@@ -1,0 +1,4 @@
+include/config
+include/sdkconfig.h
+build/
+.config.old

@@ -1,0 +1,9 @@
+start                   bank                        size(KB)
+0                        rom                            4
+1000                  	boot                            12
+4000                    PART_TABLE             		48
+10000                	OTA_0                        	936
+FA000             	wifidata	               	88
+110000                	OTA_1                        	936
+1FA000            	rfdata                        12
+1FD000            	otadata                       12
