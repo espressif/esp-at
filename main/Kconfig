@@ -1,0 +1,56 @@
+menu "AT"
+
+config AT_ENABLE
+    bool "Enable AT"
+    default "y"
+
+	
+choice AT_COMMUNICATION_METHOD
+    prompt "communicate method for AT command"
+	default AT_BASE_ON_UART
+	
+config AT_BASE_ON_UART
+	bool "Default: UART1" 
+	
+config AT_UART_PORT
+	int "uart port number for AT command"
+	default 1
+	depends on AT_BASE_ON_UART
+	
+config AT_UART_PORT_RX_PIN
+	int "uart rx pin for AT command"
+	default 16
+	depends on AT_BASE_ON_UART
+	
+config AT_UART_PORT_TX_PIN
+	int "uart tx pin for AT command"
+	default 17
+	depends on AT_BASE_ON_UART
+	
+config AT_UART_PORT_RTS_PIN
+	int "uart rts pin for AT command"
+	default 14
+	depends on AT_BASE_ON_UART
+	
+config AT_UART_PORT_CTS_PIN
+	int "uart cts pin for AT command"
+	default 15
+	depends on AT_BASE_ON_UART
+endchoice
+
+config AT_OTA_SERVER_IP
+    string "Server IP for AT OTA."
+    default "iot.espressif.cn"
+    depends on AT_ENABLE
+
+config AT_OTA_SERVER_PORT
+    int "Server port for AT OTA."
+    default 80
+    depends on AT_ENABLE
+
+config AT_OTA_TOKEN_KEY
+    string "The token for AT OTA."
+    default "dd93253c287f725de50d4071a05dd28b72046ca8"
+    depends on AT_ENABLE
+
+endmenu

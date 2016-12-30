@@ -7,7 +7,6 @@
 extern void at_task_init(void);
 void app_main()
 {
-    // system_init();
     at_task_init();
 }
 
