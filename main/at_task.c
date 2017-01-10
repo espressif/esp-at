@@ -23,6 +23,7 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -31,6 +32,8 @@
 #include "nvs.h"
 #include "nvs_flash.h"
 
+#include "esp_system.h"
+#include "at_upgrade.h"
 #ifdef CONFIG_AT_BASE_ON_UART
 #include "driver/uart.h"
 typedef struct {
@@ -155,7 +158,7 @@ static void at_uart_init(void)
             uart_config.flow_ctrl = uart_nvm_config.flow_control;
         }
     }
-
+    uart_wait_tx_done(CONFIG_AT_UART_PORT,1000*portTICK_PERIOD_MS);
     //Set UART parameters
     uart_param_config(CONFIG_AT_UART_PORT, &uart_config);
     //Set UART pins,(-1: default pin, no change.)
@@ -323,10 +326,26 @@ static uint8_t at_setupCmdUartDef(uint8_t para_num)
     return ret;
 }
 
+static uint8_t at_exeCmdCipupdate(uint8_t *cmd_name)//add get station ip and ap ip
+{
+
+    if (esp_at_upgrade_process()) {
+        esp_at_response_result(ESP_AT_RESULT_CODE_OK);
+        esp_at_port_wait_write_complete(portMAX_DELAY);
+        esp_restart();
+        for(;;){
+        }
+    }
+
+    return ESP_AT_RESULT_CODE_ERROR;
+}
+
+
 static esp_at_cmd_struct at_custom_cmd[] = {
     {"+UART", NULL, NULL, at_setupCmdUart, NULL},
     {"+UART_CUR", NULL, NULL, at_setupCmdUart, NULL},
     {"+UART_DEF", NULL, NULL, at_setupCmdUartDef, NULL},
+    {"+CIUPDATE", NULL, NULL, NULL, at_exeCmdCipupdate},
 };
 
 void at_task_init(void)

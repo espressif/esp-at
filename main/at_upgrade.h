@@ -22,15 +22,10 @@
  *
  */
 
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "esp_system.h"
-#include "nvs_flash.h"
+#ifndef __AT_UPGRADE_H__
+#define __AT_UPGRADE_H__
 
-extern void at_task_init(void);
-void app_main()
-{
-    at_task_init();
-}
+bool esp_at_upgrade_process(void);
+
+#endif
 
