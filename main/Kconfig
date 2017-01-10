@@ -50,7 +50,7 @@ config AT_OTA_SERVER_PORT
 
 config AT_OTA_TOKEN_KEY
     string "The token for AT OTA."
-    default "dd93253c287f725de50d4071a05dd28b72046ca8"
+    default "dd93253c287f725de50d4071a05dd28b72056ca7"
     depends on AT_ENABLE
 
 endmenu
