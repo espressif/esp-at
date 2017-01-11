@@ -64,8 +64,24 @@ int32_t at_port_read_data(uint8_t*buf,int32_t len)
 {
     TickType_t ticks_to_wait = portTICK_RATE_MS;
     uint8_t *data = NULL;
-	
+    size_t size = 0;
+
+    if (len == 0) {
+        return 0;
+    }
+
     if (buf == NULL) {
+        if (len == -1) {
+            if (ESP_OK != uart_get_buffered_data_len(CONFIG_AT_UART_PORT,&size)) {
+                return -1;
+            }
+            len = size;
+        }
+
+        if (len == 0) {
+            return 0;
+        }
+
         data = (uint8_t *)malloc(len);
         if (data) {
             len = uart_read_bytes(CONFIG_AT_UART_PORT,data,len,ticks_to_wait);
@@ -110,6 +126,9 @@ void uart_task(void *pvParameters)
                 if (event.size) {
                     esp_at_port_recv_data_notify (event.size, portMAX_DELAY);
                 }
+                break;
+            case UART_PATTERN_DET:
+                esp_at_transmit_terminal();
                 break;
             //Others
             default:
@@ -348,6 +367,18 @@ static esp_at_cmd_struct at_custom_cmd[] = {
     {"+CIUPDATE", NULL, NULL, NULL, at_exeCmdCipupdate},
 };
 
+void at_status_callback (esp_at_status_type status)
+{
+    switch (status) {
+    case ESP_AT_STATUS_NORMAL:
+        uart_disable_pattern_det_intr(CONFIG_AT_UART_PORT);
+        break;
+    case ESP_AT_STATUS_TRANSMIT:
+        uart_enable_pattern_det_intr(CONFIG_AT_UART_PORT, '+', 3, ((APB_CLK_FREQ*20)/1000),((APB_CLK_FREQ*20)/1000), ((APB_CLK_FREQ*20)/1000));
+        break;
+    }
+}
+
 void at_task_init(void)
 {
     uint8_t *version = (uint8_t *)malloc(64);
@@ -358,10 +389,15 @@ void at_task_init(void)
         .wait_write_complete = at_port_wait_write_complete,
     };
     
+    esp_at_custom_ops_struct esp_at_custom_ops = {
+        .status_callback = at_status_callback,
+    };
+
     at_uart_init();
 
     sprintf((char*)version, "compile time:%s %s", __DATE__, __TIME__);
     esp_at_device_ops_regist (&esp_at_device_ops);
+    esp_at_custom_ops_regist(&esp_at_custom_ops);
     esp_at_module_init (0, version);
     free(version);
 

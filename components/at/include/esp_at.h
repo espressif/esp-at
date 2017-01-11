@@ -44,6 +44,28 @@ typedef struct {
     bool (*wait_write_complete)(int32_t timeout_msec);              /*!< wait write finish */
 } esp_at_device_ops_struct;
 
+/**
+ * @brief esp_at_status
+ *  some custom function interacting with AT
+ *
+ */
+typedef enum {
+    ESP_AT_STATUS_NORMAL = 0x0,                /*!< Normal mode.Now mcu can send AT command */
+    ESP_AT_STATUS_TRANSMIT,                    /*!< Transparent Transmition mode */
+
+} esp_at_status_type;
+
+/**
+ * @brief esp_at_ops_struct
+ *  some custom function interacting with AT
+ *
+ */
+typedef struct {
+    void (*status_callback) (esp_at_status_type status);              /*!< callback when AT status changes */
+
+} esp_at_custom_ops_struct;
+
+
 // error number
 /**
  * @brief module number,Now just AT module
@@ -197,6 +219,14 @@ void esp_at_custom_cmd_array_regist(esp_at_cmd_struct *custom_at_cmd_array, uint
  *
  */
 void esp_at_device_ops_regist(esp_at_device_ops_struct* ops);
+
+/**
+ * @brief regist custom operate functions set interacting with AT,
+ *
+ * @param ops custom operate functions set
+ *
+ */
+void esp_at_custom_ops_regist(esp_at_custom_ops_struct* ops);
 
 /**
  * @brief get at module version number,

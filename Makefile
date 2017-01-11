@@ -4,6 +4,6 @@
 #
 
 PROJECT_NAME := esp-at
-EXTRA_CFLAGS += -DSDK_GIT=\"$(shell cd $(IDF_PATH);git rev-list HEAD -n 1 | cut -c 1-8)\"
+EXTRA_CFLAGS += -DSDK_GIT=IDF_VER
 include $(IDF_PATH)/make/project.mk
 

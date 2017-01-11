@@ -3,15 +3,14 @@ libat_core.a is AT Command Core,and it is the core of AT command, including the 
 
 The demo is the AT command set based on uart.You can replace uart driver with other drivers whichever you want to use.But you have to make some changes in at_task.c. In addition，you can add some custom AT command in at_custom_cmd like AT+CIUPDATE if necessary.
 
-# Compile AT
-Building examples is the same as building any other project:
+# Compile the demo and using AT instructions
+Building the demo is the same as building any other project:
 
 * Follow the setup instructions in the top-level esp-idf README.
-
 * Set `IDF_PATH` environment variable to point to the path to the esp-idf top-level directory.
-* Change into the directory of the example you'd like to build.
-* `make menuconfig` to configure the example. Most examples require a simple WiFi SSID & password via this configuration.
-* `make` to build the example.
+* `make menuconfig` to configure the demo.And you can use default configuration by 'make defconfig'.
+* `make` to build the demo.
 * Follow the printed instructions to flash, or run `make flash`.
+* You can use AT instructions referred in the released AT document.
 
 
