@@ -3,6 +3,9 @@ libat_core.a is AT Command Core,and it is the core of AT command, including the 
 
 The demo is the AT command set based on uart.You can replace uart driver with other drivers whichever you want to use.But you have to make some changes in at_task.c. In addition，you can add some custom AT command in at_custom_cmd like AT+CIUPDATE if necessary.
 
+If You want to get more information,you can get document from http://espressif.com/sites/default/files/documentation/esp32_at_instruction_set_and_examples_en.pdf,or
+http://espressif.com/sites/default/files/documentation/esp32_at_instruction_set_and_examples_cn.pdf .
+
 # Compile the demo and using AT instructions
 Building the demo is the same as building any other project:
 
@@ -12,5 +15,10 @@ Building the demo is the same as building any other project:
 * `make` to build the demo.
 * Follow the printed instructions to flash, or run `make flash`.
 * You can use AT instructions referred in the released AT document.
+
+# Released Bin
+You can get AT bin from http://espressif.com/zh-hans/support/download/at?keys=&field_type_tid%5B%5D=13
+
+
 
 
