@@ -1,0 +1,38 @@
+stages:
+  - build
+
+build_at:
+  stage: build
+  image: espressif/esp32-ci-env
+  tags:
+    - build
+
+  variables:
+    IDF_PATH: "$CI_PROJECT_DIR/esp-at-core/esp-idf"
+    GIT_STRATEGY: clone
+    
+  artifacts:
+    paths:
+      - build/*.bin
+      - build/*.elf
+      - build/*.map
+      - build/bootloader/*.bin
+    expire_in: 6 mos
+
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
+    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+    - git submodule update --init --recursive
+
+  script:
+    - git clone $GITLAB_SSH_SERVER/rd/esp-at-core.git
+    - cd esp-at-core
+    - git checkout ${CI_BUILD_REF_NAME} || echo "Using default branch..."
+    - git submodule update --init --recursive
+    - cd $CI_PROJECT_DIR
+    - make defconfig
+    - make -j4
