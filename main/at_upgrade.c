@@ -1,9 +1,9 @@
 /*
- * ESPRSSIF MIT License
+ * ESPRESSIF MIT License
  *
- * Copyright (c) 2015 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
+ * Copyright (c) 2017 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
  *
- * Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP8266 only, in which case,
+ * Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP32 only, in which case,
  * it is free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including
  * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
