@@ -16,9 +16,4 @@ Building the demo is the same as building any other project:
 * Follow the printed instructions to flash, or run `make flash`.
 * You can use AT instructions referred in the released AT document.
 
-# Released Bin
-You can get AT bin from http://espressif.com/zh-hans/support/download/at?keys=&field_type_tid%5B%5D=13
-
-
-
 
