@@ -1,0 +1,10 @@
+config AT_BASE_ON_SOCKET
+    bool "AT through socket"
+
+if AT_BASE_ON_SOCKET
+menu "AT socket settings"
+config AT_SOCKET_PORT
+    int "The socket port bond by TCP server, and you can send AT commands via the socket after the tcp client connected this port"
+    default 3333
+endmenu
+endif
