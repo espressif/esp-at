@@ -9,11 +9,18 @@ If you want to get more information, you can get document from [esp32_at_instruc
 # Compile the demo and using AT instructions
 Building the demo is the same as building any other project:
 
+* You can clone the demo into an empty directory using command:
+
+```
+git clone --recursive https://github.com/espressif/esp32-at.git
+```
+  Note the `--recursive` option! If you have already cloned esp32-at without this option, run another command to get all the submodules:
+```shell
+git submodule update --init --recursive
+```
 * Follow the setup instructions in the top-level esp-idf README.
-* Set `IDF_PATH` environment variable to point to the path to the esp-idf top-level directory.
+* Set `IDF_PATH` environment variable to point to the path of the esp-idf in current directory.
 * `make menuconfig` to configure the demo.And you can use default configuration by 'make defconfig'.
 * `make` to build the demo.
 * Follow the printed instructions to flash, or run `make flash`.
 * You can use AT instructions referred in the released AT document.
-
-
