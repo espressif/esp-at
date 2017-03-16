@@ -9,7 +9,7 @@ build_at:
     - build
 
   variables:
-    IDF_PATH: "$CI_PROJECT_DIR/esp-at-core/esp-idf"
+    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
     GIT_STRATEGY: clone
     
   artifacts:
@@ -30,11 +30,6 @@ build_at:
     - git submodule update --init --recursive
 
   script:
-    - git clone $GITLAB_SSH_SERVER/rd/esp-at-core.git
-    - cd esp-at-core
-    - git checkout ${CI_BUILD_REF_NAME} || echo "Using default branch..."
-    - git submodule update --init --recursive
-    - cd $CI_PROJECT_DIR
     - make defconfig
     - make -j4
 
