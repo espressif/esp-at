@@ -177,7 +177,6 @@ static void at_uart_init(void)
             uart_config.flow_ctrl = uart_nvm_config.flow_control;
         }
     }
-    uart_wait_tx_done(CONFIG_AT_UART_PORT,1000*portTICK_PERIOD_MS);
     //Set UART parameters
     uart_param_config(CONFIG_AT_UART_PORT, &uart_config);
     //Set UART pins,(-1: default pin, no change.)
