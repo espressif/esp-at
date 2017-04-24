@@ -1,0 +1,25 @@
+index:
+  type: int
+  mandantory: true
+uuid_len:
+  type: int
+  mandantory: true
+uuid:
+  type: hex
+  mandantory: true
+  outFormat: string
+perm:
+  type: hex
+  mandantory: true
+val_max_len:
+  type: int
+  mandantory: false
+  default: 512
+val_cur_len:
+  type: int
+  mandantory: false
+  default: 0
+value:
+  type: hex_string
+  mandantory: false
+  default: ""
