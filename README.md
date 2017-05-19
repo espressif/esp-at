@@ -32,7 +32,10 @@ git submodule update --init --recursive
 ```
 * Follow the setup instructions in the top-level esp-idf README.
 * Set `IDF_PATH` environment variable to point to the path of the esp-idf in current directory.
-* `make menuconfig` to configure the demo. And you can use default configuration by `make defconfig`.
+* `rm sdkconfig` to remove the old configuration.
+* `make menuconfig` to configure the demo. Or you can use the latest default configuration by `make defconfig`.
 * `make` to build the demo.
 * Follow the printed instructions to flash, or run `make flash`.
+* `make print_flash_cmd` can be used to print the addresses of downloading.
 * You can use AT instructions referred in the released AT document.
+
