@@ -424,7 +424,7 @@ uint8_t at_queryCmdUartDef (uint8_t *cmd_name)
 }
 
 static esp_at_cmd_struct at_custom_cmd[] = {
-    {"+UART", NULL, at_queryCmdUart, at_setupCmdUart, NULL},
+    {"+UART", NULL, at_queryCmdUart, at_setupCmdUartDef, NULL},
     {"+UART_CUR", NULL, at_queryCmdUart, at_setupCmdUart, NULL},
     {"+UART_DEF", NULL, at_queryCmdUartDef, at_setupCmdUartDef, NULL},
     {"+CIUPDATE", NULL, NULL, NULL, at_exeCmdCipupdate},
