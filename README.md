@@ -41,4 +41,5 @@ export IDF_PATH=/path_of_your_esp32-at/esp-idf
   * Or you can call `make` to compile it, and follow the printed instructions to download the bin files into flash by yourself.
   * `make print_flash_cmd` can be used to print the addresses of downloading.
   * More details are in the [esp-idf README](https://github.com/espressif/esp-idf/blob/master/README.md).
+7. If the ESP32-AT bin fails to boot, and prints "ota data partition invalid", you should run `make erase_flash` to erase the entire flash.
 
