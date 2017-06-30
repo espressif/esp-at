@@ -3,3 +3,8 @@ include/sdkconfig.h
 build/
 sdkconfig.old
 sdkconfig
+
+.bundle/
+vendor/
+.vagrant
+output/

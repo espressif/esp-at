@@ -49,13 +49,13 @@ if [ -f ~/getAmbarellaSDK.py ];then
 
 
   
-      mkdir -p ~/esp
-      chmod 777 ~/esp
-      cd ~/esp
-      wget https://artifactory.tools.simplisafe.com/artifactory/misc/toolchain/xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz
-      tar -xzf ./xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz
+      sudo mkdir -p /opt/esp
+      sudo chmod 777 /opt/esp
+      cd /opt/esp
+      wget https://artifactory.tools.simplisafe.com/artifactory/misc/toolchain/xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz -nv
+      tar -xzf /opt/esp/xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz
 
-      export PATH=$PATH:$HOME/esp/xtensa-esp32-elf/bin
+      export PATH=$PATH:$/opt/esp/xtensa-esp32-elf/bin
 
       export GO_MAJOR="$GO_MAJOR"
       export GO_MINOR="$GO_MINOR"
