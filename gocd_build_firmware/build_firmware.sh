@@ -13,6 +13,7 @@ COMMIT_HASH=$(sed -n 's/#define COMMIT_HASH 0x//p' /mnt/ss3_fw_source/main/versi
 # CD To the project directory and make the project
 cd /mnt/ss3_fw_source/
 make clean
+make sdkconfig.defaults
 make
 
 # Append the version number to the output file
