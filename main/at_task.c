@@ -465,6 +465,30 @@ void at_task_init(void)
     esp_at_module_init (0, version);
     free(version);
 
+#ifdef CONFIG_AT_BASE_COMMAND_SUPPORT
+    if(at_base_cmd_regist() == false) {
+        printf("regist base cmd fail\r\n");
+    }
+#endif
+
+#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
+    if(at_wifi_cmd_regist() == false) {
+        printf("regist wifi cmd fail\r\n");
+    }
+#endif
+
+#ifdef CONFIG_AT_NET_COMMAND_SUPPORT
+    if(at_net_cmd_regist() == false) {
+        printf("regist net cmd fail\r\n");
+    }
+#endif
+
+#ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
+    if(at_ble_cmd_regist() == false) {
+        printf("regist ble cmd fail\r\n");
+    }
+#endif
+
     esp_at_custom_cmd_array_regist (at_custom_cmd, sizeof(at_custom_cmd)/sizeof(at_custom_cmd[0]));
     esp_at_port_write_data((uint8_t *)"\r\nready\r\n",strlen("\r\nready\r\n"));
 
