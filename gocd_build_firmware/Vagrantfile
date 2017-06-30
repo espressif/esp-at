@@ -1,0 +1,120 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require_relative 'libs/config'
+
+# Determine if we are running on the go-cd server
+# of if we are being run manually.
+
+aws_region = ENV['AWS_REGION'] || 'us-east-1'
+
+# Configure AWS region info.  Remember that go-cd will need to be in the PRD aws account
+# while developers are in the DEV aws account.
+
+awsRegionSettings = {};
+
+if(aws_region == 'us-east-1')
+  if(run_by_gocd)
+    awsRegionSettings= {
+      'region' => 'us-east-1',
+      'subnet_id' => 'subnet-c5f295ef',
+      'security_groups' => [
+        'sg-5dea2e26',
+        'sg-871cebfc'
+      ]
+    }
+  else
+    awsRegionSettings= {
+      'region' => 'us-east-1',
+      'subnet_id' => 'subnet-14cb8f63',
+      'security_groups' => [
+        'sg-16210272'
+      ]
+    }
+  end
+elsif (aws_region == 'us-west-2')
+  if(run_by_gocd)
+    puts "us-west-2 gocd"
+    awsRegionSettings= {
+      'region' => 'us-west-2',
+      'subnet_id' => 'subnet-709e3915',
+      'security_groups' => [
+        'sg-565fc533'
+      ]
+    }
+  else
+    puts "us-west-2 local"
+    awsRegionSettings= {
+      'region' => 'us-west-2',
+      'subnet_id' => 'subnet-a5bf60fc',
+      'security_groups' => [
+        'sg-07071a62'
+      ]
+    }
+  end
+end
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  config.vm.box = "simplisafe/ubuntu-14.04"
+
+  config.vm.provider :aws do |aws, override|
+    aws.instance_type = 'c4.xlarge'
+
+    aws.region          = awsRegionSettings['region']
+    # aws.subnet_id       = awsRegionSettings['subnet_id']
+    # aws.security_groups = awsRegionSettings['security_groups']
+  #  aws.network_interface = 'eni-c4765b31'
+
+      
+
+    # Backup settings for us-west-2 if us-east-1 is having issues
+    #aws.region          = 'us-west-2'
+    #aws.subnet_id       = 'subnet-edb356b4'
+    #aws.security_groups = ['sg-565fc533']
+
+    aws.tags = {
+    	'Name' => 'GO.CD Build Server',
+    	'stackdriver_monitor' => 'false',
+    	'Tier' => 'Admin',
+    	'ENV' => 'tools'
+    }
+    aws.associate_public_ip = false
+    if run_by_gocd
+      aws.ssh_host_attribute = :private_ip_address
+    end
+    override.nfs.functional = false
+    override.ssh.username   = "ubuntu"
+
+    aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 50 }]
+
+    aws.ami=""
+  end
+
+# To build locally, forcing the MAC address to match the license file.
+#config.vm.provider "virtualbox" do |vb|
+#  vb.customize ["modifyvm", :id, "--macaddress1", "12C59502F896" ]
+#end
+
+
+
+  config.vm.provision :shell, path: "bootstrap.sh"
+  #config.vm.provision :shell, path: "build_ambarella.sh", privileged: false
+  #config.vm.network "public_network"
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 8192
+    v.cpus = 4
+  end
+
+  config.vm.synced_folder "../",
+    "/mnt/ss3_fw_source",
+    type: "rsync",
+    rsync__args: [
+      "--archive",
+      "--compress"
+    ]
+
+end

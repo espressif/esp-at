@@ -1,0 +1,92 @@
+#!/usr/bin/env ruby
+
+
+
+require 'bundler'
+Bundler.setup
+
+require 'vagrant-wrapper'
+
+require_relative "libs/config"
+
+#Dir.chdir '.'
+
+vw = VagrantWrapper.new
+vw.require_version(">= 1.1")
+
+$build_number = "99.0.0.0"
+
+desc 'Ensure a build environment is up and running.'
+task :start_build_server do
+  vw.execute ["up", "--provider", "aws"]
+end
+
+desc 'Populate build number'
+task :populate_build_number do
+    
+    if run_by_gocd
+        major = ENV['GO_MAJOR']
+        minor = ENV['GO_MINOR']
+        patch = ENV['GO_PATCH']
+        build = ENV['GO_PIPELINE_COUNTER']
+	commit = ENV['GO_REVISION_SS3_FW_SOURCE']
+        $build_number = "#{major}.#{minor}.#{patch}.#{build}-#{commit}"
+	$target = ENV['GO_TARGET']	        
+    end
+    
+end
+
+desc 'Write Build Number to File.'
+task :write_build_number => [:populate_build_number] do
+
+  build_version_file = '/mnt/ss3_fw_source/src/version.h'
+
+  if run_by_gocd
+        major = ENV['GO_MAJOR']
+        minor = ENV['GO_MINOR']
+        patch = ENV['GO_PATCH']
+        build = ENV['GO_PIPELINE_COUNTER']
+	commit = ENV['GO_REVISION_SS3_FW_SOURCE']
+        release_build = ENV['GO_RELEASE_BUILD']
+  end
+  
+  puts "Writing version.h with version string: '#{$build_number}'"
+  vw.run ["exec", "printf", "'#define MAJOR %d\n#define MINOR %d\n#define PATCH %d\n#define BUILD %d\n#define RELEASE_BUILD %d\n#define COMMIT_HASH 0x%s' #{major} #{minor} #{patch} #{build} #{release_build} #{commit[0...8]} > #{build_version_file}"]
+
+end
+
+desc 'Get the build environment status.'
+task :status do
+  vw.execute ["status"]
+end
+
+desc 'Build firmware'
+task :build_firmware => [:populate_build_number] do
+  vw.execute ["exec", "bash", "build_firmware.sh", "#{$target}"]
+end
+
+desc 'Push changes to the build server.'
+task :push_code do
+  vw.execute "rsync"
+end
+
+desc 'Clean all code off the repo.'
+task :clean_code do
+  vw.execute ["exec", "sudo", "rm", "-rf", "/mnt/ss3_fw_source"]
+end
+
+desc 'Pull built artifacts to their local repos.'
+task :pull_artifacts do
+  vw.execute "rsync-back"
+end
+
+desc 'Destroy the build environment if it is running.'
+task :destroy_build_server do
+  vw.execute ["destroy", "-f"]
+end
+
+desc 'Clean and start a build.  '
+task :build_clean => ['clean_code', 'push_code', 'write_build_number', 'build_firmware']
+
+
+
