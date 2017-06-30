@@ -4,40 +4,60 @@ config AT_ENABLE
     bool "Enable AT"
     default "y"
 
-	
+
 choice AT_COMMUNICATION_METHOD
     prompt "communicate method for AT command"
-	default AT_BASE_ON_UART
-	
+    default AT_BASE_ON_UART
+
 config AT_BASE_ON_UART
-	bool "Default: UART1" 
-	
+    bool "Default: UART1" 
+
 config AT_UART_PORT
-	int "uart port number for AT command"
-	default 1
-	depends on AT_BASE_ON_UART
-	
+    int "uart port number for AT command"
+    default 1
+    depends on AT_BASE_ON_UART
+
 config AT_UART_PORT_RX_PIN
-	int "uart rx pin for AT command"
-	default 16
-	depends on AT_BASE_ON_UART
-	
+    int "uart rx pin for AT command"
+    default 16
+    depends on AT_BASE_ON_UART
+
 config AT_UART_PORT_TX_PIN
-	int "uart tx pin for AT command"
-	default 17
-	depends on AT_BASE_ON_UART
-	
+    int "uart tx pin for AT command"
+    default 17
+    depends on AT_BASE_ON_UART
+
 config AT_UART_PORT_RTS_PIN
-	int "uart rts pin for AT command"
-	default 14
-	depends on AT_BASE_ON_UART
-	
+    int "uart rts pin for AT command"
+    default 14
+    depends on AT_BASE_ON_UART
+
 config AT_UART_PORT_CTS_PIN
-	int "uart cts pin for AT command"
-	default 15
-	depends on AT_BASE_ON_UART
+    int "uart cts pin for AT command"
+    default 15
+    depends on AT_BASE_ON_UART
 endchoice
 
+config AT_BASE_COMMAND_SUPPORT
+    bool "AT base command support."
+    default "y"
+    depends on AT_ENABLE
+
+config AT_WIFI_COMMAND_SUPPORT
+    bool "AT wifi command support."
+    default "y"
+    depends on AT_ENABLE
+
+config AT_NET_COMMAND_SUPPORT
+    bool "AT net command support."
+    default "y"
+    depends on AT_WIFI_COMMAND_SUPPORT
+    
+config AT_BLE_COMMAND_SUPPORT
+    bool "AT ble command support."
+    default "y"
+    depends on AT_ENABLE
+    
 config AT_OTA_SERVER_IP
     string "Server IP for AT OTA."
     default "iot.espressif.cn"

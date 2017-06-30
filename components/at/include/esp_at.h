@@ -222,7 +222,7 @@ void esp_at_transmit_terminal(void);
  * @param cmd_num command number
  *
  */
-void esp_at_custom_cmd_array_regist(esp_at_cmd_struct *custom_at_cmd_array, uint32_t cmd_num);
+bool esp_at_custom_cmd_array_regist(esp_at_cmd_struct *custom_at_cmd_array, uint32_t cmd_num);
 
 /**
  * @brief regist device operate functions set,
@@ -302,5 +302,29 @@ bool esp_at_port_wait_write_complete(int32_t timeout_msec);
  */
 int32_t  esp_at_port_get_data_length(void);
 
+/**
+ * @brief regist at base command set. If not,you can not use at base command
+ * @param NONE
+ *
+ */
+bool at_base_cmd_regist(void);
+/**
+ * @brief regist at wifi command set. If not,you can not use at wifi command
+ * @param NONE
+ *
+ */
+bool at_wifi_cmd_regist(void);
+/**
+ * @brief regist at net command set. If not,you can not use at net command
+ * @param NONE
+ *
+ */
+bool at_net_cmd_regist(void);
+/**
+ * @brief regist at ble command set. If not,you can not use at ble command
+ * @param NONE
+ *
+ */
+bool at_ble_cmd_regist(void);
 #endif
 
