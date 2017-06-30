@@ -25,7 +25,8 @@
 #ifndef __AT_UPGRADE_H__
 #define __AT_UPGRADE_H__
 
-bool esp_at_upgrade_process(void);
+bool esp_at_upgrade_process(char* server_ip, int32_t server_port, char* ota_filename);
+uint8_t at_upgrade_rollback(uint8_t*);
 
 #endif
 

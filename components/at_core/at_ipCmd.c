@@ -31,6 +31,16 @@
 
 #include "esp_system.h"
 
+#include "mbedtls/platform.h"
+#include "mbedtls/net.h"
+#include "mbedtls/esp_debug.h"
+#include "mbedtls/ssl.h"
+#include "mbedtls/entropy.h"
+#include "mbedtls/ctr_drbg.h"
+#include "mbedtls/error.h"
+#include "mbedtls/certs.h"
+#include "esp_log.h"
+
 volatile at_mdStateType mdState = m_inactive;
 
 volatile bool at_ip_mode = FALSE;
@@ -53,6 +63,17 @@ static int32_t at_transmit_data_len = 0;
 static uint8_t at_transmit_data_buf[AT_DATA_BUFFER_MAX_SIZE + 1];
 extern xQueueHandle at_process_queue;
 
+
+static const char *TAG = "example";
+extern const uint8_t server_root_cert_pem_start[] asm("_binary_server_root_cert_pem_start");
+extern const uint8_t server_root_cert_pem_end[]   asm("_binary_server_root_cert_pem_end");
+
+    mbedtls_entropy_context entropy;
+    mbedtls_ctr_drbg_context ctr_drbg;
+    mbedtls_ssl_context ssl;
+    mbedtls_x509_crt cacert;
+    mbedtls_ssl_config conf;
+    mbedtls_net_context server_fd;
 
 #define AT_SOCKET_LOCK()        xSemaphoreTake(at_socket_mutex,portMAX_DELAY)
 #define AT_SOCKET_UNLOCK()      xSemaphoreGive(at_socket_mutex)
@@ -324,8 +345,8 @@ uint8_t at_setupCmdCipstart(uint8_t para_num)
     wifi_mode_t mode = WIFI_MODE_NULL;
     int ret = 0;
 #ifdef AT_SSL_SUPPORT
-    SSL_CTX *ctx = NULL;
-    SSL *ssl = NULL;
+//    SSL_CTX *ctx = NULL;
+    //SSL *ssl = NULL;
 #endif
     if(para_num < 3)
     {
@@ -344,6 +365,7 @@ uint8_t at_setupCmdCipstart(uint8_t para_num)
     {
         linkID = 0;
     }
+    
     if(linkID >= at_netconn_max_num)
     {
         esp_at_printf_error_code(ESP_AT_CMD_ERROR_PARA_INVALID(cnt));
@@ -486,8 +508,7 @@ uint8_t at_setupCmdCipstart(uint8_t para_num)
             return ESP_AT_RESULT_CODE_ERROR;
         }
         ip_address = *(ip_addr_t*)hptr->h_addr_list[0];
-    }
-
+    }    
     AT_SOCKET_LOCK();
     pLink[linkID].link_state = AT_LINK_DISCONNECTED;
     pLink[linkID].change_mode = changType;
@@ -547,7 +568,126 @@ uint8_t at_setupCmdCipstart(uint8_t para_num)
 
         pLink[linkID].link_state = AT_LINK_CONNECTED;
         break;
-#ifdef AT_SSL_SUPPORT
+#ifdef AT_SSL_SUPPORT    
+    case AT_SOCKET_TYPE_SSL:        
+    mbedtls_ssl_init(&ssl);
+    mbedtls_x509_crt_init(&cacert);
+    mbedtls_ctr_drbg_init(&ctr_drbg);
+    ESP_LOGI(TAG, "Seeding the random number generator");
+    
+    mbedtls_ssl_config_init(&conf);
+
+    mbedtls_entropy_init(&entropy);
+    if((ret = mbedtls_ctr_drbg_seed(&ctr_drbg, mbedtls_entropy_func, &entropy,
+                                    NULL, 0)) != 0)
+    {
+        ESP_LOGE(TAG, "mbedtls_ctr_drbg_seed returned %d", ret);
+        goto exit;
+    }
+
+    ESP_LOGI(TAG, "Loading the CA root certificate...");
+
+    ret = mbedtls_x509_crt_parse(&cacert, server_root_cert_pem_start,
+                                 server_root_cert_pem_end-server_root_cert_pem_start);
+
+    if(ret < 0)
+    {
+        ESP_LOGE(TAG, "mbedtls_x509_crt_parse returned -0x%x\n\n", -ret);
+        goto exit;
+    }
+
+    ESP_LOGI(TAG, "Setting hostname for TLS session...");
+
+     /* Hostname set here should match CN in server certificate */
+    if((ret = mbedtls_ssl_set_hostname(&ssl, (char*) ipTemp)) != 0)
+    {
+        ESP_LOGE(TAG, "mbedtls_ssl_set_hostname returned -0x%x", -ret);
+        goto exit;
+    }
+
+    ESP_LOGI(TAG, "Setting up the SSL/TLS structure...");
+
+    if((ret = mbedtls_ssl_config_defaults(&conf,
+                                          MBEDTLS_SSL_IS_CLIENT,
+                                          MBEDTLS_SSL_TRANSPORT_STREAM,
+                                          MBEDTLS_SSL_PRESET_DEFAULT)) != 0)
+    {
+        ESP_LOGE(TAG, "mbedtls_ssl_config_defaults returned %d", ret);
+        goto exit;
+    }
+
+    /* MBEDTLS_SSL_VERIFY_OPTIONAL is bad for security, in this example it will print
+       a warning if CA verification fails but it will continue to connect.
+
+       You should consider using MBEDTLS_SSL_VERIFY_REQUIRED in your own code.
+    */
+    mbedtls_ssl_conf_authmode(&conf, MBEDTLS_SSL_VERIFY_REQUIRED);
+    mbedtls_ssl_conf_ca_chain(&conf, &cacert, NULL);
+    mbedtls_ssl_conf_rng(&conf, mbedtls_ctr_drbg_random, &ctr_drbg);
+#ifdef CONFIG_MBEDTLS_DEBUG
+    mbedtls_esp_enable_debug_log(&conf, 4);
+#endif
+
+    if ((ret = mbedtls_ssl_setup(&ssl, &conf)) != 0)
+    {
+        ESP_LOGE(TAG, "mbedtls_ssl_setup returned -0x%x\n\n", -ret);
+        goto exit;
+    }
+    /* Wait for the callback to set the CONNECTED_BIT in the
+       event group.
+    */
+    mbedtls_net_init(&server_fd);
+    char port_string[8];
+    sprintf(port_string, "%d", remotePort);
+    ESP_LOGI(TAG, "Connecting to %s:%s...", (char*)ipTemp, port_string);
+
+    pLink[linkID].link_state = AT_LINK_CONNECTING;
+
+    if ((ret = mbedtls_net_connect(&server_fd, (char*)ipTemp,
+                                  port_string, MBEDTLS_NET_PROTO_TCP)) != 0)
+    {
+        ESP_LOGE(TAG, "mbedtls_net_connect returned -%x", -ret);
+        goto exit;
+    }
+
+    ESP_LOGI(TAG, "Connected.");
+
+    mbedtls_ssl_set_bio(&ssl, &server_fd, mbedtls_net_send, mbedtls_net_recv, NULL);
+
+    ESP_LOGI(TAG, "Performing the SSL/TLS handshake...");
+
+    while ((ret = mbedtls_ssl_handshake(&ssl)) != 0)
+    {
+        if (ret != MBEDTLS_ERR_SSL_WANT_READ && ret != MBEDTLS_ERR_SSL_WANT_WRITE)
+        {
+            ESP_LOGE(TAG, "mbedtls_ssl_handshake returned -0x%x", -ret);
+            goto exit;
+        }
+    }
+
+    ESP_LOGI(TAG, "Verifying peer X.509 certificate...");
+
+    if ((mbedtls_ssl_get_verify_result(&ssl)) != 0)
+    {
+        /* In real life, we probably want to close connection if ret != 0 */
+        ESP_LOGW(TAG, "Failed to verify peer certificate!");
+        goto exit;
+    }
+    else {
+        ESP_LOGI(TAG, "Certificate verified.");
+    }
+    pLink[linkID].socket = 1;
+    pLink[linkID].link_state = AT_LINK_CONNECTED;
+    //pLink[linkID].ssl = ssl;          
+    break;
+    exit:        
+        mbedtls_ssl_session_reset(&ssl);
+        mbedtls_net_free(&server_fd);
+        AT_SOCKET_UNLOCK();
+        return ESP_AT_RESULT_CODE_FAIL;
+    break;    
+#endif        
+#ifdef AT_SSL_SUPPORT_OLD
         case AT_SOCKET_TYPE_SSL:
         pLink[linkID].socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
         if(pLink[linkID].socket < 0)
@@ -955,13 +1095,16 @@ uint8_t at_sending_data(uint8_t *data,uint32_t len)
         }
 #ifdef AT_SSL_SUPPORT
     } else if (AT_SOCKET_TYPE_SSL== pLink[sendingID].ip_type) {
-        if(SSL_write(pLink[sendingID].ssl,data,len) == len)
+        //printf("calling mbedtls_ssl_write with len %d\n", len);
+        if(mbedtls_ssl_write(&ssl,data,len) == len)
         {
+            
             pLink[sendingID].link_state = AT_LINK_CONNECTED;
             at_printf("id:%d,Len:%d,dp:%p\r\n",sendingID,len,data);
         }
         else
         {
+            //printf("mbedtls_ssl_write failed, wrote %d\n", len);
             pLink[sendingID].link_state = AT_LINK_CONNECTED;
             at_printf("send fail\r\n");
             return ESP_AT_RESULT_CODE_SEND_FAIL;
@@ -1911,14 +2054,17 @@ static void at_process_recv_socket(at_link_info_t* plink)
     if (plink->ip_type == AT_SOCKET_TYPE_UDP) {
         len = recvfrom(plink->socket,buffer,AT_SOCKET_RECV_BUF_MAX,0,(struct sockaddr*)&sa,&socklen);
 #ifdef AT_SSL_SUPPORT
-    } else if (plink->ip_type == AT_SOCKET_TYPE_SSL) {
-        len = SSL_read(plink->ssl,buffer,AT_SOCKET_RECV_BUF_MAX);
+    } else if (plink->ip_type == AT_SOCKET_TYPE_SSL) {    
+        len = AT_SOCKET_RECV_BUF_MAX;
+        len = mbedtls_ssl_read(&ssl, (unsigned char *)buffer, len);
 #endif
     } else {
         len = recv(plink->socket,buffer,AT_SOCKET_RECV_BUF_MAX,0);
     }
+    //printf("mbedtls_ssl_read returned %d bytes\n", len);
     if(len > 0)
     {
+        
         if (at_ip_mode == TRUE) {
             esp_at_port_write_data(buffer, len);
         } else {
@@ -1987,9 +2133,9 @@ static void at_process_recv_socket(at_link_info_t* plink)
                     if (plink->link_state != AT_LINK_DISCONNECTING) {
 #ifdef AT_SSL_SUPPORT
                         if (AT_SOCKET_TYPE_SSL == plink->ip_type) {
-                            SSL_shutdown(plink->ssl);
-                            SSL_free(plink->ssl);
-                            plink->ssl = NULL;
+                            mbedtls_ssl_close_notify(&ssl);
+                            mbedtls_ssl_session_reset(&ssl);
+                            mbedtls_net_free(&server_fd);
                         }
 #endif
 	                    sock = plink->socket;
@@ -2259,9 +2405,9 @@ bool at_socket_client_cleanup_task(at_link_info_t* plink)
         plink->link_state = AT_LINK_DISCONNECTING;
 #ifdef AT_SSL_SUPPORT
         if (plink->ip_type == AT_SOCKET_TYPE_SSL) {
-            SSL_shutdown(plink->ssl);
-            SSL_free(plink->ssl);
-            plink->ssl = NULL;
+            mbedtls_ssl_close_notify(&ssl);
+            mbedtls_ssl_session_reset(&ssl);
+            mbedtls_net_free(&server_fd);
         }
 #endif
         close(plink->socket);

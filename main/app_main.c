@@ -28,9 +28,9 @@
 #include "esp_system.h"
 #include "nvs_flash.h"
 
-extern void at_task_init(void);
+/*extern void at_task_init(void);
 void app_main()
 {
     at_task_init();
-}
+}*/
 

@@ -37,8 +37,8 @@
 
 #include "esp_at.h"
 
-#define ESP_AT_SERVER_IP   CONFIG_AT_OTA_SERVER_IP
-#define ESP_AT_SERVER_PORT CONFIG_AT_OTA_SERVER_PORT
+//#define ESP_AT_SERVER_IP   "192.168.209.173"
+//#define ESP_AT_SERVER_PORT 8070
 #define ESP_AT_BIN_KEY     CONFIG_AT_OTA_TOKEN_KEY
 
 #define TEXT_BUFFSIZE 1024
@@ -48,11 +48,10 @@
 
 #define pheadbuffer "Connection: keep-alive\r\n\
 Cache-Control: no-cache\r\n\
-User-Agent: Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36 \r\n\
+User-Agent: SS3 Basestation ESP32 Wifi Chip \r\n\
 Accept: */*\r\n\
-Authorization: token %s\r\n\
-Accept-Encoding: gzip,deflate,sdch\r\n\
-Accept-Language: zh-CN,zh;q=0.8\r\n\r\n"
+Accept-Encoding: identity\r\n\
+Accept-Language: en-US,en;q=0.8\r\n\r\n"
 
 #define ESP_AT_OTA_TIMEOUT_MS               (60*3*1000)
 
@@ -72,7 +71,14 @@ static void esp_at_ota_timeout_callback( TimerHandle_t xTimer )
     }
 }
 
-bool esp_at_upgrade_process(void)
+uint8_t at_upgrade_rollback(uint8_t* cmd_name)
+{
+    const esp_partition_t* pPartition = esp_ota_get_next_update_partition(NULL);
+    esp_ota_set_boot_partition(pPartition);
+    return 0;    
+}
+
+bool esp_at_upgrade_process(char* server_ip, int32_t server_port, char* ota_filename)
 {
     bool pkg_body_start = false;
     struct sockaddr_in sock_info;
@@ -81,7 +87,7 @@ bool esp_at_upgrade_process(void)
     uint8_t* http_request = NULL;
     uint8_t* data_buffer = NULL;
     uint8_t* pStr = NULL;
-    uint8_t* version= NULL;
+    //uint8_t* version= NULL;
     esp_partition_t* partition_ptr = NULL;
     esp_partition_t partition;
     esp_ota_handle_t out_handle = 0;
@@ -103,10 +109,11 @@ bool esp_at_upgrade_process(void)
                 NULL,
                 esp_at_ota_timeout_callback);
     xTimerStart(esp_at_ota_timeout_timer,portMAX_DELAY);
-    ip_address.u_addr.ip4.addr = inet_addr(ESP_AT_SERVER_IP);
+    printf("server_ip=%s, server_port=%d, ota_filename=%s\n", server_ip, server_port, ota_filename);
+    ip_address.u_addr.ip4.addr = inet_addr(server_ip);
 
-    if ((ip_address.u_addr.ip4.addr == IPADDR_NONE) && (strcmp(ESP_AT_SERVER_IP,"255.255.255.255") != 0)) {
-        if((hptr = gethostbyname(ESP_AT_SERVER_IP)) == NULL)
+    if ((ip_address.u_addr.ip4.addr == IPADDR_NONE) && (strcmp(server_ip,"255.255.255.255") != 0)) {
+        if((hptr = gethostbyname(server_ip)) == NULL)
         {
             ESP_AT_OTA_DEBUG("gethostbyname fail\r\n");
             goto OTA_ERROR;
@@ -124,7 +131,7 @@ bool esp_at_upgrade_process(void)
     memset(&sock_info, 0, sizeof(struct sockaddr_in));
     sock_info.sin_family = AF_INET;
     sock_info.sin_addr.s_addr = ip_address.u_addr.ip4.addr;
-    sock_info.sin_port = htons(ESP_AT_SERVER_PORT);
+    sock_info.sin_port = htons(server_port);
 
     // connect to http server
     if (connect(esp_at_ota_socket_id, (struct sockaddr*)&sock_info, sizeof(sock_info)) < 0)
@@ -143,10 +150,10 @@ bool esp_at_upgrade_process(void)
     if (data_buffer == NULL) {
         goto OTA_ERROR;
     }
-    snprintf((char*)http_request,TEXT_BUFFSIZE,"GET /v1/device/rom/?is_format_simple=true HTTP/1.0\r\nHost: "IPSTR":%d\r\n"pheadbuffer"",
+    /*snprintf((char*)http_request,TEXT_BUFFSIZE,"GET /v1/device/rom/?is_format_simple=true HTTP/1.0\r\nHost: "IPSTR":%d\r\n"pheadbuffer"",
              IP2STR(&ip_address.u_addr.ip4),
              ESP_AT_SERVER_PORT, ESP_AT_BIN_KEY);
-    /*send GET request to http server*/
+    //send GET request to http server
     if (send(esp_at_ota_socket_id, http_request, strlen((char*)http_request), 0) < 0)
     {
     	ESP_AT_OTA_DEBUG("send GET request to server failed\r\n");
@@ -173,11 +180,11 @@ bool esp_at_upgrade_process(void)
         ESP_AT_OTA_DEBUG("rom_version tail error!\r\n");
         goto OTA_ERROR;
     }
-    *pStr = '\0';
+    *pStr = '\0';*/
     snprintf((char*)http_request,TEXT_BUFFSIZE,
-        "GET /v1/device/rom/?action=download_rom&version=%s&filename=ota.bin HTTP/1.1\r\nHost: "IPSTR":%d\r\n"pheadbuffer"",
-        (char*)version, IP2STR(&ip_address.u_addr.ip4),
-        ESP_AT_SERVER_PORT, ESP_AT_BIN_KEY);
+        "GET %s HTTP/1.1\r\nHost: %s\r\n"pheadbuffer"", 
+         ota_filename,
+         server_ip);
 
     // search ota partition
     partition_ptr = (esp_partition_t*)esp_ota_get_boot_partition();
@@ -230,6 +237,7 @@ bool esp_at_upgrade_process(void)
         ESP_AT_OTA_DEBUG("connect to server2 failed!\r\n");
         goto OTA_ERROR;
     }
+    printf("SOCK_SEND size %d, %s", strlen((char*)http_request), http_request);
     if (send(esp_at_ota_socket_id, http_request, strlen((char*)http_request), 0) < 0)
     {
     	ESP_AT_OTA_DEBUG("send GET bin to server failed\r\n");
@@ -248,7 +256,7 @@ bool esp_at_upgrade_process(void)
             // search "\r\n\r\n"
             pStr = (uint8_t*)strstr((char*)data_buffer,"Content-Length: ");
             if (pStr == NULL) {
-                break;
+                continue;
             }
             pStr += strlen("Content-Length: ");
             total_len = atoi((char*)pStr);
@@ -257,8 +265,8 @@ bool esp_at_upgrade_process(void)
             if (pStr) {
                 pkg_body_start = true;
                 pStr += 4; // skip "\r\n"
-                if (pStr[0] != 0xE9) {
-                    ESP_AT_OTA_DEBUG("OTA Write Header format Check Failed! first byte is %02x\r\n", pStr[0]);
+                if ((pStr[0] != 0xE9) || (pStr[1] != 0x08)) {
+                    ESP_AT_OTA_DEBUG("OTA Write Header format Check Failed! first byte is %02x ,second byte is %02x\r\n", pStr[0],pStr[1]);
                     goto OTA_ERROR;
                 }
                 // pStr += 2;
@@ -298,11 +306,11 @@ bool esp_at_upgrade_process(void)
         goto OTA_ERROR;
     }
 
-    if(esp_ota_set_boot_partition(&partition) != ESP_OK)
+    /*if(esp_ota_set_boot_partition(&partition) != ESP_OK)
     {
         ESP_AT_OTA_DEBUG("esp_ota_set_boot_partition failed!\r\n");
         goto OTA_ERROR;
-    }
+    }*/
     esp_at_port_write_data((uint8_t*)"+CIPUPDATE:4\r\n",strlen("+CIPUPDATE:4\r\n"));
 
     ret = true;

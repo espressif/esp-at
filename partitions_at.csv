@@ -1,7 +1,7 @@
 # Name,   Type, SubType, Offset,  Size
-phy_init, data, phy,     0xf000,  0x1000
-otadata,data,ota,  0x10000,        8K
-nvs,data,nvs,   0x12000,        56K
-ble_data,0x40,0,0x20000,12K
-ota_0,app,    ota_0,   0x100000,0x180000
-ota_1,app,    ota_1,   0x280000,0x180000
+phy_init,	data, 	phy,     	0x0f000,	0x1000
+otadata,	data,	ota,  		0x10000,	0x2000
+nvs,		data,	nvs,   		0x12000,	0xE000
+ble_data,	0x40,	0,			0x20000,	0x3000
+ota_0,		app,	ota_0,		0x40000,	0x1E0000
+ota_1,		app,	ota_1,		0x220000,	0x1E0000
