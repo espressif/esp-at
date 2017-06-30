@@ -34,6 +34,7 @@
 
 #include "esp_system.h"
 #include "at_upgrade.h"
+
 #ifdef CONFIG_AT_BASE_ON_UART
 #include "driver/uart.h"
 typedef struct {
@@ -45,7 +46,7 @@ typedef struct {
 } at_nvm_uart_config_struct; 
 
 QueueHandle_t esp_at_uart_queue = NULL;
-static bool at_save_para_into_flash = false;
+static bool at_default_flag = false;
 
 
 static bool at_nvm_uart_config_set (at_nvm_uart_config_struct *uart_config);
@@ -148,7 +149,7 @@ static void at_uart_init(void)
         .data_bits = UART_DATA_8_BITS,
         .parity = UART_PARITY_DISABLE,
         .stop_bits = UART_STOP_BITS_1,
-        .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,
+        .flow_ctrl = UART_HW_FLOWCTRL_RTS,
         .rx_flow_ctrl_thresh = 122,
     };
 
@@ -176,6 +177,13 @@ static void at_uart_init(void)
         if ((uart_nvm_config.flow_control >= UART_HW_FLOWCTRL_DISABLE) && (uart_nvm_config.flow_control <= UART_HW_FLOWCTRL_CTS_RTS)) {
             uart_config.flow_ctrl = uart_nvm_config.flow_control;
         }
+    } else {
+        uart_nvm_config.baudrate = 115200;
+        uart_nvm_config.data_bits = UART_DATA_8_BITS;
+        uart_nvm_config.flow_control = UART_HW_FLOWCTRL_RTS;
+        uart_nvm_config.parity = UART_PARITY_DISABLE;
+        uart_nvm_config.stop_bits = UART_STOP_BITS_1;
+        at_nvm_uart_config_set(&uart_nvm_config);
     }
     //Set UART parameters
     uart_param_config(CONFIG_AT_UART_PORT, &uart_config);
@@ -218,7 +226,6 @@ static bool at_nvm_uart_config_set (at_nvm_uart_config_struct *uart_config)
         return false;
     }
     nvs_close(handle);
-
     return true;
 }
 
@@ -317,7 +324,7 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     }
     uart_config.flow_control = value;
 
-    if (at_save_para_into_flash) {
+    if (at_default_flag) {
         if (at_nvm_uart_config_set(&uart_config) == false) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
@@ -337,9 +344,9 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
 static uint8_t at_setupCmdUartDef(uint8_t para_num)
 {
     uint8_t ret = ESP_AT_RESULT_CODE_ERROR;
-    at_save_para_into_flash = true;
+    at_default_flag = true;
     ret = at_setupCmdUart(para_num);
-    at_save_para_into_flash = false;
+    at_default_flag = false;
     
     return ret;
 }
@@ -358,11 +365,68 @@ static uint8_t at_exeCmdCipupdate(uint8_t *cmd_name)//add get station ip and ap 
     return ESP_AT_RESULT_CODE_ERROR;
 }
 
+uint8_t at_queryCmdUart (uint8_t *cmd_name)
+{
+    uint32_t baudrate = 0;
+    uart_word_length_t data_bits = UART_DATA_8_BITS;
+    uart_stop_bits_t stop_bits = UART_STOP_BITS_1;
+    uart_parity_t parity = UART_PARITY_DISABLE;
+    uart_hw_flowcontrol_t flow_control = UART_HW_FLOWCTRL_DISABLE;
+
+    uint8_t buffer[64];
+
+    uart_get_baudrate(CONFIG_AT_UART_PORT,&baudrate);
+    uart_get_word_length(CONFIG_AT_UART_PORT,&data_bits);
+    uart_get_stop_bits(CONFIG_AT_UART_PORT,&stop_bits);
+    uart_get_parity(CONFIG_AT_UART_PORT,&parity);
+    uart_get_hw_flow_ctrl(CONFIG_AT_UART_PORT,&flow_control);
+
+    data_bits += 5;
+    if (UART_PARITY_DISABLE == parity) {
+        parity = 0;
+    } else if (UART_PARITY_ODD == parity) {
+        parity = 1;
+    } else if (UART_PARITY_EVEN == parity) {
+        parity = 2;
+    } else {
+        parity = 0xff;
+    }
+
+    snprintf((char*)buffer,sizeof(buffer) - 1,"%s:%d,%d,%d,%d,%d\r\n",cmd_name,baudrate,data_bits,stop_bits,parity,flow_control);
+
+    esp_at_port_write_data(buffer,strlen((char*)buffer));
+
+    return ESP_AT_RESULT_CODE_OK;
+}
+
+uint8_t at_queryCmdUartDef (uint8_t *cmd_name)
+{
+    at_nvm_uart_config_struct uart_nvm_config;
+    uint8_t buffer[64];
+    memset(&uart_nvm_config,0x0,sizeof(uart_nvm_config));
+    at_nvm_uart_config_get(&uart_nvm_config);
+
+    uart_nvm_config.data_bits += 5;
+    if (UART_PARITY_DISABLE == uart_nvm_config.parity) {
+        uart_nvm_config.parity = 0;
+    } else if (UART_PARITY_ODD == uart_nvm_config.parity) {
+        uart_nvm_config.parity = 1;
+    } else if (UART_PARITY_EVEN == uart_nvm_config.parity) {
+        uart_nvm_config.parity = 2;
+    } else {
+        uart_nvm_config.parity = 0xff;
+    }
+    snprintf((char*)buffer,sizeof(buffer) - 1,"%s:%d,%d,%d,%d,%d\r\n",cmd_name,uart_nvm_config.baudrate,
+        uart_nvm_config.data_bits,uart_nvm_config.stop_bits,uart_nvm_config.parity,uart_nvm_config.flow_control);
+
+    esp_at_port_write_data(buffer,strlen((char*)buffer));
+    return ESP_AT_RESULT_CODE_OK;
+}
 
 static esp_at_cmd_struct at_custom_cmd[] = {
-    {"+UART", NULL, NULL, at_setupCmdUart, NULL},
-    {"+UART_CUR", NULL, NULL, at_setupCmdUart, NULL},
-    {"+UART_DEF", NULL, NULL, at_setupCmdUartDef, NULL},
+    {"+UART", NULL, at_queryCmdUart, at_setupCmdUartDef, NULL},
+    {"+UART_CUR", NULL, at_queryCmdUart, at_setupCmdUart, NULL},
+    {"+UART_DEF", NULL, at_queryCmdUartDef, at_setupCmdUartDef, NULL},
     {"+CIUPDATE", NULL, NULL, NULL, at_exeCmdCipupdate},
 };
 
@@ -392,6 +456,7 @@ void at_task_init(void)
         .status_callback = at_status_callback,
     };
 
+    nvs_flash_init();
     at_uart_init();
 
     sprintf((char*)version, "compile time:%s %s", __DATE__, __TIME__);

@@ -101,6 +101,7 @@ typedef enum {
     ESP_AT_SUB_PARA_PARSE_FAIL          = 0x08,              /*!<  parse parameter fail */
     ESP_AT_SUB_UNSUPPORT_CMD            = 0x09,
     ESP_AT_SUB_CMD_EXEC_FAIL            = 0x0A,
+    ESP_AT_SUB_CMD_PROCESSING           = 0x0B,              /*!<  previous command is processing */
 } esp_at_error_code;
 
 #define ESP_AT_ERROR_NO(subcategory,extension)  \
@@ -116,6 +117,7 @@ typedef enum {
 #define ESP_AT_CMD_ERROR_PARA_PARSE_FAIL(which_para)          ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_PARSE_FAIL,which_para)
 #define ESP_AT_CMD_ERROR_CMD_UNSUPPORT                        ESP_AT_ERROR_NO(ESP_AT_SUB_UNSUPPORT_CMD,0x00)
 #define ESP_AT_CMD_ERROR_CMD_EXEC_FAIL(result)                ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_EXEC_FAIL,result)
+#define ESP_AT_CMD_ERROR_CMD_PROCESSING                       ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_PROCESSING,0x00)
 
 /**
  * @brief the result of AT parse

@@ -257,8 +257,8 @@ bool esp_at_upgrade_process(void)
             if (pStr) {
                 pkg_body_start = true;
                 pStr += 4; // skip "\r\n"
-                if ((pStr[0] != 0xE9) || (pStr[1] != 0x09)) {
-                    ESP_AT_OTA_DEBUG("OTA Write Header format Check Failed! first byte is %02x ,second byte is %02x\r\n", pStr[0],pStr[1]);
+                if (pStr[0] != 0xE9) {
+                    ESP_AT_OTA_DEBUG("OTA Write Header format Check Failed! first byte is %02x\r\n", pStr[0]);
                     goto OTA_ERROR;
                 }
                 // pStr += 2;
