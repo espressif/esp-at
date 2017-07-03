@@ -39,7 +39,7 @@ end
 desc 'Write Build Number to File.'
 task :write_build_number => [:populate_build_number] do
 
-  build_version_file = '/mnt/ss3_fw_source/src/version.h'
+  build_version_file = '/mnt/ss3_fw_source/main/version.h'
 
   if run_by_gocd
         major = ENV['GO_MAJOR']
