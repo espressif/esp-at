@@ -44,6 +44,9 @@
 #include "mbedtls/certs.h"
 #include "esp_log.h"
 #include "version.h"
+#include "esp_ota_ops.h"
+#include "esp_partition.h"
+
 //#include "nanopb.h"
 
 #include "esp_system.h"
@@ -435,8 +438,12 @@ uint8_t at_exeCmdSNTP(uint8_t* cmd_name)
 
 uint8_t at_getVersion(uint8_t* cmd_name)
 {
-    char version_string[50];    
-    sprintf(version_string, "AT Active:%d.%d.%d.%d,Inactive:%d.%d.%d.%d", MAJOR, MINOR, PATCH, BUILD, MAJOR, MINOR, PATCH, BUILD);
+    char version_string[50];
+    uint8_t version[5];
+    const esp_partition_t* pPartition = esp_ota_get_next_update_partition(NULL);
+    spi_flash_read(pPartition->address + 0x13,&version, 5);
+
+    sprintf(version_string, "AT Active:%d.%d.%d.%d,Inactive:%d.%d.%d.%d", MAJOR, MINOR, PATCH, BUILD, version[0], version[1], version[2], *((uint16_t*) &version[3]));
     at_port_print((uint8_t*) version_string);
     return ESP_AT_RESULT_CODE_OK;    
 }

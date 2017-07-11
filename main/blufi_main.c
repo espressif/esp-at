@@ -23,6 +23,8 @@
 #include "esp_event_loop.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
+#include "esp_spi_flash.h"
+#include "rom/spi_flash.h"
 #include "bt.h"
 
 #include "esp_blufi_api.h"
@@ -387,8 +389,8 @@ uint8_t at_StopBluetooth(uint8_t para_num)
 }
 
 void app_main()
-{    
-    printf("Version %d.%d.%d.%d (HASH: %x)\n", MAJOR, MINOR, PATCH, BUILD, COMMIT_HASH);
+{    	
+
 	at_task_init();	    
     nvs_flash_init();
     initialise_wifi(); 
