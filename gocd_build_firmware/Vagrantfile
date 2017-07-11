@@ -67,7 +67,7 @@ Vagrant.configure("2") do |config|
     aws.region          = awsRegionSettings['region']
     # aws.subnet_id       = awsRegionSettings['subnet_id']
     # aws.security_groups = awsRegionSettings['security_groups']
-  #  aws.network_interface = 'eni-c4765b31'
+    aws.network_interface = 'eni-c4765b31'
 
       
 
