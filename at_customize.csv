@@ -1,0 +1,6 @@
+# Name,   Type, SubType, Offset,  Size
+ble_data,0x40,1,0x21000,12K
+server_cert,0x40,2,0x24000,8K
+server_key,0x40,3,0x26000,8K
+server_ca,0x40,4,0x28000,8K
+fatfs,data,fat,0x70000,576K
