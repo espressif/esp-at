@@ -300,31 +300,38 @@ bool esp_at_port_wait_write_complete(int32_t timeout_msec);
  *  - >= 0   : the length of the data received
  *  - others : fail
  */
-int32_t  esp_at_port_get_data_length(void);
+int32_t esp_at_port_get_data_length(void);
 
 /**
- * @brief regist at base command set. If not,you can not use at base command
+ * @brief regist at base command set. If not,you can not use AT base command
  * @param NONE
  *
  */
-bool at_base_cmd_regist(void);
+bool esp_at_base_cmd_regist(void);
 /**
- * @brief regist at wifi command set. If not,you can not use at wifi command
+ * @brief regist at wifi command set. If not,you can not use AT wifi command
  * @param NONE
  *
  */
-bool at_wifi_cmd_regist(void);
+bool esp_at_wifi_cmd_regist(void);
 /**
- * @brief regist at net command set. If not,you can not use at net command
+ * @brief regist at net command set. If not,you can not use AT net command
  * @param NONE
  *
  */
-bool at_net_cmd_regist(void);
+bool esp_at_net_cmd_regist(void);
 /**
- * @brief regist at ble command set. If not,you can not use at ble command
+ * @brief regist at ble command set. If not,you can not use AT ble command
  * @param NONE
  *
  */
-bool at_ble_cmd_regist(void);
+bool esp_at_ble_cmd_regist(void);
+
+/**
+ * @brief regist at fs command set. If not,you can not use AT fs command
+ * @param NONE
+ *
+ */
+bool esp_at_fs_cmd_regist(void);
 #endif
 
