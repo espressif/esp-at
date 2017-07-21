@@ -46,7 +46,9 @@
 #include "version.h"
 #include "esp_ota_ops.h"
 #include "esp_partition.h"
-
+#include "esp_wifi.h"
+#include "esp_wifi_types.h"
+#include "esp_image_format.h"
 //#include "nanopb.h"
 
 #include "esp_system.h"
@@ -438,13 +440,26 @@ uint8_t at_exeCmdSNTP(uint8_t* cmd_name)
 
 uint8_t at_getVersion(uint8_t* cmd_name)
 {
+	size_t image_size;
     char version_string[50];
-    uint8_t version[5];
-    const esp_partition_t* pPartition = esp_ota_get_next_update_partition(NULL);
-    spi_flash_read(pPartition->address + 0x13,&version, 5);
+    uint8_t version[5] = {0,0,0,0,0};
+    const esp_partition_t* pPartition = esp_ota_get_next_update_partition(NULL);    
+    if (esp_image_basic_verify(pPartition->address, true, &image_size) == ESP_OK)
+    	spi_flash_read(pPartition->address + 0x13,&version, 5);
 
     sprintf(version_string, "AT Active:%d.%d.%d.%d,Inactive:%d.%d.%d.%d", MAJOR, MINOR, PATCH, BUILD, version[0], version[1], version[2], *((uint16_t*) &version[3]));
     at_port_print((uint8_t*) version_string);
+    return ESP_AT_RESULT_CODE_OK;    
+}
+
+uint8_t at_get_wifi_config(uint8_t* cmd_name)
+{
+    char config_string[50];
+    wifi_config_t sta_conf;
+    esp_wifi_get_config(WIFI_IF_STA, &sta_conf);    
+    sprintf(config_string, "AT ssid:%s,password:%s", sta_conf.sta.ssid, sta_conf.sta.password);
+    at_port_print((uint8_t*) config_string);
+
     return ESP_AT_RESULT_CODE_OK;    
 }
 
@@ -460,6 +475,7 @@ static esp_at_cmd_struct at_custom_cmd[] = {
     {"+LOCK", NULL, NULL, at_lock_control, NULL },
     {"+SNTP", NULL, NULL, NULL, at_exeCmdSNTP },
     {"+VERSION", NULL, NULL, NULL, at_getVersion },
+    {"+WIFI_CONFIG", NULL, NULL, NULL, at_get_wifi_config },
     
 };
 
@@ -474,6 +490,9 @@ void at_status_callback (esp_at_status_type status)
         break;
     }
 }
+
+
+
 
 void at_task_init(void)
 {
