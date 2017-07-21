@@ -166,6 +166,7 @@ bool esp_at_upgrade_process(void)
     }
     data_buffer = (uint8_t*)malloc(TEXT_BUFFSIZE);
     if (data_buffer == NULL) {
+        free(http_request);
         goto OTA_ERROR;
     }
     snprintf((char*)http_request,TEXT_BUFFSIZE,"GET /v1/device/rom/?is_format_simple=true HTTP/1.0\r\nHost: "IPSTR":%d\r\n"pheadbuffer"",
