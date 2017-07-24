@@ -1,0 +1,31 @@
+menu "AT Customized Partitions"
+
+choice
+    prompt "AT Customized Partition Table"
+    default ENABLE_AT_CUSTOMIZED_PARTITION_TABLE
+    help
+        enable AT customized partition table
+        refer to README.md in components/customized_partitions
+
+config ENABLE_AT_CUSTOMIZED_PARTITION_TABLE
+    bool "enable AT customized partition table"
+
+config DISABLE_AT_CUSTOMIZED_PARTITIOTN_TABLE
+    bool "disable AT customized partition table"
+endchoice
+
+config AT_CUSTOMIZED_PARTITION_TABLE_FILE
+    string "AT Customized partition file"
+    depends on ENABLE_AT_CUSTOMIZED_PARTITION_TABLE
+    default at_customize.csv
+    help
+        partition table path
+
+config AT_CUSTOMIZED_PARTITION_TABLE_OFFSET
+    hex "offset of AT customized partition table"
+    depends on ENABLE_AT_CUSTOMIZED_PARTITION_TABLE
+    default 0x20000
+    help
+        MUST set the same value as customized bin offset defined in AT partition table
+
+endmenu

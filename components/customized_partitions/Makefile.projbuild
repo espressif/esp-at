@@ -1,0 +1,89 @@
+#
+# AT Customized partition table
+#
+# Same as the partition table of esp-idf, AT customized partition
+# table is a standalone project to generate the partition table
+# binary and use tools to generate customized content binaries as
+# part of the build process. This binary is then added to the list
+# of files for esptool.py to flash.
+#
+.PHONY: at_customized_partitions at_customized_partitions-clean
+
+SHELL:=/bin/bash
+
+ifdef CONFIG_ENABLE_AT_CUSTOMIZED_PARTITION_TABLE
+# idf gen_esp32part tool
+AT_CUSTOMIZED_GEN_ESP32PART := $(PYTHON) $(IDF_PATH)/components/partition_table/gen_esp32part.py -q
+
+# AT CUSTOMIZED PARTITION TABLE path
+AT_PARTITION_TABLE_ROOT := $(call dequote,$(if $(CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE),$(PROJECT_PATH),$(COMPONENT_PATH)))
+AT_PARTITION_TABLE_CSV_PATH := $(call dequote,$(abspath $(AT_PARTITION_TABLE_ROOT)/$(subst $(quote),,$(CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE))))
+
+# TARGET FILE PATH
+AT_CUSTOMIZED_PARTITION_TABLE_BIN := $(BUILD_DIR_BASE)/$(notdir $(AT_PARTITION_TABLE_CSV_PATH:.csv=.bin))
+AT_CUSTOMIZED_PARTITION_BINS := $(BUILD_DIR_BASE)/customized_partitions
+
+# define component path (COMPONENT_PATH can't be used here as component.mk not exist)
+AT_CUSTOMIZED_PARTITION_FOLDER := $(PROJECT_PATH)/components/customized_partitions
+AT_CUSTOMIZED_PARTITION_DEPENDENCY_FILE = $(AT_CUSTOMIZED_PARTITION_FOLDER)/AT_partition_dependency
+
+# prepare for generating bins for customized partitions
+AT_PARTITION_TOOLS = $(wildcard $(AT_CUSTOMIZED_PARTITION_FOLDER)/generation_tools/*)
+AT_PARTITION_RAW_DATA = $(wildcard $(AT_CUSTOMIZED_PARTITION_FOLDER)/raw_data/*/*)
+AT_PARTITION_FLASH_ARG_CACHE_FILE = $(AT_CUSTOMIZED_PARTITION_BINS)/.at_customized_files.tmp
+
+# build AT customzied partition table
+$(AT_CUSTOMIZED_PARTITION_TABLE_BIN): $(AT_PARTITION_TABLE_CSV_PATH) $(SDKCONFIG_MAKEFILE) $(AT_CUSTOMIZED_PARTITION_DEPENDENCY_FILE) $(AT_PARTITION_TOOLS) $(AT_PARTITION_RAW_DATA)
+	@echo "building AT customized partition table $(CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE)"
+# check if current definition of partition table is valid
+	@cat $(AT_CUSTOMIZED_PARTITION_DEPENDENCY_FILE) | while read LINE; do \
+        if [ -n "$$LINE" ] && [[ "$$LINE" != "#"* ]]; then \
+            CONFIG_NAME="CONFIG_"`echo "$$LINE" | awk '{print $$1}'`; \
+            PARTITION_NAME=`echo "$$LINE" | awk '{print $$2}'`; \
+            CONFIG_VALUE=`cat $(SDKCONFIG_MAKEFILE) | grep $$CONFIG_NAME || echo ""`; \
+            if [ -n "$$CONFIG_VALUE" ]; then \
+                cat $(AT_PARTITION_TABLE_CSV_PATH) | grep -iq "^$$PARTITION_NAME" \
+                    || { echo "Error: $$PARTITION_NAME not defined in AT customized partition table" ; exit 1; }\
+            fi; \
+        fi; \
+    done
+# generate partition table bin and add to flash args
+	$(AT_CUSTOMIZED_GEN_ESP32PART) $< $@
+	@echo "building AT customized partition table succeed"
+# generate customized partition bins
+	@echo "generating AT customized partition bins to $(AT_CUSTOMIZED_PARTITION_BINS)"
+	@rm -f $(AT_PARTITION_FLASH_ARG_CACHE_FILE)
+	@cat $(AT_PARTITION_TABLE_CSV_PATH) | while read LINE; do \
+        if [ -n "$$LINE" ] && [[ "$$LINE" != "#"* ]]; then \
+            PARTITION_NAME=`echo "$$LINE" | awk -F, '{print $$1}'`; \
+            PARTITION_TABLE_OFFSET=`echo "$$LINE" | awk -F, '{print $$4}'`; \
+            if [ -f "$(AT_CUSTOMIZED_PARTITION_FOLDER)/generation_tools/$$PARTITION_NAME.sh" ]; then \
+                source "$(AT_CUSTOMIZED_PARTITION_FOLDER)/generation_tools/$$PARTITION_NAME.sh" \
+                    $${PARTITION_NAME} $(AT_CUSTOMIZED_PARTITION_BINS) || exit 1; \
+                echo "AT customized partitions successfully generated: $$PARTITION_NAME"; \
+                echo " $$PARTITION_TABLE_OFFSET $(AT_CUSTOMIZED_PARTITION_BINS)/$$PARTITION_NAME.bin" \
+                    >> $(AT_PARTITION_FLASH_ARG_CACHE_FILE); \
+            fi; \
+        fi; \
+    done
+	@echo "AT customized bin generation finished"
+
+ESPTOOL_ALL_FLASH_ARGS += $(CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_OFFSET) $(AT_CUSTOMIZED_PARTITION_TABLE_BIN)
+
+ESPTOOL_ALL_FLASH_ARGS += `cat $(AT_PARTITION_FLASH_ARG_CACHE_FILE) 2>/dev/null|| echo ""`
+
+all_binaries: $(AT_CUSTOMIZED_PARTITION_TABLE_BIN)
+
+at_customized_partitions-clean:
+	rm -f $(AT_CUSTOMIZED_PARTITION_TABLE_BIN)
+	rm -f $(AT_CUSTOMIZED_PARTITION_BINS)/*.bin
+	@rm -f $(AT_PARTITION_FLASH_ARG_CACHE_FILE)
+	@echo "clean AT customized table bin"
+
+at_customized_partitions: at_customized_partitions-clean $(AT_CUSTOMIZED_PARTITION_TABLE_BIN)
+	@echo "generating AT customized partitions"
+	@echo $(ESPTOOL_ALL_FLASH_ARGS)
+
+clean: at_customized_partitions-clean
+
+endif
