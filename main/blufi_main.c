@@ -37,7 +37,7 @@
 
 static void blufi_event_callback(esp_blufi_cb_event_t event, esp_blufi_cb_param_t *param);
 
-#define BLUFI_DEVICE_NAME            "BLUFI_DEVICE"
+static char blufi_device_name[32] = "BLUFI_DEVICE";
 static uint8_t blufi_service_uuid128[32] = {
     /* LSB <--------------------------------------------------------------------------------> MSB */
     //first uuid, 16bit, [12],[13] is the value
@@ -173,7 +173,7 @@ static void blufi_event_callback(esp_blufi_cb_event_t event, esp_blufi_cb_param_
     case ESP_BLUFI_EVENT_INIT_FINISH:
         BLUFI_INFO("BLUFI init finish\n");
 
-        esp_ble_gap_set_device_name(BLUFI_DEVICE_NAME);
+        esp_ble_gap_set_device_name(blufi_device_name);
         esp_ble_gap_config_adv_data(&blufi_adv_data);
         break;
     case ESP_BLUFI_EVENT_DEINIT_FINISH:
@@ -313,10 +313,11 @@ static void gap_event_handler(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param
 
 extern void at_task_init(void);
 
-uint8_t at_StartBluetooth(uint8_t para_num)
+uint8_t StartBluetooth(char* serial_number)
 {
 	esp_err_t ret;
 	
+    strcpy(blufi_device_name, serial_number); 
     esp_bt_controller_config_t bt_cfg = BT_CONTROLLER_INIT_CONFIG_DEFAULT();
     esp_bt_controller_init(&bt_cfg);
 
@@ -351,7 +352,7 @@ uint8_t at_StartBluetooth(uint8_t para_num)
 
 }
 
-uint8_t at_StopBluetooth(uint8_t para_num)
+uint8_t StopBluetooth()
 {
 	esp_err_t ret;
 
@@ -394,6 +395,6 @@ void app_main()
 	at_task_init();	    
     nvs_flash_init();
     initialise_wifi(); 
-
+    printf("SS3-ESP32 Application Version: %d.%d.%d.%d\n", MAJOR, MINOR, PATCH, BUILD);
 //    at_StartBluetooth(0);
 }

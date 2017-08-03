@@ -402,8 +402,38 @@ static uint8_t at_lock_control(uint8_t para_num)
     return ESP_AT_RESULT_CODE_PROCESS_DONE;
 }
 
-extern uint8_t at_StartBluetooth(uint8_t* cmd_name);
-extern uint8_t at_StopBluetooth(uint8_t* cmd_name);
+
+uint8_t StartBluetooth(char* serial_number);
+uint8_t StopBluetooth();
+
+uint8_t at_ControlBlufi(uint8_t para_num)
+{
+    char* serial_number = NULL;
+    int32_t enable = false;
+    if (esp_at_get_para_as_digit(0,&enable) != ESP_AT_PARA_PARSE_RESULT_OK) 
+        return ESP_AT_RESULT_CODE_ERROR;
+    if(enable)
+    {
+        if (esp_at_get_para_as_str(1,(uint8_t**) &serial_number) != ESP_AT_PARA_PARSE_RESULT_OK) 
+            return ESP_AT_RESULT_CODE_ERROR;
+
+        if (StartBluetooth(serial_number)) 
+        {
+            esp_at_response_result(ESP_AT_RESULT_CODE_OK);
+            return ESP_AT_RESULT_CODE_PROCESS_DONE;  
+        }
+    }
+    else
+    {
+        if (StopBluetooth()) 
+        {
+            esp_at_response_result(ESP_AT_RESULT_CODE_OK);
+            return ESP_AT_RESULT_CODE_PROCESS_DONE;  
+        }
+
+    }
+    return ESP_AT_RESULT_CODE_ERROR;
+}
 extern uint8_t gattc_client_init(uint8_t* cmd_name);
 
 uint8_t at_exeCmdSNTP(uint8_t* cmd_name)
@@ -468,8 +498,7 @@ static esp_at_cmd_struct at_custom_cmd[] = {
     {"+UART_CUR", NULL, NULL, at_setupCmdUart, NULL},
     {"+UART_DEF", NULL, NULL, at_setupCmdUartDef, NULL},
     {"+CIUPDATE", NULL, NULL, at_exeCmdCipupdate, NULL},
-    {"+BLUFI_ON", NULL, NULL, NULL, at_StartBluetooth},
-    {"+BLUFI_OFF", NULL, NULL, NULL, at_StopBluetooth},
+    {"+BLUFI", NULL, NULL, at_ControlBlufi, NULL},    
     {"+APPLY_UPDATE", NULL, NULL, NULL, at_upgrade_rollback},
     {"+LOCK_INIT", NULL, NULL, NULL, gattc_client_init},
     {"+LOCK", NULL, NULL, at_lock_control, NULL },
