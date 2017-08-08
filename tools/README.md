@@ -158,6 +158,23 @@ It will generate at-pki.bin at tools folder. at-pki.bin contains the following P
     * PrivateKey1 with ID 0
     * PrivateKey2 with ID 1
 
+<b><font color=#DC143C> But for the AT SSL function, the cert, private_key and CA are defined in different addresses in "esp32-at/at_customize.csv", so that we need to generate the bin files seperately. 
+
+* generate at_cert.bin by  ```
+python AtPKI.py generate_bin -b at_cert.bin cert Cert.pem```  
+* generate at_key.bin by  ```
+python AtPKI.py generate_bin -b at_key.bin key PrivateKey.pem```  
+* generate at_ca.bin by ```
+python AtPKI.py generate_bin -b at_ca.bin ca CA.pem```  
+then   
+* download the at_cert.bin into address 0x24000.  
+* download the at_key.bin into address 0x26000.
+* download the at_ca.bin into address 0x28000.</font></b>
+
+### <font color=#DC143C>Notice:   
+We provided a group of test bin files for testing in the folder "tools/SSL_test_bin".   
+But customers should use their own Cert.pem, PrivateKey.pem and CA.pem to generate them.</font>
+
 #### 3. parse PKI bin
 
 The tool also provide parsing generated PKI bin feature. It will generate PKI items to the specified path.
