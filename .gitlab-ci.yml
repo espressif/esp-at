@@ -18,6 +18,7 @@ build_at:
       - build/*.elf
       - build/*.map
       - build/bootloader/*.bin
+      - build/customized_partitions/*.bin
       - build/download.config
     expire_in: 6 mos
 
