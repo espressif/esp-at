@@ -16,6 +16,8 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+UART_DEF](#cmd-UARTD) : Default UART configuration, saved in flash.
 * [AT+SLEEP](#cmd-SLEEP) : Sets the sleep mode.
 * [AT+SYSRAM](#cmd-SYSRAM) : Checks the remaining space of RAM.
+* [AT+SYSFLASH](#cmd-SYSFLASH) : Set User Partitions in Flash.
+* [AT+FS](#cmd-FS) : Filesystem Operations.
 
 <a name="WiFi-AT"></a>
 ### 1.2 Wi-Fi AT Commands List
@@ -47,7 +49,8 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+CIPCLOSE](#cmd-CLOSE) : Closes TCP/UDP/SSL connection.
 * [AT+CIFSR](#cmd-IFSR) : Gets the local IP address.
 * [AT+CIPMUX](#cmd-MUX) : Configures the multiple connections mode.
-* [AT+CIPSERVER](#cmd-SERVER) : Deletes/Creates TCP server.
+* [AT+CIPSERVER](#cmd-SERVER) : Deletes/Creates TCP or SSL server.
+* [AT+CIPSERVERMAXCONN](#cmd-SERVERMAX) : Set the Maximum Connections Allowed by Server.
 * [AT+CIPMODE](#cmd-IPMODE) : Configures the transmission mode.
 * [AT+SAVETRANSLINK](#cmd-SAVET) : Saves the transparent transmission link in flash.
 * [AT+CIPSTO](#cmd-STO) : Sets timeout when ESP32 runs as a TCP server.
@@ -86,6 +89,8 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+BLEGATTCCHAR](#cmd-GCCHAR) : GATTC discovers characteristics
 * [AT+BLEGATTCRD](#cmd-GCRD) : GATTC reads characteristics
 * [AT+BLEGATTCWR](#cmd-GCWR) : GATTC writes characteristics
+
+* [BLE AT Examples](#exam-BLE)
 
 ## 2. Basic AT Commands 
 <a name="cmd-AT"></a>
@@ -361,6 +366,93 @@ Example:
 	+SYSRAM:148408
 	OK
 
+<a name="cmd-SYSFLASH"></a>
+### 2.12 [AT+SYSFLASH](#Basic-AT)—Set User Partitions in Flash  
+Query Command:
+
+	AT+SYSFLASH?
+	Function:
+	Check the user partitions in flash.	
+Response:
+
+	+SYSFLASH:<partition>,<type>,<subtype>,<addr>,<size>
+	OK	
+Set Command:
+
+	AT+SYSFLASH=<operation>,<partition>,<offset>,<length>
+	Function:
+	Read/write the user partitions in flash.	
+Response:
+
+	+SYSFLASH:<length>,<data>
+	OK	
+Parameters:
+
+- **\<operation>**:
+    - 0: erase sector
+    - 1: write data into the user partition
+    - 2: read data from the user partition
+- **\<partition>**: name of user partition
+- **\<offset>**: offset of user partition
+- **\<length>**: data length
+- **\<type>**: type of user partition
+- **\<subtype>**: subtype of user partition
+- **\<addr>**: address of user partition
+- **\<size>**: size of user partition
+
+***Notes:***  
+
+* at_customize.bin has to be downloaded, so that the relevant commands can be used. Please refer to the [ESP32_Customize_Partitions](https://github.com/espressif/esp32-at/tree/master/docs) for more details.
+* Important things to note when erasing user partitions:
+    * When erasing the targeted user partition in its entirety, parameters `<offset>` and `<length>` can be omitted. For example, command `AT+SYSFLASH=0,"ble_data"` can erase the entire "ble_data" user partition.
+    * If parameters `<offset>` and `<length>` are not omitted when erasing the user partition, they have to be 4KB-aligned.
+* The introduction to partitions is in [ESP-IDF Partition Tables](http://esp-idf.readthedocs.io/en/latest/api-guides/partition-tables.html).  
+
+Example:
+
+	// read 100 bytes from the "ble_data" partition offset 0.
+	AT+SYSFLASH=2,"ble_data",0,100
+	// write 10 bytes to the "ble_data" partition offset 100.
+	AT+SYSFLASH=1,"ble_data",100,10
+	// erase 8192 bytes from the "ble_data" partition offset 4096.
+	AT+SYSFLASH=0,"ble_data",4096,8192
+
+<a name="cmd-SYSFLASH"></a>
+### 2.13 [AT+FS](#Basic-AT)—Filesystem Operations  
+Set Command:
+
+	AT+FS=<type>,<operation>,<filename>,<offset>,<length>
+Response:
+
+	OK	
+Parameters:
+
+- **\<type>**: only FATFS is currently supported
+    - 0: FATFS
+- **\<operation>**:
+    - 0: delete file
+    - 1: write file
+    - 2: read file
+    - 3: query the size of the file
+    - 4: list files in a specific directory, only root directory is currently supported
+- **\<offset>**: offset, for writing and reading operations only
+- **\<length>**: data length, for writing and reading operations only
+
+***Notes:***  
+
+* at_customize.bin has to be downloaded, so that the relevant commands can be used. The definitions of user partitions are in esp32-at/at_customize.csv. Please refer to the [ESP32_Customize_Partitions](https://github.com/espressif/esp32-at/tree/master/docs) for more details.
+
+Example:
+
+	// delete a file.
+	AT+FS=0,0,"filename"
+	// write 10 bytes to offset 100 of a file.
+	AT+FS=0,1,"filename",100,10
+	// read 100 bytes from offset 0 of a file.
+	AT+FS=0,2,"filename",0,100
+	// list all files in the root directory.
+	AT+FS=0,4,"."
+
 ## 3 Wi-Fi AT Commands  
 <a name="cmd-MODE"></a>
 ### 3.1 [AT+CWMODE](#WiFi-AT)—Sets the Wi-Fi Mode (Station/SoftAP/Station+SoftAP)  
@@ -382,6 +474,7 @@ Response:
 Parameters:
 
 - **\<mode>**:
+    - 0: Null mode, WiFi RF will be disabled
     - 1: Station mode
     - 2: SoftAP mode
     - 3: SoftAP+Station mode	
@@ -1156,10 +1249,10 @@ Example:
 	AT+CIPMUX=1	
 
 <a name="cmd-SERVER"></a>
-### 4.9 [AT+CIPSERVER](#TCPIP-AT)—Deletes/Creates TCP Server
+### 4.9 [AT+CIPSERVER](#TCPIP-AT)—Deletes/Creates TCP or SSL Server
 Set Command:
 
-	AT+CIPSERVER=<mode>[,<port>]	
+	AT+CIPSERVER=<mode>[,<port>][,<SSL>,<SSL CA enable>]	
 Response:
 
 	OK	
@@ -1169,15 +1262,59 @@ Parameters:
     - 0: delete server.
     - 1: create server.
 - **\<port>**: port number; 333 by default.
+- **\[\<SSL>]**(optional parameter): string "SSL", to set a SSL server
+- **\[\<SSL CA enable>]**(optional parameter):
+    - 0: disable CA.
+    - 1: enable CA.
 
 ***Notes:***
 
 * A TCP server can only be created when multiple connections are activated (`AT+CIPMUX=1`).
-* A server monitor will automatically be created when the TCP server is created.
+* A server monitor will automatically be created when the TCP server is created. And only one server is allowed.
 * When a client is connected to the server, it will take up one connection and be assigned an ID.
 
+Example:
+
+	// To create a TCP server
+	AT+CIPMUX=1
+	AT+CIPSERVER=1,80
+	// To create a SSL server
+	AT+CIPMUX=1
+	AT+CIPSERVER=1,443,"SSL",1
+
+<a name="cmd-SERVERMAX"></a>
+### 4.10 [AT+CIPSERVERMAXCONN](#TCPIP-AT)—Set the Maximum Connections Allowed by Server
+Query Command:
+
+	AT+CIPSERVERMAXCONN?
+	Function: obtain the maximum number of clients allowed to connect to the TCP or SSL server.
+Response:
+
+	+CIPSERVERMAXCONN:<num>
+	OK	
+Set Command:
+
+	AT+CIPSERVERMAXCONN=<num>
+	Function: set the maximum number of clients allowed to connect to the TCP or SSL server.	
+Response:
+
+	OK	
+Parameters:
+
+- **\<num>**:  the maximum number of clients allowed to connect to the TCP or SSL server.
+
+***Notes:***
+
+* To set this configuration, you should call the command `AT+CIPSERVERMAXCONN=<num>` before creating a server.
+
+Example:
+
+	AT+CIPMUX=1
+	AT+CIPSERVERMAXCONN=2
+	AT+CIPSERVER=1,80
+
 <a name="cmd-IPMODE"></a>
-### 4.10 [AT+CIPMODE](#TCPIP-AT)—Configures the Transmission Mode
+### 4.11 [AT+CIPMODE](#TCPIP-AT)—Configures the Transmission Mode
 Query Command:
 
 	AT+CIPMODE?
@@ -1210,8 +1347,8 @@ Example:
 	AT+CIPMODE=1	
 
 <a name="cmd-SAVET"></a>
-### 4.11 [AT+SAVETRANSLINK](#TCPIP-AT)—Saves the Transparent Transmission Link in Flash
-#### 4.11.1 Save TCP Single Connection in Flash
+### 4.12 [AT+SAVETRANSLINK](#TCPIP-AT)—Saves the Transparent Transmission Link in Flash
+#### 4.12.1 Save TCP Single Connection in Flash
 Set Command:
 
 	AT+SAVETRANSLINK=<mode>,<remote IP or domain name>,<remote port>[,<type>,<TCP keep alive>]	
@@ -1238,7 +1375,7 @@ Parameters:
 Example:
 
 	AT+SAVETRANSLINK=1,"192.168.6.110",1002,"TCP"	
-#### 4.11.2 Save UDP Transmission in Flash
+#### 4.12.2 Save UDP Transmission in Flash
 Set Command:
 
 	AT+SAVETRANSLINK=<mode>,<remote IP>,<remote port>,<type>[,<UDP local port>]	
@@ -1264,7 +1401,7 @@ Example:
 
 	AT+SAVETRANSLINK=1,"192.168.6.110",1002,"UDP",1005	
 <a name="cmd-STO"></a>
-### 4.12 [AT+CIPSTO](#TCPIP-AT)—Sets the TCP Server Timeout
+### 4.13 [AT+CIPSTO](#TCPIP-AT)—Sets the TCP Server Timeout
 Query Command:
 
 	AT+CIPSTO?
@@ -1296,7 +1433,7 @@ Example:
 	AT+CIPSTO=10
 
 <a name="cmd-SNTPCFG"></a>
-### 4.13 [AT+CIPSNTPCFG](#TCPIP-AT)—Sets the Time Zone and the SNTP Server
+### 4.14 [AT+CIPSNTPCFG](#TCPIP-AT)—Sets the Time Zone and the SNTP Server
 Query Command:
 
 	AT+CIPSNTPCFG?
@@ -1335,7 +1472,7 @@ Example:
 
 	AT+CIPSNTPCFG=8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"	
 <a name="cmd-SNTPT"></a>
-### 4.14 [AT+CIPSNTPTIME](#TCPIP-AT)—Queries the SNTP Time
+### 4.15 [AT+CIPSNTPTIME](#TCPIP-AT)—Queries the SNTP Time
 Query Command:
 
 	AT+CIPSNTPTIME?	
@@ -1352,7 +1489,7 @@ Example:
 	OK	
 
 <a name="cmd-UPDATE"></a>
-### 4.15 [AT+CIUPDATE](#TCPIP-AT)—Updates the Software Through Wi-Fi
+### 4.16 [AT+CIUPDATE](#TCPIP-AT)—Updates the Software Through Wi-Fi
 Execute Command:
 
 	AT+CIUPDATE	
@@ -1380,7 +1517,7 @@ Parameters:
 * It is suggested that users call `AT+RESTORE` to restore the factory default settings after upgrading the AT firmware.
 
 <a name="cmd-IPDINFO"></a>
-### 4.16 [AT+CIPDINFO](#TCPIP-AT)—Shows the Remote IP and Port with "+IPD"
+### 4.17 [AT+CIPDINFO](#TCPIP-AT)—Shows the Remote IP and Port with "+IPD"
 Set Command:
 
 	AT+CIPDINFO=<mode>	
@@ -1397,7 +1534,7 @@ Example:
 
 	AT+CIPDINFO=1	
 
-### 4.17 [+IPD](#TCPIP-AT)—Receives Network Data
+### 4.18 [+IPD](#TCPIP-AT)—Receives Network Data
 Command:
 
 	Single connection: 
@@ -1433,21 +1570,23 @@ Response:
 	OK
 Set Command: 
 
-	AT+BLEINIT=<role>
+	AT+BLEINIT=<init>
 	Function: to initialize the role of BLE.
 Response:
 
 	OK
 Parameter:
 
-- **\<role>**: 
-    - 1: client
-    - 2: server
+- **\<init>**: 
+    - 0: deinit BLE, and disable RF
+    - 1: client role
+    - 2: server role
 
 ***Notes:***
 
+* at_customize.bin has to be downloaded, so that the relevant commands can be used. Please refer to the [ESP32_Customize_Partitions](https://github.com/espressif/esp32-at/tree/master/docs) for more details.
 * Before using BLE AT commands, this command has to be called first to trigger the initialization process.
-* After being initialized, the BLE role cannot be changed. If the user wants to change the BLE role, `AT+RST` needs to be called to restart the chip from scratch.
+* After being initialized, the BLE role cannot be changed. If the user wants to change the BLE role, `AT+BLEINIT=0` needs to be called first.
 * If using ESP32 as a BLE server, a service bin should be downloaded into Flash.
     * To learn how to generate a service bin, please refer to esp32-at/tools/readme.md.
     * The download address of the service bin is the "ble_data" address in esp32-at/partitions_at.csv.  
@@ -1562,26 +1701,23 @@ Example:
 
 <a name="cmd-BSCAN"></a>
 ### 5.5 [AT+BLESCAN](#BLE-AT)—Enables BLE Scanning
-Execute Command: 
-
-	AT+BLESCAN
-	Function: to execute BLE scanning. The device will scan for 5 seconds. Then, it will return the scanning result.
-Response:
-
-	+SCANRST:<addr>,<rssi>,<adv_data>,<scan_rsp_data>
-	OK
 Set Command: 
 
-	AT+BLESCAN=<enable>
-	Function: to enable/disable continuous scanning.
+	AT+BLESCAN=<enable>[,<interval>]
+	Function: to enable/disable scanning.
 Response:
 
+	+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>
 	OK
 Parameters:
 
 - **\<enable>**:
     - 0: disable continuous scanning
     - 1: enable continuous scanning
+- **\[\<interval>]**: optional parameter, unit: second
+    - When disabling the scanning, this parameter should be omitted
+    - When enabling the scanning, and the `<interval>` is 0, it means that scanning is continuous
+    - When enabling the scanning, and the `<interval>` is NOT 0, for example, command `AT+BLESCAN=1,3`, it means that scanning should last for 3 seconds and then stop automatically, so that the scanning results be returned.
 - **\<addr>**: BLE address
 - **\<rssi>**: signal strength
 - **\<adv_data>**: advertising data
@@ -1620,14 +1756,7 @@ Query Command:
 	Function: to query the parameters of advertising.
 Response:
 
-	+MININT:<adv_int_min>
-	+MAXINT:<adv_int_max>
-	+ADVTYPE:<adv_type>
-	+ADDTYPE:<own_addr_type>
-	+CHANNEL:<channel_map>
-	+FILTER:<adv_filter_policy>
-	+PEERADDRTYPE:<peer_addr_type>
-	+PEERADDR:<peer_addr>
+	+BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<peer_addr>
 	OK
 Set Command: 
 
@@ -1732,41 +1861,43 @@ Query Command:
 	Function: to query the BLE connection.
 Response:
 
-	+BLECONN:<remote_address>
+	+BLECONN:<conn_index>,<remote_address>
 	OK
-	If the connection has not been established, there will NOT be a <remote_address>
+	If the connection has not been established, there will NOT be <conn_index> and <remote_address>
 Set Command: 
 
-	AT+BLECONN=<remote_address>
+	AT+BLECONN=<conn_index>,<remote_address>
 	Function: to establish the BLE connection.
 Response:
 
 	OK
 	It will prompt the message below, if the connection is established successfully:
-	+CONNECTED:<remote_address>
+	+BLECONN:<conn_index>,<remote_address>
 	It will prompt the message below, if NOT:
-	+CONNECTED:fail
+	+BLECONN:<conn_index>,fail
 Parameters:
 
+- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
 - **\<remote_address>**：remote BLE address  
 
 Example:
 
 	AT+BLEINIT=1   // role: client
-	AT+BLECONN="24:0a:c4:09:34:23"
+	AT+BLECONN=0,"24:0a:c4:09:34:23"
 
 <a name="cmd-BDISC"></a>
 ### 5.12 [AT+BLEDISCONN](#BLE-AT)—Ends BLE connection
 Execute Command: 
 
-	AT+BLEDISCONN
+	AT+BLEDISCONN=<conn_index>
 	Function: to end the BLE connection.
 Response:
 
 	OK  // the AT+BLEDISCONN command is received
-	If the command is successful, it will prompt +DISCONNECTED:<remote_address>
+	If the command is successful, it will prompt + BLEDISCONN:<conn_index>,<remote_address>
 Parameter:
 
+- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
 - **\<remote_address>**: remote BLE address  
 
 ***Notes:***
@@ -1776,20 +1907,21 @@ Parameter:
 Example:
 
 	AT+BLEINIT=1   // role: client
-	AT+BLECONN="24:0a:c4:09:34:23"
-	AT+BLEDISCONN
+	AT+BLECONN=0,"24:0a:c4:09:34:23"
+	AT+BLEDISCONN=0
 
 <a name="cmd-BDLEN"></a>
 ### 5.13 [AT+BLEDATALEN](#BLE-AT)—Sets BLE Data Packet Length
 Set Command: 
 
-	AT+BLEDATALEN=<pkt_data_len>
+	AT+BLEDATALEN=<conn_index>,<pkt_data_len>
 	Function: to set the length of BLE data packet.
 Response:
 
 	OK 
 Parameter:
 
+- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
 - **\<pkt\_data\_len>**: data packet's length; range: 0x001b ~ 0x00fb  
 
 ***Notes:***
@@ -1799,32 +1931,41 @@ Parameter:
 Example:
 
 	AT+BLEINIT=1   // role: client
-	AT+BLECONN="24:0a:c4:09:34:23"
-	AT+BLEDATALEN=30
+	AT+BLECONN=0,"24:0a:c4:09:34:23"
+	AT+BLEDATALEN=0,30
 
 <a name="cmd-BMTU"></a>
 ### 5.14 [AT+BLECFGMTU](#BLE-AT)—Sets BLE MTU Length
+Query Command: 
+
+	AT+BLECFGMTU?
+	Function: to query the length of the maximum transmission unit (MTU).
+Response:
+
+	+BLECFGMTU:<conn_index>,<mtu_size>
+	OK
 Set Command: 
 
-	AT+BLECFGMTU=<mtu_size>
+	AT+BLECFGMTU=<conn_index>,<mtu_size>
 	Function: to set the length of the maximum transmission unit (MTU).
 Response:
 
-	OK  // the AT+BLECFGMTU=<mtu_size> command is received
-	If the configuration succeeds, it will prompt +MTU:<mtu_size>
+	OK  // the command is received
 Parameter:
 
+- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
 - **\<mtu_size>**:  MTU length
 
 ***Notes:***
 
-* The BLE connection has to be established first.
+* Only the client can call this command to set the length of MTU. However, the BLE connection has to be established first.
+* The actual length of MTU needs to be negotiated. The "OK" response only means that the MTU length must be set. So, the user should use command `AT+BLECFGMTU?` to query the actual MTU length.
 
 Example:
 
 	AT+BLEINIT=1   // role: client
-	AT+BLECONN="24:0a:c4:09:34:23"
-	AT+BLECFGMTU=300
+	AT+BLECONN=0,"24:0a:c4:09:34:23"
+	AT+BLECFGMTU=0,300
 
 <a name="cmd-GSSRVCRE"></a>
 ### 5.15 [AT+BLEGATTSSRVCRE](#BLE-AT)—GATTS Creates Services
@@ -1879,7 +2020,7 @@ Query Command:
 	Function: GATTS services discovery.
 Response:
 
-	+SRV:<srv_index>,<start>,<srv_uuid>,<srv_type>
+	+BLEGATTSSRV:<srv_index>,<start>,<srv_uuid>,<srv_type>
 	OK
 Parameters:
 
@@ -1906,8 +2047,10 @@ Query Command:
 	Function: GATTS characteristics discovery.
 Response:
 
-	+CHAR:<srv_index>,<char_index>,<char_uuid>
-	+DESC:<srv_index>,<char_index>,<desc_index> // this line will not be displayed, if there is no descriptor
+	// when showing a characteristic, it will be as:
+	+BLEGATTSCHAR:"char",<srv_index>,<char_index>,<char_uuid>,<char_prop>
+	// when showing a descriptor, it will be as:
+	+BLEGATTSCHAR:"desc",<srv_index>,<char_index>,<desc_index> 
 	OK
 Parameters:
 
@@ -1922,23 +2065,26 @@ Example:
 
 	AT+BLEINIT=2   // role: server
 	AT+BLEGATTSSRVCRE
+	AT+BLEGATTSSRVSTART
 	AT+BLEGATTSCHAR?
 
 <a name="cmd-GSNTFY"></a>
 ### 5.19 [AT+BLEGATTSNTFY](#BLE-AT)—GATTS Notifies of Characteristics
 Set Command: 
 
-	AT+BLEGATTSNTFY=<srv_index>,<char_index>,<value>
+	AT+BLEGATTSNTFY=<conn_index>,<srv_index>,<char_index>,<length>
 	Function: GATTS to notify of its characteristics.
 Response:
 
+	wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the notification starts.
+	If the data transmission is successful, the system returns:
 	OK
 Parameters:
 
+- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
 - **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTSCHAR?`
 - **\<char_index>**: characteristic's index; it can be fetched with command `AT+BLEGATTSCHAR?`
-- **\<value>**: HEX string. 
-    - For example, to notify of data "0x30 0x31 0x32", the command should be `AT+BLEGATTSNTFY=<srv_index>,<char_index>,"303132"`
+- **\<length>**: data length
 
 Example:
 
@@ -1947,23 +2093,27 @@ Example:
 	AT+BLEGATTSSRVSTART
 	AT+BLEADVSTART // starts advertising. After the client is connected, it must be configured to receive notifications.
 	AT+BLEGATTSCHAR?  // check which characteristic the client will be notified of
-	AT+BLEGATTSNTFY=3,6,"303132" //set a specific index according to the result of the previous command
+	// for example, to notify of 4 bytes of data using the 6th characteristic in the 3rd service, use the following command:
+	AT+BLEGATTSNTFY=0,3,6,4 
+	// after > shows, inputs 4 bytes of data, such as "1234"; then, the data will be transmitted automatically
 
 <a name="cmd-GSIND"></a>
 ### 5.20 [AT+BLEGATTSIND](#BLE-AT)—GATTS Indicates Characteristics
 Set Command: 
 
-	AT+BLEGATTSIND=<srv_index>,<char_index>,<value>
+	AT+BLEGATTSIND=<conn_index>,<srv_index>,<char_index>,<length>
 	Function: GATTS indicates its characteristics.
 Response:
 
+	wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the indication starts.
+	If the data transmission is successful, the system returns:
 	OK
 Parameters:
 
+- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
 - **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTSCHAR?`
 - **\<char_index>**: characteristic's index; it can be fetched with command `AT+BLEGATTSCHAR?`
-- **\<value>**: HEX string. 
-    - For example, to indicate data "0x30 0x31 0x32", the command should be `AT+BLEGATTSIND=<srv_index>,<char_index>,"303132"`
+- **\<length>**: data length
 
 Example:
 
@@ -1972,16 +2122,20 @@ Example:
 	AT+BLEGATTSSRVSTART
 	AT+BLEADVSTART // starts advertising. After the client is connected, it must be configured to receive indications.
 	AT+BLEGATTSCHAR?  // check for which characteristic the client can receive indications
-	AT+BLEGATTSIND=3,7,"303132" // set a specific index according to the result of the previous command
+	// for example, to indicate 4 bytes of data using the 7th characteristic in the 3rd service, use the following command:
+	AT+BLEGATTSIND=0,3,7,4 
+	// after > shows, inputs 4 bytes of data, such as "1234"; then, the data will be transmitted automatically
 
 <a name="cmd-GSSETA"></a>
 ### 5.21 [AT+BLEGATTSSETATTR](#BLE-AT)—GATTS Sets Characteristic
 Set Command: 
 
-	AT+BLEGATTSSETATTR=<srv_index>,<char_index>[,<desc_index>],<value>
+	AT+BLEGATTSSETATTR=<srv_index>,<char_index>[,<desc_index>],<length>
 	Function: GATTS to set its characteristic (descriptor).
 Response:
 
+	wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the setting starts.
+	If the setting is successful, the system returns:
 	OK
 Parameters:
 
@@ -1989,14 +2143,11 @@ Parameters:
 - **\<char_index>**: characteristic's index; it can be fetched with command `AT+BLEGATTSCHAR?`
 - **\[\<desc_index>]**(Optional parameter): descriptor's index. 
     - If it is set, this command is used to set the value of the descriptor; if it is not, this command is used to set the value of the characteristic.
-- **\<value>**: HEX string. For example, 
-    - to set the characteristic value as "0x30 0x31 0x32 0x33", the command should be `AT+BLEGATTSSETATTR=<srv_index>,<char_index>,,"30313233"`
-    - to set the descriptor value as "0x30 0x31 0x32 0x33", the command should be `AT+BLEGATTSSETATTR=<srv_index>,<char_index>,<desc_index>,"30313233"`
+- **\<length>**: data length
 
 ***Note:***
 
 * If the \<value> length is larger than the maximum length allowed, the setting will fail. 
-    * For example, when the max length of the \<value> is 2, the \<value> is "0x30 0x31"; but if you set it to "0x30 0x31 0x32", the setting will fail.
 
 Example:
 
@@ -2004,20 +2155,23 @@ Example:
 	AT+BLEGATTSSRVCRE
 	AT+BLEGATTSSRVSTART
 	AT+BLEGATTSCHAR? 
-	AT+BLEGATTSSETATTR=1,1,,"31"  // set a specific index according to the result of the previous command
+	// for example, to set 4 bytes of data of the 1st characteristic in the 1st service, use the following command:
+	AT+BLEGATTSSETATTR=1,1,,4
+	// after > shows, inputs 4 bytes of data, such as "1234"; then, the setting starts
 
 <a name="cmd-GCPRIMSRV"></a>
 ### 5.22 [AT+BLEGATTCPRIMSRV](#BLE-AT)—GATTC Discovers Primary Services
 Query Command: 
 
-	AT+BLEGATTCPRIMSRV?
+	AT+BLEGATTCPRIMSRV=<conn_index>
 	Function: GATTC to discover primary services.
 Response:
 
-	+SRV:<srv_index>,<srv_uuid>,<srv_type>
+	+ BLEGATTCPRIMSRV:<conn_index>,<srv_index>,<srv_uuid>,<srv_type>
 	OK
 Parameters:
 
+- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
 - **\<srv_index>**: service's index starting from 1
 - **\<srv_uuid>**: service's UUID
 - **\<srv_type>**: service's type
@@ -2031,22 +2185,23 @@ Parameters:
 Example:
 
 	AT+BLEINIT=1   // role: client
-	AT+BLECONN="24:12:5f:9d:91:98"
-	AT+BLEGATTCPRIMSRV?
+	AT+BLECONN=0,"24:12:5f:9d:91:98"
+	AT+BLEGATTCPRIMSRV=0
 
 <a name="cmd-GCINCLSRV"></a>
 ### 5.23 [AT+BLEGATTCINCLSRV](#BLE-AT)—GATTC Discovers Included Services
 Set Command: 
 
-	AT+BLEGATTCINCLSRV=<srv_index>
+	AT+BLEGATTCINCLSRV=<conn_index>,<srv_index>
 	Function: GATTC to discover included services.
 Response:
 
-	+SRV:<srv_index>,<srv_uuid>,<srv_type>,<included_srv_uuid>,<included_srv_type>
+	+ BLEGATTCINCLSRV:<conn_index>,<srv_index>,<srv_uuid>,<srv_type>,<included_srv_uuid>,<included_srv_type>
 	OK
 Parameters:
 
-- **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV?`
+- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV=<conn_index>`
 - **\<srv_uuid>**: service's UUID
 - **\<srv_type>**: service's type
     - 0：is not a primary service
@@ -2063,24 +2218,27 @@ Parameters:
 Example:
 
 	AT+BLEINIT=1   // role: client
-	AT+BLECONN="24:12:5f:9d:91:98"
-	AT+BLEGATTCPRIMSRV?
-	AT+BLEGATTCINCLSRV=1  // set a specific index according to the result of the previous command
+	AT+BLECONN=0,"24:12:5f:9d:91:98"
+	AT+BLEGATTCPRIMSRV=0
+	AT+BLEGATTCINCLSRV=0,1  // set a specific index according to the result of the previous command
 
 <a name="cmd-GCCHAR"></a>
 ### 5.24 [AT+BLEGATTCCHAR](#BLE-AT)—GATTC Discovers Characteristics
 Set Command: 
 
-	AT+BLEGATTCCHAR=<srv_index>
+	AT+BLEGATTCCHAR=<conn_index>,<srv_index>
 	Function: GATTC to discover characteristics.
 Response:
 
-	+CHAR:<srv_index>,<char_index>,<char_uuid>,<char_prop>
-	+DESC:<srv_index>,<char_index>,<desc_index>,<desc_uuid> // this line will not be displayed, if there is no descriptor
+	// when showing a characteristic, it will be as:
+	+BLEGATTCCHAR:"char",<conn_index>,<srv_index>,<char_index>,<char_uuid>,<char_prop>
+	// when showing a descriptor, it will be as:
+	+BLEGATTCCHAR:"desc",<conn_index>,<srv_index>,<char_index>,<desc_index>,<desc_uuid> 
 	OK
 Parameters:
 
-- **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV?`
+- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV=<conn_index>`
 - **\<char_index>**: characteristic's index starting from 1
 - **\<char_uuid>**: characteristic's UUID
 - **\<char_prop>**: characteristic's properties
@@ -2094,35 +2252,33 @@ Parameters:
 Example:
 
 	AT+BLEINIT=1   // role: client
-	AT+BLECONN="24:12:5f:9d:91:98"
-	AT+BLEGATTCPRIMSRV?
-	AT+BLEGATTCCHAR=1 // set a specific index according to the result of the previous command
+	AT+BLECONN=0,"24:12:5f:9d:91:98"
+	AT+BLEGATTCPRIMSRV=0
+	AT+BLEGATTCCHAR=0,1 // set a specific index according to the result of the previous command
 
 <a name="cmd-GCRD"></a>
 ### 5.25 [AT+BLEGATTCRD](#BLE-AT)—GATTC Reads a Characteristic
 Set Command: 
 
-	AT+BLEGATTCRD=<srv_index>,<char_index>[,<desc_index>]
+	AT+BLEGATTCRD=<conn_index>,<srv_index>,<char_index>[,<desc_index>]
 	Function: GATTC to read a characteristic or descriptor.
 Response：
 
-	+CHARREAD:<len>,<char_value>
-	OK
-	Or
-	+DESCREAD:<len>,<desc_value>
+	+BLEGATTCRD:<conn_index>,<len>,<value>
 	OK
 Parameters：
 
-- **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV?`
-- **\<char_index>**: characteristic's index; it can be fetched with command `AT+BLEGATTCCHAR=<srv_index>`
+- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV=<conn_index>`
+- **\<char_index>**: characteristic's index; it can be fetched with command `AT+BLEGATTCCHAR=<conn_index>,<srv_index>`
 - **\[\<desc_index>]**(Optional parameter): descriptor's index. 
     - If it is set, the value of the target descriptor will be read; 
     - if it is not set, the value of the target characteristic will be read.
 - **\<len>**: data length
-- **\<char_value>**: characteristic's value. HEX string is read by command `AT+BLEGATTCRD=<srv_index>,<char_index>`. 
-    - For example, if the response is "+CHARREAD:1,30", it means that the value length is 1, and the content is "0x30".
-- **\<desc_value>**: descriptor's value. HEX string is read by command `AT+BLEGATTCRD=<srv_index>,<char_index>,<desc_index>`. 
-    - For example, if the response is "+DESCREAD:4,30313233", it means that the value length is 4, and the content is "0x30 0x31 0x32 0x33".
+- **\<char_value>**: characteristic's value. HEX string is read by command `AT+BLEGATTCRD=<conn_index>,<srv_index>,<char_index>`. 
+    - For example, if the response is "+BLEGATTCRD:1,30", it means that the value length is 1, and the content is "0x30".
+- **\<desc_value>**: descriptor's value. HEX string is read by command `AT+BLEGATTCRD=<conn_index>,<srv_index>,<char_index>,<desc_index>`. 
+    - For example, if the response is "+BLEGATTCRD:4,30313233", it means that the value length is 4, and the content is "0x30 0x31 0x32 0x33".
 
 ***Note:***
 
@@ -2132,30 +2288,32 @@ Parameters：
 Example：
 
 	AT+BLEINIT=1   // role: client
-	AT+BLECONN="24:12:5f:9d:91:98"
-	AT+BLEGATTCPRIMSRV?
-	AT+BLEGATTCCHAR=3 // set a specific index according to the result of the previous command
-	AT+BLEGATTCRD=3,2,1 // set a specific index according to the result of the previous command
+	AT+BLECONN=0,"24:12:5f:9d:91:98"
+	AT+BLEGATTCPRIMSRV=0
+	AT+BLEGATTCCHAR=0,3 // set a specific index according to the result of the previous command
+	// for example, to read 1st descriptor of the 2nd characteristic in the 3rd service, use the following command:
+	AT+BLEGATTCRD=0,3,2,1
 
 <a name="cmd-GCWR"></a>
 ### 5.26 [AT+BLEGATTCWR](#BLE-AT)—GATTC Writes Characteristic
 Set Command: 
 
-	AT+BLEGATTCWR=<srv_index>,<char_index>[,<desc_index>],<value>
+	AT+BLEGATTCWR=<conn_index>,<srv_index>,<char_index>[,<desc_index>],<length>
 	Function: GATTC to write characteristics or descriptor.
 Response：
 
+	wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the writting starts.
+	If the setting is successful, the system returns:
 	OK  
 Parameters：
 
-- **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV?`
-- **\<char_index>**: characteristic's index; it can be fetched with command `AT+BLEGATTCCHAR=<srv_index>`
+- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV=<conn_index>`
+- **\<char_index>**: characteristic's index; it can be fetched with command `AT+BLEGATTCCHAR=<conn_index>,<srv_index>`
 - **\[\<desc_index>]**(Optional parameter): descriptor's index. 
     - If it is set, the value of the target descriptor will be written; 
     - If it is not set, the value of the target characteristic will be written.
-- **\<value>**: HEX string. For example, 
-    - to write the characteristic value as "0x30 0x31 0x32 0x33", the command should be `AT+BLEGATTCWR=<srv_index>,<char_index>,,"30313233"`
-    - to write the descriptor value as "0x30 0x31 0x32 0x33", the command should be `AT+BLEGATTCWR=<srv_index>,<char_index>,<desc_index>,"30313233"`
+- **\<length>**: data length
 
 ***Note:***
 
@@ -2165,12 +2323,16 @@ Parameters：
 Example：
 
 	AT+BLEINIT=1   // role: client
-	AT+BLECONN="24:12:5f:9d:91:98"
-	AT+BLEGATTCPRIMSRV?
-	AT+BLEGATTCCHAR=3 // set a specific index according to the result of the previous command
-	AT+BLEGATTCWR=3,3,,"30313233" // set a specific index according to the result of the previous command
+	AT+BLECONN=0,"24:12:5f:9d:91:98"
+	AT+BLEGATTCPRIMSRV=0
+	AT+BLEGATTCCHAR=0,3 // set a specific index according to the result of the previous command
+	// for example, to write 6 bytes of data to the 4th characteristic in the 3rd service, use the following command:
+	AT+BLEGATTCWR=0,3,4,,6 
+	// after > shows, inputs 6 bytes of data, such as "123456"; then, the writing starts
 
-## 6. BLE AT Example  
+
+<a name="exam-BLE"></a>
+## 6. [BLE AT Example](#BLE-AT)  
 Below is an example of using two ESP32 modules, one as a BLE server (hereafter named "ESP32 Server"), the other one as a BLE client (hereafter named "ESP32 Client"). The example shows how to use BLE functions with AT commands.  
 ***Notice:***  
 
@@ -2219,22 +2381,22 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
     (1) Start scanning.  
 
         Command:
-        AT+BLESCAN
+        AT+BLESCAN=1,3
         
         Response:
-        +SCANRST:<BLE address>,<rssi>,<adv_data>,<scan_rsp_data>
+        +BLESCAN:<BLE address>,<rssi>,<adv_data>,<scan_rsp_data>
         OK
     (2) Establish the BLE connection, when the server is scanned successfully.  
 
-        AT+BLECONN="24:0a:c4:03:f4:d6"
+        AT+BLECONN=0,"24:0a:c4:03:f4:d6"
         
         Response:
         OK
-        +CONNECTED:24:0a:c4:03:f4:d6
+        +BLECONN:0,"24:0a:c4:03:f4:d6"
     
     ***Notes:***   
-    * If the BLE connection is established successfully, it will prompt `+CONNECTED:<remote_BLE_address>`  
-    * If the BLE connection is broken, it will prompt `+DISCONNECTED:<remote_BLE_address>`  
+    * If the BLE connection is established successfully, it will prompt `+BLECONN:<conn_index>,<remote_BLE_address>`  
+    * If the BLE connection is broken, it will prompt `+BLEDISCONN:<conn_index>,<remote_BLE_address>`  
 
 3. Read/Write a characteristic:  
 
@@ -2256,19 +2418,23 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
         AT+BLEGATTSCHAR?          
         
         Response:
-        +CHAR:<srv_index>,<char_index>,<char_uuid>,<char_prop>
-        +DESC:<srv_index>,<char_index>,<desc_index>,<desc_uuid>
+        +BLEGATTSCHAR:"char",1,1,0xC300
+        +BLEGATTSCHAR:"desc",1,1,1
+        +BLEGATTSCHAR:"char",1,2,0xC301
+        +BLEGATTSCHAR:"desc",1,2,1
+        +BLEGATTSCHAR:"char",1,3,0xC302
+        +BLEGATTSCHAR:"desc",1,3,1
         OK
 
     ESP32 Client:  
     (1) Discover services.  
 	
-        AT+BLEGATTCPRIMSRV?   
+        AT+BLEGATTCPRIMSRV=0   
         
         Response:
-        +SRV:1,0x1801,1
-        +SRV:2,0x1800,1
-        +SRV:3,0xA002,1
+        +BLEGATTCPRIMSRV:0,1,0x1801,1
+        +BLEGATTCPRIMSRV:0,2,0x1800,1
+        +BLEGATTCPRIMSRV:0,3,0xA002,1
         OK
     ***Notice:***  
     * When discovering services, the ESP32 Client will get two more default services (UUID:0x1800 and 0x1801) than what the ESP32 Server will get.
@@ -2277,64 +2443,67 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
 
     (2) Discover characteristics.  
     
-        AT+BLEGATTCCHAR=3
+        AT+BLEGATTCCHAR=0,3
         
         Response:
-        +CHAR:3,1,0xC300,2
-        +DESC:3,1,1,0x2901
-        +CHAR:3,2,0xC301,2
-        +DESC:3,2,1,0x2901
-        +CHAR:3,3,0xC302,8
-        +DESC:3,3,1,0x2901
-        +CHAR:3,4,0xC303,4
-        +DESC:3,4,1,0x2901
-        +CHAR:3,5,0xC304,8
-        +CHAR:3,6,0xC305,16
-        +DESC:3,6,1,0x2902
-        +CHAR:3,7,0xC306,32
-        +DESC:3,7,1,0x2902
+        +BLEGATTCCHAR:"char",0,3,1,0xC300,2
+        +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
+        +BLEGATTCCHAR:"char",0,3,2,0xC301,2
+        +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
+        +BLEGATTCCHAR:"char",0,3,3,0xC302,8
+        +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
+        +BLEGATTCCHAR:"char",0,3,4,0xC303,4
+        +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
+        +BLEGATTCCHAR:"char",0,3,5,0xC304,8
+        +BLEGATTCCHAR:"char",0,3,6,0xC305,16
+        +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+        +BLEGATTCCHAR:"char",0,3,7,0xC306,32
+        +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
         OK  
 
     (3) Read a characteristic. Please note that the target characteristic's property has to support the read operation.
     
-        AT+BLEGATTCRD=3,1
+        AT+BLEGATTCRD=0,3,1
         
         Response:
-        +CHARREAD:1,30
+        +BLEGATTCRD:0,1,30
         OK
     ***Note:***  
-    * If the ESP32 Client reads the characteristic successfully, message `+READ:<remote BLE address>` will be prompted on the ESP32 Server side.
+    * If the ESP32 Client reads the characteristic successfully, message `+READ:<conn_index>,<remote BLE address>` will be prompted on the ESP32 Server side.
 
     (4) Write a characteristic. Please note that the target characteristic's property has to support the write operation.  
 
-        AT+BLEGATTCWR=3,3,,"3031"
+        AT+BLEGATTCWR=0,3,3,,2
         
         Response:
+        > 		// waiting for data
         OK
     ***Note:***  
-    * If the ESP32 Client writes the characteristic successfully, message `+WRITE:<srv_index>,<char_index>,[<desc_index>],<len>,<value>` will be prompted on the ESP32 Server side.  
+    * If the ESP32 Client writes the characteristic successfully, message `+WRITE:<conn_index>,<srv_index>,<char_index>,[<desc_index>],<len>,<value>` will be prompted on the ESP32 Server side.  
 
 4. Notify of a characteristic:  
 
     ESP32 Client:  
     (1) Configure the characteristic's descriptor. Please note that the target characteristic's property has to support notifications.  
 	
-        AT+BLEGATTCWR=3,6,1,"01"       
+        AT+BLEGATTCWR=0,3,6,1,2       
         
         Response:
+        > 		// waiting for data
         OK
     ***Note:***
-    * If the ESP32 Client writes the descriptor successfully, message `+WRITE:<srv_index>,<char_index>,<desc_index>,<len>,<value>` will be prompted on the ESP32 Server side.
+    * If the ESP32 Client writes the descriptor successfully, message `+WRITE:<conn_index>,<srv_index>,<char_index>,<desc_index>,<len>,<value>` will be prompted on the ESP32 Server side.
 
 	ESP32 Server:  
     (1) Notify of a characteristic. Please note that the target characteristic's property has to support notifications.  
 
-        AT+BLEGATTSNTFY=1,6,"303132"
+        AT+BLEGATTSNTFY=0,1,6,3
         
         Response:
+        > 		// waiting for data
         OK
     ***Note:***  
-    * If the ESP32 Client receives the notification, it will prompt message `+NOTIFY:<srv_index>,<char_index>,<len>,<value>`.
+    * If the ESP32 Client receives the notification, it will prompt message `+NOTIFY:<conn_index>,<srv_index>,<char_index>,<len>,<value>`.
     * For the same service, the \<srv\_index> on the ESP32 Client side equals the \<srv\_index> on the ESP32 Server side + 2.
 
 5. Indicate a characteristic:  
@@ -2342,22 +2511,24 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
     ESP32 Client:  
     (1) Configure the characteristic's descriptor. Please note that the target characteristic's property has to support the indicate operation.  
 	
-        AT+BLEGATTCWR=3,7,1,"02"       
+        AT+BLEGATTCWR=0,3,7,1,2       
         
         Response:
+        > 		// waiting for data
         OK
     ***Note:***  
-    * If the ESP32 Client writes the descriptor successfully, message `+WRITE:<srv_index>,<char_index>,<desc_index>,<len>,<value>` will be prompted on the ESP32 Server side.  
+    * If the ESP32 Client writes the descriptor successfully, message `+WRITE:<conn_index>,<srv_index>,<char_index>,<desc_index>,<len>,<value>` will be prompted on the ESP32 Server side.  
 
 	ESP32 Server:   
     (1) Indicate characteristic. Please note that the target characteristic's property has to support the indicate operation.  
 
-        AT+BLEGATTSNTFY=1,7,"303132"
+        AT+BLEGATTSIND=0,1,7,3
         
         Response:
+        > 		// waiting for data
         OK
     ***Note:***  
-    * If the ESP32 Client receives the indication, it will prompt message `+INDICATE:<srv_index>,<char_index>,<len>,<value>`
+    * If the ESP32 Client receives the indication, it will prompt message `+INDICATE:<conn_index>,<srv_index>,<char_index>,<len>,<value>`
     * For the same service, the \<srv\_index> on the ESP32 Client side equals the \<srv\_index> on the ESP32 Server side + 2.
 
 
