@@ -50,6 +50,7 @@ index,uuid_len,uuid,perm,val_max_len,val_cur_len,value
 2,16,0xC300,0x11,1,1,1
 # defines descriptor 2901 for C300 with read & write permission
 3,16,0x2901,0x11,1,1,1
+# declares another char with read properity
 4,16,0x2803,0x01,1,1,2
 5,16,0xC301,0x01,512,512,...
 6,16,0x2901,0x11,512,512,...
