@@ -1578,7 +1578,6 @@ Response:
 Parameter:
 
 - **\<init>**: 
-    - 0: deinit BLE, and disable RF
     - 1: client role
     - 2: server role
 
@@ -1586,7 +1585,7 @@ Parameter:
 
 * at_customize.bin has to be downloaded, so that the relevant commands can be used. Please refer to the [ESP32_Customize_Partitions](https://github.com/espressif/esp32-at/tree/master/docs) for more details.
 * Before using BLE AT commands, this command has to be called first to trigger the initialization process.
-* After being initialized, the BLE role cannot be changed. If the user wants to change the BLE role, `AT+BLEINIT=0` needs to be called first.
+* After being initialized, the BLE role cannot be changed. User needs to call AT+RST to restart the system first, then re-init the BLE role.
 * If using ESP32 as a BLE server, a service bin should be downloaded into Flash.
     * To learn how to generate a service bin, please refer to esp32-at/tools/readme.md.
     * The download address of the service bin is the "ble_data" address in esp32-at/partitions_at.csv.  
