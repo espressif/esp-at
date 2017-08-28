@@ -186,7 +186,7 @@ typedef enum {
 #define ESP_AT_CMD_ERROR_CMD_EXEC_FAIL(result)                  ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_EXEC_FAIL,result)
 #define ESP_AT_CMD_ERROR_CMD_PROCESSING                            ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_PROCESSING,0x00)
 
-void esp_at_module_init(uint32_t netconn_max, const uint8_t *custom_version);
+EventGroupHandle_t esp_at_module_init (uint32_t netconn_max, const uint8_t *custom_version);
 
 #define at_form_msg_p(msg,id,data_len,data_p) do {\
     (msg)->msg_id = id;\

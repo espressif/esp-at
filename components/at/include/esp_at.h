@@ -27,6 +27,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "freertos/event_groups.h"
 
 /**
  * @brief esp_at_cmd_struct
@@ -151,7 +152,7 @@ typedef enum {
  * @param netconn_max the maximum number of the link in the at module
  * @param custom_version version information by custom
  */
-void esp_at_module_init(uint32_t netconn_max, const uint8_t *custom_version);
+EventGroupHandle_t esp_at_module_init (uint32_t netconn_max, const uint8_t *custom_version);
 
 /**
  * @brief Parse digit parameter from command string.

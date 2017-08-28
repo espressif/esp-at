@@ -51,6 +51,7 @@
 #include "esp_image_format.h"
 //#include "nanopb.h"
 
+#include "at_task.h"
 #include "esp_system.h"
 #include "at_upgrade.h"
 #ifdef CONFIG_AT_BASE_ON_UART
@@ -149,7 +150,7 @@ void uart_task(void *pvParameters)
             case UART_PATTERN_DET:
                 esp_at_transmit_terminal();
                 break;
-            //Others
+            //Others 
             default:
                 break;
             }
@@ -403,11 +404,14 @@ static uint8_t at_lock_control(uint8_t para_num)
 }
 
 
+#ifndef ENABLE_BLUFI
 uint8_t StartBluetooth(char* serial_number);
 uint8_t StopBluetooth();
+#endif 
 
 uint8_t at_ControlBlufi(uint8_t para_num)
 {
+#ifdef ENABLE_BLUFI
     char* serial_number = NULL;
     int32_t enable = false;
     if (esp_at_get_para_as_digit(0,&enable) != ESP_AT_PARA_PARSE_RESULT_OK) 
@@ -433,7 +437,11 @@ uint8_t at_ControlBlufi(uint8_t para_num)
 
     }
     return ESP_AT_RESULT_CODE_ERROR;
+#else 
+    return 0;
+#endif /* ENABLE_BLUFI */
 }
+
 extern uint8_t gattc_client_init(uint8_t* cmd_name);
 
 uint8_t at_exeCmdSNTP(uint8_t* cmd_name)
@@ -498,7 +506,7 @@ static esp_at_cmd_struct at_custom_cmd[] = {
     {"+UART_CUR", NULL, NULL, at_setupCmdUart, NULL},
     {"+UART_DEF", NULL, NULL, at_setupCmdUartDef, NULL},
     {"+CIUPDATE", NULL, NULL, at_exeCmdCipupdate, NULL},
-    {"+BLUFI", NULL, NULL, at_ControlBlufi, NULL},    
+    /* {"+BLUFI", NULL, NULL, at_ControlBlufi, NULL},   */ 
     {"+APPLY_UPDATE", NULL, NULL, NULL, at_upgrade_rollback},
     {"+LOCK_INIT", NULL, NULL, NULL, gattc_client_init},
     {"+LOCK", NULL, NULL, at_lock_control, NULL },
@@ -520,11 +528,9 @@ void at_status_callback (esp_at_status_type status)
     }
 }
 
-
-
-
-void at_task_init(void)
+EventGroupHandle_t at_task_init(void)
 {
+    EventGroupHandle_t group = NULL;
     uint8_t *version = (uint8_t *)malloc(64);
     esp_at_device_ops_struct esp_at_device_ops = {
         .read_data = at_port_read_data,
@@ -542,11 +548,12 @@ void at_task_init(void)
     sprintf((char*)version, "compile time:%s %s", __DATE__, __TIME__);
     esp_at_device_ops_regist (&esp_at_device_ops);
     esp_at_custom_ops_regist(&esp_at_custom_ops);
-    esp_at_module_init (0, version);
+    group = esp_at_module_init (0, version);
     free(version);
 
     esp_at_custom_cmd_array_regist (at_custom_cmd, sizeof(at_custom_cmd)/sizeof(at_custom_cmd[0]));
     esp_at_port_write_data((uint8_t *)"\r\nready\r\n",strlen("\r\nready\r\n"));
+    return group;
 }
 
 #endif
