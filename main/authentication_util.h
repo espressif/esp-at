@@ -1,4 +1,4 @@
-/* Authentication management (oauth/socket)
+/* Authentication management
    August 2017
 */
 

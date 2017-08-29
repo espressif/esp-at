@@ -75,8 +75,8 @@ void app_main()
     else
     {
         ESP_LOGI(TAG, "We have stored credentials, continuing..");
-    }
 
+    }
     // Make sure we connected..
     #warning "Define this somewhere better, so everyone can see it.."
     #define WIFI_CONNECTED_BIT BIT0
@@ -95,12 +95,18 @@ void app_main()
         {
             // We timed out.. reset wifi creds and reboot.
             gettimeofday(&tv, NULL);
-            ESP_LOGE(TAG, "WiFi connection timed out @ %ld.%03ld. Clear credentials and restart...", tv.tv_sec, tv.tv_usec/1000);
+            ESP_LOGE(TAG, "WiFi connection timed out @ %ld.%03ld. Clear credentials and restart..", tv.tv_sec, tv.tv_usec/1000);
             clear_credentials();
             esp_restart();
             return;
         }
     }
+    else
+    {
+        ESP_LOGE(TAG, "WiFi connection unknown - event group = NULL..");
+    }
+
+    checkmem("initialization complete");
 
     ESP_LOGE( TAG, "SS3-ESP32 Application Version: %d.%d.%d.%d\n", MAJOR, MINOR, PATCH, BUILD );
 }

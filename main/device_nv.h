@@ -7,13 +7,7 @@
 #define DEVICE_NV_H
 
 #define TOKEN_KEY 		"token"
-// Oauth
-#define AUTH_KEY		"auth"
-#define REFRESH_KEY		"refresh"
-// Socket
-#define ACCESS_TOKEN    "access_token"
-#define IP				"ip"
-#define READY			"ready"
+
 // BT Provisioning
 #define BT_PROV_READY	"btcreds_set"
 #define AUTH_TOKEN		"auth_token"

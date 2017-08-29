@@ -28,5 +28,4 @@ int device_reboot(void)
 {
     esp_restart();
     return 1;
-
 }
