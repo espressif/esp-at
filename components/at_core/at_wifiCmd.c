@@ -24,6 +24,7 @@
 #include "lwip/ip4_addr.h"
 #include "esp_wps.h"
 #include "esp_system.h"
+#include "esp_log.h"
 
 #include "tcpip_adapter.h"
 
@@ -32,6 +33,9 @@
 #include <time.h>
 #include <sys/time.h>
 #include "apps/sntp/sntp.h"
+#include "string.h"
+
+static const char *TAG = "at_wifiCmd.c";
 
 
 static bool at_wifi_cmd_need_save_flag = FALSE;
@@ -303,7 +307,7 @@ at_setupCmdPing(uint8_t id, char *pPara)
         mask = mask >>1;    \
     } while(0)
 
-static bool at_cwlap_response(void)
+static bool at_cwlap_response(char* ap_list_out)
 {
     uint8_t ssid[33];
     uint16_t ap_num = 0;
@@ -321,6 +325,8 @@ static bool at_cwlap_response(void)
     if (ap_num == 0) {
         return true;
     }
+
+    ESP_LOGI(TAG, "Found %d AP records.", ap_num);
 
     ap_list = (wifi_ap_record_t *)at_malloc(ap_num * sizeof(wifi_ap_record_t));
 
@@ -365,7 +371,14 @@ static bool at_cwlap_response(void)
             //SCAN_DONE_FORMAT_PACKET(comma_flag,temp + at_strlen(temp), "%d",ap_list[loop].freq_offset);
             //SCAN_DONE_FORMAT_PACKET(comma_flag,temp + at_strlen(temp), "%d",ap_list[loop].freqcal_val);
 
-            at_sprintf(temp + at_strlen(temp), "%s",")\r\n");
+            at_sprintf(temp + at_strlen(temp), "%s",")");
+
+            if( NULL != ap_list )
+            {
+                strncpy( ap_list_out+strnlen((char*)ap_list_out, 128), (char*)temp, 128-1);
+            }
+
+            strcat((char*)temp, "\r\n");
 
             at_port_print(temp);
         }
@@ -388,6 +401,8 @@ uint8_t at_setupCmdCwlap(uint8_t para_num)
     int32_t channel = 0;
     uint8_t cnt = 0;
     uint8_t ret = ESP_AT_RESULT_CODE_ERROR;
+
+    ESP_LOGI(TAG, "at_wifiCmd::at_setupCmdCwlap, para_num: %d", para_num);
 
     at_memset(&config,0x0,sizeof(config));
 
@@ -456,7 +471,7 @@ uint8_t at_setupCmdCwlap(uint8_t para_num)
         return ESP_AT_RESULT_CODE_FAIL;
     }
 
-    if (at_cwlap_response()) {
+    if (at_cwlap_response(NULL)) {
         return ESP_AT_RESULT_CODE_OK;
     } else {
         return ESP_AT_RESULT_CODE_FAIL;
@@ -468,7 +483,7 @@ uint8_t at_setupCmdCwlap(uint8_t para_num)
  * @param  id: commad id number
  * @retval None
  */
-uint8_t at_exeCmdCwlap(uint8_t* cmd_name)
+uint8_t at_exeCmdCwlap(uint8_t* cmd_name, char* ap_list)
 {
     wifi_mode_t mode = WIFI_MODE_NULL;
     wifi_scan_config_t config;
@@ -489,7 +504,7 @@ uint8_t at_exeCmdCwlap(uint8_t* cmd_name)
         return ESP_AT_RESULT_CODE_FAIL;
     }
 
-    if (at_cwlap_response()) {
+    if (at_cwlap_response(ap_list)) {
         return ESP_AT_RESULT_CODE_OK;
     } else {
         return ESP_AT_RESULT_CODE_FAIL;

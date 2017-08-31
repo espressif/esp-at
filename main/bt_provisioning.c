@@ -35,6 +35,9 @@
 // Device
 #include "mem.h"
 
+// TEST 
+#include "at_wifiCmd.h"
+
 #define TAG "bt_provisioning.c"
 
 static bool parse_credentials( char* json_data, uint16_t length );
@@ -167,6 +170,8 @@ static void gap_event_handler(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param
     }
 }
 
+char list[2048] = {0};
+
 static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t *param) {
     switch (event) {
     case ESP_GATTS_REG_EVT:
@@ -190,8 +195,20 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
         esp_gatt_rsp_t rsp;
         memset(&rsp, 0, sizeof(esp_gatt_rsp_t));
         rsp.attr_value.handle = param->read.handle;
+
+#define LISTx
+#ifdef LIST
+        uint8_t* test = NULL;
+        //char list[2048] = {0};
+        at_exeCmdCwlap(test, list);
+        ESP_LOGI(TAG, "LIST: %s", list);
+        rsp.attr_value.len = strnlen(list, 100); //2048-1);
+        strncpy((char*)rsp.attr_value.value, list, rsp.attr_value.len);
+#else
         rsp.attr_value.len = sizeof("Hello from SimpliSafe!");
         strncpy((char*)rsp.attr_value.value, "Hello from SimpliSafe!", rsp.attr_value.len);
+#endif // LIST
+
         esp_ble_gatts_send_response(gatts_if, param->read.conn_id, param->read.trans_id, ESP_GATT_OK, &rsp);
         break;
     }
