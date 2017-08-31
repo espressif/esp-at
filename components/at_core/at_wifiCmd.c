@@ -37,6 +37,7 @@
 
 static const char *TAG = "at_wifiCmd.c";
 
+char ap_list_out[MAX_AP_LIST_LENGTH] = {0};
 
 static bool at_wifi_cmd_need_save_flag = FALSE;
 static bool at_wifi_cmd_read_from_flash_flag = FALSE;
@@ -307,10 +308,7 @@ at_setupCmdPing(uint8_t id, char *pPara)
         mask = mask >>1;    \
     } while(0)
 
-#define MAX_AP_RECORD_LENGTH    128
-#define MAX_AP_LIST_LENGTH      2048
-
-static bool at_cwlap_response(char* ap_list_out)
+static bool at_cwlap_response(void)
 {
     uint8_t ssid[33];
     uint16_t ap_num = 0;
@@ -379,11 +377,8 @@ static bool at_cwlap_response(char* ap_list_out)
 
             at_sprintf(temp + at_strlen(temp), "%s",")\r\n");
 
-            if( NULL != ap_list_out )
-            {
-                #warning "TODO: check logic below and cap length here.."
-                strncpy( ap_list_out + strnlen((char*)ap_list_out, MAX_AP_LIST_LENGTH-MAX_AP_RECORD_LENGTH), (char*)temp, MAX_AP_RECORD_LENGTH);
-            }
+            #warning "TODO: check logic below and cap length here.."
+            strncpy( ap_list_out + strnlen((char*)ap_list_out, MAX_AP_LIST_LENGTH-MAX_AP_RECORD_LENGTH), (char*)temp, MAX_AP_RECORD_LENGTH);
 
             at_port_print(temp);
         }
@@ -476,7 +471,7 @@ uint8_t at_setupCmdCwlap(uint8_t para_num)
         return ESP_AT_RESULT_CODE_FAIL;
     }
 
-    if (at_cwlap_response(NULL)) {
+    if (at_cwlap_response()) {
         return ESP_AT_RESULT_CODE_OK;
     } else {
         return ESP_AT_RESULT_CODE_FAIL;
@@ -488,7 +483,7 @@ uint8_t at_setupCmdCwlap(uint8_t para_num)
  * @param  id: commad id number
  * @retval None
  */
-uint8_t at_exeCmdCwlap(uint8_t* cmd_name, char* ap_list)
+uint8_t at_exeCmdCwlap(uint8_t* cmd_name)
 {
     wifi_mode_t mode = WIFI_MODE_NULL;
     wifi_scan_config_t config;
@@ -509,7 +504,7 @@ uint8_t at_exeCmdCwlap(uint8_t* cmd_name, char* ap_list)
         return ESP_AT_RESULT_CODE_FAIL;
     }
 
-    if (at_cwlap_response(ap_list)) {
+    if (at_cwlap_response()) {
         return ESP_AT_RESULT_CODE_OK;
     } else {
         return ESP_AT_RESULT_CODE_FAIL;

@@ -68,6 +68,8 @@ static void gatts_profile_c_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
 #define GATTS_DEMO_CHAR_VAL_LEN_MAX 0x40
 #define PREPARE_BUF_MAX_SIZE 1024
 
+extern char ap_list_out[MAX_AP_LIST_LENGTH];
+
 uint8_t char1_str[] = {0x11,0x22,0x33};
 esp_attr_value_t gatts_demo_char1_val = 
 {
@@ -212,8 +214,6 @@ static void gap_event_handler(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param
         break;
     }
 }
-
-char list[2048] = {0};
 
 void example_write_event_env(esp_gatt_if_t gatts_if, prepare_type_env_t *prepare_write_env, esp_ble_gatts_cb_param_t *param){
     esp_gatt_status_t status = ESP_GATT_OK;
@@ -444,11 +444,11 @@ static void gatts_profile_b_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
         example_write_event_env(gatts_if, &b_prepare_write_env, param);
 
         uint8_t* test = NULL;
-        at_exeCmdCwlap(test, list);
-        ESP_LOGD(TAG, "AP LIST: %s", list);
+        at_exeCmdCwlap(test);
+        ESP_LOGD(TAG, "AP LIST: %s", ap_list_out);
 
         /* get the first token */
-        token = strtok(list, "\n");
+        token = strtok(ap_list_out, "\n");
         break;
     }
     case ESP_GATTS_EXEC_WRITE_EVT:
