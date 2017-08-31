@@ -307,6 +307,9 @@ at_setupCmdPing(uint8_t id, char *pPara)
         mask = mask >>1;    \
     } while(0)
 
+#define MAX_AP_RECORD_LENGTH    128
+#define MAX_AP_LIST_LENGTH      2048
+
 static bool at_cwlap_response(char* ap_list_out)
 {
     uint8_t ssid[33];
@@ -335,7 +338,7 @@ static bool at_cwlap_response(char* ap_list_out)
     }
 
     if (esp_wifi_scan_get_ap_records(&ap_num, ap_list) == ESP_OK) {
-        uint8_t *temp = (uint8_t *)at_malloc(128);
+        uint8_t *temp = (uint8_t *)at_malloc(MAX_AP_RECORD_LENGTH);
 #ifdef AT_SCAN_SORT_SUPPORT
         if (ap_sort_flag == 1) {
 
@@ -354,14 +357,17 @@ static bool at_cwlap_response(char* ap_list_out)
             }
         }
 #endif
+
+        // "Erase" array and rely on NULL terminate for each entry. 
+        ap_list_out[0] = '\0';
+
         for (loop = 0; loop < ap_num; loop++) {
             at_memset(ssid, 0, 33);
             at_strncpy(ssid, ap_list[loop].ssid, sizeof(ap_list[loop].ssid));
 
-
             comma_flag = FALSE;
             mask = ap_print_mask;
-            at_sprintf(temp, "%s", "+CWLAP:(");
+            at_sprintf(temp, "%d: %s", loop, "+CWLAP:(");
 
             SCAN_DONE_FORMAT_PACKET(comma_flag, temp + at_strlen(temp), "%d", ap_list[loop].authmode);
             SCAN_DONE_FORMAT_PACKET(comma_flag, temp + at_strlen(temp), "\"%s\"", ssid);
@@ -371,14 +377,13 @@ static bool at_cwlap_response(char* ap_list_out)
             //SCAN_DONE_FORMAT_PACKET(comma_flag,temp + at_strlen(temp), "%d",ap_list[loop].freq_offset);
             //SCAN_DONE_FORMAT_PACKET(comma_flag,temp + at_strlen(temp), "%d",ap_list[loop].freqcal_val);
 
-            at_sprintf(temp + at_strlen(temp), "%s",")");
+            at_sprintf(temp + at_strlen(temp), "%s",")\r\n");
 
-            if( NULL != ap_list )
+            if( NULL != ap_list_out )
             {
-                strncpy( ap_list_out+strnlen((char*)ap_list_out, 128), (char*)temp, 128-1);
+                #warning "TODO: check logic below and cap length here.."
+                strncpy( ap_list_out + strnlen((char*)ap_list_out, MAX_AP_LIST_LENGTH-MAX_AP_RECORD_LENGTH), (char*)temp, MAX_AP_RECORD_LENGTH);
             }
-
-            strcat((char*)temp, "\r\n");
 
             at_port_print(temp);
         }
