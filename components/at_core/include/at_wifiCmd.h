@@ -33,7 +33,7 @@ uint8_t at_setupCmdCwjap(uint8_t para_num);
 uint8_t at_setupCmdCwjapDef(uint8_t para_num);
 
 uint8_t at_setupCmdCwlap(uint8_t para_num);
-uint8_t at_exeCmdCwlap(uint8_t *cmd_name);
+uint8_t at_exeCmdCwlap(uint8_t *cmd_name, char* ap_list);
 uint8_t at_setupCmdCwlapOpt(uint8_t para_num);
 
 uint8_t at_testCmdCwqap(uint8_t *cmd_name);
