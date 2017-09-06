@@ -31,6 +31,9 @@
 #include "device_nv.h"
 #include "system_util.h"
 #include "authentication_util.h"
+//# -- AT Related
+#include "at_port.h"
+#include "at.h"
 
 // Device
 #include "mem.h"
@@ -68,7 +71,15 @@ static void gatts_profile_c_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
 #define GATTS_DEMO_CHAR_VAL_LEN_MAX 0x40
 #define PREPARE_BUF_MAX_SIZE 1024
 
+#define MAX_STATUS_LENGTH   64
+
+#define MAX_SSID_LENGTH     32
+#define MAX_PASS_LENGTH     64
+
+extern bool at_wifi_auto_reconnect_flag;
 extern char ap_list_out[MAX_AP_LIST_LENGTH];
+
+char connection_status[MAX_STATUS_LENGTH] = "Ready for credentials..."; // {0};
 
 uint8_t char1_str[] = {0x11,0x22,0x33};
 esp_attr_value_t gatts_demo_char1_val = 
@@ -295,8 +306,8 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
         esp_gatt_rsp_t rsp;
         memset(&rsp, 0, sizeof(esp_gatt_rsp_t));
         rsp.attr_value.handle = param->read.handle;
-        rsp.attr_value.len = sizeof("Hello from SimpliSafe!");
-        strncpy((char*)rsp.attr_value.value, "Hello from SimpliSafe!", rsp.attr_value.len);
+        rsp.attr_value.len = strnlen(connection_status, MAX_STATUS_LENGTH-1);
+        strncpy((char*)rsp.attr_value.value, connection_status, rsp.attr_value.len);
         esp_ble_gatts_send_response(gatts_if, param->read.conn_id, param->read.trans_id, ESP_GATT_OK, &rsp);
         break;
     }
@@ -306,11 +317,22 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
         char* data = 0;
         data = malloc(param->write.len + 1);
         strncpy( (char*)data, (char*)param->write.value, (size_t)param->write.len );
-        //parse_credentials( (char*)param->write.value, param->write.len );
         parse_credentials( data, param->write.len );
         free(data);
 
+#warning "TODO: Confirm the usefuleness of this vs. NULL response."
+#define RESPOND_IMMEDIATELY
+#ifdef RESPOND_IMMEDIATELY
+        esp_gatt_rsp_t rsp;
+        memset(&rsp, 0, sizeof(esp_gatt_rsp_t));
+        rsp.attr_value.handle = param->read.handle;
+
+        rsp.attr_value.len = strnlen(connection_status, MAX_STATUS_LENGTH-1);
+        strncpy((char*)rsp.attr_value.value, connection_status, rsp.attr_value.len);
+        esp_ble_gatts_send_response(gatts_if, param->write.conn_id, param->write.trans_id, ESP_GATT_OK, &rsp);
+#else
         esp_ble_gatts_send_response(gatts_if, param->write.conn_id, param->write.trans_id, ESP_GATT_OK, NULL);
+#endif // RESPOND_IMMEDIATELY
         break;
     }
     case ESP_GATTS_EXEC_WRITE_EVT:
@@ -375,7 +397,7 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
         conn_params.latency = 0;
         conn_params.max_int = 0x50;    // max_int = 0x50*1.25ms = 100ms
         conn_params.min_int = 0x30;    // min_int = 0x30*1.25ms = 60ms
-        conn_params.timeout = 400;    // timeout = 400*10ms = 4000ms
+        conn_params.timeout = 400;     // timeout = 400*10ms = 4000ms
         ESP_LOGI(TAG, "ESP_GATTS_CONNECT_EVT, conn_id %d, remote %02x:%02x:%02x:%02x:%02x:%02x:, is_conn %d\n",
                  param->connect.conn_id,
                  param->connect.remote_bda[0], param->connect.remote_bda[1], param->connect.remote_bda[2],
@@ -447,8 +469,9 @@ static void gatts_profile_b_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
         at_exeCmdCwlap(test);
         ESP_LOGD(TAG, "AP LIST: %s", ap_list_out);
 
-        /* get the first token */
+        // get the first token
         token = strtok(ap_list_out, "\n");
+
         break;
     }
     case ESP_GATTS_EXEC_WRITE_EVT:
@@ -677,32 +700,82 @@ void bt_provisioning(void *pvParameter)
     esp_ble_gatts_app_register(PROFILE_B_APP_ID);
     //esp_ble_gatts_app_register(PROFILE_C_APP_ID);
 
-    ESP_LOGI(TAG, "BT waiting up to %d minutes for credentials..!\n", PROVISIONING_TIMEOUT_MINUTES);
-
-    for( ;; )
+    while(1)
     {
-        static int i = PROVISIONING_TIMEOUT_MINUTES; // minutes spent in provisioning
-        ESP_LOGI(TAG, "bt_provisioning::tick");
-        delay_minutes(1);
+        vTaskDelay(100);
+    }
+}
 
-        if( 0 < i )
+static int8_t wifi_start_connection(char* ssid, char* password)
+{
+    wifi_config_t config;
+    wifi_mode_t mode = WIFI_MODE_NULL;
+    int8_t status = -1; // error condition
+    uint8_t cnt = 0;
+    uint32_t len = 0;
+    uint8_t* pStr = NULL;
+    uint8_t wait_time;
+    uint8_t temp[32];
+
+    at_memset(&config,0x0, sizeof(config));
+    at_memcpy(config.sta.ssid, ssid, strnlen(ssid, MAX_SSID_LENGTH));
+    at_memcpy(config.sta.password, password, strnlen(password, MAX_PASS_LENGTH));
+
+    ESP_LOGE(TAG, "SSID: %s, PASSWORD: %s", config.sta.ssid, config.sta.password);
+
+    if (esp_wifi_get_mode(&mode) != ESP_OK) {
+        return -1;
+    }
+
+    if ((WIFI_MODE_AP == mode) || (WIFI_MODE_NULL == mode))
+    {
+        esp_at_printf_error_code(ESP_AT_CMD_ERROR_CMD_EXEC_FAIL(0x0));
+        return -1;
+    }
+
+    at_wifi_auto_reconnect_flag = false;
+    esp_wifi_disconnect();
+
+    if (esp_wifi_set_config(WIFI_IF_STA,&config) != ESP_OK) {
+        return -1;
+    }
+
+    wifi_station_init_connect_status();
+    at_wifi_auto_reconnect_flag = true;
+    esp_wifi_connect();
+
+    wait_time = 16;
+
+    while(wait_time--)
+    {
+        vTaskDelay(1000/(1000 /xPortGetTickRateHz()));  // delay 1000 ms
+        status = wifi_station_get_connect_status();
+        if (STATION_GOT_IP == status)
         {
-            ESP_LOGI(TAG, "bt_provisioning counting down minutes before reboot... %d", i--);
-        }
-        else
-        {
-            esp_bluedroid_disable();
-            esp_bluedroid_deinit();
-            ESP_LOGE(TAG, "BT Tired of waiting.. Reboot!");
-            device_reboot();
+            // If we've connected, leave.
+            break;
         }
     }
+
+    at_wifi_auto_reconnect_flag = false;
+
+    if (STATION_GOT_IP != status)
+    {
+        esp_wifi_disconnect();
+        at_sprintf(temp,"+CWJAP:%d\r\n",status);
+        at_port_print(temp);
+    }
+
+    return status;
 }
 
 // Accepts credentials of format: 
 // {"ssid": "blehwireless","pass": "somethingsomethingpassword","token": "asdfjklasdfjl;k"}
 static bool parse_credentials( char* json_data, uint16_t length )
 {
+    bool b_return = false;
+    int8_t status = -1; // error condition
+    uint8_t temp[32];
     json_t* root = 0;
     json_t* ssid = 0;
     json_t* password = 0;
@@ -711,14 +784,12 @@ static bool parse_credentials( char* json_data, uint16_t length )
     
     json_data[length] = '\0';
 
-    ESP_LOGI(TAG, "before json_loads");
     root = json_loads(json_data, 0, &error);
-    ESP_LOGI(TAG, "after json_loads");
 
     if(NULL == root)
     {
         ESP_LOGI(TAG, "Bad JSON when reading OTA params: %s", json_data);
-        return 0;
+        b_return = false;
     }
     else
     {
@@ -726,7 +797,7 @@ static bool parse_credentials( char* json_data, uint16_t length )
         {
             ESP_LOGI(TAG, "JSON is not an object, error: %d: %s\n", error.line, error.text );
             json_decref( root );
-            return 0;
+            b_return = false;
         }
         else
         {
@@ -737,7 +808,7 @@ static bool parse_credentials( char* json_data, uint16_t length )
             if ( !json_is_string(ssid) || !json_is_string(password) || !json_is_string(token) )
             {
                 ESP_LOGI(TAG, "Attributes are not all strings!.\n" );
-                return 0;
+                b_return = false;
             }
             else
             {
@@ -746,23 +817,61 @@ static bool parse_credentials( char* json_data, uint16_t length )
                 ESP_LOGI(TAG, "Password: %s", json_string_value(password));
                 ESP_LOGI(TAG, "Token: %s", json_string_value(token));
 
-                write_wifi_creds_to_nv( json_string_value(ssid) ,json_string_value(password));
-                write_token_to_nv( json_string_value(token) );
+                char* tmp = "Unknown response!";
+                strncpy(connection_status, tmp, MAX_STATUS_LENGTH-1);
 
-                // If all is good, then mark credentials good and reboot:
-                ESP_LOGW(TAG, "Credentials saved! shutting down now!");
-                nvs_write_string( BT_PROV_READY, "keystored", false );
-                
+                esp_wifi_set_storage(WIFI_STORAGE_FLASH);
+                status = wifi_start_connection((char*)json_string_value(ssid), (char*)json_string_value(password));
+                esp_wifi_set_storage(WIFI_STORAGE_RAM);
+
+                if (0 > status)
+                {
+                    strncpy((char*)connection_status, "STATION_UNKNOWN_ERROR", MAX_STATUS_LENGTH-1);
+                }
+                else if (STATION_IDLE == status)
+                {
+                    strncpy((char*)connection_status, "STATION_IDLE", MAX_STATUS_LENGTH-1);
+                }
+                else if (STATION_CONNECTING == status)
+                {
+                    strncpy((char*)connection_status, "STATION_CONNECTING", MAX_STATUS_LENGTH-1);
+                }
+                else if (STATION_WRONG_PASSWORD == status)
+                {
+                    strncpy((char*)connection_status, "STATION_WRONG_PASSWORD", MAX_STATUS_LENGTH-1);
+                }
+                else if (STATION_NO_AP_FOUND == status)
+                {
+                    strncpy((char*)connection_status, "STATION_NO_AP_FOUND", MAX_STATUS_LENGTH-1);
+                }
+                else if (STATION_CONNECT_FAIL == status)
+                {
+                    strncpy((char*)connection_status, "STATION_CONNECT_FAIL", MAX_STATUS_LENGTH-1);
+                }
+                else if (STATION_GOT_IP == status)
+                {
+                    strncpy((char*)connection_status, "STATION_GOT_IP", MAX_STATUS_LENGTH-1);
+
+                    // We've connected, so save and mark credentials as good.
+                    write_wifi_creds_to_nv( json_string_value(ssid), json_string_value(password));
+                    write_token_to_nv( json_string_value(token) );
+
+                    ESP_LOGW(TAG, "Credentials saved!");
+                    nvs_write_string( BT_PROV_READY, "keystored", false );
+                }
+                else
+                {
+                    ESP_LOGE(TAG, "Unknown station connect return!");
+                }
+
                 #warning "These cause system to freeze, rather than disable/de-init. follow up on proper order"
                 //esp_bluedroid_disable();
                 //esp_bluedroid_deinit();
-                
-                device_reboot();
             }
         }
     }
 
-    return true;
+    return b_return;
 }
 
 bool check_credentials( void )
