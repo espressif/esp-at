@@ -63,22 +63,17 @@ void app_main()
 
     if( check_credentials() )
     {
-        checkmem("before bt");
+        checkmem("bt_provisioning() starting");
         xTaskCreate(&bt_provisioning, "bt_provisioning", 8192, NULL, 5, NULL);
-        checkmem("after bt");
-        #warning place system event block here with timeout
-        delay_minutes(60);
-        esp_restart();
-        return;     
-        ESP_LOGE(TAG, "Should't get here, check time spent in provisioning..");
+        checkmem("bt_provisioning() complete");
     }
     else
     {
         ESP_LOGI(TAG, "We have stored credentials, continuing..");
-
     }
+
     // Make sure we connected..
-    #warning "Define this somewhere better, so everyone can see it.."
+    #warning "Define this somewhere better, so everyone can see it."
     #define WIFI_CONNECTED_BIT BIT0
     if( NULL != wifi_event_group )
     {
@@ -89,7 +84,7 @@ void app_main()
         if( ( uxBits & WIFI_CONNECTED_BIT ) != 0 )
         {
             gettimeofday(&tv, NULL);
-            ESP_LOGI(TAG, "Connected to WiFi @ %ld.%03ld, nothing to do...", tv.tv_sec, tv.tv_usec/1000);
+            ESP_LOGI(TAG, "Connected to WiFi @ %ld.%03ld, nothing to do..", tv.tv_sec, tv.tv_usec/1000);
         }
         else
         {
@@ -103,10 +98,10 @@ void app_main()
     }
     else
     {
-        ESP_LOGE(TAG, "WiFi connection unknown - event group = NULL..");
+        ESP_LOGE(TAG, "WiFi group not returned!");
     }
 
-    checkmem("initialization complete");
+    ESP_LOGW( TAG, "SS3-ESP32 Application Version: %d.%d.%d.%d\n", MAJOR, MINOR, PATCH, BUILD );
 
-    ESP_LOGE( TAG, "SS3-ESP32 Application Version: %d.%d.%d.%d\n", MAJOR, MINOR, PATCH, BUILD );
+    checkmem("app_main() complete");
 }

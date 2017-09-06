@@ -508,6 +508,7 @@ static esp_err_t at_wifi_event_handler_cb(void *ctx, system_event_t *event)
 
     switch (event->event_id) {
     case SYSTEM_EVENT_STA_CONNECTED:
+        ESP_LOGI(TAG, "SYSTEM_EVENT_STA_CONNECTED");
         at_wifi_status = SYSTEM_EVENT_STA_CONNECTED;
         last_state = SYSTEM_EVENT_STA_CONNECTED;
         if (at_ip_mode != TRUE) {
@@ -520,8 +521,7 @@ static esp_err_t at_wifi_event_handler_cb(void *ctx, system_event_t *event)
         break;
     case SYSTEM_EVENT_STA_DISCONNECTED: {
         uint8_t loop = 0;
-
-        ESP_LOGD(TAG, "WiFi Disconnected!");
+        ESP_LOGD(TAG, "SYSTEM_EVENT_STA_DISCONNECTED");
         xEventGroupClearBits(wifi_event_group, WIFI_CONNECTED_BIT);
 
         at_wifi_status = SYSTEM_EVENT_STA_DISCONNECTED;
@@ -621,6 +621,7 @@ static void initialise_wifi(void)
         if (ESP_OK != err) {break;}
     } while (0);
 }
+
 /**
  * @brief  Initializes build two tasks.
  * @param  None

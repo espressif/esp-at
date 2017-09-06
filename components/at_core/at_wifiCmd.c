@@ -550,6 +550,7 @@ uint8_t at_setupCmdCwlapOpt(uint8_t para_num)
  */
 uint8_t at_queryCmdCwjap(uint8_t* cmd_name)
 {
+
     uint8_t temp[64];
     uint8_t ssid[33];
     wifi_ap_record_t config;
