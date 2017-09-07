@@ -423,7 +423,7 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
     }
 }
 
-#warning "TODO: move this stuff and check these sizes.."
+#warning "TODO: add null terminators to all strncpy() calls."
 char *token;
 
 #define COMPLETE_AP_PER_PACKETx
