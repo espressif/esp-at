@@ -467,7 +467,6 @@ static void gatts_profile_b_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
 #else
         if( ap_list_idx <= strnlen(ap_list_out, MAX_AP_LIST_LENGTH) )
         {
-            ESP_LOGW(TAG, "ap_list_idx: %d, length: %d", ap_list_idx, strnlen(ap_list_out, MAX_AP_LIST_LENGTH));
             strncpy((char*)rsp.attr_value.value, (char*)(ap_list_out + ap_list_idx), MAX_PDU );
             rsp.attr_value.len = MAX_PDU;
             ap_list_idx += MAX_PDU;
