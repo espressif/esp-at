@@ -76,6 +76,8 @@ static void gatts_profile_c_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
 #define MAX_SSID_LENGTH     32
 #define MAX_PASS_LENGTH     64
 
+uint32_t ap_list_idx = MAX_AP_LIST_LENGTH;
+
 extern bool at_wifi_auto_reconnect_flag;
 extern char ap_list_out[MAX_AP_LIST_LENGTH];
 
@@ -423,7 +425,13 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
 
 #warning "TODO: move this stuff and check these sizes.."
 char *token;
+
+#define COMPLETE_AP_PER_PACKETx
+#ifdef COMPLETE_AP_PER_PACKET
 #define MAX_PDU 100
+#else
+#define MAX_PDU 20
+#endif // COMPLETE_AP_PER_PACKET
 
 static void gatts_profile_b_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t *param) {
     switch (event) {
@@ -441,7 +449,8 @@ static void gatts_profile_b_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
         esp_gatt_rsp_t rsp;
         memset(&rsp, 0, sizeof(esp_gatt_rsp_t));
         rsp.attr_value.handle = param->read.handle;
-
+#define COMPLETE_AP_PER_PACKETx
+#ifdef COMPLETE_AP_PER_PACKET
         if( token != NULL )
         {
             ESP_LOGI(TAG, "%s\n", token );
@@ -455,6 +464,21 @@ static void gatts_profile_b_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
             rsp.attr_value.len = sizeof("AP LIST EMPTY!");
             strncpy((char*)rsp.attr_value.value, "AP LIST EMPTY!", MAX_PDU);
         }
+#else
+        if( ap_list_idx <= strnlen(ap_list_out, MAX_AP_LIST_LENGTH) )
+        {
+            ESP_LOGW(TAG, "ap_list_idx: %d, length: %d", ap_list_idx, strnlen(ap_list_out, MAX_AP_LIST_LENGTH));
+            strncpy((char*)rsp.attr_value.value, (char*)(ap_list_out + ap_list_idx), MAX_PDU );
+            rsp.attr_value.len = MAX_PDU;
+            ap_list_idx += MAX_PDU;
+        }
+        else
+        {
+            ESP_LOGW(TAG, "AP LIST EMPTY!\n");
+            rsp.attr_value.len = sizeof("AP LIST EMPTY!");
+            strncpy((char*)rsp.attr_value.value, "AP LIST EMPTY!", MAX_PDU);
+        }
+#endif // COMPLETE_AP_PER_PACKET
 
         esp_ble_gatts_send_response(gatts_if, param->read.conn_id, param->read.trans_id,
                                     ESP_GATT_OK, &rsp);
@@ -469,8 +493,10 @@ static void gatts_profile_b_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
         at_exeCmdCwlap(test);
         ESP_LOGD(TAG, "AP LIST: %s", ap_list_out);
 
+#ifdef COMPLETE_AP_PER_PACKET
         // get the first token
         token = strtok(ap_list_out, "\n");
+#endif // COMPLETE_AP_PER_PACKET
 
         break;
     }

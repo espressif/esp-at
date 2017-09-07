@@ -21,7 +21,7 @@
 #include "at.h"
 
 #define MAX_AP_RECORD_LENGTH    128
-#define MAX_AP_LIST_LENGTH      2048
+#define MAX_AP_LIST_LENGTH      3040
 
 uint8_t at_testCmdCwmode(uint8_t *cmd_name);
 uint8_t at_queryCmdCwmode(uint8_t *cmd_name);

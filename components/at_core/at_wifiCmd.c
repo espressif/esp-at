@@ -47,6 +47,8 @@ static uint32_t ap_sort_flag = 0;
 static uint32_t ap_print_mask = AP_PRINT_MASK;
 
 extern bool at_wifi_auto_reconnect_flag;
+extern uint32_t ap_list_idx;
+
 /** @defgroup AT_WSIFICMD_Functions
  * @{
  */
@@ -356,8 +358,8 @@ static bool at_cwlap_response(void)
         }
 #endif
 
-        // "Erase" array and rely on NULL terminate for each entry. 
-        ap_list_out[0] = '\0';
+        // NULL out array
+        at_memset(ap_list_out, 0x00, sizeof(ap_list_out));
 
         for (loop = 0; loop < ap_num; loop++) {
             at_memset(ssid, 0, 33);
@@ -365,7 +367,7 @@ static bool at_cwlap_response(void)
 
             comma_flag = FALSE;
             mask = ap_print_mask;
-            at_sprintf(temp, "%d: %s", loop, "+CWLAP:(");
+            at_sprintf(temp, "|%d: %s", loop, "+CWLAP:(");
 
             SCAN_DONE_FORMAT_PACKET(comma_flag, temp + at_strlen(temp), "%d", ap_list[loop].authmode);
             SCAN_DONE_FORMAT_PACKET(comma_flag, temp + at_strlen(temp), "\"%s\"", ssid);
@@ -375,13 +377,18 @@ static bool at_cwlap_response(void)
             //SCAN_DONE_FORMAT_PACKET(comma_flag,temp + at_strlen(temp), "%d",ap_list[loop].freq_offset);
             //SCAN_DONE_FORMAT_PACKET(comma_flag,temp + at_strlen(temp), "%d",ap_list[loop].freqcal_val);
 
-            at_sprintf(temp + at_strlen(temp), "%s",")\r\n");
+            at_sprintf(temp + at_strlen(temp), "%s",")");
 
             #warning "TODO: check logic below and cap length here.."
             strncpy( ap_list_out + strnlen((char*)ap_list_out, MAX_AP_LIST_LENGTH-MAX_AP_RECORD_LENGTH), (char*)temp, MAX_AP_RECORD_LENGTH);
 
+            at_sprintf(temp + at_strlen(temp), "%s","\r\n");
+
             at_port_print(temp);
         }
+
+        // Signal bt_provisioning..
+        ap_list_idx = 0;
 
         at_free(ap_list);
         at_free(temp);
