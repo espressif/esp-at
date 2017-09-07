@@ -468,6 +468,7 @@ static void gatts_profile_b_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
         if( ap_list_idx <= strnlen(ap_list_out, MAX_AP_LIST_LENGTH) )
         {
             strncpy((char*)rsp.attr_value.value, (char*)(ap_list_out + ap_list_idx), MAX_PDU );
+            #warning "TODO - not true at end of list, but doesn't cause issues. Clean this up."
             rsp.attr_value.len = MAX_PDU;
             ap_list_idx += MAX_PDU;
         }
