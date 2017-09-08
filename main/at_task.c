@@ -404,14 +404,11 @@ static uint8_t at_lock_control(uint8_t para_num)
 }
 
 
-#ifndef ENABLE_BLUFI
 uint8_t StartBluetooth(char* serial_number);
 uint8_t StopBluetooth();
-#endif 
 
 uint8_t at_ControlBlufi(uint8_t para_num)
 {
-#ifdef ENABLE_BLUFI
     char* serial_number = NULL;
     int32_t enable = false;
     if (esp_at_get_para_as_digit(0,&enable) != ESP_AT_PARA_PARSE_RESULT_OK) 
@@ -437,9 +434,6 @@ uint8_t at_ControlBlufi(uint8_t para_num)
 
     }
     return ESP_AT_RESULT_CODE_ERROR;
-#else 
-    return 0;
-#endif /* ENABLE_BLUFI */
 }
 
 extern uint8_t gattc_client_init(uint8_t* cmd_name);
@@ -506,7 +500,7 @@ static esp_at_cmd_struct at_custom_cmd[] = {
     {"+UART_CUR", NULL, NULL, at_setupCmdUart, NULL},
     {"+UART_DEF", NULL, NULL, at_setupCmdUartDef, NULL},
     {"+CIUPDATE", NULL, NULL, at_exeCmdCipupdate, NULL},
-    /* {"+BLUFI", NULL, NULL, at_ControlBlufi, NULL},   */ 
+    {"+BLUFI", NULL, NULL, at_ControlBlufi, NULL},   
     {"+APPLY_UPDATE", NULL, NULL, NULL, at_upgrade_rollback},
     {"+LOCK_INIT", NULL, NULL, NULL, gattc_client_init},
     {"+LOCK", NULL, NULL, at_lock_control, NULL },

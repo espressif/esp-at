@@ -65,7 +65,7 @@ static void gatts_profile_c_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
 #define GATTS_DESCR_UUID_TEST_C     0x1111
 #define GATTS_NUM_HANDLE_TEST_C     4
 
-#define TEST_DEVICE_NAME            "SimpliSafe"
+static char device_name[32] = "Simplisafe 00000000";
 #define TEST_MANUFACTURER_DATA_LEN  17
 
 #define GATTS_DEMO_CHAR_VAL_LEN_MAX 0x40
@@ -294,7 +294,7 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
         gl_profile_tab[PROFILE_A_APP_ID].service_id.id.uuid.len = ESP_UUID_LEN_16;
         gl_profile_tab[PROFILE_A_APP_ID].service_id.id.uuid.uuid.uuid16 = GATTS_SERVICE_UUID_TEST_A;
 
-        esp_ble_gap_set_device_name(TEST_DEVICE_NAME);
+        esp_ble_gap_set_device_name(device_name);
 #ifdef CONFIG_SET_RAW_ADV_DATA
         esp_ble_gap_config_adv_data_raw(raw_adv_data, sizeof(raw_adv_data));
         esp_ble_gap_config_scan_rsp_data_raw(raw_scan_rsp_data, sizeof(raw_scan_rsp_data));
@@ -730,6 +730,71 @@ void bt_provisioning(void *pvParameter)
     {
         vTaskDelay(100);
     }
+}
+
+uint8_t StartBluetooth(char* serial_number)
+{
+    esp_err_t ret;
+
+    strcpy(device_name, serial_number); 
+    
+    esp_bt_controller_config_t bt_cfg = BT_CONTROLLER_INIT_CONFIG_DEFAULT();
+    esp_bt_controller_init(&bt_cfg);
+
+    ret = esp_bt_controller_enable(ESP_BT_MODE_BTDM);
+    if (ret) {
+        ESP_LOGE(TAG, "%s enable bt controller failed\n", __func__);
+        return 0;
+    }
+
+    ret = esp_bluedroid_init();
+    if (ret) {
+        ESP_LOGE(TAG, "%s init bluedroid failed\n", __func__);
+        return 0;
+    }
+
+    ret = esp_bluedroid_enable();
+    if (ret) {
+        ESP_LOGE(TAG, "%s enable bluedroid failed\n", __func__);
+        return 0;
+    }
+
+    esp_ble_gatts_register_callback(gatts_event_handler);
+    esp_ble_gap_register_callback(gap_event_handler);
+    esp_ble_gatts_app_register(PROFILE_A_APP_ID);
+    esp_ble_gatts_app_register(PROFILE_B_APP_ID);
+    //esp_ble_gatts_app_register(PROFILE_C_APP_ID);
+
+    return 1;
+
+}
+
+uint8_t StopBluetooth()
+{
+    esp_err_t ret;
+
+    ret = esp_bluedroid_disable();
+    if (ret) {
+        ESP_LOGE(TAG, "%s disable bluedroid failed\n", __func__);
+        return 0;
+    }   
+
+    ret = esp_bluedroid_deinit();
+    if (ret) {
+        ESP_LOGE(TAG, "%s init bluedroid failed\n", __func__);
+        return 0;
+    }    
+
+    ret = esp_bt_controller_disable(ESP_BT_MODE_BTDM);
+    if (ret) {
+        ESP_LOGE(TAG, "%s disable bt controller failed\n", __func__);
+        return 0;
+    }   
+
+    esp_bt_controller_deinit();
+
+    return 1;
+
 }
 
 static int8_t wifi_start_connection(char* ssid, char* password)

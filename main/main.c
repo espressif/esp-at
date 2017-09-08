@@ -61,6 +61,7 @@ void app_main()
         esp_restart();
     }
 
+    #if 0 // Bluetooth will be enabled with the AT+BLUFI command
     if( check_credentials() )
     {
         checkmem("bt_provisioning() starting");
@@ -71,6 +72,7 @@ void app_main()
     {
         ESP_LOGI(TAG, "We have stored credentials, continuing..");
     }
+    #endif
 
     // Make sure we connected..
     #warning "Define this somewhere better, so everyone can see it."
