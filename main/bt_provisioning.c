@@ -65,16 +65,19 @@ static void gatts_profile_c_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
 #define GATTS_DESCR_UUID_TEST_C     0x1111
 #define GATTS_NUM_HANDLE_TEST_C     4
 
+#define MAX_CREDENTIALS     256
+#define MAX_SSID_LENGTH     32
+#define MAX_PASS_LENGTH     64
+
 static char device_name[32] = "Simplisafe 00000000";
+static char wifi_credentials[MAX_CREDENTIALS] = {0};
+
 #define TEST_MANUFACTURER_DATA_LEN  17
 
 #define GATTS_DEMO_CHAR_VAL_LEN_MAX 0x40
 #define PREPARE_BUF_MAX_SIZE 1024
 
 #define MAX_STATUS_LENGTH   64
-
-#define MAX_SSID_LENGTH     32
-#define MAX_PASS_LENGTH     64
 
 uint32_t ap_list_idx = MAX_AP_LIST_LENGTH;
 
@@ -185,8 +188,10 @@ static prepare_type_env_t a_prepare_write_env;
 static prepare_type_env_t b_prepare_write_env;
 static prepare_type_env_t c_prepare_write_env;
 
-void example_write_event_env(esp_gatt_if_t gatts_if, prepare_type_env_t *prepare_write_env, esp_ble_gatts_cb_param_t *param);
-void example_exec_write_event_env(prepare_type_env_t *prepare_write_env, esp_ble_gatts_cb_param_t *param);
+static void example_write_event_env(esp_gatt_if_t gatts_if, prepare_type_env_t *prepare_write_env, esp_ble_gatts_cb_param_t *param);
+static void example_exec_write_event_env(prepare_type_env_t *prepare_write_env, esp_ble_gatts_cb_param_t *param);
+
+static uint16_t parse_message(uint8_t* incoming, uint32_t length);
 
 static void gap_event_handler(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param_t *param)
 {
@@ -316,11 +321,22 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
     case ESP_GATTS_WRITE_EVT: {
         ESP_LOGI(TAG, "GATT_WRITE_EVT, conn_id %d, trans_id %d, handle %d\n", param->write.conn_id, param->write.trans_id, param->write.handle);
         ESP_LOGI(TAG, "GATT_WRITE_EVT, value len %d, value %s\n", param->write.len, param->write.value);
-        char* data = 0;
+#define READ_COMPLETE_CREDENTIALSx
+#ifdef READ_COMPLETE_CREDENTIALS
+        char* data = NULL;
         data = malloc(param->write.len + 1);
         strncpy( (char*)data, (char*)param->write.value, (size_t)param->write.len );
         parse_credentials( data, param->write.len );
         free(data);
+#else // NOT READ_COMPLETE_CREDENTIALS
+        #warning "TODO: Consider HDLC framing, check with app team."
+        uint16_t* length = parse_message(param->write.value, param->write.len);
+        if( length > 0 )
+        {
+            parse_credentials( wifi_credentials, length );
+            ESP_LOGI(TAG, "GATT_READ_EVT" );
+        }
+#endif // READ_COMPLETE_CREDENTIALS
 
 #warning "TODO: Confirm the usefuleness of this vs. NULL response."
 #define RESPOND_IMMEDIATELY
@@ -954,15 +970,71 @@ static bool parse_credentials( char* json_data, uint16_t length )
                 {
                     ESP_LOGE(TAG, "Unknown station connect return!");
                 }
-
-                #warning "These cause system to freeze, rather than disable/de-init. follow up on proper order"
-                //esp_bluedroid_disable();
-                //esp_bluedroid_deinit();
             }
         }
     }
 
     return b_return;
+}
+
+static uint16_t parse_message(uint8_t* incoming, uint32_t length)
+{
+    static bool seen_start = false;
+    static uint16_t idx = 0;
+
+    char* tmp = NULL;
+    uint16_t index = 0;
+    uint16_t complete_msg_length = 0;
+
+    // Guarantee a NULL
+    incoming[length] = '\0';
+
+    // Spin through chars, quit before NULL
+    while( index <= length - 1 )
+    {
+        if( true == seen_start )
+        {
+            if( '\r' == incoming[index] )
+            {
+                ESP_LOGD(TAG, "Received full frame: %s", wifi_credentials);
+                seen_start = false;
+                complete_msg_length = idx;
+                idx = 0;
+                break;
+            }
+            else if( '\n' == incoming[index] )
+            {
+                ESP_LOGW(TAG, "Received 'LF', restarting frame.");
+                idx = 0;
+            }
+            else
+            {
+                if(idx > MAX_CREDENTIALS)
+                {
+                    ESP_LOGE(TAG, "Credential overflow. Send LF to begin new frame.");
+                    seen_start = false;
+                    idx = 0;
+                }
+                else
+                {
+                    ESP_LOGD(TAG, "Store incoming[%d]: '%c'", index, incoming[index]);
+                    wifi_credentials[idx++] = incoming[index];
+                }
+            }
+        }
+        else
+        {
+            ESP_LOGD(TAG, "Throwaway incoming[%d]: '%c'", index, incoming[index]);
+            if( '\n' == incoming[index] )
+            {
+                seen_start = true;
+            }
+        }
+
+        index++;
+    }
+
+    return complete_msg_length;
 }
 
 bool check_credentials( void )
