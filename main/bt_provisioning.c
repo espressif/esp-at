@@ -334,7 +334,6 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
         if( length > 0 )
         {
             parse_credentials( wifi_credentials, length );
-            ESP_LOGI(TAG, "GATT_READ_EVT" );
         }
 #endif // READ_COMPLETE_CREDENTIALS
 
@@ -1009,7 +1008,7 @@ static uint16_t parse_message(uint8_t* incoming, uint32_t length)
             }
             else
             {
-                if(idx > MAX_CREDENTIALS)
+                if(idx > MAX_CREDENTIALS - 1)
                 {
                     ESP_LOGE(TAG, "Credential overflow. Send LF to begin new frame.");
                     seen_start = false;
