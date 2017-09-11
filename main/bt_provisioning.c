@@ -69,7 +69,7 @@ static void gatts_profile_c_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
 #define MAX_SSID_LENGTH     32
 #define MAX_PASS_LENGTH     64
 
-static char device_name[32] = "Simplisafe 00000000";
+static char device_name[32] = "SimpliSafe 00000000";
 static char wifi_credentials[MAX_CREDENTIALS] = {0};
 
 #define TEST_MANUFACTURER_DATA_LEN  17
