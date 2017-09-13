@@ -42,17 +42,14 @@
 #include "mem.h"
 #include "system_util.h"
 
-// Component
+// AT Component
 #include "at_task.h"
 
 static const char *TAG = "main.c";
 
 void app_main()
 {
-    struct timeval tv;
-    EventGroupHandle_t wifi_event_group = NULL;
-
-    wifi_event_group = at_task_init();
+    at_task_init();
 
     // Initialize NV flash for data storage
     if( ESP_OK != nvs_init() )
@@ -61,49 +58,7 @@ void app_main()
         esp_restart();
     }
 
-    #if 0 // Bluetooth will be enabled with the AT+BLUFI command
-    if( check_credentials() )
-    {
-        checkmem("bt_provisioning() starting");
-        xTaskCreate(&bt_provisioning, "bt_provisioning", 8192, NULL, 5, NULL);
-        checkmem("bt_provisioning() complete");
-    }
-    else
-    {
-        ESP_LOGI(TAG, "We have stored credentials, continuing..");
-    }
-    #endif
-
-    // Make sure we connected..
-    #warning "Define this somewhere better, so everyone can see it."
-    #define WIFI_CONNECTED_BIT BIT0
-    if( NULL != wifi_event_group )
-    {
-        // Wait for the callback to set the WIFI_CONNECTED_BIT in the event group. 
-        // - Time and clear credentials after 15 minutes.                              15 minutes = 900000(ms)
-        EventBits_t uxBits = xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_BIT, false, true, 900000); //portMAX_DELAY);
-
-        if( ( uxBits & WIFI_CONNECTED_BIT ) != 0 )
-        {
-            gettimeofday(&tv, NULL);
-            ESP_LOGI(TAG, "Connected to WiFi @ %ld.%03ld, nothing to do..", tv.tv_sec, tv.tv_usec/1000);
-        }
-        else
-        {
-            // We timed out.. reset wifi creds and reboot.
-            gettimeofday(&tv, NULL);
-            ESP_LOGE(TAG, "WiFi connection timed out @ %ld.%03ld. Clear credentials and restart..", tv.tv_sec, tv.tv_usec/1000);
-            clear_credentials();
-            esp_restart();
-            return;
-        }
-    }
-    else
-    {
-        ESP_LOGE(TAG, "WiFi group not returned!");
-    }
-
     ESP_LOGW( TAG, "SS3-ESP32 Application Version: %d.%d.%d.%d\n", MAJOR, MINOR, PATCH, BUILD );
 
-    checkmem("app_main() complete");
+    checkmem( "app_main() complete" );
 }
