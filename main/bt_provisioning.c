@@ -330,14 +330,13 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
         free(data);
 #else // NOT READ_COMPLETE_CREDENTIALS
         #warning "TODO: Consider HDLC framing, check with app team."
-        uint16_t* length = parse_message(param->write.value, param->write.len);
+        uint16_t length = parse_message(param->write.value, param->write.len);
         if( length > 0 )
         {
             parse_credentials( wifi_credentials, length );
         }
 #endif // READ_COMPLETE_CREDENTIALS
 
-#warning "TODO: Confirm the usefuleness of this vs. NULL response."
 #define RESPOND_IMMEDIATELY
 #ifdef RESPOND_IMMEDIATELY
         esp_gatt_rsp_t rsp;
@@ -438,8 +437,7 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
     }
 }
 
-#warning "TODO: add null terminators to all strncpy() calls."
-char *token;
+char *token = NULL;
 
 #define COMPLETE_AP_PER_PACKETx
 #ifdef COMPLETE_AP_PER_PACKET
@@ -817,9 +815,6 @@ static int8_t wifi_start_connection(char* ssid, char* password)
     wifi_config_t config;
     wifi_mode_t mode = WIFI_MODE_NULL;
     int8_t status = -1; // error condition
-    uint8_t cnt = 0;
-    uint32_t len = 0;
-    uint8_t* pStr = NULL;
     uint8_t wait_time;
     uint8_t temp[32];
 
@@ -881,7 +876,6 @@ static bool parse_credentials( char* json_data, uint16_t length )
 {
     bool b_return = false;
     int8_t status = -1; // error condition
-    uint8_t temp[32];
     json_t* root = 0;
     json_t* ssid = 0;
     json_t* password = 0;
@@ -918,7 +912,6 @@ static bool parse_credentials( char* json_data, uint16_t length )
             }
             else
             {
-                #warning "Add checks here for WiFi and token credentials."
                 ESP_LOGI(TAG, "SSID: %s", json_string_value(ssid));
                 ESP_LOGI(TAG, "Password: %s", json_string_value(password));
                 ESP_LOGI(TAG, "Token: %s", json_string_value(token));
@@ -973,6 +966,7 @@ static bool parse_credentials( char* json_data, uint16_t length )
         }
     }
 
+    connection_status[MAX_STATUS_LENGTH-1] = '\0';
     return b_return;
 }
 
@@ -981,7 +975,6 @@ static uint16_t parse_message(uint8_t* incoming, uint32_t length)
     static bool seen_start = false;
     static uint16_t idx = 0;
 
-    char* tmp = NULL;
     uint16_t index = 0;
     uint16_t complete_msg_length = 0;
 

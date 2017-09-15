@@ -47,6 +47,9 @@ static uint32_t ap_sort_flag = 0;
 static uint32_t ap_print_mask = AP_PRINT_MASK;
 
 extern bool at_wifi_auto_reconnect_flag;
+
+// AP list related
+#define ETX_CHAR    0x02
 extern uint32_t ap_list_idx;
 
 /** @defgroup AT_WSIFICMD_Functions
@@ -367,7 +370,7 @@ static bool at_cwlap_response(void)
 
             comma_flag = FALSE;
             mask = ap_print_mask;
-            at_sprintf(temp, "|%d: %s", loop, "+CWLAP:(");
+            at_sprintf(temp, "%c%d: %s", ETX_CHAR, loop, "+CWLAP:(");
 
             SCAN_DONE_FORMAT_PACKET(comma_flag, temp + at_strlen(temp), "%d", ap_list[loop].authmode);
             SCAN_DONE_FORMAT_PACKET(comma_flag, temp + at_strlen(temp), "\"%s\"", ssid);
@@ -384,7 +387,8 @@ static bool at_cwlap_response(void)
 
             at_sprintf(temp + at_strlen(temp), "%s","\r\n");
 
-            at_port_print(temp);
+            // Increment so we don't print ETX_CHAR to AT output
+            at_port_print(temp + 1);
         }
 
         // Signal bt_provisioning..
