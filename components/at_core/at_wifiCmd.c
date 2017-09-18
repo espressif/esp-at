@@ -372,7 +372,7 @@ static bool at_cwlap_response(void)
             comma_flag = FALSE;
             mask = ap_print_mask;
 
-            at_sprintf(temp, "%c%d: %s", STX_CHAR, loop, "+CWLAP:(");
+            at_sprintf(temp, "%c%02d: %s", STX_CHAR, loop, "+CWLAP:(");
 
             SCAN_DONE_FORMAT_PACKET(comma_flag, temp + at_strlen(temp), "%d", ap_list[loop].authmode);
             SCAN_DONE_FORMAT_PACKET(comma_flag, temp + at_strlen(temp), "\"%s\"", ssid);
