@@ -778,8 +778,9 @@ uint8_t StartBluetooth(char* serial_number)
     esp_ble_gatts_app_register(PROFILE_B_APP_ID);
     //esp_ble_gatts_app_register(PROFILE_C_APP_ID);
 
-    return 1;
+    //checkmem("StartBluetooth() complete...");
 
+    return 1;
 }
 
 uint8_t StopBluetooth()
@@ -806,8 +807,9 @@ uint8_t StopBluetooth()
 
     esp_bt_controller_deinit();
 
-    return 1;
+    //checkmem("StopBluetooth() complete...");
 
+    return 1;
 }
 
 static int8_t wifi_start_connection(char* ssid, char* password)
