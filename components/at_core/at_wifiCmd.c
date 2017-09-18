@@ -49,7 +49,8 @@ static uint32_t ap_print_mask = AP_PRINT_MASK;
 extern bool at_wifi_auto_reconnect_flag;
 
 // AP list related
-#define ETX_CHAR    0x02
+#define STX_CHAR    0x02
+#define ETX_CHAR    0x03
 extern uint32_t ap_list_idx;
 
 /** @defgroup AT_WSIFICMD_Functions
@@ -370,26 +371,24 @@ static bool at_cwlap_response(void)
 
             comma_flag = FALSE;
             mask = ap_print_mask;
-            at_sprintf(temp, "%c%d: %s", ETX_CHAR, loop, "+CWLAP:(");
+
+            at_sprintf(temp, "%c%d: %s", STX_CHAR, loop, "+CWLAP:(");
 
             SCAN_DONE_FORMAT_PACKET(comma_flag, temp + at_strlen(temp), "%d", ap_list[loop].authmode);
             SCAN_DONE_FORMAT_PACKET(comma_flag, temp + at_strlen(temp), "\"%s\"", ssid);
             SCAN_DONE_FORMAT_PACKET(comma_flag, temp + at_strlen(temp), "%d", ap_list[loop].rssi);
             SCAN_DONE_FORMAT_PACKET(comma_flag, temp + at_strlen(temp), "\""MACSTR"\"",MAC2STR(ap_list[loop].bssid));
             SCAN_DONE_FORMAT_PACKET(comma_flag,temp + at_strlen(temp), "%d",ap_list[loop].primary);
-            //SCAN_DONE_FORMAT_PACKET(comma_flag,temp + at_strlen(temp), "%d",ap_list[loop].freq_offset);
-            //SCAN_DONE_FORMAT_PACKET(comma_flag,temp + at_strlen(temp), "%d",ap_list[loop].freqcal_val);
 
-            at_sprintf(temp + at_strlen(temp), "%s",")");
-
-            #warning "TODO: check logic below and cap length here.."
-            strncpy( ap_list_out + strnlen((char*)ap_list_out, MAX_AP_LIST_LENGTH-MAX_AP_RECORD_LENGTH), (char*)temp, MAX_AP_RECORD_LENGTH);
-
-            at_sprintf(temp + at_strlen(temp), "%s","\r\n");
-
-            // Increment so we don't print ETX_CHAR to AT output
+            // Offset so we don't print STX_CHAR to AT output
             at_port_print(temp + 1);
+            at_port_print((unsigned char*)")\r\n");
+
+            // Add AP record + ETX to BT transmission list
+            at_sprintf(temp + at_strlen(temp), "%s%c",")", ETX_CHAR);
+            strncpy( ap_list_out + strnlen((char*)ap_list_out, MAX_AP_LIST_LENGTH-MAX_AP_RECORD_LENGTH), (char*)temp, MAX_AP_RECORD_LENGTH);
         }
+
 
         // Signal bt_provisioning..
         ap_list_idx = 0;
