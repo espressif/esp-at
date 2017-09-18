@@ -379,17 +379,16 @@ static bool at_cwlap_response(void)
             SCAN_DONE_FORMAT_PACKET(comma_flag, temp + at_strlen(temp), "%d", ap_list[loop].rssi);
             SCAN_DONE_FORMAT_PACKET(comma_flag, temp + at_strlen(temp), "\""MACSTR"\"",MAC2STR(ap_list[loop].bssid));
             SCAN_DONE_FORMAT_PACKET(comma_flag,temp + at_strlen(temp), "%d",ap_list[loop].primary);
-            //SCAN_DONE_FORMAT_PACKET(comma_flag,temp + at_strlen(temp), "%d",ap_list[loop].freq_offset);
-            //SCAN_DONE_FORMAT_PACKET(comma_flag,temp + at_strlen(temp), "%d",ap_list[loop].freqcal_val);
 
-            // Increment so we don't print STX_CHAR to AT output
+            // Offset so we don't print STX_CHAR to AT output
             at_port_print(temp + 1);
             at_port_print((unsigned char*)")\r\n");
 
-            // Add to AP list for BT transmission
+            // Add AP record + ETX to BT transmission list
             at_sprintf(temp + at_strlen(temp), "%s%c",")", ETX_CHAR);
             strncpy( ap_list_out + strnlen((char*)ap_list_out, MAX_AP_LIST_LENGTH-MAX_AP_RECORD_LENGTH), (char*)temp, MAX_AP_RECORD_LENGTH);
         }
+
 
         // Signal bt_provisioning..
         ap_list_idx = 0;
