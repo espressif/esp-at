@@ -53,7 +53,7 @@ static bool at_nvm_uart_config_set (at_nvm_uart_config_struct *uart_config);
 static bool at_nvm_uart_config_get (at_nvm_uart_config_struct *uart_config);
 
 
-int32_t at_port_write_data(uint8_t*data,int32_t len)
+static int32_t at_port_write_data(uint8_t*data,int32_t len)
 {
     uint32_t length = 0;
 
@@ -61,7 +61,7 @@ int32_t at_port_write_data(uint8_t*data,int32_t len)
     return length;
 }
 
-int32_t at_port_read_data(uint8_t*buf,int32_t len)
+static int32_t at_port_read_data(uint8_t*buf,int32_t len)
 {
     TickType_t ticks_to_wait = portTICK_RATE_MS;
     uint8_t *data = NULL;
@@ -96,7 +96,7 @@ int32_t at_port_read_data(uint8_t*buf,int32_t len)
     }
 }
 
-int32_t at_port_get_data_length (void)
+static int32_t at_port_get_data_length (void)
 {
     size_t size = 0;
     if (ESP_OK == uart_get_buffered_data_len(CONFIG_AT_UART_PORT,&size)) {
@@ -106,7 +106,7 @@ int32_t at_port_get_data_length (void)
     }
 }
 
-bool at_port_wait_write_complete (int32_t timeout_msec)
+static bool at_port_wait_write_complete (int32_t timeout_msec)
 {
     if (ESP_OK == uart_wait_tx_done(CONFIG_AT_UART_PORT, timeout_msec*portTICK_PERIOD_MS)) {
         return true;
@@ -115,7 +115,7 @@ bool at_port_wait_write_complete (int32_t timeout_msec)
     return false;
 }
 
-void uart_task(void *pvParameters)
+static void uart_task(void *pvParameters)
 {
     uart_event_t event;
     for (;;) {
@@ -351,21 +351,7 @@ static uint8_t at_setupCmdUartDef(uint8_t para_num)
     return ret;
 }
 
-static uint8_t at_exeCmdCipupdate(uint8_t *cmd_name)//add get station ip and ap ip
-{
-
-    if (esp_at_upgrade_process()) {
-        esp_at_response_result(ESP_AT_RESULT_CODE_OK);
-        esp_at_port_wait_write_complete(portMAX_DELAY);
-        esp_restart();
-        for(;;){
-        }
-    }
-
-    return ESP_AT_RESULT_CODE_ERROR;
-}
-
-uint8_t at_queryCmdUart (uint8_t *cmd_name)
+static uint8_t at_queryCmdUart (uint8_t *cmd_name)
 {
     uint32_t baudrate = 0;
     uart_word_length_t data_bits = UART_DATA_8_BITS;
@@ -399,7 +385,7 @@ uint8_t at_queryCmdUart (uint8_t *cmd_name)
     return ESP_AT_RESULT_CODE_OK;
 }
 
-uint8_t at_queryCmdUartDef (uint8_t *cmd_name)
+static uint8_t at_queryCmdUartDef (uint8_t *cmd_name)
 {
     at_nvm_uart_config_struct uart_nvm_config;
     uint8_t buffer[64];
@@ -423,11 +409,50 @@ uint8_t at_queryCmdUartDef (uint8_t *cmd_name)
     return ESP_AT_RESULT_CODE_OK;
 }
 
+
+static uint8_t at_exeCmdCipupdate(uint8_t *cmd_name)//add get station ip and ap ip
+{
+
+    if (esp_at_upgrade_process(ESP_AT_OTA_MODE_NORMAL)) {
+        esp_at_response_result(ESP_AT_RESULT_CODE_OK);
+        esp_at_port_wait_write_complete(portMAX_DELAY);
+        esp_restart();
+        for(;;){
+        }
+    }
+
+    return ESP_AT_RESULT_CODE_ERROR;
+}
+
+static uint8_t at_setupCmdCipupdate(uint8_t para_num)
+{
+    int32_t ota_mode = 0;
+    int32_t cnt = 0;
+
+    if (esp_at_get_para_as_digit (cnt++,&ota_mode) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if (cnt != para_num) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if (esp_at_upgrade_process(ota_mode)) {
+        esp_at_response_result(ESP_AT_RESULT_CODE_OK);
+        esp_at_port_wait_write_complete(portMAX_DELAY);
+        esp_restart();
+        for(;;){
+        }
+    }
+
+    return ESP_AT_RESULT_CODE_ERROR;
+}
+
 static esp_at_cmd_struct at_custom_cmd[] = {
     {"+UART", NULL, at_queryCmdUart, at_setupCmdUartDef, NULL},
     {"+UART_CUR", NULL, at_queryCmdUart, at_setupCmdUart, NULL},
     {"+UART_DEF", NULL, at_queryCmdUartDef, at_setupCmdUartDef, NULL},
-    {"+CIUPDATE", NULL, NULL, NULL, at_exeCmdCipupdate},
+    {"+CIUPDATE", NULL, NULL, at_setupCmdCipupdate, at_exeCmdCipupdate},
 };
 
 void at_status_callback (esp_at_status_type status)
