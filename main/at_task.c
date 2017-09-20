@@ -413,7 +413,7 @@ static uint8_t at_queryCmdUartDef (uint8_t *cmd_name)
 static uint8_t at_exeCmdCipupdate(uint8_t *cmd_name)//add get station ip and ap ip
 {
 
-    if (esp_at_upgrade_process(ESP_AT_OTA_MODE_NORMAL)) {
+    if (esp_at_upgrade_process(ESP_AT_OTA_MODE_NORMAL,NULL)) {
         esp_at_response_result(ESP_AT_RESULT_CODE_OK);
         esp_at_port_wait_write_complete(portMAX_DELAY);
         esp_restart();
@@ -428,16 +428,23 @@ static uint8_t at_setupCmdCipupdate(uint8_t para_num)
 {
     int32_t ota_mode = 0;
     int32_t cnt = 0;
+    uint8_t* version = NULL;
 
     if (esp_at_get_para_as_digit (cnt++,&ota_mode) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if (cnt < para_num) {
+        if(esp_at_get_para_as_str (cnt++,&version) != ESP_AT_PARA_PARSE_RESULT_OK) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
     }
 
     if (cnt != para_num) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
-    if (esp_at_upgrade_process(ota_mode)) {
+    if (esp_at_upgrade_process(ota_mode,version)) {
         esp_at_response_result(ESP_AT_RESULT_CODE_OK);
         esp_at_port_wait_write_complete(portMAX_DELAY);
         esp_restart();

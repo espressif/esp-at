@@ -30,7 +30,7 @@ enum {
     ESP_AT_OTA_MODE_SSL,
 };
 
-bool esp_at_upgrade_process(int32_t ota_mode);
+bool esp_at_upgrade_process(int32_t ota_mode,uint8_t* version);
 
 #endif
 
