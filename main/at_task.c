@@ -67,6 +67,7 @@ typedef struct {
 QueueHandle_t esp_at_uart_queue = NULL;
 static bool at_save_para_into_flash = false;
 void at_port_print(uint8_t *str);
+extern char at_token[];
 
 static bool at_nvm_uart_config_set (at_nvm_uart_config_struct *uart_config);
 static bool at_nvm_uart_config_get (at_nvm_uart_config_struct *uart_config);
@@ -489,7 +490,7 @@ uint8_t at_get_wifi_config(uint8_t* cmd_name)
     char config_string[50];
     wifi_config_t sta_conf;
     esp_wifi_get_config(WIFI_IF_STA, &sta_conf);    
-    sprintf(config_string, "AT ssid:%s,password:%s", sta_conf.sta.ssid, sta_conf.sta.password);
+    sprintf(config_string, "AT ssid:%s,password:%s,token:%s", sta_conf.sta.ssid, sta_conf.sta.password, at_token);
     at_port_print((uint8_t*) config_string);
 
     return ESP_AT_RESULT_CODE_OK;    

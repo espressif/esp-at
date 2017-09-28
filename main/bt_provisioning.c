@@ -79,6 +79,8 @@ static char wifi_credentials[MAX_CREDENTIALS] = {0};
 
 #define MAX_STATUS_LENGTH   64
 
+char at_token[25] = "No Token";
+
 uint32_t ap_list_idx = MAX_AP_LIST_LENGTH;
 
 extern bool at_wifi_auto_reconnect_flag;
@@ -955,7 +957,9 @@ static bool parse_credentials( char* json_data, uint16_t length )
 
                     // We've connected, so save and mark credentials as good.
                     write_wifi_creds_to_nv( json_string_value(ssid), json_string_value(password));
-                    write_token_to_nv( json_string_value(token) );
+                    ESP_LOGW(TAG, "Token:%s", json_string_value(token));
+                    strncpy(at_token, json_string_value(token), sizeof(at_token));
+                    //write_token_to_nv( json_string_value(token) );
 
                     ESP_LOGW(TAG, "Credentials saved!");
                     nvs_write_string( BT_PROV_READY, "keystored", false );
