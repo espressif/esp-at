@@ -27,10 +27,6 @@
 #include "esp_log.h"
 #include "esp_wps.h"
 
-// Application
-#warning "TODO: Fix in makefile so we don't need to give path"
-#include "../../main/authentication_util.h"
-
 static const char *TAG = "at_port.c";
 
 /** @defgroup AT_PORT_Defines
@@ -587,39 +583,13 @@ static esp_err_t at_wifi_event_handler_cb(void *ctx, system_event_t *event)
 
 static void initialise_wifi(void)
 {
-    esp_err_t err = ESP_OK;
-
-    do {
-        tcpip_adapter_init();
-        wifi_event_group = xEventGroupCreate();
-        err = esp_event_loop_init(at_wifi_event_handler_cb, NULL);
-        if (ESP_OK != err) {break;}    
-        wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-        err = esp_wifi_init(&cfg);
-        if (ESP_OK != err) {break;}
-        err = esp_wifi_set_storage(WIFI_STORAGE_RAM);
-        if (ESP_OK != err) {break;}
-
-        wifi_struct* wifi = create_wifi_creds_from_nv();
-        wifi_config_t wifi_config = {
-            .sta = {
-                .ssid = "",
-                .password = "",
-            },
-        };
-
-        strncpy((char*)wifi_config.sta.ssid, (char*)wifi->ssid, 32);
-        strncpy((char*)wifi_config.sta.password, (char*)wifi->password, 64);
-        free_wifi_struct(wifi);
-
-        ESP_LOGD(TAG, "Setting WiFi configuration SSID %s...", wifi_config.sta.ssid);
-        esp_wifi_set_mode(WIFI_MODE_STA);
-        if (ESP_OK != err) {break;}
-        esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config);
-        if (ESP_OK != err) {break;}
-        err = esp_wifi_start();
-        if (ESP_OK != err) {break;}
-    } while (0);
+    tcpip_adapter_init();
+    wifi_event_group = xEventGroupCreate();
+    ESP_ERROR_CHECK( esp_event_loop_init(at_wifi_event_handler_cb, NULL) );
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
+    ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM) );
+    ESP_ERROR_CHECK( esp_wifi_start() );
 }
 
 /**

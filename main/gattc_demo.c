@@ -44,7 +44,7 @@
 static void esp_gap_cb(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param_t *param);
 static void esp_gattc_cb(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if, esp_ble_gattc_cb_param_t *param);
 static void gattc_profile_a_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if, esp_ble_gattc_cb_param_t *param);
-static void gattc_profile_b_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if, esp_ble_gattc_cb_param_t *param);
+
 #define KEYBLE_UUID_LOCK {0,0,0,0,0,0,0,0xb0,0,0x40,0x51,0x4,0x70,0x75,0,0xf0}
 #define KEYBLE_UUID_LOCK2 {0,0,0,0,0,0,0,0xb0,0,0x40,0x51,0x4,0x71,0x75,0,0xf0}
 static esp_gatt_srvc_id_t alert_service_id = {
@@ -146,7 +146,7 @@ static void gattc_profile_a_event_handler(esp_gattc_cb_event_t event, esp_gatt_i
         break;
     case ESP_GATTC_GET_CHAR_EVT:
     {
-        uint8_t value = 0;
+        //uint8_t value = 0;
         if (p_data->get_char.status != ESP_GATT_OK) {
             break;
         }
