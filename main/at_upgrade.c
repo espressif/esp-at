@@ -34,14 +34,14 @@
 #include "esp_partition.h"
 
 #include "tcpip_adapter.h"
-
 #include "esp_at.h"
 
 //#define ESP_AT_SERVER_IP   "192.168.209.173"
 //#define ESP_AT_SERVER_PORT 8070
 #define ESP_AT_BIN_KEY     CONFIG_AT_OTA_TOKEN_KEY
 
-#define TEXT_BUFFSIZE 1024
+#define TEXT_BUFFSIZE 2048
+#define MIN_START_PACKET_LENGTH 1000
 
 #define UPGRADE_FRAME  "{\"path\": \"/v1/messages/\", \"method\": \"POST\", \"meta\": {\"Authorization\": \"token %s\"},\
 \"get\":{\"action\":\"%s\"},\"body\":{\"pre_rom_version\":\"%s\",\"rom_version\":\"%s\"}}\n"
@@ -249,11 +249,42 @@ bool esp_at_upgrade_process(char* server_ip, int32_t server_port, char* ota_file
         memset(data_buffer, 0x0, TEXT_BUFFSIZE);
         
         buff_len = recv(esp_at_ota_socket_id, data_buffer, TEXT_BUFFSIZE, 0);
-        if (buff_len < 0) {
-            ESP_AT_OTA_DEBUG("receive data error!\r\n");
-            goto OTA_ERROR;
-        } else if (buff_len > 0 && !pkg_body_start) {
+        vTaskDelay(1);
+
+        while (buff_len < 1000 && !pkg_body_start)
+        {
+            ESP_AT_OTA_DEBUG("Initial packet too small at: %d bytes! Requesting more..\r\n", buff_len);
+            buff_len += recv(esp_at_ota_socket_id, data_buffer+buff_len, TEXT_BUFFSIZE-buff_len-1, 0);
+            vTaskDelay(1);
+
+            /* One shot attempt at grabbing more bytes.. Don't want to hang around forever.
+             * - Future plans to include cURL for a comprehensive way of managing buffers.
+             */
+            if (buff_len < MIN_START_PACKET_LENGTH)
+            {
+                ESP_AT_OTA_DEBUG("Error: receive data still too small at: %d bytes!\r\n", buff_len);
+                goto OTA_ERROR;
+            }
+            else
+            {
+                ESP_AT_OTA_DEBUG("Enough bytes received now, new buffer length: %d bytes!\r\n", buff_len);
+                break;
+            }
+        }
+        if (!pkg_body_start)
+        {
             // search "\r\n\r\n"
+
+#ifdef HEADER_DEBUGx
+            ESP_AT_OTA_DEBUG("Buffer length: %d\n\r", buff_len);
+
+            for(int i=0; i<buff_len; i++)
+            {
+                //ESP_AT_OTA_DEBUG("%d: 0x%02x (%c)\r\n", i, data_buffer[i], data_buffer[i]);
+                ESP_AT_OTA_DEBUG("%c", data_buffer[i]);
+            }
+#endif // 0
+
             pStr = (uint8_t*)strstr((char*)data_buffer,"Content-Length: ");
             if (pStr == NULL) {
                 continue;
@@ -265,6 +296,7 @@ bool esp_at_upgrade_process(char* server_ip, int32_t server_port, char* ota_file
             if (pStr) {
                 pkg_body_start = true;
                 pStr += 4; // skip "\r\n"
+
                 if ((pStr[0] != 0xE9) || (pStr[1] != 0x08)) {
                     ESP_AT_OTA_DEBUG("OTA Write Header format Check Failed! first byte is %02x ,second byte is %02x\r\n", pStr[0],pStr[1]);
                     goto OTA_ERROR;
