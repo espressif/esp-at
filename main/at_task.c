@@ -476,7 +476,7 @@ void at_status_callback (esp_at_status_type status)
 
 void at_task_init(void)
 {
-    uint8_t *version = (uint8_t *)malloc(64);
+    uint8_t *version = (uint8_t *)malloc(192);
     esp_at_device_ops_struct esp_at_device_ops = {
         .read_data = at_port_read_data,
         .write_data = at_port_write_data,
@@ -491,7 +491,13 @@ void at_task_init(void)
     nvs_flash_init();
     at_uart_init();
 
-    sprintf((char*)version, "compile time:%s %s", __DATE__, __TIME__);
+    sprintf((char*)version, "compile time:%s %s\r\n", __DATE__, __TIME__);
+#ifdef CONFIG_ESP_AT_FW_VERSION
+    if ((strlen(CONFIG_ESP_AT_FW_VERSION) > 0) && (strlen(CONFIG_ESP_AT_FW_VERSION) <= 128)){
+        printf("%s\r\n", CONFIG_ESP_AT_FW_VERSION);
+        strcat((char*)version, CONFIG_ESP_AT_FW_VERSION);
+    }
+#endif
     esp_at_device_ops_regist (&esp_at_device_ops);
     esp_at_custom_ops_regist(&esp_at_custom_ops);
     esp_at_module_init (CONFIG_LWIP_MAX_SOCKETS - 1, version);  // reserved one for server
