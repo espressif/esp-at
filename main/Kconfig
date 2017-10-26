@@ -98,4 +98,11 @@ config AT_OTA_SSL_TOKEN_KEY
     default "dd93253c287f725de50d4071a05dd28b72056ca7"
     depends on AT_OTA_SSL_SUPPORT
 
+config ESP_AT_FW_VERSION
+    string "AT firmware version."
+    depends on AT_ENABLE
+    help
+      The maximum length of the string is 128 characters.
+      If more than 128 characters, it will be invalid.
+
 endmenu
