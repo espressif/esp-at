@@ -33,6 +33,7 @@ build_at:
 
   script:
     - sed -i "/CONFIG_AT_OTA_TOKEN_KEY/c\\CONFIG_AT_OTA_TOKEN_KEY=\"$AT_OTA_KEY\"" sdkconfig.defaults
+    - sed -i "/CONFIG_AT_OTA_TOKEN_KEY/c\\CONFIG_AT_OTA_SSL_TOKEN_KEY=\"$AT_OTA_KEY\"" sdkconfig.defaults
     - make defconfig
     - make -j4
     - make print_flash_cmd | tail -n 1 > build/download.config

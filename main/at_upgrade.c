@@ -37,11 +37,10 @@
 
 #include "esp_at.h"
 
-#ifndef CONFIG_AT_OTA_BASED_UPON_SSL
-#define ESP_AT_SERVER_IP   CONFIG_AT_OTA_SERVER_IP
-#define ESP_AT_SERVER_PORT CONFIG_AT_OTA_SERVER_PORT
-#define ESP_AT_BIN_KEY     CONFIG_AT_OTA_TOKEN_KEY
-
+#ifdef CONFIG_AT_OTA_SSL_SUPPORT
+#include "openssl/ssl.h"
+#endif
+#include "at_upgrade.h"
 #define TEXT_BUFFSIZE 1024
 
 #define UPGRADE_FRAME  "{\"path\": \"/v1/messages/\", \"method\": \"POST\", \"meta\": {\"Authorization\": \"token %s\"},\
@@ -73,7 +72,7 @@ static void esp_at_ota_timeout_callback( TimerHandle_t xTimer )
     }
 }
 
-bool esp_at_upgrade_process(void)
+bool esp_at_upgrade_process(int32_t ota_mode,uint8_t* version)
 {
     bool pkg_body_start = false;
     struct sockaddr_in sock_info;
@@ -82,7 +81,6 @@ bool esp_at_upgrade_process(void)
     uint8_t* http_request = NULL;
     uint8_t* data_buffer = NULL;
     uint8_t* pStr = NULL;
-    uint8_t* version= NULL;
     esp_partition_t* partition_ptr = NULL;
     esp_partition_t partition;
     esp_ota_handle_t out_handle = 0;
@@ -91,7 +89,34 @@ bool esp_at_upgrade_process(void)
     int total_len = 0;
     int recv_len = 0;
     bool ret = false;
+    int result = -1;
+    char* server_ip = NULL;
+    uint16_t server_port = 0;
+    char* ota_key = NULL;
+    
+#ifdef CONFIG_AT_OTA_SSL_SUPPORT
+    SSL_CTX *ctx = NULL;
+    SSL *ssl = NULL;
+#endif
 
+    ESP_AT_OTA_DEBUG("ota_mode:%d\r\n",ota_mode);
+    if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
+        server_ip = CONFIG_AT_OTA_SERVER_IP;
+        server_port = CONFIG_AT_OTA_SERVER_PORT;
+        ota_key = CONFIG_AT_OTA_TOKEN_KEY;
+    }
+#ifdef CONFIG_AT_OTA_SSL_SUPPORT
+    else if (ota_mode == ESP_AT_OTA_MODE_SSL) {
+        server_ip = CONFIG_AT_OTA_SSL_SERVER_IP;
+        server_port = CONFIG_AT_OTA_SSL_SERVER_PORT;
+        ota_key = CONFIG_AT_OTA_SSL_TOKEN_KEY;
+    }
+#endif
+    else {
+        return ret;
+    }
+    
+    
     if (esp_at_ota_timeout_timer != NULL) {
         xTimerStop(esp_at_ota_timeout_timer,portMAX_DELAY);
         xTimerDelete(esp_at_ota_timeout_timer,portMAX_DELAY);
@@ -104,37 +129,23 @@ bool esp_at_upgrade_process(void)
                 NULL,
                 esp_at_ota_timeout_callback);
     xTimerStart(esp_at_ota_timeout_timer,portMAX_DELAY);
-    ip_address.u_addr.ip4.addr = inet_addr(ESP_AT_SERVER_IP);
+    ip_address.u_addr.ip4.addr = inet_addr(server_ip);
 
-    if ((ip_address.u_addr.ip4.addr == IPADDR_NONE) && (strcmp(ESP_AT_SERVER_IP,"255.255.255.255") != 0)) {
-        if((hptr = gethostbyname(ESP_AT_SERVER_IP)) == NULL)
+    if ((ip_address.u_addr.ip4.addr == IPADDR_NONE) && (strcmp(server_ip,"255.255.255.255") != 0)) {
+        if((hptr = gethostbyname(server_ip)) == NULL)
         {
             ESP_AT_OTA_DEBUG("gethostbyname fail\r\n");
             goto OTA_ERROR;
         }
         ip_address = *(ip_addr_t*)hptr->h_addr_list[0];
     }
-    esp_at_port_write_data((uint8_t*)"+CIPUPDATE:1\r\n",strlen("+CIPUPDATE:1\r\n"));
-    esp_at_ota_socket_id = socket(AF_INET, SOCK_STREAM, 0);
-    if (esp_at_ota_socket_id < 0) {
-        goto OTA_ERROR;
-    }
 
-    setsockopt(esp_at_ota_socket_id, SOL_SOCKET, SO_REUSEADDR,&sockopt, sizeof(sockopt));
     // set connect info
     memset(&sock_info, 0, sizeof(struct sockaddr_in));
     sock_info.sin_family = AF_INET;
     sock_info.sin_addr.s_addr = ip_address.u_addr.ip4.addr;
-    sock_info.sin_port = htons(ESP_AT_SERVER_PORT);
-
-    // connect to http server
-    if (connect(esp_at_ota_socket_id, (struct sockaddr*)&sock_info, sizeof(sock_info)) < 0)
-    {
-        ESP_AT_OTA_DEBUG("connect to server failed!\r\n");
-        goto OTA_ERROR;
-    }
-
-    esp_at_port_write_data((uint8_t*)"+CIPUPDATE:2\r\n",strlen("+CIPUPDATE:2\r\n"));
+    sock_info.sin_port = htons(server_port);
+    esp_at_port_write_data((uint8_t*)"+CIPUPDATE:1\r\n",strlen("+CIPUPDATE:1\r\n"));
 
     http_request = (uint8_t*)malloc(TEXT_BUFFSIZE);
     if (http_request == NULL) {
@@ -144,41 +155,115 @@ bool esp_at_upgrade_process(void)
     if (data_buffer == NULL) {
         goto OTA_ERROR;
     }
-    snprintf((char*)http_request,TEXT_BUFFSIZE,"GET /v1/device/rom/?is_format_simple=true HTTP/1.0\r\nHost: "IPSTR":%d\r\n"pheadbuffer"",
-             IP2STR(&ip_address.u_addr.ip4),
-             ESP_AT_SERVER_PORT, ESP_AT_BIN_KEY);
-    /*send GET request to http server*/
-    if (send(esp_at_ota_socket_id, http_request, strlen((char*)http_request), 0) < 0)
-    {
-    	ESP_AT_OTA_DEBUG("send GET request to server failed\r\n");
-        goto OTA_ERROR;
-    }
 
-    memset(data_buffer,0x0,TEXT_BUFFSIZE);
-    if (recv(esp_at_ota_socket_id, data_buffer, TEXT_BUFFSIZE, 0) < 0) {
-        ESP_AT_OTA_DEBUG("recv data from server failed!\r\n");
-    	goto OTA_ERROR;
-    }
+    if (version == NULL) {
+        esp_at_ota_socket_id = socket(AF_INET, SOCK_STREAM, 0);
+        if (esp_at_ota_socket_id < 0) {
+            goto OTA_ERROR;
+        }
 
-    esp_at_port_write_data((uint8_t*)"+CIPUPDATE:3\r\n",strlen("+CIPUPDATE:3\r\n"));
-    pStr = (uint8_t*)strstr((char*)data_buffer,"rom_version\": ");
-    if (pStr == NULL) {
-        ESP_AT_OTA_DEBUG("rom_version error!\r\n");
-        goto OTA_ERROR;
-    }
-    pStr += strlen("rom_version\": \"");
-    version = pStr;
+        setsockopt(esp_at_ota_socket_id, SOL_SOCKET, SO_REUSEADDR,&sockopt, sizeof(sockopt));
+        // connect to http server
+        if (connect(esp_at_ota_socket_id, (struct sockaddr*)&sock_info, sizeof(sock_info)) < 0)
+        {
+            ESP_AT_OTA_DEBUG("connect to server failed!\r\n");
+            goto OTA_ERROR;
+        }
 
-    pStr = (uint8_t*)strstr((char*)version,"\",");
-    if (pStr == NULL) {
-        ESP_AT_OTA_DEBUG("rom_version tail error!\r\n");
-        goto OTA_ERROR;
+    #ifdef CONFIG_AT_OTA_SSL_SUPPORT
+        if (ota_mode == ESP_AT_OTA_MODE_SSL) {
+            ctx = SSL_CTX_new(TLSv1_2_client_method());
+            if (!ctx) {
+                ESP_AT_OTA_DEBUG("ctx fail\r\n");
+                goto OTA_ERROR;
+            }
+            ssl = SSL_new(ctx);
+            SSL_CTX_free(ctx);
+            ctx = NULL;
+            if (!ssl) {
+                ESP_AT_OTA_DEBUG("ssl fail\r\n");
+                goto OTA_ERROR;
+            }
+
+            SSL_set_fd(ssl, esp_at_ota_socket_id);
+
+            if(!SSL_connect(ssl)) {
+                ESP_AT_OTA_DEBUG("ssl connect fail\r\n");
+                goto OTA_ERROR;
+            }
+        }
+    #endif
+
+        esp_at_port_write_data((uint8_t*)"+CIPUPDATE:2\r\n",strlen("+CIPUPDATE:2\r\n"));
+
+        snprintf((char*)http_request,TEXT_BUFFSIZE,"GET /v1/device/rom/?is_format_simple=true HTTP/1.0\r\nHost: "IPSTR":%d\r\n"pheadbuffer"",
+                 IP2STR(&ip_address.u_addr.ip4),
+                 server_port, ota_key);
+
+        printf("http request length %d bytes\r\n",strlen((char*)http_request));
+        /*send GET request to http server*/
+        result = -1;
+        if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
+            result = write(esp_at_ota_socket_id, http_request, strlen((char*)http_request));
+        }
+    #ifdef CONFIG_AT_OTA_SSL_SUPPORT
+        else if (ota_mode == ESP_AT_OTA_MODE_SSL) {
+            result = SSL_write(ssl,http_request, strlen((char*)http_request));
+        }
+    #endif
+
+        if(result != strlen((char*)http_request))
+        {
+            ESP_AT_OTA_DEBUG("send GET request to server failed\r\n");
+            goto OTA_ERROR;
+        }
+
+        memset(data_buffer,0x0,TEXT_BUFFSIZE);
+
+        result = -1;
+        if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
+            result = read(esp_at_ota_socket_id, data_buffer, TEXT_BUFFSIZE);
+        }
+    #ifdef CONFIG_AT_OTA_SSL_SUPPORT
+        else if (ota_mode == ESP_AT_OTA_MODE_SSL) {
+            result = SSL_read(ssl,data_buffer, TEXT_BUFFSIZE);
+        }
+
+        if (ssl != NULL) {
+            SSL_shutdown(ssl);
+            SSL_free(ssl);
+            ssl = NULL;
+        }
+    #endif
+        close(esp_at_ota_socket_id);
+        esp_at_ota_socket_id = -1;
+
+        if (result < 0) {
+            ESP_AT_OTA_DEBUG("recv data from server failed!\r\n");
+            goto OTA_ERROR;
+        }
+    
+        esp_at_port_write_data((uint8_t*)"+CIPUPDATE:3\r\n",strlen("+CIPUPDATE:3\r\n"));
+        pStr = (uint8_t*)strstr((char*)data_buffer,"rom_version\": ");
+        if (pStr == NULL) {
+            ESP_AT_OTA_DEBUG("rom_version error!\r\n");
+            goto OTA_ERROR;
+        }
+        pStr += strlen("rom_version\": \"");
+        version = pStr;
+    
+        pStr = (uint8_t*)strstr((char*)version,"\",");
+        if (pStr == NULL) {
+            ESP_AT_OTA_DEBUG("rom_version tail error!\r\n");
+            goto OTA_ERROR;
+        }
+        *pStr = '\0';
     }
-    *pStr = '\0';
+    printf("version:%s\r\n",version);
     snprintf((char*)http_request,TEXT_BUFFSIZE,
         "GET /v1/device/rom/?action=download_rom&version=%s&filename=ota.bin HTTP/1.1\r\nHost: "IPSTR":%d\r\n"pheadbuffer"",
         (char*)version, IP2STR(&ip_address.u_addr.ip4),
-        ESP_AT_SERVER_PORT, ESP_AT_BIN_KEY);
+        server_port, ota_key);
 
     // search ota partition
     partition_ptr = (esp_partition_t*)esp_ota_get_boot_partition();
@@ -207,7 +292,6 @@ bool esp_at_upgrade_process(void)
     }
     partition.type = ESP_PARTITION_TYPE_APP;
 
-    // partition = (esp_partition_t*)esp_partition_find_first(partition->type,partition->subtype,NULL);
     partition_ptr = (esp_partition_t*)esp_partition_find_first(partition.type,partition.subtype,NULL);
     if (partition_ptr == NULL) {
         ESP_AT_OTA_DEBUG("partition NULL!\r\n");
@@ -220,8 +304,7 @@ bool esp_at_upgrade_process(void)
         ESP_AT_OTA_DEBUG("esp_ota_begin failed!\r\n");
         goto OTA_ERROR;
     }
-    close(esp_at_ota_socket_id);
-    esp_at_ota_socket_id = -1;
+
     esp_at_ota_socket_id = socket(AF_INET, SOCK_STREAM, 0);
     if (esp_at_ota_socket_id < 0) {
        goto OTA_ERROR;
@@ -231,9 +314,45 @@ bool esp_at_upgrade_process(void)
         ESP_AT_OTA_DEBUG("connect to server2 failed!\r\n");
         goto OTA_ERROR;
     }
-    if (send(esp_at_ota_socket_id, http_request, strlen((char*)http_request), 0) < 0)
+#ifdef CONFIG_AT_OTA_SSL_SUPPORT
+    if (ota_mode == ESP_AT_OTA_MODE_SSL) {
+        ctx = SSL_CTX_new(TLSv1_1_client_method());
+        if (!ctx) {
+            ESP_AT_OTA_DEBUG("ctx fail\r\n");
+            goto OTA_ERROR;
+        }
+        ssl = SSL_new(ctx);
+        SSL_CTX_free(ctx);
+        ctx = NULL;
+        if (!ssl) {
+            ESP_AT_OTA_DEBUG("ssl fail\r\n");
+            goto OTA_ERROR;
+        }
+
+        SSL_set_fd(ssl, esp_at_ota_socket_id);
+
+        if(!SSL_connect(ssl)) {
+            ESP_AT_OTA_DEBUG("ssl connect fail\r\n");
+            goto OTA_ERROR;
+        }
+    }
+#endif
+
+
+    
+    result = -1;
+    if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
+        result = write(esp_at_ota_socket_id, http_request, strlen((char*)http_request));
+    }
+#ifdef CONFIG_AT_OTA_SSL_SUPPORT
+    else if (ota_mode == ESP_AT_OTA_MODE_SSL) {
+        result = SSL_write(ssl,http_request, strlen((char*)http_request));
+    }
+#endif
+
+    if(result != strlen((char*)http_request))
     {
-    	ESP_AT_OTA_DEBUG("send GET bin to server failed\r\n");
+        ESP_AT_OTA_DEBUG("send GET bin to server failed\r\n");
         goto OTA_ERROR;
     }
     /*deal with all receive packet*/
@@ -241,7 +360,15 @@ bool esp_at_upgrade_process(void)
     {
         memset(data_buffer, 0x0, TEXT_BUFFSIZE);
         
-        buff_len = recv(esp_at_ota_socket_id, data_buffer, TEXT_BUFFSIZE, 0);
+        buff_len = -1;
+        if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
+            buff_len = read(esp_at_ota_socket_id, data_buffer, TEXT_BUFFSIZE);
+        }
+#ifdef CONFIG_AT_OTA_SSL_SUPPORT
+        else if (ota_mode == ESP_AT_OTA_MODE_SSL) {
+            buff_len = SSL_read(ssl,data_buffer, TEXT_BUFFSIZE);
+        }
+#endif
         if (buff_len < 0) {
             ESP_AT_OTA_DEBUG("receive data error!\r\n");
             goto OTA_ERROR;
@@ -287,7 +414,7 @@ bool esp_at_upgrade_process(void)
         } else {
             ESP_AT_OTA_DEBUG("Warning: uncontolled event!\r\n");
         }
-        ESP_AT_OTA_DEBUG("recv_len=%d,total_len=%d!\r\n",recv_len,total_len);
+        ESP_AT_OTA_DEBUG("total_len=%d(%d), %0.1f%%!\r\n",total_len,recv_len,(recv_len*1.0)*100/total_len);
         if (recv_len == total_len) {
             break;
         }
@@ -329,7 +456,13 @@ OTA_ERROR:
         data_buffer = NULL;
     }
     
+#ifdef CONFIG_AT_OTA_SSL_SUPPORT
+    if (ssl != NULL) {
+        SSL_shutdown(ssl);
+        SSL_free(ssl);
+        ssl = NULL;
+    }
+#endif
     return ret;
 }
-#endif
 

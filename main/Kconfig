@@ -63,11 +63,6 @@ config AT_FS_COMMAND_SUPPORT
     default "n"
     depends on AT_ENABLE
     
-config AT_OTA_BASED_UPON_SSL
-    bool "OTA based upon ssl"
-    default "n"
-    depends on AT_ENABLE
-
 config AT_OTA_SERVER_IP
     string "Server IP for AT OTA."
     default "iot.espressif.cn"
@@ -82,5 +77,25 @@ config AT_OTA_TOKEN_KEY
     string "The token for AT OTA."
     default "dd93253c287f725de50d4071a05dd28b72056ca7"
     depends on AT_ENABLE
+
+config AT_OTA_SSL_SUPPORT
+    bool "OTA based upon ssl"
+    default "y"
+    depends on AT_ENABLE
+
+config AT_OTA_SSL_SERVER_IP
+    string "SSL server IP for AT OTA."
+    default "iot.espressif.cn"
+    depends on AT_OTA_SSL_SUPPORT
+
+config AT_OTA_SSL_SERVER_PORT
+    int "SSL server port for AT ssl OTA."
+    default 443
+    depends on AT_OTA_SSL_SUPPORT
+
+config AT_OTA_SSL_TOKEN_KEY
+    string "The SSL token for AT OTA."
+    default "dd93253c287f725de50d4071a05dd28b72056ca7"
+    depends on AT_OTA_SSL_SUPPORT
 
 endmenu

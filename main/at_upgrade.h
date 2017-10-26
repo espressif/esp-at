@@ -25,7 +25,12 @@
 #ifndef __AT_UPGRADE_H__
 #define __AT_UPGRADE_H__
 
-bool esp_at_upgrade_process(void);
+enum {
+    ESP_AT_OTA_MODE_NORMAL = 0,
+    ESP_AT_OTA_MODE_SSL,
+};
+
+bool esp_at_upgrade_process(int32_t ota_mode,uint8_t* version);
 
 #endif
 
