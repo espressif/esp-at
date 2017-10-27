@@ -24,6 +24,14 @@ define the following attributes for one service:
     * format: hex. for example `0x2800` or `2800`.
 4. perm:
     * permission (refer to BLE Spec for definition)
+        * Read	            0x01	
+        * Read Encrypted	0x02	
+        * Read ENC MIMT	    0x04	
+        * Write	            0x10	
+        * Write Encrypted	0x20	
+        * Write ENC MIMT	0x40	
+        * Read ENC SIGNED	0x80	
+        * Read ENC SIGNED MIMT	0x100
     * format: int. for example `0x11` or `17` or `0b10001`.
 5. val\_max\_len:
     * max allow value length (the max length when you dynamic set value)
