@@ -83,6 +83,7 @@ bool esp_at_upgrade_process(int32_t ota_mode,uint8_t* version)
     uint8_t* pStr = NULL;
     esp_partition_t* partition_ptr = NULL;
     esp_partition_t partition;
+    esp_partition_t* next_partition = NULL;
     esp_ota_handle_t out_handle = 0;
     int buff_len = 0;
     int sockopt = 1;
@@ -242,7 +243,6 @@ bool esp_at_upgrade_process(int32_t ota_mode,uint8_t* version)
             ESP_AT_OTA_DEBUG("recv data from server failed!\r\n");
             goto OTA_ERROR;
         }
-    
         esp_at_port_write_data((uint8_t*)"+CIPUPDATE:3\r\n",strlen("+CIPUPDATE:3\r\n"));
         pStr = (uint8_t*)strstr((char*)data_buffer,"rom_version\": ");
         if (pStr == NULL) {
@@ -277,19 +277,18 @@ bool esp_at_upgrade_process(int32_t ota_mode,uint8_t* version)
         goto OTA_ERROR;
     }
 
-    /*choose which OTA image should we write to*/
-    switch(partition_ptr->subtype)
-    {
-        case  ESP_PARTITION_SUBTYPE_APP_OTA_0:
-            partition.subtype = ESP_PARTITION_SUBTYPE_APP_OTA_1;
-            break;
-        case ESP_PARTITION_SUBTYPE_APP_OTA_1:
+    if (partition_ptr->subtype == ESP_PARTITION_SUBTYPE_APP_FACTORY) {
+        partition.subtype = ESP_PARTITION_SUBTYPE_APP_OTA_0;
+    } else {
+        next_partition = esp_ota_get_next_update_partition(partition_ptr);
+
+        if (next_partition) {
+            partition.subtype = next_partition->subtype;
+        } else {
             partition.subtype = ESP_PARTITION_SUBTYPE_APP_OTA_0;
-            break;
-        default:
-            ESP_AT_OTA_DEBUG("subtype error!\r\n");
-            goto OTA_ERROR;
+        }
     }
+
     partition.type = ESP_PARTITION_TYPE_APP;
 
     partition_ptr = (esp_partition_t*)esp_partition_find_first(partition.type,partition.subtype,NULL);
