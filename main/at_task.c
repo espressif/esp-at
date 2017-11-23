@@ -474,6 +474,17 @@ void at_status_callback (esp_at_status_type status)
     }
 }
 
+void at_pre_deepsleep_callback (void)
+{
+    /* Do something before deep sleep
+     * Set uart pin for power saving
+    */
+    gpio_set_direction(CONFIG_AT_UART_PORT_TX_PIN,0);
+    gpio_set_direction(CONFIG_AT_UART_PORT_RX_PIN,0);
+    gpio_set_direction(CONFIG_AT_UART_PORT_RTS_PIN,0);
+    gpio_set_direction(CONFIG_AT_UART_PORT_CTS_PIN,0);
+}
+
 void at_task_init(void)
 {
     uint8_t *version = (uint8_t *)malloc(192);
@@ -486,6 +497,7 @@ void at_task_init(void)
     
     esp_at_custom_ops_struct esp_at_custom_ops = {
         .status_callback = at_status_callback,
+        .pre_deepsleep_callback = at_pre_deepsleep_callback,
     };
 
     nvs_flash_init();
