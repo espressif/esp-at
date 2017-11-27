@@ -72,7 +72,7 @@ typedef enum {
  */
 typedef struct {
     void (*status_callback) (esp_at_status_type status);              /*!< callback when AT status changes */
-
+    void (*pre_deepsleep_callback) (void);                            /*!< callback before enter deep sleep */
 } esp_at_custom_ops_struct;
 
 
