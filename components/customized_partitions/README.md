@@ -32,6 +32,9 @@ AT_FS_COMMAND_SUPPORT fatfs
 AT_NET_COMMAND_SUPPORT server_cert
 AT_NET_COMMAND_SUPPORT server_key
 AT_NET_COMMAND_SUPPORT server_ca
+AT_NET_COMMAND_SUPPORT client_cert
+AT_NET_COMMAND_SUPPORT client_key
+AT_NET_COMMAND_SUPPORT client_ca
 ```
 
 ##### generation of customized bins
@@ -41,9 +44,11 @@ To provide a generic way of generation customized partitions bins from raw conte
 customized_partitions --- generation_tool --- ble_data.sh
                       |                   |-- xxx.sh
                       |                   |-- server_cert.sh
+                      |                   |-- client_cert.sh
                       |
                       |-- raw_data --- ble_data --- xxx
                       |            |-- server_cert --- xxx
+                                   |-- client_cert --- xxx
 ```
 
 In building customized partition bin stage:
@@ -62,5 +67,10 @@ In building customized partition bin stage:
 2. server_ca: put one `pem/der/cer/crt` file to `esp-at/components/customized_partitions/raw_data/server_ca/`
 3. server_cert: put one `pem/der/cer/crt` file to `esp-at/components/customized_partitions/raw_data/server_cert/`
 4. server_key: put one `pem/der/key` file to `esp-at/components/customized_partitions/raw_data/server_key/`
+5. client_ca: put one `pem/der/cer/crt` file to `esp-at/components/customized_partitions/raw_data/client_ca/`
+6. client_cert: put one `pem/der/cer/crt` file to `esp-at/components/customized_partitions/raw_data/cient_cert/`
+7. client_key: put one `pem/der/key` file to `esp-at/components/customized_partitions/raw_data/client_key/`
+
+**Notes:** `server_ca` should certificate `client_cert` and `client_key`, and `client_ca` should certificate `server_cert` and `server_key`. For more information, please refer to OpenSSL command.  
 
 For BLE service data definition, please refer to README.md in `esp-at/tools` folder.
