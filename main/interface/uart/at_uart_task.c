@@ -35,7 +35,6 @@
 #include "esp_system.h"
 #include "at_upgrade.h"
 
-#ifdef CONFIG_AT_BASE_ON_UART
 #include "driver/uart.h"
 typedef struct {
     int32_t baudrate;
@@ -550,6 +549,5 @@ void at_task_init(void)
 
 }
 
-#endif
 
 
