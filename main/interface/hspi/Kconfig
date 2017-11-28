@@ -1,0 +1,34 @@
+
+config AT_BASE_ON_HSPI
+    bool "AT through HSPI"
+    help
+        This demo is AT through HSPI. The MCU can send AT command through SPI bus. 
+        But besides the standard SPI pins, the more one pin is required to handshake MCU. 
+        In order to respond in time, MCU should use the interrupt pin as the handshake pin.
+
+
+config AT_HSPI_MISO_PIN
+ 	int "HSPI miso pin for AT command"
+	default 13
+	depends on AT_BASE_ON_HSPI
+
+config AT_HSPI_MOSI_PIN
+ 	int "HSPI mosi pin for AT command"
+	default 12
+	depends on AT_BASE_ON_HSPI
+
+config AT_HSPI_SCLK_PIN
+ 	int "HSPI sclk pin for AT command"
+	default 15
+	depends on AT_BASE_ON_HSPI
+
+config AT_HSPI_CS_PIN
+ 	int "HSPI cs pin for AT command"
+	default 14
+	depends on AT_BASE_ON_HSPI
+
+config AT_HSPI_HANDSHAKE_PIN
+ 	int "HSPI handshake pin for AT command"
+	default 2
+	depends on AT_BASE_ON_HSPI
+
