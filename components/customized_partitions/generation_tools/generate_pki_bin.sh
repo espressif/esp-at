@@ -22,4 +22,34 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-source $PROJECT_PATH/components/customized_partitions/generation_tools/generate_pki_bin.sh $1 $2 cert
+PARTITION_NAME=$1
+TARGET_FOLDER=$2
+PKI_TYPE=$3
+TOOL_PATH="$PROJECT_PATH/tools/AtPKI.py"
+
+RAW_DATA_FOLDER="$PROJECT_PATH/components/customized_partitions/raw_data/$PARTITION_NAME"
+
+if [ "$PKI_TYPE" == "cert" -o "$PKI_TYPE" == "ca" ]
+then
+    RAW_DATA_FILES=$(ls $RAW_DATA_FOLDER/*.pem $RAW_DATA_FOLDER/*.der $RAW_DATA_FOLDER/*.cer $RAW_DATA_FOLDER/*.crt 2>/dev/null | awk '{print $1}')
+elif [[ "$PKI_TYPE" == "key" ]]
+then
+    RAW_DATA_FILES=$(ls $RAW_DATA_FOLDER/*.pem $RAW_DATA_FOLDER/*.der $RAW_DATA_FOLDER/*.key 2>/dev/null | awk '{print $1}')
+fi
+
+FILE_CONFIG=""
+for FILE in $RAW_DATA_FILES;
+do
+    FILE_CONFIG="${FILE_CONFIG}${PKI_TYPE} $FILE "
+done
+
+if [ -z "$FILE_CONFIG" ]
+then
+    echo "$PARTITION_NAME: Warning: raw data file not found, generate empty file instead!"
+    touch $TARGET_FOLDER/$PARTITION_NAME.bin
+    exit 0
+fi
+
+echo "generating $PARTITION_NAME.bin: python $TOOL_PATH generate_bin -b $TARGET_FOLDER/$PARTITION_NAME $FILE_CONFIG"
+
+python $TOOL_PATH generate_bin -b $TARGET_FOLDER/$PARTITION_NAME.bin $FILE_CONFIG
