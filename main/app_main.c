@@ -39,6 +39,9 @@
 #include "at_upgrade.h"
 #include "at_interface.h"
 
+#ifdef CONFIG_AT_ETHERNET_SUPPORT
+#include "at_eth_init.h"
+#endif
 static uint8_t at_exeCmdCipupdate(uint8_t *cmd_name)//add get station ip and ap ip
 {
 
@@ -139,7 +142,16 @@ void app_main()
     }
 #endif
 
-
+#ifdef CONFIG_AT_ETHERNET_SUPPORT
+    if(at_eth_init() == false) {
+        printf("ethernet init fail\r\n");
+    }else {
+        if(esp_at_eth_cmd_regist() == false) {
+            printf("regist ethernet cmd fail\r\n");
+        }
+    }
+#endif
+    
 #ifdef CONFIG_AT_FS_COMMAND_SUPPORT
     if(esp_at_fs_cmd_regist() == false) {
         printf("regist fs cmd fail\r\n");

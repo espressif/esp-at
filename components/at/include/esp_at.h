@@ -391,5 +391,12 @@ bool esp_at_custom_cmd_line_terminator_set(uint8_t* terminator);
  * @return the command line terminator
  */
 uint8_t* esp_at_custom_cmd_line_terminator_get(void);
+
+/**
+ * @brief regist at ethernet command set. If not,you can not use AT ethernet command
+ * @param NONE
+ *
+ */
+bool esp_at_eth_cmd_regist(void);
 #endif
 

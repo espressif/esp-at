@@ -482,7 +482,6 @@ void at_pre_restart_callback (void)
 
 void at_interface_init (void)
 {
-    uint8_t *version = (uint8_t *)malloc(192);
     esp_at_device_ops_struct esp_at_device_ops = {
         .read_data = at_port_read_data,
         .write_data = at_port_write_data,
