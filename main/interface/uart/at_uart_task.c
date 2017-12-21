@@ -36,6 +36,11 @@
 #include "at_upgrade.h"
 
 #include "driver/uart.h"
+
+#ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
+#include "bt.h"
+#endif
+
 typedef struct {
     int32_t baudrate;
     int8_t data_bits;
@@ -533,6 +538,7 @@ void at_task_init(void)
 #endif
 
 #ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
+    esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT);
     if(esp_at_ble_cmd_regist() == false) {
         printf("regist ble cmd fail\r\n");
     }
