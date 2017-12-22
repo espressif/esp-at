@@ -3,10 +3,3 @@
 #
 # (Uses default behaviour of compiling all source files in directory, adding 'include' to include path.)
 
-ifdef CONFIG_AT_BASE_ON_UART 
-COMPONENT_SRCDIRS += interface/uart
-endif
-
-COMPONENT_ADD_INCLUDEDIRS := .
-
-
