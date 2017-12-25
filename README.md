@@ -30,16 +30,12 @@ git clone --recursive https://github.com/espressif/esp32-at.git
 ```shell
 git submodule update --init --recursive
 ```  
-2. Set `IDF_PATH` environment variable, for example:
-```
-export IDF_PATH=/path_of_your_esp32-at/esp-idf
-```
-3. `rm sdkconfig` to remove the old configuration.
-4. Set the latest default configuration by `make defconfig`. 
-5. `make menuconfig` -> `Serial flasher config` to configure the serial port for downloading.
-6. `make flash` to compile the project and download it into the flash.
+2. `rm sdkconfig` to remove the old configuration.
+3. Set the latest default configuration by `make defconfig`. 
+4. `make menuconfig` -> `Serial flasher config` to configure the serial port for downloading.
+5. `make flash` to compile the project and download it into the flash.
   * Or you can call `make` to compile it, and follow the printed instructions to download the bin files into flash by yourself.
   * `make print_flash_cmd` can be used to print the addresses of downloading.
   * More details are in the [esp-idf README](https://github.com/espressif/esp-idf/blob/master/README.md).
-7. If the ESP32-AT bin fails to boot, and prints "ota data partition invalid", you should run `make erase_flash` to erase the entire flash.
-
+6. If the ESP32-AT bin fails to boot, and prints "ota data partition invalid", you should run `make erase_flash` to erase the entire flash.
+7. Since we updated the toolchain recently, it is not compatible with the old version. Please use the toolchain we provided in the  `esp32-at/esp-idf/docs/get-started/linux-setup.rst` and `esp32-at/esp-idf/docs/get-started/windows-setup.rst` to build your ESP32 AT project.
