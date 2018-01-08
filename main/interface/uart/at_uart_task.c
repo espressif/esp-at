@@ -504,6 +504,10 @@ void at_task_init(void)
         .pre_deepsleep_callback = at_pre_deepsleep_callback,
     };
 
+#ifdef CONFIG_AT_COMMAND_TERMINATOR
+    uint8_t cmd_terminator[2] = {CONFIG_AT_COMMAND_TERMINATOR,0};
+#endif
+
     nvs_flash_init();
     at_uart_init();
 
@@ -552,7 +556,9 @@ void at_task_init(void)
 
     esp_at_custom_cmd_array_regist (at_custom_cmd, sizeof(at_custom_cmd)/sizeof(at_custom_cmd[0]));
     esp_at_port_write_data((uint8_t *)"\r\nready\r\n",strlen("\r\nready\r\n"));
-
+#ifdef CONFIG_AT_COMMAND_TERMINATOR
+    esp_at_custom_cmd_line_terminator_set((uint8_t*)&cmd_terminator);
+#endif
 }
 
 
