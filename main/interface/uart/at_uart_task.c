@@ -195,7 +195,7 @@ static void at_uart_init(void)
     uart_set_pin(CONFIG_AT_UART_PORT, CONFIG_AT_UART_PORT_TX_PIN, CONFIG_AT_UART_PORT_RX_PIN, CONFIG_AT_UART_PORT_RTS_PIN, CONFIG_AT_UART_PORT_CTS_PIN);
     //Install UART driver, and get the queue.
     uart_driver_install(CONFIG_AT_UART_PORT, 2048, 8192, 10,&esp_at_uart_queue,0);
-    xTaskCreate(uart_task, "uTask", 2048, (void*)CONFIG_AT_UART_PORT, 8, NULL);
+    xTaskCreate(uart_task, "uTask", 2048, (void*)CONFIG_AT_UART_PORT, 1, NULL);
 }
 
 static bool at_nvm_uart_config_set (at_nvm_uart_config_struct *uart_config)
