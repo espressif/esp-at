@@ -4,6 +4,13 @@
 #
 
 #
+# Serial flasher config
+#
+CONFIG_ESPTOOLPY_FLASHMODE="dio"
+CONFIG_ESPTOOLPY_FLASHFREQ_40M=y
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+
+#
 # Partition Table
 #
 # CONFIG_PARTITION_TABLE_SINGLE_APP is not set

@@ -37,5 +37,6 @@ git submodule update --init --recursive
   * Or you can call `make` to compile it, and follow the printed instructions to download the bin files into flash by yourself.
   * `make print_flash_cmd` can be used to print the addresses of downloading.
   * More details are in the [esp-idf README](https://github.com/espressif/esp-idf/blob/master/README.md).
-6. If the ESP32-AT bin fails to boot, and prints "ota data partition invalid", you should run `make erase_flash` to erase the entire flash.
-7. Since we updated the toolchain recently, it is not compatible with the old version. Please use the toolchain we provided in the  `esp32-at/esp-idf/docs/get-started/linux-setup.rst` and `esp32-at/esp-idf/docs/get-started/windows-setup.rst` to build your ESP32 AT project.
+6. `make factory_bin` to combine factory bin, by default, the factory bin is 4MB flash size, DIO flash mode and 40MHz flash speed. If you want use this command, you must fisrt run `make print_flash_cmd | tail -n 1 > build/download.config` to generate `build/download.config`.
+7. If the ESP32-AT bin fails to boot, and prints "ota data partition invalid", you should run `make erase_flash` to erase the entire flash.
+8. Since we updated the toolchain recently, it is not compatible with the old version. Please use the toolchain we provided in the  `esp32-at/esp-idf/docs/get-started/linux-setup.rst` and `esp32-at/esp-idf/docs/get-started/windows-setup.rst` to build your ESP32 AT project.
