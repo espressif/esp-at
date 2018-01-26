@@ -37,6 +37,7 @@ build_at:
     - make defconfig
     - make -j4
     - make print_flash_cmd | tail -n 1 > build/download.config
+    - make factory_bin
 
 push_master_to_github:
   stage: deploy
