@@ -54,6 +54,17 @@ typedef struct {
     bool (*wait_write_complete)(int32_t timeout_msec);              /*!< wait write finish */
 } esp_at_device_ops_struct;
 
+/*
+ *@brief esp_at_custom_net_ops_struct
+ *net recv functions struct for AT
+ *
+ */
+typedef struct {
+    int32_t (*recv_data)(uint8_t*data,int32_t len);
+    void (*connect_cb)(void);
+    void (*disconnect_cb)(void);
+} esp_at_custom_net_ops_struct;
+
 /**
  * @brief esp_at_status
  *  some custom function interacting with AT
@@ -190,7 +201,7 @@ esp_at_para_parse_result_type esp_at_get_para_as_str(int32_t para_index, uint8_t
  * @param len data length
  *
  */
-void esp_at_port_recv_data_notify_from_isr(int32_t len);
+void IRAM_ATTR esp_at_port_recv_data_notify_from_isr(int32_t len);
 
 /**
  * @brief Calling the esp_at_port_recv_data_notify to notify at module that at port received data.
@@ -234,6 +245,16 @@ bool esp_at_custom_cmd_array_regist(esp_at_cmd_struct *custom_at_cmd_array, uint
  *
  */
 void esp_at_device_ops_regist(esp_at_device_ops_struct* ops);
+
+/*
+ *  @brief regist custom callback about socket status,
+ *
+ *  @param link_id the link id
+ *  @param ops custom operate functions set
+ *
+ *  Note: Make sure this API call after esp_at_module_init.
+  */
+bool esp_at_custom_net_ops_regist (int32_t link_id,esp_at_custom_net_ops_struct* ops);
 
 /**
  * @brief regist custom operate functions set interacting with AT,
