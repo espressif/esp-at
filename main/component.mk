@@ -7,6 +7,10 @@ ifdef CONFIG_AT_BASE_ON_UART
 COMPONENT_SRCDIRS += interface/uart
 endif
 
+ifdef CONFIG_AT_BASE_ON_HSPI 
+COMPONENT_SRCDIRS += interface/hspi
+endif
+
 COMPONENT_ADD_INCLUDEDIRS := .
 
 
