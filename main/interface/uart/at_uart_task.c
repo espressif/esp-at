@@ -49,7 +49,7 @@ typedef struct {
     int8_t flow_control;
 } at_nvm_uart_config_struct; 
 
-QueueHandle_t esp_at_uart_queue = NULL;
+static QueueHandle_t esp_at_uart_queue = NULL;
 static bool at_default_flag = false;
 
 
@@ -122,6 +122,8 @@ static bool at_port_wait_write_complete (int32_t timeout_msec)
 static void uart_task(void *pvParameters)
 {
     uart_event_t event;
+    int pattern_pos = -1;
+    uint8_t *data = NULL;
     for (;;) {
         //Waiting for UART event.
         if (xQueueReceive(esp_at_uart_queue, (void * )&event, (portTickType)portMAX_DELAY)) {
@@ -133,6 +135,15 @@ static void uart_task(void *pvParameters)
                 }
                 break;
             case UART_PATTERN_DET:
+                pattern_pos = uart_pattern_pop_pos(CONFIG_AT_UART_PORT);
+                if (pattern_pos >= 0) {
+                    data = (uint8_t *)malloc(pattern_pos + 3);
+                    uart_read_bytes(CONFIG_AT_UART_PORT,data,pattern_pos + 3,0);
+                    printf("data:%s\r\n",data);
+                    free(data);
+                    data = NULL;
+                }
+                pattern_pos = -1;
                 esp_at_transmit_terminal();
                 break;
             //Others
