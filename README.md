@@ -9,10 +9,12 @@ More details are in documentation [esp32_at_instruction_set_and_examples_en.pdf]
 # Hardware Introduction
 The ESP32 Board sends AT commands through UART1 by default. 
 
-* GPIO16 is RXD
-* GPIO17 is TXD
+* GPIO16 is RXD 
+* GPIO17 is TXD 
 * GPIO14 is RTS
 * GPIO15 is CTS
+
+In the case of Pico D4, one will have to change the pins to GPIO9 and GPIO10 for RXD and TXD from the `make menuconfig` --> `Component config` --> `AT` menu.
 
 The debug log will output through UART0 by default, but user can change it in menuconfig if needed.  
 
