@@ -103,7 +103,13 @@ static int32_t at_port_read_data(uint8_t*buf,int32_t len)
 static int32_t at_port_get_data_length (void)
 {
     size_t size = 0;
+    int pattern_pos = 0;
+
     if (ESP_OK == uart_get_buffered_data_len(CONFIG_AT_UART_PORT,&size)) {
+        pattern_pos = uart_pattern_pop_pos(CONFIG_AT_UART_PORT);
+        if (pattern_pos >= 0) {
+            size = pattern_pos;
+        }
         return size;
     } else {
         return 0;
@@ -124,14 +130,33 @@ static void uart_task(void *pvParameters)
     uart_event_t event;
     int pattern_pos = -1;
     uint8_t *data = NULL;
+    uint32_t data_len = 0;
+    BaseType_t retry_flag = pdFALSE;
+
     for (;;) {
         //Waiting for UART event.
         if (xQueueReceive(esp_at_uart_queue, (void * )&event, (portTickType)portMAX_DELAY)) {
+retry:
             switch (event.type) {
             //Event of UART receving data
             case UART_DATA:
-                if (event.size) {
-                    esp_at_port_recv_data_notify (event.size, portMAX_DELAY);
+            case UART_BUFFER_FULL:
+                data_len += event.size;
+                // we can put all data together to process
+                retry_flag = pdFALSE;
+                while (xQueueReceive(esp_at_uart_queue, (void * )&event, (portTickType)0) == pdTRUE) {
+                    if ((event.type == UART_DATA) || (event.type == UART_BUFFER_FULL)) {
+                        data_len += event.size;
+                    } else {
+                        retry_flag = pdTRUE;
+                        break;
+                    }
+                }
+                esp_at_port_recv_data_notify (data_len, portMAX_DELAY);
+                data_len = 0;
+
+                if (retry_flag == pdTRUE) {
+                    goto retry;
                 }
                 break;
             case UART_PATTERN_DET:
@@ -143,7 +168,6 @@ static void uart_task(void *pvParameters)
                     free(data);
                     data = NULL;
                 }
-                pattern_pos = -1;
                 esp_at_transmit_terminal();
                 break;
             //Others
@@ -205,7 +229,7 @@ static void at_uart_init(void)
     //Set UART pins,(-1: default pin, no change.)
     uart_set_pin(CONFIG_AT_UART_PORT, CONFIG_AT_UART_PORT_TX_PIN, CONFIG_AT_UART_PORT_RX_PIN, CONFIG_AT_UART_PORT_RTS_PIN, CONFIG_AT_UART_PORT_CTS_PIN);
     //Install UART driver, and get the queue.
-    uart_driver_install(CONFIG_AT_UART_PORT, 2048, 8192, 10,&esp_at_uart_queue,0);
+    uart_driver_install(CONFIG_AT_UART_PORT, 2048, 8192, 30,&esp_at_uart_queue,0);
     xTaskCreate(uart_task, "uTask", 2048, (void*)CONFIG_AT_UART_PORT, 1, NULL);
 }
 
@@ -571,6 +595,3 @@ void at_task_init(void)
     esp_at_custom_cmd_line_terminator_set((uint8_t*)&cmd_terminator);
 #endif
 }
-
-
-
