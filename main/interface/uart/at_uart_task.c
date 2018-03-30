@@ -524,6 +524,14 @@ void at_pre_deepsleep_callback (void)
     gpio_set_direction(CONFIG_AT_UART_PORT_CTS_PIN,0);
 }
 
+void at_pre_restart_callback (void)
+{
+    /* Do something before restart
+    */
+    uart_disable_rx_intr(CONFIG_AT_UART_PORT);
+    esp_at_port_wait_write_complete(portMAX_DELAY);
+}
+
 void at_task_init(void)
 {
     uint8_t *version = (uint8_t *)malloc(192);
@@ -537,6 +545,7 @@ void at_task_init(void)
     esp_at_custom_ops_struct esp_at_custom_ops = {
         .status_callback = at_status_callback,
         .pre_deepsleep_callback = at_pre_deepsleep_callback,
+        .pre_restart_callback = at_pre_restart_callback,
     };
 
 #ifdef CONFIG_AT_COMMAND_TERMINATOR
