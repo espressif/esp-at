@@ -38,7 +38,7 @@
 #include "driver/uart.h"
 
 #ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
-#include "bt.h"
+#include "esp_bt.h"
 #endif
 
 typedef struct {
@@ -106,7 +106,7 @@ static int32_t at_port_get_data_length (void)
     int pattern_pos = 0;
 
     if (ESP_OK == uart_get_buffered_data_len(CONFIG_AT_UART_PORT,&size)) {
-        pattern_pos = uart_pattern_pop_pos(CONFIG_AT_UART_PORT);
+        pattern_pos = uart_pattern_get_pos(CONFIG_AT_UART_PORT);
         if (pattern_pos >= 0) {
             size = pattern_pos;
         }
@@ -164,7 +164,6 @@ retry:
                 if (pattern_pos >= 0) {
                     data = (uint8_t *)malloc(pattern_pos + 3);
                     uart_read_bytes(CONFIG_AT_UART_PORT,data,pattern_pos + 3,0);
-                    printf("data:%s\r\n",data);
                     free(data);
                     data = NULL;
                 }
