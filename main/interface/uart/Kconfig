@@ -27,3 +27,7 @@ config AT_UART_PORT_CTS_PIN
     default 15
     depends on AT_BASE_ON_UART
 
+config AT_UART_BAUDRATE
+    int "uart default baudrate"
+    default 115200
+    depends on AT_BASE_ON_UART

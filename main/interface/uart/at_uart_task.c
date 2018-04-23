@@ -183,7 +183,7 @@ static void at_uart_init(void)
 {
     at_nvm_uart_config_struct uart_nvm_config;
     uart_config_t uart_config = {
-        .baud_rate = 115200,
+        .baud_rate = CONFIG_AT_UART_BAUDRATE,
         .data_bits = UART_DATA_8_BITS,
         .parity = UART_PARITY_DISABLE,
         .stop_bits = UART_STOP_BITS_1,
@@ -216,7 +216,7 @@ static void at_uart_init(void)
             uart_config.flow_ctrl = uart_nvm_config.flow_control;
         }
     } else {
-        uart_nvm_config.baudrate = 115200;
+        uart_nvm_config.baudrate = CONFIG_AT_UART_BAUDRATE;
         uart_nvm_config.data_bits = UART_DATA_8_BITS;
         uart_nvm_config.flow_control = UART_HW_FLOWCTRL_RTS;
         uart_nvm_config.parity = UART_PARITY_DISABLE;
