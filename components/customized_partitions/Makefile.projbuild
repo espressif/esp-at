@@ -16,7 +16,7 @@ ifdef CONFIG_ENABLE_AT_CUSTOMIZED_PARTITION_TABLE
 AT_CUSTOMIZED_GEN_ESP32PART := $(PYTHON) $(IDF_PATH)/components/partition_table/gen_esp32part.py -q
 
 # AT CUSTOMIZED PARTITION TABLE path
-AT_PARTITION_TABLE_ROOT := $(call dequote,$(if $(CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE),$(PROJECT_PATH),$(COMPONENT_PATH)))
+AT_PARTITION_TABLE_ROOT := $(call dequote,$(if $(CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE),$(ESP_AT_PROJECT_PATH),$(COMPONENT_PATH)))
 AT_PARTITION_TABLE_CSV_PATH := $(call dequote,$(abspath $(AT_PARTITION_TABLE_ROOT)/$(subst $(quote),,$(CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE))))
 
 # TARGET FILE PATH
@@ -24,7 +24,7 @@ AT_CUSTOMIZED_PARTITION_TABLE_BIN := $(BUILD_DIR_BASE)/$(notdir $(AT_PARTITION_T
 AT_CUSTOMIZED_PARTITION_BINS := $(BUILD_DIR_BASE)/customized_partitions
 
 # define component path (COMPONENT_PATH can't be used here as component.mk not exist)
-AT_CUSTOMIZED_PARTITION_FOLDER := $(PROJECT_PATH)/components/customized_partitions
+AT_CUSTOMIZED_PARTITION_FOLDER := $(ESP_AT_PROJECT_PATH)/components/customized_partitions
 AT_CUSTOMIZED_PARTITION_DEPENDENCY_FILE = $(AT_CUSTOMIZED_PARTITION_FOLDER)/AT_partition_dependency
 
 # prepare for generating bins for customized partitions

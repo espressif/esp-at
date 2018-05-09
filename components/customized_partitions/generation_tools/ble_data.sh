@@ -24,9 +24,9 @@
 
 PARTITION_NAME=$1
 TARGET_FOLDER=$2
-TOOL_PATH=$PROJECT_PATH/tools/BLEService.py
+TOOL_PATH=$ESP_AT_PROJECT_PATH/tools/BLEService.py
 
-RAW_DATA_FOLDER=$PROJECT_PATH/components/customized_partitions/raw_data/ble_data
+RAW_DATA_FOLDER=$ESP_AT_PROJECT_PATH/components/customized_partitions/raw_data/ble_data
 
 RAW_DATA_FILE=$(ls $RAW_DATA_FOLDER/*.csv | awk '{print $1}')
 
