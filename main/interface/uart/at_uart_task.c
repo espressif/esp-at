@@ -166,7 +166,11 @@ retry:
                     uart_read_bytes(CONFIG_AT_UART_PORT,data,pattern_pos + 3,0);
                     free(data);
                     data = NULL;
+                } else {
+                    uart_flush_input(CONFIG_AT_UART_PORT);
+                    xQueueReset(esp_at_uart_queue);
                 }
+
                 esp_at_transmit_terminal();
                 break;
             //Others
