@@ -1,13 +1,10 @@
 /*
-ESP8266 web server - platform-dependent routines, FreeRTOS version
+ESP32 web server - platform-dependent routines, FreeRTOS version
 
 
 Thanks to my collague at Espressif for writing the foundations of this code.
 */
-#ifdef FREERTOS
 
-
-#include <esp8266.h>
 #include "httpd.h"
 #include "platform.h"
 #include "httpd-platform.h"
@@ -17,11 +14,7 @@ Thanks to my collague at Espressif for writing the foundations of this code.
 #include "freertos/queue.h"
 #include "freertos/semphr.h"
 
-#ifdef ESP32
 #include "lwip/sockets.h"
-#else
-#include "lwip/lwip/sockets.h"
-#endif
 
 static int httpPort;
 static int httpMaxConnCt;
@@ -150,7 +143,7 @@ static void platHttpServerTask(void* pvParameters)
                     maxfdp = rconn[x].fd;
                 }
 
-                printf("Sel add %d (write %d)\n", (int)rconn[x].fd, rconn[x].needWriteDoneNotif);
+                //printf("Sel add %d (write %d)\n", (int)rconn[x].fd, rconn[x].needWriteDoneNotif);
             } else {
                 socketsFull = 0;
             }
@@ -163,13 +156,13 @@ static void platHttpServerTask(void* pvParameters)
                 maxfdp = listenfd;
             }
 
-            printf("Sel add listen %d\n", listenfd);
+            //printf("Sel add listen %d\n", listenfd);
         }
 
         //polling all exist client handle,wait until readable/writable
         ret = lwip_select(maxfdp + 1, &readset, &writeset, NULL, NULL); //&timeout
-        printf("sel ret\n");
 
+        //printf("sel ret\n");
         if (ret > 0) {
             //See if we need to accept a new connection
             if (FD_ISSET(listenfd, &readset)) {
@@ -270,35 +263,6 @@ static void platHttpServerTask(void* pvParameters)
         }
     }
 
-#if 0
-
-//Deinit code, not used here.
-    /*release data connection*/
-    for (x = 0; x < HTTPD_MAX_CONNECTIONS; x++) {
-        //find all valid handle
-        if (connData[x].conn == NULL) {
-            continue;
-        }
-
-        if (connData[x].conn->sockfd >= 0) {
-            os_timer_disarm((os_timer_t*)&connData[x].conn->stop_watch);
-            close(connData[x].conn->sockfd);
-            connData[x].conn->sockfd = -1;
-            connData[x].conn = NULL;
-
-            if (connData[x].cgi != NULL) {
-                connData[x].cgi(&connData[x]);    //flush cgi data
-            }
-
-            httpdRetireConn(&connData[x]);
-        }
-    }
-
-    /*release listen socket*/
-    close(listenfd);
-
-    vTaskDelete(NULL);
-#endif
 }
 
 
@@ -330,12 +294,6 @@ void ICACHE_FLASH_ATTR httpdPlatInit(int port, int maxConnCt)
 {
     httpPort = port;
     httpMaxConnCt = maxConnCt;
-#ifdef ESP32
-    xTaskCreate(platHttpServerTask, (const char*)"esphttpd", HTTPD_STACKSIZE, NULL, 4, NULL);
-#else
-    xTaskCreate(platHttpServerTask, (const signed char*)"esphttpd", HTTPD_STACKSIZE, NULL, 4, NULL);
-#endif
+    xTaskCreate(platHttpServerTask, (const char*)"esphttpd", 6 * 1024, NULL, 4, NULL);
 }
 
-
-#endif

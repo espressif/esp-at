@@ -11,8 +11,6 @@ Esp8266 http server - core routines
  * ----------------------------------------------------------------------------
  */
 
-
-#include <esp8266.h>
 #include "httpd.h"
 #include "httpd-platform.h"
 
@@ -437,28 +435,7 @@ int ICACHE_FLASH_ATTR cgiRedirectToHostname(HttpdConnData* connData)
 //to be redirected to nowhere.
 int ICACHE_FLASH_ATTR cgiRedirectApClientToHostname(HttpdConnData* connData)
 {
-#ifndef FREERTOS
-    uint32* remadr;
-    struct ip_info apip;
-    int x = wifi_get_opmode();
-
-    //Check if we have an softap interface; bail out if not
-    if (x != 2 && x != 3) {
-        return HTTPD_CGI_NOTFOUND;
-    }
-
-    remadr = (uint32*)connData->remote_ip;
-    wifi_get_ip_info(SOFTAP_IF, &apip);
-
-    if ((*remadr & apip.netmask.addr) == (apip.ip.addr & apip.netmask.addr)) {
-        return cgiRedirectToHostname(connData);
-    } else {
-        return HTTPD_CGI_NOTFOUND;
-    }
-
-#else
     return HTTPD_CGI_NOTFOUND;
-#endif
 }
 
 

@@ -11,14 +11,9 @@ Connector to let httpd use the espfs filesystem to serve the files in it.
  * ----------------------------------------------------------------------------
  */
 
-#include <esp8266.h>
+#include"platform.h"
 #include "httpdespfs.h"
 #include "espfs.h"
-#include "espfsformat.h"
-
-// The static files marked with FLAG_GZIP are compressed and will be served with GZIP compression.
-// If the client does not advertise that he accepts GZIP send following warning message (telnet users for e.g.)
-static const char* gzipNonSupportedMessage = "HTTP/1.0 501 Not implemented\r\nServer: esp8266-httpd/"HTTPDVER"\r\nConnection: close\r\nContent-Type: text/plain\r\nContent-Length: 52\r\n\r\nYour browser does not accept gzip-compressed data.\r\n";
 
 
 //This is a catch-all cgi function. It takes the url passed to it, looks up the corresponding
@@ -29,8 +24,6 @@ int ICACHE_FLASH_ATTR cgiEspFsHook(HttpdConnData* connData)
     EspFsFile* file = connData->cgiData;
     int len;
     char buff[1024];
-    char acceptEncodingBuffer[64];
-    int isGzip;
 
     if (connData->conn == NULL) {
         //Connection aborted. Clean up.
@@ -58,29 +51,10 @@ int ICACHE_FLASH_ATTR cgiEspFsHook(HttpdConnData* connData)
         // mean additional overhead and is actually safer to be on at all times.
         // If there are no gzipped files in the image, the code bellow will not cause any harm.
 
-        // Check if requested file was GZIP compressed
-        isGzip = espFsFlags(file) & FLAG_GZIP;
-
-        if (isGzip) {
-            // Check the browser's "Accept-Encoding" header. If the client does not
-            // advertise that he accepts GZIP send a warning message (telnet users for e.g.)
-            httpdGetHeader(connData, "Accept-Encoding", acceptEncodingBuffer, 64);
-
-            if (strstr(acceptEncodingBuffer, "gzip") == NULL) {
-                //No Accept-Encoding: gzip header present
-                httpdSend(connData, gzipNonSupportedMessage, -1);
-                espFsClose(file);
-                return HTTPD_CGI_DONE;
-            }
-        }
 
         connData->cgiData = file;
         httpdStartResponse(connData, 200);
         httpdHeader(connData, "Content-Type", httpdGetMimetype(connData->url));
-
-        if (isGzip) {
-            httpdHeader(connData, "Content-Encoding", "gzip");
-        }
 
         httpdHeader(connData, "Cache-Control", "max-age=3600, must-revalidate");
         httpdEndHeaders(connData);
@@ -144,13 +118,6 @@ int ICACHE_FLASH_ATTR cgiEspFsTemplate(HttpdConnData* connData)
         tpd->tokenPos = -1;
 
         if (tpd->file == NULL) {
-            espFsClose(tpd->file);
-            free(tpd);
-            return HTTPD_CGI_NOTFOUND;
-        }
-
-        if (espFsFlags(tpd->file) & FLAG_GZIP) {
-            httpd_printf("cgiEspFsTemplate: Trying to use gzip-compressed file %s as template!\n", connData->url);
             espFsClose(tpd->file);
             free(tpd);
             return HTTPD_CGI_NOTFOUND;
