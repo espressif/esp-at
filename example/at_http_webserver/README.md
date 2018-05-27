@@ -14,6 +14,4 @@ Pulls together various bits of code from the net that I modified for this projec
 
 # Compiling and flashing the project
 1. `make menuconfig` -> `Serial flasher config` to configure the serial port for downloading.
-2. `make makefatfs` to build the FAT image containing the javascript html and CSS pages. The html web pages will integrate to the /build sub-directory named fatfs_image.img. This needs to be done only once, unless you decide to modify the javascript or html code to do something different.
-3. Download fatfs_image.img to 0x280000, you can edit it in patition_at.csv.
-4. `make flash` to compile the project and download it into the flash.
+2. `make flash` to compile the project and download it into the flash.
