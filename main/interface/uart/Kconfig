@@ -1,29 +1,58 @@
-
 config AT_BASE_ON_UART
     bool "AT through UART"
 
+if AT_BASE_ON_UART
+menu "AT uart settings"
 config AT_UART_PORT
     int "uart port number for AT command"
     default 1
-    depends on AT_BASE_ON_UART
 
 config AT_UART_PORT_RX_PIN
     int "uart rx pin for AT command"
     default 16
-    depends on AT_BASE_ON_UART
 
 config AT_UART_PORT_TX_PIN
     int "uart tx pin for AT command"
     default 17
-    depends on AT_BASE_ON_UART
 
 config AT_UART_PORT_RTS_PIN
     int "uart rts pin for AT command"
     default 14
-    depends on AT_BASE_ON_UART
 
 config AT_UART_PORT_CTS_PIN
     int "uart cts pin for AT command"
     default 15
+    
+config AT_UART_DEFAULT_BAUDRATE
+    int "the uart baud rate for AT port, the range is [80, 5000000]"
+    default 115200
+    range 80 5000000
+    
+config AT_UART_DEFAULT_DATABITS
+    int "the uart data bits for AT port, the range is [5, 8]"
+    default 8
+    range 5 8
     depends on AT_BASE_ON_UART
+    
+config AT_UART_DEFAULT_STOPBITS
+    int "the uart stop bit for AT port, the range is [1, 3]"
+    help
+        1: 1-bit stop bit; 2: 1.5-bit stop bit; 3: 2-bit stop bit
+    default 1
+    range 1 3
+    
+config AT_UART_DEFAULT_PARITY_BITS
+    int "the uart parity bit for AT port, the range is [0, 2]"
+    help
+         0: None; 1: Odd; 2: Even
+    default 0
+    range 0 2
 
+config AT_UART_DEFAULT_FLOW_CONTROL
+    int "the uart flow control for AT port, the range is [0, 3]"
+    help
+        0: flow control is disabled; 1: enable RTS; 2: enable CTS; 3: enable RTS and CTS
+    default 1
+    range 0 3
+endmenu
+endif

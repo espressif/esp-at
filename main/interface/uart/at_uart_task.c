@@ -49,6 +49,8 @@ typedef struct {
     int8_t flow_control;
 } at_nvm_uart_config_struct; 
 
+static const uint8_t esp_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PARITY_EVEN, UART_PARITY_ODD};
+
 static QueueHandle_t esp_at_uart_queue = NULL;
 static bool at_default_flag = false;
 
@@ -181,17 +183,15 @@ retry:
     }
     vTaskDelete(NULL);
 }
-
-
 static void at_uart_init(void)
 {
     at_nvm_uart_config_struct uart_nvm_config;
     uart_config_t uart_config = {
-        .baud_rate = 115200,
-        .data_bits = UART_DATA_8_BITS,
-        .parity = UART_PARITY_DISABLE,
-        .stop_bits = UART_STOP_BITS_1,
-        .flow_ctrl = UART_HW_FLOWCTRL_RTS,
+        .baud_rate = CONFIG_AT_UART_DEFAULT_BAUDRATE,
+        .data_bits = CONFIG_AT_UART_DEFAULT_DATABITS - 5,
+        .parity = esp_at_uart_parity_table[CONFIG_AT_UART_DEFAULT_PARITY_BITS],
+        .stop_bits = CONFIG_AT_UART_DEFAULT_STOPBITS,
+        .flow_ctrl = CONFIG_AT_UART_DEFAULT_FLOW_CONTROL,
         .rx_flow_ctrl_thresh = 122,
     };
 
@@ -220,11 +220,11 @@ static void at_uart_init(void)
             uart_config.flow_ctrl = uart_nvm_config.flow_control;
         }
     } else {
-        uart_nvm_config.baudrate = 115200;
-        uart_nvm_config.data_bits = UART_DATA_8_BITS;
-        uart_nvm_config.flow_control = UART_HW_FLOWCTRL_RTS;
-        uart_nvm_config.parity = UART_PARITY_DISABLE;
-        uart_nvm_config.stop_bits = UART_STOP_BITS_1;
+        uart_nvm_config.baudrate = CONFIG_AT_UART_DEFAULT_BAUDRATE;
+        uart_nvm_config.data_bits = CONFIG_AT_UART_DEFAULT_DATABITS - 5;
+        uart_nvm_config.flow_control = CONFIG_AT_UART_DEFAULT_FLOW_CONTROL;
+        uart_nvm_config.parity = esp_at_uart_parity_table[CONFIG_AT_UART_DEFAULT_PARITY_BITS];
+        uart_nvm_config.stop_bits = CONFIG_AT_UART_DEFAULT_STOPBITS;
         at_nvm_uart_config_set(&uart_nvm_config);
     }
     //Set UART parameters
@@ -307,7 +307,6 @@ static bool at_nvm_uart_config_get (at_nvm_uart_config_struct *uart_config)
     return true;
 }
 
-
 static uint8_t at_setupCmdUart(uint8_t para_num)
 {
     int32_t value = 0;
@@ -347,12 +346,8 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     if (esp_at_get_para_as_digit (cnt++,&value) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
-    if (value == 0) {
-        uart_config.parity = UART_PARITY_DISABLE;
-    } else if (value == 1) {
-        uart_config.parity = UART_PARITY_ODD;
-    } else if (value == 2) {
-        uart_config.parity = UART_PARITY_EVEN;
+    if ((value >= 0) && (value <= 2)) {
+        uart_config.parity = esp_at_uart_parity_table[value];
     } else {
         return ESP_AT_RESULT_CODE_ERROR;
     }
