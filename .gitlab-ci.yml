@@ -50,6 +50,7 @@ push_master_to_github:
   image: espressif/esp32-ci-env
   variables:
     GIT_STRATEGY: clone
+    GITHUB_PUSH_REFS: refs/remotes/origin/release refs/remotes/origin/master
   script:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
@@ -58,4 +59,5 @@ push_master_to_github:
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - git remote add github git@github.com:espressif/esp32-at.git
-    - git push --follow-tags github HEAD:master
+    # - git push --follow-tags github HEAD:master
+    - eval $(git for-each-ref --shell bash --format 'if [ $CI_COMMIT_SHA == %(objectname) ]; then git checkout -B %(refname:strip=3); git push --follow-tags github %(refname:strip=3); fi;' $GITHUB_PUSH_REFS)
