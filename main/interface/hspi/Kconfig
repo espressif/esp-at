@@ -6,7 +6,8 @@ config AT_BASE_ON_HSPI
         But besides the standard SPI pins, the more one pin is required to handshake MCU. 
         In order to respond in time, MCU should use the interrupt pin as the handshake pin.
 
-
+if AT_BASE_ON_HSPI
+menu "AT hspi settings"
 config AT_HSPI_MISO_PIN
  	int "HSPI miso pin for AT command"
 	default 13
@@ -31,4 +32,6 @@ config AT_HSPI_HANDSHAKE_PIN
  	int "HSPI handshake pin for AT command"
 	default 2
 	depends on AT_BASE_ON_HSPI
-
+	
+endmenu
+endif
