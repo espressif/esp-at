@@ -22,4 +22,4 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-source $PROJECT_PATH/components/customized_partitions/generation_tools/generate_pki_bin.sh $1 $2 key
+source $ESP_AT_PROJECT_PATH/components/customized_partitions/generation_tools/generate_pki_bin.sh $1 $2 key

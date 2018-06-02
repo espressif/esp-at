@@ -10,8 +10,8 @@ choice AT_COMMUNICATION_METHOD
     default AT_BASE_ON_UART
     depends on AT_ENABLE
 
-source "$PROJECT_PATH/main/interface/uart/Kconfig"
-source "$PROJECT_PATH/main/interface/hspi/Kconfig"
+source "$ESP_AT_PROJECT_PATH/main/interface/uart/Kconfig"
+source "$ESP_AT_PROJECT_PATH/main/interface/hspi/Kconfig"
 endchoice
 
 config AT_COMMAND_TERMINATOR_SUPPORT

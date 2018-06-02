@@ -23,4 +23,4 @@
 #
 
 
-source $PROJECT_PATH/components/customized_partitions/generation_tools/generate_pki_bin.sh $1 $2 ca
+source $ESP_AT_PROJECT_PATH/components/customized_partitions/generation_tools/generate_pki_bin.sh $1 $2 ca
