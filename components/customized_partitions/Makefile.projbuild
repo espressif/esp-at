@@ -31,11 +31,13 @@ AT_CUSTOMIZED_PARTITION_DEPENDENCY_FILE = $(AT_CUSTOMIZED_PARTITION_FOLDER)/AT_p
 AT_PARTITION_TOOLS = $(wildcard $(AT_CUSTOMIZED_PARTITION_FOLDER)/generation_tools/*)
 AT_PARTITION_RAW_DATA = $(wildcard $(AT_CUSTOMIZED_PARTITION_FOLDER)/raw_data/*/*)
 AT_PARTITION_FLASH_ARG_CACHE_FILE = $(AT_CUSTOMIZED_PARTITION_BINS)/.at_customized_files.tmp
+AT_ENABLED_CUSTOMIZED_PARTITIONS_FILE = $(AT_CUSTOMIZED_PARTITION_BINS)/.at_enabled_partitions.tmp
 
 # build AT customzied partition table
 $(AT_CUSTOMIZED_PARTITION_TABLE_BIN): $(AT_PARTITION_TABLE_CSV_PATH) $(SDKCONFIG_MAKEFILE) $(AT_CUSTOMIZED_PARTITION_DEPENDENCY_FILE) $(AT_PARTITION_TOOLS) $(AT_PARTITION_RAW_DATA)
 	@echo "building AT customized partition table $(CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE)"
 # check if current definition of partition table is valid
+	@rm -f $(AT_ENABLED_CUSTOMIZED_PARTITIONS_FILE)
 	@cat $(AT_CUSTOMIZED_PARTITION_DEPENDENCY_FILE) | while read LINE; do \
         if [ -n "$$LINE" ] && [[ "$$LINE" != "#"* ]]; then \
             CONFIG_NAME="CONFIG_"`echo "$$LINE" | awk '{print $$1}'`; \
@@ -43,7 +45,8 @@ $(AT_CUSTOMIZED_PARTITION_TABLE_BIN): $(AT_PARTITION_TABLE_CSV_PATH) $(SDKCONFIG
             CONFIG_VALUE=`cat $(SDKCONFIG_MAKEFILE) | grep $$CONFIG_NAME || echo ""`; \
             if [ -n "$$CONFIG_VALUE" ]; then \
                 cat $(AT_PARTITION_TABLE_CSV_PATH) | grep -iq "^$$PARTITION_NAME" \
-                    || { echo "Error: $$PARTITION_NAME not defined in AT customized partition table" ; exit 1; }\
+                    || { echo "Error: $$PARTITION_NAME not defined in AT customized partition table" ; exit 1; }; \
+                echo $$PARTITION_NAME >> $(AT_ENABLED_CUSTOMIZED_PARTITIONS_FILE); \
             fi; \
         fi; \
     done
@@ -56,13 +59,16 @@ $(AT_CUSTOMIZED_PARTITION_TABLE_BIN): $(AT_PARTITION_TABLE_CSV_PATH) $(SDKCONFIG
 	@cat $(AT_PARTITION_TABLE_CSV_PATH) | while read LINE; do \
         if [ -n "$$LINE" ] && [[ "$$LINE" != "#"* ]]; then \
             PARTITION_NAME=`echo "$$LINE" | awk -F, '{print $$1}'`; \
-            PARTITION_TABLE_OFFSET=`echo "$$LINE" | awk -F, '{print $$4}'`; \
-            if [ -f "$(AT_CUSTOMIZED_PARTITION_FOLDER)/generation_tools/$$PARTITION_NAME.sh" ]; then \
-                source "$(AT_CUSTOMIZED_PARTITION_FOLDER)/generation_tools/$$PARTITION_NAME.sh" \
-                    $${PARTITION_NAME} $(AT_CUSTOMIZED_PARTITION_BINS) || exit 1; \
-                echo "AT customized partitions successfully generated: $$PARTITION_NAME"; \
-                echo " $$PARTITION_TABLE_OFFSET $(AT_CUSTOMIZED_PARTITION_BINS)/$$PARTITION_NAME.bin" \
-                    >> $(AT_PARTITION_FLASH_ARG_CACHE_FILE); \
+            PARTITION_ENABLED=`cat $(AT_ENABLED_CUSTOMIZED_PARTITIONS_FILE) | grep $$PARTITION_NAME`; \
+            if [ -n "$$PARTITION_ENABLED" ] ; then \
+                PARTITION_TABLE_OFFSET=`echo "$$LINE" | awk -F, '{print $$4}'`; \
+                if [ -f "$(AT_CUSTOMIZED_PARTITION_FOLDER)/generation_tools/$$PARTITION_NAME.sh" ]; then \
+                    source "$(AT_CUSTOMIZED_PARTITION_FOLDER)/generation_tools/$$PARTITION_NAME.sh" \
+                        $${PARTITION_NAME} $(AT_CUSTOMIZED_PARTITION_BINS) || exit 1; \
+                    echo "AT customized partitions successfully generated: $$PARTITION_NAME"; \
+                    echo " $$PARTITION_TABLE_OFFSET $(AT_CUSTOMIZED_PARTITION_BINS)/$$PARTITION_NAME.bin" \
+                        >> $(AT_PARTITION_FLASH_ARG_CACHE_FILE); \
+                fi; \
             fi; \
         fi; \
     done
