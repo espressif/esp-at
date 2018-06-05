@@ -51,6 +51,8 @@ config AT_FS_COMMAND_SUPPORT
     bool "AT FS command support."
     default "n"
     depends on AT_ENABLE
+    select WL_SECTOR_SIZE_512
+    select FATFS_LFN_HEAP
     
 config AT_OTA_SERVER_IP
     string "Server IP for AT OTA."
