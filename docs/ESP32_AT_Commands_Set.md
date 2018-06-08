@@ -18,6 +18,7 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+SYSRAM](#cmd-SYSRAM) : Checks the remaining space of RAM.
 * [AT+SYSFLASH](#cmd-SYSFLASH) : Set User Partitions in Flash.
 * [AT+FS](#cmd-FS) : Filesystem Operations.
+* [AT+RFPOWER](#cmd-RFPOWER) : Set RF TX Power.
 
 <a name="WiFi-AT"></a>
 ### 1.2 Wi-Fi AT Commands List
@@ -38,6 +39,7 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+CWSTARTSMART](#cmd-STARTS) : Starts SmartConfig.
 * [AT+CWSTOPSMART](#cmd-STOPS) : Stops SmartConfig.
 * [AT+WPS](#cmd-WPS) : Enables the WPS function.
+* [AT+MDNS](#cmd-MDNS) : Configurates the MDNS function
 
 <a name="TCPIP-AT"></a>
 ### 1.3 TCP/IP-Related AT Commands List
@@ -58,6 +60,7 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+CIPSNTPTIME](#cmd-SNTPT) : Queries the SNTP time.
 * [AT+CIUPDATE](#cmd-UPDATE) : Updates the software through Wi-Fi.
 * [AT+CIPDINFO](#cmd-IPDINFO) : Shows remote IP and remote port with +IPD.
+* [AT+CIPSSLCCONF](#cmd-SSLCCONF) : Config SSL client.
 
 <a name="BLE-AT"></a>
 ### 1.4 BLE AT Commands List
@@ -89,6 +92,15 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+BLEGATTCCHAR](#cmd-GCCHAR) : GATTC discovers characteristics
 * [AT+BLEGATTCRD](#cmd-GCRD) : GATTC reads characteristics
 * [AT+BLEGATTCWR](#cmd-GCWR) : GATTC writes characteristics
+* [AT+BLESPPCFG](#cmd-BLESPPCFG) : Sets BLE spp parameters
+* [AT+BLESPP](#cmd-BLESPP) : Enter BLE spp mode
+* [AT+BLESECPARAM](#cmd-BLESMPPAR) : Set BLE encryption parameters
+* [AT+BLEENC](#cmd-BLEENC) : Initiate BLE encryption request
+* [AT+BLEENCRSP](#cmd-BLEENCRSP) : Grant security request access.
+* [AT+BLEKEYREPLY](#cmd-BLEKEYREPLY) : Reply the key value to the peer device in the lagecy connection stage.
+* [AT+BLECONFREPLY](#cmd-BLECOFREPLY) : Reply the comfirm value to the peer device in the lagecy connection stage.
+* [AT+BLEENCDEV](#cmd-BLEENCDEV) : Query BLE encryption device list
+* [AT+BLEENCCLEAR](#cmd-BLEENCCLEAR) : Clear BLE encryption device list
 
 * [BLE AT Examples](#exam-BLE)
 
@@ -452,6 +464,49 @@ Example:
 	AT+FS=0,2,"filename",0,100
 	// list all files in the root directory.
 	AT+FS=0,4,"."
+
+<a name="cmd-RFPOWER"></a>
+### 2.13 [AT+RFPOWER](#Basic-AT)-Set RF TX Power
+Query Command: 
+
+    AT+RFPOWER?
+    Function: to query the RF TX Power.
+Response:
+
+    +RFPOWER:<wifi_power>,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>
+    OK
+
+Set Command:
+
+    AT+RFPOWER=<wifi_power>[,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>]
+Response:
+
+    OK
+Parameters:
+- **\<wifi_power>**: range [0, 11]
+    - 0:level 0. Refer to the 44th byte of phy_init_data.bin, the default value is 19.5 dBm
+    - 1:level 1. Refer to the 45th byte of phy_init_data.bin, the default value is 19 dBm
+    - 2:level 2. Refer to the 46th byte of phy_init_data.bin, the default value is 18.5 dBm
+    - 3:level 3. Refer to the 47th byte of phy_init_data.bin, the default value is 17 dBm
+    - 4:level 4. Refer to the 48th byte of phy_init_data.bin, the default value is 15 dBm
+    - 5:level 5. Refer to the 49th byte of phy_init_data.bin, the default value is 13 dBm
+    - 6:level 5 - 2 dBm. For example, if level 5 is 13 dBm, level 6 will be 11 dBm
+    - 7:level 5 - 4.5 dBm
+    - 8:level 5 - 6 dBm
+    - 9:level 5 - 8 dBm
+    - 10:level 5 - 11 dBm
+    - 11:level 5 - 14 dBm
+- **\<ble_adv_power>**: RF TX Power of BLE advertising, range: [0, 7]
+    - 0:7dBm
+    - 1:4dBm
+    - 2:1dBm
+    - 3:-2 dBm
+    - 4:-5 dBm
+    - 5:-8 dBm
+    - 6:-11 dBm
+    - 7:-14 dBm
+- **\<ble_scan_power>**: RF TX Power of BLE scanning, range:  [0, 7], the same as **\<ble_adv_power>**
+- **\<ble_conn_power>**: RF TX Power of BLE connecting, range:  [0, 7], the same as **\<ble_adv_power>**
 
 ## 3 Wi-Fi AT Commands  
 <a name="cmd-MODE"></a>
@@ -979,6 +1034,31 @@ Example:
 
 	AT+CWMODE=1
 	AT+WPS=1
+	
+<a name="cmd-MDNS"></a>
+### 3.18 [AT+MDNS](#WiFi-AT)—Configurates the MDNS Function
+Set Command:
+
+    AT+MDNS=<enable>[,<hostname>,<service_name>,<port>]
+Response:
+
+    OK 
+Parameters:
+
+- **\<enable>**:
+    - 1: enables the MDNS function; the following three parameters need to be set.
+    - 0: disables the MDNS function; the following three parameters need not to be set.
+- **\<hostname>**: MDNS host name
+- **\<service_name>**: MDNS service name
+- **\<port>**: MDNS port
+
+***Notes:***
+    Please do not use other special characters (such as .) for <hostname> and <service_name>.
+
+Example:
+
+    AT+MDNS=1,"espressif","_iot",8080  
+    AT+MDNS=0
 
 ## 4. TCP/IP-Related AT Commands
 <a name="cmd-STATUS"></a>
@@ -1030,9 +1110,9 @@ Example:
 Set Command:
 
 	Single TCP connection (AT+CIPMUX=0):
-	AT+CIPSTART=<type>,<remote IP>,<remote port>[,<TCP keep alive>]
+	AT+CIPSTART=<type>,<remote IP>,<remote port>[,<TCP keep alive>][,<local IP>]
 	Multiple TCP Connections (AT+CIPMUX=1):
-	AT+CIPSTART=<link ID>,<type>,<remote IP>,<remote port>[,<TCP keep alive>]
+	AT+CIPSTART=<link ID>,<type>,<remote IP>,<remote port>[,<TCP keep alive>][,<local IP>]
 Response:
 
 	OK
@@ -1049,17 +1129,21 @@ Parameters:
     - 0: disable TCP keep-alive.
     - 1 ~ 7200: detection time interval; unit: second (s).
 
+- **\[\<local IP>]**(optional parameter): select which IP want to use, this is useful when using both ethernet and WiFi; this parameter is disabled by default. If you want to use this parameter, <TCP keep alive> must be specified firstly, null also is valid.
+
 Examples:
 
 	AT+CIPSTART="TCP","iot.espressif.cn",8000
 	AT+CIPSTART="TCP","192.168.101.110",1000
+	AT+CIPSTART="TCP","192.168.101.110",1000,,"192.168.101.100"
+
 #### 4.3.2 Establish UDP Transmission
 Set Command:
 
 	Single connection (AT+CIPMUX=0): 
-	AT+CIPSTART=<type>,<remote IP>,<remote port>[,(<UDP local port>),(<UDP mode>)]
+	AT+CIPSTART=<type>,<remote IP>,<remote port>[,(<UDP local port>),(<UDP mode>)][,<local IP>]
 	Multiple connections (AT+CIPMUX=1): 
-	AT+CIPSTART=<link ID>,<type>,<remote IP>,<remote port>[,(<UDP local port>),(<UDP mode>)]
+	AT+CIPSTART=<link ID>,<type>,<remote IP>,<remote port>[,(<UDP local port>),(<UDP mode>)][,<local IP>]
 Response:
 
 	OK
@@ -1077,6 +1161,7 @@ Parameters:
     - 0: the destination peer entity of UDP will not change; this is the default setting.
     - 1: the destination peer entity of UDP can change once.
     - 2: the destination peer entity of UDP is allowed to change.
+- **\[\<local IP>]**(optional parameter): select which IP want to use, this is useful when using both ethernet and WiFi; this parameter is disabled by default. If you want to use this parameter, <UDP local port> and <UDP mode> must be specified firstly, null also is valid.
 
 ***Notice:*** 
 
@@ -1085,10 +1170,11 @@ Parameters:
 Example:
 
 	AT+CIPSTART="UDP","192.168.101.110",1000,1002,2
+	AT+CIPSTART="UDP","192.168.101.110",1000,,,"192.168.101.100"
 #### 4.3.3 Establish SSL Connection
 Set Command:
 
-	AT+CIPSTART=[<link ID>,]<type>,<remote IP>,<remote port>[,<TCP keep alive>]	
+	AT+CIPSTART=[<link ID>,]<type>,<remote IP>,<remote port>[,<TCP keep alive>][,<local IP>]	
 Response:
 
 	OK
@@ -1103,7 +1189,8 @@ Parameters:
 - **\<remote port>**: the remote port number.
 - **\[\<TCP keep alive>]**(optional parameter): detection time interval when TCP is kept alive; this function is disabled by default.
     - 0: disable the TCP keep-alive function.
-    - 1 ~ 7200: detection time interval, unit: second (s).	
+    - 1 ~ 7200: detection time interval, unit: second (s).
+- **\[\<local IP>]**(optional parameter): select which IP want to use, this is useful when using both ethernet and WiFi; this parameter is disabled by default. If you want to use this parameter, <TCP keep alive> must be specified firstly, null also is valid.	
 
 ***Notes:***
 
@@ -1113,7 +1200,8 @@ Parameters:
 
 Example:
 
-	AT+CIPSTART="SSL","iot.espressif.cn",8443	
+	AT+CIPSTART="SSL","iot.espressif.cn",8443
+	AT+CIPSTART="SSL","192.168.101.110",1000,,"192.168.101.100"	
 <a name="cmd-SEND"></a>
 ### 4.4 [AT+CIPSEND](#TCPIP-AT)—Sends Data
 Set Command: 
@@ -1553,6 +1641,41 @@ Parameters:
 
 * The command is valid in normal command mode. When the module receives network data, it will send the data through the serial port using the `+IPD` command.
 
+<a name="cmd-SSLCCONF"></a>
+### 4.17 [AT+CIPSSLCCONF](#TCPIP-AT)—Config SSL client
+Query Command:
+
+	AT+CIPSSLCCONF?
+	Function: to obtain all link SSL client configuration.
+Response:
+
+	+CIPSNTPCFG:<link ID>,<auth_mode>,<pki_number>,<ca_number>
+	OK
+Set Command:
+
+	Single connection: (+CIPMUX=0)
+	AT+CIPSSLCCONF=<auth_mode>,<pki_number>,<ca_number>
+	Multiple connections: (+CIPMUX=1)
+	AT+CIPSENDEX=<link ID>,<auth_mode>,<pki_number>,<ca_number>
+Response:
+
+	OK
+Parameters:
+
+- **\<link ID>**: ID of the connection (0~max), for multiple connections, if the value is max, it means all connections. By default, max is 5.
+- **\<auth_mode>**: 
+    - 0: no authorization.
+    - 1: load cert and private key for server authorization.
+    - 2: load CA for client authorize server cert and private key.
+    - 3: both authorization.
+- **\<pki_number>**: the index of cert and private key, if only one cert and private key, the value should be 0.
+- **\<ca_number>**: the index of CA, if only one CA, the value should be 0.
+
+***Notes:***
+
+* Call this command before establish SSL connection if you want configuration take effect immediately.
+* The configuration changes will be saved in the NVS area. If you use AT+SAVETRANSLINK to set SSL passthrough mode, ESP32 SSL will be connected based on this configuration after power on.
+
 ## 5. BLE-Related AT Commands
 <a name="cmd-BINIT"></a>
 ### 5.1 [AT+BLEINIT](#BLE-AT)—BLE Initialization
@@ -1706,7 +1829,7 @@ Set Command:
 	Function: to enable/disable scanning.
 Response:
 
-	+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>
+	+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>
 	OK
 Parameters:
 
@@ -1865,8 +1988,8 @@ Response:
 	If the connection has not been established, there will NOT be <conn_index> and <remote_address>
 Set Command: 
 
-	AT+BLECONN=<conn_index>,<remote_address>
-	Function: to establish the BLE connection.
+	AT+BLECONN=<conn_index>,<remote_address>[,<address_type>]
+	Function: to establish the BLE connection, the address_type is an optional parameter.
 Response:
 
 	OK
@@ -1877,7 +2000,7 @@ Response:
 Parameters:
 
 - **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
-- **\<remote_address>**：remote BLE address  
+- **\<remote_address>**：remote BLE address
 
 Example:
 
@@ -2329,6 +2452,237 @@ Example：
 	AT+BLEGATTCWR=0,3,4,,6 
 	// after > shows, inputs 6 bytes of data, such as "123456"; then, the writing starts
 
+<a name="cmd-BLESPP"></a>
+### 5.27 [AT+BLESPPCFG](#BLE-AT)—Sets BLE spp parameters
+Query Command:
+
+	AT+BLESPPCFG?
+	Function: to get the parameters of BLE spp.
+Response:
+
+	+BLESPPCFG:<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>
+	OK
+Set Command:
+
+	AT+BLESCANPARAM=<option>[,<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>]
+	Function: to set or reset the parameters of BLE spp.
+Response:
+
+	OK
+Parameters:
+
+- **\<option>**: if the option is 0, it means all the spp parametersthe will be reset, and the next four parameters don't need input. if the option is 1, the user must input all the parameters.
+- **\<tx_service_index>**: tx service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV=<conn_index>` and `AT+BLEGATTSSRVCRE?`
+- **\<tx_char_index>**: tx characteristic's index; it can be fetched with command `AT+BLEGATTCCHAR=<conn_index>,<srv_index>` and `AT+BLEGATTSCHAR?`
+- **\<rx_service_index>**: rx service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV=<conn_index>` and `AT+BLEGATTSSRVCRE?`
+- **\<rx_char_index>**: rx characteristic's index; it can be fetched with command `AT+BLEGATTCCHAR=<conn_index>,<srv_index>` and `AT+BLEGATTSCHAR?`
+
+***Note:***
+
+* In BLE client, the property of tx characteristic must be write with response or write without response, the property of rx characteristic must be indicate or notify.
+* In BLE server, the property of tx characteristic must be indicate or notify, the property of rx characteristic must be write with response or write without response.
+
+Example:
+
+	AT+BLESPPCFG=0          // reset ble spp parameters
+	AT+BLESPPCFG=1,3,5,3,7  // set ble spp parameters
+	AT+BLESPPCFG?           // query ble spp parameters 
+
+<a name="cmd-BLESPP"></a>
+### 5.28 [AT+BLESPP](#BLE-AT)—Enter BLE spp mode
+Execute Command: 
+
+	AT+BLESPP
+	Function: Enter BLE spp mode.
+
+Response:
+
+	>	
+
+***Note:***
+
+* If the ble spp parameters is illegal, this command will return ERROR.
+
+Example:
+
+	AT+BLESPP   // enter ble spp mode
+
+<a name="cmd-BLESMPPAR"></a>
+### 5.29 [AT+BLESECPARAM](#BLE-AT)—Set BLE encryption parameters
+Query Command:
+
+	AT+BLESECPARAM?
+	Function: to get the parameters of BLE smp.
+Response:
+
+	+BLESECPARAM:<auth_req>,<iocap>,<key_size>,<init_key>,<rsp_key>
+	OK
+Set Command:
+
+	AT+BLESECPARAM=<auth_req>,<iocap>,<key_size>,<init_key>,<rsp_key>
+	Function: to set the parameters of BLE smp.
+Response:
+
+	OK
+Parameters:
+
+- **\<auth_req>**: 
+    - 0 : NO_BOND
+    - 1 : BOND
+    - 2 : MITM
+    - 4 : SC_ONLY
+    - 5 : SC_BOND
+    - 6 : SC_MITM
+    - 7 : SC_MITM_BOND
+- **\<iocap>**:
+    - 0 : DisplayOnly 
+    - 1 : DisplayYesNo
+    - 2 : KeyboardOnly
+    - 3 : NoInputNoOutput
+    - 4 : Keyboard displa
+- **\<key_size>**: the key size should be 7~16 bytes.
+- **\<init_key>**: combination of the bit pattern.
+- **\<rsp_key>**:  combination of the bit pattern.
+
+***Note:***
+
+* The bit pattern for init_key&rsp_key is:
+    - (1<<0) Used to exchange the encrytyption key in the init key & response key
+    - (1<<1) Used to exchange the IRK key in the init key & response key
+    - (1<<2) Used to exchange the CSRK key in the init key & response key
+    - (1<<3) Used to exchange the link key(this key just used in the BLE & BR/EDR coexist mode) in the init key & response key
+
+Example:
+
+	AT+BLESECPARAM=1,4,16,3,3
+
+<a name="cmd-BLEENC"></a>
+### 5.30 [AT+BLEENC](#BLE-AT)—Initiate BLE encryption request
+Set Command:
+
+	AT+BLEENC=<conn_index>,<sec_act>
+	Function: to start a pairing request
+Response:
+
+	OK
+Parameters:
+
+- **\<conn_index>**: index of BLE connection.
+- **\<sec_act>**:
+    - 0 : SEC_NONE
+    - 1 : SEC_ENCRYPT
+    - 2 : SEC_ENCRYPT_NO_MITM
+    - 3 : SEC_ENCRYPT_MITM
+
+***Note:***
+
+* Before ipput this command, user must set the security paramsters and connection with remote device.
+
+Example:
+
+	AT+BLESECPARAM=1,4,16,3,3
+	AT+BLEENC=0,3
+
+<a name="cmd-BLEENCRSP"></a>
+### 5.31 [AT+BLEENCRSP](#BLE-AT)—Grant security request access
+Set Command:
+
+	AT+BLEENCRSP=<conn_index>,<accept>
+	Function: to set a pairing response.
+Response:
+
+	OK
+Parameters:
+
+- **\<conn_index>**: index of BLE connection.
+- **\<accept>**:
+    - 0 : reject
+    - 1 : accept; 
+
+Example:
+
+	AT+BLEENCRSP=0,1
+
+<a name="cmd-BLEKEYREPLY"></a>
+### 5.32 [AT+BLEKEYREPLY](#BLE-AT)—Reply the key value to the peer device in the lagecy connection stage
+Set Command:
+
+	AT+BLEKEYREPLY=<conn_index>,<key>
+	Function: to reply a pairing key.
+Response:
+
+	OK
+Parameters:
+
+- **\<conn_index>**: index of BLE connection.
+- **\<key>**:    pairing key
+
+Example:
+
+	AT+BLEKEYREPLY=0,649784
+
+<a name="cmd-BLECONFREPLY"></a>
+### 5.33 [AT+BLECONFREPLY](#BLE-AT)—Reply the comfirm value to the peer device in the lagecy connection stage
+Set Command:
+
+	AT+BLECONFREPLY=<conn_index>,<confirm>
+	Function: to reply to a pairing result.
+Response:
+
+	OK
+Parameters:
+
+- **\<conn_index>**: index of BLE connection.
+- **\<confirm>**:
+    - 0 : NO
+    - 1 : Yes
+
+Example:
+
+	AT+BLECONFREPLY=0,1
+
+<a name="cmd-BLEENCDEV"></a>
+### 5.34 [AT+BLEENCDEV](#BLE-AT)—Query BLE encryption device list
+Query Command:
+
+	AT+BLEENCDEV?
+	Function: to get the bounded devices.
+Response:
+
+	+BLEENCDEV:<enc_dev_index>,<mac_address>
+	OK
+Parameters:
+
+- **\<enc_dev_index>**: index of the bonded devices.
+- **\<mac_address>**:   Mac address.
+
+Example:
+
+	AT+BLEENCDEV?
+
+<a name="cmd-BLEENCCLEAR"></a>
+### 5.35 [AT+BLEENCCLEAR](#BLE-AT)—Clear BLE encryption device list
+Set Command:
+
+	AT+BLEKEYREPLY=<enc_dev_index>
+	Function: to unbind a device with a specific index.
+Response:
+
+	OK
+Execute Command:
+
+	AT+BLEENCCLEAR
+	Function: unbind all devices
+Response:
+
+	OK
+Parameters:
+
+- **\<enc_dev_index>**: index of the bonded devices.
+
+Example:
+
+	AT+BLEENCCLEAR
 
 <a name="exam-BLE"></a>
 ## 6. [BLE AT Example](#BLE-AT)  
@@ -2529,6 +2883,5 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
     ***Note:***  
     * If the ESP32 Client receives the indication, it will prompt message `+INDICATE:<conn_index>,<srv_index>,<char_index>,<len>,<value>`
     * For the same service, the \<srv\_index> on the ESP32 Client side equals the \<srv\_index> on the ESP32 Server side + 2.
-
 
 
