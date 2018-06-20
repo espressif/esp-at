@@ -1,0 +1,297 @@
+FATFS_VFS.cpp
+void FATFS_VFS::mount() {
+	esp_vfs_fat_mount_config_t mountConfig;
+	mountConfig.max_files = m_maxFiles;
+	mountConfig.format_if_mount_failed = false; //MVA true;
+	ESP_ERROR_CHECK(esp_vfs_fat_spiflash_mount(m_mountPath.c_str(), m_partitionName.c_str(), &mountConfig, &m_wl_handle));
+} // mount
+
+vfs_fat_spiflash.c
+esp_err_t esp_vfs_fat_spiflash_mount(const char* base_path,
+    const char* partition_label,
+    const esp_vfs_fat_mount_config_t* mount_config,
+    wl_handle_t* wl_handle)
+{
+    esp_err_t result = ESP_OK;
+    const size_t workbuf_size = 4096;
+    void *workbuf = NULL;
+
+/* Ёмулировать структуру
+typedef struct {
+    esp_partition_type_t type;          /*!< partition type (app/data) */
+    esp_partition_subtype_t subtype;    /*!< partition subtype */
+    uint32_t address;                   /*!< starting address of the partition in flash */
+    uint32_t size;                      /*!< size of the partition, in bytes */
+    char label[17];                     /*!< partition label, zero-terminated ASCII string */
+    bool encrypted;                     /*!< flag is set to true if partition is encrypted */
+} esp_partition_t;
+*/
+
+    esp_partition_t *data_partition = (esp_partition_t *)esp_partition_find_first(ESP_PARTITION_TYPE_DATA, ESP_PARTITION_SUBTYPE_DATA_FAT, partition_label);
+    if (data_partition == NULL) {
+        ESP_LOGE(TAG, "Failed to find FATFS partition (type='data', subtype='fat', partition_label='%s'). Check the partition table.", partition_label);
+        return ESP_ERR_NOT_FOUND;
+    }
+
+/*
+wear_levelling.cpp:
+в функции wear_levelling.cpp:wl_mount() устанавливаетс€:
+
+    s_instances[*out_handle].instance = wl_flash;
+
+где wl_flash - экземпл€р класса WL_Flash.cpp:WL_Flash()
+там же вызываетс€ wl_flash->config(&cfg, part), где part - это указатель на экземпл€р класса Partition: public Flash_Access()
+ ласс Partition находитс€ в Partition.cpp
+
+
+*/
+
+    result = wl_mount(data_partition, wl_handle);
+    if (result != ESP_OK) {
+        ESP_LOGE(TAG, "failed to mount wear levelling layer. result = %i", result);
+        return result;
+    }
+    // connect driver to FATFS
+    BYTE pdrv = 0xFF;
+    if (ff_diskio_get_drive(&pdrv) != ESP_OK) {
+        ESP_LOGD(TAG, "the maximum count of volumes is already mounted");
+        return ESP_ERR_NO_MEM;
+    }
+    ESP_LOGD(TAG, "using pdrv=%i", pdrv);
+    char drv[3] = {(char)('0' + pdrv), ':', 0};
+
+
+/* в diskio_spiflash.c:ff_diskio_register_wl_partition() устанавливаетс€ impl
+    static const ff_diskio_impl_t wl_impl = {
+        .init = &ff_wl_initialize,
+        .status = &ff_wl_status,
+        .read = &ff_wl_read,
+        .write = &ff_wl_write,
+        .ioctl = &ff_wl_ioctl
+    };
+
+например, diskio_spiflash.c:ff_wl_read() вызывает функцию wl_read()
+
+DRESULT ff_wl_read (BYTE pdrv, BYTE *buff, DWORD sector, UINT count)
+{
+    ESP_LOGV(TAG, "ff_wl_read - pdrv=%i, sector=%i, count=%i\n", (unsigned int)pdrv, (unsigned int)sector, (unsigned int)count);
+    wl_handle_t wl_handle = ff_wl_handles[pdrv];
+    assert(wl_handle + 1);
+    esp_err_t err = wl_read(wl_handle, sector * wl_sector_size(wl_handle), buff, count * wl_sector_size(wl_handle));
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "wl_read failed (%d)", err);
+        return RES_ERROR;
+    }
+    return RES_OK;
+}
+
+в свою очередь wl_read() вызывает функцию s_instances[handle].instance->read()
+s_instances[handle].instance - это экземпл€р класса WL_Flash(), но записан туда экземпл€р класса Partition: public Flash_Access()
+
+esp_err_t wl_read(wl_handle_t handle, size_t src_addr, void *dest, size_t size)
+{
+    esp_err_t result = check_handle(handle, __func__);
+    if (result != ESP_OK) {
+        return result;
+    }
+    _lock_acquire(&s_instances[handle].lock);
+    result = s_instances[handle].instance->read(src_addr, dest, size);
+    _lock_release(&s_instances[handle].lock);
+    return result;
+}
+
+функци€ s_instances[handle].instance->read() вызывает функцию this->flash_drv->read(),
+где
+  this - экземпл€р класса WL_Flash(),
+  flash_drv - экземпл€р класса Partition: public Flash_Access()
+
+flash_drv устанавливаетс€ при вызове WL_Flash::config(wl_config_t *cfg, Flash_Access *flash_drv)
+Partition::read() вызывает функцию esp_partition_read(this->partition, src_addr, dest, size)
+где partition - это esp_partition_t *partition
+
+функци€ esp_partition_read() вызывает функцию spi_flash_read()
+функци€ spi_flash_read() вызывает функцию esp_rom_spiflash_read()
+
+
+*/
+
+    result = ff_diskio_register_wl_partition(pdrv, *wl_handle);
+    if (result != ESP_OK) {
+        ESP_LOGE(TAG, "ff_diskio_register_wl_partition failed pdrv=%i, error - 0x(%x)", pdrv, result);
+        goto fail;
+    }
+
+
+/*
+в функции vfs_fat.c:esp_vfs_fat_register()
+устанавливаютс€ обработчики:
+    const esp_vfs_t vfs = {
+        .flags = ESP_VFS_FLAG_CONTEXT_PTR,
+        .write_p = &vfs_fat_write,
+        .lseek_p = &vfs_fat_lseek,
+        .read_p = &vfs_fat_read,
+        .open_p = &vfs_fat_open,
+        .close_p = &vfs_fat_close,
+        .fstat_p = &vfs_fat_fstat,
+        .stat_p = &vfs_fat_stat,
+        .link_p = &vfs_fat_link,
+        .unlink_p = &vfs_fat_unlink,
+        .rename_p = &vfs_fat_rename,
+        .opendir_p = &vfs_fat_opendir,
+        .closedir_p = &vfs_fat_closedir,
+        .readdir_p = &vfs_fat_readdir,
+        .readdir_r_p = &vfs_fat_readdir_r,
+        .seekdir_p = &vfs_fat_seekdir,
+        .telldir_p = &vfs_fat_telldir,
+        .mkdir_p = &vfs_fat_mkdir,
+        .rmdir_p = &vfs_fat_rmdir
+    };
+и передаютс€ в esp_vfs_register(base_path, &vfs, fat_ctx) дл€ регистрации,
+а также туда передаетс€ адрес структуры (vfs_fat_ctx_t*)fat_ctx
+в vfs.c:esp_vfs_register() создаетс€ и заполн€етс€ структура (vfs_entry_t*)entry
+
+затем в функции vfs_fat.c:esp_vfs_fat_register() заполн€етс€ *out_fs = &fat_ctx->fs, чтобы вернуть (FATFS*)fs
+
+*/
+
+
+
+
+
+    FATFS *fs;
+    result = esp_vfs_fat_register(base_path, drv, mount_config->max_files, &fs);
+    if (result == ESP_ERR_INVALID_STATE) {
+        // it's okay, already registered with VFS
+    } else if (result != ESP_OK) {
+        ESP_LOGD(TAG, "esp_vfs_fat_register failed 0x(%x)", result);
+        goto fail;
+    }
+
+/*
+в функции ff.c:f_mount(fs, drv, 1) '1' означает 'Mount immediately'
+эта функци€ вызывает функцию ff.c:find_volume(&path, &fs, 0)
+
+‘ункци€ ff.c:find_volume() вызывает:
+	ff.c:get_ldnumber()
+	diskio.c:disk_status() --> s_impls[pdrv]->status(pdrv)
+	LD2PD() --> #define LD2PD(vol) (VolToPart[vol].pd)	/* Get physical drive number */
+	diskio.c:disk_initialize() --> s_impls[pdrv]->init(pdrv)
+	diskio.c:disk_ioctl() --> s_impls[pdrv]->ioctl(pdrv, cmd, buff)
+	ff.c:check_fs() возвращает 0:FAT, 1:exFAT, 2:Valid BS but not FAT, 3:Not a BS, 4:Disk error
+
+
+
+*/
+
+
+
+
+
+    // Try to mount partition
+    FRESULT fresult = f_mount(fs, drv, 1);
+    if (fresult != FR_OK) {
+        ESP_LOGW(TAG, "f_mount failed (%d)", fresult);
+        if (!(fresult == FR_NO_FILESYSTEM && mount_config->format_if_mount_failed)) {
+            result = ESP_FAIL;
+            goto fail;
+        }
+        workbuf = malloc(workbuf_size);
+        ESP_LOGI(TAG, "Formatting FATFS partition");
+        fresult = f_mkfs(drv, FM_ANY | FM_SFD, workbuf_size, workbuf, workbuf_size);
+        if (fresult != FR_OK) {
+            result = ESP_FAIL;
+            ESP_LOGE(TAG, "f_mkfs failed (%d)", fresult);
+            goto fail;
+        }
+        free(workbuf);
+        workbuf = NULL;
+        ESP_LOGI(TAG, "Mounting again");
+        fresult = f_mount(fs, drv, 0);
+        if (fresult != FR_OK) {
+            result = ESP_FAIL;
+            ESP_LOGE(TAG, "f_mount failed after formatting (%d)", fresult);
+            goto fail;
+        }
+    }
+    return ESP_OK;
+
+fail:
+    free(workbuf);
+    esp_vfs_fat_unregister_path(base_path);
+    ff_diskio_unregister(pdrv);
+    return result;
+}
+
+
+“рассиворка создани€ структур:
+------------------------------
+
+static wl_handle_t s_wl_handle;
+
+main.cpp:fatfsMount()
+  esp_vfs_fat_mount_config_t mountConfig;
+  mountConfig.max_files = 4;
+  mountConfig.format_if_mount_failed = true;
+  fatfs.c:fat_mount("/spiflash", &mountConfig, &s_wl_handle, s_imageSize);
+    const size_t workbuf_size = 4096;
+    void *workbuf = NULL;
+    s_partition.size = imageSize;
+    esp_partition_t *data_partition = &s_partition;
+    wear_levelling.cpp:wl_mount(data_partition, wl_handle); // (const esp_partition_t *partition, wl_handle_t *out_handle)
+      WL_Flash *wl_flash = NULL;
+      void *part_ptr = NULL;
+      Partition *part = NULL;
+      *out_handle = WL_INVALID_HANDLE;
+      for (size_t i = 0; i < MAX_WL_HANDLES; i++) {
+          if (s_instances[i].instance == NULL) {
+              *out_handle = i;
+              break;
+          }
+      }
+      wl_ext_cfg_t cfg;
+      cfg.full_mem_size = partition->size;
+      cfg.start_addr = WL_DEFAULT_START_ADDR;		// 0
+      cfg.version = WL_CURRENT_VERSION;			// 1
+      cfg.sector_size = SPI_FLASH_SEC_SIZE;		// 4096
+      cfg.page_size = SPI_FLASH_SEC_SIZE;		// 4096
+      cfg.updaterate = WL_DEFAULT_UPDATERATE;		// 16
+      cfg.temp_buff_size = WL_DEFAULT_TEMP_BUFF_SIZE;	// 32
+      cfg.wr_size = WL_DEFAULT_WRITE_SIZE;		// 16
+      // FAT sector size by default will be 512
+      cfg.fat_sector_size = CONFIG_WL_SECTOR_SIZE;	// 4096, задаетс€ в menuconfig
+      part_ptr = malloc(sizeof(Partition));
+      part = new (part_ptr) Partition(partition); // class Partition : public Flash_Access
+        this->partition = partition;
+      wl_flash_ptr = malloc(sizeof(WL_Flash));
+      wl_flash = new (wl_flash_ptr) WL_Flash();
+      wl_flash->config(&cfg, part); // (wl_config_t *cfg, Flash_Access *flash_drv)
+        this->flash_drv = flash_drv;
+
+      wl_flash->init();
+      s_instances[*out_handle].instance = wl_flash;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

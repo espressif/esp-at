@@ -8,7 +8,11 @@ PROJECT_NAME := esp-at
 export ESP_AT_PROJECT_PATH := $(PWD)
 export IDF_PATH ?= $(ESP_AT_PROJECT_PATH)/esp-idf
 
+export ESP_AT_IMAGE_DIR ?= $(ESP_AT_PROJECT_PATH)/components/fs_image
+EXTRA_COMPONENT_DIRS := $(ESP_AT_PROJECT_PATH)/tools/mkfatfs
+
 EXTRA_CFLAGS += -DSDK_GIT=IDF_VER
+
 include $(IDF_PATH)/make/project.mk
 
 factory_bin:

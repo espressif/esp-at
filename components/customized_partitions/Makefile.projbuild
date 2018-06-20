@@ -59,12 +59,13 @@ $(AT_CUSTOMIZED_PARTITION_TABLE_BIN): $(AT_PARTITION_TABLE_CSV_PATH) $(SDKCONFIG
 	@cat $(AT_PARTITION_TABLE_CSV_PATH) | while read LINE; do \
         if [ -n "$$LINE" ] && [[ "$$LINE" != "#"* ]]; then \
             PARTITION_NAME=`echo "$$LINE" | awk -F, '{print $$1}'`; \
+            PARTITION_SIZE=`echo "$$LINE" | awk -F, '{print $$5}'`; \
             PARTITION_ENABLED=`cat $(AT_ENABLED_CUSTOMIZED_PARTITIONS_FILE) | grep $$PARTITION_NAME`; \
             if [ -n "$$PARTITION_ENABLED" ] ; then \
                 PARTITION_TABLE_OFFSET=`echo "$$LINE" | awk -F, '{print $$4}'`; \
                 if [ -f "$(AT_CUSTOMIZED_PARTITION_FOLDER)/generation_tools/$$PARTITION_NAME.sh" ]; then \
                     source "$(AT_CUSTOMIZED_PARTITION_FOLDER)/generation_tools/$$PARTITION_NAME.sh" \
-                        $${PARTITION_NAME} $(AT_CUSTOMIZED_PARTITION_BINS) || exit 1; \
+                        $${PARTITION_NAME} $(AT_CUSTOMIZED_PARTITION_BINS) $$PARTITION_SIZE || exit 1; \
                     echo "AT customized partitions successfully generated: $$PARTITION_NAME"; \
                     echo " $$PARTITION_TABLE_OFFSET $(AT_CUSTOMIZED_PARTITION_BINS)/$$PARTITION_NAME.bin" \
                         >> $(AT_PARTITION_FLASH_ARG_CACHE_FILE); \
