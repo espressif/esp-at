@@ -16,8 +16,10 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+UART_DEF](#cmd-UARTD) : Default UART configuration, saved in flash.
 * [AT+SLEEP](#cmd-SLEEP) : Sets the sleep mode.
 * [AT+SYSRAM](#cmd-SYSRAM) : Checks the remaining space of RAM.
+* [AT+SYSMSG](#cmd-SYSMSG) : Set message format.
 * [AT+SYSFLASH](#cmd-SYSFLASH) : Set User Partitions in Flash.
 * [AT+FS](#cmd-FS) : Filesystem Operations.
+* [AT+RFPOWER](#cmd-RFPOWER) : Set RF TX Power.
 
 <a name="WiFi-AT"></a>
 ### 1.2 Wi-Fi AT Commands List
@@ -38,6 +40,7 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+CWSTARTSMART](#cmd-STARTS) : Starts SmartConfig.
 * [AT+CWSTOPSMART](#cmd-STOPS) : Stops SmartConfig.
 * [AT+WPS](#cmd-WPS) : Enables the WPS function.
+* [AT+MDNS](#cmd-MDNS) : Configurates the MDNS function
 
 <a name="TCPIP-AT"></a>
 ### 1.3 TCP/IP-Related AT Commands List
@@ -58,6 +61,7 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+CIPSNTPTIME](#cmd-SNTPT) : Queries the SNTP time.
 * [AT+CIUPDATE](#cmd-UPDATE) : Updates the software through Wi-Fi.
 * [AT+CIPDINFO](#cmd-IPDINFO) : Shows remote IP and remote port with +IPD.
+* [AT+CIPSSLCCONF](#cmd-SSLCCONF) : Config SSL client.
 
 <a name="BLE-AT"></a>
 ### 1.4 BLE AT Commands List
@@ -89,8 +93,23 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+BLEGATTCCHAR](#cmd-GCCHAR) : GATTC discovers characteristics
 * [AT+BLEGATTCRD](#cmd-GCRD) : GATTC reads characteristics
 * [AT+BLEGATTCWR](#cmd-GCWR) : GATTC writes characteristics
+* [AT+BLESPPCFG](#cmd-BLESPPCFG) : Sets BLE spp parameters
+* [AT+BLESPP](#cmd-BLESPP) : Enter BLE spp mode
+* [AT+BLESECPARAM](#cmd-BLESMPPAR) : Set BLE encryption parameters
+* [AT+BLEENC](#cmd-BLEENC) : Initiate BLE encryption request
+* [AT+BLEENCRSP](#cmd-BLEENCRSP) : Grant security request access.
+* [AT+BLEKEYREPLY](#cmd-BLEKEYREPLY) : Reply the key value to the peer device in the lagecy connection stage.
+* [AT+BLECONFREPLY](#cmd-BLECOFREPLY) : Reply the comfirm value to the peer device in the lagecy connection stage.
+* [AT+BLEENCDEV](#cmd-BLEENCDEV) : Query BLE encryption device list
+* [AT+BLEENCCLEAR](#cmd-BLEENCCLEAR) : Clear BLE encryption device list
 
 * [BLE AT Examples](#exam-BLE)
+
+<a name="ETH-AT"></a>
+### 1.5 ETH AT Commands List
+* [AT+CIPETHMAC](#cmd-ETHMAC) : Sets the MAC address of ESP32 Ethernet.
+* [AT+CIPETH](#cmd-CIPETH) : Sets the IP address of ESP32 Ethernet.
+
 
 ## 2. Basic AT Commands 
 <a name="cmd-AT"></a>
@@ -119,9 +138,9 @@ Execute Command:
 Response: 
 
     <AT version info>
-	<SDK version info>
-	<compile time>
-	
+    <SDK version info>
+    <compile time>
+    
     OK
 Parameters:  
 
@@ -137,12 +156,12 @@ Set Command:
 Response:  
 
     <time>
-	
-	OK
+    
+    OK
 Parameters:  
 
 - **\<time>**: the duration of ESP32’s sleep. Unit: ms.  
-	ESP32 will wake up after Deep-sleep for as many milliseconds (ms) as \<time> indicates.  
+    ESP32 will wake up after Deep-sleep for as many milliseconds (ms) as \<time> indicates.  
 
 <a name="cmd-ATE"></a>
 ### 2.5 [ATE](#Basic-AT)—AT Commands Echoing
@@ -179,8 +198,8 @@ Query Command:
 Response:  
 
     +UART:<baudrate>,<databits>,<stopbits>,<parity>,<flow control>
-	
-	OK
+    
+    OK
 ***Note:***  
 
 * Command `AT+UART?` will return the actual value of UART configuration parameters, which may have allowable errors compared with the set value because of the clock division.   
@@ -195,23 +214,23 @@ Parameters:
 
 - **\<baudrate>**: UART baud rate
 - **\<databits>**: data bits  
-    - 	5: 5-bit data
-    - 	6: 6-bit data
-    - 	7: 7-bit data
-    - 	8: 8-bit data
+    -   5: 5-bit data
+    -   6: 6-bit data
+    -   7: 7-bit data
+    -   8: 8-bit data
 - **\<stopbits>**: stop bits
-    - 	1: 1-bit stop bit
-    - 	2: 1.5-bit stop bit
-    - 	3: 2-bit stop bit
+    -   1: 1-bit stop bit
+    -   2: 1.5-bit stop bit
+    -   3: 2-bit stop bit
 - **\<parity>**: parity bit
-    - 	0: None
-    - 	1: Odd
-    - 	2: Even
+    -   0: None
+    -   1: Odd
+    -   2: Even
 - **\<flow control>**: flow control
-    - 	0: flow control is not enabled
-    - 	1: enable RTS
-    - 	2: enable CTS
-    - 	3: enable both RTS and CTS	
+    -   0: flow control is not enabled
+    -   1: enable RTS
+    -   2: enable CTS
+    -   3: enable both RTS and CTS  
 
 ***Notes:***
 
@@ -221,9 +240,9 @@ Parameters:
     * IO14 is UART0 RTS
 * The range of baud rates supported: 80 ~ 5000000.
 
-Example:	
+Example:    
 
-	AT+UART=115200,8,1,0,3	
+    AT+UART=115200,8,1,0,3  
 
 <a name="cmd-UARTC"></a>
 ### 2.8 [AT+UART_CUR](#Basic-AT)—Current UART Configuration, Not Saved in Flash
@@ -233,8 +252,8 @@ Query Command:
 Response:  
 
     +UART_CUR:<baudrate>,<databits>,<stopbits>,<parity>,<flow control>
-	
-	OK
+    
+    OK
 ***Note:***  
 
 * Command `AT+UART_CUR?` will return the actual value of UART configuration parameters, which may have allowable errors compared with the set value because of the clock division.
@@ -249,8 +268,8 @@ Parameters:
 
 - **\<baudrate>**: UART baud rate
 - **\<databits>**: data bits
-    - 	5: 5-bit data
-    - 	6: 6-bit data
+    -   5: 5-bit data
+    -   6: 6-bit data
     -  7: 7-bit data
     -  8: 8-bit data
 - **\<stopbits>**: stop bits
@@ -265,7 +284,7 @@ Parameters:
     -  0: flow control is not enabled
     -  1: enable RTS
     -  2: enable CTS
-    -  3: enable both RTS and CTS	
+    -  3: enable both RTS and CTS   
 
 ***Notes:***
 
@@ -275,9 +294,9 @@ Parameters:
     * IO14 is UART0 RTS
 * The range of baud rates supported: 80 ~ 5000000.
 
-Example:	
+Example:    
 
-	AT+UART_CUR=115200,8,1,0,3	
+    AT+UART_CUR=115200,8,1,0,3  
 
 <a name="cmd-UARTD"></a>
 ### 2.9 [AT+UART_DEF](#Basic-AT)—Default UART Configuration, Saved in Flash
@@ -287,8 +306,8 @@ Query Command:
 Response:  
 
     +UART_DEF:<baudrate>,<databits>,<stopbits>,<parity>,<flow control>
-	
-	OK
+    
+    OK
 Set Command:  
 
     AT+UART_DEF=<baudrate>,<databits>,<stopbits>,<parity>,<flow control>
@@ -315,7 +334,7 @@ Parameters:
     -  0: flow control is not enabled
     -  1: enable RTS
     -  2: enable CTS
-    -  3: enable both RTS and CTS	  
+    -  3: enable both RTS and CTS     
 
 ***Notes:***
 
@@ -325,9 +344,9 @@ Parameters:
     * IO14 is UART0 RTS
 * The range of baud rates supported: 80 ~ 5000000.  
 
-Example:	
+Example:    
 
-	AT+UART_DEF=115200,8,1,0,3	
+    AT+UART_DEF=115200,8,1,0,3  
 
 <a name="cmd-SLEEP"></a>
 ### 2.10 [AT+SLEEP](#Basic-AT)—Sets the Sleep Mode
@@ -336,7 +355,7 @@ Set Command:
     AT+SLEEP=<sleep mode>
 Response:
 
-	OK
+    OK
 Parameters:  
 
 - **\<sleep mode>**: 
@@ -345,47 +364,89 @@ Parameters:
 
 Example:
 
-	AT+SLEEP=0
+    AT+SLEEP=0
 
 <a name="cmd-SYSRAM"></a>
 ### 2.11 [AT+SYSRAM](#Basic-AT)—Checks the Remaining Space of RAM  
 Query Command:
 
-	AT+SYSRAM?	
+    AT+SYSRAM?  
 Response:
 
-	+SYSRAM:<remaining RAM size>
-	OK	
+    +SYSRAM:<remaining RAM size>
+    OK  
 Parameters:
 
-- **\<remaining RAM size>**: remaining space of RAM, unit: byte	
+- **\<remaining RAM size>**: remaining space of RAM, unit: byte 
 
 Example:
 
-	AT+SYSRAM?
-	+SYSRAM:148408
-	OK
+    AT+SYSRAM?
+    +SYSRAM:148408
+    OK
+
+<a name="cmd-SYSMSG"></a>
+### 2.12 [AT+SYSMSG](#Basic-AT)—Control to use new or old information
+Query Command:
+
+    AT+SYSMSG?
+    Function:
+    Query the current system message state. 
+Response:
+
+    +SYSMSG:<state>
+    OK  
+    Bit0: 
+        0: Quit transparent transmission no information.
+        1: Quit transparent transmission will supply information.
+    Bit1: 
+        0: Use old connection info.
+        1: Use new connection info.
+Set Command:
+
+    AT+SYSMSG=<state>
+    Function:
+    Control to use new or old information.  
+Response:
+
+    OK  
+Parameters:
+
+- **\<state>**: 
+    - Bit0: Quit transparent transmission
+    - Bit1: Connection info
+
+***Notes:***  
+
+* The configuration changes will be saved in the NVS area.
+* If set Bit0 to 1 will supply information "+QUITT" when quit transparent transmission.
+* If set Bit1 to 1 will impact the infomation of command `AT+CIPSTART` and `AT+CIPSERVER`,
+    * It will supply "+LINK_CONN : status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port" instead of "XX,CONNECT".
+Example:
+
+    // Use new connection info and quit transparent transmission no information
+    AT+SYSMSG=2
 
 <a name="cmd-SYSFLASH"></a>
 ### 2.12 [AT+SYSFLASH](#Basic-AT)—Set User Partitions in Flash  
 Query Command:
 
-	AT+SYSFLASH?
-	Function:
-	Check the user partitions in flash.	
+    AT+SYSFLASH?
+    Function:
+    Check the user partitions in flash. 
 Response:
 
-	+SYSFLASH:<partition>,<type>,<subtype>,<addr>,<size>
-	OK	
+    +SYSFLASH:<partition>,<type>,<subtype>,<addr>,<size>
+    OK  
 Set Command:
 
-	AT+SYSFLASH=<operation>,<partition>,<offset>,<length>
-	Function:
-	Read/write the user partitions in flash.	
+    AT+SYSFLASH=<operation>,<partition>,<offset>,<length>
+    Function:
+    Read/write the user partitions in flash.    
 Response:
 
-	+SYSFLASH:<length>,<data>
-	OK	
+    +SYSFLASH:<length>,<data>
+    OK  
 Parameters:
 
 - **\<operation>**:
@@ -410,21 +471,21 @@ Parameters:
 
 Example:
 
-	// read 100 bytes from the "ble_data" partition offset 0.
-	AT+SYSFLASH=2,"ble_data",0,100
-	// write 10 bytes to the "ble_data" partition offset 100.
-	AT+SYSFLASH=1,"ble_data",100,10
-	// erase 8192 bytes from the "ble_data" partition offset 4096.
-	AT+SYSFLASH=0,"ble_data",4096,8192
+    // read 100 bytes from the "ble_data" partition offset 0.
+    AT+SYSFLASH=2,"ble_data",0,100
+    // write 10 bytes to the "ble_data" partition offset 100.
+    AT+SYSFLASH=1,"ble_data",100,10
+    // erase 8192 bytes from the "ble_data" partition offset 4096.
+    AT+SYSFLASH=0,"ble_data",4096,8192
 
-<a name="cmd-SYSFLASH"></a>
+<a name="cmd-FS"></a>
 ### 2.13 [AT+FS](#Basic-AT)—Filesystem Operations  
 Set Command:
 
-	AT+FS=<type>,<operation>,<filename>,<offset>,<length>
+    AT+FS=<type>,<operation>,<filename>,<offset>,<length>
 Response:
 
-	OK	
+    OK  
 Parameters:
 
 - **\<type>**: only FATFS is currently supported
@@ -441,62 +502,106 @@ Parameters:
 ***Notes:***  
 
 * at_customize.bin has to be downloaded, so that the relevant commands can be used. The definitions of user partitions are in esp32-at/at_customize.csv. Please refer to the [ESP32_Customize_Partitions](https://github.com/espressif/esp32-at/tree/master/docs) for more details.
+* If the length of the read data is greater than the actual file length, only the actual data length of the file will be returned.
 
 Example:
 
-	// delete a file.
-	AT+FS=0,0,"filename"
-	// write 10 bytes to offset 100 of a file.
-	AT+FS=0,1,"filename",100,10
-	// read 100 bytes from offset 0 of a file.
-	AT+FS=0,2,"filename",0,100
-	// list all files in the root directory.
-	AT+FS=0,4,"."
+    // delete a file.
+    AT+FS=0,0,"filename"
+    // write 10 bytes to offset 100 of a file.
+    AT+FS=0,1,"filename",100,10
+    // read 100 bytes from offset 0 of a file.
+    AT+FS=0,2,"filename",0,100
+    // list all files in the root directory.
+    AT+FS=0,4,"."
+
+<a name="cmd-RFPOWER"></a>
+### 2.13 [AT+RFPOWER](#Basic-AT)-Set RF TX Power
+Query Command: 
+
+    AT+RFPOWER?
+    Function: to query the RF TX Power.
+Response:
+
+    +RFPOWER:<wifi_power>,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>
+    OK
+
+Set Command:
+
+    AT+RFPOWER=<wifi_power>[,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>]
+Response:
+
+    OK
+Parameters:
+- **\<wifi_power>**: range [0, 11]
+    - 0:level 0. Refer to the 44th byte of phy_init_data.bin, the default value is 19.5 dBm
+    - 1:level 1. Refer to the 45th byte of phy_init_data.bin, the default value is 19 dBm
+    - 2:level 2. Refer to the 46th byte of phy_init_data.bin, the default value is 18.5 dBm
+    - 3:level 3. Refer to the 47th byte of phy_init_data.bin, the default value is 17 dBm
+    - 4:level 4. Refer to the 48th byte of phy_init_data.bin, the default value is 15 dBm
+    - 5:level 5. Refer to the 49th byte of phy_init_data.bin, the default value is 13 dBm
+    - 6:level 5 - 2 dBm. For example, if level 5 is 13 dBm, level 6 will be 11 dBm
+    - 7:level 5 - 4.5 dBm
+    - 8:level 5 - 6 dBm
+    - 9:level 5 - 8 dBm
+    - 10:level 5 - 11 dBm
+    - 11:level 5 - 14 dBm
+- **\<ble_adv_power>**: RF TX Power of BLE advertising, range: [0, 7]
+    - 0:7dBm
+    - 1:4dBm
+    - 2:1dBm
+    - 3:-2 dBm
+    - 4:-5 dBm
+    - 5:-8 dBm
+    - 6:-11 dBm
+    - 7:-14 dBm
+- **\<ble_scan_power>**: RF TX Power of BLE scanning, range:  [0, 7], the same as **\<ble_adv_power>**
+- **\<ble_conn_power>**: RF TX Power of BLE connecting, range:  [0, 7], the same as **\<ble_adv_power>**
 
 ## 3 Wi-Fi AT Commands  
 <a name="cmd-MODE"></a>
 ### 3.1 [AT+CWMODE](#WiFi-AT)—Sets the Wi-Fi Mode (Station/SoftAP/Station+SoftAP)  
 Query Command: 
 
-	AT+CWMODE?
-	Function: to query the Wi-Fi mode of ESP32.
+    AT+CWMODE?
+    Function: to query the Wi-Fi mode of ESP32.
 Response:
 
-	+CWMODE:<mode>
-	OK
+    +CWMODE:<mode>
+    OK
 Set Command: 
 
-	AT+CWMODE=<mode>
-	Function: to set the Wi-Fi mode of ESP32.
+    AT+CWMODE=<mode>
+    Function: to set the Wi-Fi mode of ESP32.
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<mode>**:
     - 0: Null mode, WiFi RF will be disabled
     - 1: Station mode
     - 2: SoftAP mode
-    - 3: SoftAP+Station mode	
+    - 3: SoftAP+Station mode    
 
 ***Note:***
 
-* The configuration changes will be saved in the NVS area.	
+* The configuration changes will be saved in the NVS area.  
 
 Example:
 
-	AT+CWMODE=3	
+    AT+CWMODE=3 
 
 <a name="cmd-JAP"></a>
 ### 3.2 [AT+CWJAP](#WiFi-AT)—Connects to an AP
 Query Command: 
 
-	AT+CWJAP?
-	Function: to query the AP to which the ESP32 Station is already connected.
+    AT+CWJAP?
+    Function: to query the AP to which the ESP32 Station is already connected.
 Response:
 
-	+CWJAP:<ssid>,<bssid>,<channel>,<rssi>
-	OK
+    +CWJAP:<ssid>,<bssid>,<channel>,<rssi>
+    OK
 Parameters:
 
 - **\<ssid>**: a string parameter showing the SSID of the AP.
@@ -506,14 +611,14 @@ Parameters:
 
 Set Command:
 
-	AT+CWJAP=<ssid>,<pwd>[,<bssid>]
-	Function: to set the AP to which the ESP32 Station needs to be connected.
+    AT+CWJAP=<ssid>,<pwd>[,<bssid>]
+    Function: to set the AP to which the ESP32 Station needs to be connected.
 Response:
 
-	OK
-	or
-	+CWJAP:<error code>
-	ERROR
+    OK
+    or
+    +CWJAP:<error code>
+    ERROR
 Parameters:
 
 - **\<ssid>**: the SSID of the target AP.
@@ -529,24 +634,24 @@ Parameters:
 
 ***Note:***
 
-* The configuration changes will be saved in the NVS area.	
+* The configuration changes will be saved in the NVS area.  
 * This command requires Station mode to be active. 
 
 Examples:
 
-	AT+CWJAP="abc","0123456789"
-	For example, if the target AP's SSID is "ab\,c" and the password is "0123456789"\", the command is as follows:
-	AT+CWJAP="ab\\\,c","0123456789\"\\"
-	If multiple APs have the same SSID as "abc", the target AP can be found by BSSID:
-	AT+CWJAP="abc","0123456789","ca:d7:19:d8:a6:44"	
+    AT+CWJAP="abc","0123456789"
+    For example, if the target AP's SSID is "ab\,c" and the password is "0123456789"\", the command is as follows:
+    AT+CWJAP="ab\\\,c","0123456789\"\\"
+    If multiple APs have the same SSID as "abc", the target AP can be found by BSSID:
+    AT+CWJAP="abc","0123456789","ca:d7:19:d8:a6:44" 
 <a name="cmd-LAPOPT"></a>
 ### 3.3 [AT+CWLAPOPT](#WiFi-AT)—Sets the Configuration for the Command AT+CWLAP
 Set Command:
 
-	AT+CWLAPOPT=<sort_enable>,<mask>
+    AT+CWLAPOPT=<sort_enable>,<mask>
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<sort_enable>**: determines whether the result of command AT+CWLAP will be listed according to RSSI: 
@@ -562,24 +667,24 @@ Parameters:
 
 Example:
 
-	AT+CWLAPOPT=1,31
-	The first parameter is 1, meaning that the result of the command AT+CWLAP will be ordered according to RSSI;
-	The second parameter is 31, namely 0x1F, meaning that the corresponding bits of <mask> are set to 1. All parameters will be shown in the result of AT+CWLAP.
+    AT+CWLAPOPT=1,31
+    The first parameter is 1, meaning that the result of the command AT+CWLAP will be ordered according to RSSI;
+    The second parameter is 31, namely 0x1F, meaning that the corresponding bits of <mask> are set to 1. All parameters will be shown in the result of AT+CWLAP.
 
 <a name="cmd-LAP"></a>
 ### 3.4 [AT+CWLAP](#WiFi-AT)—Lists the Available APs
 Set Command: 
 
-	AT+CWLAP=<ssid>[,<mac>,<channel>]
-	Function: to query the APs with specific SSID and MAC on a specific channel.
+    AT+CWLAP=<ssid>[,<mac>,<channel>]
+    Function: to query the APs with specific SSID and MAC on a specific channel.
 Execute Command:
 
-	AT+CWLAP
-	Function: to list all available APs.
+    AT+CWLAP
+    Function: to list all available APs.
 Response:
 
-	+CWLAP:<ecn>,<ssid>,<rssi>,<mac>,<channel>
-	OK
+    +CWLAP:<ecn>,<ssid>,<rssi>,<mac>,<channel>
+    OK
 Parameters:
 
 - **\<ecn>**: encryption method.
@@ -595,36 +700,36 @@ Parameters:
 
 Examples:
 
-	AT+CWLAP="Wi-Fi","ca:d7:19:d8:a6:44",6
-	Or search for APs with a designated SSID: 
-	AT+CWLAP="Wi-Fi"
+    AT+CWLAP="Wi-Fi","ca:d7:19:d8:a6:44",6
+    Or search for APs with a designated SSID: 
+    AT+CWLAP="Wi-Fi"
 
 <a name="cmd-QAP"></a>
 ### 3.5 [AT+CWQAP](#WiFi-AT)—Disconnects from the AP
 Execute Command:
 
-	AT+CWQAP
+    AT+CWQAP
 Response:
 
-	OK
+    OK
 
 <a name="cmd-SAP"></a>
 ### 3.6 [AT+CWSAP](#WiFi-AT)—Configuration of the ESP32 SoftAP
 Query Command: 
 
-	AT+CWSAP?
-	Function: to obtain the configuration parameters of the ESP32 SoftAP.
+    AT+CWSAP?
+    Function: to obtain the configuration parameters of the ESP32 SoftAP.
 Response:
 
-	+CWSAP:<ssid>,<pwd>,<channel>,<ecn>,<max conn>,<ssid hidden>
-	OK
+    +CWSAP:<ssid>,<pwd>,<channel>,<ecn>,<max conn>,<ssid hidden>
+    OK
 Set Command:
 
-	AT+CWSAP=<ssid>,<pwd>,<chl>,<ecn>[,<max conn>][,<ssid hidden>]
-	Function: to set the configuration of the ESP32 SoftAP.
+    AT+CWSAP=<ssid>,<pwd>,<chl>,<ecn>[,<max conn>][,<ssid hidden>]
+    Function: to set the configuration of the ESP32 SoftAP.
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<ssid>**: string parameter, SSID of AP.
@@ -643,21 +748,21 @@ Parameters:
 ***Note:***
 
 * This command is only available when SoftAP is active.
-* The configuration changes will be saved in the NVS area.	
+* The configuration changes will be saved in the NVS area.  
 
 Example:
 
-	AT+CWSAP="ESP32","1234567890",5,3	
+    AT+CWSAP="ESP32","1234567890",5,3   
 
 <a name="cmd-LIF"></a>
 ### 3.7 [AT+CWLIF](#WiFi-AT)—IP of Stations to Which the ESP32 SoftAP is Connected
 Execute Command:
 
-	AT+CWLIF
+    AT+CWLIF
 Response:
 
-	<ip addr>,<mac>
-	OK
+    <ip addr>,<mac>
+    OK
 Parameters:
 
 - **\<ip addr>**: IP address of Stations to which ESP32 SoftAP is connected.
@@ -671,23 +776,23 @@ Parameters:
 ### 3.8 [AT+CWDHCP](#WiFi-AT)—Enables/Disables DHCP
 Query Command: 
 
-	AT+CWDHCP?
+    AT+CWDHCP?
 Response:
 
-	DHCP disabled or enabled now?
-	Bit0: 
-		0: Station DHCP is disabled.
-		1: Station DHCP is enabled.
-	Bit1: 
-		0: SoftAP DHCP is disabled.
-		1: SoftAP DHCP is enabled.
+    DHCP disabled or enabled now?
+    Bit0: 
+        0: Station DHCP is disabled.
+        1: Station DHCP is enabled.
+    Bit1: 
+        0: SoftAP DHCP is disabled.
+        1: SoftAP DHCP is enabled.
 Set Command: 
 
-	AT+CWDHCP=<operate>,<mode>
-	Function: to enable/disable DHCP.
+    AT+CWDHCP=<operate>,<mode>
+    Function: to enable/disable DHCP.
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<operate>**: 
@@ -707,24 +812,24 @@ Parameters:
 
 Examples:
 
-	AT+CWDHCP=1,1    //Enable Station DHCP. If the last DHCP mode is 2, then the current DHCP mode will be 3.
-	AT+CWDHCP=0,2    //Disable SoftAP DHCP. If the last DHCP mode is 3, then the current DHCP mode will be 1.	
+    AT+CWDHCP=1,1    //Enable Station DHCP. If the last DHCP mode is 2, then the current DHCP mode will be 3.
+    AT+CWDHCP=0,2    //Disable SoftAP DHCP. If the last DHCP mode is 3, then the current DHCP mode will be 1.   
 <a name="cmd-DHCPS"></a>
 ### 3.9 [AT+CWDHCPS](#WiFi-AT)—Sets the IP Address Allocated by ESP32 SoftAP DHCP (The configuration is saved in Flash.)
 Query Command:
 
-	AT+CWDHCPS?
+    AT+CWDHCPS?
 Response:
 
-	+CWDHCPS=<lease time>,<start IP>,<end IP>
-	OK
+    +CWDHCPS=<lease time>,<start IP>,<end IP>
+    OK
 Set Command: 
 
-	AT+CWDHCPS=<enable>,<lease time>,<start IP>,<end IP>
-	Function: sets the IP address range of the ESP32 SoftAP DHCP server.
+    AT+CWDHCPS=<enable>,<lease time>,<start IP>,<end IP>
+    Function: sets the IP address range of the ESP32 SoftAP DHCP server.
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<enable>**: 
@@ -742,18 +847,18 @@ Parameters:
 
 Examples:
 
-	AT+CWDHCPS=1,3,"192.168.4.10","192.168.4.15"
-	or
-	AT+CWDHCPS=0 //Disable the settings and use the default IP range.
+    AT+CWDHCPS=1,3,"192.168.4.10","192.168.4.15"
+    or
+    AT+CWDHCPS=0 //Disable the settings and use the default IP range.
 
 <a name="cmd-AUTOC"></a>
 ### 3.10 [AT+CWAUTOCONN](#WiFi-AT)—Auto-Connects to the AP or Not
 Set Command:
 
-	AT+CWAUTOCONN=<enable>
+    AT+CWAUTOCONN=<enable>
 Response:  
 
-	OK
+    OK
 Parameters:
 
 - **\<enable>**: 
@@ -767,28 +872,28 @@ Parameters:
 
 Example:
 
-	AT+CWAUTOCONN=1
+    AT+CWAUTOCONN=1
 
 <a name="cmd-STAMAC"></a>
 ### 3.11 [AT+CIPSTAMAC](#WiFi-AT)—Sets the MAC Address of the ESP32 Station
 Query Command:
 
-	AT+CIPSTAMAC?
-	Function: to obtain the MAC address of the ESP32 Station.
+    AT+CIPSTAMAC?
+    Function: to obtain the MAC address of the ESP32 Station.
 Response:
 
-	+CIPSTAMAC:<mac>
-	OK
+    +CIPSTAMAC:<mac>
+    OK
 Set Command: 
 
-	AT+CIPSTAMAC=<mac>
-	Function: to set the MAC address of the ESP32 Station.
+    AT+CIPSTAMAC=<mac>
+    Function: to set the MAC address of the ESP32 Station.
 Response:
 
-	OK
+    OK
 Parameters:
 
-- **\<mac>**: string parameter, MAC address of the ESP8266 Station.	
+- **\<mac>**: string parameter, MAC address of the ESP8266 Station. 
 
 ***Notes:***
 
@@ -800,28 +905,28 @@ Parameters:
 
 Example:
 
-	AT+CIPSTAMAC="1a:fe:35:98:d3:7b"	
+    AT+CIPSTAMAC="1a:fe:35:98:d3:7b"    
 
 <a name="cmd-APMAC"></a>
 ### 3.12 [AT+CIPAPMAC](#WiFi-AT)—Sets the MAC Address of the ESP32 SoftAP
 Query Command:
 
-	AT+CIPAPMAC?
-	Function: to obtain the MAC address of the ESP32 SoftAP.
+    AT+CIPAPMAC?
+    Function: to obtain the MAC address of the ESP32 SoftAP.
 Response:
 
-	+CIPAPMAC:<mac>
-	OK
+    +CIPAPMAC:<mac>
+    OK
 Set Command: 
 
-	AT+CIPAPMAC=<mac>
-	Function: to set the MAC address of the ESP32 SoftAP.
+    AT+CIPAPMAC=<mac>
+    Function: to set the MAC address of the ESP32 SoftAP.
 Response:
 
-	OK
+    OK
 Parameters:
 
-- **\<mac>**: string parameter, MAC address of the ESP8266 SoftAP.	
+- **\<mac>**: string parameter, MAC address of the ESP8266 SoftAP.  
 
 ***Notes:***
 
@@ -833,26 +938,26 @@ Parameters:
 
 Example:
 
-	AT+CIPAPMAC="18:fe:35:98:d3:7b"	
+    AT+CIPAPMAC="18:fe:35:98:d3:7b" 
 
 <a name="cmd-IPSTA"></a>
 ### 3.13 [AT+CIPSTA](#WiFi-AT)—Sets the IP Address of the ESP32 Station
 Query Command:
 
-	AT+CIPSTA?
-	Function: to obtain the IP address of the ESP32 Station.
-	Notice: Only when the ESP32 Station is connected to an AP can its IP address be queried.
+    AT+CIPSTA?
+    Function: to obtain the IP address of the ESP32 Station.
+    Notice: Only when the ESP32 Station is connected to an AP can its IP address be queried.
 Response:
 
-	+CIPSTA:<ip>
-	OK
+    +CIPSTA:<ip>
+    OK
 Set Command:
 
-	AT+CIPSTA=<ip>[,<gateway>,<netmask>]
-	Function: to set the IP address of the ESP32 Station.
+    AT+CIPSTA=<ip>[,<gateway>,<netmask>]
+    Function: to set the IP address of the ESP32 Station.
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<ip>**: string parameter, the IP address of the ESP32 Station.
@@ -869,24 +974,24 @@ Parameters:
 
 Example:
 
-	AT+CIPSTA="192.168.6.100","192.168.6.1","255.255.255.0"	
+    AT+CIPSTA="192.168.6.100","192.168.6.1","255.255.255.0" 
 <a name="cmd-IPAP"></a>
 ### 3.14 [AT+CIPAP](#WiFi-AT)—Sets the IP Address of the ESP32 SoftAP
 Query Command:
 
-	AT+CIPAP?
-	Function: to obtain the IP address of the ESP32 SoftAP.
+    AT+CIPAP?
+    Function: to obtain the IP address of the ESP32 SoftAP.
 Response:
 
-	+CIPAP:<ip>,<gateway>,<netmask>
-	OK
+    +CIPAP:<ip>,<gateway>,<netmask>
+    OK
 Set Command:
 
-	AT+CIPAP=<ip>[,<gateway>,<netmask>]
-	Function: to set the IP address of the ESP32 SoftAP.
+    AT+CIPAP=<ip>[,<gateway>,<netmask>]
+    Function: to set the IP address of the ESP32 SoftAP.
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<ip>**: string parameter, the IP address of the ESP32 SoftAP.
@@ -903,21 +1008,21 @@ Parameters:
 
 Example:
 
-	AT+CIPAP="192.168.5.1","192.168.5.1","255.255.255.0"
+    AT+CIPAP="192.168.5.1","192.168.5.1","255.255.255.0"
 
 <a name="cmd-STARTS"></a>
 ### 3.15 [AT+CWSTARTSMART](#WiFi-AT)—Starts SmartConfig
 Execute Command:
 
-	AT+CWSTARTSMART
-	Function: to start SmartConfig. (The type of SmartConfig is ESP-TOUCH + AirKiss.）
+    AT+CWSTARTSMART
+    Function: to start SmartConfig. (The type of SmartConfig is ESP-TOUCH + AirKiss.）
 Set Command:
 
-	AT+CWSTARTSMART=<type>
-	Function: to start SmartConfig of a designated type.
+    AT+CWSTARTSMART=<type>
+    Function: to start SmartConfig of a designated type.
 Response:
 
-	OK	
+    OK  
 Parameters:
 
 - **\<type>**: 
@@ -935,35 +1040,35 @@ Parameters:
 
 Example:
 
-	AT+CWMODE=1
-	AT+CWSTARTSMART
+    AT+CWMODE=1
+    AT+CWSTARTSMART
 
 <a name="cmd-STOPS"></a>
 ### 3.16 [AT+CWSTOPSMART](#WiFi-AT)—Stops SmartConfig
 Execute Command:
 
-	AT+CWSTOPSMART
+    AT+CWSTOPSMART
 Response:
 
-	OK
+    OK
 ***Note:***
 
 * Irrespective of whether SmartConfig succeeds or not, before executing any other AT commands, please always call `AT+CWSTOPSMART` to release the internal memory taken up by SmartConfig.
 
 Example:
 
-	AT+CWMODE=1
-	AT+CWSTARTSMART
-	AT+CWSTOPSMART
+    AT+CWMODE=1
+    AT+CWSTARTSMART
+    AT+CWSTOPSMART
 
 <a name="cmd-WPS"></a>
 ### 3.17 [AT+WPS](#WiFi-AT)—Enables the WPS Function
 Set Command:
 
-	AT+WPS=<enable>
+    AT+WPS=<enable>
 Response:
 
-	OK 
+    OK 
 Parameters:
 
 - **\<enable>**: 
@@ -977,19 +1082,44 @@ Parameters:
 
 Example:
 
-	AT+CWMODE=1
-	AT+WPS=1
+    AT+CWMODE=1
+    AT+WPS=1
+    
+<a name="cmd-MDNS"></a>
+### 3.18 [AT+MDNS](#WiFi-AT)—Configurates the MDNS Function
+Set Command:
+
+    AT+MDNS=<enable>[,<hostname>,<service_name>,<port>]
+Response:
+
+    OK 
+Parameters:
+
+- **\<enable>**:
+    - 1: enables the MDNS function; the following three parameters need to be set.
+    - 0: disables the MDNS function; the following three parameters need not to be set.
+- **\<hostname>**: MDNS host name
+- **\<service_name>**: MDNS service name
+- **\<port>**: MDNS port
+
+***Notes:***
+    Please do not use other special characters (such as .) for <hostname> and <service_name>.
+
+Example:
+
+    AT+MDNS=1,"espressif","_iot",8080  
+    AT+MDNS=0
 
 ## 4. TCP/IP-Related AT Commands
 <a name="cmd-STATUS"></a>
 ### 4.1 [AT+CIPSTATUS](#TCPIP-AT)—Gets the Connection Status
 Execute Command:
 
-	AT+CIPSTATUS
+    AT+CIPSTATUS
 Response:
 
-	STATUS:<stat>
-	+CIPSTATUS:<link ID>,<type>,<remote IP>,<remote port>,<local port>,<tetype>
+    STATUS:<stat>
+    +CIPSTATUS:<link ID>,<type>,<remote IP>,<remote port>,<local port>,<tetype>
 Parameters:
 
 - **\<stat>**: status of the ESP32 Station interface.
@@ -1010,35 +1140,35 @@ Parameters:
 ### 4.2 [AT+CIPDOMAIN](#TCPIP-AT)—DNS Function
 Execute Command:
 
-	AT+CIPDOMAIN=<domain name>
+    AT+CIPDOMAIN=<domain name>
 Response:
 
-	+CIPDOMAIN:<IP address>
+    +CIPDOMAIN:<IP address>
 Parameter:
 
 - **\<domain name>**: the domain name.
 
 Example:
 
-	AT+CWMODE=1                       // set Station mode
-	AT+CWJAP="SSID","password"        // access to the internet
-	AT+CIPDOMAIN="iot.espressif.cn"   // DNS function
+    AT+CWMODE=1                       // set Station mode
+    AT+CWJAP="SSID","password"        // access to the internet
+    AT+CIPDOMAIN="iot.espressif.cn"   // DNS function
 
 <a name="cmd-START"></a>
 ### 4.3 [AT+CIPSTART](#TCPIP-AT)—Establishes TCP Connection, UDP Transmission or SSL Connection
 #### 4.3.1 Establish TCP Connection
 Set Command:
 
-	Single TCP connection (AT+CIPMUX=0):
-	AT+CIPSTART=<type>,<remote IP>,<remote port>[,<TCP keep alive>]
-	Multiple TCP Connections (AT+CIPMUX=1):
-	AT+CIPSTART=<link ID>,<type>,<remote IP>,<remote port>[,<TCP keep alive>]
+    Single TCP connection (AT+CIPMUX=0):
+    AT+CIPSTART=<type>,<remote IP>,<remote port>[,<TCP keep alive>][,<local IP>]
+    Multiple TCP Connections (AT+CIPMUX=1):
+    AT+CIPSTART=<link ID>,<type>,<remote IP>,<remote port>[,<TCP keep alive>][,<local IP>]
 Response:
 
-	OK
-	Or if the TCP connection is already established, the response is:
-	ALREADY CONNECTTED
-	ERROR
+    OK
+    Or if the TCP connection is already established, the response is:
+    ALREADY CONNECTTED
+    ERROR
 Parameters:
 
 - **\<link ID>**: ID of network connection (0~4), used for multiple connections.
@@ -1049,23 +1179,27 @@ Parameters:
     - 0: disable TCP keep-alive.
     - 1 ~ 7200: detection time interval; unit: second (s).
 
+- **\[\<local IP>]**(optional parameter): select which IP want to use, this is useful when using both ethernet and WiFi; this parameter is disabled by default. If you want to use this parameter, <TCP keep alive> must be specified firstly, null also is valid.
+
 Examples:
 
-	AT+CIPSTART="TCP","iot.espressif.cn",8000
-	AT+CIPSTART="TCP","192.168.101.110",1000
+    AT+CIPSTART="TCP","iot.espressif.cn",8000
+    AT+CIPSTART="TCP","192.168.101.110",1000
+    AT+CIPSTART="TCP","192.168.101.110",1000,,"192.168.101.100"
+
 #### 4.3.2 Establish UDP Transmission
 Set Command:
 
-	Single connection (AT+CIPMUX=0): 
-	AT+CIPSTART=<type>,<remote IP>,<remote port>[,(<UDP local port>),(<UDP mode>)]
-	Multiple connections (AT+CIPMUX=1): 
-	AT+CIPSTART=<link ID>,<type>,<remote IP>,<remote port>[,(<UDP local port>),(<UDP mode>)]
+    Single connection (AT+CIPMUX=0): 
+    AT+CIPSTART=<type>,<remote IP>,<remote port>[,(<UDP local port>),(<UDP mode>)][,<local IP>]
+    Multiple connections (AT+CIPMUX=1): 
+    AT+CIPSTART=<link ID>,<type>,<remote IP>,<remote port>[,(<UDP local port>),(<UDP mode>)][,<local IP>]
 Response:
 
-	OK
-	Or if the UDP transmission is already established, the response is:
-	ALREADY CONNECTTED
-	ERROR
+    OK
+    Or if the UDP transmission is already established, the response is:
+    ALREADY CONNECTTED
+    ERROR
 Parameters:
 
 - **\<link ID>**: ID of network connection (0~4), used for multiple connections.
@@ -1077,6 +1211,7 @@ Parameters:
     - 0: the destination peer entity of UDP will not change; this is the default setting.
     - 1: the destination peer entity of UDP can change once.
     - 2: the destination peer entity of UDP is allowed to change.
+- **\[\<local IP>]**(optional parameter): select which IP want to use, this is useful when using both ethernet and WiFi; this parameter is disabled by default. If you want to use this parameter, <UDP local port> and <UDP mode> must be specified firstly, null also is valid.
 
 ***Notice:*** 
 
@@ -1084,17 +1219,18 @@ Parameters:
 
 Example:
 
-	AT+CIPSTART="UDP","192.168.101.110",1000,1002,2
+    AT+CIPSTART="UDP","192.168.101.110",1000,1002,2
+    AT+CIPSTART="UDP","192.168.101.110",1000,,,"192.168.101.100"
 #### 4.3.3 Establish SSL Connection
 Set Command:
 
-	AT+CIPSTART=[<link ID>,]<type>,<remote IP>,<remote port>[,<TCP keep alive>]	
+    AT+CIPSTART=[<link ID>,]<type>,<remote IP>,<remote port>[,<TCP keep alive>][,<local IP>]    
 Response:
 
-	OK
-	Or if the TCP connection is already established, the response is:
-	ALREADY CONNECTTED
-	ERROR
+    OK
+    Or if the TCP connection is already established, the response is:
+    ALREADY CONNECTTED
+    ERROR
 Parameters:
 
 - **\<link ID>**: ID of network connection (0~4), used for multiple connections.
@@ -1103,73 +1239,75 @@ Parameters:
 - **\<remote port>**: the remote port number.
 - **\[\<TCP keep alive>]**(optional parameter): detection time interval when TCP is kept alive; this function is disabled by default.
     - 0: disable the TCP keep-alive function.
-    - 1 ~ 7200: detection time interval, unit: second (s).	
+    - 1 ~ 7200: detection time interval, unit: second (s).
+- **\[\<local IP>]**(optional parameter): select which IP want to use, this is useful when using both ethernet and WiFi; this parameter is disabled by default. If you want to use this parameter, <TCP keep alive> must be specified firstly, null also is valid.  
 
 ***Notes:***
 
 * ESP32 can only set one SSL connection at most.
 * SSL connection does not support UART-WiFi passthrough mode (transparent transmission).
-* SSL connection needs a large amount of memory; otherwise, it may cause system reboot.	
+* SSL connection needs a large amount of memory; otherwise, it may cause system reboot. 
 
 Example:
 
-	AT+CIPSTART="SSL","iot.espressif.cn",8443	
+    AT+CIPSTART="SSL","iot.espressif.cn",8443
+    AT+CIPSTART="SSL","192.168.101.110",1000,,"192.168.101.100" 
 <a name="cmd-SEND"></a>
 ### 4.4 [AT+CIPSEND](#TCPIP-AT)—Sends Data
 Set Command: 
 
-	Single connection: (+CIPMUX=0)
-	AT+CIPSEND=<length>
-	Multiple connections: (+CIPMUX=1)
-	AT+CIPSEND=<link ID>,<length>
-	Remote IP and ports can be set in UDP transmission: 
-	AT+CIPSEND=[<link ID>,]<length>[,<remote IP>,<remote port>]
-	Function: to configure the data length in normal transmission mode.
+    Single connection: (+CIPMUX=0)
+    AT+CIPSEND=<length>
+    Multiple connections: (+CIPMUX=1)
+    AT+CIPSEND=<link ID>,<length>
+    Remote IP and ports can be set in UDP transmission: 
+    AT+CIPSEND=[<link ID>,]<length>[,<remote IP>,<remote port>]
+    Function: to configure the data length in normal transmission mode.
 Response:
 
-	Send data of designated length.
-	Wrap return > after the set command. Begin receiving serial data. When the requirement of data length is met, the transmission of data starts.
-	If the connection cannot be established or gets disrupted during data transmission, the system returns:
-	ERROR
-	If data is transmitted successfully, the system returns: 
-	SEND OK	
+    Send data of designated length.
+    Wrap return > after the set command. Begin receiving serial data. When the requirement of data length is met, the transmission of data starts.
+    If the connection cannot be established or gets disrupted during data transmission, the system returns:
+    ERROR
+    If data is transmitted successfully, the system returns: 
+    SEND OK 
 Execute Command: 
 
-	AT+CIPSEND
-	Function: to start sending data in transparent transmission mode.
+    AT+CIPSEND
+    Function: to start sending data in transparent transmission mode.
 Response:
 
-	Wrap return > after executing this command.
-	Enter transparent transmission, with a 20-ms interval between each packet, and a maximum of 2048 bytes per packet. 
-	When a single packet containing +++ is received, ESP32 returns to normal command mode. Please wait for at least one second before sending the next AT command.
-	This command can only be used in transparent transmission mode which requires single connection.
-	For UDP transparent transmission, the value of <UDP mode> has to be 0 when using AT+CIPSTART.
+    Wrap return > after executing this command.
+    Enter transparent transmission, with a 20-ms interval between each packet, and a maximum of 2048 bytes per packet. 
+    When a single packet containing +++ is received, ESP32 returns to normal command mode. Please wait for at least one second before sending the next AT command.
+    This command can only be used in transparent transmission mode which requires single connection.
+    For UDP transparent transmission, the value of <UDP mode> has to be 0 when using AT+CIPSTART.
 Parameters:
 
 - **\<link ID>**: ID of the connection (0~4), for multiple connections.
 - **\<length>**: data length, MAX: 2048 bytes.
 - **\[\<remote IP>]**(optional parameter): remote IP can be set in UDP transmission.
-- **\[\<remote port>]**(optional parameter): remote port can be set in UDP transmission.	
+- **\[\<remote port>]**(optional parameter): remote port can be set in UDP transmission.    
 
 <a name="cmd-SENDEX"></a>
 ### 4.5 [AT+CIPSENDEX](#TCPIP-AT)—Sends Data
 Set Command: 
 
-	Single connection: (+CIPMUX=0)
-	AT+CIPSENDEX=<length>
-	Multiple connections: (+CIPMUX=1)
-	AT+CIPSENDEX=<link ID>,<length>
-	Remote IP and ports can be set in UDP transmission:
-	AT+CIPSENDEX=[<link ID>,]<length>[,<remote IP>,<remote port>]
-	Function: to configure the data length in normal transmission mode.
+    Single connection: (+CIPMUX=0)
+    AT+CIPSENDEX=<length>
+    Multiple connections: (+CIPMUX=1)
+    AT+CIPSENDEX=<link ID>,<length>
+    Remote IP and ports can be set in UDP transmission:
+    AT+CIPSENDEX=[<link ID>,]<length>[,<remote IP>,<remote port>]
+    Function: to configure the data length in normal transmission mode.
 Response:
 
-	Send data of designated length.
-	Wrap return > after the set command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, or when \0 appears in the data, the transmission starts.
-	If connection cannot be established or gets disconnected during transmission,  the system returns: 
-	ERROR
-	If data are successfully transmitted, the system returns:
-	SEND OK
+    Send data of designated length.
+    Wrap return > after the set command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, or when \0 appears in the data, the transmission starts.
+    If connection cannot be established or gets disconnected during transmission,  the system returns: 
+    ERROR
+    If data are successfully transmitted, the system returns:
+    SEND OK
 Parameters:
 
 - **\<link ID>**: ID of the connection (0~4), for multiple connections.
@@ -1181,29 +1319,29 @@ Parameters:
 ### 4.6 [AT+CIPCLOSE](#TCPIP-AT)—Closes TCP/UDP/SSL Connection
 Set Command (for multiple connections): 
 
-	AT+CIPCLOSE=<link ID>
-	Function: to close TCP/UDP connection.
+    AT+CIPCLOSE=<link ID>
+    Function: to close TCP/UDP connection.
 Parameters:
 
 - **\<link ID>**: ID number of connections to be closed; when ID=5, all connections will be closed.
 
 Execute Command (for single connection):
 
-	AT+CIPCLOSE
+    AT+CIPCLOSE
 Response:
 
-	OK	
+    OK  
 
 <a name="cmd-IFSR"></a>
 ### 4.7 [AT+CIFSR](#TCPIP-AT)—Gets the Local IP Address
 Execute Command:
 
-	AT+CIFSR	
+    AT+CIFSR    
 Response:
 
-	+CIFSR:<SoftAP IP address>
-	+CIFSR:<Station IP address>
-	OK
+    +CIFSR:<SoftAP IP address>
+    +CIFSR:<Station IP address>
+    OK
 Parameters:
 
 - **\<IP address>**: 
@@ -1218,19 +1356,19 @@ Parameters:
 ### 4.8 [AT+CIPMUX](#TCPIP-AT)—Enables/Disables Multiple Connections
 Query Command:
 
-	AT+CIPMUX?
-	Function: to query the connection type.
+    AT+CIPMUX?
+    Function: to query the connection type.
 Response:
 
-	+CIPMUX:<mode>
-	OK
+    +CIPMUX:<mode>
+    OK
 Set Command:
 
-	AT+CIPMUX=<mode>
-	Function: to set the connection type.
+    AT+CIPMUX=<mode>
+    Function: to set the connection type.
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<mode>**: 
@@ -1246,16 +1384,16 @@ Parameters:
 
 Example:
 
-	AT+CIPMUX=1	
+    AT+CIPMUX=1 
 
 <a name="cmd-SERVER"></a>
 ### 4.9 [AT+CIPSERVER](#TCPIP-AT)—Deletes/Creates TCP or SSL Server
 Set Command:
 
-	AT+CIPSERVER=<mode>[,<port>][,<SSL>,<SSL CA enable>]	
+    AT+CIPSERVER=<mode>[,<port>][,<SSL>,<SSL CA enable>]    
 Response:
 
-	OK	
+    OK  
 Parameters:
 
 - **\<mode>**:
@@ -1275,30 +1413,30 @@ Parameters:
 
 Example:
 
-	// To create a TCP server
-	AT+CIPMUX=1
-	AT+CIPSERVER=1,80
-	// To create a SSL server
-	AT+CIPMUX=1
-	AT+CIPSERVER=1,443,"SSL",1
+    // To create a TCP server
+    AT+CIPMUX=1
+    AT+CIPSERVER=1,80
+    // To create a SSL server
+    AT+CIPMUX=1
+    AT+CIPSERVER=1,443,"SSL",1
 
 <a name="cmd-SERVERMAX"></a>
 ### 4.10 [AT+CIPSERVERMAXCONN](#TCPIP-AT)—Set the Maximum Connections Allowed by Server
 Query Command:
 
-	AT+CIPSERVERMAXCONN?
-	Function: obtain the maximum number of clients allowed to connect to the TCP or SSL server.
+    AT+CIPSERVERMAXCONN?
+    Function: obtain the maximum number of clients allowed to connect to the TCP or SSL server.
 Response:
 
-	+CIPSERVERMAXCONN:<num>
-	OK	
+    +CIPSERVERMAXCONN:<num>
+    OK  
 Set Command:
 
-	AT+CIPSERVERMAXCONN=<num>
-	Function: set the maximum number of clients allowed to connect to the TCP or SSL server.	
+    AT+CIPSERVERMAXCONN=<num>
+    Function: set the maximum number of clients allowed to connect to the TCP or SSL server.    
 Response:
 
-	OK	
+    OK  
 Parameters:
 
 - **\<num>**:  the maximum number of clients allowed to connect to the TCP or SSL server.
@@ -1309,27 +1447,27 @@ Parameters:
 
 Example:
 
-	AT+CIPMUX=1
-	AT+CIPSERVERMAXCONN=2
-	AT+CIPSERVER=1,80
+    AT+CIPMUX=1
+    AT+CIPSERVERMAXCONN=2
+    AT+CIPSERVER=1,80
 
 <a name="cmd-IPMODE"></a>
 ### 4.11 [AT+CIPMODE](#TCPIP-AT)—Configures the Transmission Mode
 Query Command:
 
-	AT+CIPMODE?
-	Function: to obtain information about transmission mode.
+    AT+CIPMODE?
+    Function: to obtain information about transmission mode.
 Response:
 
-	+CIPMODE:<mode>
-	OK
+    +CIPMODE:<mode>
+    OK
 Set Command:
 
-	AT+CIPMODE=<mode>
-	Function: to set the transmission mode.
+    AT+CIPMODE=<mode>
+    Function: to set the transmission mode.
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<mode>**: 
@@ -1344,17 +1482,17 @@ Parameters:
 
 Example:
 
-	AT+CIPMODE=1	
+    AT+CIPMODE=1    
 
 <a name="cmd-SAVET"></a>
 ### 4.12 [AT+SAVETRANSLINK](#TCPIP-AT)—Saves the Transparent Transmission Link in Flash
 #### 4.12.1 Save TCP Single Connection in Flash
 Set Command:
 
-	AT+SAVETRANSLINK=<mode>,<remote IP or domain name>,<remote port>[,<type>,<TCP keep alive>]	
+    AT+SAVETRANSLINK=<mode>,<remote IP or domain name>,<remote port>[,<type>,<TCP keep alive>]  
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<mode>**: 
@@ -1374,14 +1512,14 @@ Parameters:
 
 Example:
 
-	AT+SAVETRANSLINK=1,"192.168.6.110",1002,"TCP"	
+    AT+SAVETRANSLINK=1,"192.168.6.110",1002,"TCP"   
 #### 4.12.2 Save UDP Transmission in Flash
 Set Command:
 
-	AT+SAVETRANSLINK=<mode>,<remote IP>,<remote port>,<type>[,<UDP local port>]	
+    AT+SAVETRANSLINK=<mode>,<remote IP>,<remote port>,<type>[,<UDP local port>] 
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<mode>**: 
@@ -1399,27 +1537,27 @@ Parameters:
 
 Example:
 
-	AT+SAVETRANSLINK=1,"192.168.6.110",1002,"UDP",1005	
+    AT+SAVETRANSLINK=1,"192.168.6.110",1002,"UDP",1005  
 <a name="cmd-STO"></a>
 ### 4.13 [AT+CIPSTO](#TCPIP-AT)—Sets the TCP Server Timeout
 Query Command:
 
-	AT+CIPSTO?
-	Function: to check the TCP server timeout.
+    AT+CIPSTO?
+    Function: to check the TCP server timeout.
 Response:
 
-	+CIPSTO:<time>
-	OK
+    +CIPSTO:<time>
+    OK
 Set Command:
 
-	AT+CIPSTO=<time>
-	Function: to set the TCP server timeout.
+    AT+CIPSTO=<time>
+    Function: to set the TCP server timeout.
 Response:
 
-	OK
+    OK
 Parameter:
 
-- **\<time>**: TCP server timeout within the range of 0 ~ 7200s.	
+- **\<time>**: TCP server timeout within the range of 0 ~ 7200s.    
 
 ***Notes:***
 
@@ -1428,32 +1566,32 @@ Parameter:
 
 Example:
 
-	AT+CIPMUX=1
-	AT+CIPSERVER=1,1001
-	AT+CIPSTO=10
+    AT+CIPMUX=1
+    AT+CIPSERVER=1,1001
+    AT+CIPSTO=10
 
 <a name="cmd-SNTPCFG"></a>
 ### 4.14 [AT+CIPSNTPCFG](#TCPIP-AT)—Sets the Time Zone and the SNTP Server
 Query Command:
 
-	AT+CIPSNTPCFG?
+    AT+CIPSNTPCFG?
 Response:
 
-	+CIPSNTPCFG:<enable>,<timezone>,<SNTP server1>[,<SNTP server2>,<SNTP server3>]
-	OK
+    +CIPSNTPCFG:<enable>,<timezone>,<SNTP server1>[,<SNTP server2>,<SNTP server3>]
+    OK
 Execute Command:
 
-	AT+CIPSNTPCFG
-	Function: to clear the SNTP server information.
+    AT+CIPSNTPCFG
+    Function: to clear the SNTP server information.
 Response:
 
-	OK
+    OK
 Set Command:
 
-	AT+CIPSNTPCFG=<timezone>[,<SNTP server1>,<SNTP server2>,<SNTP server3>]
+    AT+CIPSNTPCFG=<timezone>[,<SNTP server1>,<SNTP server2>,<SNTP server3>]
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<enable>**: 
@@ -1470,33 +1608,33 @@ Parameters:
 
 Example:
 
-	AT+CIPSNTPCFG=8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"	
+    AT+CIPSNTPCFG=8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"   
 <a name="cmd-SNTPT"></a>
 ### 4.15 [AT+CIPSNTPTIME](#TCPIP-AT)—Queries the SNTP Time
 Query Command:
 
-	AT+CIPSNTPTIME?	
+    AT+CIPSNTPTIME? 
 Response:
 
-	+CIPSNTPTIME:SNTP time
-	OK
+    +CIPSNTPTIME:SNTP time
+    OK
 Example:
 
-	AT+CIPSNTPCFG=8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
-	OK
-	AT+CIPSNTPTIME?
-	+CIPSNTPTIME:Mon Dec 12 02:33:32 2016
-	OK	
+    AT+CIPSNTPCFG=8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
+    OK
+    AT+CIPSNTPTIME?
+    +CIPSNTPTIME:Mon Dec 12 02:33:32 2016
+    OK  
 
 <a name="cmd-UPDATE"></a>
 ### 4.16 [AT+CIUPDATE](#TCPIP-AT)—Updates the Software Through Wi-Fi
 Execute Command:
 
-	AT+CIUPDATE	
+    AT+CIUPDATE 
 Response:
 
-	+CIPUPDATE:<n>
-	OK
+    +CIPUPDATE:<n>
+    OK
 Parameters:
 
 - **\<n>**: 
@@ -1520,10 +1658,10 @@ Parameters:
 ### 4.17 [AT+CIPDINFO](#TCPIP-AT)—Shows the Remote IP and Port with "+IPD"
 Set Command:
 
-	AT+CIPDINFO=<mode>	
+    AT+CIPDINFO=<mode>  
 Response:
 
-	OK	
+    OK  
 Parameters:
 
 - **\<mode>**: 
@@ -1532,15 +1670,15 @@ Parameters:
 
 Example:
 
-	AT+CIPDINFO=1	
+    AT+CIPDINFO=1   
 
 ### 4.18 [+IPD](#TCPIP-AT)—Receives Network Data
 Command:
 
-	Single connection: 
-	(+CIPMUX=0)+IPD,<len>[,<remote IP>,<remote port>]:<data>
-	multiple connections: 
-	(+CIPMUX=1)+IPD,<link ID>,<len>[,<remote IP>,<remote port>]:<data>
+    Single connection: 
+    (+CIPMUX=0)+IPD,<len>[,<remote IP>,<remote port>]:<data>
+    multiple connections: 
+    (+CIPMUX=1)+IPD,<link ID>,<len>[,<remote IP>,<remote port>]:<data>
 Parameters:
 
 - **\[\<remote IP>]**: remote IP, enabled by command `AT+CIPDINFO=1`.
@@ -1553,31 +1691,67 @@ Parameters:
 
 * The command is valid in normal command mode. When the module receives network data, it will send the data through the serial port using the `+IPD` command.
 
+<a name="cmd-SSLCCONF"></a>
+### 4.17 [AT+CIPSSLCCONF](#TCPIP-AT)—Config SSL client
+Query Command:
+
+    AT+CIPSSLCCONF?
+    Function: to obtain all link SSL client configuration.
+Response:
+
+    +CIPSNTPCFG:<link ID>,<auth_mode>,<pki_number>,<ca_number>
+    OK
+Set Command:
+
+    Single connection: (+CIPMUX=0)
+    AT+CIPSSLCCONF=<auth_mode>,<pki_number>,<ca_number>
+    Multiple connections: (+CIPMUX=1)
+    AT+CIPSENDEX=<link ID>,<auth_mode>,<pki_number>,<ca_number>
+Response:
+
+    OK
+Parameters:
+
+- **\<link ID>**: ID of the connection (0~max), for multiple connections, if the value is max, it means all connections. By default, max is 5.
+- **\<auth_mode>**: 
+    - 0: no authorization.
+    - 1: load cert and private key for server authorization.
+    - 2: load CA for client authorize server cert and private key.
+    - 3: both authorization.
+- **\<pki_number>**: the index of cert and private key, if only one cert and private key, the value should be 0.
+- **\<ca_number>**: the index of CA, if only one CA, the value should be 0.
+
+***Notes:***
+
+* Call this command before establish SSL connection if you want configuration take effect immediately.
+* The configuration changes will be saved in the NVS area. If you use AT+SAVETRANSLINK to set SSL passthrough mode, ESP32 SSL will be connected based on this configuration after power on.
+
 ## 5. BLE-Related AT Commands
 <a name="cmd-BINIT"></a>
 ### 5.1 [AT+BLEINIT](#BLE-AT)—BLE Initialization
 Query Command:
 
-	AT+BLEINIT?
-	Function: to check the initialization status of BLE.
+    AT+BLEINIT?
+    Function: to check the initialization status of BLE.
 Response:
 
-	If BLE is not initialized, it will return
-	+BLEINIT:0
-	OK
-	If BLE is initialized, it will return
-	+BLEINIT:<role>
-	OK
+    If BLE is not initialized, it will return
+    +BLEINIT:0
+    OK
+    If BLE is initialized, it will return
+    +BLEINIT:<role>
+    OK
 Set Command: 
 
-	AT+BLEINIT=<init>
-	Function: to initialize the role of BLE.
+    AT+BLEINIT=<init>
+    Function: to initialize the role of BLE.
 Response:
 
-	OK
+    OK
 Parameter:
 
 - **\<init>**: 
+    - 0: deinit ble
     - 1: client role
     - 2: server role
 
@@ -1592,25 +1766,25 @@ Parameter:
 
 Example:
 
-	AT+BLEINIT=1	
+    AT+BLEINIT=1    
 
 <a name="cmd-BADDR"></a>
 ### 5.2 [AT+BLEADDR](#BLE-AT)—Sets BLE Device's Address
 Query Command:
 
-	AT+BLEADDR?
-	Function: to get the BLE public address.
+    AT+BLEADDR?
+    Function: to get the BLE public address.
 Response:
 
-	+BLEADDR:<BLE_public_addr>
-	OK
+    +BLEADDR:<BLE_public_addr>
+    OK
 Set Command:
 
-	AT+BLEADDR=<addr_type>,<random_addr>
-	Function: to set the BLE random address.
+    AT+BLEADDR=<addr_type>,<random_addr>
+    Function: to set the BLE random address.
 Response:
 
-	OK
+    OK
 Parameter:
 
 - **\<addr_type>**: 
@@ -1619,29 +1793,29 @@ Parameter:
 
 ***Notes:***
 
-* For the time being, only two actions are supported: getting the public address and setting the BLE random address.	
+* For the time being, only two actions are supported: getting the public address and setting the BLE random address.    
 
 Example:
 
-	AT+BLEADDR=1,"08:7f:24:87:1c:7b"	
+    AT+BLEADDR=1,"08:7f:24:87:1c:7b"    
 
 <a name="cmd-BNAME"></a>
 ### 5.3 [AT+BLENAME](#BLE-AT)—Sets BLE Device's Name
 Query Command:
 
-	AT+BLENAME?
-	Function: to get the BLE device name.
+    AT+BLENAME?
+    Function: to get the BLE device name.
 Response:
 
-	+BLENAME:<device_name>
-	OK
+    +BLENAME:<device_name>
+    OK
 Set Command:
 
-	AT+BLENAME=<device_name>
-	Function: to set the BLE device name.
+    AT+BLENAME=<device_name>
+    Function: to set the BLE device name.
 Response:
 
-	OK
+    OK
 Parameter:
 
 - **\<device_name>**: the BLE device name
@@ -1652,25 +1826,25 @@ Parameter:
 
 Example:
 
-	AT+BLENAME="esp_demo"	
+    AT+BLENAME="esp_demo"   
 
 <a name="cmd-BSCANP"></a>
 ### 5.4 [AT+BLESCANPARAM](#BLE-AT)—Sets Parameters of BLE Scanning
 Query Command:
 
-	AT+BLESCANPARAM?
-	Function: to get the parameters of BLE scanning.
+    AT+BLESCANPARAM?
+    Function: to get the parameters of BLE scanning.
 Response:
 
-	+BLESCANPARAM:<scan_type>,<own_addr_type>,<filter_policy>,<scan_interval>,<scan_window>
-	OK
+    +BLESCANPARAM:<scan_type>,<own_addr_type>,<filter_policy>,<scan_interval>,<scan_window>
+    OK
 Set Command:
 
-	AT+BLESCANPARAM=<scan_type>,<own_addr_type>,<filter_policy>,<scan_interval>,<scan_window>
-	Function: to set the parameters of BLE scanning.
+    AT+BLESCANPARAM=<scan_type>,<own_addr_type>,<filter_policy>,<scan_interval>,<scan_window>
+    Function: to set the parameters of BLE scanning.
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<scan_type>**:
@@ -1691,23 +1865,23 @@ Parameters:
 
 ***Notes:***
 
-* \<scan\_window> CANNOT be larger than \<scan\_interval>.	
+* \<scan\_window> CANNOT be larger than \<scan\_interval>.  
 
 Example:
 
-	AT+BLEINIT=1   // role: client
-	AT+BLESCANPARAM=0,0,0,100,50
+    AT+BLEINIT=1   // role: client
+    AT+BLESCANPARAM=0,0,0,100,50
 
 <a name="cmd-BSCAN"></a>
 ### 5.5 [AT+BLESCAN](#BLE-AT)—Enables BLE Scanning
 Set Command: 
 
-	AT+BLESCAN=<enable>[,<interval>]
-	Function: to enable/disable scanning.
+    AT+BLESCAN=<enable>[,<interval>]
+    Function: to enable/disable scanning.
 Response:
 
-	+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>
-	OK
+    +BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>
+    OK
 Parameters:
 
 - **\<enable>**:
@@ -1721,49 +1895,50 @@ Parameters:
 - **\<rssi>**: signal strength
 - **\<adv_data>**: advertising data
 - **\<scan\_rsp_data>**: scan response data
+- **\<addr_type>**: the address type of broadcasters
 
 Example:
 
-	AT+BLEINIT=1   // role: client
-	AT+BLESCAN=1    // start scanning
-	AT+BLESCAN=0     // stop scanning
+    AT+BLEINIT=1   // role: client
+    AT+BLESCAN=1    // start scanning
+    AT+BLESCAN=0     // stop scanning
 
 <a name="cmd-BSCANR"></a>
 ### 5.6 [AT+BLESCANRSPDATA](#BLE-AT)—Sets BLE Scan Response
 Set Command: 
 
-	AT+BLESCANRSPDATA=<scan_rsp_data>
-	Function: to set scan response.
+    AT+BLESCANRSPDATA=<scan_rsp_data>
+    Function: to set scan response.
 Response:
 
-	OK	
+    OK  
 Parameter:
 
 - **\<scan\_rsp\_data>**: scan response data is a HEX string. 
-    - For example, to set the response data as "0x11 0x22 0x33 0x44 0x55", the command should be `AT+BLESCANRSPDATA="1122334455"`.	
+    - For example, to set the response data as "0x11 0x22 0x33 0x44 0x55", the command should be `AT+BLESCANRSPDATA="1122334455"`.  
 
 Example:
 
-	AT+BLEINIT=2   // role: server
-	AT+BLESCANRSPDATA="1122334455"
+    AT+BLEINIT=2   // role: server
+    AT+BLESCANRSPDATA="1122334455"
 
 <a name="cmd-BADVP"></a>
 ### 5.7 [AT+BLEADVPARAM](#BLE-AT)—Sets Parameters of Advertising
 Query Command: 
 
-	AT+BLEADVPARAM?
-	Function: to query the parameters of advertising.
+    AT+BLEADVPARAM?
+    Function: to query the parameters of advertising.
 Response:
 
-	+BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<peer_addr>
-	OK
+    +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<peer_addr>
+    OK
 Set Command: 
 
-	AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>, <adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>] [,<peer_addr>]
-	Function: to set the parameters of advertising.
+    AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>, <adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>] [,<peer_addr>]
+    Function: to set the parameters of advertising.
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<adv\_int\_min>**: minimum value of advertising interval; range: 0x0020 ~ 0x4000
@@ -1792,18 +1967,18 @@ Parameters:
 
 Example:
 
-	AT+BLEINIT=2   // role: server
-	AT+BLEADVPARAM=50,50,0,0,4,0,0,"12:34:45:78:66:88"
+    AT+BLEINIT=2   // role: server
+    AT+BLEADVPARAM=50,50,0,0,4,0,0,"12:34:45:78:66:88"
 
 <a name="cmd-BADVD"></a>
 ### 5.8 [AT+BLEADVDATA](#BLE-AT)—Sets Advertising Data
 Set Command: 
 
-	AT+BLEADVDATA=<adv_data>
-	Function: to set advertising data.
+    AT+BLEADVDATA=<adv_data>
+    Function: to set advertising data.
 Response:
 
-	OK
+    OK
 Parameters:
 
 - **\<adv_data>**: advertising data; this is a HEX string. 
@@ -1811,18 +1986,18 @@ Parameters:
 
 Example:
 
-	AT+BLEINIT=2   // role: server
-	AT+BLEADVDATA="1122334455"
+    AT+BLEINIT=2   // role: server
+    AT+BLEADVDATA="1122334455"
 
 <a name="cmd-BADVSTART"></a>
 ### 5.9 [AT+BLEADVSTART](#BLE-AT)—Starts Advertising
 Execute Command:
 
-	AT+BLEADVSTART
-	Function: to start advertising.
+    AT+BLEADVSTART
+    Function: to start advertising.
 Response:
 
-	OK
+    OK
 ***Notes:***
 
 * If advertising parameters are NOT set by command `AT+BLEADVPARAM=<adv_parameter>`, the default parameters will be used.
@@ -1830,70 +2005,71 @@ Response:
 
 Example:
 
-	AT+BLEINIT=2   // role: server
-	AT+BLEADVSTART
+    AT+BLEINIT=2   // role: server
+    AT+BLEADVSTART
 
 <a name="cmd-BADVSTOP"></a>
 ### 5.10 [AT+BLEADVSTOP](#BLE-AT)—Stops Advertising
 Execute Command: 
 
-	AT+BLEADVSTOP
-	Function: to stop advertising.
+    AT+BLEADVSTOP
+    Function: to stop advertising.
 Response:
 
-	OK
+    OK
 ***Notes:***
 
 * After having started advertising, if the BLE connection is established successfully, it will stop advertising automatically. In such a case, this command does NOT need to be called.
 
 Example:
 
-	AT+BLEINIT=2   // role: server
-	AT+BLEADVSTART
-	AT+BLEADVSTOP
+    AT+BLEINIT=2   // role: server
+    AT+BLEADVSTART
+    AT+BLEADVSTOP
 
 <a name="cmd-BCONN"></a>
 ### 5.11 [AT+BLECONN](#BLE-AT)—Establishes BLE connection
 Query Command: 
 
-	AT+BLECONN?
-	Function: to query the BLE connection.
+    AT+BLECONN?
+    Function: to query the BLE connection.
 Response:
 
-	+BLECONN:<conn_index>,<remote_address>
-	OK
-	If the connection has not been established, there will NOT be <conn_index> and <remote_address>
+    +BLECONN:<conn_index>,<remote_address>
+    OK
+    If the connection has not been established, there will NOT be <conn_index> and <remote_address>
 Set Command: 
 
-	AT+BLECONN=<conn_index>,<remote_address>
-	Function: to establish the BLE connection.
+    AT+BLECONN=<conn_index>,<remote_address>[,<addr_type>]
+    Function: to establish the BLE connection, the address_type is an optional parameter.
 Response:
 
-	OK
-	It will prompt the message below, if the connection is established successfully:
-	+BLECONN:<conn_index>,<remote_address>
-	It will prompt the message below, if NOT:
-	+BLECONN:<conn_index>,fail
+    OK
+    It will prompt the message below, if the connection is established successfully:
+    +BLECONN:<conn_index>,<remote_address>
+    It will prompt the message below, if NOT:
+    +BLECONN:<conn_index>,fail
 Parameters:
 
 - **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
-- **\<remote_address>**：remote BLE address  
+- **\<remote_address>**：remote BLE address
+- **\<addr_type>**: the address type of broadcasters
 
 Example:
 
-	AT+BLEINIT=1   // role: client
-	AT+BLECONN=0,"24:0a:c4:09:34:23"
+    AT+BLEINIT=1   // role: client
+    AT+BLECONN=0,"24:0a:c4:09:34:23"
 
 <a name="cmd-BDISC"></a>
 ### 5.12 [AT+BLEDISCONN](#BLE-AT)—Ends BLE connection
 Execute Command: 
 
-	AT+BLEDISCONN=<conn_index>
-	Function: to end the BLE connection.
+    AT+BLEDISCONN=<conn_index>
+    Function: to end the BLE connection.
 Response:
 
-	OK  // the AT+BLEDISCONN command is received
-	If the command is successful, it will prompt + BLEDISCONN:<conn_index>,<remote_address>
+    OK  // the AT+BLEDISCONN command is received
+    If the command is successful, it will prompt + BLEDISCONN:<conn_index>,<remote_address>
 Parameter:
 
 - **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
@@ -1905,19 +2081,19 @@ Parameter:
 
 Example:
 
-	AT+BLEINIT=1   // role: client
-	AT+BLECONN=0,"24:0a:c4:09:34:23"
-	AT+BLEDISCONN=0
+    AT+BLEINIT=1   // role: client
+    AT+BLECONN=0,"24:0a:c4:09:34:23"
+    AT+BLEDISCONN=0
 
 <a name="cmd-BDLEN"></a>
 ### 5.13 [AT+BLEDATALEN](#BLE-AT)—Sets BLE Data Packet Length
 Set Command: 
 
-	AT+BLEDATALEN=<conn_index>,<pkt_data_len>
-	Function: to set the length of BLE data packet.
+    AT+BLEDATALEN=<conn_index>,<pkt_data_len>
+    Function: to set the length of BLE data packet.
 Response:
 
-	OK 
+    OK 
 Parameter:
 
 - **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
@@ -1929,27 +2105,27 @@ Parameter:
 
 Example:
 
-	AT+BLEINIT=1   // role: client
-	AT+BLECONN=0,"24:0a:c4:09:34:23"
-	AT+BLEDATALEN=0,30
+    AT+BLEINIT=1   // role: client
+    AT+BLECONN=0,"24:0a:c4:09:34:23"
+    AT+BLEDATALEN=0,30
 
 <a name="cmd-BMTU"></a>
 ### 5.14 [AT+BLECFGMTU](#BLE-AT)—Sets BLE MTU Length
 Query Command: 
 
-	AT+BLECFGMTU?
-	Function: to query the length of the maximum transmission unit (MTU).
+    AT+BLECFGMTU?
+    Function: to query the length of the maximum transmission unit (MTU).
 Response:
 
-	+BLECFGMTU:<conn_index>,<mtu_size>
-	OK
+    +BLECFGMTU:<conn_index>,<mtu_size>
+    OK
 Set Command: 
 
-	AT+BLECFGMTU=<conn_index>,<mtu_size>
-	Function: to set the length of the maximum transmission unit (MTU).
+    AT+BLECFGMTU=<conn_index>,<mtu_size>
+    Function: to set the length of the maximum transmission unit (MTU).
 Response:
 
-	OK  // the command is received
+    OK  // the command is received
 Parameter:
 
 - **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
@@ -1962,19 +2138,19 @@ Parameter:
 
 Example:
 
-	AT+BLEINIT=1   // role: client
-	AT+BLECONN=0,"24:0a:c4:09:34:23"
-	AT+BLECFGMTU=0,300
+    AT+BLEINIT=1   // role: client
+    AT+BLECONN=0,"24:0a:c4:09:34:23"
+    AT+BLECFGMTU=0,300
 
 <a name="cmd-GSSRVCRE"></a>
 ### 5.15 [AT+BLEGATTSSRVCRE](#BLE-AT)—GATTS Creates Services
 Execute Command: 
 
-	AT+BLEGATTSSRVCRE
-	Function: The Generic Attributes Server (GATTS) creates BLE services.
+    AT+BLEGATTSSRVCRE
+    Function: The Generic Attributes Server (GATTS) creates BLE services.
 Response:
 
-	OK
+    OK
 ***Notes:***
 
 * If using ESP32 as a BLE server, a service bin should be downloaded into Flash in order to provide services.
@@ -1985,42 +2161,42 @@ Response:
 
 Example:
 
-	AT+BLEINIT=2   // role: server
-	AT+BLEGATTSSRVCRE
+    AT+BLEINIT=2   // role: server
+    AT+BLEGATTSSRVCRE
 
 <a name="cmd-GSSRVSTART"></a>
 ### 5.16 [AT+BLEGATTSSRVSTART](#BLE-AT)—GATTS Starts Services
 Execute Command: 
 
-	AT+BLEGATTSSTART
-	Function: GATTS starts all services.
+    AT+BLEGATTSSTART
+    Function: GATTS starts all services.
 Set Command: 
 
-	AT+BLEGATTSSRVSTART=<srv_index>
-	Function: GATTS starts a specific service.
+    AT+BLEGATTSSRVSTART=<srv_index>
+    Function: GATTS starts a specific service.
 Response:
 
-	OK	
+    OK  
 Parameter:
 
 - **\<srv_index>**: service's index starting from 1
 
 Example:
 
-	AT+BLEINIT=2   // role: server
-	AT+BLEGATTSSRVCRE
-	AT+BLEGATTSSRVSTART
+    AT+BLEINIT=2   // role: server
+    AT+BLEGATTSSRVCRE
+    AT+BLEGATTSSRVSTART
 
 <a name="cmd-GSSRV"></a>
 ### 5.17 [AT+BLEGATTSSRV](#BLE-AT)—GATTS Discovers Services
 Query Command: 
 
-	AT+BLEGATTSSRV?
-	Function: GATTS services discovery.
+    AT+BLEGATTSSRV?
+    Function: GATTS services discovery.
 Response:
 
-	+BLEGATTSSRV:<srv_index>,<start>,<srv_uuid>,<srv_type>
-	OK
+    +BLEGATTSSRV:<srv_index>,<start>,<srv_uuid>,<srv_type>
+    OK
 Parameters:
 
 - **\<srv_index>**: service's index starting from 1
@@ -2034,23 +2210,23 @@ Parameters:
 
 Example:
 
-	AT+BLEINIT=2   // role: server
-	AT+BLEGATTSSRVCRE
-	AT+BLEGATTSSRV?
+    AT+BLEINIT=2   // role: server
+    AT+BLEGATTSSRVCRE
+    AT+BLEGATTSSRV?
 
 <a name="cmd-GSCHAR"></a>
 ### 5.18 [AT+BLEGATTSCHAR](#BLE-AT)—GATTS Discovers Characteristics
 Query Command: 
 
-	AT+BLEGATTSCHAR?
-	Function: GATTS characteristics discovery.
+    AT+BLEGATTSCHAR?
+    Function: GATTS characteristics discovery.
 Response:
 
-	// when showing a characteristic, it will be as:
-	+BLEGATTSCHAR:"char",<srv_index>,<char_index>,<char_uuid>,<char_prop>
-	// when showing a descriptor, it will be as:
-	+BLEGATTSCHAR:"desc",<srv_index>,<char_index>,<desc_index> 
-	OK
+    // when showing a characteristic, it will be as:
+    +BLEGATTSCHAR:"char",<srv_index>,<char_index>,<char_uuid>,<char_prop>
+    // when showing a descriptor, it will be as:
+    +BLEGATTSCHAR:"desc",<srv_index>,<char_index>,<desc_index> 
+    OK
 Parameters:
 
 - **\<srv_index>**: service's index starting from 1
@@ -2062,22 +2238,22 @@ Parameters:
 
 Example:
 
-	AT+BLEINIT=2   // role: server
-	AT+BLEGATTSSRVCRE
-	AT+BLEGATTSSRVSTART
-	AT+BLEGATTSCHAR?
+    AT+BLEINIT=2   // role: server
+    AT+BLEGATTSSRVCRE
+    AT+BLEGATTSSRVSTART
+    AT+BLEGATTSCHAR?
 
 <a name="cmd-GSNTFY"></a>
 ### 5.19 [AT+BLEGATTSNTFY](#BLE-AT)—GATTS Notifies of Characteristics
 Set Command: 
 
-	AT+BLEGATTSNTFY=<conn_index>,<srv_index>,<char_index>,<length>
-	Function: GATTS to notify of its characteristics.
+    AT+BLEGATTSNTFY=<conn_index>,<srv_index>,<char_index>,<length>
+    Function: GATTS to notify of its characteristics.
 Response:
 
-	wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the notification starts.
-	If the data transmission is successful, the system returns:
-	OK
+    wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the notification starts.
+    If the data transmission is successful, the system returns:
+    OK
 Parameters:
 
 - **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
@@ -2087,26 +2263,26 @@ Parameters:
 
 Example:
 
-	AT+BLEINIT=2   // role: server
-	AT+BLEGATTSSRVCRE
-	AT+BLEGATTSSRVSTART
-	AT+BLEADVSTART // starts advertising. After the client is connected, it must be configured to receive notifications.
-	AT+BLEGATTSCHAR?  // check which characteristic the client will be notified of
-	// for example, to notify of 4 bytes of data using the 6th characteristic in the 3rd service, use the following command:
-	AT+BLEGATTSNTFY=0,3,6,4 
-	// after > shows, inputs 4 bytes of data, such as "1234"; then, the data will be transmitted automatically
+    AT+BLEINIT=2   // role: server
+    AT+BLEGATTSSRVCRE
+    AT+BLEGATTSSRVSTART
+    AT+BLEADVSTART // starts advertising. After the client is connected, it must be configured to receive notifications.
+    AT+BLEGATTSCHAR?  // check which characteristic the client will be notified of
+    // for example, to notify of 4 bytes of data using the 6th characteristic in the 3rd service, use the following command:
+    AT+BLEGATTSNTFY=0,3,6,4 
+    // after > shows, inputs 4 bytes of data, such as "1234"; then, the data will be transmitted automatically
 
 <a name="cmd-GSIND"></a>
 ### 5.20 [AT+BLEGATTSIND](#BLE-AT)—GATTS Indicates Characteristics
 Set Command: 
 
-	AT+BLEGATTSIND=<conn_index>,<srv_index>,<char_index>,<length>
-	Function: GATTS indicates its characteristics.
+    AT+BLEGATTSIND=<conn_index>,<srv_index>,<char_index>,<length>
+    Function: GATTS indicates its characteristics.
 Response:
 
-	wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the indication starts.
-	If the data transmission is successful, the system returns:
-	OK
+    wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the indication starts.
+    If the data transmission is successful, the system returns:
+    OK
 Parameters:
 
 - **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
@@ -2116,26 +2292,26 @@ Parameters:
 
 Example:
 
-	AT+BLEINIT=2   // role: server
-	AT+BLEGATTSSRVCRE
-	AT+BLEGATTSSRVSTART
-	AT+BLEADVSTART // starts advertising. After the client is connected, it must be configured to receive indications.
-	AT+BLEGATTSCHAR?  // check for which characteristic the client can receive indications
-	// for example, to indicate 4 bytes of data using the 7th characteristic in the 3rd service, use the following command:
-	AT+BLEGATTSIND=0,3,7,4 
-	// after > shows, inputs 4 bytes of data, such as "1234"; then, the data will be transmitted automatically
+    AT+BLEINIT=2   // role: server
+    AT+BLEGATTSSRVCRE
+    AT+BLEGATTSSRVSTART
+    AT+BLEADVSTART // starts advertising. After the client is connected, it must be configured to receive indications.
+    AT+BLEGATTSCHAR?  // check for which characteristic the client can receive indications
+    // for example, to indicate 4 bytes of data using the 7th characteristic in the 3rd service, use the following command:
+    AT+BLEGATTSIND=0,3,7,4 
+    // after > shows, inputs 4 bytes of data, such as "1234"; then, the data will be transmitted automatically
 
 <a name="cmd-GSSETA"></a>
 ### 5.21 [AT+BLEGATTSSETATTR](#BLE-AT)—GATTS Sets Characteristic
 Set Command: 
 
-	AT+BLEGATTSSETATTR=<srv_index>,<char_index>[,<desc_index>],<length>
-	Function: GATTS to set its characteristic (descriptor).
+    AT+BLEGATTSSETATTR=<srv_index>,<char_index>[,<desc_index>],<length>
+    Function: GATTS to set its characteristic (descriptor).
 Response:
 
-	wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the setting starts.
-	If the setting is successful, the system returns:
-	OK
+    wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the setting starts.
+    If the setting is successful, the system returns:
+    OK
 Parameters:
 
 - **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTSCHAR?`
@@ -2150,24 +2326,24 @@ Parameters:
 
 Example:
 
-	AT+BLEINIT=2   // role: server
-	AT+BLEGATTSSRVCRE
-	AT+BLEGATTSSRVSTART
-	AT+BLEGATTSCHAR? 
-	// for example, to set 4 bytes of data of the 1st characteristic in the 1st service, use the following command:
-	AT+BLEGATTSSETATTR=1,1,,4
-	// after > shows, inputs 4 bytes of data, such as "1234"; then, the setting starts
+    AT+BLEINIT=2   // role: server
+    AT+BLEGATTSSRVCRE
+    AT+BLEGATTSSRVSTART
+    AT+BLEGATTSCHAR? 
+    // for example, to set 4 bytes of data of the 1st characteristic in the 1st service, use the following command:
+    AT+BLEGATTSSETATTR=1,1,,4
+    // after > shows, inputs 4 bytes of data, such as "1234"; then, the setting starts
 
 <a name="cmd-GCPRIMSRV"></a>
 ### 5.22 [AT+BLEGATTCPRIMSRV](#BLE-AT)—GATTC Discovers Primary Services
 Query Command: 
 
-	AT+BLEGATTCPRIMSRV=<conn_index>
-	Function: GATTC to discover primary services.
+    AT+BLEGATTCPRIMSRV=<conn_index>
+    Function: GATTC to discover primary services.
 Response:
 
-	+ BLEGATTCPRIMSRV:<conn_index>,<srv_index>,<srv_uuid>,<srv_type>
-	OK
+    + BLEGATTCPRIMSRV:<conn_index>,<srv_index>,<srv_uuid>,<srv_type>
+    OK
 Parameters:
 
 - **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
@@ -2183,20 +2359,20 @@ Parameters:
 
 Example:
 
-	AT+BLEINIT=1   // role: client
-	AT+BLECONN=0,"24:12:5f:9d:91:98"
-	AT+BLEGATTCPRIMSRV=0
+    AT+BLEINIT=1   // role: client
+    AT+BLECONN=0,"24:12:5f:9d:91:98"
+    AT+BLEGATTCPRIMSRV=0
 
 <a name="cmd-GCINCLSRV"></a>
 ### 5.23 [AT+BLEGATTCINCLSRV](#BLE-AT)—GATTC Discovers Included Services
 Set Command: 
 
-	AT+BLEGATTCINCLSRV=<conn_index>,<srv_index>
-	Function: GATTC to discover included services.
+    AT+BLEGATTCINCLSRV=<conn_index>,<srv_index>
+    Function: GATTC to discover included services.
 Response:
 
-	+ BLEGATTCINCLSRV:<conn_index>,<srv_index>,<srv_uuid>,<srv_type>,<included_srv_uuid>,<included_srv_type>
-	OK
+    + BLEGATTCINCLSRV:<conn_index>,<srv_index>,<srv_uuid>,<srv_type>,<included_srv_uuid>,<included_srv_type>
+    OK
 Parameters:
 
 - **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
@@ -2216,24 +2392,24 @@ Parameters:
 
 Example:
 
-	AT+BLEINIT=1   // role: client
-	AT+BLECONN=0,"24:12:5f:9d:91:98"
-	AT+BLEGATTCPRIMSRV=0
-	AT+BLEGATTCINCLSRV=0,1  // set a specific index according to the result of the previous command
+    AT+BLEINIT=1   // role: client
+    AT+BLECONN=0,"24:12:5f:9d:91:98"
+    AT+BLEGATTCPRIMSRV=0
+    AT+BLEGATTCINCLSRV=0,1  // set a specific index according to the result of the previous command
 
 <a name="cmd-GCCHAR"></a>
 ### 5.24 [AT+BLEGATTCCHAR](#BLE-AT)—GATTC Discovers Characteristics
 Set Command: 
 
-	AT+BLEGATTCCHAR=<conn_index>,<srv_index>
-	Function: GATTC to discover characteristics.
+    AT+BLEGATTCCHAR=<conn_index>,<srv_index>
+    Function: GATTC to discover characteristics.
 Response:
 
-	// when showing a characteristic, it will be as:
-	+BLEGATTCCHAR:"char",<conn_index>,<srv_index>,<char_index>,<char_uuid>,<char_prop>
-	// when showing a descriptor, it will be as:
-	+BLEGATTCCHAR:"desc",<conn_index>,<srv_index>,<char_index>,<desc_index>,<desc_uuid> 
-	OK
+    // when showing a characteristic, it will be as:
+    +BLEGATTCCHAR:"char",<conn_index>,<srv_index>,<char_index>,<char_uuid>,<char_prop>
+    // when showing a descriptor, it will be as:
+    +BLEGATTCCHAR:"desc",<conn_index>,<srv_index>,<char_index>,<desc_index>,<desc_uuid> 
+    OK
 Parameters:
 
 - **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
@@ -2250,21 +2426,21 @@ Parameters:
 
 Example:
 
-	AT+BLEINIT=1   // role: client
-	AT+BLECONN=0,"24:12:5f:9d:91:98"
-	AT+BLEGATTCPRIMSRV=0
-	AT+BLEGATTCCHAR=0,1 // set a specific index according to the result of the previous command
+    AT+BLEINIT=1   // role: client
+    AT+BLECONN=0,"24:12:5f:9d:91:98"
+    AT+BLEGATTCPRIMSRV=0
+    AT+BLEGATTCCHAR=0,1 // set a specific index according to the result of the previous command
 
 <a name="cmd-GCRD"></a>
 ### 5.25 [AT+BLEGATTCRD](#BLE-AT)—GATTC Reads a Characteristic
 Set Command: 
 
-	AT+BLEGATTCRD=<conn_index>,<srv_index>,<char_index>[,<desc_index>]
-	Function: GATTC to read a characteristic or descriptor.
+    AT+BLEGATTCRD=<conn_index>,<srv_index>,<char_index>[,<desc_index>]
+    Function: GATTC to read a characteristic or descriptor.
 Response：
 
-	+BLEGATTCRD:<conn_index>,<len>,<value>
-	OK
+    +BLEGATTCRD:<conn_index>,<len>,<value>
+    OK
 Parameters：
 
 - **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
@@ -2286,24 +2462,24 @@ Parameters：
 
 Example：
 
-	AT+BLEINIT=1   // role: client
-	AT+BLECONN=0,"24:12:5f:9d:91:98"
-	AT+BLEGATTCPRIMSRV=0
-	AT+BLEGATTCCHAR=0,3 // set a specific index according to the result of the previous command
-	// for example, to read 1st descriptor of the 2nd characteristic in the 3rd service, use the following command:
-	AT+BLEGATTCRD=0,3,2,1
+    AT+BLEINIT=1   // role: client
+    AT+BLECONN=0,"24:12:5f:9d:91:98"
+    AT+BLEGATTCPRIMSRV=0
+    AT+BLEGATTCCHAR=0,3 // set a specific index according to the result of the previous command
+    // for example, to read 1st descriptor of the 2nd characteristic in the 3rd service, use the following command:
+    AT+BLEGATTCRD=0,3,2,1
 
 <a name="cmd-GCWR"></a>
 ### 5.26 [AT+BLEGATTCWR](#BLE-AT)—GATTC Writes Characteristic
 Set Command: 
 
-	AT+BLEGATTCWR=<conn_index>,<srv_index>,<char_index>[,<desc_index>],<length>
-	Function: GATTC to write characteristics or descriptor.
+    AT+BLEGATTCWR=<conn_index>,<srv_index>,<char_index>[,<desc_index>],<length>
+    Function: GATTC to write characteristics or descriptor.
 Response：
 
-	wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the writting starts.
-	If the setting is successful, the system returns:
-	OK  
+    wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the writting starts.
+    If the setting is successful, the system returns:
+    OK  
 Parameters：
 
 - **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
@@ -2321,14 +2497,245 @@ Parameters：
 
 Example：
 
-	AT+BLEINIT=1   // role: client
-	AT+BLECONN=0,"24:12:5f:9d:91:98"
-	AT+BLEGATTCPRIMSRV=0
-	AT+BLEGATTCCHAR=0,3 // set a specific index according to the result of the previous command
-	// for example, to write 6 bytes of data to the 4th characteristic in the 3rd service, use the following command:
-	AT+BLEGATTCWR=0,3,4,,6 
-	// after > shows, inputs 6 bytes of data, such as "123456"; then, the writing starts
+    AT+BLEINIT=1   // role: client
+    AT+BLECONN=0,"24:12:5f:9d:91:98"
+    AT+BLEGATTCPRIMSRV=0
+    AT+BLEGATTCCHAR=0,3 // set a specific index according to the result of the previous command
+    // for example, to write 6 bytes of data to the 4th characteristic in the 3rd service, use the following command:
+    AT+BLEGATTCWR=0,3,4,,6 
+    // after > shows, inputs 6 bytes of data, such as "123456"; then, the writing starts
 
+<a name="cmd-BLESPP"></a>
+### 5.27 [AT+BLESPPCFG](#BLE-AT)—Sets BLE spp parameters
+Query Command:
+
+    AT+BLESPPCFG?
+    Function: to get the parameters of BLE spp.
+Response:
+
+    +BLESPPCFG:<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>
+    OK
+Set Command:
+
+    AT+BLESCANPARAM=<option>[,<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>]
+    Function: to set or reset the parameters of BLE spp.
+Response:
+
+    OK
+Parameters:
+
+- **\<option>**: if the option is 0, it means all the spp parametersthe will be reset, and the next four parameters don't need input. if the option is 1, the user must input all the parameters.
+- **\<tx_service_index>**: tx service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV=<conn_index>` and `AT+BLEGATTSSRVCRE?`
+- **\<tx_char_index>**: tx characteristic's index; it can be fetched with command `AT+BLEGATTCCHAR=<conn_index>,<srv_index>` and `AT+BLEGATTSCHAR?`
+- **\<rx_service_index>**: rx service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV=<conn_index>` and `AT+BLEGATTSSRVCRE?`
+- **\<rx_char_index>**: rx characteristic's index; it can be fetched with command `AT+BLEGATTCCHAR=<conn_index>,<srv_index>` and `AT+BLEGATTSCHAR?`
+
+***Note:***
+
+* In BLE client, the property of tx characteristic must be write with response or write without response, the property of rx characteristic must be indicate or notify.
+* In BLE server, the property of tx characteristic must be indicate or notify, the property of rx characteristic must be write with response or write without response.
+
+Example:
+
+    AT+BLESPPCFG=0          // reset ble spp parameters
+    AT+BLESPPCFG=1,3,5,3,7  // set ble spp parameters
+    AT+BLESPPCFG?           // query ble spp parameters 
+
+<a name="cmd-BLESPP"></a>
+### 5.28 [AT+BLESPP](#BLE-AT)—Enter BLE spp mode
+Execute Command: 
+
+    AT+BLESPP
+    Function: Enter BLE spp mode.
+
+Response:
+
+    >   
+
+***Note:***
+
+* If the ble spp parameters is illegal, this command will return ERROR.
+
+Example:
+
+    AT+BLESPP   // enter ble spp mode
+
+<a name="cmd-BLESMPPAR"></a>
+### 5.29 [AT+BLESECPARAM](#BLE-AT)—Set BLE encryption parameters
+Query Command:
+
+    AT+BLESECPARAM?
+    Function: to get the parameters of BLE smp.
+Response:
+
+    +BLESECPARAM:<auth_req>,<iocap>,<key_size>,<init_key>,<rsp_key>
+    OK
+Set Command:
+
+    AT+BLESECPARAM=<auth_req>,<iocap>,<key_size>,<init_key>,<rsp_key>
+    Function: to set the parameters of BLE smp.
+Response:
+
+    OK
+Parameters:
+
+- **\<auth_req>**: 
+    - 0 : NO_BOND
+    - 1 : BOND
+    - 2 : MITM
+    - 4 : SC_ONLY
+    - 5 : SC_BOND
+    - 6 : SC_MITM
+    - 7 : SC_MITM_BOND
+- **\<iocap>**:
+    - 0 : DisplayOnly 
+    - 1 : DisplayYesNo
+    - 2 : KeyboardOnly
+    - 3 : NoInputNoOutput
+    - 4 : Keyboard displa
+- **\<key_size>**: the key size should be 7~16 bytes.
+- **\<init_key>**: combination of the bit pattern.
+- **\<rsp_key>**:  combination of the bit pattern.
+
+***Note:***
+
+* The bit pattern for init_key&rsp_key is:
+    - (1<<0) Used to exchange the encrytyption key in the init key & response key
+    - (1<<1) Used to exchange the IRK key in the init key & response key
+    - (1<<2) Used to exchange the CSRK key in the init key & response key
+    - (1<<3) Used to exchange the link key(this key just used in the BLE & BR/EDR coexist mode) in the init key & response key
+
+Example:
+
+    AT+BLESECPARAM=1,4,16,3,3
+
+<a name="cmd-BLEENC"></a>
+### 5.30 [AT+BLEENC](#BLE-AT)—Initiate BLE encryption request
+Set Command:
+
+    AT+BLEENC=<conn_index>,<sec_act>
+    Function: to start a pairing request
+Response:
+
+    OK
+Parameters:
+
+- **\<conn_index>**: index of BLE connection.
+- **\<sec_act>**:
+    - 0 : SEC_NONE
+    - 1 : SEC_ENCRYPT
+    - 2 : SEC_ENCRYPT_NO_MITM
+    - 3 : SEC_ENCRYPT_MITM
+
+***Note:***
+
+* Before ipput this command, user must set the security paramsters and connection with remote device.
+
+Example:
+
+    AT+BLESECPARAM=1,4,16,3,3
+    AT+BLEENC=0,3
+
+<a name="cmd-BLEENCRSP"></a>
+### 5.31 [AT+BLEENCRSP](#BLE-AT)—Grant security request access
+Set Command:
+
+    AT+BLEENCRSP=<conn_index>,<accept>
+    Function: to set a pairing response.
+Response:
+
+    OK
+Parameters:
+
+- **\<conn_index>**: index of BLE connection.
+- **\<accept>**:
+    - 0 : reject
+    - 1 : accept; 
+
+Example:
+
+    AT+BLEENCRSP=0,1
+
+<a name="cmd-BLEKEYREPLY"></a>
+### 5.32 [AT+BLEKEYREPLY](#BLE-AT)—Reply the key value to the peer device in the lagecy connection stage
+Set Command:
+
+    AT+BLEKEYREPLY=<conn_index>,<key>
+    Function: to reply a pairing key.
+Response:
+
+    OK
+Parameters:
+
+- **\<conn_index>**: index of BLE connection.
+- **\<key>**:    pairing key
+
+Example:
+
+    AT+BLEKEYREPLY=0,649784
+
+<a name="cmd-BLECONFREPLY"></a>
+### 5.33 [AT+BLECONFREPLY](#BLE-AT)—Reply the comfirm value to the peer device in the lagecy connection stage
+Set Command:
+
+    AT+BLECONFREPLY=<conn_index>,<confirm>
+    Function: to reply to a pairing result.
+Response:
+
+    OK
+Parameters:
+
+- **\<conn_index>**: index of BLE connection.
+- **\<confirm>**:
+    - 0 : NO
+    - 1 : Yes
+
+Example:
+
+    AT+BLECONFREPLY=0,1
+
+<a name="cmd-BLEENCDEV"></a>
+### 5.34 [AT+BLEENCDEV](#BLE-AT)—Query BLE encryption device list
+Query Command:
+
+    AT+BLEENCDEV?
+    Function: to get the bounded devices.
+Response:
+
+    +BLEENCDEV:<enc_dev_index>,<mac_address>
+    OK
+Parameters:
+
+- **\<enc_dev_index>**: index of the bonded devices.
+- **\<mac_address>**:   Mac address.
+
+Example:
+
+    AT+BLEENCDEV?
+
+<a name="cmd-BLEENCCLEAR"></a>
+### 5.35 [AT+BLEENCCLEAR](#BLE-AT)—Clear BLE encryption device list
+Set Command:
+
+    AT+BLEKEYREPLY=<enc_dev_index>
+    Function: to unbind a device with a specific index.
+Response:
+
+    OK
+Execute Command:
+
+    AT+BLEENCCLEAR
+    Function: unbind all devices
+Response:
+
+    OK
+Parameters:
+
+- **\<enc_dev_index>**: index of the bonded devices.
+
+Example:
+
+    AT+BLEENCCLEAR
 
 <a name="exam-BLE"></a>
 ## 6. [BLE AT Example](#BLE-AT)  
@@ -2344,16 +2751,16 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
     ESP32 Server:
 
         Command:
-	    AT+BLEINIT=2                              // server role
-    	
+        AT+BLEINIT=2                              // server role
+        
         Response:
         OK
 
     ESP32 Client:
 
         Command:
-	    AT+BLEINIT=1                              // client role
-    	
+        AT+BLEINIT=1                              // client role
+        
         Response:
         OK
 2. Establish BLE connection:  
@@ -2363,7 +2770,7 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
 
         Command:
         AT+BLEADDR?                              // get server's BLE address
-    	
+        
         Response:
         +BLEADDR:24:0a:c4:03:f4:d6
         OK
@@ -2401,19 +2808,19 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
 
     ESP32 Server:  
     (1) Create services.  
-	
+    
         AT+BLEGATTSSRVCRE
         
         Response:
         OK
     (2) Start services.  
-	
+    
         AT+BLEGATTSSRVSTART
         
         Response:
         OK
     (3) Discover characteristics.  
-	
+    
         AT+BLEGATTSCHAR?          
         
         Response:
@@ -2427,7 +2834,7 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
 
     ESP32 Client:  
     (1) Discover services.  
-	
+    
         AT+BLEGATTCPRIMSRV=0   
         
         Response:
@@ -2475,7 +2882,7 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
         AT+BLEGATTCWR=0,3,3,,2
         
         Response:
-        > 		// waiting for data
+        >       // waiting for data
         OK
     ***Note:***  
     * If the ESP32 Client writes the characteristic successfully, message `+WRITE:<conn_index>,<srv_index>,<char_index>,[<desc_index>],<len>,<value>` will be prompted on the ESP32 Server side.  
@@ -2484,22 +2891,22 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
 
     ESP32 Client:  
     (1) Configure the characteristic's descriptor. Please note that the target characteristic's property has to support notifications.  
-	
+    
         AT+BLEGATTCWR=0,3,6,1,2       
         
         Response:
-        > 		// waiting for data
+        >       // waiting for data
         OK
     ***Note:***
     * If the ESP32 Client writes the descriptor successfully, message `+WRITE:<conn_index>,<srv_index>,<char_index>,<desc_index>,<len>,<value>` will be prompted on the ESP32 Server side.
 
-	ESP32 Server:  
+    ESP32 Server:  
     (1) Notify of a characteristic. Please note that the target characteristic's property has to support notifications.  
 
         AT+BLEGATTSNTFY=0,1,6,3
         
         Response:
-        > 		// waiting for data
+        >       // waiting for data
         OK
     ***Note:***  
     * If the ESP32 Client receives the notification, it will prompt message `+NOTIFY:<conn_index>,<srv_index>,<char_index>,<len>,<value>`.
@@ -2509,26 +2916,96 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
 
     ESP32 Client:  
     (1) Configure the characteristic's descriptor. Please note that the target characteristic's property has to support the indicate operation.  
-	
+    
         AT+BLEGATTCWR=0,3,7,1,2       
         
         Response:
-        > 		// waiting for data
+        >       // waiting for data
         OK
     ***Note:***  
     * If the ESP32 Client writes the descriptor successfully, message `+WRITE:<conn_index>,<srv_index>,<char_index>,<desc_index>,<len>,<value>` will be prompted on the ESP32 Server side.  
 
-	ESP32 Server:   
+    ESP32 Server:   
     (1) Indicate characteristic. Please note that the target characteristic's property has to support the indicate operation.  
 
         AT+BLEGATTSIND=0,1,7,3
         
         Response:
-        > 		// waiting for data
+        >       // waiting for data
         OK
     ***Note:***  
     * If the ESP32 Client receives the indication, it will prompt message `+INDICATE:<conn_index>,<srv_index>,<char_index>,<len>,<value>`
     * For the same service, the \<srv\_index> on the ESP32 Client side equals the \<srv\_index> on the ESP32 Server side + 2.
 
+## 7 ETH AT Commands
+<a name="cmd-ETHMAC"></a>
+### 7.1 [AT+CIPETHMAC](#ETH-AT)—Sets the MAC Address of the ESP32 Ethernet
+Query Command:
 
+    AT+CIPETHMAC?
+    Function: to obtain the MAC address of the ESP32 Ethernet.
+Response:
+
+    +CIPETHMAC:<mac>
+    OK
+Set Command: 
+
+    AT+CIPETHMAC =<mac>
+    Function: to set the MAC address of the ESP32 Ethernet.
+Response:
+
+    OK
+Parameters:
+
+- **\<mac>**: string parameter, MAC address of the ESP8266 Ethernet.    
+
+***Notes:***
+
+* The configuration changes will be saved in the NVS area.
+* The MAC address of ESP32 SoftAP is different from that of the ESP32 Station. Please make sure that you do not set the same MAC address for both of them.
+* Bit 0 of the ESP32 MAC address CANNOT be 1. 
+    * For example, a MAC address can be "1a:…" but not "15:…".
+* FF:FF:FF:FF:FF:FF and 00:00:00:00:00:00 are invalid MAC and cannot be set.
+
+Example:
+
+    AT+CIPETHMAC ="1a:fe:35:98:d4:7b"
+
+<a name="cmd-IPSTA"></a>
+### 7.2 [AT+CIPETH](#ETH-AT)—Sets the IP Address of the ESP32 Ethernet
+Query Command:
+
+    AT+CIPETH?
+    Function: to obtain the IP address of the ESP32 Ethernet.
+    Notice: Only after calling esp_at_eth_cmd_regist can its IP address be queried.
+Response:
+
+    +CIPETH:ip:<ip>
+    +CIPETH:gateway:<gateway>
+    +CIPETH:netmask:<netmask>
+    OK
+Set Command:
+
+    AT+CIPETH=<ip>[,<gateway>,<netmask>]
+    Function: to set the IP address of the ESP32 Ethernet.
+Response:
+
+    OK
+Parameters:
+
+- **\<ip>**: string parameter, the IP address of the ESP32 Ethernet.
+- **\[\<gateway>]**: gateway.
+- **\[\<netmask>]**: netmask.
+
+***Notes:***
+
+* The configuration changes will be saved in the NVS area.
+* The set command interacts with DHCP-related AT commands (AT+CWDHCP-related commands): 
+    * If static IP is enabled, DHCP will be disabled;
+    * If DHCP is enabled, static IP will be disabled;
+    * Whether it is DHCP or static IP that is enabled depends on the last configuration.
+
+Example:
+
+    AT+CIPETH="192.168.6.100","192.168.6.1","255.255.255.0"
 

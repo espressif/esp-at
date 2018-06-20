@@ -360,6 +360,13 @@ bool esp_at_ble_cmd_regist(void);
 bool esp_at_fs_cmd_regist(void);
 
 /**
+ * @brief regist at ethernet command set. If not,you can not use AT ethernet command
+ * @param NONE
+ *
+ */
+bool esp_at_eth_cmd_regist(void);
+
+/**
  * @brief Set AT command terminator, by default, the terminator is "\r\n"
  * You can change it by calling this function, but it just supports one character now.
  * @param NONE
