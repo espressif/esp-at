@@ -1,0 +1,5 @@
+
+config AT_BASE_ON_SDIO
+    bool "AT through SDIO"
+    help
+        This demo is AT through SDIO. The MCU can send AT command through SDIO bus. 

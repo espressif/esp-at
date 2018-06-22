@@ -11,8 +11,8 @@ ifdef CONFIG_AT_BASE_ON_HSPI
 COMPONENT_SRCDIRS += interface/hspi
 endif
 
-ifdef CONFIG_AT_BASE_ON_SOCKET 
-COMPONENT_SRCDIRS += interface/socket
+ifdef CONFIG_AT_BASE_ON_SDIO 
+COMPONENT_SRCDIRS += interface/sdio
 endif
 
 COMPONENT_ADD_INCLUDEDIRS := .
