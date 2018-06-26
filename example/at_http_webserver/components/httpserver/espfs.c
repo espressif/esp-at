@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "espfs.h"
+#include "esp_parse_at.h"
 
 // Donnot care flag
 int espFsFlags(EspFsFile* fh)
@@ -9,7 +10,7 @@ int espFsFlags(EspFsFile* fh)
     return 0;
 }
 
-#if 1
+#ifndef ESP_AT_FATFS_COMMAND
 
 // Handle of the wear levelling library instance
 static wl_handle_t s_wl_handle = WL_INVALID_HANDLE;
@@ -36,7 +37,6 @@ int espFsInit(void)
     printf("Mount FATFS success\n");
     return 1;
 }
-
 
 /*
 *  Just open the file and assign to the espFsFile pointer
@@ -139,7 +139,6 @@ int espFsRead(EspFsFile* fh, char* buff, int len)
 
     return 0;
 }
-#endif
 
 void espFsClose(EspFsFile* fh)
 {
@@ -151,33 +150,35 @@ void espFsClose(EspFsFile* fh)
     free(fh->filename);
     free(fh);
 }
+#else
 
-#if 0
-char* fs_data = NULL;
+void espFsClose(EspFsFile* fh)
+{
+    if (fh == NULL) {
+        return;
+    }
+
+    free(fh);
+}
+
 EspFsFile* espFsOpen(char* fileName)
 {
-    at_cmd_arg cmd_arg;
-    at_response cmd_rsp;
     int file_len = 0;
-    cmd_arg.fsopen.filename = fileName;
-    cmd_rsp = at_add_cmd(AT_FSOPEN, cmd_arg);
+    file_len = esp_at_fatfs_open(fileName);
 
-    if (cmd_rsp.rsp_flag != AT_CMD_RETURN_SUCCESS) {
-        // ESP_LOGE(TAG, "Cannot open file:%s", fileName);
+    if (file_len < 0) {
         printf("Cannot open file:%s\n", fileName);
         return NULL;
     }
 
-    file_len = atoi((char*)cmd_rsp.data);
-    printf("File %s len:%d\n", fileName, file_len);
     EspFsFile* r = (EspFsFile*)malloc(sizeof(EspFsFile));
 
-    //fs_data = malloc(file_len * sizeof(char));
     if (r == NULL) {
         return NULL;
     }
 
-    //r->header=NULL;
+    printf("FATFS open File %s len:%d\n", fileName, file_len);
+
     r->filename = fileName;
     r->totalLen = file_len;
     r->decompressor = 0;
@@ -188,15 +189,11 @@ EspFsFile* espFsOpen(char* fileName)
 
 int espFsRead(EspFsFile* fh, char* buff, int len)
 {
-    int flen;
-    at_cmd_arg cmd_arg;
-    at_response cmd_rsp;
+    char* read_data = NULL;
 
     if (fh == NULL) {
         return 0;
     }
-
-//    memcpy(fs_data, cmd_rsp.data,file_len);
 
     if (fh->decompressor == 0) {
         int toRead;
@@ -206,24 +203,19 @@ int espFsRead(EspFsFile* fh, char* buff, int len)
             len = toRead;
         }
 
-        cmd_arg.fsread.filename = fh->filename;
-        cmd_arg.fsread.offset = fh->posDecomp;
-        cmd_arg.fsread.length = len;
-        cmd_rsp = at_add_cmd(AT_FSREAD, cmd_arg);
+        read_data = esp_at_fatfs_read(fh->filename, fh->posDecomp, len);
 
-        if (cmd_rsp.rsp_flag != AT_CMD_RETURN_SUCCESS) {
+        if (read_data == NULL) {
             printf("Cannot read file:%s\n", fh->filename);
             return 0;
         }
 
-        memcpy(buff, cmd_rsp.data, len);
+        memcpy(buff, read_data, len);
         fh->posDecomp += len;
-        //fh->posComp+=len;
+        free(read_data);
         return len;
     }
 
     return 0;
 }
 #endif
-
-
