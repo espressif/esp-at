@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+
+    <title>AT-BLE</title>
+
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/toastr.css">
+    <link rel="stylesheet" href="../../css/style.css">
+
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand">
+                ESPRESSIF-AT
+            </a>
+            <a class="user pull-right user-xs hidden-lg hidden-md hidden-sm user-logout">
+                <i class="icon-log-out"></i>
+                <span class="user-name">Logout</span>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <a href="../../index.html">
+                        <span class="icon-home title-icon"></span><span class="title-text">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../wifi/softap.html">
+                        <span class="icon-wifi title-icon"></span><span class="title-text">WiFi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../tcp/create.html">
+                        <span class="icon-IP title-icon"></span><span class="title-text">Tcp/Ip</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="active" href="../ble/ble.html">
+                        <span class="icon-bluetooth title-icon"></span><span class="title-text">Ble</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../config/config.html">
+                        <span class="icon-set title-icon"></span><span class="title-text">Config</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right hidden-xs user-info">
+                <li><a class="user user-logout"><i class="icon-log-out"></i><span class="user-name">Logout</span></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="wrapper index-bg">
+    <div id="left-content" class="left-content">
+        <ul class="nav">
+            <li>
+                <a class="active" href="ble.html">
+                    <span class="thread"></span>
+                    <i class="icon-bluetooth"></i>
+                    <span>Set</span>
+                </a>
+            </li>
+            <li>
+                <a href="create.html">
+                    <span class="thread"></span>
+                    <i class="icon-connect"></i>
+                    <span>Create</span>
+                </a>
+            </li>
+            <li>
+                <a href="info.html">
+                    <span class="thread"></span>
+                    <i class="icon-device"></i>
+                    <span>Connected</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="right-content">
+        <div class="col-sm-10 col-xs-12 col-sm-offset-1">
+            <div class="col-xs-12 no-padding item-title">
+                <h5>Parameter Setting</h5>
+            </div>
+            <div class="wrapper-content col-xs-12">
+                <div class="col-sm-6 col-xs-12 item">
+                    <label class="col-xs-12 no-padding right-label">Mode Setting</label>
+                    <div class="col-xs-12 no-padding">
+                        <select id="device-type" class="form-control">
+                            <option data-value="disconnect" value="0">Disconnect Ble</option>
+                            <option selected data-value="client" value="1">Client Mode</option>
+                            <option data-value="server" value="2">Server Mode</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="no-disconnect">
+                    <!--<div class="col-sm-6 col-xs-12 item">-->
+                        <!--<label class="col-xs-12 no-padding right-label">Device Address</label>-->
+                        <!--<div class="col-xs-12 no-padding">-->
+                            <!--<input id="device-adr" class="form-control" placeholder="Device Address">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-sm-6 col-xs-12 item">-->
+                        <!--<label class="col-xs-12 no-padding right-label">Device Name</label>-->
+                        <!--<div class="col-xs-12 no-padding">-->
+                            <!--<input id="device-name" class="form-control" placeholder="Device Name">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="col-sm-6 col-xs-12 item">
+                        <label class="col-xs-12 no-padding right-label">Address Type</label>
+                        <div class="col-xs-12 no-padding">
+                            <select id="adr-type" class="form-control">
+                                <option selected value="">-- Please choose --</option>
+                                <option value="0">Public Address</option>
+                                <option value="1">Random Address</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="select-device-client">
+                        <div class="col-xs-12 no-padding hidden">
+                            <div class="col-sm-6 col-xs-12 item">
+                                <label class="col-xs-12 no-padding right-label">Scanning Way</label>
+                                <div class="col-xs-12 no-padding">
+                                    <select id="scanning-way" class="form-control">
+                                        <option selected value="">-- Please choose --</option>
+                                        <option value="0">Active Scanning</option>
+                                        <option value="1">Passive Scanning</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-xs-12 item">
+                                <label class="col-xs-12 no-padding right-label">Filter Policy</label>
+                                <div class="col-xs-12 no-padding">
+                                    <select id="filter-policy" class="form-control">
+                                        <option selected value="">-- Please choose --</option>
+                                        <option value="0">Allow All</option>
+                                        <option value="1">WLST</option>
+                                        <option value="2">UNDRPADIR</option>
+                                        <option value="3">WLISTPRADIR</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12 item">
+                                <label class="col-xs-12 no-padding right-label">Scanning Interval</label>
+                                <div class="col-xs-12 no-padding">
+                                    <input id="scanning-interval" class="form-control" placeholder="Scanning Interval">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12 item">
+                                <label class="col-xs-12 no-padding right-label">Scanning Window</label>
+                                <div class="col-xs-12 no-padding">
+                                    <input id="scanning-window" class="form-control" placeholder="Scanning Window">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 btn-advanced"><a class="advanced-options">advanced options</a></div>
+                    </div>
+                    <div id="select-device-server" class="hidden">
+                        <div class="col-xs-12 no-padding hidden">
+                            <div class="col-sm-6 col-xs-12 item">
+                                <label class="col-xs-12 no-padding right-label">Max Interval</label>
+                                <div class="col-xs-12 no-padding">
+                                    <input id="max-spacing" class="form-control" placeholder="Max Interval">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12 item">
+                                <label class="col-xs-12 no-padding right-label">Min Interval</label>
+                                <div class="col-xs-12 no-padding">
+                                    <input id="min-spacing" class="form-control" placeholder="Min Interval">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12 item">
+                                <label class="col-xs-12 no-padding right-label">Broadcast Type</label>
+                                <div class="col-xs-12 no-padding">
+                                    <select id="broadcast-type" class="form-control">
+                                        <option selected value="">-- Please choose --</option>
+                                        <option value="0">IND</option>
+                                        <option value="1">DIRECT_IND_HIGH</option>
+                                        <option value="2">SCAN_IND</option>
+                                        <option value="3">NONCONN_IND</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12 item">
+                                <label class="col-xs-12 no-padding right-label">Broadcast Channel</label>
+                                <div class="col-xs-12 no-padding">
+                                    <select id="broadcast-channel" class="form-control">
+                                        <option selected value="">-- Please choose --</option>
+                                        <option value="1">ADV_CHNL_37</option>
+                                        <option value="2">ADV_CHNL_38</option>
+                                        <option value="4">ADV_CHNL_39</option>
+                                        <option value="7">ADV_CHNL_ALl</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 btn-advanced"><a class="advanced-options">advanced options</a></div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 btn-operation text-center">
+                    <button id="ble-btn" class="btn btn-sm">Save</button>
+                </div>
+            </div>
+        </div>
+        <div id="broadcast-set" class="col-sm-10 col-xs-12 col-sm-offset-1 hidden">
+            <div class="col-xs-12 no-padding item-title">
+                <h5>Broadcast Setting</h5>
+            </div>
+            <div class="wrapper-content col-xs-12">
+                <div class="col-xs-12 item">
+                    <label class="col-xs-12 no-padding right-label">Broadcast Data</label>
+                    <div class="col-xs-12 no-padding">
+                        <input id="broadcast-data" class="form-control" placeholder="Broadcast Data">
+                    </div>
+                </div>
+                <div class="col-xs-12 btn-operation text-center btn-broadcast">
+                    <button id="broadcast-start" class="btn btn-sm">Start</button>
+                    <button id="broadcast-stop" class="btn btn-sm hidden">Stop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="navbar-fixed-bottom hidden-lg hidden-md hidden-sm">
+    <ul class="nav navigation-bottom">
+        <li>
+            <a href="../../index.html">
+                <span class="icon-home title-icon"></span><span class="title-text">Home</span>
+            </a>
+        </li>
+        <li>
+            <a href="../wifi/softap.html">
+                <span class="icon-wifi title-icon"></span><span class="title-text">WiFi</span>
+            </a>
+        </li>
+        <li>
+            <a href="../tcp/create.html">
+                <span class="icon-IP title-icon"></span><span class="title-text">Tcp/Ip</span>
+            </a>
+        </li>
+        <li>
+            <a class="active" href="ble.html">
+                <span class="icon-bluetooth title-icon"></span><span class="title-text">Ble</span>
+            </a>
+        </li>
+        <li>
+            <a href="../config/config.html">
+                <span class="icon-set title-icon"></span><span class="title-text">Config</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/jquery-editable-select.min.js"></script>
+<script src="../../js/toastr.js"></script>
+<script src="../../js/constant.js"></script>
+<script src="../../js/index.js"></script>
+<script>
+    AT.getBleClient();
+
+    $("#device-type, #adr-type, #scanning-way, #filter-policy, #broadcast-type, #broadcast-channel").editableSelect({
+        filter: false
+    });
+    $("#device-type, #adr-type, #scanning-way, #filter-policy, #broadcast-type, #broadcast-channel").attr("readonly", true);
+    AT._setSelect("device-type", "1");
+</script>
+</body>
+</html>

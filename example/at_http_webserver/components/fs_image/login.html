@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+
+    <title>AT</title>
+
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/toastr.css">
+    <link rel="stylesheet" href="css/style.css">
+
+
+</head>
+<body>
+<div class="wrapper login-bg">
+    <div class="login-wraaper">
+        <div class="content">
+            <div class="col-xs-12 text-center title">
+                <h2 class="color-blue">AT-LOGIN</h2>
+            </div>
+            <!--<div class="col-xs-12 margin-bottom">-->
+                <!--<div class="col-sm-10 col-sm-offset-1 position-relative">-->
+                    <!--<i class="icon-account"></i>-->
+                    <!--<input id="account" type="text" class="form-control bg-bottom" >-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="col-xs-12 margin-bottom">
+                <div class="col-sm-10 col-sm-offset-1 position-relative">
+                    <i class="icon-password" style="top: 2px;"></i>
+                    <input placeholder="Initial password: 123456" id="password" type="password" class="form-control bg-bottom" >
+                </div>
+            </div>
+            <div class="col-xs-12 margin-bottom">
+                <div class="col-sm-10 col-sm-offset-1 text-right">
+                    <a class="forget-password">忘记密码?</a>
+                </div>
+            </div>
+            <div class="col-xs-12 text-center">
+                <button id="login-btn" class="login-btn">登录</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-sm" id="forget-title" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">System title</h4>
+            </div>
+            <div class="modal-body">
+                <p>You can restore the factory settings through GPIO15!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/toastr.js"></script>
+<script src="js/constant.js"></script>
+<script src="js/login.js"></script>
+</body>
+</html>

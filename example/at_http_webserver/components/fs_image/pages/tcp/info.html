@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+
+    <title>AT-TCP/IP</title>
+
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/toastr.css">
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand">
+                ESPRESSIF-AT
+            </a>
+            <a class="user pull-right user-xs hidden-lg hidden-md hidden-sm user-logout">
+                <i class="icon-log-out"></i>
+                <span class="user-name">Logout</span>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <a href="../../index.html">
+                        <span class="icon-home title-icon"></span><span class="title-text">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../wifi/softap.html">
+                        <span class="icon-wifi title-icon"></span><span class="title-text">WiFi</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="active" class="active" href="../tcp/create.html">
+                        <span class="icon-IP title-icon"></span><span class="title-text">Tcp/Ip</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../ble/ble.html">
+                        <span class="icon-bluetooth title-icon"></span><span class="title-text">Ble</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../config/config.html">
+                        <span class="icon-set title-icon"></span><span class="title-text">Config</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right hidden-xs user-info">
+                <li><a class="user user-logout"><i class="icon-log-out"></i><span class="user-name">Logout</span></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="wrapper index-bg">
+    <div id="left-content" class="left-content">
+        <ul class="nav">
+            <li>
+                <a href="create.html">
+                    <span class="thread"></span>
+                    <i class="icon-connect"></i>
+                    <span>Create</span>
+                </a>
+            </li>
+            <li>
+                <a class="active" href="info.html">
+                    <span class="thread"></span>
+                    <i class="icon-device"></i>
+                    <span>Connected</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="right-content">
+        <div class="col-sm-10 col-xs-12 col-sm-offset-1 no-padding">
+            <div class="col-xs-12 no-padding item-title">
+                <h5 class="hidden-xs">Connected to the device</h5>
+                <h5 class="hidden-md hidden-lg hidden-sm">Information</h5>
+                <button data-id="5" class="btn btn-sm scanning-btn btn-tcp-all btn-tcp">Discon All</button>
+            </div>
+            <div class="wrapper-item-column col-xs-12 no-padding" id="tcp-connect-info">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="navbar-fixed-bottom hidden-lg hidden-md hidden-sm">
+    <ul class="nav navigation-bottom">
+        <li>
+            <a href="../../index.html">
+                <span class="icon-home title-icon"></span><span class="title-text">Home</span>
+            </a>
+        </li>
+        <li>
+            <a href="../wifi/softap.html">
+                <span class="icon-wifi title-icon"></span><span class="title-text">WiFi</span>
+            </a>
+        </li>
+        <li>
+            <a class="active" href="create.html">
+                <span class="icon-IP title-icon"></span><span class="title-text">Tcp/Ip</span>
+            </a>
+        </li>
+        <li>
+            <a href="../ble/ble.html">
+                <span class="icon-bluetooth title-icon"></span><span class="title-text">Ble</span>
+            </a>
+        </li>
+        <li>
+            <a href="../config/config.html">
+                <span class="icon-set title-icon"></span><span class="title-text">Config</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/toastr.js"></script>
+<script src="../../js/constant.js"></script>
+<script src="../../js/index.js"></script>
+<script>
+    $(function(){
+        AT.getTcp();
+    })
+</script>
+</body>
+</html>
