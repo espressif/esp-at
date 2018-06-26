@@ -10,7 +10,6 @@ Libesphttpd is the HTTP server library for the ESP32. Its core is clean and smal
 
 Pulls together various bits of code from the net that I modified for this project
 1. HTTP server code from https://github.com/Spritetm/libesphttpd
-2. Make a FAT file system image tool from https://github.com/jkearins/ESP32_mkfatfs
 
 # Compiling and flashing the project
 1. `make menuconfig` -> `Serial flasher config` to configure the serial port for downloading.

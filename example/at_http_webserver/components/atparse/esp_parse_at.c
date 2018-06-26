@@ -1,16 +1,43 @@
+/*
+ * ESPRESSIF MIT License
+ *
+ * Copyright (c) 2018 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
+ *
+ * Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP32 only, in which case,
+ * it is free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
 #include "esp_log.h"
 #include "esp_system.h"
 #include "esp_parse_at.h"
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-//#include "rom/ets_sys.h"
-
 
 static const char* TAG = "ParseAt";
-extern ble_scan_info* ble_link_head;
+
+// Considering that the BLE scan implement asynchronously, we need to
+// get the list after BLE scan return success.
+extern ble_scan_info* at_ble_link_head;
 
 esp_err_t esp_at_join_ap(esp_at_method method, esp_at_arg* arg)
 {
@@ -209,9 +236,6 @@ esp_err_t esp_at_set_mac(esp_wifi_mode mode, esp_at_arg* arg)
 
     return ESP_OK;
 }
-
-
-
 
 esp_err_t esp_at_wifi_scan(wifi_scan_cb cb)
 {
@@ -799,6 +823,72 @@ int32_t esp_at_ping(char* addr)
     return ping_time;
 }
 
+int32_t esp_at_fatfs_open(char* filename)
+{
+    int32_t file_len = 0;
+    at_response* at_result;
+    at_cmd_arg cmd_arg;
+
+    if (filename == NULL) {
+        ESP_LOGE(TAG, "File name is NULL\n");
+        return -1;
+    }
+
+    cmd_arg.fsopen.filename = filename;
+    at_result = at_add_cmd(AT_FSOPEN, &cmd_arg);
+
+    if (at_result->rsp_flag != AT_CMD_RETURN_SUCCESS) {
+        ESP_LOGE(TAG, "command execution error");
+        at_cmd_free(at_result);
+        return -1;
+    }
+
+    file_len = atoi((char*)at_result->data);
+    at_cmd_free(at_result);
+    return file_len;
+}
+
+char* esp_at_fatfs_read(char* filename, uint32_t offset, uint32_t length)
+{
+    int32_t read_len = 0;
+    char* read_data = NULL;
+    char* tmp_data = NULL;
+    at_response* at_result;
+    at_cmd_arg cmd_arg;
+
+    if (filename == NULL) {
+        ESP_LOGE(TAG, "File name is NULL\n");
+        return NULL;
+    }
+
+    cmd_arg.fsread.filename = filename;
+    cmd_arg.fsread.offset = offset;
+    cmd_arg.fsread.length = length;
+    at_result = at_add_cmd(AT_FSREAD, &cmd_arg);
+
+    if (at_result->rsp_flag != AT_CMD_RETURN_SUCCESS) {
+        ESP_LOGE(TAG, "command execution error");
+        at_cmd_free(at_result);
+        return NULL;
+    }
+
+    // parse response data  "+FS:len,XXXXX"
+    read_data = strstr((char*)at_result->data, "+FS:");
+
+    tmp_data = strchr(read_data, ',');
+    *tmp_data = '\0';
+    read_len = atoi((read_data + 4));
+
+    if (read_len != length) {
+        ESP_LOGI(TAG, "Read len:%d, len:%d\n", read_len, length);
+    }
+
+    read_data = malloc(read_len + 1);
+    memcpy(read_data, tmp_data + 1, read_len);
+    at_cmd_free(at_result);
+    return read_data;
+}
+
 esp_err_t esp_at_ble_init(esp_at_method method, esp_at_arg* arg)
 {
     at_response* at_result = NULL;
@@ -929,11 +1019,9 @@ esp_err_t esp_at_ble_scan(esp_at_arg* arg, ble_scan_cb cb)
     }
 
     at_cmd_free(at_result);
-    //wait_time = arg->blescan.interval *1000 + 200;
-    //printf("wait_time:%d\n",wait_time);
     vTaskDelay(1100 / portTICK_RATE_MS);   // wait some time
 
-    cb(ble_link_head);
+    cb(at_ble_link_head);
 
     return ESP_OK;
 }
@@ -1231,16 +1319,6 @@ esp_err_t esp_at_ble_connect(esp_at_arg* arg)
         return ESP_ERR_INVALID_STATE;
     }
 
-// Waiting for "+BLECONN:" may need over 30s, skip it may be a good idea.
-    /*
-        vTaskDelay(3000/ portTICK_RATE_MS);    // reponse data ,it the data is null, it means connect fail
-
-        if(at_result->data == NULL || strstr((char*)(at_result->data), "+BLECONN:") == NULL){
-    	ESP_LOGE(TAG, "Connect fail");
-            at_cmd_free(at_result);
-    	return ESP_ERR_INVALID_STATE;
-        }
-    */
     at_cmd_free(at_result);
     return ESP_OK;
 }
@@ -1250,7 +1328,6 @@ ble_conn_dev* esp_at_get_ble_connect(void)
     at_response* at_result = NULL;
     ble_conn_dev* conn_dev_head = NULL;
     char conn_id[5] = {0};
-//    uint8_t n = 0;
     char* ip_start_ptr = NULL;
     char* ip_end_ptr = NULL;
     at_result = at_add_cmd(AT_QUERTBLECONN, NULL);
@@ -1313,7 +1390,6 @@ ble_conn_dev* esp_at_get_ble_connect(void)
         conn_pre = conn_dev;
     }
 
-
     return conn_dev_head;
 }
 
@@ -1334,13 +1410,12 @@ esp_err_t esp_at_ble_close_connect(uint8_t conn_id)
     return ESP_OK;
 }
 
-
 esp_err_t esp_at_init_parse(void)
 {
     at_cmd_arg cmd_arg;
     at_response* at_result = NULL;
 
-    init_parse_frame();
+    at_init_parse_frame();
 
 // set station + softAP mode
     cmd_arg.cwmode.mode = 3;
@@ -1365,22 +1440,25 @@ esp_err_t esp_at_init_parse(void)
     }
 
     at_cmd_free(at_result);
-    ESP_LOGI(TAG, "init AT parse frame seccess\n");
 
-    /*  This is test */
+#if 0
     /*
-        memset(&cmd_arg, '\0', sizeof(at_cmd_arg));
-        strcpy(cmd_arg.cwjap.ssid, "HUAWEI001");
-        strcpy(cmd_arg.cwjap.pwd, "12345678");
-        at_result = at_add_cmd(AT_CWJAP, &cmd_arg);
+     *  Test connect AP first
+     */
+    memset(&cmd_arg, 0x0, sizeof(cmd_arg));
+    strcpy(cmd_arg.cwjap.ssid , "HUAWEI001");
+    strcpy(cmd_arg.cwjap.pwd , "12345678");
+    at_result = at_add_cmd(AT_CWJAP, &cmd_arg);
 
-        if (at_result->rsp_flag != AT_CMD_RETURN_SUCCESS) {
-            ESP_LOGE(TAG, "command cipmux execution error");
-            at_cmd_free(at_result);
-            return ESP_ERR_INVALID_STATE;
-        }
-    */
+    if (at_result->rsp_flag != AT_CMD_RETURN_SUCCESS) {
+        ESP_LOGE(TAG, "command cipmux execution error");
+        at_cmd_free(at_result);
+        return ESP_ERR_INVALID_STATE;
+    }
+
+    at_cmd_free(at_result);
+#endif
+
+    ESP_LOGI(TAG, "init AT parse frame seccess\n");
     return ESP_OK;
 }
-
-

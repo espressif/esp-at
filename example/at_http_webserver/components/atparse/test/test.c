@@ -1,7 +1,7 @@
 /*
  * ESPRESSIF MIT License
  *
- * Copyright (c) 2017 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
+ * Copyright (c) 2018 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
  *
  * Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP32 only, in which case,
  * it is free of charge, to any person obtaining a copy of this software and associated
@@ -24,15 +24,14 @@
 
 #include <stdio.h>
 #include <string.h>
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "esp_system.h"
+
 #include "nvs_flash.h"
 #include "esp_log.h"
-
+#include "esp_system.h"
 #include "esp_parse_at.h"
-
-//#define TEST_DEMO
 
 #ifdef TEST_DEMO
 

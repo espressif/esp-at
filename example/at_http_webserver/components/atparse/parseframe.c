@@ -1,34 +1,60 @@
+/*
+ * ESPRESSIF MIT License
+ *
+ * Copyright (c) 2018 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
+ *
+ * Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP32 only, in which case,
+ * it is free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
-#include "esp_at.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
 #include "freertos/ringbuf.h"
+
+#include "esp_at.h"
 #include "esp_log.h"
 #include "esp_system.h"
+
 #include "atparse.h"
 #include "parseframe.h"
 
 #define ESP_AT_RING_ESP_AT_BUFFER_SIZE 6*1024
-#define ESP_AT_RECEIVE_BUFF_SIZE 1024
+#define ESP_AT_RECEIVE_BUFF_SIZE 1500
+
+static const char* TAG = "ParseFrame";
 
 static RingbufHandle_t at_read_ring_buf;
 static RingbufHandle_t at_write_ring_buf;
-static char esp_at_receive_data_buf[ESP_AT_RECEIVE_BUFF_SIZE];
 
-xQueueHandle MsgQueue;
-
-static const char* TAG = "ParseFrame";
+// AT massage queue
+xQueueHandle at_msg_queue;
 
 rsp_cb response_cb = NULL;
 
 /*
 * Call AT lib to process the received data.
 */
-int8_t call_lib(uint8_t* data, int32_t len)
+int8_t at_call_lib(uint8_t* data, int32_t len)
 {
     if (len > 0) {
         if (xRingbufferSend(at_read_ring_buf, data, len, portMAX_DELAY) == pdFALSE) {
@@ -40,17 +66,15 @@ int8_t call_lib(uint8_t* data, int32_t len)
         return -1;
     }
 
-
     esp_at_port_recv_data_notify(len, portMAX_DELAY);
     return 0;
 }
-
 
 /*Called when recieve a normal AT command, make sure have added \r\n */
 static int32_t at_http_read_data(uint8_t* data, int32_t len)
 {
     if (data == NULL || len < 0) {
-        ESP_LOGE(TAG, "Cannot get read data address.");
+        ESP_LOGW(TAG, "Cannot get read data address.");
         return -1;
     }
 
@@ -109,6 +133,7 @@ static bool at_port_wait_write_complete(int32_t timeout_msec)
 static void check_reponse_task(void* pvParameters)
 {
     size_t recv_len;
+    char* esp_at_receive_data_buf = NULL;
 
     while (1) {
         char* at_rsp = (char*) xRingbufferReceive(at_write_ring_buf, &recv_len, (portTickType) portMAX_DELAY);
@@ -123,6 +148,7 @@ static void check_reponse_task(void* pvParameters)
             continue;
         }
 
+        esp_at_receive_data_buf = malloc(ESP_AT_RECEIVE_BUFF_SIZE * sizeof(char));
         memcpy(esp_at_receive_data_buf, at_rsp, recv_len);
         esp_at_receive_data_buf[recv_len] = '\0';
         ESP_LOGD(TAG, "Receive data:%s\n", esp_at_receive_data_buf);
@@ -133,11 +159,11 @@ static void check_reponse_task(void* pvParameters)
         }
 
         vRingbufferReturnItem(at_write_ring_buf, at_rsp);
-
+        free(esp_at_receive_data_buf);
     }
 }
 
-void init_at_module(void)
+static void init_at_module(void)
 {
     uint8_t* version = (uint8_t*)malloc(192);
     esp_at_device_ops_struct esp_at_device_ops = {
@@ -200,12 +226,10 @@ void init_at_module(void)
 
 #endif
     ESP_LOGI(TAG, "AT command regist OK\r\n");
-
 }
 
-void init_parse_frame(void)
+void at_init_parse_frame(void)
 {
-
     at_read_ring_buf = xRingbufferCreate(ESP_AT_RING_ESP_AT_BUFFER_SIZE, RINGBUF_TYPE_NOSPLIT);
     at_write_ring_buf = xRingbufferCreate(ESP_AT_RING_ESP_AT_BUFFER_SIZE, RINGBUF_TYPE_NOSPLIT);
 
@@ -216,11 +240,7 @@ void init_parse_frame(void)
 
     init_at_module();
 
-    MsgQueue = xQueueCreate(1 , sizeof(at_response));
+    at_msg_queue = xQueueCreate(1 , sizeof(at_response));
 
     xTaskCreate(&check_reponse_task, "custom_flag_task", 4 * 1024, NULL, 5, NULL);
 }
-
-
-
-

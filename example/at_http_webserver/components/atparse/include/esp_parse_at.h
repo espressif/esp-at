@@ -1,194 +1,227 @@
-#ifndef ESPPARSEAT_H
-#define ESPPARSEAT_H
+/*
+ * ESPRESSIF MIT License
+ *
+ * Copyright (c) 2018 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
+ *
+ * Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP32 only, in which case,
+ * it is free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ */
+
+#ifndef __ESPPARSEAT_H__
+#define __ESPPARSEAT_H__
 
 #include "esp_err.h"
 #include "atparse.h"
 
-typedef enum{
+typedef enum {
     QUERY,   // Query the current value of parameters
     SET,     // Set the value of user-defined parameters, and runs it.
-}esp_at_method;
+} esp_at_method;
 
-typedef enum{
+typedef enum {
     CONNECT_AP = 2,        // Station is connected to an AP and its IP is obtained.
     CREAT_TRAN = 3,        // Station has created a TCP or UDP transmission.
     DISCONN_TRAN = 4,      // The TCP or UDP transmission of ESP32 Station is disconnected.
     DISCONN_AP = 5,        // ESP32 Station does NOT connect an AP.
-}sta_interface_status;
+} sta_interface_status;
 
-typedef enum{
+typedef enum {
     STATION,
     SOFTAP,
-}esp_wifi_mode;
+} esp_wifi_mode;
 
-typedef enum{
+typedef enum {
     NONE = 0,            // Disable station DHCP and softap DHCP.
     CLIENT,              // Enable station DHCP.
     SERVER,              // Enable softap DHCP.
     BOTH,                // Enable station DHCP and softap DHCP.
-}esp_dhcp_status;
+} esp_dhcp_status;
 
-typedef union{
-	struct {
-		uint8_t mode;                // WiFi mode(0-3), 0:NULL mode, 1:station mode, 2:softap mode, 3:softap+station mode
-	}cwmode;
-	
-	struct {
-		char ssid[30];               // the SSID of the target AP 
-		char pwd[30];                // password
-		char bssid[30];              // (optional parameter) the target AP's MAC address, NULL if not use.
-	}cwjap;
+typedef union {
+    struct {
+        uint8_t mode;                // WiFi mode(0-3), 0:NULL mode, 1:station mode, 2:softap mode, 3:softap+station mode
+    } cwmode;
 
-	struct {
-		char ssid[30];               // show the SSID of the AP
-		char bssid[30];              // show the AP's MAC address 
-     		uint8_t channel;
-     		int8_t rssi;                 // signal strength
-	}queryjap;
-	
-	struct {
-		char ssid[30];               // ssid of AP
-		char pwd[30];                // password
-		int8_t chl;                  // channel ID
-		int8_t ecn;                  // encryption method(0-4), 0:OPEN, 1:WEP, 2:WPA_PSK, 3:WPA2_PSK, 4:WPA_WPA2_PSK
-		int8_t max_conn;             // (optional parameter), maximum number of station to which ESP32 softAP can be connect. Range(1,10)
-		int8_t ssid_hidden;          // (optional parameter), ssid  hidden(0 or 1), 0 - ssid is broadcast(the default setting), 1 - ssid is not broadcast
-	}cwsap;
+    struct {
+        char ssid[33];               // the SSID of the target AP
+        char pwd[64];                // password
+        char bssid[20];              // (optional parameter) the target AP's MAC address, NULL if not use.
+    } cwjap;
 
-	struct {
-		char *ip;
-		char *gateway;
-		char *netmask;
-	}ipinfo;      // cipsta or cipap
+    struct {
+        char ssid[33];               // show the SSID of the AP
+        char bssid[20];              // show the AP's MAC address
+        uint8_t channel;
+        int8_t rssi;                 // signal strength
+    } queryjap;
 
-	struct {
-		uint8_t enable;              // (0 or 1) : 1 - enable auto connect , 0 - disable auto connect
-	}autoconn;	
+    struct {
+        char ssid[33];               // ssid of AP
+        char pwd[64];                // password
+        int8_t chl;                  // channel ID
+        int8_t ecn;                  // encryption method(0-4), 0:OPEN, 1:WEP, 2:WPA_PSK, 3:WPA2_PSK, 4:WPA_WPA2_PSK
+        int8_t max_conn;             // (optional parameter), maximum number of station to which ESP32 softAP can be connect. Range(1,10)
+        int8_t ssid_hidden;          // (optional parameter), ssid  hidden(0 or 1), 0 - ssid is broadcast(the default setting), 1 - ssid is not broadcast
+    } cwsap;
 
-	struct {
-		int8_t enable;               // 0 or 1, 0 - disable the settings and use the default IP range, 1 - enable setting the IP range, and the parameters below have to be set
-		int32_t lease;               // lease time, unit:minute, range [1,2880]
-		char start_ip[30];           // start IP of the IP range that can be obtained from ESP32 softAP DHCP server
-		char end_ip[30];             // end IP of the IP range
-	}cwdhcps;
+    struct {
+        char* ip;
+        char* gateway;
+        char* netmask;
+    } ipinfo;     // cipsta or cipap
 
-	struct {
-		char mac[30];
-	}cipmac;
+    struct {
+        uint8_t enable;              // (0 or 1) : 1 - enable auto connect , 0 - disable auto connect
+    } autoconn;
 
-	struct {
-		int8_t link_id;              // ID of network connection (0~max_conn)
-		char type[10];               // connection type: "TCP", "UDP" or "SSL"
-		char remote_ip[30];          // remote IP address
-		int32_t remote_port;         // remote port number
-		int32_t keep_alive;          // detection time interval when TCP is kept alive, default is disabled. If establish UDP connect , it is omit,(-1 is a good choice)
-		int32_t local_port;          // UDP port. It only used by UDP connect, and it is optional parameter
-		int8_t udp_mode;             // UDP mode(0-2). 0 - destination peer entity of UDP will not change, 1 - change once, 2 - allow to change.
-					     // It only used by UDP connect, and it also is optional parameter
-	}cipstart;
+    struct {
+        int8_t enable;               // 0 or 1, 0 - disable the settings and use the default IP range, 1 - enable setting the IP range, and the parameters below have to be set
+        int32_t lease;               // lease time, unit:minute, range [1,2880]
+        char start_ip[20];           // start IP of the IP range that can be obtained from ESP32 softAP DHCP server
+        char end_ip[20];             // end IP of the IP range
+    } cwdhcps;
 
-	struct {
-		int8_t init_mode;            // init role(0 or 2), 0 - not init, 1 - client role, 2 - server role 
-	}bleinit;
+    struct {
+        char mac[20];
+    } cipmac;
 
-	struct {
-		int8_t addr_type;            // address type(0 or 1), 0 - public address, 1 - random address
-		char random_addr[30];
-	}bleaddr;
+    struct {
+        int8_t link_id;              // ID of network connection (0~max_conn)
+        char type[10];               // connection type: "TCP", "UDP" or "SSL"
+        char remote_ip[20];          // remote IP address
+        int32_t remote_port;         // remote port number
+        int32_t keep_alive;          // detection time interval when TCP is kept alive, default is disabled. If establish UDP connect , it is omit,(-1 is a good choice)
+        int32_t local_port;          // UDP port. It only used by UDP connect, and it is optional parameter
+        int8_t udp_mode;             // UDP mode(0-2). 0 - destination peer entity of UDP will not change, 1 - change once, 2 - allow to change.
+        // It only used by UDP connect, and it also is optional parameter
+    } cipstart;
 
-	struct {
-		char device_name[30];        // BLE device name
-	}blename;
+    struct {
+        char filename[256];
+    } fsopen;
 
-	struct {
-		int8_t scan_type;            // BLE scan type(0 or 1), 0 - passive scan, 1 - active scan
-		int8_t addr_type;            // BLE own address type(0 ~ 3), 0 - public address, 1 - random address, 2 - RPA public address, 3 - PRA random address
-		int8_t filter_policy;        // filter policy(0 ~ 3), 0 - ALLOW_ALL, 1 - ALLOW_ONLY_WLIST, 2 - ALLOW_UND_RPA_DIR, 3 - ALLOW_WLIST_PRA_DIR
-		int32_t scan_interval;       // scan interval
-		int32_t scan_window;         // scan window
-	}blescanparam;
+    struct {
+        char filename[256];
+        uint32_t offset;
+        uint32_t length;
+    } fsread;
 
-	struct {
-		int8_t enable;
-		int8_t interval;
-	}blescan;
+    struct {
+        int8_t init_mode;            // init role(0 or 2), 0 - not init, 1 - client role, 2 - server role
+    } bleinit;
 
-	struct {
-		int8_t conn_index;
-		char remote_address[30];
-	}bleconn;
+    struct {
+        int8_t addr_type;            // address type(0 or 1), 0 - public address, 1 - random address
+        char random_addr[20];
+    } bleaddr;
 
-	struct {
-		int32_t adv_int_min;
-		int32_t adv_int_max;
-		int8_t adv_type;
-		int8_t addr_type;
-		int8_t channel;
-		int8_t adv_filter_policy;
-		int8_t peer_addr_type;
-		char peer_address[30];
-	}bleadvparam;
+    struct {
+        char device_name[30];        // BLE device name
+    } blename;
 
-}esp_at_arg;
+    struct {
+        int8_t scan_type;            // BLE scan type(0 or 1), 0 - passive scan, 1 - active scan
+        int8_t addr_type;            // BLE own address type(0 ~ 3), 0 - public address, 1 - random address, 2 - RPA public address, 3 - PRA random address
+        int8_t filter_policy;        // filter policy(0 ~ 3), 0 - ALLOW_ALL, 1 - ALLOW_ONLY_WLIST, 2 - ALLOW_UND_RPA_DIR, 3 - ALLOW_WLIST_PRA_DIR
+        int32_t scan_interval;       // scan interval
+        int32_t scan_window;         // scan window
+    } blescanparam;
+
+    struct {
+        int8_t enable;
+        int8_t interval;
+    } blescan;
+
+    struct {
+        int8_t conn_index;
+        char remote_address[20];
+    } bleconn;
+
+    struct {
+        int32_t adv_int_min;
+        int32_t adv_int_max;
+        int8_t adv_type;
+        int8_t addr_type;
+        int8_t channel;
+        int8_t adv_filter_policy;
+        int8_t peer_addr_type;
+        char peer_address[20];
+    } bleadvparam;
+
+} esp_at_arg;
 
 typedef struct {
-     char ip[30];
-     char mac[30];
-     char gateway[30];
-     char netmask[30];
-}esp_at_ip_info;
+    char ip[20];
+    char mac[20];
+    char gateway[20];
+    char netmask[20];
+} esp_at_ip_info;
 
-typedef struct scan_ap_struct{
-     uint8_t ecn;                       // encryption menthod (0-4), 0:OPEN, 1:WEP, 2:WPA_PSK, 3:WPA2_PSK, 4:WPA_WPA2_PSK
-     char ssid[30];                     // string parameter, SSID of the AP.
-     int8_t rssi;                       // signal strength
-     char mac[30];                      // string parameter, MAC address of the AP.
-     uint8_t channel;                   // channel of the AP.
-     struct scan_ap_struct* next;
-}scan_ap_link;
+typedef struct scan_ap_struct {
+    uint8_t ecn;                       // encryption menthod (0-4), 0:OPEN, 1:WEP, 2:WPA_PSK, 3:WPA2_PSK, 4:WPA_WPA2_PSK
+    char ssid[33];                     // string parameter, SSID of the AP.
+    int8_t rssi;                       // signal strength
+    char mac[20];                      // string parameter, MAC address of the AP.
+    uint8_t channel;                   // channel of the AP.
+    struct scan_ap_struct* next;
+} scan_ap_link;
 
-typedef struct at_ble_scan_info{
-     char addr[30];
-     int rssi;
-     char adv_data[63];
-     char scan_rsp_data[63];    // 31*2
-     struct at_ble_scan_info* next;
-}ble_scan_info;
+typedef struct at_ble_scan_info {
+    char addr[20];
+    int rssi;
+    char adv_data[63];
+    char scan_rsp_data[63];    // 31*2
+    struct at_ble_scan_info* next;
+} ble_scan_info;
 
-typedef struct connect_status{
-     uint8_t link_id;                    // ID of the connection(0~max).
-     char type[30];                      // string parameter, "TCP" or "UDP".
-     char remote_ip[30];                 // string parameter indicating the remote IP address.
-     uint32_t remote_port;               // the remote port number.
-     uint32_t local_port;                // ESP32 local port number.
-     uint8_t tetype;                     // 0 or 1, 0 means ESP32 runs as a client, 1 means ESP32 runs as a server.
-     struct connect_status* next;
-}conn_status_link;
+typedef struct connect_status {
+    uint8_t link_id;                    // ID of the connection(0~max).
+    char type[10];                      // string parameter, "TCP" or "UDP".
+    char remote_ip[20];                 // string parameter indicating the remote IP address.
+    uint32_t remote_port;               // the remote port number.
+    uint32_t local_port;                // ESP32 local port number.
+    uint8_t tetype;                     // 0 or 1, 0 means ESP32 runs as a client, 1 means ESP32 runs as a server.
+    struct connect_status* next;
+} conn_status_link;
 
-typedef struct{
+typedef struct {
     sta_interface_status interface_status;     // status of the ESP32 Station interface.
     conn_status_link* status_link;
-}conn_stat;
+} conn_stat;
 
+typedef struct connected_dev {
+    char ip[20];
+    char mac[20];
+    struct connected_dev* next;
+} conn_dev_link;
 
-typedef struct connected_dev{
-     char ip[30];
-     char mac[30];
-     struct connected_dev* next;
-}conn_dev_link;
-
-typedef struct ble_connected_dev{
-     uint8_t conn_index;               // index of BLE connection
-     char addr[30];                    // remote BLE address
-     struct ble_connected_dev* next;
-}ble_conn_dev;
+typedef struct ble_connected_dev {
+    uint8_t conn_index;               // index of BLE connection
+    char addr[20];                    // remote BLE address
+    struct ble_connected_dev* next;
+} ble_conn_dev;
 
 /**
  * @brief BLE scan callback function
  *
  * @param dev_head pointer to BLE scan info linked list head
  *
- * @note  The link list need be freed by yourself. 
+ * @note  The link list need be freed by yourself.
  */
 typedef void (* ble_scan_cb)(ble_scan_info* dev_head);
 
@@ -197,7 +230,7 @@ typedef void (* ble_scan_cb)(ble_scan_info* dev_head);
  *
  * @param dev_head pointer to WiFi scan linked list head
  *
- * @note  The link list need be freed by yourself. 
+ * @note  The link list need be freed by yourself.
  */
 typedef void (* wifi_scan_cb)(scan_ap_link* dev_head);
 
@@ -208,9 +241,9 @@ typedef void (* wifi_scan_cb)(scan_ap_link* dev_head);
  *
  * @param    method : join or get current ap info (set/query)
  *
- * @param    arg    : cwjap / queryjap. 
+ * @param    arg    : cwjap / queryjap.
  *              When use set method, arg is cwjap. When use query method, arg is queryjap.
- * 
+ *
  * @return
  *      - ESP_OK on success
  *      - ESP_ERR_INVALID_ARG if the configuration values are not correct
@@ -237,7 +270,7 @@ esp_err_t esp_at_auto_connect(esp_at_method method, esp_at_arg* arg);
  * @brief    Get the IP information which connected to ESP32 softAP
  *
  * @note     This API cannot get a station IP.
- * 
+ *
  * @return
  *      - NULL if fail or no connection
  *      - connected IP infor link
@@ -253,7 +286,7 @@ conn_dev_link* esp_at_connected_device(void);
  * @param    method : set DHCP or get current DHCP info (set/query)
  *
  * @param    esp_dhcp_status : DHCP status
- * 
+ *
  * @return
  *      - ESP_OK on success
  *      - ESP_ERR_INVALID_ARG if the configuration values are not correct
@@ -269,7 +302,7 @@ esp_err_t esp_at_dhcp_status(esp_at_method method, esp_dhcp_status* dhcp_status)
  * @param    method : set IP address allocate or get current IP address allocate (set/query)
  *
  * @param    arg    : cwdhcps
- * 
+ *
  * @return
  *      - ESP_OK on success
  *      - ESP_ERR_INVALID_ARG if the configuration values are not correct
@@ -279,7 +312,7 @@ esp_err_t esp_at_set_dhcps(esp_at_method method, esp_at_arg* arg);
 
 /**
  * @brief    Disconnect from AP
- * 
+ *
  * @return
  *      - ESP_OK on success
  *      - ESP_ERR_INVALID_STATE if AT core execute error
@@ -347,7 +380,7 @@ esp_err_t esp_at_set_mac(esp_wifi_mode mode, esp_at_arg* arg);
 /**
  * @brief    Get AP list in last scan
  *
- * @param    cb : wifi_scan_cb hold the found APs info 
+ * @param    cb : wifi_scan_cb hold the found APs info
  *
  * @return
  *      - ESP_OK on success
@@ -360,14 +393,14 @@ esp_err_t esp_at_wifi_scan(wifi_scan_cb cb);
  *
  * @return
  *      - -1 if AT core execute error
- *      - remain RAM size 
+ *      - remain RAM size
  */
 int32_t esp_at_getramsize(void);
 
 /**
  * @brief    Send ping packets
  *
- * @param    addr  : host IP or domain name 
+ * @param    addr  : host IP or domain name
  *
  * @return
  *      - ping time
@@ -422,10 +455,28 @@ esp_err_t esp_at_close_connect(int8_t link_id);
  * @brief  Gets the connect status
  *
  * @return
- *      - a struct include a IP link list, this struct and link list need be freed by yourself. 
+ *      - a struct include a IP link list, this struct and link list need be freed by yourself.
  *      - NULL if error
  */
 conn_stat* esp_at_get_connect_status(void);
+
+/**
+ * @brief  Open a FATFS file
+ *
+ * @return
+ *      - len if success
+ *      - -1 if error
+ */
+int32_t esp_at_fatfs_open(char* filename);
+
+/**
+ * @brief  Read FATFS file
+ *
+ * @return
+ *      - Point to address where stores read contents if success
+ *      - NULL if error
+ */
+char* esp_at_fatfs_read(char* filename, uint32_t offset, uint32_t length);
 
 /**
  * @brief    BLE initialization
@@ -551,7 +602,7 @@ esp_err_t esp_at_ble_adv_stop();
  *
  * @param    arg  : blescanparam.
  *
- * @param    cb : ble_scan_cb hold the found BLEs info 
+ * @param    cb : ble_scan_cb hold the found BLEs info
  *
  * @return
  *      - ESP_OK on success
@@ -576,10 +627,10 @@ esp_err_t esp_at_ble_connect(esp_at_arg* arg);
 /**
  * @brief    Get BLE connection info
  *
- * @note     It just try to connect ble server, but not care whether it success, 
+ * @note     It just try to connect ble server, but not care whether it success,
  *
  * @return
- *      - ble device link list, it need be freed by yourself. 
+ *      - ble device link list, it need be freed by yourself.
  *      - NULL if error or no connect device
  */
 ble_conn_dev* esp_at_get_ble_connect(void);

@@ -36,33 +36,9 @@
 #include "httpd.h"
 #include "httpdespfs.h"
 #include "cgiat.h"
-#include "button.h"
 #include "atparse.h"
 
-#define RESET_BUTTON_NUM 15
-
 static const char* TAG = "HTTPAT";
-
-static void httpat_button_reset_tap_cb(void* arg)
-{
-    const esp_partition_t* p = esp_partition_find_first(ESP_PARTITION_TYPE_DATA, ESP_PARTITION_SUBTYPE_DATA_NVS, NULL);
-
-    if (p == NULL) {
-        ESP_LOGE(TAG, "Cannot find patition");
-        return;
-    }
-
-    esp_wifi_stop();
-    esp_partition_erase_range(p, 0, p->size);
-
-    esp_restart();
-}
-
-static void initialise_key(void)
-{
-    button_handle_t btn_handle = button_dev_init(RESET_BUTTON_NUM, 0, BUTTON_ACTIVE_LOW);
-    button_dev_add_tap_cb(BUTTON_PUSH_CB, httpat_button_reset_tap_cb, "PUSH", 50 / portTICK_PERIOD_MS, btn_handle);
-}
 
 HttpdBuiltInUrl builtInUrls[] = {
     {"/", cgiRedirect, "/login.html"},
@@ -109,12 +85,11 @@ void app_main()
     int ret;
     nvs_flash_init();
 
-    initialise_key();
-
     ESP_ERROR_CHECK(esp_at_init_parse());
-
+#ifndef ESP_AT_FATFS_COMMAND
     ret =  espFsInit();
     assert(ret == 1);
+#endif
     httpdInit(builtInUrls, 80);
 }
 

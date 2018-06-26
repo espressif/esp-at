@@ -1,180 +1,204 @@
-#ifndef ATPARSE_H
-#define ATPARSE_H
+/*
+ * ESPRESSIF MIT License
+ *
+ * Copyright (c) 2018 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
+ *
+ * Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP32 only, in which case,
+ * it is free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ */
+
+#ifndef __ATPARSE_H__
+#define __ATPARSE_H__
 
 #include<stdio.h>
 #include<stdint.h>
 
-typedef union{
-	struct {
-		uint8_t mode;
-	}cwmode;
-	
-	struct {
-		char ssid[30];
-		char pwd[30];
-		char bssid[30];
-	}cwjap;
+typedef union {
+    struct {
+        uint8_t mode;
+    } cwmode;
 
-	struct {
-		char ssid[30];
-		char bssid[30];
-     		uint8_t channel;
-     		int8_t rssi;
-	}queryjap;
-	
-	struct {
-		char ssid[30];
-		char pwd[30];
-		int8_t chl;
-		int8_t ecn;
-		int8_t max_conn;
-		int8_t ssid_hidden;
-	}cwsap;
+    struct {
+        char ssid[33];
+        char pwd[64];
+        char bssid[20];
+    } cwjap;
 
-	struct {
-		char* ip;
-		char* gateway;
-		char* netmask;
-	}cipsta;
-	
-	struct {
-		char* ip;
-		char* gateway;
-		char* netmask;
-	}cipap;
+    struct {
+        char ssid[33];
+        char bssid[20];
+        uint8_t channel;
+        int8_t rssi;
+    } queryjap;
 
-	struct {
-		char mac[30];
-	}cipmac;
+    struct {
+        char ssid[33];
+        char pwd[64];
+        int8_t chl;
+        int8_t ecn;
+        int8_t max_conn;
+        int8_t ssid_hidden;
+    } cwsap;
 
-	struct {
-		uint8_t mode;
-	}cipmux;
-	
-	struct {
-		uint8_t mode;
-		int8_t port;
-		char* ssl;
-		int8_t ca_enable;
-	}cipserver;
+    struct {
+        char* ip;
+        char* gateway;
+        char* netmask;
+    } cipsta;
 
-	struct {
-		int8_t link_id;
-		int32_t length;
-	}cipsend;
-	struct {
-		char* data;
-		uint32_t data_len;
-	}sendinfo;
+    struct {
+        char* ip;
+        char* gateway;
+        char* netmask;
+    } cipap;
 
-	struct {
-		char* filename;
-	}fsopen;
+    struct {
+        char mac[20];
+    } cipmac;
 
-	struct {
-		char* filename;
-		uint32_t offset;
-		uint32_t length;
-	}fsread;
+    struct {
+        uint8_t mode;
+    } cipmux;
 
-	struct {
-		char* ip;
-	}ping;
+    struct {
+        uint8_t mode;
+        int8_t port;
+        char* ssl;
+        int8_t ca_enable;
+    } cipserver;
 
-	struct {
-		uint8_t enable;
-	}autoconn;	
-	struct {
-		int8_t operate;
-		int8_t mode;
-	}cwdhcp;
-	struct {
-		int8_t enable;
-		int32_t lease;
-		char start_ip[30];
-		char end_ip[30];
-	}cwdhcps;
+    struct {
+        int8_t link_id;
+        int32_t length;
+    } cipsend;
+    struct {
+        char* data;
+        uint32_t data_len;
+    } sendinfo;
 
-	struct {
-		int8_t link_id;
-		char type[10];
-		char remote_ip[30];
-		int32_t remote_port;
-		int32_t keep_alive;
-		int32_t local_port;
-		int8_t udp_mode;
-	}cipstart;
-	struct {
-		int8_t link_id;
-	}cipclose;
-	struct {
-		int8_t init_mode;
-	}bleinit;
+    struct {
+        char* filename;
+    } fsopen;
 
-	struct {
-		int8_t addr_type;
-		char random_addr[30];
-	}bleaddr;
+    struct {
+        char* filename;
+        uint32_t offset;
+        uint32_t length;
+    } fsread;
 
-	struct {
-		char device_name[30];
-	}blename;
+    struct {
+        char* ip;
+    } ping;
 
-	struct {
-		int8_t scan_type;
-		int8_t addr_type;
-		int8_t filter_policy;
-		int32_t scan_interval;
-		int32_t scan_window;
-	}blescanparam;
+    struct {
+        uint8_t enable;
+    } autoconn;
+    struct {
+        int8_t operate;
+        int8_t mode;
+    } cwdhcp;
+    struct {
+        int8_t enable;
+        int32_t lease;
+        char start_ip[20];
+        char end_ip[20];
+    } cwdhcps;
 
-	struct {
-		int8_t enable;
-		int8_t interval;
-	}blescan;
+    struct {
+        int8_t link_id;
+        char type[10];
+        char remote_ip[20];
+        int32_t remote_port;
+        int32_t keep_alive;
+        int32_t local_port;
+        int8_t udp_mode;
+    } cipstart;
+    struct {
+        int8_t link_id;
+    } cipclose;
+    struct {
+        int8_t init_mode;
+    } bleinit;
 
-	struct {
-		int8_t conn_index;
-		char remote_address[30];
-	}bleconn;
+    struct {
+        int8_t addr_type;
+        char random_addr[20];
+    } bleaddr;
 
-	struct {
-		int8_t conn_id;
-	}bledisconn;
+    struct {
+        char device_name[30];
+    } blename;
 
-	struct {
-		int32_t adv_int_min;
-		int32_t adv_int_max;
-		int8_t adv_type;
-		int8_t addr_type;
-		int8_t channel;
-		int8_t adv_filter_policy;
-		int8_t peer_addr_type;
-		char peer_address[30];
-	}bleadvparam;
+    struct {
+        int8_t scan_type;
+        int8_t addr_type;
+        int8_t filter_policy;
+        int32_t scan_interval;
+        int32_t scan_window;
+    } blescanparam;
 
-	struct {
-		char* adv_data;
-	}bleadvdata;
-}at_cmd_arg;
+    struct {
+        int8_t enable;
+        int8_t interval;
+    } blescan;
+
+    struct {
+        int8_t conn_index;
+        char remote_address[20];
+    } bleconn;
+
+    struct {
+        int8_t conn_id;
+    } bledisconn;
+
+    struct {
+        int32_t adv_int_min;
+        int32_t adv_int_max;
+        int8_t adv_type;
+        int8_t addr_type;
+        int8_t channel;
+        int8_t adv_filter_policy;
+        int8_t peer_addr_type;
+        char peer_address[20];
+    } bleadvparam;
+
+    struct {
+        char* adv_data;
+    } bleadvdata;
+} at_cmd_arg;
 
 
 // Get local IP address and mac, include AP and station.
 typedef struct {
-     char ap_ip[30];
-     char ap_mac[30];
-     char sta_ip[30];
-     char sta_mac[30];
-}cifsr_info;
+    char ap_ip[20];
+    char ap_mac[20];
+    char sta_ip[20];
+    char sta_mac[20];
+} cifsr_info;
 
 // Get station ip info
 typedef struct {
-     char ip[30];
-     char gateway[30];
-     char netmask[30];
-}ip_info;
+    char ip[20];
+    char gateway[20];
+    char netmask[20];
+} ip_info;
 
-typedef enum{
+typedef enum {
     WAIT_CMD = 0,
     AT_CWMODE,   // AT+CWMODE
     AT_CWSAP,    // AT+CWSAP
@@ -227,30 +251,30 @@ typedef enum{
     AT_QUERTBLESCANPARAM,
     AT_QUERTBLECONN,
     AT_QUERTBLEADVPARAM,
-}at_command_list;
+} at_command_list;
 
-typedef struct{
-	uint8_t rsp_flag;
-	void* data;
-}at_response;
+typedef struct {
+    uint8_t rsp_flag;
+    void* data;
+} at_response;
 
 #define AT_CMD_RETURN_SUCCESS 0
 #define AT_CMD_RETURN_FAIL 1
 #define AT_ERROR  2
 
 #define at_rsp_error_msg(msg,error_reason) do {\
-    (msg)->rsp_flag = AT_ERROR;\
-    (msg)->data = error_reason;\
+        (msg)->rsp_flag = AT_ERROR;\
+        (msg)->data = error_reason;\
     }while(0)
 
 #define MAX_SCAN_COUNT 20
 
-typedef struct{
-	int8_t (*pack)(at_cmd_arg* cmd_arg);
-	void (*response)(char* data, size_t len);
-}at_cmd_func;
+typedef struct {
+    int8_t (*pack)(at_cmd_arg* cmd_arg);
+    void (*response)(char* data, size_t len);
+} at_cmd_func;
 
-typedef void (*rsp_cb)(char* data, size_t len); 
+typedef void (*rsp_cb)(char* data, size_t len);
 
 
 /**
@@ -284,6 +308,6 @@ void at_cmd_free(at_response* rsp);
  * @note It must be called before use "at_add_cmd" to call AT
  *
  */
-void init_parse_frame(void);
+void at_init_parse_frame(void);
 
 #endif
