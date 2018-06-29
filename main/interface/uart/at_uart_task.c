@@ -33,13 +33,10 @@
 #include "nvs_flash.h"
 
 #include "esp_system.h"
-#include "at_upgrade.h"
 
 #include "driver/uart.h"
 
-#ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
-#include "esp_bt.h"
-#endif
+#include "at_interface.h"
 
 typedef struct {
     int32_t baudrate;
@@ -446,57 +443,10 @@ static uint8_t at_queryCmdUartDef (uint8_t *cmd_name)
     return ESP_AT_RESULT_CODE_OK;
 }
 
-
-static uint8_t at_exeCmdCipupdate(uint8_t *cmd_name)//add get station ip and ap ip
-{
-
-    if (esp_at_upgrade_process(ESP_AT_OTA_MODE_NORMAL,NULL)) {
-        esp_at_response_result(ESP_AT_RESULT_CODE_OK);
-        esp_at_port_wait_write_complete(portMAX_DELAY);
-        esp_restart();
-        for(;;){
-        }
-    }
-
-    return ESP_AT_RESULT_CODE_ERROR;
-}
-
-static uint8_t at_setupCmdCipupdate(uint8_t para_num)
-{
-    int32_t ota_mode = 0;
-    int32_t cnt = 0;
-    uint8_t* version = NULL;
-
-    if (esp_at_get_para_as_digit (cnt++,&ota_mode) != ESP_AT_PARA_PARSE_RESULT_OK) {
-        return ESP_AT_RESULT_CODE_ERROR;
-    }
-
-    if (cnt < para_num) {
-        if(esp_at_get_para_as_str (cnt++,&version) != ESP_AT_PARA_PARSE_RESULT_OK) {
-            return ESP_AT_RESULT_CODE_ERROR;
-        }
-    }
-
-    if (cnt != para_num) {
-        return ESP_AT_RESULT_CODE_ERROR;
-    }
-
-    if (esp_at_upgrade_process(ota_mode,version)) {
-        esp_at_response_result(ESP_AT_RESULT_CODE_OK);
-        esp_at_port_wait_write_complete(portMAX_DELAY);
-        esp_restart();
-        for(;;){
-        }
-    }
-
-    return ESP_AT_RESULT_CODE_ERROR;
-}
-
 static esp_at_cmd_struct at_custom_cmd[] = {
     {"+UART", NULL, at_queryCmdUart, at_setupCmdUartDef, NULL},
     {"+UART_CUR", NULL, at_queryCmdUart, at_setupCmdUart, NULL},
     {"+UART_DEF", NULL, at_queryCmdUartDef, at_setupCmdUartDef, NULL},
-    {"+CIUPDATE", NULL, NULL, at_setupCmdCipupdate, at_exeCmdCipupdate},
 };
 
 void at_status_callback (esp_at_status_type status)
@@ -530,7 +480,7 @@ void at_pre_restart_callback (void)
     esp_at_port_wait_write_complete(portMAX_DELAY);
 }
 
-void at_task_init(void)
+void at_interface_init (void)
 {
     uint8_t *version = (uint8_t *)malloc(192);
     esp_at_device_ops_struct esp_at_device_ops = {
@@ -546,59 +496,15 @@ void at_task_init(void)
         .pre_restart_callback = at_pre_restart_callback,
     };
 
-#ifdef CONFIG_AT_COMMAND_TERMINATOR
-    uint8_t cmd_terminator[2] = {CONFIG_AT_COMMAND_TERMINATOR,0};
-#endif
-
-    nvs_flash_init();
     at_uart_init();
 
-    sprintf((char*)version, "compile time:%s %s\r\n", __DATE__, __TIME__);
-#ifdef CONFIG_ESP_AT_FW_VERSION
-    if ((strlen(CONFIG_ESP_AT_FW_VERSION) > 0) && (strlen(CONFIG_ESP_AT_FW_VERSION) <= 128)){
-        printf("%s\r\n", CONFIG_ESP_AT_FW_VERSION);
-        strcat((char*)version, CONFIG_ESP_AT_FW_VERSION);
-    }
-#endif
     esp_at_device_ops_regist (&esp_at_device_ops);
     esp_at_custom_ops_regist(&esp_at_custom_ops);
-    esp_at_module_init (CONFIG_LWIP_MAX_SOCKETS - 1, version);  // reserved one for server
-    free(version);
+}
 
-#ifdef CONFIG_AT_BASE_COMMAND_SUPPORT
-    if(esp_at_base_cmd_regist() == false) {
-        printf("regist base cmd fail\r\n");
-    }
-#endif
 
-#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
-    if(esp_at_wifi_cmd_regist() == false) {
-        printf("regist wifi cmd fail\r\n");
-    }
-#endif
-
-#ifdef CONFIG_AT_NET_COMMAND_SUPPORT
-    if(esp_at_net_cmd_regist() == false) {
-        printf("regist net cmd fail\r\n");
-    }
-#endif
-
-#ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
-    esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT);
-    if(esp_at_ble_cmd_regist() == false) {
-        printf("regist ble cmd fail\r\n");
-    }
-#endif
-
-#ifdef CONFIG_AT_FS_COMMAND_SUPPORT
-    if(esp_at_fs_cmd_regist() == false) {
-        printf("regist ble cmd fail\r\n");
-    }
-#endif
-
+void at_custom_init(void)
+{
     esp_at_custom_cmd_array_regist (at_custom_cmd, sizeof(at_custom_cmd)/sizeof(at_custom_cmd[0]));
     esp_at_port_write_data((uint8_t *)"\r\nready\r\n",strlen("\r\nready\r\n"));
-#ifdef CONFIG_AT_COMMAND_TERMINATOR
-    esp_at_custom_cmd_line_terminator_set((uint8_t*)&cmd_terminator);
-#endif
 }
