@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+
+    <title>AT-WIFI</title>
+
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/toastr.css">
+    <link rel="stylesheet" href="../../css/style.css">
+
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand">
+                ESPRESSIF-AT
+            </a>
+            <a class="user pull-right user-xs hidden-lg hidden-md hidden-sm user-logout">
+                <i class="icon-log-out"></i>
+                <span class="user-name">Logout</span>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <a href="../../index.html">
+                        <span class="icon-home title-icon"></span><span class="title-text">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="active" href="../wifi/softap.html">
+                        <span class="icon-wifi title-icon"></span><span class="title-text">WiFi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../tcp/create.html">
+                        <span class="icon-IP title-icon"></span><span class="title-text">Tcp/Ip</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../ble/ble.html">
+                        <span class="icon-bluetooth title-icon"></span><span class="title-text">Ble</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../config/config.html">
+                        <span class="icon-set title-icon"></span><span class="title-text">Config</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right hidden-xs user-info">
+                <li><a class="user user-logout"><i class="icon-log-out"></i><span class="user-name">Logout</span></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="wrapper index-bg">
+    <div id="left-content" class="left-content">
+        <ul class="nav">
+            <li>
+                <a href="softap.html">
+                    <span class="thread"></span>
+                    <i class="icon-softap"></i>
+                    <span>Softap</span>
+                </a>
+            </li>
+            <li>
+                <a href="softap-device.html">
+                    <span class="thread"></span>
+                    <i class="icon-device"></i>
+                    <span>Connected</span>
+                </a>
+            </li>
+            <li>
+                <a href="station.html">
+                    <span class="thread"></span>
+                    <i class="icon-station"></i>
+                    <span>Station</span>
+                </a>
+            </li>
+            <li>
+                <a class="active" href="wifi.html">
+                    <span class="thread"></span>
+                    <i class="icon-wifi"></i>
+                    <span>Wifi</span>
+                </a>
+            </li>
+            <li>
+                <a href="dhcp.html">
+                    <span class="thread"></span>
+                    <i class="icon-DHCP"></i>
+                    <span>DHCP</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="right-content">
+        <div class="col-sm-10 col-xs-12 col-sm-offset-1">
+            <div class="col-xs-12 no-padding item-title">
+                <h5>WiFi Setting</h5>
+            </div>
+            <div class="wrapper-content col-xs-12">
+                <div class="col-sm-12 col-xs-12 item">
+                    <label class="col-xs-12 no-padding right-label" for="select-type">Select Type</label>
+                    <div class="col-xs-12 no-padding" id="select-type">
+                        <div class="col-sm-3 col-xs-6 radio radio-info input-radio">
+                            <input type="radio" class="styled" checked name="select-type" id="select-ap-ip"
+                                   data-id="select-softap-ip" value="softapIp">
+                            <label for="select-ap-ip">
+                                Softap Ip
+                            </label>
+                        </div>
+                        <div class="col-sm-3 col-xs-6 radio radio-info input-radio">
+                            <input type="radio" class="styled" name="select-type" id="select-sta-ip"
+                                   data-id="select-station-ip" value="stationIp">
+                            <label for="select-sta-ip">
+                                Station Ip
+                            </label>
+                        </div>
+                        <div class="col-sm-3 col-xs-6 radio radio-info input-radio">
+                            <input type="radio" class="styled" name="select-type" id="select-ap-mac"
+                                   data-id="select-softap-mac" value="softapMac">
+                            <label for="select-ap-mac">
+                                Softap Mac
+                            </label>
+                        </div>
+                        <div class="col-sm-3 col-xs-6 radio radio-info input-radio">
+                            <input type="radio" class="styled" name="select-type" id="select-sta-mac"
+                                   data-id="select-station-mac" value="stationMac">
+                            <label for="select-sta-mac">
+                                Station Mac
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div id="select-softap-ip">
+                        <div class="col-sm-6 col-xs-12 item">
+                            <label class="col-xs-12 no-padding right-label" for="softap-ip">Softap IP</label>
+                            <div class="col-xs-12 no-padding">
+                                <input id="softap-ip" class="form-control" placeholder="Ip">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-12 item">
+                            <label class="col-xs-12 no-padding right-label" for="softap-netmask">Softap Netmask</label>
+                            <div class="col-xs-12 no-padding">
+                                <input id="softap-netmask" class="form-control" placeholder="Netmask">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-12 item">
+                            <label class="col-xs-12 no-padding right-label" for="softap-gateway">Softap Gateway</label>
+                            <div class="col-xs-12 no-padding">
+                                <input id="softap-gateway" class="form-control" placeholder="Gateway">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="select-softap-mac" class="hidden">
+                        <div class="col-xs-12 item">
+                            <label class="col-xs-12 no-padding right-label" for="softap-mac">Softap Mac</label>
+                            <div class="col-xs-12 no-padding">
+                                <input id="softap-mac" class="form-control" placeholder="Softap Mac">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="select-station-ip" class="hidden">
+                        <div class="col-sm-6 col-xs-12 item">
+                            <label class="col-xs-12 no-padding right-label" for="station-ip">Station IP</label>
+                            <div class="col-xs-12 no-padding">
+                                <input id="station-ip" class="form-control" placeholder="Ip">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-12 item">
+                            <label class="col-xs-12 no-padding right-label" for="station-netmask">Station Netmask</label>
+                            <div class="col-xs-12 no-padding">
+                                <input id="station-netmask" class="form-control" placeholder="Netmask">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-12 item">
+                            <label class="col-xs-12 no-padding right-label" for="station-gateway">Station Gateway</label>
+                            <div class="col-xs-12 no-padding">
+                                <input id="station-gateway" class="form-control" placeholder="Gateway">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="select-station-mac" class="hidden">
+                        <div class="col-xs-12 item">
+                            <label class="col-xs-12 no-padding right-label" for="station-mac">Station Mac</label>
+                            <div class="col-xs-12 no-padding">
+                                <input id="station-mac" class="form-control" placeholder="Station Mac">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 btn-operation text-center">
+                    <button id="wifi-btn" class="btn btn-sm">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="navbar-fixed-bottom hidden-lg hidden-md hidden-sm">
+    <ul class="nav navigation-bottom">
+        <li>
+            <a href="../../index.html">
+                <span class="icon-home title-icon"></span><span class="title-text">Home</span>
+            </a>
+        </li>
+        <li>
+            <a class="active" href="softap.html">
+                <span class="icon-wifi title-icon"></span><span class="title-text">WiFi</span>
+            </a>
+        </li>
+        <li>
+            <a href="../tcp/create.html">
+                <span class="icon-IP title-icon"></span><span class="title-text">Tcp/Ip</span>
+            </a>
+        </li>
+        <li>
+            <a href="../ble/ble.html">
+                <span class="icon-bluetooth title-icon"></span><span class="title-text">Ble</span>
+            </a>
+        </li>
+        <li>
+            <a href="../config/config.html">
+                <span class="icon-set title-icon"></span><span class="title-text">Config</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/toastr.js"></script>
+<script src="../../js/constant.js"></script>
+<script src="../../js/index.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+
+    <title>AT-CONFIG</title>
+
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/toastr.css">
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand">
+                ESPRESSIF-AT
+            </a>
+            <a class="user pull-right user-xs hidden-lg hidden-md hidden-sm user-logout">
+                <i class="icon-log-out"></i>
+                <span class="user-name">Logout</span>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <a href="../../index.html">
+                        <span class="icon-home title-icon"></span><span class="title-text">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../wifi/softap.html">
+                        <span class="icon-wifi title-icon"></span><span class="title-text">WiFi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../tcp/create.html">
+                        <span class="icon-IP title-icon"></span><span class="title-text">Tcp/Ip</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../ble/ble.html">
+                        <span class="icon-bluetooth title-icon"></span><span class="title-text">Ble</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="active" href="../config/config.html">
+                        <span class="icon-set title-icon"></span><span class="title-text">Config</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right hidden-xs user-info">
+                <li><a class="user user-logout"><i class="icon-log-out"></i><span class="user-name">Logout</span></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="wrapper index-bg">
+    <div id="left-content" class="left-content">
+        <ul class="nav">
+            <li>
+                <a class="active" href="config.html">
+                    <span class="thread"></span>
+                    <i class="icon-set"></i>
+                    <span>Config</span>
+                </a>
+            </li>
+            <li>
+                <a href="password.html">
+                    <span class="thread"></span>
+                    <i class="icon-password"></i>
+                    <span>Password</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="right-content">
+        <div class="col-sm-10 col-xs-12 no-padding col-sm-offset-1">
+            <div class="wrapper-item col-xs-12 no-padding">
+                <!--<div class="col-md-4 col-sm-6 col-xs-12">-->
+                    <!--<div class="item config-item">-->
+                        <!--<div class="item-icon">-->
+                            <!--<i class="icon-version"></i>-->
+                        <!--</div>-->
+                        <!--<div class="item-content">-->
+                            <!--<div class="content">-->
+                                <!--<h5>Version Info</h5>-->
+                                <!--<p>Version Number: <span>1.0.2</span></p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="item config-item">
+                        <div class="item-icon">
+                            <i class="icon-reset"></i>
+                        </div>
+                        <div class="item-content">
+                            <div class="content">
+                                <h5>Restart Operation</h5>
+                                <p><button id="restart-btn" class="btn-config">Restart</button></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="item config-item">
+                        <div class="item-icon">
+                            <i class="icon-ram"></i>
+                        </div>
+                        <div class="item-content">
+                            <div class="content">
+                                <h5>RAM Size：<span id="ram-size">0</span></h5>
+                                <p><button id="search-ram" class="btn-config">Search</button></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="item config-item">
+                        <div class="item-icon">
+                            <i class="icon-ping"></i>
+                        </div>
+                        <div class="item-content">
+                            <div class="content">
+                                <p class="ping-p"><span class="ping-span">Remote Ip</span><button id="ping-btn" class="btn-config">ping</button></p>
+                                <p><input type="text" id="ping-ip" class="form-control" placeholder="Please enter IP"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="col-md-4 col-sm-6 col-xs-12">-->
+                    <!--<div class="item config-item">-->
+                        <!--<div class="item-icon">-->
+                            <!--<i class="icon-upgrade"></i>-->
+                        <!--</div>-->
+                        <!--<div class="item-content">-->
+                            <!--<div class="content">-->
+                                <!--<h5>OTA Upgrade</h5>-->
+                                <!--<p><button class="btn-config">Upgrade</button></p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="item config-item">
+                        <div class="item-icon">
+                            <i class="icon-upgrade"></i>
+                        </div>
+                        <div class="item-content">
+                            <div class="content">
+                                <h5>Factory Reset </h5>
+                                <p><button id="reset-btn" class="btn-config">Reset</button></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="navbar-fixed-bottom hidden-lg hidden-md hidden-sm">
+    <ul class="nav navigation-bottom">
+        <li>
+            <a href="../../index.html">
+                <span class="icon-home title-icon"></span><span class="title-text">Home</span>
+            </a>
+        </li>
+        <li>
+            <a href="../wifi/softap.html">
+                <span class="icon-wifi title-icon"></span><span class="title-text">WiFi</span>
+            </a>
+        </li>
+        <li>
+            <a href="../tcp/create.html">
+                <span class="icon-IP title-icon"></span><span class="title-text">Tcp/Ip</span>
+            </a>
+        </li>
+        <li>
+            <a href="../ble/ble.html">
+                <span class="icon-bluetooth title-icon"></span><span class="title-text">Ble</span>
+            </a>
+        </li>
+        <li>
+            <a class="active" href="config.html">
+                <span class="icon-set title-icon"></span><span class="title-text">Config</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/toastr.js"></script>
+<script src="../../js/constant.js"></script>
+<script src="../../js/index.js"></script>
+<script>
+    $(function () {
+        AT.getRamSize();
+    })
+</script>
+</body>
+</html>
