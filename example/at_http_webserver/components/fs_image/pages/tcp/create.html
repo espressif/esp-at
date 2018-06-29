@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+
+    <title>AT-TCP/IP</title>
+
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/toastr.css">
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand">
+                ESPRESSIF-AT
+            </a>
+            <a class="user pull-right user-xs hidden-lg hidden-md hidden-sm user-logout">
+                <i class="icon-log-out"></i>
+                <span class="user-name">Logout</span>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <a href="../../index.html">
+                        <span class="icon-home title-icon"></span><span class="title-text">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../wifi/softap.html">
+                        <span class="icon-wifi title-icon"></span><span class="title-text">WiFi</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="active" href="../tcp/create.html">
+                        <span class="icon-IP title-icon"></span><span class="title-text">Tcp/Ip</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../ble/ble.html">
+                        <span class="icon-bluetooth title-icon"></span><span class="title-text">Ble</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../config/config.html">
+                        <span class="icon-set title-icon"></span><span class="title-text">Config</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right hidden-xs user-info">
+                <li><a class="user user-logout"><i class="icon-log-out"></i><span class="user-name">Logout</span></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="wrapper index-bg">
+    <div id="left-content" class="left-content">
+        <ul class="nav">
+            <li>
+                <a class="active" href="create.html">
+                    <span class="thread"></span>
+                    <i class="icon-connect"></i>
+                    <span>Create</span>
+                </a>
+            </li>
+            <li>
+                <a href="info.html">
+                    <span class="thread"></span>
+                    <i class="icon-device"></i>
+                    <span>Connected</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="right-content">
+        <div class="col-sm-10 col-xs-12 col-sm-offset-1">
+            <div class="col-xs-12 no-padding item-title">
+                <h5>Create Connect</h5>
+            </div>
+            <div class="wrapper-content col-xs-12">
+                <div class="col-sm-6 col-xs-12 item">
+                    <label class="col-xs-12 no-padding right-label" for="connection-type">Connect Type</label>
+                    <div class="col-xs-12 no-padding">
+                        <select id="connection-type" class="form-control">
+                            <option selected data-value="tl" value="TCP">TCP</option>
+                            <option data-value="udp" value="UDP">UDP</option>
+                            <option data-value="tl" value="SSL">SSL</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xs-12 item">
+                    <label class="col-xs-12 no-padding right-label" for="connection-id">Connect ID</label>
+                    <div class="col-xs-12 no-padding">
+                        <select id="connection-id" class="form-control">
+                            <option selected value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xs-12 item">
+                    <label class="col-xs-12 no-padding right-label" for="remote-ip">Remote IP</label>
+                    <div class="col-xs-12 no-padding">
+                        <input id="remote-ip" class="form-control" placeholder="Remote IP">
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xs-12 item">
+                    <label class="col-xs-12 no-padding right-label" for="remote-port">Remote Port</label>
+                    <div class="col-xs-12 no-padding">
+                        <input id="remote-port" class="form-control" placeholder="Remote Port">
+                    </div>
+                </div>
+                <div id="select-connection-udp" class="hidden">
+                    <div class="col-sm-6 col-xs-12 item">
+                        <label class="col-xs-12 no-padding right-label" for="local-port">Local Port</label>
+                        <div class="col-xs-12 no-padding">
+                            <input id="local-port" class="form-control" placeholder="Local Port">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12 item">
+                        <label class="col-xs-12 no-padding right-label" for="udp-mode">UDP Mode</label>
+                        <div class="col-xs-12 no-padding">
+                            <select id="udp-mode" class="form-control">
+                                <option selected value="">-- Please choose --</option>
+                                <option value="0">Do not change</option>
+                                <option value="1">Change once</option>
+                                <option value="2">Change</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="select-connection-tl">
+                    <div class="col-sm-6 col-xs-12 item">
+                        <label class="col-xs-12 no-padding right-label" for="keep-alive">Keep Alive</label>
+                        <div class="col-xs-12 no-padding" id="keep-alive">
+                            <div class="col-sm-4 col-xs-5 radio radio-info input-radio">
+                                <input class="styled" type="radio" id="keep-yes" name="keep-alive" value="1">
+                                <label for="keep-yes">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="col-sm-4 col-xs-5 radio radio-info input-radio">
+                                <input class="styled" type="radio" checked id="keep-no" name="keep-alive" value="0">
+                                <label for="keep-no">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12 item" id="keep-alive-time">
+                        <label class="col-xs-12 no-padding right-label" for="keep-time">Keep Alive Time</label>
+                        <div class="col-xs-12 no-padding">
+                            <input id="keep-time" class="form-control" placeholder="Keep Alive Time">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 btn-operation text-center">
+                    <button id="tcp-btn" class="btn btn-sm">Connect</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="navbar-fixed-bottom hidden-lg hidden-md hidden-sm">
+    <ul class="nav navigation-bottom">
+        <li>
+            <a href="../../index.html">
+                <span class="icon-home title-icon"></span><span class="title-text">Home</span>
+            </a>
+        </li>
+        <li>
+            <a href="../wifi/softap.html">
+                <span class="icon-wifi title-icon"></span><span class="title-text">WiFi</span>
+            </a>
+        </li>
+        <li>
+            <a class="active" href="create.html">
+                <span class="icon-IP title-icon"></span><span class="title-text">Tcp/Ip</span>
+            </a>
+        </li>
+        <li>
+            <a href="../ble/ble.html">
+                <span class="icon-bluetooth title-icon"></span><span class="title-text">Ble</span>
+            </a>
+        </li>
+        <li>
+            <a href="../config/config.html">
+                <span class="icon-set title-icon"></span><span class="title-text">Config</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/jquery-editable-select.min.js"></script>
+<script src="../../js/toastr.js"></script>
+<script src="../../js/constant.js"></script>
+<script src="../../js/index.js"></script>
+<script>
+    $("#connection-type, #connection-id, #udp-mode").editableSelect({
+        filter: false
+    });
+    $("#connection-type, #connection-id, #udp-mode").attr("readonly", true);
+</script>
+</body>
+</html>
