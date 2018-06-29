@@ -40,7 +40,7 @@
 
 #include "driver/spi_slave.h"
 
-#include "at_upgrade.h"
+#include "at_interface.h"
 
 /*
  This example uses one extra pin: GPIO_HANDSHAKE is used as a handshake pin. The slave makes this pin high as soon as it is
@@ -387,56 +387,6 @@ static void spi_task(void* pvParameters)
     vTaskDelete(NULL);
 }
 
-static uint8_t at_exeCmdCipupdate(uint8_t* cmd_name)//add get station ip and ap ip
-{
-    if (esp_at_upgrade_process(ESP_AT_OTA_MODE_NORMAL, NULL)) {
-        esp_at_response_result(ESP_AT_RESULT_CODE_OK);
-        esp_at_port_wait_write_complete(portMAX_DELAY);
-        esp_restart();
-
-        for (;;) {
-        }
-    }
-
-    return ESP_AT_RESULT_CODE_ERROR;
-}
-
-static uint8_t at_setupCmdCipupdate(uint8_t para_num)
-{
-    int32_t ota_mode = 0;
-    int32_t cnt = 0;
-    uint8_t* version = NULL;
-
-    if (esp_at_get_para_as_digit(cnt++, &ota_mode) != ESP_AT_PARA_PARSE_RESULT_OK) {
-        return ESP_AT_RESULT_CODE_ERROR;
-    }
-
-    if (cnt < para_num) {
-        if (esp_at_get_para_as_str(cnt++, &version) != ESP_AT_PARA_PARSE_RESULT_OK) {
-            return ESP_AT_RESULT_CODE_ERROR;
-        }
-    }
-
-    if (cnt != para_num) {
-        return ESP_AT_RESULT_CODE_ERROR;
-    }
-
-    if (esp_at_upgrade_process(ota_mode, version)) {
-        esp_at_response_result(ESP_AT_RESULT_CODE_OK);
-        esp_at_port_wait_write_complete(portMAX_DELAY);
-        esp_restart();
-
-        for (;;) {
-        }
-    }
-
-    return ESP_AT_RESULT_CODE_ERROR;
-}
-
-static esp_at_cmd_struct at_custom_cmd[] = {
-    {"+CIUPDATE", NULL, NULL, at_setupCmdCipupdate, at_exeCmdCipupdate},
-};
-
 /*This function let you handle some operation when using custom cmd and AT status change*/
 static void at_status_callback(esp_at_status_type status)
 {
@@ -450,7 +400,8 @@ static void at_status_callback(esp_at_status_type status)
             break;
     }
 }
-void at_task_init(void)
+
+void at_interface_init(void)
 {
     uint8_t* version = (uint8_t*)malloc(192);
     esp_at_device_ops_struct esp_at_device_ops = {
@@ -478,63 +429,13 @@ void at_task_init(void)
         return;
     }
 
-    nvs_flash_init();
-
-    sprintf((char*)version, "compile time:%s %s\r\n", __DATE__, __TIME__);
-#ifdef CONFIG_ESP_AT_FW_VERSION
-
-    if ((strlen(CONFIG_ESP_AT_FW_VERSION) > 0) && (strlen(CONFIG_ESP_AT_FW_VERSION) <= 128)) {
-        printf("%s\r\n", CONFIG_ESP_AT_FW_VERSION);
-        strcat((char*)version, CONFIG_ESP_AT_FW_VERSION);
-    }
-
-#endif
     esp_at_device_ops_regist(&esp_at_device_ops);
     esp_at_custom_ops_regist(&esp_at_custom_ops);
     esp_at_module_init(CONFIG_LWIP_MAX_SOCKETS - 1, version);   // reserved one for server
-    free(version);
+}
 
-#ifdef CONFIG_AT_BASE_COMMAND_SUPPORT
-
-    if (esp_at_base_cmd_regist() == false) {
-        printf("regist base cmd fail\r\n");
-    }
-
-#endif
-
-#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
-
-    if (esp_at_wifi_cmd_regist() == false) {
-        printf("regist wifi cmd fail\r\n");
-    }
-
-#endif
-
-#ifdef CONFIG_AT_NET_COMMAND_SUPPORT
-
-    if (esp_at_net_cmd_regist() == false) {
-        printf("regist net cmd fail\r\n");
-    }
-
-#endif
-
-#ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
-
-    if (esp_at_ble_cmd_regist() == false) {
-        printf("regist ble cmd fail\r\n");
-    }
-
-#endif
-
-#ifdef CONFIG_AT_FS_COMMAND_SUPPORT
-
-    if (esp_at_fs_cmd_regist() == false) {
-        printf("regist ble cmd fail\r\n");
-    }
-
-#endif
-
-    esp_at_custom_cmd_array_regist(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(at_custom_cmd[0]));
+void at_custom_init(void)
+{
     xTaskCreate(spi_task, "spi_task", 12 * 1024, NULL, 4, NULL);
 }
 
