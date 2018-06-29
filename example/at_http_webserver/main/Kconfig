@@ -1,0 +1,47 @@
+menu "AT"
+
+config AT_ENABLE
+    bool "Enable AT"
+    default "y"
+
+config AT_COMMAND_TERMINATOR_SUPPORT
+    bool "AT command terminator support."
+    default "n"
+    depends on AT_ENABLE
+
+config AT_COMMAND_TERMINATOR
+    hex "AT command terminator. "
+    help 
+        Now just support one character, the range is from 0x01 to 0xFF.
+    range 0x01 0xFF
+    default 0x0A
+    depends on AT_COMMAND_TERMINATOR_SUPPORT
+
+config AT_BASE_COMMAND_SUPPORT
+    bool "AT base command support."
+    default "y"
+    depends on AT_ENABLE
+
+config AT_WIFI_COMMAND_SUPPORT
+    bool "AT wifi command support."
+    default "y"
+    depends on AT_ENABLE
+
+config AT_NET_COMMAND_SUPPORT
+    bool "AT net command support."
+    default "y"
+    depends on AT_WIFI_COMMAND_SUPPORT
+    
+config AT_BLE_COMMAND_SUPPORT
+    bool "AT ble command support."
+    default "y"
+    depends on AT_ENABLE
+    
+config AT_FS_COMMAND_SUPPORT
+    bool "AT FS command support."
+    default "y"
+    depends on AT_ENABLE
+    select WL_SECTOR_SIZE_512
+    select FATFS_LFN_HEAP
+    
+endmenu
