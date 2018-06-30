@@ -110,6 +110,22 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+CIPETHMAC](#cmd-ETHMAC) : Sets the MAC address of ESP32 Ethernet.
 * [AT+CIPETH](#cmd-CIPETH) : Sets the IP address of ESP32 Ethernet.
 
+<a name="BT-AT"></a>
+### 1.6 BT AT Commands List
+[Download BlueTooth Spec (ESP32 supports Core Version 4.2)](https://www.bluetooth.com/specifications/adopted-specifications)  
+
+* [AT+BTINIT](#cmd-BTINIT) : Classic Bluetooth initialization
+* [AT+BTNAME](#cmd-BTNAME) : Sets BT device's name
+* [AT+BTSCANMODE](#cmd-BTSCANMODE) : Sets BT SCAN mode
+* [AT+BTSTARTDISC](#cmd-BTDISC) : Start BT discovery
+* [AT+BTSPP](#cmd-BTSPPINIT) : Classic Bluetooth SPP profile initialization
+* [AT+BTSPPCONN](#cmd-BTSPPCONN) : Establishes SPP connection
+* [AT+BTSPPDISCONN](#cmd-BTSPPDISCONN) : Ends SPP connection
+* [AT+BTSPPSEND](#cmd-BTSPPSEND) : Sends data to remote bt spp device
+* [AT+BTA2DPINIT](#cmd-BTA2DPINIT) : Classic Bluetooth A2DP profile initialization
+* [AT+BTA2DPCONN](#cmd-BTA2DPCONN) : Establishes A2DP connection
+* [AT+BTA2DPDISCONN](#cmd-BTA2DPDISCONN) : Ends A2DP connection
+* [AT+BTA2DPSEND](#cmd-BTA2DPSEND) :Sends data to remote bt a2dp sink
 
 ## 2. Basic AT Commands 
 <a name="cmd-AT"></a>
@@ -3008,4 +3024,358 @@ Parameters:
 Example:
 
     AT+CIPETH="192.168.6.100","192.168.6.1","255.255.255.0"
+
+## 8. BT-Related AT Commands
+<a name="cmd-BTINIT"></a>
+### 8.1 [AT+BTINIT](#BT-AT)—Classic Bluetooth initialization
+Query Command:
+
+    AT+BTINIT?
+    Function: to check the initialization status of classic bluetooth.
+Response:
+
+    If classic bluetooth is not initialized, it will return
+    +BTINIT:0
+    OK
+    If classic bluetooth is initialized, it will return
+    +BTINIT:1
+    OK
+Set Command: 
+
+    AT+BTINIT=<init>
+    Function: to init or deinit classic bluetooth.
+Response:
+
+    OK
+Parameter:
+
+- **\<init>**: 
+    - 0: init classic bluetooth
+    - 1: deinit classic bluetooth
+
+Example:
+
+    AT+BTINIT=1    
+
+<a name="cmd-BTNAME"></a>
+### 8.2 [AT+BTNAME](#BT-AT)—Sets BT device's name
+Query Command:
+
+    AT+BTNAME?
+    Function: to get the classic bluetooth device name.
+Response:
+
+    +BTNAME:<device_name>
+    OK
+Set Command:
+
+    AT+BTNAME=<device_name>
+    Function: to set the classic bluetooth device name.
+Response:
+
+    OK
+Parameter:
+
+- **\<device_name>**: the classic bluetooth device name
+
+***Notes:***
+
+* The default classic bluetooth device name is "ESP32_AT".  
+
+Example:
+
+    AT+BTNAME="esp_demo"    
+
+<a name="cmd-BTSCANMODE"></a>
+### 8.3 [AT+BTSCANMODE](#BT-AT)—Sets BT SCAN mode
+Set Command:
+
+    AT+BTSCANMODE=<scan_mode>
+    Function: to set the scan mode of classic bluetooth.
+Response:
+
+    OK
+Parameters:
+
+- **\<scan_mode>**:
+    - 0: Neither discoverable nor connectable
+    - 1: Connectable but not discoverable
+    - 2: both discoverable and connectable
+
+Example:
+
+    AT+BTSCANMODE=2   // both discoverable and connectable
+
+<a name="cmd-BTDISC"></a>
+### 8.4 [AT+BTSTARTDISC](#BT-AT)—Start BT discovery
+Set Command:
+
+    AT+BTSTARTDISC=<inq_mode>,<inq_len>,<inq_num_rsps>
+    Function: to set the scan mode of classic bluetooth.
+Response:
+        +BTSTARTDISC:<bt_addr>,<dev_name>,<major_dev_class>,<major_srv_class>,<exten_inq_rsp>,<rssi>
+
+    OK
+Parameters:
+
+- **\<inq_mode>**:
+    - 0: General inquiry mode
+    - 1: Limited inquiry mode
+- **\<inq_len>**: inquiry duration, ranging from 0x01 to 0x30
+- **\<inq_num_rsps>**: number of inquiry responses that can be received, value 0 indicates an unlimited number of responses
+- **\<bt_addr>**: bluetooth address
+- **\<dev_name>**: device name
+- **\<major_dev_class>**: 
+    -  0: Miscellaneous
+    -  1: Computer
+    -  2: Phone(cellular, cordless, pay phone, modem)
+    -  3: LAN, Network Access Point
+    -  4: Miscellaneous
+    -  5: Peripheral(mouse, joystick, keyboard)
+    -  6: Imaging(printer, scanner, camera, display)
+    -  7: Wearable
+    -  8: Toy
+    -  9: Health
+    - 31: Uncategorized: device not specified
+- **\<major_srv_class>**: 
+    - 0x0:   None indicates an invalid value 
+    - 0x1:   Limited Discoverable Mode
+    - 0x8:   Positioning (Location identification)
+    - 0x10:  Networking, e.g. LAN, Ad hoc
+    - 0x20:  Rendering, e.g. Printing, Speakers
+    - 0x40:  Capturing, e.g. Scanner, Microphone
+    - 0x80:  Object Transfer, e.g. v-Inbox, v-Folder
+    - 0x100: Audio, e.g. Speaker, Microphone, Headerset service 
+    - 0x200: Telephony, e.g. Cordless telephony, Modem, Headset service
+    - 0x400: Information, e.g., WEB-server, WAP-server
+- **\<exten_inq_rsp>**: 
+    - 0x01: Flag with information such as BR/EDR and LE support
+    - 0x02: Incomplete list of 16-bit service UUIDs
+    - 0x03: Complete list of 16-bit service UUIDs
+    - 0x04: Incomplete list of 32-bit service UUIDs
+    - 0x05: Complete list of 32-bit service UUIDs
+    - 0x06: Incomplete list of 128-bit service UUIDs
+    - 0x07: Complete list of 128-bit service UUIDs
+    - 0x08: Shortened Local Name
+    - 0x09: Complete Local Name
+    - 0x0a: Tx power level, value is 1 octet ranging from  -127 to 127, unit is dBm
+    - 0xff: Manufacturer specific data
+
+Example:
+
+    AT+BTINIT=1
+        AT+BTSCANMODE=2
+    AT+BTSTARTDISC=0,0x30,20
+
+<a name="cmd-BTSPPINIT"></a>
+### 8.5 [AT+BTSPP](#BT-AT)—Classic Bluetooth SPP profile initialization
+Query Command:
+
+    AT+BTSPP?
+    Function: to check the initialization status of classic bluetooth SPP profile.
+Response:
+
+    If classic bluetooth SPP profile is not initialized, it will return
+    +BTSPP:0
+    OK
+    If classic bluetooth SPP profile is initialized, it will return
+    +BTSPP:1
+    OK
+Set Command: 
+
+    AT+BTSPP=<init>
+    Function: to init or deinit classic bluetooth SPP profile.
+Response:
+
+    OK
+Parameter:
+
+- **\<init>**: 
+    - 0: init classic bluetooth SPP profile
+    - 1: deinit classic bluetooth SPP profile
+
+Example:
+
+    AT+BTSPP=1    
+
+<a name="cmd-BTSPPCONN"></a>
+### 8.6 [AT+BTSPPCONN](#BT-AT)—Establishes SPP connection
+Query Command: 
+
+    AT+BTSPPCONN?
+    Function: to query classic bluetooth SPP connection.
+Response:
+
+    +BTSPPCONN:<conn_index>,<remote_address>
+    OK
+    If the connection has not been established, there will NOT be <conn_index> and <remote_address>
+Set Command: 
+
+    AT+BTSPPCONN=<conn_index>,<sec_mode>,<role>,<remote_address>
+    Function: to establish the classic bluetooth SPP connection.
+Response:
+
+    OK
+    It will prompt the message below, if the connection is established successfully:
+    +BTSPPCONN:<conn_index>,<remote_address>
+    It will prompt the message below, if NOT:
+    +BTSPPCONN:<conn_index>,fail
+Parameters:
+
+- **\<conn_index>**: index of classic bluetooth spp connection; only 0 is supported for the single connection right now.
+- **\<sec_mode>**：
+    - 0x0000 : No security
+    - 0x0001 : Authorization required (only needed for out going connection ) 
+    - 0x0012 : Authentication required.
+    - 0x0024 : Encryption required. 
+    - 0x0040 : Mode 4 level 4 service, i.e. incoming/outgoing MITM and P-256 encryption
+    - 0x3000 : Man-In-The_Middle protection 
+    - 0x4000 : Min 16 digit for pin code 
+- **\<role>**：
+    - 0 : master
+    - 1 : slave
+- **\<remote_address>**：remote classic bluetooth spp device address
+
+Example:
+
+    AT+BTSPPCONN=0,0,0,"24:0a:c4:09:34:23"
+
+<a name="cmd-BTSPPDISCONN"></a>
+### 8.7 [AT+BTSPPDISCONN](#BT-AT)—Ends SPP connection
+Execute Command: 
+
+    AT+BTSPPDISCONN=<conn_index>
+    Function: to end the classic bluetooth SPP connection.
+Response:
+
+    OK
+    If the command is successful, it will prompt + BTSPPDISCONN:<conn_index>,<remote_address>
+Parameter:
+
+- **\<conn_index>**: index of classic bluetooth SPP connection; only 0 is supported for the single connection right now.
+- **\<remote_address>**：remote classic bluetooth A2DP device address.
+
+Example:
+
+    AT+BTSPPDISCONN=0
+
+<a name="cmd-BTSPPSEND"></a>
+### 8.8 [AT+BTSPPSEND](#BT-AT)—Sends data to remote classic bluetooth spp device
+Execute Command: 
+
+    AT+BTSPPSEND=<conn_index>,<data_len>
+    Function: send data to the remote classic bluetooth SPP device.
+Response:
+
+    OK
+Parameter:
+
+- **\<conn_index>**: index of classic bluetooth SPP connection; only 0 is supported for the single connection right now.
+- **\<data_len>**: the length of the data which was ready to send.
+
+Example:
+
+    AT+BTSPPSEND=0,100
+
+<a name="cmd-BTA2DPINIT"></a>
+### 8.9 [AT+BTA2DPINIT](#BT-AT)—Classic Bluetooth A2DP profile initialization
+Query Command:
+
+    AT+BTA2DPINIT?
+    Function: to check the initialization status of classic bluetooth A2DP profile.
+Response:
+
+    If classic bluetooth A2DP profile is not initialized, it will return
+    +BTA2DPINIT:0
+    OK
+    If classic bluetooth A2DP profile is initialized, it will return
+    +BTA2DPINIT:1
+    OK
+Set Command: 
+
+    AT+BTA2DPINIT=<role>,<init_val>
+    Function: to init or deinit classic bluetooth A2DP profile.
+Response:
+
+    OK
+Parameter:
+
+- **\<role>**: 
+    - 0: source
+    - 1: sink
+- **\<init_val>**: 
+    - 0: init classic bluetooth A2DP profile
+    - 1: deinit classic bluetooth A2DP profile
+
+Example:
+
+    AT+BTA2DPINIT=0,1
+
+<a name="cmd-BTA2DPCONN"></a>
+### 8.10 [AT+BTA2DPCONN](#BT-AT)—Establishes A2DP connection
+Query Command: 
+
+    AT+BTA2DPCONN?
+    Function: to query classic bluetooth A2DP connection.
+Response:
+
+    +BTA2DPCONN:<conn_index>,<remote_address>
+    OK
+    If the connection has not been established, there will NOT be <conn_index> and <remote_address>
+Set Command: 
+
+    AT+BTA2DPCONN=<conn_index>,<remote_address>
+    Function: to establish the classic bluetooth A2DP connectionn.
+Response:
+
+    OK
+    It will prompt the message below, if the connection is established successfully:
+    +BTA2DPCONN:<conn_index>,<remote_address>
+    It will prompt the message below, if NOT:
+    +BTA2DPCONN:<conn_index>,fail
+Parameters:
+
+- **\<conn_index>**: index of classic bluetooth A2DP connection; only 0 is supported for the single connection right now.
+- **\<remote_address>**：remote classic bluetooth A2DP device address.
+
+Example:
+
+    AT+BTA2DPCONN=0,0,0,"24:0a:c4:09:34:23"
+
+<a name="cmd-BTA2DPDISCONN"></a>
+### 8.11 [AT+BTA2DPDISCONN](#BT-AT)—Ends A2DP connection
+Execute Command: 
+
+    AT+BTA2DPDISCONN=<conn_index>
+    Function: to end the classic bluetooth A2DP connection.
+Response:
+
+    OK
+    If the command is successful, it will prompt + BTA2DPDISCONN:<conn_index>,<remote_address>
+Parameter:
+
+- **\<conn_index>**: index of classic bluetooth A2DP connection; only 0 is supported for the single connection right now.
+- **\<remote_address>**：remote classic bluetooth A2DP device address.
+
+Example:
+
+    AT+BTA2DPDISCONN=0
+
+<a name="cmd-BTA2DPSEND"></a>
+### 8.12 [AT+BTA2DPSEND](#BT-AT)—Sends data to remote bt a2dp sink
+Execute Command: 
+
+    AT+BTA2DPSEND=<conn_index>,<url>
+    Function: send data to the remote classic bluetooth A2DP sink.
+Response:
+
+    OK
+Parameter:
+
+- **\<conn_index>**: index of classic bluetooth A2DP connection; only 0 is supported for the single connection right now.
+- **\<url>**: the path of the source file.
+
+Example:
+
+    AT+BTA2DPSEND=0,"file:///example.mp3"
 
