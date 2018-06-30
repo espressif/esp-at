@@ -353,6 +353,13 @@ bool esp_at_net_cmd_regist(void);
 bool esp_at_ble_cmd_regist(void);
 
 /**
+* @brief regist at bt command set. If not,you can not use AT bt command
+* @param NONE
+*
+*/
+bool esp_at_bt_cmd_regist(void);
+
+/**
  * @brief regist at fs command set. If not,you can not use AT fs command
  * @param NONE
  *

@@ -133,9 +133,16 @@ void app_main()
     }
 #endif
 
+#ifdef CONFIG_AT_BT_COMMAND_SUPPORT
+    if(esp_at_bt_cmd_regist() == false) {
+        printf("regist bt cmd fail\r\n");
+    }
+#endif
+
+
 #ifdef CONFIG_AT_FS_COMMAND_SUPPORT
     if(esp_at_fs_cmd_regist() == false) {
-        printf("regist ble cmd fail\r\n");
+        printf("regist fs cmd fail\r\n");
     }
 #endif
 
