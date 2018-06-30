@@ -158,6 +158,12 @@ void app_main()
     }
 #endif
 
+#ifdef CONFIG_AT_EAP_COMMAND_SUPPORT
+    if(esp_at_eap_cmd_regist() == false) {
+        printf("regist eap cmd fail\r\n");
+    }
+#endif
+
 #ifdef CONFIG_AT_COMMAND_TERMINATOR
     esp_at_custom_cmd_line_terminator_set((uint8_t*)&cmd_terminator);
 #endif
