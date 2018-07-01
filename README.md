@@ -4,7 +4,7 @@ libat_core.a is AT Command Core, and it is the core of AT command, including the
 The demo is the AT command set based on uart. You can replace the uart driver with other drivers whichever you want to use. But you have to make some changes in at_task.c. In addition, you can add some custom AT commands in at_custom_cmd like AT+CIUPDATE if necessary.
 
 More details are in documentation [esp32_at_instruction_set_and_examples_en.pdf](http://espressif.com/sites/default/files/documentation/esp32_at_instruction_set_and_examples_en.pdf) or 
-[esp32_at_instruction_set_and_examples_cn.pdf](http://espressif.com/sites/default/files/documentation/esp32_at_instruction_set_and_examples_cn.pdf).
+[esp32_at_instruction_set_and_examples_cn.pdf](http://espressif.com/sites/default/files/documentation/esp32_at_instruction_set_and_examples_cn.pdf). And if you enable the ethernet commands, please refer to [esp32_at_ethernet.md](./docs/ESP32_AT_Ethernet.md).
   
 # Hardware Introduction
 The ESP32 Board sends AT commands through UART1 by default. 
@@ -14,9 +14,13 @@ The ESP32 Board sends AT commands through UART1 by default.
 * GPIO14 is RTS
 * GPIO15 is CTS
 
-The debug log will output through UART0 by default, but user can change it in menuconfig if needed.  
+The debug log will output through UART0 by default, which TXD0 is GPIO1 and RXD0 is GPIO3, but user can change it in menuconfig if needed.  
 
 * `make menuconfig` --> `Component config` --> `ESP32-specific` --> `UART for console output`
+
+## Notes: Please pay attention to conflict of the pin ##
+- If choose `AT through HSPI`, you can get the information of the hspi pin by `make menuconfig` --> `Component config` --> `AT` --> `AT hspi settings`
+- If enable `AT ethernet support`, you can get the information of the ethernet pin from `ESP32_AT_Ethernet.md`.
 
 # Compiling and flashing the project
 Compiling the esp32-at is the same as compiling any other project based on the ESP-IDF:
