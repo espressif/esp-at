@@ -41,6 +41,7 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+CWSTOPSMART](#cmd-STOPS) : Stops SmartConfig.
 * [AT+WPS](#cmd-WPS) : Enables the WPS function.
 * [AT+MDNS](#cmd-MDNS) : Configurates the MDNS function
+* [AT+CWJEAP](#cmd-JEAP) : Connects to a WPA2 Enterprise AP.
 
 <a name="TCPIP-AT"></a>
 ### 1.3 TCP/IP-Related AT Commands List
@@ -1125,6 +1126,54 @@ Example:
 
     AT+MDNS=1,"espressif","_iot",8080  
     AT+MDNS=0
+
+<a name="cmd-JEAP"></a>
+### 3.19 [AT+CWJEAP](#WiFi-AT)—Connects to an WPA2 Enterprise AP.
+Query Command:
+
+    AT+CWJEAP?
+    Function: to query the Enterprise AP to which the ESP32 Station is already connected.
+Response:
+
+    +CWJEAP:<ssid>,<method>,<identity>,<username>,<password>,<security>
+    OK
+Set Command:
+
+    AT+CWJEAP=<ssid>,<method>,<identity>,<username>,<password>,<security>
+    Function: to set the Enterprise AP to which the ESP32 Station needs to be connected.
+Response:
+
+    OK
+    or
+    +CWJEAP:Timeout
+    ERROR
+Parameters:
+
+- **\<ssid>**: the SSID of the Enterprise AP.
+    - Escape character syntax is needed if SSID or password contains any special characters, such as , or " or \\.
+- **\<method>**: wpa2 enterprise authentication method.
+    - 0: EAP-TLS.
+    - 1: EAP-PEAP.
+    - 2: EAP-TTLS.
+- **\<identity>**: identity for phase 1, string limited to 1~32.
+- **\<username>**: username for phase 2, must set for EAP-PEAP and EAP-TTLS mode, nor care for EAP-TLS, string limited to 1~32.
+- **\<password>**: password for phase 2, must set for EAP-PEAP and EAP-TTLS mode, nor care for EAP-TLS, string limited to 1~32.
+- **\<security>**:
+    - Bit0: Client certificate
+    - Bit1: Server certificate
+
+Example:
+
+    1. Connect to EAP-TLS mode enterprise AP, set identity, verify server certificate and load client certificate
+    AT+CWJEAP="dlink11111",0,"example@espressif.com",,,3
+    2. Connect to EAP-PEAP mode enterprise AP, set identity, username and password, not verify server certificate and not load client certificate
+    AT+CWJEAP="dlink11111",1,"example@espressif.com","espressif","test11",0
+
+***Note:***
+
+* The configuration changes will be saved in the NVS area.	
+* This command requires Station mode to be active.
+* TLS mode will use client certificate, make sure enabled.
 
 ## 4. TCP/IP-Related AT Commands
 <a name="cmd-STATUS"></a>
