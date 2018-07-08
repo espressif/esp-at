@@ -367,6 +367,13 @@ bool esp_at_bt_cmd_regist(void);
 bool esp_at_fs_cmd_regist(void);
 
 /**
+ * @brief regist at WPA2 Enterprise AP command set. If not,you can not use AT EAP command
+ * @param NONE
+ *
+ */
+bool esp_at_eap_cmd_regist(void);
+
+/**
  * @brief regist at ethernet command set. If not,you can not use AT ethernet command
  * @param NONE
  *

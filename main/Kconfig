@@ -168,6 +168,11 @@ config PHY_SMI_MDIO_PIN
     help
         GPIO number to use for SMI data pin MDIO to/from PHY.
 
+config AT_EAP_COMMAND_SUPPORT
+    bool "AT WPA2 Enterprise command support."
+    default "n"
+    depends on AT_ENABLE
+
 config AT_OTA_SERVER_IP
     string "Server IP for AT OTA."
     default "iot.espressif.cn"
