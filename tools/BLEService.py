@@ -38,7 +38,7 @@ ERROR_LOG = ".tmp_error_log"
 
 def input_format(func):
     def _handle_args(data, **kwargs):
-        if isinstance(data, unicode):
+        if isinstance(data, str):
             value = data.encode("utf-8")
         elif isinstance(data, float):
             value = str(int(data))
@@ -167,12 +167,12 @@ class BaseParser(object):
         """ parse values """
         out_dict = dict()
         for d in input_dict:
-            if isinstance(d, unicode):
+            if isinstance(d, str):
                 # convert key to utf-8 as well
                 d = d.encode("utf-8")
             try:
                 out_dict[d] = self.cp_parser.parse({"key": d, "value": input_dict[d]}, self.log_error)
-            except StandardError, e:
+            except Exception as e:
                 self.log_error("failed to parse: {key: %s, value: %s}" % (d, input_dict[d]))
                 self.log_error("exception is %s" % e)
         return out_dict
@@ -193,7 +193,7 @@ class ExcelParser(BaseParser):
         try:
             sheet = wb.sheet_by_index(0)
             title_row = sheet.row_values(0)
-        except IndexError:
+        except (IndexError):
             self.log_error("failed to get sheet or title row")
             return
 
@@ -214,7 +214,7 @@ class ExcelParser(BaseParser):
                 data = dict(zip(title_row, [v if v != "" else None for v in row_value]))
                 data.update(dict.fromkeys(missing_keys, None))
                 out_data.append(data)
-            except IndexError:
+            except (IndexError):
                 # parse finished
                 break
         return out_data
@@ -223,7 +223,7 @@ class ExcelParser(BaseParser):
 class CSVParser(BaseParser):
 
     def load(self):
-        with open(self.file_name, "rb") as f:
+        with open(self.file_name, "r") as f:
             reader = csv.DictReader(f)
             tmp_data = [r for r in reader]
 
@@ -359,18 +359,18 @@ def main():
     def get_ext(f):
         return os.path.splitext(f)[1][1:]
     if get_ext(source_file) not in PARSERS:
-        print "don't support source file format"
-        print "only support the following format: %s" % PARSERS.keys()
+        print ("don't support source file format")
+        print ("only support the following format: %s" % PARSERS.keys())
         sys.exit(2)
     if dump_format not in DUMPERS:
-        print "dump format not supported"
-        print "only support the following format: %s" % DUMPERS.keys()
+        print ("dump format not supported")
+        print ("only support the following format: %s" % DUMPERS.keys())
         sys.exit(2)
 
     try:
         # try to remove error log
         os.remove(ERROR_LOG)
-    except StandardError:
+    except (Exception):
         pass
 
     error = False
@@ -379,15 +379,15 @@ def main():
         data = parser.parse()
         dumper = DUMPERS[dump_format](target_file, config_file, ERROR_LOG)
         dumper.dump(data)
-    except StandardError, e:
-        print e
+    except Exception as e:
+        print (e)
         error = True
 
     if os.path.exists(ERROR_LOG):
         with open(ERROR_LOG, "rb") as error_log_file:
             error_info = error_log_file.read()
             if error_info != "":
-                print error_info
+                print (error_info)
                 error = True
         os.remove(ERROR_LOG)
 
