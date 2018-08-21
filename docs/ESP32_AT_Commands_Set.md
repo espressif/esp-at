@@ -2647,11 +2647,11 @@ Parameters:
 - **\<auth_req>**: 
     - 0 : NO_BOND
     - 1 : BOND
-    - 2 : MITM
-    - 4 : SC_ONLY
-    - 5 : SC_BOND
-    - 6 : SC_MITM
-    - 7 : SC_MITM_BOND
+    - 4 : MITM
+    - 8 : SC_ONLY
+    - 9 : SC_BOND
+    - 12 : SC_MITM
+    - 13 : SC_MITM_BOND
 - **\<iocap>**:
     - 0 : DisplayOnly 
     - 1 : DisplayYesNo
