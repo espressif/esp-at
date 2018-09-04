@@ -12,7 +12,9 @@ choice AT_COMMUNICATION_METHOD
 
 source "$ESP_AT_PROJECT_PATH/main/interface/uart/Kconfig"
 source "$ESP_AT_PROJECT_PATH/main/interface/hspi/Kconfig"
-source "$PROJECT_PATH/main/interface/sdio/Kconfig"
+source "$ESP_AT_PROJECT_PATH/main/interface/socket/Kconfig"
+source "$ESP_AT_PROJECT_PATH/main/interface/sdio/Kconfig"
+
 endchoice
 
 config AT_COMMAND_TERMINATOR_SUPPORT
@@ -48,11 +50,130 @@ config AT_BLE_COMMAND_SUPPORT
     default "y"
     depends on AT_ENABLE
     
+config AT_BT_COMMAND_SUPPORT
+    bool "AT bt command support."
+    default "n"
+    select CLASSIC_BT_ENABLED
+    select A2DP_ENABLE
+    select BT_SPP_ENABLED
+    select BT_ALLOCATION_FROM_SPIRAM_FIRST
+    depends on AT_ENABLE
+    
 config AT_FS_COMMAND_SUPPORT
     bool "AT FS command support."
     default "n"
     depends on AT_ENABLE
+    select WL_SECTOR_SIZE_512
+    select FATFS_LFN_HEAP
     
+config AT_ETHERNET_SUPPORT
+    bool "AT ethernet support."
+    default "n"
+    depends on AT_ENABLE
+    help
+        Please pay attention to the conflict of the pin. You can refer to the ESP32_AT_Ethernet.md and get more details.
+    
+choice PHY_MODEL
+    prompt "Ethernet PHY"
+    default CONFIG_PHY_TLK110
+    depends on AT_ETHERNET_SUPPORT
+    help
+        Select the PHY driver to use for ESP32 AT.
+
+config PHY_TLK110
+    bool "TI TLK110 PHY"
+    help
+        Select this to use the TI TLK110 PHY
+
+config PHY_LAN8720
+    bool "Microchip LAN8720 PHY"
+    help
+        Select this to use the Microchip LAN8720 PHY
+
+endchoice
+
+config PHY_ADDRESS
+    int "PHY Address (0-31)"
+    default 31
+    range 0 31
+    depends on AT_ETHERNET_SUPPORT
+    help
+        Select the PHY Address (0-31) for the hardware configuration and PHY model.
+
+choice PHY_CLOCK_MODE
+    prompt "EMAC clock mode"
+    default PHY_CLOCK_GPIO0_IN
+    depends on AT_ETHERNET_SUPPORT
+    help
+        Select external (input on GPIO0) or internal (output on GPIO0, GPIO16 or GPIO17) clock
+
+
+config PHY_CLOCK_GPIO0_IN
+    bool "GPIO0 input"
+    help
+        Input of 50MHz refclock on GPIO0
+
+config PHY_CLOCK_GPIO0_OUT
+    bool "GPIO0 output"
+    help
+        Output the internal 50MHz APLL clock on GPIO0
+
+config PHY_CLOCK_GPIO16_OUT
+    bool "GPIO16 output"
+    help
+        Output the internal 50MHz APLL clock on GPIO16
+
+config PHY_CLOCK_GPIO17_OUT
+    bool "GPIO17 output (inverted)"
+    help
+        Output the internal 50MHz APLL clock on GPIO17 (inverted signal)
+
+endchoice
+
+config PHY_CLOCK_MODE
+    int
+    default 0 if PHY_CLOCK_GPIO0_IN
+    default 1 if PHY_CLOCK_GPIO0_OUT
+    default 2 if PHY_CLOCK_GPIO16_OUT
+    default 3 if PHY_CLOCK_GPIO17_OUT
+    depends on AT_ETHERNET_SUPPORT
+
+config PHY_USE_POWER_PIN
+    bool "Use PHY Power (enable/disable) pin"
+    default y
+    depends on AT_ETHERNET_SUPPORT
+    help
+        Use a GPIO "power pin" to power the PHY on/off during operation.
+
+config PHY_POWER_PIN
+    int "PHY Power GPIO"
+    default 17
+    range 0 33
+    depends on PHY_USE_POWER_PIN
+    help
+        GPIO number to use for powering on/off the PHY.
+
+config PHY_SMI_MDC_PIN
+    int "SMI MDC Pin"
+    default 23
+    range 0 33
+    depends on AT_ETHERNET_SUPPORT
+    help
+        GPIO number to use for SMI clock output MDC to PHY.
+
+config PHY_SMI_MDIO_PIN
+    int "SMI MDIO Pin"
+    default 18
+    depends on AT_ETHERNET_SUPPORT
+    range 0 33
+    help
+        GPIO number to use for SMI data pin MDIO to/from PHY.
+
+config AT_EAP_COMMAND_SUPPORT
+    bool "AT WPA2 Enterprise command support."
+    default "n"
+    depends on AT_ENABLE
+
 config AT_OTA_SERVER_IP
     string "Server IP for AT OTA."
     default "iot.espressif.cn"
