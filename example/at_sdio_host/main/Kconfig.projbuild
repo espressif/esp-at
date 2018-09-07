@@ -1,0 +1,27 @@
+menu "Example Configuration"
+
+config SDIO_EXAMPLE_4BIT
+    bool "Host tries using 4-bit mode to communicate with slave"
+    default n
+    help
+        If this is set, the host tries using 4-bit mode to communicate with
+        slave. If failed, the communication falls back to 1-bit mode.
+        
+        If this is not set, the host uses 1-bit mode. However, DAT1 is still
+        mandatory for interrupts.
+
+        Note that 4-bit mode is not compatible (by default) if the slave is
+        using 3.3V flash which requires a pull-down on the MTDI pin (Stripping pin).
+
+config SDIO_EXAMPLE_HIGHSPEED
+    bool "Host tries using HS mode to communicate with slave"
+    default y
+    help
+        If this is set, the host tries using high-speed (40M) mode to communicate
+        with slave. If the slave doesn't support high-speed mode, the
+        communication falls back to default-speed (20M) mode. If this is not set,
+        the host uses default speed mode.
+
+        If the example does not work, please try disabling the high-speed mode.
+
+endmenu
