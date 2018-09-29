@@ -30,7 +30,7 @@
 #include "esp_system.h"
 #include "nvs_flash.h"
 
-#ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
+#if defined(CONFIG_BT_ENABLED)
 #include "esp_bt.h"
 #endif
 
@@ -130,7 +130,6 @@ void app_main()
 #endif
 
 #ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
-    esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT);
     if(esp_at_ble_cmd_regist() == false) {
         printf("regist ble cmd fail\r\n");
     }
@@ -140,6 +139,20 @@ void app_main()
     if(esp_at_bt_cmd_regist() == false) {
         printf("regist bt cmd fail\r\n");
     }
+#endif
+
+#if defined(CONFIG_BT_ENABLED)
+#ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
+#if !defined(CONFIG_AT_BT_COMMAND_SUPPORT)
+    esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT);
+#endif
+#else
+#if defined(CONFIG_AT_BT_COMMAND_SUPPORT)
+    esp_bt_controller_mem_release(ESP_BT_MODE_BLE);
+#else
+    esp_bt_controller_mem_release(ESP_BT_MODE_BTDM);
+#endif
+#endif
 #endif
 
 #ifdef CONFIG_AT_ETHERNET_SUPPORT
@@ -171,4 +184,3 @@ void app_main()
     esp_at_custom_cmd_array_regist (at_update_cmd, sizeof(at_update_cmd)/sizeof(at_update_cmd[0]));
     at_custom_init();
 }
-
