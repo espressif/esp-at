@@ -431,7 +431,6 @@ void at_interface_init(void)
 
     esp_at_device_ops_regist(&esp_at_device_ops);
     esp_at_custom_ops_regist(&esp_at_custom_ops);
-    esp_at_module_init(CONFIG_LWIP_MAX_SOCKETS - 1, version);   // reserved one for server
 }
 
 void at_custom_init(void)
