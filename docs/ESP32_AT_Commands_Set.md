@@ -119,7 +119,7 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+BTNAME](#cmd-BTNAME) : Sets BT device's name
 * [AT+BTSCANMODE](#cmd-BTSCANMODE) : Sets BT SCAN mode
 * [AT+BTSTARTDISC](#cmd-BTDISC) : Start BT discovery
-* [AT+BTSPP](#cmd-BTSPPINIT) : Classic Bluetooth SPP profile initialization
+* [AT+BTSPPINIT](#cmd-BTSPPINIT) : Classic Bluetooth SPP profile initialization
 * [AT+BTSPPCONN](#cmd-BTSPPCONN) : Establishes SPP connection
 * [AT+BTSPPDISCONN](#cmd-BTSPPDISCONN) : Ends SPP connection
 * [AT+BTSPPSEND](#cmd-BTSPPSEND) : Sends data to remote bt spp device
@@ -628,7 +628,7 @@ Parameters:
 
 Set Command:
 
-    AT+CWJAP=<ssid>,<pwd>[,<bssid>]
+    AT+CWJAP=<ssid>,<pwd>[,<bssid>][,<pci_en>]
     Function: to set the AP to which the ESP32 Station needs to be connected.
 Response:
 
@@ -642,6 +642,7 @@ Parameters:
     - Escape character syntax is needed if SSID or password contains any special characters, such as , or " or \\.
 - **\<pwd>**: password, MAX: 64-byte ASCII.
 - **\[\<bssid>]**: the target AP's MAC address, used when multiple APs have the same SSID.
+- **\[\<pci_en>]**: enable PCI Authentication, which will disable connect OPEN and WEP AP.
 - **\<error code>**: (for reference only)
     - 1: connection timeout.
     - 2: wrong password.
@@ -1188,6 +1189,8 @@ Response:
 Parameters:
 
 - **\<stat>**: status of the ESP32 Station interface.
+    - 0: The ESP32 station is inactive.
+    - 1: The ESP32 station is idle.
     - 2: The ESP32 Station is connected to an AP and its IP is obtained.
     - 3: The ESP32 Station has created a TCP or UDP transmission.
     - 4: The TCP or UDP transmission of ESP32 Station is disconnected.
@@ -1845,8 +1848,8 @@ Response:
     OK
 Set Command:
 
-    AT+BLEADDR=<addr_type>,<random_addr>
-    Function: to set the BLE random address.
+    AT+BLEADDR=<addr_type>[,<random_addr>]
+    Function: to set the BLE address type.
 Response:
 
     OK
@@ -1854,15 +1857,12 @@ Parameter:
 
 - **\<addr_type>**: 
     - 0: public address
-    - 1: random address
-
-***Notes:***
-
-* For the time being, only two actions are supported: getting the public address and setting the BLE random address.    
+    - 1: random address  
 
 Example:
 
     AT+BLEADDR=1,"08:7f:24:87:1c:7b"    
+    AT+BLEADDR=0 
 
 <a name="cmd-BNAME"></a>
 ### 5.3 [AT+BLENAME](#BLE-AT)—Sets BLE Device's Name
@@ -2633,11 +2633,11 @@ Query Command:
     Function: to get the parameters of BLE smp.
 Response:
 
-    +BLESECPARAM:<auth_req>,<iocap>,<key_size>,<init_key>,<rsp_key>
+    +BLESECPARAM:<auth_req>,<iocap>,<key_size>,<init_key>,<rsp_key>,<auth_option>
     OK
 Set Command:
 
-    AT+BLESECPARAM=<auth_req>,<iocap>,<key_size>,<init_key>,<rsp_key>
+    AT+BLESECPARAM=<auth_req>,<iocap>,<key_size>,<init_key>,<rsp_key>[,<auth_option>]
     Function: to set the parameters of BLE smp.
 Response:
 
@@ -2660,7 +2660,10 @@ Parameters:
     - 4 : Keyboard displa
 - **\<key_size>**: the key size should be 7~16 bytes.
 - **\<init_key>**: combination of the bit pattern.
-- **\<rsp_key>**:  combination of the bit pattern.
+- **\<rsp_key>**: combination of the bit pattern.
+- **\<auth_option>**: auth option of security.
+    - 0 : Select the security level automaticly.
+    - 1 : If cannot follow the preset security level, the connection will disconnect.
 
 ***Note:***
 
@@ -2672,7 +2675,7 @@ Parameters:
 
 Example:
 
-    AT+BLESECPARAM=1,4,16,3,3
+    AT+BLESECPARAM=1,4,16,3,3,0
 
 <a name="cmd-BLEENC"></a>
 ### 5.30 [AT+BLEENC](#BLE-AT)—Initiate BLE encryption request
@@ -3099,8 +3102,8 @@ Response:
 Parameter:
 
 - **\<init>**: 
-    - 0: init classic bluetooth
-    - 1: deinit classic bluetooth
+    - 0: deinit classic bluetooth
+    - 1: init classic bluetooth
 
 Example:
 
@@ -3217,22 +3220,22 @@ Example:
     AT+BTSTARTDISC=0,0x30,20
 
 <a name="cmd-BTSPPINIT"></a>
-### 8.5 [AT+BTSPP](#BT-AT)—Classic Bluetooth SPP profile initialization
+### 8.5 [AT+BTSPPINIT](#BT-AT)—Classic Bluetooth SPP profile initialization
 Query Command:
 
-    AT+BTSPP?
+    AT+BTSPPINIT?
     Function: to check the initialization status of classic bluetooth SPP profile.
 Response:
 
     If classic bluetooth SPP profile is not initialized, it will return
-    +BTSPP:0
+    +BTSPPINIT:0
     OK
     If classic bluetooth SPP profile is initialized, it will return
-    +BTSPP:1
+    +BTSPPINIT:1
     OK
 Set Command: 
 
-    AT+BTSPP=<init>
+    AT+BTSPPINIT=<init>
     Function: to init or deinit classic bluetooth SPP profile.
 Response:
 
@@ -3240,12 +3243,12 @@ Response:
 Parameter:
 
 - **\<init>**: 
-    - 0: init classic bluetooth SPP profile
-    - 1: deinit classic bluetooth SPP profile
+    - 0: deinit classic bluetooth SPP profile
+    - 1: init classic bluetooth SPP profile
 
 Example:
 
-    AT+BTSPP=1    
+    AT+BTSPPINIT=1    
 
 <a name="cmd-BTSPPCONN"></a>
 ### 8.6 [AT+BTSPPCONN](#BT-AT)—Establishes SPP connection
@@ -3353,8 +3356,8 @@ Parameter:
     - 0: source
     - 1: sink
 - **\<init_val>**: 
-    - 0: init classic bluetooth A2DP profile
-    - 1: deinit classic bluetooth A2DP profile
+    - 0: deinit classic bluetooth A2DP profile
+    - 1: init classic bluetooth A2DP profile
 
 Example:
 
