@@ -693,7 +693,7 @@ Example:
 ### 3.4 [AT+CWLAP](#WiFi-AT)—Lists the Available APs
 Set Command: 
 
-    AT+CWLAP=<ssid>[,<mac>,<channel>]
+    AT+CWLAP=[<ssid>,<mac>,<channel>,<scan_type>,<scan_time_min>,<scan_time_max>]
     Function: to query the APs with specific SSID and MAC on a specific channel.
 Execute Command:
 
@@ -714,11 +714,16 @@ Parameters:
     - 5: WPA2\_Enterprise (AT can NOT connect to WPA2\_Enterprise AP for now.)
 - **\<ssid>**: string parameter, SSID of the AP.
 - **\<rssi>**: signal strength.
-- **\<mac>**: string parameter, MAC address of the AP.  
+- **\<mac>**: string parameter, MAC address of the AP. 
+- **\<scan_type>**: Wi-Fi scan type, active or passive.
+    - 0: active scan 
+    - 1: passive scan
+- **\<scan_time_min>**: minimum active scan time per channel, units: millisecond, range [0,1500], if the scan type is passive, this param is invalid.
+- **\<scan_time_max>**: maximum active scan time per channel, units: millisecond, range [0,1500]. if this param is zero, the firmware will use the default time, active scan type is 120ms , passive scan type is 360ms.
 
 Examples:
 
-    AT+CWLAP="Wi-Fi","ca:d7:19:d8:a6:44",6
+    AT+CWLAP="Wi-Fi","ca:d7:19:d8:a6:44",6,0,400,1000
     Or search for APs with a designated SSID: 
     AT+CWLAP="Wi-Fi"
 
