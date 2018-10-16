@@ -1,0 +1,27 @@
+
+config AT_BASE_ON_SDIO
+    bool "AT through SDIO"
+    help
+        This demo is AT through SDIO. The MCU can send AT command through SDIO bus. 
+        Note: GPIO14 is SDIO CLK pin, GPIO15 is SDIO CMD pin, GPIO2 is SDIO DAT0 pin, 
+	GPIO4 is SDIO DAT1 pin, GPIO12 is SDIO DAT2 pin, GPIO13 is SDIO DAT3 pin.
+
+if AT_BASE_ON_SDIO
+menu "AT SDIO settings"
+config AT_SDIO_BLOCK_SIZE
+ 	int "SDIO block size"
+	default 512
+	depends on AT_BASE_ON_SDIO
+
+config AT_SDIO_QUEUE_SIZE
+ 	int "SDIO queue size"
+	default 20
+	depends on AT_BASE_ON_SDIO
+
+config AT_SDIO_BUFFER_NUM
+ 	int "SDIO buffer number"
+	default 10
+	depends on AT_BASE_ON_SDIO
+	
+endmenu
+endif

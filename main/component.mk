@@ -15,6 +15,10 @@ ifdef CONFIG_AT_BASE_ON_SOCKET
 COMPONENT_SRCDIRS += interface/socket
 endif
 
+ifdef CONFIG_AT_BASE_ON_SDIO 
+COMPONENT_SRCDIRS += interface/sdio
+endif
+
 COMPONENT_ADD_INCLUDEDIRS := .
 
 
