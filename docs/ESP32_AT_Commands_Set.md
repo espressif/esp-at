@@ -2040,7 +2040,7 @@ Response:
     If the connection has not been established, there will NOT be <conn_index> and <remote_address>
 Set Command: 
 
-    AT+BLECONN=<conn_index>,<remote_address>[,<addr_type>]
+    AT+BLECONN=<conn_index>,<remote_address>[,<addr_type>,<timeout>]
     Function: to establish the BLE connection, the address_type is an optional parameter.
 Response:
 
@@ -2048,17 +2048,19 @@ Response:
     It will prompt the message below, if the connection is established successfully:
     +BLECONN:<conn_index>,<remote_address>
     It will prompt the message below, if NOT:
-    +BLECONN:<conn_index>,fail
+    +BLECONN:<conn_index>,-1
 Parameters:
 
 - **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
 - **\<remote_address>**：remote BLE address
 - **\<addr_type>**: the address type of broadcasters
+- **\<timeout>**: the timeout for the connection command, range is [3,30] seconds.
 
 Example:
 
     AT+BLEINIT=1   // role: client
     AT+BLECONN=0,"24:0a:c4:09:34:23"
+    AT+BLECONN=0,"24:0a:c4:09:34:23",0,10
 
 <a name="cmd-BDISC"></a>
 ### 5.12 [AT+BLEDISCONN](#BLE-AT)—Ends BLE connection
