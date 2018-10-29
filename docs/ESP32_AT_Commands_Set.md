@@ -122,6 +122,7 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+BTSPPINIT](#cmd-BTSPPINIT) : Classic Bluetooth SPP profile initialization
 * [AT+BTSPPCONN](#cmd-BTSPPCONN) : Establishes SPP connection
 * [AT+BTSPPDISCONN](#cmd-BTSPPDISCONN) : Ends SPP connection
+* [AT+BTSPPSTART](#cmd-BTSPPSTART) : Start Classic Bluetooth SPP profile
 * [AT+BTSPPSEND](#cmd-BTSPPSEND) : Sends data to remote bt spp device
 * [AT+BTA2DPINIT](#cmd-BTA2DPINIT) : Classic Bluetooth A2DP profile initialization
 * [AT+BTA2DPCONN](#cmd-BTA2DPCONN) : Establishes A2DP connection
@@ -1864,10 +1865,18 @@ Parameter:
     - 0: public address
     - 1: random address  
 
+***Notes:***
+
+* A static address shall meet the following requirements:
+    - The two most significant bits of the address shall be equal to 1
+    - At least one bit of the random part of the address shall be 0
+    - At least one bit of the random part of the address shall be 1
+
 Example:
 
-    AT+BLEADDR=1,"08:7f:24:87:1c:7b"    
-    AT+BLEADDR=0 
+    AT+BLEADDR=1,"f8:7f:24:87:1c:7b"    // Set Random Device Address, Static Address
+    AT+BLEADDR=1                        // Set Random Device Address, Private Address
+    AT+BLEADDR=0                        // Set Public Device Address
 
 <a name="cmd-BNAME"></a>
 ### 5.3 [AT+BLENAME](#BLE-AT)—Sets BLE Device's Name
@@ -2110,7 +2119,7 @@ Response:
     If the connection has not been established, there will NOT be <conn_index> and <remote_address>
 Set Command: 
 
-    AT+BLECONN=<conn_index>,<remote_address>[,<addr_type>]
+    AT+BLECONN=<conn_index>,<remote_address>[,<addr_type>,<timeout>]
     Function: to establish the BLE connection, the address_type is an optional parameter.
 Response:
 
@@ -2118,17 +2127,18 @@ Response:
     It will prompt the message below, if the connection is established successfully:
     +BLECONN:<conn_index>,<remote_address>
     It will prompt the message below, if NOT:
-    +BLECONN:<conn_index>,fail
+    +BLECONN:<conn_index>,-1
 Parameters:
 
 - **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
 - **\<remote_address>**：remote BLE address
 - **\<addr_type>**: the address type of broadcasters
+- **\<timeout>**: the timeout for the connection command, range is [3,30] second.
 
 Example:
 
     AT+BLEINIT=1   // role: client
-    AT+BLECONN=0,"24:0a:c4:09:34:23"
+    AT+BLECONN=0,"24:0a:c4:09:34:23",0,10
 
 <a name="cmd-BDISC"></a>
 ### 5.12 [AT+BLEDISCONN](#BLE-AT)—Ends BLE connection
@@ -3170,7 +3180,7 @@ Set Command:
     AT+BTSTARTDISC=<inq_mode>,<inq_len>,<inq_num_rsps>
     Function: to set the scan mode of classic bluetooth.
 Response:
-        +BTSTARTDISC:<bt_addr>,<dev_name>,<major_dev_class>,<major_srv_class>,<exten_inq_rsp>,<rssi>
+        +BTSTARTDISC:<bt_addr>,<dev_name>,<major_dev_class>,<minor_dev_class>,<major_srv_class>,<rssi>
 
     OK
 Parameters:
@@ -3183,17 +3193,19 @@ Parameters:
 - **\<bt_addr>**: bluetooth address
 - **\<dev_name>**: device name
 - **\<major_dev_class>**: 
-    -  0: Miscellaneous
-    -  1: Computer
-    -  2: Phone(cellular, cordless, pay phone, modem)
-    -  3: LAN, Network Access Point
-    -  4: Miscellaneous
-    -  5: Peripheral(mouse, joystick, keyboard)
-    -  6: Imaging(printer, scanner, camera, display)
-    -  7: Wearable
-    -  8: Toy
-    -  9: Health
-    - 31: Uncategorized: device not specified
+    -  0x0: Miscellaneous
+    -  0x1: Computer
+    -  0x2: Phone(cellular, cordless, pay phone, modem)
+    -  0x3: LAN, Network Access Point
+    -  0x4: Miscellaneous
+    -  0x5: Peripheral(mouse, joystick, keyboard)
+    -  0x6: Imaging(printer, scanner, camera, display)
+    -  0x7: Wearable
+    -  0x8: Toy
+    -  0x9: Health
+    - 0x1F: Uncategorized: device not specified
+- **\<minor_dev_class>**
+    - please refer to this [web](https://www.bluetooth.com/specifications/assigned-numbers/baseband)
 - **\<major_srv_class>**: 
     - 0x0:   None indicates an invalid value 
     - 0x1:   Limited Discoverable Mode
@@ -3205,24 +3217,13 @@ Parameters:
     - 0x100: Audio, e.g. Speaker, Microphone, Headerset service 
     - 0x200: Telephony, e.g. Cordless telephony, Modem, Headset service
     - 0x400: Information, e.g., WEB-server, WAP-server
-- **\<exten_inq_rsp>**: 
-    - 0x01: Flag with information such as BR/EDR and LE support
-    - 0x02: Incomplete list of 16-bit service UUIDs
-    - 0x03: Complete list of 16-bit service UUIDs
-    - 0x04: Incomplete list of 32-bit service UUIDs
-    - 0x05: Complete list of 32-bit service UUIDs
-    - 0x06: Incomplete list of 128-bit service UUIDs
-    - 0x07: Complete list of 128-bit service UUIDs
-    - 0x08: Shortened Local Name
-    - 0x09: Complete Local Name
-    - 0x0a: Tx power level, value is 1 octet ranging from  -127 to 127, unit is dBm
-    - 0xff: Manufacturer specific data
+- **\<rssi>**: signal strength
 
 Example:
 
     AT+BTINIT=1
-        AT+BTSCANMODE=2
-    AT+BTSTARTDISC=0,0x30,20
+    AT+BTSCANMODE=2
+    AT+BTSTARTDISC=0,10,10
 
 <a name="cmd-BTSPPINIT"></a>
 ### 8.5 [AT+BTSPPINIT](#BT-AT)—Classic Bluetooth SPP profile initialization
@@ -3320,6 +3321,15 @@ Example:
 ### 8.8 [AT+BTSPPSEND](#BT-AT)—Sends data to remote classic bluetooth spp device
 Execute Command: 
 
+    AT+BTSPPSEND
+    Function: Enter BT SPP mode.
+
+Response:
+
+    >   
+
+Execute Command: 
+
     AT+BTSPPSEND=<conn_index>,<data_len>
     Function: send data to the remote classic bluetooth SPP device.
 Response:
@@ -3333,9 +3343,24 @@ Parameter:
 Example:
 
     AT+BTSPPSEND=0,100
+    AT+BTSPPSEND
+
+<a name="cmd-BTSPPSTART"></a>
+### 8.9 [AT+BTSPPSTART](#BT-AT)—Start the classic bluetooth SPP profile.
+Execute Command: 
+
+    AT+BTSPPSTART
+    Function: start the classic bluetooth SPP profile.
+Response:
+
+    OK
+
+Example:
+
+    AT+BTSPPSTART
 
 <a name="cmd-BTA2DPINIT"></a>
-### 8.9 [AT+BTA2DPINIT](#BT-AT)—Classic Bluetooth A2DP profile initialization
+### 8.10 [AT+BTA2DPINIT](#BT-AT)—Classic Bluetooth A2DP profile initialization
 Query Command:
 
     AT+BTA2DPINIT?
@@ -3369,7 +3394,7 @@ Example:
     AT+BTA2DPINIT=0,1
 
 <a name="cmd-BTA2DPCONN"></a>
-### 8.10 [AT+BTA2DPCONN](#BT-AT)—Establishes A2DP connection
+### 8.11 [AT+BTA2DPCONN](#BT-AT)—Establishes A2DP connection
 Query Command: 
 
     AT+BTA2DPCONN?
@@ -3400,7 +3425,7 @@ Example:
     AT+BTA2DPCONN=0,0,0,"24:0a:c4:09:34:23"
 
 <a name="cmd-BTA2DPDISCONN"></a>
-### 8.11 [AT+BTA2DPDISCONN](#BT-AT)—Ends A2DP connection
+### 8.12 [AT+BTA2DPDISCONN](#BT-AT)—Ends A2DP connection
 Execute Command: 
 
     AT+BTA2DPDISCONN=<conn_index>
@@ -3419,7 +3444,7 @@ Example:
     AT+BTA2DPDISCONN=0
 
 <a name="cmd-BTA2DPSEND"></a>
-### 8.12 [AT+BTA2DPSEND](#BT-AT)—Sends data to remote bt a2dp sink
+### 8.13 [AT+BTA2DPSEND](#BT-AT)—Sends data to remote bt a2dp sink
 Execute Command: 
 
     AT+BTA2DPSEND=<conn_index>,<url>
