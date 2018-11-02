@@ -1780,8 +1780,8 @@ Response:
     OK
 Set Command:
 
-    AT+BLEADDR=<addr_type>,<random_addr>
-    Function: to set the BLE random address.
+    AT+BLEADDR=<addr_type>[,<random_addr>]
+    Function: to set the BLE address type.
 Response:
 
     OK
@@ -1795,9 +1795,15 @@ Parameter:
 
 * For the time being, only two actions are supported: getting the public address and setting the BLE random address.    
 
+* A static address shall meet the following requirements:
+    - The two most significant bits of the address shall be equal to 1
+    - At least one bit of the random part of the address shall be 0
+    - At least one bit of the random part of the address shall be 1
+
 Example:
 
-    AT+BLEADDR=1,"08:7f:24:87:1c:7b"    
+    AT+BLEADDR=1,"f8:7f:24:87:1c:7b"    // Set Random Device Address, Static Address
+    AT+BLEADDR=1                        // Set Random Device Address, Private Address
 
 <a name="cmd-BNAME"></a>
 ### 5.3 [AT+BLENAME](#BLE-AT)—Sets BLE Device's Name
