@@ -128,6 +128,7 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+BTA2DPCONN](#cmd-BTA2DPCONN) : Establishes A2DP connection
 * [AT+BTA2DPDISCONN](#cmd-BTA2DPDISCONN) : Ends A2DP connection
 * [AT+BTA2DPSEND](#cmd-BTA2DPSEND) :Sends data to remote bt a2dp sink
+* [AT+BTSECPIN](#cmd-BTSECPIN) :Input the PIN code
 
 ## 2. Basic AT Commands 
 <a name="cmd-AT"></a>
@@ -3461,3 +3462,20 @@ Example:
 
     AT+BTA2DPSEND=0,"file:///example.mp3"
 
+<a name="cmd-BTSECPIN"></a>
+### 8.14 [AT+BTSECPIN](#BT-AT)—Input PIN code
+Execute Command: 
+
+    AT+BTSECPIN=<conn_index>,<PIN>
+    Function: Input the pin code.
+Response:
+
+    OK
+Parameter:
+
+- **\<conn_index>**: index of classic bluetooth connection. Currently only 0 is supported for the single connection.
+- **\<PIN>**: the PIN code.
+
+Example:
+
+    AT+BTSECPIN=0,123456
