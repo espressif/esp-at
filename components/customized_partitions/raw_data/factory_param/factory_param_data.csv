@@ -1,0 +1,5 @@
+module_name,magic_flag,version,module_id,tx_max_power,start_channel,channel_num,country_code,uart_baudrate,uart_tx_pin,uart_rx_pin,uart_ctx_pin,uart_rts_pin
+WROOM-32,0xfcfc,1,1,1,1,14,CN,115200,17,16,15,14
+WROVER-32,0xfcfc,1,2,1,1,14,CN,115200,22,19,15,14
+PICO-D4,0xfcfc,1,3,1,1,14,CN,115200,22,19,15,14
+SOLO-1,0xfcfc,1,4,1,1,14,CN,115200,17,16,15,14
