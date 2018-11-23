@@ -27,6 +27,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "esp_partition.h"
 
 /**
  * @brief esp_at_cmd_struct
@@ -377,5 +378,17 @@ bool esp_at_custom_cmd_line_terminator_set(uint8_t* terminator);
  * @return the command line terminator
  */
 uint8_t* esp_at_custom_cmd_line_terminator_get(void);
+
+/**
+ * @brief Find the partition which is defined in at_customize.csv
+ * @param type the type of the partition
+ *        subtype the subtype of the partition
+ *        label Partition label
+ * 
+ * @return pointer to esp_partition_t structure, or NULL if no partition is found.
+ *         This pointer is valid for the lifetime of the application
+ */
+const esp_partition_t* esp_at_custom_partition_find(esp_partition_type_t type, esp_partition_subtype_t subtype, const char* label);
+
 #endif
 
