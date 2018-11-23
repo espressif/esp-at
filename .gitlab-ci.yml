@@ -4,7 +4,7 @@ stages:
 
 build_at:
   stage: build
-  image: espressif/esp32-ci-env
+  image: $CI_DOCKER_REGISTRY/esp32-ci-env
   tags:
     - build
 
@@ -47,7 +47,7 @@ push_master_to_github:
   tags:
     - deploy
   when: on_success
-  image: espressif/esp32-ci-env
+  image: $CI_DOCKER_REGISTRY/esp32-ci-env
   variables:
     GIT_STRATEGY: clone
     GITHUB_PUSH_REFS: refs/remotes/origin/release refs/remotes/origin/master
