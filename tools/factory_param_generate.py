@@ -50,10 +50,7 @@ def get_param_type_info(source_file, sheet_name):
     elif filetype == '.csv':
         with open(source_file) as f:
             csv_data = csv.reader(f)
-            # print(list(csv_data))
             data = list(csv_data)
-            print(type(data))
-            print(data)
             headers = data[0]
 
             for row_data in data[1:]:
@@ -85,7 +82,6 @@ def generate_factory_param_bin(source_file, sheet_name, target_name, module, log
             csv_data = csv.reader(f)
             data = list(csv_data)
 
-            print(data)
             nrows = len(data)
             ncols = len(data[0])
     else:
