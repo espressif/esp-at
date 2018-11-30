@@ -38,6 +38,7 @@
 
 #include "at_upgrade.h"
 #include "at_interface.h"
+#include "at_default_config.h"
 
 #ifdef CONFIG_AT_ETHERNET_SUPPORT
 #include "at_eth_init.h"
@@ -93,19 +94,40 @@ static esp_at_cmd_struct at_update_cmd[] = {
 
 void app_main()
 {
+    const esp_partition_t * partition = esp_at_custom_partition_find(0x40,8,"factory_param");
+    char* data = NULL;
+
+    if (!partition) {
+        printf("factory_parameter partition missed\r\n");
+        return ;
+    }
+
+    data = (char*)malloc(ESP_AT_FACTORY_PARAMETER_SIZE); // Notes
+    assert(data != NULL);
+    if(esp_partition_read(partition, 0, data, ESP_AT_FACTORY_PARAMETER_SIZE) != ESP_OK){
+        free(data);
+        printf("esp_partition_read failed\r\n");
+        return ;
+    }
+
+    uint32_t module_id = data[3];
+    free(data);
+
+    const char* module_name = esp_at_get_module_name_by_id(module_id);
     uint8_t *version = (uint8_t *)malloc(192);
 #ifdef CONFIG_AT_COMMAND_TERMINATOR
     uint8_t cmd_terminator[2] = {CONFIG_AT_COMMAND_TERMINATOR,0};
 #endif
 
     nvs_flash_init();
+    esp_at_factory_parameter_init();
     at_interface_init();
 
     sprintf((char*)version, "compile time:%s %s\r\n", __DATE__, __TIME__);
 #ifdef CONFIG_ESP_AT_FW_VERSION
     if ((strlen(CONFIG_ESP_AT_FW_VERSION) > 0) && (strlen(CONFIG_ESP_AT_FW_VERSION) <= 128)){
         printf("%s\r\n", CONFIG_ESP_AT_FW_VERSION);
-        strcat((char*)version, CONFIG_ESP_AT_FW_VERSION);
+        sprintf((char*)version + strlen((char*)version),"Bin version:%s(%s)\r\n", CONFIG_ESP_AT_FW_VERSION, module_name);
     }
 #endif
     esp_at_module_init (CONFIG_LWIP_MAX_SOCKETS - 1, version);  // reserved one for server

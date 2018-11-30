@@ -20,4 +20,5 @@ factory_bin:
 		--bin_directory $(ESP_AT_PROJECT_PATH)/build \
 		--flash_mode $(CONFIG_ESPTOOLPY_FLASHMODE) \
 		--flash_size $(CONFIG_ESPTOOLPY_FLASHSIZE) \
-		--flash_speed $(CONFIG_ESPTOOLPY_FLASHFREQ)
+		--flash_speed $(CONFIG_ESPTOOLPY_FLASHFREQ) \
+		--parameter_file  $(PROJECT_PATH)/build/factory/factory_parameter.log
