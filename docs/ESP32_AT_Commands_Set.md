@@ -128,7 +128,12 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+BTA2DPCONN](#cmd-BTA2DPCONN) : Establishes A2DP connection
 * [AT+BTA2DPDISCONN](#cmd-BTA2DPDISCONN) : Ends A2DP connection
 * [AT+BTA2DPSEND](#cmd-BTA2DPSEND) :Sends data to remote bt a2dp sink
-* [AT+BTSECPIN](#cmd-BTSECPIN) :Input the PIN code
+* [AT+BTSECPARAM](#cmd-BTSECPARAM) :Set and query the Classic Bluetooth security parameters
+* [AT+BTKEYREPLY](#cmd-BTKEYREPLY) :Input the Simple Pair Key
+* [AT+BTPINREPLY](#cmd-BTPINREPLY) :Input the Legacy Pair PIN Code
+* [AT+BTSECCFM](#cmd-BTSECCFM): Reply the confirm value to the peer device in the legacy connection stage
+* [AT+BTENCDEV](#cmd-BTENCDEV) : Query BT encryption device list
+* [AT+BTENCCLEAR](#cmd-BTENCCLEAR) : Clear BT encryption device list
 
 ## 2. Basic AT Commands 
 <a name="cmd-AT"></a>
@@ -630,7 +635,7 @@ Parameters:
 
 Set Command:
 
-    AT+CWJAP=<ssid>,<pwd>[,<bssid>][,<pci_en>]
+    AT+CWJAP=<ssid>,<pwd>[,<bssid>][,<pci_en>][,<reconn>]
     Function: to set the AP to which the ESP32 Station needs to be connected.
 Response:
 
@@ -645,6 +650,7 @@ Parameters:
 - **\<pwd>**: password, MAX: 64-byte ASCII.
 - **\[\<bssid>]**: the target AP's MAC address, used when multiple APs have the same SSID.
 - **\[\<pci_en>]**: enable PCI Authentication, which will disable connect OPEN and WEP AP.
+- **\[\<reconn>]**: enable Wi-Fi reconnection, when beacon timeout, ESP32 will reconnect automatically.
 - **\<error code>**: (for reference only)
     - 1: connection timeout.
     - 2: wrong password.
@@ -2801,15 +2807,15 @@ Example:
 ### 5.35 [AT+BLEENCCLEAR](#BLE-AT)—Clear BLE encryption device list
 Set Command:
 
-    AT+BLEKEYREPLY=<enc_dev_index>
-    Function: to unbind a device with a specific index.
+    AT+BLEENCCLEAR=<enc_dev_index>
+    Function: remove a device from the security database list with a specific index.
 Response:
 
     OK
 Execute Command:
 
     AT+BLEENCCLEAR
-    Function: unbind all devices
+    Function: remove all devices from the security database.
 Response:
 
     OK
@@ -3251,11 +3257,13 @@ Parameter:
 
 - **\<init>**: 
     - 0: deinit classic bluetooth SPP profile
-    - 1: init classic bluetooth SPP profile
+    - 1: init classic bluetooth SPP profile, the role is master
+    - 2: init classic bluetooth SPP profile, the role is slave
 
 Example:
 
-    AT+BTSPPINIT=1    
+    AT+BTSPPINIT=1    //master    
+    AT+BTSPPINIT=2    //slave
 
 <a name="cmd-BTSPPCONN"></a>
 ### 8.6 [AT+BTSPPCONN](#BT-AT)—Establishes SPP connection
@@ -3270,7 +3278,7 @@ Response:
     If the connection has not been established, there will NOT be <conn_index> and <remote_address>
 Set Command: 
 
-    AT+BTSPPCONN=<conn_index>,<sec_mode>,<role>,<remote_address>
+    AT+BTSPPCONN=<conn_index>,<sec_mode>,<remote_address>
     Function: to establish the classic bluetooth SPP connection.
 Response:
 
@@ -3278,7 +3286,7 @@ Response:
     It will prompt the message below, if the connection is established successfully:
     +BTSPPCONN:<conn_index>,<remote_address>
     It will prompt the message below, if NOT:
-    +BTSPPCONN:<conn_index>,fail
+    +BTSPPCONN:<conn_index>,-1
 Parameters:
 
 - **\<conn_index>**: index of classic bluetooth spp connection; only 0 is supported for the single connection right now.
@@ -3288,16 +3296,13 @@ Parameters:
     - 0x0012 : Authentication required.
     - 0x0024 : Encryption required. 
     - 0x0040 : Mode 4 level 4 service, i.e. incoming/outgoing MITM and P-256 encryption
-    - 0x3000 : Man-In-The_Middle protection 
+    - 0x3000 : Man-In-The-Middle protection 
     - 0x4000 : Min 16 digit for pin code 
-- **\<role>**：
-    - 0 : master
-    - 1 : slave
 - **\<remote_address>**：remote classic bluetooth spp device address
 
 Example:
 
-    AT+BTSPPCONN=0,0,0,"24:0a:c4:09:34:23"
+    AT+BTSPPCONN=0,0,"24:0a:c4:09:34:23"
 
 <a name="cmd-BTSPPDISCONN"></a>
 ### 8.7 [AT+BTSPPDISCONN](#BT-AT)—Ends SPP connection
@@ -3340,6 +3345,10 @@ Parameter:
 
 - **\<conn_index>**: index of classic bluetooth SPP connection; only 0 is supported for the single connection right now.
 - **\<data_len>**: the length of the data which was ready to send.
+
+***Notes:***
+
+* The wrap return is > after this command is executed. Then, ESP32 enters UART-BT passthrough mode. When a single packet containing +++ is received, ESP32 returns to normal command mode. Please wait for at least one second before sending the next AT command.
 
 Example:
 
@@ -3462,20 +3471,138 @@ Example:
 
     AT+BTA2DPSEND=0,"file:///example.mp3"
 
-<a name="cmd-BTSECPIN"></a>
-### 8.14 [AT+BTSECPIN](#BT-AT)—Input PIN code
+<a name="cmd-BTSECPARAM"></a>
+### 8.14 [AT+BTSECPARAM](#BT-AT)—Set and query the Classic Bluetooth security parameters
+Query Command: 
+
+    AT+BTSECPARAM?
+    Function: to query classic bluetooth security parameters.
+Response:
+
+    +BTSECPARAM:<io_cap>,<pin_type>,<pin_code>
+    OK
+Set Command: 
+
+    AT+BTSECPARAM=<io_cap>,<pin_type>,<pin_code>
+    Function: set the Classic Bluetooth security parameters.
+Response:
+
+    OK
+Parameters:
+
+- **\<io_cap>**: io capability.
+    - 0 : DisplayOnly
+    - 1 : DisplayYesNo
+    - 2 : KeyboardOnly
+    - 3 : NoInputNoOutput
+- **\<pin_type>**：Use variable or fixed PIN.
+    - 0 : variable
+    - 1 : fixed
+- **\<pin_code>**: Legacy Pair PIN Code (upto 16 bytes).
+
+***Notes:***
+
+* If pin_type is variable, pin_code will be ignored,
+
+Example:
+
+    AT+BTA2DPCONN=3,1,"9527"
+
+<a name="cmd-BTKEYREPLY"></a>
+### 8.15 [AT+BTKEYREPLY](#BT-AT)—Input Simple Pair Key
 Execute Command: 
 
-    AT+BTSECPIN=<conn_index>,<PIN>
-    Function: Input the pin code.
+    AT+BTKEYREPLY=<conn_index>,<Key>
+    Function: Input the Simple Pair Key.
 Response:
 
     OK
 Parameter:
 
-- **\<conn_index>**: index of classic bluetooth connection. Currently only 0 is supported for the single connection.
-- **\<PIN>**: the PIN code.
+- **\<conn_index>**: index of classic bluetooth connection; Currently only 0 is supported for the single connection.
+- **\<Key>**: the Simple Pair Key.
 
 Example:
 
-    AT+BTSECPIN=0,123456
+    AT+BTKEYREPLY=0,123456
+
+<a name="cmd-BTPINREPLY"></a>
+### 8.16 [AT+BTPINREPLY](#BT-AT)—Input the Legacy Pair PIN Code
+Execute Command: 
+
+    AT+BTPINREPLY=<conn_index>,<Pin>
+    Function: Input the Legacy Pair PIN Code.
+Response:
+
+    OK
+Parameter:
+
+- **\<conn_index>**: index of classic bluetooth connection; Currently only 0 is supported for the single connection.
+- **\<Pin>**: the Legacy Pair PIN Code.
+
+Example:
+
+    AT+BTPINREPLY=0,"6688"
+
+<a name="cmd-BTSECCFM"></a>
+### 8.17 [AT+BTSECCFM](#BT-AT)—Reply the confirm value to the peer device in the legacy connection stage
+Execute Command: 
+
+    AT+BTSECCFM=<conn_index>,<accept>
+    Function: Reply the confirm value to the peer device in the legacy connection stage.
+Response:
+
+    OK
+Parameter:
+
+- **\<conn_index>**: index of classic bluetooth connection; Currently only 0 is supported for the single connection.
+- **\<accept>**: reject or accept.
+    - 0 : reject
+    - 1 : accept
+
+Example:
+
+    AT+BTSECCFM=0,1
+
+<a name="cmd-BTENCDEV"></a>
+### 8.18 [AT+BTENCDEV](#BT-AT)—Query BT encryption device list
+Query Command:
+
+    AT+BTENCDEV?
+    Function: to get the bonded devices.
+Response:
+
+    +BTENCDEV:<enc_dev_index>,<mac_address>
+    OK
+Parameters:
+
+- **\<enc_dev_index>**: index of the bonded devices.
+- **\<mac_address>**:   Mac address.
+
+Example:
+
+    AT+BTENCDEV?
+
+<a name="cmd-BTENCCLEAR"></a>
+### 8.19 [AT+BTENCCLEAR](#BT-AT)—Clear BT encryption device list
+Set Command:
+
+    AT+BTENCCLEAR=<enc_dev_index>
+    Function: remove a device from the security database list with a specific index.
+Response:
+
+    OK
+Execute Command:
+
+    AT+BLEENCCLEAR
+    Function: remove all devices from the security database.
+Response:
+
+    OK
+Parameters:
+
+- **\<enc_dev_index>**: index of the bonded devices.
+
+Example:
+
+    AT+BTENCCLEAR
