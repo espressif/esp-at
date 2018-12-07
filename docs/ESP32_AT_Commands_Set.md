@@ -3506,7 +3506,7 @@ Parameters:
 
 Example:
 
-    AT+BTA2DPCONN=3,1,"9527"
+    AT+BTSECPARAM=3,1,"9527"
 
 <a name="cmd-BTKEYREPLY"></a>
 ### 8.15 [AT+BTKEYREPLY](#BT-AT)—Input Simple Pair Key
