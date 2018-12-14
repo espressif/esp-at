@@ -84,7 +84,7 @@ const char* esp_at_get_module_name_by_id(uint32_t id)
 
 uint32_t esp_at_factory_parameter_init(void)
 {
-    const esp_partition_t * partition = esp_at_custom_partition_find(0x40,11,"factory_param");
+    const esp_partition_t * partition = esp_at_custom_partition_find(0x40,8,"factory_param");
     char* data = NULL;
     wifi_country_t country;
 
