@@ -1,7 +1,7 @@
 /*
  * ESPRESSIF MIT License
  *
- * Copyright (c) 2017 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
+ * Copyright (c) 2018 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
  *
  * Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP32 only, in which case,
  * it is free of charge, to any person obtaining a copy of this software and associated
@@ -22,15 +22,20 @@
  *
  */
 
-#ifndef __AT_UPGRADE_H__
-#define __AT_UPGRADE_H__
+#ifndef __AT_CONFIG_H__
+#define __AT_CONFIG_H__
 
-typedef enum {
-    ESP_AT_OTA_MODE_NORMAL = 0,
-    ESP_AT_OTA_MODE_SSL,
-} esp_at_ota_mode_type;
+#define CONFIG_ESP_AT_OTA_TOKEN_DEFAULT       CONFIG_AT_OTA_TOKEN_KEY
+#define CONFIG_ESP_AT_OTA_SSL_TOKEN_DEFAULT   CONFIG_AT_OTA_SSL_TOKEN_KEY
 
-bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode,uint8_t* version);
+#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32        CONFIG_ESP_AT_OTA_TOKEN_DEFAULT
+#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32       CONFIG_ESP_AT_OTA_TOKEN_DEFAULT
+#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4  CONFIG_ESP_AT_OTA_TOKEN_DEFAULT
+#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1   CONFIG_ESP_AT_OTA_TOKEN_DEFAULT
+
+#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32        CONFIG_ESP_AT_OTA_SSL_TOKEN_DEFAULT
+#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32       CONFIG_ESP_AT_OTA_SSL_TOKEN_DEFAULT
+#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4  CONFIG_ESP_AT_OTA_SSL_TOKEN_DEFAULT
+#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1   CONFIG_ESP_AT_OTA_SSL_TOKEN_DEFAULT
 
 #endif
-

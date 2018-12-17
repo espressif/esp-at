@@ -1,5 +1,11 @@
 menu "AT"
 
+config AT_MODULE_NAME
+    string "the module name for espressif AT"
+    help
+        It is used to generate factory parameter bin, and should be a string module_name in components/customized_partitions/raw_data/factory_param.
+    default "WROOM-32"
+
 config AT_ENABLE
     bool "Enable AT"
     default "y"

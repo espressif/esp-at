@@ -11,7 +11,7 @@
 
 SHELL:=/bin/bash
 
-ifdef CONFIG_ENABLE_AT_CUSTOMIZED_PARTITION_TABLE
+ifdef CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_SUPPORT
 # idf gen_esp32part tool
 AT_CUSTOMIZED_GEN_ESP32PART := $(PYTHON) $(IDF_PATH)/components/partition_table/gen_esp32part.py -q
 
