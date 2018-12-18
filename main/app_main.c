@@ -120,7 +120,6 @@ void app_main()
 #endif
 
     nvs_flash_init();
-    esp_at_factory_parameter_init();
     at_interface_init();
 
     sprintf((char*)version, "compile time:%s %s\r\n", __DATE__, __TIME__);
@@ -132,6 +131,7 @@ void app_main()
 #endif
     esp_at_module_init (CONFIG_LWIP_MAX_SOCKETS - 1, version);  // reserved one for server
     free(version);
+    esp_at_factory_parameter_init();
 
 #ifdef CONFIG_AT_BASE_COMMAND_SUPPORT
     if(esp_at_base_cmd_regist() == false) {
