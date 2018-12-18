@@ -67,7 +67,7 @@ def get_param_type_info(source_file, sheet_name):
 def generate_factory_param_bin(source_file, sheet_name, target_name, module, log_file):
     if os.path.exists(os.path.dirname(log_file)) == True:
         if os.path.exists(log_file) == True:
-            os.path.remove(log_file)
+            os.remove(log_file)
     else:
         os.makedirs(os.path.dirname(log_file))
 
