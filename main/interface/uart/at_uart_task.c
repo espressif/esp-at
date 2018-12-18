@@ -197,7 +197,7 @@ static void at_uart_init(void)
     int32_t ctx_pin = CONFIG_AT_UART_PORT_CTS_PIN;
     int32_t rtx_pin = CONFIG_AT_UART_PORT_RTS_PIN;
     char* data = NULL;
-    const esp_partition_t * partition = esp_at_custom_partition_find(0x40,11,"factory_param");
+    const esp_partition_t * partition = esp_at_custom_partition_find(0x40,8,"factory_param");
 
     memset(&uart_nvm_config,0x0,sizeof(uart_nvm_config));
 
