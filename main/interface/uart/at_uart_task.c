@@ -585,22 +585,22 @@ void at_task_init(void)
 {
     const esp_partition_t * partition = esp_at_custom_partition_find(0x40,8,"factory_param");
     char* data = NULL;
+    uint32_t module_id = 0;
 
-    if (!partition) {
+    if (partition) {
+        data = (char*)malloc(ESP_AT_FACTORY_PARAMETER_SIZE); // Notes
+        assert(data != NULL);
+        if(esp_partition_read(partition, 0, data, ESP_AT_FACTORY_PARAMETER_SIZE) != ESP_OK){
+            free(data);
+            printf("esp_partition_read failed\r\n");
+            return ;
+        } else {
+            module_id = data[3];
+            free(data);
+        }
+    } else {
         printf("factory_parameter partition missed\r\n");
-        return ;
     }
-
-    data = (char*)malloc(ESP_AT_FACTORY_PARAMETER_SIZE); // Notes
-    assert(data != NULL);
-    if(esp_partition_read(partition, 0, data, ESP_AT_FACTORY_PARAMETER_SIZE) != ESP_OK){
-        free(data);
-        printf("esp_partition_read failed\r\n");
-        return ;
-    }
-
-    uint32_t module_id = data[3];
-    free(data);
 
     const char* module_name = esp_at_get_module_name_by_id(module_id);
     uint8_t *version = (uint8_t *)malloc(192);
@@ -623,7 +623,6 @@ void at_task_init(void)
 
     nvs_flash_init();
     at_uart_init();
-
     sprintf((char*)version, "compile time:%s %s\r\n", __DATE__, __TIME__);
 #ifdef CONFIG_ESP_AT_FW_VERSION
     if ((strlen(CONFIG_ESP_AT_FW_VERSION) > 0) && (strlen(CONFIG_ESP_AT_FW_VERSION) <= 128)){
