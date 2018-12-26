@@ -1,12 +1,14 @@
 # Overview
-There are some differences between different development boards, and different countries also have different restrictions on RF. So we need a table to manage these differences.
+In order to adapt the AT firmware to different requirements, for example, different development board, different country code, different RF restriction, we make a table to configure those parameters.
 
-## Factory param type
-The factory param type is shown in the following table:
+
+## Factory param type 
+
+The origin table is [`components/customized_partitions/raw_data/factory_param/factory_param_type.csv`](components/customized_partitions/raw_data/factory_param/factory_param_type.csv), and the factory parameter type is as the following table:
 
 | param_name    | offset |  type   | size |
 | ------------- | ------ | ------- | ---- |
-| module_name   |   -1   | String  |   0  |
+| module_name   |    -1   | String  |   0  |
 | magic_flag    |    0   | integer |   2  |
 | version       |    2   | integer |   1  |
 | module_id     |    3   | integer |   1  |
@@ -24,7 +26,7 @@ The factory param type is shown in the following table:
    - the version of factory param mangement
    
  - module_id
-   - the index of development boards
+   - the index of development boards, it MUST be unique.
      - 1 - WROOM32
      - 2 - WROVER32
      - 3 - PICO-D4
@@ -46,20 +48,20 @@ The factory param type is shown in the following table:
    - uart baudrate
    
  - uart\_tx_pin
-   - tx pin
+   - uart  tx pin
    
  - uart\_rx_pin
-   - rx pin
+   - uart rx pin
    
  - uart\_ctx_pin
-   - ctx pin
+   - uart ctx pin
    
  - uart\_rts_pin
-   - rts pin
+   - uart rts pin
    
-## Factory param data
+## Factory param data 
 
-Save the factory param date for each development boards in a table, it was organized as bellow:
+The origin table is [`components/customized_partitions/raw_data/factory_param/factory_param_data.csv`](components/customized_partitions/raw_data/factory_param/factory_param_data.csv), and the information each row contains is about one module. The factory parameter data is as the following table:
 
 | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin |
 |---|---|---|---|---|---|---| ---|---|---|---|---|---|
@@ -67,3 +69,62 @@ Save the factory param date for each development boards in a table, it was organ
 | WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14|
 | PICO-D4  |0xfcfc|1|3|1|1|13|CN|115200|22|19|15|14|
 | SOLO-1   |0xfcfc|1|4|1|1|13|CN|115200|17|16|15|14|
+
+<a name="Add_Customized_Module"></a>
+## Add customized module
+
+if you want to add a module named as "MY_MODULE", of which country code is JP, and Wi-Fi channel is from 1 to 14, the table should be as the following one:
+
+| module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin |
+|---|---|---|---|---|---|---| ---|---|---|---|---|---|
+| WROOM-32 |0xfcfc|1|1|1|1|13|CN|115200|17|16|15|14|
+| WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14|
+| PICO-D4  |0xfcfc|1|3|1|1|13|CN|115200|22|19|15|14|
+| SOLO-1   |0xfcfc|1|4|1|1|13|CN|115200|17|16|15|14|
+| MY_MODULE|0xfcfc|1|5|1|1|14|JP|115200|17|16|15|14|
+
+Then add module information in `esp_at_module_info` in `at_default_config.c`, like
+
+```
+static const esp_at_module_info_t esp_at_module_info[] = {
+    {"WROOM-32",        CONFIG_ESP_AT_OTA_TOKEN_WROOM32,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 },        // default:ESP32-WROOM-32                          // Unknown
+    {"WROOM-32",        CONFIG_ESP_AT_OTA_TOKEN_WROOM32,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 },        // ESP32-WROOM-32
+    {"WROVER-32",       CONFIG_ESP_AT_OTA_TOKEN_WROVER32,      CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 },       // ESP32-WROVER
+    {"PICO-D4",         CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4, CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4},   // ESP32-PICO-D4
+    {"SOLO-1",          CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1,  CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 },   // ESP32-SOLO-1
+    {"MY_MODULE",       CONFIG_ESP_AT_OTA_TOKEN_ MY_MODULE,    CONFIG_ESP_AT_OTA_SSL_TOKEN_ MY_MODULE },   // MY_MODULE
+};
+```
+## Add customized data
+
+If you want to add more parameter, for example, add a string "20181225" as the date, you need to add the type of date in the `factory_param_type.csv`, as the following table.
+
+| param_name    | offset |  type   | size |
+| ------------- | ------ | ------- | ---- |
+| module_name   |    -   | String  |   0  |
+| magic_flag    |    0   | integer |   2  |
+| version       |    2   | integer |   1  |
+| module_id     |    3   | integer |   1  |
+| tx_max_power  |    4   | integer |   1  |
+| start_channel |    6   | integer |   1  |
+| channel_num   |    7   | integer |   1  |
+| country_code  |    8   | String  |   4  |
+| uart_baudrate |   12   | integer |   4  |
+| uart_tx_pin   |   16   | integer |   1  |
+| uart_rx_pin   |   17   | integer |   1  |
+| uart_ctx_pin  |   18   | integer |   1  |
+| uart_rts_pin  |   19   | integer |   1  |
+| date  		   |   20   | String  |   8  |
+
+Edit `factory_param_data.csv` with reference to 
+[Add customized module](#Add_Customized_Module), and add the date into the last column, as the following table,
+
+| module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin | date |
+|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|
+| WROOM-32 |0xfcfc|1|1|1|1|13|CN|115200|17|16|15|14| |
+| WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14| |
+| PICO-D4  |0xfcfc|1|3|1|1|13|CN|115200|22|19|15|14| |
+| SOLO-1   |0xfcfc|1|4|1|1|13|CN|115200|17|16|15|14| |
+| MY_MODULE|0xfcfc|1|5|1|1|14|JP|115200|17|16|15|14|20181225|
+
+Then, you can add code to parse `date` in `esp_at_factory_parameter_init` or other api.
