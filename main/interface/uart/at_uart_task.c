@@ -36,6 +36,7 @@
 #include "at_upgrade.h"
 
 #include "driver/uart.h"
+#include "at_default_config.h"
 
 #ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
 #include "esp_bt.h"
@@ -183,6 +184,7 @@ retry:
     }
     vTaskDelete(NULL);
 }
+
 static void at_uart_init(void)
 {
     at_nvm_uart_config_struct uart_nvm_config;
@@ -195,7 +197,23 @@ static void at_uart_init(void)
         .rx_flow_ctrl_thresh = 122,
     };
 
+    int32_t tx_pin = CONFIG_AT_UART_PORT_TX_PIN;
+    int32_t rx_pin = CONFIG_AT_UART_PORT_RX_PIN;
+    int32_t ctx_pin = CONFIG_AT_UART_PORT_CTS_PIN;
+    int32_t rtx_pin = CONFIG_AT_UART_PORT_RTS_PIN;
+    char* data = NULL;
+    const esp_partition_t * partition = esp_at_custom_partition_find(0x40, 8, "factory_param");
+
     memset(&uart_nvm_config,0x0,sizeof(uart_nvm_config));
+
+    if (partition) {
+        data = (char*)malloc(ESP_AT_FACTORY_PARAMETER_SIZE); // Notes
+        assert(data != NULL);
+        if (esp_partition_read(partition, 0, data, ESP_AT_FACTORY_PARAMETER_SIZE) != ESP_OK){
+            free(data);
+            data = NULL;
+        }
+    }
     
     if (at_nvm_uart_config_get(&uart_nvm_config)) {
         if ((uart_nvm_config.baudrate >= 80) && (uart_nvm_config.baudrate <= 5000000)) {
@@ -220,17 +238,48 @@ static void at_uart_init(void)
             uart_config.flow_ctrl = uart_nvm_config.flow_control;
         }
     } else {
-        uart_nvm_config.baudrate = CONFIG_AT_UART_DEFAULT_BAUDRATE;
-        uart_nvm_config.data_bits = CONFIG_AT_UART_DEFAULT_DATABITS - 5;
-        uart_nvm_config.flow_control = CONFIG_AT_UART_DEFAULT_FLOW_CONTROL;
-        uart_nvm_config.parity = esp_at_uart_parity_table[CONFIG_AT_UART_DEFAULT_PARITY_BITS];
-        uart_nvm_config.stop_bits = CONFIG_AT_UART_DEFAULT_STOPBITS;
+        if (data) {
+            if ((data[0] == 0xFC) && (data[1] == 0xFC)) { // check magic flag, should be 0xfc 0xfc
+                if ((data[12] != 0xFF) || (data[13] != 0xFF) || (data[14] != 0xFF) || (data[15] != 0xFF)) {
+                    uart_config.baud_rate = *(int32_t*)&data[12];
+                }
+            }
+        }
+
+        uart_nvm_config.baudrate = uart_config.baud_rate;
+        uart_nvm_config.data_bits = uart_config.data_bits;
+        uart_nvm_config.flow_control = uart_config.flow_ctrl;
+        uart_nvm_config.parity = uart_config.parity;
+        uart_nvm_config.stop_bits = uart_config.stop_bits;
         at_nvm_uart_config_set(&uart_nvm_config);
+    }
+
+    if (data) {
+        if ((data[0] == 0xFC) && (data[1] == 0xFC)) { // check magic flag, should be 0xfc 0xfc
+            if ((data[16] != 0xFF) && (data[17] != 0xFF)) {
+                tx_pin = data[16];
+                rx_pin = data[17];
+            }
+	
+            if (data[18] != 0xFF) {
+                ctx_pin = data[18];
+            } else {
+                ctx_pin = -1;
+            }
+	
+            if (data[19] != 0xFF) {
+                rtx_pin = data[19];
+            } else {
+                rtx_pin = -1;
+            }
+        }
+        free(data);
+        data = NULL;
     }
     //Set UART parameters
     uart_param_config(CONFIG_AT_UART_PORT, &uart_config);
     //Set UART pins,(-1: default pin, no change.)
-    uart_set_pin(CONFIG_AT_UART_PORT, CONFIG_AT_UART_PORT_TX_PIN, CONFIG_AT_UART_PORT_RX_PIN, CONFIG_AT_UART_PORT_RTS_PIN, CONFIG_AT_UART_PORT_CTS_PIN);
+    uart_set_pin(CONFIG_AT_UART_PORT, tx_pin, rx_pin, rtx_pin, ctx_pin);
     //Install UART driver, and get the queue.
     uart_driver_install(CONFIG_AT_UART_PORT, 2048, 8192, 30,&esp_at_uart_queue,0);
     xTaskCreate(uart_task, "uTask", 2048, (void*)CONFIG_AT_UART_PORT, 1, NULL);
@@ -532,6 +581,27 @@ void at_pre_restart_callback (void)
 
 void at_task_init(void)
 {
+    const esp_partition_t * partition = esp_at_custom_partition_find(0x40, 8, "factory_param");
+    char* data = NULL;
+    uint32_t module_id = 0;
+
+    if (partition) {
+        data = (char*)malloc(ESP_AT_FACTORY_PARAMETER_SIZE); // Notes
+        assert(data != NULL);
+        if(esp_partition_read(partition, 0, data, ESP_AT_FACTORY_PARAMETER_SIZE) != ESP_OK){
+            free(data);
+            printf("esp_partition_read failed\r\n");
+            return ;
+        } else {
+            module_id = data[3];
+            free(data);
+        }
+    } else {
+        printf("factory_parameter partition missed\r\n");
+    }
+
+
+    const char* module_name = esp_at_get_module_name_by_id(module_id);
     uint8_t *version = (uint8_t *)malloc(192);
     esp_at_device_ops_struct esp_at_device_ops = {
         .read_data = at_port_read_data,
@@ -557,13 +627,14 @@ void at_task_init(void)
 #ifdef CONFIG_ESP_AT_FW_VERSION
     if ((strlen(CONFIG_ESP_AT_FW_VERSION) > 0) && (strlen(CONFIG_ESP_AT_FW_VERSION) <= 128)){
         printf("%s\r\n", CONFIG_ESP_AT_FW_VERSION);
-        strcat((char*)version, CONFIG_ESP_AT_FW_VERSION);
+        sprintf((char*)version + strlen((char*)version),"Bin version:%s(%s)\r\n", CONFIG_ESP_AT_FW_VERSION, module_name);
     }
 #endif
     esp_at_device_ops_regist (&esp_at_device_ops);
     esp_at_custom_ops_regist(&esp_at_custom_ops);
     esp_at_module_init (CONFIG_LWIP_MAX_SOCKETS - 1, version);  // reserved one for server
     free(version);
+    esp_at_factory_parameter_init();
 
 #ifdef CONFIG_AT_BASE_COMMAND_SUPPORT
     if(esp_at_base_cmd_regist() == false) {

@@ -36,6 +36,7 @@
 #include "tcpip_adapter.h"
 
 #include "esp_at.h"
+#include "at_default_config.h"
 
 #ifdef CONFIG_AT_OTA_SSL_SUPPORT
 #include "openssl/ssl.h"
@@ -72,7 +73,7 @@ static void esp_at_ota_timeout_callback( TimerHandle_t xTimer )
     }
 }
 
-bool esp_at_upgrade_process(int32_t ota_mode,uint8_t* version)
+bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode,uint8_t* version)
 {
     bool pkg_body_start = false;
     struct sockaddr_in sock_info;
@@ -83,7 +84,7 @@ bool esp_at_upgrade_process(int32_t ota_mode,uint8_t* version)
     uint8_t* pStr = NULL;
     esp_partition_t* partition_ptr = NULL;
     esp_partition_t partition;
-    esp_partition_t* next_partition = NULL;
+    const esp_partition_t* next_partition = NULL;
     esp_ota_handle_t out_handle = 0;
     int buff_len = 0;
     int sockopt = 1;
@@ -93,7 +94,8 @@ bool esp_at_upgrade_process(int32_t ota_mode,uint8_t* version)
     int result = -1;
     char* server_ip = NULL;
     uint16_t server_port = 0;
-    char* ota_key = NULL;
+    const char* ota_key = NULL;
+    uint32_t module_id = esp_at_get_module_id();
     
 #ifdef CONFIG_AT_OTA_SSL_SUPPORT
     SSL_CTX *ctx = NULL;
@@ -104,20 +106,18 @@ bool esp_at_upgrade_process(int32_t ota_mode,uint8_t* version)
     if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
         server_ip = CONFIG_AT_OTA_SERVER_IP;
         server_port = CONFIG_AT_OTA_SERVER_PORT;
-        ota_key = CONFIG_AT_OTA_TOKEN_KEY;
     }
 #ifdef CONFIG_AT_OTA_SSL_SUPPORT
     else if (ota_mode == ESP_AT_OTA_MODE_SSL) {
         server_ip = CONFIG_AT_OTA_SSL_SERVER_IP;
         server_port = CONFIG_AT_OTA_SSL_SERVER_PORT;
-        ota_key = CONFIG_AT_OTA_SSL_TOKEN_KEY;
     }
 #endif
     else {
         return ret;
     }
     
-    
+    ota_key = esp_at_get_ota_token_by_id(module_id, ota_mode);
     if (esp_at_ota_timeout_timer != NULL) {
         xTimerStop(esp_at_ota_timeout_timer,portMAX_DELAY);
         xTimerDelete(esp_at_ota_timeout_timer,portMAX_DELAY);
