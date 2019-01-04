@@ -63,25 +63,27 @@ The origin table is [`components/customized_partitions/raw_data/factory_param/fa
 
 The origin table is [`components/customized_partitions/raw_data/factory_param/factory_param_data.csv`](components/customized_partitions/raw_data/factory_param/factory_param_data.csv), and the information each row contains is about one module. The factory parameter data is as the following table:
 
-| module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin |
-|---|---|---|---|---|---|---| ---|---|---|---|---|---|
-| WROOM-32 |0xfcfc|1|1|1|1|13|CN|115200|17|16|15|14|
-| WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14|
-| PICO-D4  |0xfcfc|1|3|1|1|13|CN|115200|22|19|15|14|
-| SOLO-1   |0xfcfc|1|4|1|1|13|CN|115200|17|16|15|14|
+| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin |
+|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|
+| PLATFORM_ESP32 | WROOM-32 |0xfcfc|1|1|1|1|13|CN|115200|17|16|15|14|
+| PLATFORM_ESP32 | WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14|
+| PLATFORM_ESP32 | PICO-D4  |0xfcfc|1|3|1|1|13|CN|115200|22|19|15|14|
+| PLATFORM_ESP32 | SOLO-1   |0xfcfc|1|4|1|1|13|CN|115200|17|16|15|14|
+| PLATFORM_ESP8266 | WROOM-02   |0xfcfc|1|4|1|1|13|CN|115200|15|13|3|1|
 
 <a name="Add_Customized_Module"></a>
 ## Add customized module
 
 if you want to add a module named as "MY_MODULE", of which country code is JP, and Wi-Fi channel is from 1 to 14, the table should be as the following one:
 
-| module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin |
-|---|---|---|---|---|---|---| ---|---|---|---|---|---|
-| WROOM-32 |0xfcfc|1|1|1|1|13|CN|115200|17|16|15|14|
-| WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14|
-| PICO-D4  |0xfcfc|1|3|1|1|13|CN|115200|22|19|15|14|
-| SOLO-1   |0xfcfc|1|4|1|1|13|CN|115200|17|16|15|14|
-| MY_MODULE|0xfcfc|1|5|1|1|14|JP|115200|17|16|15|14|
+| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin |
+|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|
+| PLATFORM_ESP32 | WROOM-32 |0xfcfc|1|1|1|1|13|CN|115200|17|16|15|14|
+| PLATFORM_ESP32 | WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14|
+| PLATFORM_ESP32 | PICO-D4  |0xfcfc|1|3|1|1|13|CN|115200|22|19|15|14|
+| PLATFORM_ESP32 | SOLO-1   |0xfcfc|1|4|1|1|13|CN|115200|17|16|15|14|
+| PLATFORM_ESP8266 | WROOM-02   |0xfcfc|1|4|1|1|13|CN|115200|15|13|3|1|
+| MY_PLATFORM | MY_MODULE|0xfcfc|1|5|1|1|14|JP|115200|17|16|15|14|
 
 Then add module information in `esp_at_module_info` in `at_default_config.c`, like
 
@@ -101,7 +103,8 @@ If you want to add more parameter, for example, add a string "20181225" as the d
 
 | param_name    | offset |  type   | size |
 | ------------- | ------ | ------- | ---- |
-| module_name   |    -   | String  |   0  |
+| platform      |   -1   | String  |   0  |
+| module_name   |   -1   | String  |   0  |
 | magic_flag    |    0   | integer |   2  |
 | version       |    2   | integer |   1  |
 | module_id     |    3   | integer |   1  |
@@ -119,12 +122,13 @@ If you want to add more parameter, for example, add a string "20181225" as the d
 Edit `factory_param_data.csv` with reference to 
 [Add customized module](#Add_Customized_Module), and add the date into the last column, as the following table,
 
-| module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin | date |
-|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|
-| WROOM-32 |0xfcfc|1|1|1|1|13|CN|115200|17|16|15|14| |
-| WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14| |
-| PICO-D4  |0xfcfc|1|3|1|1|13|CN|115200|22|19|15|14| |
-| SOLO-1   |0xfcfc|1|4|1|1|13|CN|115200|17|16|15|14| |
-| MY_MODULE|0xfcfc|1|5|1|1|14|JP|115200|17|16|15|14|20181225|
+| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin | date |
+|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|---|
+| PLATFORM_ESP32 | WROOM-32 |0xfcfc|1|1|1|1|13|CN|115200|17|16|15|14| |
+| PLATFORM_ESP32 | WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14| |
+| PLATFORM_ESP32 | PICO-D4  |0xfcfc|1|3|1|1|13|CN|115200|22|19|15|14| |
+| PLATFORM_ESP32 | SOLO-1   |0xfcfc|1|4|1|1|13|CN|115200|17|16|15|14| |
+| PLATFORM_ESP8266 | WROOM-02   |0xfcfc|1|4|1|1|13|CN|115200|15|13|3|1|
+| MY_PLATFORM | MY_MODULE|0xfcfc|1|5|1|1|14|JP|115200|17|16|15|14|20181225|
 
 Then, you can add code to parse `date` in `esp_at_factory_parameter_init` or other api.

@@ -1,11 +1,4 @@
 menu "AT"
-
-config AT_MODULE_NAME
-    string "the module name for espressif AT"
-    help
-        It is used to generate factory parameter bin, and should be a string module_name in components/customized_partitions/raw_data/factory_param.
-    default "WROOM-32"
-
 config AT_ENABLE
     bool "Enable AT"
     default "y"
@@ -50,7 +43,8 @@ config AT_NET_COMMAND_SUPPORT
     bool "AT net command support."
     default "y"
     depends on AT_WIFI_COMMAND_SUPPORT
-    
+
+if IDF_TARGET_ESP32    
 config AT_BLE_COMMAND_SUPPORT
     bool "AT ble command support."
     default "y"
@@ -174,6 +168,7 @@ config PHY_SMI_MDIO_PIN
     range 0 33
     help
         GPIO number to use for SMI data pin MDIO to/from PHY.
+endif
 
 config AT_EAP_COMMAND_SUPPORT
     bool "AT WPA2 Enterprise command support."

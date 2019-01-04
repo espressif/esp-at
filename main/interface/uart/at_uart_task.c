@@ -33,6 +33,7 @@
 #include "nvs_flash.h"
 
 #include "esp_system.h"
+#include "driver/gpio.h"
 #include "driver/uart.h"
 #include "at_interface.h"
 
@@ -102,13 +103,17 @@ static int32_t at_port_read_data(uint8_t*buf,int32_t len)
 static int32_t at_port_get_data_length (void)
 {
     size_t size = 0;
+#if defined(CONFIG_TARGET_PLATFORM_ESP32)
     int pattern_pos = 0;
+#endif
 
     if (ESP_OK == uart_get_buffered_data_len(CONFIG_AT_UART_PORT,&size)) {
+#if defined(CONFIG_TARGET_PLATFORM_ESP32)
         pattern_pos = uart_pattern_get_pos(CONFIG_AT_UART_PORT);
         if (pattern_pos >= 0) {
             size = pattern_pos;
         }
+#endif
         return size;
     } else {
         return 0;
@@ -117,7 +122,13 @@ static int32_t at_port_get_data_length (void)
 
 static bool at_port_wait_write_complete (int32_t timeout_msec)
 {
+#if defined(CONFIG_TARGET_PLATFORM_ESP32)
     if (ESP_OK == uart_wait_tx_done(CONFIG_AT_UART_PORT, timeout_msec*portTICK_PERIOD_MS)) {
+#elif defined(CONFIG_TARGET_PLATFORM_ESP8266)
+    if (ESP_OK == uart_wait_tx_done(CONFIG_AT_UART_PORT)) {
+#else
+    if (1) {
+#endif
         return true;
     }
 
@@ -127,10 +138,12 @@ static bool at_port_wait_write_complete (int32_t timeout_msec)
 static void uart_task(void *pvParameters)
 {
     uart_event_t event;
-    int pattern_pos = -1;
-    uint8_t *data = NULL;
     uint32_t data_len = 0;
     BaseType_t retry_flag = pdFALSE;
+#if defined(CONFIG_TARGET_PLATFORM_ESP32)
+    int pattern_pos = -1;
+    uint8_t *data = NULL;
+#endif
 
     for (;;) {
         //Waiting for UART event.
@@ -158,6 +171,7 @@ retry:
                     goto retry;
                 }
                 break;
+#if defined(CONFIG_TARGET_PLATFORM_ESP32)
             case UART_PATTERN_DET:
                 pattern_pos = uart_pattern_pop_pos(CONFIG_AT_UART_PORT);
                 if (pattern_pos >= 0) {
@@ -172,6 +186,7 @@ retry:
 
                 esp_at_transmit_terminal();
                 break;
+#endif
             //Others
             default:
                 break;
@@ -196,8 +211,9 @@ static void at_uart_init(void)
     int32_t rx_pin = CONFIG_AT_UART_PORT_RX_PIN;
     int32_t ctx_pin = CONFIG_AT_UART_PORT_CTS_PIN;
     int32_t rtx_pin = CONFIG_AT_UART_PORT_RTS_PIN;
+
     char* data = NULL;
-    const esp_partition_t * partition = esp_at_custom_partition_find(0x40,8,"factory_param");
+    const esp_partition_t * partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
 
     memset(&uart_nvm_config,0x0,sizeof(uart_nvm_config));
 
@@ -209,7 +225,7 @@ static void at_uart_init(void)
             data = NULL;
         }
     }
-    
+
     if (at_nvm_uart_config_get(&uart_nvm_config)) {
         if ((uart_nvm_config.baudrate >= 80) && (uart_nvm_config.baudrate <= 5000000)) {
             uart_config.baud_rate = uart_nvm_config.baudrate;
@@ -240,7 +256,6 @@ static void at_uart_init(void)
                 }
             }
         }
-
         uart_nvm_config.baudrate = uart_config.baud_rate;
         uart_nvm_config.data_bits = uart_config.data_bits;
         uart_nvm_config.flow_control = uart_config.flow_ctrl;
@@ -273,10 +288,19 @@ static void at_uart_init(void)
     }
     //Set UART parameters
     uart_param_config(CONFIG_AT_UART_PORT, &uart_config);
+
+#if defined(CONFIG_TARGET_PLATFORM_ESP32)
     //Set UART pins,(-1: default pin, no change.)
     uart_set_pin(CONFIG_AT_UART_PORT, tx_pin, rx_pin, rtx_pin, ctx_pin);
     //Install UART driver, and get the queue.
     uart_driver_install(CONFIG_AT_UART_PORT, 2048, 8192, 30,&esp_at_uart_queue,0);
+#elif defined(CONFIG_TARGET_PLATFORM_ESP8266)
+    if ((tx_pin == 15) && (rx_pin == 13)) { // swap 
+        uart_enable_swap();
+    }
+    //Install UART driver, and get the queue.
+    uart_driver_install(CONFIG_AT_UART_PORT, 2048, 8192, 30,&esp_at_uart_queue);
+#endif
     xTaskCreate(uart_task, "uTask", 2048, (void*)CONFIG_AT_UART_PORT, 1, NULL);
 }
 
@@ -412,7 +436,11 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     }
     esp_at_response_result(ESP_AT_RESULT_CODE_OK);
 
+#if defined(CONFIG_TARGET_PLATFORM_ESP32)
     uart_wait_tx_done(CONFIG_AT_UART_PORT,portMAX_DELAY);
+#elif defined(CONFIG_TARGET_PLATFORM_ESP8266)
+    uart_wait_tx_done(CONFIG_AT_UART_PORT);
+#endif
     uart_set_baudrate(CONFIG_AT_UART_PORT,uart_config.baudrate);
     uart_set_word_length(CONFIG_AT_UART_PORT,uart_config.data_bits);
     uart_set_stop_bits(CONFIG_AT_UART_PORT,uart_config.stop_bits);
@@ -498,6 +526,7 @@ static esp_at_cmd_struct at_custom_cmd[] = {
 
 void at_status_callback (esp_at_status_type status)
 {
+#if defined(CONFIG_TARGET_PLATFORM_ESP32)
     switch (status) {
     case ESP_AT_STATUS_NORMAL:
         uart_disable_pattern_det_intr(CONFIG_AT_UART_PORT);
@@ -506,6 +535,7 @@ void at_status_callback (esp_at_status_type status)
         uart_enable_pattern_det_intr(CONFIG_AT_UART_PORT, '+', 3, ((APB_CLK_FREQ*20)/1000),((APB_CLK_FREQ*20)/1000), ((APB_CLK_FREQ*20)/1000));
         break;
     }
+#endif
 }
 
 void at_pre_deepsleep_callback (void)

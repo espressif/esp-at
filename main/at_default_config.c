@@ -42,6 +42,30 @@
 
 #include "at_default_config.h"
 
+#define ESP_AT_UNKNOWN_STR      "Unknown"
+typedef struct {
+    char* module_name;
+    char* ota_token;
+    char* ota_ssl_token;
+} esp_at_module_info_t;
+
+static const esp_at_module_info_t esp_at_module_info[] = {
+#if defined(CONFIG_TARGET_PLATFORM_ESP32)
+    {"WROOM-32",        CONFIG_ESP_AT_OTA_TOKEN_WROOM32,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 },        // default:ESP32-WROOM-32
+    {"WROOM-32",        CONFIG_ESP_AT_OTA_TOKEN_WROOM32,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 },        // ESP32-WROOM-32
+    {"WROVER-32",       CONFIG_ESP_AT_OTA_TOKEN_WROVER32,      CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 },       // ESP32-WROVER
+    {"PICO-D4",         CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4, CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4},   // ESP32-PICO-D4
+    {"SOLO-1",          CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1,  CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 },   // ESP32-SOLO-1
+#endif
+
+#if defined(CONFIG_TARGET_PLATFORM_ESP8266)
+    {"WROOM-02",        CONFIG_ESP_AT_OTA_TOKEN_WROOM_02,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 },
+    {"WROOM-S2",        CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 },
+#endif
+};
+
+static uint8_t esp_at_module_id = 0x1;
+
 #if defined(CONFIG_AT_BT_COMMAND_SUPPORT) || defined(CONFIG_AT_BLE_COMMAND_SUPPORT)
 bool esp_at_get_bluetooth_controller_default_config(esp_bt_controller_config_t* config)
 {
@@ -70,25 +94,13 @@ bool esp_at_get_wifi_default_config(wifi_init_config_t* config)
 }
 #endif
 
-typedef struct {
-    char* module_name;
-    char* ota_token;
-    char* ota_ssl_token;
-} esp_at_module_info_t;
-
-static const esp_at_module_info_t esp_at_module_info[] = {
-    {"WROOM-32",        CONFIG_ESP_AT_OTA_TOKEN_WROOM32,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 },        // default:ESP32-WROOM-32
-    {"WROOM-32",        CONFIG_ESP_AT_OTA_TOKEN_WROOM32,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 },        // ESP32-WROOM-32
-    {"WROVER-32",       CONFIG_ESP_AT_OTA_TOKEN_WROVER32,      CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 },       // ESP32-WROVER
-    {"PICO-D4",         CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4, CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4},   // ESP32-PICO-D4
-    {"SOLO-1",          CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1,  CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 },   // ESP32-SOLO-1
-};
-
-static uint8_t esp_at_module_id = 0x1;
-
 const char* esp_at_get_ota_token_by_id(uint32_t id, esp_at_ota_mode_type ota_mode)
 {
-    char* ota_token = "Unknown";
+    char* ota_token = ESP_AT_UNKNOWN_STR;
+    if (sizeof(esp_at_module_info) == 0) {
+        return ota_token;
+    }
+
     if (id < sizeof(esp_at_module_info)/sizeof(esp_at_module_info[0])) {
         if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
             ota_token = esp_at_module_info[id].ota_token;
@@ -102,16 +114,20 @@ const char* esp_at_get_ota_token_by_id(uint32_t id, esp_at_ota_mode_type ota_mod
 
 const char* esp_at_get_module_name_by_id(uint32_t id)
 {
+    if (sizeof(esp_at_module_info) == 0) {
+        return ESP_AT_UNKNOWN_STR;
+    }
+
     if (id < sizeof(esp_at_module_info)/sizeof(esp_at_module_info[0])) {
         return esp_at_module_info[id].module_name;
     }
 
-    return "Unknown";
+    return ESP_AT_UNKNOWN_STR;
 }
 
 uint32_t esp_at_factory_parameter_init(void)
 {
-    const esp_partition_t * partition = esp_at_custom_partition_find(0x40,8,"factory_param");
+    const esp_partition_t * partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
     char* data = NULL;
     wifi_country_t country;
 

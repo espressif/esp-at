@@ -22,6 +22,8 @@
  *
  */
 #include <string.h>
+#include "malloc.h"
+#include "stdlib.h"
 
 #include "esp_log.h"
 #include "lwip/err.h"

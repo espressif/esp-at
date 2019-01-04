@@ -32,10 +32,13 @@ import argparse
 from ctypes import *
 
 ESP_AT_FACTORY_PARAM_SIZE = 4096
-param_type_dicts = {}
+# param_type_dicts = {}
+# param_data_lists = []
 
 def get_param_type_info(source_file, sheet_name):
     filename,filetype = os.path.splitext(source_file)
+
+    param_type_dicts = {}
     if filetype == '.xlsx':
         data = xlrd.open_workbook(source_file)
         sheet = data.sheet_by_name(sheet_name)
@@ -50,13 +53,10 @@ def get_param_type_info(source_file, sheet_name):
     elif filetype == '.csv':
         with open(source_file) as f:
             csv_data = csv.reader(f)
-            # print(list(csv_data))
             data = list(csv_data)
-            print(type(data))
-            print(data)
             headers = data[0]
 
-            for row_data in data[1:]:
+            for row_data in data[1:]: # skip header
                 dict = {}
                 for col in range(1, len(row_data)):
                     dict[headers[col]] = row_data[col]
@@ -67,59 +67,90 @@ def get_param_type_info(source_file, sheet_name):
         print("The file type is not supported.")
         exit()
 
-def generate_factory_param_bin(source_file, sheet_name, target_name, module, log_file):
+    return param_type_dicts
+
+def get_param_data_info(source_file, sheet_name):
+    filename,filetype = os.path.splitext(source_file)
+    if filetype == '.xlsx':
+        data = xlrd.open_workbook(source_file)
+        sheet = data.sheet_by_name(sheet_name)
+        headers = sheet.row_values(0)
+
+        for row in range(1,sheet.nrows):
+            dict = {}
+            for col in range(1,sheet.ncols):
+                dict[headers[col]] = sheet.row_values(row)[col]
+
+            param_data_dicts[sheet.row_values(row)[0]] = dict
+    elif filetype == '.csv':
+        with open(source_file) as f:
+            csv_data = csv.reader(f)
+            param_data_list = list(csv_data)
+
+    else:
+        print("The file type is not supported.")
+        exit()
+
+    return param_data_list
+
+def generate_factory_param_bin(data_lists, type_dicts, target_name, platform, module, log_file):
     if os.path.exists(os.path.dirname(log_file)) == True:
         if os.path.exists(log_file) == True:
             os.remove(log_file)
     else:
         os.makedirs(os.path.dirname(log_file))
 
-    filename,filetype = os.path.splitext(source_file)
-    if filetype == '.xlsx':
-        data = xlrd.open_workbook(source_file)
-        sheet = data.sheet_by_name(sheet_name)
-        nrows = sheet.nrows
-        ncols = sheet.ncols
-    elif filetype == '.csv':
-        with open(source_file) as f:
-            csv_data = csv.reader(f)
-            data = list(csv_data)
+    headers = data_lists[0]
 
-            print(data)
-            nrows = len(data)
-            ncols = len(data[0])
-    else:
-        print("The file type is not supported.")
-        exit()
+    nrows = len(data_lists)
+    ncols = len(data_lists[0])
 
     factory_param_bin = (c_ubyte * ESP_AT_FACTORY_PARAM_SIZE)()
     has_parameter_file = 0
-    for row in range(1,nrows):
+    platform_index = ncols
+    module_name_index = ncols
+
+    for i in range(ncols): # get platform index
+        if headers[i] == 'platform':
+            platform_index = i
+            break
+
+    for i in range(ncols): # get module name index
+        if headers[i] == 'module_name':
+            module_name_index = i
+            break
+
+    if platform_index == ncols:
+        print("Not found platform in header.")
+        exit()
+    
+    if module_name_index == ncols:
+        print("Not found module name in header.")
+        exit()
+
+    for row in range(1,nrows): # skip header
         memset(byref(factory_param_bin),0xFF, len(factory_param_bin))
+        data_list = data_lists[row]
 
-        if filetype == '.xlsx':
-            module_name = sheet.row_values(row)[0]
-        elif filetype == '.csv':
-            module_name = data[row][0]
+        platform_name = data_list[platform_index]
+        module_name = data_list[module_name_index]
+        if platform_name.upper() != platform:
+            continue
 
-        for col in range(1, ncols):
-            if filetype == '.xlsx':
-                dict = param_type_dicts.get(sheet.row_values(0)[col])
-            elif filetype == '.csv':
-                dict = param_type_dicts.get(data[0][col])
+        for col in range(0, ncols):
+            type_dict = type_dicts.get(headers[col])
+            if type_dict is None:
+                continue
+            
+            if int(type_dict.get('size')) <= 0:
+                continue
 
-            if int(dict.get('size')) == -1:
-                pass
+            memset(byref(factory_param_bin, int(type_dict.get('offset'))),0x0, int(type_dict.get('size')))
 
-            memset(byref(factory_param_bin, int(dict.get('offset'))),0x0, int(dict.get('size')))
-
-            if dict.get('type') == 'integer':
+            if type_dict.get('type') == 'integer':
                 value = 0
 
-                if filetype == '.xlsx':
-                    cell_data = sheet.row_values(row)[col]
-                elif filetype == '.csv':
-                    cell_data = data[row][col]
+                cell_data = data_list[col]
 
                 if type(cell_data).__name__ == 'unicode' or type(cell_data).__name__ == 'str':
                     str_value = cell_data.encode('utf-8')
@@ -133,20 +164,18 @@ def generate_factory_param_bin(source_file, sheet_name, target_name, module, log
                     value = cell_data
 
                 c_data = c_int(int(value))
-                memmove(byref(factory_param_bin, int(dict.get('offset'))), byref(c_data), int(dict.get('size')))
+                memmove(byref(factory_param_bin, int(type_dict.get('offset'))), byref(c_data), int(type_dict.get('size')))
             else:
-                if filetype == '.xlsx':
-                    cell_data = sheet.row_values(row)[col]
-                elif filetype == '.csv':
-                    cell_data = data[row][col]
+                cell_data = data_list[col]
 
                 value = cell_data.encode('utf-8')
-                c_data = create_string_buffer(value, int(dict.get('size')))
-                memmove(byref(factory_param_bin, int(dict.get('offset'))), byref(c_data), int(dict.get('size')))
+                c_data = create_string_buffer(value, int(type_dict.get('size')))
+                memmove(byref(factory_param_bin, int(type_dict.get('offset'))), byref(c_data), int(type_dict.get('size')))            
 
         target_bin_name = os.path.splitext(target_name)[0] + '_' + module_name + '.bin'
         with open(target_bin_name, 'wb+') as f:
             f.write(factory_param_bin)
+            print "generate parameter bin: platform %s, module name %s"%(platform_name.upper(),module_name)
             with open(log_file, 'a+') as log_f:
                 log_f.write("%s %s %s "%(module_name, os.path.basename(target_name), target_bin_name))
 
@@ -166,6 +195,7 @@ def generate_factory_param_bin(source_file, sheet_name, target_name, module, log
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--platform", default="esp32", help="the chip platform")
     parser.add_argument("--module", default="Wroom32", help="the module name for espressif AT")
     parser.add_argument("--define_file", default="factory_param_type.csv", help="factory parameter file name")
     parser.add_argument("--module_file", default="factory_param_data.csv", help="factory parameter file name")
@@ -184,8 +214,10 @@ def main():
         print('%s does not exist'%module_file)
         return
 
-    get_param_type_info(define_file, 'Param_Type')
-    generate_factory_param_bin(module_file, 'Param_Data', args.bin_name, args.module, args.log_file)
+    param_type_dicts = get_param_type_info(define_file, 'Param_Type')
+    param_data_lists = get_param_data_info(module_file, 'Param_Data')
+
+    generate_factory_param_bin(param_data_lists, param_type_dicts, args.bin_name, args.platform.upper(), args.module, args.log_file)
 
 if __name__ == '__main__':
     main()
