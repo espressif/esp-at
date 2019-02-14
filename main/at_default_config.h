@@ -3,7 +3,7 @@
 
 #include "at_upgrade.h"
 
-#define ESP_AT_FACTORY_PARAMETER_SIZE       32
+#define ESP_AT_FACTORY_PARAMETER_SIZE       4096
 
 const char* esp_at_get_ota_token_by_id(uint32_t id, esp_at_ota_mode_type ota_mode);
 const char* esp_at_get_module_name_by_id(uint32_t id);

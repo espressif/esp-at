@@ -19,8 +19,10 @@ The origin table is [`components/customized_partitions/raw_data/factory_param/fa
 | uart_baudrate |   12   | integer |   4  |
 | uart_tx_pin   |   16   | integer |   1  |
 | uart_rx_pin   |   17   | integer |   1  |
-| uart_ctx_pin  |   18   | integer |   1  |
+| uart_cts_pin  |   18   | integer |   1  |
 | uart_rts_pin  |   19   | integer |   1  |
+| tx_control_pin|   20   | integer |   1  |
+| rx_control_pin|   21   | integer |   1  |
 
  - version:
    - the version of factory param mangement
@@ -48,22 +50,28 @@ The origin table is [`components/customized_partitions/raw_data/factory_param/fa
    - uart baudrate
    
  - uart\_tx_pin
-   - uart  tx pin
+   - uart tx pin
    
  - uart\_rx_pin
    - uart rx pin
    
- - uart\_ctx_pin
-   - uart ctx pin
+ - uart\_cts_pin
+   - uart cts pin, it can be configured -1, if the pin is not used
    
  - uart\_rts_pin
-   - uart rts pin
+   - uart rts pin, it can be configured -1, if the pin is not used
+
+ - tx\_control\_pin 
+   - for some board, tx pin need to be separated from mcu when power on. It can be configured -1, if the pin is not used
+
+ - rx\_control\_pin 
+   - for some board, rx pin need to be separated from mcu when power on. It can be configured -1, if the pin is not used
    
 ## Factory param data 
 
 The origin table is [`components/customized_partitions/raw_data/factory_param/factory_param_data.csv`](components/customized_partitions/raw_data/factory_param/factory_param_data.csv), and the information each row contains is about one module. The factory parameter data is as the following table:
 
-| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin |
+| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_cts_pin | uart_rts_pin |
 |---|---|---|---|---|---|---| ---|---|---|---|---|---|---|
 | PLATFORM_ESP32 | WROOM-32 |0xfcfc|1|1|1|1|13|CN|115200|17|16|15|14|
 | PLATFORM_ESP32 | WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14|
@@ -76,7 +84,7 @@ The origin table is [`components/customized_partitions/raw_data/factory_param/fa
 
 if you want to add a module named as "MY_MODULE", of which country code is JP, and Wi-Fi channel is from 1 to 14, the table should be as the following one:
 
-| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin |
+| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_cts_pin | uart_rts_pin |
 |---|---|---|---|---|---|---| ---|---|---|---|---|---|---|
 | PLATFORM_ESP32 | WROOM-32 |0xfcfc|1|1|1|1|13|CN|115200|17|16|15|14|
 | PLATFORM_ESP32 | WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14|
@@ -115,14 +123,14 @@ If you want to add more parameter, for example, add a string "20181225" as the d
 | uart_baudrate |   12   | integer |   4  |
 | uart_tx_pin   |   16   | integer |   1  |
 | uart_rx_pin   |   17   | integer |   1  |
-| uart_ctx_pin  |   18   | integer |   1  |
+| uart_cts_pin  |   18   | integer |   1  |
 | uart_rts_pin  |   19   | integer |   1  |
 | date  		   |   20   | String  |   8  |
 
 Edit `factory_param_data.csv` with reference to 
 [Add customized module](#Add_Customized_Module), and add the date into the last column, as the following table,
 
-| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin | date |
+| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_cts_pin | uart_rts_pin | date |
 |---|---|---|---|---|---|---| ---|---|---|---|---|---|---|---|
 | PLATFORM_ESP32 | WROOM-32 |0xfcfc|1|1|1|1|13|CN|115200|17|16|15|14| |
 | PLATFORM_ESP32 | WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14| |
