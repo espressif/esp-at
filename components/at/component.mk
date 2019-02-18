@@ -2,7 +2,7 @@
 # Component Makefile
 #
 
-LIBS := at_core
+LIBS := $(shell echo $(patsubst PLATFORM_%,%_at_core,$(ESP_AT_PROJECT_PLATFORM)) | tr A-Z a-z)
 
 COMPONENT_ADD_LDFLAGS := -L $(COMPONENT_PATH)/lib \
                            $(addprefix -l,$(LIBS))

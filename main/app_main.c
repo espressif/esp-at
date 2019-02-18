@@ -94,7 +94,7 @@ static esp_at_cmd_struct at_update_cmd[] = {
 
 void app_main()
 {
-    const esp_partition_t * partition = esp_at_custom_partition_find(0x40,8,"factory_param");
+    const esp_partition_t * partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
     char* data = NULL;
     uint32_t module_id = 0;
 
