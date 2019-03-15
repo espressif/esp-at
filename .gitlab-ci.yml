@@ -20,6 +20,7 @@ build_at:
       - build/bootloader/*.bin
       - build/customized_partitions/*.bin
       - build/download.config
+      - build/factory/*
     expire_in: 6 mos
 
   before_script:
@@ -38,8 +39,22 @@ build_at:
 
 
   script:
-    - sed -i "/CONFIG_AT_OTA_TOKEN_KEY/c\\CONFIG_AT_OTA_TOKEN_KEY=\"$AT_OTA_KEY\"" sdkconfig.defaults
-    - sed -i "/CONFIG_AT_OTA_SSL_TOKEN_KEY/c\\CONFIG_AT_OTA_SSL_TOKEN_KEY=\"$AT_OTA_KEY\"" sdkconfig.defaults
+    - sed -i "/CONFIG_AT_OTA_TOKEN_KEY/c\\CONFIG_AT_OTA_TOKEN_KEY=\"$AT_OTA_TOKEN_WROOM32\"" sdkconfig.defaults
+    - sed -i "/CONFIG_AT_OTA_SSL_TOKEN_KEY/c\\CONFIG_AT_OTA_SSL_TOKEN_KEY=\"$AT_OTA_TOKEN_WROOM32\"" sdkconfig.defaults
+    - cd main
+    - rm -f at_config.h
+    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+    - echo -e "#endif" >> at_config.h
+    - cd -
     - make defconfig
     - make -j4
     - make print_flash_cmd | tail -n 1 > build/download.config

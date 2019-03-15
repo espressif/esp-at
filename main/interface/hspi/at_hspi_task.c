@@ -485,7 +485,7 @@ void at_task_init(void)
 
     if ((strlen(CONFIG_ESP_AT_FW_VERSION) > 0) && (strlen(CONFIG_ESP_AT_FW_VERSION) <= 128)) {
         printf("%s\r\n", CONFIG_ESP_AT_FW_VERSION);
-        strcat((char*)version, CONFIG_ESP_AT_FW_VERSION);
+        sprintf((char*)version + strlen((char*)version),"Bin version:%s(%s)\r\n", CONFIG_ESP_AT_FW_VERSION, module_name);
     }
 
 #endif
