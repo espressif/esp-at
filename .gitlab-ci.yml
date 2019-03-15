@@ -29,7 +29,13 @@ build_at:
     - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - git submodule update --init --recursive
+    - sed -i "s%https://github.com/espressif/esp-idf%${GITLAB_SSH_SERVER}/idf/esp-idf%" .gitmodules
+    - git submodule update --init
+    # (the same regular expressions are used to set these are used in 'only:' sections below
+    - source esp-idf/tools/ci/configure_ci_environment.sh
+    # fetch the submodules (& if necessary re-fetch repo) from gitlab
+    - time ./esp-idf/tools/ci/get-full-sources.sh
+
 
   script:
     - sed -i "/CONFIG_AT_OTA_TOKEN_KEY/c\\CONFIG_AT_OTA_TOKEN_KEY=\"$AT_OTA_KEY\"" sdkconfig.defaults
