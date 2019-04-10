@@ -103,6 +103,54 @@ build_esp8266_wroom_02_at:
     - make print_flash_cmd | tail -n 1 > build/download.config
     - make factory_bin
 
+build_esp8266_wroom_5V2L_at:
+  stage: build
+  image: $CI_DOCKER_REGISTRY/esp8266-ci-env
+  tags:
+    - build
+
+  variables:
+    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
+    GIT_STRATEGY: clone
+    
+  artifacts:
+    paths:
+      - build/*.bin
+      - build/*.elf
+      - build/*.map
+      - build/bootloader/*.bin
+      - build/customized_partitions/*.bin
+      - build/download.config
+      - build/factory/*
+    expire_in: 6 mos
+
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
+    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+    - git submodule update --init --recursive
+
+  script:
+    - cd main
+    - rm -f at_config.h
+    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
+    - echo -e "#endif" >> at_config.h
+    - cd -
+    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP8266
+    - export ESP_AT_MODULE_NAME=WROOM-5V2L
+    - make defconfig
+    - make -j4
+    - make print_flash_cmd | tail -n 1 > build/download.config
+    - make factory_bin
+
 push_master_to_github:
   stage: deploy
   only:
