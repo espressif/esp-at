@@ -39,7 +39,7 @@ esp_at_idf_commit := $(strip $(subst commit:,,$(shell sed -n /commit:/p $(ESP_AT
 esp_at_idf_repository := $(strip $(subst repository:,,$(shell sed -n /repository:/p $(ESP_AT_MODULE_CONFIG_DIR)/IDF_VERSION)))
 
 ifeq (,$(wildcard $(IDF_DIR)))
-$(info $(shell git clone --recursive -b $(esp_at_idf_branch) $(esp_at_idf_repository) $(IDF_PATH); \
+$(info $(shell git clone -b $(esp_at_idf_branch) $(esp_at_idf_repository) $(IDF_PATH); \
 			cd $(IDF_PATH); \
 			git checkout $(esp_at_idf_commit); \
 			git submodule update --init --recursive \

@@ -122,13 +122,7 @@ static int32_t at_port_get_data_length (void)
 
 static bool at_port_wait_write_complete (int32_t timeout_msec)
 {
-#if defined(CONFIG_TARGET_PLATFORM_ESP32)
     if (ESP_OK == uart_wait_tx_done(CONFIG_AT_UART_PORT, timeout_msec*portTICK_PERIOD_MS)) {
-#elif defined(CONFIG_TARGET_PLATFORM_ESP8266)
-    if (ESP_OK == uart_wait_tx_done(CONFIG_AT_UART_PORT)) {
-#else
-    if (1) {
-#endif
         return true;
     }
 
@@ -209,8 +203,8 @@ static void at_uart_init(void)
 
     int32_t tx_pin = CONFIG_AT_UART_PORT_TX_PIN;	
     int32_t rx_pin = CONFIG_AT_UART_PORT_RX_PIN;
-    int32_t ctx_pin = CONFIG_AT_UART_PORT_CTS_PIN;
-    int32_t rtx_pin = CONFIG_AT_UART_PORT_RTS_PIN;
+    int32_t cts_pin = CONFIG_AT_UART_PORT_CTS_PIN;
+    int32_t rts_pin = CONFIG_AT_UART_PORT_RTS_PIN;
 
     char* data = NULL;
     const esp_partition_t * partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
@@ -272,15 +266,15 @@ static void at_uart_init(void)
             }
 
             if (data[18] != 0xFF) {
-                ctx_pin = data[18];
+                cts_pin = data[18];
             } else {
-                ctx_pin = -1;
+                cts_pin = -1;
             }
 
             if (data[19] != 0xFF) {
-                rtx_pin = data[19];
+                rts_pin = data[19];
             } else {
-                rtx_pin = -1;
+                rts_pin = -1;
             }
         }
         free(data);
@@ -291,15 +285,19 @@ static void at_uart_init(void)
 
 #if defined(CONFIG_TARGET_PLATFORM_ESP32)
     //Set UART pins,(-1: default pin, no change.)
-    uart_set_pin(CONFIG_AT_UART_PORT, tx_pin, rx_pin, rtx_pin, ctx_pin);
+    uart_set_pin(CONFIG_AT_UART_PORT, tx_pin, rx_pin, rts_pin, cts_pin);
     //Install UART driver, and get the queue.
     uart_driver_install(CONFIG_AT_UART_PORT, 2048, 8192, 30,&esp_at_uart_queue,0);
-#elif defined(CONFIG_TARGET_PLATFORM_ESP8266)
-    if ((tx_pin == 15) && (rx_pin == 13)) { // swap 
-        uart_enable_swap();
-    }
+#elif defined(CONFIG_IDF_TARGET_ESP8266)
     //Install UART driver, and get the queue.
-    uart_driver_install(CONFIG_AT_UART_PORT, 2048, 8192, 30,&esp_at_uart_queue);
+    uart_driver_install(CONFIG_AT_UART_PORT, 2048, 2048, 10,&esp_at_uart_queue);
+    if ((tx_pin == 15) && (rx_pin == 13)) { // sgit wap 
+        uart_enable_swap();
+        assert((cts_pin == -1) || (cts_pin == 3));
+        assert((rts_pin == -1) || (rts_pin == 1));
+    } else {
+        assert((tx_pin == 1) && (rx_pin == 3));
+    }
 #endif
     xTaskCreate(uart_task, "uTask", 2048, (void*)CONFIG_AT_UART_PORT, 1, NULL);
 }
@@ -436,11 +434,7 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     }
     esp_at_response_result(ESP_AT_RESULT_CODE_OK);
 
-#if defined(CONFIG_TARGET_PLATFORM_ESP32)
     uart_wait_tx_done(CONFIG_AT_UART_PORT,portMAX_DELAY);
-#elif defined(CONFIG_TARGET_PLATFORM_ESP8266)
-    uart_wait_tx_done(CONFIG_AT_UART_PORT);
-#endif
     uart_set_baudrate(CONFIG_AT_UART_PORT,uart_config.baudrate);
     uart_set_word_length(CONFIG_AT_UART_PORT,uart_config.data_bits);
     uart_set_stop_bits(CONFIG_AT_UART_PORT,uart_config.stop_bits);

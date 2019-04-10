@@ -58,7 +58,7 @@ static const esp_at_module_info_t esp_at_module_info[] = {
     {"SOLO-1",          CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1,  CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 },   // ESP32-SOLO-1
 #endif
 
-#if defined(CONFIG_TARGET_PLATFORM_ESP8266)
+#if defined(CONFIG_IDF_TARGET_ESP8266)
     {"WROOM-02",        CONFIG_ESP_AT_OTA_TOKEN_WROOM_02,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 },
     {"WROOM-S2",        CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 },
 #endif
