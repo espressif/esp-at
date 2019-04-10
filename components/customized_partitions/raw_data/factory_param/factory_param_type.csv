@@ -13,3 +13,5 @@ uart_tx_pin,16,integer,1
 uart_rx_pin,17,integer,1
 uart_ctx_pin,18,integer,1
 uart_rts_pin,19,integer,1
+tx_control_pin,20,integer,1
+rx_control_pin,21,integer,1

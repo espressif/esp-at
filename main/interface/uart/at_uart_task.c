@@ -276,6 +276,16 @@ static void at_uart_init(void)
             } else {
                 rts_pin = -1;
             }
+
+            if (data[20] != 0xFF) {
+                gpio_set_direction(data[20], GPIO_MODE_OUTPUT);
+                gpio_set_level(data[20], 1);
+            }
+
+            if (data[21] != 0xFF) {
+                gpio_set_direction(data[21], GPIO_MODE_OUTPUT);
+                gpio_set_level(data[21], 1);
+            }
         }
         free(data);
         data = NULL;
