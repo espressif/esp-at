@@ -31,9 +31,6 @@ ESP_FLASH_SIZE = {"1MB": 0, "2MB": 1, "4MB": 2, "8MB": 3, "16MB": 4}
 ESP_BIN_SIZE = {"1MB": 1024*1024, "2MB": 2*1024*1024, "4MB": 4*1024*1024, "8MB": 8*1024*1024, "16MB": 16*1024*1024}
 ESP_FLASH_SPEED = {"40M": 0, "26M": 1, "20M": 2, "80M": 3}
 
-ESP_BOOTLOADER_ADDR = 0x1000
-
-
 def esp32_at_combine_bin(modlule, flash_mode, flash_size, flash_speed, build_dir, parameter_file):
     bin_data = bytearray([0xFF] * (ESP_BIN_SIZE[flash_size]))
 
@@ -52,9 +49,10 @@ def esp32_at_combine_bin(modlule, flash_mode, flash_size, flash_speed, build_dir
             for i, byte_data in enumerate(data):
                 bin_data[bin_addr + i] = byte_data
 
-    bin_data[ESP_BOOTLOADER_ADDR + 2] = ESP_FLASH_MODE[flash_mode]  # Flash mode DIO
+    bootloader_addr = bin_list['bootloader.bin']
+    bin_data[bootloader_addr + 2] = ESP_FLASH_MODE[flash_mode]  # Flash mode DIO
     # 0x20 Flash size 4MB, speed 40MHz
-    bin_data[ESP_BOOTLOADER_ADDR + 3] = (ESP_FLASH_SIZE[flash_size] << 4) | ESP_FLASH_SPEED[flash_speed]
+    bin_data[bootloader_addr + 3] = (ESP_FLASH_SIZE[flash_size] << 4) | ESP_FLASH_SPEED[flash_speed]
 
     if parameter_file != None:
         with open(parameter_file) as f:
