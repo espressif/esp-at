@@ -47,6 +47,19 @@ build_esp32_at:
     - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
     - echo -e "#endif" >> at_config.h
     - cd -
+    # replace submodule esp-idf to internal repository to speedup cloning
+    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
+    - cd esp-idf
+    - git checkout ${commit_str#*commit:}
+    # (the same regular expressions are used to set these are used in 'only:' sections below
+    - source ./tools/ci/configure_ci_environment.sh
+    # fetch the submodules (& if necessary re-fetch repo) from gitlab
+    - time ./tools/ci/get-full-sources.sh
+    - git submodule update --init
+    - cd -
+
     - make defconfig
     - make -j4
     - make print_flash_cmd | tail -n 1 > build/download.config
@@ -96,6 +109,20 @@ build_esp8266_wroom_02_at:
     - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
     - echo -e "#endif" >> at_config.h
     - cd -
+
+    # replace submodule esp-idf to internal repository to speedup cloning
+    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp8266_default/IDF_VERSION)
+    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp8266_default/IDF_VERSION)
+    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/sdk/ESP8266_RTOS_SDK.git esp-idf
+    - cd esp-idf
+    - git checkout ${commit_str#*commit:}
+    # (the same regular expressions are used to set these are used in 'only:' sections below
+    - source ./tools/ci/configure_ci_environment.sh
+    # fetch the submodules (& if necessary re-fetch repo) from gitlab
+    # - time ./tools/ci/get-full-sources.sh
+    - git submodule update --init
+    - cd -
+
     - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP8266
     - export ESP_AT_MODULE_NAME=WROOM-02
     - make defconfig
@@ -144,6 +171,19 @@ build_esp8266_wroom_5V2L_at:
     - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
     - echo -e "#endif" >> at_config.h
     - cd -
+    # replace submodule esp-idf to internal repository to speedup cloning
+    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp8266_default/IDF_VERSION)
+    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp8266_default/IDF_VERSION)
+    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/sdk/ESP8266_RTOS_SDK.git esp-idf
+    - cd esp-idf
+    - git checkout ${commit_str#*commit:}
+    # (the same regular expressions are used to set these are used in 'only:' sections below
+    - source ./tools/ci/configure_ci_environment.sh
+    # fetch the submodules (& if necessary re-fetch repo) from gitlab
+    # - time ./tools/ci/get-full-sources.sh
+    - git submodule update --init
+    - cd -
+    
     - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP8266
     - export ESP_AT_MODULE_NAME=WROOM-5V2L
     - make defconfig
