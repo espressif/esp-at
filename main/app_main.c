@@ -36,13 +36,18 @@
 
 #include "esp_at.h"
 
+#ifdef CONFIG_AT_OTA_SUPPORT
 #include "at_upgrade.h"
+#endif
+
 #include "at_interface.h"
 #include "at_default_config.h"
 
 #ifdef CONFIG_AT_ETHERNET_SUPPORT
 #include "at_eth_init.h"
 #endif
+
+#ifdef CONFIG_AT_OTA_SUPPORT
 static uint8_t at_exeCmdCipupdate(uint8_t *cmd_name)//add get station ip and ap ip
 {
 
@@ -91,6 +96,7 @@ static uint8_t at_setupCmdCipupdate(uint8_t para_num)
 static esp_at_cmd_struct at_update_cmd[] = {
     {"+CIUPDATE", NULL, NULL, at_setupCmdCipupdate, at_exeCmdCipupdate},
 };
+#endif
 
 void app_main()
 {
@@ -203,6 +209,8 @@ void app_main()
     esp_at_custom_cmd_line_terminator_set((uint8_t*)&cmd_terminator);
 #endif
 
+#ifdef CONFIG_AT_OTA_SUPPORT
     esp_at_custom_cmd_array_regist (at_update_cmd, sizeof(at_update_cmd)/sizeof(at_update_cmd[0]));
+#endif
     at_custom_init();
 }

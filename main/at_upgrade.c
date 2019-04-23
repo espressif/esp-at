@@ -40,6 +40,7 @@
 #include "esp_at.h"
 #include "at_default_config.h"
 
+#ifdef CONFIG_AT_OTA_SUPPORT
 #ifdef CONFIG_AT_OTA_SSL_SUPPORT
 #include "openssl/ssl.h"
 #endif
@@ -466,4 +467,4 @@ OTA_ERROR:
 #endif
     return ret;
 }
-
+#endif
