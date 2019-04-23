@@ -80,19 +80,20 @@ bool esp_at_get_bluetooth_controller_default_config(esp_bt_controller_config_t* 
 }
 #endif
 
-#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
-bool esp_at_get_wifi_default_config(wifi_init_config_t* config)
+bool esp_at_get_wifi_default_config(void* config)
 {
+#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
     wifi_init_config_t wifi_cfg = WIFI_INIT_CONFIG_DEFAULT();
 
     if (!config) {
         return false;
     }
 
-    memcpy(config, &wifi_cfg, sizeof(wifi_init_config_t));
+    memcpy((wifi_init_config_t *)config, &wifi_cfg, sizeof(wifi_init_config_t));
+#endif
     return true;
 }
-#endif
+
 
 const char* esp_at_get_ota_token_by_id(uint32_t id, esp_at_ota_mode_type ota_mode)
 {
@@ -129,7 +130,9 @@ uint32_t esp_at_factory_parameter_init(void)
 {
     const esp_partition_t * partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
     char* data = NULL;
+#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
     wifi_country_t country;
+#endif
 
     if (!partition) {
         printf("factory_parameter partition missed\r\n");
@@ -150,6 +153,7 @@ uint32_t esp_at_factory_parameter_init(void)
     // data[2] is version, now we donot care it, so skip it
     // get module id
     esp_at_module_id = data[3];
+#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
     // get max tx power
     if (data[4] != 0xFF) {
         esp_wifi_set_max_tx_power((int8_t)data[4]);
@@ -170,6 +174,7 @@ uint32_t esp_at_factory_parameter_init(void)
         // esp_wifi_get_max_tx_power(&country.max_tx_power);
         esp_wifi_set_country(&country);
     }
+#endif
 
     free(data);
     return 0;
