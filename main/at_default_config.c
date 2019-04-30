@@ -38,11 +38,10 @@
 #include "esp_bt.h"
 #endif
 
-#include "at_config.h"
-
 #include "at_default_config.h"
 
 #define ESP_AT_UNKNOWN_STR      "Unknown"
+
 typedef struct {
     char* module_name;
     char* ota_token;
@@ -94,7 +93,7 @@ bool esp_at_get_wifi_default_config(void* config)
     return true;
 }
 
-
+#ifdef CONFIG_AT_OTA_SUPPORT
 const char* esp_at_get_ota_token_by_id(uint32_t id, esp_at_ota_mode_type ota_mode)
 {
     char* ota_token = ESP_AT_UNKNOWN_STR;
@@ -112,6 +111,7 @@ const char* esp_at_get_ota_token_by_id(uint32_t id, esp_at_ota_mode_type ota_mod
 
     return ota_token;
 } 
+#endif
 
 const char* esp_at_get_module_name_by_id(uint32_t id)
 {
