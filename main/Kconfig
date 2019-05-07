@@ -16,6 +16,12 @@ source "$ESP_AT_PROJECT_PATH/main/interface/sdio/Kconfig"
 
 endchoice
 
+config AT_TASK_STACK_SIZE
+    int "The stack size of the AT task in AT library, which will be used when process AT command."
+    default 2048
+    range 2048 8196
+    depends on AT_ENABLE
+
 config AT_COMMAND_TERMINATOR_SUPPORT
     bool "AT command terminator support."
     default "n"
