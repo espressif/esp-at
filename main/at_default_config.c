@@ -93,6 +93,11 @@ bool esp_at_get_wifi_default_config(void* config)
     return true;
 }
 
+uint32_t esp_at_get_task_stack_size(void)
+{
+    return CONFIG_AT_TASK_STACK_SIZE;
+}
+
 #ifdef CONFIG_AT_OTA_SUPPORT
 const char* esp_at_get_ota_token_by_id(uint32_t id, esp_at_ota_mode_type ota_mode)
 {
