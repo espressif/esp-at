@@ -88,7 +88,11 @@ typedef struct {
     void (*pre_restart_callback) (void);
 } esp_at_custom_ops_struct;
 
-
+/**
+ * @AT specific callback type
+ *
+ */
+typedef void (*esp_at_port_specific_callback_t) (void);
 // error number
 /**
  * @brief module number,Now just AT module
@@ -203,7 +207,7 @@ esp_at_para_parse_result_type esp_at_get_para_as_str(int32_t para_index, uint8_t
  * @param len data length
  *
  */
-void IRAM_ATTR esp_at_port_recv_data_notify_from_isr(int32_t len);
+void esp_at_port_recv_data_notify_from_isr(int32_t len);
 
 /**
  * @brief Calling the esp_at_port_recv_data_notify to notify at module that at port received data.
@@ -238,7 +242,7 @@ void esp_at_transmit_terminal(void);
  * @param cmd_num command number
  *
  */
-bool esp_at_custom_cmd_array_regist(esp_at_cmd_struct *custom_at_cmd_array, uint32_t cmd_num);
+bool esp_at_custom_cmd_array_regist(const esp_at_cmd_struct *custom_at_cmd_array, uint32_t cmd_num);
 
 /**
  * @brief regist device operate functions set,
@@ -417,5 +421,43 @@ const esp_partition_t* esp_at_custom_partition_find(esp_partition_type_t type, e
  *
  */
 bool esp_at_eth_cmd_regist(void);
-#endif
 
+/**
+ * @brief Set AT core as specific status, it will call callback if receiving data.
+ * for example:
+ *
+ * 
+    static void wait_data_callback (void)
+    {
+        xSemaphoreGive(sync_sema);
+    }
+
+    void process_task(void* para)
+    {
+      vSemaphoreCreateBinary(sync_sema);
+      xSemaphoreTake(sync_sema,portMAX_DELAY);
+      esp_at_port_write_data((uint8_t *)">",strlen(">"));
+      esp_at_port_enter_specific(wait_data_callback);
+      while(xSemaphoreTake(sync_sema,portMAX_DELAY)) {
+          len = esp_at_port_read_data(data, data_len);
+          // TODO:
+      }
+    }
+ * @param callback
+ *
+ */
+void esp_at_port_enter_specific(esp_at_port_specific_callback_t callback);
+
+/**
+ * @brief Exit AT core as specific status.
+ * @param NONE
+ *
+ */
+void esp_at_port_exit_specific(void);
+
+/**
+ * @brief Get current AT command name.
+ * @param NONE
+ */
+const uint8_t* esp_at_get_current_cmd_name(void);
+#endif
