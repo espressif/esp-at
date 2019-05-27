@@ -3,30 +3,6 @@ config AT_BASE_ON_UART
 
 if AT_BASE_ON_UART
 menu "AT uart settings"
-config AT_UART_PORT
-    int "uart port number for AT command"
-    default 1
-
-config AT_UART_PORT_RX_PIN
-    int "uart rx pin for AT command"
-    default 16
-
-config AT_UART_PORT_TX_PIN
-    int "uart tx pin for AT command"
-    default 17
-
-config AT_UART_PORT_RTS_PIN
-    int "uart rts pin for AT command"
-    default 14
-
-config AT_UART_PORT_CTS_PIN
-    int "uart cts pin for AT command"
-    default 15
-    
-config AT_UART_DEFAULT_BAUDRATE
-    int "the uart baud rate for AT port, the range is [80, 5000000]"
-    default 115200
-    range 80 5000000
     
 config AT_UART_DEFAULT_DATABITS
     int "the uart data bits for AT port, the range is [5, 8]"
