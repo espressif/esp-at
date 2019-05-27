@@ -70,7 +70,7 @@ build_esp32_at:
 
 build_esp8266_wroom_02_at:
   stage: build
-  image: $CI_DOCKER_REGISTRY/esp8266-ci-env
+  image: $CI_DOCKER_REGISTRY/esp8266-ci-env-new
   tags:
     - build
 
@@ -132,7 +132,7 @@ build_esp8266_wroom_02_at:
 
 build_esp8266_wroom_5V2L_at:
   stage: build
-  image: $CI_DOCKER_REGISTRY/esp8266-ci-env
+  image: $CI_DOCKER_REGISTRY/esp8266-ci-env-new
   tags:
     - build
 
