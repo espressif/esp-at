@@ -228,4 +228,12 @@ config ESP_AT_FW_VERSION
       The maximum length of the string is 128 characters.
       If more than 128 characters, it will be invalid.
 
+config AT_SOCKET_MAX_CONN_NUM
+    int "AT socket maximum connection number (1-5)"
+    default 5
+    range 1 5
+    depends on AT_ENABLE
+    help
+        Config the max connection number (1-5) for socket.
+
 endmenu
