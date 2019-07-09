@@ -1,6 +1,7 @@
-# ESP32 AT Commands Set
-Here is a list of AT commands. More details are in documentation [esp32_at_instruction_set_and_examples_en.pdf](http://espressif.com/sites/default/files/documentation/esp32_at_instruction_set_and_examples_en.pdf) or 
-[esp32_at_instruction_set_and_examples_cn.pdf](http://espressif.com/sites/default/files/documentation/esp32_at_instruction_set_and_examples_cn.pdf).
+# ESP AT Commands Set
+Here is a list of AT commands. Some of the AT commands can only work on the ESP32, which will be marked as [ESP32 Only]; others can work on both the ESP8266 and ESP32.  
+<a name="Begin-8266"></a>
+P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
   
 ## 1. AT Commands List
 <a name="Basic-AT"></a>
@@ -11,15 +12,14 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+GSLP](#cmd-GSLP) : Enters Deep-sleep mode.
 * [ATE](#cmd-ATE) : Configures echoing of AT commands.
 * [AT+RESTORE](#cmd-RESTORE) : Restores the factory default settings of the module.
-* [AT+UART](#cmd-UART) : UART configuration.
 * [AT+UART_CUR](#cmd-UARTC) : Current UART configuration.
 * [AT+UART_DEF](#cmd-UARTD) : Default UART configuration, saved in flash.
 * [AT+SLEEP](#cmd-SLEEP) : Sets the sleep mode.
 * [AT+SYSRAM](#cmd-SYSRAM) : Checks the remaining space of RAM.
 * [AT+SYSMSG](#cmd-SYSMSG) : Set message format.
-* [AT+SYSFLASH](#cmd-SYSFLASH) : Set User Partitions in Flash.
-* [AT+FS](#cmd-FS) : Filesystem Operations.
 * [AT+RFPOWER](#cmd-RFPOWER) : Set RF TX Power.
+* [ESP32 Only] [AT+SYSFLASH](#cmd-SYSFLASH) : Set User Partitions in Flash.
+* [ESP32 Only] [AT+FS](#cmd-FS) : Filesystem Operations.
 
 <a name="WiFi-AT"></a>
 ### 1.2 Wi-Fi AT Commands List
@@ -41,7 +41,7 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+CWSTOPSMART](#cmd-STOPS) : Stops SmartConfig.
 * [AT+WPS](#cmd-WPS) : Enables the WPS function.
 * [AT+MDNS](#cmd-MDNS) : Configurates the MDNS function
-* [AT+CWJEAP](#cmd-JEAP) : Connects to a WPA2 Enterprise AP.
+* [ESP32 Only] [AT+CWJEAP](#cmd-JEAP) : Connects to a WPA2 Enterprise AP.
 
 <a name="TCPIP-AT"></a>
 ### 1.3 TCP/IP-Related AT Commands List
@@ -62,78 +62,78 @@ Here is a list of AT commands. More details are in documentation [esp32_at_instr
 * [AT+CIPSNTPTIME](#cmd-SNTPT) : Queries the SNTP time.
 * [AT+CIUPDATE](#cmd-UPDATE) : Updates the software through Wi-Fi.
 * [AT+CIPDINFO](#cmd-IPDINFO) : Shows remote IP and remote port with +IPD.
-* [AT+CIPSSLCCONF](#cmd-SSLCCONF) : Config SSL client.
+* [ESP32 Only] [AT+CIPSSLCCONF](#cmd-SSLCCONF) : Config SSL client.
 
 <a name="BLE-AT"></a>
-### 1.4 BLE AT Commands List
+### 1.4 [ESP32 Only] BLE AT Commands List
 [Download BLE Spec (ESP32 supports Core Version 4.2)](https://www.bluetooth.com/specifications/adopted-specifications)  
 
-* [AT+BLEINIT](#cmd-BINIT) : Bluetooth Low Energy (BLE) initialization
-* [AT+BLEADDR](#cmd-BADDR) : Sets BLE device's address
-* [AT+BLENAME](#cmd-BNAME) : Sets BLE device's name
-* [AT+BLESCANPARAM](#cmd-BSCANP) : Sets parameters of BLE scanning
-* [AT+BLESCAN](#cmd-BSCAN) : Enables BLE scanning
-* [AT+BLESCANRSPDATA](#cmd-BSCANR) : Sets BLE scan response
-* [AT+BLEADVPARAM](#cmd-BADVP) : Sets parameters of BLE advertising
-* [AT+BLEADVDATA](#cmd-BADVD) : Sets BLE advertising data
-* [AT+BLEADVSTART](#cmd-BADVSTART) : Starts BLE advertising
-* [AT+BLEADVSTOP](#cmd-BADVSTOP) : Stops BLE advertising
-* [AT+BLECONN](#cmd-BCONN) : Establishes BLE connection
-* [AT+BLEDISCONN](#cmd-BDISC) : Ends BLE connection
-* [AT+BLEDATALEN](#cmd-BDLEN) : Sets BLE data length
-* [AT+BLECFGMTU](#cmd-BMTU) : Sets BLE MTU length
-* [AT+BLEGATTSSRVCRE](#cmd-GSSRVCRE) : Generic Attributes Server (GATTS) creates services
-* [AT+BLEGATTSSRVSTART](#cmd-GSSRVSTART) : GATTS starts services
-* [AT+BLEGATTSSRV](#cmd-GSSRV) : GATTS discovers services
-* [AT+BLEGATTSCHAR](#cmd-GSCHAR) : GATTS discovers characteristics
-* [AT+BLEGATTSNTFY](#cmd-GSNTFY) : GATTS notifies of characteristics
-* [AT+BLEGATTSIND](#cmd-GSIND) : GATTS indicates characteristics
-* [AT+BLEGATTSSETATTR](#cmd-GSSETA) : GATTS sets attributes
-* [AT+BLEGATTCPRIMSRV](#cmd-GCPRIMSRV) : Generic Attributes Client (GATTC) discovers primary services
-* [AT+BLEGATTCINCLSRV](#cmd-GCINCLSRV) : GATTC discovers included services
-* [AT+BLEGATTCCHAR](#cmd-GCCHAR) : GATTC discovers characteristics
-* [AT+BLEGATTCRD](#cmd-GCRD) : GATTC reads characteristics
-* [AT+BLEGATTCWR](#cmd-GCWR) : GATTC writes characteristics
-* [AT+BLESPPCFG](#cmd-BLESPPCFG) : Sets BLE spp parameters
-* [AT+BLESPP](#cmd-BLESPP) : Enter BLE spp mode
-* [AT+BLESECPARAM](#cmd-BLESMPPAR) : Set BLE encryption parameters
-* [AT+BLEENC](#cmd-BLEENC) : Initiate BLE encryption request
-* [AT+BLEENCRSP](#cmd-BLEENCRSP) : Grant security request access.
-* [AT+BLEKEYREPLY](#cmd-BLEKEYREPLY) : Reply the key value to the peer device in the lagecy connection stage.
-* [AT+BLECONFREPLY](#cmd-BLECOFREPLY) : Reply the comfirm value to the peer device in the lagecy connection stage.
-* [AT+BLEENCDEV](#cmd-BLEENCDEV) : Query BLE encryption device list
-* [AT+BLEENCCLEAR](#cmd-BLEENCCLEAR) : Clear BLE encryption device list
+* [ESP32 Only] [AT+BLEINIT](#cmd-BINIT) : Bluetooth Low Energy (BLE) initialization
+* [ESP32 Only] [AT+BLEADDR](#cmd-BADDR) : Sets BLE device's address
+* [ESP32 Only] [AT+BLENAME](#cmd-BNAME) : Sets BLE device's name
+* [ESP32 Only] [AT+BLESCANPARAM](#cmd-BSCANP) : Sets parameters of BLE scanning
+* [ESP32 Only] [AT+BLESCAN](#cmd-BSCAN) : Enables BLE scanning
+* [ESP32 Only] [AT+BLESCANRSPDATA](#cmd-BSCANR) : Sets BLE scan response
+* [ESP32 Only] [AT+BLEADVPARAM](#cmd-BADVP) : Sets parameters of BLE advertising
+* [ESP32 Only] [AT+BLEADVDATA](#cmd-BADVD) : Sets BLE advertising data
+* [ESP32 Only] [AT+BLEADVSTART](#cmd-BADVSTART) : Starts BLE advertising
+* [ESP32 Only] [AT+BLEADVSTOP](#cmd-BADVSTOP) : Stops BLE advertising
+* [ESP32 Only] [AT+BLECONN](#cmd-BCONN) : Establishes BLE connection
+* [ESP32 Only] [AT+BLEDISCONN](#cmd-BDISC) : Ends BLE connection
+* [ESP32 Only] [AT+BLEDATALEN](#cmd-BDLEN) : Sets BLE data length
+* [ESP32 Only] [AT+BLECFGMTU](#cmd-BMTU) : Sets BLE MTU length
+* [ESP32 Only] [AT+BLEGATTSSRVCRE](#cmd-GSSRVCRE) : Generic Attributes Server (GATTS) creates services
+* [ESP32 Only] [AT+BLEGATTSSRVSTART](#cmd-GSSRVSTART) : GATTS starts services
+* [ESP32 Only] [AT+BLEGATTSSRV](#cmd-GSSRV) : GATTS discovers services
+* [ESP32 Only] [AT+BLEGATTSCHAR](#cmd-GSCHAR) : GATTS discovers characteristics
+* [ESP32 Only] [AT+BLEGATTSNTFY](#cmd-GSNTFY) : GATTS notifies of characteristics
+* [ESP32 Only] [AT+BLEGATTSIND](#cmd-GSIND) : GATTS indicates characteristics
+* [ESP32 Only] [AT+BLEGATTSSETATTR](#cmd-GSSETA) : GATTS sets attributes
+* [ESP32 Only] [AT+BLEGATTCPRIMSRV](#cmd-GCPRIMSRV) : Generic Attributes Client (GATTC) discovers primary services
+* [ESP32 Only] [AT+BLEGATTCINCLSRV](#cmd-GCINCLSRV) : GATTC discovers included services
+* [ESP32 Only] [AT+BLEGATTCCHAR](#cmd-GCCHAR) : GATTC discovers characteristics
+* [ESP32 Only] [AT+BLEGATTCRD](#cmd-GCRD) : GATTC reads characteristics
+* [ESP32 Only] [AT+BLEGATTCWR](#cmd-GCWR) : GATTC writes characteristics
+* [ESP32 Only] [AT+BLESPPCFG](#cmd-BLESPPCFG) : Sets BLE spp parameters
+* [ESP32 Only] [AT+BLESPP](#cmd-BLESPP) : Enter BLE spp mode
+* [ESP32 Only] [AT+BLESECPARAM](#cmd-BLESMPPAR) : Set BLE encryption parameters
+* [ESP32 Only] [AT+BLEENC](#cmd-BLEENC) : Initiate BLE encryption request
+* [ESP32 Only] [AT+BLEENCRSP](#cmd-BLEENCRSP) : Grant security request access.
+* [ESP32 Only] [AT+BLEKEYREPLY](#cmd-BLEKEYREPLY) : Reply the key value to the peer device in the lagecy connection stage.
+* [ESP32 Only] [AT+BLECONFREPLY](#cmd-BLECOFREPLY) : Reply the comfirm value to the peer device in the lagecy connection stage.
+* [ESP32 Only] [AT+BLEENCDEV](#cmd-BLEENCDEV) : Query BLE encryption device list
+* [ESP32 Only] [AT+BLEENCCLEAR](#cmd-BLEENCCLEAR) : Clear BLE encryption device list
 
-* [BLE AT Examples](#exam-BLE)
+* [ESP32 Only] [BLE AT Examples](#exam-BLE)
 
 <a name="ETH-AT"></a>
-### 1.5 ETH AT Commands List
-* [AT+CIPETHMAC](#cmd-ETHMAC) : Sets the MAC address of ESP32 Ethernet.
-* [AT+CIPETH](#cmd-CIPETH) : Sets the IP address of ESP32 Ethernet.
+### 1.5 [ESP32 Only] ETH AT Commands List
+* [ESP32 Only] [AT+CIPETHMAC](#cmd-ETHMAC) : Sets the MAC address of ESP32 Ethernet.
+* [ESP32 Only] [AT+CIPETH](#cmd-CIPETH) : Sets the IP address of ESP32 Ethernet.
 
 <a name="BT-AT"></a>
-### 1.6 BT AT Commands List
+### 1.6 [ESP32 Only] BT AT Commands List
 [Download BlueTooth Spec (ESP32 supports Core Version 4.2)](https://www.bluetooth.com/specifications/adopted-specifications)  
 
-* [AT+BTINIT](#cmd-BTINIT) : Classic Bluetooth initialization
-* [AT+BTNAME](#cmd-BTNAME) : Sets BT device's name
-* [AT+BTSCANMODE](#cmd-BTSCANMODE) : Sets BT SCAN mode
-* [AT+BTSTARTDISC](#cmd-BTDISC) : Start BT discovery
-* [AT+BTSPPINIT](#cmd-BTSPPINIT) : Classic Bluetooth SPP profile initialization
-* [AT+BTSPPCONN](#cmd-BTSPPCONN) : Establishes SPP connection
-* [AT+BTSPPDISCONN](#cmd-BTSPPDISCONN) : Ends SPP connection
-* [AT+BTSPPSTART](#cmd-BTSPPSTART) : Start Classic Bluetooth SPP profile
-* [AT+BTSPPSEND](#cmd-BTSPPSEND) : Sends data to remote bt spp device
-* [AT+BTA2DPINIT](#cmd-BTA2DPINIT) : Classic Bluetooth A2DP profile initialization
-* [AT+BTA2DPCONN](#cmd-BTA2DPCONN) : Establishes A2DP connection
-* [AT+BTA2DPDISCONN](#cmd-BTA2DPDISCONN) : Ends A2DP connection
-* [AT+BTA2DPSEND](#cmd-BTA2DPSEND) :Sends data to remote bt a2dp sink
-* [AT+BTSECPARAM](#cmd-BTSECPARAM) :Set and query the Classic Bluetooth security parameters
-* [AT+BTKEYREPLY](#cmd-BTKEYREPLY) :Input the Simple Pair Key
-* [AT+BTPINREPLY](#cmd-BTPINREPLY) :Input the Legacy Pair PIN Code
-* [AT+BTSECCFM](#cmd-BTSECCFM): Reply the confirm value to the peer device in the legacy connection stage
-* [AT+BTENCDEV](#cmd-BTENCDEV) : Query BT encryption device list
-* [AT+BTENCCLEAR](#cmd-BTENCCLEAR) : Clear BT encryption device list
+* [ESP32 Only] [AT+BTINIT](#cmd-BTINIT) : Classic Bluetooth initialization
+* [ESP32 Only] [AT+BTNAME](#cmd-BTNAME) : Sets BT device's name
+* [ESP32 Only] [AT+BTSCANMODE](#cmd-BTSCANMODE) : Sets BT SCAN mode
+* [ESP32 Only] [AT+BTSTARTDISC](#cmd-BTDISC) : Start BT discovery
+* [ESP32 Only] [AT+BTSPPINIT](#cmd-BTSPPINIT) : Classic Bluetooth SPP profile initialization
+* [ESP32 Only] [AT+BTSPPCONN](#cmd-BTSPPCONN) : Establishes SPP connection
+* [ESP32 Only] [AT+BTSPPDISCONN](#cmd-BTSPPDISCONN) : Ends SPP connection
+* [ESP32 Only] [AT+BTSPPSTART](#cmd-BTSPPSTART) : Start Classic Bluetooth SPP profile
+* [ESP32 Only] [AT+BTSPPSEND](#cmd-BTSPPSEND) : Sends data to remote bt spp device
+* [ESP32 Only] [AT+BTA2DPINIT](#cmd-BTA2DPINIT) : Classic Bluetooth A2DP profile initialization
+* [ESP32 Only] [AT+BTA2DPCONN](#cmd-BTA2DPCONN) : Establishes A2DP connection
+* [ESP32 Only] [AT+BTA2DPDISCONN](#cmd-BTA2DPDISCONN) : Ends A2DP connection
+* [ESP32 Only] [AT+BTA2DPSEND](#cmd-BTA2DPSEND) :Sends data to remote bt a2dp sink
+* [ESP32 Only] [AT+BTSECPARAM](#cmd-BTSECPARAM) :Set and query the Classic Bluetooth security parameters
+* [ESP32 Only] [AT+BTKEYREPLY](#cmd-BTKEYREPLY) :Input the Simple Pair Key
+* [ESP32 Only] [AT+BTPINREPLY](#cmd-BTPINREPLY) :Input the Legacy Pair PIN Code
+* [ESP32 Only] [AT+BTSECCFM](#cmd-BTSECCFM): Reply the confirm value to the peer device in the legacy connection stage
+* [ESP32 Only] [AT+BTENCDEV](#cmd-BTENCDEV) : Query BT encryption device list
+* [ESP32 Only] [AT+BTENCCLEAR](#cmd-BTENCCLEAR) : Clear BT encryption device list
 
 ## 2. Basic AT Commands 
 <a name="cmd-AT"></a>
@@ -213,63 +213,8 @@ Response:
 * The execution of this command will reset all parameters saved in flash, and restore the factory default settings of the module. 
 * The chip will be restarted when this command is executed.
 
-<a name="cmd-UART"></a>
-### 2.7 [AT+UART](#Basic-AT)—UART Configuration
-[@deprecated] This command is deprecated. Please use AT+UART\_CUR or AT+UART\_DEF instead.  
-Query Command:  
-
-    AT+UART?
-Response:  
-
-    +UART:<baudrate>,<databits>,<stopbits>,<parity>,<flow control>
-    
-    OK
-***Note:***  
-
-* Command `AT+UART?` will return the actual value of UART configuration parameters, which may have allowable errors compared with the set value because of the clock division.   
-
-Set Command:  
-
-    AT+UART=<baudrate>,<databits>,<stopbits>,<parity>,<flow control>
-Response:  
-
-    OK
-Parameters:  
-
-- **\<baudrate>**: UART baud rate
-- **\<databits>**: data bits  
-    -   5: 5-bit data
-    -   6: 6-bit data
-    -   7: 7-bit data
-    -   8: 8-bit data
-- **\<stopbits>**: stop bits
-    -   1: 1-bit stop bit
-    -   2: 1.5-bit stop bit
-    -   3: 2-bit stop bit
-- **\<parity>**: parity bit
-    -   0: None
-    -   1: Odd
-    -   2: Even
-- **\<flow control>**: flow control
-    -   0: flow control is not enabled
-    -   1: enable RTS
-    -   2: enable CTS
-    -   3: enable both RTS and CTS  
-
-***Notes:***
-
-* The configuration changes will be saved in the NVS area, and will still be valid when the chip is powered on again.
-* The use of flow control requires the support of hardware:
-    * IO15 is UART0 CTS
-    * IO14 is UART0 RTS
-* The range of baud rates supported: 80 ~ 5000000.
-
-Example:    
-
-    AT+UART=115200,8,1,0,3  
-
 <a name="cmd-UARTC"></a>
-### 2.8 [AT+UART_CUR](#Basic-AT)—Current UART Configuration, Not Saved in Flash
+### 2.7 [AT+UART_CUR](#Basic-AT)—Current UART Configuration, Not Saved in Flash
 Query Command:  
 
     AT+UART_CUR?
@@ -323,7 +268,7 @@ Example:
     AT+UART_CUR=115200,8,1,0,3  
 
 <a name="cmd-UARTD"></a>
-### 2.9 [AT+UART_DEF](#Basic-AT)—Default UART Configuration, Saved in Flash
+### 2.8 [AT+UART_DEF](#Basic-AT)—Default UART Configuration, Saved in Flash
 Query Command:  
 
     AT+UART_DEF?
@@ -373,7 +318,7 @@ Example:
     AT+UART_DEF=115200,8,1,0,3  
 
 <a name="cmd-SLEEP"></a>
-### 2.10 [AT+SLEEP](#Basic-AT)—Sets the Sleep Mode
+### 2.9 [AT+SLEEP](#Basic-AT)—Sets the Sleep Mode
 Set Command:  
 
     AT+SLEEP=<sleep mode>
@@ -391,7 +336,7 @@ Example:
     AT+SLEEP=0
 
 <a name="cmd-SYSRAM"></a>
-### 2.11 [AT+SYSRAM](#Basic-AT)—Checks the Remaining Space of RAM  
+### 2.10 [AT+SYSRAM](#Basic-AT)—Checks the Remaining Space of RAM  
 Query Command:
 
     AT+SYSRAM?  
@@ -410,7 +355,7 @@ Example:
     OK
 
 <a name="cmd-SYSMSG"></a>
-### 2.12 [AT+SYSMSG](#Basic-AT)—Control to use new or old information
+### 2.11 [AT+SYSMSG](#Basic-AT)—Control to use new or old information
 Query Command:
 
     AT+SYSMSG?
@@ -452,7 +397,7 @@ Example:
     AT+SYSMSG=2
 
 <a name="cmd-SYSFLASH"></a>
-### 2.12 [AT+SYSFLASH](#Basic-AT)—Set User Partitions in Flash  
+### 2.12 [ESP32 Only] [AT+SYSFLASH](#Basic-AT)—Set User Partitions in Flash  
 Query Command:
 
     AT+SYSFLASH?
@@ -503,7 +448,7 @@ Example:
     AT+SYSFLASH=0,"ble_data",4096,8192
 
 <a name="cmd-FS"></a>
-### 2.13 [AT+FS](#Basic-AT)—Filesystem Operations  
+### 2.13 [ESP32 Only] [AT+FS](#Basic-AT)—Filesystem Operations  
 Set Command:
 
     AT+FS=<type>,<operation>,<filename>,<offset>,<length>
@@ -540,7 +485,7 @@ Example:
     AT+FS=0,4,"."
 
 <a name="cmd-RFPOWER"></a>
-### 2.13 [AT+RFPOWER](#Basic-AT)-Set RF TX Power
+### 2.14 [AT+RFPOWER](#Basic-AT)-Set RF TX Power
 Query Command: 
 
     AT+RFPOWER?
@@ -681,8 +626,8 @@ Response:
 Parameters:
 
 - **\<sort_enable>**: determines whether the result of command AT+CWLAP will be listed according to RSSI: 
-    - 0: the result is ordered according to RSSI.
-    - 1: the result is not ordered according to RSSI.
+    - 0: the result is not ordered according to RSSI.
+    - 1: the result is ordered according to RSSI.
 - **\<mask>**: determines the parameters shown in the result of `AT+CWLAP`; 
     - 0 means not showing the parameter corresponding to the bit, and 1 means showing it.
     - bit 0: determines whether \<ecn> will be shown in the result of `AT+CWLAP`.
@@ -1302,7 +1247,7 @@ Example:
 
     AT+CIPSTART="UDP","192.168.101.110",1000,1002,2
     AT+CIPSTART="UDP","192.168.101.110",1000,,,"192.168.101.100"
-#### 4.3.3 Establish SSL Connection
+#### [ESP32 Only] 4.3.3 Establish SSL Connection
 Set Command:
 
     AT+CIPSTART=[<link ID>,]<type>,<remote IP>,<remote port>[,<TCP keep alive>][,<local IP>]    
@@ -1481,8 +1426,8 @@ Parameters:
     - 0: delete server.
     - 1: create server.
 - **\<port>**: port number; 333 by default.
-- **\[\<SSL>]**(optional parameter): string "SSL", to set a SSL server
-- **\[\<SSL CA enable>]**(optional parameter):
+- **\[ESP32 Only] [\<SSL>]**(optional parameter): string "SSL", to set a SSL server
+- **\[ESP32 Only] [\<SSL CA enable>]**(optional parameter):
     - 0: disable CA.
     - 1: enable CA.
 
@@ -1773,7 +1718,7 @@ Parameters:
 * The command is valid in normal command mode. When the module receives network data, it will send the data through the serial port using the `+IPD` command.
 
 <a name="cmd-SSLCCONF"></a>
-### 4.17 [AT+CIPSSLCCONF](#TCPIP-AT)—Config SSL client
+### 4.19 [ESP32 Only] [AT+CIPSSLCCONF](#TCPIP-AT)—Config SSL client
 Query Command:
 
     AT+CIPSSLCCONF?
@@ -1807,9 +1752,9 @@ Parameters:
 * Call this command before establish SSL connection if you want configuration take effect immediately.
 * The configuration changes will be saved in the NVS area. If you use AT+SAVETRANSLINK to set SSL passthrough mode, ESP32 SSL will be connected based on this configuration after power on.
 
-## 5. BLE-Related AT Commands
+## 5. [ESP32 Only] BLE-Related AT Commands
 <a name="cmd-BINIT"></a>
-### 5.1 [AT+BLEINIT](#BLE-AT)—BLE Initialization
+### 5.1 [ESP32 Only] [AT+BLEINIT](#BLE-AT)—BLE Initialization
 Query Command:
 
     AT+BLEINIT?
@@ -1850,7 +1795,7 @@ Example:
     AT+BLEINIT=1    
 
 <a name="cmd-BADDR"></a>
-### 5.2 [AT+BLEADDR](#BLE-AT)—Sets BLE Device's Address
+### 5.2 [ESP32 Only] [AT+BLEADDR](#BLE-AT)—Sets BLE Device's Address
 Query Command:
 
     AT+BLEADDR?
@@ -1886,7 +1831,7 @@ Example:
     AT+BLEADDR=0                        // Set Public Device Address
 
 <a name="cmd-BNAME"></a>
-### 5.3 [AT+BLENAME](#BLE-AT)—Sets BLE Device's Name
+### 5.3 [ESP32 Only] [AT+BLENAME](#BLE-AT)—Sets BLE Device's Name
 Query Command:
 
     AT+BLENAME?
@@ -1915,7 +1860,7 @@ Example:
     AT+BLENAME="esp_demo"   
 
 <a name="cmd-BSCANP"></a>
-### 5.4 [AT+BLESCANPARAM](#BLE-AT)—Sets Parameters of BLE Scanning
+### 5.4 [ESP32 Only] [AT+BLESCANPARAM](#BLE-AT)—Sets Parameters of BLE Scanning
 Query Command:
 
     AT+BLESCANPARAM?
@@ -1959,7 +1904,7 @@ Example:
     AT+BLESCANPARAM=0,0,0,100,50
 
 <a name="cmd-BSCAN"></a>
-### 5.5 [AT+BLESCAN](#BLE-AT)—Enables BLE Scanning
+### 5.5 [ESP32 Only] [AT+BLESCAN](#BLE-AT)—Enables BLE Scanning
 Set Command: 
 
     AT+BLESCAN=<enable>[,<interval>]
@@ -1990,7 +1935,7 @@ Example:
     AT+BLESCAN=0     // stop scanning
 
 <a name="cmd-BSCANR"></a>
-### 5.6 [AT+BLESCANRSPDATA](#BLE-AT)—Sets BLE Scan Response
+### 5.6 [ESP32 Only] [AT+BLESCANRSPDATA](#BLE-AT)—Sets BLE Scan Response
 Set Command: 
 
     AT+BLESCANRSPDATA=<scan_rsp_data>
@@ -2009,7 +1954,7 @@ Example:
     AT+BLESCANRSPDATA="1122334455"
 
 <a name="cmd-BADVP"></a>
-### 5.7 [AT+BLEADVPARAM](#BLE-AT)—Sets Parameters of Advertising
+### 5.7 [ESP32 Only] [AT+BLEADVPARAM](#BLE-AT)—Sets Parameters of Advertising
 Query Command: 
 
     AT+BLEADVPARAM?
@@ -2057,7 +2002,7 @@ Example:
     AT+BLEADVPARAM=50,50,0,0,4,0,0,"12:34:45:78:66:88"
 
 <a name="cmd-BADVD"></a>
-### 5.8 [AT+BLEADVDATA](#BLE-AT)—Sets Advertising Data
+### 5.8 [ESP32 Only] [AT+BLEADVDATA](#BLE-AT)—Sets Advertising Data
 Set Command: 
 
     AT+BLEADVDATA=<adv_data>
@@ -2076,7 +2021,7 @@ Example:
     AT+BLEADVDATA="1122334455"
 
 <a name="cmd-BADVSTART"></a>
-### 5.9 [AT+BLEADVSTART](#BLE-AT)—Starts Advertising
+### 5.9 [ESP32 Only] [AT+BLEADVSTART](#BLE-AT)—Starts Advertising
 Execute Command:
 
     AT+BLEADVSTART
@@ -2095,7 +2040,7 @@ Example:
     AT+BLEADVSTART
 
 <a name="cmd-BADVSTOP"></a>
-### 5.10 [AT+BLEADVSTOP](#BLE-AT)—Stops Advertising
+### 5.10 [ESP32 Only] [AT+BLEADVSTOP](#BLE-AT)—Stops Advertising
 Execute Command: 
 
     AT+BLEADVSTOP
@@ -2114,7 +2059,7 @@ Example:
     AT+BLEADVSTOP
 
 <a name="cmd-BCONN"></a>
-### 5.11 [AT+BLECONN](#BLE-AT)—Establishes BLE connection
+### 5.11 [ESP32 Only] [AT+BLECONN](#BLE-AT)—Establishes BLE connection
 Query Command: 
 
     AT+BLECONN?
@@ -2148,7 +2093,7 @@ Example:
     AT+BLECONN=0,"24:0a:c4:09:34:23",0,10
 
 <a name="cmd-BDISC"></a>
-### 5.12 [AT+BLEDISCONN](#BLE-AT)—Ends BLE connection
+### 5.12 [ESP32 Only] [AT+BLEDISCONN](#BLE-AT)—Ends BLE connection
 Execute Command: 
 
     AT+BLEDISCONN=<conn_index>
@@ -2173,7 +2118,7 @@ Example:
     AT+BLEDISCONN=0
 
 <a name="cmd-BDLEN"></a>
-### 5.13 [AT+BLEDATALEN](#BLE-AT)—Sets BLE Data Packet Length
+### 5.13 [ESP32 Only] [AT+BLEDATALEN](#BLE-AT)—Sets BLE Data Packet Length
 Set Command: 
 
     AT+BLEDATALEN=<conn_index>,<pkt_data_len>
@@ -2197,7 +2142,7 @@ Example:
     AT+BLEDATALEN=0,30
 
 <a name="cmd-BMTU"></a>
-### 5.14 [AT+BLECFGMTU](#BLE-AT)—Sets BLE MTU Length
+### 5.14 [ESP32 Only] [AT+BLECFGMTU](#BLE-AT)—Sets BLE MTU Length
 Query Command: 
 
     AT+BLECFGMTU?
@@ -2230,7 +2175,7 @@ Example:
     AT+BLECFGMTU=0,300
 
 <a name="cmd-GSSRVCRE"></a>
-### 5.15 [AT+BLEGATTSSRVCRE](#BLE-AT)—GATTS Creates Services
+### 5.15 [ESP32 Only] [AT+BLEGATTSSRVCRE](#BLE-AT)—GATTS Creates Services
 Execute Command: 
 
     AT+BLEGATTSSRVCRE
@@ -2252,7 +2197,7 @@ Example:
     AT+BLEGATTSSRVCRE
 
 <a name="cmd-GSSRVSTART"></a>
-### 5.16 [AT+BLEGATTSSRVSTART](#BLE-AT)—GATTS Starts Services
+### 5.16 [ESP32 Only] [AT+BLEGATTSSRVSTART](#BLE-AT)—GATTS Starts Services
 Execute Command: 
 
     AT+BLEGATTSSTART
@@ -2275,7 +2220,7 @@ Example:
     AT+BLEGATTSSRVSTART
 
 <a name="cmd-GSSRV"></a>
-### 5.17 [AT+BLEGATTSSRV](#BLE-AT)—GATTS Discovers Services
+### 5.17 [ESP32 Only] [AT+BLEGATTSSRV](#BLE-AT)—GATTS Discovers Services
 Query Command: 
 
     AT+BLEGATTSSRV?
@@ -2302,7 +2247,7 @@ Example:
     AT+BLEGATTSSRV?
 
 <a name="cmd-GSCHAR"></a>
-### 5.18 [AT+BLEGATTSCHAR](#BLE-AT)—GATTS Discovers Characteristics
+### 5.18 [ESP32 Only] [AT+BLEGATTSCHAR](#BLE-AT)—GATTS Discovers Characteristics
 Query Command: 
 
     AT+BLEGATTSCHAR?
@@ -2331,7 +2276,7 @@ Example:
     AT+BLEGATTSCHAR?
 
 <a name="cmd-GSNTFY"></a>
-### 5.19 [AT+BLEGATTSNTFY](#BLE-AT)—GATTS Notifies of Characteristics
+### 5.19 [ESP32 Only] [AT+BLEGATTSNTFY](#BLE-AT)—GATTS Notifies of Characteristics
 Set Command: 
 
     AT+BLEGATTSNTFY=<conn_index>,<srv_index>,<char_index>,<length>
@@ -2360,7 +2305,7 @@ Example:
     // after > shows, inputs 4 bytes of data, such as "1234"; then, the data will be transmitted automatically
 
 <a name="cmd-GSIND"></a>
-### 5.20 [AT+BLEGATTSIND](#BLE-AT)—GATTS Indicates Characteristics
+### 5.20 [ESP32 Only] [AT+BLEGATTSIND](#BLE-AT)—GATTS Indicates Characteristics
 Set Command: 
 
     AT+BLEGATTSIND=<conn_index>,<srv_index>,<char_index>,<length>
@@ -2389,7 +2334,7 @@ Example:
     // after > shows, inputs 4 bytes of data, such as "1234"; then, the data will be transmitted automatically
 
 <a name="cmd-GSSETA"></a>
-### 5.21 [AT+BLEGATTSSETATTR](#BLE-AT)—GATTS Sets Characteristic
+### 5.21 [ESP32 Only] [AT+BLEGATTSSETATTR](#BLE-AT)—GATTS Sets Characteristic
 Set Command: 
 
     AT+BLEGATTSSETATTR=<srv_index>,<char_index>[,<desc_index>],<length>
@@ -2422,7 +2367,7 @@ Example:
     // after > shows, inputs 4 bytes of data, such as "1234"; then, the setting starts
 
 <a name="cmd-GCPRIMSRV"></a>
-### 5.22 [AT+BLEGATTCPRIMSRV](#BLE-AT)—GATTC Discovers Primary Services
+### 5.22 [ESP32 Only] [AT+BLEGATTCPRIMSRV](#BLE-AT)—GATTC Discovers Primary Services
 Query Command: 
 
     AT+BLEGATTCPRIMSRV=<conn_index>
@@ -2451,7 +2396,7 @@ Example:
     AT+BLEGATTCPRIMSRV=0
 
 <a name="cmd-GCINCLSRV"></a>
-### 5.23 [AT+BLEGATTCINCLSRV](#BLE-AT)—GATTC Discovers Included Services
+### 5.23 [ESP32 Only] [AT+BLEGATTCINCLSRV](#BLE-AT)—GATTC Discovers Included Services
 Set Command: 
 
     AT+BLEGATTCINCLSRV=<conn_index>,<srv_index>
@@ -2485,7 +2430,7 @@ Example:
     AT+BLEGATTCINCLSRV=0,1  // set a specific index according to the result of the previous command
 
 <a name="cmd-GCCHAR"></a>
-### 5.24 [AT+BLEGATTCCHAR](#BLE-AT)—GATTC Discovers Characteristics
+### 5.24 [ESP32 Only] [AT+BLEGATTCCHAR](#BLE-AT)—GATTC Discovers Characteristics
 Set Command: 
 
     AT+BLEGATTCCHAR=<conn_index>,<srv_index>
@@ -2519,7 +2464,7 @@ Example:
     AT+BLEGATTCCHAR=0,1 // set a specific index according to the result of the previous command
 
 <a name="cmd-GCRD"></a>
-### 5.25 [AT+BLEGATTCRD](#BLE-AT)—GATTC Reads a Characteristic
+### 5.25 [ESP32 Only] [AT+BLEGATTCRD](#BLE-AT)—GATTC Reads a Characteristic
 Set Command: 
 
     AT+BLEGATTCRD=<conn_index>,<srv_index>,<char_index>[,<desc_index>]
@@ -2557,7 +2502,7 @@ Example：
     AT+BLEGATTCRD=0,3,2,1
 
 <a name="cmd-GCWR"></a>
-### 5.26 [AT+BLEGATTCWR](#BLE-AT)—GATTC Writes Characteristic
+### 5.26 [ESP32 Only] [AT+BLEGATTCWR](#BLE-AT)—GATTC Writes Characteristic
 Set Command: 
 
     AT+BLEGATTCWR=<conn_index>,<srv_index>,<char_index>[,<desc_index>],<length>
@@ -2593,7 +2538,7 @@ Example：
     // after > shows, inputs 6 bytes of data, such as "123456"; then, the writing starts
 
 <a name="cmd-BLESPP"></a>
-### 5.27 [AT+BLESPPCFG](#BLE-AT)—Sets BLE spp parameters
+### 5.27 [ESP32 Only] [AT+BLESPPCFG](#BLE-AT)—Sets BLE spp parameters
 Query Command:
 
     AT+BLESPPCFG?
@@ -2629,7 +2574,7 @@ Example:
     AT+BLESPPCFG?           // query ble spp parameters 
 
 <a name="cmd-BLESPP"></a>
-### 5.28 [AT+BLESPP](#BLE-AT)—Enter BLE spp mode
+### 5.28 [ESP32 Only] [AT+BLESPP](#BLE-AT)—Enter BLE spp mode
 Execute Command: 
 
     AT+BLESPP
@@ -2648,7 +2593,7 @@ Example:
     AT+BLESPP   // enter ble spp mode
 
 <a name="cmd-BLESMPPAR"></a>
-### 5.29 [AT+BLESECPARAM](#BLE-AT)—Set BLE encryption parameters
+### 5.29 [ESP32 Only] [AT+BLESECPARAM](#BLE-AT)—Set BLE encryption parameters
 Query Command:
 
     AT+BLESECPARAM?
@@ -2700,7 +2645,7 @@ Example:
     AT+BLESECPARAM=1,4,16,3,3,0
 
 <a name="cmd-BLEENC"></a>
-### 5.30 [AT+BLEENC](#BLE-AT)—Initiate BLE encryption request
+### 5.30 [ESP32 Only] [AT+BLEENC](#BLE-AT)—Initiate BLE encryption request
 Set Command:
 
     AT+BLEENC=<conn_index>,<sec_act>
@@ -2727,7 +2672,7 @@ Example:
     AT+BLEENC=0,3
 
 <a name="cmd-BLEENCRSP"></a>
-### 5.31 [AT+BLEENCRSP](#BLE-AT)—Grant security request access
+### 5.31 [ESP32 Only] [AT+BLEENCRSP](#BLE-AT)—Grant security request access
 Set Command:
 
     AT+BLEENCRSP=<conn_index>,<accept>
@@ -2747,7 +2692,7 @@ Example:
     AT+BLEENCRSP=0,1
 
 <a name="cmd-BLEKEYREPLY"></a>
-### 5.32 [AT+BLEKEYREPLY](#BLE-AT)—Reply the key value to the peer device in the lagecy connection stage
+### 5.32 [ESP32 Only] [AT+BLEKEYREPLY](#BLE-AT)—Reply the key value to the peer device in the lagecy connection stage
 Set Command:
 
     AT+BLEKEYREPLY=<conn_index>,<key>
@@ -2765,7 +2710,7 @@ Example:
     AT+BLEKEYREPLY=0,649784
 
 <a name="cmd-BLECONFREPLY"></a>
-### 5.33 [AT+BLECONFREPLY](#BLE-AT)—Reply the comfirm value to the peer device in the lagecy connection stage
+### 5.33 [ESP32 Only] [AT+BLECONFREPLY](#BLE-AT)—Reply the comfirm value to the peer device in the lagecy connection stage
 Set Command:
 
     AT+BLECONFREPLY=<conn_index>,<confirm>
@@ -2785,7 +2730,7 @@ Example:
     AT+BLECONFREPLY=0,1
 
 <a name="cmd-BLEENCDEV"></a>
-### 5.34 [AT+BLEENCDEV](#BLE-AT)—Query BLE encryption device list
+### 5.34 [ESP32 Only] [AT+BLEENCDEV](#BLE-AT)—Query BLE encryption device list
 Query Command:
 
     AT+BLEENCDEV?
@@ -2804,7 +2749,7 @@ Example:
     AT+BLEENCDEV?
 
 <a name="cmd-BLEENCCLEAR"></a>
-### 5.35 [AT+BLEENCCLEAR](#BLE-AT)—Clear BLE encryption device list
+### 5.35 [ESP32 Only] [AT+BLEENCCLEAR](#BLE-AT)—Clear BLE encryption device list
 Set Command:
 
     AT+BLEENCCLEAR=<enc_dev_index>
@@ -2828,7 +2773,7 @@ Example:
     AT+BLEENCCLEAR
 
 <a name="exam-BLE"></a>
-## 6. [BLE AT Example](#BLE-AT)  
+## 6. [ESP32 Only] [BLE AT Example](#BLE-AT)  
 Below is an example of using two ESP32 modules, one as a BLE server (hereafter named "ESP32 Server"), the other one as a BLE client (hereafter named "ESP32 Client"). The example shows how to use BLE functions with AT commands.  
 ***Notice:***  
 
@@ -3027,9 +2972,9 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
     * If the ESP32 Client receives the indication, it will prompt message `+INDICATE:<conn_index>,<srv_index>,<char_index>,<len>,<value>`
     * For the same service, the \<srv\_index> on the ESP32 Client side equals the \<srv\_index> on the ESP32 Server side + 2.
 
-## 7 ETH AT Commands
+## 7 [ESP32 Only] ETH AT Commands
 <a name="cmd-ETHMAC"></a>
-### 7.1 [AT+CIPETHMAC](#ETH-AT)—Sets the MAC Address of the ESP32 Ethernet
+### 7.1 [ESP32 Only] [AT+CIPETHMAC](#ETH-AT)—Sets the MAC Address of the ESP32 Ethernet
 Query Command:
 
     AT+CIPETHMAC?
@@ -3062,7 +3007,7 @@ Example:
     AT+CIPETHMAC ="1a:fe:35:98:d4:7b"
 
 <a name="cmd-IPSTA"></a>
-### 7.2 [AT+CIPETH](#ETH-AT)—Sets the IP Address of the ESP32 Ethernet
+### 7.2 [ESP32 Only] [AT+CIPETH](#ETH-AT)—Sets the IP Address of the ESP32 Ethernet
 Query Command:
 
     AT+CIPETH?
@@ -3099,9 +3044,9 @@ Example:
 
     AT+CIPETH="192.168.6.100","192.168.6.1","255.255.255.0"
 
-## 8. BT-Related AT Commands
+## 8. [ESP32 Only] BT-Related AT Commands
 <a name="cmd-BTINIT"></a>
-### 8.1 [AT+BTINIT](#BT-AT)—Classic Bluetooth initialization
+### 8.1 [ESP32 Only] [AT+BTINIT](#BT-AT)—Classic Bluetooth initialization
 Query Command:
 
     AT+BTINIT?
@@ -3132,7 +3077,7 @@ Example:
     AT+BTINIT=1    
 
 <a name="cmd-BTNAME"></a>
-### 8.2 [AT+BTNAME](#BT-AT)—Sets BT device's name
+### 8.2 [ESP32 Only] [AT+BTNAME](#BT-AT)—Sets BT device's name
 Query Command:
 
     AT+BTNAME?
@@ -3161,7 +3106,7 @@ Example:
     AT+BTNAME="esp_demo"    
 
 <a name="cmd-BTSCANMODE"></a>
-### 8.3 [AT+BTSCANMODE](#BT-AT)—Sets BT SCAN mode
+### 8.3 [ESP32 Only] [AT+BTSCANMODE](#BT-AT)—Sets BT SCAN mode
 Set Command:
 
     AT+BTSCANMODE=<scan_mode>
@@ -3181,7 +3126,7 @@ Example:
     AT+BTSCANMODE=2   // both discoverable and connectable
 
 <a name="cmd-BTDISC"></a>
-### 8.4 [AT+BTSTARTDISC](#BT-AT)—Start BT discovery
+### 8.4 [ESP32 Only] [AT+BTSTARTDISC](#BT-AT)—Start BT discovery
 Set Command:
 
     AT+BTSTARTDISC=<inq_mode>,<inq_len>,<inq_num_rsps>
@@ -3233,7 +3178,7 @@ Example:
     AT+BTSTARTDISC=0,10,10
 
 <a name="cmd-BTSPPINIT"></a>
-### 8.5 [AT+BTSPPINIT](#BT-AT)—Classic Bluetooth SPP profile initialization
+### 8.5 [ESP32 Only] [AT+BTSPPINIT](#BT-AT)—Classic Bluetooth SPP profile initialization
 Query Command:
 
     AT+BTSPPINIT?
@@ -3266,7 +3211,7 @@ Example:
     AT+BTSPPINIT=2    //slave
 
 <a name="cmd-BTSPPCONN"></a>
-### 8.6 [AT+BTSPPCONN](#BT-AT)—Establishes SPP connection
+### 8.6 [ESP32 Only] [AT+BTSPPCONN](#BT-AT)—Establishes SPP connection
 Query Command: 
 
     AT+BTSPPCONN?
@@ -3305,7 +3250,7 @@ Example:
     AT+BTSPPCONN=0,0,"24:0a:c4:09:34:23"
 
 <a name="cmd-BTSPPDISCONN"></a>
-### 8.7 [AT+BTSPPDISCONN](#BT-AT)—Ends SPP connection
+### 8.7 [ESP32 Only] [AT+BTSPPDISCONN](#BT-AT)—Ends SPP connection
 Execute Command: 
 
     AT+BTSPPDISCONN=<conn_index>
@@ -3324,7 +3269,7 @@ Example:
     AT+BTSPPDISCONN=0
 
 <a name="cmd-BTSPPSEND"></a>
-### 8.8 [AT+BTSPPSEND](#BT-AT)—Sends data to remote classic bluetooth spp device
+### 8.8 [ESP32 Only] [AT+BTSPPSEND](#BT-AT)—Sends data to remote classic bluetooth spp device
 Execute Command: 
 
     AT+BTSPPSEND
@@ -3356,7 +3301,7 @@ Example:
     AT+BTSPPSEND
 
 <a name="cmd-BTSPPSTART"></a>
-### 8.9 [AT+BTSPPSTART](#BT-AT)—Start the classic bluetooth SPP profile.
+### 8.9 [ESP32 Only] [AT+BTSPPSTART](#BT-AT)—Start the classic bluetooth SPP profile.
 Execute Command: 
 
     AT+BTSPPSTART
@@ -3370,7 +3315,7 @@ Example:
     AT+BTSPPSTART
 
 <a name="cmd-BTA2DPINIT"></a>
-### 8.10 [AT+BTA2DPINIT](#BT-AT)—Classic Bluetooth A2DP profile initialization
+### 8.10 [ESP32 Only] [AT+BTA2DPINIT](#BT-AT)—Classic Bluetooth A2DP profile initialization
 Query Command:
 
     AT+BTA2DPINIT?
@@ -3404,7 +3349,7 @@ Example:
     AT+BTA2DPINIT=0,1
 
 <a name="cmd-BTA2DPCONN"></a>
-### 8.11 [AT+BTA2DPCONN](#BT-AT)—Establishes A2DP connection
+### 8.11 [ESP32 Only] [AT+BTA2DPCONN](#BT-AT)—Establishes A2DP connection
 Query Command: 
 
     AT+BTA2DPCONN?
@@ -3435,7 +3380,7 @@ Example:
     AT+BTA2DPCONN=0,0,0,"24:0a:c4:09:34:23"
 
 <a name="cmd-BTA2DPDISCONN"></a>
-### 8.12 [AT+BTA2DPDISCONN](#BT-AT)—Ends A2DP connection
+### 8.12 [ESP32 Only] [AT+BTA2DPDISCONN](#BT-AT)—Ends A2DP connection
 Execute Command: 
 
     AT+BTA2DPDISCONN=<conn_index>
@@ -3454,7 +3399,7 @@ Example:
     AT+BTA2DPDISCONN=0
 
 <a name="cmd-BTA2DPSEND"></a>
-### 8.13 [AT+BTA2DPSEND](#BT-AT)—Sends data to remote bt a2dp sink
+### 8.13 [ESP32 Only] [AT+BTA2DPSEND](#BT-AT)—Sends data to remote bt a2dp sink
 Execute Command: 
 
     AT+BTA2DPSEND=<conn_index>,<url>
@@ -3472,7 +3417,7 @@ Example:
     AT+BTA2DPSEND=0,"file:///example.mp3"
 
 <a name="cmd-BTSECPARAM"></a>
-### 8.14 [AT+BTSECPARAM](#BT-AT)—Set and query the Classic Bluetooth security parameters
+### 8.14 [ESP32 Only] [AT+BTSECPARAM](#BT-AT)—Set and query the Classic Bluetooth security parameters
 Query Command: 
 
     AT+BTSECPARAM?
@@ -3509,7 +3454,7 @@ Example:
     AT+BTSECPARAM=3,1,"9527"
 
 <a name="cmd-BTKEYREPLY"></a>
-### 8.15 [AT+BTKEYREPLY](#BT-AT)—Input Simple Pair Key
+### 8.15 [ESP32 Only] [AT+BTKEYREPLY](#BT-AT)—Input Simple Pair Key
 Execute Command: 
 
     AT+BTKEYREPLY=<conn_index>,<Key>
@@ -3527,7 +3472,7 @@ Example:
     AT+BTKEYREPLY=0,123456
 
 <a name="cmd-BTPINREPLY"></a>
-### 8.16 [AT+BTPINREPLY](#BT-AT)—Input the Legacy Pair PIN Code
+### 8.16 [ESP32 Only] [AT+BTPINREPLY](#BT-AT)—Input the Legacy Pair PIN Code
 Execute Command: 
 
     AT+BTPINREPLY=<conn_index>,<Pin>
@@ -3545,7 +3490,7 @@ Example:
     AT+BTPINREPLY=0,"6688"
 
 <a name="cmd-BTSECCFM"></a>
-### 8.17 [AT+BTSECCFM](#BT-AT)—Reply the confirm value to the peer device in the legacy connection stage
+### 8.17 [ESP32 Only] [AT+BTSECCFM](#BT-AT)—Reply the confirm value to the peer device in the legacy connection stage
 Execute Command: 
 
     AT+BTSECCFM=<conn_index>,<accept>
@@ -3565,7 +3510,7 @@ Example:
     AT+BTSECCFM=0,1
 
 <a name="cmd-BTENCDEV"></a>
-### 8.18 [AT+BTENCDEV](#BT-AT)—Query BT encryption device list
+### 8.18 [ESP32 Only] [AT+BTENCDEV](#BT-AT)—Query BT encryption device list
 Query Command:
 
     AT+BTENCDEV?
@@ -3584,7 +3529,7 @@ Example:
     AT+BTENCDEV?
 
 <a name="cmd-BTENCCLEAR"></a>
-### 8.19 [AT+BTENCCLEAR](#BT-AT)—Clear BT encryption device list
+### 8.19 [ESP32 Only] [AT+BTENCCLEAR](#BT-AT)—Clear BT encryption device list
 Set Command:
 
     AT+BTENCCLEAR=<enc_dev_index>
@@ -3606,3 +3551,15 @@ Parameters:
 Example:
 
     AT+BTENCCLEAR
+
+<a name="Appendix-8266"></a>
+## Appendix. [How to generate an ESP8266 AT firmware](#Begin-8266)
+1. Download the master branch of https://github.com/espressif/esp32-at
+2. Change the Makefile from  
+`export ESP_AT_PROJECT_PLATFORM ?= PLATFORM_ESP32`
+`export ESP_AT_MODULE_NAME ?= WROOM-32`  
+to be   
+`export ESP_AT_PROJECT_PLATFORM ?= PLATFORM_ESP8266`
+`export ESP_AT_MODULE_NAME ?= WROOM-02`
+3. Compile the esp-at project to get the ESP8266 AT firmware. 
+4. More details are in the esp32-at/docs/How_to_Add_New_Platforom.
