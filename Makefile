@@ -58,7 +58,7 @@ endif
 
 SDKCONFIG_DEFAULTS := $(ESP_AT_MODULE_CONFIG_DIR)/sdkconfig.defaults
 
-EXTRA_CFLAGS += -DSDK_GIT=IDF_VER
+export PROJECT_VER = "ESP-AT"
 
 ifeq ("$(filter 3.81 3.82,$(MAKE_VERSION))","") ## IDF just support 3.81,3.82 or 4.x newer
 include $(IDF_PATH)/make/project.mk
