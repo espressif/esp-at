@@ -1429,6 +1429,39 @@ esp_err_t esp_at_init_parse(void)
 
     at_cmd_free(at_result);
 
+#if CONFIG_ESP_WIFI_MODE_AP
+// set softAP ssid: AT_HTTP_WEBSERVER, password: 12345678
+    memset(&cmd_arg, 0x0, sizeof(at_cmd_arg));
+    strncpy(cmd_arg.cwsap.ssid, CONFIG_ESP_WIFI_SSID, strlen(CONFIG_ESP_WIFI_SSID));
+    strncpy(cmd_arg.cwsap.pwd, CONFIG_ESP_WIFI_PASSWORD, strlen(CONFIG_ESP_WIFI_PASSWORD));
+    cmd_arg.cwsap.chl = 8;
+    cmd_arg.cwsap.ecn = 4;
+    at_result = at_add_cmd(AT_CWSAP, &cmd_arg);
+    if (at_result->rsp_flag != AT_CMD_RETURN_SUCCESS) {
+        ESP_LOGE(TAG, "command cwmode execution error");
+        at_cmd_free(at_result);
+        return ESP_ERR_INVALID_STATE;
+    }
+
+    at_cmd_free(at_result);
+#else
+    /*
+     *  Test connect AP first
+     */
+    memset(&cmd_arg, 0x0, sizeof(cmd_arg));
+    strcpy(cmd_arg.cwjap.ssid , CONFIG_ESP_WIFI_SSID);
+    strcpy(cmd_arg.cwjap.pwd , CONFIG_ESP_WIFI_PASSWORD);
+    at_result = at_add_cmd(AT_CWJAP, &cmd_arg);
+
+    if (at_result->rsp_flag != AT_CMD_RETURN_SUCCESS) {
+        ESP_LOGE(TAG, "command cipmux execution error");
+        at_cmd_free(at_result);
+        return ESP_ERR_INVALID_STATE;
+    }
+
+    at_cmd_free(at_result);
+#endif
+
 // enable multiple connections
     cmd_arg.cipmux.mode = 1;
     at_result = at_add_cmd(AT_CIPMUX, &cmd_arg);
@@ -1440,24 +1473,6 @@ esp_err_t esp_at_init_parse(void)
     }
 
     at_cmd_free(at_result);
-
-#if 0
-    /*
-     *  Test connect AP first
-     */
-    memset(&cmd_arg, 0x0, sizeof(cmd_arg));
-    strcpy(cmd_arg.cwjap.ssid , "HUAWEI001");
-    strcpy(cmd_arg.cwjap.pwd , "12345678");
-    at_result = at_add_cmd(AT_CWJAP, &cmd_arg);
-
-    if (at_result->rsp_flag != AT_CMD_RETURN_SUCCESS) {
-        ESP_LOGE(TAG, "command cipmux execution error");
-        at_cmd_free(at_result);
-        return ESP_ERR_INVALID_STATE;
-    }
-
-    at_cmd_free(at_result);
-#endif
 
     ESP_LOGI(TAG, "init AT parse frame seccess\n");
     return ESP_OK;

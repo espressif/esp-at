@@ -24,7 +24,7 @@
 
 PARTITION_NAME=$1
 TARGET_FOLDER=$2
-PYTHON_TOOL=$ESP_AT_PROJECT_PATH/tools/factory_param_generate.py
+TOOL_PATH=$ESP_AT_PROJECT_PATH/tools/factory_param_generate.py
 
 RAW_DATA_FOLDER=$ESP_AT_PROJECT_PATH/components/customized_partitions/raw_data/factory_param
 
@@ -35,4 +35,4 @@ LOG_FILE=$ESP_AT_PROJECT_PATH/build/factory/factory_parameter.log
 
 echo "generating factory_param.bin($MODULE_NAME): python $TOOL_PATH -t $TARGET_FOLDER/$PARTITION_NAME.bin $MODULE_FILE"
 
-python $PYTHON_TOOL --platform $ESP_AT_PROJECT_PLATFORM --module $ESP_AT_MODULE_NAME --bin_name $TARGET_FOLDER/$PARTITION_NAME.bin --define_file $DEFINE_FILE --module_file $MODULE_FILE --log_file $LOG_FILE
+python $TOOL_PATH --platform $ESP_AT_PROJECT_PLATFORM --module $ESP_AT_MODULE_NAME --bin_name $TARGET_FOLDER/$PARTITION_NAME.bin --define_file $DEFINE_FILE --module_file $MODULE_FILE --log_file $LOG_FILE

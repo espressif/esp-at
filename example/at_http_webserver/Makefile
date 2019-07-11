@@ -7,6 +7,8 @@ PROJECT_NAME := esp-http-at
 
 export ESP_AT_PROJECT_PATH := $(PWD)/../..
 export IDF_PATH ?= $(ESP_AT_PROJECT_PATH)/esp-idf
+export ESP_AT_PROJECT_PLATFORM ?= PLATFORM_ESP32
+export ESP_AT_MODULE_NAME ?= WROOM-32
 
 export ESP_AT_IMAGE_DIR := $(PWD)/components/fs_image
 EXTRA_COMPONENT_DIRS := $(ESP_AT_PROJECT_PATH)/tools/mkfatfs $(ESP_AT_PROJECT_PATH)/components

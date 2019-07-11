@@ -17,8 +17,6 @@ typedef struct {
     void *decompData;     // no use
 }EspFsFile;
 
-#define ESP_AT_FATFS_COMMAND
-
 int espFsInit();
 EspFsFile *espFsOpen(char *fileName);
 int espFsFlags(EspFsFile *fh);

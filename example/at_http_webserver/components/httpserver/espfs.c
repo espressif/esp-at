@@ -3,6 +3,12 @@
 #include <stdlib.h>
 #include "espfs.h"
 #include "esp_parse_at.h"
+#include "esp_log.h"
+
+#include "diskio.h"
+#include "diskio_wl.h"
+
+#include "esp_at.h"
 
 // Donnot care flag
 int espFsFlags(EspFsFile* fh)
@@ -10,13 +16,74 @@ int espFsFlags(EspFsFile* fh)
     return 0;
 }
 
-#ifndef ESP_AT_FATFS_COMMAND
+#if CONFIG_READ_WRITE_FILE_SYSTEM
+
+static const char* TAG = "ESPFS";
 
 // Handle of the wear levelling library instance
 static wl_handle_t s_wl_handle = WL_INVALID_HANDLE;
 
 // Mount path for the partition
 const char* base_path = "/fatfs";
+
+esp_err_t esp_fat_spiflash_mount(const char* base_path,
+    const char* partition_label,
+    const esp_vfs_fat_mount_config_t* mount_config,
+    wl_handle_t* wl_handle)
+{
+    esp_err_t result = ESP_OK;
+    void *workbuf = NULL;
+
+    const esp_partition_t *data_partition = (esp_partition_t *)esp_at_custom_partition_find(ESP_PARTITION_TYPE_DATA, ESP_PARTITION_SUBTYPE_DATA_FAT, partition_label);
+    if (data_partition == NULL) {
+        ESP_LOGE(TAG, "Failed to find FATFS partition (type='data'(%d), subtype='fat'(%d), partition_label='%s'). Check the partition table.",
+            ESP_PARTITION_TYPE_DATA,ESP_PARTITION_SUBTYPE_DATA_FAT,partition_label);
+        return ESP_ERR_NOT_FOUND;
+    }
+
+    result = wl_mount(data_partition, wl_handle);
+    if (result != ESP_OK) {
+        ESP_LOGE(TAG, "failed to mount wear levelling layer. result = %i", result);
+        return result;
+    }
+    // connect driver to FATFS
+    BYTE pdrv = 0xFF;
+    if (ff_diskio_get_drive(&pdrv) != ESP_OK) {
+        ESP_LOGD(TAG, "the maximum count of volumes is already mounted");
+        return ESP_ERR_NO_MEM;
+    }
+    ESP_LOGD(TAG, "using pdrv=%i", pdrv);
+    char drv[3] = {(char)('0' + pdrv), ':', 0};
+
+    result = ff_diskio_register_wl_partition(pdrv, *wl_handle);
+    if (result != ESP_OK) {
+        ESP_LOGE(TAG, "ff_diskio_register_wl_partition failed pdrv=%i, error - 0x(%x)", pdrv, result);
+        goto fail;
+    }
+    FATFS *fs;
+    result = esp_vfs_fat_register(base_path, drv, mount_config->max_files, &fs);
+    if (result == ESP_ERR_INVALID_STATE) {
+        // it's okay, already registered with VFS
+    } else if (result != ESP_OK) {
+        ESP_LOGD(TAG, "esp_vfs_fat_register failed 0x(%x)", result);
+        goto fail;
+    }
+
+    // Try to mount partition
+    FRESULT fresult = f_mount(fs, drv, 1);
+    if (fresult != FR_OK) {
+        ESP_LOGW(TAG, "f_mount failed (%d)", fresult);
+        result = ESP_FAIL;
+        goto fail;
+    }
+    return ESP_OK;
+
+fail:
+    free(workbuf);
+    esp_vfs_fat_unregister_path(base_path);
+    ff_diskio_unregister(pdrv);
+    return result;
+}
 
 /*
 *  Init file system, assert we can mount the fs.
@@ -27,7 +94,8 @@ int espFsInit(void)
         .max_files = 10,
         .format_if_mount_failed = false    // If cannot mount fs, no need to go down
     };
-    esp_err_t err = esp_vfs_fat_spiflash_mount(base_path, "storage", &mount_config, &s_wl_handle);
+    //esp_err_t err = esp_vfs_fat_spiflash_mount(base_path, "fatfs", &mount_config, &s_wl_handle);
+    esp_err_t err = esp_fat_spiflash_mount(base_path, "fatfs", &mount_config, &s_wl_handle);
 
     if (err != ESP_OK) {
         printf("Failed to mount FATFS (0x%x)", err);
