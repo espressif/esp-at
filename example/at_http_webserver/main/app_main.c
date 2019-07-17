@@ -86,7 +86,7 @@ void app_main()
     nvs_flash_init();
 
     ESP_ERROR_CHECK(esp_at_init_parse());
-#ifndef ESP_AT_FATFS_COMMAND
+#if CONFIG_READ_WRITE_FILE_SYSTEM
     ret =  espFsInit();
     assert(ret == 1);
 #endif

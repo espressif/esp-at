@@ -186,46 +186,30 @@ static void init_at_module(void)
     esp_at_module_init(CONFIG_LWIP_MAX_SOCKETS - 1, version);   // reserved one for server
     free(version);
 
-#ifdef CONFIG_AT_BASE_COMMAND_SUPPORT
-
     if (esp_at_base_cmd_regist() == false) {
         ESP_LOGI(TAG, "regist base cmd fail\r\n");
     }
-
-#endif
-
-#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
 
     if (esp_at_wifi_cmd_regist() == false) {
         ESP_LOGI(TAG, "regist wifi cmd fail\r\n");
     }
 
-#endif
-
-#ifdef CONFIG_AT_NET_COMMAND_SUPPORT
-
     if (esp_at_net_cmd_regist() == false) {
         ESP_LOGI(TAG, "regist net cmd fail\r\n");
     }
-
-#endif
-
-#ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
 
     if (esp_at_ble_cmd_regist() == false) {
         ESP_LOGI(TAG, "regist ble cmd fail\r\n");
     }
 
-#endif
-
-#ifdef CONFIG_AT_FS_COMMAND_SUPPORT
-
+#if CONFIG_READ_WRITE_FILE_SYSTEM
+    ESP_LOGI(TAG, "Use file function read write file system\r\n");
+#else
     if (esp_at_fs_cmd_regist() == false) {
         ESP_LOGI(TAG, "regist FS cmd fail\r\n");
     }
-
-#endif
     ESP_LOGI(TAG, "AT command regist OK\r\n");
+#endif
 }
 
 void at_init_parse_frame(void)

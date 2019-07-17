@@ -815,7 +815,7 @@ static int8_t at_cwsap_pack(at_cmd_arg* cmd_arg)
 
     cmd_len = snprintf(cmd_tmp, sizeof(cmd_tmp), "AT+CWSAP=\"%s\",\"%s\",%d,%d", cmd_arg->cwsap.ssid, cmd_arg->cwsap.pwd, cmd_arg->cwsap.chl, cmd_arg->cwsap.ecn);
 
-    if (cmd_arg->cwsap.max_conn != -1) {
+    if (cmd_arg->cwsap.max_conn != -1 && cmd_arg->cwsap.max_conn != 0) {
         cmd_len += snprintf(cmd_tmp + cmd_len, sizeof(cmd_tmp) - cmd_len, ",%d", cmd_arg->cwsap.max_conn);
 
         if (cmd_arg->cwsap.ssid_hidden != -1) {
