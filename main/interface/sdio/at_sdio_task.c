@@ -102,7 +102,7 @@ static int32_t at_sdio_read_data(uint8_t* data, int32_t len)
 {
     uint32_t copy_len = 0;
     if (data == NULL || len < 0) {
-        ESP_LOGE(TAG , "Cannot get read data address.");
+        ESP_LOGI(TAG , "Cannot get read data address.");
         return -1;
     }
 
