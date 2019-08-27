@@ -30,6 +30,11 @@
 #include "esp_system.h"
 #include "nvs_flash.h"
 
+#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
+#include "esp_event_loop.h"
+#include "esp_wifi.h"
+#endif
+
 #if defined(CONFIG_BT_ENABLED)
 #include "esp_bt.h"
 #endif
@@ -98,6 +103,27 @@ static esp_at_cmd_struct at_update_cmd[] = {
 };
 #endif
 
+#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
+static esp_err_t at_wifi_event_handler(void *ctx, system_event_t *event)
+{
+    esp_err_t ret = esp_at_wifi_event_handler(ctx, event);
+
+    return ret;
+}
+
+static void initialise_wifi(void)
+{
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+
+    tcpip_adapter_init();
+    ESP_ERROR_CHECK( esp_event_loop_init(at_wifi_event_handler, NULL) );
+    
+    ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
+    ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM) );
+    ESP_ERROR_CHECK( esp_wifi_start() );
+}
+#endif
+
 void app_main()
 {
     const esp_partition_t * partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
@@ -126,6 +152,7 @@ void app_main()
 #endif
 
     nvs_flash_init();
+    initialise_wifi();
     at_interface_init();
 
     sprintf((char*)version, "compile time:%s %s\r\n", __DATE__, __TIME__);
