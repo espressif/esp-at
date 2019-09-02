@@ -79,20 +79,6 @@ bool esp_at_get_bluetooth_controller_default_config(esp_bt_controller_config_t* 
 }
 #endif
 
-bool esp_at_get_wifi_default_config(void* config)
-{
-#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
-    wifi_init_config_t wifi_cfg = WIFI_INIT_CONFIG_DEFAULT();
-
-    if (!config) {
-        return false;
-    }
-
-    memcpy((wifi_init_config_t *)config, &wifi_cfg, sizeof(wifi_init_config_t));
-#endif
-    return true;
-}
-
 uint32_t esp_at_get_task_stack_size(void)
 {
     return 6*1024;
@@ -161,7 +147,8 @@ uint32_t esp_at_factory_parameter_init(void)
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
     // get max tx power
     if (data[4] != 0xFF) {
-        esp_wifi_set_max_tx_power((int8_t)data[4]);
+        esp_err_t ret = esp_wifi_set_max_tx_power((int8_t)data[4]);
+        printf("max tx power=%d,ret=%d\r\n", data[4], ret);
     }
 
     memset(&country,0x0,sizeof(country));

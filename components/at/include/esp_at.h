@@ -28,7 +28,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "esp_partition.h"
-
+#include "esp_event.h"
 /**
  * @brief esp_at_cmd_struct
  *  used for define at command
@@ -460,4 +460,11 @@ void esp_at_port_exit_specific(void);
  * @param NONE
  */
 const uint8_t* esp_at_get_current_cmd_name(void);
+
+/**
+ * @brief  Wi-Fi event handler callback, which used in AT core.
+ * @param NONE
+ */
+esp_err_t esp_at_wifi_event_handler(void *ctx, system_event_t *event);
+
 #endif
