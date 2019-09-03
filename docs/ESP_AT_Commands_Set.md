@@ -502,19 +502,7 @@ Response:
 
     OK
 Parameters:
-- **\<wifi_power>**: range [0, 11]
-    - 0:level 0. Refer to the 44th byte of phy_init_data.bin, the default value is 19.5 dBm
-    - 1:level 1. Refer to the 45th byte of phy_init_data.bin, the default value is 19 dBm
-    - 2:level 2. Refer to the 46th byte of phy_init_data.bin, the default value is 18.5 dBm
-    - 3:level 3. Refer to the 47th byte of phy_init_data.bin, the default value is 17 dBm
-    - 4:level 4. Refer to the 48th byte of phy_init_data.bin, the default value is 15 dBm
-    - 5:level 5. Refer to the 49th byte of phy_init_data.bin, the default value is 13 dBm
-    - 6:level 5 - 2 dBm. For example, if level 5 is 13 dBm, level 6 will be 11 dBm
-    - 7:level 5 - 4.5 dBm
-    - 8:level 5 - 6 dBm
-    - 9:level 5 - 8 dBm
-    - 10:level 5 - 11 dBm
-    - 11:level 5 - 14 dBm
+- **\<wifi_power>**: range [40, 82], the unit is 0.25dBm, for example, if the value is 78, then RF max power is 78*0.25 dBm=19.5dBm
 - **\<ble_adv_power>**: RF TX Power of BLE advertising, range: [0, 7]
     - 0:7dBm
     - 1:4dBm
@@ -526,6 +514,8 @@ Parameters:
     - 7:-14 dBm
 - **\<ble_scan_power>**: RF TX Power of BLE scanning, range:  [0, 7], the same as **\<ble_adv_power>**
 - **\<ble_conn_power>**: RF TX Power of BLE connecting, range:  [0, 7], the same as **\<ble_adv_power>**
+
+**Notes:** Since the RF TX power is actually divided into several levels, and each level has its own value range, so the `wifi_power` value queried by the `esp_wifi_get_max_tx_power` may differ from the value set by `esp_wifi_set_max_tx_power`. And the query value will not be larger than the set one.
 
 ## 3 Wi-Fi AT Commands  
 <a name="cmd-MODE"></a>
