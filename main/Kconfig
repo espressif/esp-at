@@ -50,6 +50,11 @@ config AT_NET_COMMAND_SUPPORT
     default "y"
     depends on AT_WIFI_COMMAND_SUPPORT
 
+config AT_MQTT_COMMAND_SUPPORT
+    bool "AT MQTT command support."
+    default "n"
+    depends on AT_ENABLE
+
 if IDF_TARGET_ESP32    
 config AT_BLE_COMMAND_SUPPORT
     bool "AT ble command support."
