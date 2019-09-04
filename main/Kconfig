@@ -50,6 +50,30 @@ config AT_NET_COMMAND_SUPPORT
     default "y"
     depends on AT_WIFI_COMMAND_SUPPORT
 
+menu "AT ssl client authentication method"
+config AT_SSL_CLIENT_SERVER_AUTH_CLIENT
+    bool "Server authenticates client, client_cert and client_key partition MUST exist in at_customize.csv"
+    default y
+    depends on AT_NET_COMMAND_SUPPORT
+
+config AT_SSL_CLIENT_CLIENT_AUTH_SERVER
+    bool "Client authenticates server, client_ca partition MUST exist in at_customize.csv"
+    default y
+    depends on AT_NET_COMMAND_SUPPORT
+endmenu
+
+menu "AT ssl server authentication method"
+config AT_SSL_SERVER_SERVER_AUTH_CLIENT
+    bool "Server authenticates clients, server_ca partition MUST exist in at_customize.csv"
+    default y
+    depends on AT_NET_COMMAND_SUPPORT
+
+config AT_SSL_SERVER_CLIENT_AUTH_SERVER
+    bool "Client authenticates server, server_cert and server_key partition MUST exist in at_customize.csv"
+    default y
+    depends on AT_NET_COMMAND_SUPPORT
+endmenu
+
 config AT_MQTT_COMMAND_SUPPORT
     bool "AT MQTT command support."
     default "n"

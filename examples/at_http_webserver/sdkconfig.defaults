@@ -71,7 +71,7 @@ CONFIG_TCP_SYNMAXRTX=3
 #
 # AT Customized Partitions
 #
-CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE="example/at_http_webserver/at_customize.csv"
+CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE="examples/at_http_webserver/at_customize.csv"
 CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_OFFSET=0x20000
 
 #
