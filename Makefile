@@ -12,8 +12,7 @@ export ESP_AT_PROJECT_PATH := $(PWD)
 export ESP_AT_IMAGE_DIR ?= $(ESP_AT_PROJECT_PATH)/components/fs_image
 EXTRA_COMPONENT_DIRS := $(ESP_AT_PROJECT_PATH)/tools/mkfatfs
 
-IDF_DIR := esp-idf
-export IDF_PATH ?= $(ESP_AT_PROJECT_PATH)/$(IDF_DIR)
+export IDF_PATH ?= $(ESP_AT_PROJECT_PATH)/esp-idf
 
 # add CFLAGS depends on platform
 ifeq ($(ESP_AT_PROJECT_PLATFORM), PLATFORM_ESP8266)
@@ -38,15 +37,19 @@ esp_at_idf_branch := $(strip $(subst branch:,,$(shell sed -n /branch:/p $(ESP_AT
 esp_at_idf_commit := $(strip $(subst commit:,,$(shell sed -n /commit:/p $(ESP_AT_MODULE_CONFIG_DIR)/IDF_VERSION)))
 esp_at_idf_repository := $(strip $(subst repository:,,$(shell sed -n /repository:/p $(ESP_AT_MODULE_CONFIG_DIR)/IDF_VERSION)))
 
-ifeq (,$(wildcard $(IDF_DIR)))
+ifeq (,$(wildcard $(IDF_PATH)))
 $(info $(shell git clone -b $(esp_at_idf_branch) $(esp_at_idf_repository) $(IDF_PATH); \
 			cd $(IDF_PATH); \
 			git checkout $(esp_at_idf_commit); \
 			git submodule update --init --recursive \
 		))
 else
-idf_version := $(strip $(shell cd $(IDF_DIR);git rev-parse HEAD))
+idf_version := $(strip $(shell cd $(IDF_PATH);git rev-parse HEAD))
 ifneq ($(esp_at_idf_commit), $(idf_version))
+$(warning ======================================================)
+$(warning esp-idf commit is incorrect, please ensure repository url is for $(ESP_AT_MODULE_NAME))
+$(warning and I will checkout $(esp_at_idf_commit))
+$(warning ======================================================)
 $(info $(shell cd $(IDF_PATH); \
 			git checkout $(esp_at_idf_branch); \
 			git pull; \
@@ -63,7 +66,7 @@ export PROJECT_VER = "ESP-AT"
 ifeq ("$(filter 3.81 3.82,$(MAKE_VERSION))","") ## IDF just support 3.81,3.82 or 4.x newer
 include $(IDF_PATH)/make/project.mk
 else
-ifeq (,$(wildcard $(IDF_DIR)))
+ifeq (,$(wildcard $(IDF_PATH)))
 ifeq (,$(MAKECMDGOALS))
 all:
 	@make $(MAKECMDGOALS)
