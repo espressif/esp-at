@@ -20,6 +20,8 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+RFPOWER](#cmd-RFPOWER) : Set RF TX Power.
 * [ESP32 Only] [AT+SYSFLASH](#cmd-SYSFLASH) : Set User Partitions in Flash.
 * [ESP32 Only] [AT+FS](#cmd-FS) : Filesystem Operations.
+* [AT+SYSROLLBACK](#cmd-SYSROLLBACK) : Roll back to the previous firmware.
+* [AT+SYSTIMESTAMP](#cmd-SETTIME): Set local time stamp.
 
 <a name="WiFi-AT"></a>
 ### 1.2 Wi-Fi AT Commands List
@@ -42,11 +44,12 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+WPS](#cmd-WPS) : Enables the WPS function.
 * [AT+MDNS](#cmd-MDNS) : Configurates the MDNS function
 * [ESP32 Only] [AT+CWJEAP](#cmd-JEAP) : Connects to a WPA2 Enterprise AP.
+* [AT+CWHOSTNAME](#cmd-HOSTNAME) : Configures the Name of ESP Station
 
 <a name="TCPIP-AT"></a>
 ### 1.3 TCP/IP-Related AT Commands List
 * [AT+CIPSTATUS](#cmd-STATUS) : Gets the connection status.
-* [AT+CIPDOMAIN](#cmd-DOMAIN) : DNS function.
+* [AT+CIPDOMAIN](#cmd-DOMAIN) : Domain Name Resolution Function.
 * [AT+CIPSTART](#cmd-START) : Establishes TCP connection, UDP transmission or SSL connection.
 * [AT+CIPSEND](#cmd-SEND) : Sends data.
 * [AT+CIPSENDEX](#cmd-SENDEX) : Sends data when length of data is \<length>, or when \0 appears in the data.
@@ -62,7 +65,13 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+CIPSNTPTIME](#cmd-SNTPT) : Queries the SNTP time.
 * [AT+CIUPDATE](#cmd-UPDATE) : Updates the software through Wi-Fi.
 * [AT+CIPDINFO](#cmd-IPDINFO) : Shows remote IP and remote port with +IPD.
-* [ESP32 Only] [AT+CIPSSLCCONF](#cmd-SSLCCONF) : Config SSL client.
+* [AT+CIPSSLCCONF](#cmd-SSLCCONF) : Config SSL client.
+* [AT+CIPRECONNINTV](#cmd-AUTOCONNINT): Set Wi-Fi transparent transmitting auto-connect interval.
+* [AT+CIPRECVMODE](#cmd-CIPRECVMODE): Set Socket Receive Mode.
+* [AT+CIPRECVDATA](#cmd-CIPRECVDATA): Get Socket Data in Passive Receive Mode.
+* [AT+CIPRECVLEN](#cmd-CIPRECVLEN): Get Socket Data Length in Passive Receive Mode. 
+* [AT+PING](#cmd-CIPPING): Ping Packets
+* [AT+CIPDNS](#cmd-DNS) : Configures Domain Name System. The configuration will be saved in flash.
 
 <a name="BLE-AT"></a>
 ### 1.4 [ESP32 Only] BLE AT Commands List
@@ -103,6 +112,11 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [ESP32 Only] [AT+BLECONFREPLY](#cmd-BLECOFREPLY) : Reply the comfirm value to the peer device in the lagecy connection stage.
 * [ESP32 Only] [AT+BLEENCDEV](#cmd-BLEENCDEV) : Query BLE encryption device list
 * [ESP32 Only] [AT+BLEENCCLEAR](#cmd-BLEENCCLEAR) : Clear BLE encryption device list
+* [ESP32 Only] [AT+BLESETKEY](#cmd-BLESETKEY) : Set BLE static pair key
+* [ESP32 Only] [AT+BLEHIDINIT](#cmd-BLEHIDINIT) : BLE HID device profile initialization
+* [ESP32 Only] [AT+BLEHIDKB](#cmd-BLEHIDKB) : BLE HID Keyboard information send
+* [ESP32 Only] [AT+BLEHIDMUS](#cmd-BLEHIDMUS) : BLE HID mouse information send
+* [ESP32 Only] [AT+BLEHIDCONSUMER](#cmd-BLEHIDC) : BLE HID consumer information send
 
 * [ESP32 Only] [BLE AT Examples](#exam-BLE)
 
@@ -365,12 +379,7 @@ Response:
 
     +SYSMSG:<state>
     OK  
-    Bit0: 
-        0: Quit transparent transmission no information.
-        1: Quit transparent transmission will supply information.
-    Bit1: 
-        0: Use old connection info.
-        1: Use new connection info.
+        
 Set Command:
 
     AT+SYSMSG=<state>
@@ -383,7 +392,11 @@ Parameters:
 
 - **\<state>**: 
     - Bit0: Quit transparent transmission
+        0: Quit transparent transmission no information.
+        1: Quit transparent transmission will supply information.
     - Bit1: Connection info
+        0: Use old connection info.
+        1: Use new connection info.
 
 ***Notes:***  
 
@@ -432,7 +445,7 @@ Parameters:
 
 ***Notes:***  
 
-* at_customize.bin has to be downloaded, so that the relevant commands can be used. Please refer to the [ESP32_Customize_Partitions](https://github.com/espressif/esp32-at/tree/master/docs) for more details.
+* at_customize.bin has to be downloaded, so that the relevant commands can be used. Please refer to the [ESP32_Customize_Partitions](https://github.com/espressif/esp-at/tree/master/docs) for more details.
 * Important things to note when erasing user partitions:
     * When erasing the targeted user partition in its entirety, parameters `<offset>` and `<length>` can be omitted. For example, command `AT+SYSFLASH=0,"ble_data"` can erase the entire "ble_data" user partition.
     * If parameters `<offset>` and `<length>` are not omitted when erasing the user partition, they have to be 4KB-aligned.
@@ -470,7 +483,7 @@ Parameters:
 
 ***Notes:***  
 
-* at_customize.bin has to be downloaded, so that the relevant commands can be used. The definitions of user partitions are in esp32-at/at_customize.csv. Please refer to the [ESP32_Customize_Partitions](https://github.com/espressif/esp32-at/tree/master/docs) for more details.
+* at_customize.bin has to be downloaded, so that the relevant commands can be used. The definitions of user partitions are in esp-at/at_customize.csv. Please refer to the [ESP32_Customize_Partitions](https://github.com/espressif/esp-at/tree/master/docs) for more details.
 * If the length of the read data is greater than the actual file length, only the actual data length of the file will be returned.
 
 Example:
@@ -516,6 +529,44 @@ Parameters:
 - **\<ble_conn_power>**: RF TX Power of BLE connecting, range:  [0, 7], the same as **\<ble_adv_power>**
 
 **Notes:** Since the RF TX power is actually divided into several levels, and each level has its own value range, so the `wifi_power` value queried by the `esp_wifi_get_max_tx_power` may differ from the value set by `esp_wifi_set_max_tx_power`. And the query value will not be larger than the set one.
+
+<a name="cmd-SYSROLLBACK"></a>
+### 2.15 [AT+SYSROLLBACK](#Basic-AT)-Roll back to the previous firmware
+Execute Command:
+
+    AT+SYSROLLBACK
+Response:
+
+    OK
+
+***Note:***
+
+* This command will not upgrade via OTA, only roll back to the firmware which is in the other ota partition. 
+
+<a name="cmd-SETTIME"></a>
+### 2.16 [AT+SYSTIMESTAMP](#Basic-AT)—Set local time stamp.
+Query Command: 
+
+    AT+SYSTIMESTAMP?
+    Function: to query the time stamp.
+Response:
+
+    +SYSTIMESTAMP:<Unix_timestamp>
+    OK
+Set Command: 
+
+    AT+SYSTIMESTAMP=<Unix_timestamp>
+    Function: to set local time stamp, it will update to SNTP time, if SNTP time is updated.
+Response:
+
+    OK
+Parameters:
+
+- **\<Unix_timestamp>**: Unix timestamp, the unit is seconds.
+
+Example:
+
+    AT+SYSTIMESTAMP=1565853509    //2019-08-15 15:18:29
 
 ## 3 Wi-Fi AT Commands  
 <a name="cmd-MODE"></a>
@@ -575,7 +626,7 @@ Set Command:
 Response:
 
     OK
-    or
+or
     +CWJAP:<error code>
     ERROR
 Parameters:
@@ -744,14 +795,8 @@ Query Command:
 
     AT+CWDHCP?
 Response:
-
-    DHCP disabled or enabled now?
-    Bit0: 
-        0: Station DHCP is disabled.
-        1: Station DHCP is enabled.
-    Bit1: 
-        0: SoftAP DHCP is disabled.
-        1: SoftAP DHCP is enabled.
+    state
+    
 Set Command: 
 
     AT+CWDHCP=<operate>,<mode>
@@ -767,7 +812,13 @@ Parameters:
 - **\<mode>**: 
     - Bit0: Station DHCP
     - Bit1: SoftAP DHCP
-
+- **\<state>**:DHCP disabled or enabled now?
+    Bit0: 
+        0: Station DHCP is disabled.
+        1: Station DHCP is enabled.
+    Bit1: 
+        0: SoftAP DHCP is disabled.
+        1: SoftAP DHCP is enabled.
 ***Notes:***
 
 * The configuration changes will be stored in the NVS area.
@@ -1093,7 +1144,7 @@ Set Command:
 Response:
 
     OK
-    or
+or
     +CWJEAP:Timeout
     ERROR
 Parameters:
@@ -1124,6 +1175,41 @@ Example:
 * This command requires Station mode to be active.
 * TLS mode will use client certificate, make sure enabled.
 
+<a name="cmd-HOSTNAME"></a>
+### 3.20 [AT+CWHOSTNAME](#WiFi-AT) : Configures the Name of ESP Station
+Query Command:
+
+    AT+CWHOSTNAME?
+    Function: Checks the host name of ESP Station.
+Response:
+
+    +CWHOSTNAME:<hostname>
+
+    OK
+Set Command:
+
+    AT+CWHOSTNAME=<hostname>
+    Function: Sets the host name of ESP Station.
+Response:
+
+    OK
+
+If the Station mode is not enabled, the command will return:
+
+    ERROR
+Parameters:
+
+- **\<hostname>**: the host name of the ESP Station, the maximum length is 32 bytes.
+
+***Note:***
+
+* The configuration changes are not saved in the flash.
+
+Example:
+
+    AT+CWMODE=3
+    AT+CWHOSTNAME="my_test"
+
 ## 4. TCP/IP-Related AT Commands
 <a name="cmd-STATUS"></a>
 ### 4.1 [AT+CIPSTATUS](#TCPIP-AT)—Gets the Connection Status
@@ -1153,7 +1239,7 @@ Parameters:
     - 1: ESP32 runs as a server.
 
 <a name="cmd-DOMAIN"></a>
-### 4.2 [AT+CIPDOMAIN](#TCPIP-AT)—DNS Function
+### 4.2 [AT+CIPDOMAIN](#TCPIP-AT)—Domain Name Resolution Function
 Execute Command:
 
     AT+CIPDOMAIN=<domain name>
@@ -1168,7 +1254,7 @@ Example:
 
     AT+CWMODE=1                       // set Station mode
     AT+CWJAP="SSID","password"        // access to the internet
-    AT+CIPDOMAIN="iot.espressif.cn"   // DNS function
+    AT+CIPDOMAIN="iot.espressif.cn"   // Domain Name Resolution function
 
 <a name="cmd-START"></a>
 ### 4.3 [AT+CIPSTART](#TCPIP-AT)—Establishes TCP Connection, UDP Transmission or SSL Connection
@@ -1182,7 +1268,7 @@ Set Command:
 Response:
 
     OK
-    Or if the TCP connection is already established, the response is:
+Or if the TCP connection is already established, the response is:
     ALREADY CONNECTTED
     ERROR
 Parameters:
@@ -1213,7 +1299,7 @@ Set Command:
 Response:
 
     OK
-    Or if the UDP transmission is already established, the response is:
+Or if the UDP transmission is already established, the response is:
     ALREADY CONNECTTED
     ERROR
 Parameters:
@@ -1244,7 +1330,7 @@ Set Command:
 Response:
 
     OK
-    Or if the TCP connection is already established, the response is:
+Or if the TCP connection is already established, the response is:
     ALREADY CONNECTTED
     ERROR
 Parameters:
@@ -1281,11 +1367,14 @@ Set Command:
     Function: to configure the data length in normal transmission mode.
 Response:
 
-    Send data of designated length.
-    Wrap return > after the set command. Begin receiving serial data. When the requirement of data length is met, the transmission of data starts.
-    If the connection cannot be established or gets disrupted during data transmission, the system returns:
+    OK
+    >
+Begin receiving serial data. When the requirement of data length is met, the transmission of data starts.
+If the connection cannot be established or gets disrupted during data transmission, the system returns:
+
     ERROR
-    If data is transmitted successfully, the system returns: 
+If data is transmitted successfully, the system returns: 
+
     SEND OK 
 Execute Command: 
 
@@ -1293,11 +1382,17 @@ Execute Command:
     Function: to start sending data in transparent transmission mode.
 Response:
 
-    Wrap return > after executing this command.
-    Enter transparent transmission, with a 20-ms interval between each packet, and a maximum of 2048 bytes per packet. 
-    When a single packet containing +++ is received, ESP32 returns to normal command mode. Please wait for at least one second before sending the next AT command.
-    This command can only be used in transparent transmission mode which requires single connection.
-    For UDP transparent transmission, the value of <UDP mode> has to be 0 when using AT+CIPSTART.
+    OK
+    >
+Enter transparent transmission, with a 20-ms interval between each packet, and a maximum of 2048 bytes per packet. 
+When a single packet containing +++ is received, ESP32 returns to normal command mode. Please wait for at least one second before sending the next AT command.
+This command can only be used in transparent transmission mode which requires single connection.
+For UDP transparent transmission, the value of <UDP mode> has to be 0 when using AT+CIPSTART.
+
+Or
+
+    ERROR
+
 Parameters:
 
 - **\<link ID>**: ID of the connection (0~4), for multiple connections.
@@ -1318,11 +1413,15 @@ Set Command:
     Function: to configure the data length in normal transmission mode.
 Response:
 
-    Send data of designated length.
-    Wrap return > after the set command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, or when \0 appears in the data, the transmission starts.
-    If connection cannot be established or gets disconnected during transmission,  the system returns: 
+    OK
+    >
+Send data of designated length.
+Wrap return > after the set command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, or when \0 appears in the data, the transmission starts.
+If connection cannot be established or gets disconnected during transmission,  the system returns: 
+
     ERROR
-    If data are successfully transmitted, the system returns:
+    
+If data are successfully transmitted, the system returns:
     SEND OK
 Parameters:
 
@@ -1646,18 +1745,39 @@ Example:
 ### 4.16 [AT+CIUPDATE](#TCPIP-AT)—Updates the Software Through Wi-Fi
 Execute Command:
 
-    AT+CIUPDATE 
+    AT+CIUPDATE  
+    Function: OTA the lastest version via TCP from server.
+Response:
+
+    +CIPUPDATE:<n>
+    OK
+
+Execute Command:
+
+    AT+CIUPDATE=<ota mode>[,version]  
+    Function: OTA the specified version from server.  
 Response:
 
     +CIPUPDATE:<n>
     OK
 Parameters:
 
+- **\<ota mode>**:
+    - 0: OTA via TCP
+    - 1: OTA via SSL, please ensure `make menuconfig` > `Component config` > `AT` > `OTA based upon ssl` is enabled.
+- **\<version>**: AT version, for example, `v1.2.0.0`, `v1.1.3.0`,`v1.1.2.0`
 - **\<n>**: 
     - 1: find the server.
     - 2: connect to server.
     - 3: get the software version.
     - 4: start updating.
+
+Example:
+
+    AT+CIUPDATE  
+Or
+
+    AT+CIUPDATE=1,"v1.2.0.0"
 
 ***Notes:***
 
@@ -1666,8 +1786,8 @@ Parameters:
 
 ***Notice:***
 
-* If using Espressif's AT BIN (/esp-idf/bin/at), `AT+CIUPDATE` will download a new AT BIN from the Espressif Cloud.
-* If using a user-compiled AT BIN, users need to make their own `AT+CIUPDATE` upgrade. Espressif provides a demo as a reference for local upgrade (/esp-idf/example/at).
+* If using Espressif's AT [BIN](https://www.espressif.com/zh-hans/support/download/at), `AT+CIUPDATE` will download a new AT BIN from the Espressif Cloud.
+* If using a user-compiled AT BIN, users need to implement their own AT+CIUPDATE FOTA function. esp-at project provides an example of [FOTA](https://github.com/espressif/esp-at/blob/master/main/at_upgrade.c).
 * It is suggested that users call `AT+RESTORE` to restore the factory default settings after upgrading the AT firmware.
 
 <a name="cmd-IPDINFO"></a>
@@ -1708,21 +1828,21 @@ Parameters:
 * The command is valid in normal command mode. When the module receives network data, it will send the data through the serial port using the `+IPD` command.
 
 <a name="cmd-SSLCCONF"></a>
-### 4.19 [ESP32 Only] [AT+CIPSSLCCONF](#TCPIP-AT)—Config SSL client
+### 4.19 [AT+CIPSSLCCONF](#TCPIP-AT)—Config SSL client
 Query Command:
 
     AT+CIPSSLCCONF?
-    Function: to obtain all link SSL client configuration.
+    Function: to get the configuration of each link that running as SSL client.
 Response:
 
-    +CIPSNTPCFG:<link ID>,<auth_mode>,<pki_number>,<ca_number>
+    +CIPSSLCCONF:<link ID>,<auth_mode>,<pki_number>,<ca_number>
     OK
 Set Command:
 
     Single connection: (+CIPMUX=0)
     AT+CIPSSLCCONF=<auth_mode>,<pki_number>,<ca_number>
     Multiple connections: (+CIPMUX=1)
-    AT+CIPSENDEX=<link ID>,<auth_mode>,<pki_number>,<ca_number>
+    AT+CIPSSLCCONF=<link ID>,<auth_mode>,<pki_number>,<ca_number>
 Response:
 
     OK
@@ -1740,7 +1860,196 @@ Parameters:
 ***Notes:***
 
 * Call this command before establish SSL connection if you want configuration take effect immediately.
-* The configuration changes will be saved in the NVS area. If you use AT+SAVETRANSLINK to set SSL passthrough mode, ESP32 SSL will be connected based on this configuration after power on.
+* The configuration changes will be saved in the NVS area. If you use AT+SAVETRANSLINK to set SSL passthrough mode, the ESP will establish an SSL connection based on this configuration after next power on.
+
+<a name="cmd-AUTOCONNINT"></a>
+### 4.20 [AT+CIPRECONNINTV](#TCPIP-AT)—Set Wi-Fi transparent transmitting auto-connect interval
+Set Command:
+
+    AT+CIPRECONNINTV=<interval>
+    Function: to set the interval of auto reconnecting when the TCP/UDP/SSL transmission broke in UART-WiFi transparent mode.
+Parameters:
+
+- **\<interval>**: Time interval for automatic reconnection, default is 1, range is 1~36000, unit is 100ms.
+
+Example:
+
+    AT+CIPRECONNINTV=10  
+
+### 4.21 [+IPD](#TCPIP-AT)—Receives Network Data
+Command:
+
+    Single connection: 
+    (+CIPMUX=0)+IPD,<len>[,<remote IP>,<remote port>]:<data>
+    multiple connections: 
+    (+CIPMUX=1)+IPD,<link ID>,<len>[,<remote IP>,<remote port>]:<data>
+Parameters:
+
+- **\[\<remote IP>]**: remote IP, enabled by command `AT+CIPDINFO=1`.
+- **\[\<remote port>]**: remote port, enabled by command `AT+CIPDINFO=1`.
+- **\<link ID>**: ID number of connection.
+- **\<len>**: data length.
+- **\<data>**: data received.
+
+***Note:***
+
+* The command is valid in normal command mode. When the module receives network data, it will send the data through the serial port using the `+IPD` command.
+
+<a name="cmd-CIPRECVMODE"></a>
+### 4.22 [AT+CIPRECVMODE](#TCPIP-AT)—Set Socket Receive Mode
+Query Command:
+
+    AT+CIPRECVMODE?
+    Function: to query socket receive mode.
+Response:
+
+    +CIPRECVMODE:<mode>
+    OK
+Set Command:
+
+    AT+CIPRECVMODE=<mode>
+Response:
+
+    OK
+
+Parameters:
+- **\<mode>**: the receive mode of socket data is active mode by default.
+    - 0: active mode - ESP AT will send all the received socket data instantly to host MCU through UART with header “+IPD".
+    - 1: passive mode - ESP AT will keep the received socket data in an internal buffer (default is 5840 bytes), and wait for host MCU to read the data. If the buffer is full, the socket transmission will be blocked.
+
+Example:
+
+    AT+CIPRECVMODE=1   
+
+***Notes:***
+
+* The configuration is for TCP and SSL transmission only, and can not be used on WiFi-UART passthrough mode. If it is a UDP transmission in passive mode，data will be missed when buffer full.
+
+* If the passive mode is enabled, when ESP AT receives socket data, it will prompt the following message in different scenarios: 
+    - for multiple connection mode (AT+CIPMUX=1), the message is: `+IPD,<link ID>,<len>`
+    - for single connection mode (AT+CIPMUX=0), the message is: `+IPD,<len>`
+    - `<len>` is the total length of socket data in buffer
+
+<a name="cmd-CIPRECVDATA"></a>
+### 4.23 [AT+CIPRECVDATA](#TCPIP-AT)—Get Socket Data in Passive Receive Mode
+Set Command:
+
+    Single connection: (+CIPMUX=0)ß
+    AT+CIPRECVDATA=<len>
+    Multiple connections: (+CIPMUX=1)
+    AT+CIPRECVDATA=<link_id>,<len>
+Response:
+
+    +CIPRECVDATA:<actual_len>,<data>
+    OK
+
+Parameters:
+- **\<link_id>**: connection ID in multiple connection mode.
+- **\<len>**: data length that you want to get, max is 2048 bytes per time.
+- **\<actual_len>**: length of the data you actually get
+- **\<data>**: the data you get
+
+Example:
+
+    AT+CIPRECVMODE=1
+    For example, if host MCU gets a message of receiving 100 bytes data in connection with No.0, the message will be as following: +IPD,0,100
+    then you can read those 100 bytes by using the command below
+    AT+CIPRECVDATA=0,100
+
+***Notes:***
+
+* In a case of disconnection, the buffered Socket data will still be there and can be read by MCU until you send `AT+CIPCLOSE`, or a new connection occupied the previous link_id instead.
+
+<a name="cmd-CIPRECVLEN"></a>
+### 4.24 [AT+CIPRECVLEN](#TCPIP-AT)—Get Socket Data Length in Passive Receive Mode
+Query Command:
+
+    AT+CIPRECVLEN?
+    Function: query the length of the entire data buffered for the link.
+Response:
+
+    +CIPRECVLEN:<data length of link0>,<data length of link1>,<data length of link2>,<data length of link3>,<data length of link4>
+    OK
+
+Parameters:
+- **\<data length of link>**: length of the entire data buffered for the link
+
+Example:
+
+    AT+CIPRECVLEN?
+    +CIPRECVLEN:100,,,,,
+    OK
+
+***Notes:***
+
+* For ssl link, it will return the length of encrypted data, so the returned length will be more than the real data length.
+
+<a name="cmd-CIPPING"></a>
+### 4.25 [AT+PING](#TCPIP-AT): Ping Packets
+Set Command:
+
+    AT+PING=<IP>
+    Function: Ping packets.
+Response:
+
+    +<time>
+
+    OK
+or
+
+    +timeout
+
+    ERROR
+
+Parameters:
+- **\<IP>**: string; host IP or domain name
+- **\<time>**: the response time of ping
+
+Example:
+
+    AT+PING="192.168.1.1"
+    AT+PING="www.baidu.com"
+
+<a name="cmd-DNS"></a>
+### 4.26 [AT+CIPDNS](#TCPIP-AT) : Configures Domain Name System.
+Query Command:
+
+    AT+CIPDNS?
+    Function: to obtain current Domain Name System information.
+Response:
+
+    +CIPDNS:<enable>[,<"DNS IP1">,<"DNS IP2">,<"DNS IP3">]
+    OK
+
+Set Command:
+
+    AT+CIPDNS=<enable>[,<"DNS IP1">,<"DNS IP2">,<"DNS IP3">]
+    Function: Configures Domain Name System.
+Response:
+
+    OK
+or
+
+    ERROR
+
+Parameters:
+- **\<enable>**: 
+    - 0: Enable automatic DNS settings from DHCP, the DNS will be restore to `222.222.67.208`, only when DHCP is updated will it take effect.
+    - 1: Enable manual DNS settings, if not set `DNS IP`, It will use `222.222.67.208` by default.
+- **\<DNS IP1>**: the first DNS IP. For set command, only for manual DNS settings; for query command, it is current DNS setting.
+- **\<DNS IP2>**: the second DNS IP. For set command, only for manual DNS settings; for query command, it is current DNS setting.
+- **\<DNS IP3>**: the third DNS IP. For set command, only for manual DNS settings; for query command, it is current DNS setting.
+
+Example:
+
+    AT+CIPDNS=0
+    AT+CIPDNS=1,"222.222.67.208","114.114.114.114","8.8.8.8"
+
+**Notes:** 
+
+* The configuration changes will be saved in the NVS area.  
+* The three <DNS IP>parameters cannot be set to the same server.  
+* The DNS server may change according to the configuration of the router which the ESP chip connected to.  
 
 ## 5. [ESP32 Only] BLE-Related AT Commands
 <a name="cmd-BINIT"></a>
@@ -1751,10 +2060,12 @@ Query Command:
     Function: to check the initialization status of BLE.
 Response:
 
-    If BLE is not initialized, it will return
+If BLE is not initialized, it will return
+
     +BLEINIT:0
     OK
-    If BLE is initialized, it will return
+If BLE is initialized, it will return
+
     +BLEINIT:<role>
     OK
 Set Command: 
@@ -1773,12 +2084,12 @@ Parameter:
 
 ***Notes:***
 
-* at_customize.bin has to be downloaded, so that the relevant commands can be used. Please refer to the [ESP32_Customize_Partitions](https://github.com/espressif/esp32-at/tree/master/docs) for more details.
+* at_customize.bin has to be downloaded, so that the relevant commands can be used. Please refer to the [ESP32_Customize_Partitions](https://github.com/espressif/esp-at/tree/master/docs) for more details.
 * Before using BLE AT commands, this command has to be called first to trigger the initialization process.
 * After being initialized, the BLE role cannot be changed. User needs to call AT+RST to restart the system first, then re-init the BLE role.
 * If using ESP32 as a BLE server, a service bin should be downloaded into Flash.
-    * To learn how to generate a service bin, please refer to esp32-at/tools/readme.md.
-    * The download address of the service bin is the "ble_data" address in esp32-at/partitions_at.csv.  
+    * To learn how to generate a service bin, please refer to esp-at/tools/readme.md.
+    * The download address of the service bin is the "ble_data" address in esp-at/partitions_at.csv.  
 
 Example:
 
@@ -2058,7 +2369,7 @@ Response:
 
     +BLECONN:<conn_index>,<remote_address>
     OK
-    If the connection has not been established, there will NOT be <conn_index> and <remote_address>
+If the connection has not been established, there will NOT be <conn_index> and <remote_address>
 Set Command: 
 
     AT+BLECONN=<conn_index>,<remote_address>[,<addr_type>,<timeout>]
@@ -2066,9 +2377,11 @@ Set Command:
 Response:
 
     OK
-    It will prompt the message below, if the connection is established successfully:
+It will prompt the message below, if the connection is established successfully:
+
     +BLECONN:<conn_index>,<remote_address>
-    It will prompt the message below, if NOT:
+It will prompt the message below, if NOT:
+
     +BLECONN:<conn_index>,-1
 Parameters:
 
@@ -2176,8 +2489,8 @@ Response:
 ***Notes:***
 
 * If using ESP32 as a BLE server, a service bin should be downloaded into Flash in order to provide services.
-    * To learn how to generate a service bin, please refer to esp32-at/tools/readme.md.
-    * The download address of the service bin is the "ble_data" address in esp32-at/partitions_at.csv.
+    * To learn how to generate a service bin, please refer to esp-at/tools/readme.md.
+    * The download address of the service bin is the "ble_data" address in esp-at/partitions_at.csv.
 * This command should be called immediately to create services, right after the BLE server is initialized. 
 * If a BLE connection is established first, the service creation will fail.
 
@@ -2244,9 +2557,11 @@ Query Command:
     Function: GATTS characteristics discovery.
 Response:
 
-    // when showing a characteristic, it will be as:
+When showing a characteristic, it will be as:
+
     +BLEGATTSCHAR:"char",<srv_index>,<char_index>,<char_uuid>,<char_prop>
-    // when showing a descriptor, it will be as:
+When showing a descriptor, it will be as:
+
     +BLEGATTSCHAR:"desc",<srv_index>,<char_index>,<desc_index> 
     OK
 Parameters:
@@ -2273,8 +2588,9 @@ Set Command:
     Function: GATTS to notify of its characteristics.
 Response:
 
-    wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the notification starts.
-    If the data transmission is successful, the system returns:
+    >
+Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the notification starts.
+If the data transmission is successful, the system returns:
     OK
 Parameters:
 
@@ -2302,8 +2618,9 @@ Set Command:
     Function: GATTS indicates its characteristics.
 Response:
 
-    wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the indication starts.
-    If the data transmission is successful, the system returns:
+    >
+Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the indication starts.
+If the data transmission is successful, the system returns:
     OK
 Parameters:
 
@@ -2331,8 +2648,9 @@ Set Command:
     Function: GATTS to set its characteristic (descriptor).
 Response:
 
-    wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the setting starts.
-    If the setting is successful, the system returns:
+    >
+Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the setting starts.
+If the setting is successful, the system returns:
     OK
 Parameters:
 
@@ -2427,9 +2745,11 @@ Set Command:
     Function: GATTC to discover characteristics.
 Response:
 
-    // when showing a characteristic, it will be as:
+When showing a characteristic, it will be as:
+
     +BLEGATTCCHAR:"char",<conn_index>,<srv_index>,<char_index>,<char_uuid>,<char_prop>
-    // when showing a descriptor, it will be as:
+When showing a descriptor, it will be as:
+
     +BLEGATTCCHAR:"desc",<conn_index>,<srv_index>,<char_index>,<desc_index>,<desc_uuid> 
     OK
 Parameters:
@@ -2499,8 +2819,9 @@ Set Command:
     Function: GATTC to write characteristics or descriptor.
 Response：
 
-    wrap return > after the command. Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the writting starts.
-    If the setting is successful, the system returns:
+    >
+Begin receiving serial data. When the requirement of data length, determined by <length>, is met, the writting starts.
+If the setting is successful, the system returns:
     OK  
 Parameters：
 
@@ -2762,14 +3083,136 @@ Example:
 
     AT+BLEENCCLEAR
 
+<a name="cmd-BLESETKEY"></a>
+### 5.36 [ESP32 Only][AT+BLESETKEY](#BLE-AT)—Set BLE static pair key
+Query Command:
+
+    AT+BLESETKEY?
+    Function: to query the ble static pair key, If it's not set, it will returns -1.
+Response:
+
+    +BLESETKEY:<static_key>
+    OK
+Set Command:
+
+    AT+BLESETKEY=<static_key>
+    Function: to set a BLE static pair key for all BLE connections.
+Response:
+
+    OK
+Parameters:
+
+- **\<static_key>**: static BLE pair key.
+
+Example:
+
+    AT+BLESETKEY=123456
+
+<a name="cmd-BLEHIDINIT"></a>
+### 5.37 [ESP32 Only][AT+BLEHIDINIT](#BLE-AT)—BLE HID device profile initialization
+Query Command:
+
+    AT+BLEHIDINIT?
+    Function: to check the initialization status of BLE HID profile.
+Response:
+
+If BLE HID device profile is not initialized, it will return:
+
+    +BLEHIDINIT:0
+    OK
+If BLE HID device profile is initialized, it will return:
+
+    +BLEHIDINIT:1
+    OK
+Set Command: 
+
+    AT+BLEHIDINIT=<init>
+    Function: to initialize the BLE HID device profile.
+Response:
+
+    OK
+Parameter:
+
+- **\<init>**: 
+    - 0: deinit ble hid device profile
+    - 1: init ble hid device profile
+
+***Notes:***
+
+* The BLE HID command cannot be used at the same time with general GATT/GAP commands.
+
+Example:
+
+    AT+BLEHIDINIT=1 
+
+<a name="cmd-BLEHIDKB"></a>
+### 5.38 [ESP32 Only][AT+BLEHIDKB](#BLE-AT)—BLE HID Keyboard information send
+Set Command: 
+
+    AT+BLEHIDKB=<Modifier_keys>,<key_1>,<key_2>,<key_3>,<key_4>,<key_5>,<key_6>
+    Function: to send keyboard informations.
+Response:
+
+    OK
+Parameter:
+
+- **\<Modifier_keys>**: Modifier keys mask
+- **\<key_1>**: key code 1
+- **\<key_2>**: key code 2
+- **\<key_3>**: key code 3
+- **\<key_4>**: key code 4
+- **\<key_5>**: key code 5
+- **\<key_6>**: key code 6
+
+Example:
+
+    AT+BLEHIDKB=0,4,0,0,0,0,0   // input a
+
+<a name="cmd-BLEHIDMUS"></a>
+### 5.39 [ESP32 Only][AT+BLEHIDMUS](#BLE-AT)—BLE HID mouse information send
+Set Command: 
+
+    AT+BLEHIDMUS=<buttons>,<X_displacement>,<Y_displacement>,<wheel>
+    Function: to send mouse informations.
+Response:
+
+    OK
+Parameter:
+
+- **\<buttons>**: mouse button
+- **\<X_displacement>**: X displacement
+- **\<Y_displacement>**: Y displacement
+- **\<wheel>**: Wheel
+
+Example:
+
+    AT+BLEHIDMUS=0,10,10,0
+
+<a name="cmd-BLEHIDC"></a>
+### 5.40 [ESP32 Only][AT+BLEHIDCONSUMER](#BLE-AT)—BLE HID consumer information send
+Set Command: 
+
+    AT+BLEHIDCONSUMER=<consumer_usage_id>
+    Function: to send consumer informations.
+Response:
+
+    OK
+Parameter:
+
+- **\<consumer_usage_id>**: consumer id, such as power, reset, help, volume and so on.
+
+Example:
+
+    AT+BLEHIDCONSUMER=233   // volume up
+
 <a name="exam-BLE"></a>
 ## 6. [ESP32 Only] [BLE AT Example](#BLE-AT)  
 Below is an example of using two ESP32 modules, one as a BLE server (hereafter named "ESP32 Server"), the other one as a BLE client (hereafter named "ESP32 Client"). The example shows how to use BLE functions with AT commands.  
 ***Notice:***  
 
 * The ESP32 Server needs to download a "service bin" into Flash to provide BLE services.
-    * To learn how to generate a "service bin", please refer to esp32-at/tools/readme.md.
-    * The download address of the "service bin" is the address of "ble_data" in esp32-at/partitions_at.csv.
+    * To learn how to generate a "service bin", please refer to esp-at/tools/readme.md.
+    * The download address of the "service bin" is the address of "ble_data" in esp-at/partitions_at.csv.
 
 1. BLE initialization:  
 
@@ -3043,10 +3486,12 @@ Query Command:
     Function: to check the initialization status of classic bluetooth.
 Response:
 
-    If classic bluetooth is not initialized, it will return
+If classic bluetooth is not initialized, it will return:
+
     +BTINIT:0
     OK
-    If classic bluetooth is initialized, it will return
+If classic bluetooth is initialized, it will return:
+
     +BTINIT:1
     OK
 Set Command: 
@@ -3122,7 +3567,8 @@ Set Command:
     AT+BTSTARTDISC=<inq_mode>,<inq_len>,<inq_num_rsps>
     Function: to set the scan mode of classic bluetooth.
 Response:
-        +BTSTARTDISC:<bt_addr>,<dev_name>,<major_dev_class>,<minor_dev_class>,<major_srv_class>,<rssi>
+
+    +BTSTARTDISC:<bt_addr>,<dev_name>,<major_dev_class>,<minor_dev_class>,<major_srv_class>,<rssi>
 
     OK
 Parameters:
@@ -3175,10 +3621,12 @@ Query Command:
     Function: to check the initialization status of classic bluetooth SPP profile.
 Response:
 
-    If classic bluetooth SPP profile is not initialized, it will return
+If classic bluetooth SPP profile is not initialized, it will return:
+
     +BTSPPINIT:0
     OK
-    If classic bluetooth SPP profile is initialized, it will return
+If classic bluetooth SPP profile is initialized, it will return:
+
     +BTSPPINIT:1
     OK
 Set Command: 
@@ -3210,7 +3658,7 @@ Response:
 
     +BTSPPCONN:<conn_index>,<remote_address>
     OK
-    If the connection has not been established, there will NOT be <conn_index> and <remote_address>
+If the connection has not been established, there are not <conn_index> and <remote_address>
 Set Command: 
 
     AT+BTSPPCONN=<conn_index>,<sec_mode>,<remote_address>
@@ -3218,9 +3666,11 @@ Set Command:
 Response:
 
     OK
-    It will prompt the message below, if the connection is established successfully:
+It will prompt the message below, if the connection is established successfully:
+
     +BTSPPCONN:<conn_index>,<remote_address>
-    It will prompt the message below, if NOT:
+It will prompt the message below, if NOT:
+
     +BTSPPCONN:<conn_index>,-1
 Parameters:
 
@@ -3248,7 +3698,9 @@ Execute Command:
 Response:
 
     OK
-    If the command is successful, it will prompt + BTSPPDISCONN:<conn_index>,<remote_address>
+If the command is successful, it will prompt:
+
+    +BTSPPDISCONN:<conn_index>,<remote_address>
 Parameter:
 
 - **\<conn_index>**: index of classic bluetooth SPP connection; only 0 is supported for the single connection right now.
@@ -3312,10 +3764,12 @@ Query Command:
     Function: to check the initialization status of classic bluetooth A2DP profile.
 Response:
 
-    If classic bluetooth A2DP profile is not initialized, it will return
+If classic bluetooth A2DP profile is not initialized, it will return
+
     +BTA2DPINIT:0
     OK
-    If classic bluetooth A2DP profile is initialized, it will return
+If classic bluetooth A2DP profile is initialized, it will return
+
     +BTA2DPINIT:1
     OK
 Set Command: 
@@ -3348,7 +3802,7 @@ Response:
 
     +BTA2DPCONN:<conn_index>,<remote_address>
     OK
-    If the connection has not been established, there will NOT be <conn_index> and <remote_address>
+If the connection has not been established, there will NOT be <conn_index> and <remote_address>
 Set Command: 
 
     AT+BTA2DPCONN=<conn_index>,<remote_address>
@@ -3356,9 +3810,11 @@ Set Command:
 Response:
 
     OK
-    It will prompt the message below, if the connection is established successfully:
+It will prompt the message below, if the connection is established successfully:
+
     +BTA2DPCONN:<conn_index>,<remote_address>
-    It will prompt the message below, if NOT:
+It will prompt the message below, if NOT:
+
     +BTA2DPCONN:<conn_index>,fail
 Parameters:
 
@@ -3378,7 +3834,8 @@ Execute Command:
 Response:
 
     OK
-    If the command is successful, it will prompt + BTA2DPDISCONN:<conn_index>,<remote_address>
+If the command is successful, it will prompt 
+    +BTA2DPDISCONN:<conn_index>,<remote_address>
 Parameter:
 
 - **\<conn_index>**: index of classic bluetooth A2DP connection; only 0 is supported for the single connection right now.
@@ -3544,12 +4001,14 @@ Example:
 
 <a name="Appendix-8266"></a>
 ## Appendix. [How to generate an ESP8266 AT firmware](#Begin-8266)
-1. Download the master branch of https://github.com/espressif/esp32-at
+1. Download the master branch of https://github.com/espressif/esp-at
 2. Change the Makefile from  
+
 `export ESP_AT_PROJECT_PLATFORM ?= PLATFORM_ESP32`
 `export ESP_AT_MODULE_NAME ?= WROOM-32`  
 to be   
+
 `export ESP_AT_PROJECT_PLATFORM ?= PLATFORM_ESP8266`
 `export ESP_AT_MODULE_NAME ?= WROOM-02`
 3. Compile the esp-at project to get the ESP8266 AT firmware. 
-4. More details are in the esp32-at/docs/How_to_Add_New_Platforom.
+4. More details are in the esp-at/docs/How_to_Add_New_Platforom.
