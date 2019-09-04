@@ -137,6 +137,9 @@ def generate_factory_param_bin(data_lists, type_dicts, target_name, platform, mo
         if platform_name.upper() != platform:
             continue
 
+        if module_name.upper() != module:
+            continue
+
         for col in range(0, ncols):
             type_dict = type_dicts.get(headers[col])
             if type_dict is None:

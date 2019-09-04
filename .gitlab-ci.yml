@@ -2,7 +2,7 @@ stages:
   - build
   - deploy
 
-build_esp32_at:
+esp32_wroom_at:
   stage: build
   image: $CI_DOCKER_REGISTRY/esp32-ci-env
   tags:
@@ -64,11 +64,201 @@ build_esp32_at:
     - make -j4
     - make print_flash_cmd | tail -n 1 > build/download.config
     - make factory_bin
-    - make factory_bin ESP_AT_MODULE_NAME=WROVER-32
-    - make factory_bin ESP_AT_MODULE_NAME=PICO-D4
-    - make factory_bin ESP_AT_MODULE_NAME=SOLO-1
 
-build_esp8266_wroom_02_at:
+esp32_wrover_at:
+  stage: build
+  image: $CI_DOCKER_REGISTRY/esp32-ci-env
+  tags:
+    - build
+
+  variables:
+    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
+    GIT_STRATEGY: clone
+    
+  artifacts:
+    paths:
+      - build/*.bin
+      - build/*.elf
+      - build/*.map
+      - build/bootloader/*.bin
+      - build/customized_partitions/*.bin
+      - build/download.config
+      - build/factory/*
+    expire_in: 6 mos
+
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
+    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+    - git submodule update --init --recursive
+
+  script:
+    - cd main
+    - rm -f at_config.h
+    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+    - echo -e "#endif" >> at_config.h
+    - cd -
+    # replace submodule esp-idf to internal repository to speedup cloning
+    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
+    - cd esp-idf
+    - git checkout ${commit_str#*commit:}
+    # (the same regular expressions are used to set these are used in 'only:' sections below
+    - source ./tools/ci/configure_ci_environment.sh
+    # fetch the submodules (& if necessary re-fetch repo) from gitlab
+    - time ./tools/ci/get-full-sources.sh
+    - git submodule update --init
+    - cd -
+
+    - export ESP_AT_MODULE_NAME=WROVER-32
+    - make defconfig
+    - make -j4
+    - make print_flash_cmd | tail -n 1 > build/download.config
+    - make factory_bin
+
+pico_d4_at:
+  stage: build
+  image: $CI_DOCKER_REGISTRY/esp32-ci-env
+  tags:
+    - build
+
+  variables:
+    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
+    GIT_STRATEGY: clone
+    
+  artifacts:
+    paths:
+      - build/*.bin
+      - build/*.elf
+      - build/*.map
+      - build/bootloader/*.bin
+      - build/customized_partitions/*.bin
+      - build/download.config
+      - build/factory/*
+    expire_in: 6 mos
+
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
+    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+    - git submodule update --init --recursive
+
+  script:
+    - cd main
+    - rm -f at_config.h
+    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+    - echo -e "#endif" >> at_config.h
+    - cd -
+    # replace submodule esp-idf to internal repository to speedup cloning
+    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
+    - cd esp-idf
+    - git checkout ${commit_str#*commit:}
+    # (the same regular expressions are used to set these are used in 'only:' sections below
+    - source ./tools/ci/configure_ci_environment.sh
+    # fetch the submodules (& if necessary re-fetch repo) from gitlab
+    - time ./tools/ci/get-full-sources.sh
+    - git submodule update --init
+    - cd -
+
+    - export ESP_AT_MODULE_NAME=PICO-D4
+    - make defconfig
+    - make -j4
+    - make print_flash_cmd | tail -n 1 > build/download.config
+    - make factory_bin
+
+
+pico_solo_1_at:
+  stage: build
+  image: $CI_DOCKER_REGISTRY/esp32-ci-env
+  tags:
+    - build
+
+  variables:
+    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
+    GIT_STRATEGY: clone
+    
+  artifacts:
+    paths:
+      - build/*.bin
+      - build/*.elf
+      - build/*.map
+      - build/bootloader/*.bin
+      - build/customized_partitions/*.bin
+      - build/download.config
+      - build/factory/*
+    expire_in: 6 mos
+
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
+    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+    - git submodule update --init --recursive
+
+  script:
+    - cd main
+    - rm -f at_config.h
+    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+    - echo -e "#endif" >> at_config.h
+    - cd -
+    # replace submodule esp-idf to internal repository to speedup cloning
+    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
+    - cd esp-idf
+    - git checkout ${commit_str#*commit:}
+    # (the same regular expressions are used to set these are used in 'only:' sections below
+    - source ./tools/ci/configure_ci_environment.sh
+    # fetch the submodules (& if necessary re-fetch repo) from gitlab
+    - time ./tools/ci/get-full-sources.sh
+    - git submodule update --init
+    - cd -
+
+    - export ESP_AT_MODULE_NAME=SOLO-1
+    - make defconfig
+    - make -j4
+    - make print_flash_cmd | tail -n 1 > build/download.config
+    - make factory_bin
+
+esp8266_wroom_02_at:
   stage: build
   image: $CI_DOCKER_REGISTRY/esp8266-ci-env-new
   tags:
@@ -130,7 +320,7 @@ build_esp8266_wroom_02_at:
     - make print_flash_cmd | tail -n 1 > build/download.config
     - make factory_bin
 
-build_esp8266_wroom_5V2L_at:
+esp8266_wroom_5V2L_at:
   stage: build
   image: $CI_DOCKER_REGISTRY/esp8266-ci-env-new
   tags:
@@ -213,3 +403,52 @@ push_master_to_github:
     - git remote add github git@github.com:espressif/esp32-at.git
     # - git push --follow-tags github HEAD:master
     - eval $(git for-each-ref --shell bash --format 'if [ $CI_COMMIT_SHA == %(objectname) ]; then git checkout -B %(refname:strip=3); git push --follow-tags github %(refname:strip=3); fi;' $GITHUB_PUSH_REFS)
+
+
+esp32_demo:
+  stage: build
+  image: $CI_DOCKER_REGISTRY/esp32-ci-env
+  tags:
+    - build
+
+  variables:
+    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
+    GIT_STRATEGY: clone
+
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
+    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+    - git submodule update --init --recursive
+
+  script:
+    # replace submodule esp-idf to internal repository to speedup cloning
+    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
+    - cd esp-idf
+    - git checkout ${commit_str#*commit:}
+    # (the same regular expressions are used to set these are used in 'only:' sections below
+    - source ./tools/ci/configure_ci_environment.sh
+    # fetch the submodules (& if necessary re-fetch repo) from gitlab
+    - time ./tools/ci/get-full-sources.sh
+    - git submodule update --init
+    - cd -
+
+    - cd examples/at_http_webserver
+    - make defconfig
+    - make -j8
+    - cd -
+
+    - cd examples/at_sdio_host
+    - make defconfig
+    - make -j8
+    - cd -
+
+    - cd examples/at_sdspi_host
+    - make defconfig
+    - make -j8
+    - cd -
