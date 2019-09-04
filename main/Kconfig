@@ -55,6 +55,11 @@ config AT_MQTT_COMMAND_SUPPORT
     default "n"
     depends on AT_ENABLE
 
+config AT_HTTP_COMMAND_SUPPORT
+    bool "AT http command support."
+    default "n"
+    depends on AT_ENABLE
+
 if IDF_TARGET_ESP32    
 config AT_BLE_COMMAND_SUPPORT
     bool "AT ble command support."
