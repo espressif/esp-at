@@ -351,11 +351,20 @@ bool esp_at_wifi_cmd_regist(void);
  */
 bool esp_at_net_cmd_regist(void);
 /**
+
  * @brief regist at net command set. If not,you can not use AT net command
  * @param NONE
  *
  */
 bool esp_at_mqtt_cmd_regist(void);
+
+/**
+ * @brief regist at http command set. If not,you can not use AT http command
+ * @param NONE
+ *
+ */
+bool esp_at_http_cmd_regist(void);
+
 /**
  * @brief regist at ble command set. If not,you can not use AT ble command
  * @param NONE
