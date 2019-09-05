@@ -187,6 +187,7 @@ void app_main()
 #ifdef CONFIG_AT_MQTT_COMMAND_SUPPORT
     if(esp_at_mqtt_cmd_regist() == false) {
         printf("regist mqtt cmd fail\r\n");
+    }
 #endif
 
 #ifdef CONFIG_AT_HTTP_COMMAND_SUPPORT
