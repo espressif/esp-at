@@ -22,6 +22,7 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [ESP32 Only] [AT+FS](#cmd-FS) : Filesystem Operations.
 * [AT+SYSROLLBACK](#cmd-SYSROLLBACK) : Roll back to the previous firmware.
 * [AT+SYSTIMESTAMP](#cmd-SETTIME): Set local time stamp.
+* [AT+SYSLOG](#cmd-SYSLOG) : Enable or disable the AT error code prompt.
 
 <a name="WiFi-AT"></a>
 ### 1.2 Wi-Fi AT Commands List
@@ -567,6 +568,50 @@ Parameters:
 Example:
 
     AT+SYSTIMESTAMP=1565853509    //2019-08-15 15:18:29
+
+<a name="cmd-SYSLOG"></a>
+### 2.17 [AT+SYSLOG](#Basic-AT) : Enable or disable the AT error code prompt.
+Query Command:  
+
+    AT+SYSLOG?  
+    Function: to query the AT error code prompt for whether it is enabled or disabled.  
+Response:  
+
+    +SYSLOG:<status>  
+
+    OK  
+
+Set Command:  
+
+    AT+SYSLOG=<status>
+    Function: Enable or disable the AT error code prompt.
+Response:  
+
+    OK
+Parameters:  
+- **\<status>**: : enable or disable
+    - 0: disable
+    - 1: enable
+
+Example:  
+If enable AT error code prompt:     
+    
+    AT+SYSLOG=1
+
+    OK
+    AT+FAKE
+    ERR CODE:0x01090000
+
+    ERROR
+If disable AT error code prompt:  
+
+    AT+SYSLOG=0
+
+    OK
+    AT+FAKE
+    //No `ERR CODE:0x01090000` 
+
+    ERROR  
 
 ## 3 Wi-Fi AT Commands  
 <a name="cmd-MODE"></a>
