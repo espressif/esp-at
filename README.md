@@ -5,6 +5,7 @@ The demo is the AT command set based on uart. You can replace the uart driver wi
 
 - [ESP_AT_Get_Started.md](docs/ESP_AT_Get_Started.md): How to compile ESP AT  
 - [ESP_AT_Commands_Set.md](docs/ESP_AT_Commands_Set.md): ESP AT Command Set  
+- [How_To_Set_AT_Port_Pin.md](docs/How_To_Set_AT_Port_Pin.md): How to modify AT Port pin  
 - [ESP_AT_Factory_Parameter_Bin.md](docs/ESP_AT_Factory_Parameter_Bin.md): How to add factory parameter 
 - [ESP_AT_Customize_Partitions.md](docs/ESP_AT_Customize_Partitions.md): What is `The Secondary Partitions Table`    
 - [How_To_Add_New_Platform.md](docs/How_To_Add_New_Platform.md): How to add new configuration for your module  
