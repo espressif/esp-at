@@ -15,6 +15,6 @@ ESP32 AT through SDIO use the following pins to communicate with the MCU:
 - GPIO12 is DAT2
 - GPIO13 is DAT3
 
-For more details, please refer to [sdio_AT_User_Guide.md](https://github.com/espressif/esp32-at/tree/master/docs/sdio_AT_User_Guide.md) in the docs directory.
+For more details, please refer to [sdio_AT_User_Guide.md](https://github.com/espressif/esp-at/blob/master/docs/SDIO_AT_User_Guide.md) in the docs directory.
 
 ***Note*:** If you're using a board (e.g. WroverKit v2 and before, PICO, DevKitC) which is not able to drive GPIO2 low on downloading, be sure to do some preprocessing with [README](https://github.com/espressif/esp-idf/blob/master/examples/peripherals/sdio/README.md) firstly.

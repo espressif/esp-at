@@ -9,17 +9,17 @@ Herein, we provide an example of the ESP32 SDIO AT to show how to set a new plat
 
 For example, to name the platform as "PLATFORM_ESP32", the module as "WROOM32-SDIO", we need to open the `components/customized_partitions/raw_data/factory_param/factory_param_data.csv` and add a new row of the new platform at the end.
 
-| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin |
-|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|
-|-xxx-|-xxx-|-xxx-|-xxx-|-xxx-|-xxx-|-xxx-| -xxx-|-xxx-|-xxx-|-xxx-|-xxx-|-xxx-|-xxx-|
-| PLATFORM_ESP32 | WROOM32-SDIO | 0xfcfc | 1 | 1 | 1 | 1 | 13 | CN | -1 | -1 | -1 | -1 | -1 |
+| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin | tx_control_pin | rx_control_pin
+|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|---|---|
+|-xxx-|-xxx-|-xxx-|-xxx-|-xxx-|-xxx-|-xxx-| -xxx-|-xxx-|-xxx-|-xxx-|-xxx-|-xxx-|-xxx-|-xxx-|-xxx-|
+| PLATFORM_ESP32 | ESP32-SDIO | 0xfcfc | 1 | 1 | 1 | 1 | 13 | CN | -1 | -1 | -1 | -1 | -1 | -1 | -1
 
 ## 2. Set Makefile
 Open the `Makefile` and set to the new platform. Please use capital letters. 
 
 ```
 export ESP_AT_PROJECT_PLATFORM ?= PLATFORM_ESP32
-export ESP_AT_MODULE_NAME ?= WROOM32-SDIO
+export ESP_AT_MODULE_NAME ?= ESP32-SDIO
 ```
 
 ## 3. Configure the New Platform
@@ -72,13 +72,13 @@ If you need to use a new at\_core lib, put the lib into the `components/at/lib`,
 ## 1. 创建模块信息
 假设平台名称为 `PLATFORM_ESP32`，模块名称为 `WROOM32-SDIO`，打开 `components/customized_partitions/raw_data/factory_param/factory_param_data.csv`,按照标题
 
-| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin |
-|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|
+| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_ctx_pin | uart_rts_pin | tx_control_pin | rx_control_pin
+|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|---|---|
 
 在最后添加
 
-| PLATFORM_ESP32 | WROOM32-SDIO | 0xfcfc | 1 | 1 | 1 | 1 | 13 | CN | -1 | -1 | -1 | -1 | -1 |
-|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|
+| PLATFORM_ESP32 | WROOM32-SDIO | 0xfcfc | 1 | 1 | 1 | 1 | 13 | CN | -1 | -1 | -1 | -1 | -1 | -1 | -1|
+|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|---|---|
 
 ## 2. 修改工程模块信息
 打开 `Makefile`，修改平台名称和模块名称，对于英文字母，请使用大写格式

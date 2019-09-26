@@ -38,7 +38,12 @@ git clone --recursive https://github.com/espressif/esp32-at.git
   * More details are in the [esp-idf README](https://github.com/espressif/esp-idf/blob/master/README.md).
 6. `make factory_bin` to combine factory bin, by default, the factory bin is 4MB flash size, DIO flash mode and 40MHz flash speed. If you want use this command, you must fisrt run `make print_flash_cmd | tail -n 1 > build/download.config` to generate `build/download.config`.
 7. If the ESP32-AT bin fails to boot, and prints "ota data partition invalid", you should run `make erase_flash` to erase the entire flash.
-8. Since we updated the toolchain recently, it is not compatible with the old version. Please use the toolchain we provided in the  `esp32-at/esp-idf/docs/get-started/linux-setup.rst` and `esp32-at/esp-idf/docs/get-started/windows-setup.rst` to build your ESP32 AT project.
+8. Suppose you have completed the installation of the compiler environment for esp-idf, if not, you should completed  it referring to https://docs.espressif.com/projects/esp-idf/en/v3.3/get-started/index.html#setup-toolchain, in order to compile esp-at project properly, please do the following additional steps:
+
+step1:install python 2.7  
+step2:[install pip](https://pip.pypa.io/en/latest/installing/)  
+step3:install the following python packages with pip: pip install pyyaml xlrd
+
 
 <a name="platform-esp8266"></a>
 # ESP8266 platform  
@@ -82,4 +87,8 @@ export ESP_AT_MODULE_NAME ?= WROOM-02
   * More details are in the [esp-idf README](https://github.com/espressif/esp-idf/blob/master/README.md).
 7. `make factory_bin` to combine factory bin, by default, the factory bin is 4MB flash size, DIO flash mode and 40MHz flash speed. If you want use this command, you must fisrt run `make print_flash_cmd | tail -n 1 > build/download.config` to generate `build/download.config`.
 8. If the ESP32-AT bin fails to boot, and prints "ota data partition invalid", you should run `make erase_flash` to erase the entire flash.
-9. Since we updated the toolchain recently, it is not compatible with the old version. Please use the toolchain we provided in the  `esp32-at/esp-idf/docs/get-started/linux-setup.rst` and `esp32-at/esp-idf/docs/get-started/windows-setup.rst` to build your ESP32 AT project.
+9. Suppose you have completed the installation of the compiler environment for esp-idf, if not, you should completed  it referring to https://docs.espressif.com/projects/esp8266-rtos-sdk/en/v3.2/get-started/index.html#setup-toolchain, in order to compile esp-at project properly, please do the following additional steps:
+
+step1:install python 2.7  
+step2:[install pip](https://pip.pypa.io/en/latest/installing/)  
+step3:install the following python packages with pip: pip install pyyaml xlrd
