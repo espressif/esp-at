@@ -23,6 +23,8 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+SYSROLLBACK](#cmd-SYSROLLBACK) : Roll back to the previous firmware.
 * [AT+SYSTIMESTAMP](#cmd-SETTIME): Set local time stamp.
 * [AT+SYSLOG](#cmd-SYSLOG) : Enable or disable the AT error code prompt.
+* [AT+SYSLSPCFG](#cmd-SYSLSPCFG) : Config the light-sleep wakeup source.
+* [AT+SYSLSP](#cmd-SYSLSP) : Enters light-sleep mode.
 
 <a name="WiFi-AT"></a>
 ### 1.2 Wi-Fi AT Commands List
@@ -142,7 +144,8 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [ESP32 Only] [AT+BTA2DPINIT](#cmd-BTA2DPINIT) : Classic Bluetooth A2DP profile initialization
 * [ESP32 Only] [AT+BTA2DPCONN](#cmd-BTA2DPCONN) : Establishes A2DP connection
 * [ESP32 Only] [AT+BTA2DPDISCONN](#cmd-BTA2DPDISCONN) : Ends A2DP connection
-* [ESP32 Only] [AT+BTA2DPSEND](#cmd-BTA2DPSEND) :Sends data to remote bt a2dp sink
+* [ESP32 Only] [AT+BTA2DPSRC](#cmd-BTA2DPSRC) : Set or query the audio file URL
+* [ESP32 Only] [AT+BTA2DPCTRL](#cmd-BTA2DPCTRL) : control the audio play
 * [ESP32 Only] [AT+BTSECPARAM](#cmd-BTSECPARAM) :Set and query the Classic Bluetooth security parameters
 * [ESP32 Only] [AT+BTKEYREPLY](#cmd-BTKEYREPLY) :Input the Simple Pair Key
 * [ESP32 Only] [AT+BTPINREPLY](#cmd-BTPINREPLY) :Input the Legacy Pair PIN Code
@@ -635,6 +638,46 @@ If disable AT error code prompt:
     //No `ERR CODE:0x01090000` 
 
     ERROR  
+
+<a name="cmd-SYSLSP"></a>
+### 2.18 [AT+SYSLSP](#Basic-AT)—Enters light-sleep mode (Just support ESP32)
+Execute Command:
+    AT+SYSLSP
+Response:
+
+    OK
+
+Example:
+
+    AT+SYSLSP
+
+<a name="cmd-SYSLSPCFG"></a>
+### 2.19 [AT+SYSLSPCFG](#Basic-AT)—Config the light-sleep wakeup source (Just support ESP32)
+Set Command:  
+
+    AT+SYSLSPCFG=<wakeup source>,<param>[,<wakeup level>]
+Response:
+
+    OK
+Parameters:  
+
+- **\<wakeup source>**: 
+    - 0: Wakeup by timer.
+    - 1: Wakeup by uart.  
+    - 2: Wakeup by GPIO.
+
+- **\<param>**:
+    - If the wakeup source is timer, this param is time before wakeup, the units is millisecond.
+    - If the wakeup source is uart. this param is Uart number.
+    - If the wakeup source is GPIO, the param is the IO number.
+
+- **\<wakeup level>**: only used for GPIO, 0: Low level, 1: High level.
+
+Example:
+
+    AT+SYSLSPCFG=0,1000  // Timer wakeup
+    AT+SYSLSPCFG=1,1     // Uart1 wakeup
+    AT+SYSLSPCFG=2,12,1  // GPIO12 wakeup, high level
 
 ## 3 Wi-Fi AT Commands  
 <a name="cmd-MODE"></a>
@@ -3913,26 +3956,70 @@ Example:
 
     AT+BTA2DPDISCONN=0
 
-<a name="cmd-BTA2DPSEND"></a>
-### 8.13 [ESP32 Only] [AT+BTA2DPSEND](#BT-AT)—Sends data to remote bt a2dp sink
+<a name="cmd-BTA2DPSRC"></a>
+### 8.13 [ESP32 Only] [AT+BTA2DPSRC](#BT-AT)—Set or query the audio file URL
 Execute Command: 
 
-    AT+BTA2DPSEND=<conn_index>,<url>
-    Function: send data to the remote classic bluetooth A2DP sink.
+    AT+BTA2DPSRC=<conn_index>,<url>
+    Function: Set the audio file URL.
 Response:
 
     OK
+
+Query Command:
+
+    AT+BTA2DPSRC?
+    Function: to query the audio file URL.
+Response:
+
+    +BTA2DPSRC:<url>,<type>
+    OK
+
 Parameter:
 
 - **\<conn_index>**: index of classic bluetooth A2DP connection; only 0 is supported for the single connection right now.
-- **\<url>**: the path of the source file.
+- **\<url>**: the path of the source file. HTTP HTTPS and FLASH are currently supported.
+- **\<type>**: the type of audio file, such as "mp3".
+
+***Note:***  
+
+* Only mp3 format is currently supported.
 
 Example:
 
-    AT+BTA2DPSEND=0,"file:///example.mp3"
+    AT+BTA2DPSRC="https://dl.espressif.com/dl/audio/ff-16b-2c-44100hz.mp3"
+    AT+BTA2DPSRC="flash://spiffs/zhifubao.mp3"
+
+<a name="cmd-BTA2DPCTRL"></a>
+### 8.14 [ESP32 Only] [AT+BTA2DPCTRL](#BT-AT)—control the audio play
+Execute Command: 
+
+    AT+BTA2DPCTRL=<conn_index>,<ctrl>
+    Function: control the audio play
+Response:
+
+    OK
+
+Parameter:
+
+- **\<conn_index>**: index of classic bluetooth A2DP connection; only 0 is supported for the single connection right now.
+- **\<ctrl>**: types of control.
+    - 0 : A2DP Sink, stop play
+    - 1 : A2DP Sink, start play
+    - 2 : A2DP Sink, forward
+    - 3 : A2DP Sink, backward
+    - 4 : A2DP Sink, fastward start
+    - 5 : A2DP Sink, fastward stop
+    - 0 : A2DP Source, stop play
+    - 1 : A2DP Source, start play
+    - 2 : A2DP Source, suspend
+
+Example:
+
+    AT+BTA2DPCTRL=0,1  // start play audio
 
 <a name="cmd-BTSECPARAM"></a>
-### 8.14 [ESP32 Only] [AT+BTSECPARAM](#BT-AT)—Set and query the Classic Bluetooth security parameters
+### 8.15 [ESP32 Only] [AT+BTSECPARAM](#BT-AT)—Set and query the Classic Bluetooth security parameters
 Query Command: 
 
     AT+BTSECPARAM?
@@ -3969,7 +4056,7 @@ Example:
     AT+BTSECPARAM=3,1,"9527"
 
 <a name="cmd-BTKEYREPLY"></a>
-### 8.15 [ESP32 Only] [AT+BTKEYREPLY](#BT-AT)—Input Simple Pair Key
+### 8.16 [ESP32 Only] [AT+BTKEYREPLY](#BT-AT)—Input Simple Pair Key
 Execute Command: 
 
     AT+BTKEYREPLY=<conn_index>,<Key>
@@ -3987,7 +4074,7 @@ Example:
     AT+BTKEYREPLY=0,123456
 
 <a name="cmd-BTPINREPLY"></a>
-### 8.16 [ESP32 Only] [AT+BTPINREPLY](#BT-AT)—Input the Legacy Pair PIN Code
+### 8.17 [ESP32 Only] [AT+BTPINREPLY](#BT-AT)—Input the Legacy Pair PIN Code
 Execute Command: 
 
     AT+BTPINREPLY=<conn_index>,<Pin>
@@ -4005,7 +4092,7 @@ Example:
     AT+BTPINREPLY=0,"6688"
 
 <a name="cmd-BTSECCFM"></a>
-### 8.17 [ESP32 Only] [AT+BTSECCFM](#BT-AT)—Reply the confirm value to the peer device in the legacy connection stage
+### 8.18 [ESP32 Only] [AT+BTSECCFM](#BT-AT)—Reply the confirm value to the peer device in the legacy connection stage
 Execute Command: 
 
     AT+BTSECCFM=<conn_index>,<accept>
@@ -4025,7 +4112,7 @@ Example:
     AT+BTSECCFM=0,1
 
 <a name="cmd-BTENCDEV"></a>
-### 8.18 [ESP32 Only] [AT+BTENCDEV](#BT-AT)—Query BT encryption device list
+### 8.19 [ESP32 Only] [AT+BTENCDEV](#BT-AT)—Query BT encryption device list
 Query Command:
 
     AT+BTENCDEV?
@@ -4044,7 +4131,7 @@ Example:
     AT+BTENCDEV?
 
 <a name="cmd-BTENCCLEAR"></a>
-### 8.19 [ESP32 Only] [AT+BTENCCLEAR](#BT-AT)—Clear BT encryption device list
+### 8.20 [ESP32 Only] [AT+BTENCCLEAR](#BT-AT)—Clear BT encryption device list
 Set Command:
 
     AT+BTENCCLEAR=<enc_dev_index>
