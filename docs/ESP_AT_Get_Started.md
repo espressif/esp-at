@@ -27,7 +27,7 @@ Compiling the esp32-at is the same as compiling any other project based on the E
 
 1. You can clone the project into an empty directory using command:
 ```
-git clone --recursive https://github.com/espressif/esp32-at.git
+git clone --recursive https://github.com/espressif/esp-at.git
 ```
 2. `rm sdkconfig` to remove the old configuration and `rm -rf esp-idf` to remove the old esp-idf if you want to compile other esp platform AT.
 3. Set the latest default configuration by `make defconfig`. 
@@ -66,7 +66,7 @@ Compiling the ESP8266 AT is the same as compiling esp32-at:
 
 1. You can clone the project into an empty directory using command:
 ```
-git clone --recursive https://github.com/espressif/esp32-at.git
+git clone --recursive https://github.com/espressif/esp-at.git
 ```
 2. Change the Makefile from  
 ```  
