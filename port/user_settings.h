@@ -35,7 +35,26 @@
 #define HAVE_CURVE25519
 #define CURVE25519_SMALL
 #define HAVE_ED25519
+/* do not use wolfssl defined app_main function used to test esp-wolfssl */
+#define NO_MAIN_DRIVER
 
+/* These Flags are defined to make wolfssl not use some insecure cipher suites */
+#define NO_DH
+#define NO_MD4
+#define NO_DES3
+#define NO_DSA
+#define NO_RC4
+#define NO_RABBIT
+
+#define OPENSSL_EXTRA_X509_SMALL /* Allows of x509 certs (for wolfssl_get_verify_result function)*/
+#define WOLFSSL_ALT_CERT_CHAINS /* Allow to try alternate cert chain */
+
+/* If you want to authenticate the server with Intermediate CA cert, enable following flag */
+/* #define WOLFSSL_SMALL_CERT_VERIFY */
+
+/* Reduces the Cache used by wolfssl and thus reduces heap used */
+#define WOLFSSL_SMALL_STACK
+#define SMALL_SESSION_CACHE
 /* esp32-wroom-32se specific definition */
 #if defined(WOLFSSL_ESPWROOM32SE)
     #define WOLFSSL_ATECC508A
@@ -65,11 +84,11 @@
 /* date/time                               */
 /* if it cannot adjust time in the device, */
 /* enable macro below                      */
-/* #define NO_ASN_TIME */
-/* #define XTIME time */
-
+#define NO_ASN_TIME
+#define XTIME time
 /* when you want not to use HW acceleration */
 /* #define NO_ESP32WROOM32_CRYPT */
-/* #define NO_WOLFSSL_ESP32WROOM32_CRYPT_HASH*/
+/* Turn off the sha acceleration for esp32 */
+#define NO_WOLFSSL_ESP32WROOM32_CRYPT_HASH
 /* #define NO_WOLFSSL_ESP32WROOM32_CRYPT_AES */
 /* #define NO_WOLFSSL_ESP32WROOM32_CRYPT_RSA_PRI */

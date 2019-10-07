@@ -687,6 +687,9 @@ typedef struct TrustedPeerCert TrustedPeerCert;
 typedef struct SignatureCtx SignatureCtx;
 typedef struct CertSignCtx  CertSignCtx;
 
+#ifndef WOLFSSL_MAX_PATH_LEN
+	    #define WOLFSSL_MAX_PATH_LEN 127
+#endif
 
 struct DecodedCert {
     const byte* publicKey;
@@ -732,6 +735,7 @@ struct DecodedCert {
     int     extCrlInfoSz;            /* length of the URI                */
     byte    extSubjKeyId[KEYID_SIZE]; /* Subject Key ID                  */
     byte    extAuthKeyId[KEYID_SIZE]; /* Authority Key ID                */
+    byte    maxPathLen;              /* The maximum path length allowed  */
     byte    pathLength;              /* CA basic constraint path length  */
     word16  extKeyUsage;             /* Key usage bitfield               */
     byte    extExtKeyUsage;          /* Extended Key usage bitfield      */
@@ -828,6 +832,7 @@ struct DecodedCert {
     byte extNameConstraintSet : 1;
 #endif
     byte isCA : 1;                 /* CA basic constraint true */
+    byte maxPathLenSet : 1;        /* RFC 5280 sect. 6.1.4  max_path_len set */
     byte pathLengthSet : 1;        /* CA basic const path length set */
     byte weOwnAltNames : 1;        /* altNames haven't been given to copy */
     byte extKeyUsageSet : 1;
@@ -873,8 +878,8 @@ struct Signer {
     word32  pubKeySize;
     word32  keyOID;                  /* key type */
     word16  keyUsage;
-    byte    pathLength;
-    byte    pathLengthSet : 1;
+    byte    maxPathLen;
+    byte    maxPathLenSet : 1;
     byte    selfSigned : 1;
     const byte* publicKey;
     int     nameLen;
