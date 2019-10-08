@@ -2103,7 +2103,7 @@ Set Command:
     Function: Ping packets.
 Response:
 
-    +<time>
+    +PING:<time>
 
     OK
 or
@@ -2114,7 +2114,7 @@ or
 
 Parameters:
 - **\<IP>**: string; host IP or domain name
-- **\<time>**: the response time of ping
+- **\<time>**: the response time of ping, unit: millisecond.
 
 Example:
 
