@@ -13,41 +13,14 @@ To discuss additional features, additional support and updates, or to obtain a q
 
 # Getting Started
 
-- Requirements
-	- ESP-IDF
-	- ESP-WolfSSL
-
-## How to use with ESP-IDF
-
-If you want to use WolfSSL in your project, there are two ways in which you can proceed:
-
-### Use `esp-wolfssl` component outside from ESP-IDF
-
-- If you are using CMake as build system, add following line to the CMakeLists.txt file in your project folder
-
-	`set(EXTRA_COMPONENT_DIRS PATH-to-your-esp-wolfssl-folder)`
-
-	see the guidelines for `EXTRA_COMPONENT_DIRS` at
-
-	[https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/build-system.html#optional-project-variables]()
-- If you are using GNU Make as build system, add following lines to the Makefile file in your project folder
-	`EXTRA_COMPONENT_DIRS:= PATH-to-your-esp-wolfssl-folder`
-
-	see the guidelines at
-
-    [https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/build-system-legacy.html#optional-project-variables]()
-
-### Include `esp-wolfssl` component in ESP-IDF
-
-- Copy folder `esp-wolfssl` into `$(IDF_PATH)/components/`
-
-## Selecting WolfSSL
-
-- To select the esp-wolfssl as SSL/TLS Library in `esp-tls`
-	`idf.py/make menuconfig -> Component Config -> ESP-TLS -> Choose ESP_TLS/SSL Library`
-	- note: esp-wolfssl is used with ESP-TLS abstraction, your code written using esp-tls component should run successfully with choosing wolfssl
-
-- You can see the setting of `esp-wolfssl` at `esp-wolfssl/wolfssl/port/user_settings`. Additionally enable debug logs for wolfssl in the same option provided in step 3 (helps while debugging).
+- Please clone this repository using,
+    ```
+    git clone https://github.com/espressif/esp-wolfssl
+    ```
+- Please refer to https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html for setting ESP-IDF
+  - ESP-IDF can be downloaded from https://github.com/espressif/esp-idf/
+  - ESP-IDF v4.1 and above is recommended version
+- Please refer to [example README](examples/README.md) for more information on setting up examples
 
 # Additional Pointers
 
