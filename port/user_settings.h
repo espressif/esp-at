@@ -50,7 +50,7 @@
 #define WOLFSSL_ALT_CERT_CHAINS /* Allow to try alternate cert chain */
 
 /* If you want to authenticate the server with Intermediate CA cert, enable following flag */
-/* #define WOLFSSL_SMALL_CERT_VERIFY */
+#define WOLFSSL_SMALL_CERT_VERIFY
 
 /* Reduces the Cache used by wolfssl and thus reduces heap used */
 #define WOLFSSL_SMALL_STACK

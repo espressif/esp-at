@@ -1,5 +1,5 @@
 set(include_dirs port wolfssl)
-set(lib_path ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+set(lib_path ${CMAKE_CURRENT_SOURCE_DIR}/wolfssl/lib)
 
 idf_component_register(INCLUDE_DIRS "${include_dirs}"
                     REQUIRES lwip
