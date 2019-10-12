@@ -1230,9 +1230,6 @@ Parameters:
 - **\<service_name>**: MDNS service name
 - **\<port>**: MDNS port
 
-***Notes:***
-    Please do not use other special characters (such as .) for <hostname> and <service_name>.
-
 Example:
 
     AT+MDNS=1,"espressif","_iot",8080  
