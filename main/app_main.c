@@ -29,6 +29,7 @@
 #include "freertos/task.h"
 #include "esp_system.h"
 #include "nvs_flash.h"
+#include "lwip/apps/sntp.h"
 
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
 #include "esp_event_loop.h"
@@ -104,8 +105,29 @@ static esp_at_cmd_struct at_update_cmd[] = {
 #endif
 
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
+static void at_init_sntp_when_got_ip(void)
+{
+    // Sync SNTP time
+    sntp_setoperatingmode(SNTP_OPMODE_POLL);
+    sntp_setservername(0, "ntp1.aliyun.com");
+    sntp_init();
+
+    // Set timezone to China Standard Time
+    setenv("TZ", "CST-8", 1);
+    tzset();
+}
+
 static esp_err_t at_wifi_event_handler(void *ctx, system_event_t *event)
 {
+    switch (event->event_id) {
+    case SYSTEM_EVENT_STA_GOT_IP:
+        at_init_sntp_when_got_ip();
+        break;
+
+    default:
+        break;
+    }
+
     esp_err_t ret = esp_at_wifi_event_handler(ctx, event);
 
     return ret;
