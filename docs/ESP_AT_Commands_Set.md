@@ -1457,8 +1457,6 @@ Parameters:
 * ESP32 can only set one SSL connection at most.
 * SSL connection does not support UART-WiFi passthrough mode (transparent transmission).
 * SSL connection needs a large amount of memory; otherwise, it may cause system reboot. 
-* Make sure valid sntp time by `AT+CIPSNTPTIME?` if SSL connected failed.
-* Set sntp server and area by `AT+CIPSNTPCFG`
 
 Example:
 
