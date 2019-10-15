@@ -21,6 +21,9 @@ else ifeq ($(ESP_AT_PROJECT_PLATFORM), PLATFORM_ESP32)
 EXTRA_CFLAGS += -DCONFIG_TARGET_PLATFORM_ESP32=1
 endif
 
+ESP_AT_PROJECT_COMMIT_ID := $(shell git rev-parse --short HEAD)
+EXTRA_CFLAGS += -DESP_AT_PROJECT_COMMIT_ID=\"$(ESP_AT_PROJECT_COMMIT_ID)\"
+
 ESP_AT_MODULE_CONFIG_DIR ?= module_config/module_$(shell echo $(ESP_AT_MODULE_NAME) | tr A-Z a-z)
 
 ifeq (,$(wildcard $(ESP_AT_MODULE_CONFIG_DIR))) ## if there is no module config, we use platform default config
