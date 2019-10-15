@@ -146,7 +146,7 @@ void app_main()
     }
 
     const char* module_name = esp_at_get_module_name_by_id(module_id);
-    uint8_t *version = (uint8_t *)malloc(192);
+    uint8_t *version = (uint8_t *)malloc(256);
 #ifdef CONFIG_AT_COMMAND_TERMINATOR
     uint8_t cmd_terminator[2] = {CONFIG_AT_COMMAND_TERMINATOR,0};
 #endif
@@ -155,7 +155,7 @@ void app_main()
     initialise_wifi();
     at_interface_init();
 
-    sprintf((char*)version, "compile time:%s %s\r\n", __DATE__, __TIME__);
+    sprintf((char*)version, "compile time(%s):%s %s\r\n", ESP_AT_PROJECT_COMMIT_ID, __DATE__, __TIME__);
 #ifdef CONFIG_ESP_AT_FW_VERSION
     if ((strlen(CONFIG_ESP_AT_FW_VERSION) > 0) && (strlen(CONFIG_ESP_AT_FW_VERSION) <= 128)){
         printf("%s\r\n", CONFIG_ESP_AT_FW_VERSION);
