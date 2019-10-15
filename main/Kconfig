@@ -10,7 +10,9 @@ choice AT_COMMUNICATION_METHOD
     depends on AT_ENABLE
 
 source "$ESP_AT_PROJECT_PATH/main/interface/uart/Kconfig"
+if IDF_TARGET_ESP8266
 source "$ESP_AT_PROJECT_PATH/main/interface/hspi/Kconfig"
+endif
 source "$ESP_AT_PROJECT_PATH/main/interface/socket/Kconfig"
 source "$ESP_AT_PROJECT_PATH/main/interface/sdio/Kconfig"
 

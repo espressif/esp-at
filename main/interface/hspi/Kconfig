@@ -8,29 +8,9 @@ config AT_BASE_ON_HSPI
 
 if AT_BASE_ON_HSPI
 menu "AT hspi settings"
-config AT_HSPI_MISO_PIN
- 	int "HSPI miso pin for AT command"
-	default 13
-	depends on AT_BASE_ON_HSPI
-
-config AT_HSPI_MOSI_PIN
- 	int "HSPI mosi pin for AT command"
-	default 12
-	depends on AT_BASE_ON_HSPI
-
-config AT_HSPI_SCLK_PIN
- 	int "HSPI sclk pin for AT command"
-	default 15
-	depends on AT_BASE_ON_HSPI
-
-config AT_HSPI_CS_PIN
- 	int "HSPI cs pin for AT command"
-	default 14
-	depends on AT_BASE_ON_HSPI
-
 config AT_HSPI_HANDSHAKE_PIN
  	int "HSPI handshake pin for AT command"
-	default 2
+	default 4
 	depends on AT_BASE_ON_HSPI
 	
 endmenu
