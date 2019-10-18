@@ -74,3 +74,15 @@ One solution is to use an additional GPIO as a "power pin", which either powers 
 See the source code to see how the "power pin" GPIO can be managed in software.
 
 The defaults is to using `GPIO17` for this function, but it can be overriden. On Espressif's Ethernet development board, `GPIO17` is the power pin used to enable/disable the PHY oscillator.
+
+## Compiling 
+
+1. `make menuconfig` -> `Serial flasher config` to configure the serial port for downloading.
+2. `make menuconfig` -> `Component config` -> `AT` -> `AT ethernet support` to enable ethernet.
+3. Due to both the `TXD` of `UART1` and `power pin` of ethernet are `GPIO17` in the esp-at project by default, which causes pin conflicts, you have to change `uart_tx_pin` and `uart_rx_pin` to other pins referring to [How_To_Set_AT_Port_Pin.md](How_To_Set_AT_Port_Pin.md), for example, changes as following in `esp-at/components/customized_partitions/raw_data/factory_param/factory_param_data.csv`.
+
+| platform | module_name | magic_flag | ... | uart_baudrate | uart\_tx_pin | uart\_rx_pin | uart\_ctx_pin | uart\_rts_pin |...
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+PLATFORM_ESP32 |	WROOM-32|	0xfcfc	|...|115200|1|3|15|14|... 
+
+4. Recompile the `esp-at` project, download the new `factory_param.bin` and AT bin into flash.
