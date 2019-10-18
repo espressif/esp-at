@@ -152,7 +152,9 @@ void app_main()
 #endif
 
     nvs_flash_init();
+#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
     initialise_wifi();
+#endif
     at_interface_init();
 
     sprintf((char*)version, "compile time(%s):%s %s\r\n", ESP_AT_PROJECT_COMMIT_ID, __DATE__, __TIME__);
