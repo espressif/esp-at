@@ -115,7 +115,6 @@ static void initialise_wifi(void)
 {
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
 
-    tcpip_adapter_init();
     ESP_ERROR_CHECK( esp_event_loop_init(at_wifi_event_handler, NULL) );
     
     ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
@@ -152,6 +151,7 @@ void app_main()
 #endif
 
     nvs_flash_init();
+    tcpip_adapter_init();
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
     initialise_wifi();
 #endif
