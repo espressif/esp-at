@@ -34,13 +34,16 @@ class LEUnsigned(object):
         """ covert int to LE unisgned int bytes """
         output = bytes()
         for i in range(size):
-            output += chr((le_unsigned_int >> (i*8)) & 0xFF)
+            try:
+                output += chr((le_unsigned_int >> (i*8)) & 0xFF).encode("iso8859-1")
+            except UnicodeDecodeError:
+                output += chr((le_unsigned_int >> (i*8)) & 0xFF)
         return output
 
     @classmethod
     def unpack(cls, bytes_in):
         """ convert LE unsigned int bytes to int """
-        value = long()
+        value = 0
         for i, _ in enumerate(bytes_in):
             value += ord(bytes_in[i]) << (i*8)
         return value
@@ -79,7 +82,11 @@ class PKIItem(object):
         data_out += LEUnsigned.pack(item_id, 1)  # ID
         data_out += LEUnsigned.pack(len(pki_raw_data), 2)  # content len
         data_out += pki_raw_data  # raw data
-        data_out += chr(0xFF) * ((4 - (len(pki_raw_data) % 4)) % 4)  # padding
+        # padding
+        try:
+            data_out += chr(0xFF).encode("iso8859-1") * ((4 - (len(pki_raw_data) % 4)) % 4)
+        except UnicodeDecodeError:
+            data_out += chr(0xFF) * ((4 - (len(pki_raw_data) % 4)) % 4)
         return data_out
 
     @classmethod
@@ -91,7 +98,7 @@ class PKIItem(object):
             if cls.TYPE[pki_type] == pki_type_enum:
                 break
         else:
-            raise StandardError("pki type not supported: 0x%02x" % pki_type_enum)
+            raise TypeError("pki type not supported: 0x%02x" % pki_type_enum)
 
         folder_path = os.path.join(output_path, pki_type)
         if os.path.exists(folder_path) is False:
@@ -246,7 +253,7 @@ def main():
             data = _file.read()
         FileFormat.from_bytes(data, args.output_path)
     else:
-        print "Not supported operation: %s" % args.operation
+        print("Not supported operation: %s" % args.operation)
         exit(-1)
 
 
