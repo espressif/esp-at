@@ -101,10 +101,20 @@ config AT_BT_COMMAND_SUPPORT
     bool "AT bt command support."
     default "n"
     select CLASSIC_BT_ENABLED
-    select A2DP_ENABLE
-    select BT_SPP_ENABLED
     select BT_ALLOCATION_FROM_SPIRAM_FIRST
     depends on AT_ENABLE
+
+config AT_BT_SPP_COMMAND_SUPPORT
+    bool "AT bt spp command support."
+    default "y"
+    select BT_SPP_ENABLED
+    depends on AT_BT_COMMAND_SUPPORT
+
+config AT_BT_A2DP_COMMAND_SUPPORT
+    bool "AT bt a2dp command support."
+    default "n"
+    select A2DP_ENABLE
+    depends on AT_BT_COMMAND_SUPPORT
     
 config AT_FS_COMMAND_SUPPORT
     bool "AT FS command support."
