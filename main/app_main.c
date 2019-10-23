@@ -208,6 +208,16 @@ void app_main()
     if(esp_at_bt_cmd_regist() == false) {
         printf("regist bt cmd fail\r\n");
     }
+#ifdef CONFIG_AT_BT_SPP_COMMAND_SUPPORT
+    if(esp_at_bt_spp_cmd_regist() == false) {
+        printf("regist bt spp cmd fail\r\n");
+    }
+#endif
+#ifdef CONFIG_AT_BT_A2DP_COMMAND_SUPPORT
+    if(esp_at_bt_a2dp_cmd_regist() == false) {
+        printf("regist bt a2dp cmd fail\r\n");
+    }
+#endif
 #endif
 
 #if defined(CONFIG_BT_ENABLED)

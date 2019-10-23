@@ -380,6 +380,20 @@ bool esp_at_ble_cmd_regist(void);
 bool esp_at_bt_cmd_regist(void);
 
 /**
+* @brief regist at bt spp command set. If not,you can not use AT bt spp command
+* @param NONE
+*
+*/
+bool esp_at_bt_spp_cmd_regist(void);
+
+/**
+* @brief regist at bt a2dp command set. If not,you can not use AT bt a2dp command
+* @param NONE
+*
+*/
+bool esp_at_bt_a2dp_cmd_regist(void);
+
+/**
  * @brief regist at fs command set. If not,you can not use AT fs command
  * @param NONE
  *
