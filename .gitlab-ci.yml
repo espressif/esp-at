@@ -125,7 +125,7 @@ esp32_wrover_at:
 
     - export ESP_AT_MODULE_NAME=WROVER-32
     - make defconfig
-    - make -j4
+    - make -j4 SILENCE=1
     - make print_flash_cmd | tail -n 1 > build/download.config
     - make factory_bin
 
