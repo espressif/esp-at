@@ -21,6 +21,11 @@ else ifeq ($(ESP_AT_PROJECT_PLATFORM), PLATFORM_ESP32)
 EXTRA_CFLAGS += -DCONFIG_TARGET_PLATFORM_ESP32=1
 endif
 
+export SILENCE ?=
+ifeq ($(SILENCE), 1)
+EXTRA_CFLAGS += -DNDEBUG
+endif
+
 ESP_AT_PROJECT_COMMIT_ID := $(shell git rev-parse --short HEAD)
 EXTRA_CFLAGS += -DESP_AT_PROJECT_COMMIT_ID=\"$(ESP_AT_PROJECT_COMMIT_ID)\"
 
@@ -62,7 +67,11 @@ $(info $(shell cd $(IDF_PATH); \
 endif
 endif
 
+ifeq ($(SILENCE), 1)
+SDKCONFIG_DEFAULTS := $(ESP_AT_MODULE_CONFIG_DIR)/sdkconfig_silence.defaults
+else
 SDKCONFIG_DEFAULTS := $(ESP_AT_MODULE_CONFIG_DIR)/sdkconfig.defaults
+endif
 
 export PROJECT_VER = "ESP-AT"
 
