@@ -156,7 +156,10 @@ def generate_factory_param_bin(data_lists, type_dicts, target_name, platform, mo
                 cell_data = data_list[col]
 
                 if type(cell_data).__name__ == 'unicode' or type(cell_data).__name__ == 'str':
-                    str_value = cell_data.encode('utf-8')
+                    if sys.version_info.major == 2:
+                        str_value = cell_data.encode('utf-8')
+                    else:
+                        str_value = cell_data
                     if str_value.startswith(('0x', '0X')):
                         value = int(str_value,16)
                     elif str_value.startswith(('0')):
@@ -178,7 +181,7 @@ def generate_factory_param_bin(data_lists, type_dicts, target_name, platform, mo
         target_bin_name = os.path.splitext(target_name)[0] + '_' + module_name + '.bin'
         with open(target_bin_name, 'wb+') as f:
             f.write(factory_param_bin)
-            print "generate parameter bin: platform %s, module name %s"%(platform_name.upper(),module_name)
+            print("generate parameter bin: platform %s, module name %s"%(platform_name.upper(),module_name))
             with open(log_file, 'a+') as log_f:
                 log_f.write("%s %s %s "%(module_name, os.path.basename(target_name), target_bin_name))
 

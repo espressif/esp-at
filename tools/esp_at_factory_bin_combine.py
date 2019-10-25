@@ -63,7 +63,7 @@ def esp32_at_combine_bin(modlule, flash_mode, flash_size, flash_speed, build_dir
 
                 if modlule == modlule_name:
                     addr = bin_list[default_name]
-                    with open(bin_file) as f:
+                    with open(bin_file, 'rb') as f:
                         data = f.read()
 
                         for i, byte_data in enumerate(data):
