@@ -477,6 +477,7 @@ Parameters:
     * When erasing the targeted user partition in its entirety, parameters `<offset>` and `<length>` can be omitted. For example, command `AT+SYSFLASH=0,"ble_data"` can erase the entire "ble_data" user partition.
     * If parameters `<offset>` and `<length>` are not omitted when erasing the user partition, they have to be 4KB-aligned.
 * The introduction to partitions is in [ESP-IDF Partition Tables](http://esp-idf.readthedocs.io/en/latest/api-guides/partition-tables.html).  
+* If the operator is write, wrap return `>` after the write command, then you can send the actual data, which length is parameter `<length>`.
 
 Example:
 
@@ -512,6 +513,7 @@ Parameters:
 
 * at_customize.bin has to be downloaded, so that the relevant commands can be used. The definitions of user partitions are in esp-at/at_customize.csv. Please refer to the [ESP32_Customize_Partitions](https://github.com/espressif/esp-at/tree/master/docs) for more details.
 * If the length of the read data is greater than the actual file length, only the actual data length of the file will be returned.
+* If the operator is write, wrap return `>` after the write command, then you can send the actual data, which length is parameter `<length>`.
 
 Example:
 
@@ -1909,8 +1911,8 @@ Response:
 Parameters:
 
 - **\<mode>**: 
-    - 0: does not show the remote IP and port with "+IPD".
-    - 1: shows the remote IP and port with "+IPD".
+    - 0: does not show the remote IP and port with "+IPD" and "+CIPRECVDATA".
+    - 1: shows the remote IP and port with "+IPD" and "+CIPRECVDATA".
 
 Example:
 
@@ -1925,7 +1927,7 @@ Command:
     (+CIPMUX=1)+IPD,<link ID>,<len>[,<remote IP>,<remote port>]:<data>
 Parameters:
 
-- **\[\<remote IP>]**: remote IP, enabled by command `AT+CIPDINFO=1`.
+- **\[\<remote IP>]**: remote IP string, enabled by command `AT+CIPDINFO=1`.
 - **\[\<remote port>]**: remote port, enabled by command `AT+CIPDINFO=1`.
 - **\<link ID>**: ID number of connection.
 - **\<len>**: data length.
@@ -2042,7 +2044,7 @@ Example:
 ### 4.23 [AT+CIPRECVDATA](#TCPIP-AT)—Get Socket Data in Passive Receive Mode
 Set Command:
 
-    Single connection: (+CIPMUX=0)ß
+    Single connection: (+CIPMUX=0)
     AT+CIPRECVDATA=<len>
     Multiple connections: (+CIPMUX=1)
     AT+CIPRECVDATA=<link_id>,<len>
@@ -2051,11 +2053,18 @@ Response:
     +CIPRECVDATA:<actual_len>,<data>
     OK
 
+or
+
+    +CIPRECVDATA:<actual_len>,<remote IP>,<remote port>,<data>
+    OK
+
 Parameters:
 - **\<link_id>**: connection ID in multiple connection mode.
 - **\<len>**: data length that you want to get, max is 2048 bytes per time.
 - **\<actual_len>**: length of the data you actually get
 - **\<data>**: the data you get
+- **\[\<remote IP>]**: remote IP string, enabled by command `AT+CIPDINFO=1`.
+- **\[\<remote port>]**: remote port, enabled by command `AT+CIPDINFO=1`.
 
 Example:
 
