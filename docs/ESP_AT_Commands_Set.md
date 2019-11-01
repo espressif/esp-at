@@ -1,8 +1,10 @@
+[toc]
+
 # ESP AT Commands Set
 Here is a list of AT commands. Some of the AT commands can only work on the ESP32, which will be marked as [ESP32 Only]; others can work on both the ESP8266 and ESP32.  
 <a name="Begin-8266"></a>
 P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
-  
+ 
 ## 1. AT Commands List
 <a name="Basic-AT"></a>
 ### 1.1 Basic AT Commands List
@@ -33,15 +35,16 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+CWLAPOPT](#cmd-LAPOPT) : Sets the configuration of command AT+CWLAP.
 * [AT+CWLAP](#cmd-LAP) : Lists available APs.
 * [AT+CWQAP](#cmd-QAP) : Disconnects from the AP.
-* [AT+CWSAP](#cmd-SAP) : Sets the configuration of the ESP32 SoftAP.
-* [AT+CWLIF](#cmd-LIF) : Gets the Station IP to which the ESP32 SoftAP is connected.
+* [AT+CWSAP](#cmd-SAP) : Sets the configuration of the ESP SoftAP.
+* [AT+CWLIF](#cmd-LIF) : Gets the Station IP to which the ESP SoftAP is connected.
+* [AT+CWQIF](#cmd-QIF) : Disconnect Station from the ESP SoftAP.
 * [AT+CWDHCP](#cmd-DHCP) : Enables/disables DHCP.
-* [AT+CWDHCPS](#cmd-DHCPS) : Sets the IP range of the ESP32 SoftAP DHCP server. Saves the setting in flash.
+* [AT+CWDHCPS](#cmd-DHCPS) : Sets the IP range of the ESP SoftAP DHCP server. Saves the setting in flash.
 * [AT+CWAUTOCONN](#cmd-AUTOC) : Connects to the AP automatically on power-up.
-* [AT+CIPSTAMAC](#cmd-STAMAC) : Sets the MAC address of ESP32 Station.
-* [AT+CIPAPMAC](#cmd-APMAC) : Sets the MAC address of ESP32 SoftAP.
-* [AT+CIPSTA](#cmd-IPSTA) : Sets the IP address of ESP32 Station.
-* [AT+CIPAP](#cmd-IPAP) : Sets the IP address of ESP32 SoftAP.
+* [AT+CIPSTAMAC](#cmd-STAMAC) : Sets the MAC address of ESP Station.
+* [AT+CIPAPMAC](#cmd-APMAC) : Sets the MAC address of ESP SoftAP.
+* [AT+CIPSTA](#cmd-IPSTA) : Sets the IP address of ESP Station.
+* [AT+CIPAP](#cmd-IPAP) : Sets the IP address of ESP SoftAP.
 * [AT+CWSTARTSMART](#cmd-STARTS) : Starts SmartConfig.
 * [AT+CWSTOPSMART](#cmd-STOPS) : Stops SmartConfig.
 * [AT+WPS](#cmd-WPS) : Enables the WPS function.
@@ -54,6 +57,7 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+CIPSTATUS](#cmd-STATUS) : Gets the connection status.
 * [AT+CIPDOMAIN](#cmd-DOMAIN) : Domain Name Resolution Function.
 * [AT+CIPSTART](#cmd-START) : Establishes TCP connection, UDP transmission or SSL connection.
+* [AT+CIPSTARTEX](#cmd-STARTEX) : Establishes TCP connection, UDP transmission or SSL connection with automatically assigned ID.
 * [AT+CIPSEND](#cmd-SEND) : Sends data.
 * [AT+CIPSENDEX](#cmd-SENDEX) : Sends data when length of data is \<length>, or when \0 appears in the data.
 * [AT+CIPCLOSE](#cmd-CLOSE) : Closes TCP/UDP/SSL connection.
@@ -117,9 +121,9 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [ESP32 Only] [AT+BLEENCCLEAR](#cmd-BLEENCCLEAR) : Clear BLE encryption device list
 * [ESP32 Only] [AT+BLESETKEY](#cmd-BLESETKEY) : Set BLE static pair key
 * [ESP32 Only] [AT+BLEHIDINIT](#cmd-BLEHIDINIT) : BLE HID device profile initialization
-* [ESP32 Only] [AT+BLEHIDKB](#cmd-BLEHIDKB) : BLE HID Keyboard information send
-* [ESP32 Only] [AT+BLEHIDMUS](#cmd-BLEHIDMUS) : BLE HID mouse information send
-* [ESP32 Only] [AT+BLEHIDCONSUMER](#cmd-BLEHIDC) : BLE HID consumer information send
+* [ESP32 Only] [AT+BLEHIDKB](#cmd-BLEHIDKB) : Send BLE HID Keyboard information
+* [ESP32 Only] [AT+BLEHIDMUS](#cmd-BLEHIDMUS) : Send BLE HID mouse information
+* [ESP32 Only] [AT+BLEHIDCONSUMER](#cmd-BLEHIDC) : Send BLE HID consumer information
 
 * [ESP32 Only] [BLE AT Examples](#exam-BLE)
 
@@ -585,7 +589,7 @@ Response:
 Set Command: 
 
     AT+SYSTIMESTAMP=<Unix_timestamp>
-    Function: to set local time stamp, it will update to SNTP time, if SNTP time is updated.
+    Function: to set local time stamp. It will be the same as SNTP time when the SNTP time updated.
 Response:
 
     OK
@@ -642,7 +646,7 @@ If disable AT error code prompt:
     ERROR  
 
 <a name="cmd-SYSLSP"></a>
-### 2.18 [AT+SYSLSP](#Basic-AT)—Enters light-sleep mode (Just support ESP32)
+### 2.18 [AT+SYSLSP](#Basic-AT)—Enters light-sleep mode (Only Support ESP32)
 Execute Command:
     AT+SYSLSP
 Response:
@@ -654,7 +658,7 @@ Example:
     AT+SYSLSP
 
 <a name="cmd-SYSLSPCFG"></a>
-### 2.19 [AT+SYSLSPCFG](#Basic-AT)—Config the light-sleep wakeup source (Just support ESP32)
+### 2.19 [AT+SYSLSPCFG](#Basic-AT)—Config the light-sleep wakeup source (Only Support ESP32)
 Set Command:  
 
     AT+SYSLSPCFG=<wakeup source>,<param>[,<wakeup level>]
@@ -665,15 +669,15 @@ Parameters:
 
 - **\<wakeup source>**: 
     - 0: Wakeup by timer.
-    - 1: Wakeup by uart.  
+    - 1: Wakeup by UART.  
     - 2: Wakeup by GPIO.
 
 - **\<param>**:
     - If the wakeup source is timer, this param is time before wakeup, the units is millisecond.
-    - If the wakeup source is uart. this param is Uart number.
-    - If the wakeup source is GPIO, the param is the IO number.
+    - If the wakeup source is UART. this param is the Uart number.
+    - If the wakeup source is GPIO, the param is the GPIO number.
 
-- **\<wakeup level>**: only used for GPIO, 0: Low level, 1: High level.
+- **\<wakeup level>**: only for wakeup source GPIO, 0: Low level, 1: High level.
 
 Example:
 
@@ -734,7 +738,7 @@ Parameters:
 
 Set Command:
 
-    AT+CWJAP=<ssid>,<pwd>[,<bssid>][,<pci_en>][,<reconn>]
+    AT+CWJAP=<ssid>,<pwd>[,<bssid>][,<pci_en>][,<reconn>][,<listen_interval>]
     Function: to set the AP to which the ESP32 Station needs to be connected.
 Response:
 
@@ -750,6 +754,7 @@ Parameters:
 - **\[\<bssid>]**: the target AP's MAC address, used when multiple APs have the same SSID.
 - **\[\<pci_en>]**: enable PCI Authentication, which will disable connect OPEN and WEP AP.
 - **\[\<reconn>]**: enable Wi-Fi reconnection, when beacon timeout, ESP32 will reconnect automatically.
+- **\[\<listen_interval>]**: the interval of listening to the AP's beacon,the range is (0,100],
 - **\<error code>**: (for reference only)
     - 1: connection timeout.
     - 2: wrong password.
@@ -902,8 +907,30 @@ Parameters:
 
 * This command cannot get a static IP. It only works when both DHCPs of the ESP32 SoftAP, and of the Station to which ESP32 is connected, are enabled.
 
+<a name="cmd-QIF"></a>
+### 3.8 [AT+CWQIF](#WiFi-AT)—Disconnect Station from the ESP SoftAP
+Execute Command:
+
+    AT+CWQIF
+    Function: Disconnect all stations that connected to the ESP SoftAP.
+Response:
+
+    OK
+
+Set Command:
+
+    AT+CWQIF=<mac>
+    Function: Disconnect the station whose mac is "<mac>" from the ESP SoftAP.
+Response:
+
+    OK
+
+Parameters:
+
+- **\<mac>**: MAC address of the station to disconnect to.
+
 <a name="cmd-DHCP"></a>
-### 3.8 [AT+CWDHCP](#WiFi-AT)—Enables/Disables DHCP
+### 3.9 [AT+CWDHCP](#WiFi-AT)—Enables/Disables DHCP
 Query Command: 
 
     AT+CWDHCP?
@@ -945,7 +972,7 @@ Examples:
     AT+CWDHCP=1,1    //Enable Station DHCP. If the last DHCP mode is 2, then the current DHCP mode will be 3.
     AT+CWDHCP=0,2    //Disable SoftAP DHCP. If the last DHCP mode is 3, then the current DHCP mode will be 1.   
 <a name="cmd-DHCPS"></a>
-### 3.9 [AT+CWDHCPS](#WiFi-AT)—Sets the IP Address Allocated by ESP32 SoftAP DHCP (The configuration is saved in Flash.)
+### 3.10 [AT+CWDHCPS](#WiFi-AT)—Sets the IP Address Allocated by ESP32 SoftAP DHCP (The configuration is saved in Flash.)
 Query Command:
 
     AT+CWDHCPS?
@@ -982,7 +1009,7 @@ Examples:
     AT+CWDHCPS=0 //Disable the settings and use the default IP range.
 
 <a name="cmd-AUTOC"></a>
-### 3.10 [AT+CWAUTOCONN](#WiFi-AT)—Auto-Connects to the AP or Not
+### 3.11 [AT+CWAUTOCONN](#WiFi-AT)—Auto-Connects to the AP or Not
 Set Command:
 
     AT+CWAUTOCONN=<enable>
@@ -1005,7 +1032,7 @@ Example:
     AT+CWAUTOCONN=1
 
 <a name="cmd-STAMAC"></a>
-### 3.11 [AT+CIPSTAMAC](#WiFi-AT)—Sets the MAC Address of the ESP32 Station
+### 3.12 [AT+CIPSTAMAC](#WiFi-AT)—Sets the MAC Address of the ESP32 Station
 Query Command:
 
     AT+CIPSTAMAC?
@@ -1038,7 +1065,7 @@ Example:
     AT+CIPSTAMAC="1a:fe:35:98:d3:7b"    
 
 <a name="cmd-APMAC"></a>
-### 3.12 [AT+CIPAPMAC](#WiFi-AT)—Sets the MAC Address of the ESP32 SoftAP
+### 3.13 [AT+CIPAPMAC](#WiFi-AT)—Sets the MAC Address of the ESP32 SoftAP
 Query Command:
 
     AT+CIPAPMAC?
@@ -1071,7 +1098,7 @@ Example:
     AT+CIPAPMAC="18:fe:35:98:d3:7b" 
 
 <a name="cmd-IPSTA"></a>
-### 3.13 [AT+CIPSTA](#WiFi-AT)—Sets the IP Address of the ESP32 Station
+### 3.14 [AT+CIPSTA](#WiFi-AT)—Sets the IP Address of the ESP32 Station
 Query Command:
 
     AT+CIPSTA?
@@ -1106,7 +1133,7 @@ Example:
 
     AT+CIPSTA="192.168.6.100","192.168.6.1","255.255.255.0" 
 <a name="cmd-IPAP"></a>
-### 3.14 [AT+CIPAP](#WiFi-AT)—Sets the IP Address of the ESP32 SoftAP
+### 3.15 [AT+CIPAP](#WiFi-AT)—Sets the IP Address of the ESP32 SoftAP
 Query Command:
 
     AT+CIPAP?
@@ -1141,7 +1168,7 @@ Example:
     AT+CIPAP="192.168.5.1","192.168.5.1","255.255.255.0"
 
 <a name="cmd-STARTS"></a>
-### 3.15 [AT+CWSTARTSMART](#WiFi-AT)—Starts SmartConfig
+### 3.16 [AT+CWSTARTSMART](#WiFi-AT)—Starts SmartConfig
 Execute Command:
 
     AT+CWSTARTSMART
@@ -1174,7 +1201,7 @@ Example:
     AT+CWSTARTSMART
 
 <a name="cmd-STOPS"></a>
-### 3.16 [AT+CWSTOPSMART](#WiFi-AT)—Stops SmartConfig
+### 3.17 [AT+CWSTOPSMART](#WiFi-AT)—Stops SmartConfig
 Execute Command:
 
     AT+CWSTOPSMART
@@ -1192,7 +1219,7 @@ Example:
     AT+CWSTOPSMART
 
 <a name="cmd-WPS"></a>
-### 3.17 [AT+WPS](#WiFi-AT)—Enables the WPS Function
+### 3.18 [AT+WPS](#WiFi-AT)—Enables the WPS Function
 Set Command:
 
     AT+WPS=<enable>
@@ -1216,7 +1243,7 @@ Example:
     AT+WPS=1
     
 <a name="cmd-MDNS"></a>
-### 3.18 [AT+MDNS](#WiFi-AT)—Configurates the MDNS Function
+### 3.19 [AT+MDNS](#WiFi-AT)—Configurates the MDNS Function
 Set Command:
 
     AT+MDNS=<enable>[,<hostname>,<service_name>,<port>]
@@ -1238,7 +1265,7 @@ Example:
     AT+MDNS=0
 
 <a name="cmd-JEAP"></a>
-### 3.19 [AT+CWJEAP](#WiFi-AT)—Connects to an WPA2 Enterprise AP.
+### 3.20 [AT+CWJEAP](#WiFi-AT)—Connects to an WPA2 Enterprise AP.
 Query Command:
 
     AT+CWJEAP?
@@ -1286,7 +1313,7 @@ Example:
 * TLS mode will use client certificate, make sure enabled.
 
 <a name="cmd-HOSTNAME"></a>
-### 3.20 [AT+CWHOSTNAME](#WiFi-AT) : Configures the Name of ESP Station
+### 3.21 [AT+CWHOSTNAME](#WiFi-AT) : Configures the Name of ESP Station
 Query Command:
 
     AT+CWHOSTNAME?
@@ -1464,8 +1491,16 @@ Example:
 
     AT+CIPSTART="SSL","iot.espressif.cn",8443
     AT+CIPSTART="SSL","192.168.101.110",1000,,"192.168.101.100" 
+
+
+<a name="cmd-STARTEX"></a>
+### 4.4 [AT+CIPSTARTEX](#TCPIP-AT)—Establishes TCP connection, UDP transmission or SSL connection with automatically assigned ID
+
+This command is similar to [AT+CIPSTART](#cmd-START), but you need not to assign an ID by yourself when it is the multiple connections mode (AT+CIPMUX=1), the system will assign an ID to the new connection automatically.
+
+
 <a name="cmd-SEND"></a>
-### 4.4 [AT+CIPSEND](#TCPIP-AT)—Sends Data
+### 4.5 [AT+CIPSEND](#TCPIP-AT)—Sends Data
 Set Command: 
 
     Single connection: (+CIPMUX=0)
@@ -1511,7 +1546,7 @@ Parameters:
 - **\[\<remote port>]**(optional parameter): remote port can be set in UDP transmission.    
 
 <a name="cmd-SENDEX"></a>
-### 4.5 [AT+CIPSENDEX](#TCPIP-AT)—Sends Data
+### 4.6 [AT+CIPSENDEX](#TCPIP-AT)—Sends Data
 Set Command: 
 
     Single connection: (+CIPMUX=0)
@@ -1541,7 +1576,7 @@ Parameters:
     - When sending \0, please send it as \\\0.
 
 <a name="cmd-CLOSE"></a>
-### 4.6 [AT+CIPCLOSE](#TCPIP-AT)—Closes TCP/UDP/SSL Connection
+### 4.7 [AT+CIPCLOSE](#TCPIP-AT)—Closes TCP/UDP/SSL Connection
 Set Command (for multiple connections): 
 
     AT+CIPCLOSE=<link ID>
@@ -1558,7 +1593,7 @@ Response:
     OK  
 
 <a name="cmd-IFSR"></a>
-### 4.7 [AT+CIFSR](#TCPIP-AT)—Gets the Local IP Address
+### 4.8 [AT+CIFSR](#TCPIP-AT)—Gets the Local IP Address
 Execute Command:
 
     AT+CIFSR    
@@ -1578,7 +1613,7 @@ Parameters:
 * Only when the ESP32 Station is connected to an AP can the Station IP can be queried.
 
 <a name="cmd-MUX"></a>
-### 4.8 [AT+CIPMUX](#TCPIP-AT)—Enables/Disables Multiple Connections
+### 4.9 [AT+CIPMUX](#TCPIP-AT)—Enables/Disables Multiple Connections
 Query Command:
 
     AT+CIPMUX?
@@ -1612,7 +1647,7 @@ Example:
     AT+CIPMUX=1 
 
 <a name="cmd-SERVER"></a>
-### 4.9 [AT+CIPSERVER](#TCPIP-AT)—Deletes/Creates TCP or SSL Server
+### 4.10 [AT+CIPSERVER](#TCPIP-AT)—Deletes/Creates TCP or SSL Server
 Set Command:
 
     AT+CIPSERVER=<mode>[,<port>][,<SSL>,<SSL CA enable>]    
@@ -1646,7 +1681,7 @@ Example:
     AT+CIPSERVER=1,443,"SSL",1
 
 <a name="cmd-SERVERMAX"></a>
-### 4.10 [AT+CIPSERVERMAXCONN](#TCPIP-AT)—Set the Maximum Connections Allowed by Server
+### 4.11 [AT+CIPSERVERMAXCONN](#TCPIP-AT)—Set the Maximum Connections Allowed by Server
 Query Command:
 
     AT+CIPSERVERMAXCONN?
@@ -1677,7 +1712,7 @@ Example:
     AT+CIPSERVER=1,80
 
 <a name="cmd-IPMODE"></a>
-### 4.11 [AT+CIPMODE](#TCPIP-AT)—Configures the Transmission Mode
+### 4.12 [AT+CIPMODE](#TCPIP-AT)—Configures the Transmission Mode
 Query Command:
 
     AT+CIPMODE?
@@ -1710,8 +1745,8 @@ Example:
     AT+CIPMODE=1    
 
 <a name="cmd-SAVET"></a>
-### 4.12 [AT+SAVETRANSLINK](#TCPIP-AT)—Saves the Transparent Transmission Link in Flash
-#### 4.12.1 Save TCP Single Connection in Flash
+### 4.13 [AT+SAVETRANSLINK](#TCPIP-AT)—Saves the Transparent Transmission Link in Flash
+#### 4.13.1 Save TCP Single Connection in Flash
 Set Command:
 
     AT+SAVETRANSLINK=<mode>,<remote IP or domain name>,<remote port>[,<type>,<TCP keep alive>]  
@@ -1738,7 +1773,7 @@ Parameters:
 Example:
 
     AT+SAVETRANSLINK=1,"192.168.6.110",1002,"TCP"   
-#### 4.12.2 Save UDP Transmission in Flash
+#### 4.13.2 Save UDP Transmission in Flash
 Set Command:
 
     AT+SAVETRANSLINK=<mode>,<remote IP>,<remote port>,<type>[,<UDP local port>] 
@@ -1764,7 +1799,7 @@ Example:
 
     AT+SAVETRANSLINK=1,"192.168.6.110",1002,"UDP",1005  
 <a name="cmd-STO"></a>
-### 4.13 [AT+CIPSTO](#TCPIP-AT)—Sets the TCP Server Timeout
+### 4.14 [AT+CIPSTO](#TCPIP-AT)—Sets the TCP Server Timeout
 Query Command:
 
     AT+CIPSTO?
@@ -1796,7 +1831,7 @@ Example:
     AT+CIPSTO=10
 
 <a name="cmd-SNTPCFG"></a>
-### 4.14 [AT+CIPSNTPCFG](#TCPIP-AT)—Sets the Time Zone and the SNTP Server
+### 4.15 [AT+CIPSNTPCFG](#TCPIP-AT)—Sets the Time Zone and the SNTP Server
 Query Command:
 
     AT+CIPSNTPCFG?
@@ -1835,7 +1870,7 @@ Example:
 
     AT+CIPSNTPCFG=8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"   
 <a name="cmd-SNTPT"></a>
-### 4.15 [AT+CIPSNTPTIME](#TCPIP-AT)—Queries the SNTP Time
+### 4.16 [AT+CIPSNTPTIME](#TCPIP-AT)—Queries the SNTP Time
 Query Command:
 
     AT+CIPSNTPTIME? 
@@ -1852,7 +1887,7 @@ Example:
     OK  
 
 <a name="cmd-UPDATE"></a>
-### 4.16 [AT+CIUPDATE](#TCPIP-AT)—Updates the Software Through Wi-Fi
+### 4.17 [AT+CIUPDATE](#TCPIP-AT)—Updates the Software Through Wi-Fi
 Execute Command:
 
     AT+CIUPDATE  
@@ -1901,7 +1936,7 @@ Or
 * It is suggested that users call `AT+RESTORE` to restore the factory default settings after upgrading the AT firmware.
 
 <a name="cmd-IPDINFO"></a>
-### 4.17 [AT+CIPDINFO](#TCPIP-AT)—Shows the Remote IP and Port with "+IPD"
+### 4.18 [AT+CIPDINFO](#TCPIP-AT)—Shows the Remote IP and Port with "+IPD"
 Set Command:
 
     AT+CIPDINFO=<mode>  
@@ -1918,7 +1953,7 @@ Example:
 
     AT+CIPDINFO=1   
 
-### 4.18 [+IPD](#TCPIP-AT)—Receives Network Data
+### 4.19 [+IPD](#TCPIP-AT)—Receives Network Data
 Command:
 
     Single connection: 
@@ -1938,7 +1973,7 @@ Parameters:
 * The command is valid in normal command mode. When the module receives network data, it will send the data through the serial port using the `+IPD` command.
 
 <a name="cmd-SSLCCONF"></a>
-### 4.19 [AT+CIPSSLCCONF](#TCPIP-AT)—Config SSL client
+### 4.20 [AT+CIPSSLCCONF](#TCPIP-AT)—Config SSL client
 Query Command:
 
     AT+CIPSSLCCONF?
@@ -1973,7 +2008,7 @@ Parameters:
 * The configuration changes will be saved in the NVS area. If you use AT+SAVETRANSLINK to set SSL passthrough mode, the ESP will establish an SSL connection based on this configuration after next power on.
 
 <a name="cmd-AUTOCONNINT"></a>
-### 4.20 [AT+CIPRECONNINTV](#TCPIP-AT)—Set Wi-Fi transparent transmitting auto-connect interval
+### 4.21 [AT+CIPRECONNINTV](#TCPIP-AT)—Set Wi-Fi transparent transmitting auto-connect interval
 Set Command:
 
     AT+CIPRECONNINTV=<interval>
@@ -1986,7 +2021,7 @@ Example:
 
     AT+CIPRECONNINTV=10  
 
-### 4.21 [+IPD](#TCPIP-AT)—Receives Network Data
+### 4.22 [+IPD](#TCPIP-AT)—Receives Network Data
 Command:
 
     Single connection: 
@@ -2006,7 +2041,7 @@ Parameters:
 * The command is valid in normal command mode. When the module receives network data, it will send the data through the serial port using the `+IPD` command.
 
 <a name="cmd-CIPRECVMODE"></a>
-### 4.22 [AT+CIPRECVMODE](#TCPIP-AT)—Set Socket Receive Mode
+### 4.23 [AT+CIPRECVMODE](#TCPIP-AT)—Set Socket Receive Mode
 Query Command:
 
     AT+CIPRECVMODE?
@@ -2041,7 +2076,7 @@ Example:
     - `<len>` is the total length of socket data in buffer
 
 <a name="cmd-CIPRECVDATA"></a>
-### 4.23 [AT+CIPRECVDATA](#TCPIP-AT)—Get Socket Data in Passive Receive Mode
+### 4.24 [AT+CIPRECVDATA](#TCPIP-AT)—Get Socket Data in Passive Receive Mode
 Set Command:
 
     Single connection: (+CIPMUX=0)
@@ -2078,7 +2113,7 @@ Example:
 * In a case of disconnection, the buffered Socket data will still be there and can be read by MCU until you send `AT+CIPCLOSE`, or a new connection occupied the previous link_id instead.
 
 <a name="cmd-CIPRECVLEN"></a>
-### 4.24 [AT+CIPRECVLEN](#TCPIP-AT)—Get Socket Data Length in Passive Receive Mode
+### 4.25 [AT+CIPRECVLEN](#TCPIP-AT)—Get Socket Data Length in Passive Receive Mode
 Query Command:
 
     AT+CIPRECVLEN?
@@ -2102,7 +2137,7 @@ Example:
 * For ssl link, it will return the length of encrypted data, so the returned length will be more than the real data length.
 
 <a name="cmd-CIPPING"></a>
-### 4.25 [AT+PING](#TCPIP-AT): Ping Packets
+### 4.26 [AT+PING](#TCPIP-AT): Ping Packets
 Set Command:
 
     AT+PING=<IP>
@@ -2128,7 +2163,7 @@ Example:
     AT+PING="www.baidu.com"
 
 <a name="cmd-DNS"></a>
-### 4.26 [AT+CIPDNS](#TCPIP-AT) : Configures Domain Name System.
+### 4.27 [AT+CIPDNS](#TCPIP-AT) : Configures Domain Name System.
 Query Command:
 
     AT+CIPDNS?
@@ -3263,11 +3298,11 @@ Example:
     AT+BLEHIDINIT=1 
 
 <a name="cmd-BLEHIDKB"></a>
-### 5.38 [ESP32 Only][AT+BLEHIDKB](#BLE-AT)—BLE HID Keyboard information send
+### 5.38 [ESP32 Only][AT+BLEHIDKB](#BLE-AT)—Send BLE HID Keyboard information
 Set Command: 
 
     AT+BLEHIDKB=<Modifier_keys>,<key_1>,<key_2>,<key_3>,<key_4>,<key_5>,<key_6>
-    Function: to send keyboard informations.
+    Function: to send keyboard information.
 Response:
 
     OK
@@ -3286,11 +3321,11 @@ Example:
     AT+BLEHIDKB=0,4,0,0,0,0,0   // input a
 
 <a name="cmd-BLEHIDMUS"></a>
-### 5.39 [ESP32 Only][AT+BLEHIDMUS](#BLE-AT)—BLE HID mouse information send
+### 5.39 [ESP32 Only][AT+BLEHIDMUS](#BLE-AT)—Send BLE HID mouse information
 Set Command: 
 
     AT+BLEHIDMUS=<buttons>,<X_displacement>,<Y_displacement>,<wheel>
-    Function: to send mouse informations.
+    Function: to send mouse information.
 Response:
 
     OK
@@ -3306,11 +3341,11 @@ Example:
     AT+BLEHIDMUS=0,10,10,0
 
 <a name="cmd-BLEHIDC"></a>
-### 5.40 [ESP32 Only][AT+BLEHIDCONSUMER](#BLE-AT)—BLE HID consumer information send
+### 5.40 [ESP32 Only][AT+BLEHIDCONSUMER](#BLE-AT)—Send BLE HID consumer information
 Set Command: 
 
     AT+BLEHIDCONSUMER=<consumer_usage_id>
-    Function: to send consumer informations.
+    Function: to send consumer information.
 Response:
 
     OK
@@ -3783,10 +3818,10 @@ Set Command:
 Response:
 
     OK
-It will prompt the message below, if the connection is established successfully:
+It will prompt the following message, if the connection is established successfully:
 
     +BTSPPCONN:<conn_index>,<remote_address>
-It will prompt the message below, if NOT:
+It will prompt the following message, if NOT:
 
     +BTSPPCONN:<conn_index>,-1
 Parameters:
@@ -4160,8 +4195,9 @@ Example:
 
     AT+BTENCCLEAR
 
+## 9.[ESP32 Only] MQTT AT Commands List
 <a name="cmd-MQTTUSERCFG"></a>
-### [AT+MQTTUSERCFG](#MQTT-AT)  - Set MQTT User Config
+### 9.1 [AT+MQTTUSERCFG](#MQTT-AT)  - Set MQTT User Config
 **Set Command:**  
   
     AT+MQTTUSERCFG=<LinkID>,<scheme>,<"client_id">,<"username">,<"password">,<cert_key_ID>,<CA_ID>,<"path">
@@ -4200,7 +4236,7 @@ Example:
 - The total length of the entire AT command should be less than 256Bytes.
 
 <a name="cmd-MQTTCONNCFG"></a>
-### [AT+MQTTCONNCFG](#MQTT-AT)  - Set configuration of MQTT Connection
+### 9.2 [AT+MQTTCONNCFG](#MQTT-AT)  - Set configuration of MQTT Connection
 ---
 **Set Command:**
 
@@ -4229,7 +4265,7 @@ AT+MQTTCONNCFG=<LinkID>,<keepalive>,<disable_clean_session>,<"lwt_topic">,<"lwt_
 - **\<lwt_retain>**: LWT retain, can be set to 0 or 1. Default is 0.
 
 <a name="cmd-MQTTCONN"></a>
-### [AT+MQTTCONN](#MQTT-AT)  - Connect to MQTT Broker
+### 9.3 [AT+MQTTCONN](#MQTT-AT)  - Connect to MQTT Broker
 
 **Set Command:**  
 
@@ -4293,7 +4329,7 @@ OK
   - 10: MQTT over WebSocket Secure(based on TLS, verify server certificate and provide client certificate)
 
 <a name="cmd-MQTTPUB"></a>
-### [AT+MQTTPUB](#MQTT-AT) - Publish MQTT message in string
+### 9.4 [AT+MQTTPUB](#MQTT-AT) - Publish MQTT message in string
 **Set Command:**  
 
 ```
@@ -4323,7 +4359,7 @@ OK
 - This command cannot send data `\0`, if you need to send `\0`, please use command `AT+MQTTPUBRAW` instead.
 
 <a name="cmd-MQTTPUBRAW"></a>
-### [AT+MQTTPUBRAW](#MQTT-AT) - Publish MQTT message in binary
+### 9.5 [AT+MQTTPUBRAW](#MQTT-AT) - Publish MQTT message in binary
 **Set Command:**   
 ```
 AT+MQTTPUBRAW=<LinkID>,<"topic">,<length>,<qos>,<retain>
@@ -4360,7 +4396,7 @@ Or
 - **\<retain>**: retain flag
 
 <a name="cmd-MQTTSUB"></a>
-### [AT+MQTTSUB](#MQTT-AT) - Subscribe to MQTT Topic
+### 9.6 [AT+MQTTSUB](#MQTT-AT) - Subscribe to MQTT Topic
 **Set Command:**  
 ```
 AT+MQTTSUB=<LinkID>,<"topic">,<qos>
@@ -4417,7 +4453,7 @@ OK
 - **\<qos>**: the QoS that subscribed to
 
 <a name="cmd-MQTTUNSUB"></a>
-### [AT+MQTTUNSUB](#MQTT-AT) - Unsubscribe from MQTT Topic
+### 9.7 [AT+MQTTUNSUB](#MQTT-AT) - Unsubscribe from MQTT Topic
 **Set Command:**   
 
 ```
@@ -4444,7 +4480,7 @@ OK
 - If the topic has not been subscribed, then the AT log will prompt `NO UNSUBSCRIBE`. And the AT command will still respond `OK`.
 
 <a name="cmd-MQTTCLEAN"></a>
-### [AT+MQTTCLEAN](#MQTT-AT) - Close the MQTT Connection
+### 9.8 [AT+MQTTCLEAN](#MQTT-AT) - Close the MQTT Connection
 **Set Command:**  
 
 ```
@@ -4466,7 +4502,7 @@ OK
 - **\<LinkID>**: only supports link ID 0 for now
 
 <a name="MQTTErrCod"></a>
-### [MQTT Error Codes](#MQTT-AT)
+### 9.9 [MQTT Error Codes](#MQTT-AT)
 The MQTT Error code will be prompt as `ERR CODE:0x<%08x>`.
 
 ```
@@ -4552,14 +4588,14 @@ The MQTT Error code will be prompt as `ERR CODE:0x<%08x>`.
 ```
 
 <a name="MQTTNote"></a>
-### [MQTT Notes](#MQTT-AT)
+### 9.10 [MQTT Notes](#MQTT-AT)
 - In general, AT MQTT commands will be responded within 10s, except command `AT+MQTTCONN`.For example, if the router fails to access to the internet, the command `AT+MQTTPUB` will respond within 10s. But the command `AT+MQTTCONN` may need more time due to the packet retransmission in bad network environment.
 - If the `AT+MQTTCONN` is based on a TLS connection, the timeout of each packet is 10s, then the total timeout will be much longer depending on the handshake packets count. 
 - When the MQTT connection ends, it will prompt message `+MQTTDISCONNECTED:<LinkID>`
 - When the MQTT connection established, it will prompt message `+MQTTCONNECTED:<LinkID>,<scheme>,<"host">,port,<"path">,<reconnect>`
 
 <a name="MQTTExamp1"></a>
-### [Example 1: MQTT over TCP](#MQTT-AT) (with a Local MQTT Broker)
+### 9.11 [Example 1: MQTT over TCP](#MQTT-AT) (with a Local MQTT Broker)
 Create a local MQTT broker. For example, the MQTT broker's IP address is "192.168.31.113", port 1883. Then the example of communicating with the MQTT broker will be as the following steps.  
 
 ```
@@ -4571,7 +4607,7 @@ AT+MQTTCLEAN=0
 ```
 
 <a name="MQTTExamp2"></a>
-### [Example 2: MQTT over TLS](#MQTT-AT) (with a Local MQTT Broker)
+### 9.12 [Example 2: MQTT over TLS](#MQTT-AT) (with a Local MQTT Broker)
 Create a local MQTT broker. For example, the MQTT broker's IP address is "192.168.31.113", port 1883. Then the example of communicating with the MQTT broker will be as the following steps.    
 
 ```
@@ -4586,7 +4622,7 @@ AT+MQTTCLEAN=0
 ```
 
 <a name="MQTTExamp3"></a>
-### [Example 3: MQTT over WSS](#MQTT-AT) 
+### 9.13 [Example 3: MQTT over WSS](#MQTT-AT) 
 This is an example of communicating with MQTT broker: iot.eclipse.org, of which port is 443.  
 
 ```
@@ -4599,10 +4635,10 @@ AT+MQTTPUB=0,"topic","test",1,0
 AT+MQTTCLEAN=0
 ```
 
-## 9. HTTP AT Command
+## 10. HTTP AT Command
 
 <a name="cmd-HTTPCLIENT"></a>
-### 9.1 [AT+HTTPCLIENT](#HTTP-AT)-Send HTTP Client Request
+### 10.1 [AT+HTTPCLIENT](#HTTP-AT)-Send HTTP Client Request
 Set Command:  
 
     AT+HTTPCLIENT=<opt>,[<url>],[<host>],[<path>],<transport_type>,[<data>]
@@ -4650,7 +4686,7 @@ Parameters:
     AT+HTTPCLIENT=3,0,"http://httpbin.org/post",,,0,"field1=value1&field2=value
 
 <a name="cmd-HTTPErrCode"></a>
-### 9.2 [HTTP Error Code](#HTTP-AT)
+### 10.2 [HTTP Error Code](#HTTP-AT)
 
 - HTTP Client:
 
