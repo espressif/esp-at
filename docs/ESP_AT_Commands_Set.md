@@ -2261,7 +2261,7 @@ Response:
 Set Command:
 
     AT+BLENAME=<device_name>
-    Function: to set the BLE device name.
+    Function: to set the BLE device name, The maximum length is 32.
 Response:
 
     OK
@@ -3641,7 +3641,7 @@ Response:
 Set Command:
 
     AT+BTNAME=<device_name>
-    Function: to set the classic bluetooth device name.
+    Function: to set the classic bluetooth device name, The maximum length is 248.
 Response:
 
     OK
