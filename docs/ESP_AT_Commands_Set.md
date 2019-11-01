@@ -3775,7 +3775,7 @@ Response:
 
     +BTSPPCONN:<conn_index>,<remote_address>
     OK
-If the connection has not been established, there are not <conn_index> and <remote_address>
+If the connection has not been established, there will be return `+BTSPPCONN:-1`.
 Set Command: 
 
     AT+BTSPPCONN=<conn_index>,<sec_mode>,<remote_address>
