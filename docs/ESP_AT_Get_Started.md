@@ -1,7 +1,7 @@
 - [ESP32 platform](#platform-esp32)  
 - [ESP8266 platform](#platform-esp8266)  
 
-More supported modules, please referred to [`components/customized_partitions/raw_data/factory_param/factory_param_data.csv`](components/customized_partitions/raw_data/factory_param/factory_param_data.csv)
+More supported modules, please referred to [`components/customized_partitions/raw_data/factory_param/factory_param_data.csv`](../components/customized_partitions/raw_data/factory_param/factory_param_data.csv)
 
 <a name="platform-esp32"></a>
 # ESP32 platform  
