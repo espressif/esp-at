@@ -13,7 +13,7 @@ The demo is the AT command set based on uart. You can replace the uart driver wi
 - [ESP32_AT_Classic_Bluetooth.md](docs/ESP32_AT_Classic_Bluetooth.md): The example for ESP AT classic bluetooth command  
 - [ESP32_AT_Ethernet.md](docs/ESP32_AT_Ethernet.md): How to use ethernet  
 - [tools](tools/README.md): Some tools ESP AT used  
-- virtual machine (for windows user): [`http://download.espressif.com/esp_share/env/esp_ubuntu18.04_64bit.ova`](http://download.espressif.com/esp_share/env/esp_ubuntu18.04_64bit.ova)
+- virtual machine (for windows 64bits user): [`http://download.espressif.com/esp_share/env/ubuntu1804.ova`](http://download.espressif.com/esp_share/env/ubuntu1804.ova)
 - https://blog.csdn.net/espressif/article/details/79316992: CSDN espressif official blog in Chinese
 
 # 概述
@@ -31,5 +31,5 @@ libat_core.a 是 AT 命令集的核心部分, 包含默认的 AT 指令集, 具�
 - [ESP32_AT_Classic_Bluetooth.md](docs/ESP32_AT_Classic_Bluetooth.md): ESP AT 经典蓝牙指令集示例  
 - [ESP32_AT_Ethernet.md](docs/ESP32_AT_Ethernet.md): 如何使用 ethernet 接口  
 - [tools](tools/README.md): 其它一些 ESP AT 相关工具  
-- 虚拟机下载地址(供 windows 虚拟机客户使用): [`http://download.espressif.com/esp_share/env/esp_ubuntu18.04_64bit.ova`](http://download.espressif.com/esp_share/env/esp_ubuntu18.04_64bit.ova)
+- 虚拟机下载地址(供 64 位 windows 虚拟机客户使用): [`http://download.espressif.com/esp_share/env/ubuntu1804.ova`](http://download.espressif.com/esp_share/env/ubuntu1804.ova)
 - https://blog.csdn.net/espressif/article/details/79316992: CSDN espressif 中文官方博客

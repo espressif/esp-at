@@ -1460,7 +1460,7 @@ Example:
 
     AT+CIPSTART="UDP","192.168.101.110",1000,1002,2
     AT+CIPSTART="UDP","192.168.101.110",1000,,,"192.168.101.100"
-#### [ESP32 Only] 4.3.3 Establish SSL Connection
+#### 4.3.3 Establish SSL Connection
 Set Command:
 
     AT+CIPSTART=[<link ID>,]<type>,<remote IP>,<remote port>[,<TCP keep alive>][,<local IP>]    
