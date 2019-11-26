@@ -96,6 +96,11 @@ config AT_BLE_COMMAND_SUPPORT
     bool "AT ble command support."
     default "y"
     depends on AT_ENABLE
+
+config AT_BLE_HID_COMMAND_SUPPORT
+    bool "AT ble hid command support."
+    default "y"
+    depends on AT_ENABLE
     
 config AT_BT_COMMAND_SUPPORT
     bool "AT bt command support."
