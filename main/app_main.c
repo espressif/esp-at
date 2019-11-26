@@ -204,6 +204,12 @@ void app_main()
     }
 #endif
 
+#ifdef CONFIG_AT_BLE_HID_COMMAND_SUPPORT
+    if(esp_at_ble_hid_cmd_regist() == false) {
+        printf("regist ble hid cmd fail\r\n");
+    }
+#endif
+
 #ifdef CONFIG_AT_BT_COMMAND_SUPPORT
     if(esp_at_bt_cmd_regist() == false) {
         printf("regist bt cmd fail\r\n");
@@ -221,7 +227,7 @@ void app_main()
 #endif
 
 #if defined(CONFIG_BT_ENABLED)
-#ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
+#if defined(CONFIG_AT_BLE_COMMAND_SUPPORT) || defined(CONFIG_AT_BLE_HID_COMMAND_SUPPORT)
 #if !defined(CONFIG_AT_BT_COMMAND_SUPPORT)
     esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT);
 #endif
