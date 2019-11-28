@@ -87,7 +87,9 @@
 #define NO_ASN_TIME
 #define XTIME time
 /* when you want not to use HW acceleration */
-/* #define NO_ESP32WROOM32_CRYPT */
+#if !defined(CONFIG_IDF_TARGET_ESP32)
+#define NO_ESP32WROOM32_CRYPT
+#endif
 /* Turn off the sha acceleration for esp32 */
 #define NO_WOLFSSL_ESP32WROOM32_CRYPT_HASH
 /* #define NO_WOLFSSL_ESP32WROOM32_CRYPT_AES */
