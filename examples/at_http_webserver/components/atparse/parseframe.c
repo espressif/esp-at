@@ -35,6 +35,9 @@
 #include "esp_log.h"
 #include "esp_system.h"
 
+#include "esp_event_loop.h"
+#include "esp_wifi.h"
+
 #include "atparse.h"
 #include "parseframe.h"
 
@@ -163,6 +166,24 @@ static void check_reponse_task(void* pvParameters)
     }
 }
 
+static esp_err_t at_wifi_event_handler(void *ctx, system_event_t *event)
+{
+    esp_err_t ret = esp_at_wifi_event_handler(ctx, event);
+
+    return ret;
+}
+
+static void initialise_wifi(void)
+{
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+
+    ESP_ERROR_CHECK( esp_event_loop_init(at_wifi_event_handler, NULL) );
+    
+    ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
+    ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM) );
+    ESP_ERROR_CHECK( esp_wifi_start() );
+}
+
 static void init_at_module(void)
 {
     uint8_t* version = (uint8_t*)malloc(192);
@@ -182,7 +203,12 @@ static void init_at_module(void)
     }
 
 #endif
+
+    tcpip_adapter_init();
+    initialise_wifi();
+
     esp_at_device_ops_regist(&esp_at_device_ops);
+
     esp_at_module_init(CONFIG_LWIP_MAX_SOCKETS - 1, version);   // reserved one for server
     free(version);
 
