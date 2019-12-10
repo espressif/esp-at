@@ -167,7 +167,10 @@ void IRAM_ATTR at_spi_event_callback(int event, void* arg)
                                        (void*)receive_data,
                                        read_len,    // data len
                                        &xHigherPriorityTaskWoken);
-                assert(ringbuf_actual_Bytes == read_len);
+                if (ringbuf_actual_Bytes != read_len) {
+                    ESP_EARLY_LOGE(TAG, "at_spi_event_callback(SPI_SLV_WR_BUF_DONE): send data error");
+                    assert(0);
+                }
 
                 if (xStreamBufferSpacesAvailable(at_spi_slave_rx_ring_buf) >= 64) {   // Stream buffer not filled, can be read agian
                     trigger_flag = true;
@@ -180,7 +183,10 @@ void IRAM_ATTR at_spi_event_callback(int event, void* arg)
             }
 
             if (trans_done & SPI_SLV_WR_STA_DONE) {        // master -> slave status len  
-                assert(at_recv_total_len == 0);
+                if (at_recv_total_len) {
+                    ESP_EARLY_LOGE(TAG, "Receive repeat length %d", at_recv_total_len);
+                    assert(0);
+                }
                 spi_slave_get_status(HSPI_HOST, &at_recv_total_len);
                 ESP_EARLY_LOGD(TAG, "at_spi_event_callback(SPI_SLV_WR_STA_DONE): Write status, status value: %d", at_recv_total_len);
 
