@@ -81,6 +81,26 @@ config AT_SSL_SERVER_CLIENT_AUTH_SERVER
     depends on AT_NET_COMMAND_SUPPORT
 endmenu
 
+config AT_MDNS_COMMAND_SUPPORT
+    bool "AT MDNS command support."
+    default "y"
+    depends on AT_ENABLE
+
+config AT_WPS_COMMAND_SUPPORT
+    bool "AT WPS command support."
+    default "y"
+    depends on AT_WIFI_COMMAND_SUPPORT
+
+config AT_SMARTCONFIG_COMMAND_SUPPORT
+    bool "AT smartconfig command support."
+    default "y"
+    depends on AT_WIFI_COMMAND_SUPPORT
+
+config AT_PING_COMMAND_SUPPORT
+    bool "AT ping command support."
+    default "y"
+    depends on AT_ENABLE
+
 config AT_MQTT_COMMAND_SUPPORT
     bool "AT MQTT command support."
     default "n"

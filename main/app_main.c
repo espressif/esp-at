@@ -240,6 +240,30 @@ void app_main()
 #endif
 #endif
 
+#if defined(CONFIG_AT_MDNS_COMMAND_SUPPORT)
+    if(esp_at_mdns_cmd_regist() == false) {
+        printf("regist mdns cmd fail\r\n");
+    }
+#endif
+
+#if defined(CONFIG_AT_WPS_COMMAND_SUPPORT)
+    if(esp_at_wps_cmd_regist() == false) {
+        printf("regist wps cmd fail\r\n");
+    }
+#endif
+
+#if defined(CONFIG_AT_SMARTCONFIG_COMMAND_SUPPORT)
+    if(esp_at_smartconfig_cmd_regist() == false) {
+        printf("regist smartconfig cmd fail\r\n");
+    }
+#endif
+
+#if defined(CONFIG_AT_PING_COMMAND_SUPPORT)
+    if(esp_at_ping_cmd_regist() == false) {
+        printf("regist ping cmd fail\r\n");
+    }
+#endif
+
 #ifdef CONFIG_AT_ETHERNET_SUPPORT
     if(at_eth_init() == false) {
         printf("ethernet init fail\r\n");

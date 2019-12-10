@@ -28,7 +28,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "esp_partition.h"
-#include "esp_event.h"
+#include "esp_wifi.h"
+
 /**
  * @brief esp_at_cmd_struct
  *  used for define at command
@@ -351,12 +352,33 @@ bool esp_at_wifi_cmd_regist(void);
  */
 bool esp_at_net_cmd_regist(void);
 /**
-
- * @brief regist at net command set. If not,you can not use AT net command
+ * @brief regist at mdns command set. If not,you can not use AT mdns command
  * @param NONE
  *
  */
-bool esp_at_mqtt_cmd_regist(void);
+
+bool esp_at_mdns_cmd_regist(void);
+
+/**
+ * @brief regist at wps command set. If not,you can not use AT wps command
+ * @param NONE
+ *
+ */
+bool esp_at_wps_cmd_regist(void);
+
+/**
+ * @brief regist at smartconfig command set. If not,you can not use AT smartconfig command
+ * @param NONE
+ *
+ */
+bool esp_at_smartconfig_cmd_regist(void);
+
+/**
+ * @brief regist at ping command set. If not,you can not use AT ping command
+ * @param NONE
+ *
+ */
+bool esp_at_ping_cmd_regist(void);
 
 /**
  * @brief regist at http command set. If not,you can not use AT http command
@@ -365,6 +387,12 @@ bool esp_at_mqtt_cmd_regist(void);
  */
 bool esp_at_http_cmd_regist(void);
 
+/**
+ * @brief regist at mqtt command set. If not,you can not use AT mqtt command
+ * @param NONE
+ *
+ */
+bool esp_at_mqtt_cmd_regist(void);
 /**
  * @brief regist at ble command set. If not,you can not use AT ble command
  * @param NONE
