@@ -97,7 +97,7 @@ Then add module information in `esp_at_module_info` in `at_default_config.c`, li
 
 ```
 static const esp_at_module_info_t esp_at_module_info[] = {
-#if defined(CONFIG_TARGET_PLATFORM_ESP32)
+#if defined(CONFIG_IDF_TARGET_ESP32)
     {"WROOM-32",        CONFIG_ESP_AT_OTA_TOKEN_WROOM32,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 },        // default:ESP32-WROOM-32
     {"WROOM-32",        CONFIG_ESP_AT_OTA_TOKEN_WROOM32,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 },        // ESP32-WROOM-32
     {"WROVER-32",       CONFIG_ESP_AT_OTA_TOKEN_WROVER32,      CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 },       // ESP32-WROVER

@@ -37,6 +37,7 @@
 #include "esp_log.h"
 #include "esp_system.h"
 
+#ifdef CONFIG_AT_BASE_ON_SDIO
 #include "driver/sdio_slave.h"
 
 #include "soc/slc_struct.h"
@@ -237,3 +238,4 @@ void at_custom_init(void)
 
     xTaskCreate(at_sdio_recv_task , "at_sdio_recv_task" , 4096 , NULL , 2 , NULL);
 }
+#endif

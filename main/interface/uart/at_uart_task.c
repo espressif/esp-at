@@ -32,6 +32,7 @@
 #include "nvs.h"
 #include "nvs_flash.h"
 
+#ifdef CONFIG_AT_BASE_ON_UART
 #include "esp_system.h"
 #include "driver/gpio.h"
 #include "driver/uart.h"
@@ -52,7 +53,7 @@ static const uint8_t esp_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PAR
 static QueueHandle_t esp_at_uart_queue = NULL;
 static bool at_default_flag = false;
 
-#if defined(CONFIG_TARGET_PLATFORM_ESP32)
+#if defined(CONFIG_IDF_TARGET_ESP32)
 #define CONFIG_AT_UART_PORT_TX_PIN_DEFAULT          17
 #define CONFIG_AT_UART_PORT_RX_PIN_DEFAULT          16
 #define CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT         15
@@ -122,12 +123,12 @@ static int32_t at_port_read_data(uint8_t*buf,int32_t len)
 static int32_t at_port_get_data_length (void)
 {
     size_t size = 0;
-#if defined(CONFIG_TARGET_PLATFORM_ESP32)
+#if defined(CONFIG_IDF_TARGET_ESP32)
     int pattern_pos = 0;
 #endif
 
     if (ESP_OK == uart_get_buffered_data_len(esp_at_uart_port,&size)) {
-#if defined(CONFIG_TARGET_PLATFORM_ESP32)
+#if defined(CONFIG_IDF_TARGET_ESP32)
         pattern_pos = uart_pattern_get_pos(esp_at_uart_port);
         if (pattern_pos >= 0) {
             size = pattern_pos;
@@ -153,7 +154,7 @@ static void uart_task(void *pvParameters)
     uart_event_t event;
     uint32_t data_len = 0;
     BaseType_t retry_flag = pdFALSE;
-#if defined(CONFIG_TARGET_PLATFORM_ESP32)
+#if defined(CONFIG_IDF_TARGET_ESP32)
     int pattern_pos = -1;
     uint8_t *data = NULL;
 #endif
@@ -184,7 +185,7 @@ retry:
                     goto retry;
                 }
                 break;
-#if defined(CONFIG_TARGET_PLATFORM_ESP32)
+#if defined(CONFIG_IDF_TARGET_ESP32)
             case UART_PATTERN_DET:
                 pattern_pos = uart_pattern_pop_pos(esp_at_uart_port);
                 if (pattern_pos >= 0) {
@@ -312,7 +313,7 @@ static void at_uart_init(void)
     //Set UART parameters
     uart_param_config(esp_at_uart_port, &uart_config);
 
-#if defined(CONFIG_TARGET_PLATFORM_ESP32)
+#if defined(CONFIG_IDF_TARGET_ESP32)
     //Set UART pins,(-1: default pin, no change.)
     uart_set_pin(esp_at_uart_port, tx_pin, rx_pin, rts_pin, cts_pin);
     //Install UART driver, and get the queue.
@@ -549,7 +550,7 @@ static esp_at_cmd_struct at_custom_cmd[] = {
 
 void at_status_callback (esp_at_status_type status)
 {
-#if defined(CONFIG_TARGET_PLATFORM_ESP32)
+#if defined(CONFIG_IDF_TARGET_ESP32)
     switch (status) {
     case ESP_AT_STATUS_NORMAL:
         uart_disable_pattern_det_intr(esp_at_uart_port);
@@ -607,3 +608,4 @@ void at_custom_init(void)
     esp_at_custom_cmd_array_regist (at_custom_cmd, sizeof(at_custom_cmd)/sizeof(at_custom_cmd[0]));
     esp_at_port_write_data((uint8_t *)"\r\nready\r\n",strlen("\r\nready\r\n"));
 }
+#endif
