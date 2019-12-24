@@ -727,7 +727,7 @@ Query Command:
     Function: to query the AP to which the ESP32 Station is already connected.
 Response:
 
-    +CWJAP:<ssid>,<bssid>,<channel>,<rssi>
+    +CWJAP:<ssid>,<bssid>,<channel>,<rssi>,<pci_en>,<reconn>,<lisnten_interval>
     OK
 Parameters:
 
@@ -735,6 +735,9 @@ Parameters:
 - **\<bssid>**: the AP’s MAC address.
 - **\<channel>**: channel
 - **\<rssi>**: signal strength
+- **\[\<pci_en>]**: PCI Authentication, which will disable connect OPEN and WEP AP.
+- **\[\<reconn>]**: Wi-Fi reconnection, when beacon timeout, ESP32 will reconnect automatically.
+- **\[\<listen_interval>]**: the interval of listening to the AP's beacon,the range is (0,100]
 
 Set Command:
 
