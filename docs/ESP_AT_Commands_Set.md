@@ -158,21 +158,24 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [ESP32 Only] [AT+BTENCCLEAR](#cmd-BTENCCLEAR) : Clear BT encryption device list
 
 <a name="MQTT-AT"></a>
-### 1.7 [ESP32 Only] MQTT AT Commands List
+### 1.7 MQTT AT Commands List
 
- * [ESP32 Only] [AT+MQTTUSERCFG](#cmd-MQTTUSERCFG) : Set MQTT User Config
- * [ESP32 Only] [AT+MQTTCONNCFG](#cmd-MQTTCONNCFG) : Set configuration of MQTT Connection
- * [ESP32 Only] [AT+MQTTCONN](#cmd-MQTTCONN) : Connect to MQTT Broker
- * [ESP32 Only] [AT+MQTTPUB](#cmd-MQTTPUB) : Publish MQTT Data in string
- * [ESP32 Only] [AT+MQTTPUBRAW](#cmd-MQTTPUBRAW) : Publish MQTT message in binary
- * [ESP32 Only] [AT+MQTTSUB](#cmd-MQTTSUB) : Subscribe to MQTT Topic
- * [ESP32 Only] [AT+MQTTUNSUB](#cmd-MQTTUNSUB) : Unsubscribe from MQTT Topic
- * [ESP32 Only] [AT+MQTTCLEAN](#cmd-MQTTCLEAN) : Close the MQTT Connection
- * [ESP32 Only] [MQTT Error Codes](#MQTTErrCod)
- * [ESP32 Only] [MQTT Notes](#MQTTNote)
- * [ESP32 Only] [Example 1: MQTT over TCP](#MQTTExamp1)
- * [ESP32 Only] [Example 2: MQTT over TLS](#MQTTExamp2)
- * [ESP32 Only] [Example 3: MQTT over WSS](#MQTTExamp3)
+ * [AT+MQTTUSERCFG](#cmd-MQTTUSERCFG) : Set MQTT User Config
+ * [AT+MQTTCLIENTID](#cmd-MQTTCLIENTID) : Set MQTT Client ID
+ * [AT+MQTTUSERNAME](#cmd-MQTTUSERNAME) : Set MQTT Username
+ * [AT+MQTTPASSWORD](#cmd-MQTTPASSWORD) : Set MQTT Password
+ * [AT+MQTTCONNCFG](#cmd-MQTTCONNCFG) : Set configuration of MQTT Connection
+ * [AT+MQTTCONN](#cmd-MQTTCONN) : Connect to MQTT Broker
+ * [AT+MQTTPUB](#cmd-MQTTPUB) : Publish MQTT Data in string
+ * [AT+MQTTPUBRAW](#cmd-MQTTPUBRAW) : Publish MQTT message in binary
+ * [AT+MQTTSUB](#cmd-MQTTSUB) : Subscribe to MQTT Topic
+ * [AT+MQTTUNSUB](#cmd-MQTTUNSUB) : Unsubscribe from MQTT Topic
+ * [AT+MQTTCLEAN](#cmd-MQTTCLEAN) : Close the MQTT Connection
+ * [MQTT Error Codes](#MQTTErrCod)
+ * [MQTT Notes](#MQTTNote)
+ * [Example 1: MQTT over TCP](#MQTTExamp1)
+ * [Example 2: MQTT over TLS](#MQTTExamp2)
+ * [Example 3: MQTT over WSS](#MQTTExamp3)
 
 <a name="HTTP-AT"></a>
 ### 1.8 HTTP AT Command List
@@ -4238,8 +4241,82 @@ Example:
 
 - The total length of the entire AT command should be less than 256Bytes.
 
+<a name="cmd-MQTTCLIENTID"></a>
+### 9.2 [AT+MQTTCLIENTID](#MQTT-AT)  - Set MQTT Client ID
+**Set Command:**  
+  
+    AT+MQTTCLIENTID=<LinkID><"client_id">
+
+**Function:**  
+
+    Set MQTT Client ID, will cover the parameter client_id in AT+MQTTUSERCFG   
+    User can set a long client id by AT+MQTTCLIENTID.   
+
+**Response:**    
+
+    OK 
+
+**Parameters:**  
+
+- **\<LinkID>**: only supports link ID 0 for now 
+- **\<client_id>**: MQTT client ID, max length 256Bytes
+
+**Note:**  
+
+- The total length of the entire AT command should be less than 256Bytes.
+- AT+MQTTCLIENTID command only could be set after AT+MQTTUSERCFG command
+
+<a name="cmd-MQTTUSERNAME"></a>
+### 9.3 [AT+MQTTUSERNAME](#MQTT-AT)  - Set MQTT Username
+**Set Command:**  
+  
+    AT+MQTTUSERNAME=<LinkID><"client_id">
+
+**Function:**  
+
+    Set MQTT Username, will cover the parameter username in AT+MQTTUSERCFG   
+    User can set a long username by AT+MQTTUSERNAME.     
+
+**Response:**    
+
+    OK 
+
+**Parameters:**  
+
+- **\<LinkID>**: only supports link ID 0 for now 
+- **\<username>**: the user name to login to the MQTT broker, max length 256Bytes
+
+**Note:**  
+
+- The total length of the entire AT command should be less than 256Bytes.
+- AT+MQTTUSERNAME command only could be set after AT+MQTTUSERCFG command
+
+<a name="cmd-MQTTPASSWORD"></a>
+### 9.4 [AT+MQTTPASSWORD](#MQTT-AT)  - Set MQTT Password
+**Set Command:**  
+  
+    AT+MQTTPASSWORD=<LinkID><"password">
+
+**Function:**  
+
+    Set MQTT Password, will cover the parameter password in AT+MQTTUSERCFG   
+    User can set a long username by AT+MQTTPASSWORD.  
+
+**Response:**    
+
+    OK 
+
+**Parameters:**  
+
+- **\<LinkID>**: only supports link ID 0 for now 
+- **\<password>**: the password to login to the MQTT broker, max length 256Bytes
+
+**Note:**  
+
+- The total length of the entire AT command should be less than 256Bytes.
+- AT+MQTTPASSWORD command only could be set after AT+MQTTUSERCFG command
 <a name="cmd-MQTTCONNCFG"></a>
-### 9.2 [AT+MQTTCONNCFG](#MQTT-AT)  - Set configuration of MQTT Connection
+### 9.5 [AT+MQTTCONNCFG](#MQTT-AT)  - Set configuration of MQTT Connection
 ---
 **Set Command:**
 
@@ -4268,7 +4345,7 @@ AT+MQTTCONNCFG=<LinkID>,<keepalive>,<disable_clean_session>,<"lwt_topic">,<"lwt_
 - **\<lwt_retain>**: LWT retain, can be set to 0 or 1. Default is 0.
 
 <a name="cmd-MQTTCONN"></a>
-### 9.3 [AT+MQTTCONN](#MQTT-AT)  - Connect to MQTT Broker
+### 9.6 [AT+MQTTCONN](#MQTT-AT)  - Connect to MQTT Broker
 
 **Set Command:**  
 
@@ -4332,7 +4409,7 @@ OK
   - 10: MQTT over WebSocket Secure(based on TLS, verify server certificate and provide client certificate)
 
 <a name="cmd-MQTTPUB"></a>
-### 9.4 [AT+MQTTPUB](#MQTT-AT) - Publish MQTT message in string
+### 9.7 [AT+MQTTPUB](#MQTT-AT) - Publish MQTT message in string
 **Set Command:**  
 
 ```
@@ -4362,7 +4439,7 @@ OK
 - This command cannot send data `\0`, if you need to send `\0`, please use command `AT+MQTTPUBRAW` instead.
 
 <a name="cmd-MQTTPUBRAW"></a>
-### 9.5 [AT+MQTTPUBRAW](#MQTT-AT) - Publish MQTT message in binary
+### 9.8 [AT+MQTTPUBRAW](#MQTT-AT) - Publish MQTT message in binary
 **Set Command:**   
 ```
 AT+MQTTPUBRAW=<LinkID>,<"topic">,<length>,<qos>,<retain>
@@ -4399,7 +4476,7 @@ Or
 - **\<retain>**: retain flag
 
 <a name="cmd-MQTTSUB"></a>
-### 9.6 [AT+MQTTSUB](#MQTT-AT) - Subscribe to MQTT Topic
+### 9.9 [AT+MQTTSUB](#MQTT-AT) - Subscribe to MQTT Topic
 **Set Command:**  
 ```
 AT+MQTTSUB=<LinkID>,<"topic">,<qos>
@@ -4456,7 +4533,7 @@ OK
 - **\<qos>**: the QoS that subscribed to
 
 <a name="cmd-MQTTUNSUB"></a>
-### 9.7 [AT+MQTTUNSUB](#MQTT-AT) - Unsubscribe from MQTT Topic
+### 9.10 [AT+MQTTUNSUB](#MQTT-AT) - Unsubscribe from MQTT Topic
 **Set Command:**   
 
 ```
@@ -4483,7 +4560,7 @@ OK
 - If the topic has not been subscribed, then the AT log will prompt `NO UNSUBSCRIBE`. And the AT command will still respond `OK`.
 
 <a name="cmd-MQTTCLEAN"></a>
-### 9.8 [AT+MQTTCLEAN](#MQTT-AT) - Close the MQTT Connection
+### 9.11 [AT+MQTTCLEAN](#MQTT-AT) - Close the MQTT Connection
 **Set Command:**  
 
 ```
@@ -4505,7 +4582,7 @@ OK
 - **\<LinkID>**: only supports link ID 0 for now
 
 <a name="MQTTErrCod"></a>
-### 9.9 [MQTT Error Codes](#MQTT-AT)
+### 9.12 [MQTT Error Codes](#MQTT-AT)
 The MQTT Error code will be prompt as `ERR CODE:0x<%08x>`.
 
 ```
@@ -4591,14 +4668,14 @@ The MQTT Error code will be prompt as `ERR CODE:0x<%08x>`.
 ```
 
 <a name="MQTTNote"></a>
-### 9.10 [MQTT Notes](#MQTT-AT)
+### 9.13 [MQTT Notes](#MQTT-AT)
 - In general, AT MQTT commands will be responded within 10s, except command `AT+MQTTCONN`.For example, if the router fails to access to the internet, the command `AT+MQTTPUB` will respond within 10s. But the command `AT+MQTTCONN` may need more time due to the packet retransmission in bad network environment.
 - If the `AT+MQTTCONN` is based on a TLS connection, the timeout of each packet is 10s, then the total timeout will be much longer depending on the handshake packets count. 
 - When the MQTT connection ends, it will prompt message `+MQTTDISCONNECTED:<LinkID>`
 - When the MQTT connection established, it will prompt message `+MQTTCONNECTED:<LinkID>,<scheme>,<"host">,port,<"path">,<reconnect>`
 
 <a name="MQTTExamp1"></a>
-### 9.11 [Example 1: MQTT over TCP](#MQTT-AT) (with a Local MQTT Broker)
+### 9.14 [Example 1: MQTT over TCP](#MQTT-AT) (with a Local MQTT Broker)
 Create a local MQTT broker. For example, the MQTT broker's IP address is "192.168.31.113", port 1883. Then the example of communicating with the MQTT broker will be as the following steps.  
 
 ```
@@ -4610,7 +4687,7 @@ AT+MQTTCLEAN=0
 ```
 
 <a name="MQTTExamp2"></a>
-### 9.12 [Example 2: MQTT over TLS](#MQTT-AT) (with a Local MQTT Broker)
+### 9.15 [Example 2: MQTT over TLS](#MQTT-AT) (with a Local MQTT Broker)
 Create a local MQTT broker. For example, the MQTT broker's IP address is "192.168.31.113", port 1883. Then the example of communicating with the MQTT broker will be as the following steps.    
 
 ```
@@ -4625,7 +4702,7 @@ AT+MQTTCLEAN=0
 ```
 
 <a name="MQTTExamp3"></a>
-### 9.13 [Example 3: MQTT over WSS](#MQTT-AT) 
+### 9.16 [Example 3: MQTT over WSS](#MQTT-AT) 
 This is an example of communicating with MQTT broker: iot.eclipse.org, of which port is 443.  
 
 ```
