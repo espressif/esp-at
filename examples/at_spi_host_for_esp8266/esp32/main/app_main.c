@@ -42,6 +42,7 @@
 #include "driver/uart.h"
 #include "driver/spi_master.h"
 
+
 /*
 Pins in use. The SPI Master can use the GPIO mux, so feel free to change these if needed.
 */
@@ -104,7 +105,7 @@ static void IRAM_ATTR at_spi_master_tran_data(at_spi_mode_t mode, uint32_t* data
     uint32_t send_len = 0;
     memset(&t, 0x0, sizeof(t));
 
-    if (len > 32) {  // ESP8266 does not have DMA, so it can only receive 32 bytes at a time
+    if (len > 64) {  // ESP8266 does not have DMA, so it can only receive 64 bytes at a time
         ESP_LOGE(TAG, "send len:%d too large", len);
         return;
     }
@@ -282,7 +283,7 @@ void init_driver(void)
 */
 static void IRAM_ATTR spi_master_transmit(void* arg)
 {
-    uint32_t transmit_data[8];
+    uint32_t transmit_data[16];
     size_t recv_actual_len = 0;
     uint8_t* transmit_point = NULL;
 
@@ -290,7 +291,7 @@ static void IRAM_ATTR spi_master_transmit(void* arg)
     uint32_t read_len = 0;
 
     while (1) {
-        memset((uint8_t*)transmit_data, 0x0, 32);
+        memset((uint8_t*)transmit_data, 0x0, 64);
         xSemaphoreTake(rdySem, portMAX_DELAY);
 
         if (trans_mode == SPI_NULL) {       // Some data need to read or write???
@@ -317,7 +318,7 @@ static void IRAM_ATTR spi_master_transmit(void* arg)
             }
         }
 
-        read_len =  transmit_len > 32 ? 32 : transmit_len;
+        read_len =  transmit_len > 64 ? 64 : transmit_len;
 
         // ESP8266 have some data want to transimit, read it
         if (trans_mode == SPI_READ) {

@@ -82,8 +82,8 @@ static void IRAM_ATTR at_spi_slave_send_data(uint32_t* data, uint32_t len)
     spi_trans_t trans;
     uint16_t cmd = 0;
     uint32_t send_len = (len + 3) >> 2;
-    if (send_len > 8) {
-        ESP_EARLY_LOGE(TAG, "ESP8266 only support transmit 32bytes(8 * sizeof(uint32_t)) one time");
+    if (send_len > 16) {
+        ESP_EARLY_LOGE(TAG, "ESP8266 only support transmit 64bytes(16 * sizeof(uint32_t)) one time");
         return;
     }
     memset(&trans, 0x0, sizeof(trans));
@@ -93,7 +93,7 @@ static void IRAM_ATTR at_spi_slave_send_data(uint32_t* data, uint32_t len)
     trans.bits.cmd = 8 * 1;
     trans.bits.addr = 8 * 1;
     trans.miso = data;
-    trans.bits.miso = send_len * 32;
+    trans.bits.miso = send_len * 32;               // 8 * sizeof(uint32_t)
     spi_trans(HSPI_HOST, &trans); 
 }
 
@@ -101,8 +101,8 @@ void IRAM_ATTR at_spi_event_callback(int event, void* arg)
 {
     BaseType_t xHigherPriorityTaskWoken;
     uint32_t trans_done;
-    uint32_t send_data[8];
-    uint32_t receive_data[8];
+    uint32_t send_data[16];
+    uint32_t receive_data[16];
     size_t ringbuf_actual_Bytes, current_bytes;
     uint32_t read_len = 0;
     bool trigger_flag = false;
@@ -115,7 +115,7 @@ void IRAM_ATTR at_spi_event_callback(int event, void* arg)
 
             if (trans_done & SPI_SLV_RD_BUF_DONE) { // slave -> master data
                 if (at_sendto_mcu_len > 0) {             // Have some data send to MCU
-                    read_len = at_sendto_mcu_len > 32 ? 32 : at_sendto_mcu_len;
+                    read_len = at_sendto_mcu_len > 64 ? 64 : at_sendto_mcu_len;
 
                     ESP_EARLY_LOGD(TAG, "at_spi_event_callback(SPI_SLV_RD_BUF_DONE): Send data len: %d", read_len);
 
@@ -156,8 +156,8 @@ void IRAM_ATTR at_spi_event_callback(int event, void* arg)
                     break;
                 }
 
-                read_len = at_recv_total_len > 32 ? 32 : at_recv_total_len;
-                for (int x = 0; x < 8; x++) {
+                read_len = at_recv_total_len > 64 ? 64 : at_recv_total_len;
+                for (int x = 0; x < 16; x++) {
                     receive_data[x] = SPI1.data_buf[x];
                 }
                 ESP_EARLY_LOGD(TAG, "at_spi_event_callback(SPI_SLV_WR_BUF_DONE): Receive data len: %d", read_len);
@@ -167,9 +167,12 @@ void IRAM_ATTR at_spi_event_callback(int event, void* arg)
                                        (void*)receive_data,
                                        read_len,    // data len
                                        &xHigherPriorityTaskWoken);
-                assert(ringbuf_actual_Bytes == read_len);
+                if (ringbuf_actual_Bytes != read_len) {
+                    ESP_EARLY_LOGE(TAG, "at_spi_event_callback(SPI_SLV_WR_BUF_DONE): send data error");
+                    assert(0);
+                }
 
-                if (xStreamBufferSpacesAvailable(at_spi_slave_rx_ring_buf) >= 32) {   // Stream buffer not filled, can be read agian
+                if (xStreamBufferSpacesAvailable(at_spi_slave_rx_ring_buf) >= 64) {   // Stream buffer not filled, can be read agian
                     trigger_flag = true;
                 } else {
                     recv_filled_len = xStreamBufferBytesAvailable(at_spi_slave_rx_ring_buf);
@@ -180,7 +183,10 @@ void IRAM_ATTR at_spi_event_callback(int event, void* arg)
             }
 
             if (trans_done & SPI_SLV_WR_STA_DONE) {        // master -> slave status len  
-                assert(at_recv_total_len == 0);
+                if (at_recv_total_len) {
+                    ESP_EARLY_LOGE(TAG, "Receive repeat length %d", at_recv_total_len);
+                    assert(0);
+                }
                 spi_slave_get_status(HSPI_HOST, &at_recv_total_len);
                 ESP_EARLY_LOGD(TAG, "at_spi_event_callback(SPI_SLV_WR_STA_DONE): Write status, status value: %d", at_recv_total_len);
 
@@ -206,7 +212,7 @@ void IRAM_ATTR at_spi_event_callback(int event, void* arg)
             if (trans_done & SPI_SLV_RD_STA_DONE) {     // Slave -> Master status len
                 if (at_sendto_mcu_len > 0) {   // We have some data need to send, and MCU have got it
                     at_spi_trans_done = false;   // Start a send cycle
-                    read_len = at_sendto_mcu_len > 32 ? 32 : at_sendto_mcu_len;
+                    read_len = at_sendto_mcu_len > 64 ? 64 : at_sendto_mcu_len;
                     ringbuf_actual_Bytes = xStreamBufferReceiveFromISR(at_spi_slave_tx_ring_buf,
                                            (void*)send_data,
                                            read_len,
@@ -266,7 +272,7 @@ static int32_t IRAM_ATTR at_spi_read_data(uint8_t* data, int32_t len)
     if (at_wait_recv_data) {
         ESP_LOGD(TAG, "at_spi_read_data need to wait, len: %d", len);
 
-        if (xStreamBufferSpacesAvailable(at_spi_slave_rx_ring_buf) >= 32) {
+        if (xStreamBufferSpacesAvailable(at_spi_slave_rx_ring_buf) >= 64) {
             ESP_LOGD(TAG, "Can receive agiain");
             at_wait_recv_data = false;
             gpio_set_level(SPI_SLAVE_HANDSHARK_GPIO, 1);
