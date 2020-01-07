@@ -3,17 +3,26 @@ register_component()
 idf_build_get_property(build_dir BUILD_DIR)
 idf_build_get_property(project_dir PROJECT_DIR)
 
+set(flash_customized_partition_args ${build_dir}/flash_customized_partition_args)
+
+STRING(REGEX REPLACE ".*/(.*)\.csv" "\\1" customize_bin ${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE})
+set(customize_bin_full_name ${customize_bin}.bin)
 execute_process (
-    COMMAND python ${COMPONENT_DIR}/raw_data/raw_data_bin_gen.py
+    COMMAND ${PYTHON} ${IDF_PATH}/components/partition_table/gen_esp32part.py 
+        ${project_dir}/${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE} ${build_dir}/${customize_bin_full_name}
+)
+esptool_py_flash_project_args(${customize_bin} ${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_OFFSET} ${build_dir}/${customize_bin_full_name} FLASH_IN_PROJECT)
+
+execute_process (
+    COMMAND ${PYTHON} ${COMPONENT_DIR}/raw_data/raw_data_bin_gen.py
         --sdkconfig_file ${project_dir}/sdkconfig
         --dependency_file ${COMPONENT_DIR}/AT_partition_dependency
-        --partition_file ${ESP_AT_MODULE_CONFIG_DIR}/at_customize.csv
+        --partition_file ${project_dir}/${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE}
         --tools_dir ${COMPONENT_DIR}/generation_tools
         --output_dir ${build_dir}/${COMPONENT_NAME}
-        --flash_args_file ${build_dir}/flash_customized_partition_args
+        --flash_args_file ${flash_customized_partition_args}
 )
 
-set(flash_customized_partition_args ${build_dir}/flash_customized_partition_args)
 file(STRINGS ${flash_customized_partition_args} customized_partition_args)
 
 foreach(partition_args ${customized_partition_args})

@@ -20,6 +20,7 @@ esp32_wroom_at:
       - build/bootloader/*.bin
       - build/partition_table/*.bin
       - build/customized_partitions/*.bin
+      - build/flasher_args.json
       # - build/download.config
       # - build/factory/*
     expire_in: 6 mos
@@ -60,7 +61,7 @@ esp32_wroom_at:
     - time ./tools/ci/get-full-sources.sh
     - git submodule update --init
     - cd -
-
+    - export ESP_AT_PROJECT_PATH=$(pwd)
     - ./esp-idf/tools/idf.py build
     # - make print_flash_cmd | tail -n 1 > build/download.config
     # - make factory_bin
@@ -83,6 +84,7 @@ esp32_wrover_at:
       - build/bootloader/*.bin
       - build/partition_table/*.bin
       - build/customized_partitions/*.bin
+      - build/flasher_args.json
       # - build/download.config
       # - build/factory/*
     expire_in: 6 mos
@@ -125,6 +127,7 @@ esp32_wrover_at:
     - cd -
 
     - export ESP_AT_MODULE_NAME=WROVER-32
+    - export ESP_AT_PROJECT_PATH=$(pwd)
     - ./esp-idf/tools/idf.py build -DSILENCE=1
     # - make print_flash_cmd | tail -n 1 > build/download.config
     # - make factory_bin
@@ -147,6 +150,7 @@ pico_d4_at:
       - build/bootloader/*.bin
       - build/partition_table/*.bin
       - build/customized_partitions/*.bin
+      - build/flasher_args.json
       # - build/download.config
       # - build/factory/*
     expire_in: 6 mos
@@ -189,6 +193,7 @@ pico_d4_at:
     - cd -
 
     - export ESP_AT_MODULE_NAME=PICO-D4
+    - export ESP_AT_PROJECT_PATH=$(pwd)
     - ./esp-idf/tools/idf.py build -DSILENCE=1
     # - make print_flash_cmd | tail -n 1 > build/download.config
     # - make factory_bin
@@ -212,6 +217,7 @@ solo_1_at:
       - build/bootloader/*.bin
       - build/partition_table/*.bin
       - build/customized_partitions/*.bin
+      - build/flasher_args.json
       # - build/download.config
       # - build/factory/*
     expire_in: 6 mos
@@ -254,6 +260,7 @@ solo_1_at:
     - cd -
 
     - export ESP_AT_MODULE_NAME=SOLO-1
+    - export ESP_AT_PROJECT_PATH=$(pwd)
     - ./esp-idf/tools/idf.py build -DSILENCE=1
     # - make print_flash_cmd | tail -n 1 > build/download.config
     # - make factory_bin
@@ -276,6 +283,7 @@ esp8266_wroom_02_at:
       - build/bootloader/*.bin
       - build/partition_table/*.bin
       - build/customized_partitions/*.bin
+      - build/flasher_args.json
       # - build/download.config
       # - build/factory/*
     expire_in: 6 mos
@@ -316,6 +324,7 @@ esp8266_wroom_02_at:
 
     - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP8266
     - export ESP_AT_MODULE_NAME=WROOM-02
+    - export ESP_AT_PROJECT_PATH=$(pwd)
     - ./esp-idf/tools/idf.py build -DSILENCE=1
     # - make print_flash_cmd | tail -n 1 > build/download.config
     # - make factory_bin
@@ -338,6 +347,7 @@ esp8266_wroom_5V2L_at:
       - build/bootloader/*.bin
       - build/partition_table/*.bin
       - build/customized_partitions/*.bin
+      - build/flasher_args.json
       # - build/download.config
       # - build/factory/*
     expire_in: 6 mos
@@ -377,6 +387,7 @@ esp8266_wroom_5V2L_at:
     
     - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP8266
     - export ESP_AT_MODULE_NAME=WROOM-5V2L
+    - export ESP_AT_PROJECT_PATH=$(pwd)
     - ./esp-idf/tools/idf.py build -DSILENCE=1
     # - make print_flash_cmd | tail -n 1 > build/download.config
     # - make factory_bin
@@ -471,6 +482,7 @@ wrover32_all_function_at:
       - build/bootloader/*.bin
       - build/partition_table/*.bin
       - build/customized_partitions/*.bin
+      - build/flasher_args.json
       # - build/download.config
       # - build/factory/*
     expire_in: 6 mos
@@ -528,6 +540,7 @@ wrover32_all_function_at:
     - cd -
 
     - export ESP_AT_MODULE_NAME=WROVER-32
+    - export ESP_AT_PROJECT_PATH=$(pwd)
     - ./esp-idf/tools/idf.py build -DSILENCE=1
     # - make print_flash_cmd | tail -n 1 > build/download.config
     # - make factory_bin

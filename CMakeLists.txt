@@ -4,21 +4,17 @@
 # in this exact order for cmake to work correctly
 cmake_minimum_required(VERSION 3.5)
 
-if (DEFINED ENV{ESP_AT_PROJECT_PLATFORM})
-set(ESP_AT_PROJECT_PLATFORM $ENV{ESP_AT_PROJECT_PLATFORM})
-else()
-set(ESP_AT_PROJECT_PLATFORM PLATFORM_ESP32)
+if (NOT DEFINED ENV{ESP_AT_PROJECT_PLATFORM})
+set(ENV{ESP_AT_PROJECT_PLATFORM} PLATFORM_ESP32)
 endif()
 
-if (DEFINED ENV{ESP_AT_MODULE_NAME})
-set(ESP_AT_MODULE_NAME $ENV{ESP_AT_MODULE_NAME})
-else()
-set(ESP_AT_MODULE_NAME WROOM-32)
+if (NOT DEFINED ENV{ESP_AT_MODULE_NAME})
+set(ENV{ESP_AT_MODULE_NAME} WROOM-32)
 endif()
 
 set(IDF_PATH ${CMAKE_SOURCE_DIR}/esp-idf)
 
-string(SUBSTRING "${ESP_AT_PROJECT_PLATFORM}" 9 31 PLATFORM_NAME) # remove PLATFORM_
+string(SUBSTRING "$ENV{ESP_AT_PROJECT_PLATFORM}" 9 31 PLATFORM_NAME) # remove PLATFORM_
 string(TOLOWER ${PLATFORM_NAME} LOWER_NAME)
 
 set(ESP_AT_MODULE_CONFIG_DIR ${CMAKE_SOURCE_DIR}/module_config/module_${LOWER_NAME}_default )
@@ -90,3 +86,18 @@ endif()
 include(${IDF_PATH}/tools/cmake/project.cmake)
 
 project(esp-at)
+
+
+add_custom_target(factory_bin ALL DEPENDS app)
+add_custom_command(OUTPUT factory_bin
+  POST_BUILD
+  COMMAND mkdir -p $ENV{ESP_AT_PROJECT_PATH}/build/factory
+  COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/tools/esp_at_factory_bin_combine_cmake.py
+		--module_name $ENV{ESP_AT_MODULE_NAME}
+ 		--bin_directory $ENV{ESP_AT_PROJECT_PATH}/build
+		--flash_mode ${CONFIG_ESPTOOLPY_FLASHMODE}
+		--flash_size ${CONFIG_ESPTOOLPY_FLASHSIZE}
+		--flash_speed ${CONFIG_ESPTOOLPY_FLASHFREQ}
+		--parameter_file $ENV{ESP_AT_PROJECT_PATH}/build/factory/factory_parameter.log
+  COMMENT "Create factory bin..."
+)
