@@ -22,7 +22,7 @@ esp32_wroom_at:
       - build/customized_partitions/*.bin
       - build/flasher_args.json
       - build/download.config
-      # - build/factory/*
+      - build/factory/*
     expire_in: 6 mos
 
   before_script:
@@ -87,7 +87,7 @@ esp32_wrover_at:
       - build/customized_partitions/*.bin
       - build/flasher_args.json
       - build/download.config
-      # - build/factory/*
+      - build/factory/*
     expire_in: 6 mos
 
   before_script:
@@ -154,7 +154,7 @@ pico_d4_at:
       - build/customized_partitions/*.bin
       - build/flasher_args.json
       - build/download.config
-      # - build/factory/*
+      - build/factory/*
     expire_in: 6 mos
 
   before_script:
@@ -222,7 +222,7 @@ solo_1_at:
       - build/customized_partitions/*.bin
       - build/flasher_args.json
       - build/download.config
-      # - build/factory/*
+      - build/factory/*
     expire_in: 6 mos
 
   before_script:
@@ -289,7 +289,7 @@ esp8266_wroom_02_at:
       - build/customized_partitions/*.bin
       - build/flasher_args.json
       - build/download.config
-      # - build/factory/*
+      - build/factory/*
     expire_in: 6 mos
 
   before_script:
@@ -354,7 +354,7 @@ esp8266_wroom_5V2L_at:
       - build/customized_partitions/*.bin
       - build/flasher_args.json
       - build/download.config
-      # - build/factory/*
+      - build/factory/*
     expire_in: 6 mos
 
   before_script:
@@ -490,7 +490,7 @@ wrover32_all_function_at:
       - build/customized_partitions/*.bin
       - build/flasher_args.json
       - build/download.config
-      # - build/factory/*
+      - build/factory/*
     expire_in: 6 mos
 
   before_script:

@@ -87,17 +87,17 @@ include(${IDF_PATH}/tools/cmake/project.cmake)
 
 project(esp-at)
 
-
 add_custom_target(factory_bin ALL DEPENDS app)
-add_custom_command(OUTPUT factory_bin
+add_custom_command(TARGET factory_bin
   POST_BUILD
   COMMAND mkdir -p $ENV{ESP_AT_PROJECT_PATH}/build/factory
-  COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/tools/esp_at_factory_bin_combine_cmake.py
+  COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/tools/esp_at_factory_bin_combine.py
 		--module_name $ENV{ESP_AT_MODULE_NAME}
  		--bin_directory $ENV{ESP_AT_PROJECT_PATH}/build
 		--flash_mode ${CONFIG_ESPTOOLPY_FLASHMODE}
 		--flash_size ${CONFIG_ESPTOOLPY_FLASHSIZE}
 		--flash_speed ${CONFIG_ESPTOOLPY_FLASHFREQ}
 		--parameter_file $ENV{ESP_AT_PROJECT_PATH}/build/factory/factory_parameter.log
+        --download_config $ENV{ESP_AT_PROJECT_PATH}/build/flash_project_args
   COMMENT "Create factory bin..."
 )
