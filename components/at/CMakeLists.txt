@@ -1,7 +1,16 @@
 
+set(require_components ${IDF_TARGET} mqtt mdns esp_http_client json freertos spiffs
+    bootloader_support app_update openssl wpa_supplicant spi_flash)
+
+if ("${IDF_TARGET}" STREQUAL "esp32")
+    list(APPEND require_components bt fatfs)
+elseif ("${IDF_TARGET}" STREQUAL "esp8266")
+    list(APPEND require_components nvs_flash)
+endif()
+
 idf_component_register (
     INCLUDE_DIRS include
-    REQUIRES bt mqtt mdns esp_http_client json fatfs freertos spiffs)
+    REQUIRES ${require_components})
 
 if (${SILENCE} EQUAL 1)
 set(LIB_NAME _at_core_silence)
