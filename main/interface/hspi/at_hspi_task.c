@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef CONFIG_IDF_TARGET_ESP32
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/semphr.h"
@@ -36,6 +37,7 @@
 #include "esp_log.h"
 #include "esp_at.h"
 
+#ifdef CONFIG_AT_BASE_ON_HSPI
 #include "driver/gpio.h"
 #include "driver/spi.h"
 
@@ -362,3 +364,5 @@ void at_custom_init(void)
 {
 
 }
+#endif
+#endif

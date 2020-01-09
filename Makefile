@@ -14,11 +14,6 @@ EXTRA_COMPONENT_DIRS := $(ESP_AT_PROJECT_PATH)/tools/mkfatfs
 
 export IDF_PATH ?= $(ESP_AT_PROJECT_PATH)/esp-idf
 
-# add CFLAGS depends on platform
-ifeq ($(ESP_AT_PROJECT_PLATFORM), PLATFORM_ESP32)
-EXTRA_CFLAGS += -DCONFIG_TARGET_PLATFORM_ESP32=1
-endif
-
 export SILENCE ?=
 ifeq ($(SILENCE), 1)
 EXTRA_CFLAGS += -DNDEBUG
@@ -96,4 +91,5 @@ factory_bin:
 		--flash_mode $(CONFIG_ESPTOOLPY_FLASHMODE) \
 		--flash_size $(CONFIG_ESPTOOLPY_FLASHSIZE) \
 		--flash_speed $(CONFIG_ESPTOOLPY_FLASHFREQ) \
-		--parameter_file $(PROJECT_PATH)/build/factory/factory_parameter.log
+		--parameter_file $(PROJECT_PATH)/build/factory/factory_parameter.log \
+		--download_config $(PROJECT_PATH)/build/download.config

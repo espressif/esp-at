@@ -7,6 +7,7 @@
 
 #include "diskio.h"
 #include "diskio_wl.h"
+#include "diskio_impl.h"
 
 #include "esp_at.h"
 

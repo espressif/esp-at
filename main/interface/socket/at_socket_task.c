@@ -43,6 +43,7 @@
 
 #include "esp_at.h"
 
+#ifdef CONFIG_AT_BASE_ON_SOCKET
 #define ESP_AT_BUFFER_SIZE 200
 #define ESP_AT_SOCKET_PORT CONFIG_AT_SOCKET_PORT
 #define ESP_AT_RING_ESP_AT_BUFFER_SIZE 8*1024
@@ -271,3 +272,4 @@ void at_custom_init(void)
 
     esp_at_port_write_data((uint8_t*) "\r\nready\r\n", strlen("\r\nready\r\n"));
 }
+#endif
