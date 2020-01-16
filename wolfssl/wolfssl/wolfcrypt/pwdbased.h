@@ -36,6 +36,9 @@ WOLFSSL_API int wc_PBKDF1_ex(byte* key, int keyLen, byte* iv, int ivLen,
 WOLFSSL_API int wc_PBKDF1(byte* output, const byte* passwd, int pLen,
                       const byte* salt, int sLen, int iterations, int kLen,
                       int typeH);
+WOLFSSL_API int wc_PBKDF2_ex(byte* output, const byte* passwd, int pLen,
+                    const byte* salt, int sLen, int iterations, int kLen,
+                    int typeH, void* heap, int devId);
 WOLFSSL_API int wc_PBKDF2(byte* output, const byte* passwd, int pLen,
                       const byte* salt, int sLen, int iterations, int kLen,
                       int typeH);
@@ -50,6 +53,9 @@ WOLFSSL_API int wc_PKCS12_PBKDF_ex(byte* output, const byte* passwd,int passLen,
 WOLFSSL_API int wc_scrypt(byte* output, const byte* passwd, int passLen,
                           const byte* salt, int saltLen, int cost,
                           int blockSize, int parallel, int dkLen);
+WOLFSSL_API int wc_scrypt_ex(byte* output, const byte* passwd, int passLen,
+                             const byte* salt, int saltLen, word32 iterations,
+                             int blockSize, int parallel, int dkLen);
 #endif
 
 

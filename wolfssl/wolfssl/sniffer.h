@@ -88,7 +88,7 @@ enum {
  * information associated with the SSL session.
  */
 
-#if defined(__GNUC__)
+#if defined(__IAR_SYSTEMS_ICC__) || defined(__GNUC__)
     #define WOLFSSL_PACK __attribute__ ((packed))
 #else
     #define WOLFSSL_PACK
@@ -142,6 +142,9 @@ typedef struct SSLStats
     unsigned long int sslDecryptedPackets;
     unsigned long int sslKeyMatches;
     unsigned long int sslEncryptedConns;
+
+    unsigned long int sslResumptionValid;
+    unsigned long int sslResumptionInserts;
 } SSLStats;
 
 
@@ -168,6 +171,10 @@ WOLFSSL_API
 SSL_SNIFFER_API int ssl_SetWatchKeyCallback(SSLWatchCb cb, char* error);
 
 WOLFSSL_API
+SSL_SNIFFER_API int ssl_SetWatchKeyCallback_ex(SSLWatchCb cb, int devId,
+                        char* error);
+
+WOLFSSL_API
 SSL_SNIFFER_API int ssl_SetWatchKeyCtx(void* ctx, char* error);
 
 WOLFSSL_API
@@ -180,6 +187,28 @@ SSL_SNIFFER_API int ssl_SetWatchKey_file(void* vSniffer,
                         const char* keyFile, int keyType,
                         const char* password, char* error);
 
+
+typedef int (*SSLStoreDataCb)(const unsigned char* decryptBuf,
+        unsigned int decryptBufSz, unsigned int decryptBufOffset, void* ctx);
+
+WOLFSSL_API
+SSL_SNIFFER_API int ssl_SetStoreDataCallback(SSLStoreDataCb cb);
+
+WOLFSSL_API
+SSL_SNIFFER_API int ssl_DecodePacketWithSessionInfoStoreData(
+        const unsigned char* packet, int length, void* ctx,
+        SSLInfo* sslInfo, char* error);
+
+
+WOLFSSL_API
+SSL_SNIFFER_API int ssl_DecodePacketWithChain(void* vChain,
+        unsigned int chainSz, unsigned char** data, char* error);
+
+
+WOLFSSL_API
+SSL_SNIFFER_API int ssl_DecodePacketWithChainSessionInfoStoreData(
+        void* vChain, unsigned int chainSz, void* ctx, SSLInfo* sslInfo,
+        char* error);
 
 #ifdef __cplusplus
     }  /* extern "C" */

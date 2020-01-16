@@ -47,7 +47,7 @@ enum wolfSSL_ErrorCodes {
     DOMAIN_NAME_MISMATCH         = -322,   /* peer subject name mismatch */
     WANT_READ                    = -323,   /* want read, call again    */
     NOT_READY_ERROR              = -324,   /* handshake layer not ready */
-
+    IPADDR_MISMATCH              = -325,   /* peer ip address mismatch */
     VERSION_ERROR                = -326,   /* record layer version error */
     WANT_WRITE                   = -327,   /* want write, call again   */
     BUFFER_ERROR                 = -328,   /* malformed buffer input   */
@@ -153,6 +153,10 @@ enum wolfSSL_ErrorCodes {
     DH_PARAMS_NOT_FFDHE_E        = -432,   /* DH params from server not FFDHE */
     TCA_INVALID_ID_TYPE          = -433,   /* TLSX TCA ID type invalid */
     TCA_ABSENT_ERROR             = -434,   /* TLSX TCA ID no response */
+    TSIP_MAC_DIGSZ_E             = -435,   /* Invalid MAC size for TSIP */
+    CLIENT_CERT_CB_ERROR         = -436,   /* Client cert callback error */
+    SSL_SHUTDOWN_ALREADY_DONE_E  = -437,   /* Shutdown called redundantly */
+
     /* add strings to wolfSSL_ERR_reason_error_string in internal.c !!!!! */
 
     /* begin negotiation parameter errors */

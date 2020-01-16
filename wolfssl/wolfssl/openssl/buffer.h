@@ -30,10 +30,6 @@ WOLFSSL_API void wolfSSL_BUF_MEM_free(WOLFSSL_BUF_MEM* buf);
 #define BUF_MEM_grow wolfSSL_BUF_MEM_grow
 #define BUF_MEM_free wolfSSL_BUF_MEM_free
 
-/* error codes */
-#define ERR_R_MALLOC_FAILURE  MEMORY_E
-
-
 #ifdef __cplusplus
     }  /* extern "C" */
 #endif

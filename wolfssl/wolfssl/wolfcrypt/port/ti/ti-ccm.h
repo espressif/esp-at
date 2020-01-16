@@ -11,7 +11,6 @@
 
 
 
-
 #ifndef WOLF_CRYPT_TI_CCM_H
 #define WOLF_CRYPT_TI_CCM_H
 

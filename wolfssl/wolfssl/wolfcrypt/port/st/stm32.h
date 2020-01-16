@@ -15,8 +15,12 @@
 /* Generic STM32 Hashing and Crypto Functions */
 /* Supports CubeMX HAL or Standard Peripheral Library */
 
+#include <wolfssl/wolfcrypt/settings.h>
 #include <wolfssl/wolfcrypt/types.h>
 
+#if defined(WOLFSSL_STM32_PKA)
+    #include <wolfssl/wolfcrypt/ecc.h>
+#endif
 
 #ifdef STM32_HASH
 
@@ -88,21 +92,41 @@ int  wc_Stm32_Hash_Final(STM32_HASH_Context* stmCtx, word32 algo,
         #define CRYP AES
     #endif
 
+    /* Detect newer CubeMX crypto HAL (HAL_CRYP_Encrypt / HAL_CRYP_Decrypt) */
+    #if !defined(STM32_HAL_V2) && \
+        defined(WOLFSSL_STM32F7) && defined(CRYP_AES_GCM)
+        #define STM32_HAL_V2
+    #endif
+
+    /* The datatype for STM32 CubeMX HAL Crypt calls */
+    #ifdef STM32_HAL_V2
+        #define STM_CRYPT_TYPE uint32_t
+    #else
+        #define STM_CRYPT_TYPE uint8_t
+    #endif
+
     /* CRYPT_AES_GCM starts the IV with 2 */
     #define STM32_GCM_IV_START 2
 
-    #if defined(WOLFSSL_AES_DIRECT) || defined(HAVE_AESGCM) || defined(HAVE_AESCCM)
-        struct Aes;
-        #ifdef WOLFSSL_STM32_CUBEMX
-            int wc_Stm32_Aes_Init(struct Aes* aes, CRYP_HandleTypeDef* hcryp);
-        #else /* STD_PERI_LIB */
-            int wc_Stm32_Aes_Init(struct Aes* aes, CRYP_InitTypeDef* cryptInit,
-                CRYP_KeyInitTypeDef* keyInit);
-        #endif /* WOLFSSL_STM32_CUBEMX */
-    #endif /* WOLFSSL_AES_DIRECT || HAVE_AESGCM || HAVE_AESCCM */
+    struct Aes;
+    #ifdef WOLFSSL_STM32_CUBEMX
+        int wc_Stm32_Aes_Init(struct Aes* aes, CRYP_HandleTypeDef* hcryp);
+    #else /* STD_PERI_LIB */
+        int wc_Stm32_Aes_Init(struct Aes* aes, CRYP_InitTypeDef* cryptInit,
+            CRYP_KeyInitTypeDef* keyInit);
+    #endif /* WOLFSSL_STM32_CUBEMX */
 #endif /* !NO_AES */
 
 #endif /* STM32_CRYPTO */
+
+#ifdef WOLFSSL_STM32_PKA
+int stm32_ecc_verify_hash_ex(mp_int *r, mp_int *s, const byte* hash,
+                    word32 hashlen, int* res, ecc_key* key);
+
+int stm32_ecc_sign_hash_ex(const byte* hash, word32 hashlen, WC_RNG* rng,
+                     ecc_key* key, mp_int *r, mp_int *s);
+
+#endif
 
 
 #endif /* _WOLFPORT_STM32_H_ */

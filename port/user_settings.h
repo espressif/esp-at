@@ -9,6 +9,8 @@
  * https://www.wolfssl.com
  */
 
+#include "sdkconfig.h"
+
 #define WOLFSSL_ESPIDF
 #define WOLFSSL_ESPWROOM32
 
@@ -22,7 +24,10 @@
 #define HAVE_HKDF
 #define HAVE_AEAD
 #define HAVE_SUPPORTED_CURVES
-
+/* ALPN in wolfSSL is enabled by default,can be disabled with menuconfig */
+#if defined(CONFIG_WOLFSSL_HAVE_ALPN)
+    #define HAVE_ALPN
+#endif
 /* when you want to use SINGLE THREAD */
 /* #define SINGLE_THREADED */
 #define NO_FILESYSTEM
@@ -49,6 +54,8 @@
 #define OPENSSL_EXTRA_X509_SMALL /* Allows of x509 certs (for wolfssl_get_verify_result function)*/
 #define WOLFSSL_ALT_CERT_CHAINS /* Allow to try alternate cert chain */
 
+#define WOLFSSL_BASE64_ENCODE
+#define OPENSSL_EXTRA
 /* If you want to authenticate the server with Intermediate CA cert, enable following flag */
 #define WOLFSSL_SMALL_CERT_VERIFY
 
@@ -86,6 +93,8 @@
 /* enable macro below                      */
 #define NO_ASN_TIME
 #define XTIME time
+#define XGMTIME(c, t) gmtime((c))
+
 /* when you want not to use HW acceleration */
 #if !defined(CONFIG_IDF_TARGET_ESP32)
 #define NO_ESP32WROOM32_CRYPT
