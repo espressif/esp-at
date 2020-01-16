@@ -27,7 +27,7 @@
 
 #if defined(_MSC_VER)
     #define SP_NOINLINE __declspec(noinline)
-#elif defined(__GNUC__)
+#elif defined(__IAR_SYSTEMS_ICC__) || defined(__GNUC__) || defined(__KEIL__)
     #define SP_NOINLINE __attribute__((noinline))
 #else
     #define SP_NOINLINE
@@ -52,6 +52,12 @@ WOLFSSL_LOCAL int sp_RsaPrivate_3072(const byte* in, word32 inLen,
     mp_int* dm, mp_int* pm, mp_int* qm, mp_int* dpm, mp_int* dqm, mp_int* qim,
     mp_int* mm, byte* out, word32* outLen);
 
+WOLFSSL_LOCAL int sp_RsaPublic_4096(const byte* in, word32 inLen,
+    mp_int* em, mp_int* mm, byte* out, word32* outLen);
+WOLFSSL_LOCAL int sp_RsaPrivate_4096(const byte* in, word32 inLen,
+    mp_int* dm, mp_int* pm, mp_int* qm, mp_int* dpm, mp_int* dqm, mp_int* qim,
+    mp_int* mm, byte* out, word32* outLen);
+
 #endif /* WOLFSSL_HAVE_SP_RSA */
 
 #if defined(WOLFSSL_HAVE_SP_DH) || defined(WOLFSSL_HAVE_SP_RSA)
@@ -64,6 +70,8 @@ WOLFSSL_LOCAL int sp_ModExp_2048(mp_int* base, mp_int* exp, mp_int* mod,
     mp_int* res);
 WOLFSSL_LOCAL int sp_ModExp_3072(mp_int* base, mp_int* exp, mp_int* mod,
     mp_int* res);
+WOLFSSL_LOCAL int sp_ModExp_4096(mp_int* base, mp_int* exp, mp_int* mod,
+    mp_int* res);
 
 #endif
 
@@ -72,6 +80,8 @@ WOLFSSL_LOCAL int sp_ModExp_3072(mp_int* base, mp_int* exp, mp_int* mod,
 WOLFSSL_LOCAL int sp_DhExp_2048(mp_int* base, const byte* exp, word32 expLen,
     mp_int* mod, byte* out, word32* outLen);
 WOLFSSL_LOCAL int sp_DhExp_3072(mp_int* base, const byte* exp, word32 expLen,
+    mp_int* mod, byte* out, word32* outLen);
+WOLFSSL_LOCAL int sp_DhExp_4096(mp_int* base, const byte* exp, word32 expLen,
     mp_int* mod, byte* out, word32* outLen);
 
 #endif /* WOLFSSL_HAVE_SP_DH */
@@ -86,7 +96,7 @@ int sp_ecc_make_key_256(WC_RNG* rng, mp_int* priv, ecc_point* pub, void* heap);
 int sp_ecc_secret_gen_256(mp_int* priv, ecc_point* pub, byte* out,
                           word32* outlen, void* heap);
 int sp_ecc_sign_256(const byte* hash, word32 hashLen, WC_RNG* rng, mp_int* priv,
-                    mp_int* rm, mp_int* sm, void* heap);
+                    mp_int* rm, mp_int* sm, mp_int* km, void* heap);
 int sp_ecc_verify_256(const byte* hash, word32 hashLen, mp_int* pX, mp_int* pY,
                       mp_int* pZ, mp_int* r, mp_int* sm, int* res, void* heap);
 int sp_ecc_is_point_256(mp_int* pX, mp_int* pY);

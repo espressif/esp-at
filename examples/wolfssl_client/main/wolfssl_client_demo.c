@@ -214,6 +214,7 @@ static void wolfssl_client(void* pv)
             for (int i = 0; i < ret; i++) {
                 printf("%c", recv_data[i]);
             }
+	    printf("\n");
         } while (1);
 
 failed5:

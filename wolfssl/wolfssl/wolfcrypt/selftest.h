@@ -22,6 +22,9 @@
 #endif
 
 #ifdef HAVE_SELFTEST
+    /* Get wolfCrypt CAVP version */
+    WOLFSSL_API const char* wolfCrypt_GetVersion_CAVP_selftest(void);
+
     /* wolfCrypt self test, runs CAVP KATs */
     WOLFSSL_API int wolfCrypt_SelfTest(void);
 #endif
