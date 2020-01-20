@@ -134,6 +134,11 @@ config AT_BLE_HID_COMMAND_SUPPORT
     default "y"
     depends on AT_ENABLE
     
+config AT_BLUFI_COMMAND_SUPPORT
+    bool "AT blufi command support."
+    default "n"
+    depends on AT_ENABLE
+
 config AT_BT_COMMAND_SUPPORT
     bool "AT bt command support."
     default "n"
