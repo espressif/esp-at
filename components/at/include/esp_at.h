@@ -408,6 +408,13 @@ bool esp_at_ble_cmd_regist(void);
 bool esp_at_ble_hid_cmd_regist(void);
 
 /**
+ * @brief regist at blufi command set. If not,you can not use AT blufi command
+ * @param NONE
+ *
+ */
+bool esp_at_blufi_cmd_regist(void);
+
+/**
 * @brief regist at bt command set. If not,you can not use AT bt command
 * @param NONE
 *

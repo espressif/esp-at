@@ -124,6 +124,7 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [ESP32 Only] [AT+BLEHIDKB](#cmd-BLEHIDKB) : Send BLE HID Keyboard information
 * [ESP32 Only] [AT+BLEHIDMUS](#cmd-BLEHIDMUS) : Send BLE HID mouse information
 * [ESP32 Only] [AT+BLEHIDCONSUMER](#cmd-BLEHIDC) : Send BLE HID consumer information
+* [ESP32 Only] [AT+BLUFI](#cmd-BLUFI) : Start or Stop BLUFI
 
 * [ESP32 Only] [BLE AT Examples](#exam-BLE)
 
@@ -3362,6 +3363,39 @@ Parameter:
 Example:
 
     AT+BLEHIDCONSUMER=233   // volume up
+
+<a name="cmd-BLUFI"></a>
+### 5.41 [ESP32 Only] [AT+BLUFI](#BLE-AT)—Start or Stop BLUFI
+Query Command:
+
+    AT+BLUFI?
+    Function: to check the status of BLUFI.
+Response:
+
+If BLUFI is not started, it will return
+
+    +BLUFI:0
+    OK
+If BLUFI is started, it will return
+
+    +BLUFI:1
+    OK
+Set Command: 
+
+    AT+BLUFI=<option>
+    Function: start or stop blufi.
+Response:
+
+    OK
+Parameter:
+
+- **\<option>**: 
+    - 0: stop blufi
+    - 1: start blufi
+
+Example:
+
+    AT+BLUFI=1    
 
 <a name="exam-BLE"></a>
 ## 6. [ESP32 Only] [BLE AT Example](#BLE-AT)  
