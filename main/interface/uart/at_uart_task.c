@@ -48,7 +48,7 @@ typedef struct {
     int8_t flow_control;
 } at_nvm_uart_config_struct; 
 
-static const uint8_t esp_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PARITY_EVEN, UART_PARITY_ODD};
+static const uint8_t esp_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PARITY_ODD, UART_PARITY_EVEN};
 
 static QueueHandle_t esp_at_uart_queue = NULL;
 static bool at_default_flag = false;
@@ -447,7 +447,6 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     } else {
         return ESP_AT_RESULT_CODE_ERROR;
     }
-    uart_config.parity = value;
 
     if (esp_at_get_para_as_digit (cnt++,&value) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
