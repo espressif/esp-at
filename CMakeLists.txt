@@ -14,10 +14,16 @@ endif()
 
 set(IDF_PATH ${CMAKE_SOURCE_DIR}/esp-idf)
 
+string(TOLOWER $ENV{ESP_AT_MODULE_NAME} LOWER_NAME)
+
+set(ESP_AT_MODULE_CONFIG_DIR ${CMAKE_SOURCE_DIR}/module_config/module_${LOWER_NAME})
+if (NOT EXISTS "${ESP_AT_MODULE_CONFIG_DIR}")
 string(SUBSTRING "$ENV{ESP_AT_PROJECT_PLATFORM}" 9 31 PLATFORM_NAME) # remove PLATFORM_
 string(TOLOWER ${PLATFORM_NAME} LOWER_NAME)
 
 set(ESP_AT_MODULE_CONFIG_DIR ${CMAKE_SOURCE_DIR}/module_config/module_${LOWER_NAME}_default )
+endif()
+
 SET(ENV{ESP_AT_PROJECT_PATH} ${CMAKE_SOURCE_DIR} )
 
 if (NOT DEFINED SILENCE)
@@ -87,7 +93,7 @@ include(${IDF_PATH}/tools/cmake/project.cmake)
 
 project(esp-at)
 
-add_custom_target(factory_bin ALL DEPENDS app)
+add_custom_target(factory_bin ALL DEPENDS customized_bin)
 add_custom_command(TARGET factory_bin
   POST_BUILD
   COMMAND mkdir -p $ENV{ESP_AT_PROJECT_PATH}/build/factory

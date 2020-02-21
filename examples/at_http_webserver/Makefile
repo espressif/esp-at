@@ -18,9 +18,11 @@ EXTRA_CFLAGS += -DSDK_GIT=IDF_VER
 include $(IDF_PATH)/make/project.mk
 
 factory_bin:
-	$(PYTHON) $(ESP_AT_PROJECT_PATH)/tools/esp32_at_combine.py \
-		--bin_directory $(ESP_AT_PROJECT_PATH)/build \
+	$(PYTHON) $(ESP_AT_PROJECT_PATH)/tools/esp_at_factory_bin_combine.py \
+		--module_name $(ESP_AT_MODULE_NAME) \
+		--bin_directory $(PWD)/build \
 		--flash_mode $(CONFIG_ESPTOOLPY_FLASHMODE) \
 		--flash_size $(CONFIG_ESPTOOLPY_FLASHSIZE) \
-		--flash_speed $(CONFIG_ESPTOOLPY_FLASHFREQ)
+		--flash_speed $(CONFIG_ESPTOOLPY_FLASHFREQ) \
+		--download_config $(PWD)/build/download.config
 

@@ -1232,7 +1232,7 @@ static int8_t at_bledisconn_pack(at_cmd_arg* cmd_arg)
 static int8_t at_bleadvparam_pack(at_cmd_arg* cmd_arg)
 {
     uint32_t cmd_len = 0;
-    char cmd_tmp[30];
+    char cmd_tmp[60];
 
     if (cmd_arg->bleadvparam.adv_filter_policy != -1 && cmd_arg->bleadvparam.peer_addr_type != -1 && strlen(cmd_arg->bleadvparam.peer_address) > 0) {
         cmd_len = snprintf(cmd_tmp, sizeof(cmd_tmp), "AT+BLEADVPARAM=%d,%d,%d,%d,%d,%d,%d,%s\r\n", cmd_arg->bleadvparam.adv_int_min, cmd_arg->bleadvparam.adv_int_max, cmd_arg->bleadvparam.adv_type, cmd_arg->bleadvparam.addr_type, cmd_arg->bleadvparam.channel, cmd_arg->bleadvparam.adv_filter_policy, cmd_arg->bleadvparam.peer_addr_type, cmd_arg->bleadvparam.peer_address);

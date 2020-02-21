@@ -31,8 +31,8 @@ RAW_DATA_FOLDER=$ESP_AT_PROJECT_PATH/components/customized_partitions/raw_data/f
 MODULE_FILE=$(ls $RAW_DATA_FOLDER/factory_param_data.csv | awk '{print $1}')
 DEFINE_FILE=$(ls $RAW_DATA_FOLDER/factory_param_type.csv | awk '{print $1}')
 
-LOG_FILE=$ESP_AT_PROJECT_PATH/build/factory/factory_parameter.log
+LOG_FILE=$(dirname ${TARGET_FOLDER})/factory/factory_parameter.log
 
-echo "generating factory_param.bin($MODULE_NAME): python $TOOL_PATH -t $TARGET_FOLDER/$PARTITION_NAME.bin $MODULE_FILE"
+echo "generating factory_param.bin($ESP_AT_MODULE_NAME): python $TOOL_PATH -t $TARGET_FOLDER/$PARTITION_NAME.bin $MODULE_FILE"
 
 python $TOOL_PATH --platform $ESP_AT_PROJECT_PLATFORM --module $ESP_AT_MODULE_NAME --bin_name $TARGET_FOLDER/$PARTITION_NAME.bin --define_file $DEFINE_FILE --module_file $MODULE_FILE --log_file $LOG_FILE
