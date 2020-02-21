@@ -61,6 +61,8 @@ esp32_wroom_at:
     - time ./tools/ci/get-full-sources.sh
     - git submodule update --init
     - cd -
+    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
+    - export ESP_AT_MODULE_NAME=WROOM-32
     - export ESP_AT_PROJECT_PATH=$(pwd)
     - ./esp-idf/tools/idf.py build
     - cp build/flash_project_args build/download.config
@@ -127,6 +129,7 @@ esp32_wrover_at:
     - git submodule update --init
     - cd -
 
+    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
     - export ESP_AT_MODULE_NAME=WROVER-32
     - export ESP_AT_PROJECT_PATH=$(pwd)
     - ./esp-idf/tools/idf.py build -DSILENCE=1
@@ -194,9 +197,10 @@ pico_d4_at:
     - git submodule update --init
     - cd -
 
+    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
     - export ESP_AT_MODULE_NAME=PICO-D4
     - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py build -DSILENCE=1
+    - ./esp-idf/tools/idf.py build
     - cp build/flash_project_args build/download.config
     # - make print_flash_cmd | tail -n 1 > build/download.config
     # - make factory_bin
@@ -262,9 +266,10 @@ solo_1_at:
     - git submodule update --init
     - cd -
 
+    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
     - export ESP_AT_MODULE_NAME=SOLO-1
     - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py build -DSILENCE=1
+    - ./esp-idf/tools/idf.py build
     - cp build/flash_project_args build/download.config
     # - make print_flash_cmd | tail -n 1 > build/download.config
     # - make factory_bin
@@ -329,10 +334,11 @@ esp8266_wroom_02_at:
     - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP8266
     - export ESP_AT_MODULE_NAME=WROOM-02
     - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py build -DSILENCE=1
+    - ./esp-idf/tools/idf.py build
     - cp build/flash_project_args build/download.config
     # - make print_flash_cmd | tail -n 1 > build/download.config
     # - make factory_bin
+
 
 esp8266_wroom_5V2L_at:
   stage: build
@@ -393,7 +399,7 @@ esp8266_wroom_5V2L_at:
     - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP8266
     - export ESP_AT_MODULE_NAME=WROOM-5V2L
     - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py build -DSILENCE=1
+    - ./esp-idf/tools/idf.py build
     - cp build/flash_project_args build/download.config
     # - make print_flash_cmd | tail -n 1 > build/download.config
     # - make factory_bin
@@ -456,8 +462,14 @@ esp32_demo:
     - cd -
 
     - cd examples/at_http_webserver
+    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
+    - export ESP_AT_MODULE_NAME=WROOM-32
+    - export ESP_AT_PROJECT_PATH=$(pwd)/../..
     - make defconfig
     - make -j8
+    - unset ESP_AT_PROJECT_PLATFORM
+    - unset ESP_AT_MODULE_NAME
+    - unset ESP_AT_PROJECT_PATH
     - cd -
 
     - cd examples/at_sdio_host
@@ -545,9 +557,10 @@ wrover32_all_function_at:
     - git submodule update --init
     - cd -
 
+    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
     - export ESP_AT_MODULE_NAME=WROVER-32
     - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py build -DSILENCE=1
+    - ./esp-idf/tools/idf.py build
     - cp build/flash_project_args build/download.config
     # - make print_flash_cmd | tail -n 1 > build/download.config
     # - make factory_bin

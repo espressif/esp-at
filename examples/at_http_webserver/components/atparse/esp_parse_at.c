@@ -1432,8 +1432,8 @@ esp_err_t esp_at_init_parse(void)
 #if CONFIG_ESP_WIFI_MODE_AP
 // set softAP ssid: AT_HTTP_WEBSERVER, password: 12345678
     memset(&cmd_arg, 0x0, sizeof(at_cmd_arg));
-    strncpy(cmd_arg.cwsap.ssid, CONFIG_ESP_WIFI_SSID, strlen(CONFIG_ESP_WIFI_SSID));
-    strncpy(cmd_arg.cwsap.pwd, CONFIG_ESP_WIFI_PASSWORD, strlen(CONFIG_ESP_WIFI_PASSWORD));
+    strncpy(cmd_arg.cwsap.ssid, CONFIG_ESP_WIFI_SSID, sizeof(cmd_arg.cwsap.ssid));
+    strncpy(cmd_arg.cwsap.pwd, CONFIG_ESP_WIFI_PASSWORD, sizeof(cmd_arg.cwsap.pwd));
     cmd_arg.cwsap.chl = 8;
     cmd_arg.cwsap.ecn = 4;
     at_result = at_add_cmd(AT_CWSAP, &cmd_arg);

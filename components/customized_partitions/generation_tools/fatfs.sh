@@ -23,6 +23,7 @@
 #
 
 ESP_AT_IMAGE_SIZE_STR=$3
+BUILD_DIR_BASE=$(dirname $2)
 
 if [ ${ESP_AT_IMAGE_SIZE_STR: -1} == K ]
 then 
@@ -32,6 +33,7 @@ else
 	let ESP_AT_IMAGE_SIZE=$[ESP_AT_IMAGE_SIZE_STR]
 fi
 
-make mkfatfs
+# make mkfatfs
+make -C $ESP_AT_PROJECT_PATH/tools/mkfatfs BUILD_DIR_BASE=${BUILD_DIR_BASE}
 
-"$ESP_AT_PROJECT_PATH"/tools/mkfatfs/src/mkfatfs -c "$ESP_AT_IMAGE_DIR" -s $ESP_AT_IMAGE_SIZE $2/$1.bin
+${BUILD_DIR_BASE}/mkfatfs/mkfatfs -c "$ESP_AT_IMAGE_DIR" -s $ESP_AT_IMAGE_SIZE $2/$1.bin

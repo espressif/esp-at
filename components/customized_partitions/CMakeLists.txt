@@ -4,6 +4,7 @@ idf_build_get_property(build_dir BUILD_DIR)
 idf_build_get_property(project_dir PROJECT_DIR)
 
 set(flash_customized_partition_args ${build_dir}/flash_customized_partition_args)
+set(module_info ${build_dir}/module_info)
 
 STRING(REGEX REPLACE ".*/(.*)\.csv" "\\1" customize_bin ${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE})
 set(customize_bin_full_name ${customize_bin}.bin)
@@ -14,11 +15,10 @@ execute_process (
 esptool_py_flash_project_args(${customize_bin} ${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_OFFSET} ${build_dir}/${customize_bin_full_name} FLASH_IN_PROJECT)
 
 execute_process (
-    COMMAND ${PYTHON} ${COMPONENT_DIR}/raw_data/raw_data_bin_gen.py
+    COMMAND ${PYTHON} ${COMPONENT_DIR}/raw_data/at_customized_partition_parse.py
         --sdkconfig_file ${project_dir}/sdkconfig
         --dependency_file ${COMPONENT_DIR}/AT_partition_dependency
         --partition_file ${project_dir}/${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE}
-        --tools_dir ${COMPONENT_DIR}/generation_tools
         --output_dir ${build_dir}/${COMPONENT_NAME}
         --flash_args_file ${flash_customized_partition_args}
 )
@@ -35,3 +35,15 @@ foreach(partition_args ${customized_partition_args})
 
     esptool_py_flash_project_args(${file_name} ${offset} ${file_path} FLASH_IN_PROJECT)
 endforeach(partition_args)
+
+add_custom_target(customized_bin ALL DEPENDS app)
+add_custom_command(TARGET customized_bin
+  POST_BUILD
+  COMMAND mkdir -p ${build_dir}/include
+  COMMAND cp ${build_dir}/config/sdkconfig.h ${build_dir}/include/sdkconfig.h
+  COMMAND ${PYTHON} ${COMPONENT_DIR}/raw_data/at_customized_partition_gen.py
+            --tools_dir ${COMPONENT_DIR}/generation_tools
+            --output_dir ${build_dir}/${COMPONENT_NAME}
+            --flash_args_file ${flash_customized_partition_args}
+  COMMENT "Create customized_bin..."
+)

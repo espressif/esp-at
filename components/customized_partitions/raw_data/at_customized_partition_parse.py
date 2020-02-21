@@ -48,7 +48,7 @@ def parse_partition_tables (partition_file):
                 if str_list[0] in generation_tools:
                     offset = str_list[3]
                     size = str_list[4]
-                    generation_tools.update({str_list[0] : {'offset' : offset}})
+                    generation_tools.update({str_list[0] : {'offset' : offset, 'size' : size}})
 
 def main():
     """ main """
@@ -56,7 +56,6 @@ def main():
     parser.add_argument("--dependency_file", help="dependency")
     parser.add_argument("--sdkconfig_file", help="sdkconfig")
     parser.add_argument("--partition_file", help="at_customize.csv")
-    parser.add_argument("--tools_dir", default=".", help="the tools directory")
     parser.add_argument("--output_dir", default="output", help="the output bin directory")
     parser.add_argument("--flash_args_file", default="flash_args_file", help="the file to store flash args")
     args = parser.parse_args()
@@ -64,7 +63,6 @@ def main():
     sdkconfig_file = args.sdkconfig_file
     dependency_file = args.dependency_file
     partition_file = args.partition_file
-    tools_dir = args.tools_dir
     output_dir = args.output_dir
     flash_args_file = args.flash_args_file
     parse_generation_tools(dependency_file, sdkconfig_file)
@@ -75,14 +73,9 @@ def main():
 
     with open(flash_args_file, 'w+') as args_file:
         for partition in generation_tools:
-            script = ''.join([partition, '.sh'])
-            tool = os.path.join(tools_dir, script)
-            if not os.access(tool, os.X_OK):
-                os.chmod(tool, stat.S_IRUSR | stat.S_IXUSR)
-            cmd = ' '.join([tool, partition, output_dir, generation_tools[partition]['offset']])
-            subprocess.call([tool, partition, output_dir], shell = False)
             args_file.write(''.join([generation_tools[partition]['offset'], ' ']))
-            args_file.write(''.join([os.path.join(output_dir, partition), '.bin\r\n']))
+            args_file.write(''.join([os.path.join(output_dir, partition), ''.join(['.bin', ' '])]))
+            args_file.write(''.join([generation_tools[partition]['size'], '\r\n']))
 
 if __name__ == '__main__':
     main()

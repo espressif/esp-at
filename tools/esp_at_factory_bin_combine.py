@@ -75,7 +75,7 @@ def esp32_at_combine_bin(modlule, flash_mode, flash_size, flash_speed, build_dir
                         print("Create %s for %s finished"%(factory_bin, modlule_name))
     
     else:
-        factory_bin = os.path.join(os.path.dirname(parameter_file), 'factory.bin')
+        factory_bin = os.path.join(build_dir, 'factory.bin')
         with open(factory_bin, 'wb') as f:
             f.write(bin_data)
             print("Create %s finished"%(factory_bin))
