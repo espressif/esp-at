@@ -191,13 +191,16 @@ def generate_factory_param_bin(data_lists, type_dicts, target_name, platform, mo
                     has_parameter_file = 1
 
     if has_parameter_file == 0:
-        target_bin_name = os.path.splitext(target_name)[0] + '_' + target_name + '.bin'
-        with open(target_name, 'wb+') as target_f:
-            memset(byref(factory_param_bin),0xFF, len(factory_param_bin))
+        target_bin_name = os.path.splitext(target_name)[0] + '_' + module + '.bin'
+        memset(byref(factory_param_bin),0xFF, len(factory_param_bin))
+        with open(target_bin_name, 'wb+') as target_f:
             target_f.write(factory_param_bin)
 
+        with open(target_name, 'wb+') as target_f:
+                    target_f.write(factory_param_bin)
+
         with open(log_file, 'a+') as log_f:
-                log_f.write("%s %s %s "%(target_name, os.path.basename(target_name), target_bin_name))    
+                log_f.write("%s %s %s "%(module, os.path.basename(target_name), target_bin_name))    
 
 def main():
     parser = argparse.ArgumentParser()
