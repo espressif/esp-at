@@ -541,7 +541,7 @@ esp32_demo:
     - make -j8
     - cd -
 
-    - cd examples/at_sdspi_host
+    - cd examples/at_sdspi_host/ESP32
     - make defconfig
     - make -j8
     - cd -

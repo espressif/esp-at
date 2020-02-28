@@ -336,7 +336,7 @@ static esp_err_t start_command_read_blocks(sdspi_hw_cmd_t* cmd,
         uint8_t* data, uint32_t rx_length)
 {
     esp_err_t ret;
-    uint8_t rx_data[SDSPI_BLOCK_BUF_SIZE];
+    static uint8_t rx_data[SDSPI_BLOCK_BUF_SIZE];
     bool need_stop_command = rx_length > SDSPI_MAX_DATA_LEN;
 
     ret = at_spi_transmit(cmd, cmd, (SDSPI_CMD_R1_SIZE + SDSPI_RESPONSE_MAX_DELAY));
@@ -913,7 +913,7 @@ esp_err_t at_sdspi_get_packet(spi_context_t* context, void* out_data, size_t siz
         at_do_delay(1);
     } while (++try_time < 1000);
 
-    if (try_time == 100) {
+    if (try_time == 1000) {
         ESP_AT_LOGE(TAG, "esp_slave_get_rx_data_size timeout.");
         return ESP_ERR_TIMEOUT;
     }

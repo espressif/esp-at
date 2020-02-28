@@ -1,6 +1,6 @@
 # Introduction
 
-The ESP32 SPI AT uses "SDIO-SPI" mode to communicate with MCU which is as an SPI host. The communication process is shown as the following picture:
+The SDSPI AT uses "SDIO-SPI" mode to communicate with MCU which is as an SPI host. The communication process is shown as the following picture:
 
 ![dataflow](res/data_flow.png)
 
@@ -8,6 +8,8 @@ The ESP32 SPI AT uses "SDIO-SPI" mode to communicate with MCU which is as an SPI
  * The MCU as host uses SPI hardware to transmit SDIO data.
 
 Since the SDIO protocol is a pure software part, which has low coupling degree with the SPI hardware, we encapsulated the SDIO software protocol and make it platform-independent. In this case, users only need to implement the SPI hardware interfaces of the MCU, and can use the upper application directly.
+
+### SPEED
 
 Herein we used one ESP32 as the host MCU, another ESP32 running SDIO AT as the slave. And we tested its TCP throughput.  
 Test environment: SPI clock 20 MHz, in shielding box, [optimized WiFi configuration](https://github.com/espressif/esp-idf/blob/master/examples/wifi/iperf/sdkconfig.defaults) for high throughput.  
@@ -32,13 +34,15 @@ DAT3 is reused as the CS line. For each command, SDIO slave is activated by pull
 
 # Usage
 
-The SDIO SPI communication can be tested by using two ESP32  connect according to the signal line of the hardware interface.
-- A ESP32 as MCU needs to run the `at_sdspi_host` program
+The SDIO SPI communication can be tested  according to the signal line of the hardware interface.
+- MCU needs to run the `ESP32` or  `STM32` program 
 - A ESP32 as slave run SDIO AT program ( `make menuconfig` --> `Component config` --> `AT` --> `communicate method for AT command` --> `AT through SDIO`)
 
 It should be noted that CMD and DATA lines D0-D3 of the slave should be pulled up by 50KOhm resistor even when there is no connection. In addition, the voltage selection efuse should be written as 3.3v. For specific notes, please refer to [SD Pullup Requirements](https://espressif-docs.readthedocs-hosted.com/projects/esp-idf/en/latest/api-reference/peripherals/sd_pullup_requirements.html)
 
 # How do I configure the MCU
+
+We offered ESP32 & STM32 (Model: STM32F103ZET6) as the MCU solution. This section use ESP32 as MCU illustrate how to port to your own platform.
 
 Herein we used one ESP32 as the host MCU, running the example `components/platform/esp32`, another ESP32 running the SDIO AT as the slave. Users can refer to our ESP32 MCU example to implement their own host MCU. The directory structure of ESP32 which runs as the MCU is as follows:
 
@@ -90,13 +94,13 @@ Step 2: It will print these log if read R1 respond fail after Step 1, then there
 
 # Next action items
 
+- [x] MCU adds support for STM32 (ARM) (Supported)
 - [ ] MCU adds support for Raspberry Pi 3 (Linux )
-- [ ] MCU adds support for STM32 (ARM)
 
 
 # 简介
 
-ESP32 SPI AT 是 MCU 通过 SDIO 协议中的 SPI 模式与 ESP32 侧的 SDIO 进行通信，通信流程如下图所示：
+SDSPI AT 是 MCU 通过 SDIO 协议中的 SPI 模式与 ESP32 侧的 SDIO 进行通信，通信流程如下图所示：
 
 ![dataflow](res/data_flow.png)
 
@@ -104,6 +108,8 @@ ESP32 SPI AT 是 MCU 通过 SDIO 协议中的 SPI 模式与 ESP32 侧的 SDIO �
 - 作为 host 的 MCU 使用 SPI 接口，通过传输 SDIO 协议数据，和 Slave 进行 SDIO 通信.
 
 考虑到 SDIO 协议是纯软件的部分，且与 SPI 硬件耦合程度较低，因此将这部分进行封装，转换为与平台无关的形式。在此 example 中，用户只需要基于 MCU，实现 SPI、GPIO 等硬件相关操作，适配此 example 即可。 
+
+### 速率
 
 我们使用一个 ESP32 作为 host MCU， 另一个 ESP32 在 slave 侧运行 SDIO AT， 测试 TCP 吞吐如下：
 
@@ -128,16 +134,16 @@ DAT3 被复用作 CS 线，对于每一个命令， SDIO slave 均是通过拉�
 
 # 使用方法
 
-使用两个 ESP32 按照硬件接口的信号线对接即可测试 SDIO SPI 通信
+按照硬件接口的信号线对接即可测试 SDIO SPI 通信
 
-- 一个 ESP32 作为 MCU 需要运行  `at_sdspi_host` 示例程序
-- 一个 ESP32 在 slave 侧运行 SDIO AT 程序 （在 ESP32-AT 目录下配置  `make menuconfig` --> `Component config` --> `AT` --> `communicate method for AT command` --> `AT through SDIO`）
+- MCU 需要运行  `at_sdspi_host` 示例程序
+- ESP32 在 slave 侧运行 SDIO AT 程序 （在 ESP32-AT 目录下配置  `make menuconfig` --> `Component config` --> `AT` --> `communicate method for AT command` --> `AT through SDIO`）
 
  需要注意的是 SDIO slave 的 CMD 和 D0-D3 即使在没有连接时都应该连接一个 50K 的上拉电阻，另外需要将电压选择 efuse 烧写为 3.3v，具体注意事项请参考 [SD Pullup Requirements](https://espressif-docs.readthedocs-hosted.com/projects/esp-idf/en/latest/api-reference/peripherals/sd_pullup_requirements.html)
 
 # 如何移植到自己的 MCU
 
-我们提供了 ESP32 作为 MCU 的方案，用户可以参照  ESP32 `components/platform/esp32`示例代码在自己的 host MCU 上实现。
+我们提供了 ESP32 & STM32 （型号：STM32F103ZET6）作为 MCU 的方案，本章节以 ESP32 为例介绍如何移植到自己的 MCU，用户可以参照  ESP32 `components/platform/esp32`示例代码在自己的 host MCU 上实现。
 
 其中ESP32 MCU 侧示例代码的目录结构如下：
 
@@ -177,8 +183,6 @@ app_main.c 文件主要是 sdio spi 的使用，包含了两个线程（接收�
 
 **强烈建议**在开始移植到自己的 MCU 之前确保 SDIO 硬件是没有问题的，这个测试可以排查可能出现的 SDIO 硬件问题。 
 
-
-
 # 可能遇到的问题
 
 **Q** : 初始化不成功，一直打印`E sdspi_transaction: CMD0 response error, expect 0x1, response 0   E sdspi_transaction: Please restart slave and test again,error code:264`
@@ -187,6 +191,6 @@ app_main.c 文件主要是 sdio spi 的使用，包含了两个线程（接收�
 
 # 接下来的工作
 
+- [x] MCU 增加 STM32 的支持 (ARM)
 - [ ] MCU 增加树莓派 3 的支持 (Linux)
-- [ ] MCU 增加 STM32 的支持 (ARM)
 
