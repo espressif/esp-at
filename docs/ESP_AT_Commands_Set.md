@@ -25,8 +25,7 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+SYSROLLBACK](#cmd-SYSROLLBACK) : Roll back to the previous firmware.
 * [AT+SYSTIMESTAMP](#cmd-SETTIME): Set local time stamp.
 * [AT+SYSLOG](#cmd-SYSLOG) : Enable or disable the AT error code prompt.
-* [AT+SYSLSPCFG](#cmd-SYSLSPCFG) : Config the light-sleep wakeup source.
-* [AT+SYSLSP](#cmd-SYSLSP) : Enters light-sleep mode.
+* [AT+SLEEPWKCFG](#cmd-WKCFG) : Config the light-sleep wakeup source and awake GPIO.
 
 <a name="WiFi-AT"></a>
 ### 1.2 Wi-Fi AT Commands List
@@ -157,6 +156,7 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [ESP32 Only] [AT+BTSECCFM](#cmd-BTSECCFM): Reply the confirm value to the peer device in the legacy connection stage
 * [ESP32 Only] [AT+BTENCDEV](#cmd-BTENCDEV) : Query BT encryption device list
 * [ESP32 Only] [AT+BTENCCLEAR](#cmd-BTENCCLEAR) : Clear BT encryption device list
+* [ESP32 Only] [AT+BTCOD](#cmd-BTCOD) : Set class of device
 
 <a name="MQTT-AT"></a>
 ### 1.7 MQTT AT Commands List
@@ -379,6 +379,7 @@ Parameters:
 - **\<sleep mode>**: 
     - 0: disable the sleep mode.
     - 1: Modem-sleep mode.  
+    - 2: Light-sleep mode.
 
 Example:
 
@@ -649,23 +650,11 @@ If disable AT error code prompt:
 
     ERROR  
 
-<a name="cmd-SYSLSP"></a>
-### 2.18 [AT+SYSLSP](#Basic-AT)—Enters light-sleep mode (Only Support ESP32)
-Execute Command:
-    AT+SYSLSP
-Response:
-
-    OK
-
-Example:
-
-    AT+SYSLSP
-
-<a name="cmd-SYSLSPCFG"></a>
-### 2.19 [AT+SYSLSPCFG](#Basic-AT)—Config the light-sleep wakeup source (Only Support ESP32)
+<a name="cmd-WKCFG"></a>
+### 2.18 [AT+SLEEPWKCFG](#Basic-AT)—Config the light-sleep wakeup source and awake GPIO.
 Set Command:  
 
-    AT+SYSLSPCFG=<wakeup source>,<param>[,<wakeup level>]
+    AT+SLEEPWKCFG=<wakeup source>,<param1>[,<param2>]
 Response:
 
     OK
@@ -673,21 +662,22 @@ Parameters:
 
 - **\<wakeup source>**: 
     - 0: Wakeup by timer.
-    - 1: Wakeup by UART.  
+    - 1: Wakeup by UART. (Only Support ESP32)
     - 2: Wakeup by GPIO.
 
-- **\<param>**:
+- **\<param1>**:
     - If the wakeup source is timer, this param is time before wakeup, the units is millisecond.
     - If the wakeup source is UART. this param is the Uart number.
     - If the wakeup source is GPIO, the param is the GPIO number.
 
-- **\<wakeup level>**: only for wakeup source GPIO, 0: Low level, 1: High level.
+- **\<param2>**:
+    - If the wakeup source is GPIO, the param is the wakeup level, 0: Low level, 1: High level.
 
 Example:
 
-    AT+SYSLSPCFG=0,1000  // Timer wakeup
-    AT+SYSLSPCFG=1,1     // Uart1 wakeup
-    AT+SYSLSPCFG=2,12,1  // GPIO12 wakeup, high level
+    AT+SLEEPWKCFG=0,1000  // Timer wakeup
+    AT+SLEEPWKCFG=1,1     // Uart1 wakeup, Only Support ESP32
+    AT+SLEEPWKCFG=2,12,0  // GPIO12 wakeup, low level.
 
 ## 3 Wi-Fi AT Commands  
 <a name="cmd-MODE"></a>
@@ -1887,7 +1877,7 @@ Response:
     OK
 Example:
 
-    AT+CIPSNTPCFG=8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
+    AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
     OK
     AT+CIPSNTPTIME?
     +CIPSNTPTIME:Mon Dec 12 02:33:32 2016
@@ -2102,7 +2092,7 @@ or
 
 Parameters:
 - **\<link_id>**: connection ID in multiple connection mode.
-- **\<len>**: data length that you want to get, max is 2048 bytes per time.
+- **\<len>**: the max value is up to 0x7fffffff, if the actual length of the received data is less than `len`, the actual length will be returned.
 - **\<actual_len>**: length of the data you actually get
 - **\<data>**: the data you get
 - **\[\<remote IP>]**: remote IP string, enabled by command `AT+CIPDINFO=1`.
@@ -4234,6 +4224,27 @@ Parameters:
 Example:
 
     AT+BTENCCLEAR
+
+* [ESP32 Only] [AT+BTCOD](#cmd-BTCOD) : Set class of device
+<a name="cmd-BTCOD"></a>
+### 8.21 [ESP32 Only] [AT+BTCOD](#BT-AT)—Set class of device
+Set Command:
+
+    AT+BTCOD=<major>,<minor>,<service>
+    Function: set the BT class of device.
+Response:
+
+    OK
+
+Parameters:
+
+- **\<major>**: [major class](https://www.bluetooth.com/specifications/assigned-numbers/baseband/).
+- **\<minor>**: [minor class](https://www.bluetooth.com/specifications/assigned-numbers/baseband/).
+- **\<service>**: [service class](https://www.bluetooth.com/specifications/assigned-numbers/baseband/).
+
+Example:
+
+    AT+BTCOD=6,32,32   //the printer
 
 ## 9.[ESP32 Only] MQTT AT Commands List
 <a name="cmd-MQTTUSERCFG"></a>
