@@ -57,6 +57,7 @@ esp32_wroom_at:
     - git checkout ${commit_str#*commit:}
     # (the same regular expressions are used to set these are used in 'only:' sections below
     - source ./tools/ci/configure_ci_environment.sh
+    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
     - time ./tools/ci/get-full-sources.sh
     - git submodule update --init
@@ -124,6 +125,7 @@ esp32_wrover_at:
     - git checkout ${commit_str#*commit:}
     # (the same regular expressions are used to set these are used in 'only:' sections below
     - source ./tools/ci/configure_ci_environment.sh
+    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
     - time ./tools/ci/get-full-sources.sh
     - git submodule update --init
@@ -192,6 +194,7 @@ pico_d4_at:
     - git checkout ${commit_str#*commit:}
     # (the same regular expressions are used to set these are used in 'only:' sections below
     - source ./tools/ci/configure_ci_environment.sh
+    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
     - time ./tools/ci/get-full-sources.sh
     - git submodule update --init
@@ -261,6 +264,7 @@ solo_1_at:
     - git checkout ${commit_str#*commit:}
     # (the same regular expressions are used to set these are used in 'only:' sections below
     - source ./tools/ci/configure_ci_environment.sh
+    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
     - time ./tools/ci/get-full-sources.sh
     - git submodule update --init
@@ -520,6 +524,7 @@ esp32_demo:
     - git checkout ${commit_str#*commit:}
     # (the same regular expressions are used to set these are used in 'only:' sections below
     - source ./tools/ci/configure_ci_environment.sh
+    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
     - time ./tools/ci/get-full-sources.sh
     - git submodule update --init
@@ -616,6 +621,7 @@ wrover32_all_function_at:
     - git checkout ${commit_str#*commit:}
     # (the same regular expressions are used to set these are used in 'only:' sections below
     - source ./tools/ci/configure_ci_environment.sh
+    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
     - time ./tools/ci/get-full-sources.sh
     - git submodule update --init
