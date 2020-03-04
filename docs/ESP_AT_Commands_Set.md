@@ -26,6 +26,7 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+SYSTIMESTAMP](#cmd-SETTIME): Set local time stamp.
 * [AT+SYSLOG](#cmd-SYSLOG) : Enable or disable the AT error code prompt.
 * [AT+SLEEPWKCFG](#cmd-WKCFG) : Config the light-sleep wakeup source and awake GPIO.
+* [AT+SYSSTORE](#cmd-SYSSTORE) : Config parameter store mode.
 
 <a name="WiFi-AT"></a>
 ### 1.2 Wi-Fi AT Commands List
@@ -38,7 +39,7 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+CWLIF](#cmd-LIF) : Gets the Station IP to which the ESP SoftAP is connected.
 * [AT+CWQIF](#cmd-QIF) : Disconnect Station from the ESP SoftAP.
 * [AT+CWDHCP](#cmd-DHCP) : Enables/disables DHCP.
-* [AT+CWDHCPS](#cmd-DHCPS) : Sets the IP range of the ESP SoftAP DHCP server. Saves the setting in flash.
+* [AT+CWDHCPS](#cmd-DHCPS) : Sets the IP range of the ESP SoftAP DHCP server.
 * [AT+CWAUTOCONN](#cmd-AUTOC) : Connects to the AP automatically on power-up.
 * [AT+CIPSTAMAC](#cmd-STAMAC) : Sets the MAC address of ESP Station.
 * [AT+CIPAPMAC](#cmd-APMAC) : Sets the MAC address of ESP SoftAP.
@@ -77,7 +78,7 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+CIPRECVDATA](#cmd-CIPRECVDATA): Get Socket Data in Passive Receive Mode.
 * [AT+CIPRECVLEN](#cmd-CIPRECVLEN): Get Socket Data Length in Passive Receive Mode. 
 * [AT+PING](#cmd-CIPPING): Ping Packets
-* [AT+CIPDNS](#cmd-DNS) : Configures Domain Name System. The configuration will be saved in flash.
+* [AT+CIPDNS](#cmd-DNS) : Configures Domain Name System.
 
 <a name="BLE-AT"></a>
 ### 1.4 [ESP32 Only] BLE AT Commands List
@@ -436,7 +437,7 @@ Parameters:
 
 ***Notes:***  
 
-* The configuration changes will be saved in the NVS area.
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.
 * If set Bit0 to 1 will supply information "+QUITT" when quit transparent transmission.
 * If set Bit1 to 1 will impact the infomation of command `AT+CIPSTART` and `AT+CIPSERVER`,
     * It will supply "+LINK_CONN : status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port" instead of "XX,CONNECT".
@@ -679,6 +680,64 @@ Example:
     AT+SLEEPWKCFG=1,1     // Uart1 wakeup, Only Support ESP32
     AT+SLEEPWKCFG=2,12,0  // GPIO12 wakeup, low level.
 
+<a name="cmd-SYSSTORE"></a>
+### 2.20 [AT+SYSSTORE](#Basic-AT)— Config parameter store mode
+Query Command:  
+
+    AT+SYSSTORE?  
+    Function: to query the AT parameter store mode.  
+Response:  
+
+    +SYSSTORE:<store_mode>  
+
+    OK  
+
+Set Command:  
+
+    AT+SYSSTORE=<store_mode>
+Response:
+
+    OK
+Parameters:  
+
+- **\<store_mode>**: 
+    - 0: Do not store command configuration into flash.  
+    - 1: Store command configuration into flash.  
+
+Affected commands:
+
+    AT+SYSMSG  
+    AT+CWMODE  
+    AT+CWJAP  
+    AT+CWSAP
+    AT+CIPAP  
+    AT+CIPSTA  
+    AT+CIPAPMAC  
+    AT+CIPSTAMAC  
+    AT+CIPDNS
+    AT+CWDHCPS  
+    AT+CWDHCP  
+    AT+CWJEAP
+    AT+CIPETH  
+    AT+CIPETHMAC  
+    AT+BLENAME  
+    AT+BTNAME
+
+***Note:***
+
+    * The default value of `store_mode` is 1;  
+    * `AT+SYSSTORE` only effects on setup command, query command is always got from ram.  
+
+Example:
+
+    AT+SYSSTORE=0
+    AT+CWMODE=1  // Do not store into flash
+    AT+CWJAP="test","1234567890" // Do not store into flash
+
+    AT+SYSSTORE=1
+    AT+CWMODE=3  // Store into flash
+    AT+CWJAP="test","1234567890" // Store into flash
+
 ## 3 Wi-Fi AT Commands  
 <a name="cmd-MODE"></a>
 ### 3.1 [AT+CWMODE](#WiFi-AT)—Sets the Wi-Fi Mode (Station/SoftAP/Station+SoftAP)  
@@ -707,7 +766,7 @@ Parameters:
 
 ***Note:***
 
-* The configuration changes will be saved in the NVS area.  
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.  
 
 Example:
 
@@ -761,7 +820,7 @@ Parameters:
 
 ***Note:***
 
-* The configuration changes will be saved in the NVS area.  
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.  
 * This command requires Station mode to be active. 
 
 Examples:
@@ -880,7 +939,7 @@ Parameters:
 ***Note:***
 
 * This command is only available when SoftAP is active.
-* The configuration changes will be saved in the NVS area.  
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.  
 
 Example:
 
@@ -958,7 +1017,7 @@ Parameters:
         1: SoftAP DHCP is enabled.
 ***Notes:***
 
-* The configuration changes will be stored in the NVS area.
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.
 * This set command interacts with static-IP-related AT commands(AT+CIPSTA-related and AT+CIPAP-related commands): 
     * If DHCP is enabled, static IP will be disabled;
     * If static IP is enabled, DHCP will be disabled;
@@ -969,7 +1028,7 @@ Examples:
     AT+CWDHCP=1,1    //Enable Station DHCP. If the last DHCP mode is 2, then the current DHCP mode will be 3.
     AT+CWDHCP=0,2    //Disable SoftAP DHCP. If the last DHCP mode is 3, then the current DHCP mode will be 1.   
 <a name="cmd-DHCPS"></a>
-### 3.10 [AT+CWDHCPS](#WiFi-AT)—Sets the IP Address Allocated by ESP32 SoftAP DHCP (The configuration is saved in Flash.)
+### 3.10 [AT+CWDHCPS](#WiFi-AT)—Sets the IP Address Allocated by ESP32 SoftAP DHCP
 Query Command:
 
     AT+CWDHCPS?
@@ -995,7 +1054,7 @@ Parameters:
 
 ***Notes:***
 
-* The configuration changes will be saved in the NVS area.
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.
 * This AT command is enabled when ESP8266 runs as SoftAP, and when DHCP is enabled. 
 * The IP address should be in the same network segment as the IP address of ESP32 SoftAP.
 
@@ -1051,7 +1110,7 @@ Parameters:
 
 ***Notes:***
 
-* The configuration changes will be saved in the NVS area.
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.
 * The MAC address of ESP32 SoftAP is different from that of the ESP32 Station. Please make sure that you do not set the same MAC address for both of them.
 * Bit 0 of the ESP32 MAC address CANNOT be 1. 
     * For example, a MAC address can be "1a:…" but not "15:…".
@@ -1084,7 +1143,7 @@ Parameters:
 
 ***Notes:***
 
-* The configuration changes will be saved in the NVS area.
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.
 * The MAC address of ESP32 SoftAP is different from that of the ESP32 Station. Please make sure that you do not set the same MAC address for both of them.
 * Bit 0 of the ESP32 MAC address CANNOT be 1. 
     * For example, a MAC address can be "18:…" but not "15:…".
@@ -1120,7 +1179,7 @@ Parameters:
 
 ***Notes:***
 
-* The configuration changes will be saved in the NVS area.
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.
 * The set command interacts with DHCP-related AT commands (AT+CWDHCP-related commands): 
     * If static IP is enabled, DHCP will be disabled;
     * If DHCP is enabled, static IP will be disabled;
@@ -1154,7 +1213,7 @@ Parameters:
 
 ***Notes:***
 
-* The configuration changes will be saved in the NVS area.
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.
 * The set command interacts with DHCP-related AT commands (AT+CWDHCP-related commands): 
     * If static IP is enabled, DHCP will be disabled;
     * If DHCP is enabled, static IP will be disabled;
@@ -1305,7 +1364,7 @@ Example:
 
 ***Note:***
 
-* The configuration changes will be saved in the NVS area.	
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.	
 * This command requires Station mode to be active.
 * TLS mode will use client certificate, make sure enabled.
 
@@ -2196,7 +2255,7 @@ Example:
 
 **Notes:** 
 
-* The configuration changes will be saved in the NVS area.  
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.  
 * The three <DNS IP>parameters cannot be set to the same server.  
 * The DNS server may change according to the configuration of the router which the ESP chip connected to.  
 
@@ -2303,6 +2362,7 @@ Parameter:
 
 ***Notes:***
 
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`. 
 * The default BLE device name is "BLE_AT".  
 
 Example:
@@ -3385,7 +3445,7 @@ Parameter:
 
 Example:
 
-    AT+BLUFI=1    
+    AT+BLUFI=1
 
 <a name="exam-BLE"></a>
 ## 6. [ESP32 Only] [BLE AT Example](#BLE-AT)  
@@ -3611,7 +3671,7 @@ Parameters:
 
 ***Notes:***
 
-* The configuration changes will be saved in the NVS area.
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.
 * The MAC address of ESP32 SoftAP is different from that of the ESP32 Station. Please make sure that you do not set the same MAC address for both of them.
 * Bit 0 of the ESP32 MAC address CANNOT be 1. 
     * For example, a MAC address can be "1a:…" but not "15:…".
@@ -3649,7 +3709,7 @@ Parameters:
 
 ***Notes:***
 
-* The configuration changes will be saved in the NVS area.
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.
 * The set command interacts with DHCP-related AT commands (AT+CWDHCP-related commands): 
     * If static IP is enabled, DHCP will be disabled;
     * If DHCP is enabled, static IP will be disabled;
@@ -3716,6 +3776,7 @@ Parameter:
 
 ***Notes:***
 
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.
 * The default classic bluetooth device name is "ESP32_AT".  
 
 Example:
