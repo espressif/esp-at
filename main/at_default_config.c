@@ -121,6 +121,7 @@ uint32_t esp_at_factory_parameter_init(void)
 {
     const esp_partition_t * partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
     char* data = NULL;
+    uint8_t version = 0;
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
     wifi_country_t country;
 #endif
@@ -141,14 +142,16 @@ uint32_t esp_at_factory_parameter_init(void)
         return -1;
     }
 
-    // data[2] is version, now we donot care it, so skip it
+    version = data[2];
     // get module id
     esp_at_module_id = data[3];
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
     // get max tx power
     if (data[4] != 0xFF) {
-        esp_err_t ret = esp_wifi_set_max_tx_power((int8_t)data[4]);
-        printf("max tx power=%d,ret=%d\r\n", data[4], ret);
+        if ((version != 1) || ((version == 1) && (data[4] >= 10))) {
+            esp_err_t ret = esp_wifi_set_max_tx_power((int8_t)data[4]);
+            printf("max tx power=%d,ret=%d\r\n", data[4], ret);
+        }
     }
 
     memset(&country,0x0,sizeof(country));
