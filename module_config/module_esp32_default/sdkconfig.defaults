@@ -3,6 +3,8 @@
 # Espressif IoT Development Framework Configuration
 #
 
+CONFIG_IDF_TARGET_ESP32=y
+
 #
 # Serial flasher config
 #
