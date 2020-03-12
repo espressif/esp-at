@@ -24,14 +24,13 @@
 #define HAVE_HKDF
 #define HAVE_AEAD
 #define HAVE_SUPPORTED_CURVES
+#define HAVE_SNI
 /* ALPN in wolfSSL is enabled by default,can be disabled with menuconfig */
-#if defined(CONFIG_WOLFSSL_HAVE_ALPN)
-    #define HAVE_ALPN
-#endif
+#define HAVE_ALPN
 /* when you want to use SINGLE THREAD */
 /* #define SINGLE_THREADED */
 #define NO_FILESYSTEM
-
+#define WOLFSSL_STATIC_PSK
 #define HAVE_AESGCM
 /* when you want to use SHA384 */
 /* #define WOLFSSL_SHA384 */
@@ -42,12 +41,13 @@
 #define HAVE_ED25519
 /* do not use wolfssl defined app_main function used to test esp-wolfssl */
 #define NO_MAIN_DRIVER
+/* you can disable folowing cipher suits by uncommenting following lines */
+//#define NO_DSA
+//#define NO_DH
 
 /* These Flags are defined to make wolfssl not use some insecure cipher suites */
-#define NO_DH
 #define NO_MD4
 #define NO_DES3
-#define NO_DSA
 #define NO_RC4
 #define NO_RABBIT
 
@@ -55,7 +55,8 @@
 #define WOLFSSL_ALT_CERT_CHAINS /* Allow to try alternate cert chain */
 
 #define WOLFSSL_BASE64_ENCODE
-#define OPENSSL_EXTRA
+//#define OPENSSL_EXTRA
+#define OPENSSL_ALL
 /* If you want to authenticate the server with Intermediate CA cert, enable following flag */
 #define WOLFSSL_SMALL_CERT_VERIFY
 
