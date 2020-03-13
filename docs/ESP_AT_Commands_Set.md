@@ -780,7 +780,7 @@ Query Command:
     Function: to query the AP to which the ESP32 Station is already connected.
 Response:
 
-    +CWJAP:<ssid>,<bssid>,<channel>,<rssi>,<pci_en>,<reconn>,<lisnten_interval>
+    +CWJAP:<ssid>,<bssid>,<channel>,<rssi>,<pci_en>,<reconn>,<lisnten_interval>,<scan_mode>
     OK
 Parameters:
 
@@ -791,10 +791,13 @@ Parameters:
 - **\[\<pci_en>]**: PCI Authentication, which will disable connect OPEN and WEP AP.
 - **\[\<reconn>]**: Wi-Fi reconnection, when beacon timeout, ESP32 will reconnect automatically.
 - **\[\<listen_interval>]**: the interval of listening to the AP's beacon,the range is (0,100]
+- **\[\<scan_mode>]**: 
+    - 0: Do fast scan, scan will end after find SSID match AP, Wi-Fi will connect the first scanned AP.
+    - 1: All channel scan, scan will end after scan all the channel, Wi-Fi will connect the AP with the strongest signal scanned.
 
 Set Command:
 
-    AT+CWJAP=<ssid>,<pwd>[,<bssid>][,<pci_en>][,<reconn>][,<listen_interval>]
+    AT+CWJAP=<ssid>,<pwd>[,<bssid>][,<pci_en>][,<reconn>][,<listen_interval>][,<scan_mode>]
     Function: to set the AP to which the ESP32 Station needs to be connected.
 Response:
 
@@ -817,6 +820,9 @@ Parameters:
     - 3: cannot find the target AP.
     - 4: connection failed.
     - others: unknown error occurred.
+- **\[\<scan_mode>]**: 
+    - 0: Do fast scan, scan will end after find SSID match AP, Wi-Fi will connect the first scanned AP.
+    - 1: All channel scan, scan will end after scan all the channel, Wi-Fi will connect the AP with the strongest signal scanned.
 
 ***Note:***
 
