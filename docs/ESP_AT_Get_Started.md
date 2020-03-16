@@ -82,13 +82,13 @@ Compiling the esp32-at is the same as compiling any other project based on the E
 git clone --recursive https://github.com/espressif/esp-at.git
 ```
 2. `rm sdkconfig` to remove the old configuration and `rm -rf esp-idf` to remove the old esp-idf if you want to compile other esp platform AT.
-3. Set esp module information
-`
+3. Set esp module information  
+```  
 export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32S2
 export ESP_AT_MODULE_NAME=WROOM
 export ESP_AT_PROJECT_PATH=$(pwd)
-`
-4. `./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 build` or `make flash SILENCE=1` to compile the project and download it into the flash, and `./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 -DSILENCE=1 build` will remove some logs to reduce firmware size.
+```  
+4. `./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 build` to compile the project and download it into the flash, and `./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 -DSILENCE=1 build` will remove some logs to reduce firmware size.
   * Follow the printed instructions to download the bin files into flash by yourself.
 
 <a name="platform-esp8266"></a>
