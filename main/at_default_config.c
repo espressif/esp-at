@@ -61,6 +61,10 @@ static const esp_at_module_info_t esp_at_module_info[] = {
     {"WROOM-02",        CONFIG_ESP_AT_OTA_TOKEN_WROOM_02,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 },
     {"WROOM-S2",        CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 },
 #endif
+
+#if defined(CONFIG_IDF_TARGET_ESP32S2)
+    {"WROOM",        CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM,       CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM },
+#endif
 };
 
 static uint8_t esp_at_module_id = 0x1;

@@ -12,7 +12,13 @@ execute_process (
     COMMAND ${PYTHON} ${IDF_PATH}/components/partition_table/gen_esp32part.py 
         ${project_dir}/${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE} ${build_dir}/${customize_bin_full_name}
 )
+
+if(CONFIG_IDF_TARGET_ESP32S2)
+esptool_py_custom_target(${customize_bin} ${customize_bin} "${customize_bin}")
+esptool_py_flash_target_image(flash "${customize_bin}" "${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_OFFSET}" "${build_dir}/${customize_bin_full_name}")
+else()
 esptool_py_flash_project_args(${customize_bin} ${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_OFFSET} ${build_dir}/${customize_bin_full_name} FLASH_IN_PROJECT)
+endif()
 
 execute_process (
     COMMAND ${PYTHON} ${COMPONENT_DIR}/raw_data/at_customized_partition_parse.py
@@ -33,7 +39,12 @@ foreach(partition_args ${customized_partition_args})
     
     STRING(REGEX REPLACE ".*/(.*)\.bin" "\\1" file_name ${file_path})
 
-    esptool_py_flash_project_args(${file_name} ${offset} ${file_path} FLASH_IN_PROJECT)
+    if(CONFIG_IDF_TARGET_ESP32S2)
+        esptool_py_custom_target(${file_name} ${file_name} "${file_name}")
+        esptool_py_flash_target_image(flash "${file_name}" "${offset}" "${file_path}")
+    else()
+        esptool_py_flash_project_args(${file_name} ${offset} ${file_path} FLASH_IN_PROJECT)
+    endif()
 endforeach(partition_args)
 
 add_custom_target(customized_bin ALL DEPENDS app)

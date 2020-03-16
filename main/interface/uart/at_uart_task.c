@@ -69,6 +69,14 @@ static bool at_default_flag = false;
 #ifndef CONFIG_AT_UART_PORT
 #define CONFIG_AT_UART_PORT                         UART_NUM_0
 #endif
+#elif defined(CONFIG_IDF_TARGET_ESP32S2)
+#define CONFIG_AT_UART_PORT_TX_PIN_DEFAULT          17
+#define CONFIG_AT_UART_PORT_RX_PIN_DEFAULT          18
+#define CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT         20
+#define CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT         19
+#ifndef CONFIG_AT_UART_PORT
+#define CONFIG_AT_UART_PORT                         UART_NUM_1
+#endif
 #endif
 
 static const uart_port_t esp_at_uart_port = CONFIG_AT_UART_PORT;
@@ -123,12 +131,12 @@ static int32_t at_port_read_data(uint8_t*buf,int32_t len)
 static int32_t at_port_get_data_length (void)
 {
     size_t size = 0;
-#if defined(CONFIG_IDF_TARGET_ESP32)
+#if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2)
     int pattern_pos = 0;
 #endif
 
     if (ESP_OK == uart_get_buffered_data_len(esp_at_uart_port,&size)) {
-#if defined(CONFIG_IDF_TARGET_ESP32)
+#if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2)
         pattern_pos = uart_pattern_get_pos(esp_at_uart_port);
         if (pattern_pos >= 0) {
             size = pattern_pos;
@@ -154,7 +162,7 @@ static void uart_task(void *pvParameters)
     uart_event_t event;
     uint32_t data_len = 0;
     BaseType_t retry_flag = pdFALSE;
-#if defined(CONFIG_IDF_TARGET_ESP32)
+#if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2)
     int pattern_pos = -1;
     uint8_t *data = NULL;
 #endif
@@ -185,7 +193,7 @@ retry:
                     goto retry;
                 }
                 break;
-#if defined(CONFIG_IDF_TARGET_ESP32)
+#if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2)
             case UART_PATTERN_DET:
                 pattern_pos = uart_pattern_pop_pos(esp_at_uart_port);
                 if (pattern_pos >= 0) {
@@ -313,7 +321,7 @@ static void at_uart_init(void)
     //Set UART parameters
     uart_param_config(esp_at_uart_port, &uart_config);
 
-#if defined(CONFIG_IDF_TARGET_ESP32)
+#if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2)
     //Set UART pins,(-1: default pin, no change.)
     uart_set_pin(esp_at_uart_port, tx_pin, rx_pin, rts_pin, cts_pin);
     //Install UART driver, and get the queue.
@@ -549,13 +557,15 @@ static esp_at_cmd_struct at_custom_cmd[] = {
 
 void at_status_callback (esp_at_status_type status)
 {
-#if defined(CONFIG_IDF_TARGET_ESP32)
+#if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2)
     switch (status) {
     case ESP_AT_STATUS_NORMAL:
         uart_disable_pattern_det_intr(esp_at_uart_port);
         break;
     case ESP_AT_STATUS_TRANSMIT:
+#if defined(CONFIG_IDF_TARGET_ESP32)
         uart_enable_pattern_det_intr(esp_at_uart_port, '+', 3, ((APB_CLK_FREQ*20)/1000),((APB_CLK_FREQ*20)/1000), ((APB_CLK_FREQ*20)/1000));
+#endif
         break;
     }
 #endif
