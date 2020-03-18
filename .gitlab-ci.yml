@@ -308,7 +308,7 @@ esp32s2_wroom_at:
     - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - git submodule update --init --recursive
+    # - git submodule update --init --recursive
 
   script:
     - cd main
