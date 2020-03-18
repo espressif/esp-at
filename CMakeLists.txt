@@ -3,7 +3,7 @@ set(lib_path ${CMAKE_CURRENT_SOURCE_DIR}/wolfssl/lib/${IDF_TARGET})
 
 idf_component_register(INCLUDE_DIRS "${include_dirs}"
                     REQUIRES lwip
-                    )
+                    REQUIRED_IDF_TARGETS esp32 esp8266)
 
 target_compile_options(${COMPONENT_LIB} INTERFACE -Wno-cpp)
 target_compile_definitions(${COMPONENT_LIB} INTERFACE WOLFSSL_USER_SETTINGS)
