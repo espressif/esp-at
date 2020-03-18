@@ -51,6 +51,7 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+MDNS](#cmd-MDNS) : Configurates the MDNS function
 * [ESP32 Only] [AT+CWJEAP](#cmd-JEAP) : Connects to a WPA2 Enterprise AP.
 * [AT+CWHOSTNAME](#cmd-HOSTNAME) : Configures the Name of ESP Station
+* [AT+CWCOUNTRY](#cmd-COUNTRY) : Configures the Wi-Fi Country Code
 
 <a name="TCPIP-AT"></a>
 ### 1.3 TCP/IP-Related AT Commands List
@@ -722,6 +723,11 @@ Affected commands:
     AT+CIPETHMAC  
     AT+BLENAME  
     AT+BTNAME
+    AT+BLEADVPARAM
+    AT+BLEADVDATA
+    AT+BLESCANRSPDATA
+    AT+BLESCANPARAM
+    AT+BTSCANMODE
 
 ***Note:***
 
@@ -1408,6 +1414,45 @@ Example:
 
     AT+CWMODE=3
     AT+CWHOSTNAME="my_test"
+
+
+
+<a name="cmd-COUNTRY"></a>
+### 3.22 [AT+CWCOUNTRY](#WiFi-AT) : Configures the Wi-Fi Country Code
+Query Command:
+
+    AT+CWCOUNTRY?
+    Function: Query Wi-Fi country code information.
+Response:
+
+    +CWCOUNTRY:<country_policy>,<country_code>,<start_channel>,<total_channel_count>
+
+    OK
+Set Command:
+
+    AT+ CWCOUNTRY=<country_policy>,<country_code>,<start_channel>,<total_channel_count>
+    Function: Sets the Wi-Fi country code information.
+Response:
+
+    OK
+
+Parameters:  
+
+- **\<country_policy>**:  
+	- 0: will change the county code to be the same as the AP that ESP is connected to
+	- 1: the country code will not change, always be the one set by command.
+- **\<country_code>**:  country code, the length can be 3 characters at most; 
+- **\<start_channel>**:  the channel number to start, range [1,14]
+- **\<total_channel_count>**:  total channel count
+
+***Note:***
+
+* The configuration changes are not saved in the flash.
+
+Example:
+
+    AT+CWMODE=3
+    AT+CWCOUNTRY=1,"CN",1,13
 
 ## 4. TCP/IP-Related AT Commands
 <a name="cmd-STATUS"></a>
