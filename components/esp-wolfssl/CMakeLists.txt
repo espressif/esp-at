@@ -1,3 +1,7 @@
+if("${IDF_TARGET}" STREQUAL "esp32s2")
+idf_component_register(INCLUDE_DIRS "${include_dirs}"
+                    )
+else()
 set(include_dirs port wolfssl)
 set(lib_path ${CMAKE_CURRENT_SOURCE_DIR}/wolfssl/lib/${IDF_TARGET})
 
@@ -26,4 +30,5 @@ else()
         # This Library is USED BY DEFAULT (no wolfssl options enabled)
         target_link_libraries(${COMPONENT_LIB} INTERFACE wolfssl)
     endif()
+endif()
 endif()
