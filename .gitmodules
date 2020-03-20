@@ -1,3 +1,0 @@
-[submodule "components/esp-wolfssl"]
-	path = components/esp-wolfssl
-	url = https://github.com/espressif/esp-wolfssl.git
