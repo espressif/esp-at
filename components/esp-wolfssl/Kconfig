@@ -1,0 +1,15 @@
+menu "wolfSSL"
+
+    config TLS_STACK_WOLFSSL
+        bool "Include wolfSSL in esp-tls"
+        default y
+        help
+            Includes wolfSSL in the esp-tls so that , esp-tls can be compiled with wolfSSL as its SSL/TLS library.
+
+    config WOLFSSL_HAVE_ALPN
+        bool "Enable ALPN(Application Layer Protocol Negotiation) in wolfSSL"
+        default y
+        help
+            Enables ALPN option in wolfSSL.
+
+endmenu # wolfSSL
