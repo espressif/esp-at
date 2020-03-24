@@ -69,6 +69,11 @@ CONFIG_LWIP_TCP_MAXRTX=6
 CONFIG_LWIP_TCP_SYNMAXRTX=3
 
 #
+# ESP-TLS
+#
+CONFIG_ESP_TLS_SERVER=y
+
+#
 # AT Customized Partitions
 #
 CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE="examples/at_http_webserver/at_customize.csv"
