@@ -74,6 +74,10 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+CIUPDATE](#cmd-UPDATE) : Updates the software through Wi-Fi.
 * [AT+CIPDINFO](#cmd-IPDINFO) : Shows remote IP and remote port with +IPD.
 * [AT+CIPSSLCCONF](#cmd-SSLCCONF) : Config SSL client.
+* [AT+CIPSSLCCN](#cmd-SSLCCN) : Config SSL client common name.
+* [AT+CIPSSLCSNI](#cmd-SSLCSNI) : Config SSL client SNI.
+* [AT+CIPSSLCALPN](#cmd-SSLCALPN) : Config SSL client ALPN.
+* [AT+CIPSSLCPSK](#cmd-SSLCPSK) : Config SSL client PSK.
 * [AT+CIPRECONNINTV](#cmd-AUTOCONNINT): Set Wi-Fi transparent transmitting auto-connect interval.
 * [AT+CIPRECVMODE](#cmd-CIPRECVMODE): Set Socket Receive Mode.
 * [AT+CIPRECVDATA](#cmd-CIPRECVDATA): Get Socket Data in Passive Receive Mode.
@@ -93,6 +97,7 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [ESP32 Only] [AT+BLESCANRSPDATA](#cmd-BSCANR) : Sets BLE scan response
 * [ESP32 Only] [AT+BLEADVPARAM](#cmd-BADVP) : Sets parameters of BLE advertising
 * [ESP32 Only] [AT+BLEADVDATA](#cmd-BADVD) : Sets BLE advertising data
+* [ESP32 Only] [AT+BLEADVDATAEX](#cmd-BADVDEX) : Auto sets BLE advertising data
 * [ESP32 Only] [AT+BLEADVSTART](#cmd-BADVSTART) : Starts BLE advertising
 * [ESP32 Only] [AT+BLEADVSTOP](#cmd-BADVSTOP) : Stops BLE advertising
 * [ESP32 Only] [AT+BLECONN](#cmd-BCONN) : Establishes BLE connection
@@ -725,6 +730,7 @@ Affected commands:
     AT+BTNAME
     AT+BLEADVPARAM
     AT+BLEADVDATA
+    AT+BLEADVDATAEX
     AT+BLESCANRSPDATA
     AT+BLESCANPARAM
     AT+BTSCANMODE
@@ -2111,8 +2117,122 @@ Parameters:
 
 ***Notes:***
 
-* Call this command before establish SSL connection if you want configuration take effect immediately.
+* Send this command before establish SSL connection if you want configuration take effect immediately.
 * The configuration changes will be saved in the NVS area. If you use AT+SAVETRANSLINK to set SSL passthrough mode, the ESP will establish an SSL connection based on this configuration after next power on.
+
+<a name="cmd-SSLCCN"></a>
+### 4.20 [AT+CIPSSLCCN](#TCPIP-AT)—Config SSL client common name
+Query Command:
+
+    AT+CIPSSLCCN?
+    Function: to get the common name configuration of each link that running as SSL client.
+Response:
+
+    +CIPSSLCCN:<link ID>,<"common name">
+    OK
+Set Command:
+
+    Single connection: (+CIPMUX=0)
+    AT+CIPSSLCCN=<"common name">
+    Multiple connections: (+CIPMUX=1)
+    AT+CIPSSLCCN=<link ID>,<"common name">
+Response:
+
+    OK
+Parameters:
+
+- **\<link ID>**: ID of the connection (0~max), for multiple connections, if the value is max, it means all connections. By default, max is 5.
+- **\<"common name">**: common name is used to verify the commonName in the certificate sent by the server.
+
+***Notes:***
+
+* Send this command before establish SSL connection if you want configuration take effect immediately.
+
+<a name="cmd-SSLCSNI"></a>
+### 4.20 [AT+CIPSSLCSNI](#TCPIP-AT)—Config SSL client server name indication
+Query Command:
+
+    AT+CIPSSLCSNI?
+    Function: to get the SNI configuration of each link that running as SSL client.
+Response:
+
+    +CIPSSLCSNI:<link ID>,<"sni">
+    OK
+Set Command:
+
+    Single connection: (+CIPMUX=0)
+    AT+CIPSSLCSNI=<"sni">
+    Multiple connections: (+CIPMUX=1)
+    AT+CIPSSLCSNI=<link ID>,<"sni">
+Response:
+
+    OK
+Parameters:
+
+- **\<link ID>**: ID of the connection (0~max), for multiple connections, if the value is max, it means all connections. By default, max is 5.
+- **\<"sni">**: Set TLS extension servername (SNI) in ClientHello
+
+***Notes:***
+
+* Send this command before establish SSL connection if you want configuration take effect immediately.
+
+<a name="cmd-SSLCALPN"></a>
+### 4.20 [AT+CIPSSLCALPN](#TCPIP-AT)—Config SSL client application layer protocol negotiation(ALPN)
+Query Command:
+
+    AT+CIPSSLCALPN?
+    Function: to get the ALPN configuration of each link that running as SSL client.
+Response:
+
+    +CIPSSLCALPN:<link ID>,<counts>,<"alpn">[,<"alpn">[,<"alpn">]]
+    OK
+Set Command:
+
+    Single connection: (+CIPMUX=0)
+    AT+CIPSSLCALPN=<counts>,<"alpn">[,<"alpn">[,<"alpn">]]
+    Multiple connections: (+CIPMUX=1)
+    AT+CIPSSLCALPN=<link ID>,<counts>,<"alpn">[,<"alpn">[,<"alpn">]]
+Response:
+
+    OK
+Parameters:
+
+- **\<link ID>**: ID of the connection (0~max), for multiple connections, if the value is max, it means all connections. By default, max is 5.
+- **\<counts>**: ALPN counts
+- **\<"alpn">**: Set ALPN in ClientHello
+
+***Notes:***
+
+* Send this command before establish SSL connection if you want configuration take effect immediately.
+
+<a name="cmd-SSLCPSK"></a>
+### 4.20 [AT+CIPSSLCPSK](#TCPIP-AT)—Config SSL client pre-shared key(PSK)
+Query Command:
+
+    AT+CIPSSLCPSK?
+    Function: to get the PSK configuration of each link that running as SSL client.
+Response:
+
+    +CIPSSLCPSK:<link ID>,<"psk">,<"hint">
+    OK
+Set Command:
+
+    Single connection: (+CIPMUX=0)
+    AT+CIPSSLCPSK=<"psk">,<"hint">
+    Multiple connections: (+CIPMUX=1)
+    AT+CIPSSLCPSK=<link ID>,<"psk">,<"hint">
+Response:
+
+    OK
+Parameters:
+
+- **\<link ID>**: ID of the connection (0~max), for multiple connections, if the value is max, it means all connections. By default, max is 5.
+- **\<"psk">**: PSK identity
+- **\<"hint">**: PSK hint
+
+***Notes:***
+
+* Send this command before establish SSL connection if you want configuration take effect immediately.
 
 <a name="cmd-AUTOCONNINT"></a>
 ### 4.21 [AT+CIPRECONNINTV](#TCPIP-AT)—Set Wi-Fi transparent transmitting auto-connect interval
@@ -2576,13 +2696,60 @@ Parameters:
 - **\<adv_data>**: advertising data; this is a HEX string. 
     - For example, to set the advertising data as "0x11 0x22 0x33 0x44 0x55", the command should be `AT+BLEADVDATA="1122334455"`.
 
+***Notes:***
+
+* If advertising data is preset by command `AT+BLEADVDATAEX=<dev_name>,<uuid>,<manufacturer_data>,<include_power>`, it will be over write by `AT+BLEADVDATA=<adv_data>`.
+
 Example:
 
     AT+BLEINIT=2   // role: server
     AT+BLEADVDATA="1122334455"
 
+<a name="cmd-BADVDEX"></a>
+### 5.9 [ESP32 Only] [AT+BLEADVDATAEX](#BLE-AT)—Auto sets BLE advertising data
+Query Command: 
+
+    AT+BLEADVDATAEX?
+    Function: to query the parameters of advertising data.
+Response:
+
+    +BLEADVDATAEX:<dev_name>,<uuid>,<manufacturer_data>,<include_power>
+
+    OK
+Set Command: 
+
+    AT+BLEADVSTART=<dev_name>,<uuid>,<manufacturer_data>,<include_power>
+    Function: configurate the adv data and start advertising.
+Response:
+
+    OK
+Parameters:
+
+- **\<dev_name>**: device name; this is a string. For example:
+    - to set the device name "just-test", the command should be `AT+BLEADVSTART="just-test",<uuid>,<manufacturer_data>,<include_power>`
+
+- **\<uuid>**: this is a string. For example:
+    - to set the UUID "0xA002", the command should be `AT+BLEADVSTART=<dev_name>,"A002",<manufacturer_data>,<include_power>`.
+
+- **\<manufacturer_data>**: manufacturer data; this is a HEX string, For example:
+    - to set the manufacturer data as "0x11 0x22 0x33 0x44 0x55", the command should be `AT+BLEADVSTART=<dev_name>,<uuid>,"1122334455",<include_power>`.
+
+- **\<include_power>**: if User need include the tx power in the advertising data, this param should be set `1`, if not, this param should be set `0`
+
+***Notes:***
+
+* If advertising data is preset by command `AT+BLEADVDATA=<adv_data>`, it will be over write by `AT+BLEADVDATAEX=<dev_name>,<uuid>,<manufacturer_data>,<include_power>`
+
+Example:
+
+    AT+BLEINIT=2   // role: server
+    AT+BLEADVDATAEX="ESP-AT","A002","0102030405",1
+
+* [ESP32 Only] [AT+BLEADVDATAEX](#cmd-BADVD) : Auto sets BLE advertising data
+
+
 <a name="cmd-BADVSTART"></a>
-### 5.9 [ESP32 Only] [AT+BLEADVSTART](#BLE-AT)—Starts Advertising
+### 5.10 [ESP32 Only] [AT+BLEADVSTART](#BLE-AT)—Starts Advertising
 Execute Command:
 
     AT+BLEADVSTART
@@ -2590,10 +2757,12 @@ Execute Command:
 Response:
 
     OK
+
 ***Notes:***
 
 * If advertising parameters are NOT set by command `AT+BLEADVPARAM=<adv_parameter>`, the default parameters will be used.
 * If advertising data is NOT set by command `AT+BLEADVDATA=<adv_data>`, the all zeros data will be sent.
+* If advertising data is preset by command `AT+BLEADVDATA=<adv_data>`, it will be over write by `AT+BLEADVDATAEX=<dev_name>,<uuid>,<manufacturer_data>,<include_power>` and vice versa.
 
 Example:
 
@@ -2601,7 +2770,7 @@ Example:
     AT+BLEADVSTART
 
 <a name="cmd-BADVSTOP"></a>
-### 5.10 [ESP32 Only] [AT+BLEADVSTOP](#BLE-AT)—Stops Advertising
+### 5.11 [ESP32 Only] [AT+BLEADVSTOP](#BLE-AT)—Stops Advertising
 Execute Command: 
 
     AT+BLEADVSTOP
@@ -2620,7 +2789,7 @@ Example:
     AT+BLEADVSTOP
 
 <a name="cmd-BCONN"></a>
-### 5.11 [ESP32 Only] [AT+BLECONN](#BLE-AT)—Establishes BLE connection
+### 5.12 [ESP32 Only] [AT+BLECONN](#BLE-AT)—Establishes BLE connection
 Query Command: 
 
     AT+BLECONN?
@@ -2656,7 +2825,7 @@ Example:
     AT+BLECONN=0,"24:0a:c4:09:34:23",0,10
 
 <a name="cmd-BDISC"></a>
-### 5.12 [ESP32 Only] [AT+BLEDISCONN](#BLE-AT)—Ends BLE connection
+### 5.13 [ESP32 Only] [AT+BLEDISCONN](#BLE-AT)—Ends BLE connection
 Execute Command: 
 
     AT+BLEDISCONN=<conn_index>
@@ -2681,7 +2850,7 @@ Example:
     AT+BLEDISCONN=0
 
 <a name="cmd-BDLEN"></a>
-### 5.13 [ESP32 Only] [AT+BLEDATALEN](#BLE-AT)—Sets BLE Data Packet Length
+### 5.14 [ESP32 Only] [AT+BLEDATALEN](#BLE-AT)—Sets BLE Data Packet Length
 Set Command: 
 
     AT+BLEDATALEN=<conn_index>,<pkt_data_len>
@@ -2705,7 +2874,7 @@ Example:
     AT+BLEDATALEN=0,30
 
 <a name="cmd-BMTU"></a>
-### 5.14 [ESP32 Only] [AT+BLECFGMTU](#BLE-AT)—Sets BLE MTU Length
+### 5.15 [ESP32 Only] [AT+BLECFGMTU](#BLE-AT)—Sets BLE MTU Length
 Query Command: 
 
     AT+BLECFGMTU?
@@ -2738,7 +2907,7 @@ Example:
     AT+BLECFGMTU=0,300
 
 <a name="cmd-GSSRVCRE"></a>
-### 5.15 [ESP32 Only] [AT+BLEGATTSSRVCRE](#BLE-AT)—GATTS Creates Services
+### 5.16 [ESP32 Only] [AT+BLEGATTSSRVCRE](#BLE-AT)—GATTS Creates Services
 Execute Command: 
 
     AT+BLEGATTSSRVCRE
@@ -2760,7 +2929,7 @@ Example:
     AT+BLEGATTSSRVCRE
 
 <a name="cmd-GSSRVSTART"></a>
-### 5.16 [ESP32 Only] [AT+BLEGATTSSRVSTART](#BLE-AT)—GATTS Starts Services
+### 5.17 [ESP32 Only] [AT+BLEGATTSSRVSTART](#BLE-AT)—GATTS Starts Services
 Execute Command: 
 
     AT+BLEGATTSSTART
@@ -2783,7 +2952,7 @@ Example:
     AT+BLEGATTSSRVSTART
 
 <a name="cmd-GSSRV"></a>
-### 5.17 [ESP32 Only] [AT+BLEGATTSSRV](#BLE-AT)—GATTS Discovers Services
+### 5.18 [ESP32 Only] [AT+BLEGATTSSRV](#BLE-AT)—GATTS Discovers Services
 Query Command: 
 
     AT+BLEGATTSSRV?
@@ -2810,7 +2979,7 @@ Example:
     AT+BLEGATTSSRV?
 
 <a name="cmd-GSCHAR"></a>
-### 5.18 [ESP32 Only] [AT+BLEGATTSCHAR](#BLE-AT)—GATTS Discovers Characteristics
+### 5.19 [ESP32 Only] [AT+BLEGATTSCHAR](#BLE-AT)—GATTS Discovers Characteristics
 Query Command: 
 
     AT+BLEGATTSCHAR?
@@ -2841,7 +3010,7 @@ Example:
     AT+BLEGATTSCHAR?
 
 <a name="cmd-GSNTFY"></a>
-### 5.19 [ESP32 Only] [AT+BLEGATTSNTFY](#BLE-AT)—GATTS Notifies of Characteristics
+### 5.20 [ESP32 Only] [AT+BLEGATTSNTFY](#BLE-AT)—GATTS Notifies of Characteristics
 Set Command: 
 
     AT+BLEGATTSNTFY=<conn_index>,<srv_index>,<char_index>,<length>
@@ -2871,7 +3040,7 @@ Example:
     // after > shows, inputs 4 bytes of data, such as "1234"; then, the data will be transmitted automatically
 
 <a name="cmd-GSIND"></a>
-### 5.20 [ESP32 Only] [AT+BLEGATTSIND](#BLE-AT)—GATTS Indicates Characteristics
+### 5.21 [ESP32 Only] [AT+BLEGATTSIND](#BLE-AT)—GATTS Indicates Characteristics
 Set Command: 
 
     AT+BLEGATTSIND=<conn_index>,<srv_index>,<char_index>,<length>
@@ -2901,7 +3070,7 @@ Example:
     // after > shows, inputs 4 bytes of data, such as "1234"; then, the data will be transmitted automatically
 
 <a name="cmd-GSSETA"></a>
-### 5.21 [ESP32 Only] [AT+BLEGATTSSETATTR](#BLE-AT)—GATTS Sets Characteristic
+### 5.22 [ESP32 Only] [AT+BLEGATTSSETATTR](#BLE-AT)—GATTS Sets Characteristic
 Set Command: 
 
     AT+BLEGATTSSETATTR=<srv_index>,<char_index>[,<desc_index>],<length>
@@ -2935,7 +3104,7 @@ Example:
     // after > shows, inputs 4 bytes of data, such as "1234"; then, the setting starts
 
 <a name="cmd-GCPRIMSRV"></a>
-### 5.22 [ESP32 Only] [AT+BLEGATTCPRIMSRV](#BLE-AT)—GATTC Discovers Primary Services
+### 5.23 [ESP32 Only] [AT+BLEGATTCPRIMSRV](#BLE-AT)—GATTC Discovers Primary Services
 Query Command: 
 
     AT+BLEGATTCPRIMSRV=<conn_index>
@@ -2964,7 +3133,7 @@ Example:
     AT+BLEGATTCPRIMSRV=0
 
 <a name="cmd-GCINCLSRV"></a>
-### 5.23 [ESP32 Only] [AT+BLEGATTCINCLSRV](#BLE-AT)—GATTC Discovers Included Services
+### 5.24 [ESP32 Only] [AT+BLEGATTCINCLSRV](#BLE-AT)—GATTC Discovers Included Services
 Set Command: 
 
     AT+BLEGATTCINCLSRV=<conn_index>,<srv_index>
@@ -2998,7 +3167,7 @@ Example:
     AT+BLEGATTCINCLSRV=0,1  // set a specific index according to the result of the previous command
 
 <a name="cmd-GCCHAR"></a>
-### 5.24 [ESP32 Only] [AT+BLEGATTCCHAR](#BLE-AT)—GATTC Discovers Characteristics
+### 5.25 [ESP32 Only] [AT+BLEGATTCCHAR](#BLE-AT)—GATTC Discovers Characteristics
 Set Command: 
 
     AT+BLEGATTCCHAR=<conn_index>,<srv_index>
@@ -3034,7 +3203,7 @@ Example:
     AT+BLEGATTCCHAR=0,1 // set a specific index according to the result of the previous command
 
 <a name="cmd-GCRD"></a>
-### 5.25 [ESP32 Only] [AT+BLEGATTCRD](#BLE-AT)—GATTC Reads a Characteristic
+### 5.26 [ESP32 Only] [AT+BLEGATTCRD](#BLE-AT)—GATTC Reads a Characteristic
 Set Command: 
 
     AT+BLEGATTCRD=<conn_index>,<srv_index>,<char_index>[,<desc_index>]
@@ -3072,7 +3241,7 @@ Example：
     AT+BLEGATTCRD=0,3,2,1
 
 <a name="cmd-GCWR"></a>
-### 5.26 [ESP32 Only] [AT+BLEGATTCWR](#BLE-AT)—GATTC Writes Characteristic
+### 5.27 [ESP32 Only] [AT+BLEGATTCWR](#BLE-AT)—GATTC Writes Characteristic
 Set Command: 
 
     AT+BLEGATTCWR=<conn_index>,<srv_index>,<char_index>[,<desc_index>],<length>
@@ -3109,7 +3278,7 @@ Example：
     // after > shows, inputs 6 bytes of data, such as "123456"; then, the writing starts
 
 <a name="cmd-BLESPP"></a>
-### 5.27 [ESP32 Only] [AT+BLESPPCFG](#BLE-AT)—Sets BLE spp parameters
+### 5.28 [ESP32 Only] [AT+BLESPPCFG](#BLE-AT)—Sets BLE spp parameters
 Query Command:
 
     AT+BLESPPCFG?
@@ -3145,7 +3314,7 @@ Example:
     AT+BLESPPCFG?           // query ble spp parameters 
 
 <a name="cmd-BLESPP"></a>
-### 5.28 [ESP32 Only] [AT+BLESPP](#BLE-AT)—Enter BLE spp mode
+### 5.29 [ESP32 Only] [AT+BLESPP](#BLE-AT)—Enter BLE spp mode
 Execute Command: 
 
     AT+BLESPP
@@ -3164,7 +3333,7 @@ Example:
     AT+BLESPP   // enter ble spp mode
 
 <a name="cmd-BLESMPPAR"></a>
-### 5.29 [ESP32 Only] [AT+BLESECPARAM](#BLE-AT)—Set BLE encryption parameters
+### 5.30 [ESP32 Only] [AT+BLESECPARAM](#BLE-AT)—Set BLE encryption parameters
 Query Command:
 
     AT+BLESECPARAM?
@@ -3216,7 +3385,7 @@ Example:
     AT+BLESECPARAM=1,4,16,3,3,0
 
 <a name="cmd-BLEENC"></a>
-### 5.30 [ESP32 Only] [AT+BLEENC](#BLE-AT)—Initiate BLE encryption request
+### 5.31 [ESP32 Only] [AT+BLEENC](#BLE-AT)—Initiate BLE encryption request
 Set Command:
 
     AT+BLEENC=<conn_index>,<sec_act>
@@ -3243,7 +3412,7 @@ Example:
     AT+BLEENC=0,3
 
 <a name="cmd-BLEENCRSP"></a>
-### 5.31 [ESP32 Only] [AT+BLEENCRSP](#BLE-AT)—Grant security request access
+### 5.32 [ESP32 Only] [AT+BLEENCRSP](#BLE-AT)—Grant security request access
 Set Command:
 
     AT+BLEENCRSP=<conn_index>,<accept>
@@ -3263,7 +3432,7 @@ Example:
     AT+BLEENCRSP=0,1
 
 <a name="cmd-BLEKEYREPLY"></a>
-### 5.32 [ESP32 Only] [AT+BLEKEYREPLY](#BLE-AT)—Reply the key value to the peer device in the lagecy connection stage
+### 5.33 [ESP32 Only] [AT+BLEKEYREPLY](#BLE-AT)—Reply the key value to the peer device in the lagecy connection stage
 Set Command:
 
     AT+BLEKEYREPLY=<conn_index>,<key>
@@ -3281,7 +3450,7 @@ Example:
     AT+BLEKEYREPLY=0,649784
 
 <a name="cmd-BLECONFREPLY"></a>
-### 5.33 [ESP32 Only] [AT+BLECONFREPLY](#BLE-AT)—Reply the comfirm value to the peer device in the lagecy connection stage
+### 5.34 [ESP32 Only] [AT+BLECONFREPLY](#BLE-AT)—Reply the comfirm value to the peer device in the lagecy connection stage
 Set Command:
 
     AT+BLECONFREPLY=<conn_index>,<confirm>
@@ -3301,7 +3470,7 @@ Example:
     AT+BLECONFREPLY=0,1
 
 <a name="cmd-BLEENCDEV"></a>
-### 5.34 [ESP32 Only] [AT+BLEENCDEV](#BLE-AT)—Query BLE encryption device list
+### 5.35 [ESP32 Only] [AT+BLEENCDEV](#BLE-AT)—Query BLE encryption device list
 Query Command:
 
     AT+BLEENCDEV?
@@ -3320,7 +3489,7 @@ Example:
     AT+BLEENCDEV?
 
 <a name="cmd-BLEENCCLEAR"></a>
-### 5.35 [ESP32 Only] [AT+BLEENCCLEAR](#BLE-AT)—Clear BLE encryption device list
+### 5.36 [ESP32 Only] [AT+BLEENCCLEAR](#BLE-AT)—Clear BLE encryption device list
 Set Command:
 
     AT+BLEENCCLEAR=<enc_dev_index>
@@ -3344,7 +3513,7 @@ Example:
     AT+BLEENCCLEAR
 
 <a name="cmd-BLESETKEY"></a>
-### 5.36 [ESP32 Only][AT+BLESETKEY](#BLE-AT)—Set BLE static pair key
+### 5.37 [ESP32 Only][AT+BLESETKEY](#BLE-AT)—Set BLE static pair key
 Query Command:
 
     AT+BLESETKEY?
@@ -3369,7 +3538,7 @@ Example:
     AT+BLESETKEY=123456
 
 <a name="cmd-BLEHIDINIT"></a>
-### 5.37 [ESP32 Only][AT+BLEHIDINIT](#BLE-AT)—BLE HID device profile initialization
+### 5.38 [ESP32 Only][AT+BLEHIDINIT](#BLE-AT)—BLE HID device profile initialization
 Query Command:
 
     AT+BLEHIDINIT?
@@ -3406,7 +3575,7 @@ Example:
     AT+BLEHIDINIT=1 
 
 <a name="cmd-BLEHIDKB"></a>
-### 5.38 [ESP32 Only][AT+BLEHIDKB](#BLE-AT)—Send BLE HID Keyboard information
+### 5.39 [ESP32 Only][AT+BLEHIDKB](#BLE-AT)—Send BLE HID Keyboard information
 Set Command: 
 
     AT+BLEHIDKB=<Modifier_keys>,<key_1>,<key_2>,<key_3>,<key_4>,<key_5>,<key_6>
@@ -3429,7 +3598,7 @@ Example:
     AT+BLEHIDKB=0,4,0,0,0,0,0   // input a
 
 <a name="cmd-BLEHIDMUS"></a>
-### 5.39 [ESP32 Only][AT+BLEHIDMUS](#BLE-AT)—Send BLE HID mouse information
+### 5.40 [ESP32 Only][AT+BLEHIDMUS](#BLE-AT)—Send BLE HID mouse information
 Set Command: 
 
     AT+BLEHIDMUS=<buttons>,<X_displacement>,<Y_displacement>,<wheel>
@@ -3449,7 +3618,7 @@ Example:
     AT+BLEHIDMUS=0,10,10,0
 
 <a name="cmd-BLEHIDC"></a>
-### 5.40 [ESP32 Only][AT+BLEHIDCONSUMER](#BLE-AT)—Send BLE HID consumer information
+### 5.41 [ESP32 Only][AT+BLEHIDCONSUMER](#BLE-AT)—Send BLE HID consumer information
 Set Command: 
 
     AT+BLEHIDCONSUMER=<consumer_usage_id>
