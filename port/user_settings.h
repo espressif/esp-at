@@ -17,8 +17,6 @@
 #define BENCH_EMBEDDED
 #define USE_CERT_BUFFERS_2048
 
-/* TLS 1.3                                 */
-#define WOLFSSL_TLS13
 #define HAVE_TLS_EXTENSIONS
 #define WC_RSA_PSS
 #define HAVE_HKDF
