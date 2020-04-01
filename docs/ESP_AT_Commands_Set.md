@@ -385,8 +385,9 @@ Parameters:
 
 - **\<sleep mode>**: 
     - 0: disable the sleep mode.
-    - 1: Modem-sleep mode.  
-    - 2: Light-sleep mode.
+    - 1: Modem-sleep DTIM mode. RF will be periodically closed according to AP DTIM.  
+    - 2: Light-sleep mode. CPU will automatically sleep and RF will be periodically closed according to `listen interval` set by `AT+CWJAP`.  
+    - 3: Modem-sleep listen interval mode. RF will be periodically closed according to `listen interval` set by `AT+CWJAP`.  
 
 Example:
 
@@ -825,7 +826,7 @@ Parameters:
 - **\[\<bssid>]**: the target AP's MAC address, used when multiple APs have the same SSID.
 - **\[\<pci_en>]**: enable PCI Authentication, which will disable connect OPEN and WEP AP.
 - **\[\<reconn>]**: enable Wi-Fi reconnection, when beacon timeout, ESP32 will reconnect automatically.
-- **\[\<listen_interval>]**: the interval of listening to the AP's beacon,the range is (0,100],
+- **\[\<listen_interval>]**: the interval of listening to the AP's beacon,the range is (0,100], by default, the value is 3.
 - **\<error code>**: (for reference only)
     - 1: connection timeout.
     - 2: wrong password.
@@ -1380,6 +1381,46 @@ Example:
     2. Connect to EAP-PEAP mode enterprise AP, set identity, username and password, not verify server certificate and not load client certificate
     AT+CWJEAP="dlink11111",1,"example@espressif.com","espressif","test11",0
 
+**Error Code:**
+The WPA2 enterprise Error code will be prompt as `ERR CODE:0x<%08x>`.
+```
+    AT_EAP_MALLOC_FAILED,               // 0x8001
+    AT_EAP_GET_NVS_CONFIG_FAILED,       // 0x8002
+    AT_EAP_CONN_FAILED,                 // 0x8003
+    AT_EAP_SET_WIFI_CONFIG_FAILED,      // 0x8004
+    AT_EAP_SET_IDENTITY_FAILED,         // 0x8005
+    AT_EAP_SET_USERNAME_FAILED,         // 0x8006
+    AT_EAP_SET_PASSWORD_FAILED,         // 0x8007
+    AT_EAP_GET_CA_LEN_FAILED,           // 0x8008
+    AT_EAP_READ_CA_FAILED,              // 0x8009
+    AT_EAP_SET_CA_FAILED,               // 0x800A
+    AT_EAP_GET_CERT_LEN_FAILED,         // 0x800B
+    AT_EAP_READ_CERT_FAILED,            // 0x800C
+    AT_EAP_GET_KEY_LEN_FAILED,          // 0x800D
+    AT_EAP_READ_KEY_FAILED,             // 0x800E
+    AT_EAP_SET_CERT_KEY_FAILED,         // 0x800F
+    AT_EAP_ENABLE_FAILED,               // 0x8010
+    AT_EAP_ALREADY_CONNECTED,           // 0x8011
+    AT_EAP_GET_SSID_FAILED,             // 0x8012
+    AT_EAP_SSID_NULL,                   // 0x8013
+    AT_EAP_SSID_LEN_ERROR,              // 0x8014
+    AT_EAP_GET_METHOD_FAILED,           // 0x8015
+    AT_EAP_CONN_TIMEOUT,                // 0x8016
+    AT_EAP_GET_IDENTITY_FAILED,         // 0x8017
+    AT_EAP_IDENTITY_LEN_ERROR,          // 0x8018
+    AT_EAP_GET_USERNAME_FAILED,         // 0x8019
+    AT_EAP_USERNAME_LEN_ERROR,          // 0x801A
+    AT_EAP_GET_PASSWORD_FAILED,         // 0x801B
+    AT_EAP_PASSWORD_LEN_ERROR,          // 0x801C
+    AT_EAP_GET_SECURITY_FAILED,         // 0x801D
+    AT_EAP_SECURITY_ERROR,              // 0x801E
+    AT_EAP_METHOD_SECURITY_UNMATCHED,   // 0x801F
+    AT_EAP_PARAMETER_COUNTS_ERROR,      // 0x8020
+    AT_EAP_GET_WIFI_MODE_ERROR,         // 0x8021
+    AT_EAP_WIFI_MODE_NOT_STA,           // 0x8022
+    AT_EAP_SET_CONFIG_FAILED,           // 0x8023
+    AT_EAP_METHOD_ERROR,                // 0x8024
+```
 ***Note:***
 
 * The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.	
@@ -2287,7 +2328,7 @@ Response:
 Parameters:
 - **\<mode>**: the receive mode of socket data is active mode by default.
     - 0: active mode - ESP AT will send all the received socket data instantly to host MCU through UART with header “+IPD".
-    - 1: passive mode - ESP AT will keep the received socket data in an internal buffer (default is 5840 bytes), and wait for host MCU to read the data. If the buffer is full, the socket transmission will be blocked.
+    - 1: passive mode - ESP AT will keep the received socket data in an internal buffer (default is 5744 bytes), and wait for host MCU to read the data. If the buffer is full, the socket transmission will be blocked.
 
 Example:
 
@@ -2301,6 +2342,8 @@ Example:
     - for multiple connection mode (AT+CIPMUX=1), the message is: `+IPD,<link ID>,<len>`
     - for single connection mode (AT+CIPMUX=0), the message is: `+IPD,<len>`
     - `<len>` is the total length of socket data in buffer
+    - User should read data by command `AT+CIPRECVDATA` once there is a `+IPD` reported. Otherwise, the next `+IPD` will not be reported to the host MCU, until the previous `+IPD` be read by command `AT+CIPRECVDATA`.
+    - In a case of disconnection, the buffered socket data will still be there and can be read by MCU until you send `AT+CIPCLOSE`. Specially, if `+IPD` has been reported, the message `CLOSED` of this connection will never come until you send `AT+CIPCLOSE` or read all data by command `AT+CIPRECVDATA`.
 
 <a name="cmd-CIPRECVDATA"></a>
 ### 4.24 [AT+CIPRECVDATA](#TCPIP-AT)—Get Socket Data in Passive Receive Mode
@@ -2334,10 +2377,6 @@ Example:
     For example, if host MCU gets a message of receiving 100 bytes data in connection with No.0, the message will be as following: +IPD,0,100
     then you can read those 100 bytes by using the command below
     AT+CIPRECVDATA=0,100
-
-***Notes:***
-
-* In a case of disconnection, the buffered Socket data will still be there and can be read by MCU until you send `AT+CIPCLOSE`, or a new connection occupied the previous link_id instead.
 
 <a name="cmd-CIPRECVLEN"></a>
 ### 4.25 [AT+CIPRECVLEN](#TCPIP-AT)—Get Socket Data Length in Passive Receive Mode
@@ -2588,7 +2627,7 @@ Example:
 ### 5.5 [ESP32 Only] [AT+BLESCAN](#BLE-AT)—Enables BLE Scanning
 Set Command: 
 
-    AT+BLESCAN=<enable>[,<interval>]
+    AT+BLESCAN=<enable>[,<interval>][,<filter_type>,<filter_param>]
     Function: to enable/disable scanning.
 Response:
 
@@ -2603,6 +2642,8 @@ Parameters:
     - When disabling the scanning, this parameter should be omitted
     - When enabling the scanning, and the `<interval>` is 0, it means that scanning is continuous
     - When enabling the scanning, and the `<interval>` is NOT 0, for example, command `AT+BLESCAN=1,3`, it means that scanning should last for 3 seconds and then stop automatically, so that the scanning results be returned.
+- **\<filter_type>**: Filtering option, 1:MAC or 2:"NAME".
+- **\<filter_param>**: Filtering param, remote evice mac address or remote device name.
 - **\<addr>**: BLE address
 - **\<rssi>**: signal strength
 - **\<adv_data>**: advertising data
@@ -2614,6 +2655,8 @@ Example:
     AT+BLEINIT=1   // role: client
     AT+BLESCAN=1    // start scanning
     AT+BLESCAN=0     // stop scanning
+    AT+BLESCAN=1,3,1,"24:0A:C4:96:E6:88"    // start scanning, filter type is MAC address
+    AT+BLESCAN=1,3,2,"ESP-AT"    // start scanning, filter type is device name
 
 <a name="cmd-BSCANR"></a>
 ### 5.6 [ESP32 Only] [AT+BLESCANRSPDATA](#BLE-AT)—Sets BLE Scan Response
