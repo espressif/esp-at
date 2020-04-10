@@ -325,7 +325,10 @@ static void at_uart_init(void)
     uart_set_pin(esp_at_uart_port, tx_pin, rx_pin, rts_pin, cts_pin);
     //Install UART driver, and get the queue.
     uart_driver_install(esp_at_uart_port, 2048, 8192, 30,&esp_at_uart_queue,0);
+
+#if defined(CONFIG_IDF_TARGET_ESP32)
     uart_enable_pattern_det_intr(esp_at_uart_port, '+', 3, ((APB_CLK_FREQ*20)/1000),((APB_CLK_FREQ*20)/1000), ((APB_CLK_FREQ*20)/1000));
+#endif
 #elif defined(CONFIG_IDF_TARGET_ESP8266)
     //Install UART driver, and get the queue.
     uart_driver_install(esp_at_uart_port, 2048, 2048, 10,&esp_at_uart_queue, 0);
