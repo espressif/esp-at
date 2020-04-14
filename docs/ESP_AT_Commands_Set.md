@@ -1640,6 +1640,7 @@ Parameters:
 * ESP32 can only set one SSL connection at most.
 * SSL connection does not support UART-WiFi passthrough mode (transparent transmission).
 * SSL connection needs a large amount of memory; otherwise, it may cause system reboot. 
+* If the `AT+CIPSTART` is based on a TLS connection, the timeout of each packet is 10s, then the total timeout will be much longer depending on the handshake packets count. 
 
 Example:
 
