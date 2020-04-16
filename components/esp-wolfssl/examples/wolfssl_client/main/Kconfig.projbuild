@@ -1,9 +1,0 @@
-menu "wolfSSL_client_demo"
-
-    config CERT_AUTH
-        bool      "Enable_cert_authentication"
-        default   y
-        help
-	          Enabling this flags authenticates the server certificate while establishing a tls connection
-
-endmenu # wolfSSL_client_demo
