@@ -79,7 +79,12 @@ bool esp_at_get_bluetooth_controller_default_config(esp_bt_controller_config_t* 
 }
 #endif
 
-uint32_t esp_at_get_task_stack_size(void)
+uint32_t esp_at_get_process_task_stack_size(void)
+{
+    return 6*1024;
+}
+
+uint32_t esp_at_get_socket_task_stack_size(void)
 {
     return 6*1024;
 }
