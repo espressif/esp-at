@@ -79,7 +79,7 @@ static bool at_default_flag = false;
 #endif
 #endif
 
-static const uart_port_t esp_at_uart_port = CONFIG_AT_UART_PORT;
+static uart_port_t esp_at_uart_port = CONFIG_AT_UART_PORT;
 
 static bool at_nvm_uart_config_set (at_nvm_uart_config_struct *uart_config);
 static bool at_nvm_uart_config_get (at_nvm_uart_config_struct *uart_config);
@@ -287,6 +287,16 @@ static void at_uart_init(void)
 
     if (data) {
         if ((data[0] == 0xFC) && (data[1] == 0xFC)) { // check magic flag, should be 0xfc 0xfc
+            if (data[5] != 0xFF) {
+#if defined(CONFIG_IDF_TARGET_ESP32)
+                assert((data[5] == 0) || (data[5] == 1) || (data[5] == 2));
+#elif defined(CONFIG_IDF_TARGET_ESP32S2)
+                assert((data[5] == 0) || (data[5] == 1));
+#elif defined(CONFIG_IDF_TARGET_ESP8266)
+                assert(data[5] == 0);
+#endif
+                esp_at_uart_port = data[5];
+            }
             if ((data[16] != 0xFF) && (data[17] != 0xFF)) {
                 tx_pin = data[16];
                 rx_pin = data[17];
