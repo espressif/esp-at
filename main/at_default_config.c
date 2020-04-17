@@ -83,9 +83,14 @@ bool esp_at_get_bluetooth_controller_default_config(esp_bt_controller_config_t* 
 }
 #endif
 
-uint32_t esp_at_get_task_stack_size(void)
+uint32_t esp_at_get_process_task_stack_size(void)
 {
-    return CONFIG_AT_TASK_STACK_SIZE;
+    return CONFIG_AT_PROCESS_TASK_STACK_SIZE;
+}
+
+uint32_t esp_at_get_socket_task_stack_size(void)
+{
+    return CONFIG_AT_SOCKET_TASK_STACK_SIZE;
 }
 
 #ifdef CONFIG_AT_OTA_SUPPORT

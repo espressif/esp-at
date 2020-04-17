@@ -18,9 +18,15 @@ source "$ESP_AT_PROJECT_PATH/main/interface/sdio/Kconfig"
 
 endchoice
 
-config AT_TASK_STACK_SIZE
-    int "The stack size of the AT task in AT library, which will be used when process AT command."
+config AT_PROCESS_TASK_STACK_SIZE
+    int "The stack size of the AT process task in AT library, which will be used to process AT command"
     default 2048
+    range 2048 8196
+    depends on AT_ENABLE
+
+config AT_SOCKET_TASK_STACK_SIZE
+    int "The stack size of the AT socket task in AT library, which will be used to process socket link"
+    default 6144
     range 2048 8196
     depends on AT_ENABLE
 
