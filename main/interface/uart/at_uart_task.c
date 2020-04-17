@@ -336,9 +336,6 @@ static void at_uart_init(void)
     //Install UART driver, and get the queue.
     uart_driver_install(esp_at_uart_port, 2048, 8192, 30,&esp_at_uart_queue,0);
 
-#if defined(CONFIG_IDF_TARGET_ESP32)
-    uart_enable_pattern_det_intr(esp_at_uart_port, '+', 3, ((APB_CLK_FREQ*20)/1000),((APB_CLK_FREQ*20)/1000), ((APB_CLK_FREQ*20)/1000));
-#endif
 #elif defined(CONFIG_IDF_TARGET_ESP8266)
     //Install UART driver, and get the queue.
     uart_driver_install(esp_at_uart_port, 1024, 2048, 10,&esp_at_uart_queue, 0);
@@ -570,7 +567,6 @@ static esp_at_cmd_struct at_custom_cmd[] = {
 
 void at_status_callback (esp_at_status_type status)
 {
-#if 0
 #if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2)
     switch (status) {
     case ESP_AT_STATUS_NORMAL:
@@ -582,7 +578,6 @@ void at_status_callback (esp_at_status_type status)
 #endif
         break;
     }
-#endif
 #endif
 }
 
