@@ -5,6 +5,7 @@ magic_flag,0,integer,2
 version,2,integer,1
 module_id,3,integer,1
 tx_max_power,4,integer,1
+uart_port,5,integer,1
 start_channel,6,integer,1
 channel_num,7,integer,1
 country_code,8,String,4
