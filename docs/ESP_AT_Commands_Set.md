@@ -131,6 +131,7 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [ESP32 Only] [AT+BLEHIDMUS](#cmd-BLEHIDMUS) : Send BLE HID mouse information
 * [ESP32 Only] [AT+BLEHIDCONSUMER](#cmd-BLEHIDC) : Send BLE HID consumer information
 * [ESP32 Only] [AT+BLUFI](#cmd-BLUFI) : Start or Stop BLUFI
+* [ESP32 Only] [AT+BLUFINAME](#cmd-BLUFINAME) : Set BLUFI device name
 
 * [ESP32 Only] [BLE AT Examples](#exam-BLE)
 
@@ -3711,6 +3712,38 @@ Example:
 
     AT+BLUFI=1
 
+[ESP32 Only] [AT+BLUFINAME](#cmd-BLUFINAME) : Set BLUFI device name
+<a name="cmd-BLUFINAME"></a>
+### 5.42 [ESP32 Only] [AT+BLUFINAME](#BLE-AT)—Set BLUFI device name
+Query Command:
+
+    AT+BLUFINAME?
+    Function: to query the BLUFI name.
+Response:
+
+    +BLUFINAME:<device_name>
+    OK
+Set Command: 
+
+    AT+BLUFINAME=<device_name>
+    Function: set the BLUFI device name.
+Response:
+
+    OK
+Parameter:
+
+- **\<device_name>**: the name of blufi device
+
+***Notes:***
+
+* If you need to set BLUFI name, please set it before command `AT+BLUFI=1`, Otherwise, it will use the default name `BLUFI_DEVICE`.
+* The max length of BLUFI name is 29 bytes.
+
+Example:
+
+    AT+BLUFINAME="BLUFI_DEV"
+    AT+BLUFINAME?
+
 <a name="exam-BLE"></a>
 ## 6. [ESP32 Only] [BLE AT Example](#BLE-AT)  
 Below is an example of using two ESP32 modules, one as a BLE server (hereafter named "ESP32 Server"), the other one as a BLE client (hereafter named "ESP32 Client"). The example shows how to use BLE functions with AT commands.  
@@ -4586,6 +4619,22 @@ Example:
 
     OK 
 
+**Query Command:**  
+
+```
+AT+MQTTUSERCFG?
+```
+**Function:**  
+
+    Get the MQTT user configuration.  
+
+**Response:**  
+
+```
++MQTTUSERCFG:<LinkID>,<scheme>,<"client_id">,<"username">,<"password">,<cert_key_ID>,<CA_ID>,<"path">
+OK
+```
+
 **Parameters:**  
 
 - **\<LinkID>**: only supports link ID 0 for now 
@@ -4626,6 +4675,22 @@ Example:
 
     OK 
 
+**Query Command:**  
+
+```
+AT+MQTTCLIENTID?
+```
+**Function:**  
+
+    Get the MQTT client ID.  
+
+**Response:**  
+
+```
++MQTTCLIENTID:<LinkID>,<"client_id">
+OK
+```
+
 **Parameters:**  
 
 - **\<LinkID>**: only supports link ID 0 for now 
@@ -4640,7 +4705,7 @@ Example:
 ### 9.3 [AT+MQTTUSERNAME](#MQTT-AT)  - Set MQTT Username
 **Set Command:**  
   
-    AT+MQTTUSERNAME=<LinkID><"client_id">
+    AT+MQTTUSERNAME=<LinkID><"username">
 
 **Function:**  
 
@@ -4650,6 +4715,22 @@ Example:
 **Response:**    
 
     OK 
+
+**Query Command:**  
+
+```
+AT+MQTTUSERNAME?
+```
+**Function:**  
+
+    Get the MQTT client username.  
+
+**Response:**  
+
+```
++MQTTUSERNAME:<LinkID>,<"username">
+OK
+```
 
 **Parameters:**  
 
@@ -4670,11 +4751,27 @@ Example:
 **Function:**  
 
     Set MQTT Password, will cover the parameter password in AT+MQTTUSERCFG   
-    User can set a long username by AT+MQTTPASSWORD.  
+    User can set a long password by AT+MQTTPASSWORD.  
 
 **Response:**    
 
     OK 
+
+**Query Command:**  
+
+```
+AT+MQTTPASSWORD?
+```
+**Function:**  
+
+    Get the MQTT client password.  
+
+**Response:**  
+
+```
++MQTTPASSWORD:<LinkID>,<"password">
+OK
+```
 
 **Parameters:**  
 
@@ -4702,10 +4799,26 @@ AT+MQTTCONNCFG=<LinkID>,<keepalive>,<disable_clean_session>,<"lwt_topic">,<"lwt_
 
     OK
 
+**Query Command:**  
+
+```
+AT+MQTTCONNCFG?
+```
+**Function:**  
+
+    Get configuration of MQTT Connection  
+
+**Response:**  
+
+```
++MQTTCONNCFG:<LinkID>,<keepalive>,<disable_clean_session>,<"lwt_topic">,<"lwt_msg">,<lwt_qos>,<lwt_retain>
+OK
+```
+
 **Parameters:**  
   
 - **\<LinkID>**: only supports link ID 0 for now
-- **\<keepalive>**: timeout of MQTT ping, range [60, 7200], unit:second. Default is 120s.
+- **\<keepalive>**: timeout of MQTT ping, range [1, 7200], unit:second. Default is 120s.
 - **\<disable\_clean_session>**: set MQTT clean session
     - 0: enable clean session
     - 1: disable clean session
