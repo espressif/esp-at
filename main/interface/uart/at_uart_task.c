@@ -331,7 +331,7 @@ static void at_uart_init(void)
 #endif
 #elif defined(CONFIG_IDF_TARGET_ESP8266)
     //Install UART driver, and get the queue.
-    uart_driver_install(esp_at_uart_port, 2048, 2048, 10,&esp_at_uart_queue, 0);
+    uart_driver_install(esp_at_uart_port, 1024, 2048, 10,&esp_at_uart_queue, 0);
     if ((tx_pin == 15) && (rx_pin == 13)) { // sgit wap 
         uart_enable_swap();
         assert((cts_pin == -1) || (cts_pin == 3));
