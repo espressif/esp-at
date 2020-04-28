@@ -2141,9 +2141,9 @@ Response:
 Set Command:
 
     Single connection: (+CIPMUX=0)
-    AT+CIPSSLCCONF=<auth_mode>,<pki_number>,<ca_number>
+    AT+CIPSSLCCONF=<auth_mode>[,<pki_number>][,<ca_number>]
     Multiple connections: (+CIPMUX=1)
-    AT+CIPSSLCCONF=<link ID>,<auth_mode>,<pki_number>,<ca_number>
+    AT+CIPSSLCCONF=<link ID>,<auth_mode>[,<pki_number>][,<ca_number>]
 Response:
 
     OK
@@ -2151,7 +2151,7 @@ Parameters:
 
 - **\<link ID>**: ID of the connection (0~max), for multiple connections, if the value is max, it means all connections. By default, max is 5.
 - **\<auth_mode>**: 
-    - 0: no authorization.
+    - 0: no authorization. In this case, \<pki_number> and \<ca_number> are not required.
     - 1: load cert and private key for server authorization.
     - 2: load CA for client authorize server cert and private key.
     - 3: both authorization.
