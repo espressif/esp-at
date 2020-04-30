@@ -765,7 +765,7 @@ Response:
     OK
 Set Command: 
 
-    AT+CWMODE=<mode>
+    AT+CWMODE=<mode>[,<auto_connect>]
     Function: to set the Wi-Fi mode of ESP32.
 Response:
 
@@ -777,6 +777,10 @@ Parameters:
     - 1: Station mode
     - 2: SoftAP mode
     - 3: SoftAP+Station mode    
+
+- **\<auto_connect>**:
+    - 0: Do not connect to WiFi when WiFi mode change to Station or Station+SoftAP
+    - 1: Connect to WiFi when WiFi mode change to Station or Station+SoftAP (default configuration)
 
 ***Note:***
 
