@@ -1,13 +1,16 @@
+ESP AT Get Started
+=============
+
 - [ESP32 platform](#platform-esp32)  
 - [ESP32S2 platform](#platform-esp32s2)  
 - [ESP8266 platform](#platform-esp8266)  
 
-More supported modules, please referred to [`components/customized_partitions/raw_data/factory_param/factory_param_data.csv`](../components/customized_partitions/raw_data/factory_param/factory_param_data.csv)
+More supported modules, please referred to [`factory_param_data.csv`](../../../components/customized_partitions/raw_data/factory_param/factory_param_data.csv)
 
 <a name="platform-esp32"></a>
-# ESP32 platform  
+## ESP32 platform  
 
-## Hardware Introduction
+### Hardware Introduction
 The WROOM32 Board sends AT commands through UART1 by default. 
 
 * GPIO16 is RXD
@@ -19,13 +22,13 @@ The debug log will output through UART0 by default, which TXD0 is GPIO1 and RXD0
 
 * `make menuconfig` --> `Component config` --> `ESP32-specific` --> `UART for console output`
 
-### Notes: Please pay attention to conflict of the pin ##
+#### Notes: Please pay attention to conflict of the pin ##
 - If choose `AT through HSPI`, you can get the information of the hspi pin by `make menuconfig` --> `Component config` --> `AT` --> `AT hspi settings`
 - If enable `AT ethernet support`, you can get the information of the ethernet pin from `ESP32_AT_Ethernet.md`.
 
-## Compiling and flashing the project
+### Compiling and flashing the project
 
-Suppose you have completed the installation of the compiler environment for esp-idf, if not, you should completed it referring to https://docs.espressif.com/projects/esp-idf/en/v3.3/get-started/index.html#setup-toolchain, in order to compile esp-at project properly, please do the following additional steps:
+Suppose you have completed the installation of the compiler environment for esp-idf, if not, you should complete it referring to `https://docs.espressif.com/projects/esp-idf/en/v3.3/get-started/index.html#setup-toolchain`, in order to compile esp-at project properly, please do the following additional steps:
 
 ```  
 step1:install python 2.7 or python 3.x 
@@ -53,9 +56,9 @@ git clone --recursive https://github.com/espressif/esp-at.git
 7. If the esp-at bin fails to boot, and prints "ota data partition invalid", you should run `make erase_flash` to erase the entire flash.
 
 <a name="platform-esp32s2"></a>
-# ESP32S2 platform  
+## ESP32S2 platform  
 
-## Hardware Introduction
+### Hardware Introduction
 The WROOM32S2 Board sends AT commands through UART1 by default. 
 
 * GPIO18 is RXD
@@ -67,9 +70,9 @@ The debug log will output through UART0 by default, which TXD0 is GPIO1 and RXD0
 
 * `make menuconfig` --> `Component config` --> `Common ESP-related` --> `UART for console output`
 
-## Compiling and flashing the project
+### Compiling and flashing the project
 
-Suppose you have completed the installation of the compiler environment for esp-idf, if not, you should completed it referring to https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html#setup-toolchain, and you can get compiler toolchain from https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/tools/idf-tools.html#list-of-idf-tools, in order to compile esp-at project properly, please do the following additional steps:
+Suppose you have completed the installation of the compiler environment for esp-idf, if not, you should complete it referring to `https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html#setup-toolchain`, and you can get compiler toolchain from `https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/tools/idf-tools.html#list-of-idf-tools`, in order to compile esp-at project properly, please do the following additional steps:
 
 ```  
 step1:python > 3.8.0 
@@ -96,9 +99,9 @@ export ESP_AT_PROJECT_PATH=$(pwd)
   * Follow the printed instructions to download the bin files into flash by yourself.
 
 <a name="platform-esp8266"></a>
-# ESP8266 platform  
+## ESP8266 platform  
 
-## Hardware Introduction
+### Hardware Introduction
 The ESP8266 WROOM 02 Board sends AT commands through UART0 by default. 
 
 * GPIO13 is RXD
@@ -111,8 +114,8 @@ The debug log will output through UART1 by default, which TXD0 is GPIO2, but use
 * `make menuconfig` --> `Component config` --> `ESP8266-specific` --> `UART for console output`
 
 
-## Compiling and flashing the project
-Suppose you have completed the installation of the compiler environment for esp-idf, if not, you should completed  it referring to https://docs.espressif.com/projects/esp8266-rtos-sdk/en/v3.2/get-started/index.html#setup-toolchain, in order to compile esp-at project properly, please do the following additional steps:
+### Compiling and flashing the project
+Suppose you have completed the installation of the compiler environment for esp-idf, if not, you should complete it referring to `https://docs.espressif.com/projects/esp8266-rtos-sdk/en/v3.2/get-started/index.html#setup-toolchain`, in order to compile esp-at project properly, please do the following additional steps:
 
 ```
 step1:install python 2.7 or python 3.x  

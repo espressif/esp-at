@@ -56,15 +56,14 @@ typedef struct {
     bool (*wait_write_complete)(int32_t timeout_msec);              /*!< wait write finish */
 } esp_at_device_ops_struct;
 
-/*
- *@brief esp_at_custom_net_ops_struct
- *net recv functions struct for AT
- *
+/**
+ * @brief esp_at_custom_net_ops_struct
+ * net recv functions struct for AT
  */
 typedef struct {
-    int32_t (*recv_data)(uint8_t*data,int32_t len);
-    void (*connect_cb)(void);
-    void (*disconnect_cb)(void);
+    int32_t (*recv_data)(uint8_t*data,int32_t len);  /*!< callback when socket received data */
+    void (*connect_cb)(void);                        /*!< callback when socket connection is built */
+    void (*disconnect_cb)(void);                     /*!< callback when socket connection is disconnected */
 } esp_at_custom_net_ops_struct;
 
 /**
@@ -86,11 +85,11 @@ typedef enum {
 typedef struct {
     void (*status_callback) (esp_at_status_type status);              /*!< callback when AT status changes */
     void (*pre_deepsleep_callback) (void);                            /*!< callback before enter deep sleep */
-    void (*pre_restart_callback) (void);
+    void (*pre_restart_callback) (void);                              /*!< callback before restart */
 } esp_at_custom_ops_struct;
 
 /**
- * @AT specific callback type
+ * @brief AT specific callback type
  *
  */
 typedef void (*esp_at_port_specific_callback_t) (void);
@@ -335,25 +334,21 @@ int32_t esp_at_port_get_data_length(void);
 
 /**
  * @brief regist at base command set. If not,you can not use AT base command
- * @param NONE
  *
  */
 bool esp_at_base_cmd_regist(void);
 /**
  * @brief regist at wifi command set. If not,you can not use AT wifi command
- * @param NONE
  *
  */
 bool esp_at_wifi_cmd_regist(void);
 /**
  * @brief regist at net command set. If not,you can not use AT net command
- * @param NONE
  *
  */
 bool esp_at_net_cmd_regist(void);
 /**
  * @brief regist at mdns command set. If not,you can not use AT mdns command
- * @param NONE
  *
  */
 
@@ -361,97 +356,84 @@ bool esp_at_mdns_cmd_regist(void);
 
 /**
  * @brief regist at wps command set. If not,you can not use AT wps command
- * @param NONE
  *
  */
 bool esp_at_wps_cmd_regist(void);
 
 /**
  * @brief regist at smartconfig command set. If not,you can not use AT smartconfig command
- * @param NONE
  *
  */
 bool esp_at_smartconfig_cmd_regist(void);
 
 /**
  * @brief regist at ping command set. If not,you can not use AT ping command
- * @param NONE
  *
  */
 bool esp_at_ping_cmd_regist(void);
 
 /**
  * @brief regist at http command set. If not,you can not use AT http command
- * @param NONE
  *
  */
 bool esp_at_http_cmd_regist(void);
 
 /**
  * @brief regist at mqtt command set. If not,you can not use AT mqtt command
- * @param NONE
  *
  */
 bool esp_at_mqtt_cmd_regist(void);
 /**
  * @brief regist at ble command set. If not,you can not use AT ble command
- * @param NONE
  *
  */
 bool esp_at_ble_cmd_regist(void);
 
 /**
  * @brief regist at ble hid command set. If not,you can not use AT ble hid command
- * @param NONE
  *
  */
 bool esp_at_ble_hid_cmd_regist(void);
 
 /**
  * @brief regist at blufi command set. If not,you can not use AT blufi command
- * @param NONE
  *
  */
 bool esp_at_blufi_cmd_regist(void);
 
 /**
 * @brief regist at bt command set. If not,you can not use AT bt command
-* @param NONE
 *
 */
 bool esp_at_bt_cmd_regist(void);
 
 /**
 * @brief regist at bt spp command set. If not,you can not use AT bt spp command
-* @param NONE
 *
 */
 bool esp_at_bt_spp_cmd_regist(void);
 
 /**
 * @brief regist at bt a2dp command set. If not,you can not use AT bt a2dp command
-* @param NONE
 *
 */
 bool esp_at_bt_a2dp_cmd_regist(void);
 
 /**
  * @brief regist at fs command set. If not,you can not use AT fs command
- * @param NONE
+ *
  *
  */
 bool esp_at_fs_cmd_regist(void);
 
 /**
  * @brief regist at WPA2 Enterprise AP command set. If not,you can not use AT EAP command
- * @param NONE
  *
  */
 bool esp_at_eap_cmd_regist(void);
 
 /**
  * @brief regist at ethernet command set. If not,you can not use AT ethernet command
- * @param NONE
  *
  */
 bool esp_at_eth_cmd_regist(void);
@@ -459,7 +441,7 @@ bool esp_at_eth_cmd_regist(void);
 /**
  * @brief Set AT command terminator, by default, the terminator is "\r\n"
  * You can change it by calling this function, but it just supports one character now.
- * @param NONE
+ * @param terminator: the line terminator
  *
  * @return
  *  - true : succeed,transmit data completely
@@ -469,7 +451,6 @@ bool esp_at_custom_cmd_line_terminator_set(uint8_t* terminator);
 
 /**
  * @brief Get AT command line terminator,by default, the return string is "\r\n"
- * @param NONE
  *
  * @return the command line terminator
  */
@@ -477,9 +458,9 @@ uint8_t* esp_at_custom_cmd_line_terminator_get(void);
 
 /**
  * @brief Find the partition which is defined in at_customize.csv
- * @param type the type of the partition
- *        subtype the subtype of the partition
- *        label Partition label
+ * @param type: the type of the partition
+ * @param subtype: the subtype of the partition
+ * @param label: Partition label
  * 
  * @return pointer to esp_partition_t structure, or NULL if no partition is found.
  *         This pointer is valid for the lifetime of the application
@@ -488,7 +469,7 @@ const esp_partition_t* esp_at_custom_partition_find(esp_partition_type_t type, e
 
 /**
  * @brief regist at ethernet command set. If not,you can not use AT ethernet command
- * @param NONE
+ *
  *
  */
 bool esp_at_eth_cmd_regist(void);
@@ -514,27 +495,31 @@ bool esp_at_eth_cmd_regist(void);
           // TODO:
       }
     }
- * @param callback
+ * @param callback: which will be called when received data from AT port
  *
  */
 void esp_at_port_enter_specific(esp_at_port_specific_callback_t callback);
 
 /**
  * @brief Exit AT core as specific status.
- * @param NONE
  *
  */
 void esp_at_port_exit_specific(void);
 
 /**
  * @brief Get current AT command name.
- * @param NONE
+ *
  */
 const uint8_t* esp_at_get_current_cmd_name(void);
 
 /**
  * @brief  Wi-Fi event handler callback, which used in AT core.
- * @param NONE
+ * @param  ctx    reserved for user
+ * @param  event  event type defined in this file
+ *
+ * @return
+ *    - ESP_OK: succeed
+ *    - others: fail
  */
 esp_err_t esp_at_wifi_event_handler(void *ctx, system_event_t *event);
 

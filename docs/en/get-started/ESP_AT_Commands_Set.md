@@ -1,7 +1,8 @@
-[toc]
+ESP AT Commands Set
+=============
 
 <a name="Begin-AT"></a>
-# ESP AT Commands Set
+## Overview
 Here is a list of AT commands. Some of the AT commands can only work on the ESP32, which will be marked as [ESP32 Only]; others can work on both the ESP8266 and ESP32.  
 
 **Appendix**:  
@@ -29,7 +30,7 @@ Here is a list of AT commands. Some of the AT commands can only work on the ESP3
 * [AT+SYSRAM](#cmd-SYSRAM) : Checks the remaining space of RAM.
 * [AT+SYSMSG](#cmd-SYSMSG) : Set message format.
 * [AT+RFPOWER](#cmd-RFPOWER) : Set RF TX Power.
-* [ESP32 Only] [AT+SYSFLASH](#cmd-SYSFLASH) : Set User Partitions in Flash.
+* [AT+SYSFLASH] [AT+SYSFLASH](#cmd-SYSFLASH) : Set User Partitions in Flash.
 * [ESP32 Only] [AT+FS](#cmd-FS) : Filesystem Operations.
 * [AT+SYSROLLBACK](#cmd-SYSROLLBACK) : Roll back to the previous firmware.
 * [AT+SYSTIMESTAMP](#cmd-SETTIME): Set local time stamp.
@@ -210,7 +211,7 @@ Here is a list of AT commands. Some of the AT commands can only work on the ESP3
 <a name="HTTP-AT"></a>
 ### 1.8 HTTP AT Command List
 - [AT+HTTPCLIENT](#cmd-HTTPCLIENT) -  Send HTTP Client Request
-- [AT+HTTPGETSIZE](#cmd-HTTPGETSIZE) - Get HTTP Source Size
+- [AT+HTTPGETSIZE](#cmd-HTTPGETSIZE) - Get HTTP Resource Size
 - [HTTP AT Error Code](#cmd-HTTPErrCode)
 
 <a name="FACT-AT"></a>
@@ -480,7 +481,7 @@ Example:
     AT+SYSMSG=2
 
 <a name="cmd-SYSFLASH"></a>
-### 2.12 [ESP32 Only] [AT+SYSFLASH](#Basic-AT)—Set User Partitions in Flash  
+### 2.12 [AT+SYSFLASH](#Basic-AT)—Set User Partitions in Flash  
 Query Command:
 
     AT+SYSFLASH?
@@ -515,7 +516,7 @@ Parameters:
 
 ***Notes:***  
 
-* at_customize.bin has to be downloaded, so that the relevant commands can be used. Please refer to the [ESP32_Customize_Partitions](https://github.com/espressif/esp-at/tree/master/docs) for more details.
+* at_customize.bin has to be downloaded, so that the relevant commands can be used. Please refer to the [ESP_AT_Customize_Partitions](https://github.com/espressif/esp-at/tree/master/docs) for more details.
 * Important things to note when erasing user partitions:
     * When erasing the targeted user partition in its entirety, parameters `<offset>` and `<length>` can be omitted. For example, command `AT+SYSFLASH=0,"ble_data"` can erase the entire "ble_data" user partition.
     * If parameters `<offset>` and `<length>` are not omitted when erasing the user partition, they have to be 4KB-aligned.
@@ -1621,21 +1622,21 @@ Response:
     +CIPSTATUS:<link ID>,<type>,<remote IP>,<remote port>,<local port>,<tetype>
 Parameters:
 
-- **\<stat>**: status of the ESP32 Station interface.
-    - 0: The ESP32 station is inactive.
-    - 1: The ESP32 station is idle.
-    - 2: The ESP32 Station is connected to an AP and its IP is obtained.
-    - 3: The ESP32 Station has created a TCP or UDP transmission.
-    - 4: The TCP or UDP transmission of ESP32 Station is disconnected.
-    - 5: The ESP32 Station does NOT connect to an AP.
+- **\<stat>**: status of the esp device Station interface.
+    - 0: The esp device station is inactive.
+    - 1: The esp device station is idle.
+    - 2: The esp device Station is connected to an AP and its IP is obtained.
+    - 3: The esp device Station has created a TCP or SSL transmission.
+    - 4: The TCP or SSL transmission of esp device Station is disconnected.
+    - 5: The esp device Station does NOT connect to an AP.
 - **\<link ID>**: ID of the connection (0~4), used for multiple connections.
 - **\<type>**: string parameter, "TCP" or "UDP".
 - **\<remote IP>**: string parameter indicating the remote IP address.
 - **\<remote port>**: the remote port number.
-- **\<local port>**: ESP32 local port number.
+- **\<local port>**: the local port number.
 - **\<tetype>**:
-    - 0: ESP32 runs as a client.
-    - 1: ESP32 runs as a server.
+    - 0: esp device runs as a client.
+    - 1: esp device runs as a server.
 
 <a name="cmd-DOMAIN"></a>
 ### 4.2 [AT+CIPDOMAIN](#TCPIP-AT)—Domain Name Resolution Function
@@ -1681,6 +1682,11 @@ Parameters:
     - 1 ~ 7200: detection time interval; unit: second (s).
 
 - **\[\<local IP>]**(optional parameter): select which IP want to use, this is useful when using both ethernet and WiFi; this parameter is disabled by default. If you want to use this parameter, <TCP keep alive> must be specified firstly, null also is valid.
+
+Notes:
+
+    If the remote IP over the UDP is a multicast address(224.0.0.0 ~ 239.255.255.255), the esp device will send and receive the UDP multicast;
+    If the remote IP over the UDP is a broadcast address(255.255.255.255), the esp device will send and receive the UDP broadcast.
 
 Examples:
 
@@ -2701,7 +2707,7 @@ Below is an example showing how a TCP server is established when ESP works in th
    OK
    ```
 4. Connect the PC to the ESP SoftAP.  
-![avatar](img/Connect-SoftAP.png)   
+![avatar](../../img/Connect-SoftAP.png)   
 5. Using a network tool on PC to create a TCP client and connect to the TCP server that ESP created.   
 **Notice**:   
    When ESP works as a TCP server, there is a timeout mechanism. If the TCP client is connected to the ESP TCP server, while there is no data transmission for a period of time, the server will disconnect from the client. To avoid such a problem, please set up a data transmission cycle every two seconds.
@@ -2955,7 +2961,7 @@ Here is an example of the ESP working as a SoftAP in UDP transparent transmissio
    OK
    ```
 2. Connect the PC to the ESP SoftAP.  
-![avatar](img/Connect-SoftAP.png)   
+![avatar](../../img/Connect-SoftAP.png)   
 3. Use a network tool on PC to create a UDP endpoint. For example, the PC's IP address is `192.168.4.2` and the port is `1001`.
 4. Create a UDP transmission between ESP32 and the PC with a fixed remote IP and port.
 
@@ -4592,7 +4598,7 @@ The AT command should be as below:
     OK
     ```
 Open WeChat on your mobile phone and then select “Shake Nearby” to discover the ESP32 device that is advertising.
-![avatar](img/Shake-Nearby.png)   
+![avatar](../../img/Shake-Nearby.png)   
 
 ### Example 2.2. ESP32 Device Scanning for iBeacons
 Not only can the ESP32 device transmits iBeacons, but it can also work as a BLE client that scans for iBeacons and gets the advertisement data which can then be parsed by the host MCU.  
@@ -6078,6 +6084,8 @@ Set Command:
     AT+HTTPCLIENT=<opt>,<content-type>,[<url>],[<host>],[<path>],<transport_type>,[<data>][,"http_req_header"][,"http_req_header"][...]
 Response:
 
+    +HTTPCLIENT:<size>,<data>
+
     OK
 Parameters:
 
@@ -6123,7 +6131,7 @@ Parameters:
     HTTPCLIENT=2,0,"http://www.baidu.com/img/bdlogo.gif",,,0,"Range: bytes=100-200"
 
 <a name="cmd-HTTPGETSIZE"></a>
-### 10.2 [AT+HTTPGETSIZE](#HTTP-AT)-Get HTTP Source Size
+### 10.2 [AT+HTTPGETSIZE](#HTTP-AT)-Get HTTP Resource Size
 Set Command:
 
     AT+HTTPGETSIZE=<url>
@@ -6315,21 +6323,21 @@ The following AT Commands with configuration will be saved in the flash NVS Area
 The following steps guide the users in creating a device on iot.espressif.cn and updating the OTA BIN on it.   
 
 1. Open the website iot.espressif.cn. If using SSL OTA, it should be https://iot.espressif.cn.
-![avatar](img/OTA-1.png)
+![avatar](../../img/OTA-1.png)
 2. Click "Join" in the upper right corner of the webpage, and enter your name, email address, and password.  
-![avatar](img/OTA-2.png)
+![avatar](../../img/OTA-2.png)
 3. Click on "Device" in the upper right corner of the webpage, and click on "Create" to create a device.
-![avatar](img/OTA-3.png)  
-![avatar](img/OTA-4.png)  
+![avatar](../../img/OTA-3.png)  
+![avatar](../../img/OTA-4.png)  
 4. A key is generated when the device is successfully created, as the figure below shows.
-![avatar](img/OTA-5.png)   
+![avatar](../../img/OTA-5.png)   
 5. Use the key to compile your own OTA BIN. The process of configuring the AT OTA token key is as follows:
-![avatar](img/OTA-6.png)   
-![avatar](img/OTA-7.png) 
+![avatar](../../img/OTA-6.png)   
+![avatar](../../img/OTA-7.png) 
 **Notice:**
 If using SSL OTA, the option "OTA based upon ssl" should be selected.
 6. Click on "Product" to enter the webpage, as shown below. Click on the device created. Enter version and corename under "ROM Deploy". Rename the BIN compiled in Step 5 as "ota.bin" and save the configuration.
-![avatar](img/OTA-8.png) 
+![avatar](../../img/OTA-8.png) 
 7. Click on the ota.bin to save it as the current version.
-![avatar](img/OTA-9.png) 
+![avatar](../../img/OTA-9.png) 
 8. Run the command AT+CIUPDATE on the ESP device. If the network is connected, OTA update will be done.

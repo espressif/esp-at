@@ -1,5 +1,7 @@
-## The Secondary Partitions Table
+The Secondary Partitions Table
+=============
 
+## Overview
 The primary partition table is for system usage, it will generate a "partitions_at.bin" according to the "partitions_at.csv" in compilation. And if the primary partition table goes wrong, the system will fail to startup. So generally, we should not change the "partitions_at.csv".
 
 In this case, we provide a secondary partition table for custom usage, "at_customize.csv". We have already defined some user partitions in it. Custom can add new partitions in the "at_customize.csv", and generate a new "at_customize.bin" according to it. The partition table can be updated by flashing the new "at_customize.bin" into flash, or be revised by command "AT+SYSFLASH".
