@@ -4099,6 +4099,7 @@ Parameters:
     - 0: Neither discoverable nor connectable
     - 1: Connectable but not discoverable
     - 2: both discoverable and connectable
+    - 3: discoverable but not Connectable
 
 Example:
 
