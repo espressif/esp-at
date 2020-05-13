@@ -84,6 +84,7 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+CIPRECVLEN](#cmd-CIPRECVLEN): Get Socket Data Length in Passive Receive Mode. 
 * [AT+PING](#cmd-CIPPING): Ping Packets
 * [AT+CIPDNS](#cmd-DNS) : Configures Domain Name System.
+* [AT+CIPTCPOPT](#cmd-TCPOPT) : Configurates the socket options.
 
 <a name="BLE-AT"></a>
 ### 1.4 [ESP32 Only] BLE AT Commands List
@@ -2188,7 +2189,8 @@ Response:
     OK
 Parameters:
 
-- **\<link ID>**: ID of the connection (0~max), for multiple connections, if the value is max, it means all connections. By default, max is 5.
+- **\<link ID>**: ID of the connection (0~max), for single connection, link ID is 0;  
+    for multiple connections, if the value is max, it means all connections, max is 5 by default.
 - **\<"common name">**: common name is used to verify the commonName in the certificate sent by the server.
 
 ***Notes:***
@@ -2216,7 +2218,8 @@ Response:
     OK
 Parameters:
 
-- **\<link ID>**: ID of the connection (0~max), for multiple connections, if the value is max, it means all connections. By default, max is 5.
+- **\<link ID>**: ID of the connection (0~max), for single connection, link ID is 0;  
+    for multiple connections, if the value is max, it means all connections, max is 5 by default.
 - **\<"sni">**: Set TLS extension servername (SNI) in ClientHello
 
 ***Notes:***
@@ -2231,7 +2234,7 @@ Query Command:
     Function: to get the ALPN configuration of each link that running as SSL client.
 Response:
 
-    +CIPSSLCALPN:<link ID>,<counts>,<"alpn">[,<"alpn">[,<"alpn">]]
+    +CIPSSLCALPN:<link ID>,<"alpn">[,<"alpn">[,<"alpn">]]
     OK
 Set Command:
 
@@ -2244,7 +2247,8 @@ Response:
     OK
 Parameters:
 
-- **\<link ID>**: ID of the connection (0~max), for multiple connections, if the value is max, it means all connections. By default, max is 5.
+- **\<link ID>**: ID of the connection (0~max), for single connection, link ID is 0;  
+    for multiple connections, if the value is max, it means all connections, max is 5 by default.
 - **\<counts>**: ALPN counts
 - **\<"alpn">**: Set ALPN in ClientHello
 
@@ -2273,9 +2277,10 @@ Response:
     OK
 Parameters:
 
-- **\<link ID>**: ID of the connection (0~max), for multiple connections, if the value is max, it means all connections. By default, max is 5.
-- **\<"psk">**: PSK identity
-- **\<"hint">**: PSK hint
+- **\<link ID>**: ID of the connection (0~max), for single connection, link ID is 0;  
+    for multiple connections, if the value is max, it means all connections, max is 5 by default.
+- **\<"psk">**: PSK identity, maxlen is 32.
+- **\<"hint">**: PSK hint, maxlen is 32.
 
 ***Notes:***
 
@@ -2474,6 +2479,42 @@ Example:
 * The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.  
 * The three <DNS IP>parameters cannot be set to the same server.  
 * The DNS server may change according to the configuration of the router which the ESP chip connected to.  
+
+
+<a name="cmd-TCPOPT"></a>
+### 4.28 [AT+CIPTCPOPT](#TCPIP-AT) : Configurates the socket options.
+Query Command:
+
+    AT+CIPTCPOPT?
+    Function: to obtain current socket options information.
+Response:
+
+    +CIPTCPOPT:<link_id>,<so_linger>,<tcp_nodelay>,<so_sndtimeo>
+    OK
+
+Set Command:
+
+    Single TCP connection (AT+CIPMUX=0):
+    AT+CIPTCPOPT=[<so_linger>],[<tcp_nodelay>],[<so_sndtimeo>]
+    Multiple TCP Connections (AT+CIPMUX=1):
+    AT+CIPTCPOPT=<link ID>,[<so_linger>],[<tcp_nodelay>],[<so_sndtimeo>]
+Response:
+
+    OK
+or
+
+    ERROR
+
+Parameters:
+- **\<link_id>**: ID of the connection(0~max), for multiple connections, if the value is max, it means all connections. By default, max is 5.
+- **\<so_linger>**: configurate the SO_LINGER options for socket, in second, default: -1.
+    - = -1: off
+    - = 0: on, linger time = 0
+    - > 0: on, linger time = <so_linger>
+- **\<tcp_nodelay>**: configurate the TCP_NODELAY options for socket.
+    - 0: disable TCP_NODELAY, default
+    - 1: enable TCP_NODELAY
+- **\<so_sndtimeo>**: configurate the SO_SNDTIMEO options for socket, in millisecond, default: 0.
 
 ## 5. [ESP32 Only] BLE-Related AT Commands
 <a name="cmd-BINIT"></a>
