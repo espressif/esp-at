@@ -25,8 +25,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2)
 #include "freertos/FreeRTOS.h"
+#if defined(CONFIG_IDF_TARGET_ESP8266)
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 #include "freertos/stream_buffer.h"
