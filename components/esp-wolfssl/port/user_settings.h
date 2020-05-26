@@ -18,10 +18,42 @@
 #define USE_CERT_BUFFERS_2048
 
 #define HAVE_TLS_EXTENSIONS
+
+#define CONFIG_ESP_WOLFSSL_NANO
+#define HAVE_SUPPORTED_CURVES
+
+// -----------------------------------------
+// compatible ciphers for esp-at
+#ifdef CONFIG_ESP_WOLFSSL_NANO
+#define BUILD_TLS_RSA_WITH_AES_256_CBC_SHA256
+#define BUILD_TLS_RSA_WITH_AES_128_CBC_SHA256
+#define BUILD_TLS_RSA_WITH_AES_256_CBC_SHA
+#define BUILD_TLS_RSA_WITH_AES_128_CBC_SHA
+#define BUILD_TLS_RSA_WITH_AES_128_GCM_SHA256
+#endif
+// -----------------------------------------
+
+// -----------------------------------------
+// compatible configuration for esp-at
+#ifdef CONFIG_ESP_WOLFSSL_NANO
+#define HAVE_AESGCM
+#define WOLFSSL_STATIC_RSA
+#endif
+// -----------------------------------------
+
+#ifndef CONFIG_ESP_WOLFSSL_NANO
 #define WC_RSA_PSS
 #define HAVE_HKDF
 #define HAVE_AEAD
-#define HAVE_SUPPORTED_CURVES
+#define WOLFSSL_SHA512
+#define HAVE_CURVE25519
+#define CURVE25519_SMALL
+#define HAVE_ED25519
+#define WOLFSSL_AES_128
+#define HAVE_AES_DECRYPT
+#endif
+
+#define HAVE_ECC
 #define HAVE_SNI
 /* ALPN in wolfSSL is enabled by default,can be disabled with menuconfig */
 #define HAVE_ALPN
@@ -29,14 +61,6 @@
 /* #define SINGLE_THREADED */
 #define NO_FILESYSTEM
 #define WOLFSSL_STATIC_PSK
-#define HAVE_AESGCM
-/* when you want to use SHA384 */
-/* #define WOLFSSL_SHA384 */
-#define WOLFSSL_SHA512
-#define HAVE_ECC
-#define HAVE_CURVE25519
-#define CURVE25519_SMALL
-#define HAVE_ED25519
 /* do not use wolfssl defined app_main function used to test esp-wolfssl */
 #define NO_MAIN_DRIVER
 /* you can disable folowing cipher suits by uncommenting following lines */
