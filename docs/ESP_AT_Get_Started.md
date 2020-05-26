@@ -33,7 +33,9 @@ step2:[install pip](https://pip.pypa.io/en/latest/installing/)
 step3:install the following python packages with pip: pip install pyyaml xlrd
 ```
 
-Compiling the esp32-at is the same as compiling any other project based on the ESP-IDF:
+Compiling the esp-at is the same as compiling any other project based on the ESP-IDF:
+
+**Please do not set `IDF_PATH` unless you know esp-at project in particular. esp-idf will automatically be cloned.**
 
 1. You can clone the project into an empty directory using command:
 ```
@@ -48,7 +50,7 @@ git clone --recursive https://github.com/espressif/esp-at.git
   * More details are in the [esp-idf README](https://github.com/espressif/esp-idf/blob/master/README.md).
   * If enable BT feature, the firmware size will be much larger, please make sure it does not exceed the ota partition size.  
 6. `make factory_bin` to combine factory bin, by default, the factory bin is 4MB flash size, DIO flash mode and 40MHz flash speed. If you want use this command, you must fisrt run `make print_flash_cmd | tail -n 1 > build/download.config` to generate `build/download.config`.
-7. If the ESP32-AT bin fails to boot, and prints "ota data partition invalid", you should run `make erase_flash` to erase the entire flash.
+7. If the esp-at bin fails to boot, and prints "ota data partition invalid", you should run `make erase_flash` to erase the entire flash.
 
 <a name="platform-esp32s2"></a>
 # ESP32S2 platform  
@@ -75,7 +77,9 @@ step2:[install pip](https://pip.pypa.io/en/latest/installing/)
 step3:install the following python packages with pip3: pip3 install pyyaml xlrd
 ```
 
-Compiling the esp32-at is the same as compiling any other project based on the ESP-IDF:
+Compiling the esp-at is the same as compiling any other project based on the ESP-IDF:
+
+**Please do not set `IDF_PATH` unless you know esp-at project in particular. esp-idf will automatically be cloned.**
 
 1. You can clone the project into an empty directory using command:
 ```
@@ -116,7 +120,9 @@ step2:[install pip](https://pip.pypa.io/en/latest/installing/)
 step3:install the following python packages with pip: pip install pyyaml xlrd
 ```
 
-Compiling the ESP8266 AT is the same as compiling esp32-at:
+Compiling the esp-at is the same as compiling any other project based on the ESP-IDF:
+
+**Please do not set `IDF_PATH` unless you know esp-at project in particular. esp-idf will automatically be cloned.**
 
 1. You can clone the project into an empty directory using command:
 ```
@@ -140,4 +146,4 @@ export ESP_AT_MODULE_NAME ?= WROOM-02
   * `make print_flash_cmd` can be used to print the addresses of downloading.
   * More details are in the [esp-idf README](https://github.com/espressif/esp-idf/blob/master/README.md).
 7. `make factory_bin` to combine factory bin, by default, the factory bin is 4MB flash size, DIO flash mode and 40MHz flash speed. If you want use this command, you must fisrt run `make print_flash_cmd | tail -n 1 > build/download.config` to generate `build/download.config`.
-8. If the ESP32-AT bin fails to boot, and prints "ota data partition invalid", you should run `make erase_flash` to erase the entire flash.
+8. If the esp-at bin fails to boot, and prints "ota data partition invalid", you should run `make erase_flash` to erase the entire flash.
