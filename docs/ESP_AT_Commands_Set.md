@@ -41,6 +41,8 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+CWDHCP](#cmd-DHCP) : Enables/disables DHCP.
 * [AT+CWDHCPS](#cmd-DHCPS) : Sets the IP range of the ESP SoftAP DHCP server.
 * [AT+CWAUTOCONN](#cmd-AUTOC) : Connects to the AP automatically on power-up.
+* [AT+CWAPPROTO](#cmd-APPROTO) : Sets the 802.11 b/g/n protocol standard of SoftAP mode.
+* [AT+CWSTAPROTO](#cmd-STAPROTO) : Sets the 802.11 b/g/n protocol standard of station mode.
 * [AT+CIPSTAMAC](#cmd-STAMAC) : Sets the MAC address of ESP Station.
 * [AT+CIPAPMAC](#cmd-APMAC) : Sets the MAC address of ESP SoftAP.
 * [AT+CIPSTA](#cmd-IPSTA) : Sets the IP address of ESP Station.
@@ -189,7 +191,8 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 
 <a name="HTTP-AT"></a>
 ### 1.8 HTTP AT Command List
-- [AT+HTTPCLIENT](#cmd-HTTPCLIENT) -  Send HTTP Client Request  
+- [AT+HTTPCLIENT](#cmd-HTTPCLIENT) -  Send HTTP Client Request
+- [AT+HTTPGETSIZE](#cmd-HTTPGETSIZE) - Get HTTP Source Size
 - [HTTP AT Error Code](#cmd-HTTPErrCode)
 
 
@@ -726,6 +729,8 @@ Affected commands:
     AT+CIPDNS
     AT+CWDHCPS  
     AT+CWDHCP  
+    AT+CWSTAPROTO  
+    AT+CWAPPROTO  
     AT+CWJEAP
     AT+CIPETH  
     AT+CIPETHMAC  
@@ -1112,8 +1117,52 @@ Example:
 
     AT+CWAUTOCONN=1
 
+<a name="cmd-APPROTO"></a>
+### 3.12 [AT+CWAPPROTO](#WiFi-AT)—Sets the 802.11 b/g/n protocol standard of SoftAP mode.
+Query Command:
+
+    AT+CWAPPROTO?
+Response:
+
+    +CWAPPROTO=<protocol>
+    OK
+Set Command:
+
+    AT+CWAPPROTO=<protocol>
+Response:  
+
+    OK
+Parameters:
+
+- **\<protocol>**: 
+    - bit0: 802.11b protocol standard.
+    - bit1: 802.11g protocol standard.
+    - bit2: 802.11n protocol standard.
+
+<a name="cmd-STAPROTO"></a>
+### 3.13 [AT+CWSTAPROTO](#WiFi-AT)—Sets the 802.11 b/g/n protocol standard of station mode.
+Query Command:
+
+    AT+CWSTAPROTO?
+Response:
+
+    +CWSTAPROTO=<protocol>
+    OK
+Set Command:
+
+    AT+CWSTAPROTO=<protocol>
+Response:  
+
+    OK
+Parameters:
+
+- **\<protocol>**: 
+    - bit0: 802.11b protocol standard.
+    - bit1: 802.11g protocol standard.
+    - bit2: 802.11n protocol standard.
+
 <a name="cmd-STAMAC"></a>
-### 3.12 [AT+CIPSTAMAC](#WiFi-AT)—Sets the MAC Address of the ESP32 Station
+### 3.14 [AT+CIPSTAMAC](#WiFi-AT)—Sets the MAC Address of the ESP32 Station
 Query Command:
 
     AT+CIPSTAMAC?
@@ -1146,7 +1195,7 @@ Example:
     AT+CIPSTAMAC="1a:fe:35:98:d3:7b"    
 
 <a name="cmd-APMAC"></a>
-### 3.13 [AT+CIPAPMAC](#WiFi-AT)—Sets the MAC Address of the ESP32 SoftAP
+### 3.15 [AT+CIPAPMAC](#WiFi-AT)—Sets the MAC Address of the ESP32 SoftAP
 Query Command:
 
     AT+CIPAPMAC?
@@ -1179,7 +1228,7 @@ Example:
     AT+CIPAPMAC="18:fe:35:98:d3:7b" 
 
 <a name="cmd-IPSTA"></a>
-### 3.14 [AT+CIPSTA](#WiFi-AT)—Sets the IP Address of the ESP32 Station
+### 3.16 [AT+CIPSTA](#WiFi-AT)—Sets the IP Address of the ESP32 Station
 Query Command:
 
     AT+CIPSTA?
@@ -1214,7 +1263,7 @@ Example:
 
     AT+CIPSTA="192.168.6.100","192.168.6.1","255.255.255.0" 
 <a name="cmd-IPAP"></a>
-### 3.15 [AT+CIPAP](#WiFi-AT)—Sets the IP Address of the ESP32 SoftAP
+### 3.17 [AT+CIPAP](#WiFi-AT)—Sets the IP Address of the ESP32 SoftAP
 Query Command:
 
     AT+CIPAP?
@@ -1249,7 +1298,7 @@ Example:
     AT+CIPAP="192.168.5.1","192.168.5.1","255.255.255.0"
 
 <a name="cmd-STARTS"></a>
-### 3.16 [AT+CWSTARTSMART](#WiFi-AT)—Starts SmartConfig
+### 3.18 [AT+CWSTARTSMART](#WiFi-AT)—Starts SmartConfig
 Execute Command:
 
     AT+CWSTARTSMART
@@ -1282,7 +1331,7 @@ Example:
     AT+CWSTARTSMART
 
 <a name="cmd-STOPS"></a>
-### 3.17 [AT+CWSTOPSMART](#WiFi-AT)—Stops SmartConfig
+### 3.19 [AT+CWSTOPSMART](#WiFi-AT)—Stops SmartConfig
 Execute Command:
 
     AT+CWSTOPSMART
@@ -1300,7 +1349,7 @@ Example:
     AT+CWSTOPSMART
 
 <a name="cmd-WPS"></a>
-### 3.18 [AT+WPS](#WiFi-AT)—Enables the WPS Function
+### 3.20 [AT+WPS](#WiFi-AT)—Enables the WPS Function
 Set Command:
 
     AT+WPS=<enable>
@@ -1324,7 +1373,7 @@ Example:
     AT+WPS=1
     
 <a name="cmd-MDNS"></a>
-### 3.19 [AT+MDNS](#WiFi-AT)—Configurates the MDNS Function
+### 3.21 [AT+MDNS](#WiFi-AT)—Configurates the MDNS Function
 Set Command:
 
     AT+MDNS=<enable>[,<hostname>,<service_name>,<port>]
@@ -1346,7 +1395,7 @@ Example:
     AT+MDNS=0
 
 <a name="cmd-JEAP"></a>
-### 3.20 [AT+CWJEAP](#WiFi-AT)—Connects to an WPA2 Enterprise AP.
+### 3.22 [AT+CWJEAP](#WiFi-AT)—Connects to an WPA2 Enterprise AP.
 Query Command:
 
     AT+CWJEAP?
@@ -1434,7 +1483,7 @@ The WPA2 enterprise Error code will be prompt as `ERR CODE:0x<%08x>`.
 * TLS mode will use client certificate, make sure enabled.
 
 <a name="cmd-HOSTNAME"></a>
-### 3.21 [AT+CWHOSTNAME](#WiFi-AT) : Configures the Name of ESP Station
+### 3.23 [AT+CWHOSTNAME](#WiFi-AT) : Configures the Name of ESP Station
 Query Command:
 
     AT+CWHOSTNAME?
@@ -1471,7 +1520,7 @@ Example:
 
 
 <a name="cmd-COUNTRY"></a>
-### 3.22 [AT+CWCOUNTRY](#WiFi-AT) : Configures the Wi-Fi Country Code
+### 3.24 [AT+CWCOUNTRY](#WiFi-AT) : Configures the Wi-Fi Country Code
 Query Command:
 
     AT+CWCOUNTRY?
@@ -5194,6 +5243,8 @@ The MQTT Error code will be prompt as `ERR CODE:0x<%08x>`.
     AT_MQTT_RECV_LENGTH_IS_WRONG,                       // 0x604D
     AT_MQTT_CREATE_SEMA_FAILED,                         // 0x604E
     AT_MQTT_CREATE_EVENT_GROUP_FAILED,                  // 0x604F
+    AT_MQTT_URI_PARSE_FAILED,                           // 0x6050
+    AT_MQTT_IN_DISCONNECTED_STATE,                      // 0x6051
 ```
 
 <a name="MQTTNote"></a>
@@ -5250,7 +5301,7 @@ AT+MQTTCLEAN=0
 ### 10.1 [AT+HTTPCLIENT](#HTTP-AT)-Send HTTP Client Request
 Set Command:  
 
-    AT+HTTPCLIENT=<opt>,[<url>],[<host>],[<path>],<transport_type>,[<data>]
+    AT+HTTPCLIENT=<opt>,<content-type>,[<url>],[<host>],[<path>],<transport_type>,[<data>][,"http_req_header"][,"http_req_header"][...]
 Response:
 
     OK
@@ -5262,7 +5313,7 @@ Parameters:
   - 3 :  POST   
   - 4 :  PUT       
   - 5 :  DELETE 
-- **\<content-type>** : date type of HTTP client request
+- **\<content-type>** : data type of HTTP client request
   - 0 : `application/x-www-form-urlencoded`
   - 1 : `application/json`
   - 2 : `multipart/form-data`
@@ -5274,7 +5325,8 @@ Parameters:
   - 0 : `HTTP_TRANSPORT_UNKNOWN` 
   - 1 : `HTTP_TRANSPORT_OVER_TCP`
   - 2 : `HTTP_TRANSPORT_OVER_SSL` 
-- **\<data>**：optional parameter. When it is a POST request, `<data>` is the user data sent to HTTP server.
+- **\<data>**: optional parameter. When it is a POST request, `<data>` is the user data sent to HTTP server.
+- **\<http_req_header>**: optional parameter. The number of request headers can be customized by the user.
 
 **Note:**
 
@@ -5285,7 +5337,7 @@ Parameters:
     //HEAD Request
     AT+HTTPCLIENT=1,0,"http://httpbin.org/get","httpbin.org","/get",1
     AT+HTTPCLIENT=1,0,"http://httpbin.org/get",,,0
-    AT+HTTPCLIENT=1,0,"httpbin.org","/get",1
+    AT+HTTPCLIENT=1,0,,"httpbin.org","/get",1
     //GET Request
     AT+HTTPCLIENT=2,0,"http://httpbin.org/get","httpbin.org","/get",1
     AT+HTTPCLIENT=2,0,"http://httpbin.org/get",,,0
@@ -5293,9 +5345,28 @@ Parameters:
     //POST Request
     AT+HTTPCLIENT=3,0,"http://httpbin.org/post","httpbin.org","/post",1,"field1=value1&field2=value2"
     AT+HTTPCLIENT=3,0,"http://httpbin.org/post",,,0,"field1=value1&field2=value
+    //HTTP offset continue download
+    HTTPCLIENT=2,0,"http://www.baidu.com/img/bdlogo.gif",,,0,"Range: bytes=100-200"
+
+<a name="cmd-HTTPGETSIZE"></a>
+### 10.2 [AT+HTTPGETSIZE](#HTTP-AT)-Get HTTP Source Size
+Set Command:
+
+    AT+HTTPGETSIZE=<url>
+Response:
+
+    +HTTPGETSIZE:size
+
+    OK
+Parameters:
+    - **\<url>** : HTTP URL.
+
+**Example:**
+
+    AT+HTTPGETSIZE="http://www.baidu.com/img/bdlogo.gif"
 
 <a name="cmd-HTTPErrCode"></a>
-### 10.2 [HTTP Error Code](#HTTP-AT)
+### 10.3 [HTTP Error Code](#HTTP-AT)
 
 - HTTP Client:
 
@@ -5332,8 +5403,8 @@ Parameters:
 |         0x71f9         | HTTP Version Not Supported |
 
 - HTTP AT:  
-  The error code of command `AT+HTTP` will be `0x7000+Standard HTTP Error Code`.   
-  For example, if it gets the HTTP error 404 when calling command `AT+HTTP`, then the AT will respond error code as `0x7194`, `hex(0x7000+404)=0x7194`.
+  The error code of command `AT+HTTPCLIENT` will be `0x7000+Standard HTTP Error Code`.   
+  For example, if it gets the HTTP error 404 when calling command `AT+HTTPCLIENT`, then the AT will respond error code as `0x7194`, `hex(0x7000+404)=0x7194`.
 
 More details of Standard HTTP/1.1 Error Code are in RFC 2616: https://tools.ietf.org/html/rfc2616
 
