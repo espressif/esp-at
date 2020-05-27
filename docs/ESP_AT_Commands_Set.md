@@ -1,9 +1,18 @@
 [toc]
 
+<a name="Begin-AT"></a>
 # ESP AT Commands Set
 Here is a list of AT commands. Some of the AT commands can only work on the ESP32, which will be marked as [ESP32 Only]; others can work on both the ESP8266 and ESP32.  
-<a name="Begin-8266"></a>
-P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
+
+**Appendix**:  
+
+ * [How to generate an ESP8266 AT firmware](#Appendix-8266)
+ * [How to add user-defined AT commands](#Appendix-addcuscmd)
+ * [How to download AT firmware into flash](#Appendix-downloadat)
+ * [AT Command Description](#Appendix-ATDescrpt)
+ * [AT Commands with Configuration Saved in the NVS Area](#Appendix-ATSaveNVS)
+ * [AT Messages](#Appendix-ATmsg)
+ * [OTA Update](#Appendix-OTA)
  
 ## 1. AT Commands List
 <a name="Basic-AT"></a>
@@ -86,7 +95,12 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [AT+CIPRECVLEN](#cmd-CIPRECVLEN): Get Socket Data Length in Passive Receive Mode. 
 * [AT+PING](#cmd-CIPPING): Ping Packets
 * [AT+CIPDNS](#cmd-DNS) : Configures Domain Name System.
-* [AT+CIPTCPOPT](#cmd-TCPOPT) : Configurates the socket options.
+* [AT+CIPTCPOPT](#cmd-TCPOPT) : Configurates the socket options.  
+
+* Example 1. [ESP as a TCP Client in Single Connection](#exam-TCPclient) 
+* Example 2. [ESP as a TCP Server in Multiple Connections](#exam-TCPserver)
+* Example 3. [UDP Transmission](#exam-UDPTrans)
+* Example 4. [UART-Wi-Fi Passthrough Transmission](#exam-UWFPTT)  
 
 <a name="BLE-AT"></a>
 ### 1.4 [ESP32 Only] BLE AT Commands List
@@ -104,11 +118,13 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [ESP32 Only] [AT+BLEADVSTART](#cmd-BADVSTART) : Starts BLE advertising
 * [ESP32 Only] [AT+BLEADVSTOP](#cmd-BADVSTOP) : Stops BLE advertising
 * [ESP32 Only] [AT+BLECONN](#cmd-BCONN) : Establishes BLE connection
+* [ESP32 Only] [AT+BLECONNPARAM](#cmd-BCONNP) : Updates parameters of BLE connection
 * [ESP32 Only] [AT+BLEDISCONN](#cmd-BDISC) : Ends BLE connection
 * [ESP32 Only] [AT+BLEDATALEN](#cmd-BDLEN) : Sets BLE data length
 * [ESP32 Only] [AT+BLECFGMTU](#cmd-BMTU) : Sets BLE MTU length
 * [ESP32 Only] [AT+BLEGATTSSRVCRE](#cmd-GSSRVCRE) : Generic Attributes Server (GATTS) creates services
 * [ESP32 Only] [AT+BLEGATTSSRVSTART](#cmd-GSSRVSTART) : GATTS starts services
+* [ESP32 Only] [AT+BLEGATTSSRVSTOP](#cmd-GSSRVSTOP)—GATTS Stops Services
 * [ESP32 Only] [AT+BLEGATTSSRV](#cmd-GSSRV) : GATTS discovers services
 * [ESP32 Only] [AT+BLEGATTSCHAR](#cmd-GSCHAR) : GATTS discovers characteristics
 * [ESP32 Only] [AT+BLEGATTSNTFY](#cmd-GSNTFY) : GATTS notifies of characteristics
@@ -136,7 +152,9 @@ P.S. [How to generate an ESP8266 AT firmware](#Appendix-8266).
 * [ESP32 Only] [AT+BLUFI](#cmd-BLUFI) : Start or Stop BLUFI
 * [ESP32 Only] [AT+BLUFINAME](#cmd-BLUFINAME) : Set BLUFI device name
 
-* [ESP32 Only] [BLE AT Examples](#exam-BLE)
+* Example 1. [ESP32 Only] [BLE AT Examples](#exam-BLE)
+* Example 2. [ESP32 Only] [iBeacon Examples](#exam-iBeacon)
+* Example 3. [ESP32 Only] [UART-BLE Passthrough Mode](#exam-UARTBLE)
 
 <a name="ETH-AT"></a>
 ### 1.5 [ESP32 Only] ETH AT Commands List
@@ -663,6 +681,37 @@ If disable AT error code prompt:
 
     ERROR  
 
+
+The error code is 32-bits hexadecimal value and defined as follows:
+
+|  category   | subcategory  | extension
+|  ----  | ----  | ----|
+| bit32~bit24  | bit23~bit16 |bit15~bit0
+
+- **category:** stationary value 0x01
+- **subcategory:** error type
+- **extension:** error extension information, there are different extension for different subcategory, the detail is defined in `components/at/include/esp_at.h`
+
+subcategory is defined as follows:
+```
+    ESP_AT_SUB_OK                       = 0x00,              /*!< OK */
+    ESP_AT_SUB_COMMON_ERROR             = 0x01,              /*!< reserved */
+    ESP_AT_SUB_NO_TERMINATOR            = 0x02,              /*!<  not end with "\r\n" */
+    ESP_AT_SUB_NO_AT                    = 0x03,              /*!<  not found AT or at or At or aT */
+    ESP_AT_SUB_PARA_LENGTH_MISMATCH     = 0x04,              /*!<  parameter length not match */
+    ESP_AT_SUB_PARA_TYPE_MISMATCH       = 0x05,              /*!<  parameter length not match */
+    ESP_AT_SUB_PARA_NUM_MISMATCH        = 0x06,              /*!<  parameter number not match */
+    ESP_AT_SUB_PARA_INVALID             = 0x07,              /*!<  parameter is invalid */
+    ESP_AT_SUB_PARA_PARSE_FAIL          = 0x08,              /*!<  parse parameter fail */
+    ESP_AT_SUB_UNSUPPORT_CMD            = 0x09,              /*!<  command is not supported */
+    ESP_AT_SUB_CMD_EXEC_FAIL            = 0x0A,              /*!<  command executes failed */
+    ESP_AT_SUB_CMD_PROCESSING           = 0x0B,              /*!<  previous command is processing */
+    ESP_AT_SUB_CMD_OP_ERROR             = 0x0C,              /*!<  command types is not supported */
+
+```
+
+for example, the error code `ERR CODE:0x01090000` means the command is not supported.
+
 <a name="cmd-WKCFG"></a>
 ### 2.18 [AT+SLEEPWKCFG](#Basic-AT)—Config the light-sleep wakeup source and awake GPIO.
 Set Command:  
@@ -742,6 +791,7 @@ Affected commands:
     AT+BLESCANRSPDATA
     AT+BLESCANPARAM
     AT+BTSCANMODE
+    AT+BLECONNPARAM
 
 ***Note:***
 
@@ -2565,6 +2615,394 @@ Parameters:
     - 1: enable TCP_NODELAY
 - **\<so_sndtimeo>**: configurate the SO_SNDTIMEO options for socket, in millisecond, default: 0.
 
+
+<a name="exam-TCPclient"></a>
+### Example 1. [ESP as a TCP Client in Single Connection](#TCPIP-AT)  
+1. Set the Wi-Fi mode:  
+
+   ```
+   Command:
+   AT+CWMODE=3                  // SoftAP+Station mode
+        
+   Response:
+   OK
+   ```
+2. Connect to the router:
+
+   ```
+   AT+CWJAP="SSID","password"               // SSID and password of router
+        
+   Response:
+   OK
+   ```
+3. Query the device's IP:
+
+   ```
+   AT+CIFSR
+        
+   Response:
+   192.168.3.106                            // device got an IP from router
+   ```
+4. Connect the PC to the same router which ESP is connected to. Use a network tool on the PC to create a TCP server. For example, the TCP server on PC is 192.168.3.116, port 8080.
+5. ESP is connected to the TCP server as a client:
+
+   ```
+   AT+CIPSTART="TCP","192.168.3.116",8080   // protocol、server IP & port
+   ```
+6. Send data:
+
+   ```
+   AT+CIPSEND=4             // set date length which will be sent, such as 4 bytes
+   >TEST                     // enter the data, no CR
+   
+   Response:
+   SEND OK
+   ```
+   **Note：**
+   If the number of bytes inputted are more than the length (n) set by `AT+CIPSEND`, the system will reply `busy`, and send the first n bytes.
+And after sending the first n bytes, the system will reply `SEND OK`.  
+7. Receive data:
+
+   ```
+   +IPD,n:xxxxxxxxxx               // received n bytes, data=xxxxxxxxxxx
+   ```
+
+<a name="exam-TCPserver"></a>
+### Example 2. [ESP as a TCP Server in Multiple Connections](#TCPIP-AT)  
+When ESP works as a TCP server, multiple connections should be enabled; that is to say, there should be more than one client connecting to ESP.  
+Below is an example showing how a TCP server is established when ESP works in the SoftAP mode. If ESP works as a Station, set up a server in the same way after connecting ESP to the router.
+
+1. Set the Wi-Fi mode:  
+
+   ```
+   Command:
+   AT+CWMODE=3                  // SoftAP+Station mode
+        
+   Response:
+   OK
+   ```
+2. Enable multiple connections. 
+
+   ```
+   AT+CIPMUX=1
+        
+   Response:
+   OK
+   ```
+3. Set up a TCP server. 
+
+   ```
+   AT+CIPSERVER=1                           // default port = 333
+        
+   Response:
+   OK
+   ```
+4. Connect the PC to the ESP SoftAP.  
+![avatar](img/Connect-SoftAP.png)   
+5. Using a network tool on PC to create a TCP client and connect to the TCP server that ESP created.   
+**Notice**:   
+   When ESP works as a TCP server, there is a timeout mechanism. If the TCP client is connected to the ESP TCP server, while there is no data transmission for a period of time, the server will disconnect from the client. To avoid such a problem, please set up a data transmission cycle every two seconds.
+6. Send data:
+
+   ```
+   // ID number of the first connection is defaulted to be 0
+   AT+CIPSEND=0,4             // send 4 bytes to connection NO.0
+   >TEST                      // enter the data, no CR
+   
+   Response:
+   SEND OK
+   ```
+   **Note：**
+   If the number of bytes inputted are more than the length (n) set by `AT+CIPSEND`, the system will reply `busy`, and send the first n bytes.
+And after sending the first n bytes, the system will reply `SEND OK`.  
+7. Receive data:
+
+   ```
+   +IPD,0,n:xxxxxxxxxx               // received n bytes, data=xxxxxxxxxxx
+   ```
+8. Close the TCP connection.
+
+   ```
+   AT+CIPCLOSE=0
+   
+   Response:
+   0,CLOSED
+   OK
+   ```
+
+<a name="exam-UDPTrans"></a>
+### Example 3. [UDP Transmission](#TCPIP-AT)   
+1. Set the Wi-Fi mode:  
+
+   ```
+   Command:
+   AT+CWMODE=3                  // SoftAP+Station mode
+        
+   Response:
+   OK
+   ```
+2. Connect to the router:
+
+   ```
+   AT+CWJAP="SSID","password"               // SSID and password of router
+        
+   Response:
+   OK
+   ```
+3. Query the device's IP:
+
+   ```
+   AT+CIFSR
+        
+   Response:
+   +CIFSR:STAIP,"192.168.101.104"              // device got an IP from router
+   ```
+4. Connect the PC to the same router which ESP is connected to. Use a network tool on the PC to create UDP transmission. For example, the PC's IP address is 192.168.101.116, port 8080.
+5. Below are two examples of UDP transmission.
+  
+#### Example 3.1. UDP Transmission with Fixed Remote IP and Port
+In UDP transmission, whether the remote IP and port are fixed or not is determined by the last parameter of `AT+CIPSTART`. 0 means that the remote IP and port are fixed and cannot be changed. A specific ID is given to such a connection, ensuring that the data sender and receiver will not be replaced by other devices.  
+
+1. Enable multiple connections:
+
+   ```
+   AT+CIPMUX=1
+   
+   Response:
+   OK
+   ```
+2. Create a UDP transmission, with the ID being 4, for example.
+
+   ```
+   AT+CIPSTART=4,"UDP","192.168.101.110",8080,1112,0
+   
+   Response:
+   4,CONNECT
+   OK
+   ```
+   Notes:  
+    * `"192.168.101.110"` and `8080` are the remote IP and port of UDP transmission on the remote side, i.e., the UDP configuration set by PC.
+    * `1112` is the local port number of ESP. Users can define this port number. A random port will be used if this parameter is not set.
+    * `0` means that the remote IP and port are fixed and cannot be changed. For example, if another PC also creates a UDP entity and sends data to ESP port 1112, ESP can receive the data sent from UDP port 1112. But when data are sent using AT command `AT+CIPSEND=4,X`, it will still be sent to the first PC end. If parameter `0` is not used, the data will be sent to the new PC.
+3. Send data:
+
+   ```
+   AT+CIPSEND=4,7              // send 7 bytes to transmission NO.4
+   >UDPtest                    // enter the data, no CR
+   
+   Response:
+   SEND OK
+   ```
+   **Note：**
+   If the number of bytes inputted are more than the length (n) set by `AT+CIPSEND`, the system will reply `busy`, and send the first n bytes.
+And after sending the first n bytes, the system will reply `SEND OK`.  
+4. Receive data:
+
+   ```
+   +IPD,4,n:xxxxxxxxxx               // received n bytes, data=xxxxxxxxxxx
+   ```
+5. Close UDP transmission No.4
+
+   ```
+   AT+CIPCLOSE=4
+   
+   Response:
+   4,CLOSED
+   OK
+   ```
+   
+#### Example 3.2. UDP Transmission with Changeable Remote IP and Port
+1. Create a UDP transmission with the last parameter being 2.
+
+   ```
+   AT+CIPSTART="UDP","192.168.101.110",8080,1112,2
+   
+   Response:
+   CONNECT
+   OK
+   ```
+   Notes:
+    * `"192.168.101.110"` and `8080` here refer to the IP and port of the remote UDP transmission terminal which is created on a PC in above Example 2.
+    * `1112` is the local port of ESP. Users can define this port. A random port will be opened if this parameter is not set.
+    * `2` means the means the opposite terminal of UDP transmission can be changed. The remote IP and port will be automatically changed to those of the last UDP connection to ESP.
+2. Send data:
+
+   ```
+   AT+CIPSEND=7                // send 7 bytes 
+   >UDPtest                    // enter the data, no CR
+   
+   Response:
+   SEND OK
+   ```
+   **Note：**
+   If the number of bytes inputted are more than the length (n) set by `AT+CIPSEND`, the system will reply `busy`, and send the first n bytes.
+And after sending the first n bytes, the system will reply `SEND OK`.  
+3. If you want to send data to any other UDP terminals, please designate the IP and port of the target terminal in the command.
+
+   ```
+   AT+CIPSEND=6,"192.168.101.111",1000          // send six bytes
+   >abcdef                                      // enter the data, no CR
+   
+   Response:
+   SEND OK
+   ```
+4. Receive data:
+
+   ```
+   +IPD,n:xxxxxxxxxx               // received n bytes, data=xxxxxxxxxxx
+   ```
+5. Close UDP transmission.
+
+   ```
+   AT+CIPCLOSE
+   
+   Response:
+   CLOSED
+   OK
+   ```
+   
+<a name="exam-UWFPTT"></a>
+### Example 4. [UART-Wi-Fi Passthrough Transmission](#TCPIP-AT)  
+ESP-AT supports UART-Wi-Fi passthrough transmission only when ESP works as a TCP client in single connection or UDP transmission.
+#### Example 4.1. [ESP as a TCP Client in UART-Wi-Fi Passthrough (Single Connection Mode)](#TCPIP-AT)
+1. Set the Wi-Fi mode:  
+
+   ```
+   Command:
+   AT+CWMODE=3                  // SoftAP+Station mode
+        
+   Response:
+   OK
+   ```
+2. Connect to the router:
+
+   ```
+   AT+CWJAP="SSID","password"               // SSID and password of router
+        
+   Response:
+   OK
+   ```
+3. Query the device's IP:
+
+   ```
+   AT+CIFSR
+        
+   Response:
+   +CIFSR:STAIP,"192.168.101.105"              // device got an IP from router
+   ```
+4. Connect the PC to the same router which ESP is connected to. Use a network tool on the PC to create a TCP server. For example, the PC's IP address is 192.168.101.110, port 8080.
+5. Connect the ESP device to the TCP server as a TCP client.
+
+   ```
+   AT+CIPSTART="TCP","192.168.101.110",8080
+   
+   Response:
+   CONNECT
+   OK
+   ```
+6. Enable the UART-WiFi transmission mode.
+
+   ```
+   AT+CIPMODE=1
+   
+   Response:
+   OK
+   ```
+7. Send data.
+
+   ```
+   AT+CIPSEND                
+   
+   Response:
+   >                // From now on, data received from UART will be transparent transmitted to server
+   ```
+8. Stop sending data.  
+   When receiving a packet that contains only `+++`,  the UART-WiFi passthrough transmission process will be stopped. Then please wait at least 1 second before sending next AT command.  
+   Please be noted that if you input `+++` directly by typing, the `+++`, may not be recognised as three consecutive `+` because of the Prolonged time when typing.    
+   **Notice**:  
+   The aim of ending the packet with +++ is to exit transparent transmission and to accept normal AT commands, while TCP still remains connected. However, users can also deploy command `AT+CIPSEND` to go back into transparent transmission.
+9. Exit the UART-WiFi passthrough mode.
+
+   ```
+   AT+CIPMODE=0
+   
+   Response:
+   OK
+   ```
+10. Close the TCP connection.
+
+   ```
+   AT+CIPCLOSE
+   
+   Response:
+   CLOSED
+   OK
+   ```
+     
+#### Example 4.2. [UDP Transmission in UART-Wi-Fi Passthrough Mode](#TCPIP-AT)
+Here is an example of the ESP working as a SoftAP in UDP transparent transmission.
+
+1. Set the Wi-Fi mode:  
+
+   ```
+   Command:
+   AT+CWMODE=3                  // SoftAP+Station mode
+        
+   Response:
+   OK
+   ```
+2. Connect the PC to the ESP SoftAP.  
+![avatar](img/Connect-SoftAP.png)   
+3. Use a network tool on PC to create a UDP endpoint. For example, the PC's IP address is `192.168.4.2` and the port is `1001`.
+4. Create a UDP transmission between ESP32 and the PC with a fixed remote IP and port.
+
+   ```
+   AT+CIPSTART="UDP","192.168.4.2",1001,2233,0
+   
+   Response:
+   CONNECT
+   OK
+   ```
+5. Enable the UART-WiFi transmission mode.
+
+   ```
+   AT+CIPMODE=1
+   
+   Response:
+   OK
+   ```
+6. Send data.
+
+   ```
+   AT+CIPSEND                
+   
+   Response:
+   >                // From now on, data received from UART will be transparent transmitted to server
+   ```
+7. Stop sending data.  
+   When receiving a packet that contains only `+++`,  the UART-WiFi passthrough transmission process will be stopped. Then please wait at least 1 second before sending next AT command.  
+   Please be noted that if you input `+++` directly by typing, the `+++`, may not be recognised as three consecutive `+` because of the Prolonged time when typing.    
+   **Notice**:  
+   The aim of ending the packet with +++ is to exit transparent transmission and to accept normal AT commands, while TCP still remains connected. However, users can also deploy command `AT+CIPSEND` to go back into transparent transmission.
+8. Exit the UART-WiFi passthrough mode.
+
+   ```
+   AT+CIPMODE=0
+   
+   Response:
+   OK
+   ```
+9. Close the UDP transmission.
+
+   ```
+   AT+CIPCLOSE
+   
+   Response:
+   CLOSED
+   OK
+   ```
+
+
 ## 5. [ESP32 Only] BLE-Related AT Commands
 <a name="cmd-BINIT"></a>
 ### 5.1 [ESP32 Only] [AT+BLEINIT](#BLE-AT)—BLE Initialization
@@ -2884,8 +3322,6 @@ Example:
     AT+BLEINIT=2   // role: server
     AT+BLEADVDATAEX="ESP-AT","A002","0102030405",1
 
-* [ESP32 Only] [AT+BLEADVDATAEX](#cmd-BADVD) : Auto sets BLE advertising data
-
 
 <a name="cmd-BADVSTART"></a>
 ### 5.10 [ESP32 Only] [AT+BLEADVSTART](#BLE-AT)—Starts Advertising
@@ -2963,8 +3399,49 @@ Example:
     AT+BLEINIT=1   // role: client
     AT+BLECONN=0,"24:0a:c4:09:34:23",0,10
 
+
+<a name="cmd-BCONNP"></a>
+### 5.13 [ESP32 Only] [AT+BLECONNPARAM](#BLE-AT)—Updates parameters of BLE connection
+Query Command:
+
+    AT+BLECONNPARAM?
+    Function: to query the parameters of BLE connection.
+Response:  
+    
+    +BLECONNPARAM:<conn_index>,<min_interval>,<max_interval>,<cur_interval>,<latency>,<timeout>
+    OK
+Set Command:
+
+    AT+BLECONNPARAM=<conn_index>,<min_interval>,<max_interval>,<latency>,<timeout>
+    Function: to update the parameters of BLE connection.
+Response:
+
+    OK  // command received
+If the setting failed, it will prompt message below:
+
+    +BLECONNPARAM：<conn_index>,-1
+Parameters:
+
+- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<min_interval>**: minimum value of connecting interval; range: 0x0006 ~ 0x0C80
+- **\<max_interval>**: maximum value of connecting interval; range: 0x0006 ~ 0x0C80
+- **\<cur_interval>**: current connecting interval value
+- **\<latency>**: latency; range: 0x0000 ~ 0x01F3
+- **\<timeout>**: timeout; range: 0x000A ~ 0x0C80
+
+***Notes:***
+
+* This commands supports the client only when updating its connection parameters. Of course, the connection has to be established first. 
+
+Example:
+
+    AT+BLEINIT=1   // role: client
+    AT+BLECONN=0,"24:0a:c4:09:34:23"
+    AT+BLECONNPARAM=0,12,14,1,500  
+
+
 <a name="cmd-BDISC"></a>
-### 5.13 [ESP32 Only] [AT+BLEDISCONN](#BLE-AT)—Ends BLE connection
+### 5.14 [ESP32 Only] [AT+BLEDISCONN](#BLE-AT)—Ends BLE connection
 Execute Command: 
 
     AT+BLEDISCONN=<conn_index>
@@ -2989,7 +3466,7 @@ Example:
     AT+BLEDISCONN=0
 
 <a name="cmd-BDLEN"></a>
-### 5.14 [ESP32 Only] [AT+BLEDATALEN](#BLE-AT)—Sets BLE Data Packet Length
+### 5.15 [ESP32 Only] [AT+BLEDATALEN](#BLE-AT)—Sets BLE Data Packet Length
 Set Command: 
 
     AT+BLEDATALEN=<conn_index>,<pkt_data_len>
@@ -3013,7 +3490,7 @@ Example:
     AT+BLEDATALEN=0,30
 
 <a name="cmd-BMTU"></a>
-### 5.15 [ESP32 Only] [AT+BLECFGMTU](#BLE-AT)—Sets BLE MTU Length
+### 5.16 [ESP32 Only] [AT+BLECFGMTU](#BLE-AT)—Sets BLE MTU Length
 Query Command: 
 
     AT+BLECFGMTU?
@@ -3046,7 +3523,7 @@ Example:
     AT+BLECFGMTU=0,300
 
 <a name="cmd-GSSRVCRE"></a>
-### 5.16 [ESP32 Only] [AT+BLEGATTSSRVCRE](#BLE-AT)—GATTS Creates Services
+### 5.17 [ESP32 Only] [AT+BLEGATTSSRVCRE](#BLE-AT)—GATTS Creates Services
 Execute Command: 
 
     AT+BLEGATTSSRVCRE
@@ -3068,7 +3545,7 @@ Example:
     AT+BLEGATTSSRVCRE
 
 <a name="cmd-GSSRVSTART"></a>
-### 5.17 [ESP32 Only] [AT+BLEGATTSSRVSTART](#BLE-AT)—GATTS Starts Services
+### 5.18 [ESP32 Only] [AT+BLEGATTSSRVSTART](#BLE-AT)—GATTS Starts Services
 Execute Command: 
 
     AT+BLEGATTSSTART
@@ -3090,8 +3567,34 @@ Example:
     AT+BLEGATTSSRVCRE
     AT+BLEGATTSSRVSTART
 
+
+<a name="cmd-GSSRVSTOP"></a>
+### 5.19 [ESP32 Only] [AT+BLEGATTSSRVSTOP](#BLE-AT)—GATTS Stops Services
+Execute Command: 
+
+    AT+BLEGATTSSTOP
+    Function: GATTS stops all services.
+Set Command: 
+
+    AT+BLEGATTSSRVSTOP=<srv_index>
+    Function: GATTS stops a specific service.
+Response:
+
+    OK  
+Parameter:
+
+- **\<srv_index>**: service's index starting from 1
+
+Example:
+
+    AT+BLEINIT=2   // role: server
+    AT+BLEGATTSSRVCRE
+    AT+BLEGATTSSRVSTART
+    AT+BLEGATTSSRVSTOP
+
+
 <a name="cmd-GSSRV"></a>
-### 5.18 [ESP32 Only] [AT+BLEGATTSSRV](#BLE-AT)—GATTS Discovers Services
+### 5.20 [ESP32 Only] [AT+BLEGATTSSRV](#BLE-AT)—GATTS Discovers Services
 Query Command: 
 
     AT+BLEGATTSSRV?
@@ -3118,7 +3621,7 @@ Example:
     AT+BLEGATTSSRV?
 
 <a name="cmd-GSCHAR"></a>
-### 5.19 [ESP32 Only] [AT+BLEGATTSCHAR](#BLE-AT)—GATTS Discovers Characteristics
+### 5.21 [ESP32 Only] [AT+BLEGATTSCHAR](#BLE-AT)—GATTS Discovers Characteristics
 Query Command: 
 
     AT+BLEGATTSCHAR?
@@ -3149,7 +3652,7 @@ Example:
     AT+BLEGATTSCHAR?
 
 <a name="cmd-GSNTFY"></a>
-### 5.20 [ESP32 Only] [AT+BLEGATTSNTFY](#BLE-AT)—GATTS Notifies of Characteristics
+### 5.22 [ESP32 Only] [AT+BLEGATTSNTFY](#BLE-AT)—GATTS Notifies of Characteristics
 Set Command: 
 
     AT+BLEGATTSNTFY=<conn_index>,<srv_index>,<char_index>,<length>
@@ -3179,7 +3682,7 @@ Example:
     // after > shows, inputs 4 bytes of data, such as "1234"; then, the data will be transmitted automatically
 
 <a name="cmd-GSIND"></a>
-### 5.21 [ESP32 Only] [AT+BLEGATTSIND](#BLE-AT)—GATTS Indicates Characteristics
+### 5.23 [ESP32 Only] [AT+BLEGATTSIND](#BLE-AT)—GATTS Indicates Characteristics
 Set Command: 
 
     AT+BLEGATTSIND=<conn_index>,<srv_index>,<char_index>,<length>
@@ -3209,7 +3712,7 @@ Example:
     // after > shows, inputs 4 bytes of data, such as "1234"; then, the data will be transmitted automatically
 
 <a name="cmd-GSSETA"></a>
-### 5.22 [ESP32 Only] [AT+BLEGATTSSETATTR](#BLE-AT)—GATTS Sets Characteristic
+### 5.24 [ESP32 Only] [AT+BLEGATTSSETATTR](#BLE-AT)—GATTS Sets Characteristic
 Set Command: 
 
     AT+BLEGATTSSETATTR=<srv_index>,<char_index>[,<desc_index>],<length>
@@ -3243,7 +3746,7 @@ Example:
     // after > shows, inputs 4 bytes of data, such as "1234"; then, the setting starts
 
 <a name="cmd-GCPRIMSRV"></a>
-### 5.23 [ESP32 Only] [AT+BLEGATTCPRIMSRV](#BLE-AT)—GATTC Discovers Primary Services
+### 5.25 [ESP32 Only] [AT+BLEGATTCPRIMSRV](#BLE-AT)—GATTC Discovers Primary Services
 Query Command: 
 
     AT+BLEGATTCPRIMSRV=<conn_index>
@@ -3272,7 +3775,7 @@ Example:
     AT+BLEGATTCPRIMSRV=0
 
 <a name="cmd-GCINCLSRV"></a>
-### 5.24 [ESP32 Only] [AT+BLEGATTCINCLSRV](#BLE-AT)—GATTC Discovers Included Services
+### 5.26 [ESP32 Only] [AT+BLEGATTCINCLSRV](#BLE-AT)—GATTC Discovers Included Services
 Set Command: 
 
     AT+BLEGATTCINCLSRV=<conn_index>,<srv_index>
@@ -3306,7 +3809,7 @@ Example:
     AT+BLEGATTCINCLSRV=0,1  // set a specific index according to the result of the previous command
 
 <a name="cmd-GCCHAR"></a>
-### 5.25 [ESP32 Only] [AT+BLEGATTCCHAR](#BLE-AT)—GATTC Discovers Characteristics
+### 5.27 [ESP32 Only] [AT+BLEGATTCCHAR](#BLE-AT)—GATTC Discovers Characteristics
 Set Command: 
 
     AT+BLEGATTCCHAR=<conn_index>,<srv_index>
@@ -3342,7 +3845,7 @@ Example:
     AT+BLEGATTCCHAR=0,1 // set a specific index according to the result of the previous command
 
 <a name="cmd-GCRD"></a>
-### 5.26 [ESP32 Only] [AT+BLEGATTCRD](#BLE-AT)—GATTC Reads a Characteristic
+### 5.28 [ESP32 Only] [AT+BLEGATTCRD](#BLE-AT)—GATTC Reads a Characteristic
 Set Command: 
 
     AT+BLEGATTCRD=<conn_index>,<srv_index>,<char_index>[,<desc_index>]
@@ -3380,7 +3883,7 @@ Example：
     AT+BLEGATTCRD=0,3,2,1
 
 <a name="cmd-GCWR"></a>
-### 5.27 [ESP32 Only] [AT+BLEGATTCWR](#BLE-AT)—GATTC Writes Characteristic
+### 5.29 [ESP32 Only] [AT+BLEGATTCWR](#BLE-AT)—GATTC Writes Characteristic
 Set Command: 
 
     AT+BLEGATTCWR=<conn_index>,<srv_index>,<char_index>[,<desc_index>],<length>
@@ -3417,7 +3920,7 @@ Example：
     // after > shows, inputs 6 bytes of data, such as "123456"; then, the writing starts
 
 <a name="cmd-BLESPP"></a>
-### 5.28 [ESP32 Only] [AT+BLESPPCFG](#BLE-AT)—Sets BLE spp parameters
+### 5.30 [ESP32 Only] [AT+BLESPPCFG](#BLE-AT)—Sets BLE spp parameters
 Query Command:
 
     AT+BLESPPCFG?
@@ -3453,7 +3956,7 @@ Example:
     AT+BLESPPCFG?           // query ble spp parameters 
 
 <a name="cmd-BLESPP"></a>
-### 5.29 [ESP32 Only] [AT+BLESPP](#BLE-AT)—Enter BLE spp mode
+### 5.31 [ESP32 Only] [AT+BLESPP](#BLE-AT)—Enter BLE spp mode
 Execute Command: 
 
     AT+BLESPP
@@ -3472,7 +3975,7 @@ Example:
     AT+BLESPP   // enter ble spp mode
 
 <a name="cmd-BLESMPPAR"></a>
-### 5.30 [ESP32 Only] [AT+BLESECPARAM](#BLE-AT)—Set BLE encryption parameters
+### 5.32 [ESP32 Only] [AT+BLESECPARAM](#BLE-AT)—Set BLE encryption parameters
 Query Command:
 
     AT+BLESECPARAM?
@@ -3524,7 +4027,7 @@ Example:
     AT+BLESECPARAM=1,4,16,3,3,0
 
 <a name="cmd-BLEENC"></a>
-### 5.31 [ESP32 Only] [AT+BLEENC](#BLE-AT)—Initiate BLE encryption request
+### 5.33 [ESP32 Only] [AT+BLEENC](#BLE-AT)—Initiate BLE encryption request
 Set Command:
 
     AT+BLEENC=<conn_index>,<sec_act>
@@ -3551,7 +4054,7 @@ Example:
     AT+BLEENC=0,3
 
 <a name="cmd-BLEENCRSP"></a>
-### 5.32 [ESP32 Only] [AT+BLEENCRSP](#BLE-AT)—Grant security request access
+### 5.34 [ESP32 Only] [AT+BLEENCRSP](#BLE-AT)—Grant security request access
 Set Command:
 
     AT+BLEENCRSP=<conn_index>,<accept>
@@ -3571,7 +4074,7 @@ Example:
     AT+BLEENCRSP=0,1
 
 <a name="cmd-BLEKEYREPLY"></a>
-### 5.33 [ESP32 Only] [AT+BLEKEYREPLY](#BLE-AT)—Reply the key value to the peer device in the lagecy connection stage
+### 5.35 [ESP32 Only] [AT+BLEKEYREPLY](#BLE-AT)—Reply the key value to the peer device in the lagecy connection stage
 Set Command:
 
     AT+BLEKEYREPLY=<conn_index>,<key>
@@ -3589,7 +4092,7 @@ Example:
     AT+BLEKEYREPLY=0,649784
 
 <a name="cmd-BLECONFREPLY"></a>
-### 5.34 [ESP32 Only] [AT+BLECONFREPLY](#BLE-AT)—Reply the comfirm value to the peer device in the lagecy connection stage
+### 5.36 [ESP32 Only] [AT+BLECONFREPLY](#BLE-AT)—Reply the comfirm value to the peer device in the lagecy connection stage
 Set Command:
 
     AT+BLECONFREPLY=<conn_index>,<confirm>
@@ -3609,7 +4112,7 @@ Example:
     AT+BLECONFREPLY=0,1
 
 <a name="cmd-BLEENCDEV"></a>
-### 5.35 [ESP32 Only] [AT+BLEENCDEV](#BLE-AT)—Query BLE encryption device list
+### 5.37 [ESP32 Only] [AT+BLEENCDEV](#BLE-AT)—Query BLE encryption device list
 Query Command:
 
     AT+BLEENCDEV?
@@ -3628,7 +4131,7 @@ Example:
     AT+BLEENCDEV?
 
 <a name="cmd-BLEENCCLEAR"></a>
-### 5.36 [ESP32 Only] [AT+BLEENCCLEAR](#BLE-AT)—Clear BLE encryption device list
+### 5.38 [ESP32 Only] [AT+BLEENCCLEAR](#BLE-AT)—Clear BLE encryption device list
 Set Command:
 
     AT+BLEENCCLEAR=<enc_dev_index>
@@ -3652,7 +4155,7 @@ Example:
     AT+BLEENCCLEAR
 
 <a name="cmd-BLESETKEY"></a>
-### 5.37 [ESP32 Only][AT+BLESETKEY](#BLE-AT)—Set BLE static pair key
+### 5.39 [ESP32 Only][AT+BLESETKEY](#BLE-AT)—Set BLE static pair key
 Query Command:
 
     AT+BLESETKEY?
@@ -3677,7 +4180,7 @@ Example:
     AT+BLESETKEY=123456
 
 <a name="cmd-BLEHIDINIT"></a>
-### 5.38 [ESP32 Only][AT+BLEHIDINIT](#BLE-AT)—BLE HID device profile initialization
+### 5.40 [ESP32 Only][AT+BLEHIDINIT](#BLE-AT)—BLE HID device profile initialization
 Query Command:
 
     AT+BLEHIDINIT?
@@ -3714,7 +4217,7 @@ Example:
     AT+BLEHIDINIT=1 
 
 <a name="cmd-BLEHIDKB"></a>
-### 5.39 [ESP32 Only][AT+BLEHIDKB](#BLE-AT)—Send BLE HID Keyboard information
+### 5.41 [ESP32 Only][AT+BLEHIDKB](#BLE-AT)—Send BLE HID Keyboard information
 Set Command: 
 
     AT+BLEHIDKB=<Modifier_keys>,<key_1>,<key_2>,<key_3>,<key_4>,<key_5>,<key_6>
@@ -3737,7 +4240,7 @@ Example:
     AT+BLEHIDKB=0,4,0,0,0,0,0   // input a
 
 <a name="cmd-BLEHIDMUS"></a>
-### 5.40 [ESP32 Only][AT+BLEHIDMUS](#BLE-AT)—Send BLE HID mouse information
+### 5.42 [ESP32 Only][AT+BLEHIDMUS](#BLE-AT)—Send BLE HID mouse information
 Set Command: 
 
     AT+BLEHIDMUS=<buttons>,<X_displacement>,<Y_displacement>,<wheel>
@@ -3757,7 +4260,7 @@ Example:
     AT+BLEHIDMUS=0,10,10,0
 
 <a name="cmd-BLEHIDC"></a>
-### 5.41 [ESP32 Only][AT+BLEHIDCONSUMER](#BLE-AT)—Send BLE HID consumer information
+### 5.43 [ESP32 Only][AT+BLEHIDCONSUMER](#BLE-AT)—Send BLE HID consumer information
 Set Command: 
 
     AT+BLEHIDCONSUMER=<consumer_usage_id>
@@ -3774,7 +4277,7 @@ Example:
     AT+BLEHIDCONSUMER=233   // volume up
 
 <a name="cmd-BLUFI"></a>
-### 5.41 [ESP32 Only] [AT+BLUFI](#BLE-AT)—Start or Stop BLUFI
+### 5.44 [ESP32 Only] [AT+BLUFI](#BLE-AT)—Start or Stop BLUFI
 Query Command:
 
     AT+BLUFI?
@@ -3839,7 +4342,7 @@ Example:
     AT+BLUFINAME?
 
 <a name="exam-BLE"></a>
-## 6. [ESP32 Only] [BLE AT Example](#BLE-AT)  
+## Example 1. [ESP32 Only] [BLE AT Example](#BLE-AT)  
 Below is an example of using two ESP32 modules, one as a BLE server (hereafter named "ESP32 Server"), the other one as a BLE client (hereafter named "ESP32 Client"). The example shows how to use BLE functions with AT commands.  
 ***Notice:***  
 
@@ -3878,10 +4381,9 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
     (2) Start advertising.
 
         Command:
-        AT+BLEADDR?                              // get server's BLE address
+        AT+BLEADVSTART
         
         Response:
-        +BLEADDR:24:0a:c4:03:f4:d6
         OK
 
     ESP32 Client:  
@@ -4037,6 +4539,275 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
     ***Note:***  
     * If the ESP32 Client receives the indication, it will prompt message `+INDICATE:<conn_index>,<srv_index>,<char_index>,<len>,<value>`
     * For the same service, the \<srv\_index> on the ESP32 Client side equals the \<srv\_index> on the ESP32 Server side + 2.
+
+
+<a name="exam-iBeacon"></a>
+## Example 2. [ESP32 Only] [iBeacon Examples](#BLE-AT)  
+The following demonstrates two examples of iBeacon:  
+
+ * ESP32 advertising iBeacons, which can be discovered by the “Shake Nearby” function of WeChat.
+ * ESP32 scanning iBeacons.
+
+This is the structure of iBeacon Frame.
+
+|Type | Length (byte) | Description |
+|---|---|---|
+|iBeacon prefix | 9 | 02 01 06 1A FF 4C 00 02 15|
+|Proximity UUID | 16 | Used to identify vendor|
+|Major | 2 | Used to identify store|
+|Minor | 2 | Used to identify the location of a specific Beacon within a store|
+|TX power | 1 | Used to calculate the distance between the ESP32 device and the phone|
+
+### Example 2.1. ESP32 Device Advertising iBeacons
+1. Initialize the role of the ESP32 device as a BLE server:
+
+    ```
+    AT+BLEINIT=2                              // server role  
+
+    Response：
+    OK
+    ```
+2. Start advertising. Configure the parameters of the iBeacon advertisement as the following table shows:
+
+|Type | Content|
+|---|---|
+|iBeacon prefix | 02 01 06 1A FF 4C 00 02 15|
+|Proximity UUID | FDA50693-A4E2-4FB1-AFCF-C6EB07647825|
+|Major | 27 B7|
+|Minor | F2 06|
+|TX power | C5|
+
+The AT command should be as below:
+
+    ```
+    AT+BLEADVDATA="0201061aff4c000215fda50693a4e24fb1afcfc6eb0764782527b7f206c5"
+ 
+    OK
+    
+    AT+BLEADVSTART               // Start advertising
+ 
+    OK
+    ```
+Open WeChat on your mobile phone and then select “Shake Nearby” to discover the ESP32 device that is advertising.
+![avatar](img/Shake-Nearby.png)   
+
+### Example 2.2. ESP32 Device Scanning for iBeacons
+Not only can the ESP32 device transmits iBeacons, but it can also work as a BLE client that scans for iBeacons and gets the advertisement data which can then be parsed by the host MCU.  
+**Notice:**   
+If the ESP32 device has already been initialized as a BLE server, you need to call AT+BLEINIT=0 to de-init it first, and then re-init it as a BLE client.
+
+1. Initialize the role of the ESP32 device as a BLE client:
+
+    ```
+    AT+BLEINIT=1                              // client role 
+
+    Response：
+    OK
+    ```
+2. Enable a scanning for three seconds:
+
+    ```
+    AT+BLESCAN=1,3
+
+    Response：
+    OK
+    ```
+You will get a scanning result that looks like:
+
+    ```
+    +BLESCAN:24:0a:c4:02:10:0e,-33,0201061aff4c000215fda50693a4e24fb1afcfc6eb0764782527b7f206c5,
+    +BLESCAN:24:0a:c4:01:4d:fe,-74,02010207097a4f68664b43020aeb051220004000,
+    +BLESCAN:24:0a:c4:02:10:0e,-33,0201061aff4c000215fda50693a4e24fb1afcfc6eb0764782527b7f206c5,
+    ```
+
+
+<a name="exam-UARTBLE"></a>
+## Example 3. [ESP32 Only] [UART-BLE Passthrough Mode](#BLE-AT) 
+Below is an example of using two ESP32 modules, one as a BLE server (hereafter named "ESP32 Server"), the other one as a BLE client (hereafter named "ESP32 Client"). The example shows how to build BLE SPP (Serial Port Profile, UART-BLE passthrough mode) with AT commands.  
+***Notice:***  
+
+* The ESP32 Server needs to download a "service bin" into Flash to provide BLE services.
+    * To learn how to generate a "service bin", please refer to esp-at/tools/readme.md.
+    * The download address of the "service bin" is the address of "ble_data" in esp-at/partitions_at.csv.
+
+1. BLE initialization:  
+
+    ESP32 Server:
+
+        AT+BLEINIT=2                              // server role
+        
+        OK
+        
+        AT+BLEGATTSSRVCRE                         // Create services
+
+        OK
+
+        AT+BLEGATTSSRVSTART                       // Start services
+        
+        OK
+
+
+    ESP32 Client:
+
+        AT+BLEINIT=1                              // client role
+        
+        OK
+2. Establish BLE connection:  
+
+    ESP32 Server:   
+    (1) Query the BLE address. For example, its address is "24:0a:c4:03:f4:d6".
+
+        Command:
+        AT+BLEADDR?                              // get server's BLE address
+        
+        Response:
+        +BLEADDR:24:0a:c4:03:f4:d6
+        
+        OK
+    (2) Optional Configuration, configure advertisement data. Without the configuration, the payload of the broadcasting packet will be empty.
+
+        Command:
+        AT+BLEADVDATA="0201060A09457370726573736966030302A0"
+        
+        /*  The adv data is 
+         *  02 01 06  //<length>,<type>,<data>
+         *  0A 09 457370726573736966 //<length>,<type>,<data> 
+         *  03 03 02A0  //<length>,<type>,<data> 
+         */
+        
+        Response:
+        OK
+    (3) Start advertising.
+
+        Command:
+        AT+BLEADVSTART
+        
+        Response:
+        OK
+
+    ESP32 Client:  
+    (1) Start scanning.  
+
+        Command:
+        AT+BLESCAN=1,3
+        
+        Response:
+        +BLESCAN:<BLE address>,<rssi>,<adv_data>,<scan_rsp_data>
+        
+        OK
+    (2) Establish the BLE connection, when the server is scanned successfully.  
+
+        AT+BLECONN=0,"24:0a:c4:03:f4:d6"
+        
+        Response:
+        OK
+        +BLECONN:0,"24:0a:c4:03:f4:d6"
+    
+    ***Notes:***   
+    * If the BLE connection is established successfully, it will prompt `+BLECONN:<conn_index>,<remote_BLE_address>`  
+    * If the BLE connection is broken, it will prompt `+BLEDISCONN:<conn_index>,<remote_BLE_address>`  
+3. Discover services.  
+
+    ESP32 Server:  
+    (1) Discover local services.  
+    
+        AT+BLEGATTSSRV?     
+             
+        Response:
+        +BLEGATTSSRV:1,1,0xA002,1
+
+        OK
+    (2) Discover characteristics.  
+    
+        AT+BLEGATTSCHAR?          
+        
+        Response:
+        +BLEGATTSCHAR:"char",1,1,0xC300
+        +BLEGATTSCHAR:"desc",1,1,1
+        +BLEGATTSCHAR:"char",1,2,0xC301
+        +BLEGATTSCHAR:"desc",1,2,1
+        +BLEGATTSCHAR:"char",1,3,0xC302
+        +BLEGATTSCHAR:"desc",1,3,1
+        
+        OK
+
+    ESP32 Client:  
+    (1) Discover services.  
+    
+        AT+BLEGATTCPRIMSRV=0   
+        
+        Response:
+        +BLEGATTCPRIMSRV:0,1,0x1801,1
+        +BLEGATTCPRIMSRV:0,2,0x1800,1
+        +BLEGATTCPRIMSRV:0,3,0xA002,1
+        
+        OK
+    ***Notice:***  
+    * When discovering services, the ESP32 Client will get two more default services (UUID:0x1800 and 0x1801) than what the ESP32 Server will get.
+    * So, for the same service, the \<srv\_index> received by the ESP32 Client equals the \<srv\_index> received by ESP32 Server + 2.
+    * For example, the \<srv\_index> of the above-mentioned service, 0xA002, is 3 when the ESP32 Client is in the process of discovering services. But if the ESP32 Server tries to discover it with command `AT+BLEGATTSSRV?`, the \<srv\_index> will be 1.
+
+    (2) Discover characteristics.  
+    
+        AT+BLEGATTCCHAR=0,3
+        
+        Response:
+        +BLEGATTCCHAR:"char",0,3,1,0xC300,2
+        +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
+        +BLEGATTCCHAR:"char",0,3,2,0xC301,2
+        +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
+        +BLEGATTCCHAR:"char",0,3,3,0xC302,8
+        +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
+        +BLEGATTCCHAR:"char",0,3,4,0xC303,4
+        +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
+        +BLEGATTCCHAR:"char",0,3,5,0xC304,8
+        +BLEGATTCCHAR:"char",0,3,6,0xC305,16
+        +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+        +BLEGATTCCHAR:"char",0,3,7,0xC306,32
+        +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+        
+        OK  
+4. Configure BLE SPP:
+
+    ESP32 Client:  
+    (1) Set a characteristic that enables writing permission to TX channel for sending data. Set another characteristic that supports notification or indication to RX channel for receiving data.
+    
+        AT+BLESPPCFG=1,3,5,3,7
+        
+        Response:
+        OK
+    (2) Enable BLE SPP:
+    
+        AT+BLESPP
+        
+        Response:
+        OK
+        >	                 // waiting for serial data
+**Note**:
+After ESP32 Client enabling BLE SPP, data received from serial port will be transmitted to the BLE server directly.
+
+
+    ESP32 Server:  
+    (1) Set a characteristic that supports notification or indication to TX channel for sending data. Set another characteristic that enables writing permission to RX channel for receiving data.
+    
+        AT+BLESPPCFG=1,1,7,1,5
+        
+        Response:
+        OK
+    (2) Enable BLE SPP:
+    
+        AT+BLESPP
+        
+        Response:
+        OK
+        >	                 // waiting for serial data
+
+**Notes**:  
+
+ * After ESP32 Server enables BLE SPP, the data received from serial port will be transmitted to the BLE client directly.
+ * If the ESP32 Client does not enable BLE SPP first, or uses other device as BLE client, then the BLE client needs to listen to the notification or indication first. For example, if the ESP32 Client does not enable BLE SPP first, then it should enable listening with command `AT+BLEGATTCWR=0,3,7,1,1` first for the ESP32 Server to transmit successfully.
+ * For the same service, the `<srv_index>` on the ESP32 Client side equals the `<srv_index>` on the ESP32 Server side plus 2.
+
 
 ## 7 [ESP32 Only] ETH AT Commands
 <a name="cmd-ETHMAC"></a>
@@ -5409,8 +6180,11 @@ Parameters:
 More details of Standard HTTP/1.1 Error Code are in RFC 2616: https://tools.ietf.org/html/rfc2616
 
 
+
+
+
 <a name="Appendix-8266"></a>
-## Appendix. [How to generate an ESP8266 AT firmware](#Begin-8266)
+## Appendix 1. [How to generate an ESP8266 AT firmware](#Begin-AT)
 1. Download the master branch of https://github.com/espressif/esp-at
 2. Change the Makefile from  
 
@@ -5422,3 +6196,120 @@ to be
 `export ESP_AT_MODULE_NAME ?= WROOM-02`
 3. Compile the esp-at project to get the ESP8266 AT firmware. 
 4. More details are in the esp-at/docs/How_to_Add_New_Platforom.
+   
+
+<a name="Appendix-addcuscmd"></a>
+## Appendix 2. [How to add user-defined AT commands](#Begin-AT)
+AT firmware is based on the Espressif IoT Development Framework (ESP-IDF). Espressif Systems' AT commands are provided in `libat_core.a`, which is included in the AT BIN firmware.   
+Examples of implementing user-defined AT commands are provided in `/esp-at/main/interface/uart/at_uart_task.c`.  
+
+ * The total length of an AT command cannot be longer than 256 Bytes.  
+ * Use only English letters or an underscore (_), when naming user-defined AT commands. 
+ * The AT command name must NOT contain characters or numbers.
+ * The structure, `at_cmd_struct`, is used to define four types of a command. 
+
+<a name="Appendix-downloadat"></a>
+## Appendix 3. [How to download AT firmware into flash](#Begin-AT)
+1. It is suggested to compile and download the AT project according to [ESP_AT_Get_Started](https://github.com/espressif/esp-at/blob/master/docs/ESP_AT_Get_Started.md).
+2. If you cannot compile and download the AT project as above step 1, then you can download the AT firmware by [ESP Flash Download Tool](https://www.espressif.com/en/support/download/other-tools).
+
+ * Download `ESP32 AT Bin` or `ESP8266 IDF AT Bin` from https://www.espressif.com/en/support/download/at.
+ * Unzip ESP-AT-Bin, and download the factory/factory_xxx.bin to flash address 0.
+
+**Note:**  
+The ESP-AT-Bin contains several binaries for some specific functions, and the factory/factory_xxx.bin is the combination of all binaries. So user can only download the `factory/factory_xxx.bin` to address 0, or user can download several binaries to different addresses according to `ESP-AT-Bin/download.config`.  
+
+ * `at_customize.bin` is to provide a user partition table, which lists different partitions for the `ble_data.bin`, SSL certificates, and `factory_param_XXX.bin`. Furthermore, users can add their own users partitions, and read/write the user partitions with the command `AT+FS` and `AT+SYSFLASH`.
+ * `factory_param_XXX.bin` indicates the hardware configurations for different ESP modules. Please make sure the correct bin is used for your specific module. If users design their own module, they can configure it with reference to the `esp-at/docs/ESP32_AT_Factory_Parameter_Bin.md`, and the binaries will be automatically generated after compilation. When users flash the firmware into module according to the `download.config`, the `customized_partitions/factory_param.bin` should be replaced with the actual module-specific `customized_partitions/factory_param_XXX.bin`. UART CTS and RTS are optional pins, not compulsive.
+
+|Modules| UART Pins（TX, RX, CTS, RTS） | Bin  |
+|---|---|---|
+| ESP32-WROOM-32 Series (ESP32 Default Value)  | GPIO17, GPIO16, GPIO15, GPIO14  | `customized_partitions/factory_param_WROOM-32.bin` |  
+| ESP32-WROVER Series  | GPIO22, GPIO19, GPIO15, GPIO14  | `customized_partitions/factory_param_WROVER-32.bin` |  
+| ESP32-PICO Series  | GPIO22, GPIO19, GPIO15, GPIO14  | `customized_partitions/factory_param_PICO-D4.bin` |
+|ESP32-SOLO Series  | GPIO17, GPIO16, GPIO15, GPIO14 | `customized_partitions/factory_param_SOLO-1.bin` |
+| ESP-WROOM-02 Series (ESP8266 Default Value)  | GPIO15, GPIO13, GPIO3, GPIO1 | `customized_partitions/factory_param_WROOM-02.bin` | 
+
+ * `ble_data.bin` is to provide BLE services when the ESP32 works as a BLE server;
+ * `server_cert.bin`, `server_key.bin` and `server_ca.bin` are examples of SSL server‘s certificate; `client_cert.bin`, `client_key.bin` and `client_ca.bin` are examples of SSL client‘s certificate.  
+
+If some of the functions are not used, then the corresponding binaries need not to be downloaded into flash.  
+
+
+<a name="Appendix-ATDescrpt"></a>
+## Appendix 4. [AT Command Description](#Begin-AT)
+Each command can support four types of AT commands.
+
+|Type | Command Format | Description|  
+|---|---|---|  
+|Test Command	 | AT+<x>=? | Queries the Set Commands' internal parameters and their range of values.|
+|Query Command | AT+<x>? | Returns the current value of parameters.|
+|Set Command | AT+<x>=<…> | Sets the value of user-defined parameters in commands, and runs these commands.|
+|Execute Command | AT+<x> | Runs commands with no user-defined parameters.|
+
+ * Not all AT commands support all four variations mentioned above.
+ * Square brackets [ ] designate the default value; it is either not required or may not appear.
+ * String values need to be included in double quotation marks, for example: `AT+CWSAP="ESP756290","21030826",1,4`.
+ * The default baud rate of AT command is 115200.
+ * AT commands are ended with a new-line (CR-LF), so the serial tool should be set into "New Line Mode".
+ * Definitions of AT command error codes are in `esp-at/components/at/include/esp_at.h`.
+ 
+<a name="Appendix-ATSave"></a>
+## Appendix 5. [AT Commands with Configuration Saved in the Flash](#Begin-AT)
+The following AT Commands with configuration will be saved in the flash NVS Area.
+
+ *  [AT+SYSSTORE](#cmd-SYSSTORE): some AT configurations will be saved into flash after command `AT+SYSSTORE=1`.
+ *  [AT+UART_DEF](#cmd-UARTD): for example, `AT+UART_DEF=115200,8,1,0,3`
+ *  [AT+SAVETRANSLINK](#cmd-SAVET) : for example, `AT+SAVETRANSLINK=1,"192.168.6.10",1001`
+ *  [AT+CWAUTOCONN](#cmd-AUTOC): for example, `AT+CWAUTOCONN=1`
+
+<a name="Appendix-ATmsg"></a>
+## Appendix 6. [AT Messages](#Begin-AT)
+
+|Messages | Description|
+|---|---|
+|ready	| The AT firmware is ready.|
+|ERROR | AT command error, or error occurred during execution.|
+|WIFI CONNECTED | ESP station connected to an AP.|
+|WIFI GOT IP	| ESP station got IP address.|
+|WIFI DISCONNECT	| ESP station disconnected from an AP.|
+|busy p... | Busy processing. The system is in process of handling the previous command, cannot accept the newly input.|
+|\<conn_id>,CONNECT | A network connection of which ID is <conn_id> is established.|
+|\<conn_id>,CLOSED | A network connection of which ID is <conn_id> ends.|
+|+IPD | Network data received.|
+|+STA\_CONNECTED: \<sta_mac> | A station connects to the ESP softAP.|
+|+DIST\_STA\_IP: \<sta\_mac>,\<sta_ip> | ESP softAP distributes an IP address to the station connected.|
+|+STA\_DISCONNECTED: \<sta_mac> | A station disconnects from the ESP softAP.|
+|+BLECONN	| A BLE connection established.|
+|+BLEDISCONN | A BLE connection ends.|
+|+READ | A read operation from BLE connection.|
+|+WRITE | A write operation from BLE connection.|
+|+NOTIFY | A notification from BLE connection.|
+|+INDICATE | An indication from BLE connection.|
+|+BLESECNTFYKEY | BLE SMP key|
+|+BLEAUTHCMPL	 | BLE SMP pairing completed.|
+
+
+<a name="Appendix-OTA"></a>
+## Appendix 7. [OTA Update](#Begin-AT)
+The following steps guide the users in creating a device on iot.espressif.cn and updating the OTA BIN on it.   
+
+1. Open the website iot.espressif.cn. If using SSL OTA, it should be https://iot.espressif.cn.
+![avatar](img/OTA-1.png)
+2. Click "Join" in the upper right corner of the webpage, and enter your name, email address, and password.  
+![avatar](img/OTA-2.png)
+3. Click on "Device" in the upper right corner of the webpage, and click on "Create" to create a device.
+![avatar](img/OTA-3.png)  
+![avatar](img/OTA-4.png)  
+4. A key is generated when the device is successfully created, as the figure below shows.
+![avatar](img/OTA-5.png)   
+5. Use the key to compile your own OTA BIN. The process of configuring the AT OTA token key is as follows:
+![avatar](img/OTA-6.png)   
+![avatar](img/OTA-7.png) 
+**Notice:**
+If using SSL OTA, the option "OTA based upon ssl" should be selected.
+6. Click on "Product" to enter the webpage, as shown below. Click on the device created. Enter version and corename under "ROM Deploy". Rename the BIN compiled in Step 5 as "ota.bin" and save the configuration.
+![avatar](img/OTA-8.png) 
+7. Click on the ota.bin to save it as the current version.
+![avatar](img/OTA-9.png) 
+8. Run the command AT+CIUPDATE on the ESP device. If the network is connected, OTA update will be done.
