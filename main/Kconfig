@@ -209,6 +209,13 @@ endchoice
 
 endif
 
+if IDF_TARGET_ESP8266
+config AT_SIGNALING_COMMAND_SUPPORT
+    bool "AT signaling test command support."
+    default "y"
+    depends on AT_ENABLE
+endif
+
 config AT_EAP_COMMAND_SUPPORT
     bool "AT WPA2 Enterprise command support."
     default "n"
