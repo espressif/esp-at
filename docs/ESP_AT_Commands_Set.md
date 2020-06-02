@@ -213,6 +213,9 @@ Here is a list of AT commands. Some of the AT commands can only work on the ESP3
 - [AT+HTTPGETSIZE](#cmd-HTTPGETSIZE) - Get HTTP Source Size
 - [HTTP AT Error Code](#cmd-HTTPErrCode)
 
+<a name="FACT-AT"></a>
+### 1.9 Signaling test Commands List
+- [AT+FACTPLCP](#cmd-FACTPLCP) -  Send with long or short PLCP(physical layer convergence procedure)   
 
 ## 2. Basic AT Commands 
 <a name="cmd-AT"></a>
@@ -6179,9 +6182,26 @@ Parameters:
 
 More details of Standard HTTP/1.1 Error Code are in RFC 2616: https://tools.ietf.org/html/rfc2616
 
+## 11. Signaling test Commands
 
+<a name="cmd-FACTPLCP"></a>
 
+### 11.1 [AT+FACTPLCP](#FACT-AT)-Send with long or short PLCP(physical layer convergence procedure)  
+Set Command:  
 
+    AT+FACTPLCP=<enable>,<tx_with_long>
+Response:
+
+    OK
+
+Parameters:
+
+- **\<enable>** : Enable or disable manual configuration
+  - 0 :  Disable manual configuration, it will use the defalut configuration    
+  - 1 :  Enable manual configuration, send PLCP as `tx_with_long`    
+- **\<tx_with_long>** : Send with long PLCP or not
+  - 0 : Send with short PLCP
+  - 1 : Send with long PLCP
 
 <a name="Appendix-8266"></a>
 ## Appendix 1. [How to generate an ESP8266 AT firmware](#Begin-AT)

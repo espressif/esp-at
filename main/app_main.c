@@ -33,6 +33,9 @@
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
 #include "esp_event_loop.h"
 #include "esp_wifi.h"
+#ifdef CONFIG_IDF_TARGET_ESP8266
+#include "internal/esp_wifi_internal.h"
+#endif
 #endif
 
 #if defined(CONFIG_BT_ENABLED)
@@ -100,6 +103,43 @@ static uint8_t at_setupCmdCipupdate(uint8_t para_num)
 
 static esp_at_cmd_struct at_update_cmd[] = {
     {"+CIUPDATE", NULL, NULL, at_setupCmdCipupdate, at_exeCmdCipupdate},
+};
+#endif
+
+#ifdef CONFIG_AT_SIGNALING_COMMAND_SUPPORT
+static uint8_t at_setupCmdFactPlcp(uint8_t para_num)
+{
+    int32_t enable = 0;
+    int32_t tx_with_long = 0;
+    int32_t cnt = 0;
+
+    if (esp_at_get_para_as_digit (cnt++, &enable) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if ((enable != 0) && (enable != 1)) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if (esp_at_get_para_as_digit (cnt++, &tx_with_long) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if ((tx_with_long != 0) && (tx_with_long != 1)) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if (cnt != para_num) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    esp_wifi_set_11b_tx_plcp(enable, tx_with_long);
+
+    return ESP_AT_RESULT_CODE_OK;
+}
+
+static esp_at_cmd_struct at_fact_cmd[] = {
+    {"+FACTPLCP", NULL, NULL, at_setupCmdFactPlcp, NULL},
 };
 #endif
 
@@ -298,6 +338,10 @@ void app_main()
 
 #ifdef CONFIG_AT_OTA_SUPPORT
     esp_at_custom_cmd_array_regist (at_update_cmd, sizeof(at_update_cmd)/sizeof(at_update_cmd[0]));
+#endif
+
+#ifdef CONFIG_AT_SIGNALING_COMMAND_SUPPORT
+    esp_at_custom_cmd_array_regist (at_fact_cmd, sizeof(at_fact_cmd)/sizeof(at_fact_cmd[0]));
 #endif
     at_custom_init();
 }
