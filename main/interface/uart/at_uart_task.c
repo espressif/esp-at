@@ -208,6 +208,23 @@ retry:
                 esp_at_transmit_terminal();
                 break;
 #endif
+            case UART_FIFO_OVF:
+                retry_flag = pdFALSE;
+                while (xQueueReceive(esp_at_uart_queue, (void *)&event, (portTickType)0) == pdTRUE) {
+                    if ((event.type == UART_DATA) || (event.type == UART_BUFFER_FULL) || (event.type == UART_FIFO_OVF)) {
+                        // Put all data together to process
+                    } else {
+                        retry_flag = pdTRUE;
+                        break;
+                    }
+                }
+                esp_at_port_recv_data_notify(at_port_get_data_length(), portMAX_DELAY);
+                data_len = 0;
+                if (retry_flag == pdTRUE) {
+                    goto retry;
+                }
+                break;
+
             //Others
             default:
                 break;
