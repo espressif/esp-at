@@ -364,7 +364,7 @@ static void at_uart_init(void)
         assert((tx_pin == 1) && (rx_pin == 3));
     }
 #endif
-    xTaskCreate(uart_task, "uTask", 2048, (void*)esp_at_uart_port, 1, NULL);
+    xTaskCreate(uart_task, "uTask", 1024, (void*)esp_at_uart_port, 1, NULL);
 }
 
 static bool at_nvm_uart_config_set (at_nvm_uart_config_struct *uart_config)
