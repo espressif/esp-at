@@ -21,7 +21,7 @@ endchoice
 config AT_PROCESS_TASK_STACK_SIZE
     int "The stack size of the AT process task in AT library, which will be used to process AT command"
     default 2048
-    range 2048 8196
+    range 1024 8196
     depends on AT_ENABLE
 
 config AT_SOCKET_TASK_STACK_SIZE
