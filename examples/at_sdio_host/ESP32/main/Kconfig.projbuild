@@ -1,0 +1,15 @@
+menu "SDIO HOST Configuration"
+
+choice TARGET_PLATFORM
+    prompt "Select slave platform."
+    default SLAVE_ESP32
+    help
+        Select which target is used (ESP8266 or ESP32).
+
+config SLAVE_ESP32
+    bool "Using ESP32"
+config SLAVE_ESP8266
+    bool "Using ESP8266"
+endchoice
+
+endmenu
