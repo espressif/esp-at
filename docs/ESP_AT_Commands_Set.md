@@ -29,7 +29,7 @@ Here is a list of AT commands. Some of the AT commands can only work on the ESP3
 * [AT+SYSRAM](#cmd-SYSRAM) : Checks the remaining space of RAM.
 * [AT+SYSMSG](#cmd-SYSMSG) : Set message format.
 * [AT+RFPOWER](#cmd-RFPOWER) : Set RF TX Power.
-* [ESP32 Only] [AT+SYSFLASH](#cmd-SYSFLASH) : Set User Partitions in Flash.
+* [AT+SYSFLASH] [AT+SYSFLASH](#cmd-SYSFLASH) : Set User Partitions in Flash.
 * [ESP32 Only] [AT+FS](#cmd-FS) : Filesystem Operations.
 * [AT+SYSROLLBACK](#cmd-SYSROLLBACK) : Roll back to the previous firmware.
 * [AT+SYSTIMESTAMP](#cmd-SETTIME): Set local time stamp.
@@ -210,7 +210,7 @@ Here is a list of AT commands. Some of the AT commands can only work on the ESP3
 <a name="HTTP-AT"></a>
 ### 1.8 HTTP AT Command List
 - [AT+HTTPCLIENT](#cmd-HTTPCLIENT) -  Send HTTP Client Request
-- [AT+HTTPGETSIZE](#cmd-HTTPGETSIZE) - Get HTTP Source Size
+- [AT+HTTPGETSIZE](#cmd-HTTPGETSIZE) - Get HTTP Resource Size
 - [HTTP AT Error Code](#cmd-HTTPErrCode)
 
 <a name="FACT-AT"></a>
@@ -480,7 +480,7 @@ Example:
     AT+SYSMSG=2
 
 <a name="cmd-SYSFLASH"></a>
-### 2.12 [ESP32 Only] [AT+SYSFLASH](#Basic-AT)—Set User Partitions in Flash  
+### 2.12 [AT+SYSFLASH](#Basic-AT)—Set User Partitions in Flash  
 Query Command:
 
     AT+SYSFLASH?
@@ -515,7 +515,7 @@ Parameters:
 
 ***Notes:***  
 
-* at_customize.bin has to be downloaded, so that the relevant commands can be used. Please refer to the [ESP32_Customize_Partitions](https://github.com/espressif/esp-at/tree/master/docs) for more details.
+* at_customize.bin has to be downloaded, so that the relevant commands can be used. Please refer to the [ESP_AT_Customize_Partitions](https://github.com/espressif/esp-at/tree/master/docs) for more details.
 * Important things to note when erasing user partitions:
     * When erasing the targeted user partition in its entirety, parameters `<offset>` and `<length>` can be omitted. For example, command `AT+SYSFLASH=0,"ble_data"` can erase the entire "ble_data" user partition.
     * If parameters `<offset>` and `<length>` are not omitted when erasing the user partition, they have to be 4KB-aligned.
@@ -1621,21 +1621,21 @@ Response:
     +CIPSTATUS:<link ID>,<type>,<remote IP>,<remote port>,<local port>,<tetype>
 Parameters:
 
-- **\<stat>**: status of the ESP32 Station interface.
-    - 0: The ESP32 station is inactive.
-    - 1: The ESP32 station is idle.
-    - 2: The ESP32 Station is connected to an AP and its IP is obtained.
-    - 3: The ESP32 Station has created a TCP or UDP transmission.
-    - 4: The TCP or UDP transmission of ESP32 Station is disconnected.
-    - 5: The ESP32 Station does NOT connect to an AP.
+- **\<stat>**: status of the esp device Station interface.
+    - 0: The esp device station is inactive.
+    - 1: The esp device station is idle.
+    - 2: The esp device Station is connected to an AP and its IP is obtained.
+    - 3: The esp device Station has created a TCP or SSL transmission.
+    - 4: The TCP or SSL transmission of esp device Station is disconnected.
+    - 5: The esp device Station does NOT connect to an AP.
 - **\<link ID>**: ID of the connection (0~4), used for multiple connections.
 - **\<type>**: string parameter, "TCP" or "UDP".
 - **\<remote IP>**: string parameter indicating the remote IP address.
 - **\<remote port>**: the remote port number.
-- **\<local port>**: ESP32 local port number.
+- **\<local port>**: the local port number.
 - **\<tetype>**:
-    - 0: ESP32 runs as a client.
-    - 1: ESP32 runs as a server.
+    - 0: esp device runs as a client.
+    - 1: esp device runs as a server.
 
 <a name="cmd-DOMAIN"></a>
 ### 4.2 [AT+CIPDOMAIN](#TCPIP-AT)—Domain Name Resolution Function
@@ -1681,6 +1681,11 @@ Parameters:
     - 1 ~ 7200: detection time interval; unit: second (s).
 
 - **\[\<local IP>]**(optional parameter): select which IP want to use, this is useful when using both ethernet and WiFi; this parameter is disabled by default. If you want to use this parameter, <TCP keep alive> must be specified firstly, null also is valid.
+
+Notes:
+
+    If the remote IP over the UDP is a multicast address(224.0.0.0 ~ 239.255.255.255), the esp device will send and receive the UDP multicast;
+    If the remote IP over the UDP is a broadcast address(255.255.255.255), the esp device will send and receive the UDP broadcast.
 
 Examples:
 
@@ -3324,6 +3329,8 @@ Example:
 
     AT+BLEINIT=2   // role: server
     AT+BLEADVDATAEX="ESP-AT","A002","0102030405",1
+
+* [ESP32 Only] [AT+BLEADVDATAEX](#cmd-BADVD) : Auto sets BLE advertising data
 
 
 <a name="cmd-BADVSTART"></a>
@@ -6078,6 +6085,8 @@ Set Command:
     AT+HTTPCLIENT=<opt>,<content-type>,[<url>],[<host>],[<path>],<transport_type>,[<data>][,"http_req_header"][,"http_req_header"][...]
 Response:
 
+    +HTTPCLIENT:<size>,<data>
+
     OK
 Parameters:
 
@@ -6123,7 +6132,7 @@ Parameters:
     HTTPCLIENT=2,0,"http://www.baidu.com/img/bdlogo.gif",,,0,"Range: bytes=100-200"
 
 <a name="cmd-HTTPGETSIZE"></a>
-### 10.2 [AT+HTTPGETSIZE](#HTTP-AT)-Get HTTP Source Size
+### 10.2 [AT+HTTPGETSIZE](#HTTP-AT)-Get HTTP Resource Size
 Set Command:
 
     AT+HTTPGETSIZE=<url>
