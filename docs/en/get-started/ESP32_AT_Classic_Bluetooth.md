@@ -1,13 +1,16 @@
-# Overview
+ESP32 AT Classic Bluetooth
+=============
+
+## Overview
 Classic bluetooth is Disabled by default. If you want to use classic bluetooth commands, you need to enable BT commands in menuconfig.
 
 ```
 Component config -> AT -> [*] AT bt command support.
 ```
 
-# Command Description
+## Command Description
 
-## initialization
+### initialization
 There are two initialization-related commands. Firstly, initializing the bluetooth protocol stack, and then initializing the profile, such as:
 
 ```
@@ -15,24 +18,24 @@ AT+BTINIT=1      // init BT statck
 AT+BTSPPINIT=2   // init SPP profile, the role is slave
 ```
 
-## Basic parameters setting
+### Basic parameters setting
 After initialization, there are some basic parameter setting commands that may be need to be invoked.
 
-### 1. device name
+#### 1. device name
 The default device name is `esp32`, If use command to set the device name, it will be stored in NVS.
 
 ```
 AT+BTNAME="EXAMPLE"
 ```
 
-### 2. scan mode
+#### 2. scan mode
 Sets whether it can be discovered and connected.
 
 ```
 AT+BTSCANMODE=2    // both discoverable and connectable
 ```
 
-### 3. security parameters
+#### 3. security parameters
 ESP32 supports both Simple pair and Legacy pair by default.
 
 Using this command, you can set the IO capability, PIN type and PIN code of the device.
@@ -44,8 +47,8 @@ AT+BTSECPARAM=3,1,"9527"  // NO input NO output, fixed PIN code, 9527
 If the PIN type is variable, the PIN code will be ignored.
 If use the Simple pair encryption, the PIn code will be ignored.
 
-## BT SPP EXAMPLE
-### 1. PC CONNECTS TO ESP32
+### BT SPP EXAMPLE
+#### 1. PC CONNECTS TO ESP32
 In this case, generally PC is master and ESP32 is slave. ESP32 needs to do this before the connection is established:
 
  - initialization
@@ -102,7 +105,7 @@ AT+BTSPPSEND
 ```
 If you want to exit passthrough mode, you can input `+++`.
 
-### ESP32 CONNECTS TO ESP32
+#### ESP32 CONNECTS TO ESP32
 If you use two ESP32 boards connected to each other，The process is basically the same as described above, The only difference is the initialization. the client initialization is as follow:
 
  ```
@@ -111,7 +114,7 @@ If you use two ESP32 boards connected to each other，The process is basically t
  ```
 All other steps are the same as described above.
 
-## Encryption-related operation
+### Encryption-related operation
 If the IO capability is not NoInputNoOutput, the encryption process  will involve the exchange of key and PIN code.
 
 If need to input the PIN code for Legacy Pair:

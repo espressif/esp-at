@@ -1,0 +1,1 @@
+[ESP_AT_Factory_Parameter_Bin.md](../../en/get-started/ESP_AT_Factory_Parameter_Bin.md)

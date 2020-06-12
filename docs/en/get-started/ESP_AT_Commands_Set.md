@@ -1,7 +1,8 @@
-[toc]
+ESP AT Commands Set
+=============
 
 <a name="Begin-AT"></a>
-# ESP AT Commands Set
+## Overview
 Here is a list of AT commands. Some of the AT commands can only work on the ESP32, which will be marked as [ESP32 Only]; others can work on both the ESP8266 and ESP32.  
 
 **Appendix**:  
@@ -2706,7 +2707,7 @@ Below is an example showing how a TCP server is established when ESP works in th
    OK
    ```
 4. Connect the PC to the ESP SoftAP.  
-![avatar](img/Connect-SoftAP.png)   
+![avatar](../../img/Connect-SoftAP.png)   
 5. Using a network tool on PC to create a TCP client and connect to the TCP server that ESP created.   
 **Notice**:   
    When ESP works as a TCP server, there is a timeout mechanism. If the TCP client is connected to the ESP TCP server, while there is no data transmission for a period of time, the server will disconnect from the client. To avoid such a problem, please set up a data transmission cycle every two seconds.
@@ -2960,7 +2961,7 @@ Here is an example of the ESP working as a SoftAP in UDP transparent transmissio
    OK
    ```
 2. Connect the PC to the ESP SoftAP.  
-![avatar](img/Connect-SoftAP.png)   
+![avatar](../../img/Connect-SoftAP.png)   
 3. Use a network tool on PC to create a UDP endpoint. For example, the PC's IP address is `192.168.4.2` and the port is `1001`.
 4. Create a UDP transmission between ESP32 and the PC with a fixed remote IP and port.
 
@@ -4599,7 +4600,7 @@ The AT command should be as below:
     OK
     ```
 Open WeChat on your mobile phone and then select “Shake Nearby” to discover the ESP32 device that is advertising.
-![avatar](img/Shake-Nearby.png)   
+![avatar](../../img/Shake-Nearby.png)   
 
 ### Example 2.2. ESP32 Device Scanning for iBeacons
 Not only can the ESP32 device transmits iBeacons, but it can also work as a BLE client that scans for iBeacons and gets the advertisement data which can then be parsed by the host MCU.  
@@ -6324,21 +6325,21 @@ The following AT Commands with configuration will be saved in the flash NVS Area
 The following steps guide the users in creating a device on iot.espressif.cn and updating the OTA BIN on it.   
 
 1. Open the website iot.espressif.cn. If using SSL OTA, it should be https://iot.espressif.cn.
-![avatar](img/OTA-1.png)
+![avatar](../../img/OTA-1.png)
 2. Click "Join" in the upper right corner of the webpage, and enter your name, email address, and password.  
-![avatar](img/OTA-2.png)
+![avatar](../../img/OTA-2.png)
 3. Click on "Device" in the upper right corner of the webpage, and click on "Create" to create a device.
-![avatar](img/OTA-3.png)  
-![avatar](img/OTA-4.png)  
+![avatar](../../img/OTA-3.png)  
+![avatar](../../img/OTA-4.png)  
 4. A key is generated when the device is successfully created, as the figure below shows.
-![avatar](img/OTA-5.png)   
+![avatar](../../img/OTA-5.png)   
 5. Use the key to compile your own OTA BIN. The process of configuring the AT OTA token key is as follows:
-![avatar](img/OTA-6.png)   
-![avatar](img/OTA-7.png) 
+![avatar](../../img/OTA-6.png)   
+![avatar](../../img/OTA-7.png) 
 **Notice:**
 If using SSL OTA, the option "OTA based upon ssl" should be selected.
 6. Click on "Product" to enter the webpage, as shown below. Click on the device created. Enter version and corename under "ROM Deploy". Rename the BIN compiled in Step 5 as "ota.bin" and save the configuration.
-![avatar](img/OTA-8.png) 
+![avatar](../../img/OTA-8.png) 
 7. Click on the ota.bin to save it as the current version.
-![avatar](img/OTA-9.png) 
+![avatar](../../img/OTA-9.png) 
 8. Run the command AT+CIUPDATE on the ESP device. If the network is connected, OTA update will be done.
