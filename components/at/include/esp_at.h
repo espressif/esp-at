@@ -375,6 +375,12 @@ bool esp_at_net_cmd_regist(void);
 bool esp_at_mdns_cmd_regist(void);
 
 /**
+ * @brief regist at driver command set. If not,you can not use AT driver command
+ *
+ */
+bool esp_at_driver_cmd_regist(void);
+
+/**
  * @brief regist at wps command set. If not,you can not use AT wps command
  *
  */
