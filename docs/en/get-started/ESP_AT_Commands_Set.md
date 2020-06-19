@@ -780,6 +780,7 @@ Affected commands:
     AT+CIPAPMAC  
     AT+CIPSTAMAC  
     AT+CIPDNS
+    AT+CIPSSLCCONF
     AT+CWDHCPS  
     AT+CWDHCP  
     AT+CWSTAPROTO  
@@ -2117,7 +2118,7 @@ Response:
     OK
 Set Command:
 
-    AT+CIPSNTPCFG=<timezone>[,<SNTP server1>,<SNTP server2>,<SNTP server3>]
+    AT+CIPSNTPCFG=<enable>,<timezone>[,<SNTP server1>,<SNTP server2>,<SNTP server3>]
 Response:
 
     OK
@@ -2137,7 +2138,7 @@ Parameters:
 
 Example:
 
-    AT+CIPSNTPCFG=8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"   
+    AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"   
 <a name="cmd-SNTPT"></a>
 ### 4.16 [AT+CIPSNTPTIME](#TCPIP-AT)—Queries the SNTP Time
 Query Command:
