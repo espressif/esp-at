@@ -10,7 +10,7 @@ ESP32 的 UART 管脚可以通过管脚映射的方式进行修改, 具体请参
 TX ---> GPIO1  
 RX ---> GPIO3  
 ```
-可以通过 `make menuconfig` > `Component config` > `ESP32-specific` > `UART for console output` 进行修改. 
+可以通过 `make menuconfig` > `Component config` > `Common ESP-related` > `UART for console output` 进行修改. 
 UART1 作为 AT 命令通讯使用(只能为 UART1, 但管脚可修改)，默认管脚配置在 `factory_param.bin` 中, 可以在 `esp-at/components/customized_partitions/raw_data/factory_param/factory_param_data.csv` 文件中修改,不同的模组固件可能管脚不同，关于 `factory_param_data.csv` 的含义描述，可参阅 [`ESP_AT_Factory_Parameter_Bin.md`](ESP_AT_Factory_Parameter_Bin.md).  
 比如 `WROOM-32` 模组
  
