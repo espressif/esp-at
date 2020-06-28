@@ -1194,6 +1194,11 @@ Parameters:
     - bit1: 802.11g protocol standard.
     - bit2: 802.11n protocol standard.
 
+***Note:***
+
+* ESP8266 Currently only support 802.11b or 802.11bg mode
+* ESP32 Currently only support 802.11b or 802.11bg or 802.11bgn mode
+
 <a name="cmd-STAPROTO"></a>
 ### 3.13 [AT+CWSTAPROTO](#WiFi-AT)—Sets the 802.11 b/g/n protocol standard of station mode.
 Query Command:
@@ -1215,6 +1220,10 @@ Parameters:
     - bit0: 802.11b protocol standard.
     - bit1: 802.11g protocol standard.
     - bit2: 802.11n protocol standard.
+
+***Note:***
+
+* Currently we only support 802.11b or 802.11bg or 802.11bgn mode
 
 <a name="cmd-STAMAC"></a>
 ### 3.14 [AT+CIPSTAMAC](#WiFi-AT)—Sets the MAC Address of the ESP32 Station
