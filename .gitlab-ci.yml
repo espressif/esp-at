@@ -612,7 +612,7 @@ esp32_demo:
     - unset ESP_AT_PROJECT_PATH
     - cd -
 
-    - cd examples/at_sdio_host
+    - cd examples/at_sdio_host/ESP32
     - make defconfig
     - make -j8
     - cd -
