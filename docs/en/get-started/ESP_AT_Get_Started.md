@@ -28,10 +28,10 @@ The debug log will output through UART0 by default, which TXD0 is GPIO1 and RXD0
 
 ### Compiling and flashing the project
 
-Suppose you have completed the installation of the compiler environment for esp-idf, if not, you should complete it referring to `https://docs.espressif.com/projects/esp-idf/en/v3.3/get-started/index.html#setup-toolchain`, in order to compile esp-at project properly, please do the following additional steps:
+Suppose you have completed the installation of the compiler environment for esp-idf, if not, you should complete it referring to `https://docs.espressif.com/projects/esp-idf/en/v4.0/get-started/index.html#setup-toolchain`, in order to compile esp-at project properly, please do the following additional steps:
 
 ```  
-step1:install python 2.7 or python 3.x 
+step1:install python>=3.8
 step2:[install pip](https://pip.pypa.io/en/latest/installing/)  
 step3:install the following python packages with pip: pip install pyyaml xlrd
 ```
