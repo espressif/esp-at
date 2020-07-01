@@ -58,13 +58,24 @@ typedef struct {
 
 /**
  * @brief esp_at_custom_net_ops_struct
- * net recv functions struct for AT
+ * custom socket callback for AT
  */
 typedef struct {
     int32_t (*recv_data)(uint8_t*data,int32_t len);  /*!< callback when socket received data */
     void (*connect_cb)(void);                        /*!< callback when socket connection is built */
     void (*disconnect_cb)(void);                     /*!< callback when socket connection is disconnected */
 } esp_at_custom_net_ops_struct;
+
+/*
+ * @brief esp_at_custom_ble_ops_struct
+ * custom ble callback for AT
+ *
+ */
+typedef struct {
+    int32_t (*recv_data)(uint8_t*data,int32_t len);  /*!< callback when ble received data */
+    void (*disconnect_cb)(void);                     /*!< callback when ble connection is built */
+    void (*connect_cb)(void);                        /*!< callback when ble connection is disconnected */
+} esp_at_custom_ble_ops_struct;
 
 /**
  * @brief esp_at_status
@@ -259,8 +270,17 @@ void esp_at_device_ops_regist(esp_at_device_ops_struct* ops);
  *  @param ops custom operate functions set
  *
  *  Note: Make sure this API call after esp_at_module_init.
-  */
+ */
 bool esp_at_custom_net_ops_regist (int32_t link_id,esp_at_custom_net_ops_struct* ops);
+
+/*
+ *  @brief regist custom callback about ble status,
+ *
+ *  @param ops custom operate functions set
+ *
+ *  Note: Make sure this API call after esp_at_module_init.
+ */
+bool esp_at_custom_ble_ops_regist(int32_t conn_index, esp_at_custom_ble_ops_struct* ops);
 
 /**
  * @brief regist custom operate functions set interacting with AT,

@@ -6115,8 +6115,7 @@ Parameters:
 - **\<url>** : optional parameter, HTTP URL, The url field can override the host and path parameters if they are null.
 - **\<host>**: optional parameter, domain name or IP address
 - **\<path>**: optional parameter, HTTP Path 
-- **\<transport_type>**： HTTP Client transport type, default is 0.
-  - 0 : `HTTP_TRANSPORT_UNKNOWN` 
+- **\<transport_type>**： HTTP Client transport type, default type is 1.
   - 1 : `HTTP_TRANSPORT_OVER_TCP`
   - 2 : `HTTP_TRANSPORT_OVER_SSL` 
 - **\<data>**: optional parameter. When it is a POST request, `<data>` is the user data sent to HTTP server.
