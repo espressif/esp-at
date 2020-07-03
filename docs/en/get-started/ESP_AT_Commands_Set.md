@@ -82,7 +82,7 @@ Here is a list of AT commands. Some of the AT commands can only work on the ESP3
 * [AT+SAVETRANSLINK](#cmd-SAVET) : Saves the transparent transmission link in flash.
 * [AT+CIPSTO](#cmd-STO) : Sets timeout when ESP32 runs as a TCP server.
 * [AT+CIPSNTPCFG](#cmd-SNTPCFG) : Configures the time domain and SNTP server.
-* [AT+CIPSNTPTIME](#cmd-SNTPT) : Queries the SNTP time.
+* [AT+CIPSNTPTIME](#cmd-SNTPT) : Query the SNTP time.
 * [AT+CIUPDATE](#cmd-UPDATE) : Updates the software through Wi-Fi.
 * [AT+CIPDINFO](#cmd-IPDINFO) : Shows remote IP and remote port with +IPD.
 * [AT+CIPSSLCCONF](#cmd-SSLCCONF) : Config SSL client.
@@ -781,6 +781,7 @@ Affected commands:
     AT+CIPSTAMAC  
     AT+CIPDNS
     AT+CIPSSLCCONF
+    AT+CIPRECONNINTV
     AT+CWDHCPS  
     AT+CWDHCP  
     AT+CWSTAPROTO  
@@ -859,7 +860,7 @@ Query Command:
     Function: to query the AP to which the ESP32 Station is already connected.
 Response:
 
-    +CWJAP:<ssid>,<bssid>,<channel>,<rssi>,<pci_en>,<reconn>,<lisnten_interval>,<scan_mode>
+    +CWJAP:<ssid>,<bssid>,<channel>,<rssi>,<pci_en>,<reconn>,<listen_interval>,<scan_mode>
     OK
 Parameters:
 
@@ -2149,13 +2150,13 @@ Example:
 
     AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"   
 <a name="cmd-SNTPT"></a>
-### 4.16 [AT+CIPSNTPTIME](#TCPIP-AT)—Queries the SNTP Time
+### 4.16 [AT+CIPSNTPTIME](#TCPIP-AT)—Query the SNTP Time
 Query Command:
 
     AT+CIPSNTPTIME? 
 Response:
 
-    +CIPSNTPTIME:SNTP time
+    +CIPSNTPTIME:<asctime style time>
     OK
 Example:
 
@@ -2164,6 +2165,10 @@ Example:
     AT+CIPSNTPTIME?
     +CIPSNTPTIME:Mon Dec 12 02:33:32 2016
     OK  
+
+***Note:***
+
+* asctime style time is defined at [asctime man page](https://linux.die.net/man/3/asctime)
 
 <a name="cmd-UPDATE"></a>
 ### 4.17 [AT+CIUPDATE](#TCPIP-AT)—Updates the Software Through Wi-Fi
@@ -2406,6 +2411,15 @@ Parameters:
 
 <a name="cmd-AUTOCONNINT"></a>
 ### 4.21 [AT+CIPRECONNINTV](#TCPIP-AT)—Set Wi-Fi transparent transmitting auto-connect interval
+Query Command:
+
+    AT+CIPRECONNINTV?
+    Function: to get Wi-Fi transparent transmitting auto-connect interval .
+Response:
+
+    +CIPRECONNINTV:<interval>
+    OK
+
 Set Command:
 
     AT+CIPRECONNINTV=<interval>
@@ -2417,6 +2431,10 @@ Parameters:
 Example:
 
     AT+CIPRECONNINTV=10  
+
+**Notes:** 
+
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`. 
 
 ### 4.22 [+IPD](#TCPIP-AT)—Receives Network Data
 Command:
