@@ -1762,7 +1762,7 @@ Parameters:
 
 ***Notes:***
 
-* ESP32 can only set one SSL connection at most.
+* SSL connection count depends on available memory and maximum connection count.
 * SSL connection does not support UART-WiFi passthrough mode (transparent transmission).
 * SSL connection needs a large amount of memory; otherwise, it may cause system reboot. 
 * If the `AT+CIPSTART` is based on a TLS connection, the timeout of each packet is 10s, then the total timeout will be much longer depending on the handshake packets count. 
@@ -3428,7 +3428,7 @@ It will prompt the message below, if NOT:
     +BLECONN:<conn_index>,-1
 Parameters:
 
-- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<remote_address>**：remote BLE address
 - **\<addr_type>**: the address type of broadcasters
 - **\<timeout>**: the timeout for the connection command, range is [3,30] second.
@@ -3461,7 +3461,7 @@ If the setting failed, it will prompt message below:
     +BLECONNPARAM：<conn_index>,-1
 Parameters:
 
-- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<min_interval>**: minimum value of connecting interval; range: 0x0006 ~ 0x0C80
 - **\<max_interval>**: maximum value of connecting interval; range: 0x0006 ~ 0x0C80
 - **\<cur_interval>**: current connecting interval value
@@ -3491,7 +3491,7 @@ Response:
     If the command is successful, it will prompt + BLEDISCONN:<conn_index>,<remote_address>
 Parameter:
 
-- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<remote_address>**: remote BLE address  
 
 ***Notes:***
@@ -3515,7 +3515,7 @@ Response:
     OK 
 Parameter:
 
-- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<pkt\_data\_len>**: data packet's length; range: 0x001b ~ 0x00fb  
 
 ***Notes:***
@@ -3547,7 +3547,7 @@ Response:
     OK  // the command is received
 Parameter:
 
-- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<mtu_size>**:  MTU length
 
 ***Notes:***
@@ -3704,7 +3704,7 @@ If the data transmission is successful, the system returns:
     OK
 Parameters:
 
-- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTSCHAR?`
 - **\<char_index>**: characteristic's index; it can be fetched with command `AT+BLEGATTSCHAR?`
 - **\<length>**: data length
@@ -3734,7 +3734,7 @@ If the data transmission is successful, the system returns:
     OK
 Parameters:
 
-- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTSCHAR?`
 - **\<char_index>**: characteristic's index; it can be fetched with command `AT+BLEGATTSCHAR?`
 - **\<length>**: data length
@@ -3796,7 +3796,7 @@ Response:
     OK
 Parameters:
 
-- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<srv_index>**: service's index starting from 1
 - **\<srv_uuid>**: service's UUID
 - **\<srv_type>**: service's type
@@ -3825,7 +3825,7 @@ Response:
     OK
 Parameters:
 
-- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV=<conn_index>`
 - **\<srv_uuid>**: service's UUID
 - **\<srv_type>**: service's type
@@ -3864,7 +3864,7 @@ When showing a descriptor, it will be as:
     OK
 Parameters:
 
-- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV=<conn_index>`
 - **\<char_index>**: characteristic's index starting from 1
 - **\<char_uuid>**: characteristic's UUID
@@ -3895,7 +3895,7 @@ Response：
     OK
 Parameters：
 
-- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV=<conn_index>`
 - **\<char_index>**: characteristic's index; it can be fetched with command `AT+BLEGATTCCHAR=<conn_index>,<srv_index>`
 - **\[\<desc_index>]**(Optional parameter): descriptor's index. 
@@ -3935,7 +3935,7 @@ If the setting is successful, the system returns:
     OK  
 Parameters：
 
-- **\<conn_index>**: index of BLE connection; only 0 is supported for the single connection right now, but multiple BLE connections will be supported in the future.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<srv_index>**: service's index; it can be fetched with command `AT+BLEGATTCPRIMSRV=<conn_index>`
 - **\<char_index>**: characteristic's index; it can be fetched with command `AT+BLEGATTCCHAR=<conn_index>,<srv_index>`
 - **\[\<desc_index>]**(Optional parameter): descriptor's index. 
@@ -4076,7 +4076,7 @@ Response:
     OK
 Parameters:
 
-- **\<conn_index>**: index of BLE connection.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<sec_act>**:
     - 0 : SEC_NONE
     - 1 : SEC_ENCRYPT
@@ -4103,7 +4103,7 @@ Response:
     OK
 Parameters:
 
-- **\<conn_index>**: index of BLE connection.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<accept>**:
     - 0 : reject
     - 1 : accept; 
@@ -4123,7 +4123,7 @@ Response:
     OK
 Parameters:
 
-- **\<conn_index>**: index of BLE connection.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<key>**:    pairing key
 
 Example:
@@ -4141,7 +4141,7 @@ Response:
     OK
 Parameters:
 
-- **\<conn_index>**: index of BLE connection.
+- **\<conn_index>**: index of BLE connection, range [0~2].
 - **\<confirm>**:
     - 0 : NO
     - 1 : Yes
