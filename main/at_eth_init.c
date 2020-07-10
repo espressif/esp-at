@@ -24,11 +24,11 @@
 #include "tcpip_adapter.h"
 
 #ifdef CONFIG_AT_ETHERNET_SUPPORT
+#include "string.h"
 #include "esp_eth.h"
 
-bool at_eth_init(void)
+bool esp_at_get_eth_default_config(esp_eth_config_t* config)
 {
-    esp_err_t ret = ESP_OK;
     ESP_ERROR_CHECK(tcpip_adapter_set_default_eth_handlers());
 
     eth_mac_config_t mac_config = ETH_MAC_DEFAULT_CONFIG();
@@ -44,10 +44,10 @@ bool at_eth_init(void)
     esp_eth_phy_t *phy = esp_eth_phy_new_dp83848(&phy_config);
 #endif
 
-    esp_eth_config_t config = ETH_DEFAULT_CONFIG(mac, phy);
-    esp_eth_handle_t eth_handle = NULL;
-    ESP_ERROR_CHECK(esp_eth_driver_install(&config, &eth_handle));
+    esp_eth_config_t eth_config = ETH_DEFAULT_CONFIG(mac, phy);
 
+    memcpy(config, &eth_config, sizeof(esp_eth_config_t));
+    
     return true;
 }
 #endif
