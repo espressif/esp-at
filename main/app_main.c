@@ -311,12 +311,8 @@ void app_main()
 #endif
 
 #ifdef CONFIG_AT_ETHERNET_SUPPORT
-    if(at_eth_init() == false) {
-        printf("ethernet init fail\r\n");
-    }else {
-        if(esp_at_eth_cmd_regist() == false) {
-            printf("regist ethernet cmd fail\r\n");
-        }
+    if(esp_at_eth_cmd_regist() == false) {
+        printf("regist ethernet cmd fail\r\n");
     }
 #endif
     
