@@ -20,7 +20,7 @@ The WROOM32 Board sends AT commands through UART1 by default.
 
 The debug log will output through UART0 by default, which TXD0 is GPIO1 and RXD0 is GPIO3, but user can change it in menuconfig if needed.  
 
-* `make menuconfig` --> `Component config` --> `ESP32-specific` --> `UART for console output`
+* `make menuconfig` --> `Component config` --> `Common ESP-related` --> `UART for console output`
 
 #### Notes: Please pay attention to conflict of the pin ##
 - If choose `AT through HSPI`, you can get the information of the hspi pin by `make menuconfig` --> `Component config` --> `AT` --> `AT hspi settings`

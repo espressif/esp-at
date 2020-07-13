@@ -3438,6 +3438,11 @@ Example:
     AT+BLEINIT=1   // role: client
     AT+BLECONN=0,"24:0a:c4:09:34:23",0,10
 
+***Notes:***
+
+* It is recommended to scan devices by "AT+BLESCAN" before initiating a new connection to ensure that the target device is in broadcast state.
+* The maximum timeout for connection is 30 seconds.
+
 
 <a name="cmd-BCONNP"></a>
 ### 5.13 [ESP32 Only] [AT+BLECONNPARAM](#BLE-AT)—Updates parameters of BLE connection
@@ -5723,7 +5728,7 @@ OK
 **Parameters:**  
   
 - **\<LinkID>**: only supports link ID 0 for now
-- **\<keepalive>**: timeout of MQTT ping, range [1, 7200], unit:second. Default is 120s.
+- **\<keepalive>**: timeout of MQTT ping, range [0, 7200], unit:second. 0 means default, default is 120s.
 - **\<disable\_clean_session>**: set MQTT clean session
     - 0: enable clean session
     - 1: disable clean session
@@ -5859,7 +5864,12 @@ Or
 
 - **\<LinkID>**: only supports link ID 0 for now
 - **\<topic>**: MQTT topic, max length 64Bytes
-- **\<length>**: length of MQTT message, max length is 1024 by default. Users can change the max length limitation by setting `MQTT_BUFFER_SIZE_BYTE` in `make menuconfig`
+- **\<length>**: length of MQTT message, max length depends on platform.
+  - max length on ESP32 is limited by available memory
+  - max length on ESP8266 is limited by marco `MQTT_BUFFER_SIZE_BYTE` and available memory  
+  > Default value of `MQTT_BUFFER_SIZE_BYTE` is `512`  
+  > Users can change the max length limitation by setting `MQTT_BUFFER_SIZE_BYTE` in `make menuconfig`  
+  > max publish data length plus the MQTT header length(depends on topic name length) is equal to `MQTT_BUFFER_SIZE_BYTE`  
 - **\<qos>**: qos of publish message, can be set to 0, or 1, or 2. Default is 0.  
 - **\<retain>**: retain flag
 
@@ -6307,6 +6317,14 @@ Each command can support four types of AT commands.
  * Not all AT commands support all four variations mentioned above.
  * Square brackets [ ] designate the default value; it is either not required or may not appear.
  * String values need to be included in double quotation marks, for example: `AT+CWSAP="ESP756290","21030826",1,4`.
+ * Escape sensitive delimiters is necessary on string parameters in AT command.
+   * `\\`: escape backslash itself
+   * `\,`: escape comma which used to separate each parameter
+   * `\"`: escape double quotation marks which used to mark string input
+   * `\<any>`: escape `<any>` character means that drop backslash symbol and only use `<any>` character
+   > for example:  
+   > `AT+CWJAP="comma\,backslash\\ssid","1234567890"`  
+   > `AT+MQTTPUB=0,"topic","\"{\"sensor\":012}\"",1,0`  
  * The default baud rate of AT command is 115200.
  * AT commands are ended with a new-line (CR-LF), so the serial tool should be set into "New Line Mode".
  * Definitions of AT command error codes are in `esp-at/components/at/include/esp_at.h`.
