@@ -1,1 +1,0 @@
-[ESP_AT_Customize_Partitions.md](../../en/get-started/ESP_AT_Customize_Partitions.md

@@ -1,1 +1,0 @@
-[ESP_AT_Get_Started.md](../../en/get-started/ESP_AT_Get_Started.md)
