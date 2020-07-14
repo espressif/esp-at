@@ -1,0 +1,452 @@
+  
+name: C/C++ CI
+
+on:
+  push:
+    branches:
+      - master
+      - release/*
+
+jobs:
+  build-esp32-wroom-at:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: clone esp-idf
+      run: |
+        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+        git clone -b ${branch_str#*branch:} https://github.com/espressif/esp-idf.git esp-idf
+        cd esp-idf
+        git checkout ${commit_str#*commit:}
+        git submodule update --init --recursive
+        cd -
+      shell: bash
+    - name: Install dependencies
+      env:
+        IDF_PATH: ${{ github.workspace }}/esp-idf
+      run: |
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+    - name: Compiling
+      env:
+        AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
+        AT_OTA_TOKEN_WROVER32: ${{ secrets.AT_OTA_TOKEN_WROVER32 }}
+        AT_OTA_TOKEN_ESP32_PICO_D4: ${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}
+        AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
+      run: |
+        cd main
+        rm -f at_config.h
+        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+        echo -e "#define __AT_CONFIG_H__" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+        echo -e "#endif" >> at_config.h
+        cd -
+        
+        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
+        python ./esp-idf/tools/idf_tools.py export --prefer-system
+        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
+        export ESP_AT_MODULE_NAME=WROOM-32
+        export ESP_AT_PROJECT_PATH=$(pwd)
+        ./esp-idf/tools/idf.py build
+        upload_dir=esp32-wroom-at
+        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/*.bin $upload_dir/
+        cp build/*.elf $upload_dir/
+        cp build/*.map $upload_dir/
+        cp build/bootloader/*.bin $upload_dir/bootloader/
+        cp build/partition_table/*.bin $upload_dir/partition_table/
+        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
+        cp build/flasher_args.json $upload_dir/
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/factory/* $upload_dir/factory
+      shell: bash
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: esp32-wroom-at
+        path: esp32-wroom-at
+           
+  build-esp32-wrover-at:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: clone esp-idf
+      run: |
+        commit_str=$(awk '/commit:/{print $0}' module_config/module_wrover-32/IDF_VERSION)
+        branch_str=$(awk '/branch:/{print $0}' module_config/module_wrover-32/IDF_VERSION)
+        git clone -b ${branch_str#*branch:} https://github.com/espressif/esp-idf.git esp-idf
+        cd esp-idf
+        git checkout ${commit_str#*commit:}
+        git submodule update --init --recursive
+        cd -
+      shell: bash
+    - name: Install dependencies
+      env:
+        IDF_PATH: ${{ github.workspace }}/esp-idf
+      run: |
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+    - name: Compiling
+      env:
+        AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
+        AT_OTA_TOKEN_WROVER32: ${{ secrets.AT_OTA_TOKEN_WROVER32 }}
+        AT_OTA_TOKEN_ESP32_PICO_D4: ${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}
+        AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
+      run: |
+        cd main
+        rm -f at_config.h
+        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+        echo -e "#define __AT_CONFIG_H__" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+        echo -e "#endif" >> at_config.h
+        cd -
+        
+        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
+        python ./esp-idf/tools/idf_tools.py export --prefer-system
+        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
+        export ESP_AT_MODULE_NAME=WROVER-32
+        export ESP_AT_PROJECT_PATH=$(pwd)
+        ./esp-idf/tools/idf.py build -DSILENCE=1
+        upload_dir=esp32-wrover-at
+        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/*.bin $upload_dir/
+        cp build/*.elf $upload_dir/
+        cp build/*.map $upload_dir/
+        cp build/bootloader/*.bin $upload_dir/bootloader/
+        cp build/partition_table/*.bin $upload_dir/partition_table/
+        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
+        cp build/flasher_args.json $upload_dir/
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/factory/* $upload_dir/factory
+      shell: bash
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: esp32-wrover-at
+        path: esp32-wrover-at
+        
+  build-esp32-pico-d4-at:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: clone esp-idf
+      run: |
+        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+        git clone -b ${branch_str#*branch:} https://github.com/espressif/esp-idf.git esp-idf
+        cd esp-idf
+        git checkout ${commit_str#*commit:}
+        git submodule update --init --recursive
+        cd -
+      shell: bash
+    - name: Install dependencies
+      env:
+        IDF_PATH: ${{ github.workspace }}/esp-idf
+      run: |
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+    - name: Compiling
+      env:
+        AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
+        AT_OTA_TOKEN_WROVER32: ${{ secrets.AT_OTA_TOKEN_WROVER32 }}
+        AT_OTA_TOKEN_ESP32_PICO_D4: ${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}
+        AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
+      run: |
+        cd main
+        rm -f at_config.h
+        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+        echo -e "#define __AT_CONFIG_H__" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+        echo -e "#endif" >> at_config.h
+        cd -
+        
+        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
+        python ./esp-idf/tools/idf_tools.py export --prefer-system
+        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
+        export ESP_AT_MODULE_NAME=PICO-D4
+        export ESP_AT_PROJECT_PATH=$(pwd)
+        ./esp-idf/tools/idf.py build
+        upload_dir=esp32-pico-d4-at
+        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/*.bin $upload_dir/
+        cp build/*.elf $upload_dir/
+        cp build/*.map $upload_dir/
+        cp build/bootloader/*.bin $upload_dir/bootloader/
+        cp build/partition_table/*.bin $upload_dir/partition_table/
+        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
+        cp build/flasher_args.json $upload_dir/
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/factory/* $upload_dir/factory
+      shell: bash
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: esp32-pico-d4-at
+        path: esp32-pico-d4-at
+
+  build-esp32-solo-at:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: clone esp-idf
+      run: |
+        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
+        git clone -b ${branch_str#*branch:} https://github.com/espressif/esp-idf.git esp-idf
+        cd esp-idf
+        git checkout ${commit_str#*commit:}
+        git submodule update --init --recursive
+        cd -
+      shell: bash
+    - name: Install dependencies
+      env:
+        IDF_PATH: ${{ github.workspace }}/esp-idf
+      run: |
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+    - name: Compiling
+      env:
+        AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
+        AT_OTA_TOKEN_WROVER32: ${{ secrets.AT_OTA_TOKEN_WROVER32 }}
+        AT_OTA_TOKEN_ESP32_PICO_D4: ${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}
+        AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
+      run: |
+        cd main
+        rm -f at_config.h
+        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+        echo -e "#define __AT_CONFIG_H__" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+        echo -e "#endif" >> at_config.h
+        cd -
+        
+        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
+        python ./esp-idf/tools/idf_tools.py export --prefer-system
+        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
+        export ESP_AT_MODULE_NAME=SOLO-1
+        export ESP_AT_PROJECT_PATH=$(pwd)
+        ./esp-idf/tools/idf.py build
+        upload_dir=esp32-solo-1-at
+        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/*.bin $upload_dir/
+        cp build/*.elf $upload_dir/
+        cp build/*.map $upload_dir/
+        cp build/bootloader/*.bin $upload_dir/bootloader/
+        cp build/partition_table/*.bin $upload_dir/partition_table/
+        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
+        cp build/flasher_args.json $upload_dir/
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/factory/* $upload_dir/factory
+      shell: bash
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: esp32-solo-1-at
+        path: esp32-solo-1-at
+
+  build-esp32s2-wroom-at:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: clone esp-idf
+      run: |
+        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
+        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
+        git clone -b ${branch_str#*branch:} https://github.com/espressif/esp-idf.git esp-idf
+        cd esp-idf
+        git checkout ${commit_str#*commit:}
+        git submodule update --init --recursive
+        cd -
+      shell: bash
+    - name: Install dependencies
+      env:
+        IDF_PATH: ${{ github.workspace }}/esp-idf
+      run: |
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+    - name: Compiling
+      env:
+        AT_OTA_TOKEN_ESP32S2_WROOM: ${{ secrets.AT_OTA_TOKEN_ESP32S2_WROOM }}
+      run: |
+        cd main
+        rm -f at_config.h
+        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+        echo -e "#define __AT_CONFIG_H__" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
+        echo -e "#endif" >> at_config.h
+        cd -
+        
+        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
+        python ./esp-idf/tools/idf_tools.py export --prefer-system
+        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32S2
+        export ESP_AT_MODULE_NAME=WROOM
+        export ESP_AT_PROJECT_PATH=$(pwd)
+        ./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 build
+        upload_dir=esp32s2-wroom-at
+        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/*.bin $upload_dir/
+        cp build/*.elf $upload_dir/
+        cp build/*.map $upload_dir/
+        cp build/bootloader/*.bin $upload_dir/bootloader/
+        cp build/partition_table/*.bin $upload_dir/partition_table/
+        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
+        cp build/flasher_args.json $upload_dir/
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/factory/* $upload_dir/factory
+      shell: bash
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: esp32s2-wroom-at
+        path: esp32s2-wroom-at
+        
+  build-esp8266-wroom02-at:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: clone esp-idf
+      env:
+        AT_OTA_TOKEN_WROOM_02_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_02_1024_1024 }}
+        AT_OTA_TOKEN_WROOM_S2_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_S2_1024_1024 }}
+      run: |
+        cd main
+        rm -f at_config.h
+        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+        echo -e "#define __AT_CONFIG_H__" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
+        echo -e "#endif" >> at_config.h
+        cd -
+        
+        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp8266_default/IDF_VERSION)
+        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp8266_default/IDF_VERSION)
+        git clone -b ${branch_str#*branch:} https://github.com/espressif/ESP8266_RTOS_SDK.git esp-idf
+        cd esp-idf
+        git checkout ${commit_str#*commit:}
+        git submodule update --init --recursive
+        cd -
+      shell: bash
+    - name: Install dependencies
+      env:
+        IDF_PATH: ${{ github.workspace }}/esp-idf
+      run: |
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+    - name: Compiling
+      run: |
+        wget --no-check-certificate https://dl.espressif.com/dl/xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
+        tar -xzf xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
+        export PATH="$PATH:$(pwd)/xtensa-lx106-elf/bin"
+        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP8266
+        export ESP_AT_MODULE_NAME=WROOM-02
+        export ESP_AT_PROJECT_PATH=$(pwd)
+        ./esp-idf/tools/idf.py build
+        upload_dir=esp8266-wroom02-at
+        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/*.bin $upload_dir/
+        cp build/*.elf $upload_dir/
+        cp build/*.map $upload_dir/
+        cp build/bootloader/*.bin $upload_dir/bootloader/
+        cp build/partition_table/*.bin $upload_dir/partition_table/
+        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
+        cp build/flasher_args.json $upload_dir/
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/factory/* $upload_dir/factory
+      shell: bash
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: esp8266-wroom02-at
+        path: esp8266-wroom02-at
+
+  build-esp8285-1MB-at:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: clone esp-idf
+      run: |
+        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp8266_1mb/IDF_VERSION)
+        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp8266_1mb/IDF_VERSION)
+        git clone -b ${branch_str#*branch:} https://github.com/espressif/ESP8266_RTOS_SDK.git esp-idf
+        cd esp-idf
+        git checkout ${commit_str#*commit:}
+        git submodule update --init --recursive
+        cd -
+      shell: bash
+    - name: Install dependencies
+      env:
+        IDF_PATH: ${{ github.workspace }}/esp-idf
+      run: |
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+    - name: Compiling
+      run: |
+        wget --no-check-certificate https://dl.espressif.com/dl/xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
+        tar -xzf xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
+        export PATH="$PATH:$(pwd)/xtensa-lx106-elf/bin"
+        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP8266
+        export ESP_AT_MODULE_NAME=WROOM-02
+        export ESP_AT_PROJECT_PATH=$(pwd)
+        ./esp-idf/tools/idf.py build
+        upload_dir=esp8285-1MB-at
+        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/*.bin $upload_dir/
+        cp build/*.elf $upload_dir/
+        cp build/*.map $upload_dir/
+        cp build/bootloader/*.bin $upload_dir/bootloader/
+        cp build/partition_table/*.bin $upload_dir/partition_table/
+        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
+        cp build/flasher_args.json $upload_dir/
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/factory/* $upload_dir/factory
+      shell: bash
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: esp8285-1MB-at
+        path: esp8285-1MB-at
