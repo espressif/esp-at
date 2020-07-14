@@ -4659,9 +4659,9 @@ If the ESP32 device has already been initialized as a BLE server, you need to ca
 You will get a scanning result that looks like:
 
     ```
-    +BLESCAN:24:0a:c4:02:10:0e,-33,0201061aff4c000215fda50693a4e24fb1afcfc6eb0764782527b7f206c5,
-    +BLESCAN:24:0a:c4:01:4d:fe,-74,02010207097a4f68664b43020aeb051220004000,
-    +BLESCAN:24:0a:c4:02:10:0e,-33,0201061aff4c000215fda50693a4e24fb1afcfc6eb0764782527b7f206c5,
+    +BLESCAN:"24:0a:c4:02:10:0e",-33,0201061aff4c000215fda50693a4e24fb1afcfc6eb0764782527b7f206c5,
+    +BLESCAN:"24:0a:c4:01:4d:fe",-74,02010207097a4f68664b43020aeb051220004000,
+    +BLESCAN:"24:0a:c4:02:10:0e",-33,0201061aff4c000215fda50693a4e24fb1afcfc6eb0764782527b7f206c5,
     ```
 
 
@@ -4972,7 +4972,7 @@ Response:
 Set Command:
 
     AT+BTNAME=<device_name>
-    Function: to set the classic bluetooth device name, The maximum length is 248.
+    Function: to set the classic bluetooth device name, The maximum length is 32.
 Response:
 
     OK
