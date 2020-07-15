@@ -35,13 +35,6 @@ try:
 except KeyError:
     builddir = '_build'
 
-# Fill in a default IDF_PATH if it's missing (ie when Read The Docs is building the docs)
-try:
-    idf_path = os.environ['IDF_PATH']
-except KeyError:
-    idf_path = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
-
-
 def call_with_python(cmd):
     # using sys.executable ensures that the scripts are called with the same Python interpreter
     if os.system('{} {}'.format(sys.executable, cmd)) != 0:
@@ -59,83 +52,6 @@ copy_if_modified('xml/', 'xml_in/')
 
 # Generate 'api_name.inc' files using the XML files by Doxygen
 call_with_python('../gen-dxd.py')
-
-
-def find_component_files(parent_dir, target_filename):
-    parent_dir = os.path.abspath(parent_dir)
-    result = []
-
-    component_files = dict()
-
-    for (dirpath, dirnames, filenames) in os.walk(parent_dir):
-        try:
-            # note: trimming "examples" dir as MQTT submodule
-            # has its own examples directory in the submodule, not part of IDF
-            dirnames.remove("examples")
-        except ValueError:
-            pass
-        if target_filename in filenames:
-            component_files[os.path.basename(dirpath)] = os.path.join(dirpath, target_filename)
-
-    components = sorted(component_files.keys())
-
-    for component in components:
-        result.append(component_files[component])
-
-    print("List of %s: %s" % (target_filename, ", ".join(components)))
-    return result
-
-
-# Generate 'kconfig.inc' file from components' Kconfig files
-print("Generating kconfig.inc from kconfig contents")
-kconfig_inc_path = '{}/inc/kconfig.inc'.format(builddir)
-temp_sdkconfig_path = '{}/sdkconfig.tmp'.format(builddir)
-
-try:
-    result = subprocess.check_call("make defconfig", shell=True, cwd="../..")
-except: # just want to clone sdk
-    pass
-
-kconfigs = find_component_files("../../components", "Kconfig")
-kconfig_projbuilds = find_component_files("../../components", "Kconfig.projbuild")
-sdkconfig_renames = find_component_files("../../esp-idf/components", "sdkconfig.rename")
-
-confgen_args = [sys.executable,
-                "../../esp-idf/tools/kconfig_new/confgen.py",
-                "--kconfig", "../../esp-idf/Kconfig",
-                "--sdkconfig-rename", "../../esp-idf/sdkconfig.rename",
-                "--config", temp_sdkconfig_path,
-                "--env", "COMPONENT_KCONFIGS={}".format(" ".join(kconfigs)),
-                "--env", "COMPONENT_KCONFIGS_PROJBUILD={}".format(" ".join(kconfig_projbuilds)),
-                "--env", "COMPONENT_SDKCONFIG_RENAMES={}".format(" ".join(sdkconfig_renames)),
-                "--env", "IDF_PATH={}".format(idf_path),
-                "--output", "docs", kconfig_inc_path + '.in'
-                ]
-
-subprocess.check_call(confgen_args)
-copy_if_modified(kconfig_inc_path + '.in', kconfig_inc_path)
-
-# Generate 'esp_err_defs.inc' file with ESP_ERR_ error code definitions
-esp_err_inc_path = '{}/inc/esp_err_defs.inc'.format(builddir)
-call_with_python('../../esp-idf/tools/gen_esp_err_to_name.py --rst_output ' + esp_err_inc_path + '.in')
-copy_if_modified(esp_err_inc_path + '.in', esp_err_inc_path)
-
-# Generate version-related includes
-#
-# (Note: this is in a function as it needs to access configuration to get the language)
-def generate_version_specific_includes(app):
-    print("Generating version-specific includes...")
-    version_tmpdir = '{}/version_inc'.format(builddir)
-    call_with_python('../gen-version-specific-includes.py {} {}'.format(app.config.language, version_tmpdir))
-    copy_if_modified(version_tmpdir, '{}/inc'.format(builddir))
-
-
-# Generate toolchain download links
-print("Generating toolchain download links")
-base_url = 'https://dl.espressif.com/dl/'
-toolchain_tmpdir = '{}/toolchain_inc'.format(builddir)
-call_with_python('../gen-toolchain-links.py ../../esp-idf/tools/toolchain_versions.mk {} {}'.format(base_url, toolchain_tmpdir))
-copy_if_modified(toolchain_tmpdir, '{}/inc'.format(builddir))
 
 # http://stackoverflow.com/questions/12772927/specifying-an-online-image-in-sphinx-restructuredtext-format
 #
@@ -418,4 +334,3 @@ texinfo_documents = [
 # https://github.com/rtfd/sphinx_rtd_theme/pull/432
 def setup(app):
     app.add_stylesheet('theme_overrides.css')
-    generate_version_specific_includes(app)

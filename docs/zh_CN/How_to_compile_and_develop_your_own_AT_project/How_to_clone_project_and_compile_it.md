@@ -1,1 +1,0 @@
-[How to clone project and compile it](../../en/How_to_compile_and_develop_your_own_AT_project/How_to_clone_project_and_compile_it.md)
