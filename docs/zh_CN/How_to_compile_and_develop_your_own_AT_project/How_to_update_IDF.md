@@ -1,5 +1,5 @@
 如何更新 esp-idf 版本
-=============
+========================
 
 当前工程默认支持 ESP32 UART AT 和 ESP8266 UART AT 平台，每个平台对应一套配置文件，配置文件目录可以通过 Makefile 文件中的 `ESP_AT_MODULE_CONFIG_DIR` 变量指定，默认 ESP32 UART AT 配置目录为
 ```module_config/module_esp32_default```，ESP8266 UART AT 配置文件目录为 ```module_config/module_esp8266_default```，具体的版本信息在配置目录下的 IDF_VERSION 文件中，如 ESP32 平台的配置信息为：
