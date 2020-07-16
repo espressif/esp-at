@@ -13,7 +13,7 @@ TX ---> GPIO1
 RX ---> GPIO3  
 ```
 The log pins can be set in `make menuconfig` > `Component config` > `Common ESP-related` > `UART for console output`.  
-UART1 is for sending AT commands and receiving response, but its pins can be changed. The pins of UART1 is in the `factory_param.bin`, they can be changed in the `esp-at/components/customized_partitions/raw_data/factory_param/factory_param_data.csv`. The UART1 pins may be different for different ESP modules. More details of `factory_param_data.csv` are in the [`ESP_AT_Factory_Parameter_Bin.md`](ESP_AT_Factory_Parameter_Bin.md).    
+UART1 is for sending AT commands and receiving response, but its pins can be changed. The pins of UART1 is in the `factory_param.bin`, they can be changed in the `esp-at/components/customized_partitions/raw_data/factory_param/factory_param_data.csv`. The UART1 pins may be different for different ESP modules. More details of `factory_param_data.csv` are in the [`How_to_create_factory_parameter_bin.md`](How_to_create_factory_parameter_bin.md).    
   
 For example, the configuration of the `ESP32-WROOM-32` is as the following table.
  

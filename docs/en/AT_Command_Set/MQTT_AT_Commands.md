@@ -194,7 +194,6 @@ OK
 - AT+MQTTPASSWORD command only could be set after AT+MQTTUSERCFG command
 <a name="cmd-MQTTCONNCFG"></a>
 ### [AT+MQTTCONNCFG](#MQTT-AT)  - Set configuration of MQTT Connection
----
 **Set Command:**
 
 ```
