@@ -9,7 +9,7 @@ How to compile and develop your own AT project
    
    How to clone project and compile it <How_to_clone_project_and_compile_it>
    How to set AT port pin <How_to_set_AT_port_pin>
-   How to add user-defined AT commands <defined_AT_commands>
+   How to add user-defined AT commands <How_to_add_user-defined_AT_commands>
    How to create factory parameter bin <How_to_create_factory_parameter_bin>
    How to customize BLE services <How_to_customize_BLE_services>
    How to customize partitions <How_to_customize_partitions>
