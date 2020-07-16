@@ -78,7 +78,7 @@ the ESP-IDF:
    -  ``make print_flash_cmd`` can be used to print the addresses of
       downloading.
    -  More details are in the `esp-idf
-      README <https://github.com/espressif/esp-idf/blob/master/README.md>`__.
+      README <https://github.com/espressif/esp-idf/blob/release/v4.0/README.md>`__.
    -  If enable BT feature, the firmware size will be much larger, please
       make sure it does not exceed the ota partition size.
 
@@ -222,7 +222,7 @@ the ESP-IDF:
    - ``make print_flash_cmd`` can be used to print the addresses of
      downloading.
    - More details are in the `ESP-IDF
-     README <https://github.com/espressif/esp-idf/blob/master/README.md>`__.
+     README <https://github.com/espressif/esp-idf/blob/release/v4.0/README.md>`__.
 
 7. ``make factory_bin`` to combine factory bin, by default, the factory
    bin is 4MB flash size, DIO flash mode and 40MHz flash speed. If you
