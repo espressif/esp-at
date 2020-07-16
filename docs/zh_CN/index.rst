@@ -19,7 +19,7 @@ This is the documentation for the ESP AT.
 .. _AT Command Examples: AT_Command_Examples/index.html
 
 .. |compile and develop| image:: ../_static/general-notes.gif
-.. _compile and develop: How_to_compile_and_develop_your_own_AT_project/index.html
+.. _compile and develop: compile_and_develop/index.html
 
 .. toctree::
    :hidden:
@@ -27,6 +27,6 @@ This is the documentation for the ESP AT.
    AT Binary Lists <AT_Binary_Lists/index>
    AT Command Set <AT_Command_Set/index>
    AT Command Examples <AT_Command_Examples/index>
-   How to compile and develop your own AT project <How_to_compile_and_develop_your_own_AT_project/index>
+   How to compile and develop your own AT project <compile_and_develop/index>
    
 * :ref:`genindex`
