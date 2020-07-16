@@ -1,0 +1,1 @@
+.. include:: ../../en/compile_and_develop/How_to_clone_project_and_compile_it.rst
