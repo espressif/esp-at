@@ -762,11 +762,11 @@ build_docs:
     - cd docs
     - ./check_lang_folder_sync.sh
     - cd en
-    - make gh-linkcheck
+    # - make gh-linkcheck
     - make html
     # - ../check_doc_warnings.sh
     - cd ../zh_CN
-    - make gh-linkcheck
+    # - make gh-linkcheck
     - make html
     # - ../check_doc_warnings.sh
     
