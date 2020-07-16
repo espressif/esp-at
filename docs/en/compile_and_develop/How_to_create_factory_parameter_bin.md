@@ -6,7 +6,7 @@ In order to adapt the AT firmware to different requirements, for example, differ
 
 ## Factory param type 
 
-The origin table is [`components/customized_partitions/raw_data/factory_param/factory_param_type.csv`](../../../components/customized_partitions/raw_data/factory_param/factory_param_type.csv), and the factory parameter type is as the following table:
+The origin table is `components/customized_partitions/raw_data/factory_param/factory_param_type.csv`, and the factory parameter type is as the following table:
 
 | param_name    | offset |  type   | size |
 | ------------- | ------ | ------- | ---- |
@@ -71,7 +71,7 @@ The origin table is [`components/customized_partitions/raw_data/factory_param/fa
    
 ## Factory param data 
 
-The origin table is [`components/customized_partitions/raw_data/factory_param/factory_param_data.csv`](../../../components/customized_partitions/raw_data/factory_param/factory_param_data.csv), and the information each row contains is about one module. The factory parameter data is as the following table:
+The origin table is `components/customized_partitions/raw_data/factory_param/factory_param_data.csv`, and the information each row contains is about one module. The factory parameter data is as the following table:
 
 | platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_cts_pin | uart_rts_pin | tx_control_pin | rx_control_pin
 |---|---|---|---|---|---|---| ---|---|---|---|---|---|---|---|---|
