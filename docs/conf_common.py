@@ -21,9 +21,10 @@ import os
 import re
 import subprocess
 
-# Note: If extensions (or modules to document with autodoc) are in another directory,
+# If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute
+# documentation root, use os.path.abspath to make it absolute, like shown here.
+sys.path.insert(0, os.path.abspath('..'))
 
 from local_util import run_cmd_get_output, copy_if_modified
 
@@ -75,6 +76,7 @@ extensions = ['breathe',
               'sphinxcontrib.rackdiag',
               'sphinxcontrib.packetdiag',
               'html_redirects',
+              'sphinx_markdown_tables',
               ]
 
 # Enabling this fixes cropping of blockdiag edge labels
