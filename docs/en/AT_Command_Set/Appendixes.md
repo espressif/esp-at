@@ -1,40 +1,20 @@
-ESP-AT Commands Set
-=============
+Appendixes to ESP-AT Command Set
+================================
 
-Here is a list of AT commands. Some of the AT commands can only work on the ESP32, which will be marked as [ESP32 Only]; others can work on both the ESP8266 and ESP32.  
-
-**ESP-AT Commands List**:  
-
-* [Basic AT Commands](Basic_AT_Commands.md)
-* [Wi-Fi AT Commands](Wi-Fi_AT_Commands.md)
-* [TCP/IP AT Commands](TCP-IP_AT_Commands.md)
-* [[ESP32 Only] BLE AT Commands](BLE_AT_Commands.md)
-* [[ESP32 Only] BT AT Commands](BT_AT_Commands.md)
-* [[ESP32 Only] Ethernet AT Commands](Ethernet_AT_Commands.md)
-* [MQTT AT Commands](MQTT_AT_Commands.md)
-* [HTTP AT Commands](HTTP_AT_Commands.md)
-* [Signaling Test AT Commands](Signaling_Test_AT_Commands.md)
-
-
-**Appendix**:  
-
- * [AT Command Description](#Appendix-ATDescrpt)
- * [AT Commands with Configuration Saved in the NVS Area](#Appendix-ATSaveNVS)
- * [AT Messages](#Appendix-ATmsg)
+* [AT Command Description](#Appendix-ATDescrpt)
+* [AT Commands with Configuration Saved in the NVS Area](#Appendix-ATSaveNVS)
+* [AT Messages](#Appendix-ATmsg)
  
- 
-
-
 <a name="Appendix-ATDescrpt"></a>
 ## Appendix 1. [AT Command Description](#Begin-AT)
 Each command can support four types of AT commands.
 
-|Type | Command Format | Description|  
-|---|---|---|  
-|Test Command	 | AT+<x>=? | Queries the Set Commands' internal parameters and their range of values.|
-|Query Command | AT+<x>? | Returns the current value of parameters.|
-|Set Command | AT+<x>=<…> | Sets the value of user-defined parameters in commands, and runs these commands.|
-|Execute Command | AT+<x> | Runs commands with no user-defined parameters.|
+| Type | Command Format | Description |  
+| --- | --- | --- |  
+| Test Command	 | AT+<x>=? | Queries the Set Commands' internal parameters and their range of values. |
+| Query Command | AT+<x>? | Returns the current value of parameters. |
+| Set Command | AT+<x>=<…> | Sets the value of user-defined parameters in commands, and runs these commands. |
+| Execute Command | AT+<x> | Runs commands with no user-defined parameters. |
 
  * Not all AT commands support all four variations mentioned above.
  * Square brackets [ ] designate the default value; it is either not required or may not appear.

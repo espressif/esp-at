@@ -14,4 +14,5 @@ seqdiag>=0.9.6, <2.0.0
 actdiag>=0.5.4, <2.0.0
 nwdiag>=1.0.4, <2.0.0
 recommonmark
+sphinx_markdown_tables
 future>=0.16.0 # for ../tools/gen_esp_err_to_name.py
