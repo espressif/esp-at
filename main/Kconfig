@@ -161,14 +161,7 @@ config AT_BT_A2DP_COMMAND_SUPPORT
     default "n"
     select BT_A2DP_ENABLE
     depends on AT_BT_COMMAND_SUPPORT
-    
-config AT_FS_COMMAND_SUPPORT
-    bool "AT FS command support."
-    default "n"
-    depends on AT_ENABLE
-    select WL_SECTOR_SIZE_512
-    select FATFS_LFN_HEAP
-    
+        
 config AT_ETHERNET_SUPPORT
     bool "AT ethernet support."
     default "n"
@@ -205,6 +198,15 @@ config PHY_LAN8720
 
 endchoice
 
+endif
+
+if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2
+config AT_FS_COMMAND_SUPPORT
+    bool "AT FS command support."
+    default "n"
+    depends on AT_ENABLE
+    select WL_SECTOR_SIZE_512
+    select FATFS_LFN_HEAP
 endif
 
 if IDF_TARGET_ESP8266
