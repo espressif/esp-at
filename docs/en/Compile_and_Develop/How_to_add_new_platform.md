@@ -1,5 +1,5 @@
 How to Add a New Platform
-=============
+=========================
   
 Since the esp-at project supports different platform, for example, ESP32 UART AT, ESP32 SDIO AT, even supports ESP8266 AT, when compiling the esp-at project, users can set different configurations to generate AT firmware for different ESP modules. The detailed information are in the `esp-at/module_config` directory. Default configuration is the "PLATFORM_ESP32" for ESP-WROOM-32.  
 Please note that if you use a different bus (for example, SDIO, SPI or other buses) instead of UART, then you cannot use the default `module_espxxxx_default` directly, you need to re-configure it in the `menuconfig`.  

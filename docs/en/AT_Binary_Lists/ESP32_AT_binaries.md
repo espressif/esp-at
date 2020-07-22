@@ -1,5 +1,5 @@
 Released Firmware
-=============
+=================
 
 ## ESP32-WROOM-32 Series
 

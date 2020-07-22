@@ -1,5 +1,5 @@
 The Secondary Partitions Table
-=============
+==============================
 
 ## Overview
 The primary partition table is for system usage, it will generate a "partitions_at.bin" according to the "partitions_at.csv" in compilation. And if the primary partition table goes wrong, the system will fail to startup. So generally, we should not change the "partitions_at.csv".

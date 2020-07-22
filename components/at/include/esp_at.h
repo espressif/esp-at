@@ -66,7 +66,7 @@ typedef struct {
     void (*disconnect_cb)(void);                     /*!< callback when socket connection is disconnected */
 } esp_at_custom_net_ops_struct;
 
-/*
+/**
  * @brief esp_at_custom_ble_ops_struct
  * custom ble callback for AT
  *

@@ -1,5 +1,5 @@
 如何修改 `AT port` 管脚
-=============
+===========================
 
 在 `esp-at` 工程中，默认使用了两个 UART: UART0 和 UART1. 在有些情况下，用户可能想要修改管脚配置已满足自己的产品需求. 由于 `esp-at` 当前可支持 ESP8266 和 ESP32 两个平台，另个平台硬件有些差异，所以 UART 的配置方式也有少许差异. 
 
@@ -11,7 +11,7 @@ TX ---> GPIO1
 RX ---> GPIO3  
 ```
 可以通过 `make menuconfig` > `Component config` > `Common ESP-related` > `UART for console output` 进行修改. 
-UART1 作为 AT 命令通讯使用(只能为 UART1, 但管脚可修改)，默认管脚配置在 `factory_param.bin` 中, 可以在 `esp-at/components/customized_partitions/raw_data/factory_param/factory_param_data.csv` 文件中修改,不同的模组固件可能管脚不同，关于 `factory_param_data.csv` 的含义描述，可参阅 [`ESP_AT_Factory_Parameter_Bin.md`](ESP_AT_Factory_Parameter_Bin.md).  
+UART1 作为 AT 命令通讯使用(只能为 UART1, 但管脚可修改)，默认管脚配置在 `factory_param.bin` 中, 可以在 `esp-at/components/customized_partitions/raw_data/factory_param/factory_param_data.csv` 文件中修改,不同的模组固件可能管脚不同，关于 `factory_param_data.csv` 的含义描述，可参阅 `ESP_AT_Factory_Parameter_Bin.md`.  
 比如 `WROOM-32` 模组
  
 | platform | module_name | magic_flag | version | module_id | tx_max_power | uart_port | start_channel | channel_num | country_code | uart_baudrate | uart\_tx_pin | uart\_rx_pin | uart\_ctx_pin | uart\_rts_pin | tx\_control_pin | rx\_control_pin
