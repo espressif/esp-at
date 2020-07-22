@@ -1,5 +1,5 @@
 How to update the esp-idf version
-=============
+=================================
 
 The esp-at project supports two platforms by default, ESP32 UART AT and ESP8266 UART AT. Each of the platform has a set of configurations, you can configure its directory by setting the `ESP_AT_MODULE_CONFIG_DIR` in the `Makefile`. The default directory of ESP32 UART AT is 
 ```module_config/module_esp32_default```, and the ESP8266 UART AT is  ```module_config/module_esp8266_default```, version information is in the file `IDF_VERSION`. For example, the version info of `module_esp32_default` is:

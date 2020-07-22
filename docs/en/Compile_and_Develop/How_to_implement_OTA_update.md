@@ -1,5 +1,5 @@
 How to implement OTA update
-=============
+===========================
 
 The following steps guide the users in creating a device on iot.espressif.cn and updating the OTA BIN on it.   
 

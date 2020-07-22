@@ -1,5 +1,5 @@
 How to enable ESP32 AT Ethernet
-=============
+===============================
 
 ## Overview
 Initialises the Ethernet interface and enables it, then sends DHCP requests and tries to obtain a DHCP lease. If successful then you will be able to ping the device.

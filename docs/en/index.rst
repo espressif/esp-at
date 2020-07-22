@@ -1,12 +1,12 @@
-ESP AT User Guide
-================================================
+ESP-AT User Guide
+=================
 
-This is the documentation for the ESP AT.
+This is the documentation for the ESP-AT.
 
 ======================  ======================  ======================  ======================
   |AT Binary Lists|_      |AT Command Set|_     |AT Command Examples|_  |compile and develop|_     
 ----------------------  ----------------------  ----------------------  ----------------------
-  `AT Binary Lists`_      `AT Command Set`_     `AT Command Examples`_  `compile and develop`_     
+  `AT Binary Lists`_      `AT Command Set`_     `AT Command Examples`_  `Compile and Develop`_     
 ======================  ======================  ======================  ======================
 
 .. |AT Binary Lists| image:: ../_static/get-started.gif
@@ -18,8 +18,8 @@ This is the documentation for the ESP AT.
 .. |AT Command Examples| image:: ../_static/api-reference.gif
 .. _AT Command Examples: AT_Command_Examples/index.html
 
-.. |compile and develop| image:: ../_static/general-notes.gif
-.. _compile and develop: compile_and_develop/index.html
+.. |Compile and Develop| image:: ../_static/general-notes.gif
+.. _Compile and Develop: Compile_and_Develop/index.html
 
 .. toctree::
    :hidden:
@@ -27,6 +27,6 @@ This is the documentation for the ESP AT.
    AT Binary Lists <AT_Binary_Lists/index>
    AT Command Set <AT_Command_Set/index>
    AT Command Examples <AT_Command_Examples/index>
-   How to compile and develop your own AT project <compile_and_develop/index>
+   How to compile and develop your own AT project <Compile_and_Develop/index>
    
 * :ref:`genindex`
