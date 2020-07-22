@@ -709,7 +709,7 @@ wrover32_all_function_at:
 
 build_docs:
   stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env$BOT_DOCKER_IMAGE_TAG
+  image: $CI_DOCKER_REGISTRY/esp-at-doc-env:1
   tags:
     - build_docs
   artifacts:
@@ -760,7 +760,7 @@ build_docs:
     - make defconfig
     # - ln -s $(IDF_PATH)/tools tools
     - cd docs
-    - ./check_lang_folder_sync.sh
+    # ./check_lang_folder_sync.sh
     - cd en
     # - make gh-linkcheck
     - make html
