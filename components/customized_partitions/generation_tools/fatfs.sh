@@ -35,5 +35,5 @@ fi
 
 # make mkfatfs
 make -C $ESP_AT_PROJECT_PATH/tools/mkfatfs BUILD_DIR_BASE=${BUILD_DIR_BASE}
-
+ESP_AT_IMAGE_DIR=$ESP_AT_PROJECT_PATH/components/fs_image
 ${BUILD_DIR_BASE}/mkfatfs/mkfatfs -c "$ESP_AT_IMAGE_DIR" -s $ESP_AT_IMAGE_SIZE $2/$1.bin
