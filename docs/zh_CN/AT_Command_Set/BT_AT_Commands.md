@@ -1,1 +1,4 @@
-[BT AT Commands](../../en/AT_Command_Set/BT_AT_Commands.md)
+[ESP32_Only] BT AT Commands
+===========================
+
+See: `/docs/en/AT_Command_Set/BT_AT_Commands.md`

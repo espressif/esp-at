@@ -1,5 +1,5 @@
 Released Firmware
-=============
+=================
 
 ## ESP-WROOM-02 Series
 

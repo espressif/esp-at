@@ -1,1 +1,0 @@
-[AT Command Set](../../en/AT_Command_Set/AT_Command_Set.md)

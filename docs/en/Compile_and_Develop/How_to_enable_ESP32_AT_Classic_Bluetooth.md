@@ -1,5 +1,5 @@
 ESP32 AT Classic Bluetooth
-=============
+==========================
 
 ## Overview
 Classic bluetooth is Disabled by default. If you want to use classic bluetooth commands, you need to enable BT commands in menuconfig.
