@@ -79,7 +79,7 @@ Hardware Introduction
 
 The WROOM32S2 Board sends AT commands through UART1 by default.
 
--  GPIO18 is RXD
+-  GPIO21 is RXD
 -  GPIO17 is TXD
 -  GPIO19 is RTS
 -  GPIO20 is CTS
