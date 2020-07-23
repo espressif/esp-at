@@ -51,12 +51,12 @@ The following AT Commands with configuration will be saved in the flash NVS Area
 |WIFI GOT IP	| ESP station got IP address.|
 |WIFI DISCONNECT	| ESP station disconnected from an AP.|
 |busy p... | Busy processing. The system is in process of handling the previous command, cannot accept the newly input.|
-|\<conn_id>,CONNECT | A network connection of which ID is <conn_id> is established.|
-|\<conn_id>,CLOSED | A network connection of which ID is <conn_id> ends.|
+|<conn_id\>,CONNECT | A network connection of which ID is <conn_id\> is established.|
+|<conn_id\>,CLOSED | A network connection of which ID is <conn_id\> ends.|
 |+IPD | Network data received.|
-|+STA\_CONNECTED: \<sta_mac> | A station connects to the ESP softAP.|
-|+DIST\_STA\_IP: \<sta\_mac>,\<sta_ip> | ESP softAP distributes an IP address to the station connected.|
-|+STA\_DISCONNECTED: \<sta_mac> | A station disconnects from the ESP softAP.|
+|+STA\_CONNECTED: <sta_mac\> | A station connects to the ESP softAP.|
+|+DIST\_STA\_IP: <sta\_mac\>,<sta_ip\> | ESP softAP distributes an IP address to the station connected.|
+|+STA\_DISCONNECTED: <sta_mac\> | A station disconnects from the ESP softAP.|
 |+BLECONN	| A BLE connection established.|
 |+BLEDISCONN | A BLE connection ends.|
 |+READ | A read operation from BLE connection.|
