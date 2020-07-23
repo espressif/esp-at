@@ -267,16 +267,32 @@ Parameters:
     - Bit0: Quit transparent transmission
         0: Quit transparent transmission no information.
         1: Quit transparent transmission will supply information.
-    - Bit1: Connection info
-        0: Use old connection info.
-        1: Use new connection info.
+    - Bit1: Connection information
+        0: Use old connection information.
+        1: Use new connection information.
+    - Bit2: conection status information when in Wi-Fi transparent transmission, Ble SPP and BT SPP
+        0: There is no more prompt information but received data.
+        1: It will print some information if Wi-Fi, socket, ble or bt status is changed, the prompt is as following,
+            - "CONNECT\r\n" or the message prefixed with "+LINK_CONN:"
+            - "CLOSED\r\n"
+            - "WIFI CONNECTED\r\n"
+            - "WIFI GOT IP\r\n"
+            - "WIFI DISCONNECT\r\n"
+            - "+ETH_CONNECTED\r\n"
+            - "+ETH_DISCONNECTED\r\n"
+            - the message prefixed with "+ETH_GOT_IP:"
+            - the message prefixed with "+STA_CONNECTED:"
+            - the message prefixed with "+STA_DISCONNECTED:"
+            - the message prefixed with "+DIST_STA_IP:"
+            - the message prefixed with "+BLECONN:"
+            - the message prefixed with "+BLEDISCONN:"
 
 ***Notes:***  
 
 * The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.
 * If set Bit0 to 1 will supply information "+QUITT" when quit transparent transmission.
 * If set Bit1 to 1 will impact the infomation of command `AT+CIPSTART` and `AT+CIPSERVER`,
-    * It will supply "+LINK_CONN : status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port" instead of "XX,CONNECT".
+    * It will supply "+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port" instead of "XX,CONNECT".
 Example:
 
     // Use new connection info and quit transparent transmission no information
