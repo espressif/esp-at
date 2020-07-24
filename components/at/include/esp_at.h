@@ -73,8 +73,8 @@ typedef struct {
  */
 typedef struct {
     int32_t (*recv_data)(uint8_t*data,int32_t len);  /*!< callback when ble received data */
-    void (*disconnect_cb)(void);                     /*!< callback when ble connection is built */
-    void (*connect_cb)(void);                        /*!< callback when ble connection is disconnected */
+    void (*connect_cb)(void);                        /*!< callback when ble connection is built */
+    void (*disconnect_cb)(void);                     /*!< callback when ble connection is disconnected */
 } esp_at_custom_ble_ops_struct;
 
 /**
