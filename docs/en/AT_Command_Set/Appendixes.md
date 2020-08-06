@@ -18,8 +18,14 @@ Each command can support four types of AT commands.
 
  * Not all AT commands support all four variations mentioned above.
  * Square brackets [ ] designate the default value; it is either not required or may not appear.
+   > for example:  
+   > `AT+CWJAP="ssid","password"`  
+   > `AT+CWJAP="ssid","password","11:22:33:44:55:66"`
+ * If the parameter which is not the last one is omitted, you can give a `,` to indicate it.
+   > for example:  
+   > `AT+CWJAP="ssid","password",,1`
  * String values need to be included in double quotation marks, for example: `AT+CWSAP="ESP756290","21030826",1,4`.
- * Escape sensitive delimiters is necessary on string parameters in AT command.
+ * Escape character syntax is needed if a string contains any special characters, such as `,` or `"` or `\`.
    * `\\`: escape backslash itself
    * `\,`: escape comma which used to separate each parameter
    * `\"`: escape double quotation marks which used to mark string input
