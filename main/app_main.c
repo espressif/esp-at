@@ -40,6 +40,9 @@
 
 #if defined(CONFIG_BT_ENABLED)
 #include "esp_bt.h"
+#ifdef CONFIG_AT_BT_A2DP_COMMAND_SUPPORT
+#include "at_i2s.h"
+#endif
 #endif
 
 #include "esp_at.h"
@@ -268,7 +271,10 @@ void app_main()
 #ifdef CONFIG_AT_BT_A2DP_COMMAND_SUPPORT
     if(esp_at_bt_a2dp_cmd_regist() == false) {
         printf("regist bt a2dp cmd fail\r\n");
+    } else {
+        esp_at_i2s_init();
     }
+
 #endif
 #endif
 

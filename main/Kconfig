@@ -161,7 +161,35 @@ config AT_BT_A2DP_COMMAND_SUPPORT
     default "n"
     select BT_A2DP_ENABLE
     depends on AT_BT_COMMAND_SUPPORT
-        
+
+config AT_I2S_LRCK_PIN
+    int "I2S LRCK (WS) GPIO"
+    default 18
+    depends on AT_BT_A2DP_COMMAND_SUPPORT
+    help
+        GPIO number to use for I2S LRCK(WS) Driver.
+
+config AT_I2S_BCK_PIN
+    int "I2S BCK GPIO"
+    default 26
+    depends on AT_BT_A2DP_COMMAND_SUPPORT
+    help
+        GPIO number to use for I2S BCK Driver.
+
+config AT_I2S_DATA_PIN
+    int "I2S DATA GPIO"
+    default 33
+    depends on AT_BT_A2DP_COMMAND_SUPPORT
+    help
+        GPIO number to use for I2S Data Driver.
+    
+config AT_FS_COMMAND_SUPPORT
+    bool "AT FS command support."
+    default "n"
+    depends on AT_ENABLE
+    select WL_SECTOR_SIZE_512
+    select FATFS_LFN_HEAP
+
 config AT_ETHERNET_SUPPORT
     bool "AT ethernet support."
     default "n"
