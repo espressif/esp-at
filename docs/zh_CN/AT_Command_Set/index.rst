@@ -19,4 +19,3 @@ Please refer to :link_to_translation:`en:[English]`
    HTTP AT Commands <HTTP_AT_Commands>
    [ESP32_Only] Ethernet AT Commands <Ethernet_AT_Commands>
    Signaling Test AT Commands <Signaling_Test_AT_Commands>
-   Appendixes <Appendixes>
