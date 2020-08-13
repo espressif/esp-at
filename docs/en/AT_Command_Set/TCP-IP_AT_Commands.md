@@ -820,6 +820,7 @@ Parameters:
 ***Notes:***
 
 * Send this command before establish SSL connection if you want configuration take effect immediately.
+* This command is not currently supported on ESP32.
 
 <a name="cmd-AUTOCONNINT"></a>
 ### [AT+CIPRECONNINTV](#TCPIP-AT)—Set Wi-Fi transparent transmitting auto-connect interval

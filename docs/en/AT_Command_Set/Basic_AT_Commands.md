@@ -9,7 +9,7 @@
 * [AT+UART_CUR](#cmd-UARTC) : Current UART configuration.
 * [AT+UART_DEF](#cmd-UARTD) : Default UART configuration, saved in flash.
 * [AT+SLEEP](#cmd-SLEEP) : Sets the sleep mode.
-* [AT+SYSRAM](#cmd-SYSRAM) : Checks the remaining space of RAM.
+* [AT+SYSRAM](#cmd-SYSRAM) : Checks current remaining heap size and minimum heap size.
 * [AT+SYSMSG](#cmd-SYSMSG) : Set message format.
 * [AT+RFPOWER](#cmd-RFPOWER) : Set RF TX Power.
 * [AT+SYSFLASH](#cmd-SYSFLASH) : Set User Partitions in Flash.
@@ -227,22 +227,23 @@ Example:
 * Light sleep is not available for ESP32S2 currently.  
 
 <a name="cmd-SYSRAM"></a>
-### [AT+SYSRAM](#Basic-AT)—Checks the Remaining Space of RAM  
+### [AT+SYSRAM](#Basic-AT)—Checks current remaining heap size and minimum heap size  
 Query Command:
 
     AT+SYSRAM?  
 Response:
 
-    +SYSRAM:<remaining RAM size>
+    +SYSRAM:<remaining RAM size>,<minimum heap size>
     OK  
 Parameters:
 
-- **\<remaining RAM size>**: remaining space of RAM, unit: byte 
+- **\<remaining RAM size>**: current remaining heap size, unit: byte 
+- **\<minimum heap size>**: minimum heap size that has ever been available, unit: byte 
 
 Example:
 
     AT+SYSRAM?
-    +SYSRAM:148408
+    +SYSRAM:148408,84044
     OK
 
 <a name="cmd-SYSMSG"></a>
