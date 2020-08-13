@@ -222,6 +222,10 @@ Example:
 
     AT+SLEEP=0
 
+***Notes:***  
+
+* Light sleep is not available for ESP32S2 currently.  
+
 <a name="cmd-SYSRAM"></a>
 ### [AT+SYSRAM](#Basic-AT)—Checks the Remaining Space of RAM  
 Query Command:
