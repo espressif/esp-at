@@ -2,8 +2,6 @@
 AT Command Set
 **************
 
-:link_to_translation:`zh_CN:[中文]`
-
 Here is a list of AT commands. Some of the AT commands can only work on the ESP32, which is marked as [ESP32 Only]; others can work on both the ESP8266 and ESP32.
 
 .. toctree::
@@ -25,6 +23,8 @@ Before checking the command set details, please review some common information o
 - `AT Commands with Configuration Saved in the Flash`_
 - `AT Messages`_
 
+
+.. _at-command-types:
 
 AT Command Types
 ================
@@ -80,7 +80,12 @@ Generic AT command has four types:
 
 -  The default baud rate of AT command is 115200.
 -  AT commands are ended with a new-line (CR-LF), so the serial tool should be set into "New Line Mode".
--  Definitions of AT command error codes are in components directory in file :component:`at/include/esp_at.h`.
+-  Definitions of AT command error codes are provided in :doc:`../Compile_and_Develop/AT_API_Reference`:
+
+   - :cpp:type:`esp_at_error_code`
+   - :cpp:type:`esp_at_para_parse_result_type`
+   - :cpp:type:`esp_at_result_code_string_index`
+
 
 AT Commands with Configuration Saved in the Flash
 =================================================
