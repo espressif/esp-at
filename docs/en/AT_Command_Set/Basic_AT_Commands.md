@@ -269,28 +269,29 @@ Response:
 Parameters:
 
 - **\<state>**: 
-    - Bit0: Quit transparent transmission
-        0: Quit transparent transmission no information.
-        1: Quit transparent transmission will supply information.
-    - Bit1: Connection information
-        0: Use old connection information.
-        1: Use new connection information.
-    - Bit2: conection status information when in Wi-Fi transparent transmission, Ble SPP and BT SPP
-        0: There is no more prompt information but received data.
-        1: It will print some information if Wi-Fi, socket, ble or bt status is changed, the prompt is as following,
-            - "CONNECT\r\n" or the message prefixed with "+LINK_CONN:"
-            - "CLOSED\r\n"
-            - "WIFI CONNECTED\r\n"
-            - "WIFI GOT IP\r\n"
-            - "WIFI DISCONNECT\r\n"
-            - "+ETH_CONNECTED\r\n"
-            - "+ETH_DISCONNECTED\r\n"
-            - the message prefixed with "+ETH_GOT_IP:"
-            - the message prefixed with "+STA_CONNECTED:"
-            - the message prefixed with "+STA_DISCONNECTED:"
-            - the message prefixed with "+DIST_STA_IP:"
-            - the message prefixed with "+BLECONN:"
-            - the message prefixed with "+BLEDISCONN:"
+    - Bit0: Quit transparent transmission  
+        0: Quit transparent transmission no information.  
+        1: Quit transparent transmission will supply information.  
+    - Bit1: Connection information  
+        0: Use old connection information.  
+        1: Use new connection information.  
+    - Bit2: conection status information when in Wi-Fi transparent transmission, Ble SPP and BT SPP  
+        0: There is no more prompt information but received data.  
+        1: It will print some information if Wi-Fi, socket, ble or bt status is changed, the prompt is as following  
+
+            - "CONNECT\r\n" or the message prefixed with "+LINK_CONN:"  
+            - "CLOSED\r\n"  
+            - "WIFI CONNECTED\r\n"  
+            - "WIFI GOT IP\r\n"  
+            - "WIFI DISCONNECT\r\n"  
+            - "+ETH_CONNECTED\r\n"  
+            - "+ETH_DISCONNECTED\r\n"  
+            - the message prefixed with "+ETH_GOT_IP:"  
+            - the message prefixed with "+STA_CONNECTED:"  
+            - the message prefixed with "+STA_DISCONNECTED:"  
+            - the message prefixed with "+DIST_STA_IP:"  
+            - the message prefixed with "+BLECONN:"  
+            - the message prefixed with "+BLEDISCONN:"  
 
 ***Notes:***  
 
@@ -524,18 +525,17 @@ subcategory is defined as follows:
 ```
     ESP_AT_SUB_OK                       = 0x00,              /*!< OK */
     ESP_AT_SUB_COMMON_ERROR             = 0x01,              /*!< reserved */
-    ESP_AT_SUB_NO_TERMINATOR            = 0x02,              /*!<  not end with "\r\n" */
-    ESP_AT_SUB_NO_AT                    = 0x03,              /*!<  not found AT or at or At or aT */
-    ESP_AT_SUB_PARA_LENGTH_MISMATCH     = 0x04,              /*!<  parameter length not match */
-    ESP_AT_SUB_PARA_TYPE_MISMATCH       = 0x05,              /*!<  parameter length not match */
-    ESP_AT_SUB_PARA_NUM_MISMATCH        = 0x06,              /*!<  parameter number not match */
-    ESP_AT_SUB_PARA_INVALID             = 0x07,              /*!<  parameter is invalid */
-    ESP_AT_SUB_PARA_PARSE_FAIL          = 0x08,              /*!<  parse parameter fail */
-    ESP_AT_SUB_UNSUPPORT_CMD            = 0x09,              /*!<  command is not supported */
-    ESP_AT_SUB_CMD_EXEC_FAIL            = 0x0A,              /*!<  command executes failed */
-    ESP_AT_SUB_CMD_PROCESSING           = 0x0B,              /*!<  previous command is processing */
-    ESP_AT_SUB_CMD_OP_ERROR             = 0x0C,              /*!<  command types is not supported */
-
+    ESP_AT_SUB_NO_TERMINATOR            = 0x02,              /*!< terminator character not found ("\r\n" expected) */
+    ESP_AT_SUB_NO_AT                    = 0x03,              /*!< Starting "AT" not found (or at, At or aT entered) */
+    ESP_AT_SUB_PARA_LENGTH_MISMATCH     = 0x04,              /*!< parameter length mismatch */
+    ESP_AT_SUB_PARA_TYPE_MISMATCH       = 0x05,              /*!< parameter type mismatch */
+    ESP_AT_SUB_PARA_NUM_MISMATCH        = 0x06,              /*!< parameter number mismatch */
+    ESP_AT_SUB_PARA_INVALID             = 0x07,              /*!< the parameter is invalid */
+    ESP_AT_SUB_PARA_PARSE_FAIL          = 0x08,              /*!< parse parameter fail */
+    ESP_AT_SUB_UNSUPPORT_CMD            = 0x09,              /*!< the command is not supported */
+    ESP_AT_SUB_CMD_EXEC_FAIL            = 0x0A,              /*!< the command execution failed */
+    ESP_AT_SUB_CMD_PROCESSING           = 0x0B,              /*!< processing of previous command is in progress */
+    ESP_AT_SUB_CMD_OP_ERROR             = 0x0C,              /*!< the command operation type is error */
 ```
 
 for example, the error code `ERR CODE:0x01090000` means the command is not supported.

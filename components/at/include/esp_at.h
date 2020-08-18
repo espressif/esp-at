@@ -110,7 +110,7 @@ typedef void (*esp_at_port_specific_callback_t) (void);
  *
  */
 typedef enum {
-    ESP_AT_MODULE_NUM = 0x01
+    ESP_AT_MODULE_NUM = 0x01   /*!< AT module */
 } esp_at_module;
 
 /**
@@ -119,35 +119,35 @@ typedef enum {
  */
 typedef enum {
     ESP_AT_SUB_OK                       = 0x00,              /*!< OK */
-    ESP_AT_SUB_COMMON_ERROR             = 0x01,
-    ESP_AT_SUB_NO_TERMINATOR            = 0x02,              /*!<  not end with "\r\n" */
-    ESP_AT_SUB_NO_AT                    = 0x03,              /*!<  not found AT or at or At or aT */
-    ESP_AT_SUB_PARA_LENGTH_MISMATCH     = 0x04,              /*!<  parameter length not match */
-    ESP_AT_SUB_PARA_TYPE_MISMATCH       = 0x05,              /*!<  parameter length not match */
-    ESP_AT_SUB_PARA_NUM_MISMATCH        = 0x06,              /*!<  parameter number not match */
-    ESP_AT_SUB_PARA_INVALID             = 0x07,
-    ESP_AT_SUB_PARA_PARSE_FAIL          = 0x08,              /*!<  parse parameter fail */
-    ESP_AT_SUB_UNSUPPORT_CMD            = 0x09,
-    ESP_AT_SUB_CMD_EXEC_FAIL            = 0x0A,
-    ESP_AT_SUB_CMD_PROCESSING           = 0x0B,              /*!<  previous command is processing */
-    ESP_AT_SUB_CMD_OP_ERROR             = 0x0C,
+    ESP_AT_SUB_COMMON_ERROR             = 0x01,              /*!< reserved */
+    ESP_AT_SUB_NO_TERMINATOR            = 0x02,              /*!< terminator character not found ("\r\n" expected) */
+    ESP_AT_SUB_NO_AT                    = 0x03,              /*!< Starting "AT" not found (or at, At or aT entered) */
+    ESP_AT_SUB_PARA_LENGTH_MISMATCH     = 0x04,              /*!< parameter length mismatch */
+    ESP_AT_SUB_PARA_TYPE_MISMATCH       = 0x05,              /*!< parameter type mismatch */
+    ESP_AT_SUB_PARA_NUM_MISMATCH        = 0x06,              /*!< parameter number mismatch */
+    ESP_AT_SUB_PARA_INVALID             = 0x07,              /*!< the parameter is invalid */
+    ESP_AT_SUB_PARA_PARSE_FAIL          = 0x08,              /*!< parse parameter fail */
+    ESP_AT_SUB_UNSUPPORT_CMD            = 0x09,              /*!< the command is not supported */
+    ESP_AT_SUB_CMD_EXEC_FAIL            = 0x0A,              /*!< the command execution failed */
+    ESP_AT_SUB_CMD_PROCESSING           = 0x0B,              /*!< processing of previous command is in progress */
+    ESP_AT_SUB_CMD_OP_ERROR             = 0x0C,              /*!< the command operation type is error */
 } esp_at_error_code;
 
 #define ESP_AT_ERROR_NO(subcategory,extension)  \
         ((ESP_AT_MODULE_NUM << 24) | ((subcategory) << 16) | (extension))
 
-#define ESP_AT_CMD_ERROR_OK                                   ESP_AT_ERROR_NO(ESP_AT_SUB_OK,0x00)
-#define ESP_AT_CMD_ERROR_NON_FINISH                           ESP_AT_ERROR_NO(ESP_AT_SUB_NO_TERMINATOR,0x00)
-#define ESP_AT_CMD_ERROR_NOT_FOUND_AT                         ESP_AT_ERROR_NO(ESP_AT_SUB_NO_AT,0x00)
-#define ESP_AT_CMD_ERROR_PARA_LENGTH(which_para)              ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_LENGTH_MISMATCH,which_para)
-#define ESP_AT_CMD_ERROR_PARA_TYPE(which_para)                ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_TYPE_MISMATCH,which_para)
-#define ESP_AT_CMD_ERROR_PARA_NUM(need,given)                 ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_NUM_MISMATCH,(((need) << 8) | (given)))
-#define ESP_AT_CMD_ERROR_PARA_INVALID(which_para)             ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_INVALID,which_para)
-#define ESP_AT_CMD_ERROR_PARA_PARSE_FAIL(which_para)          ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_PARSE_FAIL,which_para)
-#define ESP_AT_CMD_ERROR_CMD_UNSUPPORT                        ESP_AT_ERROR_NO(ESP_AT_SUB_UNSUPPORT_CMD,0x00)
-#define ESP_AT_CMD_ERROR_CMD_EXEC_FAIL(result)                ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_EXEC_FAIL,result)
-#define ESP_AT_CMD_ERROR_CMD_PROCESSING                       ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_PROCESSING,0x00)
-#define ESP_AT_CMD_ERROR_CMD_OP_ERROR                         ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_OP_ERROR,0x00)
+#define ESP_AT_CMD_ERROR_OK                           ESP_AT_ERROR_NO(ESP_AT_SUB_OK,0x00)                                       /*!< No Error */
+#define ESP_AT_CMD_ERROR_NON_FINISH                   ESP_AT_ERROR_NO(ESP_AT_SUB_NO_TERMINATOR,0x00)                            /*!< terminator character not found ("\r\n" expected) */
+#define ESP_AT_CMD_ERROR_NOT_FOUND_AT                 ESP_AT_ERROR_NO(ESP_AT_SUB_NO_AT,0x00)                                    /*!< Starting "AT" not found (or at, At or aT entered) */
+#define ESP_AT_CMD_ERROR_PARA_LENGTH(which_para)      ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_LENGTH_MISMATCH,which_para)               /*!< parameter length mismatch */
+#define ESP_AT_CMD_ERROR_PARA_TYPE(which_para)        ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_TYPE_MISMATCH,which_para)                 /*!< parameter type mismatch */
+#define ESP_AT_CMD_ERROR_PARA_NUM(need,given)         ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_NUM_MISMATCH,(((need) << 8) | (given)))   /*!< parameter number mismatch */
+#define ESP_AT_CMD_ERROR_PARA_INVALID(which_para)     ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_INVALID,which_para)                       /*!< the parameter is invalid */
+#define ESP_AT_CMD_ERROR_PARA_PARSE_FAIL(which_para)  ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_PARSE_FAIL,which_para)                    /*!< parse parameter fail */
+#define ESP_AT_CMD_ERROR_CMD_UNSUPPORT                ESP_AT_ERROR_NO(ESP_AT_SUB_UNSUPPORT_CMD,0x00)                            /*!< the command is not supported */
+#define ESP_AT_CMD_ERROR_CMD_EXEC_FAIL(result)        ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_EXEC_FAIL,result)                          /*!< the command execution failed */
+#define ESP_AT_CMD_ERROR_CMD_PROCESSING               ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_PROCESSING,0x00)                           /*!< processing of previous command is in progress */
+#define ESP_AT_CMD_ERROR_CMD_OP_ERROR                 ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_OP_ERROR,0x00)                             /*!< the command operation type is error */
 
 
 /**
@@ -170,8 +170,8 @@ typedef enum {
     ESP_AT_RESULT_CODE_FAIL         = 0x02,       /*!< "ERROR" */
     ESP_AT_RESULT_CODE_SEND_OK      = 0x03,       /*!< "SEND OK" */
     ESP_AT_RESULT_CODE_SEND_FAIL    = 0x04,       /*!< "SEND FAIL" */
-    ESP_AT_RESULT_CODE_IGNORE       = 0x05,       /*!< response nothing */
-    ESP_AT_RESULT_CODE_PROCESS_DONE = 0x06,       /*!< response nothing */
+    ESP_AT_RESULT_CODE_IGNORE       = 0x05,       /*!< response nothing, just change internal status */
+    ESP_AT_RESULT_CODE_PROCESS_DONE = 0x06,       /*!< response nothing, just change internal status */
 
     ESP_AT_RESULT_CODE_MAX
 } esp_at_result_code_string_index;
@@ -498,23 +498,24 @@ bool esp_at_eth_cmd_regist(void);
  * @brief Set AT core as specific status, it will call callback if receiving data.
  * for example:
  *
+  * @code{c}
+ * static void wait_data_callback (void)
+ * {
+ *     xSemaphoreGive(sync_sema);
+ * }
  * 
-    static void wait_data_callback (void)
-    {
-        xSemaphoreGive(sync_sema);
-    }
-
-    void process_task(void* para)
-    {
-      vSemaphoreCreateBinary(sync_sema);
-      xSemaphoreTake(sync_sema,portMAX_DELAY);
-      esp_at_port_write_data((uint8_t *)">",strlen(">"));
-      esp_at_port_enter_specific(wait_data_callback);
-      while(xSemaphoreTake(sync_sema,portMAX_DELAY)) {
-          len = esp_at_port_read_data(data, data_len);
-          // TODO:
-      }
-    }
+ * void process_task(void* para)
+ * {
+ *     vSemaphoreCreateBinary(sync_sema);
+ *     xSemaphoreTake(sync_sema,portMAX_DELAY);
+ *     esp_at_port_write_data((uint8_t *)">",strlen(">"));
+ *     esp_at_port_enter_specific(wait_data_callback);
+ *     while(xSemaphoreTake(sync_sema,portMAX_DELAY)) {
+ *         len = esp_at_port_read_data(data, data_len);
+ *         // TODO:
+ *     }
+ * }
+ * @endcode
  * @param callback: which will be called when received data from AT port
  *
  */

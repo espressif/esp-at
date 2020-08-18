@@ -1,0 +1,1 @@
+.. include:: ../../en/Compile_and_Develop/How_to_add_user-defined_AT_commands.rst
