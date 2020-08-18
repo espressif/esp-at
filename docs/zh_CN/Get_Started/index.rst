@@ -7,6 +7,6 @@
 .. toctree::
    :maxdepth: 1
    
-   What is ESP-AT <What_is_ESP-AT>
-   Hardware Connection <Hardware_connection>
-   Downloading Guide <Downloading_guide>
+   ESP-AT 是什么 <What_is_ESP-AT>
+   硬件连接 <Hardware_connection>
+   下载指导 <Downloading_guide>
