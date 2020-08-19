@@ -10,7 +10,7 @@ ESP-AT provides many AT commands with different functions. For example, Wi-Fi co
 ![avatar](../../_static/ESP-AT.jpg)
 
 
-“AT” is short of “Attention”. AT command starts with “AT”, ends with a new line (CR LF).  
+“AT” is short of “Attention”. AT command starts with “AT”, ends with a new line (CR LF). All commands are executed serially. Only one AT command can be executed at a time. Each command will return `OK` or `ERROR` to indicate the final execution status of the current command. When using the AT command, you should wait for the last command to be executed before sending the next one. If the previous command is not completed and a new command is sent, the related prompt `busy P...` will be returned. More details, please refer to the command descriptions.  
 With the default configuration, host MCU connects to ESP board via UART, and sends/receives AT commands/responses through UART. But you can also change to use other peripheral, such as SDIO, according to your actual use scenario.  
 And also, you can develop your own AT commands based on our ESP-AT project, to implement more features according to your actual use scenario.
 
