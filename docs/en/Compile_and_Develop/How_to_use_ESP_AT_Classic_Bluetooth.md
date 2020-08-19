@@ -1,4 +1,4 @@
-How to use ESP AT Classic Bluetooth
+How to use ESP-AT Classic Bluetooth
 ==========================
 
 ## Overview

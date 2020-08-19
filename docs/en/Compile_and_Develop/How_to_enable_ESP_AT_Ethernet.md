@@ -1,4 +1,4 @@
-How to enable ESP AT Ethernet
+How to enable ESP-AT Ethernet
 ===============================
 
 ## Overview

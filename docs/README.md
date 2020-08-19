@@ -1,6 +1,6 @@
 # Documentation Source Folder
 
-This folder contains source files of **ESP AT documentation** available in [English](https://docs.espressif.com/projects/esp-at/en/latest/) and [中文](https://docs.espressif.com/projects/esp-at/zh_CN/latest/).
+This folder contains source files of **ESP-AT documentation** available in [English](https://docs.espressif.com/projects/esp-at/en/latest/) and [中文](https://docs.espressif.com/projects/esp-at/zh_CN/latest/).
 
 The sources do not render well in GitHub and some information is not visible at all.
 

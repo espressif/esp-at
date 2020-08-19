@@ -887,8 +887,8 @@ Response:
 
 Parameters:
 - **\<mode>**: the receive mode of socket data is active mode by default.
-    - 0: active mode - ESP AT will send all the received socket data instantly to host MCU through UART with header “+IPD".
-    - 1: passive mode - ESP AT will keep the received socket data in an internal buffer (default is 5744 bytes), and wait for host MCU to read the data. If the buffer is full, the socket transmission will be blocked.
+    - 0: active mode - ESP-AT will send all the received socket data instantly to host MCU through UART with header “+IPD".
+    - 1: passive mode - ESP-AT will keep the received socket data in an internal buffer (default is 5744 bytes), and wait for host MCU to read the data. If the buffer is full, the socket transmission will be blocked.
 
 Example:
 
@@ -898,7 +898,7 @@ Example:
 
 * The configuration is for TCP and SSL transmission only, and can not be used on WiFi-UART passthrough mode. If it is a UDP transmission in passive mode，data will be missed when buffer full.
 
-* If the passive mode is enabled, when ESP AT receives socket data, it will prompt the following message in different scenarios: 
+* If the passive mode is enabled, when ESP-AT receives socket data, it will prompt the following message in different scenarios: 
     - for multiple connection mode (AT+CIPMUX=1), the message is: `+IPD,<link ID>,<len>`
     - for single connection mode (AT+CIPMUX=0), the message is: `+IPD,<len>`
     - `<len>` is the total length of socket data in buffer
