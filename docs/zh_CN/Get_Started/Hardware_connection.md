@@ -1,5 +1,5 @@
 
-Hardware Connection
+硬件连接
 =================
 
 ## ESP32 Series

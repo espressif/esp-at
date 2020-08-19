@@ -1,4 +1,4 @@
-如何烧录 ESP AT 固件
+如何烧录 ESP-AT 固件
 =================
 
 本文档将针对 windows、linux 和 macos 平台，分别介绍如何使用烧录 AT 固件, 其中, AT 固件可从[https://docs.espressif.com/projects/esp-at/en/latest/AT_Binary_Lists/index.html](https://docs.espressif.com/projects/esp-at/en/latest/AT_Binary_Lists/index.html) 获取，以 `ESP32-WROOM-32_AT_Bin_V2.1` 为例，介绍各个 bin 文件的用途以及参数含义。目录结构如下：
