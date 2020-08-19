@@ -412,7 +412,13 @@ Response:
 
     OK
 Parameters:
-- **\<wifi_power>**: range [40, 82], the unit is 0.25dBm, for example, if the value is 78, then RF max power is 78*0.25 dBm=19.5dBm
+- **\<wifi_power>**: the unit is 0.25dBm.
+    for example, if set the value is 78, then the actual RF max power value is 78*0.25dBm = 19.5dBm.  
+    after configuring it, please confirm the actual value by `AT+RFPOWER?`  
+
+    - range: [40, 78] on ESP32 platform and ESP32S2 platform, please refer to the notes below for details
+    - range: [40, 82] on ESP8266 platform, please refer to the notes below for details
+
 - **\<ble_adv_power>**: RF TX Power of BLE advertising, range: [0, 7]
     - 0:7dBm
     - 1:4dBm
@@ -425,7 +431,35 @@ Parameters:
 - **\<ble_scan_power>**: RF TX Power of BLE scanning, range:  [0, 7], the same as **\<ble_adv_power>**
 - **\<ble_conn_power>**: RF TX Power of BLE connecting, range:  [0, 7], the same as **\<ble_adv_power>**
 
-**Notes:** Since the RF TX power is actually divided into several levels, and each level has its own value range, so the `wifi_power` value queried by the `esp_wifi_get_max_tx_power` may differ from the value set by `esp_wifi_set_max_tx_power`. And the query value will not be larger than the set one.
+**Notes:** 
+1. Since the RF TX power is actually divided into several levels, and each level has its own value range, so the `wifi_power` value queried by the `esp_wifi_get_max_tx_power` may differ from the value set by `esp_wifi_set_max_tx_power`. And the query value will not be larger than the set one.
+2. Relationship between set value and actual value, as following,
+
+ESP32 and ESP32S2 platform:
+
+| set value | actual value | actual dBm |
+|  ----  | ----  | ----|
+| [34, 43] | 34 | 8.5 |
+| [44, 51] | 44 | 11 |
+| [52, 55] | 52 | 13 |
+| [56, 59] | 56 | 14 |
+| [60, 65] | 60 | 15 |
+| [66, 71] | 66 | 16.5 |
+| [72, 77] | 72 | 18 |
+| 78 | 78 | 19.5 
+
+ESP8266 platform:
+
+| set value | actual value | actual dBm |
+|  ----  | ----  | ----|
+| [33, 48] | 33 | 8 |
+| [49, 55] | 49 | 12 |
+| [56, 63] | 56 | 14 |
+| [64, 67] | 64 | 16 |
+| [68, 73] | 68 | 17 |
+| [74, 77] | 74 | 18.5 |
+| [78, 81] | 78 | 19.5 |
+| 82 | 82 | 20.5 |
 
 <a name="cmd-SYSROLLBACK"></a>
 ### [AT+SYSROLLBACK](#Basic-AT)-Roll back to the previous firmware
