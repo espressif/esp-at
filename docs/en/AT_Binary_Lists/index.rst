@@ -16,6 +16,8 @@ Each of the linked above ESP-AT-Bin files contains several binaries for some spe
 -   ``at_customize.bin`` is to provide a user partition table, which lists different partitions for the ``ble_data.bin``, SSL certificates, and ``factory_param_XXX.bin``. Furthermore, users can add their own users partitions, and read/write the user partitions with the command ``AT+FS`` and ``AT+SYSFLASH``.
 -   ``factory_param_XXX.bin`` indicates the hardware configurations for different ESP modules (see the table below). Please make sure the correct bin is used for your specific module. If users design their own module, they can configure it with reference to the ``esp-at/docs/en/Compile_and_Develop/How_to_create_factory_parameter_bin.md``, and the binaries will be automatically generated after compilation. When users flash the firmware into module according to the ``download.config``, the ``customized_partitions/factory_param.bin`` should be replaced with the actual module-specific ``customized_partitions/factory_param_XXX.bin``. UART CTS and RTS pins are optional.
 
+    - **ESP32 Series**
+
     .. list-table::
        :header-rows: 1
 
@@ -34,6 +36,36 @@ Each of the linked above ESP-AT-Bin files contains several binaries for some spe
        * - ESP32-SOLO Series
          - GPIO17, GPIO16, GPIO15, GPIO14
          - ``factory_param_SOLO-1.bin``
+
+    - **ESP32S2 Series**
+
+    .. list-table::
+       :header-rows: 1
+
+       * - Modules
+         - UART Pins (TX, RX, CTS, RTS)
+         - Factory Parameter Bin 
+       * - ESP32S2-WROOM Series
+         - GPIO17, GPIO21, GPIO20, GPIO19
+         - ``factory_param_WROOM.bin``
+       * - ESP32S2-WROVER Series
+         - GPIO17, GPIO21, GPIO20, GPIO19
+         - ``factory_param_WROVER.bin``
+       * - ESP32S2-SOLO Series
+         - GPIO17, GPIO21, GPIO20, GPIO19
+         - ``factory_param_SOLO.bin``
+       * - ESP32S2-MINI Series
+         - GPIO17, GPIO21, GPIO20, GPIO19
+         - ``factory_param_MINI.bin``
+
+    - **ESP8266 Series**
+
+    .. list-table::
+       :header-rows: 1
+
+       * - Modules
+         - UART Pins (TX, RX, CTS, RTS)
+         - Factory Parameter Bin 
        * - ESP-WROOM-02 Series (ESP8266 Default Value)
          - GPIO15, GPIO13, GPIO3, GPIO1
          - ``factory_param_WROOM-02.bin``
