@@ -309,7 +309,19 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode,uint8_t* version)
     }
 #ifdef CONFIG_AT_OTA_SSL_SUPPORT
     else if (ota_mode == ESP_AT_OTA_MODE_SSL) {
+        if (tls) {
+            esp_tls_conn_delete(tls);
+        }
         tls = esp_tls_init();
+        if (!tls_cfg) {
+            tls_cfg = (esp_tls_cfg_t *)calloc(1, sizeof(esp_tls_cfg_t));
+        } else {
+            memset(tls_cfg, 0x0, sizeof(esp_tls_cfg_t));
+        }
+        if (tls == NULL || tls_cfg == NULL) {
+            goto OTA_ERROR;
+        }
+
         if (esp_tls_conn_new_sync(server_ip, strlen(server_ip), server_port, tls_cfg, tls) < 0) {
             ESP_AT_OTA_DEBUG("Failed to open a new connection\r\n");
             goto OTA_ERROR;
