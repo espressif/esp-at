@@ -284,9 +284,14 @@ class BaseDumper(object):
         config_file_name = os.path.split(self.config_file)[1]
         if config_file_name == "ATBleService.yml":
             # append 2 bytes LE data len + 2 bytes magic code 0x27 0x95
-            data = chr(len(data) & 0xFF) + chr(len(data) >> 8) \
-                   + chr(0x27) + chr(0x95) \
-                   + data
+            try:
+                data = chr(len(data) & 0xFF).encode('iso8859-1') + chr(len(data) >> 8).encode('iso8859-1') \
+                    + chr(0x27).encode('iso8859-1') + chr(0x95).encode('iso8859-1') \
+                    + data.encode(encoding = 'iso8859-1')
+            except UnicodeDecodeError:
+                data = chr(len(data) & 0xFF) + chr(len(data) >> 8) \
+                    + chr(0x27) + chr(0x95) \
+                    + data
         else:
             # default not appending anything
             pass
@@ -303,7 +308,7 @@ class BaseDumper(object):
         dir_name = os.path.dirname(self.target_file_name)
         if dir_name != "" and os.path.exists(dir_name) is False:
             os.makedirs(os.path.dirname(self.target_file_name))
-        with open(self.target_file_name, "w+") as f:
+        with open(self.target_file_name, "wb") as f:
             f.write(data)
 
 
