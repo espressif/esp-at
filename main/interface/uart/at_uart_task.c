@@ -40,6 +40,17 @@
 
 #include "at_default_config.h"
 
+#ifdef CONFIG_IDF_TARGET_ESP8266
+#include "esp8266/uart_register.h"
+#endif
+
+#ifdef CONFIG_IDF_TARGET_ESP32
+#include "esp32/rom/uart.h"
+#elif CONFIG_IDF_TARGET_ESP32S2
+#include "esp32s2/rom/uart.h"
+#endif
+
+
 typedef struct {
     int32_t baudrate;
     int8_t data_bits;
@@ -245,6 +256,15 @@ static void at_uart_init(void)
         .rx_flow_ctrl_thresh = 122,
     };
 
+    uart_intr_config_t intr_config = {
+        .intr_enable_mask = UART_RXFIFO_FULL_INT_ENA_M
+            | UART_RXFIFO_TOUT_INT_ENA_M
+            | UART_RXFIFO_OVF_INT_ENA_M,
+        .rxfifo_full_thresh = 100,
+        .rx_timeout_thresh = 10,
+        .txfifo_empty_intr_thresh = 10
+    };
+
     int32_t tx_pin = CONFIG_AT_UART_PORT_TX_PIN_DEFAULT;	
     int32_t rx_pin = CONFIG_AT_UART_PORT_RX_PIN_DEFAULT;
     int32_t cts_pin = CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT;
@@ -346,7 +366,6 @@ static void at_uart_init(void)
     }
     //Set UART parameters
     uart_param_config(esp_at_uart_port, &uart_config);
-
 #if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2)
     //Set UART pins,(-1: default pin, no change.)
     uart_set_pin(esp_at_uart_port, tx_pin, rx_pin, rts_pin, cts_pin);
@@ -364,6 +383,8 @@ static void at_uart_init(void)
         assert((tx_pin == 1) && (rx_pin == 3));
     }
 #endif
+    uart_intr_config(esp_at_uart_port, &intr_config);
+
     xTaskCreate(uart_task, "uTask", 1024, (void*)esp_at_uart_port, 1, NULL);
 }
 
