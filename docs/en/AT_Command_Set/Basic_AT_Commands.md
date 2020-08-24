@@ -69,8 +69,14 @@ Response:
     OK
 Parameters:  
 
-- **\<time>**: the duration of ESP32’s sleep. Unit: ms.  
-    ESP32 will wake up after Deep-sleep for as many milliseconds (ms) as \<time> indicates.  
+- **\<time>**: the duration of the device’s deep sleep. Unit: ms.  
+    ESP device will automatically wake up after the deep-sleep for as many milliseconds (ms) as \<time> indicates.  
+    Upon waking up, the device calls deep sleep wake stub, and then proceeds to load application.
+
+***Note:***  
+
+* On ESP8266 platform, in order to timing wake up, it is necessary to connect GPIO16 to RST pin.
+* Moreover, ESP8266 can be waken up from deep sleep externally by directly triggering RST pin low level pulse.
 
 <a name="cmd-ATE"></a>
 ### [ATE](#Basic-AT)—AT Commands Echoing
