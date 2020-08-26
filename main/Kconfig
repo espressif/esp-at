@@ -131,24 +131,24 @@ if IDF_TARGET_ESP32
 config AT_BLE_COMMAND_SUPPORT
     bool "AT ble command support."
     default "y"
-    depends on AT_ENABLE
+    depends on AT_ENABLE && BT_ENABLED
 
 config AT_BLE_HID_COMMAND_SUPPORT
     bool "AT ble hid command support."
     default "y"
-    depends on AT_ENABLE
+    depends on AT_ENABLE && BT_ENABLED
     
 config AT_BLUFI_COMMAND_SUPPORT
     bool "AT blufi command support."
     default "n"
-    depends on AT_ENABLE
+    depends on AT_ENABLE && BT_ENABLED
 
 config AT_BT_COMMAND_SUPPORT
     bool "AT bt command support."
     default "n"
     select BT_CLASSIC_ENABLED
     select BT_ALLOCATION_FROM_SPIRAM_FIRST
-    depends on AT_ENABLE
+    depends on AT_ENABLE && BT_ENABLED
 
 config AT_BT_SPP_COMMAND_SUPPORT
     bool "AT bt spp command support."
