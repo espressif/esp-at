@@ -4,14 +4,6 @@
 # in this exact order for cmake to work correctly
 cmake_minimum_required(VERSION 3.5)
 
-if (NOT DEFINED ENV{ESP_AT_PROJECT_PLATFORM})
-set(ENV{ESP_AT_PROJECT_PLATFORM} PLATFORM_ESP32)
-endif()
-
-if (NOT DEFINED ENV{ESP_AT_MODULE_NAME})
-set(ENV{ESP_AT_MODULE_NAME} WROOM-32)
-endif()
-
 set(IDF_PATH ${CMAKE_SOURCE_DIR}/esp-idf)
 
 string(TOLOWER $ENV{ESP_AT_MODULE_NAME} LOWER_NAME)
@@ -50,44 +42,6 @@ execute_process(COMMAND git rev-parse --short HEAD
                 OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 add_compile_options("-DESP_AT_PROJECT_COMMIT_ID=\"${ESP_AT_PROJECT_COMMIT_ID}\"")
-
-execute_process(COMMAND sed -n /branch:/p ${ESP_AT_MODULE_CONFIG_DIR}/IDF_VERSION
-                OUTPUT_VARIABLE idf_branch
-                OUTPUT_STRIP_TRAILING_WHITESPACE)
-string(REPLACE "branch:" "" esp_at_idf_branch ${idf_branch})
-
-execute_process(COMMAND sed -n /commit:/p ${ESP_AT_MODULE_CONFIG_DIR}/IDF_VERSION
-                OUTPUT_VARIABLE idf_commit
-                OUTPUT_STRIP_TRAILING_WHITESPACE)
-string(REPLACE "commit:" "" esp_at_idf_commit ${idf_commit})
-
-execute_process(COMMAND sed -n /repository:/p ${ESP_AT_MODULE_CONFIG_DIR}/IDF_VERSION
-                OUTPUT_VARIABLE idf_repository
-                OUTPUT_STRIP_TRAILING_WHITESPACE)
-string(REPLACE "repository:" "" esp_at_idf_repository ${idf_repository})
-
-if(NOT IS_DIRECTORY ${IDF_PATH})
-    execute_process(COMMAND git clone -b ${esp_at_idf_branch} ${esp_at_idf_repository} ${IDF_PATH})
-endif()
-
-execute_process(WORKING_DIRECTORY ${IDF_PATH}
-                COMMAND git rev-parse HEAD
-                OUTPUT_VARIABLE current_idf_commit
-                OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-if(NOT ${current_idf_commit} EQUAL ${esp_at_idf_commit})
-    execute_process(WORKING_DIRECTORY ${IDF_PATH}
-                    COMMAND git checkout ${esp_at_idf_branch})
-
-    execute_process(WORKING_DIRECTORY ${IDF_PATH}
-                    COMMAND git pull)
-
-    execute_process(WORKING_DIRECTORY ${IDF_PATH}
-                    COMMAND git checkout ${esp_at_idf_commit})
-
-    execute_process(WORKING_DIRECTORY ${IDF_PATH}
-                COMMAND git submodule update --init --recursive )
-endif()
 
 include(${IDF_PATH}/tools/cmake/project.cmake)
 
