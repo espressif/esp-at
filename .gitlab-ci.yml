@@ -32,7 +32,6 @@ esp32_wroom_at:
     - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - git submodule update --init --recursive
 
   script:
     - cd main
@@ -50,25 +49,17 @@ esp32_wroom_at:
     - echo -e "#endif" >> at_config.h
     - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
-    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
-    - cd esp-idf
-    - git checkout ${commit_str#*commit:}
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32_default/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure
     # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./tools/ci/configure_ci_environment.sh
-    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
+    - source ./esp-idf/tools/ci/configure_ci_environment.sh
+    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./tools/ci/get-full-sources.sh
-    - git submodule update --init
-    - cd -
-    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
-    - export ESP_AT_MODULE_NAME=WROOM-32
-    - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py build
-    - cp build/flash_project_args build/download.config
-    # - make print_flash_cmd | tail -n 1 > build/download.config
-    # - make factory_bin
+    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - ./build.py build
 
 esp32_wrover_at:
   stage: build
@@ -100,7 +91,6 @@ esp32_wrover_at:
     - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - git submodule update --init --recursive
 
   script:
     - cd main
@@ -118,26 +108,17 @@ esp32_wrover_at:
     - echo -e "#endif" >> at_config.h
     - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
-    - commit_str=$(awk '/commit:/{print $0}' module_config/module_wrover-32/IDF_VERSION)
-    - branch_str=$(awk '/branch:/{print $0}' module_config/module_wrover-32/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
-    - cd esp-idf
-    - git checkout ${commit_str#*commit:}
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_wrover-32/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure
     # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./tools/ci/configure_ci_environment.sh
-    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
+    - source ./esp-idf/tools/ci/configure_ci_environment.sh
+    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./tools/ci/get-full-sources.sh
-    - git submodule update --init
-    - cd -
-
-    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
-    - export ESP_AT_MODULE_NAME=WROVER-32
-    - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py build -DSILENCE=1
-    - cp build/flash_project_args build/download.config
-    # - make print_flash_cmd | tail -n 1 > build/download.config
-    # - make factory_bin
+    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - ./build.py build
 
 pico_d4_at:
   stage: build
@@ -169,7 +150,6 @@ pico_d4_at:
     - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - git submodule update --init --recursive
 
   script:
     - cd main
@@ -187,26 +167,17 @@ pico_d4_at:
     - echo -e "#endif" >> at_config.h
     - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
-    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
-    - cd esp-idf
-    - git checkout ${commit_str#*commit:}
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32_default/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure
     # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./tools/ci/configure_ci_environment.sh
-    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
+    - source ./esp-idf/tools/ci/configure_ci_environment.sh
+    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./tools/ci/get-full-sources.sh
-    - git submodule update --init
-    - cd -
-
-    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
-    - export ESP_AT_MODULE_NAME=PICO-D4
-    - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py build
-    - cp build/flash_project_args build/download.config
-    # - make print_flash_cmd | tail -n 1 > build/download.config
-    # - make factory_bin
+    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - ./build.py build
 
 
 solo_1_at:
@@ -239,7 +210,6 @@ solo_1_at:
     - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - git submodule update --init --recursive
 
   script:
     - cd main
@@ -257,26 +227,17 @@ solo_1_at:
     - echo -e "#endif" >> at_config.h
     - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
-    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
-    - cd esp-idf
-    - git checkout ${commit_str#*commit:}
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32_default/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure
     # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./tools/ci/configure_ci_environment.sh
-    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
+    - source ./esp-idf/tools/ci/configure_ci_environment.sh
+    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./tools/ci/get-full-sources.sh
-    - git submodule update --init
-    - cd -
-
-    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
-    - export ESP_AT_MODULE_NAME=SOLO-1
-    - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py build
-    - cp build/flash_project_args build/download.config
-    # - make print_flash_cmd | tail -n 1 > build/download.config
-    # - make factory_bin
+    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - ./build.py build
 
 esp32s2_wroom_at:
   stage: build
@@ -308,7 +269,6 @@ esp32s2_wroom_at:
     - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    # - git submodule update --init --recursive
 
   script:
     - cd main
@@ -326,26 +286,17 @@ esp32s2_wroom_at:
     - echo -e "#endif" >> at_config.h
     - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
-    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
-    - cd esp-idf
-    - git checkout ${commit_str#*commit:}
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32s2_default/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROOM\", \"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure
     # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./tools/ci/configure_ci_environment.sh
-    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
+    - source ./esp-idf/tools/ci/configure_ci_environment.sh
+    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./tools/ci/get-full-sources.sh
-    - git submodule update --init
-    - cd -
-
-    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32S2
-    - export ESP_AT_MODULE_NAME=WROOM
-    - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 build
-    - cp build/flash_project_args build/download.config
-    # - make print_flash_cmd | tail -n 1 > build/download.config
-    # - make factory_bin
+    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - ./build.py build
 
 esp32s2_wrover_at:
   stage: build
@@ -377,7 +328,6 @@ esp32s2_wrover_at:
     - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    # - git submodule update --init --recursive
 
   script:
     - cd main
@@ -395,24 +345,17 @@ esp32s2_wrover_at:
     - echo -e "#endif" >> at_config.h
     - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
-    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
-    - cd esp-idf
-    - git checkout ${commit_str#*commit:}
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32s2_default/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROVER\", \"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure
     # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./tools/ci/configure_ci_environment.sh
-    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
+    - source ./esp-idf/tools/ci/configure_ci_environment.sh
+    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./tools/ci/get-full-sources.sh
-    - git submodule update --init
-    - cd -
-
-    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32S2
-    - export ESP_AT_MODULE_NAME=WROVER
-    - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 build
-    - cp build/flash_project_args build/download.config
+    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - ./build.py build
 
 esp32s2_solo_at:
   stage: build
@@ -444,7 +387,6 @@ esp32s2_solo_at:
     - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    # - git submodule update --init --recursive
 
   script:
     - cd main
@@ -462,24 +404,17 @@ esp32s2_solo_at:
     - echo -e "#endif" >> at_config.h
     - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
-    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
-    - cd esp-idf
-    - git checkout ${commit_str#*commit:}
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32s2_default/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"SOLO\", \"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure
     # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./tools/ci/configure_ci_environment.sh
-    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
+    - source ./esp-idf/tools/ci/configure_ci_environment.sh
+    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./tools/ci/get-full-sources.sh
-    - git submodule update --init
-    - cd -
-
-    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32S2
-    - export ESP_AT_MODULE_NAME=SOLO
-    - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 build
-    - cp build/flash_project_args build/download.config
+    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - ./build.py build
 
 esp32s2_mini_at:
   stage: build
@@ -511,7 +446,6 @@ esp32s2_mini_at:
     - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    # - git submodule update --init --recursive
 
   script:
     - cd main
@@ -529,24 +463,17 @@ esp32s2_mini_at:
     - echo -e "#endif" >> at_config.h
     - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
-    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
-    - cd esp-idf
-    - git checkout ${commit_str#*commit:}
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32s2_default/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"MINI\", \"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure
     # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./tools/ci/configure_ci_environment.sh
-    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
+    - source ./esp-idf/tools/ci/configure_ci_environment.sh
+    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./tools/ci/get-full-sources.sh
-    - git submodule update --init
-    - cd -
-
-    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32S2
-    - export ESP_AT_MODULE_NAME=MINI
-    - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 build
-    - cp build/flash_project_args build/download.config
+    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - ./build.py build
 
 esp8266_wroom_02_at:
   stage: build
@@ -578,7 +505,6 @@ esp8266_wroom_02_at:
     - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - git submodule update --init --recursive
 
   script:
     - cd main
@@ -593,25 +519,17 @@ esp8266_wroom_02_at:
     - cd -
 
     # replace submodule esp-idf to internal repository to speedup cloning
-    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp8266_default/IDF_VERSION)
-    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp8266_default/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/sdk/ESP8266_RTOS_SDK.git esp-idf
-    - cd esp-idf
-    - git checkout ${commit_str#*commit:}
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}/sdk"?g' module_config/module_esp8266_default/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02\", \"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure
     # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./tools/ci/configure_ci_environment.sh
+    - source ./esp-idf/tools/ci/configure_ci_environment.sh
+    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    # - time ./tools/ci/get-full-sources.sh
-    - git submodule update --init
-    - cd -
-
-    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP8266
-    - export ESP_AT_MODULE_NAME=WROOM-02
-    - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py build
-    - cp build/flash_project_args build/download.config
-    # - make print_flash_cmd | tail -n 1 > build/download.config
-    # - make factory_bin
+    # - time ./esp-idf/tools/ci/get-full-sources.sh
+    - ./build.py build
 
 esp8266_1MB_at:
   stage: build
@@ -643,7 +561,6 @@ esp8266_1MB_at:
     - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - git submodule update --init --recursive
 
   script:
     - cd main
@@ -658,25 +575,17 @@ esp8266_1MB_at:
     - cd -
 
     # replace submodule esp-idf to internal repository to speedup cloning
-    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp8266_1mb/IDF_VERSION)
-    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp8266_1mb/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/sdk/ESP8266_RTOS_SDK.git esp-idf
-    - cd esp-idf
-    - git checkout ${commit_str#*commit:}
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}/sdk"?g' module_config/module_esp8266_default/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"ESP8266_1MB\", \"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure
     # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./tools/ci/configure_ci_environment.sh
+    - source ./esp-idf/tools/ci/configure_ci_environment.sh
+    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    # - time ./tools/ci/get-full-sources.sh
-    - git submodule update --init
-    - cd -
-
-    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP8266
-    - export ESP_AT_MODULE_NAME=ESP8266_1MB
-    - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py build
-    - cp build/flash_project_args build/download.config
-    # - make print_flash_cmd | tail -n 1 > build/download.config
-    # - make factory_bin
+    # - time ./esp-idf/tools/ci/get-full-sources.sh
+    - ./build.py build
 
 esp8266_wroom_5V2L_at:
   stage: build
@@ -708,7 +617,6 @@ esp8266_wroom_5V2L_at:
     - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - git submodule update --init --recursive
 
   script:
     - cd main
@@ -722,25 +630,17 @@ esp8266_wroom_5V2L_at:
     - echo -e "#endif" >> at_config.h
     - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
-    - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp8266_default/IDF_VERSION)
-    - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp8266_default/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/sdk/ESP8266_RTOS_SDK.git esp-idf
-    - cd esp-idf
-    - git checkout ${commit_str#*commit:}
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}/sdk"?g' module_config/module_esp8266_default/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-5V2L\", \"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure
     # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./tools/ci/configure_ci_environment.sh
+    - source ./esp-idf/tools/ci/configure_ci_environment.sh
+    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    # - time ./tools/ci/get-full-sources.sh
-    - git submodule update --init
-    - cd -
-    
-    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP8266
-    - export ESP_AT_MODULE_NAME=WROOM-5V2L
-    - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py build
-    - cp build/flash_project_args build/download.config
-    # - make print_flash_cmd | tail -n 1 > build/download.config
-    # - make factory_bin
+    # - time ./esp-idf/tools/ci/get-full-sources.sh
+    - ./build.py build
 
 push_master_to_github:
   stage: deploy
@@ -884,27 +784,17 @@ wrover32_all_function_at:
     - sed -i '/ota_0/s/'$old_size_str'/'$new_size_str'/g' module_config/module_wrover-32/partitions_at.csv
 
     # replace submodule esp-idf to internal repository to speedup cloning
-    - commit_str=$(awk '/commit:/{print $0}' module_config/module_wrover-32/IDF_VERSION)
-    - branch_str=$(awk '/branch:/{print $0}' module_config/module_wrover-32/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
-    - cd esp-idf
-    - git checkout ${commit_str#*commit:}
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_wrover-32/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure
     # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./tools/ci/configure_ci_environment.sh
-    - tools/idf_tools.py --non-interactive install && eval "$(tools/idf_tools.py --non-interactive export)" || exit 1
+    - source ./esp-idf/tools/ci/configure_ci_environment.sh
+    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./tools/ci/get-full-sources.sh
-    - git submodule update --init
-    - cd -
-
-    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
-    - export ESP_AT_MODULE_NAME=WROVER-32
-    - export ESP_AT_PROJECT_PATH=$(pwd)
-    - ./esp-idf/tools/idf.py build
-    - cp build/flash_project_args build/download.config
-    # - make print_flash_cmd | tail -n 1 > build/download.config
-    # - make factory_bin
-
+    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - ./build.py build
 
 build_docs:
   stage: build
