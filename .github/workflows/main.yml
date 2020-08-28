@@ -14,20 +14,16 @@ jobs:
     - uses: actions/checkout@v2
     - name: clone esp-idf
       run: |
-        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-        git clone -b ${branch_str#*branch:} https://github.com/espressif/esp-idf.git esp-idf
-        cd esp-idf
-        git checkout ${commit_str#*commit:}
-        git submodule update --init --recursive
-        cd -
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        mkdir build
+        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"silence\": 0}" > build/module_info.json
+        ./build.py reconfigure
       shell: bash
     - name: Install dependencies
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
     - name: Compiling
       env:
@@ -53,10 +49,8 @@ jobs:
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
         python ./esp-idf/tools/idf_tools.py export --prefer-system
-        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
-        export ESP_AT_MODULE_NAME=WROOM-32
-        export ESP_AT_PROJECT_PATH=$(pwd)
-        ./esp-idf/tools/idf.py build
+        
+        ./build.py build
         upload_dir=esp32-wroom-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
@@ -82,20 +76,16 @@ jobs:
     - uses: actions/checkout@v2
     - name: clone esp-idf
       run: |
-        commit_str=$(awk '/commit:/{print $0}' module_config/module_wrover-32/IDF_VERSION)
-        branch_str=$(awk '/branch:/{print $0}' module_config/module_wrover-32/IDF_VERSION)
-        git clone -b ${branch_str#*branch:} https://github.com/espressif/esp-idf.git esp-idf
-        cd esp-idf
-        git checkout ${commit_str#*commit:}
-        git submodule update --init --recursive
-        cd -
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        mkdir build
+        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"silence\": 1}" > build/module_info.json
+        ./build.py reconfigure
       shell: bash
     - name: Install dependencies
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
     - name: Compiling
       env:
@@ -121,10 +111,8 @@ jobs:
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
         python ./esp-idf/tools/idf_tools.py export --prefer-system
-        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
-        export ESP_AT_MODULE_NAME=WROVER-32
-        export ESP_AT_PROJECT_PATH=$(pwd)
-        ./esp-idf/tools/idf.py build -DSILENCE=1
+
+        ./build.py build
         upload_dir=esp32-wrover-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
@@ -150,20 +138,16 @@ jobs:
     - uses: actions/checkout@v2
     - name: clone esp-idf
       run: |
-        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-        git clone -b ${branch_str#*branch:} https://github.com/espressif/esp-idf.git esp-idf
-        cd esp-idf
-        git checkout ${commit_str#*commit:}
-        git submodule update --init --recursive
-        cd -
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        mkdir build
+        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"silence\": 0}" > build/module_info.json
+        ./build.py reconfigure
       shell: bash
     - name: Install dependencies
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
     - name: Compiling
       env:
@@ -189,10 +173,7 @@ jobs:
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
         python ./esp-idf/tools/idf_tools.py export --prefer-system
-        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
-        export ESP_AT_MODULE_NAME=PICO-D4
-        export ESP_AT_PROJECT_PATH=$(pwd)
-        ./esp-idf/tools/idf.py build
+        ./build.py build
         upload_dir=esp32-pico-d4-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
@@ -218,20 +199,16 @@ jobs:
     - uses: actions/checkout@v2
     - name: clone esp-idf
       run: |
-        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-        git clone -b ${branch_str#*branch:} https://github.com/espressif/esp-idf.git esp-idf
-        cd esp-idf
-        git checkout ${commit_str#*commit:}
-        git submodule update --init --recursive
-        cd -
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        mkdir build
+        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"silence\": 0}" > build/module_info.json
+        ./build.py reconfigure
       shell: bash
     - name: Install dependencies
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
     - name: Compiling
       env:
@@ -257,10 +234,7 @@ jobs:
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
         python ./esp-idf/tools/idf_tools.py export --prefer-system
-        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
-        export ESP_AT_MODULE_NAME=SOLO-1
-        export ESP_AT_PROJECT_PATH=$(pwd)
-        ./esp-idf/tools/idf.py build
+        ./build.py build
         upload_dir=esp32-solo-1-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
@@ -286,20 +260,16 @@ jobs:
     - uses: actions/checkout@v2
     - name: clone esp-idf
       run: |
-        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-        git clone -b ${branch_str#*branch:} https://github.com/espressif/esp-idf.git esp-idf
-        cd esp-idf
-        git checkout ${commit_str#*commit:}
-        git submodule update --init --recursive
-        cd -
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        mkdir build
+        echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROOM\", \"silence\": 0}" > build/module_info.json
+        ./build.py reconfigure
       shell: bash
     - name: Install dependencies
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
     - name: Compiling
       env:
@@ -325,10 +295,7 @@ jobs:
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
         python ./esp-idf/tools/idf_tools.py export --prefer-system
-        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32S2
-        export ESP_AT_MODULE_NAME=WROOM
-        export ESP_AT_PROJECT_PATH=$(pwd)
-        ./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 build
+        ./build.py build
         upload_dir=esp32s2-wroom-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
@@ -354,20 +321,16 @@ jobs:
     - uses: actions/checkout@v2
     - name: clone esp-idf
       run: |
-        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-        git clone -b ${branch_str#*branch:} https://github.com/espressif/esp-idf.git esp-idf
-        cd esp-idf
-        git checkout ${commit_str#*commit:}
-        git submodule update --init --recursive
-        cd -
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        mkdir build
+        echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROVER\", \"silence\": 0}" > build/module_info.json
+        ./build.py reconfigure
       shell: bash
     - name: Install dependencies
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
     - name: Compiling
       env:
@@ -393,10 +356,7 @@ jobs:
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
         python ./esp-idf/tools/idf_tools.py export --prefer-system
-        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32S2
-        export ESP_AT_MODULE_NAME=WROVER
-        export ESP_AT_PROJECT_PATH=$(pwd)
-        ./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 build
+        ./build.py build
         upload_dir=esp32s2-wrover-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
@@ -422,20 +382,16 @@ jobs:
     - uses: actions/checkout@v2
     - name: clone esp-idf
       run: |
-        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-        git clone -b ${branch_str#*branch:} https://github.com/espressif/esp-idf.git esp-idf
-        cd esp-idf
-        git checkout ${commit_str#*commit:}
-        git submodule update --init --recursive
-        cd -
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        mkdir build
+        echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"SOLO\", \"silence\": 0}" > build/module_info.json
+        ./build.py reconfigure
       shell: bash
     - name: Install dependencies
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
     - name: Compiling
       env:
@@ -461,10 +417,7 @@ jobs:
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
         python ./esp-idf/tools/idf_tools.py export --prefer-system
-        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32S2
-        export ESP_AT_MODULE_NAME=SOLO
-        export ESP_AT_PROJECT_PATH=$(pwd)
-        ./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 build
+        ./build.py build
         upload_dir=esp32s2-solo-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
@@ -490,20 +443,16 @@ jobs:
     - uses: actions/checkout@v2
     - name: clone esp-idf
       run: |
-        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
-        git clone -b ${branch_str#*branch:} https://github.com/espressif/esp-idf.git esp-idf
-        cd esp-idf
-        git checkout ${commit_str#*commit:}
-        git submodule update --init --recursive
-        cd -
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        mkdir build
+        echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"MINI\", \"silence\": 0}" > build/module_info.json
+        ./build.py reconfigure
       shell: bash
     - name: Install dependencies
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
     - name: Compiling
       env:
@@ -529,10 +478,7 @@ jobs:
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
         python ./esp-idf/tools/idf_tools.py export --prefer-system
-        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32S2
-        export ESP_AT_MODULE_NAME=MINI
-        export ESP_AT_PROJECT_PATH=$(pwd)
-        ./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 build
+        ./build.py build
         upload_dir=esp32s2-mini-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
@@ -571,31 +517,24 @@ jobs:
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
         echo -e "#endif" >> at_config.h
         cd -
-        
-        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp8266_default/IDF_VERSION)
-        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp8266_default/IDF_VERSION)
-        git clone -b ${branch_str#*branch:} https://github.com/espressif/ESP8266_RTOS_SDK.git esp-idf
-        cd esp-idf
-        git checkout ${commit_str#*commit:}
-        git submodule update --init --recursive
-        cd -
+
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        mkdir build
+        echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02\", \"silence\": 0}" > build/module_info.json
+        ./build.py reconfigure
       shell: bash
     - name: Install dependencies
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
     - name: Compiling
       run: |
         wget --no-check-certificate https://dl.espressif.com/dl/xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
         tar -xzf xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
         export PATH="$PATH:$(pwd)/xtensa-lx106-elf/bin"
-        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP8266
-        export ESP_AT_MODULE_NAME=WROOM-02
-        export ESP_AT_PROJECT_PATH=$(pwd)
-        ./esp-idf/tools/idf.py build
+        ./build.py build
         upload_dir=esp8266-wroom02-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
@@ -621,30 +560,23 @@ jobs:
     - uses: actions/checkout@v2
     - name: clone esp-idf
       run: |
-        commit_str=$(awk '/commit:/{print $0}' module_config/module_esp8266_1mb/IDF_VERSION)
-        branch_str=$(awk '/branch:/{print $0}' module_config/module_esp8266_1mb/IDF_VERSION)
-        git clone -b ${branch_str#*branch:} https://github.com/espressif/ESP8266_RTOS_SDK.git esp-idf
-        cd esp-idf
-        git checkout ${commit_str#*commit:}
-        git submodule update --init --recursive
-        cd -
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        mkdir build
+        echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"ESP8266_1MB\", \"silence\": 0}" > build/module_info.json
+        ./build.py reconfigure
       shell: bash
     - name: Install dependencies
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
     - name: Compiling
       run: |
         wget --no-check-certificate https://dl.espressif.com/dl/xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
         tar -xzf xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
         export PATH="$PATH:$(pwd)/xtensa-lx106-elf/bin"
-        export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP8266
-        export ESP_AT_MODULE_NAME=WROOM-02
-        export ESP_AT_PROJECT_PATH=$(pwd)
-        ./esp-idf/tools/idf.py build
+        ./build.py build
         upload_dir=esp8285-1MB-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
