@@ -50,7 +50,6 @@
 #include "esp32s2/rom/uart.h"
 #endif
 
-
 typedef struct {
     int32_t baudrate;
     int8_t data_bits;
@@ -59,10 +58,17 @@ typedef struct {
     int8_t flow_control;
 } at_nvm_uart_config_struct; 
 
-static const uint8_t esp_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PARITY_ODD, UART_PARITY_EVEN};
+typedef struct {
+    int32_t tx;
+    int32_t rx;
+    int32_t cts;
+    int32_t rts;
+} at_uart_pins_t;
 
-static QueueHandle_t esp_at_uart_queue = NULL;
 static bool at_default_flag = false;
+static at_uart_pins_t s_at_uart_port_pin;
+static QueueHandle_t esp_at_uart_queue = NULL;
+static const uint8_t esp_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PARITY_ODD, UART_PARITY_EVEN};
 
 #if defined(CONFIG_IDF_TARGET_ESP32)
 #define CONFIG_AT_UART_PORT_TX_PIN_DEFAULT          17
@@ -375,7 +381,7 @@ static void at_uart_init(void)
 #elif defined(CONFIG_IDF_TARGET_ESP8266)
     //Install UART driver, and get the queue.
     uart_driver_install(esp_at_uart_port, 1024, 2048, 10,&esp_at_uart_queue, 0);
-    if ((tx_pin == 15) && (rx_pin == 13)) { // sgit wap 
+    if ((tx_pin == 15) && (rx_pin == 13)) {         // swap pin
         uart_enable_swap();
         assert((cts_pin == -1) || (cts_pin == 3));
         assert((rts_pin == -1) || (rts_pin == 1));
@@ -384,6 +390,12 @@ static void at_uart_init(void)
     }
 #endif
     uart_intr_config(esp_at_uart_port, &intr_config);
+
+    // set actual uart pins
+    s_at_uart_port_pin.tx = tx_pin;
+    s_at_uart_port_pin.rx = rx_pin;
+    s_at_uart_port_pin.cts = cts_pin;
+    s_at_uart_port_pin.rts = rts_pin;
 
     xTaskCreate(uart_task, "uTask", 1024, (void*)esp_at_uart_port, 1, NULL);
 }
@@ -622,12 +634,20 @@ void at_status_callback (esp_at_status_type status)
 void at_pre_deepsleep_callback (void)
 {
     /* Do something before deep sleep
-     * Set uart pin for power saving
+     * Set uart pin for power saving, in case of leakage current
     */
-    gpio_set_direction(CONFIG_AT_UART_PORT_TX_PIN_DEFAULT,0);
-    gpio_set_direction(CONFIG_AT_UART_PORT_RX_PIN_DEFAULT,0);
-    gpio_set_direction(CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT,0);
-    gpio_set_direction(CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT,0);
+    if (s_at_uart_port_pin.tx >= 0) {
+        gpio_set_direction(s_at_uart_port_pin.tx, GPIO_MODE_DISABLE);
+    }
+    if (s_at_uart_port_pin.rx >= 0) {
+        gpio_set_direction(s_at_uart_port_pin.rx, GPIO_MODE_DISABLE);
+    }
+    if (s_at_uart_port_pin.cts >= 0) {
+        gpio_set_direction(s_at_uart_port_pin.cts, GPIO_MODE_DISABLE);
+    }
+    if (s_at_uart_port_pin.rts >= 0) {
+        gpio_set_direction(s_at_uart_port_pin.rts, GPIO_MODE_DISABLE);
+    }
 }
 
 void at_pre_restart_callback (void)
