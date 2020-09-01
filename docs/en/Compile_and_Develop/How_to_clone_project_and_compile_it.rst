@@ -82,7 +82,7 @@ The WROOM32S2 Board sends AT commands through UART1 by default.
 -  GPIO19 is RTS
 -  GPIO20 is CTS
 
-The debug log will output through UART0 by default, which TXD0 is GPIO1 and RXD0 is GPIO3, but user can change it in menuconfig if needed:
+The debug log will output through UART0 by default, which TXD0 is GPIO43 and RXD0 is GPIO44, but user can change it in menuconfig if needed:
 
 ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART for console output``
 
