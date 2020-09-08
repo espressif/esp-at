@@ -2,6 +2,7 @@
 ## Wi-Fi AT Commands
 * [AT+CWMODE](#cmd-MODE) : Sets the Wi-Fi mode (STA/AP/STA+AP).
 * [AT+CWJAP](#cmd-JAP) : Connects to an AP.
+* [AT+CWRECONNCFG](#cmd-RECONNCFG) : Configurates WiFi reconnect interval and maximum times.
 * [AT+CWLAPOPT](#cmd-LAPOPT) : Sets the configuration of command AT+CWLAP.
 * [AT+CWLAP](#cmd-LAP) : Lists available APs.
 * [AT+CWQAP](#cmd-QAP) : Disconnects from the AP.
@@ -71,7 +72,7 @@ Query Command:
     Function: to query the AP to which the ESP32 Station is already connected.
 Response:
 
-    +CWJAP:<ssid>,<bssid>,<channel>,<rssi>,<pci_en>,<reconn>,<listen_interval>,<scan_mode>
+    +CWJAP:<ssid>,<bssid>,<channel>,<rssi>,<pci_en>,<reconn_interval>,<listen_interval>,<scan_mode>
     OK
 Parameters:
 
@@ -80,7 +81,7 @@ Parameters:
 - **\<channel>**: channel
 - **\<rssi>**: signal strength
 - **\[\<pci_en>]**: PCI Authentication, which will disable connect OPEN and WEP AP.
-- **\[\<reconn>]**: Wi-Fi reconnection, when beacon timeout, ESP32 will reconnect automatically.
+- **\[\<reconn_interval>]**: Wi-Fi reconnection, when beacon timeout, ESP32 will reconnect automatically.
 - **\[\<listen_interval>]**: the interval of listening to the AP's beacon,the range is (0,100]
 - **\[\<scan_mode>]**: 
     - 0: Do fast scan, scan will end after find SSID match AP, Wi-Fi will connect the first scanned AP.
@@ -88,7 +89,7 @@ Parameters:
 
 Set Command:
 
-    AT+CWJAP=<ssid>,<pwd>[,<bssid>][,<pci_en>][,<reconn>][,<listen_interval>][,<scan_mode>]
+    AT+CWJAP=<ssid>,<pwd>[,<bssid>][,<pci_en>][,<reconn_interval>][,<listen_interval>][,<scan_mode>]
     Function: to set the AP to which the ESP32 Station needs to be connected.
 Response:
 
@@ -103,7 +104,7 @@ Parameters:
 - **\<pwd>**: password, MAX: 64-byte ASCII.
 - **\[\<bssid>]**: the target AP's MAC address, used when multiple APs have the same SSID.
 - **\[\<pci_en>]**: enable PCI Authentication, which will disable connect OPEN and WEP AP.
-- **\[\<reconn>]**: enable Wi-Fi reconnection, when beacon timeout, ESP32 will reconnect automatically.
+- **\[\<reconn_interval>]**: configurate Wi-Fi reconnect interval, when disconnected for AP, esp-at will reconnect automatically, unit: seconds.
 - **\[\<listen_interval>]**: the interval of listening to the AP's beacon,the range is (0,100], by default, the value is 3.
 - **\<error code>**: (for reference only)
     - 1: connection timeout.
@@ -117,8 +118,9 @@ Parameters:
 
 ***Note:***
 
-* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.  
-* This command requires Station mode to be active. 
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.
+* This command requires Station mode to be active.
+* When reconn is omitted, the last reconnection mechanism will be adopted; if not, this command will change the <interval_second> parameter of `AT+CWRECONNCFG`.
 
 Examples:
 
@@ -127,6 +129,49 @@ Examples:
     AT+CWJAP="ab\\\,c","0123456789\"\\"
     If multiple APs have the same SSID as "abc", the target AP can be found by BSSID:
     AT+CWJAP="abc","0123456789","ca:d7:19:d8:a6:44" 
+
+<a name="cmd-RECONNCFG"></a>
+### [AT+CWRECONNCFG](#WiFi-AT)—Configurates WiFi reconnect interval and maximum times
+Query Command:
+
+    AT+CWRECONNCFG?
+    Function: to query the configuration of WiFi reconnect.
+
+Response:
+
+    +CWRECONNCFG:<interval_second>,<repeat_count>
+    OK
+
+Set Command:
+
+    AT+CWRECONNCFG=<interval_second>,<repeat_count>
+    Function: to set the configuration of WiFi reconnect.
+
+Response:
+
+    OK
+
+Parameters:
+
+- **\<interval_second>**: WiFi reconnect interval second, unit: second, maximum value: 7200, defaut value: 0.
+    - 0: esp-at will not reconnect to AP when WiFi disconnected.
+    - [1,7200]: esp-at will reconnect to AP after <interval_second> seconds when WiFi disconnected.
+- **\<repeat_count>**: WiFi reconnect to AP times, maximum value: 1000, defaut value: 0, this parameter only works when <interval_second> is not 0.
+    - 0: esp-at will always try to reconnect to AP.
+    - [1,1000]: attempt to reconnect to AP <repeat_count> times.
+
+Examples:
+
+    1. esp-at will try to reconnect to AP 100 times, every reconnection interval is one second.
+        AT+CWRECONNCFG=1,100
+    2. esp-at will not reconnect to AP when WiFi disconnected.
+        AT+CWRECONNCFG=0,0
+
+***Note:***
+
+* The <interval_second> parameter of this command is same to the <reconn_interval> parameter of `AT+CWJAP`.
+* This command only works for passive disconnect from AP.
+
 <a name="cmd-LAPOPT"></a>
 ### [AT+CWLAPOPT](#WiFi-AT)—Sets the Configuration for the Command AT+CWLAP
 Set Command:
