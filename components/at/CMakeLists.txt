@@ -4,6 +4,8 @@ set(require_components ${IDF_TARGET} mqtt mdns esp_http_client json freertos spi
 
 if ("${IDF_TARGET}" STREQUAL "esp32")
     list(APPEND require_components bt fatfs)
+elseif ("${IDF_TARGET}" STREQUAL "esp32s2")
+    list(APPEND require_components fatfs)
 elseif ("${IDF_TARGET}" STREQUAL "esp8266")
     list(APPEND require_components nvs_flash)
 endif()
