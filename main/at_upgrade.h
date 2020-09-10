@@ -26,11 +26,16 @@
 #define __AT_UPGRADE_H__
 
 typedef enum {
+    AT_UPGRADE_SYSTEM_FIRMWARE = 0,
+    AT_UPGRADE_CUSTOM_PARTITION,
+} at_upgrade_type_t;
+
+typedef enum {
     ESP_AT_OTA_MODE_NORMAL = 0,
     ESP_AT_OTA_MODE_SSL,
 } esp_at_ota_mode_type;
 
-bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode,uint8_t* version);
+bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, const char *partition_name);
 
 #endif
 
