@@ -609,6 +609,10 @@ Example:
     AT+SLEEPWKCFG=1,1     // Uart1 wakeup, Only Support ESP32
     AT+SLEEPWKCFG=2,12,0  // GPIO12 wakeup, low level.
 
+***Notes:***
+
+* GPIO16 as the RTC IO can not be set as GPIO wakeup source on ESP8266 platform for light sleep.
+
 <a name="cmd-SYSSTORE"></a>
 ### [AT+SYSSTORE](#Basic-AT)— Config parameter store mode
 Query Command:  
