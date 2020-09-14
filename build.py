@@ -143,7 +143,7 @@ def build_project(platform_name, module_name, silence, build_args):
         ./esp-idf/tools/idf.py -DIDF_TARGET={} {}'.format(platform_name, module_name, os.getcwd(), silence, idf_target, build_args)
 
     subprocess.call(cmd, shell = True)
-    subprocess.call('cp build/flash_project_args build/download.config', shell = True)
+    subprocess.call('cat build/flash_project_args | tr "\n" " " > build/download.config', shell = True)
 
 def get_param_data_info(source_file, sheet_name):
     filename,filetype = os.path.splitext(source_file)
