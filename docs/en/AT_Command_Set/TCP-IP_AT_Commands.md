@@ -583,31 +583,40 @@ Example:
 * asctime style time is defined at [asctime man page](https://linux.die.net/man/3/asctime)
 
 <a name="cmd-UPDATE"></a>
-### [AT+CIUPDATE](#TCPIP-AT)—Updates the Software Through Wi-Fi
+### [AT+CIUPDATE](#TCPIP-AT) - Upgrade the Firmware Through Wi-Fi
+esp-at upgrades firmware at runtime by downloading new firmware from specific server through Wi-Fi and then flash it into some partitions.
+
 Execute Command:
 
     AT+CIUPDATE  
-    Function: OTA the lastest version via TCP from server.
+    Function: Upgrade OTA the latest version of firmware via TCP from server.
 Response:
 
     +CIPUPDATE:<n>
     OK
+Or
 
-Execute Command:
+    ERROR
 
-    AT+CIUPDATE=<ota mode>[,version]  
-    Function: OTA the specified version from server.  
+Set Command:
+
+    AT+CIUPDATE=<ota mode>[,<version>],[,<firmware name>]
+    Function: Upgrade the specified version of firmware from server.
 Response:
 
     +CIPUPDATE:<n>
     OK
+Or
+
+    ERROR
+
 Parameters:
-
 - **\<ota mode>**:
     - 0: OTA via TCP
-    - 1: OTA via SSL, please ensure `make menuconfig` > `Component config` > `AT` > `OTA based upon ssl` is enabled.
+    - 1: OTA via TLS, please ensure `make menuconfig` > `Component config` > `AT` > `OTA based upon ssl` is enabled.
 - **\<version>**: AT version, for example, `v1.2.0.0`, `v1.1.3.0`,`v1.1.2.0`
-- **\<n>**: 
+- **\<firmware name>**: Firmware name to upgrade, for example, `ota`, `mqtt_ca`, `client_ca` or other custom partition in `at_customize.csv`
+- **\<n>**:
     - 1: find the server.
     - 2: connect to server.
     - 3: get the software version.
@@ -616,9 +625,8 @@ Parameters:
 Example:
 
     AT+CIUPDATE  
-Or
-
     AT+CIUPDATE=1,"v1.2.0.0"
+    AT+CIUPDATE=1,"v2.2.0.0","mqtt_ca"
 
 ***Notes:***
 
