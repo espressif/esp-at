@@ -76,7 +76,7 @@ static void esp_at_ota_timeout_callback( TimerHandle_t xTimer )
     }
 }
 
-bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode,uint8_t* version)
+bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, const char *partition_name)
 {
     bool pkg_body_start = false;
     struct sockaddr_in sock_info;
@@ -99,11 +99,19 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode,uint8_t* version)
     uint16_t server_port = 0;
     const char* ota_key = NULL;
     uint32_t module_id = esp_at_get_module_id();
-    
+    at_upgrade_type_t upgrade_type = 0;
+    const esp_partition_t *at_custom_partition = NULL;
+
 #ifdef CONFIG_AT_OTA_SSL_SUPPORT
     esp_tls_t *tls = NULL;
     esp_tls_cfg_t *tls_cfg = NULL;
 #endif
+
+    if (memcmp(partition_name, "ota", strlen("ota")) == 0) {
+        upgrade_type = AT_UPGRADE_SYSTEM_FIRMWARE;
+    } else {
+        upgrade_type = AT_UPGRADE_CUSTOM_PARTITION;
+    }
 
     ESP_AT_OTA_DEBUG("ota_mode:%d\r\n",ota_mode);
     if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
@@ -252,48 +260,63 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode,uint8_t* version)
         *pStr = '\0';
     }
     printf("version:%s\r\n",version);
+
     snprintf((char*)http_request,TEXT_BUFFSIZE,
-        "GET /v1/device/rom/?action=download_rom&version=%s&filename=ota.bin HTTP/1.1\r\nHost: "IPSTR":%d\r\n"pheadbuffer"",
-        (char*)version, IP2STR(&ip_address.u_addr.ip4),
-        server_port, ota_key);
+        "GET /v1/device/rom/?action=download_rom&version=%s&filename=%s.bin HTTP/1.1\r\nHost: "IPSTR":%d\r\n"pheadbuffer"",
+        (char*)version, partition_name, IP2STR(&ip_address.u_addr.ip4), server_port, ota_key);
 
-    // search ota partition
-    partition_ptr = (esp_partition_t*)esp_ota_get_boot_partition();
-    if (partition_ptr == NULL) {
-        ESP_AT_OTA_DEBUG("boot partition NULL!\r\n");
-        goto OTA_ERROR;
-    }
-    if (partition_ptr->type != ESP_PARTITION_TYPE_APP)
-    {
-        ESP_AT_OTA_DEBUG("esp_current_partition->type != ESP_PARTITION_TYPE_APP\r\n");
-        goto OTA_ERROR;
-    }
-
-    if (partition_ptr->subtype == ESP_PARTITION_SUBTYPE_APP_FACTORY) {
-        partition.subtype = ESP_PARTITION_SUBTYPE_APP_OTA_0;
-    } else {
-        next_partition = esp_ota_get_next_update_partition(partition_ptr);
-
-        if (next_partition) {
-            partition.subtype = next_partition->subtype;
-        } else {
-            partition.subtype = ESP_PARTITION_SUBTYPE_APP_OTA_0;
+    // search partition
+    if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {  // search ota partition
+        partition_ptr = (esp_partition_t*)esp_ota_get_boot_partition();
+        if (partition_ptr == NULL) {
+            ESP_AT_OTA_DEBUG("boot partition NULL!\r\n");
+            goto OTA_ERROR;
         }
-    }
+        if (partition_ptr->type != ESP_PARTITION_TYPE_APP)
+        {
+            ESP_AT_OTA_DEBUG("esp_current_partition->type != ESP_PARTITION_TYPE_APP\r\n");
+            goto OTA_ERROR;
+        }
 
-    partition.type = ESP_PARTITION_TYPE_APP;
+        if (partition_ptr->subtype == ESP_PARTITION_SUBTYPE_APP_FACTORY) {
+            partition.subtype = ESP_PARTITION_SUBTYPE_APP_OTA_0;
+        } else {
+            next_partition = esp_ota_get_next_update_partition(partition_ptr);
 
-    partition_ptr = (esp_partition_t*)esp_partition_find_first(partition.type,partition.subtype,NULL);
-    if (partition_ptr == NULL) {
-        ESP_AT_OTA_DEBUG("partition NULL!\r\n");
-        goto OTA_ERROR;
-    }
+            if (next_partition) {
+                partition.subtype = next_partition->subtype;
+            } else {
+                partition.subtype = ESP_PARTITION_SUBTYPE_APP_OTA_0;
+            }
+        }
 
-    memcpy(&partition,partition_ptr,sizeof(esp_partition_t));
-    if(esp_ota_begin(&partition, OTA_SIZE_UNKNOWN, &out_handle) != ESP_OK)
-    {
-        ESP_AT_OTA_DEBUG("esp_ota_begin failed!\r\n");
-        goto OTA_ERROR;
+        partition.type = ESP_PARTITION_TYPE_APP;
+
+        partition_ptr = (esp_partition_t*)esp_partition_find_first(partition.type,partition.subtype,NULL);
+        if (partition_ptr == NULL) {
+            ESP_AT_OTA_DEBUG("partition NULL!\r\n");
+            goto OTA_ERROR;
+        }
+
+        memcpy(&partition,partition_ptr,sizeof(esp_partition_t));
+        if (esp_ota_begin(&partition, OTA_SIZE_UNKNOWN, &out_handle) != ESP_OK) {
+            ESP_AT_OTA_DEBUG("esp_ota_begin failed!\r\n");
+            goto OTA_ERROR;
+        }
+        ESP_AT_OTA_DEBUG("ready to upgrade system firmware.\r\n");
+    } else {    // custom partition
+        at_custom_partition = esp_at_custom_partition_find(0x0, 0x0, partition_name);
+        if (at_custom_partition == NULL) {
+            ESP_AT_OTA_DEBUG("no custom partition: %s\r\n", partition_name);
+            goto OTA_ERROR;
+        }
+        ESP_AT_OTA_DEBUG("ready to upgrade partition: \"%s\" type:0x%x subtype:0x%x addr:0x%x size:0x%x encrypt:%d\r\n",
+        at_custom_partition->label, at_custom_partition->type, at_custom_partition->subtype,
+        at_custom_partition->address, at_custom_partition->size, at_custom_partition->encrypted);
+        if (esp_partition_erase_range(at_custom_partition, 0, at_custom_partition->size) != ESP_OK) {
+            ESP_AT_OTA_DEBUG("esp_partition_erase_range failed!\r\n");
+            goto OTA_ERROR;
+        }
     }
 
     if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
@@ -373,24 +396,41 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode,uint8_t* version)
             if (pStr) {
                 pkg_body_start = true;
                 pStr += 4; // skip "\r\n"
-                if (pStr[0] != 0xE9) {
-                    ESP_AT_OTA_DEBUG("OTA Write Header format Check Failed! first byte is %02x\r\n", pStr[0]);
-                    goto OTA_ERROR;
+                if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {
+                    if (pStr[0] != 0xE9) {
+                        ESP_AT_OTA_DEBUG("OTA Write Header format Check Failed! first byte is %02x\r\n", pStr[0]);
+                        goto OTA_ERROR;
+                    }
                 }
                 // pStr += 2;
                 buff_len -= (pStr - data_buffer);
-                if(esp_ota_write(out_handle, (const void*)pStr, buff_len) != ESP_OK)
-                {
-                    ESP_AT_OTA_DEBUG("esp_ota_write failed!\r\n");
-                    goto OTA_ERROR;
+
+                if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {
+                    if(esp_ota_write(out_handle, (const void*)pStr, buff_len) != ESP_OK)
+                    {
+                        ESP_AT_OTA_DEBUG("esp_ota_write failed!\r\n");
+                        goto OTA_ERROR;
+                    }
+                } else {
+                    if (esp_partition_write(at_custom_partition, recv_len, pStr, buff_len) != ESP_OK) {
+                        ESP_AT_OTA_DEBUG("esp_partition_write failed!\r\n");
+                        goto OTA_ERROR;
+                    }
                 }
 
                 recv_len += buff_len;
             }
         } else if (buff_len > 0 && pkg_body_start) {
-            if(esp_ota_write( out_handle, (const void*)data_buffer, buff_len) != ESP_OK) {
-                ESP_AT_OTA_DEBUG("esp_ota_write failed!\r\n");
-                goto OTA_ERROR;
+            if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {
+                if(esp_ota_write( out_handle, (const void*)data_buffer, buff_len) != ESP_OK) {
+                    ESP_AT_OTA_DEBUG("esp_ota_write failed!\r\n");
+                    goto OTA_ERROR;
+                }
+            } else {
+                if (esp_partition_write(at_custom_partition, recv_len, data_buffer, buff_len) != ESP_OK) {
+                    ESP_AT_OTA_DEBUG("esp_partition_write failed!\r\n");
+                    goto OTA_ERROR;
+                }
             }
 
             recv_len += buff_len;
@@ -408,16 +448,18 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode,uint8_t* version)
         }
     }
 
-    if(esp_ota_end(out_handle) != ESP_OK)
-    {
-        ESP_AT_OTA_DEBUG("esp_ota_end failed!\r\n");
-        goto OTA_ERROR;
-    }
+    if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {
+        if(esp_ota_end(out_handle) != ESP_OK)
+        {
+            ESP_AT_OTA_DEBUG("esp_ota_end failed!\r\n");
+            goto OTA_ERROR;
+        }
 
-    if(esp_ota_set_boot_partition(&partition) != ESP_OK)
-    {
-        ESP_AT_OTA_DEBUG("esp_ota_set_boot_partition failed!\r\n");
-        goto OTA_ERROR;
+        if(esp_ota_set_boot_partition(&partition) != ESP_OK)
+        {
+            ESP_AT_OTA_DEBUG("esp_ota_set_boot_partition failed!\r\n");
+            goto OTA_ERROR;
+        }
     }
     esp_at_port_write_data((uint8_t*)"+CIPUPDATE:4\r\n",strlen("+CIPUPDATE:4\r\n"));
 
