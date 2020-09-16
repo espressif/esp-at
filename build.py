@@ -122,8 +122,9 @@ def auto_update_idf(platform_name, module_name):
         print('old commit:{}'.format(rev_parse_head))
         print('checkout commit:{}'.format(idf_commit))
         print('Please wait for the update to complete, which will take some time')
-        subprocess.call('git checkout {}'.format(idf_commit), shell = True)
-        subprocess.call('git checkout --recurse-submodules', shell = True)
+        subprocess.call('cd esp-idf; git pull', shell = True)
+        subprocess.call('cd esp-idf; git checkout {}'.format(idf_commit), shell = True)
+        subprocess.call('cd esp-idf; git submodule update --init --recursive', shell = True)
         print('Update completed')
 
 def build_project(platform_name, module_name, silence, build_args):
