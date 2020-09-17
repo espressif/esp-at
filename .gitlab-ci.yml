@@ -2,6 +2,75 @@ stages:
   - build
   - deploy
 
+# global variables
+variables: &global-variables
+  IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
+  GIT_STRATEGY: clone
+
+.before_build_esp32_series: &before_build_esp32_series
+  - cd main
+  - rm -f at_config.h
+  - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+  - echo -e "#define __AT_CONFIG_H__" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
+  - echo -e "#endif" >> at_config.h
+  - cd -
+  # (the same regular expressions are used to set these are used in 'only:' sections below
+  - source ./esp-idf/tools/ci/configure_ci_environment.sh
+  - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
+  # fetch the submodules (& if necessary re-fetch repo) from gitlab
+  - time ./esp-idf/tools/ci/get-full-sources.sh
+
+
+.before_build_esp32s2_series: &before_build_esp32s2_series
+  - cd main
+  - rm -f at_config.h
+  - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+  - echo -e "#define __AT_CONFIG_H__" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
+  - echo -e "#endif" >> at_config.h
+  - cd -
+  # (the same regular expressions are used to set these are used in 'only:' sections below
+  - source ./esp-idf/tools/ci/configure_ci_environment.sh
+  - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
+  # fetch the submodules (& if necessary re-fetch repo) from gitlab
+  - time ./esp-idf/tools/ci/get-full-sources.sh
+
+.before_build_esp8266_series: &before_build_esp8266_series
+  - cd main
+  - rm -f at_config.h
+  - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+  - echo -e "#define __AT_CONFIG_H__" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
+  - echo -e "#endif" >> at_config.h
+  - cd -
+  # (the same regular expressions are used to set these are used in 'only:' sections below
+  - source ./esp-idf/tools/ci/configure_ci_environment.sh
+  - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
+  # fetch the submodules (& if necessary re-fetch repo) from gitlab
+  # - time ./esp-idf/tools/ci/get-full-sources.sh
+
 esp32_wroom_at:
   stage: build
   image: $CI_DOCKER_REGISTRY/esp32-ci-env
@@ -9,8 +78,7 @@ esp32_wroom_at:
     - build
 
   variables:
-    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
-    GIT_STRATEGY: clone
+    <<: *global-variables
     
   artifacts:
     paths:
@@ -34,31 +102,15 @@ esp32_wroom_at:
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
   script:
-    - cd main
-    - rm -f at_config.h
-    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-    - echo -e "#endif" >> at_config.h
-    - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
     - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32_default/IDF_VERSION
     - mkdir build
     # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"silence\": 0}" > build/module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
     - ./build.py reconfigure
-    # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./esp-idf/tools/ci/configure_ci_environment.sh
-    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-    # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
+    - *before_build_esp32_series
     - ./build.py build
 
 esp32_wrover_at:
@@ -68,8 +120,7 @@ esp32_wrover_at:
     - build
 
   variables:
-    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
-    GIT_STRATEGY: clone
+    <<: *global-variables
     
   artifacts:
     paths:
@@ -93,31 +144,15 @@ esp32_wrover_at:
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
   script:
-    - cd main
-    - rm -f at_config.h
-    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-    - echo -e "#endif" >> at_config.h
-    - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
     - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_wrover-32/IDF_VERSION
     - mkdir build
     # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"silence\": 0}" > build/module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
     - ./build.py reconfigure
-    # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./esp-idf/tools/ci/configure_ci_environment.sh
-    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-    # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
+    - *before_build_esp32_series
     - ./build.py build
 
 pico_d4_at:
@@ -127,8 +162,7 @@ pico_d4_at:
     - build
 
   variables:
-    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
-    GIT_STRATEGY: clone
+    <<: *global-variables
     
   artifacts:
     paths:
@@ -152,31 +186,15 @@ pico_d4_at:
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
   script:
-    - cd main
-    - rm -f at_config.h
-    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-    - echo -e "#endif" >> at_config.h
-    - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
     - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32_default/IDF_VERSION
     - mkdir build
     # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"silence\": 0}" > build/module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
     - ./build.py reconfigure
-    # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./esp-idf/tools/ci/configure_ci_environment.sh
-    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-    # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
+    - *before_build_esp32_series
     - ./build.py build
 
 
@@ -187,8 +205,7 @@ solo_1_at:
     - build
 
   variables:
-    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
-    GIT_STRATEGY: clone
+    <<: *global-variables
     
   artifacts:
     paths:
@@ -212,31 +229,15 @@ solo_1_at:
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
   script:
-    - cd main
-    - rm -f at_config.h
-    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-    - echo -e "#endif" >> at_config.h
-    - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
     - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32_default/IDF_VERSION
     - mkdir build
     # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"silence\": 0}" > build/module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
     - ./build.py reconfigure
-    # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./esp-idf/tools/ci/configure_ci_environment.sh
-    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-    # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
+    - *before_build_esp32_series
     - ./build.py build
 
 esp32s2_wroom_at:
@@ -246,8 +247,7 @@ esp32s2_wroom_at:
     - build
 
   variables:
-    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
-    GIT_STRATEGY: clone
+    <<: *global-variables
     
   artifacts:
     paths:
@@ -271,31 +271,15 @@ esp32s2_wroom_at:
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
   script:
-    - cd main
-    - rm -f at_config.h
-    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-    - echo -e "#endif" >> at_config.h
-    - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
     - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32s2_default/IDF_VERSION
     - mkdir build
     # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROOM\", \"silence\": 0}" > build/module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROOM\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
     - ./build.py reconfigure
-    # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./esp-idf/tools/ci/configure_ci_environment.sh
-    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-    # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROOM\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
+    - *before_build_esp32s2_series
     - ./build.py build
 
 esp32s2_wrover_at:
@@ -305,8 +289,7 @@ esp32s2_wrover_at:
     - build
 
   variables:
-    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
-    GIT_STRATEGY: clone
+    <<: *global-variables
     
   artifacts:
     paths:
@@ -330,31 +313,15 @@ esp32s2_wrover_at:
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
   script:
-    - cd main
-    - rm -f at_config.h
-    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-    - echo -e "#endif" >> at_config.h
-    - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
     - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32s2_default/IDF_VERSION
     - mkdir build
     # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROVER\", \"silence\": 0}" > build/module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROVER\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
     - ./build.py reconfigure
-    # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./esp-idf/tools/ci/configure_ci_environment.sh
-    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-    # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROVER\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
+    - *before_build_esp32s2_series
     - ./build.py build
 
 esp32s2_solo_at:
@@ -364,8 +331,7 @@ esp32s2_solo_at:
     - build
 
   variables:
-    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
-    GIT_STRATEGY: clone
+    <<: *global-variables
     
   artifacts:
     paths:
@@ -389,31 +355,15 @@ esp32s2_solo_at:
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
   script:
-    - cd main
-    - rm -f at_config.h
-    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-    - echo -e "#endif" >> at_config.h
-    - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
     - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32s2_default/IDF_VERSION
     - mkdir build
     # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"SOLO\", \"silence\": 0}" > build/module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"SOLO\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
     - ./build.py reconfigure
-    # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./esp-idf/tools/ci/configure_ci_environment.sh
-    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-    # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"SOLO\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
+    - *before_build_esp32s2_series
     - ./build.py build
 
 esp32s2_mini_at:
@@ -423,8 +373,7 @@ esp32s2_mini_at:
     - build
 
   variables:
-    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
-    GIT_STRATEGY: clone
+    <<: *global-variables
     
   artifacts:
     paths:
@@ -448,31 +397,15 @@ esp32s2_mini_at:
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
   script:
-    - cd main
-    - rm -f at_config.h
-    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-    - echo -e "#endif" >> at_config.h
-    - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
     - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32s2_default/IDF_VERSION
     - mkdir build
     # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"MINI\", \"silence\": 0}" > build/module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"MINI\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
     - ./build.py reconfigure
-    # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./esp-idf/tools/ci/configure_ci_environment.sh
-    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-    # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"MINI\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
+    - *before_build_esp32s2_series
     - ./build.py build
 
 esp8266_wroom_02_at:
@@ -482,8 +415,7 @@ esp8266_wroom_02_at:
     - build
 
   variables:
-    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
-    GIT_STRATEGY: clone
+    <<: *global-variables
     
   artifacts:
     paths:
@@ -507,33 +439,15 @@ esp8266_wroom_02_at:
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
   script:
-    - cd main
-    - rm -f at_config.h
-    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-
-    - echo -e "#endif" >> at_config.h
-    - cd -
-
     # replace submodule esp-idf to internal repository to speedup cloning
     - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}/sdk"?g' module_config/module_esp8266_default/IDF_VERSION
     - mkdir build
     # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02\", \"silence\": 0}" > build/module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02\", \"description\": \"TX:15 RX:13\", \"silence\": 0}" > build/module_info.json'
     - ./build.py reconfigure
-    # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./esp-idf/tools/ci/configure_ci_environment.sh
-    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-    # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    # - time ./esp-idf/tools/ci/get-full-sources.sh
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02\", \"description\": \"TX:15 RX:13\", \"silence\": 0}" > build/module_info.json'
+    - *before_build_esp8266_series
     - ./build.py build
 
 esp8266_1MB_at:
@@ -543,8 +457,7 @@ esp8266_1MB_at:
     - build
 
   variables:
-    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
-    GIT_STRATEGY: clone
+    <<: *global-variables
     
   artifacts:
     paths:
@@ -568,32 +481,15 @@ esp8266_1MB_at:
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
   script:
-    - cd main
-    - rm -f at_config.h
-    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-    - echo -e "#endif" >> at_config.h
-    - cd -
-
     # replace submodule esp-idf to internal repository to speedup cloning
     - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}/sdk"?g' module_config/module_esp8266_default/IDF_VERSION
     - mkdir build
     # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"ESP8266_1MB\", \"silence\": 0}" > build/module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"ESP8266_1MB\", \"description\": \"\", \"silence\": 0}" > build/module_info.json'
     - ./build.py reconfigure
-    # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./esp-idf/tools/ci/configure_ci_environment.sh
-    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-    # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    # - time ./esp-idf/tools/ci/get-full-sources.sh
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"ESP8266_1MB\", \"description\": \"\", \"silence\": 0}" > build/module_info.json'
+    - *before_build_esp8266_series
     - ./build.py build
 
 esp8266_wroom_5V2L_at:
@@ -603,8 +499,7 @@ esp8266_wroom_5V2L_at:
     - build
 
   variables:
-    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
-    GIT_STRATEGY: clone
+    <<: *global-variables
     
   artifacts:
     paths:
@@ -628,31 +523,15 @@ esp8266_wroom_5V2L_at:
     - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
   script:
-    - cd main
-    - rm -f at_config.h
-    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-    - echo -e "#endif" >> at_config.h
-    - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
     - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}/sdk"?g' module_config/module_esp8266_default/IDF_VERSION
     - mkdir build
     # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-5V2L\", \"silence\": 0}" > build/module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-5V2L\", \"description\": \"\", \"silence\": 0}" > build/module_info.json'
     - ./build.py reconfigure
-    # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./esp-idf/tools/ci/configure_ci_environment.sh
-    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-    # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    # - time ./esp-idf/tools/ci/get-full-sources.sh
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-5V2L\", \"description\": \"\", \"silence\": 0}" > build/module_info.json'
+    - *before_build_esp8266_series
     - ./build.py build
 
 push_master_to_github:
@@ -686,8 +565,7 @@ esp32_demo:
     - build
 
   variables:
-    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
-    GIT_STRATEGY: clone
+    <<: *global-variables
 
   before_script:
     - mkdir -p ~/.ssh
@@ -741,8 +619,7 @@ wrover32_all_function_at:
     - build
 
   variables:
-    IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
-    GIT_STRATEGY: clone
+    <<: *global-variables
     
   artifacts:
     paths:
@@ -767,21 +644,6 @@ wrover32_all_function_at:
     - git submodule update --init --recursive
 
   script:
-    - cd main
-    - rm -f at_config.h
-    - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-    - echo -e "#endif" >> at_config.h
-    - cd -
-
     - echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
     - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
     - echo -e "CONFIG_AT_ETHERNET_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
@@ -800,13 +662,11 @@ wrover32_all_function_at:
     - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_wrover-32/IDF_VERSION
     - mkdir build
     # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"silence\": 0}" > build/module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
     - ./build.py reconfigure
-    # (the same regular expressions are used to set these are used in 'only:' sections below
-    - source ./esp-idf/tools/ci/configure_ci_environment.sh
-    - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-    # fetch the submodules (& if necessary re-fetch repo) from gitlab
-    - time ./esp-idf/tools/ci/get-full-sources.sh
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
+    - *before_build_esp32_series
     - ./build.py build
 
 build_docs:

@@ -29,29 +29,38 @@ import sys
 import subprocess
 import json
 
+
 def gitee_repo_preprocess():
     print('Redirect IDF url to https://gitee.com/EspressifSystems')
     return 'https://gitee.com/EspressifSystems'
 
+
 def gitee_repo_postprocess():
     print('IDF is Cloned from https://gitee.com/EspressifSystems')
 
-    subprocess.call('cd esp-idf; git submodule init', shell = True)
-    submodule_lists = subprocess.check_output(['git', 'config', '-f', 'esp-idf/.gitmodules', '--list']).decode(encoding="utf-8")
+    subprocess.call('cd esp-idf; git submodule init', shell=True)
+    submodule_lists = subprocess.check_output(['git', 'config', '-f', 'esp-idf/.gitmodules', '--list']).decode(
+        encoding="utf-8")
 
     for line in submodule_lists.split():
         if line.find('.url=') > 0:
             submodule = line.split('=')
             submodule_name = os.path.basename(submodule[1])
-            print('Redirect {} to {}'.format(submodule[0], os.path.join('https://gitee.com/esp-submodules', submodule_name)))
-            subprocess.call('cd esp-idf; git config {} {}'.format(submodule[0], os.path.join('https://gitee.com/esp-submodules', submodule_name)), shell = True)
+            print('Redirect {} to {}'.format(submodule[0],
+                                             os.path.join('https://gitee.com/esp-submodules', submodule_name)))
+            subprocess.call('cd esp-idf; git config {} {}'.format(submodule[0],
+                                                                  os.path.join('https://gitee.com/esp-submodules',
+                                                                               submodule_name)), shell=True)
 
     print('Update submodule...')
-    subprocess.call('cd esp-idf; git submodule update', shell = True)
+    subprocess.call('cd esp-idf; git submodule update', shell=True)
+
 
 preprocess_url = {
-    'https://gitee.com/EspressifSystems/esp-at.git':    {'proprocess': gitee_repo_preprocess,  'postprocess': gitee_repo_postprocess},
+    'https://gitee.com/EspressifSystems/esp-at.git': {'proprocess': gitee_repo_preprocess,
+                                                      'postprocess': gitee_repo_postprocess},
 }
+
 
 def auto_update_idf(platform_name, module_name):
     config_dir = os.path.join(os.getcwd(), 'module_config/module_{}'.format(module_name.lower()))
@@ -95,7 +104,7 @@ def auto_update_idf(platform_name, module_name):
 
     if len(idf_branch) <= 0:
         sys.exit('ERROR: idf branch is not defined')
-    
+
     if len(idf_commit) <= 0:
         sys.exit('ERROR: idf commit is not defined')
 
@@ -112,12 +121,12 @@ def auto_update_idf(platform_name, module_name):
             idf_url = os.path.join(new_url, os.path.basename(idf_url))
 
         print('Please wait for the SDK download to finish...')
-        subprocess.call('git clone -b {} {} esp-idf'.format(idf_branch, idf_url), shell = True)
+        subprocess.call('git clone -b {} {} esp-idf'.format(idf_branch, idf_url), shell=True)
 
         if project_url in preprocess_url:
             new_url = preprocess_url[project_url]['postprocess']()
 
-    rev_parse_head = subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode(encoding="utf-8")
+    rev_parse_head = subprocess.check_output(['cd esp-idf; git rev-parse HEAD'], shell = True).decode(encoding="utf-8").strip()
     if rev_parse_head != idf_commit:
         print('old commit:{}'.format(rev_parse_head))
         print('checkout commit:{}'.format(idf_commit))
@@ -126,6 +135,7 @@ def auto_update_idf(platform_name, module_name):
         subprocess.call('cd esp-idf; git checkout {}'.format(idf_commit), shell = True)
         subprocess.call('cd esp-idf; git submodule update --init --recursive', shell = True)
         print('Update completed')
+
 
 def build_project(platform_name, module_name, silence, build_args):
     if platform_name == 'ESP32':
@@ -136,26 +146,26 @@ def build_project(platform_name, module_name, silence, build_args):
         idf_target = 'esp8266'
     else:
         sys.exit('Platform "{}" is not supported'.format(platform_name))
-
     cmd = 'export ESP_AT_PROJECT_PLATFORM=PLATFORM_{}; \
         export ESP_AT_MODULE_NAME={}; \
         export ESP_AT_PROJECT_PATH={}; \
         export SILENCE={}; \
-        ./esp-idf/tools/idf.py -DIDF_TARGET={} {}'.format(platform_name, module_name, os.getcwd(), silence, idf_target, build_args)
+        ./esp-idf/tools/idf.py -DIDF_TARGET={} {}'.format(platform_name, module_name, os.getcwd(), silence, idf_target,
+                                                          build_args)
 
     subprocess.call(cmd, shell = True)
     subprocess.call('cat build/flash_project_args | tr "\n" " " > build/download.config', shell = True)
 
 def get_param_data_info(source_file, sheet_name):
-    filename,filetype = os.path.splitext(source_file)
+    filename, filetype = os.path.splitext(source_file)
     if filetype == '.xlsx':
         data = xlrd.open_workbook(source_file)
         sheet = data.sheet_by_name(sheet_name)
         headers = sheet.row_values(0)
 
-        for row in range(1,sheet.nrows):
+        for row in range(1, sheet.nrows):
             dict = {}
-            for col in range(1,sheet.ncols):
+            for col in range(1, sheet.ncols):
                 dict[headers[col]] = sheet.row_values(row)[col]
 
             param_data_dicts[sheet.row_values(row)[0]] = dict
@@ -170,9 +180,11 @@ def get_param_data_info(source_file, sheet_name):
 
     return param_data_list
 
+
 def get_platform_and_module_lists():
     platform_lists = {}
-    data_lists = get_param_data_info(os.path.join('components/customized_partitions/raw_data/factory_param', 'factory_param_data.csv'), 'Param_Data')
+    data_lists = get_param_data_info(
+        os.path.join('components/customized_partitions/raw_data/factory_param', 'factory_param_data.csv'), 'Param_Data')
 
     headers = data_lists[0]
 
@@ -180,54 +192,73 @@ def get_platform_and_module_lists():
     ncols = len(data_lists[0])
     platform_index = ncols
     module_name_index = ncols
-    for i in range(ncols): # get platform index
+    description_index = ncols
+    for i in range(ncols):  # get platform index
         if headers[i] == 'platform':
             platform_index = i
             break
 
-    for i in range(ncols): # get module name index
+    for i in range(ncols):  # get module name index
         if headers[i] == 'module_name':
             module_name_index = i
             break
-    
+
+    for i in range(ncols):  # get description index
+        if headers[i] == 'description':
+            description_index = i
+            break
+
     if platform_index == ncols:
         sys.exit("ERROR: Not found platform in header.")
-    
+
     if module_name_index == ncols:
         sys.exit("ERROR: Not found module name in header.")
 
-    for row in range(1,nrows): # skip header
+    if description_index == ncols:
+        sys.exit("ERROR: Not found description in header.")
+
+    for row in range(1, nrows):  # skip header
         data_list = data_lists[row]
         modules = []
 
         platform_name = data_list[platform_index].upper()
         module_name = data_list[module_name_index].upper()
+        module_info = {'module_name': module_name, 'description': data_list[description_index]}
         if platform_name in platform_lists:
-            platform_lists.fromkeys(platform_name, platform_lists[platform_name].append(module_name))
+            platform_lists.fromkeys(platform_name, platform_lists[platform_name].append(module_info))
         else:
-            platform_lists[platform_name] = [module_name]
+            platform_lists[platform_name] = [module_info]
 
     return platform_lists
+
 
 def choose_project_config():
     info = {}
     info_lists = get_platform_and_module_lists()
     platform_lists = list(info_lists.keys())
-
     module_info_file = os.path.join('build', 'module_info.json')
     if os.path.exists(module_info_file):
         with open(module_info_file, 'r') as f:
             info = json.load(f)
-
             if not 'platform' in info or not 'module' in info or not 'silence' in info:
                 sys.exit('"{}" configuration error, please delete and reconfigure it'.format(module_info_file))
-
             platform_name = info['platform']
             module_name = info['module']
-
-            if not platform_name in info_lists or not module_name in info_lists[platform_name] or not 'silence' in info:
+           
+            if not platform_name in info_lists:
                 sys.exit('"{}" configuration error, please delete and reconfigure it'.format(module_info_file))
-            
+
+            # get module_info
+            found = False
+            print('module_name {}'.format(module_name))
+            for index, module in enumerate(info_lists[platform_name]):
+                if module_name == module['module_name']:
+                    found = True
+                    break
+
+            if not found:
+                sys.exit('"{}" configuration error, please delete and reconfigure it'.format(module_info_file))
+
             if info['silence'] != 0 and info['silence'] != 1:
                 sys.exit('"{}" configuration error, please delete and reconfigure it'.format(module_info_file))
 
@@ -251,19 +282,25 @@ def choose_project_config():
     info['platform'] = platform_name
 
     for i, module in enumerate(info_lists[platform_name]):
-        print('{}. {}'.format(i + 1, module))
-
+        if len(module['description']) > 0:
+            print('{}. {} (description: {})'.format(i + 1, module['module_name'], module['description']))
+        else:
+            print('{}. {}'.format(i + 1, module['module_name']))
+    #print('info_lists[platform_name]: {}'.format(info_lists[platform_name]))
     try:
         module_index = raw_input('choose(range[1,{}]):'.format(i + 1))
     except NameError:
         module_index = input('choose(range[1,{}]):'.format(i + 1))
-    
+
     if (not module_index.isdigit()) or (int(module_index) - 1 > i):
         sys.exit('Invalid index')
 
-    module_name = info_lists[platform_name][int(module_index) - 1]
+    # module_name = info_lists[platform_name][int(module_index) - 1]
+    module_name = info_lists[platform_name][int(module_index) - 1]['module_name']
+    module = info_lists[platform_name][int(module_index) - 1]
     info['module'] = module_name
-    
+    info['description'] = module['description']
+
     print('\r\nEnable silence mode to remove some logs and reduce the firmware size?')
     print('0. No')
     print('1. Yes')
@@ -271,7 +308,7 @@ def choose_project_config():
         silence_index = raw_input('choose(range[0,1]):')
     except NameError:
         silence_index = input('choose(range[0,1]):')
-    
+
     if not silence_index.isdigit():
         sys.exit('Invalid index')
 
@@ -307,5 +344,7 @@ def main():
 
     build_project(platform_name, module_name, silence, build_args)
 
+
 if __name__ == '__main__':
     main()
+
