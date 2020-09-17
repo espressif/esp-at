@@ -576,6 +576,10 @@ esp8266_1MB_at:
     - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
     - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
     - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
     - echo -e "#endif" >> at_config.h
     - cd -
 
@@ -632,6 +636,10 @@ esp8266_wroom_5V2L_at:
     - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
     - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
     - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
+    - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
     - echo -e "#endif" >> at_config.h
     - cd -
     # replace submodule esp-idf to internal repository to speedup cloning
