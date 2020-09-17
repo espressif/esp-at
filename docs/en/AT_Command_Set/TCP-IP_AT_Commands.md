@@ -522,7 +522,7 @@ Example:
     AT+CIPSTO=10
 
 <a name="cmd-SNTPCFG"></a>
-### [AT+CIPSNTPCFG](#TCPIP-AT)—Sets the Time Zone and the SNTP Server
+### [AT+CIPSNTPCFG](#TCPIP-AT) — Set the Time Zone and the SNTP Server
 Query Command:
 
     AT+CIPSNTPCFG?
@@ -545,10 +545,14 @@ Response:
     OK
 Parameters:
 
-- **\<enable>**: 
+- **\<enable>**:
     - 1: the SNTP server is configured.
     - 0: the SNTP server is not configured.
-- **\<timezone>**: time zone, range: [-11,13].
+- **\<timezone>**: Time zones support two formats.
+    - The first format range is [-12,14].  
+    It marks most of the time zones on land are offset from Coordinated Universal Time (UTC) by a whole number of hours ([UTC−12:00](https://en.wikipedia.org/wiki/UTC%E2%88%9212:00) to [UTC+14:00](https://en.wikipedia.org/wiki/UTC%2B14:00)).
+    - The second format is `UTC offset`.  
+    The `UTC offset` specifies the time value you must add to the UTC time to get a local time value. It has syntax like `[+|-]hh[mm]`. This is negative if the local time zone is west of the Prime Meridian and positive if it is east. The hour(hh) must be between -12 and 14, and the minute(mm) between 0 and 59. For example, set `timezone` to `1245`, it marks the local time of New Zealand (Chatham Islands) which in `UTC+12:45`, more UTC offset details see as [wiki](https://en.wikipedia.org/wiki/Time_zone#List_of_UTC_offsets).
 - **\<SNTP server1>**: the first SNTP server.
 - **\<SNTP server2>**: the second SNTP server.
 - **\<SNTP server3>**: the third SNTP server.
@@ -559,7 +563,18 @@ Parameters:
 
 Example:
 
-    AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"   
+    // enable sntp server, set timezone to China(UTC+08:00)
+    AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
+    or
+    AT+CIPSNTPCFG=1,800,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
+
+    // enable sntp server, set timezone to New York of the United States(UTC−05:00)
+    AT+CIPSNTPCFG=1,-5,"0.pool.ntp.org","time.google.com"
+    or
+    AT+CIPSNTPCFG=1,-500,"0.pool.ntp.org","time.google.com"
+
+    // enable sntp server, set timezone to New Zealand(Chatham Islands, UTC+12:45)
+    AT+CIPSNTPCFG=1,1245,"0.pool.ntp.org","time.google.com"
 
 <a name="cmd-SNTPT"></a>
 ### [AT+CIPSNTPTIME](#TCPIP-AT)—Queries the SNTP Time

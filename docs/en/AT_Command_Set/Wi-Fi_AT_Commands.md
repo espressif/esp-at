@@ -173,31 +173,49 @@ Examples:
 * This command only works for passive disconnect from AP.
 
 <a name="cmd-LAPOPT"></a>
-### [AT+CWLAPOPT](#WiFi-AT)—Sets the Configuration for the Command AT+CWLAP
+### [AT+CWLAPOPT](#WiFi-AT) — Set the Configuration for the Command AT+CWLAP
 Set Command:
 
-    AT+CWLAPOPT=<sort_enable>,<mask>
+    AT+CWLAPOPT=<sort_enable>,<print mask>[,<rssi filter>][,<authmode mask>]
 Response:
 
     OK
-Parameters:
+or
 
-- **\<sort_enable>**: determines whether the result of command AT+CWLAP will be listed according to RSSI: 
+    ERROR
+
+Parameters:
+- **\<sort_enable>**: determines whether the result of command AT+CWLAP will be listed according to RSSI, default: 0.
     - 0: the result is not ordered according to RSSI.
     - 1: the result is ordered according to RSSI.
-- **\<mask>**: determines the parameters shown in the result of `AT+CWLAP`; 
+- **\<print mask>**: determines the parameters shown in the result of `AT+CWLAP`, default: 0x1F.
     - 0 means not showing the parameter corresponding to the bit, and 1 means showing it.
     - bit 0: determines whether \<ecn> will be shown in the result of `AT+CWLAP`.
     - bit 1: determines whether \<ssid> will be shown in the result of `AT+CWLAP`.
     - bit 2: determines whether \<rssi> will be shown in the result of `AT+CWLAP`.
     - bit 3: determines whether \<mac> will be shown in the result of `AT+CWLAP`.
     - bit 4: determines whether \<channel> will be shown in the result of `AT+CWLAP`.
+- **\[\<rssi filter>]**(optional parameter): determines whether the result of command AT+CWLAP will be listed according to `rssi filter`. Valid range: -100 to 40, default value: -100.
+    > The result of command AT+CWLAP will `NOT` show the AP which signal strength in dBm below `rssi filter`.
+- **\[\<authmode mask>]**(optional parameter): determines the parameters shown in the result of `AT+CWLAP`, default: 0xFF.
+    - 0 means not showing the any AP information corresponding to the bit, and 1 means showing it.
+    - bit 0: determines whether authmode is `OPEN` AP will be shown in the result of `AT+CWLAP`.
+    - bit 1: determines whether authmode is `WEP` AP will be shown in the result of `AT+CWLAP`.
+    - bit 2: determines whether authmode is `WPA_PSK` AP will be shown in the result of `AT+CWLAP`.
+    - bit 3: determines whether authmode is `WPA2_PSK` AP will be shown in the result of `AT+CWLAP`.
+    - bit 4: determines whether authmode is `WPA_WPA2_PSK` AP will be shown in the result of `AT+CWLAP`.
+    - bit 5: determines whether authmode is `WPA2_ENTERPRISE` AP will be shown in the result of `AT+CWLAP`.
+    - bit 6: determines whether authmode is `WPA3_PSK` AP will be shown in the result of `AT+CWLAP`, just for ESP32 and ESP32S2 platform now.
+    - bit 7: determines whether authmode is `WPA2_WPA3_PSK` AP will be shown in the result of `AT+CWLAP`, just for ESP32 and ESP32S2 platform now.
 
 Example:
 
+    // The first parameter is 1, meaning that the result of the command AT+CWLAP will be ordered according to RSSI;
+    // The second parameter is 31, namely 0x1F, meaning that the corresponding bits of <mask> are set to 1. All parameters will be shown in the result of AT+CWLAP.
     AT+CWLAPOPT=1,31
-    The first parameter is 1, meaning that the result of the command AT+CWLAP will be ordered according to RSSI;
-    The second parameter is 31, namely 0x1F, meaning that the corresponding bits of <mask> are set to 1. All parameters will be shown in the result of AT+CWLAP.
+
+    // Just show the AP which authmode is `OPEN` way
+    AT+CWLAPOPT=1,31,-100,1
 
 <a name="cmd-LAP"></a>
 ### [AT+CWLAP](#WiFi-AT)—Lists the Available APs
