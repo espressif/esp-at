@@ -235,6 +235,11 @@ config AT_FS_COMMAND_SUPPORT
     depends on AT_ENABLE
     select WL_SECTOR_SIZE_512
     select FATFS_LFN_HEAP
+
+config AT_DRIVER_COMMAND_SUPPORT
+    bool "AT driver command support."
+    default "n"
+    depends on AT_ENABLE
 endif
 
 if IDF_TARGET_ESP8266

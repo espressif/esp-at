@@ -318,6 +318,12 @@ void app_main()
     }
 #endif
 
+#if defined(CONFIG_AT_DRIVER_COMMAND_SUPPORT)
+    if(esp_at_driver_cmd_regist() == false) {
+        printf("regist driver cmd fail\r\n");
+    }
+#endif
+
 #if defined(CONFIG_AT_SMARTCONFIG_COMMAND_SUPPORT)
     if(esp_at_smartconfig_cmd_regist() == false) {
         printf("regist smartconfig cmd fail\r\n");
