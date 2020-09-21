@@ -182,13 +182,6 @@ config AT_I2S_DATA_PIN
     depends on AT_BT_A2DP_COMMAND_SUPPORT
     help
         GPIO number to use for I2S Data Driver.
-    
-config AT_FS_COMMAND_SUPPORT
-    bool "AT FS command support."
-    default "n"
-    depends on AT_ENABLE
-    select WL_SECTOR_SIZE_512
-    select FATFS_LFN_HEAP
 
 config AT_ETHERNET_SUPPORT
     bool "AT ethernet support."
