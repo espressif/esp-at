@@ -548,11 +548,7 @@ Parameters:
 - **\<enable>**:
     - 1: the SNTP server is configured.
     - 0: the SNTP server is not configured.
-- **\<timezone>**: Time zones support two formats.
-    - The first format range is [-12,14].  
-    It marks most of the time zones on land are offset from Coordinated Universal Time (UTC) by a whole number of hours ([UTC−12:00](https://en.wikipedia.org/wiki/UTC%E2%88%9212:00) to [UTC+14:00](https://en.wikipedia.org/wiki/UTC%2B14:00)).
-    - The second format is `UTC offset`.  
-    The `UTC offset` specifies the time value you must add to the UTC time to get a local time value. It has syntax like `[+|-]hh[mm]`. This is negative if the local time zone is west of the Prime Meridian and positive if it is east. The hour(hh) must be between -12 and 14, and the minute(mm) between 0 and 59. For example, set `timezone` to `1245`, it marks the local time of New Zealand (Chatham Islands) which in `UTC+12:45`, more UTC offset details see as [wiki](https://en.wikipedia.org/wiki/Time_zone#List_of_UTC_offsets).
+- **\<timezone>**: time zone, range: [-11,13].
 - **\<SNTP server1>**: the first SNTP server.
 - **\<SNTP server2>**: the second SNTP server.
 - **\<SNTP server3>**: the third SNTP server.
@@ -563,18 +559,9 @@ Parameters:
 
 Example:
 
-    // enable sntp server, set timezone to China(UTC+08:00)
     AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
-    or
-    AT+CIPSNTPCFG=1,800,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
 
-    // enable sntp server, set timezone to New York of the United States(UTC−05:00)
-    AT+CIPSNTPCFG=1,-5,"0.pool.ntp.org","time.google.com"
-    or
-    AT+CIPSNTPCFG=1,-500,"0.pool.ntp.org","time.google.com"
 
-    // enable sntp server, set timezone to New Zealand(Chatham Islands, UTC+12:45)
-    AT+CIPSNTPCFG=1,1245,"0.pool.ntp.org","time.google.com"
 
 <a name="cmd-SNTPT"></a>
 ### [AT+CIPSNTPTIME](#TCPIP-AT)—Queries the SNTP Time
@@ -598,39 +585,33 @@ Example:
 * asctime style time is defined at [asctime man page](https://linux.die.net/man/3/asctime)
 
 <a name="cmd-UPDATE"></a>
-### [AT+CIUPDATE](#TCPIP-AT) - Upgrade the Firmware Through Wi-Fi
-esp-at upgrades firmware at runtime by downloading new firmware from specific server through Wi-Fi and then flash it into some partitions.
+### [AT+CIUPDATE](#TCPIP-AT)—Updates the Software Through Wi-Fi
 
 Execute Command:
 
     AT+CIUPDATE  
-    Function: Upgrade OTA the latest version of firmware via TCP from server.
+    Function: OTA the lastest version via TCP from server.
 Response:
 
     +CIPUPDATE:<n>
     OK
-Or
 
-    ERROR
 
-Set Command:
+Execute Command:
 
-    AT+CIUPDATE=<ota mode>[,<version>],[,<firmware name>]
-    Function: Upgrade the specified version of firmware from server.
+    AT+CIUPDATE=<ota mode>[,version]  
+    Function: OTA the specified version from server.  
 Response:
 
     +CIPUPDATE:<n>
     OK
-Or
 
-    ERROR
 
 Parameters:
 - **\<ota mode>**:
     - 0: OTA via TCP
-    - 1: OTA via TLS, please ensure `make menuconfig` > `Component config` > `AT` > `OTA based upon ssl` is enabled.
+    - 1: OTA via SSL, please ensure `make menuconfig` > `Component config` > `AT` > `OTA based upon ssl` is enabled.
 - **\<version>**: AT version, for example, `v1.2.0.0`, `v1.1.3.0`,`v1.1.2.0`
-- **\<firmware name>**: Firmware name to upgrade, for example, `ota`, `mqtt_ca`, `client_ca` or other custom partition in `at_customize.csv`
 - **\<n>**:
     - 1: find the server.
     - 2: connect to server.
@@ -640,8 +621,8 @@ Parameters:
 Example:
 
     AT+CIUPDATE  
+Or
     AT+CIUPDATE=1,"v1.2.0.0"
-    AT+CIUPDATE=1,"v2.2.0.0","mqtt_ca"
 
 ***Notes:***
 

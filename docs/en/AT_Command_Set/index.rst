@@ -16,7 +16,6 @@ Here is a list of AT commands. Some of the AT commands can only work on the ESP3
    HTTP AT Commands <HTTP_AT_Commands>
    [ESP32 Only] Ethernet AT Commands <Ethernet_AT_Commands>
    Signaling Test AT Commands <Signaling_Test_AT_Commands>
-   [ESP32 & ESP32S2 Only] Driver AT Commands <Driver_AT_Commands>
 
 Before checking the command set details, please review some common information on command types, configurations that can be saved in the flash, as well as messages returned after entering commands.   
 
