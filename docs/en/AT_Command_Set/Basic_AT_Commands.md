@@ -9,7 +9,7 @@
 * [AT+UART_CUR](#cmd-UARTC) : Current UART configuration.
 * [AT+UART_DEF](#cmd-UARTD) : Default UART configuration, saved in flash.
 * [AT+SLEEP](#cmd-SLEEP) : Sets the sleep mode.
-* [AT+SYSRAM](#cmd-SYSRAM) : Checks the remaining space of RAM.
+* [AT+SYSRAM](#cmd-SYSRAM) : Checks current remaining heap size and minimum heap size.
 * [AT+SYSMSG](#cmd-SYSMSG) : Set message format.
 * [AT+RFPOWER](#cmd-RFPOWER) : Set RF TX Power.
 * [AT+SYSFLASH](#cmd-SYSFLASH) : Set User Partitions in Flash.
@@ -19,6 +19,8 @@
 * [AT+SYSLOG](#cmd-SYSLOG) : Enable or disable the AT error code prompt.
 * [AT+SLEEPWKCFG](#cmd-WKCFG) : Config the light-sleep wakeup source and awake GPIO.
 * [AT+SYSSTORE](#cmd-SYSSTORE) : Config parameter store mode.
+* [AT+SYSREG](#cmd-SYSREG) : Read/Write the register
+* [ESP32S2 Only] [AT+SYSTEMP](#cmd-SYSTEMP) : Read ESP32S2 internal celsius temperature
 
 
 <a name="cmd-AT"></a>
@@ -69,8 +71,14 @@ Response:
     OK
 Parameters:  
 
-- **\<time>**: the duration of ESP32’s sleep. Unit: ms.  
-    ESP32 will wake up after Deep-sleep for as many milliseconds (ms) as \<time> indicates.  
+- **\<time>**: the duration of the device’s deep sleep. Unit: ms.  
+    ESP device will automatically wake up after the deep-sleep for as many milliseconds (ms) as \<time> indicates.  
+    Upon waking up, the device calls deep sleep wake stub, and then proceeds to load application.
+
+***Note:***  
+
+* On ESP8266 platform, in order to timing wake up, it is necessary to connect GPIO16 to RST pin.
+* Moreover, ESP8266 can be waken up from deep sleep externally by directly triggering RST pin low level pulse.
 
 <a name="cmd-ATE"></a>
 ### [ATE](#Basic-AT)—AT Commands Echoing
@@ -222,23 +230,28 @@ Example:
 
     AT+SLEEP=0
 
+***Notes:***  
+
+* Light sleep is not available for ESP32S2 currently.  
+
 <a name="cmd-SYSRAM"></a>
-### [AT+SYSRAM](#Basic-AT)—Checks the Remaining Space of RAM  
+### [AT+SYSRAM](#Basic-AT)—Checks current remaining heap size and minimum heap size  
 Query Command:
 
     AT+SYSRAM?  
 Response:
 
-    +SYSRAM:<remaining RAM size>
+    +SYSRAM:<remaining RAM size>,<minimum heap size>
     OK  
 Parameters:
 
-- **\<remaining RAM size>**: remaining space of RAM, unit: byte 
+- **\<remaining RAM size>**: current remaining heap size, unit: byte 
+- **\<minimum heap size>**: minimum heap size that has ever been available, unit: byte 
 
 Example:
 
     AT+SYSRAM?
-    +SYSRAM:148408
+    +SYSRAM:148408,84044
     OK
 
 <a name="cmd-SYSMSG"></a>
@@ -264,19 +277,36 @@ Response:
 Parameters:
 
 - **\<state>**: 
-    - Bit0: Quit transparent transmission
-        0: Quit transparent transmission no information.
-        1: Quit transparent transmission will supply information.
-    - Bit1: Connection info
-        0: Use old connection info.
-        1: Use new connection info.
+    - Bit0: Quit transparent transmission  
+        0: Quit transparent transmission no information.  
+        1: Quit transparent transmission will supply information.  
+    - Bit1: Connection information  
+        0: Use old connection information.  
+        1: Use new connection information.  
+    - Bit2: conection status information when in Wi-Fi transparent transmission, Ble SPP and BT SPP  
+        0: There is no more prompt information but received data.  
+        1: It will print some information if Wi-Fi, socket, ble or bt status is changed, the prompt is as following  
+
+            - "CONNECT\r\n" or the message prefixed with "+LINK_CONN:"  
+            - "CLOSED\r\n"  
+            - "WIFI CONNECTED\r\n"  
+            - "WIFI GOT IP\r\n"  
+            - "WIFI DISCONNECT\r\n"  
+            - "+ETH_CONNECTED\r\n"  
+            - "+ETH_DISCONNECTED\r\n"  
+            - the message prefixed with "+ETH_GOT_IP:"  
+            - the message prefixed with "+STA_CONNECTED:"  
+            - the message prefixed with "+STA_DISCONNECTED:"  
+            - the message prefixed with "+DIST_STA_IP:"  
+            - the message prefixed with "+BLECONN:"  
+            - the message prefixed with "+BLEDISCONN:"  
 
 ***Notes:***  
 
 * The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.
 * If set Bit0 to 1 will supply information "+QUITT" when quit transparent transmission.
 * If set Bit1 to 1 will impact the infomation of command `AT+CIPSTART` and `AT+CIPSERVER`,
-    * It will supply "+LINK_CONN : status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port" instead of "XX,CONNECT".
+    * It will supply "+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port" instead of "XX,CONNECT".
 Example:
 
     // Use new connection info and quit transparent transmission no information
@@ -390,7 +420,13 @@ Response:
 
     OK
 Parameters:
-- **\<wifi_power>**: range [40, 82], the unit is 0.25dBm, for example, if the value is 78, then RF max power is 78*0.25 dBm=19.5dBm
+- **\<wifi_power>**: the unit is 0.25dBm.
+    for example, if set the value is 78, then the actual RF max power value is 78*0.25dBm = 19.5dBm.  
+    after configuring it, please confirm the actual value by `AT+RFPOWER?`  
+
+    - range: [40, 78] on ESP32 platform and ESP32S2 platform, please refer to the notes below for details
+    - range: [40, 82] on ESP8266 platform, please refer to the notes below for details
+
 - **\<ble_adv_power>**: RF TX Power of BLE advertising, range: [0, 7]
     - 0:7dBm
     - 1:4dBm
@@ -403,7 +439,35 @@ Parameters:
 - **\<ble_scan_power>**: RF TX Power of BLE scanning, range:  [0, 7], the same as **\<ble_adv_power>**
 - **\<ble_conn_power>**: RF TX Power of BLE connecting, range:  [0, 7], the same as **\<ble_adv_power>**
 
-**Notes:** Since the RF TX power is actually divided into several levels, and each level has its own value range, so the `wifi_power` value queried by the `esp_wifi_get_max_tx_power` may differ from the value set by `esp_wifi_set_max_tx_power`. And the query value will not be larger than the set one.
+**Notes:** 
+1. Since the RF TX power is actually divided into several levels, and each level has its own value range, so the `wifi_power` value queried by the `esp_wifi_get_max_tx_power` may differ from the value set by `esp_wifi_set_max_tx_power`. And the query value will not be larger than the set one.
+2. Relationship between set value and actual value, as following,
+
+ESP32 and ESP32S2 platform:
+
+| set value | actual value | actual dBm |
+|  ----  | ----  | ----|
+| [34, 43] | 34 | 8.5 |
+| [44, 51] | 44 | 11 |
+| [52, 55] | 52 | 13 |
+| [56, 59] | 56 | 14 |
+| [60, 65] | 60 | 15 |
+| [66, 71] | 66 | 16.5 |
+| [72, 77] | 72 | 18 |
+| 78 | 78 | 19.5 
+
+ESP8266 platform:
+
+| set value | actual value | actual dBm |
+|  ----  | ----  | ----|
+| [33, 48] | 33 | 8 |
+| [49, 55] | 49 | 12 |
+| [56, 63] | 56 | 14 |
+| [64, 67] | 64 | 16 |
+| [68, 73] | 68 | 17 |
+| [74, 77] | 74 | 18.5 |
+| [78, 81] | 78 | 19.5 |
+| 82 | 82 | 20.5 |
 
 <a name="cmd-SYSROLLBACK"></a>
 ### [AT+SYSROLLBACK](#Basic-AT)-Roll back to the previous firmware
@@ -503,18 +567,17 @@ subcategory is defined as follows:
 ```
     ESP_AT_SUB_OK                       = 0x00,              /*!< OK */
     ESP_AT_SUB_COMMON_ERROR             = 0x01,              /*!< reserved */
-    ESP_AT_SUB_NO_TERMINATOR            = 0x02,              /*!<  not end with "\r\n" */
-    ESP_AT_SUB_NO_AT                    = 0x03,              /*!<  not found AT or at or At or aT */
-    ESP_AT_SUB_PARA_LENGTH_MISMATCH     = 0x04,              /*!<  parameter length not match */
-    ESP_AT_SUB_PARA_TYPE_MISMATCH       = 0x05,              /*!<  parameter length not match */
-    ESP_AT_SUB_PARA_NUM_MISMATCH        = 0x06,              /*!<  parameter number not match */
-    ESP_AT_SUB_PARA_INVALID             = 0x07,              /*!<  parameter is invalid */
-    ESP_AT_SUB_PARA_PARSE_FAIL          = 0x08,              /*!<  parse parameter fail */
-    ESP_AT_SUB_UNSUPPORT_CMD            = 0x09,              /*!<  command is not supported */
-    ESP_AT_SUB_CMD_EXEC_FAIL            = 0x0A,              /*!<  command executes failed */
-    ESP_AT_SUB_CMD_PROCESSING           = 0x0B,              /*!<  previous command is processing */
-    ESP_AT_SUB_CMD_OP_ERROR             = 0x0C,              /*!<  command types is not supported */
-
+    ESP_AT_SUB_NO_TERMINATOR            = 0x02,              /*!< terminator character not found ("\r\n" expected) */
+    ESP_AT_SUB_NO_AT                    = 0x03,              /*!< Starting "AT" not found (or at, At or aT entered) */
+    ESP_AT_SUB_PARA_LENGTH_MISMATCH     = 0x04,              /*!< parameter length mismatch */
+    ESP_AT_SUB_PARA_TYPE_MISMATCH       = 0x05,              /*!< parameter type mismatch */
+    ESP_AT_SUB_PARA_NUM_MISMATCH        = 0x06,              /*!< parameter number mismatch */
+    ESP_AT_SUB_PARA_INVALID             = 0x07,              /*!< the parameter is invalid */
+    ESP_AT_SUB_PARA_PARSE_FAIL          = 0x08,              /*!< parse parameter fail */
+    ESP_AT_SUB_UNSUPPORT_CMD            = 0x09,              /*!< the command is not supported */
+    ESP_AT_SUB_CMD_EXEC_FAIL            = 0x0A,              /*!< the command execution failed */
+    ESP_AT_SUB_CMD_PROCESSING           = 0x0B,              /*!< processing of previous command is in progress */
+    ESP_AT_SUB_CMD_OP_ERROR             = 0x0C,              /*!< the command operation type is error */
 ```
 
 for example, the error code `ERR CODE:0x01090000` means the command is not supported.
@@ -547,6 +610,10 @@ Example:
     AT+SLEEPWKCFG=0,1000  // Timer wakeup
     AT+SLEEPWKCFG=1,1     // Uart1 wakeup, Only Support ESP32
     AT+SLEEPWKCFG=2,12,0  // GPIO12 wakeup, low level.
+
+***Notes:***
+
+* GPIO16 as the RTC IO can not be set as GPIO wakeup source on ESP8266 platform for light sleep.
 
 <a name="cmd-SYSSTORE"></a>
 ### [AT+SYSSTORE](#Basic-AT)— Config parameter store mode
@@ -617,3 +684,54 @@ Example:
     AT+CWMODE=3  // Store into flash
     AT+CWJAP="test","1234567890" // Store into flash
 
+<a name="cmd-SYSREG"></a>
+
+### [AT+SYSREG](#Basic-AT)- Read/Write the register interface
+Set Command:  
+
+    AT+SYSREG=<direct>,<address>[,<write value>]
+Response:
+
+    +SYSREG:<read value>  (Only in read mode)
+    OK
+
+Parameters:
+
+- **\<direct>** : read or write register
+  - 0 :  Read register
+  - 1 :  Write register
+- **\<address>** : (uint32)register address, refer to technical reference manual
+- **\<write value>** : (uint32)write value (only in write mode)
+
+***Note:***
+
+    * AT does not check address. Make sure that the registers you are operating on are valid
+
+Example:
+
+    AT+SYSREG=1,0x3f40402c,0x2      // Enable ESP32S2 IO33 output, 0x3f40402c means base address 0x3F404000 add relative address 0x2c(GPIO_ENABLE1_REG)
+    AT+SYSREG=1,0x3f404010,0x2      // ESP32S2 IO33 output high
+    AT+SYSREG=1,0x3f404010,0x0      // ESP32S2 IO33 output low
+
+<a name="cmd-SYSTEMP"></a>
+### [ESP32S2 Only] [AT+SYSTEMP](#Basic-AT)— Read ESP32S2 internal celsius temperature  
+Query Command:
+
+    AT+SYSTEMP?  
+Response:
+
+    +SYSTEMP:<temperature>
+    OK  
+Parameters:
+
+- **\<temperature>**: The celsius temperature measure output value.
+
+***Note:***
+
+    * Measure range:-10℃ ~  80℃, error < 1℃.
+
+Example:
+
+    AT+SYSTEMP?
+    +SYSTEMP:21.59
+    OK

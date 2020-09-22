@@ -271,7 +271,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'ReadtheDocsTemplate.tex', u'ESP AT User Guide',
+  ('index', 'ReadtheDocsTemplate.tex', u'ESP-AT User Guide',
      u'Read the Docs', 'manual'),
 ]
 
@@ -301,7 +301,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'readthedocstemplate', u'ESP AT User Guide',
+    ('index', 'readthedocstemplate', u'ESP-AT User Guide',
      [u'Read the Docs'], 1)
 ]
 
@@ -315,7 +315,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'ReadtheDocsTemplate', u'ESP AT User Guide',
+  ('index', 'ReadtheDocsTemplate', u'ESP-AT User Guide',
      u'Read the Docs', 'ReadtheDocsTemplate', 'One line description of project.',
      'Miscellaneous'),
 ]
