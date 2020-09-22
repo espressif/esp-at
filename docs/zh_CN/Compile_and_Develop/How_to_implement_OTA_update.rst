@@ -1,0 +1,1 @@
+.. include:: ../../en/Compile_and_Develop/How_to_implement_OTA_update.rst

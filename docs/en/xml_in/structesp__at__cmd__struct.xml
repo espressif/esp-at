@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="structesp__at__cmd__struct" kind="struct" language="C++" prot="public">
+    <compoundname>esp_at_cmd_struct</compoundname>
+    <includes refid="esp__at_8h" local="no">esp_at.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structesp__at__cmd__struct_1afdee95aa3b99feb5915afdcc60d1de2d" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* esp_at_cmd_struct::at_cmdName</definition>
+        <argsstring></argsstring>
+        <name>at_cmdName</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>at command name </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/chenwu/esp/at/esp32-at/components/at/include/esp_at.h" line="39" column="1" bodyfile="/home/chenwu/esp/at/esp32-at/components/at/include/esp_at.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structesp__at__cmd__struct_1ad2fa8d3b92dcdcd82bb25e018145f040" prot="public" static="no" mutable="no">
+        <type>uint8_t(*</type>
+        <definition>uint8_t(* esp_at_cmd_struct::at_testCmd) (uint8_t *cmd_name)</definition>
+        <argsstring>)(uint8_t *cmd_name)</argsstring>
+        <name>at_testCmd</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Test Command function pointer </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/chenwu/esp/at/esp32-at/components/at/include/esp_at.h" line="40" column="1" bodyfile="/home/chenwu/esp/at/esp32-at/components/at/include/esp_at.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structesp__at__cmd__struct_1a3904214951ad4e3525a6443ba97d44f6" prot="public" static="no" mutable="no">
+        <type>uint8_t(*</type>
+        <definition>uint8_t(* esp_at_cmd_struct::at_queryCmd) (uint8_t *cmd_name)</definition>
+        <argsstring>)(uint8_t *cmd_name)</argsstring>
+        <name>at_queryCmd</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Query Command function pointer </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/chenwu/esp/at/esp32-at/components/at/include/esp_at.h" line="41" column="1" bodyfile="/home/chenwu/esp/at/esp32-at/components/at/include/esp_at.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structesp__at__cmd__struct_1a02b35b5dc160967f01b063e337c19d6c" prot="public" static="no" mutable="no">
+        <type>uint8_t(*</type>
+        <definition>uint8_t(* esp_at_cmd_struct::at_setupCmd) (uint8_t para_num)</definition>
+        <argsstring>)(uint8_t para_num)</argsstring>
+        <name>at_setupCmd</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Setup Command function pointer </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/chenwu/esp/at/esp32-at/components/at/include/esp_at.h" line="42" column="1" bodyfile="/home/chenwu/esp/at/esp32-at/components/at/include/esp_at.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structesp__at__cmd__struct_1a735508bf57706bd56f1f69bc6023db63" prot="public" static="no" mutable="no">
+        <type>uint8_t(*</type>
+        <definition>uint8_t(* esp_at_cmd_struct::at_exeCmd) (uint8_t *cmd_name)</definition>
+        <argsstring>)(uint8_t *cmd_name)</argsstring>
+        <name>at_exeCmd</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Execute Command function pointer </para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/chenwu/esp/at/esp32-at/components/at/include/esp_at.h" line="43" column="1" bodyfile="/home/chenwu/esp/at/esp32-at/components/at/include/esp_at.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para><ref refid="structesp__at__cmd__struct" kindref="compound">esp_at_cmd_struct</ref> used for define at command </para>    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/chenwu/esp/at/esp32-at/components/at/include/esp_at.h" line="38" column="1" bodyfile="/home/chenwu/esp/at/esp32-at/components/at/include/esp_at.h" bodystart="38" bodyend="44"/>
+    <listofallmembers>
+      <member refid="structesp__at__cmd__struct_1afdee95aa3b99feb5915afdcc60d1de2d" prot="public" virt="non-virtual"><scope>esp_at_cmd_struct</scope><name>at_cmdName</name></member>
+      <member refid="structesp__at__cmd__struct_1a735508bf57706bd56f1f69bc6023db63" prot="public" virt="non-virtual"><scope>esp_at_cmd_struct</scope><name>at_exeCmd</name></member>
+      <member refid="structesp__at__cmd__struct_1a3904214951ad4e3525a6443ba97d44f6" prot="public" virt="non-virtual"><scope>esp_at_cmd_struct</scope><name>at_queryCmd</name></member>
+      <member refid="structesp__at__cmd__struct_1a02b35b5dc160967f01b063e337c19d6c" prot="public" virt="non-virtual"><scope>esp_at_cmd_struct</scope><name>at_setupCmd</name></member>
+      <member refid="structesp__at__cmd__struct_1ad2fa8d3b92dcdcd82bb25e018145f040" prot="public" virt="non-virtual"><scope>esp_at_cmd_struct</scope><name>at_testCmd</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

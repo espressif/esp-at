@@ -1,0 +1,44 @@
+.TH "esp_at_device_ops_struct" 3 "Tue Sep 22 2020" "ESP-AT User Guide" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+esp_at_device_ops_struct \- \fBesp_at_device_ops_struct\fP device operate functions struct for AT  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <esp_at\&.h>\fP
+.SS "Public Attributes"
+
+.in +1c
+.ti -1c
+.RI "int32_t(* \fBread_data\fP )(uint8_t *data, int32_t len)"
+.br
+.ti -1c
+.RI "int32_t(* \fBwrite_data\fP )(uint8_t *data, int32_t len)"
+.br
+.ti -1c
+.RI "int32_t(* \fBget_data_length\fP )(void)"
+.br
+.ti -1c
+.RI "bool(* \fBwait_write_complete\fP )(int32_t timeout_msec)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+\fBesp_at_device_ops_struct\fP device operate functions struct for AT 
+.SH "Member Data Documentation"
+.PP 
+.SS "int32_t(* esp_at_device_ops_struct::get_data_length) (void)"
+get the length of data received 
+.SS "int32_t(* esp_at_device_ops_struct::read_data) (uint8_t *data, int32_t len)"
+read data from device 
+.SS "bool(* esp_at_device_ops_struct::wait_write_complete) (int32_t timeout_msec)"
+wait write finish 
+.SS "int32_t(* esp_at_device_ops_struct::write_data) (uint8_t *data, int32_t len)"
+write data into device 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for ESP-AT User Guide from the source code\&.

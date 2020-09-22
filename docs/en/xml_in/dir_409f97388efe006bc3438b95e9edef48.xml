@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="dir_409f97388efe006bc3438b95e9edef48" kind="dir">
+    <compoundname>/home/chenwu/esp/at/esp32-at/components</compoundname>
+    <innerdir refid="dir_0b08edae5d2c8a682b168d918f3e7f2e">/home/chenwu/esp/at/esp32-at/components/at</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/chenwu/esp/at/esp32-at/components/"/>
+  </compounddef>
+</doxygen>
