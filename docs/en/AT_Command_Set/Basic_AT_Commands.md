@@ -19,6 +19,8 @@
 * [AT+SYSLOG](#cmd-SYSLOG) : Enable or disable the AT error code prompt.
 * [AT+SLEEPWKCFG](#cmd-WKCFG) : Config the light-sleep wakeup source and awake GPIO.
 * [AT+SYSSTORE](#cmd-SYSSTORE) : Config parameter store mode.
+* [AT+SYSREG](#cmd-SYSREG) : Read/Write the register
+* [ESP32S2 Only] [AT+SYSTEMP](#cmd-SYSTEMP) : Read ESP32S2 internal celsius temperature
 
 
 <a name="cmd-AT"></a>
@@ -69,8 +71,14 @@ Response:
     OK
 Parameters:  
 
-- **\<time>**: the duration of ESP32’s sleep. Unit: ms.  
-    ESP32 will wake up after Deep-sleep for as many milliseconds (ms) as \<time> indicates.  
+- **\<time>**: the duration of the device’s deep sleep. Unit: ms.  
+    ESP device will automatically wake up after the deep-sleep for as many milliseconds (ms) as \<time> indicates.  
+    Upon waking up, the device calls deep sleep wake stub, and then proceeds to load application.
+
+***Note:***  
+
+* On ESP8266 platform, in order to timing wake up, it is necessary to connect GPIO16 to RST pin.
+* Moreover, ESP8266 can be waken up from deep sleep externally by directly triggering RST pin low level pulse.
 
 <a name="cmd-ATE"></a>
 ### [ATE](#Basic-AT)—AT Commands Echoing
@@ -603,6 +611,10 @@ Example:
     AT+SLEEPWKCFG=1,1     // Uart1 wakeup, Only Support ESP32
     AT+SLEEPWKCFG=2,12,0  // GPIO12 wakeup, low level.
 
+***Notes:***
+
+* GPIO16 as the RTC IO can not be set as GPIO wakeup source on ESP8266 platform for light sleep.
+
 <a name="cmd-SYSSTORE"></a>
 ### [AT+SYSSTORE](#Basic-AT)— Config parameter store mode
 Query Command:  
@@ -672,3 +684,54 @@ Example:
     AT+CWMODE=3  // Store into flash
     AT+CWJAP="test","1234567890" // Store into flash
 
+<a name="cmd-SYSREG"></a>
+
+### [AT+SYSREG](#Basic-AT)- Read/Write the register interface
+Set Command:  
+
+    AT+SYSREG=<direct>,<address>[,<write value>]
+Response:
+
+    +SYSREG:<read value>  (Only in read mode)
+    OK
+
+Parameters:
+
+- **\<direct>** : read or write register
+  - 0 :  Read register
+  - 1 :  Write register
+- **\<address>** : (uint32)register address, refer to technical reference manual
+- **\<write value>** : (uint32)write value (only in write mode)
+
+***Note:***
+
+    * AT does not check address. Make sure that the registers you are operating on are valid
+
+Example:
+
+    AT+SYSREG=1,0x3f40402c,0x2      // Enable ESP32S2 IO33 output, 0x3f40402c means base address 0x3F404000 add relative address 0x2c(GPIO_ENABLE1_REG)
+    AT+SYSREG=1,0x3f404010,0x2      // ESP32S2 IO33 output high
+    AT+SYSREG=1,0x3f404010,0x0      // ESP32S2 IO33 output low
+
+<a name="cmd-SYSTEMP"></a>
+### [ESP32S2 Only] [AT+SYSTEMP](#Basic-AT)— Read ESP32S2 internal celsius temperature  
+Query Command:
+
+    AT+SYSTEMP?  
+Response:
+
+    +SYSTEMP:<temperature>
+    OK  
+Parameters:
+
+- **\<temperature>**: The celsius temperature measure output value.
+
+***Note:***
+
+    * Measure range:-10℃ ~  80℃, error < 1℃.
+
+Example:
+
+    AT+SYSTEMP?
+    +SYSTEMP:21.59
+    OK

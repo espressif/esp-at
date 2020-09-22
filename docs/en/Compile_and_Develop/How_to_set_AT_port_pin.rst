@@ -27,7 +27,7 @@ For example, the configuration of the ``ESP32-WROOM-32`` is as the following tab
 +----------------+----------------+
 | magic_flag     | 0xfcfc         |
 +----------------+----------------+
-| version        | 1              |
+| version        | 2              |
 +----------------+----------------+
 | module_id      | 1              |
 +----------------+----------------+
@@ -47,7 +47,7 @@ For example, the configuration of the ``ESP32-WROOM-32`` is as the following tab
 +----------------+----------------+
 | uart_rx_pin    | 16             |
 +----------------+----------------+
-| uart_ctx_pin   | 15             |
+| uart_cts_pin   | 15             |
 +----------------+----------------+
 | uart_rts_pin   | 14             |
 +----------------+----------------+
@@ -63,7 +63,7 @@ In this case, the pins of ``ESP32-WROOM-32`` AT port is:
     TX ---> GPIO17  
     RX ---> GPIO16  
     CTS ---> GPIO15  
-    RTX ---> GPIO14  
+    RTS ---> GPIO14  
 
 For example, if you need to set GPIO1 (TX) and GPIO3 (RX) to be both the log pin and AT port pin, then you can set it as the following steps.
 
@@ -79,7 +79,7 @@ For example, if you need to set GPIO1 (TX) and GPIO3 (RX) to be both the log pin
     +----------------+----------------+
     | magic_flag     | 0xfcfc         |
     +----------------+----------------+
-    | version        | 1              |
+    | version        | 2              |
     +----------------+----------------+
     | module_id      | 1              |
     +----------------+----------------+
@@ -99,7 +99,7 @@ For example, if you need to set GPIO1 (TX) and GPIO3 (RX) to be both the log pin
     +----------------+----------------+
     | uart_rx_pin    | 3              |
     +----------------+----------------+
-    | uart_ctx_pin   | -1             |
+    | uart_cts_pin   | -1             |
     +----------------+----------------+
     | uart_rts_pin   | -1             |
     +----------------+----------------+
@@ -142,7 +142,7 @@ For example, if you need to set GPIO1 (TX) and GPIO3 (RX) of ESP-WROOM-02 to be 
     +----------------+------------------+
     | uart_rx_pin    | 3                |
     +----------------+------------------+
-    | uart_ctx_pin   | -1               |
+    | uart_cts_pin   | -1               |
     +----------------+------------------+
     | uart_rts_pin   | -1               |
     +----------------+------------------+
@@ -150,3 +150,110 @@ For example, if you need to set GPIO1 (TX) and GPIO3 (RX) of ESP-WROOM-02 to be 
     +----------------+------------------+
 
 3.  Recompile the ``esp-at`` project, download the new ``factory_param.bin`` and AT bin into flash.
+
+ESP32S2 AT
+----------
+The UART pin of ESP32S2 can be user-defined to other pins, refer to `ESP32S2 Technical Reference Manual <https://www.espressif.com/sites/default/files/documentation/esp32-s2_technical_reference_manual_en.pdf>`__. In the official Espressif ESP32S2 AT bin, UART0 is the default port to print log, using the following pins:
+
+::
+
+    TX ---> GPIO43  
+    RX ---> GPIO44 
+
+The log pins can be set in ``make menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output``.
+UART1 is for sending AT commands and receiving response, but its pins can be changed. The pins of UART1 are configured in the ``factory_param.bin``, they can be changed in the component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`. The UART1 pins may be different for different ESP modules. More details of ``factory_param_data.csv`` are in the ``How_to_create_factory_parameter_bin.md``.
+
+For example, the configuration of the ``ESP32S2-WROVER`` is as the following table.
+
++----------------+------------------+
+| Parameter      | Value            |
++================+==================+
+| platform       | PLATFORM_ESP32S2 |
++----------------+------------------+
+| module_name    | WROVER           |
++----------------+------------------+
+| magic_flag     | 0xfcfc           |
++----------------+------------------+
+| version        | 2                |
++----------------+------------------+
+| module_id      | 0                |
++----------------+------------------+
+| tx_max_power   | 78               |
++----------------+------------------+
+| uart_port      | 1                |
++----------------+------------------+
+| start_channel  | 1                |
++----------------+------------------+
+| channel_num    | 13               |
++----------------+------------------+
+| country_code   | CN               |
++----------------+------------------+
+| uart_baudrate  | 115200           |
++----------------+------------------+
+| uart_tx_pin    | 17               |
++----------------+------------------+
+| uart_rx_pin    | 21               |
++----------------+------------------+
+| uart_cts_pin   | 20               |
++----------------+------------------+
+| uart_rts_pin   | 19               |
++----------------+------------------+
+| tx_control_pin | -1               |
++----------------+------------------+
+| rx_control_pin | -1               |
++----------------+------------------+
+
+In this case, the pins of ``ESP32S2-WROVER`` AT port is:
+
+::
+
+    TX ---> GPIO17  
+    RX ---> GPIO21  
+    CTS ---> GPIO20  
+    RTS ---> GPIO19  
+
+For example, if you need to set GPIO43 (TX) and GPIO44 (RX) to be both the log pin and AT port pin, then you can set it as the following steps.
+
+1.  Open component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`.
+2.  Choose the line of ``WROVER``, set ``uart_port`` to be 0, ``uart_tx_pin`` to be 43 and ``uart_rx_pin`` to be 44, and then save it.
+
+    +----------------+------------------+
+    | Parameter      | Value            |
+    +================+==================+
+    | platform       | PLATFORM_ESP32S2 |
+    +----------------+------------------+
+    | module_name    | WROVER           |
+    +----------------+------------------+
+    | magic_flag     | 0xfcfc           |
+    +----------------+------------------+
+    | version        | 2                |
+    +----------------+------------------+
+    | module_id      | 0                |
+    +----------------+------------------+
+    | tx_max_power   | 78               |
+    +----------------+------------------+
+    | uart_port      | 0                |
+    +----------------+------------------+
+    | start_channel  | 1                |
+    +----------------+------------------+
+    | channel_num    | 13               |
+    +----------------+------------------+
+    | country_code   | CN               |
+    +----------------+------------------+
+    | uart_baudrate  | 115200           |
+    +----------------+------------------+
+    | uart_tx_pin    | 43               |
+    +----------------+------------------+
+    | uart_rx_pin    | 44               |
+    +----------------+------------------+
+    | uart_cts_pin   | -1               |
+    +----------------+------------------+
+    | uart_rts_pin   | -1               |
+    +----------------+------------------+
+    | tx_control_pin | -1               |
+    +----------------+------------------+
+    | rx_control_pin | -1               |
+    +----------------+------------------+
+
+3. Recompile the ``esp-at`` project, download the new ``factory_param.bin`` and AT bin into flash.
+4. If you don't want to compile the entire project in the third step, you can refer to ``How_to_create_factory_parameter_bin.md``.
