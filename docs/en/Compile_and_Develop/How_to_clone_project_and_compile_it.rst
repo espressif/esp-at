@@ -24,14 +24,14 @@ The WROOM32 Board sends AT commands through UART1 by default.
 
 The debug log will be output through UART0 by default, where TXD0 is GPIO1 and RXD0 is GPIO3, but user can change it in menuconfig if needed:
 
-``./build.py menuconfig`` --> ``Component config`` --> 
+``make menuconfig`` --> ``Component config`` --> 
 ``Common ESP-related`` --> ``UART for console output``
 
 .. note::
 
   **Please pay attention to possible conflicts of the pins**
 
-  - If choosing ``AT through HSPI``, you can get the information of the HSPI pin by ``./build.py menuconfig`` --> ``Component config`` --> ``AT`` --> ``AT hspi settings``
+  - If choosing ``AT through HSPI``, you can get the information of the HSPI pin by ``make menuconfig`` --> ``Component config`` --> ``AT`` --> ``AT hspi settings``
   - If enabling ``AT ethernet support``, you can get the information of the ethernet pin from ``ESP32_AT_Ethernet.md``.
 
 Compiling and flashing the project
@@ -41,7 +41,7 @@ Suppose you have completed the installation of the compiler environment for ESP-
 
     step 1: install python>=3.8
     step 2: [install pip](https://pip.pypa.io/en/latest/installing/)  
-    step 3: install the following python packages with pip: python -m pip install pyyaml xlrd
+    step 3: install the following python packages with pip: pip install pyyaml xlrd
 
 Compiling the ESP-AT is the same as compiling any other project based on the ESP-IDF:
 
@@ -53,21 +53,21 @@ Compiling the ESP-AT is the same as compiling any other project based on the ESP
 
      git clone --recursive https://github.com/espressif/esp-at.git
 
-2. ``rm -rf builld sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
-3. ``./build.py menuconfig``, and then choose the name indexes of platform and your module, then ``Serial flasher config`` to configure the serial port for downloading.
+2. ``rm sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
+3. Set the latest default configuration by ``make defconfig``.
+4. ``make menuconfig`` -> ``Serial flasher config`` to configure the serial port for downloading.
 
-  - platform name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``, here should choose ``PLATFORM_ESP32``
-  - module name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``
-  - silence mode is to remove some logs and reduce the firmware size, generally, it should be disabled.
-  - The choice items will not appear if the file ``build/module_info.json`` exists. So please delete it if you want to reconfigure module information.
+5. ``make flash`` or ``make flash SILENCE=1`` to compile the project and download it into the flash, and ``make flash SILENCE=1`` will remove some logs to reduce firmware size.
 
-4. ``./build.py flash`` to compile the project and download it into the flash.
-
-   -  Or you can call ``./build.py build`` to compile it, and follow the printed instructions to download the bin files into flash by yourself.
+   -  Or you can call ``make`` to compile it, and follow the printed instructions to download the bin files into flash by yourself.
+   -  ``make print_flash_cmd`` can be used to print the addresses of downloading.
+   -  More details are in the `esp-idf README <https://github.com/espressif/esp-idf/blob/release/v4.0/README.md>`__.
    -  If enable BT feature, the firmware size will be much larger, please make sure it does not exceed the ota partition size.
-   - After compiled, the combined factory bin will be create in ``build/factory``, by default, the factory bin is 4MB flash size, DIO flash mode and 40MHz flash speed.
 
-5. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash.
+6. ``make factory_bin`` to combine factory bin, by default, the factory bin is 4MB flash size, DIO flash mode and 40MHz flash speed. If you want use this command, you must first run::
+   - ``make print_flash_cmd | tail -n 1 > build/download.config`` to generate ``build/download.config``.
+
+7. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``make erase_flash`` to erase the entire flash.
 
 ESP32S2 platform
 =================
@@ -77,14 +77,14 @@ Hardware Introduction
 
 The WROOM32S2 Board sends AT commands through UART1 by default.
 
--  GPIO21 is RXD
+-  GPIO18 is RXD
 -  GPIO17 is TXD
 -  GPIO19 is RTS
 -  GPIO20 is CTS
 
-The debug log will output through UART0 by default, which TXD0 is GPIO43 and RXD0 is GPIO44, but user can change it in menuconfig if needed:
+The debug log will output through UART0 by default, which TXD0 is GPIO1 and RXD0 is GPIO3, but user can change it in menuconfig if needed:
 
-``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART for console output``
+``make menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART for console output``
 
 Compiling and flashing the project
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -93,7 +93,7 @@ Suppose you have completed the installation of the compiler environment for ESP-
 
   step1:python > 3.8.0 
   step2:[install pip](https://pip.pypa.io/en/latest/installing/)  
-  step3:install the following python packages with pip: python -m pip install pyyaml xlrd
+  step3:install the following python packages with pip3: pip3 install pyyaml xlrd
 
 Compiling the ESP-AT is the same as compiling any other project based on the ESP-IDF:
 
@@ -105,21 +105,16 @@ Compiling the ESP-AT is the same as compiling any other project based on the ESP
 
      git clone --recursive https://github.com/espressif/esp-at.git
 
-2. ``rm -rf builld sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
-3. ``./build.py menuconfig``, and then choose the name indexes of platform and your module, then ``Serial flasher config`` to configure the serial port for downloading.
+2. ``rm sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
+3. Set esp module information::
 
-  - platform name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``, here should choose ``PLATFORM_ESP32S2``
-  - module name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``
-  - silence mode is to remove some logs and reduce the firmware size, generally, it should be disabled.
-  - The choice items will not appear if the file ``build/module_info.json`` exists. So please delete it if you want to reconfigure module information.
+    export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32S2
+    export ESP_AT_MODULE_NAME=WROOM
+    export ESP_AT_PROJECT_PATH=$(pwd)
 
-4. ``./build.py flash`` to compile the project and download it into the flash.
+4. ``./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 build`` to compile the project and download it into the flash, and ``./esp-idf/tools/idf.py -DIDF_TARGET=esp32s2 -DSILENCE=1 build`` will remove some logs to reduce firmware size.
 
-   -  Or you can call ``./build.py build`` to compile it, and follow the printed instructions to download the bin files into flash by yourself.
-   -  If enable BT feature, the firmware size will be much larger, please make sure it does not exceed the ota partition size.
-   - After compiled, the combined factory bin will be create in ``build/factory``, by default, the factory bin is 4MB flash size, QIO flash mode and 80MHz flash speed.
-
-5. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash.
+Follow the printed instructions to download the bin files into flash by yourself.
 
 
 ESP8266 platform
@@ -137,7 +132,7 @@ The ESP8266 WROOM 02 Board sends AT commands through UART0 by default.
 
 The debug log will output through UART1 by default, which TXD0 is GPIO2, but user can change it in menuconfig if needed:
 
-``./build.py menuconfig`` --> ``Component config`` -->
+``make menuconfig`` --> ``Component config`` -->
 ``ESP8266-specific`` --> ``UART for console output``
 
 Compiling and flashing the project
@@ -145,32 +140,40 @@ Compiling and flashing the project
 
 Suppose you have completed the installation of the compiler environment for ESP-IDF, if not, you should complete it referring to `ESP8266 RTOS SDK Getting Started Guide <https://docs.espressif.com/projects/esp8266-rtos-sdk/en/v3.2/get-started/index.html#setup-toolchain>`_. Then, to compile ESP-AT project properly, please do the following additional steps::
 
-  step1:python > 3.8.0 
+  step1:install python 2.7 or python 3.x  
   step2:[install pip](https://pip.pypa.io/en/latest/installing/)  
-  step3:install the following python packages with pip: python -m pip install pyyaml xlrd
+  step3:install the following python packages with pip: pip install pyyaml xlrd
 
 Compiling the ESP-AT is the same as compiling any other project based on the ESP-IDF:
 
 .. note::
 
-  Please do not set ``IDF_PATH`` unless you know ESP-AT project in particular. ESP-IDF will automatically be cloned.
+  Please do not set ``IDF_PATH`` unless you know ESP-AT project in particular. ESP-IDF will automatically be cloned.**
 
 1. You can clone the project into an empty directory using command::
 
      git clone --recursive https://github.com/espressif/esp-at.git
 
-2. ``rm -rf builld sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
-3. ``./build.py menuconfig``, and then choose the name indexes of platform and your module, then ``Serial flasher config`` to configure the serial port for downloading.
+2. Change the Makefile from::
 
-  - platform name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``, here should choose ``PLATFORM_ESP8266``
-  - module name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``
-  - silence mode is to remove some logs and reduce the firmware size, generally, it should be disabled.
-  - The choice items will not appear if the file ``build/module_info.json`` exists. So please delete it if you want to reconfigure module information.
+    export ESP_AT_PROJECT_PLATFORM ?= PLATFORM_ESP32
+    export ESP_AT_MODULE_NAME ?= WROOM-32
 
-4. ``./build.py flash`` to compile the project and download it into the flash.
+   to be::
 
-   -  Or you can call ``./build.py build`` to compile it, and follow the printed instructions to download the bin files into flash by yourself.
-   -  If enable BT feature, the firmware size will be much larger, please make sure it does not exceed the ota partition size.
-   - After compiled, the combined factory bin will be create in ``build/factory``, by default, the factory bin is 2MB flash size, DIO flash mode and 80MHz flash speed.
+    export ESP_AT_PROJECT_PLATFORM ?= PLATFORM_ESP8266 
+    export ESP_AT_MODULE_NAME ?= WROOM-02
 
-5. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash.
+3. ``rm sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
+4. Set the latest default configuration by ``make defconfig``.
+5. ``make menuconfig`` -> ``Serial flasher config`` to configure the serial port for downloading.
+6. ``make flash`` or ``make flash SILENCE=1`` to compile the project and download it into the flash, and ``make flash SILENCE=1`` will remove some logs to reduce firmware size.
+
+   - Or you can call ``make`` to compile it, and follow the printed instructions to download the bin files into flash by yourself.
+
+   - ``make print_flash_cmd`` can be used to print the addresses of downloading.
+   - More details are in the `ESP-IDF README <https://github.com/espressif/esp-idf/blob/release/v4.0/README.md>`__.
+
+7. ``make factory_bin`` to combine factory bin, by default, the factory bin is 4MB flash size, DIO flash mode and 40MHz flash speed. If you want use this command, you must fisrt run ``make print_flash_cmd | tail -n 1 > build/download.config`` to generate ``build/download.config``.
+
+8. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``make erase_flash`` to erase the entire flash.

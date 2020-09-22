@@ -9,7 +9,7 @@
 * [AT+UART_CUR](#cmd-UARTC) : Current UART configuration.
 * [AT+UART_DEF](#cmd-UARTD) : Default UART configuration, saved in flash.
 * [AT+SLEEP](#cmd-SLEEP) : Sets the sleep mode.
-* [AT+SYSRAM](#cmd-SYSRAM) : Checks current remaining heap size and minimum heap size.
+* [AT+SYSRAM](#cmd-SYSRAM) : Checks the remaining space of RAM.
 * [AT+SYSMSG](#cmd-SYSMSG) : Set message format.
 * [AT+RFPOWER](#cmd-RFPOWER) : Set RF TX Power.
 * [AT+SYSFLASH](#cmd-SYSFLASH) : Set User Partitions in Flash.
@@ -19,9 +19,6 @@
 * [AT+SYSLOG](#cmd-SYSLOG) : Enable or disable the AT error code prompt.
 * [AT+SLEEPWKCFG](#cmd-WKCFG) : Config the light-sleep wakeup source and awake GPIO.
 * [AT+SYSSTORE](#cmd-SYSSTORE) : Config parameter store mode.
-* [AT+SYSREG](#cmd-SYSREG) : Read/Write the register
-* [ESP32S2 Only] [AT+SYSTEMP](#cmd-SYSTEMP) : Read ESP32S2 internal celsius temperature
-
 
 <a name="cmd-AT"></a>
 ### [AT](#Basic-AT)—Tests AT Startup
@@ -235,23 +232,22 @@ Example:
 * Light sleep is not available for ESP32S2 currently.  
 
 <a name="cmd-SYSRAM"></a>
-### [AT+SYSRAM](#Basic-AT)—Checks current remaining heap size and minimum heap size  
+### [AT+SYSRAM](#Basic-AT)—Checks the Remaining Space of RAM  
 Query Command:
 
     AT+SYSRAM?  
 Response:
 
-    +SYSRAM:<remaining RAM size>,<minimum heap size>
+    +SYSRAM:<remaining RAM size>
     OK  
 Parameters:
 
-- **\<remaining RAM size>**: current remaining heap size, unit: byte 
-- **\<minimum heap size>**: minimum heap size that has ever been available, unit: byte 
+- **\<remaining RAM size>**: remaining space of RAM, unit: byte 
 
 Example:
 
     AT+SYSRAM?
-    +SYSRAM:148408,84044
+    +SYSRAM:148408
     OK
 
 <a name="cmd-SYSMSG"></a>
@@ -280,26 +276,10 @@ Parameters:
     - Bit0: Quit transparent transmission  
         0: Quit transparent transmission no information.  
         1: Quit transparent transmission will supply information.  
-    - Bit1: Connection information  
-        0: Use old connection information.  
-        1: Use new connection information.  
-    - Bit2: conection status information when in Wi-Fi transparent transmission, Ble SPP and BT SPP  
-        0: There is no more prompt information but received data.  
-        1: It will print some information if Wi-Fi, socket, ble or bt status is changed, the prompt is as following  
+    - Bit1: Connection info
+        0: Use old connection info.
+        1: Use new connection info.
 
-            - "CONNECT\r\n" or the message prefixed with "+LINK_CONN:"  
-            - "CLOSED\r\n"  
-            - "WIFI CONNECTED\r\n"  
-            - "WIFI GOT IP\r\n"  
-            - "WIFI DISCONNECT\r\n"  
-            - "+ETH_CONNECTED\r\n"  
-            - "+ETH_DISCONNECTED\r\n"  
-            - the message prefixed with "+ETH_GOT_IP:"  
-            - the message prefixed with "+STA_CONNECTED:"  
-            - the message prefixed with "+STA_DISCONNECTED:"  
-            - the message prefixed with "+DIST_STA_IP:"  
-            - the message prefixed with "+BLECONN:"  
-            - the message prefixed with "+BLEDISCONN:"  
 
 ***Notes:***  
 
@@ -683,55 +663,3 @@ Example:
     AT+SYSSTORE=1
     AT+CWMODE=3  // Store into flash
     AT+CWJAP="test","1234567890" // Store into flash
-
-<a name="cmd-SYSREG"></a>
-
-### [AT+SYSREG](#Basic-AT)- Read/Write the register interface
-Set Command:  
-
-    AT+SYSREG=<direct>,<address>[,<write value>]
-Response:
-
-    +SYSREG:<read value>  (Only in read mode)
-    OK
-
-Parameters:
-
-- **\<direct>** : read or write register
-  - 0 :  Read register
-  - 1 :  Write register
-- **\<address>** : (uint32)register address, refer to technical reference manual
-- **\<write value>** : (uint32)write value (only in write mode)
-
-***Note:***
-
-    * AT does not check address. Make sure that the registers you are operating on are valid
-
-Example:
-
-    AT+SYSREG=1,0x3f40402c,0x2      // Enable ESP32S2 IO33 output, 0x3f40402c means base address 0x3F404000 add relative address 0x2c(GPIO_ENABLE1_REG)
-    AT+SYSREG=1,0x3f404010,0x2      // ESP32S2 IO33 output high
-    AT+SYSREG=1,0x3f404010,0x0      // ESP32S2 IO33 output low
-
-<a name="cmd-SYSTEMP"></a>
-### [ESP32S2 Only] [AT+SYSTEMP](#Basic-AT)— Read ESP32S2 internal celsius temperature  
-Query Command:
-
-    AT+SYSTEMP?  
-Response:
-
-    +SYSTEMP:<temperature>
-    OK  
-Parameters:
-
-- **\<temperature>**: The celsius temperature measure output value.
-
-***Note:***
-
-    * Measure range:-10℃ ~  80℃, error < 1℃.
-
-Example:
-
-    AT+SYSTEMP?
-    +SYSTEMP:21.59
-    OK
