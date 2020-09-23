@@ -10,11 +10,14 @@ The origin table is `components/customized_partitions/raw_data/factory_param/fac
 
 | param_name    | offset |  type   | size |
 | ------------- | ------ | ------- | ---- |
-| module_name   |    -1   | String  |   0  |
+| platform      |   -1   | String  |   0  |
+| module_name   |   -1   | String  |   0  |
+| description   |   -1   | String  |   0  |
 | magic_flag    |    0   | integer |   2  |
 | version       |    2   | integer |   1  |
 | module_id     |    3   | integer |   1  |
 | tx_max_power  |    4   | integer |   1  |
+| uart_port     |    5   | integer |   1  |
 | start_channel |    6   | integer |   1  |
 | channel_num   |    7   | integer |   1  |
 | country_code  |    8   | String  |   4  |
@@ -25,6 +28,9 @@ The origin table is `components/customized_partitions/raw_data/factory_param/fac
 | uart_rts_pin  |   19   | integer |   1  |
 | tx_control_pin|   20   | integer |   1  |
 | rx_control_pin|   21   | integer |   1  |
+
+- description:
+  - prompt information when build the project
 
  - version:
    - the version of factory param mangement
@@ -73,39 +79,43 @@ The origin table is `components/customized_partitions/raw_data/factory_param/fac
 
 The origin table is `components/customized_partitions/raw_data/factory_param/factory_param_data.csv`, and the information each row contains is about one module. The factory parameter data is as the following table:
 
-| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_cts_pin | uart_rts_pin | tx_control_pin | rx_control_pin
-|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|---|---|
-| PLATFORM_ESP32 | WROOM-32 |0xfcfc|2|1|1|1|13|CN|115200|17|16|15|14|-1|-1
-| PLATFORM_ESP32 | WROVER-32|0xfcfc|2|2|1|1|13|CN|115200|22|19|15|14|-1|-1
-| PLATFORM_ESP32 | PICO-D4  |0xfcfc|2|3|1|1|13|CN|115200|22|19|15|14|-1|-1
-| PLATFORM_ESP32 | SOLO-1   |0xfcfc|2|4|1|1|13|CN|115200|17|16|15|14|-1|-1
-| PLATFORM_ESP8266 | WROOM-02   |0xfcfc|2|4|1|1|13|CN|115200|15|13|3|1|-1|-1
-| PLATFORM_ESP8266 | WROOM-5V2L |0xfcfc|2|1|1|1|13|CN|115200|15|13|3|1|5|-1
-| PLATFORM_ESP8266 | ESP8266_1MB|0xfcfc|2|2|1|1|13|CN|115200|15|13|3|1|-1|-1
-| PLATFORM_ESP32S2 | WROOM  |0xfcfc|2|0|1|1|13|CN|115200|17|21|20|19|-1|-1
-| PLATFORM_ESP32S2 | WROVER   |0xfcfc|2|1|1|1|13|CN|115200|17|21|20|19|-1|-1
-| PLATFORM_ESP32S2 | SOLO   |0xfcfc|2|2|1|1|13|CN|115200|17|21|20|19|-1|-1
-| PLATFORM_ESP32S2 | MINI   |0xfcfc|2|3|1|1|13|CN|115200|17|21|20|19|-1|-1
+platform|module_name|description|magic_flag|version|module_id|tx_max_power|uart_port|start_channel|channel_num|country_code|uart_baudrate|uart_tx_pin|uart_rx_pin|uart_cts_pin|uart_rts_pin|tx_control_pin|rx_control_pin|
+|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|---|---|---|---|
+|PLATFORM_ESP32|WROOM-32||0xfcfc|2|1|78|1|1|13|CN|115200|17|16|15|14|-1|-1|
+|PLATFORM_ESP32|WROVER-32||0xfcfc|2|2|78|1|1|13|CN|115200|22|19|15|14|-1|-1|
+|PLATFORM_ESP32|PICO-D4||0xfcfc|2|3|78|1|1|13|CN|115200|22|19|15|14|-1|-1|
+|PLATFORM_ESP32|SOLO-1||0xfcfc|2|4|78|1|1|13|CN|115200|17|16|15|14|-1|-1|
+|PLATFORM_ESP32|ESP32-D2WD|"2MB flash, No OTA"|0xfcfc|2|5|78|1|1|13|CN|115200|17|16|15|14|-1|-1|
+|PLATFORM_ESP8266|WROOM-02|TX:15 RX:13|0xfcfc|2|0|78|0|1|13|CN|115200|15|13|3|1|-1|-1|
+|PLATFORM_ESP8266|WROOM-5V2L|5V UART level|0xfcfc|2|1|78|0|1|13|CN|115200|15|13|3|1|5|-1|
+|PLATFORM_ESP8266|ESP8266_1MB|No OTA|0xfcfc|2|2|78|0|1|13|CN|115200|15|13|3|1|-1|-1|
+|PLATFORM_ESP8266|WROOM-S2||0xfcfc|2|3|78|0|1|13|CN|115200|15|13|3|1|-1|-1|
+|PLATFORM_ESP32S2|WROOM||0xfcfc|2|0|78|1|1|13|CN|115200|17|21|20|19|-1|-1|
+|PLATFORM_ESP32S2|WROVER||0xfcfc|2|1|78|1|1|13|CN|115200|17|21|20|19|-1|-1|
+|PLATFORM_ESP32S2|SOLO||0xfcfc|2|2|78|1|1|13|CN|115200|17|21|20|19|-1|-1|
+|PLATFORM_ESP32S2|MINI||0xfcfc|2|3|78|1|1|13|CN|115200|17|21|20|19|-1|-1|
 
 <a name="Add_Customized_Module"></a>
 ## Add customized module
 
 if you want to add a module named as "MY_MODULE", of which country code is JP, and Wi-Fi channel is from 1 to 14, the table should be as the following one:
 
-| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_cts_pin | uart_rts_pin | tx_control_pin | rx_control_pin
-|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|---|---|
-| PLATFORM_ESP32 | WROOM-32 |0xfcfc|2|1|1|1|13|CN|115200|17|16|15|14|-1|-1|
-| PLATFORM_ESP32 | WROVER-32|0xfcfc|2|2|1|1|13|CN|115200|22|19|15|14|-1|-1|
-| PLATFORM_ESP32 | PICO-D4  |0xfcfc|2|3|1|1|13|CN|115200|22|19|15|14|-1|-1|
-| PLATFORM_ESP32 | SOLO-1   |0xfcfc|2|4|1|1|13|CN|115200|17|16|15|14|-1|-1|
-| PLATFORM_ESP8266 | WROOM-02   |0xfcfc|2|4|1|1|13|CN|115200|15|13|3|1|-1|-1|
-| PLATFORM_ESP8266 | WROOM-5V2L |0xfcfc|2|1|1|1|13|CN|115200|15|13|3|1|5|-1|
-| PLATFORM_ESP8266 | ESP8266_1MB|0xfcfc|2|2|1|1|13|CN|115200|15|13|3|1|-1|-1|
-| PLATFORM_ESP32S2 | WROOM  |0xfcfc|2|0|1|1|13|CN|115200|17|21|20|19|-1|-1|
-| PLATFORM_ESP32S2 | WROVER   |0xfcfc|2|1|1|1|13|CN|115200|17|21|20|19|-1|-1|
-| PLATFORM_ESP32S2 | SOLO   |0xfcfc|2|2|1|1|13|CN|115200|17|21|20|19|-1|-1|
-| PLATFORM_ESP32S2 | MINI   |0xfcfc|2|3|1|1|13|CN|115200|17|21|20|19|-1|-1|
-| MY_PLATFORM | MY_MODULE|0xfcfc|2|5|1|1|14|JP|115200|17|16|15|14|-1|-1|
+platform|module_name|description|magic_flag|version|module_id|tx_max_power|uart_port|start_channel|channel_num|country_code|uart_baudrate|uart_tx_pin|uart_rx_pin|uart_cts_pin|uart_rts_pin|tx_control_pin|rx_control_pin|
+|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|---|---|---|---|
+|PLATFORM_ESP32|WROOM-32||0xfcfc|2|1|78|1|1|13|CN|115200|17|16|15|14|-1|-1|
+|PLATFORM_ESP32|WROVER-32||0xfcfc|2|2|78|1|1|13|CN|115200|22|19|15|14|-1|-1|
+|PLATFORM_ESP32|PICO-D4||0xfcfc|2|3|78|1|1|13|CN|115200|22|19|15|14|-1|-1|
+|PLATFORM_ESP32|SOLO-1||0xfcfc|2|4|78|1|1|13|CN|115200|17|16|15|14|-1|-1|
+|PLATFORM_ESP32|ESP32-D2WD|"2MB flash, No OTA"|0xfcfc|2|5|78|1|1|13|CN|115200|17|16|15|14|-1|-1|
+|PLATFORM_ESP8266|WROOM-02|TX:15 RX:13|0xfcfc|2|0|78|0|1|13|CN|115200|15|13|3|1|-1|-1|
+|PLATFORM_ESP8266|WROOM-5V2L|5V UART level|0xfcfc|2|1|78|0|1|13|CN|115200|15|13|3|1|5|-1|
+|PLATFORM_ESP8266|ESP8266_1MB|No OTA|0xfcfc|2|2|78|0|1|13|CN|115200|15|13|3|1|-1|-1|
+|PLATFORM_ESP8266|WROOM-S2||0xfcfc|2|3|78|0|1|13|CN|115200|15|13|3|1|-1|-1|
+|PLATFORM_ESP32S2|WROOM||0xfcfc|2|0|78|1|1|13|CN|115200|17|21|20|19|-1|-1|
+|PLATFORM_ESP32S2|WROVER||0xfcfc|2|1|78|1|1|13|CN|115200|17|21|20|19|-1|-1|
+|PLATFORM_ESP32S2|SOLO||0xfcfc|2|2|78|1|1|13|CN|115200|17|21|20|19|-1|-1|
+|PLATFORM_ESP32S2|MINI||0xfcfc|2|3|78|1|1|13|CN|115200|17|21|20|19|-1|-1|
+|MY_PLATFORM|MY_MODULE|MY_DESCRIPTION|0xfcfc|2|5|78|1|1|14|JP|115200|17|16|15|14|-1|-1|
 
 Then add module information in `esp_at_module_info` in `at_default_config.c`, like
 
@@ -140,10 +150,12 @@ If you want to add more parameter, for example, add a string "20181225" as the d
 | ------------- | ------ | ------- | ---- |
 | platform      |   -1   | String  |   0  |
 | module_name   |   -1   | String  |   0  |
+| description   |   -1   | String  |   0  |
 | magic_flag    |    0   | integer |   2  |
 | version       |    2   | integer |   1  |
 | module_id     |    3   | integer |   1  |
 | tx_max_power  |    4   | integer |   1  |
+| uart_port     |    5   | integer |   1  |
 | start_channel |    6   | integer |   1  |
 | channel_num   |    7   | integer |   1  |
 | country_code  |    8   | String  |   4  |
@@ -152,27 +164,29 @@ If you want to add more parameter, for example, add a string "20181225" as the d
 | uart_rx_pin   |   17   | integer |   1  |
 | uart_cts_pin  |   18   | integer |   1  |
 | uart_rts_pin  |   19   | integer |   1  |
-| tx_control_pin |   20   | integer |  1  |
-| rx_control_pin |   21   | integer |  1  |
-| date     |   22   | String  |   8  |
+| tx_control_pin|   20   | integer |   1  |
+| rx_control_pin|   21   | integer |   1  |
+| date          |   22   | String  |   8  |
 
 Edit `factory_param_data.csv` with reference to 
 [Add customized module](#Add_Customized_Module), and add the date into the last column, as the following table,
 
-| platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_cts_pin | uart_rts_pin | tx_control_pin | rx_control_pin | data
-|---|---|---|---|---|---|---| ---|---|---|---|---|---|---|---|---|---|
-| PLATFORM_ESP32 | WROOM-32 |0xfcfc|2|1|1|1|13|CN|115200|17|16|15|14|-1|-1| |
-| PLATFORM_ESP32 | WROVER-32|0xfcfc|2|2|1|1|13|CN|115200|22|19|15|14|-1|-1| |
-| PLATFORM_ESP32 | PICO-D4  |0xfcfc|2|3|1|1|13|CN|115200|22|19|15|14|-1|-1| |
-| PLATFORM_ESP32 | SOLO-1   |0xfcfc|2|4|1|1|13|CN|115200|17|16|15|14|-1|-1| |
-| PLATFORM_ESP8266 | WROOM-02   |0xfcfc|2|4|1|1|13|CN|115200|15|13|3|1|-1|-1| |
-| PLATFORM_ESP8266 | WROOM-5V2L |0xfcfc|2|1|1|1|13|CN|115200|15|13|3|1|5|-1| |
-| PLATFORM_ESP8266 | ESP8266_1MB|0xfcfc|2|2|1|1|13|CN|115200|15|13|3|1|-1|-1| |
-| PLATFORM_ESP32S2 | WROOM  |0xfcfc|2|0|1|1|13|CN|115200|17|21|20|19|-1|-1| |
-| PLATFORM_ESP32S2 | WROVER   |0xfcfc|2|1|1|1|13|CN|115200|17|21|20|19|-1|-1| |
-| PLATFORM_ESP32S2 | SOLO   |0xfcfc|2|2|1|1|13|CN|115200|17|21|20|19|-1|-1| |
-| PLATFORM_ESP32S2 | MINI   |0xfcfc|2|3|1|1|13|CN|115200|17|21|20|19|-1|-1| |
-| MY_PLATFORM | MY_MODULE|0xfcfc|2|5|1|1|14|JP|115200|17|16|15|14|-1|-1|20181225|
+platform|module_name|description|magic_flag|version|module_id|tx_max_power|uart_port|start_channel|channel_num|country_code|uart_baudrate|uart_tx_pin|uart_rx_pin|uart_cts_pin|uart_rts_pin|tx_control_pin|rx_control_pin|date|
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|PLATFORM_ESP32|WROOM-32||0xfcfc|2|1|78|1|1|13|CN|115200|17|16|15|14|-1|-1||
+|PLATFORM_ESP32|WROVER-32||0xfcfc|2|2|78|1|1|13|CN|115200|22|19|15|14|-1|-1||
+|PLATFORM_ESP32|PICO-D4||0xfcfc|2|3|78|1|1|13|CN|115200|22|19|15|14|-1|-1||
+|PLATFORM_ESP32|SOLO-1||0xfcfc|2|4|78|1|1|13|CN|115200|17|16|15|14|-1|-1||
+|PLATFORM_ESP32|ESP32-D2WD|"2MB flash, No OTA"|0xfcfc|2|5|78|1|1|13|CN|115200|17|16|15|14|-1|-1||
+|PLATFORM_ESP8266|WROOM-02|TX:15 RX:13|0xfcfc|2|0|78|0|1|13|CN|115200|15|13|3|1|-1|-1||
+|PLATFORM_ESP8266|WROOM-5V2L|5V UART level|0xfcfc|2|1|78|0|1|13|CN|115200|15|13|3|1|5|-1||
+|PLATFORM_ESP8266|ESP8266_1MB|No OTA|0xfcfc|2|2|78|0|1|13|CN|115200|15|13|3|1|-1|-1||
+|PLATFORM_ESP8266|WROOM-S2||0xfcfc|2|3|78|0|1|13|CN|115200|15|13|3|1|-1|-1||
+|PLATFORM_ESP32S2|WROOM||0xfcfc|2|0|78|1|1|13|CN|115200|17|21|20|19|-1|-1||
+|PLATFORM_ESP32S2|WROVER||0xfcfc|2|1|78|1|1|13|CN|115200|17|21|20|19|-1|-1||
+|PLATFORM_ESP32S2|SOLO||0xfcfc|2|2|78|1|1|13|CN|115200|17|21|20|19|-1|-1||
+|PLATFORM_ESP32S2|MINI||0xfcfc|2|3|78|1|1|13|CN|115200|17|21|20|19|-1|-1||
+|MY_PLATFORM|MY_MODULE|MY_DESCRIPTION|0xfcfc|2|5|78|1|1|14|JP|115200|17|16|15|14|-1|-1|20181225|
 
 It is important to know that the total size of the AT factory parameter is controlled by the `ESP_AT_FACTORY_PARAMETER_SIZE` in `at_default_config.h`, and can be adjusted as needed
 
