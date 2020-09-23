@@ -1,32 +1,36 @@
-ESP-AT User Guide
+ESP-AT 用户指南
 =================
 
 This is the documentation for the ESP-AT.
 
-======================  ======================  ======================  ======================
-  |AT Binary Lists|_      |AT Command Set|_     |AT Command Examples|_  |compile and develop|_     
-----------------------  ----------------------  ----------------------  ----------------------
-  `AT Binary Lists`_      `AT Command Set`_     `AT Command Examples`_  `Compile and Develop`_     
-======================  ======================  ======================  ======================
+======================  ======================  ======================  ======================  ======================
+    |入门|_               |AT Binary 列表|_         |AT 命令集|_              |AT 命令示例|_            |编译和开发|_     
+----------------------  ----------------------  ----------------------  ----------------------  ----------------------
+    `入门`_               `AT Binary 列表`_         `AT 命令集`_              `AT 命令示例`_            `编译和开发`_     
+======================  ======================  ======================  ======================  ======================
 
-.. |AT Binary Lists| image:: ../_static/get-started.png
-.. _AT Binary Lists: AT_Binary_Lists/index.html
+.. |入门| image:: ../_static/get-started.png
+.. _入门: Get_Started/index.html
 
-.. |AT Command Set| image:: ../_static/api-guides.png
-.. _AT Command Set: AT_Command_Set/index.html
+.. |AT Binary 列表| image:: ../_static/bin-list.png
+.. _AT Binary 列表: AT_Binary_Lists/index.html
 
-.. |AT Command Examples| image:: ../_static/api-reference.png
-.. _AT Command Examples: AT_Command_Examples/index.html
+.. |AT 命令集| image:: ../_static/api-guides.png
+.. _AT 命令集: AT_Command_Set/index.html
 
-.. |Compile and Develop| image:: ../_static/general-notes.png
-.. _Compile and Develop: Compile_and_Develop/index.html
+.. |AT 命令示例| image:: ../_static/api-reference.png
+.. _AT 命令示例: AT_Command_Examples/index.html
+
+.. |编译和开发| image:: ../_static/general-notes.png
+.. _编译和开发: Compile_and_Develop/index.html
 
 .. toctree::
    :hidden:
 
-   AT Binary Lists <AT_Binary_Lists/index>
-   AT Command Set <AT_Command_Set/index>
-   AT Command Examples <AT_Command_Examples/index>
-   Compile and Develop <Compile_and_Develop/index>
+   入门 <Get_Started/index>
+   AT Binary 列表 <AT_Binary_Lists/index>
+   AT 命令集 <AT_Command_Set/index>
+   AT 命令示例 <AT_Command_Examples/index>
+   编译和开发 <Compile_and_Develop/index>
    
 * :ref:`genindex`

@@ -21,26 +21,26 @@ the service definition must be in the first line, it always be a primary service
 
 * For example, the following line defines a primary service with UUID 0xA002.
 
-    |index|uuid_len|uuid|perm|val_max_len|val_cur_len|value|  
-    | :---- | :---- | :----- | :------ | :--- | :---- | :--- |
-    |0|16|0x2800|0x01|2|2|A002|  
+|index|uuid_len|uuid|perm|val_max_len|val_cur_len|value|  
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|0|16|0x2800|0x01|2|2|A002|  
 
 
 Definition of characteristics starts from the second line. It contains at least two lines, one is the characteristic declaration, another is to define the characteristic. UUID 0x2803 means the characteristic declaration, value of this line sets its permission, for example, 02 means both readable and writable, user can keep this configuration. Then the next line defines this characteristic, UUID of this line will be the characteristic's UUID, you can define it as you need, value will be the characteristic's value.
 
 * For example, the following lines define a readable and writable characteristic with UUID 0xC300, whose value is 0x30.
 
-    |index|uuid_len|uuid|perm|val_max_len|val_cur_len|value|  
-    | :---- | :---- | :----- | :------ | :--- | :---- | :--- |
-    |1|16|0x2803|0x01|1|1|02| 
-    |2|16|0xC300|0x01|1|1|30| 
+|index|uuid_len|uuid|perm|val_max_len|val_cur_len|value|  
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|1|16|0x2803|0x01|1|1|02| 
+|2|16|0xC300|0x01|1|1|30| 
 
 The attribute can be described further by descriptors. A special one is the descriptor "Client Characteristic Configuration" (UUID 0x2902) which should be present if the Notify bit has been activated in the Characteristic Declaration (UUID 0x2803). This descriptor should always be writable and readable.
 
 * For example, the following lines define a readable and writable characteristic with UUID 0xC306, and able to notify. 
 
-    |index|uuid_len|uuid|perm|val_max_len|val_cur_len|value|  
-    | :---- | :---- | :----- | :------ | :--- | :---- | :--- |
-    |3|16|0x2803|0x01|1|1|02| 
-    |4|16|0xC306|0x01|1|1|30|
-    |5|16|0x2902|0x011|2|2|0000|  
+|index|uuid_len|uuid|perm|val_max_len|val_cur_len|value|  
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|3|16|0x2803|0x01|1|1|02| 
+|4|16|0xC306|0x01|1|1|30|
+|5|16|0x2902|0x011|2|2|0000|  

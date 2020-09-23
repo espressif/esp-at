@@ -13,9 +13,10 @@ How to compile and develop your own AT project
    How to create factory parameter bin <How_to_create_factory_parameter_bin>
    How to customize BLE services <How_to_customize_BLE_services>
    How to customize partitions <How_to_customize_partitions>
-   How to enable ESP32 AT Classic Bluetooth <How_to_enable_ESP32_AT_Classic_Bluetooth>
-   How to enable ESP32 AT Ethernet <How_to_enable_ESP32_AT_Ethernet>
+   How to enable ESP32 AT Classic Bluetooth <How_to_use_ESP_AT_Classic_Bluetooth>
+   How to enable ESP32 AT Ethernet <How_to_enable_ESP_AT_Ethernet>
    How to add new platform <How_to_add_new_platform>
    How to implement ESP32 SDIO_AT <How_to_implement_ESP32_SDIO_AT>
    How to implement OTA update <How_to_implement_OTA_update>
    How to update IDF <How_to_update_IDF>
+   AT API Reference <AT_API_Reference>

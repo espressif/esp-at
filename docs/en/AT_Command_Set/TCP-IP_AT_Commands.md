@@ -522,7 +522,7 @@ Example:
     AT+CIPSTO=10
 
 <a name="cmd-SNTPCFG"></a>
-### [AT+CIPSNTPCFG](#TCPIP-AT)—Sets the Time Zone and the SNTP Server
+### [AT+CIPSNTPCFG](#TCPIP-AT) — Set the Time Zone and the SNTP Server
 Query Command:
 
     AT+CIPSNTPCFG?
@@ -545,7 +545,7 @@ Response:
     OK
 Parameters:
 
-- **\<enable>**: 
+- **\<enable>**:
     - 1: the SNTP server is configured.
     - 0: the SNTP server is not configured.
 - **\<timezone>**: time zone, range: [-11,13].
@@ -559,7 +559,9 @@ Parameters:
 
 Example:
 
-    AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"   
+    AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
+
+
 
 <a name="cmd-SNTPT"></a>
 ### [AT+CIPSNTPTIME](#TCPIP-AT)—Queries the SNTP Time
@@ -584,6 +586,7 @@ Example:
 
 <a name="cmd-UPDATE"></a>
 ### [AT+CIUPDATE](#TCPIP-AT)—Updates the Software Through Wi-Fi
+
 Execute Command:
 
     AT+CIUPDATE  
@@ -593,6 +596,7 @@ Response:
     +CIPUPDATE:<n>
     OK
 
+
 Execute Command:
 
     AT+CIUPDATE=<ota mode>[,version]  
@@ -601,13 +605,14 @@ Response:
 
     +CIPUPDATE:<n>
     OK
-Parameters:
 
+
+Parameters:
 - **\<ota mode>**:
     - 0: OTA via TCP
     - 1: OTA via SSL, please ensure `make menuconfig` > `Component config` > `AT` > `OTA based upon ssl` is enabled.
 - **\<version>**: AT version, for example, `v1.2.0.0`, `v1.1.3.0`,`v1.1.2.0`
-- **\<n>**: 
+- **\<n>**:
     - 1: find the server.
     - 2: connect to server.
     - 3: get the software version.
@@ -617,7 +622,6 @@ Example:
 
     AT+CIUPDATE  
 Or
-
     AT+CIUPDATE=1,"v1.2.0.0"
 
 ***Notes:***
@@ -820,6 +824,7 @@ Parameters:
 ***Notes:***
 
 * Send this command before establish SSL connection if you want configuration take effect immediately.
+* This command is not currently supported on ESP32.
 
 <a name="cmd-AUTOCONNINT"></a>
 ### [AT+CIPRECONNINTV](#TCPIP-AT)—Set Wi-Fi transparent transmitting auto-connect interval
@@ -886,8 +891,8 @@ Response:
 
 Parameters:
 - **\<mode>**: the receive mode of socket data is active mode by default.
-    - 0: active mode - ESP AT will send all the received socket data instantly to host MCU through UART with header “+IPD".
-    - 1: passive mode - ESP AT will keep the received socket data in an internal buffer (default is 5744 bytes), and wait for host MCU to read the data. If the buffer is full, the socket transmission will be blocked.
+    - 0: active mode - ESP-AT will send all the received socket data instantly to host MCU through UART with header “+IPD".
+    - 1: passive mode - ESP-AT will keep the received socket data in an internal buffer (default is 5744 bytes), and wait for host MCU to read the data. If the buffer is full, the socket transmission will be blocked.
 
 Example:
 
@@ -897,7 +902,7 @@ Example:
 
 * The configuration is for TCP and SSL transmission only, and can not be used on WiFi-UART passthrough mode. If it is a UDP transmission in passive mode，data will be missed when buffer full.
 
-* If the passive mode is enabled, when ESP AT receives socket data, it will prompt the following message in different scenarios: 
+* If the passive mode is enabled, when ESP-AT receives socket data, it will prompt the following message in different scenarios: 
     - for multiple connection mode (AT+CIPMUX=1), the message is: `+IPD,<link ID>,<len>`
     - for single connection mode (AT+CIPMUX=0), the message is: `+IPD,<len>`
     - `<len>` is the total length of socket data in buffer

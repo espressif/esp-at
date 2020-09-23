@@ -1,4 +1,4 @@
-How to enable ESP32 AT Ethernet
+How to enable ESP-AT Ethernet
 ===============================
 
 ## Overview
