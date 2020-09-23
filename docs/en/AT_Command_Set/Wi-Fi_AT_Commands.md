@@ -117,8 +117,8 @@ Parameters:
 
 ***Note:***
 
-* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.  
-* This command requires Station mode to be active. 
+* The configuration changes will be saved in the NVS area if `AT+SYSSTORE=1`.
+* This command requires Station mode to be active.
 
 Examples:
 
@@ -127,6 +127,21 @@ Examples:
     AT+CWJAP="ab\\\,c","0123456789\"\\"
     If multiple APs have the same SSID as "abc", the target AP can be found by BSSID:
     AT+CWJAP="abc","0123456789","ca:d7:19:d8:a6:44" 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <a name="cmd-LAPOPT"></a>
 ### [AT+CWLAPOPT](#WiFi-AT)—Sets the Configuration for the Command AT+CWLAP
 Set Command:
@@ -135,8 +150,9 @@ Set Command:
 Response:
 
     OK
-Parameters:
 
+
+Parameters:
 - **\<sort_enable>**: determines whether the result of command AT+CWLAP will be listed according to RSSI: 
     - 0: the result is not ordered according to RSSI.
     - 1: the result is ordered according to RSSI.

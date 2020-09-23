@@ -56,6 +56,7 @@ Compiling the ESP-AT is the same as compiling any other project based on the ESP
 2. ``rm sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
 3. Set the latest default configuration by ``make defconfig``.
 4. ``make menuconfig`` -> ``Serial flasher config`` to configure the serial port for downloading.
+
 5. ``make flash`` or ``make flash SILENCE=1`` to compile the project and download it into the flash, and ``make flash SILENCE=1`` will remove some logs to reduce firmware size.
 
    -  Or you can call ``make`` to compile it, and follow the printed instructions to download the bin files into flash by yourself.
@@ -64,10 +65,7 @@ Compiling the ESP-AT is the same as compiling any other project based on the ESP
    -  If enable BT feature, the firmware size will be much larger, please make sure it does not exceed the ota partition size.
 
 6. ``make factory_bin`` to combine factory bin, by default, the factory bin is 4MB flash size, DIO flash mode and 40MHz flash speed. If you want use this command, you must first run::
-
-     make print_flash_cmd | tail -n 1 > build/download.config
-
-   to generate ``build/download.config``.
+   - ``make print_flash_cmd | tail -n 1 > build/download.config`` to generate ``build/download.config``.
 
 7. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``make erase_flash`` to erase the entire flash.
 
@@ -79,7 +77,7 @@ Hardware Introduction
 
 The WROOM32S2 Board sends AT commands through UART1 by default.
 
--  GPIO21 is RXD
+-  GPIO18 is RXD
 -  GPIO17 is TXD
 -  GPIO19 is RTS
 -  GPIO20 is CTS
@@ -105,7 +103,7 @@ Compiling the ESP-AT is the same as compiling any other project based on the ESP
 
 1. You can clone the project into an empty directory using command::
 
-      git clone --recursive https://github.com/espressif/esp-at.git
+     git clone --recursive https://github.com/espressif/esp-at.git
 
 2. ``rm sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
 3. Set esp module information::
@@ -172,8 +170,10 @@ Compiling the ESP-AT is the same as compiling any other project based on the ESP
 6. ``make flash`` or ``make flash SILENCE=1`` to compile the project and download it into the flash, and ``make flash SILENCE=1`` will remove some logs to reduce firmware size.
 
    - Or you can call ``make`` to compile it, and follow the printed instructions to download the bin files into flash by yourself.
+
    - ``make print_flash_cmd`` can be used to print the addresses of downloading.
    - More details are in the `ESP-IDF README <https://github.com/espressif/esp-idf/blob/release/v4.0/README.md>`__.
 
 7. ``make factory_bin`` to combine factory bin, by default, the factory bin is 4MB flash size, DIO flash mode and 40MHz flash speed. If you want use this command, you must fisrt run ``make print_flash_cmd | tail -n 1 > build/download.config`` to generate ``build/download.config``.
+
 8. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``make erase_flash`` to erase the entire flash.

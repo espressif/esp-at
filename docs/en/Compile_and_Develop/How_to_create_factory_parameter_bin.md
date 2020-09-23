@@ -75,11 +75,17 @@ The origin table is `components/customized_partitions/raw_data/factory_param/fac
 
 | platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_cts_pin | uart_rts_pin | tx_control_pin | rx_control_pin
 |---|---|---|---|---|---|---| ---|---|---|---|---|---|---|---|---|
-| PLATFORM_ESP32 | WROOM-32 |0xfcfc|1|1|1|1|13|CN|115200|17|16|15|14|-1|-1
-| PLATFORM_ESP32 | WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14|-1|-1
-| PLATFORM_ESP32 | PICO-D4  |0xfcfc|1|3|1|1|13|CN|115200|22|19|15|14|-1|-1
-| PLATFORM_ESP32 | SOLO-1   |0xfcfc|1|4|1|1|13|CN|115200|17|16|15|14|-1|-1
-| PLATFORM_ESP8266 | WROOM-02   |0xfcfc|1|4|1|1|13|CN|115200|15|13|3|1|5|-1
+| PLATFORM_ESP32 | WROOM-32 |0xfcfc|2|1|1|1|13|CN|115200|17|16|15|14|-1|-1
+| PLATFORM_ESP32 | WROVER-32|0xfcfc|2|2|1|1|13|CN|115200|22|19|15|14|-1|-1
+| PLATFORM_ESP32 | PICO-D4  |0xfcfc|2|3|1|1|13|CN|115200|22|19|15|14|-1|-1
+| PLATFORM_ESP32 | SOLO-1   |0xfcfc|2|4|1|1|13|CN|115200|17|16|15|14|-1|-1
+| PLATFORM_ESP8266 | WROOM-02   |0xfcfc|2|4|1|1|13|CN|115200|15|13|3|1|-1|-1
+| PLATFORM_ESP8266 | WROOM-5V2L |0xfcfc|2|1|1|1|13|CN|115200|15|13|3|1|5|-1
+| PLATFORM_ESP8266 | ESP8266_1MB|0xfcfc|2|2|1|1|13|CN|115200|15|13|3|1|-1|-1
+| PLATFORM_ESP32S2 | WROOM  |0xfcfc|2|0|1|1|13|CN|115200|17|21|20|19|-1|-1
+| PLATFORM_ESP32S2 | WROVER   |0xfcfc|2|1|1|1|13|CN|115200|17|21|20|19|-1|-1
+| PLATFORM_ESP32S2 | SOLO   |0xfcfc|2|2|1|1|13|CN|115200|17|21|20|19|-1|-1
+| PLATFORM_ESP32S2 | MINI   |0xfcfc|2|3|1|1|13|CN|115200|17|21|20|19|-1|-1
 
 <a name="Add_Customized_Module"></a>
 ## Add customized module
@@ -88,12 +94,18 @@ if you want to add a module named as "MY_MODULE", of which country code is JP, a
 
 | platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_cts_pin | uart_rts_pin | tx_control_pin | rx_control_pin
 |---|---|---|---|---|---|---| ---|---|---|---|---|---|---|---|---|
-| PLATFORM_ESP32 | WROOM-32 |0xfcfc|1|1|1|1|13|CN|115200|17|16|15|14|-1|-1|
-| PLATFORM_ESP32 | WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14|-1|-1|
-| PLATFORM_ESP32 | PICO-D4  |0xfcfc|1|3|1|1|13|CN|115200|22|19|15|14|-1|-1|
-| PLATFORM_ESP32 | SOLO-1   |0xfcfc|1|4|1|1|13|CN|115200|17|16|15|14|-1|-1|
-| PLATFORM_ESP8266 | WROOM-02   |0xfcfc|1|4|1|1|13|CN|115200|15|13|3|1|5|-1|
-| MY_PLATFORM | MY_MODULE|0xfcfc|1|5|1|1|14|JP|115200|17|16|15|14|-1|-1|
+| PLATFORM_ESP32 | WROOM-32 |0xfcfc|2|1|1|1|13|CN|115200|17|16|15|14|-1|-1|
+| PLATFORM_ESP32 | WROVER-32|0xfcfc|2|2|1|1|13|CN|115200|22|19|15|14|-1|-1|
+| PLATFORM_ESP32 | PICO-D4  |0xfcfc|2|3|1|1|13|CN|115200|22|19|15|14|-1|-1|
+| PLATFORM_ESP32 | SOLO-1   |0xfcfc|2|4|1|1|13|CN|115200|17|16|15|14|-1|-1|
+| PLATFORM_ESP8266 | WROOM-02   |0xfcfc|2|4|1|1|13|CN|115200|15|13|3|1|-1|-1|
+| PLATFORM_ESP8266 | WROOM-5V2L |0xfcfc|2|1|1|1|13|CN|115200|15|13|3|1|5|-1|
+| PLATFORM_ESP8266 | ESP8266_1MB|0xfcfc|2|2|1|1|13|CN|115200|15|13|3|1|-1|-1|
+| PLATFORM_ESP32S2 | WROOM  |0xfcfc|2|0|1|1|13|CN|115200|17|21|20|19|-1|-1|
+| PLATFORM_ESP32S2 | WROVER   |0xfcfc|2|1|1|1|13|CN|115200|17|21|20|19|-1|-1|
+| PLATFORM_ESP32S2 | SOLO   |0xfcfc|2|2|1|1|13|CN|115200|17|21|20|19|-1|-1|
+| PLATFORM_ESP32S2 | MINI   |0xfcfc|2|3|1|1|13|CN|115200|17|21|20|19|-1|-1|
+| MY_PLATFORM | MY_MODULE|0xfcfc|2|5|1|1|14|JP|115200|17|16|15|14|-1|-1|
 
 Then add module information in `esp_at_module_info` in `at_default_config.c`, like
 
@@ -110,6 +122,13 @@ static const esp_at_module_info_t esp_at_module_info[] = {
 #if defined(CONFIG_IDF_TARGET_ESP8266)
     {"WROOM-02",        CONFIG_ESP_AT_OTA_TOKEN_WROOM_02,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 },
     {"WROOM-S2",        CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 },
+#endif
+
+#if defined(CONFIG_IDF_TARGET_ESP32S2)
+    {"WROOM",        CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM,       CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM },
+    {"WROVER",       CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER,      CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER },
+    {"SOLO",         CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO,        CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO },
+    {"MINI",         CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI,        CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI },
 #endif
 };
 ```
@@ -142,11 +161,41 @@ Edit `factory_param_data.csv` with reference to
 
 | platform | module_name | magic_flag | version | module_id | tx_max_power | start_channel | channel_num | country_code | uart_baudrate | uart_tx_pin | uart_rx_pin | uart_cts_pin | uart_rts_pin | tx_control_pin | rx_control_pin | data
 |---|---|---|---|---|---|---| ---|---|---|---|---|---|---|---|---|---|
-| PLATFORM_ESP32 | WROOM-32 |0xfcfc|1|1|1|1|13|CN|115200|17|16|15|14|-1|-1| |
-| PLATFORM_ESP32 | WROVER-32|0xfcfc|1|2|1|1|13|CN|115200|22|19|15|14|-1|-1| |
-| PLATFORM_ESP32 | PICO-D4  |0xfcfc|1|3|1|1|13|CN|115200|22|19|15|14|-1|-1| |
-| PLATFORM_ESP32 | SOLO-1   |0xfcfc|1|4|1|1|13|CN|115200|17|16|15|14|-1|-1| |
-| PLATFORM_ESP8266 | WROOM-02   |0xfcfc|1|4|1|1|13|CN|115200|15|13|3|1|5|-1| |
-| MY_PLATFORM | MY_MODULE|0xfcfc|1|5|1|1|14|JP|115200|17|16|15|14|-1|-1|20181225|
+| PLATFORM_ESP32 | WROOM-32 |0xfcfc|2|1|1|1|13|CN|115200|17|16|15|14|-1|-1| |
+| PLATFORM_ESP32 | WROVER-32|0xfcfc|2|2|1|1|13|CN|115200|22|19|15|14|-1|-1| |
+| PLATFORM_ESP32 | PICO-D4  |0xfcfc|2|3|1|1|13|CN|115200|22|19|15|14|-1|-1| |
+| PLATFORM_ESP32 | SOLO-1   |0xfcfc|2|4|1|1|13|CN|115200|17|16|15|14|-1|-1| |
+| PLATFORM_ESP8266 | WROOM-02   |0xfcfc|2|4|1|1|13|CN|115200|15|13|3|1|-1|-1| |
+| PLATFORM_ESP8266 | WROOM-5V2L |0xfcfc|2|1|1|1|13|CN|115200|15|13|3|1|5|-1| |
+| PLATFORM_ESP8266 | ESP8266_1MB|0xfcfc|2|2|1|1|13|CN|115200|15|13|3|1|-1|-1| |
+| PLATFORM_ESP32S2 | WROOM  |0xfcfc|2|0|1|1|13|CN|115200|17|21|20|19|-1|-1| |
+| PLATFORM_ESP32S2 | WROVER   |0xfcfc|2|1|1|1|13|CN|115200|17|21|20|19|-1|-1| |
+| PLATFORM_ESP32S2 | SOLO   |0xfcfc|2|2|1|1|13|CN|115200|17|21|20|19|-1|-1| |
+| PLATFORM_ESP32S2 | MINI   |0xfcfc|2|3|1|1|13|CN|115200|17|21|20|19|-1|-1| |
+| MY_PLATFORM | MY_MODULE|0xfcfc|2|5|1|1|14|JP|115200|17|16|15|14|-1|-1|20181225|
+
+It is important to know that the total size of the AT factory parameter is controlled by the `ESP_AT_FACTORY_PARAMETER_SIZE` in `at_default_config.h`, and can be adjusted as needed
 
 Then, you can add code to parse `date` in `esp_at_factory_parameter_init` or other api.
+
+## Modify Factory param data
+If you simply need to modify factory_param on an existing module, the following three methods are recommended:
+
+- method one
+   - Premise: you need to have the entire esp-at project.
+1. Find the factory_param_data.csv file through the following path: `components/customized_partitions/raw_data/factory_param/factory_param_data.csv`, and modify the parameters.
+2. Recompile the ``esp-at`` project, download the new ``factory_param.bin`` into flash.
+
+- method two
+   - Premise: you need to have the entire esp-at project.
+1. Find the factory_param_data.csv file through the following path: `components/customized_partitions/raw_data/factory_param/factory_param_data.csv`, and modify the parameters.
+2. Open the terminal in the following path: `esp-at`, execute the following command.
+   - Commandline: `python tools/factory_param_generate.py --platform PLATFORM_ESP32S2 --module WROVER --define_file components/customized_partitions/raw_data/factory_param/factory_param_type.csv --module_file components/customized_partitions/raw_data/factory_param/factory_param_data.csv --bin_name factory_param.bin --log_file ./factory_parameter.log`
+   - The value of the `-- platform -- module` parameter in the command needs to be changed as the case may be.
+3. It will generate factory_param.bin at esp-at folder, download the new ``factory_param.bin`` into flash.
+4. If you want to know how to use the commands in step 2, you can study the factory_param_generate.py file in the 'esp-at/tools''.
+  
+- method three
+   - Premise:  you need to have the factory_param.bin file.
+1. Open this file directly with a binary tool, and directly modify the parameters in the corresponding position according to the parameters offset in factory_param_type.csv. 
+2. Download the new ``factory_param.bin`` into flash.

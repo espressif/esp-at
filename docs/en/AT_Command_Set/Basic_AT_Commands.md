@@ -20,7 +20,6 @@
 * [AT+SLEEPWKCFG](#cmd-WKCFG) : Config the light-sleep wakeup source and awake GPIO.
 * [AT+SYSSTORE](#cmd-SYSSTORE) : Config parameter store mode.
 
-
 <a name="cmd-AT"></a>
 ### [AT](#Basic-AT)—Tests AT Startup
 Execute Command: 
@@ -69,8 +68,14 @@ Response:
     OK
 Parameters:  
 
-- **\<time>**: the duration of ESP32’s sleep. Unit: ms.  
-    ESP32 will wake up after Deep-sleep for as many milliseconds (ms) as \<time> indicates.  
+- **\<time>**: the duration of the device’s deep sleep. Unit: ms.  
+    ESP device will automatically wake up after the deep-sleep for as many milliseconds (ms) as \<time> indicates.  
+    Upon waking up, the device calls deep sleep wake stub, and then proceeds to load application.
+
+***Note:***  
+
+* On ESP8266 platform, in order to timing wake up, it is necessary to connect GPIO16 to RST pin.
+* Moreover, ESP8266 can be waken up from deep sleep externally by directly triggering RST pin low level pulse.
 
 <a name="cmd-ATE"></a>
 ### [ATE](#Basic-AT)—AT Commands Echoing
@@ -603,6 +608,10 @@ Example:
     AT+SLEEPWKCFG=1,1     // Uart1 wakeup, Only Support ESP32
     AT+SLEEPWKCFG=2,12,0  // GPIO12 wakeup, low level.
 
+***Notes:***
+
+* GPIO16 as the RTC IO can not be set as GPIO wakeup source on ESP8266 platform for light sleep.
+
 <a name="cmd-SYSSTORE"></a>
 ### [AT+SYSSTORE](#Basic-AT)— Config parameter store mode
 Query Command:  
@@ -671,4 +680,3 @@ Example:
     AT+SYSSTORE=1
     AT+CWMODE=3  // Store into flash
     AT+CWJAP="test","1234567890" // Store into flash
-
