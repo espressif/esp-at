@@ -569,6 +569,7 @@ jobs:
         AT_OTA_TOKEN_WROOM_S2_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_S2_1024_1024 }}
         AT_OTA_TOKEN_WROOM_5V2L: ${{ secrets.AT_OTA_TOKEN_WROOM_5V2L }}
         AT_OTA_TOKEN_ESP8266_1MB: ${{ secrets.AT_OTA_TOKEN_ESP8266_1MB }}
+        AT_OTA_TOKEN_WROOM_02_N_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_02_1024_1024 }}
       run: |
         cd main
         rm -f at_config.h
@@ -582,6 +583,8 @@ jobs:
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
         echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
         echo -e "#endif" >> at_config.h
         cd -
 
@@ -631,6 +634,7 @@ jobs:
         AT_OTA_TOKEN_WROOM_S2_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_S2_1024_1024 }}
         AT_OTA_TOKEN_WROOM_5V2L: ${{ secrets.AT_OTA_TOKEN_WROOM_5V2L }}
         AT_OTA_TOKEN_ESP8266_1MB: ${{ secrets.AT_OTA_TOKEN_ESP8266_1MB }}
+        AT_OTA_TOKEN_WROOM_02_N_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_02_1024_1024 }}
       run: |
         cd main
         rm -f at_config.h
@@ -644,6 +648,8 @@ jobs:
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
         echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
         echo -e "#endif" >> at_config.h
         cd -
 
@@ -693,6 +699,7 @@ jobs:
         AT_OTA_TOKEN_WROOM_S2_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_S2_1024_1024 }}
         AT_OTA_TOKEN_WROOM_5V2L: ${{ secrets.AT_OTA_TOKEN_WROOM_5V2L }}
         AT_OTA_TOKEN_ESP8266_1MB: ${{ secrets.AT_OTA_TOKEN_ESP8266_1MB }}
+        AT_OTA_TOKEN_WROOM_02_N_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_02_1024_1024 }}
       run: |
         cd main
         rm -f at_config.h
@@ -706,6 +713,8 @@ jobs:
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
         echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
         echo -e "#endif" >> at_config.h
         cd -
 
@@ -744,3 +753,68 @@ jobs:
       with:
         name: esp8285-1MB-at
         path: esp8285-1MB-at
+
+  build-esp8266-wroom02-n-at:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: clone esp-idf
+      env:
+        AT_OTA_TOKEN_WROOM_02_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_02_1024_1024 }}
+        AT_OTA_TOKEN_WROOM_S2_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_S2_1024_1024 }}
+        AT_OTA_TOKEN_WROOM_5V2L: ${{ secrets.AT_OTA_TOKEN_WROOM_5V2L }}
+        AT_OTA_TOKEN_ESP8266_1MB: ${{ secrets.AT_OTA_TOKEN_ESP8266_1MB }}
+        AT_OTA_TOKEN_WROOM_02_N_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_02_1024_1024 }}
+      run: |
+        cd main
+        rm -f at_config.h
+        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
+        echo -e "#define __AT_CONFIG_H__" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
+        echo -e "#endif" >> at_config.h
+        cd -
+
+        pip install --upgrade pip
+        pip install pyyaml xlrd
+        mkdir build
+        echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02-N\", \"silence\": 0}" > build/module_info.json
+        ./build.py reconfigure
+      shell: bash
+    - name: Install dependencies
+      env:
+        IDF_PATH: ${{ github.workspace }}/esp-idf
+      run: |
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+    - name: Compiling
+      run: |
+        wget --no-check-certificate https://dl.espressif.com/dl/xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
+        tar -xzf xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
+        export PATH="$PATH:$(pwd)/xtensa-lx106-elf/bin"
+        ./build.py build
+        upload_dir=esp8266-wroom02-at
+        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/*.bin $upload_dir/
+        cp build/*.elf $upload_dir/
+        cp build/*.map $upload_dir/
+        cp build/bootloader/*.bin $upload_dir/bootloader/
+        cp build/partition_table/*.bin $upload_dir/partition_table/
+        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
+        cp build/flasher_args.json $upload_dir/
+        cp build/flash_project_args $upload_dir/download.config
+        cp build/factory/* $upload_dir/factory
+      shell: bash
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: esp8266-wroom02-n-at
+        path: esp8266-wroom02-n-at
