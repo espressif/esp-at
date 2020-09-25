@@ -800,7 +800,7 @@ jobs:
         tar -xzf xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
         export PATH="$PATH:$(pwd)/xtensa-lx106-elf/bin"
         ./build.py build
-        upload_dir=esp8266-wroom02-at
+        upload_dir=esp8266-wroom02-n-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
         cp build/*.bin $upload_dir/
