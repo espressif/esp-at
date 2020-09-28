@@ -25,8 +25,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "freertos/FreeRTOS.h"
+#include "esp_at.h"
 #if defined(CONFIG_IDF_TARGET_ESP8266)
+#include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 #include "freertos/stream_buffer.h"
@@ -35,7 +36,6 @@
 #include "esp8266/gpio_struct.h"
 #include "esp_system.h"
 #include "esp_log.h"
-#include "esp_at.h"
 
 #ifdef CONFIG_AT_BASE_ON_HSPI
 #include "driver/gpio.h"
