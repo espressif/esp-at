@@ -693,7 +693,7 @@ esp32_demo:
     - make -j8
     - cd -
 
-    - cd examples/at_sdspi_host/ESP32
+    - cd examples/at_spi_master/sdspi/ESP32
     - make defconfig
     - make -j8
     - cd -
