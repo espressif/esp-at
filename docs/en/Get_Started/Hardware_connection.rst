@@ -1,6 +1,8 @@
 Hardware Connection
 ===================
 
+:link_to_translation:`zh_CN:[中文]`
+
 This document introduces what hardware you need to prepare and how to connect them in order to download AT firmware, send AT commands, and receive AT responses. It covers the following three ESP series of modules:
 
 - `ESP32 Series`_
@@ -10,49 +12,73 @@ This document introduces what hardware you need to prepare and how to connect th
 What You Need
 --------------
 
-- PC
-- ESP board
-- USB to serial port converter
-- USB cables to connect PC with ESP board and USB to serial port converter
-- Jumper wires to connect ESP board with USB to serial port converter
+.. list-table:: List of Components Required for ESP-AT Testing
+   :header-rows: 1
+
+   * - Component
+     - Function
+   * - ESP board
+     - Slave MCU.
+   * - USB cable (ESP borad to PC)
+     - Download/Log output connection.
+   * - PC
+     - Act as Host MCU. Download firmware to Slave MCU.
+   * - USB cable (PC to serial port converter)
+     - AT command/response connection.
+   * - USB to serial port converter
+     - Convert between USB signals and TTL signals.
+   * - Jumper wires (serial port converter to ESP board)
+     - AT command/response connection.
 
 .. figure:: ../../_static/what-you-need.svg
    :align: center
-   :alt: What You Need for ESP-AT Testing
+   :alt: Connection of Components for ESP-AT Testing
    :figclass: align-center
 
-   What You Need for ESP-AT Testing
+   Connection of Components for ESP-AT Testing
+
+Please note that in the above picture, four jump wires are used to connect the ESP board and USB to serial converter. If you don't use hardware flow control, two wires connecting TX/RX and a simpler converter will be enough.
 
 ESP32 Series
 -------------
 
 ESP32 AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. 
 
-All ESP32 modules use GPIO1 and GPIO3 as UART0, but they use different GPIOs as UART1. The following sections illustrate which GPIOs you should connect for each ESP32 series of modules. Please note that connection to CTS and RTS is optional, depending on whether you want to use hardware flow control.
+All ESP32 modules use GPIO1 and GPIO3 as UART0, but they use different GPIOs as UART1. The following sections illustrate which GPIOs you should connect for each ESP32 series of modules.
 
 For more details of ESP32 modules and boards, please refer to `ESP32 Modules and Boards <https://docs.espressif.com/projects/esp-idf/en/stable/hw-reference/modules-and-boards.html#wroom-solo-wrover-and-pico-modules>`_.
 
 ESP32-WROOM-32 Series
 ^^^^^^^^^^^^^^^^^^^^^^
+
 .. list-table:: ESP32-WROOM-32 Series Hardware Connection Pinout
-   :widths: 35 20 25
    :header-rows: 1
 
    * - Function of Connection
-     - Interface
-     - Pins
-   * - Download/Log output
+     - ESP Board Pins
+     - Other Device Pins
+   * - Download/Log output :sup:`1`
      - UART0
-     -
-       * TX:  GPIO1
-       * RX:  GPIO3
-   * - AT command/response
+         * GPIO3 (RX)
+         * GPIO1 (TX)
+     - PC
+         * TX
+         * RX
+   * - AT command/response :sup:`2`
      - UART1
-     -
-       * TX:  GPIO17
-       * RX:  GPIO16
-       * CTS: GPIO15
-       * RTS: GPIO14
+         * GPIO16 (RX)
+         * GPIO17 (TX)
+         * GPIO15 (CTS)
+         * GPIO14 (RTS)
+     - USB to serial converter
+         * TX
+         * RX
+         * RTS
+         * CTS
+
+**Note** 1: Connection between individual pins of the ESP board and the PC is already established internally on the ESP board. You only need to provide USB cable between the board and PC.
+
+**Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
 
 .. figure:: ../../_static/esp32-wroom-hw-connection.png
    :align: center
@@ -66,24 +92,33 @@ If you want to connect your device directly with ESP32-WROOM-32 rather than the 
 ESP32-WROVER Series
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. list-table:: ESP32-WROVER Series Hardware Connection Pinout
-   :widths: 35 20 25
    :header-rows: 1
 
    * - Function of Connection
-     - Interface
-     - Pins
-   * - Download/Log output
+     - ESP Board Pins
+     - Other Device Pins
+   * - Download/Log output :sup:`1`
      - UART0
-     -
-       * TX:  GPIO1
-       * RX:  GPIO3
-   * - AT command/response
+         * GPIO3 (RX)
+         * GPIO1 (TX)
+     - PC
+         * TX
+         * RX
+   * - AT command/response :sup:`2`
      - UART1
-     -
-       * TX:  GPIO22
-       * RX:  GPIO19
-       * CTS: GPIO15
-       * RTS: GPIO14
+         * GPIO19 (RX)
+         * GPIO22 (TX)
+         * GPIO15 (CTS)
+         * GPIO14 (RTS)
+     - USB to serial converter
+         * TX
+         * RX
+         * RTS
+         * CTS
+
+**Note** 1: Connection between individual pins of the ESP board and the PC is already established internally on the ESP board. You only need to provide USB cable between the board and PC.
+
+**Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
 
 .. figure:: ../../_static/esp32-wrover-hw-connection.png
    :align: center
@@ -98,24 +133,33 @@ ESP32-PICO Series
 ^^^^^^^^^^^^^^^^^^
 
 .. list-table:: ESP32-PICO Series Hardware Connection Pinout
-   :widths: 35 20 25
    :header-rows: 1
 
    * - Function of Connection
-     - Interface
-     - Pins
-   * - Download/Log output
+     - ESP Board Pins
+     - Other Device Pins
+   * - Download/Log output :sup:`1`
      - UART0
-     -
-       * TX:  GPIO1
-       * RX:  GPIO3
-   * - AT command/response
+         * GPIO3 (RX)
+         * GPIO1 (TX)
+     - PC
+         * TX
+         * RX
+   * - AT command/response :sup:`2`
      - UART1
-     -
-       * TX:  GPIO22
-       * RX:  GPIO19
-       * CTS: GPIO15
-       * RTS: GPIO14
+         * GPIO19 (RX)
+         * GPIO22 (TX)
+         * GPIO15 (CTS)
+         * GPIO14 (RTS)
+     - USB to serial converter
+         * TX
+         * RX
+         * RTS
+         * CTS
+
+**Note** 1: Connection between individual pins of the ESP board and the PC is already established internally on the ESP board. You only need to provide USB cable between the board and PC.
+
+**Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
 
 .. figure:: ../../_static/esp32-pico-hw-connection.png
    :align: center
@@ -130,24 +174,33 @@ ESP32-SOLO Series
 ^^^^^^^^^^^^^^^^^^
 
 .. list-table:: ESP32-SOLO Series Hardware Connection Pinout
-   :widths: 35 20 25
    :header-rows: 1
 
    * - Function of Connection
-     - Interface
-     - Pins
-   * - Download/Log output
+     - ESP Board Pins
+     - Other Device Pins
+   * - Download/Log output :sup:`1`
      - UART0
-     -
-       * TX:  GPIO1
-       * RX:  GPIO3
-   * - AT command/response
+         * GPIO3 (RX)
+         * GPIO1 (TX)
+     - PC
+         * TX
+         * RX
+   * - AT command/response :sup:`2`
      - UART1
-     -
-       * TX:  GPIO17
-       * RX:  GPIO16
-       * CTS: GPIO15
-       * RTS: GPIO14
+         * GPIO16 (RX)
+         * GPIO17 (TX)
+         * GPIO15 (CTS)
+         * GPIO14 (RTS)
+     - USB to serial converter
+         * TX
+         * RX
+         * RTS
+         * CTS
+
+**Note** 1: Connection between individual pins of the ESP board and the PC is already established internally on the ESP board. You only need to provide USB cable between the board and PC.
+
+**Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
 
 .. figure:: ../../_static/esp32-solo-hw-connection.png
    :align: center
@@ -161,27 +214,36 @@ If you want to connect your device directly with ESP32-SOLO-1 rather than the ES
 ESP32-S2 Series
 ----------------
 
-ESP32-S2 AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Please note that connection to CTS and RTS is optional, depending on whether you want to use hardware flow control.
+ESP32-S2 AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses.
 
 .. list-table:: ESP32-S2 Series Hardware Connection Pinout
-   :widths: 35 20 25
    :header-rows: 1
 
    * - Function of Connection
-     - Interface
-     - Pins
-   * - Download/Log output
+     - ESP Board Pins
+     - Other Device Pins
+   * - Download/Log output :sup:`1`
      - UART0
-     -
-       * TX:  GPIO43
-       * RX:  GPIO44
-   * - AT command/response
+         * GPIO44 (RX)
+         * GPIO43 (TX)
+     - PC
+         * TX
+         * RX
+   * - AT command/response :sup:`2`
      - UART1
-     -
-       * TX:  GPIO17
-       * RX:  GPIO21
-       * CTS: GPIO20
-       * RTS: GPIO19
+         * GPIO21 (RX)
+         * GPIO17 (TX)
+         * GPIO20 (CTS)
+         * GPIO19 (RTS)
+     - USB to serial converter
+         * TX
+         * RX
+         * RTS
+         * CTS
+
+**Note** 1: Connection between individual pins of the ESP board and the PC is already established internally on the ESP board. You only need to provide USB cable between the board and PC.
+
+**Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
 
 .. figure:: ../../_static/esp32-s2-hw-connection.png
    :align: center
@@ -198,25 +260,38 @@ ESP8266 Series
 ESP8266 AT uses two UART ports: UART0 is used to download firmware and send AT commands and receive AT responses; UART1 is used to log output. 
 
 .. list-table:: ESP8266 Series Hardware Connection Pinout
-   :widths: 35 20 25
    :header-rows: 1
 
    * - Function of Connection
-     - Interface
-     - Pins
-   * - Download/AT command and response
+     - ESP Board Pins
+     - Other Device Pins
+   * - Download
      - UART0
-     -
-       * TX:  GPIO1
-       * RX:  GPIO3
+         * GPIO3 (RX)
+         * GPIO1 (TX)
+     - PC
+         * TX
+         * RX
+   * - AT command/response :sup:`2`
+     - UART0
+         * GPIO13 (RX)
+         * GPIO15 (TX)
+         * GPIO3 (CTS)
+         * GPIO1 (RTS)
+     - USB to serial converter
+         * TX
+         * RX
+         * RTS
+         * CTS 
    * - Log output
      - UART1
-     - 
-       * TX:  GPIO15
-       * RX:  GPIO13
-       * CTS: GPIO3
-       * RTS: GPIO1
+         * GPIO2 (TX)
+     - USB to serial converter
+         * RX
 
+**Note** 1: Connection between individual pins of the ESP board and the PC is already established internally on the ESP board. You only need to provide USB cable between the board and PC.
+
+**Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
 
 .. figure:: ../../_static/esp8266-hw-connection.png
     :align: center
@@ -229,7 +304,6 @@ ESP8266 AT uses two UART ports: UART0 is used to download firmware and send AT c
 
     The default ESP8266 RTOS AT firmware for ESP-WROOM-02 swaps RX/TX with CTS/RTS. If you want to use hardware flow control, you need to disconnect UART1, desolder CP2102N chip from the ESP board, and connect the board with 3.3 V and GND of the converter to supply power.
 
-For more details about ESP8266 modules, please refer to `ESP8266 documentation <https://www.espressif.com/en/products/socs/esp8266>`_.
+If you want to connect your device directly with ESP-WROOM-02 or ESP-WROOM-02D/02U rather than the ESP board that integrates it, please refer to `ESP-WROOM-02 Datasheet <https://www.espressif.com/sites/default/files/documentation/0c-esp-wroom-02_datasheet_en.pdf>`_ or `ESP-WROOM-02D/02U Datasheet <https://www.espressif.com/sites/default/files/documentation/esp-wroom-02u_esp-wroom-02d_datasheet_en.pdf>`_ for more details.
 
-If you want to connect your device directly with ESP-WROOM-02 or ESP-WROOM-02D/02U rather than the ESP board that integrates it, please refer to `ESP-WROOM-02
-Datasheet <https://www.espressif.com/sites/default/files/documentation/0c-esp-wroom-02_datasheet_en.pdf>`_ or `ESP-WROOM-02D/02U Datasheet <https://www.espressif.com/sites/default/files/documentation/esp-wroom-02u_esp-wroom-02d_datasheet_en.pdf>`_ for more details.
+For more details about ESP8266 modules, please refer to `ESP8266 documentation <https://www.espressif.com/en/products/socs/esp8266>`_.

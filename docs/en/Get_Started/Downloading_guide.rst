@@ -1,6 +1,8 @@
 Downloading Guide
 =================
 
+:link_to_translation:`zh_CN:[中文]`
+
 This Guide demonstrates how to download AT firmware and flash it into an ESP device by taking ESP32-WROOM-32 as an example. The Guide is also applicable to other ESP modules.
 
 Before you start, please make sure you have already connected your hardware. For more details, see :doc:`Hardware_connection`.
@@ -79,7 +81,7 @@ Flash AT Firmware into Your Device
 
 Follow the instructions below for your operating system.
 
-Windows 
+Windows
 ^^^^^^^^
 
 Before starting to flash, you need to download `Flash Download Tools for Windows <https://www.espressif.com/en/support/download/other-tools>`_. For more details about the tools, please see ``readme.pdf`` or the  ``doc`` folder in the zip folder.
@@ -125,7 +127,7 @@ Before starting to flash, you need to download `Flash Download Tools for Windows
 
 In case of flashing issues, please verify what the COM port number of download interface of the ESP board is and select it from "COM:" dropdown list. If you don't know the port number, you can refer to `Check port on Windows <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/establish-serial-connection.html#check-port-on-windows>`_ for details.
 
-When you finish flashing, please `Check Whether AT works`_. 
+When you finish flashing, please `Check Whether AT Works`_.
 
 Linux or macOS
 ^^^^^^^^^^^^^^^
@@ -166,9 +168,9 @@ You can select either of the two ways below to flash AT firmware into your devic
 
         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x0 factory/factory_WROOM-32.bin
 
-When you finish flashing, please `Check Whether AT works`_.
+When you finish flashing, please `Check Whether AT Works`_.
 
-Check Whether AT works
+Check Whether AT Works
 -----------------------
 To check whether AT works, do as follows:
 
