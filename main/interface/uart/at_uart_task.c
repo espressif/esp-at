@@ -443,9 +443,12 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     int32_t value = 0;
     int32_t cnt = 0;
 
-    at_nvm_uart_config_struct uart_config;
+    at_nvm_uart_config_struct uart_nvm_config;
+    uart_config_t uart_config = {
+        .rx_flow_ctrl_thresh = 122,
+    };
 
-    memset(&uart_config,0x0,sizeof(uart_config));
+    memset(&uart_nvm_config,0x0,sizeof(uart_nvm_config));
     if (para_num != 5) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
@@ -456,7 +459,8 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     if ((value < 80) || (value > 5000000)) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
-    uart_config.baudrate = value;
+    uart_nvm_config.baudrate = value;
+    uart_config.baud_rate = value;
 
     if (esp_at_get_para_as_digit (cnt++,&value) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
@@ -464,6 +468,7 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     if ((value < 5) || (value > 8)) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
+    uart_nvm_config.data_bits = value - 5;
     uart_config.data_bits = value - 5;
 
     if (esp_at_get_para_as_digit (cnt++,&value) != ESP_AT_PARA_PARSE_RESULT_OK) {
@@ -472,13 +477,15 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     if ((value < 1) || (value > 3)) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
+    uart_nvm_config.stop_bits = value;
     uart_config.stop_bits = value;
 
     if (esp_at_get_para_as_digit (cnt++,&value) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
     if ((value >= 0) && (value <= 2)) {
-        uart_config.parity = esp_at_uart_parity_table[value];
+        uart_nvm_config.parity = esp_at_uart_parity_table[value];
+        uart_config.parity = uart_nvm_config.parity;
     } else {
         return ESP_AT_RESULT_CODE_ERROR;
     }
@@ -489,21 +496,18 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     if ((value < 0) || (value > 3)) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
-    uart_config.flow_control = value;
+    uart_nvm_config.flow_control = value;
+    uart_config.flow_ctrl = value;
 
     if (at_default_flag) {
-        if (at_nvm_uart_config_set(&uart_config) == false) {
+        if (at_nvm_uart_config_set(&uart_nvm_config) == false) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
     }
     esp_at_response_result(ESP_AT_RESULT_CODE_OK);
 
     uart_wait_tx_done(esp_at_uart_port,portMAX_DELAY);
-    uart_set_baudrate(esp_at_uart_port,uart_config.baudrate);
-    uart_set_word_length(esp_at_uart_port,uart_config.data_bits);
-    uart_set_stop_bits(esp_at_uart_port,uart_config.stop_bits);
-    uart_set_parity(esp_at_uart_port,uart_config.parity);
-    uart_set_hw_flow_ctrl(esp_at_uart_port,uart_config.flow_control,120);
+    uart_param_config(esp_at_uart_port, &uart_config);
 
     return ESP_AT_RESULT_CODE_PROCESS_DONE;
 }
