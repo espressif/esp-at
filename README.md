@@ -10,7 +10,7 @@ The demo is the AT command set based on uart. You can replace the uart driver wi
 - [How_to_customize_partitions.md](docs/en/Compile_and_Develop/How_to_customize_partitions.md): What is `The Secondary Partitions Table`    
 - [How_to_add_new_platform.md](docs/en/Compile_and_Develop/How_to_add_new_platform.md): How to add new configuration for your module  
 - [How_to_update_IDF.md](docs/en/Compile_and_Develop/How_to_update_IDF.md): How to update idf version  
-- [How_to_enable_ESP32_AT_Classic_Bluetooth.md](docs/en/Compile_and_Develop/How_to_enable_ESP32_AT_Classic_Bluetooth.md): The example for ESP AT classic bluetooth command  
+- [How_to_use_ESP32_AT_Classic_Bluetooth.md](docs/en/Compile_and_Develop/How_to_use_ESP_AT_Classic_Bluetooth.md): The example for ESP AT classic bluetooth command  
 - [How_to_customize_BLE_services.md](docs/en/Compile_and_Develop/How_to_customize_BLE_services.md): How to customize ble services  
 - [How_to_enable_ESP32_AT_Ethernet.md](docs/en/Compile_and_Develop/How_to_enable_ESP32_AT_Ethernet.md): How to use ethernet  
 - [How_to_implement_ESP32_SDIO_AT.md](docs/en/Compile_and_Develop/How_to_implement_ESP32_SDIO_AT.md): SDIO AT user guide
@@ -30,7 +30,7 @@ libat_core.a 是 AT 命令集的核心部分, 包含默认的 AT 指令集, 具�
 - [How_to_customize_partitions.md](docs/zh_CN/Compile_and_Develop/How_to_customize_partitions.md): 如何客制化分区  
 - [How_to_add_new_platform.md](docs/zh_CN/Compile_and_Develop/How_to_add_new_platform.md): 如何针对自己的模组添加新的平台支持  
 - [How_to_update_IDF.md](docs/zh_CN/Compile_and_Develop/How_to_update_IDF.md): 如何更新 IDF 版本  
-- [How_to_enable_ESP32_AT_Classic_Bluetooth.md](docs/zh_CN/Compile_and_Develop/How_to_enable_ESP32_AT_Classic_Bluetooth.md): 如何使能 ESP32 AT 经典蓝牙  
+- [How_to_use_ESP32_AT_Classic_Bluetooth.md](docs/zh_CN/Compile_and_Develop/How_to_use_ESP32_AT_Classic_Bluetooth.md): 如何使能 ESP32 AT 经典蓝牙  
 - [How_to_customize_BLE_services.md](docs/zh_CN/Compile_and_Develop/How_to_customize_BLE_services.md): 如何自定义 ble services  
 - [How_to_enable_ESP32_AT_Ethernet.md](docs/zh_CN/Compile_and_Develop/How_to_enable_ESP32_AT_Ethernet.md): 如何使能 ESP32 AT 网口  
 - [How_to_implement_ESP32_SDIO_AT.md](docs/zh_CN/Compile_and_Develop/How_to_implement_ESP32_SDIO_AT.md): SDIO AT 用法指南
