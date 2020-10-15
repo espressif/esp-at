@@ -530,13 +530,6 @@ Response:
 
     +CIPSNTPCFG:<enable>,<timezone>,<SNTP server1>[,<SNTP server2>,<SNTP server3>]
     OK
-Execute Command:
-
-    AT+CIPSNTPCFG
-    Function: to clear the SNTP server information.
-Response:
-
-    OK
 Set Command:
 
     AT+CIPSNTPCFG=<enable>,<timezone>[,<SNTP server1>,<SNTP server2>,<SNTP server3>]
