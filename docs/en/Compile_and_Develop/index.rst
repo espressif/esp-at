@@ -19,4 +19,5 @@ How to compile and develop your own AT project
    How to implement ESP32 SDIO_AT <How_to_implement_ESP32_SDIO_AT>
    How to implement OTA update <How_to_implement_OTA_update>
    How to update IDF <How_to_update_IDF>
+   How to understand ESP-AT the differences of each type of module <How_to_understand_the_differences_of_each_type_of_module>
    AT API Reference <AT_API_Reference>
