@@ -25,26 +25,6 @@
 
     Set MQTT User Config  
 
-**Response:**    
-
-    OK 
-
-**Query Command:**  
-
-```
-AT+MQTTUSERCFG?
-```
-**Function:**  
-
-    Get the MQTT user configuration.  
-
-**Response:**  
-
-```
-+MQTTUSERCFG:<LinkID>,<scheme>,<"client_id">,<"username">,<"password">,<cert_key_ID>,<CA_ID>,<"path">
-OK
-```
-
 **Parameters:**  
 
 - **\<LinkID>**: only supports link ID 0 for now 
@@ -81,26 +61,6 @@ OK
     Set MQTT Client ID, will cover the parameter client_id in AT+MQTTUSERCFG   
     User can set a long client id by AT+MQTTCLIENTID.   
 
-**Response:**    
-
-    OK 
-
-**Query Command:**  
-
-```
-AT+MQTTCLIENTID?
-```
-**Function:**  
-
-    Get the MQTT client ID.  
-
-**Response:**  
-
-```
-+MQTTCLIENTID:<LinkID>,<"client_id">
-OK
-```
-
 **Parameters:**  
 
 - **\<LinkID>**: only supports link ID 0 for now 
@@ -121,26 +81,6 @@ OK
 
     Set MQTT Username, will cover the parameter username in AT+MQTTUSERCFG   
     User can set a long username by AT+MQTTUSERNAME.     
-
-**Response:**    
-
-    OK 
-
-**Query Command:**  
-
-```
-AT+MQTTUSERNAME?
-```
-**Function:**  
-
-    Get the MQTT client username.  
-
-**Response:**  
-
-```
-+MQTTUSERNAME:<LinkID>,<"username">
-OK
-```
 
 **Parameters:**  
 
@@ -163,26 +103,6 @@ OK
     Set MQTT Password, will cover the parameter password in AT+MQTTUSERCFG   
     User can set a long password by AT+MQTTPASSWORD.  
 
-**Response:**    
-
-    OK 
-
-**Query Command:**  
-
-```
-AT+MQTTPASSWORD?
-```
-**Function:**  
-
-    Get the MQTT client password.  
-
-**Response:**  
-
-```
-+MQTTPASSWORD:<LinkID>,<"password">
-OK
-```
-
 **Parameters:**  
 
 - **\<LinkID>**: only supports link ID 0 for now 
@@ -192,6 +112,7 @@ OK
 
 - The total length of the entire AT command should be less than 256Bytes.
 - AT+MQTTPASSWORD command only could be set after AT+MQTTUSERCFG command
+
 <a name="cmd-MQTTCONNCFG"></a>
 ### [AT+MQTTCONNCFG](#MQTT-AT)  - Set configuration of MQTT Connection
 **Set Command:**
@@ -203,26 +124,6 @@ AT+MQTTCONNCFG=<LinkID>,<keepalive>,<disable_clean_session>,<"lwt_topic">,<"lwt_
 **Function:**  
 
     Set configuration of MQTT Connection 
-
-**Response:**  
-
-    OK
-
-**Query Command:**  
-
-```
-AT+MQTTCONNCFG?
-```
-**Function:**  
-
-    Get configuration of MQTT Connection  
-
-**Response:**  
-
-```
-+MQTTCONNCFG:<LinkID>,<keepalive>,<disable_clean_session>,<"lwt_topic">,<"lwt_msg">,<lwt_qos>,<lwt_retain>
-OK
-```
 
 **Parameters:**  
   
