@@ -31,6 +31,7 @@ In order to facilitate customers to understand the differences between different
 | AT OTA command support | √ | √ | √ | √ | × 
 
 ### 2. Hardware differences
+
 |  | ESP32-WROOM-32_AT_Bin | ESP32-WROVER-32_AT_Bin | ESP32-PICO-D4_AT_Bin | ESP32-SOLO-1_AT_Bin | ESP32-D2WD_AT_Bin | 
 |---|---|---|---|---|---|
 | flash_size(MB) | 4 | 4 | 4 | 4 | 2 
@@ -58,7 +59,7 @@ See: https://docs.espressif.com/projects/esp-at/en/latest/AT_Binary_Lists/index.
 | ESP32-WROVER-I | × | √ | √ | × | √ 
 | ESP32-SOLO-1 | √ | × | √ | √ | √ 
 | ESP32-D2WD | × | × | × | × | √ 
-| ESP32-U4WDH | × | × | √ | × | √ 
+| ESP32-MINI-1 | × | × | √ | × | √ 
 | ESP32-PICO-D4 | × | × | √ | × | √ 
 
 ## 2. ESP8266 Platform
@@ -80,6 +81,7 @@ See: https://docs.espressif.com/projects/esp-at/en/latest/AT_Binary_Lists/index.
 | AT OTA command support | √ | √ | × | √ 
 
 ### 2. Hardware differences
+
 |  | ESP8266-WROOM-02_AT_Bin | ESP8266-WROOM-5V2L_AT_Bin | ESP8266_1MB_AT_Bin | ESP8266-WROOM-02-N_AT_Bin | 
 |---|---|---|---|---|
 | flash_size(MB) | 2 | 2 | 1 | 2 
@@ -123,6 +125,7 @@ See: https://docs.espressif.com/projects/esp-at/en/latest/AT_Binary_Lists/index.
 | AT OTA command support | √ | √ | √ | √ 
 
 ### 2. Hardware differences
+
 |  | ESP32-S2-WROOM_AT_Bin | ESP32-S2-WROVER_AT_Bin | ESP32-S2-SOLO_AT_Bin | ESP32-S2-MINI_AT_Bin | 
 |---|---|---|---|---|
 | flash_size(MB) | 2 | 2 | 2 | 2 
@@ -134,6 +137,7 @@ See: https://docs.espressif.com/projects/esp-at/en/latest/AT_Binary_Lists/index.
 
 
 ### 4. Firmware supported modules 
+
 | module/chip | ESP32-S2-WROOM_AT_Bin | ESP32-S2-WROVER_AT_Bin | ESP32-S2-SOLO_AT_Bin | ESP32-S2-MINI_AT_Bin | 
 |---|---|---|---|---|
 | ESP32-S2-WROOM | √ | √ | √ | √ 
