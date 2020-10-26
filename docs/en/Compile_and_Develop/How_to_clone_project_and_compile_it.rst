@@ -53,7 +53,7 @@ Compiling the ESP-AT is the same as compiling any other project based on the ESP
 
      git clone --recursive https://github.com/espressif/esp-at.git
 
-2. ``rm -rf builld sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
+2. ``rm -rf build sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
 3. ``./build.py menuconfig``, and then choose the name indexes of platform and your module, then ``Serial flasher config`` to configure the serial port for downloading.
 
   - platform name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``, here should choose ``PLATFORM_ESP32``
@@ -105,7 +105,7 @@ Compiling the ESP-AT is the same as compiling any other project based on the ESP
 
      git clone --recursive https://github.com/espressif/esp-at.git
 
-2. ``rm -rf builld sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
+2. ``rm -rf build sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
 3. ``./build.py menuconfig``, and then choose the name indexes of platform and your module, then ``Serial flasher config`` to configure the serial port for downloading.
 
   - platform name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``, here should choose ``PLATFORM_ESP32S2``
@@ -159,7 +159,7 @@ Compiling the ESP-AT is the same as compiling any other project based on the ESP
 
      git clone --recursive https://github.com/espressif/esp-at.git
 
-2. ``rm -rf builld sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
+2. ``rm -rf build sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
 3. ``./build.py menuconfig``, and then choose the name indexes of platform and your module, then ``Serial flasher config`` to configure the serial port for downloading.
 
   - platform name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``, here should choose ``PLATFORM_ESP8266``
