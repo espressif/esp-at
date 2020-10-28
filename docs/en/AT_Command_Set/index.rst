@@ -103,49 +103,116 @@ Saving of configuration settings by several other commands can be switched on or
 AT Messages
 ===========
 
-.. list-table::
+There are two types of ESP-AT messages from ESP-AT command port. One is ESP-AT command response Messages passively, the other is ESP-AT message report actively.
+
+ESP-AT Response Messages
+  Any ESP-AT command input will return the response by mandatory, it tells the sender the result of the ESP-AT command.
+
+ESP-AT Message Report
+  ESP-AT will report the system important state change or message.
+
+.. list-table:: ESP-AT Response Messages
+    :header-rows: 1
+    :widths: 40 60
+
+    * - AT Response Messages
+      - Description
+    * - OK
+      - AT command process done and return OK
+    * - ERROR
+      - AT command error or error occurred during execution
+    * - SEND OK
+      - Data has been sent to the protocol stack (Unique to AT+CIPSEND and AT+CIPSENDEX command)
+    * - SEND FAIL
+      - Error occurred during sending the data to the protocol stack (Unique to AT+CIPSEND and AT+CIPSENDEX command)
+    * - +<Command Name>:``...``
+      - Response to the sender that AT command process result in detail
+
+.. list-table:: ESP-AT Message Report
    :header-rows: 1
    :widths: 40 60
 
-   * - Messages 
+   * - ESP-AT Message Report
      - Description
-   * - ready 
-     - The AT firmware is ready.
-   * - ERROR 
-     - AT command error, or error occurred during execution.
-   * - WIFI CONNECTED 
-     - ESP station connected to an AP.
-   * - WIFI GOT IP 
-     - ESP station got IP address.
-   * - WIFI DISCONNECT 
-     - ESP station disconnected from an AP.
-   * - busy p... 
-     - Busy processing. The system is in process of handling the previous command, cannot accept the newly input.
-   * - <conn_id>,CONNECT 
-     - A network connection of which ID is <conn_id> is established.
-   * - <conn_id>,CLOSED 
-     - A network connection of which ID is <conn_id> ends.
-   * - +IPD 
-     - Network data received.
-   * - +STA_CONNECTED: <sta_mac> 
-     - A station connects to the ESP softAP.
-   * - +DIST_STA_IP: <sta_mac>,<sta_ip> 
-     - ESP softAP distributes an IP address to the station connected.
+   * - ready
+     - The ESP-AT firmware is ready
+   * - busy p...
+     - Busy processing. The system is in process of handling the previous command, CAN NOT accept the newly input
+   * - ERR CODE:``<0x%08x>``
+     - Error code for different command
+   * - Will force to restart!!!
+     - Module restart right now
+   * - smartconfig type:``<xxx>``
+     - Smartconfig type
+   * - Smart get wifi info
+     - Smartconfig has got the SSID and PASSWORD information
+   * - smartconfig connected wifi
+     - Smartconfig done, ESP-AT has connected to the WiFi
+   * - WIFI CONNECTED
+     - WiFi station interface has connected to an AP
+   * - WIFI GOT IP
+     - WiFi station interface has got the IPv4 address
+   * - WIFI DISCONNECT
+     - WiFi station interface has disconnected from an AP
+   * - +ETH_CONNECTED
+     - Ethernet station interface has connected
+   * - +ETH_GOT_IP
+     - Ethernet station interface has got the IPv4 address
+   * - +ETH_DISCONNECTED
+     - Ethernet station interface has disconnected
+   * - [<conn_id>,]CONNECT
+     - A network connection of which ID is ``<conn_id>`` is established (ID=0 by default)
+   * - [<conn_id>,]CLOSED
+     - A network connection of which ID is ``<conn_id>`` ends (ID=0 by default)
+   * - +LINK_CONN
+     - Detailed connection information of TCP/UDP/SSL
+   * - +STA_CONNECTED: <sta_mac>
+     - A station has connected to the WiFi softAP interface of ESP-AT
+   * - +DIST_STA_IP: <sta_mac>,<sta_ip>
+     - The WiFi softAP interface of ESP-AT distributes an IP address to the station
    * - +STA_DISCONNECTED: <sta_mac> 
-     - A station disconnects from the ESP softAP.
-   * - +BLECONN 
-     - A BLE connection established.
+     - A station disconnected from the WiFi softAP interface of ESP-AT
+   * - >
+     - ESP-AT is waiting for more data to be received
+   * - Recv ``<xxx>`` bytes
+     - ESP-AT has already received ``<xxx>`` bytes from the ESP-AT command port
+   * - +IPD
+     - ESP-AT received the data from the network
+   * - SEND Canceled
+     - Cancel to send in transparent transmission
+   * - Have ``<xxx>`` Connections
+     - Has reached the maximum connection counts for server
+   * - +QUITT
+     - ESP-AT quits from the transparent transmission mode
+   * - NO CERT FOUND
+     - No a valid device certificate found in custom partition
+   * - NO PRVT_KEY FOUND
+     - No a valid private key found in custom partition
+   * - NO CA FOUND
+     - No a valid CA certificate found in custom partition
+   * - +MQTTCONNECTED
+     - MQTT connected to the broker
+   * - +MQTTDISCONNECTED
+     - MQTTT disconnected from the broker
+   * - +MQTTSUBRECV
+     - MQTT received the data from the broker
+   * - +MQTTPUB:FAIL
+     - MQTT failed to publish data
+   * - +MQTTPUB:OK
+     - MQTT publish data done
+   * - +BLECONN
+     - A BLE connection established
    * - +BLEDISCONN 
-     - A BLE connection ends.
-   * - +READ 
-     - A read operation from BLE connection.
-   * - +WRITE 
-     - A write operation from BLE connection.
-   * - +NOTIFY 
-     - A notification from BLE connection.
-   * - +INDICATE 
-     - An indication from BLE connection.
-   * - +BLESECNTFYKEY 
+     - A BLE connection ends
+   * - +READ
+     - A read operation from BLE connection
+   * - +WRITE
+     - A write operation from BLE connection
+   * - +NOTIFY
+     - A notification from BLE connection
+   * - +INDICATE
+     - An indication from BLE connection
+   * - +BLESECNTFYKEY
      - BLE SMP key
    * - +BLEAUTHCMPL 
-     - BLE SMP pairing completed.
+     - BLE SMP pairing completed
