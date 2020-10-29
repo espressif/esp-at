@@ -59,8 +59,26 @@
 #endif
 
 #ifdef CONFIG_AT_OTA_SUPPORT
-static uint8_t at_exeCmdCipupdate(uint8_t *cmd_name)//add get station ip and ap ip
-{
+
+#define ESP_AT_VERSION_LEN_MAX                64
+#define ESP_AT_PARTITION_NAME_LEN_MAX         64
+#define NB_OTA_TASK_STACK_SIZE              5120  // for non-blocking ota
+
+typedef struct {
+    int32_t ota_mode;
+    char version[ESP_AT_VERSION_LEN_MAX+1];
+    char partition_name[ESP_AT_PARTITION_NAME_LEN_MAX+1];
+} ota_param_t;
+
+static bool s_esp_at_ota_started = false;
+
+static uint8_t at_exeCmdCipupgrade(uint8_t *cmd_name)
+{   
+    if (s_esp_at_ota_started) {
+        printf("ALREADY IN OTA\r\n");
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
     if (esp_at_upgrade_process(ESP_AT_OTA_MODE_NORMAL, NULL, "ota")) {
         esp_at_response_result(ESP_AT_RESULT_CODE_OK);
         esp_at_port_wait_write_complete(portMAX_DELAY);
@@ -69,38 +87,109 @@ static uint8_t at_exeCmdCipupdate(uint8_t *cmd_name)//add get station ip and ap 
         }
     }
 
+    esp_at_set_upgrade_state(ESP_AT_OTA_STATE_FAILED);
     return ESP_AT_RESULT_CODE_ERROR;
 }
 
-static uint8_t at_setupCmdCipupdate(uint8_t para_num)
+static void non_blocking_upgrade_task(void *parameter)
 {
-    int32_t cnt = 0, ota_mode = 0;
-    uint8_t *version = NULL, *partition_name = NULL;
+    s_esp_at_ota_started = true;
+    ota_param_t *p = (ota_param_t *)parameter;
 
-    if (esp_at_get_para_as_digit (cnt++, &ota_mode) != ESP_AT_PARA_PARSE_RESULT_OK) {
+    if (esp_at_upgrade_process((esp_at_ota_mode_type)(p->ota_mode), (uint8_t *)(p->version), p->partition_name)) {
+        esp_at_port_wait_write_complete(portMAX_DELAY);
+    } else {
+        esp_at_set_upgrade_state(ESP_AT_OTA_STATE_FAILED);
+        esp_at_port_write_data((uint8_t*)"+CIPUPDATE:-1\r\n", strlen("+CIPUPDATE:-1\r\n"));
+    }
+
+    free(p);
+    p = NULL;
+    s_esp_at_ota_started = false;
+    vTaskDelete(NULL);
+}
+
+static uint8_t at_setupCmdCipupgrade(uint8_t para_num)
+{
+#define ESP_AT_NONBLOCKING_MODE_MAX     2
+    ota_param_t *param = NULL;
+    uint8_t *version = NULL, *partition_name = NULL;
+    int32_t cnt = 0, ota_mode = 0, nonblocking = 0, version_len = 0;
+
+    if (esp_at_get_para_as_digit(cnt++, &ota_mode) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if ((ota_mode < 0) || (ota_mode >= ESP_AT_OTA_MODE_MAX)) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
     if (cnt < para_num) {
-        if (esp_at_get_para_as_str (cnt++, &version) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        if (esp_at_get_para_as_str(cnt++, &version) == ESP_AT_PARA_PARSE_RESULT_FAIL) {
             return ESP_AT_RESULT_CODE_ERROR;
+        }
+
+        if (version != NULL) {
+            version_len = strlen((const char *)version);
+            if (version_len > ESP_AT_VERSION_LEN_MAX) {
+                return ESP_AT_RESULT_CODE_ERROR;
+            }
         }
     }
 
     if (cnt < para_num) {
-        if (esp_at_get_para_as_str(cnt++, &partition_name) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        if (esp_at_get_para_as_str(cnt++, &partition_name) == ESP_AT_PARA_PARSE_RESULT_FAIL) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
+    }
 
-        if (partition_name == NULL) {
+    if ((partition_name == NULL) || (strlen((const char *)partition_name) == 0)) {
+        partition_name = (uint8_t *)"ota";
+    } else if ((strlen((const char *)partition_name)) > ESP_AT_PARTITION_NAME_LEN_MAX) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if (cnt < para_num) {
+        if (esp_at_get_para_as_digit(cnt++, &nonblocking) != ESP_AT_PARA_PARSE_RESULT_OK) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
-    } else {
-        partition_name = (uint8_t *)"ota";
+    }
+
+    if ((nonblocking < 0) || (nonblocking >= ESP_AT_NONBLOCKING_MODE_MAX)) {
+        return ESP_AT_RESULT_CODE_ERROR;
     }
 
     if (cnt != para_num) {
         return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if (s_esp_at_ota_started) {
+        printf("ALREADY IN OTA\r\n");
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if (nonblocking == 1) {
+        param = (ota_param_t *)calloc(1, sizeof(ota_param_t));
+        if (param == NULL) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+
+        param->ota_mode = ota_mode;
+
+        if (version_len > 0) {
+            memcpy(param->version, version, version_len);
+        } else {
+            version = NULL;
+        }
+
+        memcpy(param->partition_name, partition_name, strlen((const char *)partition_name));
+
+        if (xTaskCreate(non_blocking_upgrade_task, "nb-ota", NB_OTA_TASK_STACK_SIZE, (void *)param, 5, NULL) != pdPASS) {
+            free(param);
+            param = NULL;
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+        return ESP_AT_RESULT_CODE_OK;
     }
 
     if (esp_at_upgrade_process(ota_mode, version, (const char *)partition_name)) {
@@ -115,11 +204,21 @@ static uint8_t at_setupCmdCipupdate(uint8_t para_num)
         }
     }
 
+    esp_at_set_upgrade_state(ESP_AT_OTA_STATE_FAILED);
     return ESP_AT_RESULT_CODE_ERROR;
 }
 
-static esp_at_cmd_struct at_update_cmd[] = {
-    {"+CIUPDATE", NULL, NULL, at_setupCmdCipupdate, at_exeCmdCipupdate},
+static uint8_t at_queryCmdCipupgrade(uint8_t *cmd_name)
+{
+    uint8_t buffer[32] = {0};
+    esp_at_ota_state_t state = esp_at_get_upgrade_state();
+    snprintf((char *)buffer, sizeof(buffer), "%s:%d\r\n", cmd_name, state);
+    esp_at_port_write_data(buffer, strlen((char *)buffer));
+    return ESP_AT_RESULT_CODE_OK;
+}
+
+static esp_at_cmd_struct at_upgrade_cmd[] = {
+    {"+CIUPDATE", NULL, at_queryCmdCipupgrade, at_setupCmdCipupgrade, at_exeCmdCipupgrade},
 };
 #endif
 
@@ -359,7 +458,7 @@ void app_main()
 #endif
 
 #ifdef CONFIG_AT_OTA_SUPPORT
-    esp_at_custom_cmd_array_regist (at_update_cmd, sizeof(at_update_cmd)/sizeof(at_update_cmd[0]));
+    esp_at_custom_cmd_array_regist (at_upgrade_cmd, sizeof(at_upgrade_cmd)/sizeof(at_upgrade_cmd[0]));
 #endif
 
 #ifdef CONFIG_AT_SIGNALING_COMMAND_SUPPORT
