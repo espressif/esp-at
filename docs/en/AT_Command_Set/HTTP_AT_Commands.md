@@ -42,19 +42,22 @@ Parameters:
 
 **Example:**
 
-    //HEAD Request
+    // HEAD Request
     AT+HTTPCLIENT=1,0,"http://httpbin.org/get","httpbin.org","/get",1
-    AT+HTTPCLIENT=1,0,"http://httpbin.org/get",,,0
+    AT+HTTPCLIENT=1,0,"http://httpbin.org/get",,,1
     AT+HTTPCLIENT=1,0,,"httpbin.org","/get",1
-    //GET Request
+
+    // GET Request
     AT+HTTPCLIENT=2,0,"http://httpbin.org/get","httpbin.org","/get",1
-    AT+HTTPCLIENT=2,0,"http://httpbin.org/get",,,0
+    AT+HTTPCLIENT=2,0,"http://httpbin.org/get",,,1
     AT+HTTPCLIENT=2,0,,"httpbin.org","/get",1
-    //POST Request
+
+    // POST Request
     AT+HTTPCLIENT=3,0,"http://httpbin.org/post","httpbin.org","/post",1,"field1=value1&field2=value2"
-    AT+HTTPCLIENT=3,0,"http://httpbin.org/post",,,0,"field1=value1&field2=value
-    //HTTP offset continue download
-    HTTPCLIENT=2,0,"http://www.baidu.com/img/bdlogo.gif",,,0,"Range: bytes=100-200"
+    AT+HTTPCLIENT=3,0,"http://httpbin.org/post",,,1,"field1=value1&field2=value
+
+    // HTTP offset continue download
+    AT+HTTPCLIENT=2,0,"http://www.baidu.com/img/bdlogo.gif",,,1,"Range: bytes=100-200"
 
 <a name="cmd-HTTPGETSIZE"></a>
 ### [AT+HTTPGETSIZE](#HTTP-AT)-Get HTTP Resource Size
