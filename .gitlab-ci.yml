@@ -159,7 +159,7 @@ esp32_wrover_at:
     - *before_build_esp32_series
     - ./build.py build
 
-pico_d4_at:
+esp32_pico_d4_at:
   stage: build
   image: $CI_DOCKER_REGISTRY/esp32-ci-env
   tags:
@@ -202,7 +202,7 @@ pico_d4_at:
     - ./build.py build
 
 
-solo_1_at:
+esp32_solo_1_at:
   stage: build
   image: $CI_DOCKER_REGISTRY/esp32-ci-env
   tags:
@@ -286,7 +286,7 @@ esp32-d2wd_at:
     - *before_build_esp32_series
     - ./build.py build
 
-mini_1_at:
+esp32_mini_1_at:
   stage: build
   image: $CI_DOCKER_REGISTRY/esp32-ci-env
   tags:
