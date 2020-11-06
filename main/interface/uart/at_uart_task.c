@@ -78,6 +78,8 @@ static const uint8_t esp_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PAR
 #ifndef CONFIG_AT_UART_PORT
 #define CONFIG_AT_UART_PORT                         UART_NUM_1
 #endif
+#define AT_UART_BAUD_RATE_MAX                  5000000
+#define AT_UART_BAUD_RATE_MIN                       80
 #elif defined(CONFIG_IDF_TARGET_ESP8266)
 #define CONFIG_AT_UART_PORT_TX_PIN_DEFAULT          15
 #define CONFIG_AT_UART_PORT_RX_PIN_DEFAULT          13
@@ -86,6 +88,8 @@ static const uint8_t esp_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PAR
 #ifndef CONFIG_AT_UART_PORT
 #define CONFIG_AT_UART_PORT                         UART_NUM_0
 #endif
+#define AT_UART_BAUD_RATE_MAX                  4500000
+#define AT_UART_BAUD_RATE_MIN                       80
 #elif defined(CONFIG_IDF_TARGET_ESP32S2)
 #define CONFIG_AT_UART_PORT_TX_PIN_DEFAULT          17
 #define CONFIG_AT_UART_PORT_RX_PIN_DEFAULT          18
@@ -94,6 +98,8 @@ static const uint8_t esp_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PAR
 #ifndef CONFIG_AT_UART_PORT
 #define CONFIG_AT_UART_PORT                         UART_NUM_1
 #endif
+#define AT_UART_BAUD_RATE_MAX                  5000000
+#define AT_UART_BAUD_RATE_MIN                       80
 #endif
 
 static uart_port_t esp_at_uart_port = CONFIG_AT_UART_PORT;
@@ -291,7 +297,7 @@ static void at_uart_init(void)
     }
 
     if (at_nvm_uart_config_get(&uart_nvm_config)) {
-        if ((uart_nvm_config.baudrate >= 80) && (uart_nvm_config.baudrate <= 5000000)) {
+        if ((uart_nvm_config.baudrate >= AT_UART_BAUD_RATE_MIN) && (uart_nvm_config.baudrate <= AT_UART_BAUD_RATE_MAX)) {
             uart_config.baud_rate = uart_nvm_config.baudrate;
         }
 
@@ -486,7 +492,7 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     if (esp_at_get_para_as_digit (cnt++,&value) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
-    if ((value < 80) || (value > 5000000)) {
+    if ((value < AT_UART_BAUD_RATE_MIN) || (value > AT_UART_BAUD_RATE_MAX)) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
     uart_config.baudrate = value;
