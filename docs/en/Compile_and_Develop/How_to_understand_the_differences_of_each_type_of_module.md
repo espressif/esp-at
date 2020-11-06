@@ -37,6 +37,9 @@ In order to facilitate customers to understand the differences between different
 | flash_size(MB) | 4 | 4 | 4 | 4 | 2 
 | PSRAM(MB) | × | 8 | × | × | × 
 | UART level(Volt) | 3.3 | 3.3 | 3.3 | 3.3 | 3.3 
+| UART pin(TX,RX,CTS,RTS) | 17, 16, 15, 14 | 22, 19, 15, 14 | 22, 19, 15, 14 | 17, 16, 15, 14 | 22, 19, 15, 14 
+
+For factory param, see: `components/customized_partitions/raw_data/factory_param/factory_param_data.csv`
 
 ### 3. AT pin
 See: https://docs.espressif.com/projects/esp-at/en/latest/AT_Binary_Lists/index.html
@@ -87,6 +90,9 @@ See: https://docs.espressif.com/projects/esp-at/en/latest/AT_Binary_Lists/index.
 | flash_size(MB) | 2 | 2 | 1 | 2 
 | PSRAM(MB) | × | × | × | × 
 | UART level(Volt) | 3.3 | 5 | 3.3 | 3.3 
+| UART pin(TX,RX,CTS,RTS) | 15, 13, 3, 1 | 15, 13, 3, 1 | 15, 13, 3, 1 | 1, 3, -1, -1 
+
+For factory param, see: `components/customized_partitions/raw_data/factory_param/factory_param_data.csv`
 
 ### 3. AT pin
 See: https://docs.espressif.com/projects/esp-at/en/latest/AT_Binary_Lists/index.html
@@ -131,6 +137,9 @@ See: https://docs.espressif.com/projects/esp-at/en/latest/AT_Binary_Lists/index.
 | flash_size(MB) | 2 | 2 | 2 | 2 
 | PSRAM(MB) | × | × | × | × 
 | UART level(Volt) | 3.3 | 3.3 | 3.3 | 3.3 
+| UART pin(TX,RX,CTS,RTS) | 17, 21, 20, 19 | 17, 21, 20, 19 | 17, 21, 20, 19 | 17, 21, 20, 19 
+
+For factory param, see: `components/customized_partitions/raw_data/factory_param/factory_param_data.csv`
 
 ### 3. AT pin
 See: https://docs.espressif.com/projects/esp-at/en/latest/AT_Binary_Lists/index.html
