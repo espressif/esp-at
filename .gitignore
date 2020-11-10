@@ -1,3 +1,9 @@
+# SDK
+esp-idf
+
+# VS Code Settings
+.vscode/
+
 include/config
 include/sdkconfig.h
 build/
