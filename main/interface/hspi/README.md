@@ -13,4 +13,13 @@ ESP8266 AT through HSPI use the following pins to communicate with the MCU:
 * GPIO14 is SCLK  
 * GPIO4 is handshake (default)
 
+ESP32 AT through HSPI use the following pins to communicate with the MCU:  
+
+* GPIO12 is MOSI  
+* GPIO13 is MISO  
+* GPIO14 is CS  
+* GPIO15 is SCLK  
+* GPIO4 is handshake (default)
+
+
 
