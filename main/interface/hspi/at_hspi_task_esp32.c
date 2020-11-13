@@ -34,6 +34,7 @@
 #include "esp_system.h"
 #include "esp_log.h"
 
+#ifdef CONFIG_AT_BASE_ON_HSPI
 #include "driver/gpio.h"
 #include "at_spi_driver.h"
 
@@ -222,4 +223,5 @@ void at_custom_init(void)
 {
     xTaskCreate(at_spi_slave_task , "at_spi_task" , 4096 , NULL , 10 , NULL);
 }
+#endif
 #endif
