@@ -111,7 +111,7 @@ esp32_wroom_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
     - *before_build_esp32_series
@@ -153,7 +153,7 @@ esp32_wrover_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
     - *before_build_esp32_series
@@ -195,7 +195,7 @@ esp32_pico_d4_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
     - *before_build_esp32_series
@@ -238,7 +238,7 @@ esp32_solo_1_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
     - *before_build_esp32_series
@@ -280,7 +280,7 @@ esp32-d2wd_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-D2WD\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-D2WD\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
     - *before_build_esp32_series
@@ -322,7 +322,7 @@ esp32_mini_1_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
     - *before_build_esp32_series
@@ -364,7 +364,7 @@ esp32s2_wroom_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROOM\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROOM\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
     - *before_build_esp32s2_series
@@ -406,7 +406,7 @@ esp32s2_wrover_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROVER\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROVER\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
     - *before_build_esp32s2_series
@@ -448,7 +448,7 @@ esp32s2_solo_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"SOLO\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"SOLO\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
     - *before_build_esp32s2_series
@@ -490,7 +490,7 @@ esp32s2_mini_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"MINI\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"MINI\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
     - *before_build_esp32s2_series
@@ -532,7 +532,7 @@ esp8266_wroom_02_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02\", \"description\": \"TX:15 RX:13\", \"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02\", \"description\": \"TX:15 RX:13\", \"silence\": 0}" > build/module_info.json'
     - *before_build_esp8266_series
@@ -574,7 +574,7 @@ esp8266_1MB_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"ESP8266_1MB\", \"description\": \"\", \"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"ESP8266_1MB\", \"description\": \"\", \"silence\": 0}" > build/module_info.json'
     - *before_build_esp8266_series
@@ -616,7 +616,7 @@ esp8266_wroom_5V2L_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-5V2L\", \"description\": \"\", \"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-5V2L\", \"description\": \"\", \"silence\": 0}" > build/module_info.json'
     - *before_build_esp8266_series
@@ -658,7 +658,7 @@ esp8266_wroom_02_N_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02-N\", \"description\": \"TX:1 RX:3\", \"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02-N\", \"description\": \"TX:1 RX:3\", \"silence\": 0}" > build/module_info.json'
     - *before_build_esp8266_series
@@ -793,7 +793,7 @@ wrover32_all_function_at:
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure
+    - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
     - *before_build_esp32_series

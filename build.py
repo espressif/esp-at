@@ -38,7 +38,9 @@ def gitee_repo_preprocess():
 def gitee_repo_postprocess():
     print('IDF is Cloned from https://gitee.com/EspressifSystems')
 
-    subprocess.call('cd esp-idf; git submodule init', shell=True)
+    ret = subprocess.call('cd esp-idf; git submodule init', shell=True)
+    if ret:
+        raise Exception("git submodule init failed")
     submodule_lists = subprocess.check_output(['git', 'config', '-f', 'esp-idf/.gitmodules', '--list']).decode(
         encoding="utf-8")
 
@@ -53,8 +55,9 @@ def gitee_repo_postprocess():
                                                                                submodule_name)), shell=True)
 
     print('Update submodule...')
-    subprocess.call('cd esp-idf; git submodule update', shell=True)
-
+    ret = subprocess.call('cd esp-idf; git submodule update', shell=True)
+    if ret:
+        raise Exception("git submodule update failed")
 
 preprocess_url = {
     'https://gitee.com/EspressifSystems/esp-at.git': {'proprocess': gitee_repo_preprocess,
@@ -121,7 +124,9 @@ def auto_update_idf(platform_name, module_name):
             idf_url = os.path.join(new_url, os.path.basename(idf_url))
 
         print('Please wait for the SDK download to finish...')
-        subprocess.call('git clone -b {} {} esp-idf'.format(idf_branch, idf_url), shell=True)
+        ret = subprocess.call('git clone -b {} {} esp-idf'.format(idf_branch, idf_url), shell=True)
+        if ret:
+            raise Exception("git clone failed")
 
         if project_url in preprocess_url:
             new_url = preprocess_url[project_url]['postprocess']()
@@ -131,9 +136,15 @@ def auto_update_idf(platform_name, module_name):
         print('old commit:{}'.format(rev_parse_head))
         print('checkout commit:{}'.format(idf_commit))
         print('Please wait for the update to complete, which will take some time')
-        subprocess.call('cd esp-idf; git pull', shell = True)
-        subprocess.call('cd esp-idf; git checkout {}'.format(idf_commit), shell = True)
-        subprocess.call('cd esp-idf; git submodule update --init --recursive', shell = True)
+        ret = subprocess.call('cd esp-idf; git pull', shell = True)
+        if ret:
+            raise Exception("git pull failed")
+        ret = subprocess.call('cd esp-idf; git checkout {}'.format(idf_commit), shell = True)
+        if ret:
+            raise Exception("git checkout failed")
+        ret = subprocess.call('cd esp-idf; git submodule update --init --recursive', shell = True)
+        if ret:
+            raise Exception("git submodule update failed")
         print('Update completed')
 
 
@@ -150,10 +161,11 @@ def build_project(platform_name, module_name, silence, build_args):
         export ESP_AT_MODULE_NAME={}; \
         export ESP_AT_PROJECT_PATH={}; \
         export SILENCE={}; \
-        ./esp-idf/tools/idf.py -DIDF_TARGET={} {}'.format(platform_name, module_name, os.getcwd(), silence, idf_target,
-                                                          build_args)
-
-    subprocess.call(cmd, shell = True)
+        ./esp-idf/tools/idf.py -DIDF_TARGET={} {}'.format(platform_name, module_name, os.getcwd(), silence, idf_target, build_args)
+    ret = subprocess.call(cmd, shell = True)
+    print("idf.py build ret: %d" %ret)
+    if ret:
+        raise Exception("idf.py build failed")
     subprocess.call('cat build/flash_project_args | tr "\n" " " > build/download.config', shell = True)
 
 def get_param_data_info(source_file, sheet_name):
@@ -346,5 +358,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
-
+    try:
+        main()
+    except Exception as e:
+        print(e)
+        sys.exit(2)
