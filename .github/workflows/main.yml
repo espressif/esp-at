@@ -18,7 +18,7 @@ jobs:
         pip install pyyaml xlrd
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure
+        ./build.py reconfigure || echo "skip exception"
       shell: bash
     - name: Install dependencies
       env:
@@ -83,7 +83,7 @@ jobs:
         pip install pyyaml xlrd
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"silence\": 1}" > build/module_info.json
-        ./build.py reconfigure
+        ./build.py reconfigure || echo "skip exception"
       shell: bash
     - name: Install dependencies
       env:
@@ -148,7 +148,7 @@ jobs:
         pip install pyyaml xlrd
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure
+        ./build.py reconfigure || echo "skip exception"
       shell: bash
     - name: Install dependencies
       env:
@@ -212,7 +212,7 @@ jobs:
         pip install pyyaml xlrd
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure
+        ./build.py reconfigure || echo "skip exception"
       shell: bash
     - name: Install dependencies
       env:
@@ -276,7 +276,7 @@ jobs:
         pip install pyyaml xlrd
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-D2WD\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure
+        ./build.py reconfigure || echo "skip exception"
       shell: bash
     - name: Install dependencies
       env:
@@ -340,7 +340,7 @@ jobs:
         pip install pyyaml xlrd
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"MINI-1\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure
+        ./build.py reconfigure || echo "skip exception"
       shell: bash
     - name: Install dependencies
       env:
@@ -404,7 +404,7 @@ jobs:
         pip install pyyaml xlrd
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROOM\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure
+        ./build.py reconfigure || echo "skip exception"
       shell: bash
     - name: Install dependencies
       env:
@@ -465,7 +465,7 @@ jobs:
         pip install pyyaml xlrd
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROVER\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure
+        ./build.py reconfigure || echo "skip exception"
       shell: bash
     - name: Install dependencies
       env:
@@ -526,7 +526,7 @@ jobs:
         pip install pyyaml xlrd
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"SOLO\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure
+        ./build.py reconfigure || echo "skip exception"
       shell: bash
     - name: Install dependencies
       env:
@@ -587,7 +587,7 @@ jobs:
         pip install pyyaml xlrd
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"MINI\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure
+        ./build.py reconfigure || echo "skip exception"
       shell: bash
     - name: Install dependencies
       env:
@@ -671,7 +671,7 @@ jobs:
         pip install pyyaml xlrd
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure
+        ./build.py reconfigure || echo "skip exception"
       shell: bash
     - name: Install dependencies
       env:
@@ -736,7 +736,7 @@ jobs:
         pip install pyyaml xlrd
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-5V2L\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure
+        ./build.py reconfigure || echo "skip exception"
       shell: bash
     - name: Install dependencies
       env:
@@ -801,7 +801,7 @@ jobs:
         pip install pyyaml xlrd
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"ESP8266_1MB\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure
+        ./build.py reconfigure || echo "skip exception"
       shell: bash
     - name: Install dependencies
       env:
@@ -866,7 +866,7 @@ jobs:
         pip install pyyaml xlrd
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02-N\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure
+        ./build.py reconfigure || echo "skip exception"
       shell: bash
     - name: Install dependencies
       env:
