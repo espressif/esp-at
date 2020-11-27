@@ -20,7 +20,7 @@ SET(ENV{ESP_AT_PROJECT_PATH} ${CMAKE_SOURCE_DIR} )
 
 if (NOT DEFINED SILENCE)
 if (DEFINED ENV{SILENCE})
-set(SILENCE 1)
+set(SILENCE $ENV{SILENCE})
 else()
 set(SILENCE 0)
 endif()
@@ -31,6 +31,8 @@ set(SDKCONFIG_DEFAULTS ${ESP_AT_MODULE_CONFIG_DIR}/sdkconfig_silence.defaults)
 else()
 set(SDKCONFIG_DEFAULTS ${ESP_AT_MODULE_CONFIG_DIR}/sdkconfig.defaults)
 endif()
+
+message("silence:${SILENCE} sdkconfig:${SDKCONFIG_DEFAULTS}")
 
 if(NOT DEFINED ENV{IDF_PATH})
     SET(ENV{IDF_PATH} ${CMAKE_SOURCE_DIR}/esp-idf )
