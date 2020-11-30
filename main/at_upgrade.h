@@ -26,16 +26,53 @@
 #define __AT_UPGRADE_H__
 
 typedef enum {
-    AT_UPGRADE_SYSTEM_FIRMWARE = 0,
-    AT_UPGRADE_CUSTOM_PARTITION,
+    AT_UPGRADE_SYSTEM_FIRMWARE = 0,         /**< upgrade type is system firmware */
+    AT_UPGRADE_CUSTOM_PARTITION,            /**< upgrade type is custom partition */
 } at_upgrade_type_t;
 
 typedef enum {
-    ESP_AT_OTA_MODE_NORMAL = 0,
-    ESP_AT_OTA_MODE_SSL,
+    ESP_AT_OTA_MODE_NORMAL = 0,             /**< upgrade mode is TCP */
+    ESP_AT_OTA_MODE_SSL,                    /**< upgrade mode is TLS */
+    ESP_AT_OTA_MODE_MAX,
 } esp_at_ota_mode_type;
 
+typedef enum {
+    ESP_AT_OTA_STATE_IDLE = 0,              /**< not in upgrade */
+    ESP_AT_OTA_STATE_FOUND_SERVER,          /**< the upgrade server found */
+    ESP_AT_OTA_STATE_CONNECTED_TO_SERVER,      /**< connected to the server */
+    ESP_AT_OTA_STATE_GOT_VERSION,           /**< got the version information to be upgraded */
+    ESP_AT_OTA_STATE_DONE,                  /**< upgrade succeeded */
+    ESP_AT_OTA_STATE_FAILED = -1,           /**< upgrade failed */
+} esp_at_ota_state_t;
+
+/**
+ * @brief      upgrade process
+ *
+ * @param[in]  ota_mode  use this mode to upgrade
+ * @param[in]  version  this version to upgrade
+ * @param[in]  partition_name  this partition to upgrade
+ * 
+ * @return
+ *    - true
+ *    - false
+ */
 bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, const char *partition_name);
 
-#endif
+/**
+ * @brief      Set upgrade status
+ *
+ * @param[in]  status  upgrade progress
+ * 
+ * @noreturn 
+ */
+void esp_at_set_upgrade_state(esp_at_ota_state_t status);
 
+/**
+ * @brief      Get upgrade status
+ *
+ * @return
+ *    - esp_at_ota_state_t
+ */
+esp_at_ota_state_t esp_at_get_upgrade_state(void);
+
+#endif

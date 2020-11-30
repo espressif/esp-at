@@ -63,6 +63,7 @@ Accept-Language: zh-CN,zh;q=0.8\r\n\r\n"
 static xTimerHandle esp_at_ota_timeout_timer = NULL;
 static bool esp_at_ota_timeout_flag = false;
 static int esp_at_ota_socket_id = -1;
+static esp_at_ota_state_t s_ota_status = ESP_AT_OTA_STATE_IDLE;
 
 #define ESP_AT_OTA_DEBUG  printf
 
@@ -157,6 +158,7 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
     sock_info.sin_family = AF_INET;
     sock_info.sin_addr.s_addr = ip_address.u_addr.ip4.addr;
     sock_info.sin_port = htons(server_port);
+    esp_at_set_upgrade_state(ESP_AT_OTA_STATE_FOUND_SERVER);
     esp_at_port_write_data((uint8_t*)"+CIPUPDATE:1\r\n",strlen("+CIPUPDATE:1\r\n"));
 
     http_request = (uint8_t*)malloc(TEXT_BUFFSIZE);
@@ -198,7 +200,7 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
             }
         }
     #endif
-
+        esp_at_set_upgrade_state(ESP_AT_OTA_STATE_CONNECTED_TO_SERVER);
         esp_at_port_write_data((uint8_t*)"+CIPUPDATE:2\r\n",strlen("+CIPUPDATE:2\r\n"));
 
         snprintf((char*)http_request,TEXT_BUFFSIZE,"GET /v1/device/rom/?is_format_simple=true HTTP/1.0\r\nHost: "IPSTR":%d\r\n"pheadbuffer"",
@@ -243,7 +245,6 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
             ESP_AT_OTA_DEBUG("recv data from server failed!\r\n");
             goto OTA_ERROR;
         }
-        esp_at_port_write_data((uint8_t*)"+CIPUPDATE:3\r\n",strlen("+CIPUPDATE:3\r\n"));
         pStr = (uint8_t*)strstr((char*)data_buffer,"rom_version\": ");
         if (pStr == NULL) {
             ESP_AT_OTA_DEBUG("rom_version error!\r\n");
@@ -258,6 +259,8 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
             goto OTA_ERROR;
         }
         *pStr = '\0';
+        esp_at_set_upgrade_state(ESP_AT_OTA_STATE_GOT_VERSION);
+        esp_at_port_write_data((uint8_t*)"+CIPUPDATE:3\r\n",strlen("+CIPUPDATE:3\r\n"));
     }
     printf("version:%s\r\n",version);
 
@@ -461,6 +464,7 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
             goto OTA_ERROR;
         }
     }
+    esp_at_set_upgrade_state(ESP_AT_OTA_STATE_DONE);
     esp_at_port_write_data((uint8_t*)"+CIPUPDATE:4\r\n",strlen("+CIPUPDATE:4\r\n"));
 
     ret = true;
@@ -496,4 +500,15 @@ OTA_ERROR:
 #endif
     return ret;
 }
+
+void esp_at_set_upgrade_state(esp_at_ota_state_t status)
+{
+    s_ota_status = status;
+}
+
+esp_at_ota_state_t esp_at_get_upgrade_state(void)
+{
+    return s_ota_status;
+}
+
 #endif
