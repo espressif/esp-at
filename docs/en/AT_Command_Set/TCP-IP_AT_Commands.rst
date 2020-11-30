@@ -1039,6 +1039,26 @@ Note
 
 ESP-AT upgrades firmware at runtime by downloading the new firmware from a specific server through Wi-Fi and then flash it into some partitions.
 
+Query Command
+^^^^^^^^^^^^^
+
+**Function:**
+
+Query ESP device upgrade status.
+
+**Command:**
+
+::
+
+    AT+CIUPDATE?
+
+**Response:**
+
+::
+
+    +CIPUPDATE:<state>
+    OK
+
 Execute Command
 ^^^^^^^^^^^^^^^
 
@@ -1056,7 +1076,7 @@ Upgrade OTA the latest version of firmware via TCP from the server.
 
 ::
 
-    +CIPUPDATE:<n>
+    +CIPUPDATE:<state>
     OK
 
 or
@@ -1076,13 +1096,13 @@ Upgrade the specified version of firmware from the server.
 
 ::
 
-    AT+CIUPDATE=<ota mode>[,<version>],[,<firmware name>]
+    AT+CIUPDATE=<ota mode>[,<version>][,<firmware name>][,<nonblocking>]
 
 **Response:**
 
 ::
 
-    +CIPUPDATE:<n>
+    +CIPUPDATE:<state>
     OK
 
 or
@@ -1100,12 +1120,19 @@ Parameters
 
 - **<version>**: AT version, such as, ``v1.2.0.0``, ``v1.1.3.0``, ``v1.1.2.0``.
 - **<firmware name>**: firmware to upgrade, such as, ``ota``, ``mqtt_ca``, ``client_ca`` or other custom partition in ``at_customize.csv``.
-- **<n>**:
+- **<nonblocking>**:
 
-    - 1: find the server.
-    - 2: connect to the server.
-    - 3: obtain the software version.
-    - 4: start updating.
+    - 0: OTA by blocking mode (In this mode, user can not send AT command until OTA completes successfully or fails.)
+    - 1: OTA by non-blocking mode（Users need to manually restart after update done(+CIPUPDATE:4).)
+
+- **<state>**:
+
+    - 0: Idle.
+    - 1: Server found.
+    - 2: Connected to the server.
+    - 3: Got the upgrade version.
+    - 4: Upgrade done.
+    - -1: Upgrade failed.
 
 Notes
 ^^^^^
@@ -1122,8 +1149,13 @@ Example
 ::
 
     AT+CIUPDATE  
+    AT+CIUPDATE=1
     AT+CIUPDATE=1,"v1.2.0.0"
     AT+CIUPDATE=1,"v2.2.0.0","mqtt_ca"
+    AT+CIUPDATE=1,"V2.2.0.0","ota",1
+    AT+CIUPDATE=1,,,1
+    AT+CIUPDATE=1,,"ota",1
+    AT+CIUPDATE=1,"V2.2.0.0",,1
 
 .. _cmd-IPDINFO:
 
