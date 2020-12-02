@@ -30,7 +30,7 @@
    * - 杜邦线（连接 USB 转 UART 串口模块和 ESP 开发板）
      - 发送 AT 命令、接收 AT 响应数据连接
 
-.. figure:: ../../_static/what-you-need.svg
+.. figure:: ../../_static/hw-connection-what-you-need.png
    :align: center
    :alt: ESP-AT 测试硬件连接示意图
    :figclass: align-center

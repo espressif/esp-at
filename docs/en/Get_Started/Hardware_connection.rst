@@ -30,7 +30,7 @@ What You Need
    * - Jumper wires (serial port converter to ESP board)
      - AT command/response connection.
 
-.. figure:: ../../_static/what-you-need.svg
+.. figure:: ../../_static/hw-connection-what-you-need.png
    :align: center
    :alt: Connection of Components for ESP-AT Testing
    :figclass: align-center
