@@ -2,7 +2,7 @@
 AT Command Set
 **************
 
-Here is a list of AT commands. Some of the AT commands can only work on the ESP32, which is marked as [ESP32 Only]; others can work on both the ESP8266 and ESP32.
+Here is a list of AT commands. Some of them can only work on the ESP32 series, so they are marked as [ESP32 Only] at the beginning; others without any mark can work on both the ESP8266 and ESP32 series.
 
 .. toctree::
    :maxdepth: 1
@@ -10,20 +10,19 @@ Here is a list of AT commands. Some of the AT commands can only work on the ESP3
    Basic AT Commands <Basic_AT_Commands>
    Wi-Fi AT Commands <Wi-Fi_AT_Commands>
    TCP-IP AT Commands <TCP-IP_AT_Commands>
-   [ESP32 Only] BLE AT Commands <BLE_AT_Commands>
-   [ESP32 Only] BT AT Commands <BT_AT_Commands>
+   [ESP32 Only] Bluetooth® Low Energy AT Commands <BLE_AT_Commands>
+   [ESP32 Only] Bluetooth® AT Commands <BT_AT_Commands>
    MQTT AT Commands <MQTT_AT_Commands>
    HTTP AT Commands <HTTP_AT_Commands>
    [ESP32 Only] Ethernet AT Commands <Ethernet_AT_Commands>
    Signaling Test AT Commands <Signaling_Test_AT_Commands>
-   [ESP32 & ESP32S2 Only] Driver AT Commands <Driver_AT_Commands>
+   [ESP32 & ESP32-S2 Only] Driver AT Commands <Driver_AT_Commands>
 
-Before checking the command set details, please review some common information on command types, configurations that can be saved in the flash, as well as messages returned after entering commands.   
+It is strongly recommended to read the following sections for some common information on AT commands before you dive into the details of each command.   
 
 - `AT Command Types`_
 - `AT Commands with Configuration Saved in the Flash`_
 - `AT Messages`_
-
 
 .. _at-command-types:
 
@@ -40,47 +39,53 @@ Generic AT command has four types:
      - Command Format 
      - Description
    * - Test Command 
-     - AT+=? 
-     - Queries the Set Commands' internal parameters and their range of values.
+     - AT+<CommamdName>=?
+     - Query the Set Commands' internal parameters and their range of values.
    * - Query Command 
-     - AT+? 
-     - Returns the current value of parameters.
+     - AT+<CommamdName>?
+     - Return the current value of parameters.
    * - Set Command 
-     - AT+=<…> 
-     - Sets the value of user-defined parameters in commands, and runs these commands.
+     - AT+<CommamdName>=<...> 
+     - Set the value of user-defined parameters in commands, and run these commands.
    * - Execute Command 
-     - AT+ 
-     - Runs commands with no user-defined parameters.
+     - AT+<CommamdName>
+     - Run commands with no user-defined parameters.
 
--  Not all AT commands support all four types mentioned above.
--  Square brackets [ ] designate parameters that may be omitted; default value of the parameter will be used instead. 
+-  Not all AT commands support all of the four types mentioned above.
+-  Square brackets [ ] designate parameters that can be omitted. The default value of the parameter will be used instead when you omit it. 
 
-   Below are examples of entering command `AT+CWJAP <#cmd-JAP>`__ with some parameters omitted::
+   Below are examples of entering the command :ref:`AT+CWJAP <cmd-JAP>` with some parameters omitted::
 
       AT+CWJAP="ssid","password"
       AT+CWJAP="ssid","password","11:22:33:44:55:66"
 
--  If the parameter which is not the last one is omitted, you can give a ``,`` to indicate it.
+-  If the parameter you want to omit is followed by a parameter(s), you must give a ``,`` to indicate it.
 
    Example::
    
       AT+CWJAP="ssid","password",,1
 
--  String values need to be included in double quotation marks, for example: ``AT+CWSAP="ESP756290","21030826",1,4``.
--  Escape character syntax is needed if a string contains any special characters, such as ``,``, ``"`` or ``\``:
+-  String values need to be included in double quotation marks.
 
-   -  ``\\``: escape backslash itself
-   -  ``\,``: escape comma which is used to separate each parameter
-   -  ``\"``: escape double quotation marks which used to mark string input
+   Example::
+
+      AT+CWSAP="ESP756290","21030826",1,4
+
+-  Escape character syntax is needed if a string contains special characters, such as ``,``, ``"``, or ``\``:
+
+   -  ``\\``: escape the backslash itself
+   -  ``\,``: escape comma which is not used to separate each parameter
+   -  ``\"``: escape double quotation mark which is not used to mark string input
    -  ``\<any>``: escape ``<any>`` character means that drop backslash symbol and only use ``<any>`` character
 
-      Example::
+   Example::
       
-         AT+CWJAP="comma\,backslash\\ssid","1234567890"
-         AT+MQTTPUB=0,"topic","\"{\"sensor\":012}\"",1,0
+      AT+CWJAP="comma\,backslash\\ssid","1234567890"
+      AT+MQTTPUB=0,"topic","\"{\"sensor\":012}\"",1,0
 
 -  The default baud rate of AT command is 115200.
--  AT commands are ended with a new-line (CR-LF), so the serial tool should be set into "New Line Mode".
+-  The length of each AT command should be no more than 256 bytes.
+-  AT commands end with a new-line (CR-LF), so the serial tool should be set to "New Line Mode".
 -  Definitions of AT command error codes are provided in :doc:`../Compile_and_Develop/AT_API_Reference`:
 
    - :cpp:type:`esp_at_error_code`
@@ -93,23 +98,24 @@ AT Commands with Configuration Saved in the Flash
 
 Configuration settings entered by the following AT Commands will always be saved in the flash NVS Area, so they can be automatically restored on reset:
 
--  `AT+UART\_DEF <#cmd-UARTD>`__: for example, ``AT+UART_DEF=115200,8,1,0,3``
--  `AT+SAVETRANSLINK <#cmd-SAVET>`__ : for example, ``AT+SAVETRANSLINK=1,"192.168.6.10",1001``
--  `AT+CWAUTOCONN <#cmd-AUTOC>`__: for example, ``AT+CWAUTOCONN=1``
+-  :ref:`AT+UART_DEF <cmd-UARTD>`: ``AT+UART_DEF=115200,8,1,0,3``
+-  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: ``AT+SAVETRANSLINK=1,"192.168.6.10",1001``
+-  :ref:`AT+CWAUTOCONN <cmd-AUTOC>`: ``AT+CWAUTOCONN=1``
 
-Saving of configuration settings by several other commands can be switched on or off with `AT+SYSSTORE <#cmd-SYSSTORE>`__ command. Please see description of `AT+SYSSTORE <#cmd-SYSSTORE>`__ for details.
-
+Saving of configuration settings by several other commands can be switched on or off with :ref:`AT+SYSSTORE <cmd-SYSSTORE>` command.
 
 AT Messages
 ===========
 
-There are two types of ESP-AT messages from ESP-AT command port. One is ESP-AT command response Messages passively, the other is ESP-AT message report actively.
+There are two types of ESP-AT messages returned from the ESP-AT command port:
 
-ESP-AT Response Messages
-  Any ESP-AT command input will return the response by mandatory, it tells the sender the result of the ESP-AT command.
+- ESP-AT Response Messages (passive)
+  
+  Each ESP-AT command input returns response messages to tell the sender the result of the ESP-AT command. 
 
-ESP-AT Message Report
-  ESP-AT will report the system important state change or message.
+- ESP-AT Message Reports (active)
+
+  ESP-AT will report important state changes or messages in the system.
 
 .. list-table:: ESP-AT Response Messages
     :header-rows: 1
@@ -120,15 +126,15 @@ ESP-AT Message Report
     * - OK
       - AT command process done and return OK
     * - ERROR
-      - AT command error or error occurred during execution
+      - AT command error or error occurred during the execution
     * - SEND OK
-      - Data has been sent to the protocol stack (Unique to AT+CIPSEND and AT+CIPSENDEX command)
+      - Data has been sent to the protocol stack (specific to :ref:`AT+CIPSEND <cmd-SEND>` and :ref:`AT+CIPSENDEX <cmd-SENDEX>` command)
     * - SEND FAIL
-      - Error occurred during sending the data to the protocol stack (Unique to AT+CIPSEND and AT+CIPSENDEX command)
+      - Error occurred during sending the data to the protocol stack (specific to :ref:`AT+CIPSEND <cmd-SEND>` and :ref:`AT+CIPSENDEX <cmd-SENDEX>` command
     * - +<Command Name>:``...``
-      - Response to the sender that AT command process result in detail
+      - Response to the sender that describes AT command process results in details
 
-.. list-table:: ESP-AT Message Report
+.. list-table:: ESP-AT Message Reports
    :header-rows: 1
    :widths: 40 60
 
@@ -137,7 +143,7 @@ ESP-AT Message Report
    * - ready
      - The ESP-AT firmware is ready
    * - busy p...
-     - Busy processing. The system is in process of handling the previous command, CAN NOT accept the newly input
+     - Busy processing. The system is in process of handling the previous command, thus CANNOT accept the new input
    * - ERR CODE:``<0x%08x>``
      - Error code for different command
    * - Will force to restart!!!
@@ -147,13 +153,13 @@ ESP-AT Message Report
    * - Smart get wifi info
      - Smartconfig has got the SSID and PASSWORD information
    * - smartconfig connected wifi
-     - Smartconfig done, ESP-AT has connected to the WiFi
+     - Smartconfig done. ESP-AT has connected to the Wi-Fi
    * - WIFI CONNECTED
-     - WiFi station interface has connected to an AP
+     - Wi-Fi station interface has connected to an AP
    * - WIFI GOT IP
-     - WiFi station interface has got the IPv4 address
+     - Wi-Fi station interface has got the IPv4 address
    * - WIFI DISCONNECT
-     - WiFi station interface has disconnected from an AP
+     - Wi-Fi station interface has disconnected from an AP
    * - +ETH_CONNECTED
      - Ethernet station interface has connected
    * - +ETH_GOT_IP
@@ -167,11 +173,11 @@ ESP-AT Message Report
    * - +LINK_CONN
      - Detailed connection information of TCP/UDP/SSL
    * - +STA_CONNECTED: <sta_mac>
-     - A station has connected to the WiFi softAP interface of ESP-AT
+     - A station has connected to the Wi-Fi softAP interface of ESP-AT
    * - +DIST_STA_IP: <sta_mac>,<sta_ip>
-     - The WiFi softAP interface of ESP-AT distributes an IP address to the station
+     - The Wi-Fi softAP interface of ESP-AT distributes an IP address to the station
    * - +STA_DISCONNECTED: <sta_mac> 
-     - A station disconnected from the WiFi softAP interface of ESP-AT
+     - A station disconnected from the Wi-Fi softAP interface of ESP-AT
    * - >
      - ESP-AT is waiting for more data to be received
    * - Recv ``<xxx>`` bytes
@@ -179,17 +185,17 @@ ESP-AT Message Report
    * - +IPD
      - ESP-AT received the data from the network
    * - SEND Canceled
-     - Cancel to send in transparent transmission
+     - Cancel to send in :ref:`Wi-Fi passthrough mode <cmd-SEND>`
    * - Have ``<xxx>`` Connections
      - Has reached the maximum connection counts for server
    * - +QUITT
-     - ESP-AT quits from the transparent transmission mode
+     - ESP-AT quits from the Wi-Fi passthrough mode
    * - NO CERT FOUND
-     - No a valid device certificate found in custom partition
+     - No valid device certificate found in custom partition
    * - NO PRVT_KEY FOUND
-     - No a valid private key found in custom partition
+     - No valid private key found in custom partition
    * - NO CA FOUND
-     - No a valid CA certificate found in custom partition
+     - No valid CA certificate found in custom partition
    * - +MQTTCONNECTED
      - MQTT connected to the broker
    * - +MQTTDISCONNECTED
@@ -201,18 +207,18 @@ ESP-AT Message Report
    * - +MQTTPUB:OK
      - MQTT publish data done
    * - +BLECONN
-     - A BLE connection established
+     - A Bluetooth LE connection established
    * - +BLEDISCONN 
-     - A BLE connection ends
+     - A Bluetooth LE connection ends
    * - +READ
-     - A read operation from BLE connection
+     - A read operation from Bluetooth LE connection
    * - +WRITE
-     - A write operation from BLE connection
+     - A write operation from Bluetooth LE connection
    * - +NOTIFY
-     - A notification from BLE connection
+     - A notification from Bluetooth LE connection
    * - +INDICATE
-     - An indication from BLE connection
+     - An indication from Bluetooth LE connection
    * - +BLESECNTFYKEY
-     - BLE SMP key
+     - Bluetooth LE SMP key
    * - +BLEAUTHCMPL 
-     - BLE SMP pairing completed
+     - Bluetooth LE SMP pairing completed
