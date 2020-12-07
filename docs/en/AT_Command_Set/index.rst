@@ -15,8 +15,8 @@ Here is a list of AT commands. Some of them can only work on the ESP32 series, s
    MQTT AT Commands <MQTT_AT_Commands>
    HTTP AT Commands <HTTP_AT_Commands>
    [ESP32 Only] Ethernet AT Commands <Ethernet_AT_Commands>
-   Signaling Test AT Commands <Signaling_Test_AT_Commands>
-   [ESP32 & ESP32-S2 Only] Driver AT Commands <Driver_AT_Commands>
+   [ESP8266 Only] Signaling Test AT Commands <Signaling_Test_AT_Commands>
+   [ESP32 & ESP32S2 Only] Driver AT Commands <Driver_AT_Commands>
 
 It is strongly recommended to read the following sections for some common information on AT commands before you dive into the details of each command.   
 
