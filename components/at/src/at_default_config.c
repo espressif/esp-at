@@ -39,7 +39,11 @@
 #include "esp_bt.h"
 #endif
 
-#include "at_default_config.h"
+#include "at_ota.h"
+
+#ifdef CONFIG_AT_BT_A2DP_COMMAND_SUPPORT
+#include "at_i2s.h"
+#endif
 
 #define ESP_AT_UNKNOWN_STR      "Unknown"
 
@@ -136,7 +140,20 @@ const char* esp_at_get_module_name_by_id(uint32_t id)
     return ESP_AT_UNKNOWN_STR;
 }
 
-uint32_t esp_at_factory_parameter_init(void)
+const char* esp_at_get_current_module_name(void)
+{
+    if (sizeof(esp_at_module_info) == 0) {
+        return ESP_AT_UNKNOWN_STR;
+    }
+
+    if (esp_at_module_id < sizeof(esp_at_module_info)/sizeof(esp_at_module_info[0])) {
+        return esp_at_module_info[esp_at_module_id].module_name;
+    }
+
+    return ESP_AT_UNKNOWN_STR;
+}
+
+static uint32_t esp_at_factory_parameter_init(void)
 {
     const esp_partition_t * partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
     char* data = NULL;
@@ -191,6 +208,19 @@ uint32_t esp_at_factory_parameter_init(void)
 
     free(data);
     return 0;
+}
+
+void esp_at_peripheral_init(void)
+{
+#ifdef CONFIG_AT_BT_A2DP_COMMAND_SUPPORT
+    esp_at_i2s_init();
+#endif
+}
+
+void esp_at_board_init(void)
+{
+    esp_at_factory_parameter_init();
+    esp_at_peripheral_init();
 }
 
 uint32_t esp_at_get_module_id(void)

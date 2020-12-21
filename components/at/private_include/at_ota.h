@@ -22,8 +22,8 @@
  *
  */
 
-#ifndef __AT_CONFIG_H__
-#define __AT_CONFIG_H__
+#ifndef __AT_OTA_TOKEN_H__
+#define __AT_OTA_TOKEN_H__
 
 #if defined(CONFIG_AT_OTA_SUPPORT)
 #define CONFIG_ESP_AT_OTA_TOKEN_DEFAULT       CONFIG_AT_OTA_TOKEN_KEY
@@ -66,10 +66,18 @@
 #define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER          CONFIG_ESP_AT_OTA_TOKEN_DEFAULT
 #define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO            CONFIG_ESP_AT_OTA_TOKEN_DEFAULT
 #define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI            CONFIG_ESP_AT_OTA_TOKEN_DEFAULT
+
 #define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM       CONFIG_ESP_AT_OTA_SSL_TOKEN_DEFAULT
 #define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER      CONFIG_ESP_AT_OTA_SSL_TOKEN_DEFAULT
 #define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO        CONFIG_ESP_AT_OTA_SSL_TOKEN_DEFAULT
 #define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI        CONFIG_ESP_AT_OTA_SSL_TOKEN_DEFAULT
 #endif
 
+typedef enum {
+    ESP_AT_OTA_MODE_NORMAL = 0,             /**< upgrade mode is TCP */
+    ESP_AT_OTA_MODE_SSL,                    /**< upgrade mode is TLS */
+    ESP_AT_OTA_MODE_MAX,
+} esp_at_ota_mode_type;
+
+const char* esp_at_get_ota_token_by_id(uint32_t id, esp_at_ota_mode_type ota_mode);
 #endif

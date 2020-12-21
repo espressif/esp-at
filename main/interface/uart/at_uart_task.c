@@ -38,8 +38,6 @@
 #include "driver/uart.h"
 #include "at_interface.h"
 
-#include "at_default_config.h"
-
 #ifdef CONFIG_IDF_TARGET_ESP8266
 #include "esp8266/uart_register.h"
 #endif
