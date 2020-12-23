@@ -172,7 +172,7 @@ Parameters
    -  0: The ESP station will not reconnect to the AP when disconnected.
    -  [1,7200]: The ESP station will reconnect to the AP at the specified interval when disconnected.
 
--  **[<listen_interval>]**: the interval of listening to the AP's beacon. Unit: second. Default: 3. Range: [0, 100]. 
+-  **[<listen_interval>]**: the interval of listening to the AP's beacon. Unit: second. Default: 3. Range: [1, 100].
 -  **<error code>**: (for reference only)
 
    -  1: connection timeout.

@@ -6,6 +6,7 @@ Basic AT Commands
 -  :ref:`AT <cmd-AT>`: Test AT startup.
 -  :ref:`AT+RST <cmd-RST>`: Restart a module.
 -  :ref:`AT+GMR <cmd-GMR>`: Check version information.
+-  :ref:`AT+CMD <cmd-cmd>`: List all AT commands and types supported in current firmware.
 -  :ref:`AT+GSLP <cmd-GSLP>`: Enter Deep-sleep mode.
 -  :ref:`ATE <cmd-ATE>`: Configure echoing of AT commands.
 -  :ref:`AT+RESTORE <cmd-RESTORE>`: Restore the factory default settings of the module.
@@ -108,6 +109,38 @@ Example
     Bin version:2.1.0(MINI-1)
 
     OK
+
+.. _cmd-CMD:
+
+:ref:`AT+CMD <Basic-AT>`: List all AT commands and types supported in current firmware
+--------------------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+CMD?
+
+**Response:**
+
+::
+
+    +CMD:<index>,<AT command name>,<support test command>,<support query command>,<support set command>,<support execute command>
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<index>**: AT command sequence number.
+-  **<AT command name>**: AT command name.
+-  **<support test command>**: 0 means not supported, 1 means supported.
+-  **<support query command>**: 0 means not supported, 1 means supported.
+-  **<support set command>**: 0 means not supported, 1 means supported.
+-  **<support execute command>**: 0 means not supported, 1 means supported.
 
 .. _cmd-GSLP:
 
