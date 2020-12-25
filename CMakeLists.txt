@@ -49,7 +49,13 @@ include(${IDF_PATH}/tools/cmake/project.cmake)
 
 project(esp-at)
 
-add_custom_target(factory_bin ALL DEPENDS customized_bin)
+if (CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_SUPPORT)
+    add_custom_target(factory_bin ALL DEPENDS customized_bin)
+else()
+    # TODO: combine defaults bins into a factory bin
+    add_custom_target(factory_bin)
+endif()
+
 add_custom_command(TARGET factory_bin
   POST_BUILD
   COMMAND mkdir -p $ENV{ESP_AT_PROJECT_PATH}/build/factory
