@@ -6,6 +6,8 @@ idf_build_get_property(project_dir PROJECT_DIR)
 set(flash_customized_partition_args ${build_dir}/flash_customized_partition_args)
 set(module_info ${build_dir}/module_info)
 
+if (CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_SUPPORT)
+
 STRING(REGEX REPLACE ".*/(.*)\.csv" "\\1" customize_bin ${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE})
 set(customize_bin_full_name ${customize_bin}.bin)
 execute_process (
@@ -58,3 +60,5 @@ add_custom_command(TARGET customized_bin
             --flash_args_file ${flash_customized_partition_args}
   COMMENT "Create customized_bin..."
 )
+
+endif()
