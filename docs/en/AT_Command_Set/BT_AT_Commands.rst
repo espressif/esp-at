@@ -418,9 +418,7 @@ Parameters
 
    -  0x0000: no security.
    -  0x0001: authorization required (only needed for out going connection).
-   -  0x0012: authentication required.
-   -  0x0024: encryption required.
-   -  0x0040: mode 4 level 4 service, i.e. incoming/outgoing MITM and P-256 encryption.
+   -  0x0036: encryption required.
    -  0x3000: Man-In-The-Middle protection.
    -  0x4000: Min 16 digit for pin code.
 
@@ -462,6 +460,12 @@ If the command is successful, it will prompt:
 ::
 
     +BTSPPDISCONN:<conn_index>,<remote_address>
+
+If the command is fail, it will prompt:
+
+::
+
+    +BTSPPDISCONN:-1
 
 Parameters
 ^^^^^^^^^^
