@@ -11,5 +11,6 @@ Please refer to :link_to_translation:`en:[English]`
    :hidden:
    
    TCP-IP AT 示例 <TCP-IP_AT_Examples>
-   [ESP32_Only] BLE AT 示例 <BLE_AT_Examples>
+   [ESP32_Only] Bluetooth® Low Engergy AT 示例 <BLE_AT_Examples>
    MQTT AT 示例 <MQTT_AT_Examples>
+   [ESP32 Only] Ethernet AT 示例 <Ethernet_AT_Examples>

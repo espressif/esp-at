@@ -3,8 +3,31 @@
 [ESP32 Only] Ethernet AT Commands
 =================================
 
+-  :ref:`Prerequisite <cmd-ETHPRE>`
 -  [ESP32 Only] :ref:`AT+CIPETHMAC <cmd-ETHMAC>`: Query/Set the MAC address of the ESP Ethernet.
 -  [ESP32 Only] :ref:`AT+CIPETH <cmd-ETHIP>`: Query/Set the IP address of the ESP Ethernet.
+
+.. _cmd-ETHPRE:
+
+:ref:`Prerequisite <ETH-AT>`
+------------------------------
+
+Before you run any Ethernet AT Commands, please refer to the following steps to make preparations:
+
+.. note::
+    This prerequisite takes `ESP32-Ethernet-Kit <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-ethernet-kit.html>`_ as an example. If you use other modules or development boards, please refer to corresponding datasheets for RX/TX pins.
+
+- Change AT UART pins (because default AT UART pins are in conflict with the Ethernet function pins):
+
+  In the row of module ``WROVER-32``, change ``uart_rx_pin`` from GPIO19 to GPIO4, ``uart_tx_pin`` from GPIO22 to GPIO2, ``uart_cts_pin`` from GPIO15 to GPIO-1, and ``uart_rts_pin`` from GPIO14 to GPIO-1 (flow control is optional and is not used here). See :doc:`../Compile_and_Develop/How_to_set_AT_port_pin` for more information.
+
+- Enable ``AT ethernet support``.
+- Compile and flash the project onto ESP32-Ethernet-Kit.
+- Connect your hardware:
+ 
+  - Connect Host MCU (PC with USB to serial converter) to GPIO2 (TX) and GPIO4 (RX) of ESP32-Ethernet-Kit when the flow control function is not enabled.
+  - Connect ESP32-Ethernet-Kit with Ethernet network.
+
 
 .. _cmd-ETHMAC:
 
