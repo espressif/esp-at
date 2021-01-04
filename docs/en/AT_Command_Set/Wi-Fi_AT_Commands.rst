@@ -136,7 +136,7 @@ Connect an ESP station to a targeted AP.
 
 ::
 
-    AT+CWJAP=<ssid>,<pwd>[,<bssid>][,<pci_en>][,<reconn_interval>][,<listen_interval>][,<scan_mode>]
+    AT+CWJAP=[<ssid>],[<pwd>][,<bssid>][,<pci_en>][,<reconn_interval>][,<listen_interval>][,<scan_mode>][,<jap_timeout>]
 
 **Response:**
 
@@ -148,7 +148,33 @@ or
 
 ::
 
-    +CWJAP:
+    +CWJAP:<error code>
+    ERROR
+
+Execute Command
+^^^^^^^^^^^^^^^
+
+**Function:**
+
+Connect an ESP station to a targeted AP with last Wi-Fi configuration.
+
+**Command:**
+
+::
+
+    AT+CWJAP
+
+**Response:**
+
+::
+
+    OK
+
+or
+
+::
+
+    +CWJAP:<error code>
     ERROR
 
 Parameters
@@ -173,6 +199,12 @@ Parameters
    -  [1,7200]: The ESP station will reconnect to the AP at the specified interval when disconnected.
 
 -  **[<listen_interval>]**: the interval of listening to the AP's beacon. Unit: second. Default: 3. Range: [1, 100].
+-  **[<scan_mode>]**:
+
+   -  0: fast scan. It will end after finding the targeted AP. The ESP station will connect to the first scanned AP.
+   -  1: all-channel scan. It will end after all the channels are scanned. The device will connect to the scanned AP with the strongest signal.
+
+-  **[<jap_timeout>]**: maximum timeout for AT+CWJAP command. Unit: second. Default: 15. Range: [3, 600].
 -  **<error code>**: (for reference only)
 
    -  1: connection timeout.
@@ -181,17 +213,14 @@ Parameters
    -  4: connection failed.
    -  others: unknown error occurred.
 
--  **[<scan_mode>]**:
-
-   -  0: fast scan. It will end after finding the targeted AP. The ESP station will connect to the first scanned AP.
-   -  1: all-channel scan. It will end after all the channels are scanned. The device will connect to the scanned AP with the strongest signal.
-
 Notes
 ^^^^^
 
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  This command requires Station mode to be enabled.
 -  The parameter ``<reconn_interval>`` of this command is the same as ``<interval_second>`` of the command :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`. Therefore, if you omit ``<reconn_interval>`` when running this command, the interval between Wi-Fi reconnections depends on its previous configuration. If you keep the parameter, it will overwrite the previous configuration.
+-  If the ``<ssid>`` and ``<password>`` parameter is omitted, it will use last configuration.
+-  Execute command has the same maximum timeout to setup command (15 seconds).
 
 Example
 ^^^^^^^^
@@ -322,6 +351,12 @@ Parameters
    -  bit 2: determine whether <rssi> will be shown.
    -  bit 3: determine whether <mac> will be shown.
    -  bit 4: determine whether <channel> will be shown.
+   -  bit 5: determine whether <freq_offset> will be shown.
+   -  bit 6: determine whether <freqcal_val> will be shown.
+   -  bit 7: determine whether <pairwise_cipher> will be shown.
+   -  bit 8: determine whether <group_cipher> will be shown.
+   -  bit 9: determine whether <bgn> will be shown.
+   -  bit 10: determine whether <wps> will be shown.
 
 -  **[<rssi filter>]**: determine whether the result of the command :ref:`AT+CWLAP <cmd-LAP>` will be filtered according to ``rssi filter``. In other words, the result of the command will **NOT** show the APs whose signal strength is below ``rssi filter``. Unit: dBm. Default: –100. Range: –100 ~ 40. 
 -  **[<authmode mask>]**: determine whether APs with the following authmodes are shown in the result of :ref:`AT+CWLAP <cmd-LAP>`. Default: 0xFF. If you set ``bit x`` to 0, the APs with the corresponding authmode will not be shown; If you set ``bit x`` to 1, the APs with the corresponding authmode will be shown.
@@ -384,7 +419,7 @@ List all available APs.
 
 ::
 
-    +CWLAP:<ecn>,<ssid>,<rssi>,<mac>,<channel>
+    +CWLAP:<ecn>,<ssid>,<rssi>,<mac>,<channel>,<freq_offset>,<freqcal_val>,<pairwise_cipher>,<group_cipher>,<bgn>,<wps>
     OK
 
 Parameters
@@ -402,6 +437,7 @@ Parameters
 -  **<ssid>**: string parameter showing SSID of the AP.
 -  **<rssi>**: signal strength.
 -  **<mac>**: string parameter showing MAC address of the AP.
+-  **<channel>**: channel.
 -  **<scan_type>**: Wi-Fi scan type:
 
    -  0: active scan
@@ -409,6 +445,31 @@ Parameters
 
 -  **<scan_time_min>**: the minimum active scan time per channel. Unit: millisecond. Range [0,1500]. If the scan type is passive, this parameter is invalid.
 -  **<scan_time_max>**: the maximum active scan time per channel. Unit: millisecond. Range [0,1500]. If this parameter is 0, the firmware will use the default time: 120 ms for active scan; 360 ms for passive scan.
+-  **<freq_offset>**: frequency offset (reserved item).
+-  **<freqcal_val>**: frequency calibration value (reserved item).
+-  **<pairwise_cipher>**: pairwise cipher type.
+
+   -  0: None
+   -  1: WEP40
+   -  2: WEP104
+   -  3: TKIP
+   -  4: CCMP
+   -  5: TKIP and CCMP
+   -  6: AES-CMAC-128
+   -  7: Unknown
+
+-  **<group_cipher>**: group cipher type, same enumerated value to ``<pairwise_cipher>``.
+-  **<bgn>**: 802.11 b/g/n.
+
+   -  bit 0: bit to identify if 802.11b mode is enabled or not
+   -  bit 1: bit to identify if 802.11g mode is enabled or not
+   -  bit 2: bit to identify if 802.11n mode is enabled or not
+   -  If the corresponding bit is 1, the corresponding mode is enabled; if the corresponding bit is 0, the corresponding mode is disabled.
+
+-  **<wps>**: wps flag.
+
+   - 0: WPS disabled
+   - 1: WPS enabled
 
 Example
 ^^^^^^^^
@@ -1368,7 +1429,7 @@ Connect to the targeted Enterprise AP.
 
 ::
 
-    AT+CWJEAP=<ssid>,<method>,<identity>,<username>,<password>,<security>
+    AT+CWJEAP=<ssid>,<method>,<identity>,<username>,<password>,<security>[,<jeap_timeout>]
 
 **Response:**
 
@@ -1403,6 +1464,8 @@ Parameters
 
    -  Bit0: Client certificate.
    -  Bit1: Server certificate.
+
+-  **[<jeap_timeout>]**: maximum timeout for AT+CWJEAP command. Unit: second. Default: 15. Range: [3, 600].
 
 Example
 ^^^^^^^^
