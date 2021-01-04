@@ -909,6 +909,7 @@ Notes
 
 -  When a timeout occurs, the ESP device configured as a TCP server will terminate the connection from the TCP client that does not respond.
 -  If you set <time> to 0, the connection will never timeout. This configuration is not recommended.
+-  When the client initiates a communication with the server within the set time, the timer will restart. After the timeout expires, the client is closed. During the set time, if the server initiate a communication with the client, the timer will not restart. After the timeout expires, the client is closed.
 
 Example
 ^^^^^^^^
