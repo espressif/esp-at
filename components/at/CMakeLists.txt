@@ -10,8 +10,12 @@ elseif ("${IDF_TARGET}" STREQUAL "esp8266")
     list(APPEND require_components nvs_flash)
 endif()
 
+file(GLOB_RECURSE srcs src/*.c)
+
 idf_component_register (
+    SRCS ${srcs}
     INCLUDE_DIRS include
+    PRIV_INCLUDE_DIRS private_include
     REQUIRES ${require_components})
 
 if (${SILENCE} EQUAL 1)
