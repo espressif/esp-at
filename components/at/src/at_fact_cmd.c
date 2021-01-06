@@ -25,9 +25,6 @@
 #include "esp_at.h"
 
 #ifdef CONFIG_AT_SIGNALING_COMMAND_SUPPORT
-#ifdef CONFIG_IDF_TARGET_ESP8266
-#include "internal/esp_wifi_internal.h"
-#endif
 
 static uint8_t at_setupCmdFactPlcp(uint8_t para_num)
 {
@@ -55,6 +52,12 @@ static uint8_t at_setupCmdFactPlcp(uint8_t para_num)
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
+    /**
+     * TODO:
+     * Explicit include corresponding header file and call esp_wifi_set_11b_tx_plcp() API,
+     * However the SDK has not exposed this API so far.
+    */
+    void esp_wifi_set_11b_tx_plcp(bool enable, bool tx_with_long);
     esp_wifi_set_11b_tx_plcp(enable, tx_with_long);
 
     return ESP_AT_RESULT_CODE_OK;
