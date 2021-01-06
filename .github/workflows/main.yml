@@ -710,9 +710,8 @@ jobs:
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
     - name: Compiling
       run: |
-        wget --no-check-certificate https://dl.espressif.com/dl/xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
-        tar -xzf xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
-        export PATH="$PATH:$(pwd)/xtensa-lx106-elf/bin"
+        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
+        python ./esp-idf/tools/idf_tools.py export --prefer-system
         ./build.py build
         upload_dir=esp8266-wroom02-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
@@ -775,9 +774,8 @@ jobs:
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
     - name: Compiling
       run: |
-        wget --no-check-certificate https://dl.espressif.com/dl/xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
-        tar -xzf xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
-        export PATH="$PATH:$(pwd)/xtensa-lx106-elf/bin"
+        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
+        python ./esp-idf/tools/idf_tools.py export --prefer-system
         ./build.py build
         upload_dir=esp8266-wroom-5V2L-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
@@ -840,9 +838,8 @@ jobs:
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
     - name: Compiling
       run: |
-        wget --no-check-certificate https://dl.espressif.com/dl/xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
-        tar -xzf xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
-        export PATH="$PATH:$(pwd)/xtensa-lx106-elf/bin"
+        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
+        python ./esp-idf/tools/idf_tools.py export --prefer-system
         ./build.py build
         upload_dir=esp8285-1MB-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
@@ -905,9 +902,8 @@ jobs:
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
     - name: Compiling
       run: |
-        wget --no-check-certificate https://dl.espressif.com/dl/xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
-        tar -xzf xtensa-lx106-elf-linux64-1.22.0-100-ge567ec7-5.2.0.tar.gz
-        export PATH="$PATH:$(pwd)/xtensa-lx106-elf/bin"
+        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
+        python ./esp-idf/tools/idf_tools.py export --prefer-system
         ./build.py build
         upload_dir=esp8266-wroom02-n-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
