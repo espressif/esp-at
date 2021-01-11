@@ -60,6 +60,7 @@ jobs:
         upload_dir=esp32-wroom-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig $upload_dir/
         cp build/*.bin $upload_dir/
         cp build/*.elf $upload_dir/
         cp build/*.map $upload_dir/
@@ -128,6 +129,7 @@ jobs:
         upload_dir=esp32-wrover-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig $upload_dir/
         cp build/*.bin $upload_dir/
         cp build/*.elf $upload_dir/
         cp build/*.map $upload_dir/
@@ -195,6 +197,7 @@ jobs:
         upload_dir=esp32-pico-d4-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig $upload_dir/
         cp build/*.bin $upload_dir/
         cp build/*.elf $upload_dir/
         cp build/*.map $upload_dir/
@@ -262,6 +265,7 @@ jobs:
         upload_dir=esp32-solo-1-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig $upload_dir/
         cp build/*.bin $upload_dir/
         cp build/*.elf $upload_dir/
         cp build/*.map $upload_dir/
@@ -329,6 +333,7 @@ jobs:
         upload_dir=esp32-d2wd-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig $upload_dir/
         cp build/*.bin $upload_dir/
         cp build/*.elf $upload_dir/
         cp build/*.map $upload_dir/
@@ -396,6 +401,7 @@ jobs:
         upload_dir=esp32-mini-1-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig $upload_dir/
         cp build/*.bin $upload_dir/
         cp build/*.elf $upload_dir/
         cp build/*.map $upload_dir/
@@ -460,6 +466,7 @@ jobs:
         upload_dir=esp32s2-wroom-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig $upload_dir/
         cp build/*.bin $upload_dir/
         cp build/*.elf $upload_dir/
         cp build/*.map $upload_dir/
@@ -524,6 +531,7 @@ jobs:
         upload_dir=esp32s2-wrover-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig $upload_dir/
         cp build/*.bin $upload_dir/
         cp build/*.elf $upload_dir/
         cp build/*.map $upload_dir/
@@ -588,6 +596,7 @@ jobs:
         upload_dir=esp32s2-solo-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig $upload_dir/
         cp build/*.bin $upload_dir/
         cp build/*.elf $upload_dir/
         cp build/*.map $upload_dir/
@@ -652,6 +661,7 @@ jobs:
         upload_dir=esp32s2-mini-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig $upload_dir/
         cp build/*.bin $upload_dir/
         cp build/*.elf $upload_dir/
         cp build/*.map $upload_dir/
@@ -716,6 +726,7 @@ jobs:
         upload_dir=esp8266-wroom02-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig $upload_dir/
         cp build/*.bin $upload_dir/
         cp build/*.elf $upload_dir/
         cp build/*.map $upload_dir/
@@ -780,6 +791,7 @@ jobs:
         upload_dir=esp8266-wroom-5V2L-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig $upload_dir/
         cp build/*.bin $upload_dir/
         cp build/*.elf $upload_dir/
         cp build/*.map $upload_dir/
@@ -844,6 +856,7 @@ jobs:
         upload_dir=esp8285-1MB-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig $upload_dir/
         cp build/*.bin $upload_dir/
         cp build/*.elf $upload_dir/
         cp build/*.map $upload_dir/
@@ -908,6 +921,7 @@ jobs:
         upload_dir=esp8266-wroom02-n-at
         mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
         cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig $upload_dir/
         cp build/*.bin $upload_dir/
         cp build/*.elf $upload_dir/
         cp build/*.map $upload_dir/

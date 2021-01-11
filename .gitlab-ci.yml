@@ -86,6 +86,7 @@ esp32_wroom_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -128,6 +129,7 @@ esp32_wrover_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -170,6 +172,7 @@ esp32_pico_d4_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -213,6 +216,7 @@ esp32_solo_1_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -255,6 +259,7 @@ esp32-d2wd_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -297,6 +302,7 @@ esp32_mini_1_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -339,6 +345,7 @@ esp32s2_wroom_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -381,6 +388,7 @@ esp32s2_wrover_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -423,6 +431,7 @@ esp32s2_solo_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -465,6 +474,7 @@ esp32s2_mini_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -507,6 +517,7 @@ esp8266_wroom_02_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -549,6 +560,7 @@ esp8266_1MB_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -591,6 +603,7 @@ esp8266_wroom_5V2L_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -633,6 +646,7 @@ esp8266_wroom_02_N_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -753,6 +767,7 @@ wrover32_all_function_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
@@ -807,6 +822,7 @@ esp32_ethernet_at:
     
   artifacts:
     paths:
+      - sdkconfig
       - build/*.bin
       - build/*.elf
       - build/*.map
