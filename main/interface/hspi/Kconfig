@@ -1,6 +1,7 @@
 
 config AT_BASE_ON_HSPI
     bool "AT through HSPI"
+    depends on (IDF_TARGET_ESP32 || IDF_TARGET_ESP8266)
     help
         This demo is AT through HSPI. The MCU can send AT command through SPI bus. 
         But besides the standard SPI pins, the more one pin is required to handshake MCU. 

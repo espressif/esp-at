@@ -1,6 +1,7 @@
 
 config AT_BASE_ON_SDIO
     bool "AT through SDIO"
+	depends on (IDF_TARGET_ESP32 || IDF_TARGET_ESP8266)
     help
         This demo is AT through SDIO. The MCU can send AT command through SDIO bus. 
         Note: GPIO14 is SDIO CLK pin, GPIO15 is SDIO CMD pin, GPIO2 is SDIO DAT0 pin, 
