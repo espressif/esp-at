@@ -1,4 +1,1 @@
-[ESP8266 Only] 信令测试 AT 命令集
-======================================
-
-See: ``/docs/en/AT_Command_Set/Signaling_Test_AT_Commands.rst``.
+.. include:: ../../en/AT_Command_Set/Signaling_Test_AT_Commands.rst

@@ -3,28 +3,30 @@
 Basic AT Commands
 =================
 
+:link_to_translation:`zh_CN:[中文]`
+
 -  :ref:`AT <cmd-AT>`: Test AT startup.
 -  :ref:`AT+RST <cmd-RST>`: Restart a module.
 -  :ref:`AT+GMR <cmd-GMR>`: Check version information.
 -  :ref:`AT+CMD <cmd-cmd>`: List all AT commands and types supported in current firmware.
 -  :ref:`AT+GSLP <cmd-GSLP>`: Enter Deep-sleep mode.
--  :ref:`ATE <cmd-ATE>`: Configure echoing of AT commands.
--  :ref:`AT+RESTORE <cmd-RESTORE>`: Restore the factory default settings of the module.
--  :ref:`AT+UART_CUR <cmd-UARTC>`: Current UART configuration.
+-  :ref:`ATE <cmd-ATE>`: Configure AT commands echoing.
+-  :ref:`AT+RESTORE <cmd-RESTORE>`: Restore factory default settings of the module.
+-  :ref:`AT+UART_CUR <cmd-UARTC>`: Current UART configuration, not saved in flash.
 -  :ref:`AT+UART_DEF <cmd-UARTD>`: Default UART configuration, saved in flash.
 -  :ref:`AT+SLEEP <cmd-SLEEP>`: Set the sleep mode.
--  :ref:`AT+SYSRAM <cmd-SYSRAM>`: Check current remaining heap size and minimum heap size.
--  :ref:`AT+SYSMSG <cmd-SYSMSG>`: Configure System Prompt Information.
--  :ref:`AT+RFPOWER <cmd-RFPOWER>`: Set RF TX Power.
--  :ref:`AT+SYSFLASH <cmd-SYSFLASH>`: Set User Partitions in Flash.
+-  :ref:`AT+SYSRAM <cmd-SYSRAM>`: Query current remaining heap size and minimum heap size.
+-  :ref:`AT+SYSMSG <cmd-SYSMSG>`: Query/Set System Prompt Information.
+-  :ref:`AT+SYSFLASH <cmd-SYSFLASH>`: Query/Set User Partitions in Flash.
 -  [ESP32 Only] :ref:`AT+FS <cmd-FS>`: Filesystem Operations.
+-  :ref:`AT+RFPOWER <cmd-RFPOWER>`: Query/Set RF TX Power.
 -  :ref:`AT+SYSROLLBACK <cmd-SYSROLLBACK>`: Roll back to the previous firmware.
--  :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`: Set local time stamp.
+-  :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`: Query/Set local time stamp.
 -  :ref:`AT+SYSLOG <cmd-SYSLOG>`: Enable or disable the AT error code prompt.
--  :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`: Configure the light-sleep wakeup source and awake GPIO.
--  :ref:`AT+SYSSTORE <cmd-SYSSTORE>`: Configure parameter store mode.
+-  :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`: Query/Set the light-sleep wakeup source and awake GPIO.
+-  :ref:`AT+SYSSTORE <cmd-SYSSTORE>`: Query/Set parameter store mode.
 -  :ref:`AT+SYSREG <cmd-SYSREG>`: Read/write the register.
--  [ESP32S2 Only] :ref:`AT+SYSTEMP <cmd-SYSTEMP>`: Read ESP32-S2 internal temperature.
+-  [ESP32-S2 Only] :ref:`AT+SYSTEMP <cmd-SYSTEMP>`: Read ESP32-S2 internal temperature.
 
 .. _cmd-AT:
 
@@ -87,6 +89,7 @@ Execute Command
     <AT version info>
     <SDK version info>
     <compile time>
+    <Bin version>
 
     OK
 
@@ -95,7 +98,8 @@ Parameters
 
 -  **<AT version info>**: information about the AT version.
 -  **<SDK version info>**: information about the SDK version.
--  **<compile time>**: the time spent to compile the BIN.
+-  **<compile time>**: the time to compile the BIN.
+-  **<Bin version>**: bin version.
 
 Example
 ^^^^^^^^
@@ -177,8 +181,8 @@ Notes
 
 .. _cmd-ATE:
 
-:ref:`ATE <Basic-AT>`: AT Commands Echoing
-----------------------------------------------
+:ref:`ATE <Basic-AT>`: Configure AT Commands Echoing
+-----------------------------------------------------
 
 Execute Command
 ^^^^^^^^^^^^^^^
@@ -209,7 +213,7 @@ Parameters
 
 .. _cmd-RESTORE:
 
-:ref:`AT+RESTORE <Basic-AT>`: Restore the Factory Default Settings
+:ref:`AT+RESTORE <Basic-AT>`: Restore Factory Default Settings
 -----------------------------------------------------------------------
 
 Execute Command
@@ -230,8 +234,8 @@ Execute Command
 Notes
 ^^^^^
 
--  The execution of this command will reset all parameters saved in flash, and restore the factory default settings of the module.
--  The chip will be restarted when this command is executed.
+-  The execution of this command will restore all parameters saved in flash to factory default settings of the module.
+-  The device will be restarted when this command is executed.
 
 .. _cmd-UARTC:
 
@@ -429,8 +433,13 @@ Parameter
 
    -  0: Disable the sleep mode.
    -  1: Modem-sleep DTIM mode. RF will be periodically closed according to AP DTIM.
-   -  2: Light-sleep mode. CPU will automatically sleep and RF will be periodically closed according to ``listen interval`` set by ``AT+CWJAP``.
-   -  3: Modem-sleep listen interval mode. RF will be periodically closed according to ``listen interval`` set by ``AT+CWJAP``.
+   -  2: Light-sleep mode. CPU will automatically sleep and RF will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>`.
+   -  3: Modem-sleep listen interval mode. RF will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>`.
+
+Note
+^^^^^
+
+-  Light-sleep mode is currently not available for ESP32-S2 series.
 
 Example
 ^^^^^^^^
@@ -439,14 +448,9 @@ Example
 
     AT+SLEEP=0
 
-Note
-^^^^^
-
--  Light-sleep mode is currently not available for ESP32-S2 series.
-
 .. _cmd-SYSRAM:
 
-:ref:`AT+SYSRAM <Basic-AT>`: Check Current Remaining Heap Size and Minimum Heap Size
+:ref:`AT+SYSRAM <Basic-AT>`: Query Current Remaining Heap Size and Minimum Heap Size
 -----------------------------------------------------------------------------------------
 
 Query Command
@@ -482,7 +486,7 @@ Example
 
 .. _cmd-SYSMSG:
 
-:ref:`AT+SYSMSG <Basic-AT>`: Configure System Prompt Information
+:ref:`AT+SYSMSG <Basic-AT>`: Query/Set System Prompt Information
 -----------------------------------------------------------------
 
 Query Command
@@ -529,17 +533,17 @@ Parameter
 
 -  **<state>**:
 
-   - Bit0: Prompt information when quitting transparent transmission.
+   - Bit0: Prompt information when quitting Wi-Fi passthrough mode.
 
-     - 0: Print no prompt information when quitting transparent transmission.
-     - 1: Print ``+QUITT`` when quitting transparent transmission.
+     - 0: Print no prompt information when quitting Wi-Fi passthrough mode.
+     - 1: Print ``+QUITT`` when quitting Wi-Fi passthrough mode.
 
    - Bit1: Connection prompt information type.
 
      - 0: Use simple prompt information, such as ``XX,CONNECT``.
      - 1: Use detailed prompt information, such as ``+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port``.
 
-   - Bit2: Connection status prompt information for Wi-Fi transparent transmission, Bluetooth LE SPP and Bluetooth SPP.
+   - Bit2: Connection status prompt information for Wi-Fi passthrough mode, Bluetooth LE SPP and Bluetooth SPP.
 
      - 0: Print no prompt information.
      - 1: Print one of the following prompt information when Wi-Fi, socket, Bluetooth LE or Bluetooth status is changed:
@@ -564,28 +568,30 @@ Notes
 ^^^^^
 
 -  The configuration changes will be saved in the NVS area if ``AT+SYSSTORE=1``.
--  If you set Bit0 to 1, it will prompt “+QUITT” when you quit transparent transmission.
--  If you set Bit1 to 1, it will impact the information of command ``AT+CIPSTART`` and ``AT+CIPSERVER``. It will supply “+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port” instead of “XX,CONNECT”.
+-  If you set Bit0 to 1, it will prompt “+QUITT” when you quit Wi-Fi passthrough mode.
+-  If you set Bit1 to 1, it will impact the information of command :ref:`AT+CIPSTART <cmd-START>` and :ref:`AT+CIPSERVER <cmd-SERVER>`. It will supply “+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port” instead of “XX,CONNECT”.
 
 Example
 ^^^^^^^^
 
 ::
 
-    // Use new connection info and quit transparent transmission no information
+    // print no promt info when quitting Wi-Fi passthrough mode
+    // print detailed connection prompt info
+    // print no prompt info when the connection status is changed
     AT+SYSMSG=2
 
 .. _cmd-SYSFLASH:
 
-:ref:`AT+SYSFLASH <Basic-AT>`: Set User Partitions in Flash
----------------------------------------------------------------
+:ref:`AT+SYSFLASH <Basic-AT>`: Query/Set User Partitions in Flash
+-------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 
 **Function:**
 
-Check the user partitions in flash. 
+Query user partitions in flash.
 
 **Command:**
 
@@ -718,8 +724,8 @@ Example
 
 .. _cmd-RFPOWER:
 
-:ref:`AT+RFPOWER <Basic-AT>`: Set RF TX Power
--------------------------------------------------
+:ref:`AT+RFPOWER <Basic-AT>`: Query/Set RF TX Power
+----------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -759,40 +765,40 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
-- **<wifi_power>**: the unit is 0.25 dBm. For example, if you set the value to 78, the actual RF max power value is 78 * 0.25 dBm = 19.5 dBm. After you configure it, please confirm the actual value by entering the command ``AT+RFPOWER?``. 
+- **<wifi_power>**: the unit is 0.25 dBm. For example, if you set the value to 78, the actual maximum RF Power value is 78 * 0.25 dBm = 19.5 dBm. After you configure it, please confirm the actual value by entering the command ``AT+RFPOWER?``.
 
-   - For ESP32 and ESP32-S2 devices, the range is [40, 78]:
+  - For ESP32 and ESP32-S2 devices, the range is [40,78]:
 
-   ========= ============ ==========
-   set value actual value actual dBm
-   ========= ============ ==========
-   [34, 43]  34           8.5
-   [44, 51]  44           11
-   [52, 55]  52           13
-   [56, 59]  56           14
-   [60, 65]  60           15
-   [66, 71]  66           16.5
-   [72, 77]  72           18
-   78        78           19.5
-   ========= ============ ==========
+    ========= ============ ==========
+    set value actual value actual dBm
+    ========= ============ ==========
+    [34,43]   34           8.5
+    [44,51]   44           11
+    [52,55]   52           13
+    [56,59]   56           14
+    [60,65]   60           15
+    [66,71]   66           16.5
+    [72,77]   72           18
+    78        78           19.5
+    ========= ============ ==========
 
 
-   - For ESP8266 devices, the range is [40, 82]:
+  - For ESP8266 devices, the range is [40,82]:
 
-   ========= ============ ==========
-   set value actual value actual dBm
-   ========= ============ ==========
-   [33, 48]  33           8
-   [49, 55]  49           12
-   [56, 63]  56           14
-   [64, 67]  64           16
-   [68, 73]  68           17
-   [74, 77]  74           18.5
-   [78, 81]  78           19.5
-   82        82           20.5
-   ========= ============ ==========
+    ========= ============ ==========
+    set value actual value actual dBm
+    ========= ============ ==========
+    [33,48]   33           8
+    [49,55]   49           12
+    [56,63]   56           14
+    [64,67]   64           16
+    [68,73]   68           17
+    [74,77]   74           18.5
+    [78,81]   78           19.5
+    82        82           20.5
+    ========= ============ ==========
 
--  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0, 7].
+-  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,7].
 
    -  0: 7 dBm
    -  1: 4 dBm
@@ -803,13 +809,13 @@ Parameters
    -  6: -11 dBm
    -  7: -14 dBm
 
--  **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. Range: [0, 7]: the parameters are the same as **<ble_adv_power>**.
--  **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. Range: [0, 7]: the same as **<ble_adv_power>**.
+-  **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. Range: [0,7]: the parameters are the same as ``<ble_adv_power>``.
+-  **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. Range: [0,7]: the same as ``<ble_adv_power>``.
 
 Note
 ------
 
-- Since the RF TX power is actually divided into several levels, and each level has its own value range, the ``wifi_power`` value queried by the ``esp_wifi_get_max_tx_power`` may differ from the value set by ``esp_wifi_set_max_tx_power`` and is no larger than the set value.
+- Since the RF TX Power is actually divided into several levels, and each level has its own value range, the ``wifi_power`` value queried by the ``esp_wifi_get_max_tx_power`` may differ from the value set by ``esp_wifi_set_max_tx_power`` and is no larger than the set value.
 
 .. _cmd-SYSROLLBACK:
 
@@ -838,8 +844,8 @@ Note
 
 .. _cmd-SETTIME:
 
-:ref:`AT+SYSTIMESTAMP <Basic-AT>`: Set Local Time Stamp
-------------------------------------------------------------
+:ref:`AT+SYSTIMESTAMP <Basic-AT>`: Query/Set Local Time Stamp
+--------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -973,30 +979,64 @@ Example
 
 The error code is a 32-bit hexadecimal value and defined as follows:
 
-+---------------+---------------+--------------+
-| category      | subcategory   | extension    |
-+===============+===============+==============+
-| bit32~bit24   | bit23~bit16   | bit15~bit0   |
-+---------------+---------------+--------------+
+.. list-table::
+   :header-rows: 1
+
+   * - category
+     - subcategory
+     - extension
+   * - bit32 ~ bit24
+     - bit23 ~ bit16
+     - bit15 ~ bit0
 
 -  **category:** stationary value 0x01.
 -  **subcategory:** error type.
-   
-   ::
 
-       ESP_AT_SUB_OK                     = 0x00,  /*!< OK */
-       ESP_AT_SUB_COMMON_ERROR           = 0x01,  /*!< reserved */
-       ESP_AT_SUB_NO_TERMINATOR          = 0x02,  /*!< terminator character not found ("\r\n" expected) */
-       ESP_AT_SUB_NO_AT                  = 0x03,  /*!< Starting "AT" not found (or at, At or aT entered) */
-       ESP_AT_SUB_PARA_LENGTH_MISMATCH   = 0x04,  /*!< parameter length mismatch */
-       ESP_AT_SUB_PARA_TYPE_MISMATCH     = 0x05,  /*!< parameter type mismatch */
-       ESP_AT_SUB_PARA_NUM_MISMATCH      = 0x06,  /*!< parameter number mismatch */
-       ESP_AT_SUB_PARA_INVALID           = 0x07,  /*!< the parameter is invalid */
-       ESP_AT_SUB_PARA_PARSE_FAIL        = 0x08,  /*!< parse parameter fail */
-       ESP_AT_SUB_UNSUPPORT_CMD          = 0x09,  /*!< the command is not supported */
-       ESP_AT_SUB_CMD_EXEC_FAIL          = 0x0A,  /*!< the command execution failed */
-       ESP_AT_SUB_CMD_PROCESSING         = 0x0B,  /*!< processing of previous command is in progress */
-       ESP_AT_SUB_CMD_OP_ERROR           = 0x0C,  /*!< the command operation type is error */
+   .. list-table:: Subcategory of Error Code  
+      :header-rows: 1
+       
+      * - Error Type
+        - Error Code
+        - Description
+      * - ESP_AT_SUB_OK
+        - 0x00
+        - OK
+      * - ESP_AT_SUB_COMMON_ERROR
+        - 0x01
+        - reserved  
+      * - ESP_AT_SUB_NO_TERMINATOR
+        - 0x02
+        - terminator character not found ("\r\n" expected)
+      * - ESP_AT_SUB_NO_AT
+        - 0x03
+        - Starting AT not found (or at, At or aT entered)
+      * - ESP_AT_SUB_PARA_LENGTH_MISMATCH
+        - 0x04
+        - parameter length mismatch
+      * - ESP_AT_SUB_PARA_TYPE_MISMATCH
+        - 0x05
+        - parameter type mismatch
+      * - ESP_AT_SUB_PARA_NUM_MISMATCH
+        - 0x06
+        - parameter number mismatch
+      * - ESP_AT_SUB_PARA_INVALID
+        - 0x07
+        - the parameter is invalid
+      * - ESP_AT_SUB_PARA_PARSE_FAIL
+        - 0x08
+        - parse parameter fail
+      * - ESP_AT_SUB_UNSUPPORT_CMD
+        - 0x09
+        - the command is not supported
+      * - ESP_AT_SUB_CMD_EXEC_FAIL
+        - 0x0A
+        - the command execution failed 
+      * - ESP_AT_SUB_CMD_PROCESSING
+        - 0x0B
+        - processing of previous command is in progress
+      * - ESP_AT_SUB_CMD_OP_ERROR
+        - 0x0C
+        - the command operation type is error
 
 -  **extension:** error extension information. There are different extensions for different subcategory. For more information, please see the ``components/at/include/esp_at.h``.
 
@@ -1004,7 +1044,7 @@ For example, the error code ``ERR CODE:0x01090000`` means the command is not sup
 
 .. _cmd-WKCFG:
 
-:ref:`AT+SLEEPWKCFG <Basic-AT>`: Configure the Light-sleep Wakeup Source and Awake GPIO.
+:ref:`AT+SLEEPWKCFG <Basic-AT>`: Set the Light-sleep Wakeup Source and Awake GPIO
 -----------------------------------------------------------------------------------------
 
 Set Command
@@ -1055,12 +1095,12 @@ Example
 ::
 
     AT+SLEEPWKCFG=0,1000  // Timer wakeup
-    AT+SLEEPWKCFG=1,1     // Uart1 wakeup, Only Support ESP32
-    AT+SLEEPWKCFG=2,12,0  // GPIO12 wakeup, low level.
+    AT+SLEEPWKCFG=1,1     // UART1 wakeup, only Support ESP32
+    AT+SLEEPWKCFG=2,12,0  // GPIO12 wakeup, low level
 
 .. _cmd-SYSSTORE:
 
-:ref:`AT+SYSSTORE <Basic-AT>`: Configure Parameter Store Mode
+:ref:`AT+SYSSTORE <Basic-AT>`: Query/Set Parameter Store Mode
 --------------------------------------------------------------
 
 Query Command
@@ -1107,42 +1147,39 @@ Parameter
    -  0: command configuration is not stored into flash.
    -  1: command configuration is stored into flash. (Default)
 
-Affected Commands
-^^^^^^^^^^^^^^^^^^
-::
-
-   AT+SYSMSG  
-   AT+CWMODE  
-   AT+CWJAP  
-   AT+CWSAP
-   AT+CIPAP  
-   AT+CIPSTA  
-   AT+CIPAPMAC  
-   AT+CIPSTAMAC  
-   AT+CIPDNS
-   AT+CIPSSLCCONF
-   AT+CIPRECONNINTV
-   AT+CWDHCPS  
-   AT+CWDHCP  
-   AT+CWSTAPROTO  
-   AT+CWAPPROTO  
-   AT+CWJEAP
-   AT+CIPETH  
-   AT+CIPETHMAC  
-   AT+BLENAME  
-   AT+BTNAME
-   AT+BLEADVPARAM
-   AT+BLEADVDATA
-   AT+BLEADVDATAEX
-   AT+BLESCANRSPDATA
-   AT+BLESCANPARAM
-   AT+BTSCANMODE
-   AT+BLECONNPARAM
-
 Note
 ^^^^^
 
-This command affects set commands only. Query commands are always fetched from RAM.
+- This command affects set commands only. Query commands are always fetched from RAM.
+- Affected commands:
+
+  - :ref:`AT+SYSMSG <cmd-SYSMSG>` 
+  - :ref:`AT+CWMODE <cmd-MODE>`
+  - :ref:`AT+CWJAP <cmd-JAP>`
+  - :ref:`AT+CWSAP <cmd-SAP>`
+  - :ref:`AT+CIPAP <cmd-IPAP>`
+  - :ref:`AT+CIPSTA <cmd-IPSTA>`
+  - :ref:`AT+CIPAPMAC <cmd-APMAC>`  
+  - :ref:`AT+CIPSTAMAC <cmd-STAMAC>`
+  - :ref:`AT+CIPDNS <cmd-DNS>`
+  - :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`
+  - :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`
+  - :ref:`AT+CWDHCPS <cmd-DHCPS>`
+  - :ref:`AT+CWDHCP <cmd-DHCP>`
+  - :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`
+  - :ref:`AT+CWAPPROTO <cmd-APPROTO>`
+  - :ref:`AT+CWJEAP <cmd-JEAP>`
+  - :ref:`AT+CIPETH <cmd-ETHIP>`
+  - :ref:`AT+CIPETHMAC <cmd-ETHMAC>`
+  - :ref:`AT+BLENAME <cmd-BNAME>`
+  - :ref:`AT+BTNAME <cmd-BTNAME>`
+  - :ref:`AT+BLEADVPARAM <cmd-BADVP>`
+  - :ref:`AT+BLEADVDATA <cmd-BADVD>`
+  - :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`
+  - :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`
+  - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`
+  - :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`
+  - :ref:`AT+BLECONNPARAM <cmd-BCONNP>`
 
 Examples
 ^^^^^^^^
@@ -1159,8 +1196,8 @@ Examples
 
 .. _cmd-SYSREG:
 
-:ref:`AT+SYSREG <Basic-AT>`: Read/Write the Register Interface
-------------------------------------------------------------------
+:ref:`AT+SYSREG <Basic-AT>`: Read/Write the Register
+--------------------------------------------------------
 
 Set Command
 ^^^^^^^^^^^
@@ -1175,37 +1212,37 @@ Set Command
 
 ::
 
-    +SYSREG:<read value>  (Only in read mode)
+    +SYSREG:<read value>    // Only in read mode
     OK
 
 Parameters
 ^^^^^^^^^^
 
--  **<direct>** : read or write register.
+-  **<direct>**: read or write register.
 
    -  0: read register.
    -  1: write register.
 
--  **<address>** : (uint32) register address. You can refer to Technical Reference Manuals.
--  **<write value>** : (uint32) write value (only in write mode).
+-  **<address>**: (uint32) register address. You can refer to Technical Reference Manuals.
+-  **<write value>**: (uint32) write value (only in write mode).
 
 Note
 ^^^^^
 
-AT does not check address. Make sure that the registers you are operating on are valid.
+- AT does not check address. Make sure that the registers you are operating on are valid.
 
 Example
 ^^^^^^^^
 
 ::
 
-    AT+SYSREG=1,0x3f40402c,0x2      // Enable ESP32S2 IO33 output, 0x3f40402c means base address 0x3F404000 add relative address 0x2c(GPIO_ENABLE1_REG)
-    AT+SYSREG=1,0x3f404010,0x2      // ESP32S2 IO33 output high
-    AT+SYSREG=1,0x3f404010,0x0      // ESP32S2 IO33 output low
+    AT+SYSREG=1,0x3F40402C,0x2      // Enable ESP32-S2 IO33 output, 0x3F40402C means base address 0x3F404000 add relative address 0x2C (GPIO_ENABLE1_REG)
+    AT+SYSREG=1,0x3F404010,0x2      // ESP32-S2 IO33 output high
+    AT+SYSREG=1,0x3F404010,0x0      // ESP32-S2 IO33 output low
 
 .. _cmd-SYSTEMP:
 
-[ESP32S2 Only] :ref:`AT+SYSTEMP <Basic-AT>`: Read ESP3-S2 Internal Temperature
+[ESP32-S2 Only] :ref:`AT+SYSTEMP <Basic-AT>`: Read ESP32-S2 Internal Temperature
 ------------------------------------------------------------------------------------------
 
 Query Command
