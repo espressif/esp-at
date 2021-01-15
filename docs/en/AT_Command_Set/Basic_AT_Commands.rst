@@ -171,17 +171,17 @@ Set Command
 Parameter
 ^^^^^^^^^^
 
--  **<time>**: the duration when the device stays in deep sleep. Unit: millisecond. When the time is up, the device automatically wakes up, calls deep sleep wake stub, and then proceeds to load the application.
+-  **<time>**: the duration when the device stays in Deep-sleep. Unit: millisecond. When the time is up, the device automatically wakes up, calls Deep-sleep wake stub, and then proceeds to load the application.
 
-   - For ESP32 and ESP32-S2 devices, the maximum deep sleep time is about 28.8 days (2**31-1 milliseconds).
-   - For ESP8266 devices, the maximum deep sleep time is about 3 hours (due to hardware limitation, more time will lead to setting failure or internal time overflow).
+   - For ESP32 and ESP32-S2 devices, the maximum Deep-sleep time is about 28.8 days (2 :sup:`31`-1 milliseconds).
+   - For ESP8266 devices, the maximum Deep-sleep time is about 3 hours (due to hardware limitation, more time will lead to setting failure or internal time overflow).
 
 Notes
 ^^^^^^
 
 - For ESP8266 devices, you must connect GPIO16 to RST pin to wake them up automatically when time is up.
-- For all devices, affected by external factors, the theoretical and actual time of deep sleep will be different.
-- ESP8266 devices can be waken up from deep sleep by directly triggering the RST pin low-level pulse.
+- For all devices, affected by external factors, the theoretical and actual time of Deep-sleep will be different.
+- ESP8266 devices can be waken up from Deep-sleep by directly triggering the RST pin low-level pulse.
 
 .. _cmd-ATE:
 
@@ -655,7 +655,7 @@ Notes
 -  The introduction to partitions is in `ESP-IDF Partition Tables <http://esp-idf.readthedocs.io/en/latest/api-guides/partition-tables.html>`_.
 -  If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
 -  If the operator is ``write``, please make sure that you have already erased this partition.
--  If the operator is ``write`` on a PKI bin (see as `Introduction <https://github.com/espressif/esp-at/blob/master/tools/README.md#2-pki-bin>`_), the ``<length>`` should be 4 bytes aligned.
+-  If the operator is ``write`` on a `PKI bin <https://github.com/espressif/esp-at/blob/master/tools/README.md#2-pki-bin>`_, the ``<length>`` should be 4 bytes aligned.
 
 Example
 ^^^^^^^^
