@@ -122,7 +122,7 @@ Query the AP to which the ESP Station is already connected.
 
 ::
 
-    +CWJAP:<ssid>,<bssid>,<channel>,<rssi>,<pci_en>,<reconn_interval>,<listen_interval>,<scan_mode>
+    +CWJAP:<ssid>,<bssid>,<channel>,<rssi>,<pci_en>,<reconn_interval>,<listen_interval>,<scan_mode>,<pmf>
     OK
 
 Set Command
@@ -136,7 +136,7 @@ Connect an ESP station to a targeted AP.
 
 ::
 
-    AT+CWJAP=[<ssid>],[<pwd>][,<bssid>][,<pci_en>][,<reconn_interval>][,<listen_interval>][,<scan_mode>][,<jap_timeout>]
+    AT+CWJAP=[<ssid>],[<pwd>][,<bssid>][,<pci_en>][,<reconn_interval>][,<listen_interval>][,<scan_mode>][,<jap_timeout>][,<pmf>]
 
 **Response:**
 
@@ -193,18 +193,24 @@ Parameters
    - 0: The ESP station will connect APs with all encryption methods, including OPEN and WEP.
    - 1: The ESP station will connect APs with all encryption methods, except OPEN and WEP.
 
--  **[<reconn_interval>]**: the interval between Wi-Fi reconnections. Unit: second. Default: 0. Maximum: 7200.
+-  **[<reconn_interval>]**: the interval between Wi-Fi reconnections. Unit: second. Default: 1. Maximum: 7200.
 
    -  0: The ESP station will not reconnect to the AP when disconnected.
    -  [1,7200]: The ESP station will reconnect to the AP at the specified interval when disconnected.
 
--  **[<listen_interval>]**: the interval of listening to the AP's beacon. Unit: second. Default: 3. Range: [1, 100].
+-  **[<listen_interval>]**: the interval of listening to the AP's beacon. Unit: AP beacon intervals. Default: 3. Range: [1, 100].
 -  **[<scan_mode>]**:
 
    -  0: fast scan. It will end after finding the targeted AP. The ESP station will connect to the first scanned AP.
    -  1: all-channel scan. It will end after all the channels are scanned. The device will connect to the scanned AP with the strongest signal.
 
 -  **[<jap_timeout>]**: maximum timeout for AT+CWJAP command. Unit: second. Default: 15. Range: [3, 600].
+- **\<pmf>**: protected management frame, default: 0x0.
+
+    - 0 means disable PMF.
+    - bit 0: PMF capable, advertizes support for protected management frame. Device will prefer to connect in PMF mode if other device also advertizes PMF capability.
+    - bit 1: PMF required, advertizes that protected management frame is required. Device will not associate to non-PMF capable devices.
+
 -  **<error code>**: (for reference only)
 
    -  1: connection timeout.
@@ -235,6 +241,9 @@ Example
 
     // If multiple APs all have the SSID of "abc", the target AP can be found by BSSID:
     AT+CWJAP="abc","0123456789","ca:d7:19:d8:a6:44" 
+
+    // If esp-at is required that connect to a AP by protected management frame, the command should be:
+    AT+CWJAP="abc","0123456789",,,,,,,3
 
 .. _cmd-RECONNCFG:
 
@@ -308,7 +317,7 @@ Notes
 ^^^^^
 
 -  The parameter ``<interval_second>`` of this command is the same as the parameter ``[<reconn_interval>]`` of the command :ref:`AT+CWJAP <cmd-JAP>`.
--  This command only works for passive disconnection from APs.
+-  This command works for passive disconnection from APs, Wi-Fi mode switch, and Wi-Fi auto connect after power on.
 
 .. _cmd-LAPOPT:
 
@@ -432,7 +441,9 @@ Parameters
    -  2: WPA_PSK
    -  3: WPA2_PSK
    -  4: WPA_WPA2_PSK
-   -  5: WPA2_Enterprise
+   -  5: WPA2_ENTERPRISE
+   -  6: WPA3_PSK
+   -  7: WPA2_WPA3_PSK
 
 -  **<ssid>**: string parameter showing SSID of the AP.
 -  **<rssi>**: signal strength.

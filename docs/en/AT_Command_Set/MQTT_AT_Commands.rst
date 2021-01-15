@@ -215,7 +215,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<LinkID>**: only supports link ID 0 currently.
--  **<keepalive>**: timeout of MQTT ping. Unit: second. Range [0, 7200]. The default value is O, which will be force-changed to 120 s.
+-  **<keepalive>**: timeout of MQTT ping. Unit: second. Range [0, 7200]. The default value is 0, which will be force-changed to 120 s.
 -  **<disable_clean_session>**: set MQTT clean session. For more details about this parameter, please refer to the section `Clean Session <http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.pdf>`_ in *MQTT Version 3.1.1*.
 
    -  0: enable clean session.
@@ -632,7 +632,7 @@ The MQTT Error code will be prompted as ``ERR CODE:0x<%08x>``.
     AT_MQTT_CREATE_EVENT_GROUP_FAILED,                  // 0x604F
     AT_MQTT_URI_PARSE_FAILED,                           // 0x6050
     AT_MQTT_IN_DISCONNECTED_STATE,                      // 0x6051
-
+    AT_MQTT_HOSTNAME_VERIFY_FAILED,                     // 0x6052
 
 .. _MQTTNote:
 

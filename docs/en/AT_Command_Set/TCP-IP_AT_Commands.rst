@@ -431,7 +431,8 @@ Parameters
 Notes
 ^^^^^^
 
--  When the requirement of data length is met, or when the string ``\0`` appears, the transmission of data starts. Go back to the normal command mode and wait for the next AT command.
+-  When the requirement of data length is met, or when the string ``\0`` (0x5c, 0x30 in ASCII) appears, the transmission of data starts. Go back to the normal command mode and wait for the next AT command.
+-  If the data contains the ``\<any>``, it means that drop backslash symbol and only use ``<any>`` character.
 -  When sending ``\0``, please use a backslash to escape it as ``\\0``.
 
 .. _cmd-CLOSE:
