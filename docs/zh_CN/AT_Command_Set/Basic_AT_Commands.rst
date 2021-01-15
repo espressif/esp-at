@@ -173,10 +173,14 @@
 
 -  **<time>**：设备进入 Deep-sleep 的时长，单位：毫秒。设定时间到后，设备自动唤醒，调用深度睡眠唤醒桩，然后加载应用程序。
 
+   - ESP32 和 ESP32-S2 设备：最大 Deep-sleep 时长约为 28.8 天（2 :sup:`31`-1 毫秒）。
+   - ESP8266 设备：最大 Deep-sleep 时长约为 3 小时，由于硬件条件限制，更长的睡眠时间会造成设置失败或内部时间溢出。
+
 说明
 ^^^^
 
 - ESP8266 设备必须将 GPIO16 连接到 RST 管脚才能在睡眠时长结束后自行唤醒。
+- 由于外部因素的影响，所有设备进入 Deep-sleep 的实际时长与理论时长之间会存在差异。
 - 也可通过直接触发 ESP8266 的 RST 管脚的低电平脉冲将其从 Deep-sleep 中唤醒。
 
 .. _cmd-ATE:
@@ -650,6 +654,8 @@
 -  擦除分区时，设置指令可省略 ``<offset>`` 和 ``<length>`` 参数，用于完整擦除该目标分区。例如，指令 ``AT+SYSFLASH=0,"ble_data"`` 可擦除整个 “ble_data” 区域。如果擦除分区时不省略 ``<offset>`` 和 ``<length>`` 参数，则这两个参数值要求是 4 KB 的整数倍。
 -  关于分区的定义可参考 `ESP-IDF 分区表 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/partition-tables.html>`_。
 -  当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时您可以输入要写的数据，数据长度应与 ``<length>`` 一致。
+-  写分区前，请先擦除该分区。
+-  写 `PKI bin <https://github.com/espressif/esp-at/blob/master/tools/README.md#2-pki-bin>`_ 时，参数 ``<length>`` 应为 4 字节的整数倍。
 
 示例
 ^^^^

@@ -5,7 +5,7 @@ ESP-AT 不同版本命令集支持对比
 本文档主要列举了旧版 NONOS-AT 向新版 ESP-AT 迁移时，需要注意的差异。
 
 - `NONOS-AT`：不推荐使用的 ESP8266 AT 版本，早期用于 ESP8266 系列芯片，基于 ESP8266_NONOS_SDK 开发，已停止更新。
-- `ESP-AT`：推荐使用的版本，支持多个芯片平台，具体请参阅:doc:`../Get_Started/What_is_ESP-AT`和:doc:`../AT_Binary_Lists/index`。
+- `ESP-AT`：推荐使用的版本，支持多个芯片平台，具体请参阅 :doc:`../Get_Started/What_is_ESP-AT` 和 :doc:`../AT_Binary_Lists/index`。
 
 .. list-table:: ESP-AT 不同版本命令集支持对比表
    :header-rows: 1
