@@ -38,24 +38,23 @@ def gitee_repo_preprocess():
 def gitee_repo_postprocess():
     print('IDF is Cloned from https://gitee.com/EspressifSystems')
 
-    ret = subprocess.call('cd esp-idf; git submodule init', shell=True)
+    ret = subprocess.call('cd esp-idf && git submodule init', shell = True)
     if ret:
         raise Exception("git submodule init failed")
-    submodule_lists = subprocess.check_output(['git', 'config', '-f', 'esp-idf/.gitmodules', '--list']).decode(
-        encoding="utf-8")
+    submodule_lists = \
+        subprocess.check_output(['git', 'config', '-f', os.path.join('esp-idf', '.gitmodules'), '--list']).decode(encoding="utf-8")
 
     for line in submodule_lists.split():
         if line.find('.url=') > 0:
             submodule = line.split('=')
             submodule_name = os.path.basename(submodule[1])
             print('Redirect {} to {}'.format(submodule[0],
-                                             os.path.join('https://gitee.com/esp-submodules', submodule_name)))
-            subprocess.call('cd esp-idf; git config {} {}'.format(submodule[0],
-                                                                  os.path.join('https://gitee.com/esp-submodules',
-                                                                               submodule_name)), shell=True)
+                                '/'.join(['https://gitee.com/esp-submodules', submodule_name])))
+            subprocess.call('cd esp-idf && git config {} {}'.format(submodule[0],
+                                '/'.join(['https://gitee.com/esp-submodules',submodule_name])), shell = True)
 
     print('Update submodule...')
-    ret = subprocess.call('cd esp-idf; git submodule update', shell=True)
+    ret = subprocess.call('cd esp-idf && git submodule update', shell = True)
     if ret:
         raise Exception("git submodule update failed")
 
@@ -66,10 +65,10 @@ preprocess_url = {
 
 
 def auto_update_idf(platform_name, module_name):
-    config_dir = os.path.join(os.getcwd(), 'module_config/module_{}'.format(module_name.lower()))
+    config_dir = os.path.join(os.getcwd(), 'module_config', 'module_{}'.format(module_name.lower()))
 
     if not os.path.exists(config_dir):
-        config_dir = os.path.join(os.getcwd(), 'module_config/module_{}_default'.format(platform_name.lower()))
+        config_dir = os.path.join(os.getcwd(), 'module_config',  'module_{}_default'.format(platform_name.lower()))
 
     idf_branch = ''
     idf_commit = ''
@@ -84,7 +83,6 @@ def auto_update_idf(platform_name, module_name):
                     sys.exit('ERROR: idf branch is defined')
 
                 idf_branch = line[index + len('branch:'):]
-                # print('idf branch: {}'.format(idf_branch))
                 continue
 
             index = line.find('commit:')
@@ -93,7 +91,6 @@ def auto_update_idf(platform_name, module_name):
                     sys.exit('ERROR: idf commit is defined')
 
                 idf_commit = line[index + len('commit:'):]
-                # print('idf commit: {}'.format(idf_commit))
                 continue
 
             index = line.find('repository:')
@@ -102,7 +99,6 @@ def auto_update_idf(platform_name, module_name):
                     sys.exit('ERROR: idf repository is defined')
 
                 idf_url = line[index + len('repository:'):]
-                # print('idf repository: {}'.format(idf_url))
                 continue
 
     if len(idf_branch) <= 0:
@@ -121,28 +117,28 @@ def auto_update_idf(platform_name, module_name):
         # check repo
         if project_url in preprocess_url:
             new_url = preprocess_url[project_url]['proprocess']()
-            idf_url = os.path.join(new_url, os.path.basename(idf_url))
+            idf_url = '/'.join([new_url, os.path.basename(idf_url)])
 
         print('Please wait for the SDK download to finish...')
-        ret = subprocess.call('git clone -b {} {} esp-idf'.format(idf_branch, idf_url), shell=True)
+        ret = subprocess.call('git clone -b {} {} esp-idf'.format(idf_branch, idf_url), shell = True)
         if ret:
             raise Exception("git clone failed")
 
         if project_url in preprocess_url:
             new_url = preprocess_url[project_url]['postprocess']()
 
-    rev_parse_head = subprocess.check_output(['cd esp-idf; git rev-parse HEAD'], shell = True).decode(encoding="utf-8").strip()
+    rev_parse_head = subprocess.check_output('cd esp-idf && git rev-parse HEAD', shell = True).decode(encoding="utf-8").strip()
     if rev_parse_head != idf_commit:
         print('old commit:{}'.format(rev_parse_head))
         print('checkout commit:{}'.format(idf_commit))
         print('Please wait for the update to complete, which will take some time')
-        ret = subprocess.call('cd esp-idf; git pull', shell = True)
+        ret = subprocess.call('cd esp-idf && git pull', shell = True)
         if ret:
             raise Exception("git pull failed")
-        ret = subprocess.call('cd esp-idf; git checkout {}'.format(idf_commit), shell = True)
+        ret = subprocess.call('cd esp-idf && git checkout {}'.format(idf_commit), shell = True)
         if ret:
             raise Exception("git checkout failed")
-        ret = subprocess.call('cd esp-idf; git submodule update --init --recursive', shell = True)
+        ret = subprocess.call('cd esp-idf && git submodule update --init --recursive', shell = True)
         if ret:
             raise Exception("git submodule update failed")
         print('Update completed')
@@ -157,16 +153,30 @@ def build_project(platform_name, module_name, silence, build_args):
         idf_target = 'esp8266'
     else:
         sys.exit('Platform "{}" is not supported'.format(platform_name))
-    cmd = 'export ESP_AT_PROJECT_PLATFORM=PLATFORM_{}; \
-        export ESP_AT_MODULE_NAME={}; \
-        export ESP_AT_PROJECT_PATH={}; \
-        export SILENCE={}; \
-        ./esp-idf/tools/idf.py -DIDF_TARGET={} {}'.format(platform_name, module_name, os.getcwd(), silence, idf_target, build_args)
+
+    os.environ['srctree'] = os.getcwd()
+    tool = os.path.join('esp-idf', 'tools', 'idf.py')
+    if sys.platform == 'win32':
+        sys_cmd = 'set'
+    else:
+        sys_cmd = 'export'
+        
+    cmd = '{0} ESP_AT_PROJECT_PLATFORM=PLATFORM_{1} && \
+        {0} ESP_AT_MODULE_NAME={2} && \
+        {0} ESP_AT_PORJECT_PATH={3} && \
+        {0} SILENCE={4} && \
+        {5} {6} -DIDF_TARGET={7} {8}'.format(sys_cmd, platform_name, module_name, os.getcwd(), silence, sys.executable, tool, idf_target, build_args)
+
     ret = subprocess.call(cmd, shell = True)
-    print("idf.py build ret: %d" %ret)
+    print('idf.py build ret: {}'.format(ret))
     if ret:
         raise Exception("idf.py build failed")
-    subprocess.call('cat build/flash_project_args | tr "\n" " " > build/download.config', shell = True)
+    # subprocess.call('cat build/flash_project_args | sed ":label;N;s/\n/ /;b label" > build/download.config', shell = True)
+    
+    with open(os.path.join('build', 'flash_project_args'), 'r') as rd_f:
+        with open(os.path.join('build', 'download.config'), 'w') as wr_f:
+            data = rd_f.read().splitlines()
+            wr_f.write(' '.join(data))
 
 def get_param_data_info(source_file, sheet_name):
     filename, filetype = os.path.splitext(source_file)
@@ -196,7 +206,7 @@ def get_param_data_info(source_file, sheet_name):
 def get_platform_and_module_lists():
     platform_lists = {}
     data_lists = get_param_data_info(
-        os.path.join('components/customized_partitions/raw_data/factory_param', 'factory_param_data.csv'), 'Param_Data')
+        os.path.join('components', 'customized_partitions', 'raw_data', 'factory_param', 'factory_param_data.csv'), 'Param_Data')
 
     headers = data_lists[0]
 
@@ -298,7 +308,6 @@ def choose_project_config():
             print('{}. {} (description: {})'.format(i + 1, module['module_name'], module['description']))
         else:
             print('{}. {}'.format(i + 1, module['module_name']))
-    #print('info_lists[platform_name]: {}'.format(info_lists[platform_name]))
     try:
         module_index = raw_input('choose(range[1,{}]):'.format(i + 1))
     except NameError:
@@ -307,7 +316,6 @@ def choose_project_config():
     if (not module_index.isdigit()) or (int(module_index) - 1 > i):
         sys.exit('Invalid index')
 
-    # module_name = info_lists[platform_name][int(module_index) - 1]
     module_name = info_lists[platform_name][int(module_index) - 1]['module_name']
     module = info_lists[platform_name][int(module_index) - 1]
     info['module'] = module_name

@@ -1,7 +1,7 @@
 #CFLAGS		?= -std=gnu99 -Os -Wall
 #CXXFLAGS	?= -std=gnu++11 -Os -Wall
 # BUILD_DIR_BASE ?= $(ESP_AT_PROJECT_PATH)/build
-IDF_INCLUDES = -I $(BUILD_DIR_BASE)/include
+IDF_INCLUDES = -I $(BUILD_DIR_BASE)/config
 
 BIN_DIR = $(BUILD_DIR_BASE)/mkfatfs
 

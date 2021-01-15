@@ -11,6 +11,7 @@ string(TOLOWER $ENV{ESP_AT_MODULE_NAME} LOWER_NAME)
 set(ESP_AT_MODULE_CONFIG_DIR ${CMAKE_SOURCE_DIR}/module_config/module_${LOWER_NAME})
 if (NOT EXISTS "${ESP_AT_MODULE_CONFIG_DIR}")
 string(SUBSTRING "$ENV{ESP_AT_PROJECT_PLATFORM}" 9 31 PLATFORM_NAME) # remove PLATFORM_
+string(STRIP ${PLATFORM_NAME} PLATFORM_NAME)
 string(TOLOWER ${PLATFORM_NAME} LOWER_NAME)
 
 set(ESP_AT_MODULE_CONFIG_DIR ${CMAKE_SOURCE_DIR}/module_config/module_${LOWER_NAME}_default )
@@ -56,9 +57,10 @@ else()
     add_custom_target(factory_bin)
 endif()
 
+file(MAKE_DIRECTORY $ENV{ESP_AT_PROJECT_PATH}/build/factory)
+
 add_custom_command(TARGET factory_bin
   POST_BUILD
-  COMMAND mkdir -p $ENV{ESP_AT_PROJECT_PATH}/build/factory
   COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/tools/esp_at_factory_bin_combine.py
 		--module_name $ENV{ESP_AT_MODULE_NAME}
  		--bin_directory $ENV{ESP_AT_PROJECT_PATH}/build

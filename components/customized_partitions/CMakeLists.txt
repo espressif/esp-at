@@ -38,8 +38,7 @@ foreach(partition_args ${customized_partition_args})
     string(REPLACE " " ";" args_lists ${args_value})
     list(GET args_lists 0 offset)
     list(GET args_lists 1 file_path)
-    
-    STRING(REGEX REPLACE ".*/(.*)\.bin" "\\1" file_name ${file_path})
+    STRING(REGEX REPLACE ".*[/\\](.*)\.bin" "\\1" file_name ${file_path})
 
     if(CONFIG_IDF_TARGET_ESP32S2)
         esptool_py_custom_target(${file_name} ${file_name} "${file_name}")
@@ -49,12 +48,14 @@ foreach(partition_args ${customized_partition_args})
     endif()
 endforeach(partition_args)
 
+file(MAKE_DIRECTORY ${build_dir}/include)
+file(COPY ${build_dir}/config/sdkconfig.h DESTINATION  ${build_dir}/include/sdkconfig.h)
+
 add_custom_target(customized_bin ALL DEPENDS app)
 add_custom_command(TARGET customized_bin
   POST_BUILD
-  COMMAND mkdir -p ${build_dir}/include
-  COMMAND cp ${build_dir}/config/sdkconfig.h ${build_dir}/include/sdkconfig.h
   COMMAND ${PYTHON} ${COMPONENT_DIR}/raw_data/at_customized_partition_gen.py
+            --project_dir $ENV{ESP_AT_PORJECT_PATH}
             --tools_dir ${COMPONENT_DIR}/generation_tools
             --output_dir ${build_dir}/${COMPONENT_NAME}
             --flash_args_file ${flash_customized_partition_args}
