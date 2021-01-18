@@ -29,14 +29,29 @@ import subprocess
 def main():
     """ main """
     parser = argparse.ArgumentParser()
+    parser.add_argument("--project_dir", default=".", help="project path")
     parser.add_argument("--tools_dir", default=".", help="the tools directory")
     parser.add_argument("--output_dir", default="output", help="the output bin directory")
     parser.add_argument("--flash_args_file", default="flash_args_file", help="the file to store flash args")
     args = parser.parse_args()
 
-    tools_dir = args.tools_dir
-    output_dir = args.output_dir
-    flash_args_file = args.flash_args_file
+    project_dir = args.project_dir.strip()
+    tools_dir = args.tools_dir.strip()
+    output_dir = args.output_dir.strip()
+    flash_args_file = args.flash_args_file.strip()
+
+    # print('tools_dir={}'.format(tools_dir))
+    # print('output_dir={}'.format(output_dir))
+    # print('flash_args_file={}'.format(flash_args_file))
+
+    # if sys.platform.startswith('win32'):
+    #     tools_dir = tools_dir.replace(r'\/'.replace(os.sep, ''), os.sep)
+    #     output_dir = output_dir.replace(r'\/'.replace(os.sep, ''), os.sep)
+    #     flash_args_file = flash_args_file.replace(r'\/'.replace(os.sep, ''), os.sep)
+
+    # print('tools_dir1={}'.format(tools_dir))
+    # print('output_dir1={}'.format(output_dir))
+    # print('flash_args1_file={}'.format(flash_args_file))
 
     if os.path.exists(output_dir) == False:
         os.mkdir(output_dir)
@@ -44,15 +59,20 @@ def main():
     with open(flash_args_file, 'r') as args_file:
         for line in args_file.readlines():
             line_str = line.strip()
-            str_list = line_str.split(' ')
-            full_filename = str_list[1]
-            file_size = str_list[2]
-            file_name = os.path.basename(full_filename)
-            partition_name = os.path.splitext(file_name)[0]
-            tool_name = os.path.join(tools_dir, ''.join([partition_name, '.sh']))
-            if not os.access(tool_name, os.X_OK):
-                os.chmod(tool_name, stat.S_IRUSR | stat.S_IXUSR)
-            subprocess.call([tool_name, partition_name, output_dir, file_size], shell = False)
+            if line_str != '':
+                str_list = line_str.split(' ')
+                full_filename = str_list[1]
+                file_size = str_list[2]
+                file_name = os.path.basename(full_filename)
+                partition_name = os.path.splitext(file_name)[0]
+                tool_name = os.path.join(tools_dir, ''.join([partition_name, '.py']))
+                if not os.access(tool_name, os.X_OK):
+                    os.chmod(tool_name, stat.S_IRUSR | stat.S_IXUSR)
+
+                # if sys.platform.startswith('win32'):
+                #     tool_name = tool_name.replace(r'\/'.replace(os.sep, ''), os.sep)
+                ret = subprocess.call([sys.executable, tool_name, '--partition_name', partition_name, '--partition_size', file_size, '--outdir', output_dir, '--project_path', project_dir], shell = False)
+
 
 if __name__ == '__main__':
     main()
