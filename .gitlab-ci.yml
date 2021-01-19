@@ -915,8 +915,14 @@ build_docs:
     - git submodule update --init
     - cd -
 
+    # - export IDF_PATH=$(pwd)/esp-idf
+    # - make defconfig
+    - mkdir -p build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure || echo "skip exception"
     - export IDF_PATH=$(pwd)/esp-idf
-    - make defconfig
+    - export ESP_AT_PORJECT_PATH=$(pwd)
+
     # - ln -s $(IDF_PATH)/tools tools
     - cd docs
     - ./check_lang_folder_sync.sh
