@@ -32,5 +32,6 @@ This is the documentation for the ESP-AT.
    AT 命令集 <AT_Command_Set/index>
    AT 命令示例 <AT_Command_Examples/index>
    编译和开发 <Compile_and_Develop/index>
+   定制化 AT 命令和固件 <Customized_AT_Commands_and_Firmware/index>
    
 * :ref:`genindex`
