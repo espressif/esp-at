@@ -55,7 +55,7 @@ add_custom_target(customized_bin ALL DEPENDS app)
 add_custom_command(TARGET customized_bin
   POST_BUILD
   COMMAND ${PYTHON} ${COMPONENT_DIR}/raw_data/at_customized_partition_gen.py
-            --project_dir $ENV{ESP_AT_PORJECT_PATH}
+            --project_dir ${project_dir}
             --tools_dir ${COMPONENT_DIR}/generation_tools
             --output_dir ${build_dir}/${COMPONENT_NAME}
             --flash_args_file ${flash_customized_partition_args}

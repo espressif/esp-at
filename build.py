@@ -154,17 +154,17 @@ def build_project(platform_name, module_name, silence, build_args):
     else:
         sys.exit('Platform "{}" is not supported'.format(platform_name))
 
-    os.environ['srctree'] = os.getcwd()
+    # os.environ['srctree'] = os.getcwd()
     tool = os.path.join('esp-idf', 'tools', 'idf.py')
     if sys.platform == 'win32':
         sys_cmd = 'set'
     else:
         sys_cmd = 'export'
-        
-    cmd = '{0} ESP_AT_PROJECT_PLATFORM=PLATFORM_{1} && \
-        {0} ESP_AT_MODULE_NAME={2} && \
-        {0} ESP_AT_PORJECT_PATH={3} && \
-        {0} SILENCE={4} && \
+    
+    cmd = '{0} ESP_AT_PROJECT_PLATFORM=PLATFORM_{1}&& \
+        {0} ESP_AT_MODULE_NAME={2}&& \
+        {0} ESP_AT_PORJECT_PATH={3}&& \
+        {0} SILENCE={4}&& \
         {5} {6} -DIDF_TARGET={7} {8}'.format(sys_cmd, platform_name, module_name, os.getcwd(), silence, sys.executable, tool, idf_target, build_args)
 
     ret = subprocess.call(cmd, shell = True)
