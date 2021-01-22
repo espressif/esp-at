@@ -19,7 +19,6 @@ endchoice
 config AT_PROCESS_TASK_STACK_SIZE
     int "The stack size of the AT process task in AT library, which will be used to process AT command"
     default 2048
-    range 1024 8196
     depends on AT_ENABLE
 
 config AT_SOCKET_TASK_STACK_SIZE
@@ -124,6 +123,9 @@ config AT_HTTP_COMMAND_SUPPORT
     bool "AT http command support."
     default "n"
     depends on AT_ENABLE
+    help
+        Please enlarge AT_PROCESS_TASK_STACK_SIZE to be more than 4096 if HTTPS link need to establish,
+        otherwise, unexpected crash probably occur due to AT process task overflow.
 
 if IDF_TARGET_ESP32    
 config AT_BLE_COMMAND_SUPPORT
