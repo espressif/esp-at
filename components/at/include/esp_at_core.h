@@ -358,6 +358,11 @@ int32_t esp_at_port_get_data_length(void);
  */
 bool esp_at_base_cmd_regist(void);
 /**
+ * @brief regist at user command set. If not,you can not use AT user command
+ *
+ */
+bool esp_at_user_cmd_regist(void);
+/**
  * @brief regist at wifi command set. If not,you can not use AT wifi command
  *
  */

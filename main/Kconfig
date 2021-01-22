@@ -46,6 +46,11 @@ config AT_BASE_COMMAND_SUPPORT
     default "y"
     depends on AT_ENABLE
 
+config AT_USER_COMMAND_SUPPORT
+    bool "AT user command support."
+    default "y"
+    depends on AT_ENABLE
+
 config AT_WIFI_COMMAND_SUPPORT
     bool "AT wifi command support."
     default "y"
