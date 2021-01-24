@@ -94,6 +94,12 @@ void app_main()
     }
 #endif
 
+#ifdef CONFIG_AT_USER_COMMAND_SUPPORT
+    if (esp_at_user_cmd_regist() == false) {
+        printf("regist user cmd fail\r\n");
+    }
+#endif
+
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
     if(esp_at_wifi_cmd_regist() == false) {
         printf("regist wifi cmd fail\r\n");
