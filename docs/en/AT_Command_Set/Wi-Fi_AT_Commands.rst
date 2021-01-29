@@ -1254,7 +1254,7 @@ Start SmartConfig of a designated type.
 
 ::
 
-    AT+CWSTARTSMART=<type>
+    AT+CWSTARTSMART=<type>[,<auth floor>]
 
 **Response:**
 
@@ -1270,6 +1270,17 @@ Parameters
    -  1: ESP-TOUCH
    -  2: AirKiss
    -  3: ESP-TOUCH+AirKiss
+
+-  **<auth floor>**: Wi-Fi authentication mode floor. ESP-AT will not connect to the AP whose authmode is lower than this floor.
+
+   -  0: OPEN (Default)
+   -  1: WEP
+   -  2: WPA_PSK
+   -  3: WPA2_PSK
+   -  4: WPA_WPA2_PSK
+   -  5: WPA2_ENTERPRISE
+   -  6: WPA3_PSK
+   -  7: WPA2_WPA3_PSK
 
 Notes
 ^^^^^
@@ -1334,7 +1345,7 @@ Set Command
 
 ::
 
-    AT+WPS=<enable>
+    AT+WPS=<enable>[,<auth floor>]
 
 **Response:**
 
@@ -1349,6 +1360,17 @@ Parameters
 
    -  1: Enable WPS (Wi-Fi Protected Setup) that uses PBC (Push Button Configuration) mode.
    -  0: Disable WPS that uses PBC mode.
+
+-  **<auth floor>**: Wi-Fi authentication mode floor. ESP-AT will not connect to the AP whose authmode is lower than this floor.
+
+   -  0: OPEN (Default)
+   -  1: WEP
+   -  2: WPA_PSK
+   -  3: WPA2_PSK
+   -  4: WPA_WPA2_PSK
+   -  5: WPA2_ENTERPRISE
+   -  6: WPA3_PSK
+   -  7: WPA2_WPA3_PSK
 
 Notes
 ^^^^^
