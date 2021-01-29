@@ -8,21 +8,19 @@ variables: &global-variables
   GIT_STRATEGY: clone
 
 .before_build_esp32_series: &before_build_esp32_series
-  - cd main
-  - rm -f at_config.h
-  - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-  - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_config.h
-  - echo -e "#endif" >> at_config.h
+  - cd components/at/private_include
+  - rm -f at_ota_token.h
+  - echo -e "#pragma once" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
   - cd -
   # (the same regular expressions are used to set these are used in 'only:' sections below
   - source ./esp-idf/tools/ci/configure_ci_environment.sh
@@ -30,21 +28,17 @@ variables: &global-variables
   # fetch the submodules (& if necessary re-fetch repo) from gitlab
   - time ./esp-idf/tools/ci/get-full-sources.sh
 
-
 .before_build_esp32s2_series: &before_build_esp32s2_series
-  - cd main
-  - rm -f at_config.h
-  - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-  - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-  - echo -e "#endif" >> at_config.h
+  - cd components/at/private_include
+  - rm -f at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_ota_token.h
   - cd -
   # (the same regular expressions are used to set these are used in 'only:' sections below
   - source ./esp-idf/tools/ci/configure_ci_environment.sh
@@ -53,21 +47,18 @@ variables: &global-variables
   - time ./esp-idf/tools/ci/get-full-sources.sh
 
 .before_build_esp8266_series: &before_build_esp8266_series
-  - cd main
-  - rm -f at_config.h
-  - echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-  - echo -e "#define __AT_CONFIG_H__" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-  - echo -e "#endif" >> at_config.h
+  - cd components/at/private_include
+  - rm -f at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_ota_token.h
   - cd -
   # (the same regular expressions are used to set these are used in 'only:' sections below
   - source ./esp-idf/tools/ci/configure_ci_environment.sh

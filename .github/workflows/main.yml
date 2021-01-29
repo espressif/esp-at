@@ -36,21 +36,19 @@ jobs:
         AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
         AT_OTA_TOKEN_ESP32_MINI_1: ${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}
       run: |
-        cd main
-        rm -f at_config.h
-        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_config.h
-        echo -e "#endif" >> at_config.h
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
         cd -
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
@@ -105,21 +103,19 @@ jobs:
         AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
         AT_OTA_TOKEN_ESP32_MINI_1: ${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}
       run: |
-        cd main
-        rm -f at_config.h
-        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_config.h
-        echo -e "#endif" >> at_config.h
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
         cd -
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
@@ -174,21 +170,19 @@ jobs:
         AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
         AT_OTA_TOKEN_ESP32_MINI_1: ${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}
       run: |
-        cd main
-        rm -f at_config.h
-        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_config.h
-        echo -e "#endif" >> at_config.h
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
         cd -
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
@@ -242,21 +236,19 @@ jobs:
         AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
         AT_OTA_TOKEN_ESP32_MINI_1: ${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}
       run: |
-        cd main
-        rm -f at_config.h
-        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_config.h
-        echo -e "#endif" >> at_config.h
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
         cd -
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
@@ -310,21 +302,19 @@ jobs:
         AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
         AT_OTA_TOKEN_ESP32_MINI_1: ${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}
       run: |
-        cd main
-        rm -f at_config.h
-        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_config.h
-        echo -e "#endif" >> at_config.h
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
         cd -
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
@@ -378,21 +368,19 @@ jobs:
         AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
         AT_OTA_TOKEN_ESP32_MINI_1: ${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}
       run: |
-        cd main
-        rm -f at_config.h
-        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_config.h
-        echo -e "#endif" >> at_config.h
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
         cd -
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
@@ -445,19 +433,17 @@ jobs:
         AT_OTA_TOKEN_ESP32S2_SOLO: ${{ secrets.AT_OTA_TOKEN_ESP32S2_SOLO }}
         AT_OTA_TOKEN_ESP32S2_MINI: ${{ secrets.AT_OTA_TOKEN_ESP32S2_MINI }}
       run: |
-        cd main
-        rm -f at_config.h
-        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-        echo -e "#endif" >> at_config.h
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_ota_token.h
         cd -
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
@@ -510,19 +496,17 @@ jobs:
         AT_OTA_TOKEN_ESP32S2_SOLO: ${{ secrets.AT_OTA_TOKEN_ESP32S2_SOLO }}
         AT_OTA_TOKEN_ESP32S2_MINI: ${{ secrets.AT_OTA_TOKEN_ESP32S2_MINI }}
       run: |
-        cd main
-        rm -f at_config.h
-        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-        echo -e "#endif" >> at_config.h
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_ota_token.h
         cd -
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
@@ -575,19 +559,17 @@ jobs:
         AT_OTA_TOKEN_ESP32S2_SOLO: ${{ secrets.AT_OTA_TOKEN_ESP32S2_SOLO }}
         AT_OTA_TOKEN_ESP32S2_MINI: ${{ secrets.AT_OTA_TOKEN_ESP32S2_MINI }}
       run: |
-        cd main
-        rm -f at_config.h
-        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-        echo -e "#endif" >> at_config.h
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_ota_token.h
         cd -
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
@@ -640,19 +622,17 @@ jobs:
         AT_OTA_TOKEN_ESP32S2_SOLO: ${{ secrets.AT_OTA_TOKEN_ESP32S2_SOLO }}
         AT_OTA_TOKEN_ESP32S2_MINI: ${{ secrets.AT_OTA_TOKEN_ESP32S2_MINI }}
       run: |
-        cd main
-        rm -f at_config.h
-        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_config.h
-        echo -e "#endif" >> at_config.h
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_ota_token.h
         cd -
         
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
@@ -690,21 +670,19 @@ jobs:
         AT_OTA_TOKEN_ESP8266_1MB: ${{ secrets.AT_OTA_TOKEN_ESP8266_1MB }}
         AT_OTA_TOKEN_WROOM_02_N_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_02_1024_1024 }}
       run: |
-        cd main
-        rm -f at_config.h
-        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
-        echo -e "#endif" >> at_config.h
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_ota_token.h
         cd -
 
         pip install --upgrade pip
@@ -755,21 +733,19 @@ jobs:
         AT_OTA_TOKEN_ESP8266_1MB: ${{ secrets.AT_OTA_TOKEN_ESP8266_1MB }}
         AT_OTA_TOKEN_WROOM_02_N_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_02_1024_1024 }}
       run: |
-        cd main
-        rm -f at_config.h
-        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
-        echo -e "#endif" >> at_config.h
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_ota_token.h
         cd -
 
         pip install --upgrade pip
@@ -820,21 +796,19 @@ jobs:
         AT_OTA_TOKEN_ESP8266_1MB: ${{ secrets.AT_OTA_TOKEN_ESP8266_1MB }}
         AT_OTA_TOKEN_WROOM_02_N_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_02_1024_1024 }}
       run: |
-        cd main
-        rm -f at_config.h
-        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
-        echo -e "#endif" >> at_config.h
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_ota_token.h
         cd -
 
         pip install --upgrade pip
@@ -885,21 +859,19 @@ jobs:
         AT_OTA_TOKEN_ESP8266_1MB: ${{ secrets.AT_OTA_TOKEN_ESP8266_1MB }}
         AT_OTA_TOKEN_WROOM_02_N_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_02_1024_1024 }}
       run: |
-        cd main
-        rm -f at_config.h
-        echo -e "#ifndef __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define __AT_CONFIG_H__" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_config.h
-        echo -e "#endif" >> at_config.h
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02 \"$AT_OTA_TOKEN_WROOM_02_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_S2 \"$AT_OTA_TOKEN_WROOM_S2_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_5V2L \"$AT_OTA_TOKEN_WROOM_5V2L\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP8266_1MB \"$AT_OTA_TOKEN_ESP8266_1MB\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM_02_N \"$AT_OTA_TOKEN_WROOM_02_N_1024_1024\"" >> at_ota_token.h
         cd -
 
         pip install --upgrade pip
