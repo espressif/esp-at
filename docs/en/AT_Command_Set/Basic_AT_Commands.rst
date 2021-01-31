@@ -17,6 +17,7 @@ Basic AT Commands
 -  :ref:`AT+SLEEP <cmd-SLEEP>`: Set the sleep mode.
 -  :ref:`AT+SYSRAM <cmd-SYSRAM>`: Query current remaining heap size and minimum heap size.
 -  :ref:`AT+SYSMSG <cmd-SYSMSG>`: Query/Set System Prompt Information.
+-  :ref:`AT+USERRAM <cmd-USERRAM>`: Operate user's free RAM.
 -  :ref:`AT+SYSFLASH <cmd-SYSFLASH>`: Query/Set User Partitions in Flash.
 -  [ESP32 Only] :ref:`AT+FS <cmd-FS>`: Filesystem Operations.
 -  :ref:`AT+RFPOWER <cmd-RFPOWER>`: Query/Set RF TX Power.
@@ -173,8 +174,20 @@ Parameter
 
 -  **<time>**: the duration when the device stays in Deep-sleep. Unit: millisecond. When the time is up, the device automatically wakes up, calls Deep-sleep wake stub, and then proceeds to load the application.
 
-   - For ESP32 and ESP32-S2 devices, the maximum Deep-sleep time is about 28.8 days (2 :sup:`31`-1 milliseconds).
-   - For ESP8266 devices, the maximum Deep-sleep time is about 3 hours (due to hardware limitation, more time will lead to setting failure or internal time overflow).
+   - For ESP32 devices:
+
+     - 0 means restarting right now
+     - the maximum Deep-sleep time is about 28.8 days (2 :sup:`31`-1 milliseconds)
+
+   - For ESP32-S2 devices:
+
+     - 0 means staying in Deep-sleep mode forever
+     - the maximum Deep-sleep time is about 28.8 days (2 :sup:`31`-1 milliseconds)
+   
+   - For ESP8266 devices:
+
+     - 0 means staying in Deep-sleep mode forever
+     - the maximum Deep-sleep time is about 3 hours (due to hardware limitation, more time will lead to setting failure or internal time overflow)
 
 Notes
 ^^^^^^
@@ -584,6 +597,70 @@ Example
     // print detailed connection prompt info
     // print no prompt info when the connection status is changed
     AT+SYSMSG=2
+
+.. _cmd-USERRAM:
+
+:ref:`AT+USERRAM <Basic-AT>`: Operate user's free RAM
+------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Function:**
+
+Query user free RAM to be used.
+
+**Command:**
+
+::
+
+    AT+USERRAM?
+
+**Response:**
+
+::
+
+    +USERRAM:<size>
+    OK
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+Operate user's free RAM
+
+**Command:**
+
+::
+
+    AT+USERRAM=<operation>,<size>[,<offset>]
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<operation>**:
+
+   -  0: release user's RAM
+   -  1: malloc user's RAM
+   -  2: write user's RAM
+   -  3: read user's RAM
+   -  4: clear user's RAM
+
+-  **<size>**: the size to malloc/read/write
+-  **<offset>**: the offset to read/write. Default: 0
+
+Notes
+^^^^^
+
+-  Please malloc the RAM size before you perform any other operations.
+-  If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
 
 .. _cmd-SYSFLASH:
 

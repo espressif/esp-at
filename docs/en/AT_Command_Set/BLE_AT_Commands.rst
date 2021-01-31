@@ -2483,7 +2483,7 @@ Start or stop BluFi.
 
 ::
 
-    AT+BLUFI=<option>
+    AT+BLUFI=<option>[,<auth floor>]
 
 **Response:**
 
@@ -2498,6 +2498,17 @@ Parameter
 
    -  0: stop BluFi
    -  1: start BluFi
+
+-  **<auth floor>**: Wi-Fi authentication mode floor. ESP-AT will not connect to the AP whose authmode is lower than this floor.
+
+   -  0: OPEN (Default)
+   -  1: WEP
+   -  2: WPA_PSK
+   -  3: WPA2_PSK
+   -  4: WPA_WPA2_PSK
+   -  5: WPA2_ENTERPRISE
+   -  6: WPA3_PSK
+   -  7: WPA2_WPA3_PSK
 
 Example
 ^^^^^^^^
