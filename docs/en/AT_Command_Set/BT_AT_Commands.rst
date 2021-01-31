@@ -26,6 +26,7 @@ ESP32 AT firmware supports `Bluetooth® Core Specification Version 5.0 <https://
 -  [ESP32 Only] :ref:`AT+BTENCDEV <cmd-BTENCDEV>`: Query Classic Bluetooth encryption device list.
 -  [ESP32 Only] :ref:`AT+BTENCCLEAR <cmd-BTENCCLEAR>`: Clear Classic Bluetooth encryption device list.
 -  [ESP32 Only] :ref:`AT+BTCOD <cmd-BTCOD>`: Set class of devices.
+-  [ESP32 Only] :ref:`AT+BTPOWER <cmd-BTPWR>`: Set power of Classic Bluetooth.
 
 .. _cmd-BTINIT:
 
@@ -1187,3 +1188,61 @@ Example
 ::
 
     AT+BTCOD=6,32,32   // the printer
+
+.. _cmd-BTPWR:
+
+[ESP32 Only] :ref:`AT+BTPOWER <BT-AT>`: Set TX power of Classic Bluetooth
+----------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Function:**
+
+Query Classic Bluetooth tx power level.
+
+**Command:**
+
+::
+
+    AT+BTPOWER?
+
+**Response:**
+
+::
+
+    +BTPOWER:<min_tx_power>,<max_tx_power>
+    OK
+
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+Set the Classic Bluetooth tx power.
+
+**Command:**
+
+::
+
+    AT+BTPOWER=<min_tx_power>,<max_tx_power>
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<min_tx_power>**: The minimum power level, range[0,7].
+-  **<max_tx_power>**: The maximum power level, range[0,7].
+
+Example
+^^^^^^^^
+
+::
+
+    AT+BTPOWER=5,6   // set Classic Bluetooth tx power.
