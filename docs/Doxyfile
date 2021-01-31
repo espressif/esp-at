@@ -24,9 +24,8 @@ INPUT = \
     ##
     ## ESP-AT - API Reference
     ##
-    ../../components/at/include/esp_at.h \
-    
-    ##
+    ../../components/at/include/esp_at_core.h \
+    ../../components/at/include/esp_at.h
 
 ## Get warnings for functions that have no documentation for their parameters or return value
 ##
