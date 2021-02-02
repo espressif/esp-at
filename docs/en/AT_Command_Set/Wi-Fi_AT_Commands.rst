@@ -3,30 +3,32 @@
 Wi-Fi AT Commands
 =================
 
+:link_to_translation:`zh_CN:[中文]`
+
 -  :ref:`AT+CWMODE <cmd-MODE>`: Set the Wi-Fi mode (Station/SoftAP/Station+SoftAP).
 -  :ref:`AT+CWJAP <cmd-JAP>`: Connect to an AP.
--  :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`: Configure the Wi-Fi reconnect interval and maximum times.
--  :ref:`AT+CWLAPOPT <cmd-LAPOPT>`: Set the configuration for the command AT+CWLAP.
+-  :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`: Query/Set the Wi-Fi reconnecting configuration.
+-  :ref:`AT+CWLAPOPT <cmd-LAPOPT>`: Set the configuration for the command :ref:`AT+CWLAP <cmd-LAP>`.
 -  :ref:`AT+CWLAP <cmd-LAP>`: List available APs.
 -  :ref:`AT+CWQAP <cmd-QAP>`: Disconnect from an AP.
--  :ref:`AT+CWSAP <cmd-SAP>`: Configure an ESP SoftAP.
+-  :ref:`AT+CWSAP <cmd-SAP>`: Query/Set the configuration of an ESP SoftAP.
 -  :ref:`AT+CWLIF <cmd-LIF>`: Obtain IP address of the station that connects to an ESP SoftAP.
 -  :ref:`AT+CWQIF <cmd-QIF>`: Disconnect stations from an ESP SoftAP.
 -  :ref:`AT+CWDHCP <cmd-DHCP>`: Enable/disable DHCP.
--  :ref:`AT+CWDHCPS <cmd-DHCPS>`: Configure the IP addresses allocated by an ESP SoftAP DHCP server.
+-  :ref:`AT+CWDHCPS <cmd-DHCPS>`: Query/Set the IP addresses allocated by an ESP SoftAP DHCP server.
 -  :ref:`AT+CWAUTOCONN <cmd-AUTOC>`: Connect to an AP automatically when powered on.
--  :ref:`AT+CWAPPROTO <cmd-APPROTO>`: Set the 802.11 b/g/n protocol standard of SoftAP mode.
--  :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`: Set the 802.11 b/g/n protocol standard of station mode.
--  :ref:`AT+CIPSTAMAC <cmd-STAMAC>`: Set the MAC address of an ESP station.
--  :ref:`AT+CIPAPMAC <cmd-APMAC>`: Set the MAC address of an ESP SoftAP.
--  :ref:`AT+CIPSTA <cmd-IPSTA>`: Set the IP address of an ESP station.
--  :ref:`AT+CIPAP <cmd-IPAP>`: Set the IP address of an ESP SoftAP.
+-  :ref:`AT+CWAPPROTO <cmd-APPROTO>`: Query/Set the 802.11 b/g/n protocol standard of SoftAP mode.
+-  :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`: Query/Set the 802.11 b/g/n protocol standard of station mode.
+-  :ref:`AT+CIPSTAMAC <cmd-STAMAC>`: Query/Set the MAC address of an ESP station.
+-  :ref:`AT+CIPAPMAC <cmd-APMAC>`: Query/Set the MAC address of an ESP SoftAP.
+-  :ref:`AT+CIPSTA <cmd-IPSTA>`: Query/Set the IP address of an ESP station.
+-  :ref:`AT+CIPAP <cmd-IPAP>`: Query/Set the IP address of an ESP SoftAP.
 -  :ref:`AT+CWSTARTSMART <cmd-STARTS>`: Start SmartConfig.
 -  :ref:`AT+CWSTOPSMART <cmd-STOPS>`: Stop SmartConfig.
 -  :ref:`AT+WPS <cmd-WPS>`: Enable the WPS function.
--  :ref:`AT+MDNS <cmd-MDNS>`: Configure the MDNS function.
+-  :ref:`AT+MDNS <cmd-MDNS>`: Configure the mDNS function.
 -  [ESP32 Only] :ref:`AT+CWJEAP <cmd-JEAP>`: Connect to a WPA2 Enterprise AP.
--  :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`: Query/Set the name of an ESP station.
+-  :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`: Query/Set the host name of an ESP station.
 -  :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`: Query/Set the Wi-Fi Country Code.
 
 .. _cmd-MODE:
@@ -83,7 +85,7 @@ Parameters
    -  2: SoftAP mode.
    -  3: SoftAP+Station mode.
 
--  **<auto_connect>**: Enable or disable automatic connection to an AP when you change the mode of the ESP device from the SoftAP mode or null mode to the station mode or the SoftAP+Station mode. 
+-  **<auto_connect>**: Enable or disable automatic connection to an AP when you change the mode of the ESP device from the SoftAP mode or null mode to the station mode or the SoftAP+Station mode. Default: 1. If you omit the parameter, the default value will be used, i.e. automatically connecting to an AP. 
 
    -  0: The ESP device will not automatically connect to an AP.
    -  1: The ESP device will automatically connect to an AP if the configuration to connect to the AP has already been saved in flash before.
@@ -185,27 +187,27 @@ Parameters
    -  Escape character syntax is needed if SSID or password contains special characters, such ``,``, ``"``, or ``\\``.
 
 -  **<pwd>**: password, MAX: 64-byte ASCII.
--  **[<bssid>]**: the MAC address of the target AP. It cannot be omitted when multiple APs have the same SSID.
+-  **<bssid>**: the MAC address of the target AP. It cannot be omitted when multiple APs have the same SSID.
 -  **<channel>**: channel.
 -  **<rssi>**: signal strength.
--  **[<pci_en>]**: PCI Authentication.
+-  **<pci_en>**: PCI Authentication.
 
    - 0: The ESP station will connect APs with all encryption methods, including OPEN and WEP.
    - 1: The ESP station will connect APs with all encryption methods, except OPEN and WEP.
 
--  **[<reconn_interval>]**: the interval between Wi-Fi reconnections. Unit: second. Default: 1. Maximum: 7200.
+-  **<reconn_interval>**: the interval between Wi-Fi reconnections. Unit: second. Default: 1. Maximum: 7200.
 
    -  0: The ESP station will not reconnect to the AP when disconnected.
    -  [1,7200]: The ESP station will reconnect to the AP at the specified interval when disconnected.
 
--  **[<listen_interval>]**: the interval of listening to the AP's beacon. Unit: AP beacon intervals. Default: 3. Range: [1, 100].
--  **[<scan_mode>]**:
+-  **<listen_interval>**: the interval of listening to the AP's beacon. Unit: AP beacon intervals. Default: 3. Range: [1,100].
+-  **<scan_mode>**:
 
    -  0: fast scan. It will end after finding the targeted AP. The ESP station will connect to the first scanned AP.
    -  1: all-channel scan. It will end after all the channels are scanned. The device will connect to the scanned AP with the strongest signal.
 
--  **[<jap_timeout>]**: maximum timeout for AT+CWJAP command. Unit: second. Default: 15. Range: [3, 600].
-- **\<pmf>**: protected management frame, default: 0x0.
+-  **<jap_timeout>**: maximum timeout for :ref:`AT+CWJAP <cmd-JAP>` command. Unit: second. Default: 15. Range: [3,600].
+-  **<pmf>**: Protected Management Frames. Default: 0.
 
     - 0 means disable PMF.
     - bit 0: PMF capable, advertizes support for protected management frame. Device will prefer to connect in PMF mode if other device also advertizes PMF capability.
@@ -224,9 +226,9 @@ Notes
 
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  This command requires Station mode to be enabled.
--  The parameter ``<reconn_interval>`` of this command is the same as ``<interval_second>`` of the command :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`. Therefore, if you omit ``<reconn_interval>`` when running this command, the interval between Wi-Fi reconnections depends on its previous configuration. If you keep the parameter, it will overwrite the previous configuration.
--  If the ``<ssid>`` and ``<password>`` parameter is omitted, it will use last configuration.
--  Execute command has the same maximum timeout to setup command (15 seconds).
+-  The parameter ``<reconn_interval>`` of this command is the same as ``<interval_second>`` of the command :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`. Therefore, if you omit ``<reconn_interval>`` when running this command, the interval between Wi-Fi reconnections will use the default value 1.
+-  If the ``<ssid>`` and ``<password>`` parameter are omitted, AT will use the last configuration.
+-  Execute command has the same maximum timeout to setup command. The default value is 15 seconds, but you can change it by setting the parameter ``<jap_timeout>``.
 
 Example
 ^^^^^^^^
@@ -247,7 +249,7 @@ Example
 
 .. _cmd-RECONNCFG:
 
-:ref:`AT+CWRECONNCFG <WiFi-AT>`: Configure the Wi-Fi Reconnect Interval and Maximum Times
+:ref:`AT+CWRECONNCFG <WiFi-AT>`: Query/Set the Wi-Fi Reconnecting Configuration
 -------------------------------------------------------------------------------------------
 
 Query Command
@@ -321,8 +323,8 @@ Notes
 
 .. _cmd-LAPOPT:
 
-:ref:`AT+CWLAPOPT <WiFi-AT>`: Set the Configuration for the Command AT+CWLAP
---------------------------------------------------------------------------------
+:ref:`AT+CWLAPOPT <WiFi-AT>`: Set the Configuration for the Command :ref:`AT+CWLAP <cmd-LAP>`
+----------------------------------------------------------------------------------------------
 
 Set Command
 ^^^^^^^^^^^
@@ -353,7 +355,7 @@ Parameters
    -  0: the result is not ordered according to RSSI.
    -  1: the result is ordered according to RSSI.
 
--  **<print mask>**: determine whether the following parameters are shown in the result of :ref:`AT+CWLAP <cmd-LAP>`. Default: 0x1F. If you set them to 0, it means not showing the corresponding parameters; if you set them as 1, it means showing the corresponding parameters.  
+-  **<print mask>**: determine whether the following parameters are shown in the result of :ref:`AT+CWLAP <cmd-LAP>`. Default: 0x7FF. If you set them to 1, it means showing the corresponding parameters; if you set them as 0, it means NOT showing the corresponding parameters.  
 
    -  bit 0: determine whether <ecn> will be shown.
    -  bit 1: determine whether <ssid> will be shown.
@@ -367,17 +369,17 @@ Parameters
    -  bit 9: determine whether <bgn> will be shown.
    -  bit 10: determine whether <wps> will be shown.
 
--  **[<rssi filter>]**: determine whether the result of the command :ref:`AT+CWLAP <cmd-LAP>` will be filtered according to ``rssi filter``. In other words, the result of the command will **NOT** show the APs whose signal strength is below ``rssi filter``. Unit: dBm. Default: –100. Range: –100 ~ 40. 
--  **[<authmode mask>]**: determine whether APs with the following authmodes are shown in the result of :ref:`AT+CWLAP <cmd-LAP>`. Default: 0xFF. If you set ``bit x`` to 0, the APs with the corresponding authmode will not be shown; If you set ``bit x`` to 1, the APs with the corresponding authmode will be shown.
+-  **[<rssi filter>]**: determine whether the result of the command :ref:`AT+CWLAP <cmd-LAP>` will be filtered according to ``rssi filter``. In other words, the result of the command will **NOT** show the APs whose signal strength is below ``rssi filter``. Unit: dBm. Default: –100. Range: [–100,40]. 
+-  **[<authmode mask>]**: determine whether APs with the following authmodes are shown in the result of :ref:`AT+CWLAP <cmd-LAP>`. Default: 0xFF. If you set ``bit x`` to 1, the APs with the corresponding authmode will be shown. If you set ``bit x`` to 0, the APs with the corresponding authmode will NOT be shown; 
 
-   -  bit 0: determine whether APs with ``OPEN`` authomode will be shown.
+   -  bit 0: determine whether APs with ``OPEN`` authmode will be shown.
    -  bit 1: determine whether APs with ``WEP`` authmode will be shown.
    -  bit 2: determine whether APs with ``WPA_PSK`` authmode will be shown.
    -  bit 3: determine whether APs with ``WPA2_PSK`` authmode will be shown.
-   -  bit 4: determine whether APs with ``WPA_WPA2_PS`` authmode will be shown.
+   -  bit 4: determine whether APs with ``WPA_WPA2_PSK`` authmode will be shown.
    -  bit 5: determine whether APs with ``WPA2_ENTERPRISE`` authmode will be shown.
-   -  bit 6: determine whether APs with ``WPA3_PSK`` authmode will be shown. Currently applicable to ESP32 and ESP32-S2 devices only.
-   -  bit 7: determine whether AP with ``WPA_WPA3_PSK`` authmode will be shown. Currently applicable to ESP32 and ESP32-S2 devices only.
+   -  bit 6: determine whether APs with ``WPA3_PSK`` authmode will be shown.
+   -  bit 7: determine whether AP with ``WPA2_WPA3_PSK`` authmode will be shown.
 
 Example
 ^^^^^^^^
@@ -385,7 +387,7 @@ Example
 ::
 
     // The first parameter is 1, meaning that the result of the command AT+CWLAP will be ordered according to RSSI;
-    // The second parameter is 31, namely 0x1F, meaning that the corresponding bits of <mask> are set to 1. All parameters will be shown in the result of AT+CWLAP.
+    // The second parameter is 31, namely 0x1F, meaning that the corresponding bits of <print mask> are set to 1. All parameters will be shown in the result of AT+CWLAP.
     AT+CWLAPOPT=1,31
     AT+CWLAP
 
@@ -470,12 +472,11 @@ Parameters
    -  7: Unknown
 
 -  **<group_cipher>**: group cipher type, same enumerated value to ``<pairwise_cipher>``.
--  **<bgn>**: 802.11 b/g/n.
+-  **<bgn>**: 802.11 b/g/n. If the corresponding bit is 1, the corresponding mode is enabled; if the corresponding bit is 0, the corresponding mode is disabled.
 
    -  bit 0: bit to identify if 802.11b mode is enabled or not
    -  bit 1: bit to identify if 802.11g mode is enabled or not
    -  bit 2: bit to identify if 802.11n mode is enabled or not
-   -  If the corresponding bit is 1, the corresponding mode is enabled; if the corresponding bit is 0, the corresponding mode is disabled.
 
 -  **<wps>**: wps flag.
 
@@ -514,15 +515,15 @@ Execute Command
 
 .. _cmd-SAP:
 
-:ref:`AT+CWSAP <WiFi-AT>`: Configure an ESP SoftAP
--------------------------------------------------------------
+:ref:`AT+CWSAP <WiFi-AT>`: Query/Set the configuration of an ESP SoftAP
+------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 
 **Function:**
 
-Obtain the configuration parameters of an ESP SoftAP.
+Query the configuration parameters of an ESP SoftAP.
 
 **Command:**
 
@@ -569,7 +570,7 @@ Parameters
    -  3: WPA2_PSK
    -  4: WPA_WPA2_PSK
 
--  **[<max conn>]**: maximum number of stations that ESP SoftAP can connect. Range: [1, 10].
+-  **[<max conn>]**: maximum number of stations that ESP SoftAP can connect. Range: [1,10].
 -  **[<ssid hidden>]**:
 
    -  0: broadcasting SSID (default). 
@@ -754,7 +755,7 @@ Example
 
 .. _cmd-DHCPS:
 
-:ref:`AT+CWDHCPS <WiFi-AT>`: Configure the IP Addresses Allocated by an ESP SoftAP DHCP Server
+:ref:`AT+CWDHCPS <WiFi-AT>`: Query/Set the IP Addresses Allocated by an ESP SoftAP DHCP Server
 -----------------------------------------------------------------------------------------------
 
 Query Command
@@ -797,10 +798,10 @@ Parameters
 
 -  **<enable>**:
    
-   -  1: Enable IP address settings. The parameters below have to be set.
-   -  0: Disable IP address settings and use the default IP range.
+   -  1: Enable DHCP server settings. The parameters below have to be set.
+   -  0: Disable DHCP server settings and use the default IP range.
 
--  **<lease time>**: lease time. Unit: minute. Range [1, 2880].
+-  **<lease time>**: lease time. Unit: minute. Range [1,2880].
 -  **<start IP>**: start IP of the IP range that can be obtained from ESP SoftAP DHCP server.
 -  **<end IP>**: end IP of the IP range that can be obtained from ESP SoftAP DHCP server.
 
@@ -808,7 +809,7 @@ Notes
 ^^^^^
 
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  This AT command works only when both SoftAP and DHCP are enabled for ESP devices.
+-  This AT command works only when both SoftAP and DHCP server are enabled for ESP devices.
 -  The IP address should be in the same network segment as the IP address of ESP SoftAP.
 
 Example
@@ -862,8 +863,8 @@ Example
 
 .. _cmd-APPROTO:
 
-:ref:`AT+CWAPPROTO <WiFi-AT>`: Set the 802.11 b/g/n Protocol Standard of SoftAP Mode
-------------------------------------------------------------------------------------------
+:ref:`AT+CWAPPROTO <WiFi-AT>`: Query/Set the 802.11 b/g/n Protocol Standard of SoftAP Mode
+-------------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -913,7 +914,7 @@ Note
 
 .. _cmd-STAPROTO:
 
-:ref:`AT+CWSTAPROTO <WiFi-AT>`: Set the 802.11 b/g/n Protocol Standard of Station Mode
+:ref:`AT+CWSTAPROTO <WiFi-AT>`: Query/Set the 802.11 b/g/n Protocol Standard of Station Mode
 --------------------------------------------------------------------------------------------
 
 Query Command
@@ -963,7 +964,7 @@ Note
 
 .. _cmd-STAMAC:
 
-:ref:`AT+CIPSTAMAC <WiFi-AT>`: Set the MAC Address of an ESP Station
+:ref:`AT+CIPSTAMAC <WiFi-AT>`: Query/Set the MAC Address of an ESP Station
 ----------------------------------------------------------------------------
 
 Query Command
@@ -971,7 +972,7 @@ Query Command
 
 **Function:**
 
-Obtain the MAC address of the ESP Station.
+Query the MAC address of the ESP Station.
 
 **Command:**
 
@@ -1027,14 +1028,14 @@ Example
 
 .. _cmd-APMAC:
 
-:ref:`AT+CIPAPMAC <WiFi-AT>`: Set the MAC Address of an ESP SoftAP
+:ref:`AT+CIPAPMAC <WiFi-AT>`: Query/Set the MAC Address of an ESP SoftAP
 --------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 **Function:**
 
-Obtain the MAC address of the ESP SoftAP.
+Query the MAC address of the ESP SoftAP.
 
 **Command:**
 
@@ -1090,7 +1091,7 @@ Example
 
 .. _cmd-IPSTA:
 
-:ref:`AT+CIPSTA <WiFi-AT>`: Set the IP Address of an ESP Station
+:ref:`AT+CIPSTA <WiFi-AT>`: Query/Set the IP Address of an ESP Station
 ------------------------------------------------------------------------
 
 Query Command
@@ -1098,7 +1099,7 @@ Query Command
 
 **Function:**
 
-Obtain the IP address of the ESP Station.
+Query the IP address of the ESP Station.
 
 **Command:**
 
@@ -1110,7 +1111,10 @@ Obtain the IP address of the ESP Station.
 
 ::
 
-    +CIPSTA:<ip>
+    +CIPSTA:ip:<ip>
+    +CIPSTA:gateway:<gateway>
+    +CIPSTA:netmask:<netmask>
+
     OK
 
 Set Command
@@ -1159,7 +1163,7 @@ Example
 
 .. _cmd-IPAP:
 
-:ref:`AT+CIPAP <WiFi-AT>`: Set the IP Address of an ESP SoftAP
+:ref:`AT+CIPAP <WiFi-AT>`: Query/Set the IP Address of an ESP SoftAP
 ----------------------------------------------------------------------
 
 Query Command
@@ -1167,7 +1171,7 @@ Query Command
 
 **Function:**
 
-Obtain the IP address of the ESP SoftAP.
+Query the IP address of the ESP SoftAP.
 
 **Command:**
 
@@ -1179,7 +1183,10 @@ Obtain the IP address of the ESP SoftAP.
 
 ::
 
-    +CIPAP:<ip>,<gateway>,<netmask>
+    +CIPAP:ip:<ip>
+    +CIPAP:gateway:<gateway>
+    +CIPAP:netmask:<netmask>
+
     OK
 
 Set Command
@@ -1235,7 +1242,7 @@ Execute Command
 
 **Function:**
 
-Start SmartConfig of the type ESP-TOUCH + AirKiss.
+Start SmartConfig of the type ESP-TOUCH+AirKiss.
 
 **Command:**
 
@@ -1388,7 +1395,7 @@ Example
 
 .. _cmd-MDNS:
 
-:ref:`AT+MDNS <WiFi-AT>`: Configure the MDNS Function
+:ref:`AT+MDNS <WiFi-AT>`: Configure the mDNS Function
 ------------------------------------------------------------
 
 Set Command
@@ -1411,12 +1418,12 @@ Parameters
 
 -  **<enable>**:
 
-   -  1: Enable the MDNS function. The following three parameters need to be set.
-   -  0: Disable the MDNS function. The following three parameters does not need to be set.
+   -  1: Enable the mDNS function. The following three parameters need to be set.
+   -  0: Disable the mDNS function. The following three parameters does not need to be set.
 
--  **<hostname>**: MDNS host name.
--  **<service_name>**: MDNS service name.
--  **<port>**: MDNS port.
+-  **<hostname>**: mDNS host name.
+-  **<service_name>**: mDNS service name.
+-  **<port>**: mDNS port.
 
 Example
 ^^^^^^^^
@@ -1436,7 +1443,7 @@ Query Command
 
 **Function:**
 
-Query the Enterprise AP to which the ESP station is already connected.
+Query the configuration information of the Enterprise AP to which the ESP station is already connected.
 
 **Command:**
 
@@ -1498,7 +1505,7 @@ Parameters
    -  Bit0: Client certificate.
    -  Bit1: Server certificate.
 
--  **[<jeap_timeout>]**: maximum timeout for AT+CWJEAP command. Unit: second. Default: 15. Range: [3, 600].
+-  **[<jeap_timeout>]**: maximum timeout for :ref:`AT+CWJEAP <cmd-JEAP>` command. Unit: second. Default: 15. Range: [3,600].
 
 Example
 ^^^^^^^^
@@ -1514,44 +1521,82 @@ Example
 
 The WPA2 Enterprise error code will be prompt as ``ERR CODE:0x<%08x>``.
 
-::
+.. list-table::
+   :header-rows: 1
+   :widths: 15 5
 
-        AT_EAP_MALLOC_FAILED,               // 0x8001
-        AT_EAP_GET_NVS_CONFIG_FAILED,       // 0x8002
-        AT_EAP_CONN_FAILED,                 // 0x8003
-        AT_EAP_SET_WIFI_CONFIG_FAILED,      // 0x8004
-        AT_EAP_SET_IDENTITY_FAILED,         // 0x8005
-        AT_EAP_SET_USERNAME_FAILED,         // 0x8006
-        AT_EAP_SET_PASSWORD_FAILED,         // 0x8007
-        AT_EAP_GET_CA_LEN_FAILED,           // 0x8008
-        AT_EAP_READ_CA_FAILED,              // 0x8009
-        AT_EAP_SET_CA_FAILED,               // 0x800A
-        AT_EAP_GET_CERT_LEN_FAILED,         // 0x800B
-        AT_EAP_READ_CERT_FAILED,            // 0x800C
-        AT_EAP_GET_KEY_LEN_FAILED,          // 0x800D
-        AT_EAP_READ_KEY_FAILED,             // 0x800E
-        AT_EAP_SET_CERT_KEY_FAILED,         // 0x800F
-        AT_EAP_ENABLE_FAILED,               // 0x8010
-        AT_EAP_ALREADY_CONNECTED,           // 0x8011
-        AT_EAP_GET_SSID_FAILED,             // 0x8012
-        AT_EAP_SSID_NULL,                   // 0x8013
-        AT_EAP_SSID_LEN_ERROR,              // 0x8014
-        AT_EAP_GET_METHOD_FAILED,           // 0x8015
-        AT_EAP_CONN_TIMEOUT,                // 0x8016
-        AT_EAP_GET_IDENTITY_FAILED,         // 0x8017
-        AT_EAP_IDENTITY_LEN_ERROR,          // 0x8018
-        AT_EAP_GET_USERNAME_FAILED,         // 0x8019
-        AT_EAP_USERNAME_LEN_ERROR,          // 0x801A
-        AT_EAP_GET_PASSWORD_FAILED,         // 0x801B
-        AT_EAP_PASSWORD_LEN_ERROR,          // 0x801C
-        AT_EAP_GET_SECURITY_FAILED,         // 0x801D
-        AT_EAP_SECURITY_ERROR,              // 0x801E
-        AT_EAP_METHOD_SECURITY_UNMATCHED,   // 0x801F
-        AT_EAP_PARAMETER_COUNTS_ERROR,      // 0x8020
-        AT_EAP_GET_WIFI_MODE_ERROR,         // 0x8021
-        AT_EAP_WIFI_MODE_NOT_STA,           // 0x8022
-        AT_EAP_SET_CONFIG_FAILED,           // 0x8023
-        AT_EAP_METHOD_ERROR,                // 0x8024
+   * - AT_EAP_MALLOC_FAILED
+     - 0x8001
+   * - AT_EAP_GET_NVS_CONFIG_FAILED
+     - 0x8002
+   * - AT_EAP_CONN_FAILED
+     - 0x8003
+   * - AT_EAP_SET_WIFI_CONFIG_FAILED
+     - 0x8004
+   * - AT_EAP_SET_IDENTITY_FAILED
+     - 0x8005
+   * - AT_EAP_SET_USERNAME_FAILED
+     - 0x8006
+   * - AT_EAP_SET_PASSWORD_FAILED
+     - 0x8007
+   * - AT_EAP_GET_CA_LEN_FAILED
+     - 0x8008
+   * - AT_EAP_READ_CA_FAILED
+     - 0x8009
+   * - AT_EAP_SET_CA_FAILED
+     - 0x800A
+   * - AT_EAP_GET_CERT_LEN_FAILED
+     - 0x800B
+   * - AT_EAP_READ_CERT_FAILED
+     - 0x800C
+   * - AT_EAP_GET_KEY_LEN_FAILED
+     - 0x800D
+   * - AT_EAP_READ_KEY_FAILED
+     - 0x800E
+   * - AT_EAP_SET_CERT_KEY_FAILED
+     - 0x800F
+   * - AT_EAP_ENABLE_FAILED
+     - 0x8010
+   * - AT_EAP_ALREADY_CONNECTED
+     - 0x8011
+   * - AT_EAP_GET_SSID_FAILED
+     - 0x8012
+   * - AT_EAP_SSID_NULL
+     - 0x8013
+   * - AT_EAP_SSID_LEN_ERROR
+     - 0x8014
+   * - AT_EAP_GET_METHOD_FAILED
+     - 0x8015
+   * - AT_EAP_CONN_TIMEOUT
+     - 0x8016
+   * - AT_EAP_GET_IDENTITY_FAILED
+     - 0x8017
+   * - AT_EAP_IDENTITY_LEN_ERROR
+     - 0x8018
+   * - AT_EAP_GET_USERNAME_FAILED
+     - 0x8019
+   * - AT_EAP_USERNAME_LEN_ERROR
+     - 0x801A
+   * - AT_EAP_GET_PASSWORD_FAILED
+     - 0x801B
+   * - AT_EAP_PASSWORD_LEN_ERROR
+     - 0x801C
+   * - AT_EAP_GET_SECURITY_FAILED
+     - 0x801D
+   * - AT_EAP_SECURITY_ERROR
+     - 0x801E
+   * - AT_EAP_METHOD_SECURITY_UNMATCHED
+     - 0x801F
+   * - AT_EAP_PARAMETER_COUNTS_ERROR
+     - 0x8020
+   * - AT_EAP_GET_WIFI_MODE_ERROR
+     - 0x8021
+   * - AT_EAP_WIFI_MODE_NOT_STA
+     - 0x8022
+   * - AT_EAP_SET_CONFIG_FAILED
+     - 0x8023
+   * - AT_EAP_METHOD_ERROR
+     - 0x8024
 
 Note
 ^^^^^
@@ -1562,15 +1607,15 @@ Note
 
 .. _cmd-HOSTNAME:
 
-:ref:`AT+CWHOSTNAME <WiFi-AT>`: Query/Set the Name of an ESP Station
-----------------------------------------------------------------------
+:ref:`AT+CWHOSTNAME <WiFi-AT>`: Query/Set the Host Name of an ESP Station
+--------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 
 **Function:**
 
-Check the host name of ESP Station.
+Query the host name of ESP Station.
 
 **Command:**
 
