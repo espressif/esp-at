@@ -5,6 +5,7 @@ HTTP AT Commands
 
 -  :ref:`AT+HTTPCLIENT <cmd-HTTPCLIENT>`: Send HTTP Client Request
 -  :ref:`AT+HTTPGETSIZE <cmd-HTTPGETSIZE>`: Get HTTP Resource Size
+-  :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>`: Post HTTP data of specified length
 -  :ref:`HTTP AT Error Codes <cmd-HTTPErrCode>`
 
 .. _cmd-HTTPCLIENT:
@@ -116,6 +117,48 @@ Example
 ::
 
     AT+HTTPGETSIZE="http://www.baidu.com/img/bdlogo.gif"
+
+.. _cmd-HTTPCPOST:
+
+:ref:`AT+HTTPCPOST <HTTP-AT>`: Post HTTP data of specified length
+------------------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+HTTPCPOST=<url>,<length>[,<http_req_header_cnt>][,<http_req_header>..<http_req_header>]
+
+**Response:**
+
+::
+
+    OK
+    >
+
+The symbol ``>`` indicates that AT is ready for receiving serial data, and you can enter the data now. When the requirement of message length determined by the parameter <length> is met, the transmission starts.
+
+If the transmission is successful, AT returns:
+
+::
+
+    SEND OK
+
+Otherwise, it returns:
+
+::
+
+    SEND FAIL
+
+Parameters
+^^^^^^^^^^
+- **<url>**: HTTP URL.
+- **<length>**: HTTP data length to post.
+- **<http_req_header_cnt>**: the number of <http_req_header> parameters.
+-  **[<http_req_header>]**: you can send more than one request header to the server.
 
 .. _cmd-HTTPErrCode:
 
