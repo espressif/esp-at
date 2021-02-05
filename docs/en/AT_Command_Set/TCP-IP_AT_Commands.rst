@@ -1,39 +1,40 @@
-
 .. _TCPIP-AT:
 
 TCP/IP AT Commands
 ==================
+
+:link_to_translation:`zh_CN:[中文]`
 
 -  :ref:`AT+CIPSTATUS <cmd-STATUS>`: Obtain the TCP/UDP/SSL connection status and information.
 -  :ref:`AT+CIPDOMAIN <cmd-DOMAIN>`: Resolve a Domain Name.
 -  :ref:`AT+CIPSTART <cmd-START>`: Establish TCP connection, UDP transmission, or SSL connection.
 -  :ref:`AT+CIPSTARTEX <cmd-STARTEX>`: Establish TCP connection, UDP transmission, or SSL connection with an automatically assigned ID.
 -  :ref:`AT+CIPSEND <cmd-SEND>`: Send data in the normal or Wi-Fi passthrough modes.
--  :ref:`AT+CIPSENDEX <cmd-SENDEX>`: Send data of designated length in the normal transmission mode.
+-  :ref:`AT+CIPSENDEX <cmd-SENDEX>`: Send data in the normal transmission mode in expanded ways.
 -  :ref:`AT+CIPCLOSE <cmd-CLOSE>`: Close TCP/UDP/SSL connection.
--  :ref:`AT+CIFSR <cmd-IFSR>`: Obtain the local IP address.
+-  :ref:`AT+CIFSR <cmd-IFSR>`: Obtain the local IP address and MAC address.
 -  :ref:`AT+CIPMUX <cmd-MUX>`: Enable/disable the multiple connections mode.
 -  :ref:`AT+CIPSERVER <cmd-SERVER>`: Delete/create a TCP or SSL server.
--  :ref:`AT+CIPSERVERMAXCONN <cmd-SERVERMAX>`: Set the maximum connections allowed by a server.
--  :ref:`AT+CIPMODE <cmd-IPMODE>`: Configure the transmission mode.
--  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Save the Wi-Fi passthrough connection in flash.
--  :ref:`AT+CIPSTO <cmd-STO>`: Set the TCP server timeout.
--  :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>`: Set the time zone and SNTP server.
+-  :ref:`AT+CIPSERVERMAXCONN <cmd-SERVERMAX>`: Query/Set the maximum connections allowed by a server.
+-  :ref:`AT+CIPMODE <cmd-IPMODE>`: Query/Set the transmission mode.
+-  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Wi-Fi passthrough mode on power-up.
+-  :ref:`AT+CIPSTO <cmd-STO>`: Query/Set the local TCP Server Timeout.
+-  :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>`: Query/Set the time zone and SNTP server.
 -  :ref:`AT+CIPSNTPTIME <cmd-SNTPT>`: Query the SNTP time.
 -  :ref:`AT+CIUPDATE <cmd-UPDATE>`: Upgrade the firmware through Wi-Fi.
--  :ref:`AT+CIPDINFO <cmd-IPDINFO>`: Show the remote IP and remote port with "+IPD".
--  :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`: Configure SSL clients.
--  :ref:`AT+CIPSSLCCN <cmd-SSLCCN>`: Configure the Common Name of the SSL client.
--  :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>`: Configure SSL client Server Name Indication (SNI).
--  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`: Configure SSL client Application Layer Protocol Negotiation (ALPN).
--  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`: Configure SSL client Pre-shared Key (PSK).
--  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`: Set the TCP reconnection interval for the Wi-Fi passthrough mode.
--  :ref:`AT+CIPRECVMODE <cmd-CIPRECVMODE>`: Set socket receiving mode.
+-  :ref:`AT+CIPDINFO <cmd-IPDINFO>`: Set "+IPD" message mode.
+-  :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`: Query/Set SSL clients.
+-  :ref:`AT+CIPSSLCCN <cmd-SSLCCN>`: Query/Set the Common Name of the SSL client.
+-  :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>`: Query/Set SSL client Server Name Indication (SNI).
+-  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`: Query/Set SSL client Application Layer Protocol Negotiation (ALPN).
+-  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`: Query/Set SSL client Pre-shared Key (PSK).
+-  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`: Query/Set the TCP reconnection interval for the Wi-Fi passthrough mode.
+-  :ref:`AT+CIPRECVMODE <cmd-CIPRECVMODE>`: Query/Set socket receiving mode.
 -  :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`: Obtain socket data in passive receiving mode.
 -  :ref:`AT+CIPRECVLEN <cmd-CIPRECVLEN>`: Obtain socket data length in passive receiving mode.
--  :ref:`AT+PING <cmd-CIPPING>`: Send ICMP ECHO_REQUEST to network hosts.
--  :ref:`AT+CIPDNS <cmd-DNS>`: Configure Domain Name System (DNS).
--  :ref:`AT+CIPTCPOPT <cmd-TCPOPT>`: Configure the socket options.
+-  :ref:`AT+PING <cmd-CIPPING>`: Ping the remote host.
+-  :ref:`AT+CIPDNS <cmd-DNS>`: Query/Set DNS server information.
+-  :ref:`AT+CIPTCPOPT <cmd-TCPOPT>`: Query/Set the socket options.
 
 .. _cmd-STATUS:
 
@@ -141,13 +142,6 @@ Set Command
 
     OK
 
-If the TCP connection is already established, the response is:
-
-::
-
-    ALREADY CONNECTED
-    ERROR
-
 Parameters
 """""""""""
 
@@ -198,13 +192,6 @@ Set Command
 
     OK
 
-If the UDP transmission is already established, the response is:
-
-::
-
-    ALREADY CONNECTED
-    ERROR
-
 Parameters
 """""""""""
 
@@ -215,16 +202,16 @@ Parameters
 -  **[<UDP local port>]**: UDP port of ESP devices.
 -  **[<UDP mode>]**: In the UDP Wi-Fi passthrough, the value of this parameter has to be 0.
 
-   -  0: the destination peer entity of UDP will not change (default).
-   -  1: the destination peer entity of UDP can change once.
-   -  2: the destination peer entity of UDP is allowed to change.
+   -  0: After UDP data is received, the parameters ``<remote IP>`` and ``<remote port>`` will stay unchanged (default).
+   -  1: Only the first time that UDP data is received from an IP address and port that are different from the initially set value of parameters ``<remote IP>`` and ``<remote port>``, will they be changed to the IP address and port of the device that sends the data.
+   -  2: Each time UDP data is received, the ``<remote IP>`` and ``<remote port>`` will be changed to the IP address and port of the device that sends the data.
 
 -  **[<local IP>]**: the local IP you want to connect. This parameter is useful when you are using both Ethernet and Wi-Fi. By default, it is disabled. If you want to use it, you should specify it first. Null is also valid.
 
 Note
 """""
 
--  To use the parameter <UDP mode> , parameter <UDP local port> must be set first.
+-  To use the parameter ``<UDP mode>``, parameter ``<UDP local port>`` must be set first.
 
 Example
 """""""""
@@ -252,13 +239,6 @@ Set Command
 
     OK
 
-If the TCP connection is already established, the response is:
-
-::
-
-    ALREADY CONNECTED
-    ERROR
-
 Parameters
 """""""""""
 
@@ -276,8 +256,7 @@ Parameters
 Notes
 """"""
 
--  The number of SSL connections depends on available memory and the maximum number of connections.
--  SSL connection does not support Wi-Fi passthrough mode.
+-  The number of SSL connections depends on available memory and the maximum number of connections. For ESP8266 devices, only one SSL connection can be established due to limited memory.
 -  SSL connection needs a large amount of memory. Insufficient memory may cause the system reboot.
 -  If the ``AT+CIPSTART`` is based on an SSL connection and the timeout of each packet is 10 s, the total timeout will be much longer depending on the number of handshake packets.
 
@@ -306,7 +285,7 @@ Set Command
 
 **Function:**
 
-Configure the data length in the normal transmission mode.
+Set the data length in the normal transmission mode.
 
 **Command:**
 
@@ -316,7 +295,7 @@ Configure the data length in the normal transmission mode.
     AT+CIPSEND=<length>
     // Multiple connections: (AT+CIPMUX=1)
     AT+CIPSEND=<link ID>,<length>
-    // Remote IP and ports can be set in UDP transmission: 
+    // Remote IP and ports can be set for UDP transmission: 
     AT+CIPSEND=[<link ID>,]<length>[,<remote IP>,<remote port>]
 
 **Response:**
@@ -326,7 +305,7 @@ Configure the data length in the normal transmission mode.
     OK
     >
 
-This response indicates that AT is ready for receiving serial data. You should enter the data, and when the requirement of data length is met, the transmission of data starts.
+This response indicates that AT is ready for receiving serial data. You should enter the data, and when the data length reaches the ``<length>`` value, the transmission of data starts.
 
 If the connection cannot be established or is disrupted during data transmission, the system returns:
 
@@ -345,7 +324,7 @@ Execute Command
 
 **Function:**
 
-Start to send data in the Wi-Fi passthrough mode.
+Enter data sending mode under the Wi-Fi passthrough mode.
 
 **Command:**
 
@@ -366,9 +345,9 @@ or
 
     ERROR
 
-Enter the Wi-Fi passthrough mode. AT will send a packet every 20 ms or when the data reaches 2048 bytes. When a single packet containing ``+++`` is received, the ESP device returns to the normal command mode. Please wait for at least one second before sending the next AT command.
+Enter the data sending mode. AT will send a packet every 20 ms or when the data reaches 2048 bytes. When a single packet containing ``+++`` is received, the ESP device will exit the data sending mode under the Wi-Fi passthrough mode. Please wait for at least one second before sending the next AT command.
 
-This command can only be used for single connection in the Wi-Fi passthrough mode. For UDP Wi-Fi passthrough, the <UDP mode> parameter has to be 0 when using ``AT+CIPSTART``.
+This command can only be used for single connection in the Wi-Fi passthrough mode. For UDP Wi-Fi passthrough, the ``<UDP mode>`` parameter has to be 0 when using :ref:`AT+CIPSTART <cmd-START>`.
 
 Parameters
 ^^^^^^^^^^
@@ -380,7 +359,7 @@ Parameters
 
 .. _cmd-SENDEX:
 
-:ref:`AT+CIPSENDEX <TCPIP-AT>`: Send Data of Designated Length in the Normal Transmission Mode
+:ref:`AT+CIPSENDEX <TCPIP-AT>`: Send Data in the Normal Transmission Mode in Expanded Ways
 -----------------------------------------------------------------------------------------------
 
 Set Command
@@ -388,7 +367,7 @@ Set Command
 
 **Function:**
 
-Configure the data length in normal transmission mode.
+Set the data length in normal transmission mode, or use ``\0`` (0x5c, 0x30 ASCII) to trigger data transmission.
 
 **Command:**
 
@@ -398,7 +377,7 @@ Configure the data length in normal transmission mode.
     AT+CIPSENDEX=<length>
     // Multiple connections: (AT+CIPMUX=1)
     AT+CIPSENDEX=<link ID>,<length>
-    // Remote IP and ports can be set in UDP transmission:
+    // Remote IP and ports can be set for UDP transmission:
     AT+CIPSENDEX=[<link ID>,]<length>[,<remote IP>,<remote port>]
 
 **Response:**
@@ -408,7 +387,7 @@ Configure the data length in normal transmission mode.
     OK
     >
 
-This response indicates that AT is ready for receiving data. You should enter the data of designated length. When the requirement of data length is met, or when the string ``\0`` appears in the data, the transmission starts.
+This response indicates that AT is ready for receiving data. You should enter the data of designated length. When the data length reaches the ``<length>`` value, or when the string ``\0`` appears in the data, the transmission starts.
 
 If the connection cannot be established or gets disconnected during transmission, the system returns:
 
@@ -453,7 +432,6 @@ Close TCP/UDP/SSL connection in the multiple connections mode.
 
     AT+CIPCLOSE=<link ID>
 
-
 Execute Command
 ^^^^^^^^^^^^^^^^^
 
@@ -478,8 +456,8 @@ Parameter
 
 .. _cmd-IFSR:
 
-:ref:`AT+CIFSR <TCPIP-AT>`: Obtain the Local IP Address
----------------------------------------------------------
+:ref:`AT+CIFSR <TCPIP-AT>`: Obtain the Local IP Address and MAC Address
+-------------------------------------------------------------------------
 
 Execute Command
 ^^^^^^^^^^^^^^^
@@ -494,8 +472,11 @@ Execute Command
 
 ::
 
-    +CIFSR:<SoftAP IP address>
-    +CIFSR:<Station IP address>
+    +CIFSR:APIP,<SoftAP IP address>
+    +CIFSR:APMAC,<SoftAP MAC address>
+    +CIFSR:STAIP,<Station IP address>
+    +CIFSR:STAMAC,<Station MAC address>
+
     OK
 
 Parameter
@@ -605,7 +586,7 @@ Parameters
    -  0: delete a server.
    -  1: create a server.
 
--  **<port>**: port number; Default: 333.
+-  **[<port>]**: port number; Default: 333.
 -  **[<SSL>]**: the string "SSL", which means configuring an SSL server. If you omit this parameter, you will delete or create a **TCP** server. This parameter is applicable to ESP32 and ESP32-S2 only.
 -  **[<SSL CA enable>]**: applicable to ESP32 and ESP32-S2 only.
 
@@ -633,8 +614,8 @@ Example
 
 .. _cmd-SERVERMAX:
 
-:ref:`AT+CIPSERVERMAXCONN <TCPIP-AT>`: Set the Maximum Connections Allowed by a Server
-----------------------------------------------------------------------------------------
+:ref:`AT+CIPSERVERMAXCONN <TCPIP-AT>`: Query/Set the Maximum Connections Allowed by a Server
+---------------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -696,7 +677,7 @@ Example
 
 .. _cmd-IPMODE:
 
-:ref:`AT+CIPMODE <TCPIP-AT>`: Configure the Transmission Mode
+:ref:`AT+CIPMODE <TCPIP-AT>`: Query/Set the Transmission Mode
 ------------------------------------------------------------------
 
 Query Command
@@ -744,7 +725,7 @@ Parameter
 -  **<mode>**:
 
    -  0: normal transmission mode.
-   -  1: Wi-Fi passthrough mode, or called transparent transmission, which can only be enabled in TCP single connection mode or in UDP mode when the remote IP and port do not change.
+   -  1: Wi-Fi passthrough mode, or called transparent transmission, which can only be enabled in TCP single connection mode, UDP mode when the remote IP and port do not change, or SSL single connection mode.
 
 Notes
 ^^^^^
@@ -762,10 +743,10 @@ Example
 
 .. _cmd-SAVET:
 
-:ref:`AT+SAVETRANSLINK <TCPIP-AT>`: Save the Wi-Fi Passthrough Connection in Flash
-------------------------------------------------------------------------------------------
+:ref:`AT+SAVETRANSLINK <TCPIP-AT>`: Set Whether to Enter Wi-Fi Passthrough Mode on Power-up
+-----------------------------------------------------------------------------------------------
 
-Save TCP Single Connection in Flash
+For TCP/SSL Single Connection
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Set Command
@@ -775,7 +756,7 @@ Set Command
 
 ::
 
-    AT+SAVETRANSLINK=<mode>,<remote IP or domain name>,<remote port>[,<type>,<TCP keep alive>]  
+    AT+SAVETRANSLINK=<mode>,<"remote IP">,<remote port>[,<"type">,<TCP keep alive>]
 
 **Response:**
 
@@ -788,12 +769,12 @@ Parameters
 
 -  **<mode>**:
 
-   -  0: normal mode. ESP devices will NOT enter Wi-Fi passthrough mode on power-up.
-   -  1: ESP devices will enter Wi-Fi passthrough mode on power-up.
+   -  0: ESP will NOT enter Wi-Fi passthrough mode on power-up.
+   -  1: ESP will enter Wi-Fi passthrough mode on power-up.
 
--  **<remote IP>**: remote IP or domain name.
+-  **<remote IP>**: remote IP address or domain name.
 -  **<remote port>**: remote port.
--  **[<type>]**: TCP or UDP. Default: TCP.
+-  **[<type>]**: "TCP" or "SSL". Default: "TCP".
 -  **[<TCP keep alive>]**: TCP keep-alive interval. Default: 0.
 
    -  0: disable the TCP keep-alive function.
@@ -802,7 +783,7 @@ Parameters
 Notes
 """""""
 
--  This command will save the Wi-Fi passthrough mode and its connection in the NVS area. The ESP devices will enter the Wi-Fi passthrough mode in any subsequent power cycles.
+-  This command will save the Wi-Fi passthrough mode configuration in the NVS area. If ``<mode>`` is set to 1, ESP device will enter the Wi-Fi passthrough mode in any subsequent power cycles. The configuration will take effect after ESP reboots.
 -  As long as the remote IP or domain name and port are valid, the configuration will be saved in flash.
 
 Example
@@ -810,9 +791,10 @@ Example
 
 ::
 
-    AT+SAVETRANSLINK=1,"192.168.6.110",1002,"TCP"   
+    AT+SAVETRANSLINK=1,"192.168.6.110",1002,"TCP"
+    AT+SAVETRANSLINK=1,"www.baidu.com",443,"SSL"
 
-Save UDP Transmission in Flash
+For UDP Transmission
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Set Command
@@ -822,7 +804,7 @@ Set Command
 
 ::
 
-    AT+SAVETRANSLINK=<mode>,<remote IP>,<remote port>,<type>[,<UDP local port>] 
+    AT+SAVETRANSLINK=<mode>,<"remote IP">,<remote port>,[<"type">,<UDP local port>]
 
 **Response:**
 
@@ -835,18 +817,18 @@ Parameters
 
 -  **<mode>**:
 
-   -  0: normal mode; ESP will NOT enter Wi-Fi passthrough mode on power-up.
-   -  1: ESP devices enter Wi-Fi passthrough mode on power-up.
+   -  0: ESP will NOT enter Wi-Fi passthrough mode on power-up.
+   -  1: ESP will enter Wi-Fi passthrough mode on power-up.
 
--  **<remote IP>**: remote IP or domain name.
+-  **<remote IP>**: remote IP address or domain name.
 -  **<remote port>**: remote port.
--  **[<type>]**: UDP. Default: TCP.
+-  **[<type>]**: "UDP". Default: "TCP".
 -  **[<UDP local port>]**: local port when UDP Wi-Fi passthrough is enabled on power-up.
 
 Notes
 """""""
 
--  This command will save the Wi-Fi passthrough mode and its connections in the NVS area. The ESP device will enter the Wi-Fi passthrough mode in any subsequent power cycles.
+-  This command will save the Wi-Fi passthrough mode configuration in the NVS area. If ``<mode>`` is set to 1, ESP device will enter the Wi-Fi passthrough mode in any subsequent power cycles. The configuration will take effect after ESP reboots.
 -  As long as the remote IP (or domain name) and port are valid, the configuration will be saved in flash.
 
 Example
@@ -858,15 +840,15 @@ Example
 
 .. _cmd-STO:
 
-:ref:`AT+CIPSTO <TCPIP-AT>`: Set the TCP Server Timeout
-------------------------------------------------------------
+:ref:`AT+CIPSTO <TCPIP-AT>`: Query/Set the local TCP Server Timeout
+--------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 
 **Function:**
 
-Query the TCP server timeout.
+Query the local TCP server timeout.
 
 **Command:**
 
@@ -886,7 +868,7 @@ Set Command
 
 **Function:**
 
-Set the TCP server timeout.
+Set the local TCP server timeout.
 
 **Command:**
 
@@ -903,13 +885,13 @@ Set the TCP server timeout.
 Parameter
 ^^^^^^^^^^
 
--  **<time>**: TCP server timeout. Unit second. Range: 0 ~ 7200.
+-  **<time>**: local TCP server timeout. Unit: second. Range: [0,7200].
 
 Notes
 ^^^^^
 
--  When a timeout occurs, the ESP device configured as a TCP server will terminate the connection from the TCP client that does not respond.
--  If you set <time> to 0, the connection will never timeout. This configuration is not recommended.
+-  When a TCP client does not communicate with the ESP server within the ``<time>`` value, the server will terminate this connection.
+-  If you set ``<time>`` to 0, the connection will never timeout. This configuration is not recommended.
 -  When the client initiates a communication with the server within the set time, the timer will restart. After the timeout expires, the client is closed. During the set time, if the server initiate a communication with the client, the timer will not restart. After the timeout expires, the client is closed.
 
 Example
@@ -923,8 +905,8 @@ Example
 
 .. _cmd-SNTPCFG:
 
-:ref:`AT+CIPSNTPCFG <TCPIP-AT>`: Set the Time Zone and the SNTP Server
---------------------------------------------------------------------------
+:ref:`AT+CIPSNTPCFG <TCPIP-AT>`: Query/Set the Time Zone and the SNTP Server
+----------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -977,7 +959,7 @@ Parameters
 Note
 ^^^^^
 
--  If the three SNTP servers are not configured, one of the following default servers will be used: "cn.ntp.org.cn", "ntp.sjtu.edu.cn", "us.pool.ntp.org".
+-  If the three SNTP servers are not configured, one of the following default servers will be used: "cn.ntp.org.cn", "ntp.sjtu.edu.cn", and "us.pool.ntp.org".
 
 Example
 ^^^^^^^^
@@ -1018,6 +1000,11 @@ Query Command
     +CIPSNTPTIME:<asctime style time>
     OK
 
+Note
+^^^^^
+
+-  The asctime style time is defined at `asctime man page <https://linux.die.net/man/3/asctime>`_.
+
 Example
 ^^^^^^^^
 
@@ -1028,11 +1015,6 @@ Example
     AT+CIPSNTPTIME?
     +CIPSNTPTIME:Mon Dec 12 02:33:32 2016
     OK  
-
-Note
-^^^^^
-
--  The asctime style time is defined at `asctime man page <https://linux.die.net/man/3/asctime>`_.
 
 .. _cmd-UPDATE:
 
@@ -1117,15 +1099,15 @@ Parameters
 ^^^^^^^^^^
 - **<ota mode>**:
     
-    - 0: OTA via TCP.
-    - 1: OTA via SSL. If it does not work, please check whether ``make menuconfig`` > ``Component config`` > ``AT`` > ``OTA based upon ssl`` is enabled. For more information, please refer to :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`.
+    - 0: OTA via HTTP.
+    - 1: OTA via HTTPS. If it does not work, please check whether ``make menuconfig`` > ``Component config`` > ``AT`` > ``OTA based upon ssl`` is enabled. For more information, please refer to :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`.
 
 - **<version>**: AT version, such as, ``v1.2.0.0``, ``v1.1.3.0``, ``v1.1.2.0``.
 - **<firmware name>**: firmware to upgrade, such as, ``ota``, ``mqtt_ca``, ``client_ca`` or other custom partition in ``at_customize.csv``.
 - **<nonblocking>**:
 
     - 0: OTA by blocking mode (In this mode, user can not send AT command until OTA completes successfully or fails.)
-    - 1: OTA by non-blocking mode（Users need to manually restart after update done(+CIPUPDATE:4).)
+    - 1: OTA by non-blocking mode（Users need to manually restart after upgrade done (+CIPUPDATE:4).)
 
 - **<state>**:
 
@@ -1141,8 +1123,8 @@ Notes
 
 -  The speed of the upgrade depends on the network status.
 -  If the upgrade fails due to unfavorable network conditions, AT will return ``ERROR``. Please wait for some time before retrying.
--  If you use Espressif's AT `BIN <https://www.espressif.com/zh-hans/support/download/at>`_, ``AT+CIUPDATE`` will download a new AT BIN from the Espressif Cloud.
--  If you use a user-compiled AT BIN, you need to implement their own AT+CIUPDATE FOTA function. ESP-AT project provides an example of `FOTA <https://github.com/espressif/esp-at/blob/master/main/at_upgrade.c>`_.
+-  If you use Espressif's AT `BIN <https://www.espressif.com/en/support/download/at>`_, ``AT+CIUPDATE`` will download a new AT BIN from the Espressif Cloud.
+-  If you use a user-compiled AT BIN, you need to implement your own AT+CIUPDATE FOTA function. ESP-AT project provides an example of `FOTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_ota_cmd.c>`_.
 -  After you upgrade the AT firmware, you are suggested to call the command :ref:`AT+RESTORE <cmd-RESTORE>` to restore the factory default settings.
 
 Example
@@ -1161,8 +1143,8 @@ Example
 
 .. _cmd-IPDINFO:
 
-:ref:`AT+CIPDINFO <TCPIP-AT>`: Show the Remote IP and Port with "+IPD"
-------------------------------------------------------------------------
+:ref:`AT+CIPDINFO <TCPIP-AT>`: Set "+IPD" Message Mode
+-----------------------------------------------------------------------------
 
 Set Command
 ^^^^^^^^^^^
@@ -1184,8 +1166,8 @@ Parameters
 
 -  **<mode>**:
 
-   -  0: does not show the remote IP and port with "+IPD" and "+CIPRECVDATA".
-   -  1: shows the remote IP and port with "+IPD" and "+CIPRECVDATA".
+   -  0: does not show the remote IP and port in "+IPD" and "+CIPRECVDATA" messages.
+   -  1: show the remote IP and port in "+IPD" and "+CIPRECVDATA" messages.
 
 Example
 ^^^^^^^^
@@ -1196,7 +1178,7 @@ Example
 
 .. _cmd-SSLCCONF:
 
-:ref:`AT+CIPSSLCCONF <TCPIP-AT>`: Configure SSL Clients
+:ref:`AT+CIPSSLCCONF <TCPIP-AT>`: Query/Set SSL Clients
 --------------------------------------------------------
 
 Query Command
@@ -1204,7 +1186,7 @@ Query Command
 
 **Function:**
 
-Obtain the configuration of each connection where the ESP device runs as an SSL client.
+Query the configuration of each connection where the ESP device runs as an SSL client.
 
 **Command:**
 
@@ -1226,9 +1208,9 @@ Set Command
 
 ::
 
-    // Single connection: (+CIPMUX=0)
+    // Single connection: (AT+CIPMUX=0)
     AT+CIPSSLCCONF=<auth_mode>[,<pki_number>][,<ca_number>]
-    // Multiple connections: (+CIPMUX=1)
+    // Multiple connections: (AT+CIPMUX=1)
     AT+CIPSSLCCONF=<link ID>,<auth_mode>[,<pki_number>][,<ca_number>]
 
 **Response:**
@@ -1240,12 +1222,12 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0~max). For multiple connections, if the value is max, it means all connections. By default, max is 5.
+-  **<link ID>**: ID of the connection (0 ~ max). For multiple connections, if the value is max, it means all connections. By default, max is 5.
 -  **<auth_mode>**:
 
-   -  0: no authentication. In this case, <pki_number> and <ca_number> are not required.
-   -  1: the server verifies the client's certificate and private key.
-   -  2: the client loads CA to verify the server's certificate and private key.
+   -  0: no authentication. In this case ``<pki_number>`` and ``<ca_number>`` are not required.
+   -  1: the client provides the client certificate for the server to verify.
+   -  2: the client loads CA certificate to verify the server's certificate.
    -  3: mutual authentication.
 
 -  **<pki_number>**: the index of certificate and private key. If there is only one certificate and private key, the value should be 0.
@@ -1255,11 +1237,11 @@ Notes
 ^^^^^
 
 -  If you want this configuration to take effect immediately, run this command before establishing an SSL connection.
--  The configuration changes will be saved in the NVS area. If you run :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL Wi-Fi passthrough mode, the ESP device will establish an SSL connection based on this configuration when powered on next time.
+-  The configuration changes will be saved in the NVS area. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL Wi-Fi passthrough mode on power-up, the ESP device will establish an SSL connection based on this configuration when powered up next time.
 
 .. _cmd-SSLCCN:
 
-:ref:`AT+CIPSSLCCN <TCPIP-AT>`: Configure the Common Name of the SSL Client
+:ref:`AT+CIPSSLCCN <TCPIP-AT>`: Query/Set the Common Name of the SSL Client
 -----------------------------------------------------------------------------
 
 Query Command
@@ -1267,7 +1249,7 @@ Query Command
 
 **Function:**
 
-Obtain the common name of the SSL client of each connection.
+Query the common name of the SSL client of each connection.
 
 **Command:**
 
@@ -1289,9 +1271,9 @@ Set Command
 
 ::
 
-    // Single connection: (+CIPMUX=0)
+    // Single connection: (AT+CIPMUX=0)
     AT+CIPSSLCCN=<"common name">
-    // Multiple connections: (+CIPMUX=1)
+    // Multiple connections: (AT+CIPMUX=1)
     AT+CIPSSLCCN=<link ID>,<"common name">
 
 **Response:**
@@ -1303,7 +1285,7 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0~max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
+-  **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
 -  **<"common name">**: this parameter is used to verify the Common Name in the certificate sent by the server.
 
 Note
@@ -1313,7 +1295,7 @@ Note
 
 .. _cmd-SSLCSNI:
 
-:ref:`AT+CIPSSLCSNI <TCPIP-AT>`: Configure SSL Client Server Name Indication (SNI)
+:ref:`AT+CIPSSLCSNI <TCPIP-AT>`: Query/Set SSL Client Server Name Indication (SNI)
 -----------------------------------------------------------------------------------
 
 Query Command
@@ -1321,15 +1303,13 @@ Query Command
 
 **Function:**
 
-Obtain the SNI configuration of each connection.
+Query the SNI configuration of each connection.
 
 **Command:**
 
 ::
 
     AT+CIPSSLCSNI?
-
-
 
 **Response:**
 
@@ -1345,9 +1325,9 @@ Set Command
 
 ::
 
-    Single connection: (+CIPMUX=0)
+    Single connection: (AT+CIPMUX=0)
     AT+CIPSSLCSNI=<"sni">
-    Multiple connections: (+CIPMUX=1)
+    Multiple connections: (AT+CIPMUX=1)
     AT+CIPSSLCSNI=<link ID>,<"sni">
 
 **Response:**
@@ -1359,7 +1339,7 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0~max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
+-  **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
 -  **<"sni">**: the Server Name Indication in ClientHello.
 
 Notes
@@ -1369,7 +1349,7 @@ Notes
 
 .. _cmd-SSLCALPN:
 
-:ref:`AT+CIPSSLCALPN <TCPIP-AT>`: Configure SSL Client Application Layer Protocol Negotiation (ALPN)
+:ref:`AT+CIPSSLCALPN <TCPIP-AT>`: Query/Set SSL Client Application Layer Protocol Negotiation (ALPN)
 -----------------------------------------------------------------------------------------------------
 
 Query Command
@@ -1377,7 +1357,7 @@ Query Command
 
 **Function:**
 
-Obtain the ALPN configuration of each connection where the ESP device runs as an SSL client.
+Query the ALPN configuration of each connection where the ESP device runs as an SSL client.
 
 **Command:**
 
@@ -1399,9 +1379,9 @@ Set Command
 
 ::
 
-    // Single connection: (+CIPMUX=0)
+    // Single connection: (AT+CIPMUX=0)
     AT+CIPSSLCALPN=<counts>,<"alpn">[,<"alpn">[,<"alpn">]]
-    // Multiple connections: (+CIPMUX=1)
+    // Multiple connections: (AT+CIPMUX=1)
     AT+CIPSSLCALPN=<link ID>,<counts>,<"alpn">[,<"alpn">[,<"alpn">]]
 
 **Response:**
@@ -1413,7 +1393,7 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0~max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
+-  **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
 -  **<counts>**: the number of ALPNs.
 -  **<"alpn">**: a string paramemter showing the ALPN in ClientHello.
 
@@ -1424,7 +1404,7 @@ Note
 
 .. _cmd-SSLCPSK:
 
-:ref:`AT+CIPSSLCPSK <TCPIP-AT>`: Configure SSL Client Pre-shared Key (PSK)
+:ref:`AT+CIPSSLCPSK <TCPIP-AT>`: Query/Set SSL Client Pre-shared Key (PSK)
 ---------------------------------------------------------------------------
 
 Query Command
@@ -1432,7 +1412,7 @@ Query Command
 
 **Function:**
 
-Obtain the PSK configuration of each connection where the ESP device runs as an SSL client.
+Query the PSK configuration of each connection where the ESP device runs as an SSL client.
 
 **Command:**
 
@@ -1454,9 +1434,9 @@ Set Command
 
 ::
 
-    // Single connection: (+CIPMUX=0)
+    // Single connection: (AT+CIPMUX=0)
     AT+CIPSSLCPSK=<"psk">,<"hint">
-    // Multiple connections: (+CIPMUX=1)
+    // Multiple connections: (AT+CIPMUX=1)
     AT+CIPSSLCPSK=<link ID>,<"psk">,<"hint">
 
 **Response:**
@@ -1468,8 +1448,7 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0~max). For single connection, <link ID> is 0.
-   for multiple connections, if the value is max, it means all connections, max is 5 by default.
+-  **<link ID>**: ID of the connection (0 ~ max). For single connection, <link ID> is 0. For multiple connections, if the value is max, it means all connections, max is 5 by default.
 -  **<"psk">**: PSK identity. Maximum length: 32.
 -  **<"hint">**: PSK hint. Maximum length: 32.
 
@@ -1480,15 +1459,15 @@ Notes
 
 .. _cmd-AUTOCONNINT:
 
-:ref:`AT+CIPRECONNINTV <TCPIP-AT>`: Set the TCP reconnection Interval for the Wi-Fi Passthrough Mode
------------------------------------------------------------------------------------------------------
+:ref:`AT+CIPRECONNINTV <TCPIP-AT>`: Query/Set the TCP reconnection Interval for the Wi-Fi Passthrough Mode
+-----------------------------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 
 **Function:**
 
-Obtain the automatic connect interval for the Wi-Fi passthrough mode.
+Query the automatic connect interval for the Wi-Fi passthrough mode.
 
 **Command:**
 
@@ -1525,7 +1504,12 @@ Set the automatic reconnecting interval when TCP/UDP/SSL transmission breaks in 
 Parameter
 ^^^^^^^^^^
 
--  **<interval>**: the duration between automatic reconnections. Unit: 100 milliseconds. Default: 1. Range: 1 ~ 36000. 
+-  **<interval>**: the duration between automatic reconnections. Unit: 100 milliseconds. Default: 1. Range: [1,36000]. 
+
+Note
+^^^^^
+
+-  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 
 Example
 ^^^^^^^^
@@ -1534,15 +1518,10 @@ Example
 
     AT+CIPRECONNINTV=10  
 
-Note
-^^^^^
-
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
-
 .. _cmd-CIPRECVMODE:
 
-:ref:`AT+CIPRECVMODE <TCPIP-AT>`: Set Socket Receiving Mode
--------------------------------------------------------------
+:ref:`AT+CIPRECVMODE <TCPIP-AT>`: Query/Set Socket Receiving Mode
+-----------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1584,20 +1563,13 @@ Parameter
 
 - **<mode>**: the receive mode of socket data. Default: 0.
    
-   - 0: active mode. ESP-AT will send all the received socket data instantly to the host MCU through UART with header “+IPD".
-   - 1: passive mode. ESP-AT will keep the received socket data in an internal buffer (5744 bytes by default), and wait for the host MCU to read it. If the buffer is full, the socket transmission will be blocked.
-
-Example
-^^^^^^^^
-
-::
-
-    AT+CIPRECVMODE=1   
+   - 0: active mode. ESP-AT will send all the received socket data instantly to the host MCU with header “+IPD".
+   - 1: passive mode. ESP-AT will keep the received socket data in an internal buffer (socket receive window, 5760 bytes by default for ESP8266 devices, 5744 bytes by default for ESP32 and ESP32-S2 devices), and wait for the host MCU to read. If the buffer is full, the socket transmission will be blocked for TCP and SSL connections, or data will be lost for UDP connections.
 
 Notes
 ^^^^^
 
--  The configuration is for TCP and SSL transmission only, and can not be used in the Wi-Fi passthrough mode. If it is a UDP transmission in passive mode, data will be lost when the buffer is full.
+-  The configuration can not be used in the Wi-Fi passthrough mode. If it is a UDP transmission in passive mode, data will be lost when the buffer is full.
 
 -  When ESP-AT receives socket data in passive mode, it will prompt the following messages in different scenarios:
 
@@ -1605,8 +1577,15 @@ Notes
    -  For single connection mode (AT+CIPMUX=0), the message is ``+IPD,<len>``.
 
 -  ``<len>`` is the total length of socket data in the buffer.
--  You should read data by running ``AT+CIPRECVDATA`` once there is a ``+IPD`` reported. Otherwise, the next ``+IPD`` will not be reported to the host MCU until the previous ``+IPD`` has been read.
--  In case of disconnection, the buffered socket data will still be there and can be read by the MCU until you send ``AT+CIPCLOSE``. In other words, if ``+IPD`` has been reported, the message ``CLOSED`` of this connection will never come until you send ``AT+CIPCLOSE`` or read all data by command ``AT+CIPRECVDATA``.
+-  You should read data by running :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` once there is a ``+IPD`` reported. Otherwise, the next ``+IPD`` will not be reported to the host MCU until the previous ``+IPD`` has been read.
+-  In case of disconnection, the buffered socket data will still be there and can be read by the MCU until you send :ref:`AT+CIPCLOSE <cmd-CLOSE>`. In other words, if ``+IPD`` has been reported, the message ``CLOSED`` of this connection will never come until you send :ref:`AT+CIPCLOSE <cmd-CLOSE>` or read all data by command :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`.
+
+Example
+^^^^^^^^
+
+::
+
+    AT+CIPRECVMODE=1   
 
 .. _cmd-CIPRECVDATA:
 
@@ -1620,9 +1599,9 @@ Set Command
 
 ::
 
-    // Single connection: (+CIPMUX=0)
+    // Single connection: (AT+CIPMUX=0)
     AT+CIPRECVDATA=<len>
-    // Multiple connections: (+CIPMUX=1)
+    // Multiple connections: (AT+CIPMUX=1)
     AT+CIPRECVDATA=<link_id>,<len>
 
 **Response:**
@@ -1679,8 +1658,6 @@ Query the length of the entire data buffered for the connection.
 
     AT+CIPRECVLEN?
 
-
-
 **Response:**
 
 ::
@@ -1709,7 +1686,7 @@ Example
 
 .. _cmd-CIPPING:
 
-:ref:`AT+PING <TCPIP-AT>`: Send ICMP ECHO_REQUEST to Network Hosts
+:ref:`AT+PING <TCPIP-AT>`: Ping the Remote Host
 --------------------------------------------------------------------
 
 Set Command
@@ -1717,7 +1694,7 @@ Set Command
 
 **Function:**
 
-Ping packets.
+Ping the remote host.
 
 **Command:**
 
@@ -1737,7 +1714,7 @@ or
 
 ::
 
-    +timeout
+    +PING:TIMEOUT
 
     ERROR
 
@@ -1757,7 +1734,7 @@ Example
 
 .. _cmd-DNS:
 
-:ref:`AT+CIPDNS <TCPIP-AT>`: Configure Domain Name System (DNS)
+:ref:`AT+CIPDNS <TCPIP-AT>`: Query/Set DNS Server Information
 ---------------------------------------------------------------
 
 Query Command
@@ -1765,7 +1742,7 @@ Query Command
 
 **Function:**
 
-Obtain the current DNS information.
+Query the current DNS server information.
 
 **Command:**
 
@@ -1785,7 +1762,7 @@ Set Command
 
 **Function:**
 
-Configure the Domain Name System.
+Set DNS server information.
 
 **Command:**
 
@@ -1811,11 +1788,18 @@ Parameters
 -  **<enable>**: configure DNS settings
 
    -  0: Enable automatic DNS settings from DHCP. The DNS will be restored to ``222.222.67.208``. Only when DHCP is updated will it take effect.
-   -  1: Enable manual DNS settings. If you do not set a value for ``DNS IP``, it will use ``222.222.67.208`` by default.
+   -  1: Enable manual DNS settings. If you do not set a value for ``<DNS IPx>``, it will use ``222.222.67.208`` by default.
 
 -  **<DNS IP1>**: the first DNS IP. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
 -  **<DNS IP2>**: the second DNS IP. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
 -  **<DNS IP3>**: the third DNS IP. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
+
+Notes
+^^^^^
+
+-  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+-  The three parameters cannot be set to the same server.
+-  When ``<enable>`` is set to 1, the DNS server may change according to the configuration of the router which the ESP device is connected to.
 
 Example
 ^^^^^^^^
@@ -1825,16 +1809,9 @@ Example
     AT+CIPDNS=0
     AT+CIPDNS=1,"222.222.67.208","114.114.114.114","8.8.8.8"
 
-Notes
-^^^^^
-
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  The three parameters cannot be set to the same server.
--  The DNS server may change according to the configuration of the router which the ESP device is connected to.
-
 .. _cmd-TCPOPT:
 
-:ref:`AT+CIPTCPOPT <TCPIP-AT>`: Configure the Socket Options
+:ref:`AT+CIPTCPOPT <TCPIP-AT>`: Query/Set the Socket Options
 ---------------------------------------------------------------
 
 Query Command
@@ -1842,7 +1819,7 @@ Query Command
 
 **Function:**
 
-Obtain current socket options.
+Query current socket options.
 
 **Command:**
 
@@ -1884,8 +1861,8 @@ or
 Parameters
 ^^^^^^^^^^
 
--  **<link_id>**: ID of the connection (0~max). For multiple connections, if the value is max, it means all connections. By default, max is 5.
--  **<so_linger>**: configure the SO_LINGER options for the socket. Unit: second. Default: -1.
+-  **<link_id>**: ID of the connection (0 ~ max). For multiple connections, if the value is max, it means all connections. By default, max is 5.
+-  **<so_linger>**: configure the ``SO_LINGER`` options for the socket. Unit: second. Default: -1.
 
    -  = -1: off
    -  = 0: on, linger time = 0
