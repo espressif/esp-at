@@ -17,7 +17,7 @@ endchoice
 config AT_CUSTOMIZED_PARTITION_TABLE_FILE
     string "AT Customized partition file"
     depends on AT_CUSTOMIZED_PARTITION_TABLE_SUPPORT
-    default at_customize.csv
+    default "at_customize.csv"
     help
         partition table path
 

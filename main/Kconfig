@@ -33,12 +33,12 @@ config AT_COMMAND_TERMINATOR_SUPPORT
     depends on AT_ENABLE
 
 config AT_COMMAND_TERMINATOR
-    hex "AT command terminator. "
-    help 
-        Now just support one character, the range is from 0x01 to 0xFF.
+    hex "AT command terminator."
     range 0x01 0xFF
     default 0x0A
     depends on AT_COMMAND_TERMINATOR_SUPPORT
+    help
+        Now just support one character, the range is from 0x01 to 0xFF.
 
 config AT_BASE_COMMAND_SUPPORT
     bool "AT base command support."
@@ -197,7 +197,7 @@ config AT_ETHERNET_SUPPORT
     
 choice PHY_MODEL
     prompt "Ethernet PHY"
-    default CONFIG_PHY_IP101
+    default PHY_IP101
     depends on AT_ETHERNET_SUPPORT
     help
         Select the PHY driver to use for ESP32 AT.
@@ -231,8 +231,6 @@ config AT_FS_COMMAND_SUPPORT
     bool "AT FS command support."
     default "n"
     depends on AT_ENABLE
-    select WL_SECTOR_SIZE_512
-    select FATFS_LFN_HEAP
 
 config AT_DRIVER_COMMAND_SUPPORT
     bool "AT driver command support."
