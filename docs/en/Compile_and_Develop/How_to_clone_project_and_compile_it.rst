@@ -143,7 +143,7 @@ The debug log will output through UART1 by default, which TXD0 is GPIO2, but use
 Compiling and flashing the project
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Suppose you have completed the installation of the compiler environment for ESP-IDF, if not, you should complete it referring to `ESP8266 RTOS SDK Getting Started Guide <https://docs.espressif.com/projects/esp8266-rtos-sdk/en/v3.2/get-started/index.html#setup-toolchain>`_. Then, to compile ESP-AT project properly, please do the following additional steps::
+Suppose you have completed the installation of the compiler environment for ESP8266 RTOS SDK, if not, you should complete it referring to `ESP8266 RTOS SDK Getting Started Guide <https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/get-started/index.html#setup-toolchain>`_. Then, to compile ESP-AT project properly, please do the following additional steps::
 
   step1:python > 3.8.0 
   step2:[install pip](https://pip.pypa.io/en/latest/installing/)  
