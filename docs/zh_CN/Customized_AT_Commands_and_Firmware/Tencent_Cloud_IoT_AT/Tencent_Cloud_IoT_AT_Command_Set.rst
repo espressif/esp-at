@@ -1,7 +1,11 @@
 腾讯云 IoT AT 命令集
 ====================
 
-本文档主要介绍腾讯云 IoT AT 命令、错误码及应用说明，仅针对 ESP8266 设备，具体目录结构请参考左侧导航栏。
+本文档主要介绍腾讯云 IoT AT 命令、错误码及应用说明，仅针对 ESP8266 设备，下表为本文档的目录。
+
+.. contents::
+   :local:
+   :depth: 2
 
 说明
 ----
@@ -33,7 +37,7 @@
 符号说明
 ^^^^^^^^
 
-1. 本文档所有语法声明中（包括测试命令、读取命令、设置命令），所有形如“xxx”的双引号引注信息，都是确定内容的信息，例：
+1. 本文档所有语法声明中（包括测试命令、读取命令、设置命令），所有形如 ``"xxx"`` 的双引号引注信息，都是确定内容的信息，例：
 
 - 命令
 
@@ -45,7 +49,7 @@
 
   ::
 
-    +TCDEVINFOSET: “TLSMODE (0/1/2)”,“PRODUCTID”,“DEVICENAME”[,” DEVICESECRET”]
+    +TCDEVINFOSET: "TLSMODE (0/1/2)","PRODUCTID","DEVICENAME"[,"DEVICESECRET"]
 
     OK
 
@@ -113,7 +117,7 @@ ESP8266 的 AT 命令集及使用说明请参考乐鑫官方 `ESP-AT 用户指�
 
 2. 每条 AT 命令都应以 ``/r/n`` 为结束符。
 
-3. 如果AT命令的参数内容包含了特殊字符如双引号 ``”`` 、逗号 ``,`` 等，需要加 ``\`` 进行转义，比如 PUB 消息的 payload 采用的 JSON 数据格式为 ``{"action": "publish_test", "count":"0"}``，则应该转义为 ``{\"action\":\"publish_test\"\,\"count\":\"0\"}`` 再传入，否则会报错。
+3. 如果AT命令的参数内容包含了特殊字符如双引号 ``"`` 、逗号 ``,`` 等，需要加 ``\`` 进行转义，比如 PUB 消息的 payload 采用的 JSON 数据格式为 ``{"action": "publish_test", "count":"0"}``，则应该转义为 ``{\"action\":\"publish_test\"\,\"count\":\"0\"}`` 再传入，否则会报错。
 
 4. 如果上一个 AT 命令还没处理完成，再发送新的命令会返回如下错误：
 
@@ -186,7 +190,7 @@ AT+TCDEVINFOSET：平台设备信息设置
 
 ::
 
-    AT+TCDEVINFOSET=<tls_mode>,<product_id>,<device_name>,< device_secret>[,<product_region>]
+    AT+TCDEVINFOSET=<tls_mode>,<product_id>,<device_name>,<device_secret>[,<product_region>]
 
 **响应：**
 
@@ -226,7 +230,7 @@ AT+TCDEVINFOSET：平台设备信息设置
 ::
 
     // 设置成功
-    AT+TCDEVINFOSET=1,”CTQS08Y5LG”,”Dev01”,”ZHNkIGRzZCA=”
+    AT+TCDEVINFOSET=1,"CTQS08Y5LG","Dev01","ZHNkIGRzZCA="
     OK
     +TCDEVINFOSET:OK
 
@@ -252,7 +256,7 @@ AT+TCPRDINFOSET：平台产品信息设置
 
 ::
 
-    +TCPRDINFOSET:”TLS_MODE(1)”,”PRODUCT_ID”,”PRODUCT_SECRET_BCC”,” DEVICE_NAME” ,"PRODUCT_REGION" 
+    +TCPRDINFOSET:"TLS_MODE(1)","PRODUCT_ID","PRODUCT_SECRET_BCC","DEVICE_NAME","PRODUCT_REGION" 
 
     OK
 
@@ -320,7 +324,7 @@ AT+TCPRDINFOSET：平台产品信息设置
 """"
 ::
 
-    AT+TCPRDINFOSET=1,”CTQS08Y5LG”,”ZHNkIGRzZCA=”,”Dev01”
+    AT+TCPRDINFOSET=1,"CTQS08Y5LG","ZHNkIGRzZCA=","Dev01"
 
     OK
     +TCPRDINFOSET:OK
@@ -480,7 +484,7 @@ AT+TCRESTORE：清除模组设备信息
 
 - 如果模组已经连接腾讯云 MQTT 服务器，则返回错误，用户需要先发送断开连接命令 (:ref:`AT+TCMQTTDISCONN <cmd-TCMQTTDISCONN>`) 才能执行该命令。
 - 如果状态允许，则返回 OK，然后清除模组上面存储的腾讯云相关设备及产品信息，以及缓存的 OTA 固件信息，并重启模组。
-- 该命令不会清除模组信息 (即通过 :ref:`AT+TCMODULE <cmd-TCMODULE>` 可以读取的信息) 以及 ESP8266 的 NVS 数据包括 Wi-Fi 配置，如果需要清除 Wi-Fi 配置信息需要执行 AT+RESTORE。
+- 该命令不会清除模组信息（即通过 :ref:`AT+TCMODULE <cmd-TCMODULE>` 可以读取的信息）以及 ESP8266 的 NVS 数据包括 Wi-Fi 配置，如果需要清除 Wi-Fi 配置信息需要执行 AT+RESTORE。
 
 示例
 """"
@@ -726,7 +730,7 @@ AT+TCMQTTPUB：向某个 Topic 发布消息
 ::
 
     // 消息发布成功
-    AT+TCMQTTPUB="iot-ee54phlu/device1/get ",1,"hello world"
+    AT+TCMQTTPUB="iot-ee54phlu/device1/get",1,"hello world"
 
     OK
     +TCMQTTPUB: OK
@@ -754,7 +758,7 @@ AT+TCMQTTPUBL：向某个 Topic 发布长消息
 
 ::
 
-    +TCMQTTPUBL: ”TOPIC_NAME(maxlen 128)”, ”QOS(0/1)”,”LEN(1-2048)” 
+    +TCMQTTPUBL: "TOPIC_NAME(maxlen 128)", "QOS(0/1)","LEN(1-2048)" 
 
     OK
 
@@ -765,7 +769,7 @@ AT+TCMQTTPUBL：向某个 Topic 发布长消息
 
 ::
 
-    AT+TCMQTTPUBL= <topic>,<qos>,<msg_length>
+    AT+TCMQTTPUBL=<topic>,<qos>,<msg_length>
 
 **响应：**
 
@@ -834,7 +838,7 @@ AT+TCMQTTPUBRAW：向某个 Topic 发布二进制数据消息
 
 ::
 
-    +TCMQTTPUBRAW: ”TOPIC_NAME(maxlen128)”, ”QOS(0/1)”,”LEN(1-2048)” 
+    +TCMQTTPUBRAW: "TOPIC_NAME(maxlen128)", "QOS(0/1)","LEN(1-2048)" 
 
     OK
 
@@ -845,7 +849,7 @@ AT+TCMQTTPUBRAW：向某个 Topic 发布二进制数据消息
 
 ::
 
-    AT+TCMQTTPUBRAW = <topic>,<qos>,<msg_length>
+    AT+TCMQTTPUBRAW=<topic>,<qos>,<msg_length>
 
 **响应：**
 
@@ -914,7 +918,7 @@ AT+TCMQTTSUB：订阅 MQTT 某个 Topic
 
 ::
 
-    +TCMQTTSUB:”TOPIC_NAME(maxlen 128)”,”QOS(0/1)”
+    +TCMQTTSUB:"TOPIC_NAME(maxlen 128)","QOS(0/1)"
 
     OK
 
@@ -1017,7 +1021,7 @@ AT+TCMQTTUNSUB：取消已经订阅的 Topic
 
 ::
 
-    +TCMQTTUNSUB: ” TOPIC_NAME”
+    +TCMQTTUNSUB: "TOPIC_NAME"
 
     OK
 
@@ -1061,10 +1065,10 @@ AT+TCMQTTUNSUB：取消已经订阅的 Topic
 
 - 如果模组尚未连接腾讯云 MQTT 服务器，则返回错误，用户需要先发送连接命令 (:ref:`AT+TCMQTTCONN <cmd-TCMQTTCONN>`) 才能订阅消息。
 - 如果模组处于 OTA 下载状态中，不支持该命令，会返回错误。
-- 如果输入合法，首先返回 ``OK``，然后返回取消订阅成功与否
+- 如果输入合法，首先返回 ``OK``，然后返回取消订阅成功与否：
 
-  - ``+TCMQTTUNSUB:OK``：取消订阅成功
-  - ``+TCMQTTUNSUB:FAIL,<err_code>``：取消订阅失败
+  - ``+TCMQTTUNSUB:OK``：取消订阅成功；
+  - ``+TCMQTTUNSUB:FAIL,<err_code>``：取消订阅失败。
 
 参数
 """"
@@ -1154,7 +1158,7 @@ OTA 功能使能控制及版本设置
 
 ::
 
-    +TCOTASET: 1(ENABLE)/0(DISABLE),”FW_version”
+    +TCOTASET: 1(ENABLE)/0(DISABLE),"FW_version"
 
     OK
 
@@ -1206,7 +1210,7 @@ OTA 功能使能控制及版本设置
 - 如果输入合法，模组会先返回 ``OK``，然后订阅 OTA 的 Topic（用户无须手动订阅 Topic) ，启动 OTA 后台任务，并上报本地版本，返回执行结果。如果后台任务已经启动并且不处于下载状态，则执行该命令会再次上报本地固件版本。如果已经在 OTA 下载状态中，执行该命令则会返回错误。
 - 该命令执行成功之后，模组会处于监听升级命令状态，这个时候如果用户通过控制台下发升级固件的命令，模组解析命令成功之后会进入 OTA 下载状态并上报 ``+TCOTASTATUS:ENTERUPDATE`` 的 URC 给 MCU。进入 OTA 下载状态之后，会禁用部分 AT 命令，直到固件下载结束。
 - 当固件下载结束，成功会上报 ``+TCOTASTATUS:UPDATESUCCESS``，失败会上报 ``+TCOTASTATUS:UPDATEFAIL``，并退出后台任务。这个时候需要再次执行该命令，才会重新启动后台下载任务。
-- 固件下载支持断点续传，异常失败重新启动后，已下载部分无须重新下载。
+- 固件下载支持断点续传，异常失败重新启动后，已下载部分无需重新下载。
 - 通过该命令启动固件升级任务，会支持 MCU 测固件下载以及模组自身的固件升级。对于模组自身的固件升级，在固件下载成功之后会上报 ``+TCOTASTATUS:UPDATERESET``，并在 2 秒后自动重启进入新固件。
 
   - ``+TCOTASET:OK``: OTA 功能设置 OK
@@ -1215,13 +1219,13 @@ OTA 功能使能控制及版本设置
 参数
 """"
 - **<ctlstate>**：OTA 使能控制，布尔型，0 关闭，1 使能。enable 上报本地版本并启动后台下载任务；disable 则取消后台下载任务
-- **< fw_ver >**：系统当前固件版本信息，字符型，版本格式：V.R.C，譬如 1.0.0. 长度 1 ~ 32 字节
+- **<fw_ver>**：系统当前固件版本信息，字符型，版本格式：V.R.C，譬如 1.0.0. 长度 1 ~ 32 字节
 
 示例
 """"
 ::
 
-    AT+TCOTASET=1,”1.0.1”
+    AT+TCOTASET=1,"1.0.1"
     OK
     +TCOTASET:OK
 
@@ -1248,7 +1252,7 @@ AT+TCFWINFO：读取模组缓存的固件信息
 
 ::
 
-    +TCFWINFO: ”FW_VERSION”，”FW_SIZE” ，”FW_MD5”,”FW_MAX_SIZE_OF_MODULE”
+    +TCFWINFO: "FW_VERSION","FW_SIZE","FW_MD5","FW_MAX_SIZE_OF_MODULE"
 
     OK
 
@@ -1290,7 +1294,7 @@ AT+TCFWINFO：读取模组缓存的固件信息
     AT+TCFWINFO？
 
     OK
-    +TCFWINFO:”2.0.0”,516360,” 93412d9ab8f3039caed9667a1d151e86”
+    +TCFWINFO:"2.0.0",516360,"93412d9ab8f3039caed9667a1d151e86"
 
 .. _cmd-TCREADFWDATA:
 
@@ -1315,7 +1319,7 @@ AT+TCREADFWDATA：读取模组缓存的固件数据
 
 ::
 
-    +TCREADFWDATA: ”LEN_FOR_READ” 
+    +TCREADFWDATA: "LEN_FOR_READ" 
     OK
 
 设置命令
@@ -1400,7 +1404,7 @@ URC 模组主动上报 MCU 消息
 """"
 ::
 
-    +TCMQTTRCVPUB:" CTQS08Y5LG/Dev01/get ",11,"hello world"
+    +TCMQTTRCVPUB:"CTQS08Y5LG/Dev01/get",11,"hello world"
 
 +TCMQTTDISCON（MQTT 断开时上报的信息）
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1479,7 +1483,7 @@ OTA 状态发生变化时上报的 URC
 """"
 ::
 
-    + TCOTASTATUS:UPDATESUCCESS
+    +TCOTASTATUS: UPDATESUCCESS
 
 Wi-Fi 配网及 AT 辅助命令
 ----------------------------
@@ -1724,7 +1728,7 @@ AT+TCSAP：以 softAP 方式进行 Wi-Fi 配网及设备绑定
 
 - 如果模组处于 MQTT 已连接状态中，则不支持该设置命令，会返回错误。需要先断开 MQTT 连接。
 - 该命令执行成功后，蓝色 Wi-Fi 指示灯会进入 200 ms 为周期的闪烁状态，这个时候执行腾讯连连小程序上面的添加设备操作并按照指示进行。
-- 如果在 5 分钟内没有执行操作，模组自动退出配网状态，并返回超时错误：``+TCSAP:FAIL,202``
+- 如果在 5 分钟内没有执行操作，模组自动退出配网状态，并返回超时错误：``+TCSAP:FAIL,202``。
 
 参数
 """"
@@ -1735,9 +1739,9 @@ AT+TCSAP：以 softAP 方式进行 Wi-Fi 配网及设备绑定
 说明
 """"
 
-- 下发此命令后，可以搜索到所配置的 ssid 的热点，手机可以按配置的密码选择连接此热点，模组同时会起一个 UDP sever，serverip:192.168.4.1.
-- APP 和模组的配网可进行交互数据流
-- 如果只提供 ssid，则会启动无加密的 Wi-Fi 热点
+- 下发此命令后，可以搜索到所配置的 ssid 的热点，手机可以按配置的密码选择连接此热点，模组同时会起一个 UDP server，serverip:192.168.4.1。
+- APP 和模组的配网可进行交互数据流。
+- 如果只提供 ssid，则会启动无加密的 Wi-Fi 热点。
 
 示例
 """"
@@ -1830,7 +1834,7 @@ AT+TCMODINFOSET：ESP 模组信息设置
 
 ::
 
-    +TCMODINFOSET:"MODULE NAME","FLASH_SIZE (2/4)","WIFI LED GPIO","FW BASE ADDR","FW MAX SIZE",”FIXED CONNID” 
+    +TCMODINFOSET:"MODULE NAME","FLASH_SIZE (2/4)","WIFI LED GPIO","FW BASE ADDR","FW MAX SIZE","FIXED CONNID" 
 
     OK
 
@@ -1928,7 +1932,7 @@ AT+TCMQTTSRV：设置腾讯云 MQTT 服务器地址
 
 ::
 
-    +TCMQTTSRV: ”MQTT SERVER IP”
+    +TCMQTTSRV: "MQTT SERVER IP"
 
     OK
 
@@ -2080,7 +2084,7 @@ AT+TCGWBIND：网关绑定子设备命令
 
 ::
 
-    AT+TCGWBIND=<mode>,<productId>,<deviceName>[,< deviceSecret>]
+    AT+TCGWBIND=<mode>,<productId>,<deviceName>[,<deviceSecret>]
 
 **响应：**
 
@@ -2110,16 +2114,16 @@ AT+TCGWBIND：网关绑定子设备命令
   - 0：绑定操作
   - 1：解绑操作 
 
-- **<productId>**：子设备产品 id，必填项，字符串类型，最大长度 10 字节
-- **<deviceName>**：子设备名称，必填项，字符串类型，最大长度 48 字节
-- **<deviceSecret>**：子设备密钥，可选项，字符串类型，最大长度 44 字节。在解绑操作时候，不需要提供子设备密钥。在绑定操作时候，如果不提供子设备密钥，则网关模组从已经存储的子设备三元组中读取密钥信息（该信息由子设备信息设置命令提供或者子设备动态注册命令获取）
+- **<productId>**：子设备产品 id，必填项，字符串类型，最大长度 10 字节。
+- **<deviceName>**：子设备名称，必填项，字符串类型，最大长度 48 字节。
+- **<deviceSecret>**：子设备密钥，可选项，字符串类型，最大长度 44 字节。在解绑操作时候，不需要提供子设备密钥。在绑定操作时候，如果不提供子设备密钥，则网关模组从已经存储的子设备三元组中读取密钥信息（该信息由子设备信息设置命令提供或者子设备动态注册命令获取）。
 
 示例
 """"
 ::
 
     // 绑定子设备成功
-    AT+TCGWBIND=0,”CTQS08Y5LG”,”Dev01”,”ZHNkIGRzZCA=”
+    AT+TCGWBIND=0,"CTQS08Y5LG","Dev01","ZHNkIGRzZCA="
 
     OK
     +TCGWBIND:OK
@@ -2132,7 +2136,7 @@ AT+TCGWONLINE：网关代理子设备上下线命令
 功能
 """"
 
-当AT模组用于网关设备上时，可以通过该命令代理其下的子设备上线和下线操作，仅支持密钥方式的子设备
+当 AT 模组用于网关设备上时，可以通过该命令代理其下的子设备上线和下线操作，仅支持密钥方式的子设备
 
 测试命令
 """"""""
@@ -2204,7 +2208,7 @@ AT+TCGWONLINE：网关代理子设备上下线命令
 
 **说明：**
 
-- 如果模组尚未连接腾讯云MQTT服务器，则返回错误，用户需要先发送连接命令 (:ref:`AT+TCMQTTCONN <cmd-TCMQTTCONN>`) 才能发布消息。
+- 如果模组尚未连接腾讯云 MQTT 服务器，则返回错误，用户需要先发送连接命令 (:ref:`AT+TCMQTTCONN <cmd-TCMQTTCONN>`) 才能发布消息。
 - 该命令为基于 MQTT 消息的同步操作，会阻塞直至上下线操作完成或超时退出。如果模组处于 OTA 下载状态中，由于 ESP8266 平台资源限制，执行该命令可能会出现超时错误。如非必要，不建议在 OTA 下载过程中执行该命令。
 - 如果输入合法，首先返回 OK，接下来返回绑定或解绑子设备操作成功与否
 
@@ -2213,7 +2217,7 @@ AT+TCGWONLINE：网关代理子设备上下线命令
 
 参数
 """"
-- **< mode >**：模式参数，必填项
+- **<mode>**：模式参数，必填项
 
   - 0：上线操作
   - 1：下线操作
@@ -2226,7 +2230,7 @@ AT+TCGWONLINE：网关代理子设备上下线命令
 ::
 
     // 子设备上线成功
-    AT+TCGWONLINE=0,”CTQS08Y5LG”,”Dev01”
+    AT+TCGWONLINE=0,"CTQS08Y5LG","Dev01"
 
     OK
     +TCGWONLINE:OK
@@ -2260,7 +2264,7 @@ AT+TCSUBDEVINFOSET：子设备信息设置
 
 ::
 
-    +TCSUBDEVINFOSET:"MODE ","PRODUCT_ID","DEVICE_NAME","DEVICE_SECRET_BCC","PRODUCT_REGION" 
+    +TCSUBDEVINFOSET:"MODE","PRODUCT_ID","DEVICE_NAME","DEVICE_SECRET_BCC","PRODUCT_REGION" 
 
     OK
 
@@ -2298,7 +2302,7 @@ AT+TCSUBDEVINFOSET：子设备信息设置
 
 ::
 
-    AT+TCSUBDEVINFOSET=<mode>,<product_id>,<device_name>,< device_secret>[,<product_region>]
+    AT+TCSUBDEVINFOSET=<mode>,<product_id>,<device_name>,<device_secret>[,<product_region>]
 
 **响应：**
 
@@ -2322,15 +2326,15 @@ AT+TCSUBDEVINFOSET：子设备信息设置
 
 参数
 """"
-- **< mode >**：模式参数，必填项
+- **<mode>**：模式参数，必填项
 
   - 0：设置操作
   - 1：删除操作
 
 - **<product_id>**：产品 id，必填项，字符串类型，最大长度 10 字节
 - **<device_name>**：设备名称，必填项，字符串类型，最大长度 48 字节
-- **<device_secret>**：设备密钥，必填项，字符串类型，最大长度 44 字节。
-- **<product_region>**：产品区域，选填项，字符串类型，最大长度 24 字节，如果不提供，默认为中国大陆公有云  "ap-guangzhou"
+- **<device_secret>**：设备密钥，必填项，字符串类型，最大长度 44 字节
+- **<product_region>**：产品区域，选填项，字符串类型，最大长度 24 字节，如果不提供，默认为中国大陆公有云 "ap-guangzhou"
 
 
 示例
@@ -2338,7 +2342,7 @@ AT+TCSUBDEVINFOSET：子设备信息设置
 ::
 
     // 设置成功
-    AT+TCSUBDEVINFOSET=0,”CTQS08Y5LG”,”Dev01”,”ZHNkIGRzZCA=”
+    AT+TCSUBDEVINFOSET=0,"CTQS08Y5LG","Dev01","ZHNkIGRzZCA="
 
     OK
     +TCSUBDEVINFOSET:OK
@@ -2366,7 +2370,7 @@ AT+TCSUBDEVPRDSET：子设备产品信息设置
 
 ::
 
-    +TCSUBDEVPRDSET:”MODE”,”PRODUCT_ID”,”PRODUCT_SECRET_BCC”,” DEVICE_NAME” ,"PRODUCT_REGION" 
+    +TCSUBDEVPRDSET:"MODE","PRODUCT_ID","PRODUCT_SECRET_BCC","DEVICE_NAME","PRODUCT_REGION" 
 
     OK
 
@@ -2431,7 +2435,7 @@ AT+TCSUBDEVPRDSET：子设备产品信息设置
 
 参数
 """"
-- **< mode >**：模式参数，必填项
+- **<mode>**：模式参数，必填项
 
   - 0：设置操作
   - 1：删除操作
@@ -2445,7 +2449,7 @@ AT+TCSUBDEVPRDSET：子设备产品信息设置
 ::
 
     // 设置成功
-    AT+TCSUBDEVPRDSET=0,”CTQS08Y5LG”,”ZHNkIGRzZCA=”,”Dev01”
+    AT+TCSUBDEVPRDSET=0,"CTQS08Y5LG","ZHNkIGRzZCA=","Dev01"
 
     OK
     +TCSUBDEVPRDSET:OK
@@ -2556,7 +2560,7 @@ AT+TCSUBDEVREG：执行子设备动态注册
 """"
 ::
 
-    AT+TCSUBDEVREG=”CTQS08Y5LG”,”Dev01”
+    AT+TCSUBDEVREG="CTQS08Y5LG","Dev01"
 
     OK
     +TCSUBDEVREG:OK
@@ -2697,7 +2701,7 @@ AT+TCSUBDEVREG：执行子设备动态注册
      - 表示消息接收缓冲区的长度小于消息的长度
      - QCLOUD_ERR_BUF_TOO_SHORT
    * - -120
-     - 表示该 QOS 级别不支持
+     - 表示该 QoS 级别不支持
      - QCLOUD_ERR_MQTT_QOS_NOT_SUPPORT
    * - -121
      - 表示取消订阅主题失败,比如该主题不存在
@@ -2949,7 +2953,7 @@ CME ERROR 列表扩展
    
      ::
  
-       AT+TCDEVINFOSET="1","CTQS08Y5LG","device1"," ZHNkIGRzZCA="
+       AT+TCDEVINFOSET="1","CTQS08Y5LG","device1","ZHNkIGRzZCA="
 
    - 响应
 
@@ -2964,7 +2968,7 @@ CME ERROR 列表扩展
    
      ::
  
-       AT+TCMQTTCONN = 1,5000,240,1,1
+       AT+TCMQTTCONN=1,5000,240,1,1
 
    - 响应
 
@@ -2979,7 +2983,7 @@ CME ERROR 列表扩展
 
 ::
 
-  AT+TCMQTTSUB=" CTQS08Y5LG /device1/control
+  AT+TCMQTTSUB="CTQS08Y5LG/device1/control"
 
 - 响应
 
