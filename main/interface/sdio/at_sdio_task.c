@@ -124,12 +124,12 @@ static int32_t at_sdio_read_data(uint8_t* data, int32_t len)
         esp_at_sdio_list_t* p_list = pHead;
 
         if (len < p_list->left_len) {
-            memcpy(data, p_list->pbuf + p_list->pos, len);
+            memcpy(data + copy_len, p_list->pbuf + p_list->pos, len);
             p_list->pos += len;
             p_list->left_len -= len;
             copy_len += len;
         } else {
-            memcpy(data, p_list->pbuf + p_list->pos, p_list->left_len);
+            memcpy(data + copy_len, p_list->pbuf + p_list->pos, p_list->left_len);
             p_list->pos += p_list->left_len;
             copy_len += p_list->left_len;
             p_list->left_len = 0;
