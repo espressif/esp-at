@@ -1432,7 +1432,7 @@ Parameters
 Note
 ^^^^^
 
--  If the value of <length> is larger than the maximum length allowed, the setting will fail.
+-  If the value of <length> is larger than the maximum length allowed, the setting will fail. The service table is defined in `components/customized_partitions/raw_data/ble_data`.
 
 Example
 ^^^^^^^^
@@ -1443,9 +1443,9 @@ Example
     AT+BLEGATTSSRVCRE
     AT+BLEGATTSSRVSTART
     AT+BLEGATTSCHAR? 
-    // For example, to set 4 bytes of data of the 1st characteristic in the 1st service, use the following command:
-    AT+BLEGATTSSETATTR=1,1,,4
-    // After the symbol ">" shows, input 4 bytes of data, such as "1234". Then the setting starts.
+    // For example, to set 1 byte of data of the 1st characteristic in the 1st service, use the following command:
+    AT+BLEGATTSSETATTR=1,1,,1
+    // After the symbol ">" shows, input 1 byte of data, such as "8". Then the setting starts.
 
 .. _cmd-GCPRIMSRV:
 
