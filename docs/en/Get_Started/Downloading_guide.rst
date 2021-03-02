@@ -191,3 +191,121 @@ If the response is OK as the picture below shows, it means that AT works.
    :figclass: align-center
 
    Response from AT
+
+Otherwise, you need to check your ESP startup log, which is visible on PC over "Download/Log output connection". If it is like the log below, it means that ESP-AT firmware have been initalized correctly.
+
+ESP32 startup log:
+
+.. code-block:: none
+
+    ets Jun  8 2016 00:22:57
+    rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+    configsip: 0, SPIWP:0xee
+    clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+    mode:DIO, clock div:2
+    load:0x3fff0030,len:4
+    load:0x3fff0034,len:7184
+    ho 0 tail 12 room 4
+    load:0x40078000,len:13200
+    load:0x40080400,len:4564
+    entry 0x400806f4
+    I (30) boot: ESP-IDF v4.2 2nd stage bootloader
+    I (31) boot: compile time 11:23:19
+    I (31) boot: chip revision: 0
+    I (33) boot.esp32: SPI Speed      : 40MHz
+    I (38) boot.esp32: SPI Mode       : DIO
+    I (42) boot.esp32: SPI Flash Size : 4MB
+    I (47) boot: Enabling RNG early entropy source...
+    I (52) boot: Partition Table:
+    I (56) boot: ## Label            Usage          Type ST Offset   Length
+    I (63) boot:  0 phy_init         RF data          01 01 0000f000 00001000
+    I (71) boot:  1 otadata          OTA data         01 00 00010000 00002000
+    I (78) boot:  2 nvs              WiFi data        01 02 00012000 0000e000
+    I (86) boot:  3 at_customize     unknown          40 00 00020000 000e0000
+    I (93) boot:  4 ota_0            OTA app          00 10 00100000 00180000
+    I (101) boot:  5 ota_1            OTA app          00 11 00280000 00180000
+    I (108) boot: End of partition table
+    I (112) esp_image: segment 0: paddr=0x00100020 vaddr=0x3f400020 size=0x2a300 (172800) map
+    I (187) esp_image: segment 1: paddr=0x0012a328 vaddr=0x3ffbdb60 size=0x039e8 ( 14824) load
+    I (194) esp_image: segment 2: paddr=0x0012dd18 vaddr=0x40080000 size=0x00404 (  1028) load
+    I (194) esp_image: segment 3: paddr=0x0012e124 vaddr=0x40080404 size=0x01ef4 (  7924) load
+    I (206) esp_image: segment 4: paddr=0x00130020 vaddr=0x400d0020 size=0x10a470 (1090672) map
+    I (627) esp_image: segment 5: paddr=0x0023a498 vaddr=0x400822f8 size=0x1c3a0 (115616) load
+    I (678) esp_image: segment 6: paddr=0x00256840 vaddr=0x400c0000 size=0x00064 (   100) load
+    I (695) boot: Loaded app from partition at offset 0x100000
+    I (695) boot: Disabling RNG early entropy source...
+    max tx power=78,ret=0
+    2.1.0
+
+ESP32-S2 startup log:
+
+.. code-block:: none
+
+    ESP-ROM:esp32s2-rc4-20191025
+    Build:Oct 25 2019
+    rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+    SPIWP:0xee
+    mode:DIO, clock div:1
+    load:0x3ffe6100,len:0x4
+    load:0x3ffe6104,len:0x1a24
+    load:0x4004c000,len:0x1a6c
+    load:0x40050000,len:0x20fc
+    entry 0x4004c35c
+    I (46) boot: ESP-IDF v4.2 2nd stage bootloader
+    I (46) boot: compile time 11:24:34
+    I (46) boot: chip revision: 0
+    I (47) qio_mode: Enabling default flash chip QIO
+    I (53) boot.esp32s2: SPI Speed      : 80MHz
+    I (57) boot.esp32s2: SPI Mode       : QIO
+    I (62) boot.esp32s2: SPI Flash Size : 4MB
+    I (67) boot: Enabling RNG early entropy source...
+    I (72) boot: Partition Table:
+    I (76) boot: ## Label            Usage          Type ST Offset   Length
+    I (83) boot:  0 phy_init         RF data          01 01 0000f000 00001000
+    I (91) boot:  1 otadata          OTA data         01 00 00010000 00002000
+    I (98) boot:  2 nvs              WiFi data        01 02 00012000 0000e000
+    I (106) boot:  3 at_customize     unknown          40 00 00020000 000e0000
+    I (113) boot:  4 ota_0            OTA app          00 10 00100000 00180000
+    I (121) boot:  5 ota_1            OTA app          00 11 00280000 00180000
+    I (128) boot: End of partition table
+    I (133) esp_image: segment 0: paddr=0x00100020 vaddr=0x3f000020 size=0x21bec (138220) map
+    I (167) esp_image: segment 1: paddr=0x00121c14 vaddr=0x3ffc9330 size=0x02fe0 ( 12256) load
+    I (169) esp_image: segment 2: paddr=0x00124bfc vaddr=0x40024000 size=0x00404 (  1028) load
+    I (173) esp_image: segment 3: paddr=0x00125008 vaddr=0x40024404 size=0x0b010 ( 45072) load
+    I (193) esp_image: segment 4: paddr=0x00130020 vaddr=0x40080020 size=0xb0784 (722820) map
+    I (324) esp_image: segment 5: paddr=0x001e07ac vaddr=0x4002f414 size=0x09f18 ( 40728) load
+    I (334) esp_image: segment 6: paddr=0x001ea6cc vaddr=0x40070000 size=0x0001c (    28) load
+    I (346) boot: Loaded app from partition at offset 0x100000
+    I (346) boot: Disabling RNG early entropy source...
+    max tx power=78,ret=0
+    2.1.0
+
+ESP8266 startup log:
+
+.. code-block:: none
+
+    ...
+    boot: ESP-IDF v3.4-rc 2nd stage bootloader
+    I (54) boot: compile time 11:18:21
+    I (54) boot: SPI Speed      : 80MHz
+    I (57) boot: SPI Mode       : DIO
+    I (61) boot: SPI Flash Size : 2MB
+    I (65) boot: Partition Table:
+    I (68) boot: ## Label            Usage          Type ST Offset   Length
+    I (75) boot:  0 otadata          OTA data         01 00 00009000 00002000
+    I (83) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+    I (90) boot:  2 ota_0            OTA app          00 10 00010000 000e0000
+    I (98) boot:  3 at_customize     unknown          40 00 000f0000 00020000
+    I (105) boot:  4 ota_1            OTA app          00 11 00110000 000e0000
+    I (112) boot:  5 nvs              WiFi data        01 02 001f0000 00010000
+    I (120) boot: End of partition table
+    I (124) boot: No factory image, trying OTA 0
+    I (129) esp_image: segment 0: paddr=0x00010010 vaddr=0x40210010 size=0xac0d0 (704720) map
+    I (138) esp_image: segment 1: paddr=0x000bc0e8 vaddr=0x402bc0e0 size=0x1aba8 (109480) map
+    I (146) esp_image: segment 2: paddr=0x000d6c98 vaddr=0x3ffe8000 size=0x00788 (  1928) load
+    I (155) esp_image: segment 3: paddr=0x000d7428 vaddr=0x40100000 size=0x00080 (   128) load
+    I (164) esp_image: segment 4: paddr=0x000d74b0 vaddr=0x40100080 size=0x059c4 ( 22980) load
+    I (173) boot: Loaded app from partition at offset 0x10000
+    phy_version: 1163.0, 665d56c, Jun 24 2020, 10:00:08, RTOS new
+    max tx power=78,ret=0
+    2.0.0
