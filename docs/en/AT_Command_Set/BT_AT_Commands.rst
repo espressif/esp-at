@@ -3,6 +3,8 @@
 [ESP32 Only] Classic Bluetooth® AT Commands
 ============================================
 
+:link_to_translation:`zh_CN:[中文]`
+
 ESP32 AT firmware supports `Bluetooth® Core Specification Version 5.0 <https://www.bluetooth.com/specifications/archived-specifications/>`_.
 
 -  [ESP32 Only] :ref:`AT+BTINIT <cmd-BTINIT>`: Classic Bluetooth initialization.
@@ -26,7 +28,7 @@ ESP32 AT firmware supports `Bluetooth® Core Specification Version 5.0 <https://
 -  [ESP32 Only] :ref:`AT+BTENCDEV <cmd-BTENCDEV>`: Query Classic Bluetooth encryption device list.
 -  [ESP32 Only] :ref:`AT+BTENCCLEAR <cmd-BTENCCLEAR>`: Clear Classic Bluetooth encryption device list.
 -  [ESP32 Only] :ref:`AT+BTCOD <cmd-BTCOD>`: Set class of devices.
--  [ESP32 Only] :ref:`AT+BTPOWER <cmd-BTPWR>`: Set power of Classic Bluetooth.
+-  [ESP32 Only] :ref:`AT+BTPOWER <cmd-BTPWR>`: Query/Set power of Classic Bluetooth.
 
 .. _cmd-BTINIT:
 
@@ -38,7 +40,7 @@ Query Command
 
 **Function:**
 
-Check the initialization status of Classic Bluetooth.
+Query the initialization status of Classic Bluetooth.
 
 **Command:**
 
@@ -66,15 +68,15 @@ If Classic Bluetooth is not initialized, AT will return:
 Set Command
 ^^^^^^^^^^^
 
+**Function:**
+
+Initialize or deinitialize Classic Bluetooth.
+
 **Command:**
 
 ::
 
     AT+BTINIT=<init>
-
-**Function:**
-
-Initialize or deinitialize Classic Bluetooth.
 
 **Response:**
 
@@ -107,7 +109,7 @@ Query Command
 
 **Function:**
 
-Obtain the Classic Bluetooth device name.
+Query the Classic Bluetooth device name.
 
 **Command:**
 
@@ -127,7 +129,7 @@ Set Command
 
 **Function:**
 
-Set the Classic Bluetooth device name. The maximum length is 32.
+Set the Classic Bluetooth device name.
 
 **Command:**
 
@@ -144,7 +146,7 @@ Set the Classic Bluetooth device name. The maximum length is 32.
 Parameter
 ^^^^^^^^^^
 
--  **<device_name>**: the Classic Bluetooth device name.
+-  **<device_name>**: the Classic Bluetooth device name. The maximum length is 32.
 
 Notes
 ^^^^^
@@ -288,7 +290,7 @@ Query Command
 
 **Function:**
 
-Check the initialization status of Classic Bluetooth SPP profile.
+Query the initialization status of Classic Bluetooth SPP profile.
 
 **Command:**
 
@@ -346,7 +348,7 @@ Example
 
 ::
 
-    AT+BTSPPINIT=1    // master    
+    AT+BTSPPINIT=1    // master
     AT+BTSPPINIT=2    // slave
 
 .. _cmd-BTSPPCONN:
@@ -588,7 +590,7 @@ Query Command
 
 **Function:**
 
-Check the initialization status of Classic Bluetooth A2DP profile.
+Query the initialization status of Classic Bluetooth A2DP profile.
 
 **Command:**
 
@@ -854,15 +856,15 @@ Parameters
 -  **<conn_index>**: index of Classic Bluetooth A2DP connection. Only 0 is supported for the single connection right now.
 -  **<ctrl>**: types of control.
 
-   -  0 : A2DP Sink, stop play.
-   -  1 : A2DP Sink, start play.
-   -  2 : A2DP Sink, forward.
-   -  3 : A2DP Sink, backward.
-   -  4 : A2DP Sink, fastward start.
-   -  5 : A2DP Sink, fastward stop.
-   -  0 : A2DP Source, stop play.
-   -  1 : A2DP Source, start play.
-   -  2 : A2DP Source, suspend.
+   -  0: A2DP Sink, stop play.
+   -  1: A2DP Sink, start play.
+   -  2: A2DP Sink, forward.
+   -  3: A2DP Sink, backward.
+   -  4: A2DP Sink, fastward start.
+   -  5: A2DP Sink, fastward stop.
+   -  0: A2DP Source, stop play.
+   -  1: A2DP Source, start play.
+   -  2: A2DP Source, suspend.
 
 Example
 ^^^^^^^^
@@ -920,22 +922,22 @@ Parameters
 
 -  **<io_cap>**: input and output capability.
 
-   -  0 : DisplayOnly.
-   -  1 : DisplayYesNo.
-   -  2 : KeyboardOnly.
-   -  3 : NoInputNoOutput.
+   -  0: DisplayOnly.
+   -  1: DisplayYesNo.
+   -  2: KeyboardOnly.
+   -  3: NoInputNoOutput.
 
 -  **<pin_type>**: use variable or fixed PIN.
 
-   -  0 : variable.
-   -  1 : fixed.
+   -  0: variable.
+   -  1: fixed.
 
 -  **<pin_code>**: Legacy Pair PIN Code. Maximum: 16 bytes.
 
 Note
 ^^^^^
 
--  If you set the parameter <pin_type> to 0, <pin_code> will be ignored.
+-  If you set the parameter ``<pin_type>`` to 0, ``<pin_code>`` will be ignored.
 
 Example
 ^^^^^^^^
@@ -1048,8 +1050,8 @@ Parameters
 -  **<conn_index>**: index of Classic Bluetooth connection. Currently, only 0 is supported for the single connection.
 -  **<accept>**: reject or accept.
 
-   -  0 : reject.
-   -  1 : accept.
+   -  0: reject.
+   -  1: accept.
 
 Example
 ^^^^^^^^
@@ -1068,7 +1070,7 @@ Query Command
 
 **Function:**
 
-Obtain the bonded devices.
+Query the bound devices.
 
 **Command:**
 
@@ -1086,7 +1088,7 @@ Obtain the bonded devices.
 Parameters
 ^^^^^^^^^^
 
--  **<enc_dev_index>**: index of the bonded devices.
+-  **<enc_dev_index>**: index of the bound devices.
 -  **<mac_address>**: MAC address.
 
 Example
@@ -1142,7 +1144,7 @@ Remove all devices from the security database.
 Parameter
 ^^^^^^^^^^
 
--  **<enc_dev_index>**: index of the bonded devices.
+-  **<enc_dev_index>**: index of the bound devices.
 
 Example
 ^^^^^^^^
@@ -1191,8 +1193,8 @@ Example
 
 .. _cmd-BTPWR:
 
-[ESP32 Only] :ref:`AT+BTPOWER <BT-AT>`: Set TX power of Classic Bluetooth
-----------------------------------------------------------------------------
+[ESP32 Only] :ref:`AT+BTPOWER <BT-AT>`: Query/Set TX power of Classic Bluetooth
+-------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1237,8 +1239,8 @@ Set the Classic Bluetooth tx power.
 Parameters
 ^^^^^^^^^^
 
--  **<min_tx_power>**: The minimum power level, range[0,7].
--  **<max_tx_power>**: The maximum power level, range[0,7].
+-  **<min_tx_power>**: The minimum power level. Range: [0,7].
+-  **<max_tx_power>**: The maximum power level. Range: [0,7].
 
 Example
 ^^^^^^^^
