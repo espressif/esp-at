@@ -11,3 +11,4 @@ AT Command Examples
    [ESP32_Only] Bluetooth® Low Engergy AT Examples <BLE_AT_Examples>
    MQTT AT Examples <MQTT_AT_Examples>
    [ESP32 Only] Ethernet AT Examples <Ethernet_AT_Examples>
+   Web server AT Examples <Web_server_AT_Examples>

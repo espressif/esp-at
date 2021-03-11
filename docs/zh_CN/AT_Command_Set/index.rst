@@ -15,4 +15,5 @@ AT 命令集
    [ESP32 Only] 以太网 AT 命令集 <Ethernet_AT_Commands>
    [ESP8266 Only] 信令测试 AT 命令集 <Signaling_Test_AT_Commands>
    [ESP32 & ESP32-S2 Only] 驱动 AT 命令集 <Driver_AT_Commands>
+   Web server AT 命令集 <Web_server_AT_Commands>
    AT 命令集对比 <AT_Command_Set_Comparison>

@@ -43,9 +43,18 @@
 
 #include "at_interface.h"
 
+#ifdef CONFIG_AT_WEB_SERVER_SUPPORT
+extern void at_web_update_sta_got_ip_flag(bool flag);
+#endif
+
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
 static esp_err_t at_wifi_event_handler(void *ctx, system_event_t *event)
 {
+#ifdef CONFIG_AT_WEB_SERVER_SUPPORT
+    if (event->event_id == SYSTEM_EVENT_STA_GOT_IP) {
+        at_web_update_sta_got_ip_flag(true);
+    }
+#endif
     esp_err_t ret = esp_at_wifi_event_handler(ctx, event);
 
     return ret;
@@ -229,6 +238,12 @@ void app_main()
 #ifdef CONFIG_AT_SIGNALING_COMMAND_SUPPORT
     if (esp_at_fact_cmd_regist() == false) {
         printf("regist fact cmd fail\r\n");
+    }
+#endif
+
+#ifdef CONFIG_AT_WEB_SERVER_SUPPORT
+    if (esp_at_web_server_cmd_regist() == false) {
+        printf("regist web conf wifi cmd fail\r\n");
     }
 #endif
 

@@ -250,6 +250,21 @@ config AT_EAP_COMMAND_SUPPORT
     default "n"
     depends on AT_ENABLE
 
+config AT_WEB_SERVER_SUPPORT
+    bool "AT WEB Server command support."
+    default "n"
+    depends on AT_ENABLE
+    help
+      Please enable this configure if you want use web server.
+ 
+config AT_WEB_USE_FATFS
+    bool "Use fatfs to store html"
+    default "n"
+    depends on AT_WEB_SERVER_SUPPORT && !IDF_TARGET_ESP8266
+    help
+        If enable this configure, html will be stored in fatfs(Please enable AT FS Command).
+        Otherwise, html file will be compiled as embedded code.
+
 config AT_OTA_SUPPORT
     bool "AT OTA command support."
     default "y"
