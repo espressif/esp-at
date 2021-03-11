@@ -69,4 +69,9 @@ uint32_t esp_at_get_module_id(void);
  */
 void esp_at_board_init(void);
 
+/**
+* @brief regist WiFi config via web command. If not,you can not use web server to config wifi connect
+*
+*/
+bool esp_at_web_server_cmd_regist(void);
 #endif

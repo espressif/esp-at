@@ -17,3 +17,9 @@ COMPONENT_ADD_LINKER_DEPS := $(patsubst %,$(COMPONENT_PATH)/lib/lib%.a,$(LIBS))
 
 ALL_LIB_FILES := $(patsubst %,$(COMPONENT_PATH)/lib/lib%.a,$(LIBS))
 $(COMPONENT_LIBRARY): $(ALL_LIB_FILES)
+
+ifdef CONFIG_AT_WEB_SERVER_SUPPORT
+ifndef CONFIG_AT_WEB_USE_FATFS 
+COMPONENT_EMBED_TXTFILES := ../fs_image/index.html
+endif
+endif

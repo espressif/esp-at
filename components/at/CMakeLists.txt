@@ -1,6 +1,6 @@
 
 set(require_components ${IDF_TARGET} mqtt mdns esp_http_client json freertos spiffs
-    bootloader_support app_update openssl wpa_supplicant spi_flash)
+    bootloader_support app_update openssl wpa_supplicant spi_flash esp_http_server)
 
 if ("${IDF_TARGET}" STREQUAL "esp32")
     list(APPEND require_components bt fatfs)
@@ -12,11 +12,18 @@ endif()
 
 file(GLOB_RECURSE srcs src/*.c)
 
+if (CONFIG_AT_WEB_SERVER_SUPPORT)
+    if(NOT CONFIG_AT_WEB_USE_FATFS)
+        set(embed_txt_files ../fs_image/index.html)
+    endif()
+endif()
+
 idf_component_register (
     SRCS ${srcs}
     INCLUDE_DIRS include
     PRIV_INCLUDE_DIRS private_include
-    REQUIRES ${require_components})
+    REQUIRES ${require_components}
+    EMBED_TXTFILES ${embed_txt_files})
 
 if (${SILENCE} EQUAL 1)
 set(LIB_NAME _at_core_silence)
