@@ -628,7 +628,12 @@ void at_status_callback (esp_at_status_type status)
         break;
     case ESP_AT_STATUS_TRANSMIT:
 #if defined(CONFIG_IDF_TARGET_ESP32)
+// A workaround to avoid compilation warning (deprecated API: uart_enable_pattern_det_intr)
+// TODO: esp-at should remove it after v2.2.0.0
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         uart_enable_pattern_det_intr(esp_at_uart_port, '+', 3, ((APB_CLK_FREQ*20)/1000),((APB_CLK_FREQ*20)/1000), ((APB_CLK_FREQ*20)/1000));
+#pragma GCC diagnostic pop
 #endif
         break;
     }

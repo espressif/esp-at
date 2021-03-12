@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-#include "tcpip_adapter.h"
+#include "esp_netif.h"
 
 #ifdef CONFIG_AT_ETHERNET_SUPPORT
 #include "string.h"

@@ -35,7 +35,7 @@
 #include "esp_log.h"
 #include "esp_system.h"
 
-#include "tcpip_adapter.h"
+#include "esp_netif.h"
 #include "sys/socket.h"
 #include "netdb.h"
 
