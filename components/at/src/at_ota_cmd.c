@@ -35,7 +35,7 @@
 #include "esp_ota_ops.h"
 #include "esp_partition.h"
 
-#include "tcpip_adapter.h"
+#include "esp_netif.h"
 
 #include "esp_at.h"
 

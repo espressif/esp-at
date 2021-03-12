@@ -21,7 +21,6 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-
 #include <stdio.h>
 #include <string.h>
 
@@ -31,7 +30,7 @@
 #include "nvs_flash.h"
 
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
-#include "esp_event_loop.h"
+#include "esp_event.h"
 #include "esp_wifi.h"
 #endif
 
@@ -40,7 +39,6 @@
 #endif
 
 #include "esp_at.h"
-
 #include "at_interface.h"
 
 #ifdef CONFIG_AT_WEB_SERVER_SUPPORT
@@ -64,7 +62,12 @@ static void initialise_wifi(void)
 {
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
 
+// A workaround to avoid compilation warning (deprecated API: esp_event_loop_init)
+// TODO: esp-at should remove it after v2.2.0.0
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     ESP_ERROR_CHECK( esp_event_loop_init(at_wifi_event_handler, NULL) );
+#pragma GCC diagnostic pop
     
     ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
     ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM) );
@@ -80,7 +83,12 @@ void app_main()
 #endif
 
     nvs_flash_init();
+// A workaround to avoid compilation warning (deprecated API: tcpip_adapter_init)
+// TODO: esp-at should remove it after v2.2.0.0
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     tcpip_adapter_init();
+#pragma GCC diagnostic pop
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
     initialise_wifi();
 #endif

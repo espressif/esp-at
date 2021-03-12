@@ -35,7 +35,7 @@
 #include "esp_log.h"
 #include "esp_system.h"
 
-#include "esp_event_loop.h"
+#include "esp_event.h"
 #include "esp_wifi.h"
 
 #include "atparse.h"
@@ -176,9 +176,12 @@ static esp_err_t at_wifi_event_handler(void *ctx, system_event_t *event)
 static void initialise_wifi(void)
 {
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-
+// A workaround to avoid compilation warning (deprecated API: esp_event_loop_init)
+// TODO: esp-at should remove it after v2.2.0.0
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     ESP_ERROR_CHECK( esp_event_loop_init(at_wifi_event_handler, NULL) );
-    
+#pragma GCC diagnostic pop
     ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
     ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM) );
     ESP_ERROR_CHECK( esp_wifi_start() );
@@ -204,7 +207,12 @@ static void init_at_module(void)
 
 #endif
 
+// A workaround to avoid compilation warning (deprecated API: tcpip_adapter_init)
+// TODO: esp-at should remove it after v2.2.0.0
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     tcpip_adapter_init();
+#pragma GCC diagnostic pop
     initialise_wifi();
 
     esp_at_device_ops_regist(&esp_at_device_ops);
