@@ -132,6 +132,23 @@ config AT_HTTP_COMMAND_SUPPORT
         Please enlarge AT_PROCESS_TASK_STACK_SIZE to be more than 4096 if HTTPS link need to establish,
         otherwise, unexpected crash probably occur due to AT process task overflow.
 
+if IDF_TARGET_ESP32C3
+config AT_BLE_COMMAND_SUPPORT
+    bool "AT ble command support."
+    default "y"
+    depends on AT_ENABLE && BT_ENABLED
+
+config AT_BLE_HID_COMMAND_SUPPORT
+    bool "AT ble hid command support."
+    default "y"
+    depends on AT_ENABLE && BT_ENABLED
+
+config AT_BLUFI_COMMAND_SUPPORT
+    bool "AT blufi command support."
+    default "n"
+    depends on AT_ENABLE && BT_ENABLED
+endif
+
 if IDF_TARGET_ESP32    
 config AT_BLE_COMMAND_SUPPORT
     bool "AT ble command support."

@@ -157,3 +157,44 @@ See: https://docs.espressif.com/projects/esp-at/en/latest/AT_Binary_Lists/index.
 | ESP32-S2-SOLO-U | √ | √ | √ | √ 
 | ESP32-S2-MINI-1 | √ | √ | √ | √ 
 | ESP32-S2-MINI-1U | √ | √ | √ | √ 
+
+## 4. ESP32C3 Platform
+
+### 1. Command differences supported
+
+| command | ESP32-C3-MINI-1_AT_Bin | 
+|---|---|---|---|---|
+| AT base command support | √ | 
+| AT wifi command support | √ | 
+| AT net command support | √ |
+| AT MDNS command support | √ |
+| AT WPS command support | √ |
+| AT ping command support | √ |
+| AT smartconfig command support | √ |
+| AT MQTT command support | √ |
+| AT http command support | √ |
+| AT FS command support | × |
+| AT driver command support | √ | 
+| AT WPA2 Enterprise command support | × | 
+| AT OTA command support | √ |
+
+### 2. Hardware differences
+
+|  | ESP32-C3-MINI-1_AT_Bin | 
+|---|---|---|---|---|
+| flash_size(MB) | 4 | 
+| PSRAM(MB) | × |
+| UART level(Volt) | 3.3 |
+| UART pin(TX,RX,CTS,RTS) | 7, 6, 5, 4 |
+
+For factory param, see: `components/customized_partitions/raw_data/factory_param/factory_param_data.csv`
+
+### 3. AT pin
+See: https://docs.espressif.com/projects/esp-at/en/latest/AT_Binary_Lists/index.html
+
+
+### 4. Firmware supported modules 
+
+| module/chip | ESP32-C3-MINI-1_AT_Bin |
+|---|---|---|---|---|
+| ESP32-C3-MINI-1 | √ |

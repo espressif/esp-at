@@ -47,6 +47,7 @@ The origin table is `components/customized_partitions/raw_data/factory_param/fac
      - For ESP32 Series chip, range[8, 78], more details please refer to [ESP32 tx power setting range](https://docs.espressif.com/projects/esp-idf/en/release-v4.0/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t)
      - For ESP8266 Series chip, range[-128, 127], more details please refer to [ESP8266 tx power setting range](https://docs.espressif.com/projects/esp8266-rtos-sdk/en/release-v3.3/api-reference/wifi/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t)
      - For ESP32S2 Series chip, range[8, 78], more details please refer to [ESP32S2 tx power setting range](https://docs.espressif.com/projects/esp-idf/en/release-v4.2/esp32/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t)
+     - For ESP32C3 Series chip, range[8, 78], more details please refer to [ESP32C3 tx power setting range](https://docs.espressif.com/projects/esp-idf/en/release-v4.2/esp32/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t)
  - start_chanel
    - Wi-Fi start channel
    
@@ -97,6 +98,7 @@ platform|module_name|description|magic_flag|version|module_id|tx_max_power|uart_
 |PLATFORM_ESP32S2|WROVER||0xfcfc|2|1|78|1|1|13|CN|115200|17|21|20|19|-1|-1|
 |PLATFORM_ESP32S2|SOLO||0xfcfc|2|2|78|1|1|13|CN|115200|17|21|20|19|-1|-1|
 |PLATFORM_ESP32S2|MINI||0xfcfc|2|3|78|1|1|13|CN|115200|17|21|20|19|-1|-1|
+|PLATFORM_ESP32C3|MINI-1|TX:7 RX:6|0xfcfc|2|1|78|1|1|13|CN|115200|7|6|5|4|-1|-1|
 
 <a name="Add_Customized_Module"></a>
 ## Add customized module
@@ -119,6 +121,7 @@ platform|module_name|description|magic_flag|version|module_id|tx_max_power|uart_
 |PLATFORM_ESP32S2|WROVER||0xfcfc|2|1|78|1|1|13|CN|115200|17|21|20|19|-1|-1|
 |PLATFORM_ESP32S2|SOLO||0xfcfc|2|2|78|1|1|13|CN|115200|17|21|20|19|-1|-1|
 |PLATFORM_ESP32S2|MINI||0xfcfc|2|3|78|1|1|13|CN|115200|17|21|20|19|-1|-1|
+|PLATFORM_ESP32C3|MINI-1|TX:7 RX:6|0xfcfc|2|1|78|1|1|13|CN|115200|7|6|5|4|-1|-1|
 |MY_PLATFORM|MY_MODULE|MY_DESCRIPTION|0xfcfc|2|5|78|1|1|14|JP|115200|17|16|15|14|-1|-1|
 
 Then add module information in `esp_at_module_info` in `at_default_config.c`, like
@@ -144,6 +147,10 @@ static const esp_at_module_info_t esp_at_module_info[] = {
     {"WROVER",       CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER,      CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER },
     {"SOLO",         CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO,        CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO },
     {"MINI",         CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI,        CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI },
+#endif
+
+#if defined(CONFIG_IDF_TARGET_ESP32C3)
+    {"MINI-1",         CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI,        CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI },
 #endif
 };
 ```
@@ -192,6 +199,7 @@ platform|module_name|description|magic_flag|version|module_id|tx_max_power|uart_
 |PLATFORM_ESP32S2|WROVER||0xfcfc|2|1|78|1|1|13|CN|115200|17|21|20|19|-1|-1||
 |PLATFORM_ESP32S2|SOLO||0xfcfc|2|2|78|1|1|13|CN|115200|17|21|20|19|-1|-1||
 |PLATFORM_ESP32S2|MINI||0xfcfc|2|3|78|1|1|13|CN|115200|17|21|20|19|-1|-1||
+|PLATFORM_ESP32C3|MINI-1|TX:7 RX:6|0xfcfc|2|1|78|1|1|13|CN|115200|7|6|5|4|-1|-1|
 |MY_PLATFORM|MY_MODULE|MY_DESCRIPTION|0xfcfc|2|5|78|1|1|14|JP|115200|17|16|15|14|-1|-1|20181225|
 
 It is important to know that the total size of the AT factory parameter is controlled by the `ESP_AT_FACTORY_PARAMETER_SIZE` in `at_default_config.h`, and can be adjusted as needed
