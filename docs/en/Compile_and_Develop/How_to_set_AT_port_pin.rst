@@ -257,3 +257,110 @@ For example, if you need to set GPIO43 (TX) and GPIO44 (RX) to be both the log p
 
 3. Recompile the ``esp-at`` project, download the new ``factory_param.bin`` and AT bin into flash.
 4. If you don't want to compile the entire project in the third step, you can refer to ``How_to_create_factory_parameter_bin.md``.
+
+ESP32C3 AT
+----------
+The UART pin of ESP32C3 can be user-defined to other pins, refer to `ESP32C3 Technical Reference Manual <https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf>`__. In the official Espressif ESP32C3 AT bin, UART0 is the default port to print log, using the following pins:
+
+::
+
+    TX ---> GPIO21  
+    RX ---> GPIO20 
+
+The log pins can be set in ``make menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output``.
+UART1 is for sending AT commands and receiving response, but its pins can be changed. The pins of UART1 are configured in the ``factory_param.bin``, they can be changed in the component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`. The UART1 pins may be different for different ESP modules. More details of ``factory_param_data.csv`` are in the ``How_to_create_factory_parameter_bin.md``.
+
+For example, the configuration of the ``ESP32C3-MINI-1`` is as the following table.
+
++----------------+------------------+
+| Parameter      | Value            |
++================+==================+
+| platform       | PLATFORM_ESP32C3 |
++----------------+------------------+
+| module_name    | MINI-1           |
++----------------+------------------+
+| magic_flag     | 0xfcfc           |
++----------------+------------------+
+| version        | 2                |
++----------------+------------------+
+| module_id      | 1                |
++----------------+------------------+
+| tx_max_power   | 78               |
++----------------+------------------+
+| uart_port      | 1                |
++----------------+------------------+
+| start_channel  | 1                |
++----------------+------------------+
+| channel_num    | 13               |
++----------------+------------------+
+| country_code   | CN               |
++----------------+------------------+
+| uart_baudrate  | 115200           |
++----------------+------------------+
+| uart_tx_pin    | 7                |
++----------------+------------------+
+| uart_rx_pin    | 6                |
++----------------+------------------+
+| uart_cts_pin   | 5                |
++----------------+------------------+
+| uart_rts_pin   | 4                |
++----------------+------------------+
+| tx_control_pin | -1               |
++----------------+------------------+
+| rx_control_pin | -1               |
++----------------+------------------+
+
+In this case, the pins of ``ESP32C3-MINI-1`` AT port is:
+
+::
+
+    TX ---> GPIO7
+    RX ---> GPIO6
+    CTS ---> GPIO5
+    RTS ---> GPIO4
+
+For example, if you need to set GPIO21 (TX) and GPIO20 (RX) to be both the log pin and AT port pin, then you can set it as the following steps.
+
+1.  Open component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`.
+2.  Choose the line of ``MINI-1``, set ``uart_port`` to be 0, ``uart_tx_pin`` to be 21 and ``uart_rx_pin`` to be 20, and then save it.
+
+    +----------------+------------------+
+    | Parameter      | Value            |
+    +================+==================+
+    | platform       | PLATFORM_ESP32C3 |
+    +----------------+------------------+
+    | module_name    | MINI-1           |
+    +----------------+------------------+
+    | magic_flag     | 0xfcfc           |
+    +----------------+------------------+
+    | version        | 2                |
+    +----------------+------------------+
+    | module_id      | 1                |
+    +----------------+------------------+
+    | tx_max_power   | 78               |
+    +----------------+------------------+
+    | uart_port      | 0                |
+    +----------------+------------------+
+    | start_channel  | 1                |
+    +----------------+------------------+
+    | channel_num    | 13               |
+    +----------------+------------------+
+    | country_code   | CN               |
+    +----------------+------------------+
+    | uart_baudrate  | 115200           |
+    +----------------+------------------+
+    | uart_tx_pin    | 21               |
+    +----------------+------------------+
+    | uart_rx_pin    | 20               |
+    +----------------+------------------+
+    | uart_cts_pin   | -1               |
+    +----------------+------------------+
+    | uart_rts_pin   | -1               |
+    +----------------+------------------+
+    | tx_control_pin | -1               |
+    +----------------+------------------+
+    | rx_control_pin | -1               |
+    +----------------+------------------+
+
+3. Recompile the ``esp-at`` project, download the new ``factory_param.bin`` and AT bin into flash.
+4. If you don't want to compile the entire project in the third step, you can refer to ``How_to_create_factory_parameter_bin.md``.

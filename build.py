@@ -149,6 +149,8 @@ def build_project(platform_name, module_name, silence, build_args):
         idf_target = 'esp32'
     elif platform_name == 'ESP32S2':
         idf_target = 'esp32s2'
+    elif platform_name == 'ESP32C3':
+        idf_target = 'esp32c3'
     elif platform_name == 'ESP8266':
         idf_target = 'esp8266'
     else:

@@ -58,6 +58,18 @@ Each of the linked above ESP-AT-Bin files contains several binaries for some spe
          - GPIO17, GPIO21, GPIO20, GPIO19
          - ``factory_param_MINI.bin``
 
+    - **ESP32C3 Series**
+
+    .. list-table::
+       :header-rows: 1
+
+       * - Modules
+         - UART Pins (TX, RX, CTS, RTS)
+         - Factory Parameter Bin 
+       * - ESP32C3-MINI Series
+         - GPIO7, GPIO6, GPIO5, GPIO4
+         - ``factory_param_MINI-1.bin``
+
     - **ESP8266 Series**
 
     .. list-table::
@@ -70,7 +82,7 @@ Each of the linked above ESP-AT-Bin files contains several binaries for some spe
          - GPIO15, GPIO13, GPIO3, GPIO1
          - ``factory_param_WROOM-02.bin``
 
--   ``ble_data.bin`` is to provide BLE services when the ESP32 works as a BLE server;
+-   ``ble_data.bin`` is to provide BLE services when the ESP32 and ESP32C3 work as a BLE server;
 -   ``server_cert.bin``, ``server_key.bin`` and ``server_ca.bin`` are examples of SSL server‘s certificate;
 -   ``client_cert.bin``, ``client_key.bin`` and ``client_ca.bin`` are examples of SSL client‘s certificate.
 

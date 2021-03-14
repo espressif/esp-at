@@ -1,7 +1,7 @@
 .. _Driver-AT:
 
-[ESP32 & ESP32-S2 Only] Driver AT Commands
-============================================
+[ESP32 & ESP32-S2 & ESP32-C3] Driver AT Commands
+================================================
 
 -  :ref:`AT+DRVADC <cmd-DRVADC>`: Read ADC channel value.
 -  :ref:`AT+DRVPWMINIT <cmd-DRVPWMINIT>`: Initialize PWM driver.
@@ -54,7 +54,7 @@ Notes
 ^^^^^
 
 -  AT only supports ADC1.
--  ESP32 only supports 12-bit width, and ESP32-S2 only supports 13-bit width.
+-  ESP32 and ESP32-C3 support 12-bit width, and ESP32-S2 only supports 13-bit width.
 
 Example
 ^^^^^^^^
@@ -62,7 +62,7 @@ Example
 ::
 
     AT+DRVADC=0,0   // ADC1 0 channel, voltage: 0 ~ 1.1 V
-    +DRVADC:2048    // For ESP32, the voltage is 2048 / 4096 * 1.1 = 0.55 
+    +DRVADC:2048    // For ESP32 and ESP32-C3, the voltage is 2048 / 4096 * 1.1 = 0.55 
                     // For ESP32-S2, the voltage is 2048 / 8192 * 1.1 = 0.264
     OK
 
