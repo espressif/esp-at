@@ -3,6 +3,8 @@
 HTTP AT Commands
 ================
 
+:link_to_translation:`zh_CN:[中文]`
+
 -  :ref:`AT+HTTPCLIENT <cmd-HTTPCLIENT>`: Send HTTP Client Request
 -  :ref:`AT+HTTPGETSIZE <cmd-HTTPGETSIZE>`: Get HTTP Resource Size
 -  :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>`: Post HTTP data of specified length
@@ -35,26 +37,26 @@ Parameters
 
 -  **<opt>**: method of HTTP client request.
    
-   -  1 : HEAD
-   -  2 : GET
-   -  3 : POST
-   -  4 : PUT
-   -  5 : DELETE
+   -  1: HEAD
+   -  2: GET
+   -  3: POST
+   -  4: PUT
+   -  5: DELETE
 
 -  **<content-type>**: data type of HTTP client request.
 
-   -  0 : ``application/x-www-form-urlencoded``
-   -  1 : ``application/json``
-   -  2 : ``multipart/form-data``
-   -  3 : ``text/xml``
+   -  0: ``application/x-www-form-urlencoded``
+   -  1: ``application/json``
+   -  2: ``multipart/form-data``
+   -  3: ``text/xml``
 
 -  **<url>**: HTTP URL. The parameter can override the ``<host>`` and ``<path>`` parameters if they are null.
 -  **<host>**: domain name or IP address.
 -  **<path>**: HTTP Path.
 -  **<transport_type>**: HTTP Client transport type. Default: 1.
 
-   -  1 : ``HTTP_TRANSPORT_OVER_TCP``
-   -  2 : ``HTTP_TRANSPORT_OVER_SSL``
+   -  1: ``HTTP_TRANSPORT_OVER_TCP``
+   -  2: ``HTTP_TRANSPORT_OVER_SSL``
 
 -  **[<data>]**: when it is a POST request, this parameter holds the data you want to send to the HTTP server.
 -  **[<http_req_header>]**: you can send more than one request header to the server.
@@ -139,7 +141,7 @@ Set Command
     OK
     >
 
-The symbol ``>`` indicates that AT is ready for receiving serial data, and you can enter the data now. When the requirement of message length determined by the parameter <length> is met, the transmission starts.
+The symbol ``>`` indicates that AT is ready for receiving serial data, and you can enter the data now. When the requirement of message length determined by the parameter ``<length>`` is met, the transmission starts.
 
 If the transmission is successful, AT returns:
 
@@ -156,14 +158,14 @@ Otherwise, it returns:
 Parameters
 ^^^^^^^^^^
 - **<url>**: HTTP URL.
-- **<length>**: HTTP data length to post.
+- **<length>**: HTTP data length to POST.
 - **<http_req_header_cnt>**: the number of <http_req_header> parameters.
--  **[<http_req_header>]**: you can send more than one request header to the server.
+- **[<http_req_header>]**: you can send more than one request header to the server.
 
 .. _cmd-HTTPErrCode:
 
-:ref:`HTTP Error Codes <HTTP-AT>`
----------------------------------
+:ref:`HTTP AT Error Codes <HTTP-AT>`
+------------------------------------
 
 -  HTTP Client:
 
@@ -231,7 +233,5 @@ Parameters
 
 -  HTTP AT:
    
-   - The error code of command ``AT+HTTPCLIENT`` will be ``0x7000+Standard HTTP Error Code``.
+   - The error code of command ``AT+HTTPCLIENT`` will be ``0x7000+Standard HTTP Error Code`` (For more details about Standard HTTP/1.1 Error Code, see `RFC 2616 <https://tools.ietf.org/html/rfc2616>`_).
    - For example, if AT gets the HTTP error 404 when calling command ``AT+HTTPCLIENT``, it will respond with error code of ``0x7194`` (``hex(0x7000+404)=0x7194``).
-
-- For more details about Standard HTTP/1.1 Error Code, please refer to `RFC 2616 <https://tools.ietf.org/html/rfc2616>`_.
