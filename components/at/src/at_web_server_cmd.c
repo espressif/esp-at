@@ -48,14 +48,6 @@
 #include "esp_image_format.h"
 #include "esp_flash_partitions.h"
 #include "esp_partition.h"
-#include "esp_netif.h"
-#include "esp_ota_ops.h"
-#include "esp_flash_partitions.h"
-#include "esp_partition.h"
-#include "esp_wifi.h"
-
-#include "esp_log.h"
-#include "esp_system.h"
 
 #include "esp_at.h"
 
@@ -295,7 +287,7 @@ static bool check_fail_list(uint8_t *bssid)
 {
     if (bssid == NULL) {
         ESP_LOGI(TAG, "ERROR bssid");
-        return 0;
+        return false;
     }
 
     if (!SLIST_EMPTY(&s_router_fail_list)) {
@@ -462,6 +454,7 @@ static esp_err_t at_web_start_scan_filter(uint8_t *phone_mac, uint8_t *password,
     ap_info = (wifi_ap_record_t*) malloc(ESP_AT_WEB_SCAN_LIST_SIZE * sizeof(wifi_ap_record_t));
     if (ap_info == NULL) {
         ESP_LOGE(TAG, "ap info malloc fail");
+        return ESP_ERR_NO_MEM;
     }
 
     ESP_LOGD(TAG, "max connect time is %d", max_connect_time);
@@ -471,7 +464,7 @@ static esp_err_t at_web_start_scan_filter(uint8_t *phone_mac, uint8_t *password,
         if (current_available_time <= ESP_AT_WEB_WIFI_LAST_SCAN_TIMEOUT) {
             last_scan = true;
         }
-        // clear var info
+        // clear the value of the variable
         try_connect_count = 0;
         ap_scan_number = ESP_AT_WEB_SCAN_LIST_SIZE;
         memset(ap_info, 0, ESP_AT_WEB_SCAN_LIST_SIZE * sizeof(wifi_ap_record_t));
@@ -514,13 +507,13 @@ static esp_err_t at_web_start_scan_filter(uint8_t *phone_mac, uint8_t *password,
             goto err;
         }
 
-        // If have mobile phone mac, first consider connect match router
+        // If have mobile phone mac, first consider connect the router which has similar mac
         if (phone_mac != NULL) {
             ESP_LOGI(TAG, "Try to macth MAC");
             for (item = SLIST_FIRST(&s_router_all_list); (item != NULL) && (try_connect_count < max_try_connect_num); item = SLIST_NEXT(item, next)) {
                 // some phone(like XIAOMI10), the difference between SOFTAP and STA is two bytes
                 if ((at_web_get_mac_match_len(phone_mac, item->mac, sizeof(item->mac)) >= 5)) {
-                    if (check_fail_list(item->mac)) {     // ignore fail connect mac
+                    if (check_fail_list(item->mac)) { // ignore fail connect mac
                         try_connect_count++;
                         ret = at_web_try_connect(item->ssid, password, item->mac, connect_event);
                         if (ret != ESP_OK) {
@@ -530,7 +523,7 @@ static esp_err_t at_web_start_scan_filter(uint8_t *phone_mac, uint8_t *password,
                         } else {
                             s_connect_success_flag = 1;
                         }
-                        break;    // find ssid, skip search
+                        break; // find ssid, skip search
                     }
                 }
             }
@@ -539,11 +532,11 @@ static esp_err_t at_web_start_scan_filter(uint8_t *phone_mac, uint8_t *password,
             }
         }
 #if ESP_AT_WEB_ENABLE_VIRTUAL_MAC_MATCH
-        // if connect mac fail, try to match virtual mac
+        // if connect fail, try to connect the router which has virtual mac
         if (last_scan == true && s_connect_success_flag == 0 && try_connect_count < max_try_connect_num) {
             ESP_LOGI(TAG, "Try to connect router through virtual MAC");
             for (item = SLIST_FIRST(&s_router_all_list); (item != NULL) && (try_connect_count < max_try_connect_num); item = SLIST_NEXT(item, next)) {
-                if ((item->mac[1]) & 0x2) {    // Compare the first byte
+                if ((item->mac[1]) & 0x2) { // Compare the first byte
                     ESP_LOGI(TAG, "Find a virtual MAC: %02x:%02x:%02x:%02x:%02x:%02x, ssid: %s", MAC2STR(item->mac), item->ssid);
                     if (check_fail_list(item->mac)) {
                         try_connect_count++;
@@ -566,6 +559,7 @@ static esp_err_t at_web_start_scan_filter(uint8_t *phone_mac, uint8_t *password,
 #endif
 
 #if ESP_AT_WEB_ENABLE_CONNECT_HIGHEST_RSSI
+        // if connect fail, try to connect the router which has highest rssi
         if (last_scan == true && s_connect_success_flag == 0 && try_connect_count < max_try_connect_num) {
             ESP_LOGI(TAG, "Try to connect highest RSSI SSID");
             head_item = SLIST_FIRST(&s_router_all_list);
@@ -613,11 +607,14 @@ static esp_err_t at_web_start_scan_filter(uint8_t *phone_mac, uint8_t *password,
         last = NULL;
         end = clock();
         if (end > start) {
-            ESP_LOGI(TAG, "scan and try connect use time is %d", (uint32_t) ((end - start) / 1000000));
-            current_available_time -= (uint32_t) ((end - start) / 1000000);
+            ESP_LOGI(TAG, "scan and try connect use time is %d", (int32_t)((end - start) / 1000));
+            current_available_time -= ((end - start) / 1000);
         } else if (end < start) {
-            ESP_LOGI(TAG, "scan and try connect use time is %d", (uint32_t) ((end + 0xFFFFFFFFUL - start)/ 1000000));
-            current_available_time -= (uint32_t) ((end + 0xFFFFFFFFUL - start)/ 1000000);
+            ESP_LOGI(TAG, "scan and try connect use time is %d", (int32_t)((end + 0xFFFFFFFFUL - start)/ 1000));
+            current_available_time -= ((end + 0xFFFFFFFFUL - start)/ 1000);
+        } else {
+            ESP_LOGE(TAG, "time interval fatal error");
+            break;
         }
 
         if ((current_available_time <= 0) || (current_available_time > max_connect_time)) {
@@ -912,6 +909,11 @@ static wifi_sta_connect_config_t *at_web_get_sta_connect_config(void)
     return &s_wifi_sta_connect_config;
 }
 
+static void at_web_clear_sta_connect_config(void)
+{
+    memset(&s_wifi_sta_connect_config, 0x0, sizeof(wifi_sta_connect_config_t));
+}
+
 static void at_web_update_sta_connection_info(wifi_sta_connection_info_t *connection_info)
 {
     memcpy(&s_wifi_sta_connection_info, connection_info, sizeof(wifi_sta_connection_info_t));
@@ -1143,6 +1145,7 @@ static esp_err_t at_web_apply_wifi_connect_info(int32_t udp_port)
             }
 
             memset(s_mobile_phone_mac, 0, sizeof(s_mobile_phone_mac));
+            at_web_clear_sta_connect_config();
             // according to connect result to update or report results
             if (ret != ESP_OK) { // connect fail
                 ESP_LOGW(TAG, "Scan filter fail, timeout");
@@ -1392,7 +1395,6 @@ static esp_err_t accept_wifi_result_post_handler(httpd_req_t *req)
     char temp[4] = {0};
     int str_len = 0;
 
-    wifi_sta_connect_config_t wifi_config = {0};
     wifi_sta_connection_info_t wifi_connection_info = {0};
     wifi_sta_connection_info_t *connection_info = at_web_get_sta_connection_info();
     memset(buf, '\0', ESP_AT_WEB_SCRATCH_BUFSIZE * sizeof(char));
@@ -1425,7 +1427,7 @@ static esp_err_t accept_wifi_result_post_handler(httpd_req_t *req)
         // clear wifi connect config and status info
         wifi_connection_info.config_status = ESP_AT_WIFI_STA_NOT_START;
 
-        at_web_update_sta_connect_config(&wifi_config);
+        at_web_clear_sta_connect_config();
         at_web_update_sta_connection_info(&wifi_connection_info);
 
         // send a message to MCU
@@ -1583,13 +1585,13 @@ static esp_err_t ota_data_post_handler(httpd_req_t *req)
                 /* Retry if timeout occurred */
                 continue;
             }
-            ESP_LOGE(TAG, "Failed to receive post ota data");
+            ESP_LOGE(TAG, "Failed to receive post ota data, err = %d", received_len);
             esp_ota_end(update_handle);
             goto err_handler;
         }else { // received successfully
             err = esp_ota_write(update_handle, buf, received_len);
             if (err != ESP_OK) {
-                ESP_LOGE(TAG, "ota begin failed (%s)", esp_err_to_name(err));
+                ESP_LOGE(TAG, "ota write failed (%s)", esp_err_to_name(err));
                 esp_ota_end(update_handle);
                 goto err_handler;
             }
