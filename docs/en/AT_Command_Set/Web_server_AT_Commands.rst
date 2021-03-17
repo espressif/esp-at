@@ -41,7 +41,7 @@ Notes
 
 -  There are two ways to provide the HTML files needed by the web server. One is to use fatfs file system (non ESP8266 chips), and you need to enable AT FS command at this time. The other one is to use embedded files to storge HTML files (default setting). 
 -  Please make sure that the max number of open sockets is not less than 12, you may change the number by ``./build.py menuconfig`` > ``Component config`` > ``LWIP`` > ``Max bumber of open sockets`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
--  The default firmware does not support web server AT commands (see :doc:`../Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT WEB Server config wifi command support`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
+-  The default firmware does not support web server AT commands (see :doc:`../Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT WEB Server command support`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
 -  For ESP8266 devices, you may need to turn off some unnecessary options to store the necessary html files.
 -  For more examples, please refer to :doc:`../AT_Command_Examples/Web_server_AT_Examples`.
 
