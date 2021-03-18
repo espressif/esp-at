@@ -7,7 +7,10 @@
 
 - `ESP32 系列`_
 - `ESP32-S2 系列`_
+- `ESP32-C3 系列`_
 - `ESP8266 系列`_
+
+对于不同系列的模组，AT 默认固件所支持的命令会有所差异。具体可参考 :doc:`/Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`。
 
 硬件准备
 ------------
@@ -253,6 +256,49 @@ ESP32-S2 AT 采用两个 UART 接口：UART0 用于下载固件和输出日志�
    ESP32-S2 系列硬件连接示意图
 
 如果需要直接基于 ESP32-S2-WROOM 模组进行连接，请参考 `《ESP32-S2-WROOM & ESP32-S2-WROOM-I 技术规格书》 <https://www.espressif.com/sites/default/files/documentation/esp32-s2-wroom_esp32-s2-wroom-i_datasheet_cn.pdf>`_。
+
+ESP32-C3 系列
+----------------
+
+ESP32-C3 AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。
+
+.. list-table:: ESP32-C3 Series 系列硬件连接管脚分配
+   :header-rows: 1
+
+   * - 功能
+     - ESP 开发板管脚
+     - 其它设备管脚
+   * - 下载固件/输出日志 :sup:`1`
+     - UART0
+         * GPIO20 (RX)
+         * GPIO21 (TX)
+     - PC
+         * TX
+         * RX
+   * - AT 命令/响应 :sup:`2`
+     - UART1
+         * GPIO6 (RX)
+         * GPIO7 (TX)
+         * GPIO5 (CTS)
+         * GPIO4 (RTS)
+     - USB 转 UART 串口模块
+         * TX
+         * RX
+         * RTS
+         * CTS
+
+**说明** 1：ESP 开发板和 PC 之间的管脚连接已内置在 ESP 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+
+**说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
+
+.. figure:: ../../_static/esp32-c3-hw-connection.png
+   :align: center
+   :alt: ESP32-C3 系列硬件连接示意图
+   :figclass: align-center
+
+   ESP32-C3 系列硬件连接示意图
+
+如果需要直接基于 ESP32­-C3-­MINI-­1 模组进行连接，请参考 `《ESP32­-C3-­MINI-­1 技术规格书》 <https://www.espressif.com/sites/default/files/documentation/esp32-c3-mini-1_datasheet_cn.pdf>`_。
 
 ESP8266 系列
 ---------------

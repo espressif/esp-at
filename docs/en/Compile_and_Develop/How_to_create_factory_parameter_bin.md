@@ -46,7 +46,7 @@ The origin table is `components/customized_partitions/raw_data/factory_param/fac
      - For ESP32 Series chip, range[8, 78], more details please refer to [ESP32 tx power setting range](https://docs.espressif.com/projects/esp-idf/en/release-v4.0/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t)
      - For ESP8266 Series chip, range[-128, 127], more details please refer to [ESP8266 tx power setting range](https://docs.espressif.com/projects/esp8266-rtos-sdk/en/release-v3.3/api-reference/wifi/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t)
      - For ESP32S2 Series chip, range[8, 78], more details please refer to [ESP32S2 tx power setting range](https://docs.espressif.com/projects/esp-idf/en/release-v4.2/esp32/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t)
-     - For ESP32C3 Series chip, range[8, 78], more details please refer to [ESP32C3 tx power setting range](https://docs.espressif.com/projects/esp-idf/en/release-v4.2/esp32/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t)
+     - For ESP32-C3 Series chip, range[8, 78], more details please refer to [ESP32-C3 tx power setting range](https://docs.espressif.com/projects/esp-idf/en/release-v4.2/esp32/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t)
  - start_chanel
    - Wi-Fi start channel
    

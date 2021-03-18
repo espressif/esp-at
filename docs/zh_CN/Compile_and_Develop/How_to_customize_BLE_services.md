@@ -7,7 +7,7 @@ BLE Service 的源文件路径是： `esp-at/components/customized_partitions/ra
 
   - 修改 `BLE Service` 文件
   - 使用 esp-at/tools/BLEService.py 重新生成 ble_data.bin
-  - 将 ble_data.bin 下载到 ESP32，具体下载的地址在 `module_config/module_esp32_default/partitions_at.csv` 分区表里面有定义。
+  - 将 ble_data.bin 下载到 ESP32，具体下载的地址在 `module_config/module_esp32_default/partitions_at.csv`（ESP32模块）或者`module_config/module_esp32c3_default/partitions_at.csv`（ESP32-C3模块） 分区表里面有定义。
 
 ## 如何修改 BLE services 文件
 

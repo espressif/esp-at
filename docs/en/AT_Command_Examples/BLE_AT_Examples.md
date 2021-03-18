@@ -1,13 +1,13 @@
 <a name="BLE-AT"></a>
-## [ESP32 Only] BLE AT Examples
+## [ESP32 & ESP32-C3] BLE AT Examples
 
-* Example 1. [ESP32 Only] [BLE AT Examples](#exam-BLE)
-* Example 2. [ESP32 Only] [iBeacon Examples](#exam-iBeacon)
-* Example 3. [ESP32 Only] [UART-BLE Passthrough Mode](#exam-UARTBLE)
+* Example 1. [ESP32 & ESP32-C3] [BLE AT Examples](#exam-BLE)
+* Example 2. [ESP32 & ESP32-C3] [iBeacon Examples](#exam-iBeacon)
+* Example 3. [ESP32 & ESP32-C3] [UART-BLE Passthrough Mode](#exam-UARTBLE)
 
 <a name="exam-BLE"></a>
-### Example 1. [ESP32 Only] [BLE AT Example](#BLE-AT)  
-Below is an example of using two ESP32 modules, one as a BLE server (hereafter named "ESP32 Server"), the other one as a BLE client (hereafter named "ESP32 Client"). The example shows how to use BLE functions with AT commands.  
+### Example 1. [ESP32 & ESP32-C3] [BLE AT Example](#BLE-AT)
+Below is an example of using two ESP32 modules, one as a BLE server (hereafter named "ESP32 Server"), the other one as a BLE client (hereafter named "ESP32 Client"). The example shows how to use BLE functions with AT commands. For ESP32-C3 modules, please refer to ESP32 modules.
 ***Notice:***  
 
 * The ESP32 Server needs to download a "service bin" into Flash to provide BLE services.
@@ -206,8 +206,8 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
 
 
 <a name="exam-iBeacon"></a>
-### Example 2. [ESP32 Only] [iBeacon Examples](#BLE-AT)  
-The following demonstrates two examples of iBeacon:  
+### Example 2. [ESP32 & ESP32-C3] [iBeacon Examples](#BLE-AT)
+The following demonstrates two examples of iBeacon for ESP32 modules(for ESP32-C3 modules, please refer to ESP32 modules):
 
  * ESP32 advertising iBeacons, which can be discovered by the “Shake Nearby” function of WeChat.
  * ESP32 scanning iBeacons.
@@ -286,8 +286,8 @@ You will get a scanning result that looks like:
 
 
 <a name="exam-UARTBLE"></a>
-### Example 3. [ESP32 Only] [UART-BLE Passthrough Mode](#BLE-AT) 
-Below is an example of using two ESP32 modules, one as a BLE server (hereafter named "ESP32 Server"), the other one as a BLE client (hereafter named "ESP32 Client"). The example shows how to build BLE SPP (Serial Port Profile, UART-BLE passthrough mode) with AT commands.  
+### Example 3. [ESP32 & ESP32-C3] [UART-BLE Passthrough Mode](#BLE-AT)
+Below is an example of using two ESP32 modules, one as a BLE server (hereafter named "ESP32 Server"), the other one as a BLE client (hereafter named "ESP32 Client"). The example shows how to build BLE SPP (Serial Port Profile, UART-BLE passthrough mode) with AT commands. For ESP32-C3 modules, please refer to ESP32 modules.
 ***Notice:***  
 
 * The ESP32 Server needs to download a "service bin" into Flash to provide BLE services.
