@@ -65,7 +65,7 @@ Web Server AT 示例
  
        AT+CIPMUX=1
 
-#. 创建 WEB server，端口：80，最大连接时间：25 s（默认最大为 60 s）。
+#. 创建 web server，端口：80，最大连接时间：25 s（默认最大为 60 s）。
 
 
    - Command
@@ -87,7 +87,7 @@ Web Server AT 示例
 """"""""""""""""""""""""
 
 在配网设备连接到 ESP 设备后，即可发送 HTTP 请求，配置待接入的路由器的信息：（注意，浏览器配网不支持配网设备作为待接入 AP）。
-在浏览器中输入 WEB server 默认的 IP 地址（如果未设置 ESP 设备的 SoftAP IP 地址，默认为 192.168.4.1，您可以通过 AT+CIPAP? 命令查询当前的 SoftAP IP 地址)，打开配网界面，输入拟连接的路由器的 ssid、password，点击“开始配网”即可开始配网：
+在浏览器中输入 web server 默认的 IP 地址（如果未设置 ESP 设备的 SoftAP IP 地址，默认为 192.168.4.1，您可以通过 AT+CIPAP? 命令查询当前的 SoftAP IP 地址)，打开配网界面，输入拟连接的路由器的 ssid、password，点击“开始配网”即可开始配网：
 
 .. figure:: ../../_static/Web_server/web_brower_open_html.png
    :align: center
@@ -96,7 +96,7 @@ Web Server AT 示例
 
    浏览器打开配网界面
 
-用户也可以点击配网页面中 SSID 输入框右方的下拉框，查看 ESP 模块附近的 AP列表，选择目标 AP 并输入 password 后，点击“开始配网”即可启动配网：
+用户也可以点击配网页面中 SSID 输入框右方的下拉框，查看 ESP 模块附近的 AP 列表，选择目标 AP 并输入 password 后，点击“开始配网”即可启动配网：
 
 .. figure:: ../../_static/Web_server/web_brower_get_ap_record.png
    :align: center
@@ -259,14 +259,14 @@ Web Server AT 示例
  
        AT+CWMODE=3
 
-#. 设置 SoftAP 的 ssid 和 password（如设置默认连接 ssid 为 `pos_softap`，无密码的 Wi-Fi）。
+#. 设置 SoftAP 的 ssid 和 password（如设置默认连接 ssid 为 `pos_softap`，password 为 `espressif`）。
 
 
    - Command
    
      ::
  
-       AT+CWSAP="pos_softap","",11,0,3
+       AT+CWSAP="pos_softap","espressif",11,3,3
 
 #. 使能多连接。
 
@@ -277,7 +277,7 @@ Web Server AT 示例
  
        AT+CIPMUX=1
 
-#. 创建 WEB server，端口：80，最大连接时间：50 s（默认最大为 60 s）。
+#. 创建 web server，端口：80，最大连接时间：50 s（默认最大为 60 s）。
 
 
    - Command
@@ -424,6 +424,8 @@ Web Server AT 示例
 
 **说明** 2：配网页面收到提示“连接 AP 失败”。请检查配网设备的 Wi-Fi 连接功能是否打开，检查 ESP 模块的 Wi-Fi AP 是否正确开启，以及 AP 的 ssid、password 是否按上述步骤进行配置。
 
+**说明** 3：配网页面收到提示“系统保存的 Wi-Fi 配置过期”。请手动使用手机连接 ESP 模块 AP，确认 ESP 模块的 ssid、password 已经按照上述步骤进行配置。
+
 使用微信小程序进行 OTA 固件升级
 ---------------------------------
-微信小程序支持在线完成 ESP 设备的固件升级，具体步骤与使用浏览器进行 OTA 固件升级类似，请参考上文。
+微信小程序支持在线完成 ESP 设备的固件升级，请参考上述 `配置 ESP 设备参数`_  的具体步骤完成 ESP 模块的配置（如果已经在配网时完成配置，不用重复配置）。完成配置后，设备执行 OTA 固件升级的流程与使用浏览器进行 OTA 固件升级类似，请参考 `使用浏览器进行 OTA 固件升级`_。
