@@ -83,7 +83,7 @@ static const esp_at_module_info_t esp_at_module_info[] = {
 #endif
 };
 
-static uint8_t esp_at_module_id = 0x1;
+static uint8_t esp_at_module_id = 0x0;
 
 #if defined(CONFIG_AT_BT_COMMAND_SUPPORT) || defined(CONFIG_AT_BLE_COMMAND_SUPPORT) \
     || defined(CONFIG_AT_BLE_HID_COMMAND_SUPPORT) || defined(CONFIG_AT_BLUFI_COMMAND_SUPPORT)
@@ -182,8 +182,20 @@ static uint32_t esp_at_factory_parameter_init(void)
     }
 
     version = data[2];
-    // get module id
-    esp_at_module_id = data[3];
+    if (version <= 2) {
+        // get module id
+        esp_at_module_id = data[3];
+    } else {
+        const char* module_name = data + 56; // for more detail, please refer to 
+        for (uint32_t loop = 0; loop < sizeof(esp_at_module_info)/sizeof(esp_at_module_info[0]); loop++) {
+            if (strcmp(module_name, esp_at_module_info[loop].module_name) == 0) {
+                esp_at_module_id = loop;
+                break;
+            }
+        }
+    }
+
+    printf("module_name:%s\r\n", esp_at_get_current_module_name());
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
     // get max tx power
     if (data[4] != 0xFF) {
