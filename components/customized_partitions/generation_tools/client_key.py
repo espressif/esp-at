@@ -48,6 +48,7 @@ def main():
     raw_data_files = ['']
     for suffix in ['.pem', '.der', '.key']:
         raw_data_files += glob.glob(os.path.join(raw_data_path, ''.join(['*', suffix])))
+    raw_data_files.sort()
 
     if len(raw_data_files) == 0:
         print('none raw data file for ble_data exists')
