@@ -29,7 +29,7 @@ For example, the configuration of the ``ESP32-WROOM-32`` is as the following tab
 +----------------+----------------+
 | version        | 2              |
 +----------------+----------------+
-| module_id      | 1              |
+| reserved1      | 0              |
 +----------------+----------------+
 | tx_max_power   | 78             |
 +----------------+----------------+
@@ -81,7 +81,7 @@ For example, if you need to set GPIO1 (TX) and GPIO3 (RX) to be both the log pin
     +----------------+----------------+
     | version        | 2              |
     +----------------+----------------+
-    | module_id      | 1              |
+    | reserved1      | 0              |
     +----------------+----------------+
     | tx_max_power   | 78             |
     +----------------+----------------+
@@ -176,7 +176,7 @@ For example, the configuration of the ``ESP32S2-WROVER`` is as the following tab
 +----------------+------------------+
 | version        | 2                |
 +----------------+------------------+
-| module_id      | 0                |
+| reserved1      | 0                |
 +----------------+------------------+
 | tx_max_power   | 78               |
 +----------------+------------------+
@@ -228,7 +228,7 @@ For example, if you need to set GPIO43 (TX) and GPIO44 (RX) to be both the log p
     +----------------+------------------+
     | version        | 2                |
     +----------------+------------------+
-    | module_id      | 0                |
+    | reserved1      | 0                |
     +----------------+------------------+
     | tx_max_power   | 78               |
     +----------------+------------------+
@@ -283,7 +283,7 @@ For example, the configuration of the ``ESP32C3-MINI-1`` is as the following tab
 +----------------+------------------+
 | version        | 2                |
 +----------------+------------------+
-| module_id      | 1                |
+| reserved1      | 0                |
 +----------------+------------------+
 | tx_max_power   | 78               |
 +----------------+------------------+
@@ -335,7 +335,7 @@ For example, if you need to set GPIO21 (TX) and GPIO20 (RX) to be both the log p
     +----------------+------------------+
     | version        | 2                |
     +----------------+------------------+
-    | module_id      | 1                |
+    | reserved1      | 0                |
     +----------------+------------------+
     | tx_max_power   | 78               |
     +----------------+------------------+
