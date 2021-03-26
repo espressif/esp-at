@@ -1091,7 +1091,7 @@ GATTS starts all services.
 
 ::
 
-    AT+BLEGATTSSTART
+    AT+BLEGATTSSRVSTART
 
 Set Command
 ^^^^^^^^^^^
@@ -1142,7 +1142,7 @@ GATTS stops all services.
 
 ::
 
-    AT+BLEGATTSSTOP
+    AT+BLEGATTSSRVSTOP
 
 Set Command
 ^^^^^^^^^^^
@@ -1774,7 +1774,7 @@ Set or reset the parameters of Bluetooth LE SPP.
 
 ::
 
-    AT+BLESCANPARAM=<option>[,<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>]
+    AT+BLESPPCFG=<cfg_enable>[,<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>]
 
 **Response:**
 
@@ -1785,7 +1785,7 @@ Set or reset the parameters of Bluetooth LE SPP.
 Parameters
 ^^^^^^^^^^
 
--  **<option>**: 
+-  **<cfg_enable>**:
 
    -  0: all the SPP parameters will be reset, and the following four parameters don't need input.
    -  1: you should input the following four parameters.
