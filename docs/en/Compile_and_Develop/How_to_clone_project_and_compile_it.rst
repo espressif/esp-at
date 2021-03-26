@@ -55,20 +55,23 @@ Compiling the ESP-AT is the same as compiling any other project based on the ESP
      git clone --recursive https://github.com/espressif/esp-at.git
 
 2. ``rm -rf build sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
-3. ``./build.py menuconfig``, and then choose the name indexes of platform and your module, then ``Serial flasher config`` to configure the serial port for downloading.
+3. ``./build.py menuconfig``, and then choose the name indexes of platform and your module.
 
   - platform name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``, here should choose ``PLATFORM_ESP32``
   - module name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``
   - silence mode is to remove some logs and reduce the firmware size, generally, it should be disabled.
   - The choice items will not appear if the file ``build/module_info.json`` exists. So please delete it if you want to reconfigure module information.
 
-4. ``./build.py flash`` to compile the project and download it into the flash.
+4. ``./build.py build`` to compile the project.
 
-   -  Or you can call ``./build.py build`` to compile it, and follow the printed instructions to download the bin files into flash by yourself.
-   -  If enable BT feature, the firmware size will be much larger, please make sure it does not exceed the ota partition size.
+   - If enable BT feature, the firmware size will be much larger, please make sure it does not exceed the ota partition size.
    - After compiled, the combined factory bin will be create in ``build/factory``, by default, the factory bin is 4MB flash size, DIO flash mode and 40MHz flash speed.
 
-5. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash.
+5. ``./build.py flash`` to download the bin files into flash.
+
+   - Or you can follow the printed instructions to download the bin files into flash after call ``./build.py build``.
+
+6. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash, and then repeat step 5 to re-flash the AT firmware.
 
 ESP32S2 platform
 =================
@@ -137,7 +140,7 @@ The MINI-1 Board sends AT commands through UART1 by default.
 
 The debug log will output through UART0 by default, which TXD0 is GPIO21 and RXD0 is GPIO20, but user can change it in menuconfig if needed:
 
-``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART for console output``
+``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``Channel for console output``
 
 Compiling and flashing the project
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -159,20 +162,23 @@ Compiling the ESP-AT is the same as compiling any other project based on the ESP
      git clone --recursive https://github.com/espressif/esp-at.git
 
 2. ``rm -rf build sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
-3. ``./build.py menuconfig``, and then choose the name indexes of platform and your module, then ``Serial flasher config`` to configure the serial port for downloading.
+
+3. ``./build.py menuconfig``, and then choose the name indexes of platform and your module.
 
   - platform name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``, here should choose ``PLATFORM_ESP32C3``
   - module name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``
   - silence mode is to remove some logs and reduce the firmware size, generally, it should be disabled.
   - The choice items will not appear if the file ``build/module_info.json`` exists. So please delete it if you want to reconfigure module information.
 
-4. ``./build.py flash`` to compile the project and download it into the flash.
+4. ``./build.py build`` to compile the project.
 
-   -  Or you can call ``./build.py build`` to compile it, and follow the printed instructions to download the bin files into flash by yourself.
-   -  If enable BT feature, the firmware size will be much larger, please make sure it does not exceed the ota partition size.
-   - After compiled, the combined factory bin will be create in ``build/factory``, by default, the factory bin is 4MB flash size, QIO flash mode and 80MHz flash speed.
+   - After compiled, the combined factory bin will be create in ``build/factory``, by default, the factory bin is 4MB flash size, DIO flash mode and 40MHz flash speed.
 
-5. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash.
+5. ``./build.py flash`` to download the bin files into flash.
+
+   - Or you can follow the printed instructions to download the bin files into flash after call ``./build.py build``.
+
+6. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash, and then repeat step 5 to re-flash the AT firmware.
 
 
 ESP8266 platform
