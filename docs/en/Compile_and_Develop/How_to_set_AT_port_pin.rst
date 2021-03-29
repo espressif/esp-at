@@ -13,7 +13,7 @@ The UART pin of ESP32 can be user-defined to other pins, refer to `ESP32 Technic
     TX ---> GPIO1  
     RX ---> GPIO3  
 
-The log pins can be set in ``make menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output``.
+The log pins can be set in ``./build.py menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output``.
 UART1 is for sending AT commands and receiving response, but its pins can be changed. The pins of UART1 is in the ``factory_param.bin``, they can be changed in the component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`. The UART1 pins may be different for different ESP modules. More details of ``factory_param_data.csv`` are in the ``How_to_create_factory_parameter_bin.md``.
 
 For example, the configuration of the ``ESP32-WROOM-32`` is as the following table.
@@ -122,7 +122,7 @@ The default setting of ESP8266 AT UART is：
 
 For example, if you need to set GPIO1 (TX) and GPIO3 (RX) of ESP-WROOM-02 to be both the log pin and AT port pin, then you can set it as the following steps.
 
-1.  ``make menuconfig`` > ``Component config`` > ``ESP8266-specific`` > ``UART for console output`` > ``Default: UART0``
+1.  ``./build.py menuconfig`` > ``Component config`` > ``ESP8266-specific`` > ``UART for console output`` > ``Default: UART0``
 2.  Open component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`, choose the line of ``WROOM-02``, set ``uart_tx_pin`` to be 1 and ``uart_rx_pin`` to be 3, and then save it.
 
     +----------------+------------------+
@@ -160,7 +160,7 @@ The UART pin of ESP32S2 can be user-defined to other pins, refer to `ESP32S2 Tec
     TX ---> GPIO43  
     RX ---> GPIO44 
 
-The log pins can be set in ``make menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output``.
+The log pins can be set in ``./build.py menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output``.
 UART1 is for sending AT commands and receiving response, but its pins can be changed. The pins of UART1 are configured in the ``factory_param.bin``, they can be changed in the component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`. The UART1 pins may be different for different ESP modules. More details of ``factory_param_data.csv`` are in the ``How_to_create_factory_parameter_bin.md``.
 
 For example, the configuration of the ``ESP32S2-WROVER`` is as the following table.
@@ -267,7 +267,7 @@ The UART pin of ESP32C3 can be user-defined to other pins, refer to `ESP32C3 Tec
     TX ---> GPIO21  
     RX ---> GPIO20 
 
-The log pins can be set in ``make menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output``.
+The log pins can be set in ``./build.py menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output``.
 UART1 is for sending AT commands and receiving response, but its pins can be changed. The pins of UART1 are configured in the ``factory_param.bin``, they can be changed in the component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`. The UART1 pins may be different for different ESP modules. More details of ``factory_param_data.csv`` are in the ``How_to_create_factory_parameter_bin.md``.
 
 For example, the configuration of the ``ESP32C3-MINI-1`` is as the following table.

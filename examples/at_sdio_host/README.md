@@ -186,7 +186,7 @@ Sdio init done
 按照硬件接口的信号线对接即可测试 SDIO 通信
 
 - MCU 需要运行 `at_sdio_host` 示例程序，通过宏定义 TARGET_ESP32 来选择从机使用 ESP32 或者 ESP8266
-- ESP 设备在 slave 侧运行 SDIO AT 程序（在 ESP-AT 目录下配置 `make menuconfig` --> `Component config` --> `AT` --> `communicate method for AT command` --> `AT through SDIO`）
+- ESP 设备在 slave 侧运行 SDIO AT 程序（在 ESP-AT 目录下配置 `./build.py menuconfig` --> `Component config` --> `AT` --> `communicate method for AT command` --> `AT through SDIO`）
 
 ## 测试速率
 
@@ -215,9 +215,9 @@ Sdio init done
 
 其中，考虑到 ESP8266 内存和吞吐之间的均衡，ESP8266  SDIO AT 只在默认配置的基础上更改了如下配置项：
 
-1. 开启 FULL Cache，（使能 `make menuconfig` --> `Component config` --> `ESP8266-specific` --> `Enable full cache mode`）
-2. 将 SDIO buffer number 改为 MCU 每次发送数据长度 * 2 / 512 的倍数，（在 ESP-AT 目录下配置 `make menuconfig` --> `Component config` --> `AT` --> `AT SDIO settings` --> `SDIO buffer number`），在本次吞吐测试中， MCU 每次发送 2048Bytes，因此 SDIO buffer number 为 8.
-3. CPU 频率调整为 160M， （设置 `make menuconfig` --> `Component config` --> `ESP8266-specific` --> `CPU frequency` 为 `160 MHz`）
-4. TCP 窗口缩小为 2920（设置 `make menuconfig` --> `Component config` --> `LWIP` --> `TCP` --> `Default send buffer size` 为 `2920`）
+1. 开启 FULL Cache，（使能 `./build.py menuconfig` --> `Component config` --> `ESP8266-specific` --> `Enable full cache mode`）
+2. 将 SDIO buffer number 改为 MCU 每次发送数据长度 * 2 / 512 的倍数，（在 ESP-AT 目录下配置 `./build.py menuconfig` --> `Component config` --> `AT` --> `AT SDIO settings` --> `SDIO buffer number`），在本次吞吐测试中， MCU 每次发送 2048Bytes，因此 SDIO buffer number 为 8.
+3. CPU 频率调整为 160M， （设置 `./build.py menuconfig` --> `Component config` --> `ESP8266-specific` --> `CPU frequency` 为 `160 MHz`）
+4. TCP 窗口缩小为 2920（设置 `./build.py menuconfig` --> `Component config` --> `LWIP` --> `TCP` --> `Default send buffer size` 为 `2920`）
 
 使用上述配置项， ESP8266-S2 连接到 WiFi 之后所剩内存为 22KB。

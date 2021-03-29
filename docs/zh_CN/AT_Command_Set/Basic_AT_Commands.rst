@@ -554,13 +554,15 @@
 
       ::
 
-           - "CONNECT\r\n" 或以 "+LINK_CONN:" 开头的提示信息  
-           - "CLOSED\r\n"  
-           - "WIFI CONNECTED\r\n"  
-           - "WIFI GOT IP\r\n"  
-           - "WIFI DISCONNECT\r\n"  
-           - "+ETH_CONNECTED\r\n"  
-           - "+ETH_DISCONNECTED\r\n"  
+           - "CONNECT\r\n" 或以 "+LINK_CONN:" 开头的提示信息
+           - "CLOSED\r\n"
+           - "WIFI CONNECTED\r\n"
+           - "WIFI GOT IP\r\n"
+           - "WIFI GOT IPv6 LL\r\n"
+           - "WIFI GOT IPv6 GL\r\n"
+           - "WIFI DISCONNECT\r\n"
+           - "+ETH_CONNECTED\r\n"
+           - "+ETH_DISCONNECTED\r\n"
            - 以 "+ETH_GOT_IP:" 开头的提示信息
            - 以 "+STA_CONNECTED:" 开头的提示信息
            - 以 "+STA_DISCONNECTED:" 开头的提示信息
@@ -573,7 +575,7 @@
 
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将被保存在 NVS 分区。
 -  若设 Bit0 为 1，退出 Wi-Fi 透传模式时会提示 ``+QUITT``。
--  若设 Bit1 为 1，将会影响 :ref:`AT+CIPSTART <cmd-START>` 和 :ref:`AT+CIPSERVER <cmd-SERVER>` 命令，系统将提示 “+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port”，而不是 “XX,CONNECT”。
+-  若设 Bit1 为 1，将会影响 :ref:`AT+CIPSTART <cmd-START>` 和 :ref:`AT+CIPSERVER <cmd-SERVER>` 命令，系统将提示 "+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port"，而不是 "XX,CONNECT"。
 
 示例
 ^^^^
@@ -651,7 +653,7 @@
 ^^^^
 
 -  使用本命令需烧录 at_customize.bin，详细信息可参考 :doc:`../Compile_and_Develop/How_to_customize_partitions`。
--  擦除分区时，设置指令可省略 ``<offset>`` 和 ``<length>`` 参数，用于完整擦除该目标分区。例如，指令 ``AT+SYSFLASH=0,"ble_data"`` 可擦除整个 “ble_data” 区域。如果擦除分区时不省略 ``<offset>`` 和 ``<length>`` 参数，则这两个参数值要求是 4 KB 的整数倍。
+-  擦除分区时，设置指令可省略 ``<offset>`` 和 ``<length>`` 参数，用于完整擦除该目标分区。例如，指令 ``AT+SYSFLASH=0,"ble_data"`` 可擦除整个 "ble_data" 区域。如果擦除分区时不省略 ``<offset>`` 和 ``<length>`` 参数，则这两个参数值要求是 4 KB 的整数倍。
 -  关于分区的定义可参考 `ESP-IDF 分区表 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/partition-tables.html>`_。
 -  当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时您可以输入要写的数据，数据长度应与 ``<length>`` 一致。
 -  写分区前，请先擦除该分区。
