@@ -1091,7 +1091,7 @@ GATTS 开启全部服务
 
 ::
 
-    AT+BLEGATTSSTART
+    AT+BLEGATTSSRVSTART
 
 设置命令
 ^^^^^^^^
@@ -1142,7 +1142,7 @@ GATTS 停止全部服务
 
 ::
 
-    AT+BLEGATTSSTOP
+    AT+BLEGATTSSRVSTOP
 
 设置命令
 ^^^^^^^^
@@ -1774,7 +1774,7 @@ GATTC 写服务特征值或描述符值
 
 ::
 
-    AT+BLESCANPARAM=<option>[,<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>]
+    AT+BLESPPCFG=<cfg_enable>[,<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>]
 
 **响应：**
 
@@ -1785,7 +1785,7 @@ GATTC 写服务特征值或描述符值
 参数
 ^^^^
 
--  **<option>**：
+-  **<cfg_enable>**：
 
    -  0: 重置所有 SPP 参数，后面四个参数无需填写；
    -  1: 后面四个参数需要填写。
