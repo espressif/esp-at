@@ -160,6 +160,10 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
      - Wi-Fi station interface has connected to an AP
    * - WIFI GOT IP
      - Wi-Fi station interface has got the IPv4 address
+   * - WIFI GOT IPv6 LL
+     - Wi-Fi station interface has got the IPv6 LinkLocal address
+   * - WIFI GOT IPv6 GL
+     - Wi-Fi station interface has got the IPv6 Global address
    * - WIFI DISCONNECT
      - Wi-Fi station interface has disconnected from an AP
    * - +ETH_CONNECTED

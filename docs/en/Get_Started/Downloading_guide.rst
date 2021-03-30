@@ -96,7 +96,7 @@ Before starting to flash, you need to download `Flash Download Tools for Windows
 
    Flash Download Tools Modes
 
-- Select your target chip. For example, choose “ESP8266 DownloadTool” for ESP8266 chip; choose “ESP32-S2 DownloadTool” for ESP32-S2 chip. (Here, we select ESP32 DownloadTool.)
+- Select your target chip. For example, choose "ESP8266 DownloadTool" for ESP8266 chip; choose “ESP32-S2 DownloadTool” for ESP32-S2 chip. (Here, we select ESP32 DownloadTool.)
 
 .. figure:: ../../_static/esp32_wroom32_download_select.png
    :align: center

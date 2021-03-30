@@ -144,7 +144,12 @@ Connect an ESP station to a targeted AP.
 
 ::
 
+    WIFI CONNECTED
+    WIFI GOT IP
+
     OK
+    [WIFI GOT IPv6 LL]
+    [WIFI GOT IPv6 GL]
 
 or
 
@@ -170,7 +175,12 @@ Connect an ESP station to a targeted AP with last Wi-Fi configuration.
 
 ::
 
+    WIFI CONNECTED
+    WIFI GOT IP
+
     OK
+    [WIFI GOT IPv6 LL]
+    [WIFI GOT IPv6 GL]
 
 or
 
@@ -229,6 +239,10 @@ Notes
 -  The parameter ``<reconn_interval>`` of this command is the same as ``<interval_second>`` of the command :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`. Therefore, if you omit ``<reconn_interval>`` when running this command, the interval between Wi-Fi reconnections will use the default value 1.
 -  If the ``<ssid>`` and ``<password>`` parameter are omitted, AT will use the last configuration.
 -  Execute command has the same maximum timeout to setup command. The default value is 15 seconds, but you can change it by setting the parameter ``<jap_timeout>``.
+-  To get an IPv6 address, you need to set :ref:`AT+CIPV6=1 <cmd-IPV6>`.
+-  Response ``OK`` means that the IPv4 network is ready, but not the IPv6 network. At present, ESP-AT is mainly based on IPv4 network, supplemented by IPv6 network.
+-  ``WIFI GOT IPv6 LL`` represents that the linklocal IPv6 address has been obtained. This address is calculated locally through EUI-64 and does not require the participation of the AP. Because of the parallel timing, this print may be before or after ``OK``.
+-  ``WIFI GOT IPv6 GL`` represents that the global IPv6 address has been obtained. This address is combined by the prefix issued by AP and the suffix calculated internally, which requires the participation of the AP. Because of the parallel timing, this print may be before or after ``OK``, or it may not be printed because the AP does not support IPv6.
 
 Example
 ^^^^^^^^
@@ -738,8 +752,8 @@ Notes
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  This Set Command correlates with the commands that set static IP, such as :ref:`AT+CIPSTA <cmd-IPSTA>` and :ref:`AT+CIPAP <cmd-IPAP>`:
 
-   -  If DHCP is enabled, static IP will be disabled;
-   -  If static IP is enabled, DHCP will be disabled;
+   -  If DHCP is enabled, static IP address will be disabled;
+   -  If static IP address is enabled, DHCP will be disabled;
    -  The last configuration overwrites the previous configuration.
 
 Example
@@ -799,11 +813,11 @@ Parameters
 -  **<enable>**:
    
    -  1: Enable DHCP server settings. The parameters below have to be set.
-   -  0: Disable DHCP server settings and use the default IP range.
+   -  0: Disable DHCP server settings and use the default IP address range.
 
 -  **<lease time>**: lease time. Unit: minute. Range [1,2880].
--  **<start IP>**: start IP of the IP range that can be obtained from ESP SoftAP DHCP server.
--  **<end IP>**: end IP of the IP range that can be obtained from ESP SoftAP DHCP server.
+-  **<start IP>**: start IP address of the IP address range that can be obtained from ESP SoftAP DHCP server.
+-  **<end IP>**: end IP address of the IP address range that can be obtained from ESP SoftAP DHCP server.
 
 Notes
 ^^^^^
@@ -819,7 +833,7 @@ Example
 
     AT+CWDHCPS=1,3,"192.168.4.10","192.168.4.15"
     
-    AT+CWDHCPS=0 // Disable the settings and use the default IP range.
+    AT+CWDHCPS=0 // Disable the settings and use the default IP address range.
 
 .. _cmd-AUTOC:
 
@@ -1111,9 +1125,11 @@ Query the IP address of the ESP Station.
 
 ::
 
-    +CIPSTA:ip:<ip>
-    +CIPSTA:gateway:<gateway>
-    +CIPSTA:netmask:<netmask>
+    +CIPSTA:ip:<"ip">
+    +CIPSTA:gateway:<"gateway">
+    +CIPSTA:netmask:<"netmask">
+    +CIPSTA:ip6ll:<"ipv6 addr">
+    +CIPSTA:ip6gl:<"ipv6 addr">
 
     OK
 
@@ -1122,13 +1138,13 @@ Set Command
 
 **Function:**
 
-Set the IP address of the ESP station.
+Set the IPv4 address of the ESP station.
 
 **Command:**
 
 ::
 
-    AT+CIPSTA=<ip>[,<gateway>,<netmask>]
+    AT+CIPSTA=<"ip">[,<"gateway">,<"netmask">]
 
 **Response:**
 
@@ -1139,9 +1155,10 @@ Set the IP address of the ESP station.
 Parameters
 ^^^^^^^^^^
 
--  **<ip>**: string parameter showing the IP address of the ESP station.
--  **[<gateway>]**: gateway.
--  **[<netmask>]**: netmask.
+-  **<"ip">**: string parameter showing the IPv4 address of the ESP station.
+-  **<"gateway">**: gateway.
+-  **<"netmask">**: netmask.
+-  **<"ipv6 addr">**: string parameter showing the IPv6 address of the ESP station.
 
 Notes
 ^^^^^
@@ -1150,8 +1167,8 @@ Notes
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The Set Command correlates with the commands that set DHCP, such as :ref:`AT+CWDHCP <cmd-DHCP>`.
 
-   -  If static IP is enabled, DHCP will be disabled;
-   -  If DHCP is enabled, static IP will be disabled;
+   -  If static IP address is enabled, DHCP will be disabled;
+   -  If DHCP is enabled, static IP address will be disabled;
    -  The last configuration overwrites the previous configuration.
 
 Example
@@ -1183,9 +1200,11 @@ Query the IP address of the ESP SoftAP.
 
 ::
 
-    +CIPAP:ip:<ip>
-    +CIPAP:gateway:<gateway>
-    +CIPAP:netmask:<netmask>
+    +CIPAP:ip:<"ip">
+    +CIPAP:gateway:<"gateway">
+    +CIPAP:netmask:<"netmask">
+    +CIPAP:ip6ll:<"ipv6 addr">
+    +CIPAP:ip6gl:<"ipv6 addr">
 
     OK
 
@@ -1194,13 +1213,13 @@ Set Command
 
 **Function:**
 
-Set the IP address of the ESP SoftAP.
+Set the IPv4 address of the ESP SoftAP.
 
 **Command:**
 
 ::
 
-    AT+CIPAP=<ip>[,<gateway>,<netmask>]
+    AT+CIPAP=<"ip">[,<"gateway">,<"netmask">]
 
 **Response:**
 
@@ -1211,9 +1230,10 @@ Set the IP address of the ESP SoftAP.
 Parameters
 ^^^^^^^^^^
 
--  **<ip>**: string parameter showing the IP address of the ESP SoftAP.
--  **[<gateway>]**: gateway.
--  **[<netmask>]**: netmask.
+-  **<"ip">**: string parameter showing the IPv4 address of the ESP SoftAP.
+-  **<"gateway">**: gateway.
+-  **<"netmask">**: netmask.
+-  **<"ipv6 addr">**: string parameter showing the IPv6 address of the ESP SoftAP.
 
 Notes
 ^^^^^
@@ -1221,8 +1241,8 @@ Notes
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The set command correlates with the commands that set DHCP, such as :ref:`AT+CWDHCP <cmd-DHCP>`.
 
-   -  If static IP is enabled, DHCP will be disabled;
-   -  If DHCP is enabled, static IP will be disabled;
+   -  If static IP address is enabled, DHCP will be disabled;
+   -  If DHCP is enabled, static IP address will be disabled;
    -  The last configuration overwrites the previous configuration.
 
 Example

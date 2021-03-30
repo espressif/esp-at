@@ -36,7 +36,7 @@ DAT3 is reused as the CS line. For each command, SDIO slave is activated by pull
 
 The SDIO SPI communication can be tested  according to the signal line of the hardware interface.
 - MCU needs to run the `ESP32` or  `STM32` program 
-- A ESP32 as slave run SDIO AT program ( `make menuconfig` --> `Component config` --> `AT` --> `communicate method for AT command` --> `AT through SDIO`)
+- A ESP32 as slave run SDIO AT program ( `./build.py menuconfig` --> `Component config` --> `AT` --> `communicate method for AT command` --> `AT through SDIO`)
 
 It should be noted that CMD and DATA lines D0-D3 of the slave should be pulled up by 50KOhm resistor even when there is no connection. In addition, the voltage selection efuse should be written as 3.3v. For specific notes, please refer to [SD Pullup Requirements](https://espressif-docs.readthedocs-hosted.com/projects/esp-idf/en/latest/api-reference/peripherals/sd_pullup_requirements.html)
 
@@ -137,7 +137,7 @@ DAT3 被复用作 CS 线，对于每一个命令， SDIO slave 均是通过拉�
 按照硬件接口的信号线对接即可测试 SDIO SPI 通信
 
 - MCU 需要运行  `at_sdspi_host` 示例程序
-- ESP32 在 slave 侧运行 SDIO AT 程序 （在 ESP32-AT 目录下配置  `make menuconfig` --> `Component config` --> `AT` --> `communicate method for AT command` --> `AT through SDIO`）
+- ESP32 在 slave 侧运行 SDIO AT 程序 （在 ESP32-AT 目录下配置  `./build.py menuconfig` --> `Component config` --> `AT` --> `communicate method for AT command` --> `AT through SDIO`）
 
  需要注意的是 SDIO slave 的 CMD 和 D0-D3 即使在没有连接时都应该连接一个 50K 的上拉电阻，另外需要将电压选择 efuse 烧写为 3.3v，具体注意事项请参考 [SD Pullup Requirements](https://espressif-docs.readthedocs-hosted.com/projects/esp-idf/en/latest/api-reference/peripherals/sd_pullup_requirements.html)
 

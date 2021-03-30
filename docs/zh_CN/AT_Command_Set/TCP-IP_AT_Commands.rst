@@ -5,8 +5,9 @@ TCP/IP AT 命令
 
 :link_to_translation:`en:[English]`
 
+-  :ref:`AT+CIPV6 <cmd-IPV6>`: 启用/禁用 IPv6 网络 (IPv6)
 -  :ref:`AT+CIPSTATUS <cmd-STATUS>`：查询 TCP/UDP/SSL 连接状态和信息
--  :ref:`AT+CIPDOMAIN <cmd-DOMAIN>`：解析域名
+-  :ref:`AT+CIPDOMAIN <cmd-DOMAIN>`：域名解析
 -  :ref:`AT+CIPSTART <cmd-START>`：建立 TCP 连接、UDP 传输或 SSL 连接
 -  :ref:`AT+CIPSTARTEX <cmd-STARTEX>`：建立自动分配 ID 的 TCP 连接、UDP 传输或 SSL 连接
 -  :ref:`AT+CIPSEND <cmd-SEND>`：在普通传输模式或 Wi-Fi 透传模式下发送数据
@@ -28,13 +29,71 @@ TCP/IP AT 命令
 -  :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>`：查询/设置 SSL 客户端的 SNI
 -  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`：查询/设置 SSL 客户端 ALPN
 -  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`：查询/设置 SSL 客户端的 PSK
--  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`：查询/设置 Wi-Fi 透传模式下的 TCP 重连间隔
+-  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`：查询/设置 Wi-Fi 透传模式下的 TCP/UDP/SSL 重连间隔
 -  :ref:`AT+CIPRECVMODE <cmd-CIPRECVMODE>`：查询/设置 socket 接收模式
 -  :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`：获取被动接收模式下的 socket 数据
 -  :ref:`AT+CIPRECVLEN <cmd-CIPRECVLEN>`：查询被动接收模式下 socket 数据的长度
 -  :ref:`AT+PING <cmd-CIPPING>`：ping 对端主机
 -  :ref:`AT+CIPDNS <cmd-DNS>`：查询/设置 DNS 服务器信息
 -  :ref:`AT+CIPTCPOPT <cmd-TCPOPT>`：查询/设置 socket 选项
+
+.. _cmd-IPV6:
+
+:ref:`AT+CIPV6 <TCPIP-AT>`: 启用/禁用 IPv6 网络 (IPv6)
+------------------------------------------------------------------
+
+查询命令
+^^^^^^^^^^^^
+
+**功能：**
+
+查询 IPv6 网络是否使能
+
+**命令：**
+
+::
+
+    AT+CIPV6?
+
+**响应：**
+
+::
+
+    +CIPV6:<enable>
+
+    OK
+
+设置命令
+^^^^^^^^^^^^^^
+
+**功能：**
+
+启用/禁用 IPv6 网络
+
+**命令：**
+
+::
+
+    AT+CIPV6=<enable>
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+-  **<enable>**: IPv6 网络使能状态。 默认值：0
+
+   -  0: 禁用 IPv6 网络
+   -  1: 启用 IPv6 网络
+
+说明
+^^^^
+
+-  在使用基于 IPv6 网络的上层应用前，需要先启用 IPv6 网络。（例如：基于 IPv6 网络使用 TCP/UDP/SSL/PING/DNS，也称为 TCP6/UDP6/SSL6/PING6/DNS6 或 TCPv6/UDPv6/SSLv6/PINGv6/DNSv6）
 
 .. _cmd-STATUS:
 
@@ -55,7 +114,7 @@ TCP/IP AT 命令
 ::
 
     STATUS:<stat>
-    +CIPSTATUS:<link ID>,<type>,<remote IP>,<remote port>,<local port>,<tetype>
+    +CIPSTATUS:<link ID>,<"type">,<"remote IP">,<remote port>,<local port>,<tetype>
     OK
 
 参数
@@ -63,16 +122,16 @@ TCP/IP AT 命令
 
 -  **<stat>**：ESP station 接⼝的状态
 
-   -  0: ESP station 为 inactive 状态
-   -  1: ESP station 为 idle 状态
+   -  0: ESP station 为未初始化状态
+   -  1: ESP station 为已初始化状态，但还未开始 Wi-Fi 连接
    -  2: ESP station 已连接 AP，获得 IP 地址
    -  3: ESP station 已建立 TCP、UDP 或 SSL 传输
    -  4: ESP 设备所有的 TCP、UDP 和 SSL 均断开
-   -  5: ESP station 未连接 AP
+   -  5: ESP station 开始过 Wi-Fi 连接，但尚未连接上 AP 或从 AP 断开
 
 -  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
--  **<type>**：字符串参数，表示传输类型："TCP"、"UDP" 或 "SSL"
--  **<remote IP>**：字符串参数，表示远端 IP 地址
+-  **<"type">**：字符串参数，表示传输类型："TCP"、"UDP"、"SSL"、"TCPv6"、"UDPv6" 或 "SSLv6"
+-  **<"remote IP">**：字符串参数，表示远端 IPv4 地址或 IPv6 地址
 -  **<remote port>**：远端端口值
 -  **<local port>**：ESP 本地端口值
 -  **<tetype>**:
@@ -82,30 +141,36 @@ TCP/IP AT 命令
 
 .. _cmd-DOMAIN:
 
-:ref:`AT+CIPDOMAIN <TCPIP-AT>`：解析域名
+:ref:`AT+CIPDOMAIN <TCPIP-AT>`：域名解析
 ------------------------------------------------------
 
-执行命令
+设置命令
 ^^^^^^^^
 
 **命令：**
 
 ::
 
-    AT+CIPDOMAIN=<domain name>
+    AT+CIPDOMAIN=<"domain name">[,<ip network>]
 
 **响应：**
 
 ::
 
-    +CIPDOMAIN:<IP address>
+    +CIPDOMAIN:<"IP address">
     OK
 
 参数
 ^^^^
 
--  **<domain name>**：待解析的域名
--  **<IP address>**：解析出的 IP 地址
+-  **<"domain name">**：待解析的域名
+-  **<ip network>**：首选 IP 网络。默认值：1
+
+   - 1：首选解析为 IPv4 地址
+   - 2：只解析为 IPv4 地址
+   - 3：只解析为 IPv6 地址
+
+-  **<"IP address">**：解析出的 IP 地址
 
 示例
 ^^^^
@@ -114,53 +179,65 @@ TCP/IP AT 命令
 
     AT+CWMODE=1                       // 设置 station 模式
     AT+CWJAP="SSID","password"        // 连接网络
-    AT+CIPDOMAIN="iot.espressif.cn"   // 解析域名
+    AT+CIPDOMAIN="iot.espressif.cn"   // 域名解析
+
+    // 域名解析，只解析为 IPv4 地址
+    AT+CIPDOMAIN="iot.espressif.cn",2
+
+    // 域名解析，只解析为 IPv6 地址
+    AT+CIPDOMAIN="ipv6.test-ipv6.com",3
+
+    // 域名解析，首选解析为 IPv4 地址
+    AT+CIPDOMAIN="ds.test-ipv6.com",1
 
 .. _cmd-START:
 
 :ref:`AT+CIPSTART <TCPIP-AT>`：建立 TCP 连接、UDP 传输或 SSL 连接
----------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 
 建立 TCP 连接
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 设置命令
-""""""""""""
+""""""""""""""
 
 **命令：**
 
 ::
 
-    // Single TCP connection (AT+CIPMUX=0):
-    AT+CIPSTART=<type>,<remote IP>,<remote port>[,<TCP keep alive>][,<local IP>]
-    // Multiple TCP Connections (AT+CIPMUX=1):
-    AT+CIPSTART=<link ID>,<type>,<remote IP>,<remote port>[,<TCP keep alive>][,<local IP>]
+    // 单连接 (AT+CIPMUX=0):
+    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep alive>][,<"local IP">]
+
+    // 多连接 (AT+CIPMUX=1):
+    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep alive>][,<"local IP">]
 
 **响应：**
 
 ::
 
+    CONNECT
+
     OK
 
 参数
-"""""""""""
+""""
 
 -  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
--  **<type>**：字符串参数，表示网络连接类型，"TCP"、"UDP" 或 "SSL"
--  **<remote IP>**：字符串参数，远端 IP 地址
+-  **<"type">**：字符串参数，表示网络连接类型，"TCP" 或 "TCPv6"。默认值："TCP"
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：远端端口值
--  **[<TCP keep alive>]**：TCP keep-alive 间隔，默认值：0
+-  **<keep alive>**：TCP keep-alive 间隔，默认值：0
 
    -  0: 禁用 TCP keep-alive 功能
    -  1 ~ 7200: 检测间隔，单位：秒
 
--  **[<local IP>]**：本地 IP 地址，该参数在同时使用以太网和 Wi-Fi 时非常有用。默认为禁用，如果您想使用，需自行设置，空值也为有效值
+-  **<"local IP">**：连接绑定的本机 IPv4 地址或 IPv6 地址，该参数在本地多网络接口时和本地多 IP 地址时非常有用。默认为禁用，如果您想使用，需自行设置，空值也为有效值
 
 说明
 """"""
 
-- 如果 UDP 连接中的远端 IP 地址是组播地址 (224.0.0.0 ~ 239.255.255.255)，ESP 设备将发送和接收 UDP 组播。
-- 如果 UDP 连接中的远端 IP 地址是广播地址 (255.255.255.255)，ESP 设备将发送和接收 UDP 广播。
+- 如果想基于 IPv6 网络建立 TCP 连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
+
 
 示例
 """"
@@ -170,25 +247,33 @@ TCP/IP AT 命令
     AT+CIPSTART="TCP","iot.espressif.cn",8000
     AT+CIPSTART="TCP","192.168.101.110",1000
     AT+CIPSTART="TCP","192.168.101.110",1000,,"192.168.101.100"
+    AT+CIPSTART="TCPv6","test-ipv6.com",80
+    AT+CIPSTART="TCPv6","fe80::860d:8eff:fe9d:cd90",1000,,"fe80::411c:1fdb:22a6:4d24"
+
+    // esp-at 已通过 AT+CWJAP 获取到 IPv6 全局地址
+    AT+CIPSTART="TCPv6","2404:6800:4005:80b::2004",80,,"240e:3a1:2070:11c0:32ae:a4ff:fe80:65ac"
 
 建立 UDP 传输
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 设置命令
-""""""""""""
+""""""""""""""
 
 **命令：**
 
 ::
 
     // 单连接：(AT+CIPMUX=0)
-    AT+CIPSTART=<type>,<remote IP>,<remote port>[,(<UDP local port>),(<UDP mode>)][,<local IP>]
+    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<local port>,<mode>,<"local IP">]
+
     // 多连接：(AT+CIPMUX=1)
-    AT+CIPSTART=<link ID>,<type>,<remote IP>,<remote port>[,(<UDP local port>),(<UDP mode>)][,<local IP>]
+    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<local port>,<mode>,<"local IP">]
 
 **响应：**
 
 ::
+
+    CONNECT
 
     OK
 
@@ -196,42 +281,52 @@ TCP/IP AT 命令
 """""""""""
 
 -  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
--  **<type>**：字符串参数，表示连接类型："TCP"、"UDP" 或 "SSL"
--  **<remote IP>**：字符串参数，远端 IP 地址
+-  **<"type">**：字符串参数，表示网络连接类型，"UDP" 或 "UDPv6"。默认值："TCP"
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：远端端口值
--  **[<UDP local port>]**：ESP 设备的 UDP 端口值
--  **[<UDP mode>]**：在 UDP Wi-Fi 透传下，本参数的值必须设为 0
+-  **<local port>**：ESP 设备的 UDP 端口值
+-  **<mode>**：在 UDP Wi-Fi 透传下，本参数的值必须设为 0
 
    -  0: 接收到 UDP 数据后，不改变对端 UDP 地址信息（默认）
    -  1: 仅第一次接收到与初始设置不同的对端 UDP 数据时，改变对端 UDP 地址信息为发送数据设备的 IP 地址和端口
    -  2: 每次接收到 UDP 数据时，都改变对端 UDP 地址信息为发送数据的设备的 IP 地址和端口
 
--  **[<local IP>]**：本地 IP 地址，该参数在同时使用以太网和 Wi-Fi 时非常有用。默认为禁用，如果您想使用，需自行设置，空值也为有效值
+-  **<"local IP">**：连接绑定的本机 IPv4 地址或 IPv6 地址，该参数在本地多网络接口时和本地多 IP 地址时非常有用。默认为禁用，如果您想使用，需自行设置，空值也为有效值
 
 说明
 """""
-
--  使用参数 ``<UDP mode>`` 前，需先设置参数 ``<UDP local port>``
+- 如果 UDP 连接中的远端 IP 地址是 IPv4 组播地址 (224.0.0.0 ~ 239.255.255.255)，ESP 设备将发送和接收 UDPv4 组播
+- 如果 UDP 连接中的远端 IP 地址是 IPv4 广播地址 (255.255.255.255)，ESP 设备将发送和接收 UDPv4 广播
+- 如果 UDP 连接中的远端 IP 地址是 IPv6 组播地址 (FF00:0:0:0:0:0:0:0 ~ FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF)，ESP 设备将基于 IPv6 网络，发送和接收 UDP 组播
+- 使用参数 ``<mode>`` 前，需先设置参数 ``<local port>``
+- 如果想基于 IPv6 网络建立 UDP 连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`, 再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
 
 示例
 """""""""
 
 ::
 
+    // UDPv4 单播
     AT+CIPSTART="UDP","192.168.101.110",1000,1002,2
     AT+CIPSTART="UDP","192.168.101.110",1000,,,"192.168.101.100"
 
+    // 基于 IPv6 网络的 UDP 单播
+    AT+CIPSTART="UDPv6","fe80::32ae:a4ff:fe80:65ac",1000,,,"fe80::5512:f37f:bb03:5d9b"
+
+    // 基于 IPv6 网络的 UDP 多播
+    AT+CIPSTART="UDPv6","FF02::FC",1000,1002,0
+
 建立 SSL 连接
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 设置命令
-"""""""""""""
+""""""""""""""
 
 **命令：**
 
 ::
 
-    AT+CIPSTART=[<link ID>,]<type>,<remote IP>,<remote port>[,<TCP keep alive>][,<local IP>]    
+    AT+CIPSTART=[<link ID>,]<"type">,<"remote host">,<remote port>[,<keep alive>,<"local IP">]
 
 **响应：**
 
@@ -243,22 +338,19 @@ TCP/IP AT 命令
 """""""""""
 
 -  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
--  **<type>**：字符串参数，表示连接类型："TCP"、"UDP" 或 "SSL"
--  **<remote IP>**：字符串参数，远端 IP 地址
+-  **<"type">**：字符串参数，表示网络连接类型，"SSL" 或 "SSLv6"。默认值："TCP"
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：远端端口值
--  **[<TCP keep alive>]**：TCP keep-alive 间隔，默认值：0
-
-   -  0: 禁用 TCP keep-alive 功能
-   -  1 ~ 7200: 检测间隔，单位：秒
-
--  **[<local IP>]**：本地 IP 地址，该参数在同时使用以太网和 Wi-Fi 时非常有用。默认为禁用，如果您想使用，需自行设置，空值也为有效值
+-  **<keep alive>**：SSL 保留配置，默认值：0
+-  **<"local IP">**：连接绑定的本机 IPv4 地址或 IPv6 地址，该参数在本地多网络接口时和本地多 IP 地址时非常有用。默认为禁用，如果您想使用，需自行设置，空值也为有效值
 
 说明
 """"""
 
--  SSL 连接数量取决于可用内存和最大连接数量；由于内存的限制，ESP8266 只能够创建一条 SSL 连接
--  SSL 连接需占用大量内存，内存不足会导致系统重启
--  如果 ``AT+CIPSTART`` 命令是基于 SSL 连接，且每个数据包的超时时间为 10 秒，则总超时时间会变得更长，具体取决于握手数据包的个数
+- SSL 连接数量取决于可用内存和最大连接数量；由于内存的限制，ESP8266 只能够创建一条 SSL 连接
+- SSL 连接需占用大量内存，内存不足会导致系统重启
+- 如果 ``AT+CIPSTART`` 命令是基于 SSL 连接，且每个数据包的超时时间为 10 秒，则总超时时间会变得更长，具体取决于握手数据包的个数
+- 如果想基于 IPv6 网络建立 SSL 连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`, 再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
 
 示例
 """"""""
@@ -268,17 +360,20 @@ TCP/IP AT 命令
     AT+CIPSTART="SSL","iot.espressif.cn",8443
     AT+CIPSTART="SSL","192.168.101.110",1000,,"192.168.101.100" 
 
+    // esp-at 已通过 AT+CWJAP 获取到 IPv6 全局地址
+    AT+CIPSTART="SSLv6","240e:3a1:2070:11c0:6972:6f96:9147:d66d",1000,,"240e:3a1:2070:11c0:55ce:4e19:9649:b75"
+
 .. _cmd-STARTEX:
 
 :ref:`AT+CIPSTARTEX <TCPIP-AT>`：建立自动分配 ID 的 TCP 连接、UDP 传输或 SSL 连接
-----------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
 
 本命令与 :ref:`AT+CIPSTART <cmd-START>` 相似，不同点在于：在多连接的情况下 (:ref:`AT+CIPMUX=1 <cmd-MUX>`) 无需手动分配 ID，系统会自动为新建的连接分配 ID。
 
 .. _cmd-SEND:
 
 :ref:`AT+CIPSEND <TCPIP-AT>`：在普通传输模式或 Wi-Fi 透传模式下发送数据
------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
 
 设置命令
 ^^^^^^^^
@@ -293,16 +388,19 @@ TCP/IP AT 命令
 
     // 单连接：(AT+CIPMUX=0)
     AT+CIPSEND=<length>
+
     // 多连接：(AT+CIPMUX=1)
     AT+CIPSEND=<link ID>,<length>
-    // UDP 传输可指定对端 IP 地址和端口：
-    AT+CIPSEND=[<link ID>,]<length>[,<remote IP>,<remote port>]
+
+    // UDP 传输可指定对端主机和端口
+    AT+CIPSEND=[<link ID>,]<length>[,<"remote host">,<remote port>]
 
 **响应：**
 
 ::
 
     OK
+
     >
 
 上述响应表示 AT 已准备好接收串行数据，此时您可以输入数据，当 AT 接收到的数据长度达到 ``<length>`` 后，数据传输开始。
@@ -347,20 +445,20 @@ Wi-Fi 透传模式下，进入数据发送模式
 
 进入数据发送模式，每包最大 2048 字节，或者每包数据以 20 ms 间隔区分。当输入单独一包 ``+++`` 时，退出透传模式下的数据发送模式，请至少间隔 1 秒再发下一条 AT 命令。
 
-本命令必须在开启透传模式以及单连接下使用。若为 Wi-Fi UDP 透传，:ref:`AT+CIPSTART <cmd-START>` 命令的参数 ``<UDP mode>`` 必须设置为 0。
+本命令必须在开启透传模式以及单连接下使用。若为 Wi-Fi UDP 透传，:ref:`AT+CIPSTART <cmd-START>` 命令的参数 ``<mode>`` 必须设置为 0。
 
 参数
 ^^^^
 
 -  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
 -  **<length>**：数据长度，最大值：2048 字节
--  **[<remote IP>]**：UDP 传输可以指定对端 IP 地址
--  **[<remote port>]**：UDP 传输可以指定对端端口
+-  **<"remote host">**：UDP 传输可以指定对端主机：IPv4 地址、IPv6 地址，或域名
+-  **<remote port>**：UDP 传输可以指定对端端口
 
 .. _cmd-SENDEX:
 
 :ref:`AT+CIPSENDEX <TCPIP-AT>`：在普通传输模式下采用扩展的方式发送数据
------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
 
 设置命令
 ^^^^^^^^
@@ -375,10 +473,12 @@ Wi-Fi 透传模式下，进入数据发送模式
 
     // 单连接：(AT+CIPMUX=0)
     AT+CIPSENDEX=<length>
+
     // 多连接：(AT+CIPMUX=1)
     AT+CIPSENDEX=<link ID>,<length>
+
     // UDP 传输可指定对端 IP 地址和端口：
-    AT+CIPSENDEX=[<link ID>,]<length>[,<remote IP>,<remote port>]
+    AT+CIPSENDEX=[<link ID>,]<length>[,<"remote host">,<remote port>]
 
 **响应：**
 
@@ -406,18 +506,20 @@ Wi-Fi 透传模式下，进入数据发送模式
 
 -  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
 -  **<length>**：数据长度，最大值：2048 字节
+-  **<"remote host">**：UDP 传输可以指定对端主机：IPv4 地址、IPv6 地址，或域名
+-  **<remote port>**：UDP 传输可以指定对端端口
 
 说明
 ^^^^^
 
--  当数据长度满足要求时，或数据中出现 ``\0`` 字符时 (0x5c, 0x30 ASCII)，数据传输开始，系统返回普通命令模式，等待下一条 AT 命令
+-  当数据长度满足要求时，或数据中出现 ``\0`` 字符时 (0x5c，0x30 ASCII)，数据传输开始，系统返回普通命令模式，等待下一条 AT 命令
 -  如果数据中包含 ``\<any>``，则会去掉反斜杠，只使用 ``<any>`` 符号
 -  如果需要发送 ``\0``，请转义为 ``\\0``
 
 .. _cmd-CLOSE:
 
 :ref:`AT+CIPCLOSE <TCPIP-AT>`：关闭 TCP/UDP/SSL 连接
-----------------------------------------------------------------
+----------------------------------------------------------------------------
 
 设置命令
 ^^^^^^^^^^
@@ -472,30 +574,46 @@ Wi-Fi 透传模式下，进入数据发送模式
 
 ::
 
-    +CIFSR:APIP,<SoftAP IP address>
-    +CIFSR:APMAC,<SoftAP MAC address>
-    +CIFSR:STAIP,<Station IP address>
-    +CIFSR:STAMAC,<Station MAC address>
+    +CIFSR:APIP,<"APIP">
+    +CIFSR:APIP6LL,<"APIP6LL">
+    +CIFSR:APIP6GL,<"APIP6GL">
+    +CIFSR:APMAC,<"APMAC">
+    +CIFSR:STAIP,<"STAIP">
+    +CIFSR:STAIP6LL,<"STAIP6LL">
+    +CIFSR:STAIP6GL,<"STAIP6GL">
+    +CIFSR:STAMAC,<"STAMAC">
+    +CIFSR:ETHIP,<"ETHIP">
+    +CIFSR:ETHIP6LL,<"ETHIP6LL">
+    +CIFSR:ETHIP6GL,<"ETHIP6GL">
+    +CIFSR:ETHMAC,<"ETHMAC">
 
     OK
 
 参数
 ^^^^
 
--  **<IP address>**:
-
-   -  ESP SoftAP 的 IP 地址
-   -  ESP station 的 IP 地址
+- **<"APIP">**: ESP SoftAP 的 IPv4 地址
+- **<"APIP6LL">**: ESP SoftAP 的 IPv6 本地链路地址
+- **<"APIP6GL">**: ESP SoftAP 的 IPv6 全局地址
+- **<"APMAC">**: ESP SoftAP 的 MAC 地址
+- **<"STAIP">**: ESP station 的 IPv4 地址
+- **<"STAIP6LL">**: ESP station 的 IPv6 本地链路地址
+- **<"STAIP6GL">**: ESP station 的 IPv6 全局地址
+- **<"STAMAC">**: ESP station 的 MAC 地址
+- **<"ETHIP">**: ESP ethernet 的 IPv4 地址
+- **<"ETHIP6LL">**: ESP ethernet 的 IPv6 本地链路地址
+- **<"ETHIP6GL">**: ESP ethernet 的 IPv6 全局地址
+- **<"ETHMAC">**: ESP ethernet 的 MAC 地址
 
 说明
 ^^^^
 
--  只有当 ESP station 连入 AP 时才能查询到它的 IP 地址
+-  只有当 ESP 设备获取到有效接口信息后，才能查询到它的 IP 地址和 MAC 地址
 
 .. _cmd-MUX:
 
 :ref:`AT+CIPMUX <TCPIP-AT>`：启用/禁用多连接模式
-----------------------------------------------------------------------
+---------------------------------------------------------------------
 
 查询命令
 ^^^^^^^^
@@ -549,7 +667,7 @@ Wi-Fi 透传模式下，进入数据发送模式
 
 -  只有当所有连接都断开时才可更改连接模式
 -  只有非透传模式 (:ref:`AT+CIPMODE=0 <cmd-IPMODE>`)，才能设置为多连接 
--  如果建立了 TCP 服务器，想切换为单连接，必须关闭服务器 (:ref:`AT+CIPSERVER=0 <cmd-SERVER>`)
+-  如果建立了 TCP/SSL 服务器，想切换为单连接，必须关闭服务器 (:ref:`AT+CIPSERVER=0 <cmd-SERVER>`)
 
 示例
 ^^^^
@@ -561,7 +679,7 @@ Wi-Fi 透传模式下，进入数据发送模式
 .. _cmd-SERVER:
 
 :ref:`AT+CIPSERVER <TCPIP-AT>`：建立/关闭 TCP 或 SSL 服务器
----------------------------------------------------------------------
+------------------------------------------------------------------------------------
 
 设置命令
 ^^^^^^^^
@@ -570,7 +688,7 @@ Wi-Fi 透传模式下，进入数据发送模式
 
 ::
 
-    AT+CIPSERVER=<mode>[,<port>][,<SSL>,<SSL CA enable>]    
+    AT+CIPSERVER=<mode>[,<port>][,<"type">,<CA enable>]
 
 **响应：**
 
@@ -586,9 +704,9 @@ Wi-Fi 透传模式下，进入数据发送模式
    -  0: 关闭服务器
    -  1: 建立服务器
 
--  **[<port>]**：端口号，默认为 333
--  **[<SSL>]**：字符串 "SSL"，用于建立 SSL 服务器，省略该参数则表示建立/关闭 **TCP** 服务器，本参数只适用于 ESP32 和 ESP32-S2
--  **[<SSL CA enable>]**：本参数只适用于 ESP32 和 ESP32-S2
+-  **<port>**：端口号，默认为 333
+-  **<"type">**：服务器类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6". 默认值："TCP"。由于内存限制，此参数不适用于 ESP8266 设备
+-  **<CA enable>**：由于内存限制，此参数不适用于 ESP8266 设备
 
    -  0: 不使用 CA 认证
    -  1: 使用 CA 认证
@@ -596,9 +714,10 @@ Wi-Fi 透传模式下，进入数据发送模式
 说明
 ^^^^
 
--  多连接情况下 (:ref:`AT+CIPMUX=1 <cmd-MUX>`)，才能开启服务器
--  创建服务器后，自动建立服务器监听，最多只允许创建一个服务器
--  当有客户端接入，会自动占用一个连接 ID
+- 多连接情况下 (:ref:`AT+CIPMUX=1 <cmd-MUX>`)，才能开启服务器
+- 创建服务器后，自动建立服务器监听，最多只允许创建一个服务器
+- 当有客户端接入，会自动占用一个连接 ID
+- 如果想基于 IPv6 网络建立服务器，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
 
 示例
 ^^^^
@@ -608,14 +727,19 @@ Wi-Fi 透传模式下，进入数据发送模式
     // 建立 TCP 服务器
     AT+CIPMUX=1
     AT+CIPSERVER=1,80
+
     // 建立 SSL 服务器
     AT+CIPMUX=1
     AT+CIPSERVER=1,443,"SSL",1
 
+    // 基于 IPv6 网络，创建 SSL 服务器
+    AT+CIPMUX=1
+    AT+CIPSERVER=1,443,"SSLv6",0
+
 .. _cmd-SERVERMAX:
 
 :ref:`AT+CIPSERVERMAXCONN <TCPIP-AT>`：查询/设置服务器允许建立的最大连接数
----------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
 
 查询命令
 ^^^^^^^^
@@ -731,8 +855,8 @@ Wi-Fi 透传模式下，进入数据发送模式
 ^^^^
 
 -  配置更改不保存到 flash。
--  Wi-Fi 透传模式传输时，如果 TCP 连接断开，ESP 会不停地尝试重连，此时单独输入 ``+++`` 退出透传，则停止重连。
--  TCP 普通传输模式时，如果 TCP 连接断开，ESP 则不会重连，并提示连接断开。
+-  Wi-Fi 透传模式传输时，如果连接断开，ESP 会不停地尝试重连，此时单独输入 ``+++`` 退出透传，则停止重连。
+-  普通传输模式时，如果连接断开，ESP 则不会重连，并提示连接断开。
 
 示例
 ^^^^
@@ -744,10 +868,10 @@ Wi-Fi 透传模式下，进入数据发送模式
 .. _cmd-SAVET:
 
 :ref:`AT+SAVETRANSLINK <TCPIP-AT>`：设置开机透传模式信息
-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
 
 设置开机进入 TCP/SSL 透传模式信息
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 设置命令
 """"""""""""""
@@ -756,7 +880,7 @@ Wi-Fi 透传模式下，进入数据发送模式
 
 ::
 
-    AT+SAVETRANSLINK=<mode>,<"remote IP">,<remote port>[,<"type">,<TCP keep alive>]
+    AT+SAVETRANSLINK=<mode>,<"remote host">,<remote port>[,<"type">,<keep alive>]
 
 **响应：**
 
@@ -772,19 +896,20 @@ Wi-Fi 透传模式下，进入数据发送模式
    -  0: 关闭 ESP 上电进入 Wi-Fi 透传模式
    -  1: 开启 ESP 上电进入 Wi-Fi 透传模式
 
--  **<remote IP>**：远端 IP 地址或域名
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：远端端口值
--  **[<type>]**："TCP" 或 "SSL"，默认为 "TCP"
--  **[<TCP keep alive>]**：TCP keep-alive 间隔，默认值：0
+-  **<"type">**：字符串参数，表示传输类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6"。默认值："TCP"
+-  **<keep alive>**：TCP keep-alive 间隔，默认值：0
 
-   -  0: 禁用 TCP keep-alive 功能
+   -  0: 禁用 keep-alive 功能
    -  1 ~ 7200: 检测间隔，单位：秒
 
 说明
 """""""
 
--  本设置将 Wi-Fi 开机透传模式信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入透传模式。需重启生效。
--  只要远端 IP 地址（域名）、端口的值符合规范，本设置就会被保存到 flash。
+- 本设置将 Wi-Fi 开机透传模式信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入透传模式。需重启生效。
+- 只要远端 IP 地址（域名）、端口的值符合规范，本设置就会被保存到 flash。
+- 如果想基于 IPv6 网络建立透传连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
 
 示例
 """"""""
@@ -793,18 +918,20 @@ Wi-Fi 透传模式下，进入数据发送模式
 
     AT+SAVETRANSLINK=1,"192.168.6.110",1002,"TCP"
     AT+SAVETRANSLINK=1,"www.baidu.com",443,"SSL"
+    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"TCPv6"
+    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"SSLv6
 
 设置开机进入 UDP 透传模式信息
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 设置
-""""""""""""""
+""""
 
 **命令：**
 
 ::
 
-    AT+SAVETRANSLINK=<mode>,<"remote IP">,<remote port>,[<"type">,<UDP local port>]
+    AT+SAVETRANSLINK=<mode>,<"remote host">,<remote port>,[<"type">,<local port>]
 
 **响应：**
 
@@ -813,23 +940,24 @@ Wi-Fi 透传模式下，进入数据发送模式
     OK
 
 参数
-""""""""""""""
+""""
 
 -  **<mode>**:
 
    -  0: 关闭 ESP 上电进入 Wi-Fi 透传模式
    -  1: 开启 ESP 上电进入 Wi-Fi 透传模式
 
--  **<remote IP>**：远端 IP 地址或域名
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：远端端口值
--  **[<type>]**："UDP"，默认为 "TCP"
--  **[<UDP local port>]**：开机进入 UDP 传输时，使用的本地端口
+-  **<"type">**：字符串参数，表示传输类型："UDP" 或 "UDPv6"。默认值："TCP"
+-  **[<local port>]**：开机进入 UDP 传输时，使用的本地端口
 
 说明
 """""""
 
--  本设置将 Wi-Fi 开机透传模式信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入透传模式。需重启生效。
--  只要远端 IP 地址（域名）、端口的值符合规范，本设置就会被保存到 flash。
+- 本设置将 Wi-Fi 开机透传模式信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入透传模式。需重启生效
+- 只要远端 IP 地址（域名）、端口的值符合规范，本设置就会被保存到 flash
+- 如果想基于 IPv6 网络建立透传连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
 
 示例
 """""""""
@@ -837,18 +965,19 @@ Wi-Fi 透传模式下，进入数据发送模式
 ::
 
     AT+SAVETRANSLINK=1,"192.168.6.110",1002,"UDP",1005
+    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8081,"UDPv6",1005
 
 .. _cmd-STO:
 
-:ref:`AT+CIPSTO <TCPIP-AT>`：查询/设置本地 TCP 服务器超时时间
----------------------------------------------------------------------
+:ref:`AT+CIPSTO <TCPIP-AT>`：查询/设置本地 TCP/SSL 服务器超时时间
+----------------------------------------------------------------------------------------
 
 查询命令
 ^^^^^^^^
 
 **功能：**
 
-查询本地 TCP 服务器超时时间
+查询本地 TCP/SSL 服务器超时时间
 
 **命令：**
 
@@ -868,7 +997,7 @@ Wi-Fi 透传模式下，进入数据发送模式
 
 **功能：**
 
-设置本地 TCP 服务器超时时间
+设置本地 TCP/SSL 服务器超时时间
 
 **命令：**
 
@@ -885,12 +1014,12 @@ Wi-Fi 透传模式下，进入数据发送模式
 参数
 ^^^^
 
--  **<time>**：本地 TCP 服务器超时时间，单位：秒，取值范围：[0,7200]
+-  **<time>**：本地 TCP/SSL 服务器超时时间，单位：秒，取值范围：[0,7200]
 
 说明
 ^^^^
 
--  当 TCP 客户端在 ``<time>`` 时间内未发生数据通讯时，ESP 服务器会断开此连接。
+-  当 TCP/SSL 客户端在 ``<time>`` 时间内未发生数据通讯时，ESP 服务器会断开此连接。
 -  如果设置参数 ``<time>`` 为 0，则连接永远不会超时，不建议这样设置。
 -  在设定的时间内，当客户端发起与服务器的通信时，计时器将重新计时。超时后，客户端被关闭。在设定的时间内，如果服务器发起与客户端的通信，计时器将不会重新计时。超时后，客户端被关闭。
 
@@ -906,7 +1035,7 @@ Wi-Fi 透传模式下，进入数据发送模式
 .. _cmd-SNTPCFG:
 
 :ref:`AT+CIPSNTPCFG <TCPIP-AT>`：查询/设置时区和 SNTP 服务器
-----------------------------------------------------------------------------
+------------------------------------------------------------------------------
 
 查询命令
 ^^^^^^^^
@@ -1048,7 +1177,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 **功能：**
 
-通过 OTA 升级到 TCP 服务器上最新版本的固件
+通过 OTA 升级到 TCP/SSL 服务器上最新版本的固件
 
 **命令：**
 
@@ -1100,7 +1229,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 - **<ota mode>**:
     
     - 0: 通过 HTTP OTA；
-    - 1: 通过 HTTPS OTA，如果无效，请检查 ``make menuconfig`` > ``Component config`` > ``AT`` > ``OTA based upon ssl`` 是否使能，更多信息请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`。
+    - 1: 通过 HTTPS OTA，如果无效，请检查 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``OTA based upon ssl`` 是否使能，更多信息请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`。
 
 - **<version>**：AT 版本，如 ``v1.2.0.0``、``v1.1.3.0`` 或 ``v1.1.2.0``。
 - **<firmware name>**：升级的固件，如 ``ota``、``mqtt_ca``、``client_ca`` 或其它 ``at_customize.csv`` 中自定义的分区。
@@ -1144,7 +1273,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 .. _cmd-IPDINFO:
 
 :ref:`AT+CIPDINFO <TCPIP-AT>`：设置 +IPD 消息详情
-------------------------------------------------------------------------
+----------------------------------------------------------------
 
 设置命令
 ^^^^^^^^
@@ -1179,7 +1308,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 .. _cmd-SSLCCONF:
 
 :ref:`AT+CIPSSLCCONF <TCPIP-AT>`：查询/设置 SSL 客户端配置
-------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
 查询命令
 ^^^^^^^^
@@ -1210,6 +1339,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
     // 单连接：(AT+CIPMUX=0)
     AT+CIPSSLCCONF=<auth_mode>[,<pki_number>][,<ca_number>]
+
     // 多连接：(AT+CIPMUX=1)
     AT+CIPSSLCCONF=<link ID>,<auth_mode>[,<pki_number>][,<ca_number>]
 
@@ -1242,7 +1372,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 .. _cmd-SSLCCN:
 
 :ref:`AT+CIPSSLCCN <TCPIP-AT>`：查询/设置 SSL 客户端的公用名 (common name)
------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
 
 查询命令
 ^^^^^^^^
@@ -1296,7 +1426,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 .. _cmd-SSLCSNI:
 
 :ref:`AT+CIPSSLCSNI <TCPIP-AT>`：查询/设置 SSL 客户端的 SNI
------------------------------------------------------------------------------------
+---------------------------------------------------------------------
 
 查询命令
 ^^^^^^^^
@@ -1350,7 +1480,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 .. _cmd-SSLCALPN:
 
 :ref:`AT+CIPSSLCALPN <TCPIP-AT>`：查询/设置 SSL 客户端 ALPN
------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------
 
 查询命令
 ^^^^^^^^
@@ -1436,6 +1566,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
     // 单连接：(AT+CIPMUX=0)
     AT+CIPSSLCPSK=<"psk">,<"hint">
+
     // 多连接：(AT+CIPMUX=1)
     AT+CIPSSLCPSK=<link ID>,<"psk">,<"hint">
 
@@ -1455,11 +1586,10 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 说明
 ^^^^
 -  如果想要本配置立即生效，请在建立 SSL 连接前运行本命令。
--  当前，仅 ESP8266 和 ESP32-S2 支持本命令，ESP32 不支持。
 
 .. _cmd-AUTOCONNINT:
 
-:ref:`AT+CIPRECONNINTV <TCPIP-AT>`：查询/设置 Wi-Fi 透传模式下的 TCP 重连间隔
+:ref:`AT+CIPRECONNINTV <TCPIP-AT>`：查询/设置 Wi-Fi 透传模式下的 TCP/UDP/SSL 重连间隔
 -----------------------------------------------------------------------------------------------------------
 
 查询命令
@@ -1564,7 +1694,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 - **<mode>**：socket 数据接收模式，默认值：0。
    
    - 0: 主动模式，ESP-AT 将所有接收到的 socket 数据立即发送给主机 MCU，头为 "+IPD"。
-   - 1: 被动模式，ESP-AT 将所有接收到的 socket 数据保存到内部缓存区 (socket 接收窗口，ESP8266 设备默认为 5760 字节，ESP32 和 ESP32-S2 设备默认值为 5744 字节），等待 MCU 读取。对于 TCP 和 SSL 连接，如果缓存区满了，将阻止 socket 传输；对于 UDP 传输，如果缓存区满了，则会发生数据丢失。
+   - 1: 被动模式，ESP-AT 将所有接收到的 socket 数据保存到内部缓存区 (socket 接收窗口，ESP8266 设备默认为 5760 字节，非 ESP8266 设备默认值为 5744 字节），等待 MCU 读取。对于 TCP 和 SSL 连接，如果缓存区满了，将阻止 socket 传输；对于 UDP 传输，如果缓存区满了，则会发生数据丢失。
 
 说明
 ^^^^
@@ -1601,6 +1731,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
     // 单连接：(AT+CIPMUX=0)
     AT+CIPRECVDATA=<len>
+
     // 多连接：(AT+CIPMUX=1)
     AT+CIPRECVDATA=<link_id>,<len>
 
@@ -1687,7 +1818,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 .. _cmd-CIPPING:
 
 :ref:`AT+PING <TCPIP-AT>`：ping 对端主机
---------------------------------------------------------------------
+----------------------------------------------------
 
 设置命令
 ^^^^^^^^
@@ -1700,7 +1831,7 @@ ping 对端主机
 
 ::
 
-    AT+PING=<IP>
+    AT+PING=<"host">
 
 **响应：**
 
@@ -1721,8 +1852,13 @@ ping 对端主机
 参数
 ^^^^
 
-- **<IP>**：字符串参数，表示主机 IP 地址或域名。
+- **<"host">**：字符串参数，表示对端主机的 IPv4 地址，IPv6 地址，或域名。
 - **<time>**：ping 的响应时间，单位：毫秒。
+
+说明
+^^^^
+
+- 如果想基于 IPv6 网络 ping 对端主机，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
 
 示例
 ^^^^
@@ -1732,10 +1868,13 @@ ping 对端主机
     AT+PING="192.168.1.1"
     AT+PING="www.baidu.com"
 
+    // 下一代互联网国家工程中心
+    AT+PING="240c::6666"
+
 .. _cmd-DNS:
 
 :ref:`AT+CIPDNS <TCPIP-AT>`：查询/设置 DNS 服务器信息
----------------------------------------------------------------
+------------------------------------------------------------------
 
 查询命令
 ^^^^^^^^
@@ -1787,8 +1926,8 @@ ping 对端主机
 
 -  **<enable>**：设置 DNS
 
-   -  0: 启用自动获取 DNS 设置，DNS 将会恢复为 ``222.222.67.208``，只有当 DHCP 更新时才会生效； 
-   -  1: 启用手动设置 DNS 信息，如果不设置参数 ``<DNS IPx>`` 的值，则使用默认值 ``222.222.67.208``。
+   -  0: 启用自动获取 DNS 设置，DNS 将会恢复为 ``208.67.222.222``，只有当 DHCP 更新时才会生效；
+   -  1: 启用手动设置 DNS 信息，如果不设置参数 ``<DNS IPx>`` 的值，则使用默认值 ``208.67.222.222``。
 
 -  **<DNS IP1>**：第一个 DNS IP 地址，对于设置命令，只有当 <enable> 参数为 1 时，也就是启用手动 DNS 设置，本参数才有效；如果设置 <enable> 为 1，并为本参数设置一个值，当您运行查询命令时，ESP-AT 将把该参数作为当前的 DNS 设置返回。
 -  **<DNS IP2>**：第二个 DNS IP 地址，对于设置命令，只有当 <enable> 参数为 1 时，也就是启用手动 DNS 设置，本参数才有效；如果设置 <enable> 为 1，并为本参数设置一个值，当您运行查询命令时，ESP-AT 将把该参数作为当前的 DNS 设置返回。
@@ -1808,12 +1947,17 @@ ping 对端主机
 ::
 
     AT+CIPDNS=0
-    AT+CIPDNS=1,"222.222.67.208","114.114.114.114","8.8.8.8"
+    AT+CIPDNS=1,"208.67.222.222","114.114.114.114","8.8.8.8"
+
+    // 第一个基于 IPv6 的 DNS 服务器：下一代互联网国家工程中心
+    // 第二个基于 IPv6 的 DNS 服务器：google-public-dns-a.google.com
+    // 第三个基于 IPv6 的 DNS 服务器：江苏省主 DNS 服务器
+    AT+CIPDNS=1,"240c::6666","2001:4860:4860::8888","240e:5a::6666"
 
 .. _cmd-TCPOPT:
 
 :ref:`AT+CIPTCPOPT <TCPIP-AT>`：查询/设置 socket 选项
----------------------------------------------------------------
+---------------------------------------------------------------------
 
 查询命令
 ^^^^^^^^
@@ -1842,9 +1986,10 @@ ping 对端主机
 
 ::
 
-    // TCP 单连接：(AT+CIPMUX=0):
+    // 单连接：(AT+CIPMUX=0):
     AT+CIPTCPOPT=[<so_linger>],[<tcp_nodelay>],[<so_sndtimeo>]
-    // TCP 多连接：(AT+CIPMUX=1):
+
+    // 多连接：(AT+CIPMUX=1):
     AT+CIPTCPOPT=<link ID>,[<so_linger>],[<tcp_nodelay>],[<so_sndtimeo>]
 
 **响应：**

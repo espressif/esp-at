@@ -567,26 +567,28 @@ Parameter
 
       ::
 
-           - "CONNECT\r\n" or the message prefixed with "+LINK_CONN:"  
-           - "CLOSED\r\n"  
-           - "WIFI CONNECTED\r\n"  
-           - "WIFI GOT IP\r\n"  
-           - "WIFI DISCONNECT\r\n"  
-           - "+ETH_CONNECTED\r\n"  
-           - "+ETH_DISCONNECTED\r\n"  
-           - the message prefixed with "+ETH_GOT_IP:"  
-           - the message prefixed with "+STA_CONNECTED:"  
-           - the message prefixed with "+STA_DISCONNECTED:"  
-           - the message prefixed with "+DIST_STA_IP:"  
-           - the message prefixed with "+BLECONN:"  
-           - the message prefixed with "+BLEDISCONN:"  
+           - "CONNECT\r\n" or the message prefixed with "+LINK_CONN:"
+           - "CLOSED\r\n"
+           - "WIFI CONNECTED\r\n"
+           - "WIFI GOT IP\r\n"
+           - "WIFI GOT IPv6 LL\r\n"
+           - "WIFI GOT IPv6 GL\r\n"
+           - "WIFI DISCONNECT\r\n"
+           - "+ETH_CONNECTED\r\n"
+           - "+ETH_DISCONNECTED\r\n"
+           - the message prefixed with "+ETH_GOT_IP:"
+           - the message prefixed with "+STA_CONNECTED:"
+           - the message prefixed with "+STA_DISCONNECTED:"
+           - the message prefixed with "+DIST_STA_IP:"
+           - the message prefixed with "+BLECONN:"
+           - the message prefixed with "+BLEDISCONN:"
 
 Notes
 ^^^^^
 
 -  The configuration changes will be saved in the NVS area if ``AT+SYSSTORE=1``.
 -  If you set Bit0 to 1, it will prompt “+QUITT” when you quit Wi-Fi passthrough mode.
--  If you set Bit1 to 1, it will impact the information of command :ref:`AT+CIPSTART <cmd-START>` and :ref:`AT+CIPSERVER <cmd-SERVER>`. It will supply “+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port” instead of “XX,CONNECT”.
+-  If you set Bit1 to 1, it will impact the information of command :ref:`AT+CIPSTART <cmd-START>` and :ref:`AT+CIPSERVER <cmd-SERVER>`. It will supply "+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port" instead of "XX,CONNECT".
 
 Example
 ^^^^^^^^
