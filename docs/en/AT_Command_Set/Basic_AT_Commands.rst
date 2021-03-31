@@ -1238,17 +1238,20 @@ Note
 - This command affects set commands only. Query commands are always fetched from RAM.
 - Affected commands:
 
-  - :ref:`AT+SYSMSG <cmd-SYSMSG>` 
+  - :ref:`AT+SYSMSG <cmd-SYSMSG>`
   - :ref:`AT+CWMODE <cmd-MODE>`
+  - :ref:`AT+CIPV6 <cmd-IPV6>`
   - :ref:`AT+CWJAP <cmd-JAP>`
   - :ref:`AT+CWSAP <cmd-SAP>`
+  - :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`
   - :ref:`AT+CIPAP <cmd-IPAP>`
   - :ref:`AT+CIPSTA <cmd-IPSTA>`
-  - :ref:`AT+CIPAPMAC <cmd-APMAC>`  
+  - :ref:`AT+CIPAPMAC <cmd-APMAC>`
   - :ref:`AT+CIPSTAMAC <cmd-STAMAC>`
   - :ref:`AT+CIPDNS <cmd-DNS>`
   - :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`
   - :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`
+  - :ref:`AT+CIPTCPOPT <cmd-TCPOPT>`
   - :ref:`AT+CWDHCPS <cmd-DHCPS>`
   - :ref:`AT+CWDHCP <cmd-DHCP>`
   - :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`
