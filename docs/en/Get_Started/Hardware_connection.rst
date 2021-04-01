@@ -3,11 +3,14 @@ Hardware Connection
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document introduces what hardware you need to prepare and how to connect them in order to download AT firmware, send AT commands, and receive AT responses. It covers the following three ESP series of modules:
+This document introduces what hardware you need to prepare and how to connect them in order to download AT firmware, send AT commands, and receive AT responses. It covers the following four ESP series of modules:
 
 - `ESP32 Series`_
 - `ESP32-S2 Series`_
+- `ESP32-C3 Series`_
 - `ESP8266 Series`_
+
+For different series of modules, the commands supported by AT firmware are different. Please refer to :doc:`/Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module` for more details.
 
 What You Need
 --------------
@@ -253,6 +256,49 @@ ESP32-S2 AT uses two UART ports: UART0 is used to download firmware and log outp
    ESP32-S2 Series Hardware Connection
 
 If you want to connect your device directly with ESP32-S2-WROOM rather than the ESP board that integrates it, please refer to `ESP32-S2-WROOM & ESP32-S2-WROOM-I Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-s2-wroom_esp32-s2-wroom-i_datasheet_en.pdf>`_ for more details.
+
+ESP32-C3 Series
+----------------
+
+ESP32-C3 AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses.
+
+.. list-table:: ESP32-C3 Series Hardware Connection Pinout
+   :header-rows: 1
+
+   * - Function of Connection
+     - ESP Board Pins
+     - Other Device Pins
+   * - Download/Log output :sup:`1`
+     - UART0
+         * GPIO20 (RX)
+         * GPIO21 (TX)
+     - PC
+         * TX
+         * RX
+   * - AT command/response :sup:`2`
+     - UART1
+         * GPIO6 (RX)
+         * GPIO7 (TX)
+         * GPIO5 (CTS)
+         * GPIO4 (RTS)
+     - USB to serial converter
+         * TX
+         * RX
+         * RTS
+         * CTS
+
+**Note** 1: Connection between individual pins of the ESP board and the PC is already established internally on the ESP board. You only need to provide USB cable between the board and PC.
+
+**Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
+
+.. figure:: ../../_static/esp32-c3-hw-connection.png
+   :align: center
+   :alt: ESP32-C3 Series Hardware Connection
+   :figclass: align-center
+
+   ESP32-C3 Series Hardware Connection
+
+If you want to connect your device directly with ESP32­-C3-­MINI-­1 rather than the ESP board that integrates it, please refer to `ESP32­-C3-­MINI-­1 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-c3-mini-1_datasheet_en.pdf>`_ for more details.
 
 ESP8266 Series
 ---------------

@@ -7,6 +7,8 @@
 
 下载和烧录 AT 固件之前，请确保您已正确连接所需硬件，具体可参考 :doc:`Hardware_connection`。
 
+对于不同系列的模组，AT 默认固件所支持的命令会有所差异。具体可参考 :doc:`/Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`。
+
 下载 AT 固件
 -------------
 
@@ -277,6 +279,51 @@ ESP32-S2 开机日志：
     I (334) esp_image: segment 6: paddr=0x001ea6cc vaddr=0x40070000 size=0x0001c (    28) load
     I (346) boot: Loaded app from partition at offset 0x100000
     I (346) boot: Disabling RNG early entropy source...
+    max tx power=78,ret=0
+    2.1.0
+
+ESP32-C3 开机日志:
+
+.. code-block:: none
+
+    ESP-ROM:esp32c3-20200918
+    Build:Sep 18 2020
+    rst:0x1 (POWERON),boot:0xc (SPI_FAST_FLASH_BOOT)
+    SPIWP:0xee
+    mode:DIO, clock div:2
+    load:0x3fcd6100,len:0x14
+    load:0x3fcd6114,len:0x179c
+    load:0x403ce000,len:0x894
+    load:0x403d0000,len:0x2bf8
+    entry 0x403ce000
+    I (54) boot: ESP-IDF v4.3-beta1 2nd stage bootloader
+    I (55) boot: compile time 12:09:42
+    I (55) boot: chip revision: 1
+    I (57) boot_comm: chip revision: 1, min. bootloader chip revision: 0
+    I (64) boot.esp32c3: SPI Speed      : 40MHz
+    I (68) boot.esp32c3: SPI Mode       : DIO
+    I (73) boot.esp32c3: SPI Flash Size : 4MB
+    I (78) boot: Enabling RNG early entropy source...
+    I (83) boot: Partition Table:
+    I (87) boot: ## Label            Usage          Type ST Offset   Length
+    I (94) boot:  0 phy_init         RF data          01 01 0000f000 00001000
+    I (102) boot:  1 otadata          OTA data         01 00 00010000 00002000
+    I (109) boot:  2 nvs              WiFi data        01 02 00012000 0000e000
+    I (117) boot:  3 at_customize     unknown          40 00 00020000 000e0000
+    I (124) boot:  4 ota_0            OTA app          00 10 00100000 00180000
+    I (132) boot:  5 ota_1            OTA app          00 11 00280000 00180000
+    I (139) boot: End of partition table
+    I (144) boot: No factory image, trying OTA 0
+    I (149) boot_comm: chip revision: 1, min. application chip revision: 0
+    I (156) esp_image: segment 0: paddr=00100020 vaddr=3c140020 size=29cc8h (171208) map
+    I (201) esp_image: segment 1: paddr=00129cf0 vaddr=3fc8f000 size=03be8h ( 15336) load
+    I (205) esp_image: segment 2: paddr=0012d8e0 vaddr=40380000 size=02738h ( 10040) load
+    I (210) esp_image: segment 3: paddr=00130020 vaddr=42000020 size=135bf0h (1268720) map
+    I (489) esp_image: segment 4: paddr=00265c18 vaddr=40382738 size=0c778h ( 51064) load
+    I (502) esp_image: segment 5: paddr=00272398 vaddr=50000000 size=00004h (     4) load
+    I (508) boot: Loaded app from partition at offset 0x100000
+    I (544) boot: Set actual ota_seq=1 in otadata[0]
+    I (544) boot: Disabling RNG early entropy source...
     max tx power=78,ret=0
     2.1.0
 

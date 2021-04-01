@@ -4,7 +4,7 @@ How to clone project and compile it
 
 - `ESP32 platform`_
 - `ESP32S2 platform`_
-- `ESP32C3 platform`_
+- `ESP32-C3 platform`_
 - `ESP8266 platform`_
 
 For specific supported modules, please refer to :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`
@@ -125,7 +125,7 @@ Compiling the ESP-AT is the same as compiling any other project based on the ESP
 
 5. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash.
 
-ESP32C3 platform
+ESP32-C3 platform
 =================
 
 Hardware Introduction

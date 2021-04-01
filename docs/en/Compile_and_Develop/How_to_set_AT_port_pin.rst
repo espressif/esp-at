@@ -258,19 +258,19 @@ For example, if you need to set GPIO43 (TX) and GPIO44 (RX) to be both the log p
 3. Recompile the ``esp-at`` project, download the new ``factory_param.bin`` and AT bin into flash.
 4. If you don't want to compile the entire project in the third step, you can refer to ``How_to_create_factory_parameter_bin.md``.
 
-ESP32C3 AT
-----------
-The UART pin of ESP32C3 can be user-defined to other pins, refer to `ESP32C3 Technical Reference Manual <https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf>`__. In the official Espressif ESP32C3 AT bin, UART0 is the default port to print log, using the following pins:
+ESP32-C3 AT
+------------
+The UART pin of ESP32-C3 can be user-defined to other pins, refer to `ESP32-C3 Technical Reference Manual <https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf>`__. In the official Espressif ESP32-C3 AT bin, UART0 is the default port to print log, using the following pins:
 
 ::
 
     TX ---> GPIO21  
     RX ---> GPIO20 
 
-The log pins can be set in ``./build.py menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output``.
+The log pins can be set in ``./build.py menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``Channel for console output``.
 UART1 is for sending AT commands and receiving response, but its pins can be changed. The pins of UART1 are configured in the ``factory_param.bin``, they can be changed in the component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`. The UART1 pins may be different for different ESP modules. More details of ``factory_param_data.csv`` are in the ``How_to_create_factory_parameter_bin.md``.
 
-For example, the configuration of the ``ESP32C3-MINI-1`` is as the following table.
+For example, the configuration of the ``ESP32-C3-MINI-1`` is as the following table.
 
 +----------------+------------------+
 | Parameter      | Value            |
@@ -310,7 +310,7 @@ For example, the configuration of the ``ESP32C3-MINI-1`` is as the following tab
 | rx_control_pin | -1               |
 +----------------+------------------+
 
-In this case, the pins of ``ESP32C3-MINI-1`` AT port is:
+In this case, the pins of ``ESP32-C3-MINI-1`` AT port is:
 
 ::
 
