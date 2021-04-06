@@ -3,6 +3,8 @@
 [ESP8266 Only] Signaling Test AT Commands
 ==========================================
 
+:link_to_translation:`zh_CN:[中文]`
+
 -  :ref:`AT+FACTPLCP <cmd-FACTPLCP>`: Send with long or short PLCP (Physical Layer Convergence Procedure)
 
 .. _cmd-FACTPLCP:

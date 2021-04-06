@@ -3,6 +3,8 @@
 [ESP32 Only] Ethernet AT Commands
 =================================
 
+:link_to_translation:`zh_CN:[中文]`
+
 -  :ref:`Prerequisite <cmd-ETHPRE>`
 -  [ESP32 Only] :ref:`AT+CIPETHMAC <cmd-ETHMAC>`: Query/Set the MAC address of the ESP Ethernet.
 -  [ESP32 Only] :ref:`AT+CIPETH <cmd-ETHIP>`: Query/Set the IP address of the ESP Ethernet.
@@ -12,16 +14,17 @@
 :ref:`Prerequisite <ETH-AT>`
 ------------------------------
 
-Before you run any Ethernet AT Commands, please refer to the following steps to make preparations:
+Before you run any Ethernet AT Commands, please make the following preparations:
 
 .. note::
     This prerequisite takes `ESP32-Ethernet-Kit <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-ethernet-kit.html>`_ as an example. If you use other modules or development boards, please refer to corresponding datasheets for RX/TX pins.
 
 - Change AT UART pins (because default AT UART pins are in conflict with the Ethernet function pins):
 
-  In the row of module ``WROVER-32``, change ``uart_rx_pin`` from GPIO19 to GPIO4, ``uart_tx_pin`` from GPIO22 to GPIO2, ``uart_cts_pin`` from GPIO15 to GPIO-1, and ``uart_rts_pin`` from GPIO14 to GPIO-1 (flow control is optional and is not used here). See :doc:`../Compile_and_Develop/How_to_set_AT_port_pin` for more information.
+  - Open ``factory_param_data.csv`` file
+  - In the row of module ``WROVER-32``, change ``uart_tx_pin`` from GPIO22 to GPIO2, ``uart_rx_pin`` from GPIO19 to GPIO4, ``uart_cts_pin`` from GPIO15 to GPIO-1, and ``uart_rts_pin`` from GPIO14 to GPIO-1 (flow control is optional and is not used here). See :doc:`../Compile_and_Develop/How_to_set_AT_port_pin` for more information.
 
-- Enable ``AT ethernet support``.
+- Enable ``AT ethernet support``. See :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` for more information.
 - Compile and flash the project onto ESP32-Ethernet-Kit.
 - Connect your hardware:
  
@@ -38,7 +41,7 @@ Query Command
 ^^^^^^^^^^^^^
 **Function:**
 
-Obtain the MAC address of the ESP Ethernet.
+Query the MAC address of the ESP Ethernet.
 
 **Command:**
 
@@ -50,7 +53,7 @@ Obtain the MAC address of the ESP Ethernet.
 
 ::
 
-    +CIPETHMAC:<mac>
+    +CIPETHMAC:<"mac">
     OK
 
 Set Command
@@ -64,7 +67,7 @@ Set the MAC address of the ESP Ethernet.
 
 ::
 
-    AT+CIPETHMAC=<mac>
+    AT+CIPETHMAC=<"mac">
 
 **Response:**
 
@@ -75,7 +78,7 @@ Set the MAC address of the ESP Ethernet.
 Parameter
 ^^^^^^^^^^
 
--  **<mac>**: string parameter showing the MAC address of the Ethernet interface.
+-  **<"mac">**: string parameter showing the MAC address of the Ethernet interface.
 
 Notes
 ^^^^^
@@ -83,10 +86,7 @@ Notes
 -  The default firmware does not support Ethernet AT commands (see :doc:`../Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT ethernet support`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  Please make sure the MAC address of Ethernet interface you set is different from those of other interfaces.
--  Bit 0 of the ESP MAC address CANNOT be 1.
-
-   -  For example, a MAC address can be "1a:…" but not "15:…".
-
+-  Bit0 of the ESP MAC address CANNOT be 1. For example, a MAC address can be "1a:…" but not "15:…".
 -  ``FF:FF:FF:FF:FF:FF`` and ``00:00:00:00:00:00`` are invalid MAC addresses and cannot be set.
 
 Example
@@ -106,7 +106,7 @@ Query Command
 
 **Function:**
 
-Obtain the IP address of the ESP Ethernet.
+Query the IP address of the ESP Ethernet.
 
 **Command:**
 
@@ -153,7 +153,6 @@ Notes
 ^^^^^
 
 -  The default firmware does not support Ethernet AT commands (see :doc:`../Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT ethernet support`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
-- Only after calling esp_at_eth_cmd_regist can its IP address be queried.
 - The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 - This Set Command correlates with DHCP commands, such as :ref:`AT+CWDHCP <cmd-DHCP>`:
 

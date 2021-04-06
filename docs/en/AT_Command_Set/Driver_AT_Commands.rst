@@ -3,10 +3,12 @@
 [ESP32 & ESP32-S2 & ESP32-C3] Driver AT Commands
 ================================================
 
+:link_to_translation:`zh_CN:[中文]`
+
 -  :ref:`AT+DRVADC <cmd-DRVADC>`: Read ADC channel value.
 -  :ref:`AT+DRVPWMINIT <cmd-DRVPWMINIT>`: Initialize PWM driver.
--  :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>`: Change PWM duty.
--  :ref:`AT+DRVPWMFADE <cmd-DRVPWMFADE>`: Change PWM gradient.
+-  :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>`: Set PWM duty.
+-  :ref:`AT+DRVPWMFADE <cmd-DRVPWMFADE>`: Set PWM fade.
 -  :ref:`AT+DRVI2CINIT <cmd-DRVI2CINIT>`: Initialize I2C master driver.
 -  :ref:`AT+DRVI2CRD <cmd-DRVI2CRD>`: Read I2C data.
 -  :ref:`AT+DRVI2CWRDATA <cmd-DRVI2CWRDATA>`: Write I2C data.
@@ -48,12 +50,12 @@ Parameters
    -  2: 6 dB attenuation gives full-scale voltage 2.2 V.
    -  3: 11 dB attenuation gives full-scale voltage 3.9 V.
 
-- **<raw data>**: ADC channel value.
+- **<raw data>**: ADC channel value. The voltage value is raw_data/2 :sup:`width` * atten.
 
 Notes
 ^^^^^
 
--  AT only supports ADC1.
+-  ESP-AT only supports ADC1.
 -  ESP32 and ESP32-C3 support 12-bit width, and ESP32-S2 only supports 13-bit width.
 
 Example
@@ -110,7 +112,7 @@ Example
 
 .. _cmd-DRVPWMDUTY:
 
-:ref:`AT+DRVPWMDUTY <Driver-AT>`: Change Channel PWM Duty
+:ref:`AT+DRVPWMDUTY <Driver-AT>`: Set PWM Duty
 -------------------------------------------------------------
 
 Set Command
@@ -131,7 +133,7 @@ Set Command
 Parameter
 ^^^^^^^^^^
 
--  **<duty>**: LEDC channel duty. Range: [0, 2 :sup:`duty_resolution`].
+-  **<duty>**: LEDC channel duty. Range: [0,2 :sup:`duty_resolution`].
 
 Notes
 ^^^^^
@@ -149,7 +151,7 @@ Example
 
 .. _cmd-DRVPWMFADE:
 
-:ref:`AT+DRVPWMFADE <Driver-AT>`: Change Channel PWM Gradient
+:ref:`AT+DRVPWMFADE <Driver-AT>`: Set PWM Fade
 -----------------------------------------------------------------
 
 Set Command
@@ -185,7 +187,7 @@ Example
 ::
 
     AT+DRVPWMFADE=,,0,1000           // use one second to change channel 1 duty to 0
-    AT+DRVPWMFADE=1024,1000,0,2000,  // use one second time change channel 1 duty to 1024, two seconds to change channel 1 duty to 0
+    AT+DRVPWMFADE=1024,1000,0,2000,  // use one second time to change channel 0 duty to 1024, two seconds to change channel 1 duty to 0
 
 .. _cmd-DRVI2CINIT:
 
@@ -410,7 +412,7 @@ Parameters
 -  **<mosi>**: GPIO pin for Master Out Slave In signal.
 -  **<miso>**: GPIO pin for Master In Slave Out signal, or -1 if not used.
 -  **<sclk>**: GPIO pin for SPI Clock signal.
--  **<cs>**: GPIO pin for Master In Slave Out signal, or -1 if not used.
+-  **<cs>**: GPIO pin for slave selection signal, or -1 if not used.
 
 .. _cmd-DRVSPIINIT:
 
@@ -500,7 +502,7 @@ Parameters
 Note
 ^^^^^
 
--  If you don't use DMA, the maximum <data_len> you can set is 64 bytes each time.
+-  If you don't use DMA, the maximum ``<data_len>`` you can set is 64 bytes each time.
 
 Example
 ^^^^^^^^
@@ -556,22 +558,22 @@ Parameters
 ^^^^^^^^^^
 
 -  **<data_len>**: SPI data length. Range: 0 ~ 4092.
--  **<cmd>**: command data. The length of the data is set in <cmd_len>.
+-  **<cmd>**: command data. The length of the data is set in ``<cmd_len>``.
 -  **<cmd_len>**: command length in this transaction. Range: 0 ~ 2 bytes.
--  **<addr>**: command address. The length of the address is set in <addr_len>.
+-  **<addr>**: command address. The length of the address is set in ``<addr_len>``.
 -  **<addr_len>**: The address length in this transaction. Range: 0 ~ 4 bytes.
 
 Note
 ^^^^^
 
--  If you don't use DMA, the maximum <data_len> you can set is 64 bytes each time.
+-  If you don't use DMA, the maximum ``<data_len>`` you can set is 64 bytes each time.
 
 Example
 ^^^^^^^^
 
 ::
 
-    AT+DRVSPIWR=2  // read 4 bytes data
+    AT+DRVSPIWR=2  // write 2 bytes data
     OK
     >              // begin receiving serial data
     OK
