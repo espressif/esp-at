@@ -80,6 +80,8 @@ Generic AT command has four types:
    -  ``\"``: escape double quotation mark which is not used to mark string input
    -  ``\<any>``: escape ``<any>`` character means that drop backslash symbol and only use ``<any>`` character
 
+-  Escape is needed in AT commands only, not elsewhere. For example, when AT command port prints ``>`` and wait for your input, the input does not need to be escaped.
+
    Example::
       
       AT+CWJAP="comma\,backslash\\ssid","1234567890"
