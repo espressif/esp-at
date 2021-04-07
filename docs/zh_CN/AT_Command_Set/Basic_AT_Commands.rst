@@ -17,6 +17,7 @@
 -  :ref:`AT+SLEEP <cmd-SLEEP>`：设置 sleep 模式
 -  :ref:`AT+SYSRAM <cmd-SYSRAM>`：查询当前剩余堆空间和最小堆空间
 -  :ref:`AT+SYSMSG <cmd-SYSMSG>`：查询/设置系统提示信息
+-  :ref:`AT+USERRAM <cmd-USERRAM>`：操作用户的空闲 RAM
 -  :ref:`AT+SYSFLASH <cmd-SYSFLASH>`：查询或读写 flash 用户分区
 -  [ESP32 Only] :ref:`AT+FS <cmd-FS>`：文件系统操作
 -  :ref:`AT+RFPOWER <cmd-RFPOWER>`：查询/设置 RF TX Power
@@ -80,7 +81,7 @@
 
 ::
 
-    AT+GMR  
+    AT+GMR
 
 **响应：**
 
@@ -96,10 +97,15 @@
 参数
 ^^^^
 
--  **<AT version info>**：AT 版本信息
--  **<SDK version info>**：SDK 版本信息
--  **<compile time>**：固件生成时间
--  **<Bin version>**: bin 版本信息
+-  **<AT version info>**：AT 核心库的版本信息，它们在 ``esp-at/components/at/lib/`` 目录下。代码是闭源的，无开放计划。
+-  **<SDK version info>**：AT 使用的平台 SDK 版本信息，它们定义在 ``esp-at/module_config/module_{platform}_default/IDF_VERSION`` 文件中。
+-  **<compile time>**：固件生成时间。
+-  **<Bin version>**: AT 固件版本信息。版本信息可以在 menuconfig 中修改。
+
+说明
+^^^^
+
+- 如果您在使用 ESP-AT 固件中有任何问题，请先提供 ``AT+GMR`` 版本信息。
 
 示例
 ^^^^
@@ -587,6 +593,90 @@
     // 连接状态发生改变时不打印信息
     AT+SYSMSG=2
 
+.. _cmd-USERRAM:
+
+:ref:`AT+USERRAM <Basic-AT>`: 操作用户的空闲 RAM
+----------------------------------------------------------
+查询命令
+^^^^^^^^
+
+**功能：**
+
+查询用户当前可用的空闲 RAM 大小
+
+**命令：**
+
+::
+
+    AT+USERRAM?
+
+**响应：**
+
+::
+
+    +USERRAM:<size>
+
+    OK
+
+设置命令
+^^^^^^^^
+
+**功能：**
+
+分配、读、写、擦除、释放用户 RAM 空间
+
+**命令：**
+
+::
+
+    AT+USERRAM=<operation>,<size>[,<offset>]
+
+**响应：**
+
+::
+
+    +USERRAM:<length>,<data>    // 只有是读操作时，才会有这个回复
+
+    OK
+
+参数
+^^^^
+
+-  **<operation>**：
+
+   -  0：释放用户 RAM 空间
+   -  1：分配用户 RAM 空间
+   -  2：向用户 RAM 写数据
+   -  3：从用户 RAM 读数据
+   -  4：清除用户 RAM 上的数据
+
+-  **<size>**: 分配/读/写的用户 RAM 大小
+-  **<offset>**: 读/写 RAM 的偏移量。默认：0
+
+说明
+^^^^
+
+- 请在执行任何其他操作之前分配用户 RAM 空间。
+- 当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时您可以输入要写的数据，数据长度应与 ``<length>`` 一致。
+- 当 ``<operator>`` 为 ``read`` 时并且长度大于 1024，ESP-AT 会以同样格式多次回复，最终以 ``\r\nOK\r\n`` 结束。
+
+示例
+^^^^
+
+::
+
+    // 分配 1 KB 用户 RAM 空间
+    AT+USERRAM=1,1024
+
+    // 向 RAM 空间开始位置写入 500 字节数据
+    AT+USERRAM=2,500
+
+    // 从 RAM 空间偏移 100 位置读取 64 字节数据
+    AT+USERRAM=3,64,100
+
+    // 释放用户 RAM 空间
+    AT+USERRAM=0
+
 .. _cmd-SYSFLASH:
 
 :ref:`AT+SYSFLASH <Basic-AT>`：查询或读写 flash 用户分区
@@ -666,8 +756,10 @@
 
     // 从 "ble_data" 分区偏移地址 0 处读取 100 字节
     AT+SYSFLASH=2,"ble_data",0,100
+
     // 在 "ble_data" 分区偏移地址 100 处写入 10 字节
     AT+SYSFLASH=1,"ble_data",100,10
+
     // 从 "ble_data" 分区偏移地址 4096 处擦除 8192 字节
     AT+SYSFLASH=0,"ble_data",4096,8192
 
@@ -723,10 +815,13 @@
 
     // 删除某个文件
     AT+FS=0,0,"filename"
+
     // 在某个文件偏移地址 100 处写入 10 字节
     AT+FS=0,1,"filename",100,10
+
     // 从某个文件偏移地址 0 处读取 100 字节
     AT+FS=0,2,"filename",0,100
+
     // 列出根目录下所有文件
     AT+FS=0,4,"."
 
@@ -1076,7 +1171,7 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
 -  **<wakeup source>**: 唤醒源
 
    -  0：定时器唤醒
-   -  1：UART 唤醒（只适用于 ESP32）
+   -  1：UART 唤醒（保留）
    -  2：GPIO 唤醒
 
 -  **<param1>**:
@@ -1102,9 +1197,11 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
 
 ::
 
-    AT+SLEEPWKCFG=0,1000  // 定时器唤醒
-    AT+SLEEPWKCFG=1,1     // UART1 唤醒，当前只支持 ESP32 设备
-    AT+SLEEPWKCFG=2,12,0  // GPIO12 置为低电平时唤醒
+    // 定时器唤醒
+    AT+SLEEPWKCFG=0,1000
+
+    // GPIO12 置为低电平时唤醒
+    AT+SLEEPWKCFG=2,12,0
 
 .. _cmd-SYSSTORE:
 
@@ -1244,9 +1341,14 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
 
 ::
 
-    AT+SYSREG=1,0x3F40402C,0x2      // ESP32-S2 IO33 输出，0x3F40402C 由基础地址 0x3F404000 与相对地址 0x2C (GPIO_ENABLE1_REG) 相加而来
-    AT+SYSREG=1,0x3F404010,0x2      // ESP32-S2 IO33 输出高电平
-    AT+SYSREG=1,0x3F404010,0x0      // ESP32-S2 IO33 输出低电平
+    // ESP32-S2 IO33 输出，0x3F40402C 由基础地址 0x3F404000 与相对地址 0x2C (GPIO_ENABLE1_REG) 相加而来
+    AT+SYSREG=1,0x3F40402C,0x2
+
+    // ESP32-S2 IO33 输出高电平
+    AT+SYSREG=1,0x3F404010,0x2
+
+    // ESP32-S2 IO33 输出低电平
+    AT+SYSREG=1,0x3F404010,0x0
 
 .. _cmd-SYSTEMP:
 

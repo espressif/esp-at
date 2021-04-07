@@ -688,7 +688,7 @@ Wi-Fi 透传模式下，进入数据发送模式
 
 ::
 
-    AT+CIPSERVER=<mode>[,<port>][,<"type">,<CA enable>]
+    AT+CIPSERVER=<mode>[,<param2>][,<"type">,<CA enable>]
 
 **响应：**
 
@@ -699,17 +699,24 @@ Wi-Fi 透传模式下，进入数据发送模式
 参数
 ^^^^
 
--  **<mode>**:
+-  **<mode>**：
 
    -  0: 关闭服务器
    -  1: 建立服务器
 
--  **<port>**：端口号，默认为 333
+-  **<param2>**：参数 ``<mode>`` 不同，则此参数意义不同：
+
+  - 如果 ``<mode>`` 是 1，``<param2>`` 代表端口号。默认值：333
+  - 如果 ``<mode>`` 是 0，``<param2>`` 代表服务器是否关闭所有客户端。默认值：0
+
+    - 0：关闭服务器并保留现有客户端连接
+    - 1：关闭服务器并关闭所有连接
+
 -  **<"type">**：服务器类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6". 默认值："TCP"。由于内存限制，此参数不适用于 ESP8266 设备
 -  **<CA enable>**：由于内存限制，此参数不适用于 ESP8266 设备
 
-   -  0: 不使用 CA 认证
-   -  1: 使用 CA 认证
+   -  0：不使用 CA 认证
+   -  1：使用 CA 认证
 
 说明
 ^^^^
@@ -735,6 +742,9 @@ Wi-Fi 透传模式下，进入数据发送模式
     // 基于 IPv6 网络，创建 SSL 服务器
     AT+CIPMUX=1
     AT+CIPSERVER=1,443,"SSLv6",0
+
+    // 关闭服务器并且关闭所有连接
+    AT+CIPSERVER=0,1
 
 .. _cmd-SERVERMAX:
 
@@ -1079,7 +1089,7 @@ Wi-Fi 透传模式下，进入数据发送模式
 -  **<timezone>**：支持以下两种格式：
 
    -  第一种格式的范围：[-12,14]，它以小时为单位，通过与协调世界时 (UTC) 的偏移来标记大多数时区（`UTC−12:00 <https://en.wikipedia.org/wiki/UTC%E2%88%9212:00>`_ 至 `UTC+14:00 <https://en.wikipedia.org/wiki/UTC%2B14:00>`_）；
-   -  第二种格式为 ``UTC 偏移量``， ``UTC 偏移量`` 指定了你需要加多少时间到 UTC 时间上才能得到本地时间，通常显示为 ``[+|-]hh[mm]``。如果当地时区在本初子午线以西，则为负数，如果在东边，则为正数。小时 (hh) 必须在 -12 到 14 之间，分钟 (mm) 必须在 0 到 59 之间。例如，如果您想把时区设置为新西兰查塔姆群岛，即 ``UTC+12:45``，您应该把 ``<timezone>`` 参数设置为 ``1245``，更多信息请参考 `UTC 偏移量 <https://en.wikipedia.org/wiki/Time_zone#List_of_UTC_offsets>`_。
+   -  第二种格式为 ``UTC 偏移量``， ``UTC 偏移量`` 指定了你需要加多少时间到 UTC 时间上才能得到本地时间，通常显示为 ``[+|-][hh]mm``。如果当地时区在本初子午线以西，则为负数，如果在东边，则为正数。小时 (hh) 必须在 -12 到 14 之间，分钟 (mm) 必须在 0 到 59 之间。例如，如果您想把时区设置为新西兰查塔姆群岛，即 ``UTC+12:45``，您应该把 ``<timezone>`` 参数设置为 ``1245``，更多信息请参考 `UTC 偏移量 <https://en.wikipedia.org/wiki/Time_zone#List_of_UTC_offsets>`_。
 
 -  **[<SNTP server1>]**：第一个 SNTP 服务器。
 -  **[<SNTP server2>]**：第二个 SNTP 服务器。
@@ -1089,6 +1099,7 @@ Wi-Fi 透传模式下，进入数据发送模式
 ^^^^
 
 -  设置命令若未填写以上三个 SNTP 服务器参数，则默认使用 "cn.ntp.org.cn"、"ntp.sjtu.edu.cn" 和 "us.pool.ntp.org" 其中之一。
+-  对于查询命令，查询的 ``<timezone>`` 参数可能会和设置的 ``<timezone>`` 参数不一样。因为 ``<timezone>`` 参数支持第二种 UTC 偏移量格式，例如：设置 ``AT+CIPSNTPCFG=1,015``，那么查询时，ESP-AT 会忽略时区参数的前导 0，即设置值是 ``15``。不属于第一种格式，所以按照第二种 UTC 偏移量格式解析，也就是 ``UTC+00:15``，也就是查询出来的是 0 时区。
 
 示例
 ^^^^
@@ -1140,7 +1151,9 @@ Wi-Fi 透传模式下，进入数据发送模式
 ::
 
     AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
+
     OK
+
     AT+CIPSNTPTIME?
     +CIPSNTPTIME:Mon Dec 12 02:33:32 2016
     OK  
@@ -1403,6 +1416,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
     // 单连接：(AT+CIPMUX=0)
     AT+CIPSSLCCN=<"common name">
+
     // 多连接：(AT+CIPMUX=1)
     AT+CIPSSLCCN=<link ID>,<"common name">
 
@@ -1511,6 +1525,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
     // 单连接：(AT+CIPMUX=0)
     AT+CIPSSLCALPN=<counts>,<"alpn">[,<"alpn">[,<"alpn">]]
+
     // 多连接：(AT+CIPMUX=1)
     AT+CIPSSLCALPN=<link ID>,<counts>,<"alpn">[,<"alpn">[,<"alpn">]]
 

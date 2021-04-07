@@ -6,6 +6,7 @@ Wi-Fi AT Commands
 :link_to_translation:`zh_CN:[中文]`
 
 -  :ref:`AT+CWMODE <cmd-MODE>`: Set the Wi-Fi mode (Station/SoftAP/Station+SoftAP).
+-  :ref:`AT+CWSTATE <cmd-STATE>`: Query the Wi-Fi state and Wi-Fi information.
 -  :ref:`AT+CWJAP <cmd-JAP>`: Connect to an AP.
 -  :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`: Query/Set the Wi-Fi reconnecting configuration.
 -  :ref:`AT+CWLAPOPT <cmd-LAPOPT>`: Set the configuration for the command :ref:`AT+CWLAP <cmd-LAP>`.
@@ -101,6 +102,50 @@ Example
 ::
 
     AT+CWMODE=3 
+
+.. _cmd-STATE:
+
+:ref:`AT+CWSTATE <WiFi-AT>`: Query the Wi-Fi state and Wi-Fi information
+------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Function:**
+
+Query the Wi-Fi state and Wi-Fi information of ESP devices.
+
+**Command:**
+
+::
+
+    AT+CWSTATE?
+
+**Response:**
+
+::
+
+    +CWSTATE:<state>,<"ssid">
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<state>**: current Wi-Fi state.
+
+   -  0: ESP station has not started any Wi-Fi connection.
+   -  1: ESP station has connected to an AP, but does not get an IPv4 address yet.
+   -  2: ESP station has connected to an AP, and got an IPv4 address.
+   -  3: ESP station is in Wi-Fi connecting or reconnecting state.
+   -  4: ESP station is in Wi-Fi disconnected state.
+
+-  **<"ssid">**: the SSID of the target AP.
+
+Note
+^^^^^
+
+- When ESP station is not connected to an AP, it is recommended to use this command to query Wi-Fi information; after ESP station is connected to an AP, it is recommended to use :ref:`AT+CWJAP <cmd-JAP>` to query Wi-Fi information.
 
 .. _cmd-JAP:
 
@@ -738,14 +783,19 @@ Parameters
 -  **<state>**: the status of DHCP
    
    - Bit0:
-   
+
      - 0: Station DHCP is disabled.
      - 1: Station DHCP is enabled.
    
    - Bit1:
-     
+
      - 0: SoftAP DHCP is disabled.
      - 1: SoftAP DHCP is enabled.
+
+   - Bit2 (ESP32 only):
+
+     - 0: Ethernet DHCP is disabled.
+     - 1: Ethernet DHCP is enabled.
 
 Notes
 ^^^^^
@@ -1163,7 +1213,7 @@ Parameters
 Notes
 ^^^^^
 
--  For the query command, only when the ESP station is connected to an AP can its IP address be queried.
+-  For the query command, only when the ESP station is connected to an AP or the static IP address is configured can its IP address be queried.
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The Set Command correlates with the commands that set DHCP, such as :ref:`AT+CWDHCP <cmd-DHCP>`.
 
@@ -1534,6 +1584,7 @@ Example
 
     // Connect to EAP-TLS mode Enterprise AP, set identity, verify server certificate and load client certificate
     AT+CWJEAP="dlink11111",0,"example@espressif.com",,,3
+
     // Connect to EAP-PEAP mode Enterprise AP, set identity, username and password, not verify server certificate and not load client certificate
     AT+CWJEAP="dlink11111",1,"example@espressif.com","espressif","test11",0
 

@@ -689,7 +689,7 @@ Set Command
 
 ::
 
-    AT+CIPSERVER=<mode>[,<port>][,<"type">,<CA enable>]
+    AT+CIPSERVER=<mode>[,<param2>][,<"type">,<CA enable>]
 
 **Response:**
 
@@ -705,7 +705,14 @@ Parameters
    -  0: delete a server.
    -  1: create a server.
 
--  **<port>**: port number. Default: 333.
+-  **<param2>**: It means differently depending on the parameter ``<mode>``:
+
+  - If ``<mode>`` is 1, ``<param2>`` represents the port number. Default: 333.
+  - If ``<mode>`` is 0, ``<param2>`` represents whether the server closes all connections. Default: 0.
+
+    - 0: shutdown the server and keep existing connections.
+    - 1: shutdown the server and close all connections.
+
 -  **<"type">**: server type: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP". This parameter is **NOT** applicable to ESP8266 platform due to memory limitation.
 -  **<CA enable>**: not applicable to ESP8266 devices.
 
@@ -736,6 +743,9 @@ Example
     // To create an SSL server based on IPv6 network
     AT+CIPMUX=1
     AT+CIPSERVER=1,443,"SSLv6",0
+
+    // To delete an server and close all clients
+    AT+CIPSERVER=0,1
 
 .. _cmd-SERVERMAX:
 
@@ -1080,7 +1090,7 @@ Parameters
 -  **<timezone>**: support the following two formats:
 
    -  The first format range is [-12,14]. It marks most of the time zones by offset from Coordinated Universal Time (UTC) in **whole hours** (`UTC−12:00 <https://en.wikipedia.org/wiki/UTC%E2%88%9212:00>`__ to `UTC+14:00 <https://en.wikipedia.org/wiki/UTC%2B14:00>`_).
-   -  The second format is ``UTC offset``. The ``UTC offset`` specifies the time value you must add to the UTC time to get a local time value. It has syntax like ``[+|-]hh[mm]``. This is negative if the local time zone is on the west of the Prime Meridian and positive if it is on the east. The hour(hh) must be between -12 and 14, and the minute(mm) between 0 and 59. For example, if you want to set the timezone to New Zealand (Chatham Islands) which is in ``UTC+12:45``, you should set the parameter ``<timezone>`` to ``1245``. Please refer to `UTC offset wiki <https://en.wikipedia.org/wiki/Time_zone#List_of_UTC_offsets>`_ for more information.
+   -  The second format is ``UTC offset``. The ``UTC offset`` specifies the time value you must add to the UTC time to get a local time value. It has syntax like ``[+|-][hh]mm``. This is negative if the local time zone is on the west of the Prime Meridian and positive if it is on the east. The hour(hh) must be between -12 and 14, and the minute(mm) between 0 and 59. For example, if you want to set the timezone to New Zealand (Chatham Islands) which is in ``UTC+12:45``, you should set the parameter ``<timezone>`` to ``1245``. Please refer to `UTC offset wiki <https://en.wikipedia.org/wiki/Time_zone#List_of_UTC_offsets>`_ for more information.
 
 -  **[<SNTP server1>]**: the first SNTP server.
 -  **[<SNTP server2>]**: the second SNTP server.
@@ -1090,6 +1100,7 @@ Note
 ^^^^^
 
 -  If the three SNTP servers are not configured, one of the following default servers will be used: "cn.ntp.org.cn", "ntp.sjtu.edu.cn", and "us.pool.ntp.org".
+-  For the query command, ``<timezone>`` parameter in the response may be different from the ``<timezone>`` parameter in set command. Because the ``<timezone>`` parameter supports the second ``UTC offset`` format, for example, set ``AT+CIPSNTPCFG=1,015``, for query command, ESP-AT ignores the leading zero of the ``<timezone>`` parameter, and the valid value is ``15``. It does not belong to the first format, so it is parsed according to the second ``UTC offset`` format, that is, ``UTC+00:15``, that is, ``timezone`` is 0 in the response.
 
 Example
 ^^^^^^^^
@@ -1141,7 +1152,9 @@ Example
 ::
 
     AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
+
     OK
+
     AT+CIPSNTPTIME?
     +CIPSNTPTIME:Mon Dec 12 02:33:32 2016
     OK  

@@ -22,7 +22,7 @@ HTTP AT 命令集
 
 ::
 
-    AT+HTTPCLIENT=<opt>,<content-type>,<url>,<host>,<path>,<transport_type>,[<data>][,"http_req_header"][,"http_req_header"][...]
+    AT+HTTPCLIENT=<opt>,<content-type>,<"url">,<"host">,<"path">,<transport_type>,[<"data">][,<"http_req_header">][,<"http_req_header">][...]
 
 **响应：**
 
@@ -50,20 +50,21 @@ HTTP AT 命令集
    -  2: ``multipart/form-data``
    -  3: ``text/xml``
 
--  **<url>**：HTTP URL，当后面的 ``<host>`` 和 ``<path>`` 参数为空时，本参数会自动覆盖这两个参数。
--  **<host>**：域名或 IP 地址。
--  **<path>**：HTTP 路径。
+-  **<"url">**：HTTP URL，当后面的 ``<host>`` 和 ``<path>`` 参数为空时，本参数会自动覆盖这两个参数。
+-  **<"host">**：域名或 IP 地址。
+-  **<"path">**：HTTP 路径。
 -  **<transport_type>**：HTTP 客户端传输类型，默认值为 1：
 
    -  1: ``HTTP_TRANSPORT_OVER_TCP``
    -  2: ``HTTP_TRANSPORT_OVER_SSL``
 
--  **[<data>]**: 当发送的是 POST 请求时，本参数为发送给 HTTP 服务器的数据。
--  **[<http_req_header>]**: 可发送多个请求头给服务器。
+-  **<"data">**: 当发送的是 POST 请求时，本参数为发送给 HTTP 服务器的数据。
+-  **<"http_req_header">**: 可发送多个请求头给服务器。
 
 说明
 ^^^^
 
+-  如果 ``url`` 参数不为空，HTTP 客户端将使用它并忽略 ``host`` 参数和 ``path`` 参数；如果 ``url`` 参数被省略或字符串为空，HTTP 客户端将使用 ``host`` 参数和 ``path`` 参数。
 -  某些已发布的固件默认不支持 HTTP 客户端命令（详情请见 :doc:`../Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`），但是可通过以下方式使其支持该命令：``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support``，然后编译项目（详情请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
 
 示例
@@ -158,7 +159,7 @@ HTTP AT 命令集
 参数
 ^^^^
 - **<url>**：HTTP URL。
-- **<length>**：需 POST 的 HTTP 数据长度。
+- **<length>**：需 POST 的 HTTP 数据长度。最大长度等于系统可分配的堆空间大小。
 - **<http_req_header_cnt>**：``<http_req_header>`` 参数的数量。
 - **[<http_req_header>]**：可发送多个请求头给服务器。
 

@@ -738,14 +738,19 @@ Wi-Fi AT 命令集
 -  **<state>**：DHCP 的状态
    
    - Bit0:
-   
+
      - 0: 禁用 Station 的 DHCP
      - 1: 启用 Station 的 DHCP
    
    - Bit1:
-     
+
      - 0: 禁用 SoftAP 的 DHCP
      - 1: 启用 SoftAP 的 DHCP
+
+   - Bit2 (ESP32 only):
+
+     - 0: 禁用 Ethernet 的 DHCP
+     - 1: 启用 Ethernet 的 DHCP
 
 说明
 ^^^^
@@ -1163,7 +1168,7 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
--  使用查询命令时，只有当 ESP station 连入 AP 时才能查询到它的 IP 地址
+-  使用查询命令时，只有当 ESP station 连入 AP 或者配置过静态 IP 地址后，才能查询到它的 IP 地址
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
 -  本设置命令与设置 DHCP 的命令相互影响，如 :ref:`AT+CWDHCP <cmd-DHCP>`
 
@@ -1534,6 +1539,7 @@ Wi-Fi AT 命令集
 
     // 连接至 EAP-TLS 认证方式的企业版 AP，设置身份，验证服务器证书，加载客户端证书
     AT+CWJEAP="dlink11111",0,"example@espressif.com",,,3
+
     // 连接至 EAP-PEAP 认证方式的企业版 AP，设置身份、用户名、密码，不验证服务器证书，不加载客户端证书
     AT+CWJEAP="dlink11111",1,"example@espressif.com","espressif","test11",0
 

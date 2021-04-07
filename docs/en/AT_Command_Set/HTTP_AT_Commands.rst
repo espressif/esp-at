@@ -22,7 +22,7 @@ Set Command
 
 ::
 
-    AT+HTTPCLIENT=<opt>,<content-type>,<url>,<host>,<path>,<transport_type>,[<data>][,"http_req_header"][,"http_req_header"][...]
+    AT+HTTPCLIENT=<opt>,<content-type>,<"url">,[<"host">],[<"path">],<transport_type>,[<"data">][,<"http_req_header">][,<"http_req_header">][...]
 
 **Response:**
 
@@ -50,20 +50,20 @@ Parameters
    -  2: ``multipart/form-data``
    -  3: ``text/xml``
 
--  **<url>**: HTTP URL. The parameter can override the ``<host>`` and ``<path>`` parameters if they are null.
--  **<host>**: domain name or IP address.
--  **<path>**: HTTP Path.
+-  **<"url">**: HTTP URL. The parameter can override the ``<host>`` and ``<path>`` parameters if they are null.
+-  **<"host">**: domain name or IP address.
+-  **<"path">**: HTTP Path.
 -  **<transport_type>**: HTTP Client transport type. Default: 1.
 
    -  1: ``HTTP_TRANSPORT_OVER_TCP``
    -  2: ``HTTP_TRANSPORT_OVER_SSL``
 
--  **[<data>]**: when it is a POST request, this parameter holds the data you want to send to the HTTP server.
--  **[<http_req_header>]**: you can send more than one request header to the server.
+-  **<"data">**: when it is a POST request, this parameter holds the data you want to send to the HTTP server.
+-  **<http_req_header>**: you can send more than one request header to the server.
 
-Note
+Notes
 ^^^^^
-
+-  If the ``url`` parameter is not null, HTTP client will use it and ignore the ``host`` parameter and ``path`` parameter; If the ``url`` parameter is omited or null string, HTTP client will use ``host`` parameter and ``path`` parameter.
 -  In some released firmware, HTTP client commands are not supported (see :doc:`../Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support`` and build the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
 
 Example
@@ -158,7 +158,7 @@ Otherwise, it returns:
 Parameters
 ^^^^^^^^^^
 - **<url>**: HTTP URL.
-- **<length>**: HTTP data length to POST.
+- **<length>**: HTTP data length to POST. The maximum length is equal to the system allocable heap size.
 - **<http_req_header_cnt>**: the number of <http_req_header> parameters.
 - **[<http_req_header>]**: you can send more than one request header to the server.
 
