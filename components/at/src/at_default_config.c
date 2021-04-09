@@ -80,6 +80,7 @@ static const esp_at_module_info_t esp_at_module_info[] = {
 #endif
 #if defined(CONFIG_IDF_TARGET_ESP32C3)
     {"MINI-1",         CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI,        CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI },
+    {"ESP32C3_QCLOUD", CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD, CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI_QCLOUD },
 #endif
 };
 

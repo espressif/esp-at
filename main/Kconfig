@@ -328,4 +328,22 @@ config ESP_AT_FW_VERSION
     help
       The maximum length of the string is 128 characters.
       If more than 128 characters, it will be invalid.
+
+menu "QCloud IoT"
+config AT_QCLOUD_IOT_COMMAND_SUPPORT
+
+    bool "AT QCloud IoT command support."
+    default "n"
+    depends on AT_ENABLE
+    depends on IDF_TARGET_ESP32C3
+    help
+        Please enable this configure if you want use AT QCloud IoT commands.
+        AT QCloud IoT commands is specially designed for Tencent Cloud.
+
+config AT_QCLOUD_IOT_GENERATE_FACTORY_INFO
+
+    bool "Automatically generate qcloud_modinfo.bin, qcloud_devinfo.bin and qcloud_prdinfo.bin"
+    default "y"
+    depends on AT_QCLOUD_IOT_COMMAND_SUPPORT
+endmenu
 endmenu
