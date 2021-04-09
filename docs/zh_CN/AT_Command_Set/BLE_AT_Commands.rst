@@ -1,61 +1,61 @@
 .. _BLE-AT:
 
-[ESP32 & ESP32-C3] Bluetooth® Low Energy AT 命令集
+[ESP32 Only] Bluetooth® Low Energy AT 命令集
 ==================================================
 
 :link_to_translation:`en:[English]`
 
 ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/archived-specifications/>`_。
 
--  [ESP32 & ESP32-C3] :ref:`AT+BLEINIT <cmd-BINIT>`：Bluetooth LE 初始化
--  [ESP32 & ESP32-C3] :ref:`AT+BLEADDR <cmd-BADDR>`：设置 Bluetooth LE 设备地址
--  [ESP32 & ESP32-C3] :ref:`AT+BLENAME <cmd-BNAME>`：查询/设置 Bluetooth LE 设备名称
--  [ESP32 & ESP32-C3] :ref:`AT+BLESCANPARAM <cmd-BSCANP>`：查询/设置 Bluetooth LE 扫描参数
--  [ESP32 & ESP32-C3] :ref:`AT+BLESCAN <cmd-BSCAN>`：使能 Bluetooth LE 扫描
--  [ESP32 & ESP32-C3] :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`：设置 Bluetooth LE 扫描响应
--  [ESP32 & ESP32-C3] :ref:`AT+BLEADVPARAM <cmd-BADVP>`：查询/设置 Bluetooth LE 广播参数
--  [ESP32 & ESP32-C3] :ref:`AT+BLEADVDATA <cmd-BADVD>`：设置 Bluetooth LE 广播数据
--  [ESP32 & ESP32-C3] :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`：自动设置 Bluetooth LE 广播数据
--  [ESP32 & ESP32-C3] :ref:`AT+BLEADVSTART <cmd-BADVSTART>`：开始 Bluetooth LE 广播
--  [ESP32 & ESP32-C3] :ref:`AT+BLEADVSTOP <cmd-BADVSTOP>`：停止 Bluetooth LE 广播
--  [ESP32 & ESP32-C3] :ref:`AT+BLECONN <cmd-BCONN>`：建立 Bluetooth LE 连接
--  [ESP32 & ESP32-C3] :ref:`AT+BLECONNPARAM <cmd-BCONNP>`：查询/更新 Bluetooth LE 连接参数
--  [ESP32 & ESP32-C3] :ref:`AT+BLEDISCONN <cmd-BDISC>`：断开 Bluetooth LE 连接
--  [ESP32 & ESP32-C3] :ref:`AT+BLEDATALEN <cmd-BDLEN>`：设置 Bluetooth LE 数据包长度
--  [ESP32 & ESP32-C3] :ref:`AT+BLECFGMTU <cmd-BMTU>`：设置 Bluetooth LE MTU 长度
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`：GATTS 创建服务
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`：GATTS 开启服务
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`：GATTS 停止服务
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`：GATTS 发现服务
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`：GATTS 发现服务特征
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`：服务器 notify 服务特征值给客户端
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSIND <cmd-GSIND>`：服务器 indicate 服务特征值给客户端
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`：GATTS 设置服务特征值
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`：GATTC 发现基本服务
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`：GATTC 发现包含的服务
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`：GATTC 发现服务特征
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTCRD <cmd-GCRD>`：GATTC 读取服务特征值
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTCWR <cmd-GCWR>`：GATTC 写服务特征值
--  [ESP32 & ESP32-C3] :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`：查询/设置 Bluetooth LE SPP 参数
--  [ESP32 & ESP32-C3] :ref:`AT+BLESPP <cmd-BLESPP>`：进入 Bluetooth LE SPP 模式
--  [ESP32 & ESP32-C3] :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`：查询/设置 Bluetooth LE 加密参数
--  [ESP32 & ESP32-C3] :ref:`AT+BLEENC <cmd-BLEENC>`：发起 Bluetooth LE 加密请求
--  [ESP32 & ESP32-C3] :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`：回复对端设备发起的配对请求
--  [ESP32 & ESP32-C3] :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`：给对方设备回复密钥（传统连接阶段）
--  [ESP32 & ESP32-C3] :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`：给对方设备回复确认结果（传统连接阶段）
--  [ESP32 & ESP32-C3] :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`：查询绑定的 Bluetooth LE 加密设备列表
--  [ESP32 & ESP32-C3] :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`：清除 Bluetooth LE 加密设备列表
--  [ESP32 & ESP32-C3] :ref:`AT+BLESETKEY <cmd-BLESETKEY>`：设置 Bluetooth LE 静态配对密钥
--  [ESP32 & ESP32-C3] :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`：Bluetooth LE HID 协议初始化
--  [ESP32 & ESP32-C3] :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`：发送 Bluetooth LE HID 键盘信息
--  [ESP32 & ESP32-C3] :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`：发送 Bluetooth LE HID 鼠标信息
--  [ESP32 & ESP32-C3] :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`：发送 Bluetooth LE HID consumer 信息
--  [ESP32 & ESP32-C3] :ref:`AT+BLUFI <cmd-BLUFI>`：开启或关闭 BluFi
--  [ESP32 & ESP32-C3] :ref:`AT+BLUFINAME <cmd-BLUFINAME>`：查询/设置 BluFi 设备名称
+-  [ESP32 Only] :ref:`AT+BLEINIT <cmd-BINIT>`：Bluetooth LE 初始化
+-  [ESP32 Only] :ref:`AT+BLEADDR <cmd-BADDR>`：设置 Bluetooth LE 设备地址
+-  [ESP32 Only] :ref:`AT+BLENAME <cmd-BNAME>`：查询/设置 Bluetooth LE 设备名称
+-  [ESP32 Only] :ref:`AT+BLESCANPARAM <cmd-BSCANP>`：查询/设置 Bluetooth LE 扫描参数
+-  [ESP32 Only] :ref:`AT+BLESCAN <cmd-BSCAN>`：使能 Bluetooth LE 扫描
+-  [ESP32 Only] :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`：设置 Bluetooth LE 扫描响应
+-  [ESP32 Only] :ref:`AT+BLEADVPARAM <cmd-BADVP>`：查询/设置 Bluetooth LE 广播参数
+-  [ESP32 Only] :ref:`AT+BLEADVDATA <cmd-BADVD>`：设置 Bluetooth LE 广播数据
+-  [ESP32 Only] :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`：自动设置 Bluetooth LE 广播数据
+-  [ESP32 Only] :ref:`AT+BLEADVSTART <cmd-BADVSTART>`：开始 Bluetooth LE 广播
+-  [ESP32 Only] :ref:`AT+BLEADVSTOP <cmd-BADVSTOP>`：停止 Bluetooth LE 广播
+-  [ESP32 Only] :ref:`AT+BLECONN <cmd-BCONN>`：建立 Bluetooth LE 连接
+-  [ESP32 Only] :ref:`AT+BLECONNPARAM <cmd-BCONNP>`：查询/更新 Bluetooth LE 连接参数
+-  [ESP32 Only] :ref:`AT+BLEDISCONN <cmd-BDISC>`：断开 Bluetooth LE 连接
+-  [ESP32 Only] :ref:`AT+BLEDATALEN <cmd-BDLEN>`：设置 Bluetooth LE 数据包长度
+-  [ESP32 Only] :ref:`AT+BLECFGMTU <cmd-BMTU>`：设置 Bluetooth LE MTU 长度
+-  [ESP32 Only] :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`：GATTS 创建服务
+-  [ESP32 Only] :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`：GATTS 开启服务
+-  [ESP32 Only] :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`：GATTS 停止服务
+-  [ESP32 Only] :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`：GATTS 发现服务
+-  [ESP32 Only] :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`：GATTS 发现服务特征
+-  [ESP32 Only] :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`：服务器 notify 服务特征值给客户端
+-  [ESP32 Only] :ref:`AT+BLEGATTSIND <cmd-GSIND>`：服务器 indicate 服务特征值给客户端
+-  [ESP32 Only] :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`：GATTS 设置服务特征值
+-  [ESP32 Only] :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`：GATTC 发现基本服务
+-  [ESP32 Only] :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`：GATTC 发现包含的服务
+-  [ESP32 Only] :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`：GATTC 发现服务特征
+-  [ESP32 Only] :ref:`AT+BLEGATTCRD <cmd-GCRD>`：GATTC 读取服务特征值
+-  [ESP32 Only] :ref:`AT+BLEGATTCWR <cmd-GCWR>`：GATTC 写服务特征值
+-  [ESP32 Only] :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`：查询/设置 Bluetooth LE SPP 参数
+-  [ESP32 Only] :ref:`AT+BLESPP <cmd-BLESPP>`：进入 Bluetooth LE SPP 模式
+-  [ESP32 Only] :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`：查询/设置 Bluetooth LE 加密参数
+-  [ESP32 Only] :ref:`AT+BLEENC <cmd-BLEENC>`：发起 Bluetooth LE 加密请求
+-  [ESP32 Only] :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`：回复对端设备发起的配对请求
+-  [ESP32 Only] :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`：给对方设备回复密钥（传统连接阶段）
+-  [ESP32 Only] :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`：给对方设备回复确认结果（传统连接阶段）
+-  [ESP32 Only] :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`：查询绑定的 Bluetooth LE 加密设备列表
+-  [ESP32 Only] :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`：清除 Bluetooth LE 加密设备列表
+-  [ESP32 Only] :ref:`AT+BLESETKEY <cmd-BLESETKEY>`：设置 Bluetooth LE 静态配对密钥
+-  [ESP32 Only] :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`：Bluetooth LE HID 协议初始化
+-  [ESP32 Only] :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`：发送 Bluetooth LE HID 键盘信息
+-  [ESP32 Only] :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`：发送 Bluetooth LE HID 鼠标信息
+-  [ESP32 Only] :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`：发送 Bluetooth LE HID consumer 信息
+-  [ESP32 Only] :ref:`AT+BLUFI <cmd-BLUFI>`：开启或关闭 BluFi
+-  [ESP32 Only] :ref:`AT+BLUFINAME <cmd-BLUFINAME>`：查询/设置 BluFi 设备名称
 
 .. _cmd-BINIT:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEINIT <BLE-AT>`：Bluetooth LE 初始化
+[ESP32 Only] :ref:`AT+BLEINIT <BLE-AT>`：Bluetooth LE 初始化
 ---------------------------------------------------------------------
 
 查询命令
@@ -135,7 +135,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BADDR:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEADDR <BLE-AT>`：设置 Bluetooth LE 设备地址
+[ESP32 Only] :ref:`AT+BLEADDR <BLE-AT>`：设置 Bluetooth LE 设备地址
 -------------------------------------------------------------------------
 
 查询命令
@@ -205,7 +205,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BNAME:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLENAME <BLE-AT>`：查询/设置 Bluetooth LE 设备名称
+[ESP32 Only] :ref:`AT+BLENAME <BLE-AT>`：查询/设置 Bluetooth LE 设备名称
 ---------------------------------------------------------------------------------
 
 查询命令
@@ -266,7 +266,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BSCANP:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLESCANPARAM <BLE-AT>`：查询/设置 Bluetooth LE 扫描参数
+[ESP32 Only] :ref:`AT+BLESCANPARAM <BLE-AT>`：查询/设置 Bluetooth LE 扫描参数
 ---------------------------------------------------------------------------------------
 
 查询命令
@@ -348,7 +348,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BSCAN:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLESCAN <BLE-AT>`：使能 Bluetooth LE 扫描
+[ESP32 Only] :ref:`AT+BLESCAN <BLE-AT>`：使能 Bluetooth LE 扫描
 ----------------------------------------------------------------------
 
 设置命令
@@ -412,7 +412,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BSCANR:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLESCANRSPDATA <BLE-AT>`：设置 Bluetooth LE 扫描响应
+[ESP32 Only] :ref:`AT+BLESCANRSPDATA <BLE-AT>`：设置 Bluetooth LE 扫描响应
 --------------------------------------------------------------------------------
 
 设置命令
@@ -449,7 +449,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BADVP:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEADVPARAM <BLE-AT>`：查询/设置 Bluetooth LE 广播参数
+[ESP32 Only] :ref:`AT+BLEADVPARAM <BLE-AT>`：查询/设置 Bluetooth LE 广播参数
 ----------------------------------------------------------------------------------------
 
 查询命令
@@ -538,7 +538,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BADVD:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEADVDATA <BLE-AT>`：设置 Bluetooth LE 广播数据
+[ESP32 Only] :ref:`AT+BLEADVDATA <BLE-AT>`：设置 Bluetooth LE 广播数据
 -------------------------------------------------------------------------------
 
 设置命令
@@ -580,7 +580,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BADVDEX:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEADVDATAEX <BLE-AT>`：自动设置 Bluetooth LE 广播数据
+[ESP32 Only] :ref:`AT+BLEADVDATAEX <BLE-AT>`：自动设置 Bluetooth LE 广播数据
 -----------------------------------------------------------------------------------------------
 
 查询命令
@@ -615,7 +615,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 ::
 
-    AT+BLEADVSTARTEX=<dev_name>,<uuid>,<manufacturer_data>,<include_power>
+    AT+BLEADVDATAEX=<dev_name>,<uuid>,<manufacturer_data>,<include_power>
 
 **响应：**
 
@@ -649,7 +649,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BADVSTART:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEADVSTART <BLE-AT>`：开始 Bluetooth LE 广播
+[ESP32 Only] :ref:`AT+BLEADVSTART <BLE-AT>`：开始 Bluetooth LE 广播
 -----------------------------------------------------------------------------
 
 执行命令
@@ -688,7 +688,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BADVSTOP:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEADVSTOP <BLE-AT>`：停止 Bluetooth LE 广播
+[ESP32 Only] :ref:`AT+BLEADVSTOP <BLE-AT>`：停止 Bluetooth LE 广播
 ---------------------------------------------------------------------------
 
 执行命令
@@ -726,7 +726,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BCONN:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLECONN <BLE-AT>`：建立 Bluetooth LE 连接
+[ESP32 Only] :ref:`AT+BLECONN <BLE-AT>`：建立 Bluetooth LE 连接
 ----------------------------------------------------------------------------
 
 查询命令
@@ -806,7 +806,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BCONNP:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLECONNPARAM <BLE-AT>`：查询/更新 Bluetooth LE 连接参数
+[ESP32 Only] :ref:`AT+BLECONNPARAM <BLE-AT>`：查询/更新 Bluetooth LE 连接参数
 -------------------------------------------------------------------------------------------
 
 查询命令
@@ -880,7 +880,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BDISC:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEDISCONN <BLE-AT>`：断开 Bluetooth LE 连接
+[ESP32 Only] :ref:`AT+BLEDISCONN <BLE-AT>`：断开 Bluetooth LE 连接
 -------------------------------------------------------------------------
 
 执行命令
@@ -925,7 +925,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BDLEN:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEDATALEN <BLE-AT>`：设置 Bluetooth LE 数据包长度
+[ESP32 Only] :ref:`AT+BLEDATALEN <BLE-AT>`：设置 Bluetooth LE 数据包长度
 --------------------------------------------------------------------------------------
 
 设置命令
@@ -969,7 +969,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-BMTU:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLECFGMTU <BLE-AT>`：设置 Bluetooth LE MTU 长度
+[ESP32 Only] :ref:`AT+BLECFGMTU <BLE-AT>`：设置 Bluetooth LE MTU 长度
 -----------------------------------------------------------------------------
 
 查询命令
@@ -1035,7 +1035,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 .. _cmd-GSSRVCRE:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRVCRE <BLE-AT>`：GATTS 创建服务
+[ESP32 Only] :ref:`AT+BLEGATTSSRVCRE <BLE-AT>`：GATTS 创建服务
 --------------------------------------------------------------------------
 
 执行命令
@@ -1077,7 +1077,7 @@ GATTS (Generic Attributes Server) 创建 Bluetooth LE 服务
 
 .. _cmd-GSSRVSTART:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRVSTART <BLE-AT>`：GATTS 开启服务
+[ESP32 Only] :ref:`AT+BLEGATTSSRVSTART <BLE-AT>`：GATTS 开启服务
 ---------------------------------------------------------------------------
 
 执行命令
@@ -1128,7 +1128,7 @@ GATTS 开启某指定服务
 
 .. _cmd-GSSRVSTOP:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRVSTOP <BLE-AT>`：GATTS 停止服务
+[ESP32 Only] :ref:`AT+BLEGATTSSRVSTOP <BLE-AT>`：GATTS 停止服务
 -------------------------------------------------------------------------
 
 执行命令
@@ -1180,7 +1180,7 @@ GATTS 停止某指定服务
 
 .. _cmd-GSSRV:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRV <BLE-AT>`：GATTS 发现服务
+[ESP32 Only] :ref:`AT+BLEGATTSSRV <BLE-AT>`：GATTS 发现服务
 -------------------------------------------------------------------------
 
 查询命令
@@ -1229,7 +1229,7 @@ GATTS 发现服务
 
 .. _cmd-GSCHAR:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSCHAR <BLE-AT>`：GATTS 发现服务特征
+[ESP32 Only] :ref:`AT+BLEGATTSCHAR <BLE-AT>`：GATTS 发现服务特征
 ---------------------------------------------------------------------------------
 
 查询命令
@@ -1282,7 +1282,7 @@ GATTS 发现服务特征
 
 .. _cmd-GSNTFY:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSNTFY <BLE-AT>`：服务器 notify 服务特征值给客户端
+[ESP32 Only] :ref:`AT+BLEGATTSNTFY <BLE-AT>`：服务器 notify 服务特征值给客户端
 ---------------------------------------------------------------------------------------------
 
 设置命令
@@ -1336,7 +1336,7 @@ GATTS 发现服务特征
 
 .. _cmd-GSIND:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSIND <BLE-AT>`：服务器 indicate 服务特征值给客户端
+[ESP32 Only] :ref:`AT+BLEGATTSIND <BLE-AT>`：服务器 indicate 服务特征值给客户端
 ------------------------------------------------------------------------------------------
 
 设置命令
@@ -1390,7 +1390,7 @@ GATTS 发现服务特征
 
 .. _cmd-GSSETA:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSETATTR <BLE-AT>`：GATTS 设置服务特征值
+[ESP32 Only] :ref:`AT+BLEGATTSSETATTR <BLE-AT>`：GATTS 设置服务特征值
 ------------------------------------------------------------------------------
 
 设置命令
@@ -1452,7 +1452,7 @@ GATTS 设置服务特征值或描述符值
 
 .. _cmd-GCPRIMSRV:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTCPRIMSRV <BLE-AT>`：GATTC 发现基本服务
+[ESP32 Only] :ref:`AT+BLEGATTCPRIMSRV <BLE-AT>`：GATTC 发现基本服务
 -------------------------------------------------------------------------------------
 
 查询命令
@@ -1502,7 +1502,7 @@ GATTC (Generic Attributes Client) 发现基本服务
 
 .. _cmd-GCINCLSRV:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTCINCLSRV <BLE-AT>`：GATTC 发现包含的服务
+[ESP32 Only] :ref:`AT+BLEGATTCINCLSRV <BLE-AT>`：GATTC 发现包含的服务
 --------------------------------------------------------------------------------------
 
 设置命令
@@ -1559,7 +1559,7 @@ GATTC 发现包含服务
 
 .. _cmd-GCCHAR:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTCCHAR <BLE-AT>`：GATTC 发现服务特征
+[ESP32 Only] :ref:`AT+BLEGATTCCHAR <BLE-AT>`：GATTC 发现服务特征
 ---------------------------------------------------------------------------------
 
 设置命令
@@ -1618,7 +1618,7 @@ GATTC 发现服务特征
 
 .. _cmd-GCRD:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTCRD <BLE-AT>`：GATTC 读取服务特征值
+[ESP32 Only] :ref:`AT+BLEGATTCRD <BLE-AT>`：GATTC 读取服务特征值
 ----------------------------------------------------------------------------
 
 设置命令
@@ -1676,7 +1676,7 @@ GATTC 读取服务特征值或描述符值
 
 .. _cmd-GCWR:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTCWR <BLE-AT>`：GATTC 写服务特征值
+[ESP32 Only] :ref:`AT+BLEGATTCWR <BLE-AT>`：GATTC 写服务特征值
 ---------------------------------------------------------------------------
 
 设置命令
@@ -1740,7 +1740,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLESPPCFG:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLESPPCFG <BLE-AT>`：查询/设置 Bluetooth LE SPP 参数
+[ESP32 Only] :ref:`AT+BLESPPCFG <BLE-AT>`：查询/设置 Bluetooth LE SPP 参数
 --------------------------------------------------------------------------------
 
 查询命令
@@ -1812,7 +1812,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLESPP:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLESPP <BLE-AT>`：进入 Bluetooth LE SPP 模式
+[ESP32 Only] :ref:`AT+BLESPP <BLE-AT>`：进入 Bluetooth LE SPP 模式
 ------------------------------------------------------------------------
 
 执行命令
@@ -1849,7 +1849,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLESMPPAR:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLESECPARAM <BLE-AT>`：查询/设置 Bluetooth LE 加密参数
+[ESP32 Only] :ref:`AT+BLESECPARAM <BLE-AT>`：查询/设置 Bluetooth LE 加密参数
 -------------------------------------------------------------------------------------
 
 查询命令
@@ -1939,7 +1939,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLEENC:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEENC <BLE-AT>`：发起 Bluetooth LE 加密请求
+[ESP32 Only] :ref:`AT+BLEENC <BLE-AT>`：发起 Bluetooth LE 加密请求
 ----------------------------------------------------------------------------------
 
 设置命令
@@ -1987,7 +1987,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLEENCRSP:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEENCRSP <BLE-AT>`：回复对端设备发起的配对请求
+[ESP32 Only] :ref:`AT+BLEENCRSP <BLE-AT>`：回复对端设备发起的配对请求
 -----------------------------------------------------------------------------------
 
 设置命令
@@ -2027,7 +2027,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLEKEYREPLY:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEKEYREPLY <BLE-AT>`：给对方设备回复密钥（传统连接阶段）
+[ESP32 Only] :ref:`AT+BLEKEYREPLY <BLE-AT>`：给对方设备回复密钥（传统连接阶段）
 ------------------------------------------------------------------------------------------------
 
 设置命令
@@ -2064,7 +2064,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLECONFREPLY:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLECONFREPLY <BLE-AT>`：给对方设备回复确认结果（传统连接阶段）
+[ESP32 Only] :ref:`AT+BLECONFREPLY <BLE-AT>`：给对方设备回复确认结果（传统连接阶段）
 -----------------------------------------------------------------------------------------------------------
 
 设置命令
@@ -2104,7 +2104,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLEENCDEV:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEENCDEV <BLE-AT>`：查询绑定的 Bluetooth LE 加密设备列表
+[ESP32 Only] :ref:`AT+BLEENCDEV <BLE-AT>`：查询绑定的 Bluetooth LE 加密设备列表
 ---------------------------------------------------------------------------------------------
 
 查询命令
@@ -2142,7 +2142,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLEENCCLEAR:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEENCCLEAR <BLE-AT>`：清除 Bluetooth LE 加密设备列表
+[ESP32 Only] :ref:`AT+BLEENCCLEAR <BLE-AT>`：清除 Bluetooth LE 加密设备列表
 ----------------------------------------------------------------------------------------
 
 设置命令
@@ -2197,7 +2197,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLESETKEY:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLESETKEY <BLE-AT>`：设置 Bluetooth LE 静态配对密钥
+[ESP32 Only] :ref:`AT+BLESETKEY <BLE-AT>`：设置 Bluetooth LE 静态配对密钥
 -------------------------------------------------------------------------------
 
 查询命令
@@ -2253,7 +2253,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLEHIDINIT:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEHIDINIT <BLE-AT>`：Bluetooth LE HID 协议初始化
+[ESP32 Only] :ref:`AT+BLEHIDINIT <BLE-AT>`：Bluetooth LE HID 协议初始化
 ------------------------------------------------------------------------------------
 
 查询命令
@@ -2326,7 +2326,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLEHIDKB:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEHIDKB <BLE-AT>`：发送 Bluetooth LE HID 键盘信息
+[ESP32 Only] :ref:`AT+BLEHIDKB <BLE-AT>`：发送 Bluetooth LE HID 键盘信息
 --------------------------------------------------------------------------------------
 
 设置命令
@@ -2373,7 +2373,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLEHIDMUS:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEHIDMUS <BLE-AT>`：发送 Bluetooth LE HID 鼠标信息
+[ESP32 Only] :ref:`AT+BLEHIDMUS <BLE-AT>`：发送 Bluetooth LE HID 鼠标信息
 -----------------------------------------------------------------------------------
 
 设置命令
@@ -2412,7 +2412,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLEHIDC:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEHIDCONSUMER <BLE-AT>`：发送 Bluetooth LE HID consumer 信息
+[ESP32 Only] :ref:`AT+BLEHIDCONSUMER <BLE-AT>`：发送 Bluetooth LE HID consumer 信息
 --------------------------------------------------------------------------------------------
 
 设置命令
@@ -2448,7 +2448,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLUFI:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLUFI <BLE-AT>`：开启或关闭 BluFi
+[ESP32 Only] :ref:`AT+BLUFI <BLE-AT>`：开启或关闭 BluFi
 --------------------------------------------------------------
 
 查询命令
@@ -2527,7 +2527,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLUFINAME:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLUFINAME <BLE-AT>`：查询/设置 BluFi 设备名称
+[ESP32 Only] :ref:`AT+BLUFINAME <BLE-AT>`：查询/设置 BluFi 设备名称
 -------------------------------------------------------------------------
 
 查询命令

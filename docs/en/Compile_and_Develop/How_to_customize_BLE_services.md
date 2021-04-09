@@ -7,7 +7,7 @@ The path of BLE service source file is `esp-at/components/customized_partitions/
 
   - Modify the `BLE Service` file
   - use esp-at/tools/BLEService.py to generate ble_data.bin
-  - Download generated ble_data.bin to address defined in `module_config/module_esp32_default/partitions_at.csv`(ESP32 modules) or `module_config/module_esp32c3_default/partitions_at.csv`(ESP32-C3 modules)
+  - Download generated ble_data.bin to address defined in `module_config/module_esp32_default/partitions_at.csv`(ESP32 modules).
 
 ## Description of the structure of the BLE service
 

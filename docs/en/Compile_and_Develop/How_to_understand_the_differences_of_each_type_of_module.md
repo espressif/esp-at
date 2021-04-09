@@ -173,8 +173,8 @@ See: https://docs.espressif.com/projects/esp-at/en/latest/AT_Binary_Lists/index.
 | AT smartconfig command support | √ |
 | AT MQTT command support | √ |
 | AT http command support | √ |
-| AT ble command support | √ |
-| AT ble hid command support | √ |
+| AT ble command support | × |
+| AT ble hid command support | × |
 | AT blufi command support | × |
 | AT bt spp command support | × |
 | AT bt a2dp command support | × |

@@ -1,61 +1,61 @@
 .. _BLE-AT:
 
-[ESP32 & ESP32-C3] Bluetooth® Low Energy AT Commands
+[ESP32 Only] Bluetooth® Low Energy AT Commands
 =====================================================
 
 :link_to_translation:`zh_CN:[中文]`
 
 ESP32 AT firmware supports `Bluetooth® Core Specification Version 5.0 <https://www.bluetooth.com/specifications/archived-specifications/>`_.
 
--  [ESP32 & ESP32-C3] :ref:`AT+BLEINIT <cmd-BINIT>`: Bluetooth LE initialization.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEADDR <cmd-BADDR>`: Query/Set Bluetooth LE device address.
--  [ESP32 & ESP32-C3] :ref:`AT+BLENAME <cmd-BNAME>`: Query/Set Bluetooth LE device name.
--  [ESP32 & ESP32-C3] :ref:`AT+BLESCANPARAM <cmd-BSCANP>`: Query/Set parameters of Bluetooth LE scanning.
--  [ESP32 & ESP32-C3] :ref:`AT+BLESCAN <cmd-BSCAN>`: Enable Bluetooth LE scanning.
--  [ESP32 & ESP32-C3] :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`: Set Bluetooth LE scan response.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEADVPARAM <cmd-BADVP>`: Query/Set parameters of Bluetooth LE advertising.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEADVDATA <cmd-BADVD>`: Set Bluetooth LE advertising data.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`: Automatically set Bluetooth LE advertising data.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEADVSTART <cmd-BADVSTART>`: Start Bluetooth LE advertising.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEADVSTOP <cmd-BADVSTOP>`: Stop Bluetooth LE advertising.
--  [ESP32 & ESP32-C3] :ref:`AT+BLECONN <cmd-BCONN>`: Establish Bluetooth LE connection.
--  [ESP32 & ESP32-C3] :ref:`AT+BLECONNPARAM <cmd-BCONNP>`: Query/Update parameters of Bluetooth LE connection.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEDISCONN <cmd-BDISC>`: End Bluetooth LE connection.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEDATALEN <cmd-BDLEN>`: Set Bluetooth LE data packet length.
--  [ESP32 & ESP32-C3] :ref:`AT+BLECFGMTU <cmd-BMTU>`: Set Bluetooth LE MTU length.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`: Generic Attributes Server (GATTS) creates services.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`: GATTS starts services.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`: GATTS Stops Services.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`: GATTS discovers services.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`: GATTS discovers characteristics.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`: Notify a client of the value of a characteristic value from the server.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSIND <cmd-GSIND>`: Indicate the characteristic value from the server to a client.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`: GATTS sets characteristics.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`: Generic Attributes Client (GATTC) discovers primary services.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`: GATTC discovers included services.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`: GATTC discovers characteristics.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTCRD <cmd-GCRD>`: GATTC reads characteristics.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEGATTCWR <cmd-GCWR>`: GATTC writes characteristics.
--  [ESP32 & ESP32-C3] :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`: Query/Set Bluetooth LE SPP parameters.
--  [ESP32 & ESP32-C3] :ref:`AT+BLESPP <cmd-BLESPP>`: Enter Bluetooth LE SPP mode.
--  [ESP32 & ESP32-C3] :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`: Query/Set Bluetooth LE encryption parameters.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEENC <cmd-BLEENC>`: Initiate Bluetooth LE encryption request.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`: Respond to the pairing request from the peer device.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`: Reply the key value to the peer device in the legacy connection stage.
--  [ESP32 & ESP32-C3] :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`: Reply the confirm value to the peer device in the legacy connection stage.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`: Query bonded Bluetooth LE encryption device list.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`: Clear Bluetooth LE encryption device list.
--  [ESP32 & ESP32-C3] :ref:`AT+BLESETKEY <cmd-BLESETKEY>`: Set Bluetooth LE static pair key.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`: Bluetooth LE Human Interface Device (HID) profile initialization.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`: Send Bluetooth LE HID keyboard information.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`: Send Bluetooth LE HID mouse information.
--  [ESP32 & ESP32-C3] :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`: Send Bluetooth LE HID consumer information.
--  [ESP32 & ESP32-C3] :ref:`AT+BLUFI <cmd-BLUFI>`: Start or Stop BluFi.
--  [ESP32 & ESP32-C3] :ref:`AT+BLUFINAME <cmd-BLUFINAME>`: Query/Set BluFi device name.
+-  [ESP32 Only] :ref:`AT+BLEINIT <cmd-BINIT>`: Bluetooth LE initialization.
+-  [ESP32 Only] :ref:`AT+BLEADDR <cmd-BADDR>`: Query/Set Bluetooth LE device address.
+-  [ESP32 Only] :ref:`AT+BLENAME <cmd-BNAME>`: Query/Set Bluetooth LE device name.
+-  [ESP32 Only] :ref:`AT+BLESCANPARAM <cmd-BSCANP>`: Query/Set parameters of Bluetooth LE scanning.
+-  [ESP32 Only] :ref:`AT+BLESCAN <cmd-BSCAN>`: Enable Bluetooth LE scanning.
+-  [ESP32 Only] :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`: Set Bluetooth LE scan response.
+-  [ESP32 Only] :ref:`AT+BLEADVPARAM <cmd-BADVP>`: Query/Set parameters of Bluetooth LE advertising.
+-  [ESP32 Only] :ref:`AT+BLEADVDATA <cmd-BADVD>`: Set Bluetooth LE advertising data.
+-  [ESP32 Only] :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`: Automatically set Bluetooth LE advertising data.
+-  [ESP32 Only] :ref:`AT+BLEADVSTART <cmd-BADVSTART>`: Start Bluetooth LE advertising.
+-  [ESP32 Only] :ref:`AT+BLEADVSTOP <cmd-BADVSTOP>`: Stop Bluetooth LE advertising.
+-  [ESP32 Only] :ref:`AT+BLECONN <cmd-BCONN>`: Establish Bluetooth LE connection.
+-  [ESP32 Only] :ref:`AT+BLECONNPARAM <cmd-BCONNP>`: Query/Update parameters of Bluetooth LE connection.
+-  [ESP32 Only] :ref:`AT+BLEDISCONN <cmd-BDISC>`: End Bluetooth LE connection.
+-  [ESP32 Only] :ref:`AT+BLEDATALEN <cmd-BDLEN>`: Set Bluetooth LE data packet length.
+-  [ESP32 Only] :ref:`AT+BLECFGMTU <cmd-BMTU>`: Set Bluetooth LE MTU length.
+-  [ESP32 Only] :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`: Generic Attributes Server (GATTS) creates services.
+-  [ESP32 Only] :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`: GATTS starts services.
+-  [ESP32 Only] :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`: GATTS Stops Services.
+-  [ESP32 Only] :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`: GATTS discovers services.
+-  [ESP32 Only] :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`: GATTS discovers characteristics.
+-  [ESP32 Only] :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`: Notify a client of the value of a characteristic value from the server.
+-  [ESP32 Only] :ref:`AT+BLEGATTSIND <cmd-GSIND>`: Indicate the characteristic value from the server to a client.
+-  [ESP32 Only] :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`: GATTS sets characteristics.
+-  [ESP32 Only] :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`: Generic Attributes Client (GATTC) discovers primary services.
+-  [ESP32 Only] :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`: GATTC discovers included services.
+-  [ESP32 Only] :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`: GATTC discovers characteristics.
+-  [ESP32 Only] :ref:`AT+BLEGATTCRD <cmd-GCRD>`: GATTC reads characteristics.
+-  [ESP32 Only] :ref:`AT+BLEGATTCWR <cmd-GCWR>`: GATTC writes characteristics.
+-  [ESP32 Only] :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`: Query/Set Bluetooth LE SPP parameters.
+-  [ESP32 Only] :ref:`AT+BLESPP <cmd-BLESPP>`: Enter Bluetooth LE SPP mode.
+-  [ESP32 Only] :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`: Query/Set Bluetooth LE encryption parameters.
+-  [ESP32 Only] :ref:`AT+BLEENC <cmd-BLEENC>`: Initiate Bluetooth LE encryption request.
+-  [ESP32 Only] :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`: Respond to the pairing request from the peer device.
+-  [ESP32 Only] :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`: Reply the key value to the peer device in the legacy connection stage.
+-  [ESP32 Only] :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`: Reply the confirm value to the peer device in the legacy connection stage.
+-  [ESP32 Only] :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`: Query bonded Bluetooth LE encryption device list.
+-  [ESP32 Only] :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`: Clear Bluetooth LE encryption device list.
+-  [ESP32 Only] :ref:`AT+BLESETKEY <cmd-BLESETKEY>`: Set Bluetooth LE static pair key.
+-  [ESP32 Only] :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`: Bluetooth LE Human Interface Device (HID) profile initialization.
+-  [ESP32 Only] :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`: Send Bluetooth LE HID keyboard information.
+-  [ESP32 Only] :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`: Send Bluetooth LE HID mouse information.
+-  [ESP32 Only] :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`: Send Bluetooth LE HID consumer information.
+-  [ESP32 Only] :ref:`AT+BLUFI <cmd-BLUFI>`: Start or Stop BluFi.
+-  [ESP32 Only] :ref:`AT+BLUFINAME <cmd-BLUFINAME>`: Query/Set BluFi device name.
 
 .. _cmd-BINIT:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEINIT <BLE-AT>`: Bluetooth LE Initialization
+[ESP32 Only] :ref:`AT+BLEINIT <BLE-AT>`: Bluetooth LE Initialization
 ----------------------------------------------------------------------------
 
 Query Command
@@ -135,7 +135,7 @@ Example
 
 .. _cmd-BADDR:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEADDR <BLE-AT>`: Query/Set Bluetooth LE Device Address
+[ESP32 Only] :ref:`AT+BLEADDR <BLE-AT>`: Query/Set Bluetooth LE Device Address
 -------------------------------------------------------------------------------------
 
 Query Command
@@ -205,7 +205,7 @@ Example
 
 .. _cmd-BNAME:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLENAME <BLE-AT>`: Query/Set Bluetooth LE Device Name
+[ESP32 Only] :ref:`AT+BLENAME <BLE-AT>`: Query/Set Bluetooth LE Device Name
 ----------------------------------------------------------------------------------
 
 Query Command
@@ -266,7 +266,7 @@ Example
 
 .. _cmd-BSCANP:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLESCANPARAM <BLE-AT>`: Query/Set Parameters of Bluetooth LE Scanning
+[ESP32 Only] :ref:`AT+BLESCANPARAM <BLE-AT>`: Query/Set Parameters of Bluetooth LE Scanning
 --------------------------------------------------------------------------------------------------
 
 Query Command
@@ -348,7 +348,7 @@ Example
 
 .. _cmd-BSCAN:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLESCAN <BLE-AT>`: Enable Bluetooth LE Scanning
+[ESP32 Only] :ref:`AT+BLESCAN <BLE-AT>`: Enable Bluetooth LE Scanning
 ----------------------------------------------------------------------------
 
 Set Command
@@ -412,7 +412,7 @@ Example
 
 .. _cmd-BSCANR:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLESCANRSPDATA <BLE-AT>`: Set Bluetooth LE Scan Response
+[ESP32 Only] :ref:`AT+BLESCANRSPDATA <BLE-AT>`: Set Bluetooth LE Scan Response
 -------------------------------------------------------------------------------------
 
 Set Command
@@ -449,7 +449,7 @@ Example
 
 .. _cmd-BADVP:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEADVPARAM <BLE-AT>`: Query/Set Parameters of Bluetooth LE Advertising
+[ESP32 Only] :ref:`AT+BLEADVPARAM <BLE-AT>`: Query/Set Parameters of Bluetooth LE Advertising
 ----------------------------------------------------------------------------------------------------
 
 Query Command
@@ -538,7 +538,7 @@ Example
 
 .. _cmd-BADVD:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEADVDATA <BLE-AT>`: Set Bluetooth LE Advertising Data
+[ESP32 Only] :ref:`AT+BLEADVDATA <BLE-AT>`: Set Bluetooth LE Advertising Data
 ------------------------------------------------------------------------------------
 
 Set Command
@@ -580,7 +580,7 @@ Example
 
 .. _cmd-BADVDEX:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEADVDATAEX <BLE-AT>`: Automatically Set Bluetooth LE Advertising Data
+[ESP32 Only] :ref:`AT+BLEADVDATAEX <BLE-AT>`: Automatically Set Bluetooth LE Advertising Data
 ----------------------------------------------------------------------------------------------------
 
 Query Command
@@ -615,7 +615,7 @@ Set the advertising data and start advertising.
 
 ::
 
-    AT+BLEADVSTARTEX=<dev_name>,<uuid>,<manufacturer_data>,<include_power>
+    AT+BLEADVDATAEX=<dev_name>,<uuid>,<manufacturer_data>,<include_power>
 
 **Response:**
 
@@ -649,7 +649,7 @@ Example
 
 .. _cmd-BADVSTART:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEADVSTART <BLE-AT>`: Start Bluetooth LE Advertising
+[ESP32 Only] :ref:`AT+BLEADVSTART <BLE-AT>`: Start Bluetooth LE Advertising
 ----------------------------------------------------------------------------------
 
 Execute Command
@@ -688,7 +688,7 @@ Example
 
 .. _cmd-BADVSTOP:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEADVSTOP <BLE-AT>`: Stop Bluetooth LE Advertising
+[ESP32 Only] :ref:`AT+BLEADVSTOP <BLE-AT>`: Stop Bluetooth LE Advertising
 --------------------------------------------------------------------------------
 
 Execute Command
@@ -726,7 +726,7 @@ Example
 
 .. _cmd-BCONN:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLECONN <BLE-AT>`: Establish Bluetooth LE Connection
+[ESP32 Only] :ref:`AT+BLECONN <BLE-AT>`: Establish Bluetooth LE Connection
 ---------------------------------------------------------------------------------
 
 Query Command
@@ -806,7 +806,7 @@ Example
 
 .. _cmd-BCONNP:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLECONNPARAM <BLE-AT>`: Query/Update Parameters of Bluetooth LE Connection
+[ESP32 Only] :ref:`AT+BLECONNPARAM <BLE-AT>`: Query/Update Parameters of Bluetooth LE Connection
 -------------------------------------------------------------------------------------------------------
 
 Query Command
@@ -880,7 +880,7 @@ Example
 
 .. _cmd-BDISC:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEDISCONN <BLE-AT>`: End Bluetooth LE Connection
+[ESP32 Only] :ref:`AT+BLEDISCONN <BLE-AT>`: End Bluetooth LE Connection
 ------------------------------------------------------------------------------
 
 Execute Command
@@ -925,7 +925,7 @@ Example
 
 .. _cmd-BDLEN:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEDATALEN <BLE-AT>`: Set Bluetooth LE Data Packet Length
+[ESP32 Only] :ref:`AT+BLEDATALEN <BLE-AT>`: Set Bluetooth LE Data Packet Length
 ---------------------------------------------------------------------------------------
 
 Set Command
@@ -969,7 +969,7 @@ Example
 
 .. _cmd-BMTU:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLECFGMTU <BLE-AT>`: Set Bluetooth LE MTU Length
+[ESP32 Only] :ref:`AT+BLECFGMTU <BLE-AT>`: Set Bluetooth LE MTU Length
 -----------------------------------------------------------------------------
 
 Query Command
@@ -1035,7 +1035,7 @@ Example
 
 .. _cmd-GSSRVCRE:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRVCRE <BLE-AT>`: GATTS Creates Services
+[ESP32 Only] :ref:`AT+BLEGATTSSRVCRE <BLE-AT>`: GATTS Creates Services
 ------------------------------------------------------------------------------
 
 Execute Command
@@ -1077,7 +1077,7 @@ Example
 
 .. _cmd-GSSRVSTART:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRVSTART <BLE-AT>`: GATTS Starts Services
+[ESP32 Only] :ref:`AT+BLEGATTSSRVSTART <BLE-AT>`: GATTS Starts Services
 ------------------------------------------------------------------------------
 
 Execute Command
@@ -1128,7 +1128,7 @@ Example
 
 .. _cmd-GSSRVSTOP:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRVSTOP <BLE-AT>`: GATTS Stops Services
+[ESP32 Only] :ref:`AT+BLEGATTSSRVSTOP <BLE-AT>`: GATTS Stops Services
 -----------------------------------------------------------------------------
 
 Execute Command
@@ -1180,7 +1180,7 @@ Example
 
 .. _cmd-GSSRV:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSRV <BLE-AT>`: GATTS Discovers Services
+[ESP32 Only] :ref:`AT+BLEGATTSSRV <BLE-AT>`: GATTS Discovers Services
 -----------------------------------------------------------------------------
 
 Query Command
@@ -1229,7 +1229,7 @@ Example
 
 .. _cmd-GSCHAR:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSCHAR <BLE-AT>`: GATTS Discovers Characteristics
+[ESP32 Only] :ref:`AT+BLEGATTSCHAR <BLE-AT>`: GATTS Discovers Characteristics
 -------------------------------------------------------------------------------------
 
 Query Command
@@ -1282,7 +1282,7 @@ Example
 
 .. _cmd-GSNTFY:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSNTFY <BLE-AT>`: Notify a Client of the Value of a Characteristic Value from the Server
+[ESP32 Only] :ref:`AT+BLEGATTSNTFY <BLE-AT>`: Notify a Client of the Value of a Characteristic Value from the Server
 ---------------------------------------------------------------------------------------------------------------------------
 
 Set Command
@@ -1336,7 +1336,7 @@ Example
 
 .. _cmd-GSIND:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSIND <BLE-AT>`: Indicate the Characteristic Value from the Server to a Client
+[ESP32 Only] :ref:`AT+BLEGATTSIND <BLE-AT>`: Indicate the Characteristic Value from the Server to a Client
 -----------------------------------------------------------------------------------------------------------------
 
 Set Command
@@ -1390,7 +1390,7 @@ Example
 
 .. _cmd-GSSETA:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTSSETATTR <BLE-AT>`: GATTS Sets Characteristics
+[ESP32 Only] :ref:`AT+BLEGATTSSETATTR <BLE-AT>`: GATTS Sets Characteristics
 ----------------------------------------------------------------------------------
 
 Set Command
@@ -1452,7 +1452,7 @@ Example
 
 .. _cmd-GCPRIMSRV:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTCPRIMSRV <BLE-AT>`: GATTC Discovers Primary Services
+[ESP32 Only] :ref:`AT+BLEGATTCPRIMSRV <BLE-AT>`: GATTC Discovers Primary Services
 ----------------------------------------------------------------------------------------
 
 Query Command
@@ -1502,7 +1502,7 @@ Example
 
 .. _cmd-GCINCLSRV:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTCINCLSRV <BLE-AT>`: GATTC Discovers Included Services
+[ESP32 Only] :ref:`AT+BLEGATTCINCLSRV <BLE-AT>`: GATTC Discovers Included Services
 -----------------------------------------------------------------------------------------
 
 Set Command
@@ -1559,7 +1559,7 @@ Example
 
 .. _cmd-GCCHAR:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTCCHAR <BLE-AT>`: GATTC Discovers Characteristics
+[ESP32 Only] :ref:`AT+BLEGATTCCHAR <BLE-AT>`: GATTC Discovers Characteristics
 ------------------------------------------------------------------------------------
 
 Set Command
@@ -1618,7 +1618,7 @@ Example
 
 .. _cmd-GCRD:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTCRD <BLE-AT>`: GATTC Reads Characteristics
+[ESP32 Only] :ref:`AT+BLEGATTCRD <BLE-AT>`: GATTC Reads Characteristics
 ------------------------------------------------------------------------------
 
 Set Command
@@ -1676,7 +1676,7 @@ Example
 
 .. _cmd-GCWR:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEGATTCWR <BLE-AT>`: GATTC Writes Characteristics
+[ESP32 Only] :ref:`AT+BLEGATTCWR <BLE-AT>`: GATTC Writes Characteristics
 -------------------------------------------------------------------------------
 
 Set Command
@@ -1740,7 +1740,7 @@ Example
 
 .. _cmd-BLESPPCFG:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLESPPCFG <BLE-AT>`: Query/Set Bluetooth LE SPP Parameters
+[ESP32 Only] :ref:`AT+BLESPPCFG <BLE-AT>`: Query/Set Bluetooth LE SPP Parameters
 ---------------------------------------------------------------------------------------
 
 Query Command
@@ -1812,7 +1812,7 @@ Example
 
 .. _cmd-BLESPP:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLESPP <BLE-AT>`: Enter Bluetooth LE SPP Mode
+[ESP32 Only] :ref:`AT+BLESPP <BLE-AT>`: Enter Bluetooth LE SPP Mode
 ---------------------------------------------------------------------------
 
 Execute Command
@@ -1849,7 +1849,7 @@ Example
 
 .. _cmd-BLESMPPAR:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLESECPARAM <BLE-AT>`: Query/Set Bluetooth LE Encryption Parameters
+[ESP32 Only] :ref:`AT+BLESECPARAM <BLE-AT>`: Query/Set Bluetooth LE Encryption Parameters
 ------------------------------------------------------------------------------------------------
 
 Query Command
@@ -1939,7 +1939,7 @@ Example
 
 .. _cmd-BLEENC:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEENC <BLE-AT>`: Initiate Bluetooth LE Encryption Request
+[ESP32 Only] :ref:`AT+BLEENC <BLE-AT>`: Initiate Bluetooth LE Encryption Request
 ---------------------------------------------------------------------------------------
 
 Set Command
@@ -1987,7 +1987,7 @@ Example
 
 .. _cmd-BLEENCRSP:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEENCRSP <BLE-AT>`: Respond to the Pairing Request from the Peer Device
+[ESP32 Only] :ref:`AT+BLEENCRSP <BLE-AT>`: Respond to the Pairing Request from the Peer Device
 -----------------------------------------------------------------------------------------------------
 
 Set Command
@@ -2027,7 +2027,7 @@ Example
 
 .. _cmd-BLEKEYREPLY:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEKEYREPLY <BLE-AT>`: Reply the Key Value to the Peer Device in the Legacy Connection Stage
+[ESP32 Only] :ref:`AT+BLEKEYREPLY <BLE-AT>`: Reply the Key Value to the Peer Device in the Legacy Connection Stage
 -------------------------------------------------------------------------------------------------------------------------
 
 Set Command
@@ -2064,7 +2064,7 @@ Example
 
 .. _cmd-BLECONFREPLY:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLECONFREPLY <BLE-AT>`: Reply the Confirm Value to the Peer Device in the Legacy Connection Stage
+[ESP32 Only] :ref:`AT+BLECONFREPLY <BLE-AT>`: Reply the Confirm Value to the Peer Device in the Legacy Connection Stage
 ------------------------------------------------------------------------------------------------------------------------------
 
 Set Command
@@ -2104,7 +2104,7 @@ Example
 
 .. _cmd-BLEENCDEV:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEENCDEV <BLE-AT>`: Query Bonded Bluetooth LE Encryption Device List
+[ESP32 Only] :ref:`AT+BLEENCDEV <BLE-AT>`: Query Bonded Bluetooth LE Encryption Device List
 --------------------------------------------------------------------------------------------------
 
 Query Command
@@ -2142,7 +2142,7 @@ Example
 
 .. _cmd-BLEENCCLEAR:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEENCCLEAR <BLE-AT>`: Clear Bluetooth LE Encryption Device List
+[ESP32 Only] :ref:`AT+BLEENCCLEAR <BLE-AT>`: Clear Bluetooth LE Encryption Device List
 ---------------------------------------------------------------------------------------------
 
 Set Command
@@ -2197,7 +2197,7 @@ Example
 
 .. _cmd-BLESETKEY:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLESETKEY <BLE-AT>`: Set Bluetooth LE Static Pair Key
+[ESP32 Only] :ref:`AT+BLESETKEY <BLE-AT>`: Set Bluetooth LE Static Pair Key
 ----------------------------------------------------------------------------------
 
 Query Command
@@ -2253,7 +2253,7 @@ Example
 
 .. _cmd-BLEHIDINIT:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEHIDINIT <BLE-AT>`: Bluetooth LE HID Profile Initialization
+[ESP32 Only] :ref:`AT+BLEHIDINIT <BLE-AT>`: Bluetooth LE HID Profile Initialization
 -------------------------------------------------------------------------------------------
 
 Query Command
@@ -2326,7 +2326,7 @@ Example
 
 .. _cmd-BLEHIDKB:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEHIDKB <BLE-AT>`: Send Bluetooth LE HID Keyboard Information
+[ESP32 Only] :ref:`AT+BLEHIDKB <BLE-AT>`: Send Bluetooth LE HID Keyboard Information
 -------------------------------------------------------------------------------------------
 
 Set Command
@@ -2373,7 +2373,7 @@ Example
 
 .. _cmd-BLEHIDMUS:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEHIDMUS <BLE-AT>`: Send Bluetooth LE HID Mouse Information
+[ESP32 Only] :ref:`AT+BLEHIDMUS <BLE-AT>`: Send Bluetooth LE HID Mouse Information
 ------------------------------------------------------------------------------------------
 
 Set Command
@@ -2412,7 +2412,7 @@ Example
 
 .. _cmd-BLEHIDC:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLEHIDCONSUMER <BLE-AT>`: Send Bluetooth LE HID Consumer Information
+[ESP32 Only] :ref:`AT+BLEHIDCONSUMER <BLE-AT>`: Send Bluetooth LE HID Consumer Information
 --------------------------------------------------------------------------------------------------
 
 Set Command
@@ -2448,7 +2448,7 @@ Example
 
 .. _cmd-BLUFI:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLUFI <BLE-AT>`: Start or Stop BluFi
+[ESP32 Only] :ref:`AT+BLUFI <BLE-AT>`: Start or Stop BluFi
 -----------------------------------------------------------------
 
 Query Command
@@ -2527,7 +2527,7 @@ Example
 
 .. _cmd-BLUFINAME:
 
-[ESP32 & ESP32-C3] :ref:`AT+BLUFINAME <BLE-AT>`: Query/Set BluFi Device Name
+[ESP32 Only] :ref:`AT+BLUFINAME <BLE-AT>`: Query/Set BluFi Device Name
 ------------------------------------------------------------------------------
 
 Query Command
