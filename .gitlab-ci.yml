@@ -157,10 +157,10 @@ esp32_wrover_at:
     - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_wrover-32/IDF_VERSION
     - mkdir build
     # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 1}" > build/module_info.json'
     - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 1}" > build/module_info.json'
     - *before_build_esp32_series
     - ./build.py build
 
