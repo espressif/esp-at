@@ -1,0 +1,1 @@
+.. include:: ../en/index_of_abbreviations.rst
