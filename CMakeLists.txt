@@ -51,7 +51,7 @@ include(${IDF_PATH}/tools/cmake/project.cmake)
 project(esp-at)
 
 if (CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_SUPPORT)
-    add_custom_target(factory_bin ALL DEPENDS customized_bin)
+    add_custom_target(factory_bin ALL DEPENDS app)
 else()
     # TODO: combine defaults bins into a factory bin
     add_custom_target(factory_bin)
@@ -71,3 +71,6 @@ add_custom_command(TARGET factory_bin
         --download_config $ENV{ESP_AT_PROJECT_PATH}/build/flash_project_args
   COMMENT "Create factory bin..."
 )
+
+add_dependencies(factory_bin gen_project_binary)
+add_dependencies(flash factory_bin)

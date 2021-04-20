@@ -51,7 +51,7 @@ endforeach(partition_args)
 file(MAKE_DIRECTORY ${build_dir}/include)
 file(COPY ${build_dir}/config/sdkconfig.h DESTINATION  ${build_dir}/include/sdkconfig.h)
 
-add_custom_target(customized_bin ALL DEPENDS app)
+add_custom_target(customized_bin ALL)
 add_custom_command(TARGET customized_bin
   POST_BUILD
   COMMAND ${PYTHON} ${COMPONENT_DIR}/raw_data/at_customized_partition_gen.py
@@ -61,5 +61,6 @@ add_custom_command(TARGET customized_bin
             --flash_args_file ${flash_customized_partition_args}
   COMMENT "Create customized_bin..."
 )
+add_dependencies(gen_project_binary customized_bin)
 
 endif()
