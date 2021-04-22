@@ -165,7 +165,7 @@ def build_project(platform_name, module_name, silence, build_args):
     
     cmd = '{0} ESP_AT_PROJECT_PLATFORM=PLATFORM_{1}&& \
         {0} ESP_AT_MODULE_NAME={2}&& \
-        {0} ESP_AT_PORJECT_PATH={3}&& \
+        {0} ESP_AT_PROJECT_PATH={3}&& \
         {0} SILENCE={4}&& \
         {5} {6} -DIDF_TARGET={7} {8}'.format(sys_cmd, platform_name, module_name, os.getcwd(), silence, sys.executable, tool, idf_target, build_args)
 

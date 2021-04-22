@@ -9,10 +9,10 @@ choice AT_COMMUNICATION_METHOD
     default AT_BASE_ON_UART
     depends on AT_ENABLE
 
-source "$ESP_AT_PORJECT_PATH/main/interface/uart/Kconfig"
-source "$ESP_AT_PORJECT_PATH/main/interface/hspi/Kconfig"
-source "$ESP_AT_PORJECT_PATH/main/interface/socket/Kconfig"
-source "$ESP_AT_PORJECT_PATH/main/interface/sdio/Kconfig"
+source "$ESP_AT_PROJECT_PATH/main/interface/uart/Kconfig"
+source "$ESP_AT_PROJECT_PATH/main/interface/hspi/Kconfig"
+source "$ESP_AT_PROJECT_PATH/main/interface/socket/Kconfig"
+source "$ESP_AT_PROJECT_PATH/main/interface/sdio/Kconfig"
 
 endchoice
 
@@ -132,45 +132,27 @@ config AT_HTTP_COMMAND_SUPPORT
         Please enlarge AT_PROCESS_TASK_STACK_SIZE to be more than 4096 if HTTPS link need to establish,
         otherwise, unexpected crash probably occur due to AT process task overflow.
 
-if IDF_TARGET_ESP32C3
 config AT_BLE_COMMAND_SUPPORT
     bool "AT ble command support."
     default "y"
-    depends on AT_ENABLE && BT_ENABLED
+    depends on AT_ENABLE && BT_ENABLED && (IDF_TARGET_ESP32 || IDF_TARGET_ESP32C3)
 
 config AT_BLE_HID_COMMAND_SUPPORT
     bool "AT ble hid command support."
     default "y"
-    depends on AT_ENABLE && BT_ENABLED
-
-config AT_BLUFI_COMMAND_SUPPORT
-    bool "AT blufi command support."
-    default "n"
-    depends on AT_ENABLE && BT_ENABLED
-endif
-
-if IDF_TARGET_ESP32    
-config AT_BLE_COMMAND_SUPPORT
-    bool "AT ble command support."
-    default "y"
-    depends on AT_ENABLE && BT_ENABLED
-
-config AT_BLE_HID_COMMAND_SUPPORT
-    bool "AT ble hid command support."
-    default "y"
-    depends on AT_ENABLE && BT_ENABLED
+    depends on AT_ENABLE && BT_ENABLED && (IDF_TARGET_ESP32 || IDF_TARGET_ESP32C3)
     
 config AT_BLUFI_COMMAND_SUPPORT
     bool "AT blufi command support."
     default "n"
-    depends on AT_ENABLE && BT_ENABLED
+    depends on AT_ENABLE && BT_ENABLED && (IDF_TARGET_ESP32 || IDF_TARGET_ESP32C3)
 
 config AT_BT_COMMAND_SUPPORT
     bool "AT bt command support."
     default "n"
     select BT_CLASSIC_ENABLED
     select BT_ALLOCATION_FROM_SPIRAM_FIRST
-    depends on AT_ENABLE && BT_ENABLED
+    depends on AT_ENABLE && BT_ENABLED && IDF_TARGET_ESP32
 
 config AT_BT_SPP_COMMAND_SUPPORT
     bool "AT bt spp command support."
@@ -208,7 +190,7 @@ config AT_I2S_DATA_PIN
 config AT_ETHERNET_SUPPORT
     bool "AT ethernet support."
     default "n"
-    depends on AT_ENABLE
+    depends on AT_ENABLE && IDF_TARGET_ESP32
     help
         Please pay attention to the usage. You can refer to the ESP32_AT_Ethernet.md and get more details.
     
@@ -241,19 +223,15 @@ config PHY_LAN8720
 
 endchoice
 
-endif
-
-if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2
 config AT_FS_COMMAND_SUPPORT
     bool "AT FS command support."
     default "n"
-    depends on AT_ENABLE
+    depends on AT_ENABLE && !IDF_TARGET_ESP8266
 
 config AT_DRIVER_COMMAND_SUPPORT
     bool "AT driver command support."
     default "n"
-    depends on AT_ENABLE
-endif
+    depends on AT_ENABLE && !IDF_TARGET_ESP8266
 
 if IDF_TARGET_ESP8266
 config AT_SIGNALING_COMMAND_SUPPORT
