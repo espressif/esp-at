@@ -38,6 +38,10 @@
 #include "esp_bt.h"
 #endif
 
+#ifdef CONFIG_AT_QCLOUD_IOT_COMMAND_SUPPORT
+#include "qcloud_iot_at.h"
+#endif
+
 #include "esp_at.h"
 #include "at_interface.h"
 
@@ -258,5 +262,12 @@ void app_main()
 #ifdef CONFIG_AT_COMMAND_TERMINATOR
     esp_at_custom_cmd_line_terminator_set((uint8_t*)&cmd_terminator);
 #endif
+
+#ifdef CONFIG_AT_QCLOUD_IOT_COMMAND_SUPPORT
+    if(esp_at_qcloud_iot_cmd_regist() == false) {
+        printf("qcloud at init fail\r\n");
+    }
+#endif
+
     at_custom_init();
 }

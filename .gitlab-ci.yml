@@ -51,6 +51,8 @@ variables: &global-variables
   - rm -f at_ota_token.h
   - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI \"$AT_OTA_TOKEN_ESP32C3_MINI\"" >> at_ota_token.h
   - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI \"$AT_OTA_TOKEN_ESP32C3_MINI\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD \"$AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI_QCLOUD \"$AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD\"" >> at_ota_token.h
   - cd -
   # (the same regular expressions are used to set these are used in 'only:' sections below
   - source ./esp-idf/tools/ci/configure_ci_environment.sh
@@ -721,6 +723,49 @@ esp32c3_mini_1_at:
     - ./build.py reconfigure || echo "skip exception"
     - rm -rf build && mkdir build
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
+    - *before_build_esp32c3_series
+    - ./build.py build
+
+esp32c3_qcloud:
+  stage: build
+  image: $CI_DOCKER_REGISTRY/esp32-ci-env
+  tags:
+    - build
+
+  variables:
+    <<: *global-variables
+
+  artifacts:
+    paths:
+      - sdkconfig
+      - build/*.bin
+      - build/*.elf
+      - build/*.map
+      - build/bootloader/*.bin
+      - build/partition_table/*.bin
+      - build/customized_partitions/*.bin
+      - build/flasher_args.json
+      - build/download.config
+      - build/factory/*
+    expire_in: 6 mos
+
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
+    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
+  script:
+    # replace submodule esp-idf to internal repository to speedup cloning
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32c3_qcloud/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3_QCLOUD\", \"description\": \"QCLOUD TX:7 RX:6\",\"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure || echo "skip exception"
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3_QCLOUD\", \"description\": \"QCLOUD TX:7 RX:6\",\"silence\": 0}" > build/module_info.json'
     - *before_build_esp32c3_series
     - ./build.py build
 
