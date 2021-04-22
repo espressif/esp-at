@@ -183,7 +183,7 @@ static int32_t at_port_get_data_length (void)
 
 static bool at_port_wait_write_complete (int32_t timeout_msec)
 {
-    if (ESP_OK == uart_wait_tx_done(esp_at_uart_port, timeout_msec*portTICK_PERIOD_MS)) {
+    if (ESP_OK == uart_wait_tx_done(esp_at_uart_port, timeout_msec / portTICK_PERIOD_MS)) {
         return true;
     }
 
@@ -554,7 +554,6 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     uart_set_stop_bits(esp_at_uart_port,uart_config.stop_bits);
     uart_set_parity(esp_at_uart_port,uart_config.parity);
     uart_set_hw_flow_ctrl(esp_at_uart_port,uart_config.flow_control,120);
-
     return ESP_AT_RESULT_CODE_PROCESS_DONE;
 }
 
@@ -670,7 +669,7 @@ void at_pre_restart_callback (void)
     /* Do something before restart
     */
     uart_disable_rx_intr(esp_at_uart_port);
-    esp_at_port_wait_write_complete(portMAX_DELAY);
+    esp_at_port_wait_write_complete(ESP_AT_PORT_TX_WAIT_MS_MAX);
 }
 
 void at_interface_init (void)

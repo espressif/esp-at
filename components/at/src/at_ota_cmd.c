@@ -547,7 +547,7 @@ static uint8_t at_exeCmdCipupgrade(uint8_t *cmd_name)
 
     if (esp_at_upgrade_process(ESP_AT_OTA_MODE_NORMAL, NULL, "ota")) {
         esp_at_response_result(ESP_AT_RESULT_CODE_OK);
-        esp_at_port_wait_write_complete(portMAX_DELAY);
+        esp_at_port_wait_write_complete(ESP_AT_PORT_TX_WAIT_MS_MAX);
         esp_restart();
         for(;;){
         }
@@ -563,7 +563,7 @@ static void non_blocking_upgrade_task(void *parameter)
     ota_param_t *p = (ota_param_t *)parameter;
 
     if (esp_at_upgrade_process((esp_at_ota_mode_type)(p->ota_mode), (uint8_t *)(p->version), p->partition_name)) {
-        esp_at_port_wait_write_complete(portMAX_DELAY);
+        esp_at_port_wait_write_complete(ESP_AT_PORT_TX_WAIT_MS_MAX);
     } else {
         esp_at_set_upgrade_state(ESP_AT_OTA_STATE_FAILED);
         esp_at_port_write_data((uint8_t*)"+CIPUPDATE:-1\r\n", strlen("+CIPUPDATE:-1\r\n"));
@@ -661,7 +661,7 @@ static uint8_t at_setupCmdCipupgrade(uint8_t para_num)
     if (esp_at_upgrade_process(ota_mode, version, (const char *)partition_name)) {
         if (memcmp(partition_name, "ota", strlen("ota")) == 0) {
             esp_at_response_result(ESP_AT_RESULT_CODE_OK);
-            esp_at_port_wait_write_complete(portMAX_DELAY);
+            esp_at_port_wait_write_complete(ESP_AT_PORT_TX_WAIT_MS_MAX);
             esp_restart();
             for(;;){
             }
