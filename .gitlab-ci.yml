@@ -1012,7 +1012,7 @@ build_docs:
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
     - ./build.py reconfigure || echo "skip exception"
     - export IDF_PATH=$(pwd)/esp-idf
-    - export ESP_AT_PORJECT_PATH=$(pwd)
+    - export ESP_AT_PROJECT_PATH=$(pwd)
 
     # - ln -s $(IDF_PATH)/tools tools
     - cd docs
