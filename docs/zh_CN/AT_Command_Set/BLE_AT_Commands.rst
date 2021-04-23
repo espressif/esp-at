@@ -1790,9 +1790,9 @@ GATTC 写服务特征值或描述符值
    -  0: 重置所有 SPP 参数，后面四个参数无需填写；
    -  1: 后面四个参数需要填写。
 
--  **<tx_service_index>**：tx 服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 和 :ref:`AT+BLEGATTSSRVCRE? <cmd-GSSRVCRE>` 查询。
+-  **<tx_service_index>**：tx 服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 和 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 查询。
 -  **<tx_char_index>**：tx 服务特征序号，可运行 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 和 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
--  **<rx_service_index>**：rx 服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 和 :ref:`AT+BLEGATTSSRVCRE? <cmd-GSSRVCRE>` 查询。
+-  **<rx_service_index>**：rx 服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 和 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 查询。
 -  **<rx_char_index>**：rx 服务特征序号，可运行 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 和 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
 
 说明

@@ -1790,9 +1790,9 @@ Parameters
    -  0: all the SPP parameters will be reset, and the following four parameters don't need input.
    -  1: you should input the following four parameters.
 
--  **<tx_service_index>**: tx service's index. It can be fetched with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRVCRE? <cmd-GSSRVCRE>`.
+-  **<tx_service_index>**: tx service's index. It can be fetched with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`.
 -  **<tx_char_index>**: tx characteristic's index. It can be fetched with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> and :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
--  **<rx_service_index>**: rx service's index. It can be fetched with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRVCRE? <cmd-GSSRVCRE>`.
+-  **<rx_service_index>**: rx service's index. It can be fetched with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`.
 -  **<rx_char_index>**: rx characteristic's index. It can be fetched with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> and :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
 
 Notes
