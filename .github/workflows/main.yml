@@ -933,12 +933,15 @@ jobs:
     - name: Compiling
       env:
         AT_OTA_TOKEN_ESP32C3_MINI: ${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI }}
+        AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD: ${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD }}
       run: |
         cd components/at/private_include
         rm -f at_ota_token.h
         echo -e "#pragma once" >> at_ota_token.h
         echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI \"$AT_OTA_TOKEN_ESP32C3_MINI\"" >> at_ota_token.h
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI \"$AT_OTA_TOKEN_ESP32C3_MINI\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD \"$AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI_QCLOUD \"$AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD\"" >> at_ota_token.h
         cd -
 
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
@@ -987,6 +990,7 @@ jobs:
     - name: Compiling
       env:
         AT_OTA_TOKEN_ESP32C3_MINI: ${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI }}
+        AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD: ${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD }}
       run: |
         cd components/at/private_include
         rm -f at_ota_token.h
