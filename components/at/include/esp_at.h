@@ -27,6 +27,7 @@
 
 #include "esp_at_core.h"
 
+#define ESP_AT_PORT_TX_WAIT_MS_MAX          3000    // 3s
 #define ESP_AT_FACTORY_PARAMETER_SIZE       4096
 
 #ifdef CONFIG_AT_OTA_SUPPORT
