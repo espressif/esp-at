@@ -826,25 +826,12 @@ esp32_demo:
     - git submodule update --init
     - cd -
 
-    - cd examples/at_http_webserver
-    - export ESP_AT_PROJECT_PLATFORM=PLATFORM_ESP32
-    - export ESP_AT_MODULE_NAME=WROOM-32
-    - export ESP_AT_PROJECT_PATH=$(pwd)/../..
-    - make defconfig
-    - make -j8
-    - unset ESP_AT_PROJECT_PLATFORM
-    - unset ESP_AT_MODULE_NAME
-    - unset ESP_AT_PROJECT_PATH
-    - cd -
-
     - cd examples/at_sdio_host/ESP32
-    - make defconfig
-    - make -j8
+    - idf.py build
     - cd -
 
     - cd examples/at_spi_master/sdspi/ESP32
-    - make defconfig
-    - make -j8
+    - idf.py build
     - cd -
 
 wrover32_all_function_at:

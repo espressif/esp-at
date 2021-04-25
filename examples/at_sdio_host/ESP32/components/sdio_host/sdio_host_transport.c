@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "rom/ets_sys.h"
+#include "esp32/rom/ets_sys.h"
 #include "platform_os.h"
 #include "sdio_host_reg.h"
 #include "sdio_host_log.h"
