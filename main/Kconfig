@@ -1,8 +1,7 @@
 menu "AT"
 config AT_ENABLE
-    bool "Enable AT"
+    bool "Enable AT Commands"
     default "y"
-
 
 choice AT_COMMUNICATION_METHOD
     prompt "communicate method for AT command"
@@ -58,15 +57,16 @@ config AT_WIFI_COMMAND_SUPPORT
 config AT_NET_COMMAND_SUPPORT
     bool "AT net command support."
     default "y"
-    depends on AT_WIFI_COMMAND_SUPPORT
+    depends on AT_ENABLE
 
 config AT_SOCKET_MAX_CONN_NUM
     int "AT socket maximum connection number"
     default 5
-    depends on AT_ENABLE
+    depends on AT_NET_COMMAND_SUPPORT
 
-if AT_NET_COMMAND_SUPPORT
 menu "AT ssl client authentication method"
+    depends on AT_NET_COMMAND_SUPPORT
+
 config AT_SSL_CLIENT_SERVER_AUTH_CLIENT
     bool "Server authenticates client, client_cert and client_key partition MUST exist in at_customize.csv"
     default y
@@ -77,6 +77,8 @@ config AT_SSL_CLIENT_CLIENT_AUTH_SERVER
 endmenu
 
 menu "AT ssl server authentication method"
+    depends on AT_NET_COMMAND_SUPPORT
+
 config AT_SSL_SERVER_SERVER_AUTH_CLIENT
     bool "Server authenticates clients, server_ca partition MUST exist in at_customize.csv"
     default y
@@ -85,7 +87,6 @@ config AT_SSL_SERVER_CLIENT_AUTH_SERVER
     bool "Client authenticates server, server_cert and server_key partition MUST exist in at_customize.csv"
     default y
 endmenu
-endif
 
 config AT_MDNS_COMMAND_SUPPORT
     bool "AT MDNS command support."
@@ -233,17 +234,15 @@ config AT_DRIVER_COMMAND_SUPPORT
     default "n"
     depends on AT_ENABLE && !IDF_TARGET_ESP8266
 
-if IDF_TARGET_ESP8266
 config AT_SIGNALING_COMMAND_SUPPORT
     bool "AT signaling test command support."
     default "y"
-    depends on AT_ENABLE
-endif
+    depends on AT_ENABLE && IDF_TARGET_ESP8266
 
 config AT_EAP_COMMAND_SUPPORT
     bool "AT WPA2 Enterprise command support."
     default "n"
-    depends on AT_ENABLE
+    depends on AT_WIFI_COMMAND_SUPPORT
 
 config AT_WEB_SERVER_SUPPORT
     bool "AT WEB Server command support."
@@ -307,7 +306,7 @@ config ESP_AT_FW_VERSION
       The maximum length of the string is 128 characters.
       If more than 128 characters, it will be invalid.
 
-menu "QCloud IoT"
+menu "Cloud IoT Commands"
 config AT_QCLOUD_IOT_COMMAND_SUPPORT
 
     bool "AT QCloud IoT command support."

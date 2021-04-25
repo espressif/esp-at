@@ -45,6 +45,10 @@
 #include "esp_at.h"
 #include "at_interface.h"
 
+#ifndef CONFIG_AT_SOCKET_MAX_CONN_NUM
+#define CONFIG_AT_SOCKET_MAX_CONN_NUM       1
+#endif
+
 #ifdef CONFIG_AT_WEB_SERVER_SUPPORT
 extern void at_web_update_sta_got_ip_flag(bool flag);
 #endif
