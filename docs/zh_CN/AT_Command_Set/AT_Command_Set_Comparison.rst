@@ -1,17 +1,21 @@
-***********************************
 ESP-AT 不同版本命令集支持对比
-***********************************
+===================================
 
-本文档主要列举了旧版 NONOS-AT 向新版 ESP-AT 迁移时，需要注意的差异。
+:link_to_translation:`en:[English]`
+
+本文档主要列举了旧版 NONOS-AT 向新版 ESP-AT 迁移时，需要注意的命令上的差异。
 
 - NONOS-AT：**不推荐** 使用的 ESP8266 AT 版本，早期用于 ESP8266 系列芯片，基于 ESP8266_NONOS_SDK 开发，已停止更新。
-- ESP-AT：**推荐** 使用的版本，支持多个芯片平台，具体请参阅 :doc:`../Get_Started/What_is_ESP-AT` 和 :doc:`../AT_Binary_Lists/index`。
+- ESP-AT：**推荐** 使用的版本，支持多个芯片平台，与 NONOS-AT 相比，支持更多种类的命令，如 Bluetooth 命令、Bluetooth LE 命令、以太网命令、驱动命令等。更多有关 ESP-AT 的信息请参阅 :doc:`../Get_Started/What_is_ESP-AT` 和 :doc:`../AT_Binary_Lists/index`。
 
 .. 注意::
-  下方表格中，第一列的命令链接均指向新版 ESP-AT 的命令。
+  下表列出了所有的 NONOS-AT 命令，以及它们在 ESP-AT 中的支持情况。下表并不包含所有的 ESP-AT 命令，若想了解所有 ESP-AT 命令，请参考 :doc:`AT 命令集 <index>`。
+
+  下表中第一列的命令链接均指向 ESP-AT 命令。
 
 .. list-table:: ESP-AT 不同版本命令集支持对比表
    :header-rows: 1
+   :widths: 25 30 15 30
 
    * - 命令
      - 简介
@@ -122,7 +126,7 @@ ESP-AT 不同版本命令集支持对比
      - ✅
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWMODE <cmd-MODE>`
    * - AT+CWMODE_DEF
-     - 设置当前 Wi-Fi 模式，保存到 flash
+     - 设置默认 Wi-Fi 模式，保存到 flash
      - ✅
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWMODE <cmd-MODE>`
    * - :ref:`AT+CWJAP <cmd-JAP>`
@@ -138,7 +142,7 @@ ESP-AT 不同版本命令集支持对比
      - ✅
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWJAP <cmd-JAP>`
    * - :ref:`AT+CWLAPOPT <cmd-LAPOPT>`
-     - 设置 CWLAP 指令的属性
+     - 设置 CWLAP 命令的属性
      - ✅
      - ✅ 新增更多功能
    * - :ref:`AT+CWLAP <cmd-LAP>`
@@ -150,19 +154,19 @@ ESP-AT 不同版本命令集支持对比
      - ✅
      - ✅
    * - :ref:`AT+CWSAP <cmd-SAP>`
-     - 配置 SoftAP 参数
+     - 配置 softAP 参数
      - ❌
      - ✅
    * - AT+CWSAP_CUR
-     - 配置 SoftAP 参数，不保存到 flash
+     - 配置 softAP 参数，不保存到 flash
      - ✅
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWSAP <cmd-SAP>`
    * - AT+CWSAP_DEF
-     - 配置 SoftAP 参数，保存到 flash
+     - 配置 softAP 参数，保存到 flash
      - ✅
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWSAP <cmd-SAP>`
    * - :ref:`AT+CWLIF <cmd-LIF>`
-     - 查询连接到 SoftAP 的 Station 信息
+     - 查询连接到 softAP 的 Station 信息
      - ✅
      - ✅
    * - :ref:`AT+CWDHCP <cmd-DHCP>`
@@ -178,15 +182,15 @@ ESP-AT 不同版本命令集支持对比
      - ✅
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWDHCP <cmd-DHCP>`
    * - :ref:`AT+CWDHCPS <cmd-DHCPS>`
-     - 设置 SoftAP DHCP 分配的 IP 范围
+     - 设置 softAP DHCP 分配的 IP 范围
      - ❌
      - ✅
    * - AT+CWDHCPS_CUR
-     - 设置 SoftAP DHCP 分配的 IP 范围，不保存到 flash
+     - 设置 softAP DHCP 分配的 IP 范围，不保存到 flash
      - ✅
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWDHCPS <cmd-DHCPS>`
    * - AT+CWDHCPS_DEF
-     - 设置 SoftAP DHCP 分配的 IP 范围，保存到 flash
+     - 设置 softAP DHCP 分配的 IP 范围，保存到 flash
      - ✅
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWDHCPS <cmd-DHCPS>`
    * - :ref:`AT+CWAUTOCONN <cmd-AUTOC>`
@@ -206,15 +210,15 @@ ESP-AT 不同版本命令集支持对比
      - ✅
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPSTAMAC <cmd-STAMAC>`
    * - :ref:`AT+CIPAPMAC <cmd-APMAC>`
-     - 设置 SoftAP 的 MAC 地址
+     - 设置 softAP 的 MAC 地址
      - ❌
      - ✅
    * - AT+CIPAPMAC_CUR
-     - 设置 SoftAP 的 MAC 地址，不保存到 flash
+     - 设置 softAP 的 MAC 地址，不保存到 flash
      - ✅
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPAPMAC <cmd-APMAC>`
    * - AT+CIPAPMAC_DEF
-     - 设置 SoftAP 的 MAC 地址，保存到 flash
+     - 设置 softAP 的 MAC 地址，保存到 flash
      - ✅
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPAPMAC <cmd-APMAC>`
    * - :ref:`AT+CIPSTA <cmd-IPSTA>`
@@ -230,15 +234,15 @@ ESP-AT 不同版本命令集支持对比
      - ✅
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPSTA <cmd-IPSTA>`
    * - :ref:`AT+CIPAP <cmd-IPAP>`
-     - 设置 SoftAP 的 IP 地址
+     - 设置 softAP 的 IP 地址
      - ❌
      - ✅
    * - AT+CIPAP_CUR
-     - 设置 SoftAP 的 IP 地址，不保存到 flash
+     - 设置 softAP 的 IP 地址，不保存到 flash
      - ✅
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPAP <cmd-IPAP>`
    * - AT+CIPAP_DEF
-     - 设置 SoftAP 的 IP 地址，保存到 flash
+     - 设置 softAP 的 IP 地址，保存到 flash
      - ✅
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPAP <cmd-IPAP>`
    * - :ref:`AT+CWSTARTSMART <cmd-STARTS>`
@@ -262,7 +266,7 @@ ESP-AT 不同版本命令集支持对比
      - ✅
      - ✅
    * - :ref:`AT+MDNS <cmd-MDNS>`
-     - 设置 MDNS 功能
+     - 设置 mDNS 功能
      - ✅
      - ✅
    * - :ref:`AT+CWJEAP <cmd-JEAP>`
@@ -316,7 +320,7 @@ ESP-AT 不同版本命令集支持对比
      - 配置 SSL 连接属性
      - ✅
      - ✅ 参数不同
-   * - :ref:`AT+CIPSEND <cmd-SEND>`:
+   * - :ref:`AT+CIPSEND <cmd-SEND>`
      - 发送数据
      - ✅
      - ✅
@@ -357,7 +361,7 @@ ESP-AT 不同版本命令集支持对比
      - ✅
      - ✅
    * - :ref:`AT+CIPSERVER <cmd-SERVER>`
-     - 建立 TCP 服务器
+     - 建立 TCP/SSL 服务器
      - ✅ 不支持 SSL server
      -
        ✅ ESP32 和 ESP32-S2 支持 SSL server，ESP8266 不支持 SSL server
@@ -370,7 +374,7 @@ ESP-AT 不同版本命令集支持对比
      - ✅
      - ✅
    * - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`
-     - 保存透传到 flash
+     - 设置开机透传模式信息
      - ✅
      - ✅
    * - :ref:`AT+CIPSTO <cmd-STO>`
@@ -423,36 +427,8 @@ ESP-AT 不同版本命令集支持对比
      - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPDNS <cmd-DNS>`
    * - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`
      - 读写 flash 用户分区
+     - ❌
      - ✅
-     - ✅
-   * - :ref:`AT+FS <cmd-FS>`
-     - ⽂件系统操作
-     - ❌
-     -
-       | ESP8266 ❌
-       | ESP32 ✅
-       | ESP32-S2 ✅
-   * - :doc:`AT+BT.. <BT_AT_Commands>`
-     - BT 相关命令
-     - ❌
-     -
-       | ESP8266 ❌ 
-       | ESP32 ✅
-       | ESP32-S2 ❌ 
-   * - :doc:`AT+BLE.. <BLE_AT_Commands>`
-     - Bluetooth LE 相关命令
-     - ❌
-     -
-       | ESP8266 ❌
-       | ESP32 ✅
-       | ESP32-S2 ❌
-   * - :doc:`AT+ETH.. <Ethernet_AT_Commands>`
-     - ETH 相关命令
-     - ❌
-     -
-       | ESP8266 ❌
-       | ESP32 ✅
-       | ESP32-S2 ❌
 
 提示：点击脚注序号即可返回/跳转到上方表格的标注处。
 
