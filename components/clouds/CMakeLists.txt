@@ -13,6 +13,8 @@ if (CONFIG_AT_QCLOUD_IOT_COMMAND_SUPPORT)
     string(CONCAT FULL_NAME ${PLATFORM_NAME} ${LIB_NAME})
     string(TOLOWER ${FULL_NAME} LIBS)
 
+	message("silence:${SILENCE}, ld core:${CMAKE_CURRENT_SOURCE_DIR}/qcloud/lib/lib${LIBS}.a")
+
     add_library(${LIBS} STATIC IMPORTED)
     set_property(TARGET ${LIBS} PROPERTY IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/qcloud/lib/lib${LIBS}.a)
     target_link_libraries(${COMPONENT_LIB} INTERFACE ${LIBS})
