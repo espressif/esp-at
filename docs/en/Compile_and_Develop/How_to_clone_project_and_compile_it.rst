@@ -1,235 +1,310 @@
-***********************************
-How to clone project and compile it
-***********************************
+Build Your Own ESP-AT Project
+=============================
 
-- `ESP32 platform`_
-- `ESP32S2 platform`_
-- `ESP32-C3 platform`_
-- `ESP8266 platform`_
+This document details how to build your own ESP-AT project and flash the generated binary files into your ESP devices, including ESP32, ESP32-S2, ESP32-C3, and ESP8266. It comes in handy when the default :doc:`../AT_Binary_Lists/index` cannot meet your needs, for example, to customize the AT port pins, Bluetooth service, partitions, and so on.
 
-For specific supported modules, please refer to :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`
+The structure of this document is as follows:
 
+- :ref:`build-project-overview`: Overview of the steps to build an ESP-AT project.
+- :ref:`build-project-esp32-s2-c3-series`: Details steps to build a project for ESP32, ESP32-S2, and ESP32-C3 series.
+- :ref:`build-project-esp8266`: Details steps to build a project for ESP8266.
 
-ESP32 platform
-==============
+.. _build-project-overview:
 
-Hardware Introduction
-~~~~~~~~~~~~~~~~~~~~~
+Overview
+--------
 
-The WROOM32 Board sends AT commands through UART1 by default.
+Before compiling an ESP-AT project, you need first get started with ESP-IDF and set up the environment for ESP-IDF, because ESP-AT is based on ESP-IDF. 
 
-- GPIO16 is RXD
-- GPIO17 is TXD
-- GPIO14 is RTS
-- GPIO15 is CTS
-
-The debug log will be output through UART0 by default, where TXD0 is GPIO1 and RXD0 is GPIO3, but user can change it in menuconfig if needed:
-
-``./build.py menuconfig`` --> ``Component config`` --> 
-``Common ESP-related`` --> ``UART for console output``
+After the environment is ready, install the tools and ESP-AT SDK. Then, connect your ESP device to PC. Use ``./build.py menuconfig`` to set up some configuration for the project. Build the project and flash the generated bin files onto your ESP device.
 
 .. note::
 
-  **Please pay attention to possible conflicts of the pins**
+  **Please pay attention to possible conflicts of pins**. If choosing ``AT through HSPI``, you can get the information of the HSPI pin by ``./build.py menuconfig`` --> ``Component config`` --> ``AT`` --> ``AT hspi settings``.
 
-  - If choosing ``AT through HSPI``, you can get the information of the HSPI pin by ``./build.py menuconfig`` --> ``Component config`` --> ``AT`` --> ``AT hspi settings``
-  - If enabling ``AT ethernet support``, you can get the information of the ethernet pin from ``ESP32_AT_Ethernet.md``.
+.. _build-project-esp32-s2-c3-series:
 
-Compiling and flashing the project
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ESP32, ESP32-S2 and ESP32-C3 Series
+-----------------------------------
 
-Suppose you have completed the installation of the compiler environment for ESP-IDF, if not, you should complete it referring to `ESP-IDF Getting Started Guide <https://docs.espressif.com/projects/esp-idf/en/v4.0/get-started/index.html#setup-toolchain>`__. Then, to compile ESP-AT project properly, please do the following additional steps::
+This section describes how to compile an ESP-AT project for ESP32, ESP32-S2 and ESP32-C3 series.
 
-    step 1: install python>=3.8
-    step 2: [install pip](https://pip.pypa.io/en/latest/installing/)  
-    step 3: install the following python packages with pip: python -m pip install pyyaml xlrd
+Get Started with ESP-IDF
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-Compiling the ESP-AT is the same as compiling any other project based on the ESP-IDF:
+Get started with ESP-IDF before compiling an ESP-AT project, because ESP-AT is developed based on ESP-IDF, and the supported version varies from series to series:
 
-.. note::
+.. include:: ../../inline_substitutions
 
-  Please do not set ``IDF_PATH`` unless you know ESP-AT project in particular. ESP-IDF will automatically be cloned.
+.. list-table:: ESP-IDF Versions for Different Series
+   :header-rows: 1
 
-1. You can clone the project into an empty directory using command::
+   * - Project
+     - IDF Version
+     - IDF Documentation Version
+   * - ESP32 ESP-AT
+     - |esp32 idf branch version|
+     - ESP-IDF Get Started Guide |esp32 idf doc version|_
+   * - ESP32-S2 ESP-AT
+     - |esp32-s2 idf branch version|
+     - ESP-IDF Get Started Guide |esp32-s2 idf doc version|_
+   * - ESP32-C3 ESP-AT
+     - |esp32-c3 idf branch version|
+     - ESP-IDF Get Started Guide |esp32-c3 idf doc version|_
 
-     git clone --recursive https://github.com/espressif/esp-at.git
+First, set up the development environment for ESP-IDF according to Step 1 to 4 of *ESP-IDF Get Started Guide* (click the corresponding link in the table above to navigate to the documentation).
 
-2. ``rm -rf build sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
-3. ``./build.py menuconfig``, and then choose the name indexes of platform and your module.
+Then, start a simple project of ``hello_world`` according to Step 5 to 10 of *ESP-IDF Get Started Guide* to make sure your environment works and familiarize yourself with the process of starting a new project based on ESP-IDF. It is not a must, but you are strongly recommended to do so.
 
-  - platform name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``, here should choose ``PLATFORM_ESP32``
-  - module name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``
-  - silence mode is to remove some logs and reduce the firmware size, generally, it should be disabled.
-  - The choice items will not appear if the file ``build/module_info.json`` exists. So please delete it if you want to reconfigure module information.
-
-4. ``./build.py build`` to compile the project.
-
-   - If enable BT feature, the firmware size will be much larger, please make sure it does not exceed the ota partition size.
-   - After compiled, the combined factory bin will be create in ``build/factory``, by default, the factory bin is 4MB flash size, DIO flash mode and 40MHz flash speed.
-
-5. ``./build.py flash`` to download the bin files into flash.
-
-   - Or you can follow the printed instructions to download the bin files into flash after call ``./build.py build``.
-
-6. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash, and then repeat step 5 to re-flash the AT firmware.
-
-ESP32S2 platform
-=================
-
-Hardware Introduction
-~~~~~~~~~~~~~~~~~~~~~
-
-The WROOM32S2 Board sends AT commands through UART1 by default.
-
--  GPIO21 is RXD
--  GPIO17 is TXD
--  GPIO19 is RTS
--  GPIO20 is CTS
-
-The debug log will output through UART0 by default, which TXD0 is GPIO43 and RXD0 is GPIO44, but user can change it in menuconfig if needed:
-
-``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART for console output``
-
-Compiling and flashing the project
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Suppose you have completed the installation of the compiler environment for ESP-IDF, if not, you should complete it referring to `ESP-IDF Getting Started Guide <https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html#setup-toolchain>`__. If required download the `compiler toolchain <https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/tools/idf-tools.html#list-of-idf-tools>`_. Then, to compile ESP-AT project properly, please do the following additional steps::
-
-  step1:python > 3.8.0 
-  step2:[install pip](https://pip.pypa.io/en/latest/installing/)  
-  step3:install the following python packages with pip: python -m pip install pyyaml xlrd
-
-Compiling the ESP-AT is the same as compiling any other project based on the ESP-IDF:
+After finishing all the ten steps (if not, at least the first four steps), you can move onto the following steps that are ESP-AT specific.
 
 .. note::
 
-  Please do not set ``IDF_PATH`` unless you know ESP-AT project in particular. ESP-IDF will automatically be cloned.
+  Please do not set ``IDF_PATH`` during the process, otherwise, you would encounter some unexpected issues when compiling ESP-AT projects later.
 
-1. You can clone the project into an empty directory using command::
+Get ESP-AT
+^^^^^^^^^^
 
-     git clone --recursive https://github.com/espressif/esp-at.git
+To compile an ESP-AT project, you need the software libraries provided by Espressif in the ESP-AT repository.
 
-2. ``rm -rf build sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
-3. ``./build.py menuconfig``, and then choose the name indexes of platform and your module, then ``Serial flasher config`` to configure the serial port for downloading.
+To get ESP-AT, navigate to your installation directory and clone the repository with git clone, following instructions below specific to your operating system.
 
-  - platform name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``, here should choose ``PLATFORM_ESP32S2``
-  - module name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``
-  - silence mode is to remove some logs and reduce the firmware size, generally, it should be disabled.
-  - The choice items will not appear if the file ``build/module_info.json`` exists. So please delete it if you want to reconfigure module information.
+- Linux or macOS
+  
+  ::
 
-4. ``./build.py flash`` to compile the project and download it into the flash.
+    cd ~/esp
+    git clone --recursive https://github.com/espressif/esp-at.git
 
-   -  Or you can call ``./build.py build`` to compile it, and follow the printed instructions to download the bin files into flash by yourself.
-   -  If enable BT feature, the firmware size will be much larger, please make sure it does not exceed the ota partition size.
-   - After compiled, the combined factory bin will be create in ``build/factory``, by default, the factory bin is 4MB flash size, QIO flash mode and 80MHz flash speed.
+- Windows
 
-5. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash.
+  ::
 
-ESP32-C3 platform
-=================
+    cd %userprofile%\esp
+    git clone --recursive https://github.com/espressif/esp-at.git
 
-Hardware Introduction
-~~~~~~~~~~~~~~~~~~~~~
 
-The MINI-1 Board sends AT commands through UART1 by default.
-
--  GPIO6 is RXD
--  GPIO7 is TXD
--  GPIO4 is RTS
--  GPIO5 is CTS
-
-The debug log will output through UART0 by default, which TXD0 is GPIO21 and RXD0 is GPIO20, but user can change it in menuconfig if needed:
-
-``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``Channel for console output``
-
-Compiling and flashing the project
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Suppose you have completed the installation of the compiler environment for ESP-IDF, if not, you should complete it referring to `ESP-IDF Getting Started Guide <https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html#setup-toolchain>`__. If required download the `compiler toolchain <https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/tools/idf-tools.html#list-of-idf-tools>`_. Then, to compile ESP-AT project properly, please do the following additional steps::
-
-  step1:python > 3.8.0 
-  step2:[install pip](https://pip.pypa.io/en/latest/installing/)  
-  step3:install the following python packages with pip: python -m pip install pyyaml xlrd
-
-Compiling the ESP-AT is the same as compiling any other project based on the ESP-IDF:
+ESP-AT will be downloaded into ``~/esp/esp-at`` on Linux or macOS, or ``%userprofile%\esp\esp-at`` on Windows.
 
 .. note::
 
-  Please do not set ``IDF_PATH`` unless you know ESP-AT project in particular. ESP-IDF will automatically be cloned.
+    This guide uses the directory ``~/esp`` on Linux or macOS, or ``%userprofile%\esp`` on Windows as an installation folder for ESP-AT. You can use any directory, but you will need to adjust paths for the commands respectively. Keep in mind that ESP-AT does not support spaces in paths.
 
-1. You can clone the project into an empty directory using command::
+Connect Your Device
+^^^^^^^^^^^^^^^^^^^
 
-     git clone --recursive https://github.com/espressif/esp-at.git
+Connect your device to the PC with a USB cable to download firmware and log output. See :doc:`../Get_Started/Hardware_connection` for more information. Note that you do not need to set up the "AT command/response" connection if you do not send AT commands and receive AT responses during the compiling process. You can change default port pins referring to :doc:`How_to_set_AT_port_pin`.
 
-2. ``rm -rf build sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
+Configure
+^^^^^^^^^
 
-3. ``./build.py menuconfig``, and then choose the name indexes of platform and your module.
+In this step, you will clone the ``esp-idf`` folder into the ``esp-at`` folder, set up the development environment in the newly cloned folder, and configure your project.
 
-  - platform name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``, here should choose ``PLATFORM_ESP32C3``
-  - module name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``
-  - silence mode is to remove some logs and reduce the firmware size, generally, it should be disabled.
-  - The choice items will not appear if the file ``build/module_info.json`` exists. So please delete it if you want to reconfigure module information.
+1. Navigate to ``~/esp/esp-at`` directory.
 
-4. ``./build.py build`` to compile the project.
+2. Run the project configuration utility ``menuconfig`` to configure.
 
-   - After compiled, the combined factory bin will be create in ``build/factory``, by default, the factory bin is 4MB flash size, DIO flash mode and 40MHz flash speed.
+  ::
+    
+    ./build.py menuconfig
 
-5. ``./build.py flash`` to download the bin files into flash.
+3. Select the following configuration options for your ESP device if it is your first time.
 
-   - Or you can follow the printed instructions to download the bin files into flash after call ``./build.py build``.
+  - Select the ``Platform name`` for your ESP device. For example, select ``PLATFORM_ESP32`` for ESP32 series of products, ``PLATFORM_ESP32S2`` for ESP32-S2 series of products. ``Platform name`` is defined in :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
+  - Select the ``Module name`` for your ESP device. For example, select ``WROOM-32`` for the ESP32-WROOM-32D module. ``Module name`` is defined in :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
+  - Enable or disable ``silence mode``. If enabled, it will remove some logs and reduce the firmware size. Generally, it should be disabled.
+  - The above three option items will not appear if the file ``build/module_info.json`` exists. So please delete it if you want to reconfigure the module information.
 
-6. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash, and then repeat step 5 to re-flash the AT firmware.
+4. Now, the ``esp-idf`` folder is created in ``esp-at`` folder. This ``esp-idf`` is different from that in Step **Get Started with ESP-IDF**. 
 
+  - If the terminal prompt an error message like the following, please proceed with the next step to set up the develop environment in the ``esp-at/esp-idf``.
+    
+    ::
 
-ESP8266 platform
-================
+      The following Python requirements are not satisfied:
+      ...
+      Please follow the instructions found in the "Set up the tools" section of ESP-IDF Get Started Guide.
 
-Hardware Introduction
-~~~~~~~~~~~~~~~~~~~~~
+  - If you have compiled an ESP-AT project for an ESP series before and want to switch to another series, you must run ``rm -rf esp-idf`` to remove the old esp/idf and then proceed with the next step.
 
-The ESP8266 WROOM 02 Board sends AT commands through UART0 by default.
+  - If your esp-idf is upgraded, you are recommended to proceed with the next step.
 
--  GPIO13 is RXD
--  GPIO15 is TXD
--  GPIO1 is RTS
--  GPIO3 is CTS
+5. Set up the development environment in the ``esp-at/esp-idf``.
+  
+  - Set up the tools in the folder if it is the first time you compile the ESP-AT project. See Step 3 of *ESP-IDF Get Started Guide*.
+  - Set up environment variables in the folder **every time** you compile an ESP-AT project. See Step 4 of *ESP-IDF Get Started Guide*.
+  - Install ``pyyaml`` and ``xlrd`` packages with pip in the folder if you have not done it.
 
-The debug log will output through UART1 by default, which TXD0 is GPIO2, but user can change it in menuconfig if needed:
+    ::
 
-``./build.py menuconfig`` --> ``Component config`` -->
-``ESP8266-specific`` --> ``UART for console output``
+      python -m pip install pyyaml xlrd
 
-Compiling and flashing the project
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If the previous steps have been done correctly, the following menu appears after you run ``./build.py menuconfig``:
 
-Suppose you have completed the installation of the compiler environment for ESP8266 RTOS SDK, if not, you should complete it referring to `ESP8266 RTOS SDK Getting Started Guide <https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/get-started/index.html#setup-toolchain>`_. Then, to compile ESP-AT project properly, please do the following additional steps::
+.. figure:: ../../_static/project-configuration.png
+   :align: center
+   :alt: Project configuration - Home window
+   :figclass: align-center
 
-  step1:python > 3.8.0 
-  step2:[install pip](https://pip.pypa.io/en/latest/installing/)  
-  step3:install the following python packages with pip: python -m pip install pyyaml xlrd
+   Project configuration - Home window
 
-Compiling the ESP-AT is the same as compiling any other project based on the ESP-IDF:
+You are using this menu to set up project-specific configuration, e.g. changing AT port pins, enabling Classic Bluetooth function, etc. If you made no changes, it will run with the default configuration.
+
+Build the Project
+^^^^^^^^^^^^^^^^^
+
+Build the project by running:
+
+::
+
+  ./build.py build
+
+- If Bluetooth feature is enabled, the firmware size will be much larger. Please make sure it does not exceed the ota partition size.
+- After compiled, the combined factory bin will be created in ``build/factory``. See :doc:`How_to_understand_the_differences_of_each_type_of_module` for more information.
+
+Flash onto the Device
+^^^^^^^^^^^^^^^^^^^^^^
+
+Flash the binaries that you just built onto your ESP32 board by running:
+
+::
+
+  ./build.py -p (PORT) flash
+
+- Note that you may need to replace ``PORT`` with your ESP device’s serial port name.
+- Or you can follow the printed instructions to flash the bin files into flash. Note that you may also need to replace the ``PORT``.
+- If the ESP-AT bin fails to boot and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash, and then re-flash the AT firmware.
+
+.. _build-project-esp8266:
+
+ESP8266 Series
+--------------
+
+This section describes how to compile an ESP-AT project for ESP8266 series.
+
+Get Started with ESP-IDF
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Get started with ESP-IDF before compiling an ESP-AT project, because ESP-AT is developed based on ESP-IDF:
+
+First, set up the development environment according to ESP8266 RTOS SDK Get Started Guide |esp8266 idf doc version|_.
+
+Then, start a simple project of ``hello_world`` according to the Guide to make sure your environment works and familiarize yourself with the process of starting a new project based on ESP-IDF. It is not a must, but you are strongly recommended to do so.
+
+After setting up the development environment and starting a simple project, you can move onto the following steps that are ESP-AT specific.
 
 .. note::
 
-  Please do not set ``IDF_PATH`` unless you know ESP-AT project in particular. ESP-IDF will automatically be cloned.
+  Please do not set ``IDF_PATH`` during the process, otherwise, you would encounter some unexpected issues when compiling ESP-AT projects later.
 
-1. You can clone the project into an empty directory using command::
+Get ESP-AT
+^^^^^^^^^^
 
-     git clone --recursive https://github.com/espressif/esp-at.git
+To compile an ESP-AT project, you need the software libraries provided by Espressif in the ESP-AT repository.
 
-2. ``rm -rf build sdkconfig`` to remove the old configuration and ``rm -rf esp-idf`` to remove the old ESP-IDF if you want to compile other esp platform AT.
-3. ``./build.py menuconfig``, and then choose the name indexes of platform and your module, then ``Serial flasher config`` to configure the serial port for downloading.
+To get ESP-AT, navigate to your installation directory and clone the repository with git clone, following instructions below specific to your operating system.
 
-  - platform name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``, here should choose ``PLATFORM_ESP8266``
-  - module name is defined in ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``
-  - silence mode is to remove some logs and reduce the firmware size, generally, it should be disabled.
-  - The choice items will not appear if the file ``build/module_info.json`` exists. So please delete it if you want to reconfigure module information.
+- Linux or macOS
+  
+  ::
 
-4. ``./build.py flash`` to compile the project and download it into the flash.
+    cd ~/esp
+    git clone --recursive https://github.com/espressif/esp-at.git
 
-   -  Or you can call ``./build.py build`` to compile it, and follow the printed instructions to download the bin files into flash by yourself.
-   -  If enable BT feature, the firmware size will be much larger, please make sure it does not exceed the ota partition size.
-   - After compiled, the combined factory bin will be create in ``build/factory``, by default, the factory bin is 2MB flash size, DIO flash mode and 80MHz flash speed.
+- Windows
 
-5. If the ESP-AT bin fails to boot, and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash.
+  ::
+
+    cd %userprofile%\esp
+    git clone --recursive https://github.com/espressif/esp-at.git
+
+
+ESP-AT will be downloaded into ``~/esp/esp-at`` on Linux or macOS, or ``%userprofile%\esp\esp-at`` on Windows.
+
+.. note::
+
+    This guide uses the directory ``~/esp`` on Linux and macOS or ``%userprofile%\esp`` on Windows as an installation folder for ESP-AT. You can use any directory, but you will need to adjust paths for the commands respectively. Keep in mind that ESP-AT does not support spaces in paths.
+
+Connect Your Device
+^^^^^^^^^^^^^^^^^^^
+
+Connect your device to the PC with a USB cable to download firmware and log output. See :doc:`../Get_Started/Hardware_connection` for more information. Note that you do not need to set up the "AT command/response" connection if you do not send AT commands and receive AT responses during the compiling process. You can change default port pins referring to :doc:`How_to_set_AT_port_pin`.
+
+Configure
+^^^^^^^^^
+
+In this step, you will clone the ``esp-idf`` folder into the ``esp-at`` folder, set up the development environment in the newly cloned folder, and configure your project.
+
+1. Navigate back to your ``~/esp/esp-at`` directory.
+
+2. Run the project configuration utility ``menuconfig`` to configure.
+
+  ::
+    
+    ./build.py menuconfig
+
+3. Select the following configuration options for your ESP device if it is the first time you build the ESP-AT project.
+
+  - Select the ``Platform name`` for your ESP device, i.e., select ``PLATFORM_ESP8266`` for your ESP8266 device. ``Platform name`` is defined in :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
+  - Select the ``Module name`` for your ESP device. For example, select ``WROOM-02`` for the ESP-WROOM-02D module. ``Module name`` is defined in :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
+  - Enable or disable ``silence mode``. If enabled, it will remove some logs and reduce the firmware size. Generally, it should be disabled.
+  - The above three option items will not appear if the file ``build/module_info.json`` exists. So please delete it if you want to reconfigure the module information.
+
+4. Now, the ``esp-idf`` folder is created in ``esp-at`` folder. This ``esp-idf`` is different from that in Step **Get Started with ESP-IDF**.
+
+  - If the terminal prompt an error message like the following, please proceed with the next step to set up the develop environment in the ``esp-at/esp-idf``.
+    
+    ::
+
+      The following Python requirements are not satisfied:
+      ...
+      Please follow the instructions found in the "Set up the tools" section of ESP-IDF Get Started Guide.
+
+  - If you have compiled an ESP-AT project for an ESP series before and want to switch to another series, you must run ``rm -rf esp-idf`` to remove the old esp/idf and then proceed with the next step.
+
+  - If your esp-idf is upgraded, you are recommended to proceed with the next step.
+
+5. Set up the development environment in the ``esp-at/esp-idf``.
+  
+  - Set up the tools in the folder if it is the first time you compile an ESP-AT project. See *ESP8266 RTOS SDK Get Started Guide* |esp8266 idf doc version|_ for more information.
+  - Set up environment variables in the folder **every time** you compile an ESP-AT project. See *ESP8266 RTOS SDK Get Started Guide* |esp8266 idf doc version|_ for more information.
+  - Install ``pyyaml`` and ``xlrd`` packages with pip in the folder if you have not done it.
+
+    ::
+
+      python -m pip install pyyaml xlrd
+
+If the previous steps have been done correctly, the following menu appears after you run ``./build.py menuconfig``:
+
+.. figure:: ../../_static/project-configuration.png
+   :align: center
+   :alt: Project configuration - Home window
+   :figclass: align-center
+
+   Project configuration - Home window
+
+You are using this menu to set up project-specific configuration, e.g. changing AT port pins, enabling Classic Bluetooth function, etc. If you made no changes, it will run with the default configuration.
+
+Build the Project
+^^^^^^^^^^^^^^^^^
+
+Build the project by running:
+
+::
+
+  ./build.py build
+
+- After compiled, the combined factory bin will be created in ``build/factory``. By default, the factory bin is 2 MB flash size, DIO flash mode and 80 MHz flash speed. See :doc:`How_to_understand_the_differences_of_each_type_of_module` for more information.
+
+Flash onto the Device
+^^^^^^^^^^^^^^^^^^^^^^
+
+Flash the binaries that you just built onto your ESP8266 board by running:
+
+::
+
+  ./build.py -p (PORT) flash
+
+- Note that you may need to replace ``PORT`` with your ESP device’s serial port name.
+- Or you can follow the printed instructions to flash the bin files into flash. Note that you may also need to replace the ``PORT``.
+- If the ESP-AT bin fails to boot and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash, and then re-flash the AT firmware.

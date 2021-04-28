@@ -1,0 +1,21 @@
+.. This document contains all the inline substitutions in the ESP-AT repo.
+
+.. |esp32 idf branch version| replace:: release/v4.2
+
+.. |esp32 idf doc version| replace:: v4.2
+.. _esp32 idf doc version: https://docs.espressif.com/projects/esp-idf/en/release-v4.2/esp32/index.html
+
+.. |esp32-s2 idf branch version| replace:: release/v4.2
+
+.. |esp32-s2 idf doc version| replace:: v4.2
+.. _esp32-s2 idf doc version: https://docs.espressif.com/projects/esp-idf/en/release-v4.2/esp32s2/get-started/index.html
+
+.. |esp32-c3 idf branch version| replace:: release/v4.3
+
+.. |esp32-c3 idf doc version| replace:: v4.3
+.. _esp32-c3 idf doc version: https://docs.espressif.com/projects/esp-idf/en/release-v4.3/esp32c3/get-started/index.html
+
+.. |esp8266 idf branch version| replace:: release/v3.4
+
+.. |esp8266 idf doc version| replace:: v3.4
+.. _esp8266 idf doc version: https://docs.espressif.com/projects/esp8266-rtos-sdk/en/v3.4/get-started/index.html
