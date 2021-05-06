@@ -669,7 +669,7 @@ Notes
 
 -  Please malloc the RAM size before you perform any other operations.
 -  If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
--  If the operator is ``read`` and the length is bigger than 1024, ESP-AT will reply multiple times in the same format, and eventually end up with ``\r\nOK\r\n``.
+-  If the operator is ``read`` and the length is bigger than 1024, ESP-AT will reply multiple times in the same format, each reply can carry up to 1024 bytes of data, and eventually end up with ``\r\nOK\r\n``.
 
 Example
 ^^^^^^^^
@@ -1182,13 +1182,12 @@ Parameters
 -  **<wakeup source>**:
 
    -  0: wakeup by a timer.
-   -  1: wakeup by UART (reserved).
+   -  1: reserved.
    -  2: wakeup by GPIO.
 
 -  **<param1>**:
 
    -  If the wakeup source is a timer, it means the time before wakeup. Unit: millisecond.
-   -  If the wakeup source is UART, it means the UART number.
    -  If the wakeup source is GPIO, it means the GPIO number.
 
 -  **<param2>**:

@@ -347,7 +347,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CWLAPOPT=<sort_enable>,<print mask>[,<rssi filter>][,<authmode mask>]
+    AT+CWLAPOPT=<reserved>,<print mask>[,<rssi filter>][,<authmode mask>]
 
 **响应：**
 
@@ -364,11 +364,7 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<sort_enable>**：:ref:`AT+CWLAP <cmd-LAP>` 的扫描结果是否按照信号强度 RSSI 值排序，默认值：0
-
-   -  0: 不按照信号强度 RSSI 值排序
-   -  1: 按照信号强度 RSSI 值排序
-
+-  **<reserved>**：保留项
 -  **<print mask>**：:ref:`AT+CWLAP <cmd-LAP>` 的扫描结果是否显示以下参数，默认值：0x7FF，若 bit 设为 1，则显示对应参数，若设为 0，则不显示对应参数
 
    -  bit 0: 是否显示 <ecn>
@@ -621,7 +617,8 @@ Wi-Fi AT 命令集
 
 ::
 
-    <ip addr>,<mac>
+    +CWLIF:<ip addr>,<mac>
+
     OK
 
 参数
