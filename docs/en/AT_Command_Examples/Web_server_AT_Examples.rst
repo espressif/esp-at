@@ -1,4 +1,4 @@
 Web server AT Examples
 ======================
 
-Please refer to ``docs/zh_CN/AT_Command_Examples/Web_server_AT_Examples.rst``.
+English version is coming soon. Please refer to :link_to_translation:`zh_CN:[Chinese version]` before that.
