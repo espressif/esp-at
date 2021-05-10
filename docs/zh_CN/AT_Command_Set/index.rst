@@ -56,6 +56,8 @@ AT 命令分类
      - 运行无用户自定义参数的命令
 
 -  不是每条 AT 命令都具备上述四种类型的命令。
+-  命令里输入参数，当前只支持字符串参数和整形数字参数。
+-  尖括号 < > 内的参数不可以省略。
 -  方括号 [ ] 内的参数可以省略，省略时使用默认值。例如，运行 :ref:`AT+CWJAP <cmd-JAP>` 命令时省略某些参数：
    ::
 
@@ -125,7 +127,7 @@ AT 消息
       * - ERROR
         - AT 命令错误或执行过程中发生错误
       * - SEND OK
-        - 数据已发送到协议栈（针对于 :ref:`AT+CIPSEND <cmd-SEND>` 和 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 命令）
+        - 数据已发送到协议栈（针对于 :ref:`AT+CIPSEND <cmd-SEND>` 和 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 命令），但不代表数据已经发到对端
       * - SEND FAIL
         - 向协议栈发送数据时发生错误（针对于 :ref:`AT+CIPSEND <cmd-SEND>` 和 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 命令）
       * - +<Command Name>:``...``

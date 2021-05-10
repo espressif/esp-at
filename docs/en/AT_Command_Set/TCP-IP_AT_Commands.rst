@@ -682,6 +682,27 @@ Example
 :ref:`AT+CIPSERVER <TCPIP-AT>`: Delete/create a TCP/SSL Server
 --------------------------------------------------------------
 
+Query Command
+^^^^^^^^^^^^^
+
+**Function:**
+
+Query the TCP/SSL server status.
+
+**Command:**
+
+::
+
+    AT+CIPSERVER?
+
+**Response:**
+
+::
+
+    +CIPSERVER:<mode>[,<port>,<"type">][,<CA enable>]
+
+    OK
+
 Set Command
 ^^^^^^^^^^^
 
@@ -689,7 +710,7 @@ Set Command
 
 ::
 
-    AT+CIPSERVER=<mode>[,<param2>][,<"type">,<CA enable>]
+    AT+CIPSERVER=<mode>[,<param2>][,<"type">][,<CA enable>]
 
 **Response:**
 
@@ -1431,7 +1452,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
--  **<"common name">**: this parameter is used to verify the Common Name in the certificate sent by the server.
+-  **<"common name">**: this parameter is used to verify the Common Name in the certificate sent by the server. The maximum length of ``common name`` is 64 bytes.
 
 Note
 ^^^^^
@@ -1486,7 +1507,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
--  **<"sni">**: the Server Name Indication in ClientHello.
+-  **<"sni">**: the Server Name Indication in ClientHello. The maximum length of ``sni`` is 64 bytes.
 
 Notes
 ^^^^^
@@ -1542,7 +1563,7 @@ Parameters
 
 -  **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
 -  **<counts>**: the number of ALPNs.
--  **<"alpn">**: a string paramemter showing the ALPN in ClientHello.
+-  **<"alpn">**: a string paramemter showing the ALPN in ClientHello. The maximum length of alpn is limited by the command length.
 
 Note
 ^^^^^

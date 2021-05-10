@@ -392,7 +392,7 @@ Set Command
 
 ::
 
-    AT+CWLAPOPT=<sort_enable>,<print mask>[,<rssi filter>][,<authmode mask>]
+    AT+CWLAPOPT=<reserved>,<print mask>[,<rssi filter>][,<authmode mask>]
 
 **Response:**
 
@@ -409,11 +409,7 @@ or
 Parameters
 ^^^^^^^^^^
 
--  **<sort_enable>**: determine whether the result of the command :ref:`AT+CWLAP <cmd-LAP>` will be listed according to RSSI. Default: 0.
-
-   -  0: the result is not ordered according to RSSI.
-   -  1: the result is ordered according to RSSI.
-
+-  **<reserved>**: reserved item.
 -  **<print mask>**: determine whether the following parameters are shown in the result of :ref:`AT+CWLAP <cmd-LAP>`. Default: 0x7FF. If you set them to 1, it means showing the corresponding parameters; if you set them as 0, it means NOT showing the corresponding parameters.  
 
    -  bit 0: determine whether <ecn> will be shown.
@@ -666,7 +662,8 @@ Execute Command
 
 ::
 
-    <ip addr>,<mac>
+    +CWLIF:<ip addr>,<mac>
+
     OK
 
 Parameters

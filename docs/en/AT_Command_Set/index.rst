@@ -56,6 +56,8 @@ Generic AT command has four types:
      - Run commands with no user-defined parameters.
 
 -  Not all AT commands support all of the four types mentioned above.
+-  Currently, only strings and integer numbers are supported as input parameters in AT commands.
+-  Angle brackets < > designate parameters that can not be omitted.
 -  Square brackets [ ] designate parameters that can be omitted. The default value of the parameter will be used instead when you omit it. Below are examples of entering the command :ref:`AT+CWJAP <cmd-JAP>` with some parameters omitted.
    ::
 
@@ -125,7 +127,7 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
       * - ERROR
         - AT command error or error occurred during the execution
       * - SEND OK
-        - Data has been sent to the protocol stack (specific to :ref:`AT+CIPSEND <cmd-SEND>` and :ref:`AT+CIPSENDEX <cmd-SENDEX>` command)
+        - Data has been sent to the protocol stack (specific to :ref:`AT+CIPSEND <cmd-SEND>` and :ref:`AT+CIPSENDEX <cmd-SENDEX>` command). It doesn't mean that the data has been sent to the opposite end
       * - SEND FAIL
         - Error occurred during sending the data to the protocol stack (specific to :ref:`AT+CIPSEND <cmd-SEND>` and :ref:`AT+CIPSENDEX <cmd-SENDEX>` command
       * - +<Command Name>:``...``
