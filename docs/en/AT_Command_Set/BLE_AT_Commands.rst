@@ -795,6 +795,14 @@ Notes
 
 -  It is recommended to scan devices by running :ref:`AT+BLESCAN <cmd-BSCAN>` before initiating a new connection to ensure that the target device is in the broadcast state.
 -  The maximum timeout for connection is 30 seconds.
+-  If the Bluetooth LE server is initialized and the connection is established successfully, you can use this command to discover the services in the peer device (GATTC). The following GATTC commands can also be used:
+
+   -  :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`
+   -  :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`
+   -  :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`
+   -  :ref:`AT+BLEGATTCRD <cmd-GCRD>`
+   -  :ref:`AT+BLEGATTCWR <cmd-GCWR>`
+   -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
 
 Example
 ^^^^^^^^
@@ -1066,6 +1074,15 @@ Notes
    -  The download address of the service bin is the "ble_data" address in esp-at/module_config/module_${platform}_default/at_customize.csv.
 
 -  This command should be called immediately to create services, right after the Bluetooth LE server is initialized; If a Bluetooth LE connection is established first, the service creation will fail.
+-  If the Bluetooth LE client is initialized, you can use this command to create local services. Some GATTS commands can also be used, such as those to start and stop services, set attribute values, and send notifications/indications. See the list below for the specific commands.
+
+   -  :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>` (It is recommended to execute this command before the connection is established)
+   -  :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>` (It is recommended to execute this command before the connection is established)
+   -  :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`
+   -  :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`
+   -  :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`
+   -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
+   -  :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`
 
 Example
 ^^^^^^^^

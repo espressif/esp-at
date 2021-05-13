@@ -795,6 +795,14 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 -  建议在建立新连接之前，先运行 :ref:`AT+BLESCAN <cmd-BSCAN>` 命令扫描设备，确保目标设备处于广播状态。
 -  最大连接超时为 30 秒。
+-  如果 Bluetooth LE server 已初始化且连接已成功建立，则可以使用此命令在对等设备 (GATTC) 中发现服务。还可以使用以下 GATTC 命令：
+
+   -  :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`
+   -  :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`
+   -  :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`
+   -  :ref:`AT+BLEGATTCRD <cmd-GCRD>`
+   -  :ref:`AT+BLEGATTCWR <cmd-GCWR>`
+   -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
 
 示例
 ^^^^
@@ -1066,6 +1074,15 @@ GATTS (Generic Attributes Server) 创建 Bluetooth LE 服务
    -  service bin 文件的烧录地址为 esp-at/module_config/module_${platform}_default/at_customize.csv 文件中的 "ble_data" 地址。
 
 -  Bluetooth LE server 初始化后，请及时调用本命令创建服务；如果先建立 Bluetooth LE 连接，则无法创建服务。
+-  如果 Bluetooth LE client 已初始化成功，可以使用此命令创建服务；也可以使用其他一些相应的 GATTS 命令，例如启动和停止服务、设置服务特征值和 notification/indication，具体命令如下：
+
+   -  :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>` (建议在 Bluetooth LE 连接建立之前使用)
+   -  :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>` (建议在 Bluetooth LE 连接建立之前使用)
+   -  :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`
+   -  :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`
+   -  :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`
+   -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
+   -  :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`
 
 示例
 ^^^^
