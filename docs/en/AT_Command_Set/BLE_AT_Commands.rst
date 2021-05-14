@@ -2018,6 +2018,21 @@ Parameters
    -  0: reject
    -  1: accept
 
+Note
+^^^^^
+
+-  After running this command, AT will output the pairing result at the end of the pairing process.
+
+::
+
+    +BLEAUTHCMPL:<conn_index>,<enc_result>
+
+-  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+-  **<enc_result>**:
+
+   - 0: encryption succeeded
+   - 1: encryption failed
+
 Example
 ^^^^^^^^
 
