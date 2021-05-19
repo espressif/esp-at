@@ -399,6 +399,11 @@ Parameters
 -  **<scan_rsp_data>**: scan response data.
 -  **<addr_type>**: the address type of broadcasters.
 
+Notes
+^^^^^
+
+-  The response ``OK`` does not necessarily come before the response ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>``. It may be output before ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` or after it.
+
 Example
 ^^^^^^^^
 
