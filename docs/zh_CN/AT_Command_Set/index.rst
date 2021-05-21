@@ -139,7 +139,7 @@ AT 消息
 
   .. list-table:: ESP-AT 消息报告
      :header-rows: 1
-     :widths: 40 60
+     :widths: 60 60
   
      * - ESP-AT 消息报告
        - 说明
@@ -227,5 +227,7 @@ AT 消息
        - 来自 Bluetooth LE 连接的 indication
      * - +BLESECNTFYKEY
        - Bluetooth LE SMP 密钥
-     * - +BLEAUTHCMPL 
+     * - +BLESECREQ:<conn_index>
+       - 收到来自 Bluetooth LE 连接的加密配对请求
+     * - +BLEAUTHCMPL:<conn_index>,<enc_result>
        - Bluetooth LE SMP 配对完成

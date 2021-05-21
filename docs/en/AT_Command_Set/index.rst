@@ -139,7 +139,7 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
 
   .. list-table:: ESP-AT Message Reports
      :header-rows: 1
-     :widths: 40 60
+     :widths: 60 60
   
      * - ESP-AT Message Report
        - Description
@@ -227,5 +227,7 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - An indication from Bluetooth LE connection
      * - +BLESECNTFYKEY
        - Bluetooth LE SMP key
-     * - +BLEAUTHCMPL 
+     * - +BLESECREQ:<conn_index>
+       - Received encryption request which index is <conn_index>
+     * - +BLEAUTHCMPL:<conn_index>,<enc_result>
        - Bluetooth LE SMP pairing completed
