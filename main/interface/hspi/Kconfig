@@ -1,18 +1,95 @@
-
 config AT_BASE_ON_HSPI
     bool "AT through HSPI"
-    depends on (IDF_TARGET_ESP32 || IDF_TARGET_ESP8266)
     help
-        This demo is AT through HSPI. The MCU can send AT command through SPI bus. 
+        If enable this option, the MCU can send AT command through SPI bus. 
         But besides the standard SPI pins, the more one pin is required to handshake MCU. 
         In order to respond in time, MCU should use the interrupt pin as the handshake pin.
 
-if AT_BASE_ON_HSPI
-menu "AT hspi settings"
-config AT_HSPI_HANDSHAKE_PIN
- 	int "HSPI handshake pin for AT command"
-	default 4
-	depends on AT_BASE_ON_HSPI
-	
+choice SPI_TRANSMIT
+    prompt "AT SPI Data Transmission Mode"
+    depends on AT_BASE_ON_HSPI && !IDF_TARGET_ESP8266 && !IDF_TARGET_ESP32
+    default SPI_STANDARD_MODE
+
+config SPI_STANDARD_MODE
+    bool "Standard SPI"
+    help
+        Enable the one-line data transmission. The MCU can send data through MOSI line and receive data through MISO line.
+
+config SPI_DUAL_MODE
+    bool "Dual SPI"
+    depends on !IDF_TARGET_ESP8266
+    help
+        Enable the two-line data transmission. The MCU can transmit data through MOSI and MISO line. 
+        
+config SPI_QUAD_MODE
+    bool "Quad SPI"
+    depends on !IDF_TARGET_ESP8266
+    help
+        Enable the four-line data transmission. In this mode, two more I/O lines for sending 4 data bits per clock cycle are needed.
+endchoice
+
+
+menu "AT SPI GPIO settings"
+    depends on AT_BASE_ON_HSPI && !IDF_TARGET_ESP8266
+    config SPI_SCLK_PIN
+        int "SPI sclk pin"
+        default 15 if (IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32)
+        default 6 if IDF_TARGET_ESP32C3
+
+    config SPI_MOSI_PIN
+        int "SPI mosi pin"
+        default 13 if (IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32)
+        default 7 if IDF_TARGET_ESP32C3
+
+    config SPI_MISO_PIN
+        int "SPI miso pin"
+        default 12 if (IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32)
+        default 2 if IDF_TARGET_ESP32C3
+
+    config SPI_CS_PIN
+        int "SPI cs pin"
+        default 14 if (IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32)
+        default 10 if IDF_TARGET_ESP32C3
+
+    config SPI_HANDSHAKE_PIN
+        int "SPI handshake pin for slave send"
+        default 5 if IDF_TARGET_ESP32S2
+        default 3 if IDF_TARGET_ESP32C3
+        default 4 if (IDF_TARGET_ESP8266 || IDF_TARGET_ESP32)
+
+    config SPI_WP_PIN
+        int "SPI WP pin(quad spi)"
+        default 16 if IDF_TARGET_ESP32S2
+        default 8 if IDF_TARGET_ESP32C3
+        depends on SPI_QUAD_MODE
+        
+    config SPI_HD_PIN
+        int "SPI HD pin(quad spi)"
+        default 17 if IDF_TARGET_ESP32S2
+        default 9 if IDF_TARGET_ESP32C3
+        depends on SPI_QUAD_MODE
 endmenu
-endif
+
+menu "AT SPI driver settings"
+    depends on AT_BASE_ON_HSPI
+    config SPI_NUM
+        int "SPI number"
+        default 1
+        range 1 2 if !IDF_TARGET_ESP8266
+        range 1 1 if IDF_TARGET_ESP8266
+
+    config SPI_MODE
+        int "SPI mode"
+        default 0
+        range 0 3
+
+    config TX_STREAM_BUFFER_SIZE
+        int "TX stream buffer size"
+        default 4096
+        range 1024 8192
+
+    config RX_STREAM_BUFFER_SIZE
+        int "RX stream buffer size"
+        default 4096
+        range 1024 8192
+endmenu

@@ -17,6 +17,7 @@
    如何使能 ESP-AT ethernet 接口 <How_to_enable_ESP_AT_Ethernet>
    如何增加一个新的平台支持 <How_to_add_new_platform>
    如何实现 ESP32_SDIO_AT <How_to_implement_ESP32_SDIO_AT>
+   如何实现 SPI AT <How_to_implement_SPI_AT>
    如何基于乐鑫服务器实现自己的 OTA 管理 <How_to_implement_OTA_update>
    如何更新 ESP-IDF 版本 <How_to_update_IDF>
    如何了解 ESP-AT 同一平台不同模组差异 <How_to_understand_the_differences_of_each_type_of_module>

@@ -42,17 +42,17 @@ static const char* TAG = "HSPI-AT";
 static uint8_t *recv_data;
 static uint32_t notify_len = 0;
 
-#define SPI_SLAVE_HANDSHARK_GPIO     CONFIG_AT_HSPI_HANDSHAKE_PIN
-#define SPI_SLAVE_HANDSHARK_SEL      (1ULL<<SPI_SLAVE_HANDSHARK_GPIO)
-#define AT_READ_STREAM_BUFFER_SIZE      1024*2
-#define AT_WRITE_STREAM_BUFFER_SIZE      1024*4
-
 //#define LOG_LOCAL_LEVEL 4     //debug mode, it will print debug log
 
-#define GPIO_MOSI 12
-#define GPIO_MISO 13
-#define GPIO_SCLK 15
-#define GPIO_CS 14
+#define GPIO_MOSI                   CONFIG_SPI_MOSI_PIN
+#define GPIO_MISO                   CONFIG_SPI_MISO_PIN
+#define GPIO_SCLK                   CONFIG_SPI_SCLK_PIN
+#define GPIO_CS                     CONFIG_SPI_CS_PIN
+#define SPI_SLAVE_HANDSHARK_GPIO     CONFIG_SPI_HANDSHAKE_PIN
+
+#define SPI_SLAVE_HANDSHARK_SEL      (1ULL<<CONFIG_SPI_HANDSHAKE_PIN)
+#define AT_READ_STREAM_BUFFER_SIZE      CONFIG_RX_STREAM_BUFFER_SIZE
+#define AT_WRITE_STREAM_BUFFER_SIZE      CONFIG_TX_STREAM_BUFFER_SIZE
 
 static xSemaphoreHandle spi_pxMutex;
 
@@ -158,7 +158,7 @@ static void at_spi_slave_task(void* pvParameters)
 
     //Configuration for the SPI slave interface
     spi_slave_interface_config_t slvcfg={
-        .mode=0,
+        .mode=CONFIG_SPI_MODE,
         .spics_io_num=GPIO_CS,
         .queue_size=3,
         .flags=0,
