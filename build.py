@@ -59,8 +59,12 @@ def gitee_repo_postprocess():
         raise Exception("git submodule update failed")
 
 preprocess_url = {
+    'https://gitee.com/EspressifSystems/esp-at': {'proprocess': gitee_repo_preprocess,
+                                                  'postprocess': gitee_repo_postprocess},
     'https://gitee.com/EspressifSystems/esp-at.git': {'proprocess': gitee_repo_preprocess,
                                                       'postprocess': gitee_repo_postprocess},
+    'git@gitee.com:EspressifSystems/esp-at.git': {'proprocess': gitee_repo_preprocess,
+                                                   'postprocess': gitee_repo_postprocess},
 }
 
 
