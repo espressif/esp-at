@@ -112,6 +112,8 @@ static const uint8_t esp_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PAR
 #define AT_UART_BAUD_RATE_MIN                       80
 #endif
 
+#define AT_UART_PATTERN_TIMEOUT_MS                  20
+
 static uart_port_t esp_at_uart_port = CONFIG_AT_UART_PORT;
 
 static bool at_nvm_uart_config_set (at_nvm_uart_config_struct *uart_config);
@@ -633,13 +635,38 @@ static esp_at_cmd_struct at_custom_cmd[] = {
 
 void at_status_callback (esp_at_status_type status)
 {
+    /**
+     * ESP8266 CAN NOT provide uart_enable_pattern_det_baud_intr() feature due to hardware reason
+    */
 #ifndef CONFIG_IDF_TARGET_ESP8266
     switch (status) {
     case ESP_AT_STATUS_NORMAL:
         uart_disable_pattern_det_intr(esp_at_uart_port);
         break;
-    case ESP_AT_STATUS_TRANSMIT:
-        uart_enable_pattern_det_baud_intr(esp_at_uart_port, '+', 3, ((APB_CLK_FREQ*20)/1000),((APB_CLK_FREQ*20)/1000), ((APB_CLK_FREQ*20)/1000));
+
+    case ESP_AT_STATUS_TRANSMIT: {
+        /**
+         * As the implement of API uart_enable_pattern_det_baud_intr() in esp-idf,
+         * the last three timeout parameters is different on ESP32 and non ESP32 platform.
+         *
+         * That is, on ESP32 platform, it uses the APB clocks as the unit;
+         * on non ESP32 platform (ESP32-S2, ESP32-C3, ..), it uses the UART baud rate clocks as the unit.
+         *
+         * Notes:
+         * on non ESP32 platform, due to the value of input parameters have a limit of 0xFFFF (see as macro: UART_RX_GAP_TOUT_V..),
+         * so the maximum uart baud rate is recommended to be less than (0xFFFF * 1000 / AT_UART_PATTERN_TIMEOUT_MS) = 3276750 ~= 3.2Mbps
+         * otherwise, this uart_enable_pattern_det_baud_intr() will not work.
+        */
+#ifdef CONFIG_IDF_TARGET_ESP32
+        int apb_clocks = (uint32_t)APB_CLK_FREQ * AT_UART_PATTERN_TIMEOUT_MS / 1000;
+        uart_enable_pattern_det_baud_intr(esp_at_uart_port, '+', 3, apb_clocks, apb_clocks, apb_clocks);
+#else
+        uint32_t uart_baud = 0;
+        uart_get_baudrate(esp_at_uart_port, &uart_baud);
+        int uart_clocks = (uint32_t)uart_baud * AT_UART_PATTERN_TIMEOUT_MS / 1000;
+        uart_enable_pattern_det_baud_intr(esp_at_uart_port, '+', 3, uart_clocks, uart_clocks, uart_clocks);
+#endif
+    }
         break;
     }
 #endif
