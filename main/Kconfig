@@ -258,6 +258,23 @@ config AT_WEB_USE_FATFS
     help
         If enable this configure, html will be stored in fatfs(Please enable AT FS Command).
         Otherwise, html file will be compiled as embedded code.
+config AT_WEB_CAPTIVE_PORTAL_ENABLE
+    bool "AT WEB captive portal support"
+    default "n"
+    depends on AT_WEB_SERVER_SUPPORT && !IDF_TARGET_ESP8266
+    help
+        If your mobile phone or PC supports captive portal, 
+        it will automatically open a browser for setting Wi-Fi station information when connects to ESP softAP. 
+        For more details, please refer to https://en.wikipedia.org/wiki/Captive_portal.
+        Please enlarge LWIP_MAX_SOCKETS to be more than 14 to ensure access to the web smoothly.
+
+config AT_WEB_ROOT_DIR
+    string "AT WEB root dir."
+    default "/"
+    depends on AT_WEB_CAPTIVE_PORTAL_ENABLE
+    help
+        AT WEB root dir used for generateing default redirect url.
+        The complete url is just like "http://192.168.4.1/".
 
 config AT_OTA_SUPPORT
     bool "AT OTA command support."
