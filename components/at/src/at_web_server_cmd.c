@@ -61,6 +61,10 @@
 #include "diskio_impl.h"
 #include "esp_vfs_fat.h"
 #endif
+#ifdef CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE
+#include "at_web_dns_server.h"
+static char *s_at_web_redirect_url = NULL;
+#endif
 
 #define ESP_AT_WEB_SERVER_CHECK(a, str, goto_tag, ...)                                              \
     do                                                                                 \
@@ -96,6 +100,8 @@
 #define ESP_AT_WEB_WIFI_TRY_CONNECT_TIMEOUT            8000 // try connect timeout is 8000ms
 #define ESP_AT_WEB_WIFI_SSID_LEN_DEFAULT               32
 #define ESP_AT_WEB_WIFI_LAST_SCAN_TIMEOUT              10   // 10s
+#define ESP_AT_WEB_ROOT_DIR_DEFAULT                    CONFIG_AT_WEB_ROOT_DIR
+#define ESP_AT_WEB_REDIRECT_URL_PREFIX_LEN             24
 
 extern void at_wifi_reconnect_stop(void);
 extern void at_wifi_reconnect_init(bool force);
@@ -831,24 +837,7 @@ static esp_err_t index_html_get_handler(httpd_req_t *req)
 /* Send HTTP response with the contents of the requested file */
 static esp_err_t web_common_get_handler(httpd_req_t *req)
 {
-    char filepath[ESP_AT_WEB_FILE_PATH_MAX];
-    web_server_context_t *s_web_context = (web_server_context_t*) req->user_ctx;
-    strlcpy(filepath, s_web_context->base_path, sizeof(filepath));
-    if (req->uri[strlen(req->uri) - 1] == '/') {
-        strlcat(filepath, "/index.html", sizeof(filepath));
-    } else {
-        strlcat(filepath, req->uri, sizeof(filepath));
-    }
-
-    char *p = strrchr(filepath, '?');
-    if (p != NULL) {
-        *p = '\0';
-    }
-    ESP_LOGD(TAG, "file path is %s \n", filepath);
-
-    if (strcmp(filepath, "/www/index.html") == 0) {
-        return index_html_get_handler(req);
-    }
+    return index_html_get_handler(req);
     return ESP_OK;
 }
 #endif
@@ -1613,6 +1602,27 @@ err_handler:
     return ESP_FAIL;
 }
 
+#ifdef CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE
+/* http 404/414 error handler that redirect all requests to the root page */
+static esp_err_t http_common_error_handler(httpd_req_t *req, httpd_err_code_t err)
+{
+     /* Set status */
+    httpd_resp_set_status(req, "302 Temporary Redirect");
+
+    /* Redirect to the "/" root directory */
+    httpd_resp_set_hdr(req, "Location", s_at_web_redirect_url);
+
+    /* iOS require content in the response to detect a captive portal,
+       simply redirecting is not sufficient.
+     */
+    httpd_resp_send(req, "Redirect to captive portal", HTTPD_RESP_USE_STRLEN);
+
+    ESP_LOGI(TAG, "Redirecting to root");
+
+    return ESP_OK;
+}
+#endif
+
 static esp_err_t start_web_server(const char *base_path, uint16_t server_port)
 {
     ESP_AT_WEB_SERVER_CHECK(base_path, "wrong base path", err);
@@ -1624,8 +1634,12 @@ static esp_err_t start_web_server(const char *base_path, uint16_t server_port)
     config.max_uri_handlers = 8;
     config.max_open_sockets = 7; // It cannot be less than 7.
     config.server_port = server_port;
-#ifdef CONFIG_AT_WEB_USE_FATFS
+#ifndef CONFIG_IDF_TARGET_ESP8266
     config.uri_match_fn = httpd_uri_match_wildcard;
+#ifdef CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE
+    /* this is an important option that isn't set up by default.*/
+    config.lru_purge_enable = true;
+#endif
 #endif
 
     ESP_LOGD(TAG, "Starting HTTP Server");
@@ -1638,10 +1652,10 @@ static esp_err_t start_web_server(const char *base_path, uint16_t server_port)
         {"/getaprecord", HTTP_GET, ap_record_get_handler, s_web_context},
         {"/getotainfo", HTTP_GET, ota_info_get_handler, s_web_context},
         {"/setotadata", HTTP_POST, ota_data_post_handler, s_web_context},
-#ifdef CONFIG_AT_WEB_USE_FATFS
-        {"/*", HTTP_GET, web_common_get_handler,s_web_context} // Catch-all callback function for the filesystem, this must be set to the array last one
+#ifdef CONFIG_IDF_TARGET_ESP8266
+        {"/", HTTP_GET, web_common_get_handler,s_web_context} // Catch-all callback function for the filesystem, this must be set to the array last one
 #else
-        {"/", HTTP_GET, web_common_get_handler,s_web_context}
+        {"/*", HTTP_GET, web_common_get_handler,s_web_context},
 #endif
     };
 
@@ -1650,6 +1664,18 @@ static esp_err_t start_web_server(const char *base_path, uint16_t server_port)
             ESP_LOGE(TAG, "httpd register uri_array[%d] fail", i);
         }
     }
+#ifdef CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE
+    size_t redirect_url_sz = ESP_AT_WEB_REDIRECT_URL_PREFIX_LEN + strlen(ESP_AT_WEB_ROOT_DIR_DEFAULT) + 1; /* strlen(http://255.255.255.255) + strlen("/") + 1 for \0 */
+    s_at_web_redirect_url = malloc(sizeof(char) * redirect_url_sz);
+    *s_at_web_redirect_url = '\0';
+    esp_netif_ip_info_t ip_info;
+    esp_netif_get_ip_info(esp_netif_get_handle_from_ifkey("WIFI_AP_DEF"), &ip_info);
+    snprintf(s_at_web_redirect_url, redirect_url_sz, "http://"IPSTR"%s", IP2STR(&ip_info.ip), ESP_AT_WEB_ROOT_DIR_DEFAULT);
+    
+    httpd_register_err_handler(s_server, HTTPD_404_NOT_FOUND, http_common_error_handler);
+    httpd_register_err_handler(s_server, HTTPD_414_URI_TOO_LONG, http_common_error_handler);
+    httpd_register_err_handler(s_server, HTTPD_405_METHOD_NOT_ALLOWED, http_common_error_handler);
+#endif
 
     return ESP_OK;
 err_start:
@@ -1665,6 +1691,12 @@ static esp_err_t stop_web_server(void)
     s_web_context = NULL;
     s_server = NULL;
     ESP_LOGI(TAG, "Stop HTTP Server");
+#ifdef CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE
+    if (s_at_web_redirect_url) {
+        free(s_at_web_redirect_url);
+        s_at_web_redirect_url = NULL;
+    }
+#endif
 
     return ESP_OK;
 err:
@@ -1778,6 +1810,12 @@ static esp_err_t at_web_start(uint16_t server_port)
         if (err != ESP_OK) {
             return err;
         }
+#ifdef CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE
+        at_dns_server_start();
+        esp_log_level_set("httpd_uri", ESP_LOG_ERROR);
+        esp_log_level_set("httpd_txrx", ESP_LOG_ERROR);
+        esp_log_level_set(TAG, ESP_LOG_INFO);
+#endif
     }
 
     return ESP_OK;
@@ -1791,6 +1829,9 @@ static esp_err_t at_web_destory(void)
         if ((err = stop_web_server()) != ESP_OK) {
             return err;
         }
+#ifdef CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE
+        at_dns_server_stop();
+#endif
 #ifdef CONFIG_AT_WEB_USE_FATFS 
         if ((err = at_web_fatfs_spiflash_deinit()) != ESP_OK) {
             return err;

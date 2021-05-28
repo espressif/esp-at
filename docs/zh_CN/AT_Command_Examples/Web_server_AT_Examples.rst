@@ -1,19 +1,25 @@
 Web Server AT 示例
 ==================
 
+:link_to_translation:`en:[English]`
+
 本文档主要介绍 AT web server 的使用，主要涉及以下几个方面的应用：
 
 .. contents::
    :local:
    :depth: 1
 
+.. 注解::
+
+   默认的 AT 固件并不支持 AT web server 的功能，请参考 :doc:`../AT_Command_Set/Web_server_AT_Commands` 启用该功能。
+   
 使用浏览器进行 Wi-Fi 配网
 --------------------------
 
 简介
 ^^^^
 
-浏览器配网是通过浏览器连接 ESP 设备创建的 AP，并通过 HTTP 请求将需要连接的路由器信息传输给 ESP 设备，ESP 设备通过这些信息连接到对应的路由器，并通知浏览器配网结果的解决方案。
+通过 web server，手机或 PC 可以设置 ESP 设备的 Wi-Fi 连接信息。您可以使用手机或电脑连接到 ESP 设备的 AP，通过浏览器打开配网网页，并将 Wi-Fi 配置信息发送给 ESP 设备，然后 ESP 设备将根据该配置信息连接到指定的路由器。
 
 流程
 ^^^^
@@ -86,7 +92,7 @@ Web Server AT 示例
 使用浏览器发送配网信息
 """"""""""""""""""""""""
 
-在配网设备连接到 ESP 设备后，即可发送 HTTP 请求，配置待接入的路由器的信息：（注意，浏览器配网不支持配网设备作为待接入 AP）。
+在配网设备连接到 ESP 设备后，即可发送 HTTP 请求，配置待接入的路由器的信息：（注意，浏览器配网不支持配网设备作为待接入 AP，例如，如果使用手机连接到 ESP 的 AP，则该手机不建议作为 ESP 设备待接入的热点。）
 在浏览器中输入 web server 默认的 IP 地址（如果未设置 ESP 设备的 SoftAP IP 地址，默认为 192.168.4.1，您可以通过 AT+CIPAP? 命令查询当前的 SoftAP IP 地址)，打开配网界面，输入拟连接的路由器的 ssid、password，点击“开始配网”即可开始配网：
 
 .. figure:: ../../_static/Web_server/web_brower_open_html.png
@@ -268,6 +274,10 @@ Web Server AT 示例
  
        AT+CWSAP="pos_softap","espressif",11,3,3
 
+  .. 注解::
+
+      微信小程序默认向 ssid 为 `pos_softap`，password 为 `espressif` 的 SoftAP 发起连接，请确保将 ESP 设备的参数按照上述配置进行设置。
+
 #. 使能多连接。
 
 
@@ -277,14 +287,14 @@ Web Server AT 示例
  
        AT+CIPMUX=1
 
-#. 创建 web server，端口：80，最大连接时间：50 s（默认最大为 60 s）。
+#. 创建 web server，端口：80，最大连接时间：40 s（默认最大为 60 s）。
 
 
    - Command
    
      ::
  
-       AT+WEBSERVER=1,80,25
+       AT+WEBSERVER=1,80,40
 
 加载微信小程序
 """"""""""""""""
@@ -429,3 +439,34 @@ Web Server AT 示例
 使用微信小程序进行 OTA 固件升级
 ---------------------------------
 微信小程序支持在线完成 ESP 设备的固件升级，请参考上述 `配置 ESP 设备参数`_  的具体步骤完成 ESP 模块的配置（如果已经在配网时完成配置，不用重复配置）。完成配置后，设备执行 OTA 固件升级的流程与使用浏览器进行 OTA 固件升级类似，请参考 `使用浏览器进行 OTA 固件升级`_。
+
+[ESP32][ESP32-S Series][ESP32-C Series] 使用 Captive Portal 功能
+----------------------------------------------------------------
+
+简介
+^^^^
+
+Captive Portal，是一种“强制认证主页”技术，当使用支持 Captive Portal 的 station 设备连接到提供 Captive Portal 服务的 AP 设备时，将触发 station 设备的浏览器跳转到指定的网页。更多关于 Captive Portal 的介绍，请参考 `Captive Portal Wiki <https://en.wikipedia.org/wiki/Captive_portal>`__。
+
+.. 注解::
+
+   默认情况下 AT web 并未启用该功能，可以通过 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT WEB Server command support`` > ``AT WEB captive portal support`` 启用该功能，然后编译工程（请参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。此外，启用该功能，可能导致使用微信小程序进行配网或 OTA 固件升级时发生页面跳转，建议仅在使用浏览器访问 AT web 时启用该功能。
+
+流程
+^^^^
+
+启用 Captive Portal 功能后，请参考上述 `配网设备连接 ESP 设备`_ 的具体步骤完成 ESP 模块的配置，然后连接 ESP 设备的 AP：
+
+.. figure:: ../../_static/Web_server/captive_portal_auth_pages.png
+   :align: center
+   :alt: 连接打开 Captive Portal 功能的 AP
+   :figclass: align-center
+
+   连接打开 Captive Portal 功能的 AP
+
+如上图，station 设备连接打开 Captive Portal 功能的 ESP 设备的 AP 后，提示“需登录/认证”，然后将自动打开浏览器，并跳转到 AT web 的主界面。若不能自动跳转，请根据 station 设备的提示，点击“认证”或点击上图中的“pos_softap”热点的名称，手动触发 Captive Portal 自动打开浏览器，进入到 AT web 的主界面。
+
+常见故障排除
+^^^^^^^^^^^^
+
+**说明** 1：通信双方（station 设备、AP 设备）都支持 Captive Portal 功能才能保证该功能正常使用，因此，若设备连接 ESP 设备的 AP 后未提示“需登录/认证”，并且没有自动进入到 AT web 的主界面，可能是 station 设备不支持该功能，此时，请参考上述 `使用浏览器发送配网信息`_ 的具体步骤手动打开 AT web 的主界面。
