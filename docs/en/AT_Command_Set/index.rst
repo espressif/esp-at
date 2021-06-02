@@ -58,7 +58,7 @@ Generic AT command has four types:
 -  Not all AT commands support all of the four types mentioned above.
 -  Currently, only strings and integer numbers are supported as input parameters in AT commands.
 -  Angle brackets < > designate parameters that can not be omitted.
--  Square brackets [ ] designate parameters that can be omitted. The default value of the parameter will be used instead when you omit it. Below are examples of entering the command :ref:`AT+CWJAP <cmd-JAP>` with some parameters omitted.
+-  Square brackets [ ] designate optional parameters that can be omitted. The default value of the parameter will be used instead when you omit it. Below are examples of entering the command :ref:`AT+CWJAP <cmd-JAP>` with some parameters omitted.
    ::
 
       AT+CWJAP="ssid","password"
@@ -106,6 +106,8 @@ Configuration settings entered by the following AT Commands will always be saved
 -  :ref:`AT+CWAUTOCONN <cmd-AUTOC>`: ``AT+CWAUTOCONN=1``
 
 Saving of configuration settings by several other commands can be switched on or off with :ref:`AT+SYSSTORE <cmd-SYSSTORE>` command, which is mentioned in the Note section of these commands.
+
+.. _at-messages:
 
 AT Messages
 ===========
