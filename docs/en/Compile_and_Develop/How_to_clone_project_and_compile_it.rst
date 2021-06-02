@@ -1,7 +1,7 @@
 Build Your Own ESP-AT Project
 =============================
 
-This document details how to build your own ESP-AT project and flash the generated binary files into your ESP devices, including ESP32, ESP32-S2, ESP32-C3, and ESP8266. It comes in handy when the default :doc:`../AT_Binary_Lists/index` cannot meet your needs, for example, to customize the AT port pins, Bluetooth service, partitions, and so on.
+This document details how to build your own ESP-AT project and flash the generated binary files into your ESP devices, including ESP32, ESP32-S2, ESP32-C3, and ESP8266. It comes in handy when the default :doc:`../AT_Binary_Lists/index` cannot meet your needs, for example, to customize the :term:`AT port` pins, Bluetooth service, partitions, and so on.
 
 The structure of this document is as follows:
 
@@ -149,7 +149,7 @@ If the previous steps have been done correctly, the following menu appears after
 
    Project configuration - Home window
 
-You are using this menu to set up project-specific configuration, e.g. changing AT port pins, enabling Classic Bluetooth function, etc. If you made no changes, it will run with the default configuration.
+You are using this menu to set up project-specific configuration, e.g. changing :term:`AT port` pins, enabling Classic Bluetooth function, etc. If you made no changes, it will run with the default configuration.
 
 Build the Project
 ^^^^^^^^^^^^^^^^^
@@ -285,7 +285,7 @@ If the previous steps have been done correctly, the following menu appears after
 
    Project configuration - Home window
 
-You are using this menu to set up project-specific configuration, e.g. changing AT port pins, enabling some function, etc. If you made no changes, it will run with the default configuration.
+You are using this menu to set up project-specific configuration, e.g. changing :term:`AT port` pins, enabling Classic Bluetooth function, etc. If you made no changes, it will run with the default configuration.
 
 Build the Project
 ^^^^^^^^^^^^^^^^^

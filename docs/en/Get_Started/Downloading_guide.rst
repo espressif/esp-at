@@ -78,6 +78,8 @@ The file ``download.config`` contains the configuration to flash the firmware in
 - ``--flash_size 4MB`` means the firmware is using flash size 4 MB.
 - ``0x10000 ota_data_initial.bin`` means downloading ``ota_data_initial.bin`` into the address ``0x10000``.
 
+.. _flash-at-firmware-into-your-device:
+
 Flash AT Firmware into Your Device
 -----------------------------------
 

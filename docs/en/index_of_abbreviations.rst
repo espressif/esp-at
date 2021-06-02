@@ -19,6 +19,11 @@ Index of Abbreviations
     
       应用层协议协商
     
+    AT port
+      AT port is the general name of AT log port (that is used to output log) and AT command port (that is used to send AT commands and receive responses). Please refer to :doc:`Get_Started/Hardware_connection` for default AT port pins and :doc:`Compile_and_Develop/How_to_set_AT_port_pin` for how to customize them.
+
+      AT 端口是 AT 日志端口（用于输出日志）和 AT 命令端口（用于发送 AT 命令和接收响应）的总称。请参考 :doc:`Get_Started/Hardware_connection` 了解默认的 AT 端口管脚，参考 :doc:`Compile_and_Develop/How_to_set_AT_port_pin` 了解如何自定义 AT 端口管脚。
+
     Bluetooth LE
       Bluetooth Low Energy
     
