@@ -105,7 +105,7 @@ AT 命令分类
 -  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: ``AT+SAVETRANSLINK=1,"192.168.6.10",1001``
 -  :ref:`AT+CWAUTOCONN <cmd-AUTOC>`: ``AT+CWAUTOCONN=1``
 
-其它一些命令的参数更改是否保存到 flash 可以通过 :ref:AT+SYSSTORE <cmd-SYSSTORE> 命令来配置，具体请参见命令的详细说明。
+其它一些命令的参数更改是否保存到 flash 可以通过 :ref:`AT+SYSSTORE <cmd-SYSSTORE>` 命令来配置，具体请参见命令的详细说明。
 
 AT 消息
 ===========
@@ -192,11 +192,11 @@ AT 消息
      * - +IPD
        - ESP-AT 已收到来自网络的数据
      * - SEND Canceled
-       - 取消在 :ref:`Wi-Fi 透传模式 <cmd-SEND>` 下发送数据
+       - 取消在 Wi-Fi :term:`普通传输模式` 下发送数据
      * - Have ``<xxx>`` Connections
        - 已达到服务器的最大连接数
      * - +QUITT
-       - ESP-AT 退出 Wi-Fi 透传模式
+       - ESP-AT 退出 Wi-Fi :term:`透传模式`
      * - NO CERT FOUND
        - 在自定义分区中没有找到有效的设备证书
      * - NO PRVT_KEY FOUND

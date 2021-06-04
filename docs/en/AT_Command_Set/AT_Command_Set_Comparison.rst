@@ -374,7 +374,7 @@ This document lists the differences between the AT commands supported by the old
      - ✅
      - ✅
    * - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`
-     - Set whether to enter Wi-Fi passthrough mode on power-up
+     - Set whether to enter Wi-Fi :term:`Passthrough Mode` on power-up
      - ✅
      - ✅
    * - :ref:`AT+CIPSTO <cmd-STO>`

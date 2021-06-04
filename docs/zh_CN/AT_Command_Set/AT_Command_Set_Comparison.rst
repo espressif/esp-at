@@ -374,7 +374,7 @@ ESP-AT 不同版本命令集支持对比
      - ✅
      - ✅
    * - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`
-     - 设置开机透传模式信息
+     - 设置开机 :term:`透传模式` 信息
      - ✅
      - ✅
    * - :ref:`AT+CIPSTO <cmd-STO>`

@@ -192,11 +192,11 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
      * - +IPD
        - ESP-AT received the data from the network
      * - SEND Canceled
-       - Cancel to send in :ref:`Wi-Fi passthrough mode <cmd-SEND>`
+       - Cancel to send in :ref:`Wi-Fi normal sending mode <cmd-SEND>`
      * - Have ``<xxx>`` Connections
        - Has reached the maximum connection counts for server
      * - +QUITT
-       - ESP-AT quits from the Wi-Fi passthrough mode
+       - ESP-AT quits from the Wi-Fi :term:`Passthrough Mode`
      * - NO CERT FOUND
        - No valid device certificate found in custom partition
      * - NO PRVT_KEY FOUND

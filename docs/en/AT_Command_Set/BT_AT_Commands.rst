@@ -535,7 +535,7 @@ Parameters
 Notes
 ^^^^^
 
--  The wrap return is > after this command is executed. Then, the ESP device enters UART Bluetooth passthrough mode. When the packet which only contains ``+++`` is received, the device returns to normal command mode. Please wait for at least one second before sending the next AT command.
+-  The wrap return is > after this command is executed. Then, the ESP device enters UART Bluetooth passthrough mode. When the packet which only contains :ref:`+++ <cmd-PLUS>` is received, the device returns to normal command mode. Please wait for at least one second before sending the next AT command.
 
 Example
 ^^^^^^^^

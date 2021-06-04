@@ -369,10 +369,10 @@ Example
 ::
 
     // The ESP station tries to reconnect to AP at the interval of one second for 100 times.
-        AT+CWRECONNCFG=1,100
+    AT+CWRECONNCFG=1,100
 
     // The ESP station will not reconnect to AP when disconnected.
-        AT+CWRECONNCFG=0,0
+    AT+CWRECONNCFG=0,0
 
 Notes
 ^^^^^
@@ -970,8 +970,8 @@ Parameters
 Note
 ^^^^^
 
--  ESP8266 currently only support 802.11b or 802.11bg mode.
--  ESP32 and ESP32-S2 currently only support 802.11b or 802.11bg or 802.11bgn mode.
+-  Currently ESP devices only support 802.11b or 802.11bg or 802.11bgn mode.
+-  By default, PHY mode of ESP8266 device is 802.11bg mode, and PHY mode of non ESP8266 device is 802.11bgn mode.
 
 .. _cmd-STAPROTO:
 
@@ -1022,6 +1022,7 @@ Note
 ^^^^^
 
 -  Currently ESP devices only support 802.11b or 802.11bg or 802.11bgn mode.
+-  By default, PHY mode of ESP8266 device is 802.11bg mode, and PHY mode of non ESP8266 device is 802.11bgn mode.
 
 .. _cmd-STAMAC:
 

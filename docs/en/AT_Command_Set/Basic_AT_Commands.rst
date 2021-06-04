@@ -461,7 +461,9 @@ Parameter
 Note
 ^^^^^
 
--  Light-sleep mode is currently not available for ESP32-S2 series.
+-  Modem-sleep mode and Light-sleep mode can be set only in station mode.
+-  Before setting the Light-sleep mode, it is recommended to set the wakeup source in advance through the command :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`, otherwise ESP devices can't wake up and will always be in sleep mode.
+-  After setting the Light-sleep mode, if the Light-sleep wakeup condition is not met, ESP devices will automatically enter the sleep mode. When the Light-sleep wakeup condition is met, ESP devices will automatically wake up from sleep mode.
 
 Example
 ^^^^^^^^
@@ -555,17 +557,17 @@ Parameter
 
 -  **<state>**:
 
-   - Bit0: Prompt information when quitting Wi-Fi passthrough mode.
+   - Bit0: Prompt information when quitting Wi-Fi :term:`Passthrough Mode`.
 
-     - 0: Print no prompt information when quitting Wi-Fi passthrough mode.
-     - 1: Print ``+QUITT`` when quitting Wi-Fi passthrough mode.
+     - 0: Print no prompt information when quitting Wi-Fi :term:`Passthrough Mode`.
+     - 1: Print ``+QUITT`` when quitting Wi-Fi :term:`Passthrough Mode`.
 
    - Bit1: Connection prompt information type.
 
      - 0: Use simple prompt information, such as ``XX,CONNECT``.
      - 1: Use detailed prompt information, such as ``+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port``.
 
-   - Bit2: Connection status prompt information for Wi-Fi passthrough mode, Bluetooth LE SPP and Bluetooth SPP.
+   - Bit2: Connection status prompt information for Wi-Fi :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
 
      - 0: Print no prompt information.
      - 1: Print one of the following prompt information when Wi-Fi, socket, Bluetooth LE or Bluetooth status is changed:
@@ -592,7 +594,7 @@ Notes
 ^^^^^
 
 -  The configuration changes will be saved in the NVS area if ``AT+SYSSTORE=1``.
--  If you set Bit0 to 1, it will prompt “+QUITT” when you quit Wi-Fi passthrough mode.
+-  If you set Bit0 to 1, it will prompt "+QUITT" when you quit Wi-Fi :term:`Passthrough Mode`.
 -  If you set Bit1 to 1, it will impact the information of command :ref:`AT+CIPSTART <cmd-START>` and :ref:`AT+CIPSERVER <cmd-SERVER>`. It will supply "+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port" instead of "XX,CONNECT".
 
 Example
