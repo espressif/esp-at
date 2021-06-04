@@ -1364,6 +1364,7 @@ Notes
 -  SmartConfig is only available in the ESP station mode.
 -  The message ``Smart get Wi-Fi info`` means that SmartConfig has successfully acquired the AP information. ESP device will try to connect to the target AP.
 -  Message ``Smartconfig connected Wi-Fi`` is printed if the connection is successful.
+-  When AT returns ``Smartconfig connected Wi-Fi``, it is recommended to delay more than ``6`` seconds before executing :ref:`AT+CWSTOPSMART <cmd-STOPS>` because the ESP device needs to synchronize the SmartConfig results to the mobile phone.
 -  Use command :ref:`AT+CWSTOPSMART <cmd-STOPS>` to stop SmartConfig before running other commands. Please make sure that you do not execute other commands during SmartConfig.
 
 Example
