@@ -449,7 +449,9 @@
 说明
 ^^^^
 
--  当前 ESP32-S2 设备不支持 Light-sleep 模式
+-  只有在 station 模式，才可以设置 Modem-sleep 和 Light-sleep 睡眠模式
+-  设置 Light-sleep 模式前，建议提前通过 :ref:`AT+SLEEPWKCFG <cmd-WKCFG>` 命令设置好唤醒源，否则没法唤醒，设备将一直处于睡眠状态
+-  设置 Light-sleep 模式后，如果 Light-sleep 唤醒条件不满足时，设备将自动进入睡眠模式，当 Light-sleep 唤醒条件满足时，设备将自动从睡眠模式中唤醒
 
 示例
 ^^^^
@@ -543,7 +545,7 @@
 
 -  **<state>**：
 
-   - Bit0：退出 Wi-Fi 透传模式时是否打印提示信息
+   - Bit0：退出 Wi-Fi :term:`透传模式` 时是否打印提示信息
 
      - 0：不打印
      - 1：打印 ``+QUITT``
@@ -553,7 +555,7 @@
      - 0：使用简单版提示信息，如 ``XX,CONNECT``
      - 1：使用详细版提示信息，如 ``+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port``
 
-   - Bit2：连接状态提示信息，适用于 Wi-Fi 透传模式、Bluetooth LE SPP 及 Bluetooth SPP
+   - Bit2：连接状态提示信息，适用于 Wi-Fi :term:`透传模式`、Bluetooth LE SPP 及 Bluetooth SPP
 
      - 0：不打印提示信息
      - 1：当 Wi-Fi、socket、Bluetooth LE 或 Bluetooth 状态发生改变时，打印提示信息，如：
@@ -580,7 +582,7 @@
 ^^^^
 
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将被保存在 NVS 分区。
--  若设 Bit0 为 1，退出 Wi-Fi 透传模式时会提示 ``+QUITT``。
+-  若设 Bit0 为 1，退出 Wi-Fi :term:`透传模式` 时会提示 ``+QUITT``。
 -  若设 Bit1 为 1，将会影响 :ref:`AT+CIPSTART <cmd-START>` 和 :ref:`AT+CIPSERVER <cmd-SERVER>` 命令，系统将提示 "+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port"，而不是 "XX,CONNECT"。
 
 示例

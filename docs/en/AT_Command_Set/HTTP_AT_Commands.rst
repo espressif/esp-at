@@ -22,7 +22,7 @@ Set Command
 
 ::
 
-    AT+HTTPCLIENT=<opt>,<content-type>,<"url">,[<"host">],[<"path">],<transport_type>,[<"data">][,<"http_req_header">][,<"http_req_header">][...]
+    AT+HTTPCLIENT=<opt>,<content-type>,<"url">,[<"host">],[<"path">],<transport_type>[,<"data">][,<"http_req_header">][,<"http_req_header">][...]
 
 **Response:**
 
@@ -58,7 +58,7 @@ Parameters
    -  1: ``HTTP_TRANSPORT_OVER_TCP``
    -  2: ``HTTP_TRANSPORT_OVER_SSL``
 
--  **<"data">**: when it is a POST request, this parameter holds the data you want to send to the HTTP server.
+-  **<"data">**: If ``<opt>`` is a POST request, this parameter holds the data you send to the HTTP server. If not, this parameter does not exist, which means there is no need to input a comma to indicate this parameter.
 -  **<http_req_header>**: you can send more than one request header to the server.
 
 Notes

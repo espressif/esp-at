@@ -99,6 +99,71 @@ Index of Abbreviations
       
       非易失性存储器
     
+    Normal Transmission Mode
+      Default Transmission Mode
+
+      In normal transmission mode, users can send AT commands. For examples, users can send MCU data received by AT command port to the opposite end of transmission by :ref:`AT+CIPSEND <cmd-SEND>`; and the data received from the opposite end of transmission will also be returned to MCU through AT command port with additional prompt: `+IPD`.
+
+      During a normal transmission, if the connection breaks, ESP devices will give a prompt and will not attempt to reconnect.
+
+      More details are in :term:`Transmission Mode Shift Diagram`.
+
+    普通传输模式
+      默认传输模式
+
+      在普通传输模式下，用户可以发送 AT 命令。
+      例如，用户可以通过 :ref:`AT+CIPSEND <cmd-SEND>` 命令，发送 AT 命令口收到的 MCU 数据到传输对端。从传输对端收到的数据，会通过 AT 命令口返回给 MCU，同时会附带 `+IPD` 信息。
+
+      普通传输模式时，如果连接断开，ESP 不会重连，并提示连接断开。
+
+      更多介绍请参考 :term:`Transmission Mode Shift Diagram`。
+
+    Passthrough Mode
+      Also called as "Passthrough Sending & Receiving Mode".
+      
+      In passthrough mode, users cannot send AT commands except special :ref:`+++ <cmd-PLUS>` command. All MCU data received by AT command port will be sent to the opposite end of transmission without any modification; and the data received from the opposite end of transmission will also be returned to MCU through AT command port without any modification.
+
+      During the Wi-Fi passthrough transmission, if the connection breaks, ESP devices will keep trying to reconnect until :ref:`+++ <cmd-PLUS>` is input to exit the passthrough transmission.
+
+      More details are in :term:`Transmission Mode Shift Diagram`.
+
+    透传模式
+      也称为 “透传发送接收模式”。
+
+      在透传模式下，用户不能发送其它 AT 命令，除了特别的 :ref:`+++ <cmd-PLUS>` 命令。AT 命令口收到的所有的 MCU 数据都将无修改地，发送到传输对端。从传输对端收到的数据也会通过 AT 命令口无修改地，返回给 MCU。
+
+      Wi-Fi 透传模式传输时，如果连接断开，ESP 会不停地尝试重连，此时单独输入 :ref:`+++ <cmd-PLUS>` 退出透传，则停止重连。
+
+      更多介绍请参考 :term:`Transmission Mode Shift Diagram`。
+
+    Transmission Mode Shift Diagram
+      .. figure:: ../_static/intro-tt-mode.png
+        :align: center
+        :alt: Transmission Mode Shift Diagram
+        :figclass: align-center
+    
+        Transmission Mode Shift Diagram
+
+      More details are in the following introduction.
+
+      * :term:`Normal Transmission Mode` (:term:`普通传输模式`)
+      * :term:`Passthrough Receiving Mode` (:term:`透传接收模式`)
+      * :term:`Passthrough Mode` (:term:`透传模式`)
+      * :ref:`AT+CIPMODE <cmd-IPMODE>`
+      * :ref:`AT+CIPSEND <cmd-SEND>`
+      * :ref:`+++ <cmd-PLUS>`
+      * :ref:`AT+SAVETRANSLINK <cmd-SAVET>`
+
+    Passthrough Receiving Mode
+      The temporary mode between :term:`Normal Transmission Mode` and :term:`Passthrough Mode`.
+
+      In passthrough receiving mode, AT cannot send any data to the opposite end of transmission; but the data received from the opposite end of transmission can be returned to MCU through AT command port without any modification. More details are in :term:`Transmission Mode Shift Diagram`.
+
+    透传接收模式
+      在 :term:`普通传输模式` 和 :term:`透传模式` 之间的一个临时模式。
+
+      在透传接收模式，AT 不能发送数据到传输对端；但 AT 可以收到来自传输对端的数据，通过 AT 命令口无修改地返回给 MCU。更多介绍请参考 :term:`Transmission Mode Shift Diagram`。
+
     PBC
       Push Button Configuration
       

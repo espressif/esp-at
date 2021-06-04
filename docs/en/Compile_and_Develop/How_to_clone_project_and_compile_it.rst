@@ -83,6 +83,7 @@ To get ESP-AT, navigate to your installation directory and clone the repository 
     cd %userprofile%\esp
     git clone --recursive https://github.com/espressif/esp-at.git
 
+If you are located in China or have difficulties to access GitHub, you can also use ``git clone https://gitee.com/EspressifSystems/esp-at.git`` to get ESP-AT, which may be faster.
 
 ESP-AT will be downloaded into ``~/esp/esp-at`` on Linux or macOS, or ``%userprofile%\esp\esp-at`` on Windows.
 
@@ -133,7 +134,7 @@ In this step, you will clone the ``esp-idf`` folder into the ``esp-at`` folder, 
   
   - Set up the tools in the folder if it is the first time you compile the ESP-AT project. See Step 3 of *ESP-IDF Get Started Guide*.
   - Set up environment variables in the folder **every time** you compile an ESP-AT project. See Step 4 of *ESP-IDF Get Started Guide*.
-  - Install ``pyyaml`` and ``xlrd`` packages with pip in the folder if you have not done it.
+  - **Install** ``pyyaml`` **and** ``xlrd`` **packages with pip in the folder if you have not done it**.
 
     ::
 
@@ -218,6 +219,7 @@ To get ESP-AT, navigate to your installation directory and clone the repository 
     cd %userprofile%\esp
     git clone --recursive https://github.com/espressif/esp-at.git
 
+If you are located in China or have difficulties to access GitHub, you can also use ``git clone https://gitee.com/EspressifSystems/esp-at.git`` to get ESP-AT, which may be faster.
 
 ESP-AT will be downloaded into ``~/esp/esp-at`` on Linux or macOS, or ``%userprofile%\esp\esp-at`` on Windows.
 
@@ -268,7 +270,7 @@ In this step, you will clone the ``esp-idf`` folder into the ``esp-at`` folder, 
   
   - Set up the tools in the folder if it is the first time you compile an ESP-AT project. See *ESP8266 RTOS SDK Get Started Guide* |esp8266 idf doc version|_ for more information.
   - Set up environment variables in the folder **every time** you compile an ESP-AT project. See *ESP8266 RTOS SDK Get Started Guide* |esp8266 idf doc version|_ for more information.
-  - Install ``pyyaml`` and ``xlrd`` packages with pip in the folder if you have not done it.
+  - **Install** ``pyyaml`` **and** ``xlrd`` **packages with pip in the folder if you have not done it**.
 
     ::
 
@@ -283,7 +285,7 @@ If the previous steps have been done correctly, the following menu appears after
 
    Project configuration - Home window
 
-You are using this menu to set up project-specific configuration, e.g. changing AT port pins, enabling Classic Bluetooth function, etc. If you made no changes, it will run with the default configuration.
+You are using this menu to set up project-specific configuration, e.g. changing AT port pins, enabling some function, etc. If you made no changes, it will run with the default configuration.
 
 Build the Project
 ^^^^^^^^^^^^^^^^^

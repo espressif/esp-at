@@ -58,7 +58,7 @@ Establish a TCP Connection on Ethernet Network
    
 #. Use a network tool on PC to create a TCP client and connect to the TCP server that ESP created. (IP: 192.168.105.24, Port: 8081).
 
-#. Send data in normal transmission mode.
+#. Send data in :term:`Normal Transmission Mode`.
 
    - Command
   
@@ -82,7 +82,7 @@ Establish a TCP Connection on Ethernet Network
   
    Note: If the length of the data you entered is more than the value of <length> (n) set by ``AT+CIPSEND``, the system will prompt ``busy``, and send the first n bytes. After sending the first n bytes, the system will reply ``SEND OK``.
 
-#. Receive data in normal transmission mode.
+#. Receive data in :term:`Normal Transmission Mode`.
 
    When the ESP server receives data, AT will prompt:
 

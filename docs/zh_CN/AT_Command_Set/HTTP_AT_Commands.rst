@@ -22,7 +22,7 @@ HTTP AT 命令集
 
 ::
 
-    AT+HTTPCLIENT=<opt>,<content-type>,<"url">,<"host">,<"path">,<transport_type>,[<"data">][,<"http_req_header">][,<"http_req_header">][...]
+    AT+HTTPCLIENT=<opt>,<content-type>,<"url">,[<"host">],[<"path">],<transport_type>[,<"data">][,<"http_req_header">][,<"http_req_header">][...]
 
 **响应：**
 
@@ -58,7 +58,7 @@ HTTP AT 命令集
    -  1: ``HTTP_TRANSPORT_OVER_TCP``
    -  2: ``HTTP_TRANSPORT_OVER_SSL``
 
--  **<"data">**: 当发送的是 POST 请求时，本参数为发送给 HTTP 服务器的数据。
+-  **<"data">**: 当 ``<opt>`` 是 POST 请求时，本参数为发送给 HTTP 服务器的数据。当 ``<opt>`` 不是 POST 请求时，这个参数不存在（也就是，不需要输入逗号来表示有这个参数）。
 -  **<"http_req_header">**: 可发送多个请求头给服务器。
 
 说明

@@ -10,15 +10,16 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPDOMAIN <cmd-DOMAIN>`: Resolve a Domain Name.
 -  :ref:`AT+CIPSTART <cmd-START>`: Establish TCP connection, UDP transmission, or SSL connection.
 -  :ref:`AT+CIPSTARTEX <cmd-STARTEX>`: Establish TCP connection, UDP transmission, or SSL connection with an automatically assigned ID.
--  :ref:`AT+CIPSEND <cmd-SEND>`: Send data in the normal or Wi-Fi passthrough modes.
--  :ref:`AT+CIPSENDEX <cmd-SENDEX>`: Send data in the normal transmission mode in expanded ways.
+-  :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`: Exit the :term:`passthrough mode`.
+-  :ref:`AT+CIPSEND <cmd-SEND>`: Send data in the :term:`normal transmission mode` or Wi-Fi :term:`passthrough mode`.
+-  :ref:`AT+CIPSENDEX <cmd-SENDEX>`: Send data in the :term:`normal transmission mode` in expanded ways.
 -  :ref:`AT+CIPCLOSE <cmd-CLOSE>`: Close TCP/UDP/SSL connection.
 -  :ref:`AT+CIFSR <cmd-IFSR>`: Obtain the local IP address and MAC address.
 -  :ref:`AT+CIPMUX <cmd-MUX>`: Enable/disable the multiple connections mode.
 -  :ref:`AT+CIPSERVER <cmd-SERVER>`: Delete/create a TCP/SSL server.
 -  :ref:`AT+CIPSERVERMAXCONN <cmd-SERVERMAX>`: Query/Set the maximum connections allowed by a server.
 -  :ref:`AT+CIPMODE <cmd-IPMODE>`: Query/Set the transmission mode.
--  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Wi-Fi passthrough mode on power-up.
+-  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Wi-Fi :term:`passthrough mode` on power-up.
 -  :ref:`AT+CIPSTO <cmd-STO>`: Query/Set the local TCP Server Timeout.
 -  :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>`: Query/Set the time zone and SNTP server.
 -  :ref:`AT+CIPSNTPTIME <cmd-SNTPT>`: Query the SNTP time.
@@ -29,7 +30,7 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>`: Query/Set SSL client Server Name Indication (SNI).
 -  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`: Query/Set SSL client Application Layer Protocol Negotiation (ALPN).
 -  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`: Query/Set SSL client Pre-shared Key (PSK).
--  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`: Query/Set the TCP/UDP/SSL reconnection interval for the Wi-Fi passthrough mode.
+-  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`: Query/Set the TCP/UDP/SSL reconnection interval for the Wi-Fi :term:`passthrough mode`.
 -  :ref:`AT+CIPRECVMODE <cmd-CIPRECVMODE>`: Query/Set socket receiving mode.
 -  :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`: Obtain socket data in passive receiving mode.
 -  :ref:`AT+CIPRECVLEN <cmd-CIPRECVLEN>`: Obtain socket data length in passive receiving mode.
@@ -238,6 +239,7 @@ Notes
 """"""
 
 - If you want to establish TCP connection based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
+- ``<keep alive>`` parameter will eventually be configured to the socket option ``TCP_KEEPIDLE``. As for other socket options of keepalive, ``TCP_KEEPINTVL`` will use ``1`` by default, and ``TCP_KEEPCNT`` will use ``3`` by default.
 
 Example
 """""""""
@@ -351,6 +353,7 @@ Notes
 -  SSL connection needs a large amount of memory. Insufficient memory may cause the system reboot.
 -  If the ``AT+CIPSTART`` is based on an SSL connection and the timeout of each packet is 10 s, the total timeout will be much longer depending on the number of handshake packets.
 -  If you want to establish SSL connection based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
+- ``<keep alive>`` parameter will eventually be configured to the socket option ``TCP_KEEPIDLE``. As for other socket options of keepalive, ``TCP_KEEPINTVL`` will use ``1`` by default, and ``TCP_KEEPCNT`` will use ``3`` by default.
 
 Example
 """"""""
@@ -370,17 +373,43 @@ Example
 
 This command is similar to :ref:`AT+CIPSTART <cmd-START>` except that you don't need to assign an ID by yourself in multiple connections mode (:ref:`AT+CIPMUX=1 <cmd-MUX>`). The system will assign an ID to the new connection automatically.
 
+.. _cmd-PLUS:
+
+:ref:`[Passthrough Mode Only] +++ <TCPIP-AT>`: Exit from :term:`Passthrough Mode`
+-----------------------------------------------------------------------------------
+
+Special Execute Command
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Function:**
+
+Exit from :term:`Passthrough Mode` and enter the :term:`Passthrough Receiving Mode`.
+
+**Command:**
+
+::
+
+    // Only for passthrough mode
+    +++
+
+Notes
+""""""
+
+-  This special execution command consists of three identical ``+`` characters (0x2b ASCII), and no CR-LF appends to the command tail.
+-  Make sure there is more than 20 ms interval before the first ``+`` character, more than 20 ms interval after the third ``+`` character, less than 20 ms interval among the three ``+`` characters. Otherwise, the ``+`` characters will be sent out as normal passthrough data.
+-  This command returns no reply.
+
 .. _cmd-SEND:
 
-:ref:`AT+CIPSEND <TCPIP-AT>`: Send Data in the Normal or Wi-Fi Passthrough Modes
---------------------------------------------------------------------------------
+:ref:`AT+CIPSEND <TCPIP-AT>`: Send Data in the :term:`Normal Transmission Mode` or Wi-Fi :term:`Passthrough Mode`
+-----------------------------------------------------------------------------------------------------------------
 
 Set Command
 ^^^^^^^^^^^
 
 **Function:**
 
-Set the data length in the normal transmission mode.
+Set the data length to be send in the :term:`Normal Transmission Mode`.
 
 **Command:**
 
@@ -422,7 +451,7 @@ Execute Command
 
 **Function:**
 
-Enter data sending mode under the Wi-Fi passthrough mode.
+Enter the Wi-Fi :term:`Passthrough Mode`.
 
 **Command:**
 
@@ -443,9 +472,11 @@ or
 
     ERROR
 
-Enter the data sending mode. AT will send a packet every 20 ms or when the data reaches 2048 bytes. When a single packet containing ``+++`` is received, the ESP device will exit the data sending mode under the Wi-Fi passthrough mode. Please wait for at least one second before sending the next AT command.
+Enter the Wi-Fi :term:`Passthrough Mode`. The ESP8266 devices can receive 2048 bytes and send 1460 bytes at most each time; the other ESP devices can receive 8192 bytes and send 2920 bytes at most each time.
+If the length of the currently received data is greater than the maximum number of bytes that can be sent, AT will send the received data immediately; Otherwise, the received data will be sent out within 20 ms.
+When a single packet containing :ref:`+++ <cmd-PLUS>` is received, the ESP device will exit the data sending mode under the Wi-Fi :term:`Passthrough Mode`. Please wait for at least one second before sending the next AT command.
 
-This command can only be used for single connection in the Wi-Fi passthrough mode. For UDP Wi-Fi passthrough, the ``<mode>`` parameter has to be 0 when using :ref:`AT+CIPSTART <cmd-START>`.
+This command can only be used for single connection in the Wi-Fi :term:`Passthrough Mode`. For UDP Wi-Fi passthrough, the ``<mode>`` parameter has to be 0 when using :ref:`AT+CIPSTART <cmd-START>`.
 
 Parameters
 ^^^^^^^^^^
@@ -457,15 +488,15 @@ Parameters
 
 .. _cmd-SENDEX:
 
-:ref:`AT+CIPSENDEX <TCPIP-AT>`: Send Data in the Normal Transmission Mode in Expanded Ways
-------------------------------------------------------------------------------------------
+:ref:`AT+CIPSENDEX <TCPIP-AT>`: Send Data in the :term:`Normal Transmission Mode` in Expanded Ways
+----------------------------------------------------------------------------------------------------
 
 Set Command
 ^^^^^^^^^^^
 
 **Function:**
 
-Set the data length in normal transmission mode, or use ``\0`` (0x5c, 0x30 ASCII) to trigger data transmission.
+Set the data length to be send in :term:`Normal Transmission Mode`, or use ``\0`` (0x5c, 0x30 ASCII) to trigger data transmission.
 
 **Command:**
 
@@ -667,7 +698,7 @@ Notes
 ^^^^^
 
 -  This mode can only be changed after all connections are disconnected.
--  If you want to set the multiple connections mode, the Wi-Fi passthrough mode should be disabled (:ref:`AT+CIPMODE=0 <cmd-IPMODE>`).  
+-  If you want to set the multiple connections mode, ESP devices should be in the :term:`Normal Transmission Mode` (:ref:`AT+CIPMODE=0 <cmd-IPMODE>`).  
 -  If you want to set the single connection mode when the TCP/SSL server is running, you should delete the server first. (:ref:`AT+CIPSERVER=0 <cmd-SERVER>`).
 
 Example
@@ -877,18 +908,15 @@ Set the transmission mode.
 
 Parameter
 ^^^^^^^^^^
-
 -  **<mode>**:
 
-   -  0: normal transmission mode.
-   -  1: Wi-Fi passthrough mode, or called transparent transmission, which can only be enabled in TCP single connection mode, UDP mode when the remote host and port do not change, or SSL single connection mode.
+   -  0: :term:`Normal Transmission Mode`.
+   -  1: Wi-Fi :term:`Passthrough Receiving Mode`, or called transparent receiving transmission, which can only be enabled in TCP single connection mode, UDP mode when the remote host and port do not change, or SSL single connection mode.
 
 Notes
 ^^^^^
 
 -  The configuration changes will NOT be saved in flash.
--  During the Wi-Fi passthrough transmission, if the connection breaks, ESP devices will keep trying to reconnect until ``+++`` is input to exit the transmission.
--  During a normal transmission, if the connection breaks, ESP devices will give a prompt and will not attempt to reconnect.
 
 Example
 ^^^^^^^^
@@ -899,8 +927,8 @@ Example
 
 .. _cmd-SAVET:
 
-:ref:`AT+SAVETRANSLINK <TCPIP-AT>`: Set Whether to Enter Wi-Fi Passthrough Mode on Power-up
--------------------------------------------------------------------------------------------
+:ref:`AT+SAVETRANSLINK <TCPIP-AT>`: Set Whether to Enter Wi-Fi :term:`Passthrough Mode` on Power-up
+----------------------------------------------------------------------------------------------------
 
 For TCP/SSL Single Connection
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -925,8 +953,8 @@ Parameters
 
 -  **<mode>**:
 
-   -  0: ESP will NOT enter Wi-Fi passthrough mode on power-up.
-   -  1: ESP will enter Wi-Fi passthrough mode on power-up.
+   -  0: ESP will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
+   -  1: ESP will enter Wi-Fi :term:`Passthrough Mode` on power-up.
 
 -  **<"remote host">**: string parameter showing the IPv4 address or IPv6 address or domain name of remote host.
 -  **<remote port>**: the remote port number.
@@ -939,7 +967,7 @@ Parameters
 Notes
 """""""
 
--  This command will save the Wi-Fi passthrough mode configuration in the NVS area. If ``<mode>`` is set to 1, ESP device will enter the Wi-Fi passthrough mode in any subsequent power cycles. The configuration will take effect after ESP reboots.
+-  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 1, ESP device will enter the Wi-Fi :term:`Passthrough Mode` in any subsequent power cycles. The configuration will take effect after ESP reboots.
 -  As long as the remote host and port are valid, the configuration will be saved in flash.
 -  If you want to establish TCP/SSL connection based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
 
@@ -976,8 +1004,8 @@ Parameters
 
 -  **<mode>**:
 
-   -  0: ESP will NOT enter Wi-Fi passthrough mode on power-up.
-   -  1: ESP will enter Wi-Fi passthrough mode on power-up.
+   -  0: ESP will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
+   -  1: ESP will enter Wi-Fi :term:`Passthrough Mode` on power-up.
 
 -  **<"remote host">**: string parameter showing the IPv4 address or IPv6 address or domain name of remote host.
 -  **<remote port>**: the remote port number.
@@ -987,7 +1015,7 @@ Parameters
 Notes
 """""""
 
--  This command will save the Wi-Fi passthrough mode configuration in the NVS area. If ``<mode>`` is set to 1, ESP device will enter the Wi-Fi passthrough mode in any subsequent power cycles. The configuration will take effect after ESP reboots.
+-  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 1, ESP device will enter the Wi-Fi :term:`Passthrough Mode` in any subsequent power cycles. The configuration will take effect after ESP reboots.
 -  As long as the remote host and port are valid, the configuration will be saved in flash.
 -  If you want to establish UDP transmission based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
 
@@ -1402,7 +1430,7 @@ Notes
 ^^^^^
 
 -  If you want this configuration to take effect immediately, run this command before establishing an SSL connection.
--  The configuration changes will be saved in the NVS area. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL Wi-Fi passthrough mode on power-up, the ESP device will establish an SSL connection based on this configuration when powered up next time.
+-  The configuration changes will be saved in the NVS area. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL Wi-Fi :term:`Passthrough Mode` on power-up, the ESP device will establish an SSL connection based on this configuration when powered up next time.
 
 .. _cmd-SSLCCN:
 
@@ -1536,7 +1564,8 @@ Query the ALPN configuration of each connection where the ESP device runs as an 
 
 ::
 
-    +CIPSSLCALPN:<link ID>,<"alpn">[,<"alpn">[,<"alpn">]]
+    +CIPSSLCALPN:<link ID>[,<"alpn">][,<"alpn">][,<"alpn">]
+
     OK
 
 Set Command
@@ -1547,10 +1576,10 @@ Set Command
 ::
 
     // Single connection: (AT+CIPMUX=0)
-    AT+CIPSSLCALPN=<counts>,<"alpn">[,<"alpn">[,<"alpn">]]
+    AT+CIPSSLCALPN=<counts>[,<"alpn">][,<"alpn">][,<"alpn">]
 
     // Multiple connections: (AT+CIPMUX=1)
-    AT+CIPSSLCALPN=<link ID>,<counts>,<"alpn">[,<"alpn">[,<"alpn">]]
+    AT+CIPSSLCALPN=<link ID>,<counts>[,<"alpn">][,<"alpn">][,<"alpn">]
 
 **Response:**
 
@@ -1562,7 +1591,11 @@ Parameters
 ^^^^^^^^^^
 
 -  **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
--  **<counts>**: the number of ALPNs.
+-  **<counts>**: the number of ALPNs. Range: [0,5].
+
+  - 0: clean the ALPN configuration.
+  - [1,5]: set the ALPN configuration.
+
 -  **<"alpn">**: a string paramemter showing the ALPN in ClientHello. The maximum length of alpn is limited by the command length.
 
 Note
@@ -1627,15 +1660,15 @@ Notes
 
 .. _cmd-AUTOCONNINT:
 
-:ref:`AT+CIPRECONNINTV <TCPIP-AT>`: Query/Set the TCP/UDP/SSL reconnection Interval for the Wi-Fi Passthrough Mode
-------------------------------------------------------------------------------------------------------------------
+:ref:`AT+CIPRECONNINTV <TCPIP-AT>`: Query/Set the TCP/UDP/SSL reconnection Interval for the Wi-Fi :term:`Passthrough Mode`
+--------------------------------------------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 
 **Function:**
 
-Query the automatic connect interval for the Wi-Fi passthrough mode.
+Query the automatic connect interval for the Wi-Fi :term:`Passthrough Mode`.
 
 **Command:**
 
@@ -1655,7 +1688,7 @@ Set Command
 
 **Function:**
 
-Set the automatic reconnecting interval when TCP/UDP/SSL transmission breaks in the Wi-Fi passthrough mode.
+Set the automatic reconnecting interval when TCP/UDP/SSL transmission breaks in the Wi-Fi :term:`Passthrough Mode`.
 
 **Command:**
 
@@ -1737,7 +1770,7 @@ Parameter
 Notes
 ^^^^^
 
--  The configuration can not be used in the Wi-Fi passthrough mode. If it is a UDP transmission in passive mode, data will be lost when the buffer is full.
+-  The configuration can not be used in the Wi-Fi :term:`Passthrough Mode`. If it is a UDP transmission in passive mode, data will be lost when the buffer is full.
 
 -  When ESP-AT receives socket data in passive mode, it will prompt the following messages in different scenarios:
 
@@ -1883,7 +1916,7 @@ or
 
 ::
 
-    +PING:TIMEOUT
+    +PING:TIMEOUT   // esp-at returns this response only when the domain name resolution failure or ping timeout
 
     ERROR
 
@@ -1896,6 +1929,7 @@ Parameters
 Notes
 ^^^^^
 - If you want to ping a remote host based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
+- If the remote host is a domain name string, ping will first resolve the domain name (IPv4 address preferred) from DNS (domain name server), and then ping the remote IP address.
 
 Example
 ^^^^^^^^

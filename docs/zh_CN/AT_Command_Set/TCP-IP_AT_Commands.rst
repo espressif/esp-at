@@ -10,15 +10,16 @@ TCP/IP AT 命令
 -  :ref:`AT+CIPDOMAIN <cmd-DOMAIN>`：域名解析
 -  :ref:`AT+CIPSTART <cmd-START>`：建立 TCP 连接、UDP 传输或 SSL 连接
 -  :ref:`AT+CIPSTARTEX <cmd-STARTEX>`：建立自动分配 ID 的 TCP 连接、UDP 传输或 SSL 连接
--  :ref:`AT+CIPSEND <cmd-SEND>`：在普通传输模式或 Wi-Fi 透传模式下发送数据
--  :ref:`AT+CIPSENDEX <cmd-SENDEX>`：在普通传输模式下采用扩展的方式发送数据
+-  :ref:`[仅适用透传模式] +++ <cmd-PLUS>`: 退出 :term:`透传模式`
+-  :ref:`AT+CIPSEND <cmd-SEND>`：在 :term:`普通传输模式` 或 Wi-Fi :term:`透传模式` 下发送数据
+-  :ref:`AT+CIPSENDEX <cmd-SENDEX>`：在 :term:`普通传输模式` 下采用扩展的方式发送数据
 -  :ref:`AT+CIPCLOSE <cmd-CLOSE>`：关闭 TCP/UDP/SSL 连接
 -  :ref:`AT+CIFSR <cmd-IFSR>`：查询本地 IP 地址和 MAC 地址
 -  :ref:`AT+CIPMUX <cmd-MUX>`：启用/禁用多连接模式
 -  :ref:`AT+CIPSERVER <cmd-SERVER>`：建立/关闭 TCP 或 SSL 服务器
 -  :ref:`AT+CIPSERVERMAXCONN <cmd-SERVERMAX>`：查询/设置服务器允许建立的最大连接数
 -  :ref:`AT+CIPMODE <cmd-IPMODE>`：查询/设置传输模式
--  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`：设置开机透传模式信息
+-  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`：设置开机 :term:`透传模式` 信息
 -  :ref:`AT+CIPSTO <cmd-STO>`：查询/设置本地 TCP 服务器超时时间
 -  :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>`：查询/设置时区和 SNTP 服务器
 -  :ref:`AT+CIPSNTPTIME <cmd-SNTPT>`：查询 SNTP 时间
@@ -29,7 +30,7 @@ TCP/IP AT 命令
 -  :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>`：查询/设置 SSL 客户端的 SNI
 -  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`：查询/设置 SSL 客户端 ALPN
 -  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`：查询/设置 SSL 客户端的 PSK
--  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`：查询/设置 Wi-Fi 透传模式下的 TCP/UDP/SSL 重连间隔
+-  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`：查询/设置 Wi-Fi :term:`透传模式` 下的 TCP/UDP/SSL 重连间隔
 -  :ref:`AT+CIPRECVMODE <cmd-CIPRECVMODE>`：查询/设置 socket 接收模式
 -  :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`：获取被动接收模式下的 socket 数据
 -  :ref:`AT+CIPRECVLEN <cmd-CIPRECVLEN>`：查询被动接收模式下 socket 数据的长度
@@ -237,7 +238,7 @@ TCP/IP AT 命令
 """"""
 
 - 如果想基于 IPv6 网络建立 TCP 连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
-
+- ``<keep alive>`` 参数最终会配置到 socket 选项 ``TCP_KEEPIDLE``，keepalive 另外的　socket 选项 ``TCP_KEEPINTVL`` 默认会使用 ``1``，``TCP_KEEPCNT`` 默认会使用 ``3``
 
 示例
 """"
@@ -351,6 +352,7 @@ TCP/IP AT 命令
 - SSL 连接需占用大量内存，内存不足会导致系统重启
 - 如果 ``AT+CIPSTART`` 命令是基于 SSL 连接，且每个数据包的超时时间为 10 秒，则总超时时间会变得更长，具体取决于握手数据包的个数
 - 如果想基于 IPv6 网络建立 SSL 连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`, 再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
+- ``<keep alive>`` 参数最终会配置到 socket 选项 ``TCP_KEEPIDLE``，keepalive 另外的　socket 选项 ``TCP_KEEPINTVL`` 默认会使用 ``1``，``TCP_KEEPCNT`` 默认会使用 ``3``
 
 示例
 """"""""
@@ -370,9 +372,35 @@ TCP/IP AT 命令
 
 本命令与 :ref:`AT+CIPSTART <cmd-START>` 相似，不同点在于：在多连接的情况下 (:ref:`AT+CIPMUX=1 <cmd-MUX>`) 无需手动分配 ID，系统会自动为新建的连接分配 ID。
 
+.. _cmd-PLUS:
+
+:ref:`[仅适用透传模式] +++ <TCPIP-AT>`：退出 :term:`透传模式`
+--------------------------------------------------------------------------
+
+特殊执行命令
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+**功能：**
+
+退出 :term:`透传模式`，进入 :term:`透传接收模式`
+
+**Command:**
+
+::
+
+    // 仅适用透传模式
+    +++
+
+说明
+""""""
+
+-  此特殊执行命令包含有三个相同的 ``+`` 字符（即 ASCII 码：0x2b），同时命令结尾没有 CR-LF 字符
+-  确保第一个 ``+`` 字符前至少有 20 ms 时间间隔内没有其他输入，第三个 ``+`` 字符后至少有 20 ms 时间间隔内没有其他输入，三个 ``+`` 字符之间至多有 20 ms 时间间隔内没有其他输入。否则，``+`` 字符会被当做普通透传数据发送出去
+-  本条特殊执行命令没有命令回复
+
 .. _cmd-SEND:
 
-:ref:`AT+CIPSEND <TCPIP-AT>`：在普通传输模式或 Wi-Fi 透传模式下发送数据
+:ref:`AT+CIPSEND <TCPIP-AT>`：在 :term:`普通传输模式` 或 Wi-Fi :term:`透传模式` 下发送数据
 ------------------------------------------------------------------------------------------------------------------
 
 设置命令
@@ -380,7 +408,7 @@ TCP/IP AT 命令
 
 **功能：**
 
-普通传输模式下，指定长度发送数据
+:term:`普通传输模式` 下，指定长度发送数据
 
 **命令：**
 
@@ -422,7 +450,7 @@ TCP/IP AT 命令
 
 **功能：**
 
-Wi-Fi 透传模式下，进入数据发送模式
+进入 Wi-Fi :term:`透传模式`
 
 **命令：**
 
@@ -443,9 +471,9 @@ Wi-Fi 透传模式下，进入数据发送模式
 
     ERROR
 
-进入数据发送模式，每包最大 2048 字节，或者每包数据以 20 ms 间隔区分。当输入单独一包 ``+++`` 时，退出透传模式下的数据发送模式，请至少间隔 1 秒再发下一条 AT 命令。
+进入 Wi-Fi :term:`透传模式`，ESP8266 设备每次最大接收 2048 字节，最大发送 1460 字节；其他 ESP 设备每次最大接收 8192 字节，最大发送 2920 字节。如果当前接收的数据长度大于最大发送字节数，AT 将立即发送；否则，接收的数据将在 20 ms 内发送。当输入单独一包 :ref:`+++ <cmd-PLUS>` 时，退出 :term:`透传模式` 下的数据发送模式，请至少间隔 1 秒再发下一条 AT 命令。
 
-本命令必须在开启透传模式以及单连接下使用。若为 Wi-Fi UDP 透传，:ref:`AT+CIPSTART <cmd-START>` 命令的参数 ``<mode>`` 必须设置为 0。
+本命令必须在开启 :term:`透传模式` 以及单连接下使用。若为 Wi-Fi UDP 透传，:ref:`AT+CIPSTART <cmd-START>` 命令的参数 ``<mode>`` 必须设置为 0。
 
 参数
 ^^^^
@@ -457,7 +485,7 @@ Wi-Fi 透传模式下，进入数据发送模式
 
 .. _cmd-SENDEX:
 
-:ref:`AT+CIPSENDEX <TCPIP-AT>`：在普通传输模式下采用扩展的方式发送数据
+:ref:`AT+CIPSENDEX <TCPIP-AT>`：在 :term:`普通传输模式` 下采用扩展的方式发送数据
 ----------------------------------------------------------------------------------------------
 
 设置命令
@@ -465,7 +493,7 @@ Wi-Fi 透传模式下，进入数据发送模式
 
 **功能：**
 
-普通传输模式下，指定长度发送数据，或者使用字符串 ``\0`` (0x5c, 0x30 ASCII) 触发数据发送
+:term:`普通传输模式` 下，指定长度发送数据，或者使用字符串 ``\0`` (0x5c, 0x30 ASCII) 触发数据发送
 
 **命令：**
 
@@ -666,7 +694,7 @@ Wi-Fi 透传模式下，进入数据发送模式
 ^^^^
 
 -  只有当所有连接都断开时才可更改连接模式
--  只有非透传模式 (:ref:`AT+CIPMODE=0 <cmd-IPMODE>`)，才能设置为多连接 
+-  只有 :term:`普通传输模式` (:ref:`AT+CIPMODE=0 <cmd-IPMODE>`)，才能设置为多连接 
 -  如果建立了 TCP/SSL 服务器，想切换为单连接，必须关闭服务器 (:ref:`AT+CIPSERVER=0 <cmd-SERVER>`)
 
 示例
@@ -879,15 +907,13 @@ Wi-Fi 透传模式下，进入数据发送模式
 
 -  **<mode>**:
 
-   -  0: 普通传输模式
-   -  1: Wi-Fi 透传模式，仅支持 TCP 单连接、UDP 固定通信对端、SSL 单连接的情况
+   -  0: :term:`普通传输模式`
+   -  1: Wi-Fi :term:`透传接收模式`，仅支持 TCP 单连接、UDP 固定通信对端、SSL 单连接的情况
 
 说明
 ^^^^
 
 -  配置更改不保存到 flash。
--  Wi-Fi 透传模式传输时，如果连接断开，ESP 会不停地尝试重连，此时单独输入 ``+++`` 退出透传，则停止重连。
--  普通传输模式时，如果连接断开，ESP 则不会重连，并提示连接断开。
 
 示例
 ^^^^
@@ -898,10 +924,10 @@ Wi-Fi 透传模式下，进入数据发送模式
 
 .. _cmd-SAVET:
 
-:ref:`AT+SAVETRANSLINK <TCPIP-AT>`：设置开机透传模式信息
+:ref:`AT+SAVETRANSLINK <TCPIP-AT>`：设置开机 :term:`透传模式` 信息
 -------------------------------------------------------------------------------------
 
-设置开机进入 TCP/SSL 透传模式信息
+设置开机进入 TCP/SSL :term:`透传模式` 信息
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 设置命令
@@ -924,8 +950,8 @@ Wi-Fi 透传模式下，进入数据发送模式
 
 -  **<mode>**:
 
-   -  0: 关闭 ESP 上电进入 Wi-Fi 透传模式
-   -  1: 开启 ESP 上电进入 Wi-Fi 透传模式
+   -  0: 关闭 ESP 上电进入 Wi-Fi :term:`透传模式`
+   -  1: 开启 ESP 上电进入 Wi-Fi :term:`透传模式`
 
 -  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：远端端口值
@@ -938,7 +964,7 @@ Wi-Fi 透传模式下，进入数据发送模式
 说明
 """""""
 
-- 本设置将 Wi-Fi 开机透传模式信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入透传模式。需重启生效。
+- 本设置将 Wi-Fi 开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入 :term:`透传模式`。需重启生效。
 - 只要远端 IP 地址（域名）、端口的值符合规范，本设置就会被保存到 flash。
 - 如果想基于 IPv6 网络建立透传连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
 
@@ -952,7 +978,7 @@ Wi-Fi 透传模式下，进入数据发送模式
     AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"TCPv6"
     AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"SSLv6
 
-设置开机进入 UDP 透传模式信息
+设置开机进入 UDP :term:`透传模式` 信息
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 设置
@@ -975,8 +1001,8 @@ Wi-Fi 透传模式下，进入数据发送模式
 
 -  **<mode>**:
 
-   -  0: 关闭 ESP 上电进入 Wi-Fi 透传模式
-   -  1: 开启 ESP 上电进入 Wi-Fi 透传模式
+   -  0: 关闭 ESP 上电进入 Wi-Fi :term:`透传模式`
+   -  1: 开启 ESP 上电进入 Wi-Fi :term:`透传模式`
 
 -  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：远端端口值
@@ -986,7 +1012,7 @@ Wi-Fi 透传模式下，进入数据发送模式
 说明
 """""""
 
-- 本设置将 Wi-Fi 开机透传模式信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入透传模式。需重启生效
+- 本设置将 Wi-Fi 开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入 :term:`透传模式`。需重启生效
 - 只要远端 IP 地址（域名）、端口的值符合规范，本设置就会被保存到 flash
 - 如果想基于 IPv6 网络建立透传连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
 
@@ -1401,7 +1427,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 ^^^^
 
 -  如果想要本配置立即生效，请在建立 SSL 连接前运行本命令。
--  配置更改将保存在 NVS 区，如果您使用 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 命令设置开机进入 Wi-Fi SSL 透传模式，ESP 将在下次上电时基于本配置建立 SSL 连接。
+-  配置更改将保存在 NVS 区，如果您使用 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 命令设置开机进入 Wi-Fi SSL :term:`透传模式`，ESP 将在下次上电时基于本配置建立 SSL 连接。
 
 .. _cmd-SSLCCN:
 
@@ -1534,7 +1560,8 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 ::
 
-    +CIPSSLCALPN:<link ID>,<"alpn">[,<"alpn">[,<"alpn">]]
+    +CIPSSLCALPN:<link ID>,<"alpn">[,<"alpn">][,<"alpn">]
+
     OK
 
 设置命令
@@ -1545,10 +1572,10 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 ::
 
     // 单连接：(AT+CIPMUX=0)
-    AT+CIPSSLCALPN=<counts>,<"alpn">[,<"alpn">[,<"alpn">]]
+    AT+CIPSSLCALPN=<counts>[,<"alpn">][,<"alpn">][,<"alpn">]
 
     // 多连接：(AT+CIPMUX=1)
-    AT+CIPSSLCALPN=<link ID>,<counts>,<"alpn">[,<"alpn">[,<"alpn">]]
+    AT+CIPSSLCALPN=<link ID>,<counts>[,<"alpn">][,<"alpn">[,<"alpn">]
 
 **响应：**
 
@@ -1560,7 +1587,11 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 ^^^^
 
 -  **<link ID>**：网络连接 ID (0 ~ max)，在单连接的情况下，本参数值为 0；在多连接的情况下，若参数值设为 max，则表示所有连接；本参数默认值为 5。
--  **<counts>**：ALPN 的数量。
+-  **<counts>**：ALPN 的数量。范围：[0,5]。
+
+  - 0: 清除 ALPN 配置。
+  - [1,5]: 设置 ALPN 配置。
+
 -  **<"alpn">**：字符串参数，表示 ClientHello 中的 ALPN。ALPN 最大长度受限于命令的最大长度。
 
 说明
@@ -1625,7 +1656,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 .. _cmd-AUTOCONNINT:
 
-:ref:`AT+CIPRECONNINTV <TCPIP-AT>`：查询/设置 Wi-Fi 透传模式下的 TCP/UDP/SSL 重连间隔
+:ref:`AT+CIPRECONNINTV <TCPIP-AT>`：查询/设置 Wi-Fi :term:`透传模式` 下的 TCP/UDP/SSL 重连间隔
 -----------------------------------------------------------------------------------------------------------
 
 查询命令
@@ -1633,7 +1664,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 **功能：**
 
-查询 Wi-Fi 透传模式下的自动重连间隔
+查询 Wi-Fi :term:`透传模式` 下的自动重连间隔
 
 **命令：**
 
@@ -1653,7 +1684,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 **功能：**
 
-设置 Wi-Fi 透传模式下 TCP/UDP/SSL 传输断开后自动重连的间隔
+设置 Wi-Fi :term:`透传模式` 下 TCP/UDP/SSL 传输断开后自动重连的间隔
 
 **命令：**
 
@@ -1735,7 +1766,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 说明
 ^^^^
 
--  该配置不能用于 Wi-Fi 透传模式。
+-  该配置不能用于 Wi-Fi :term:`透传模式`。
 
 -  当 ESP-AT 在被动模式下收到 socket 数据时，会根据情况的不同提示不同的信息：
 
@@ -1881,7 +1912,7 @@ ping 对端主机
 
 ::
 
-    +PING:TIMEOUT
+    +PING:TIMEOUT   // 只有在域名解析失败或 PING 超时情况下，才会有这个回复
 
     ERROR
 
@@ -1895,6 +1926,7 @@ ping 对端主机
 ^^^^
 
 - 如果想基于 IPv6 网络 ping 对端主机，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
+- 如果远端主机是域名字符串，则 ping 将先通过 DNS 进行域名解析（优先解析 IPv4 地址），再 ping 对端主机 IP 地址
 
 示例
 ^^^^
