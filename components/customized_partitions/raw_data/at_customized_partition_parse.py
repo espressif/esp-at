@@ -25,6 +25,7 @@ import sys
 import stat
 import argparse
 import subprocess
+import re
 
 generation_tools = {}
 
@@ -34,6 +35,7 @@ def parse_generation_tools (dependency_file, sdkconfig_file):
         with open(dependency_file) as f:
             for line in f.readlines():
                 line_str = line.strip()
+                line_str = re.sub(' +', ' ', line_str)
                 if not line_str.startswith("#"):
                     str_list = line_str.split()
                     if (sdkconfig.find("".join(["CONFIG_",str_list[0]])) != -1):
@@ -43,6 +45,7 @@ def parse_partition_tables (partition_file):
     with open(partition_file) as f:
         for line in f.readlines():
             line_str = line.strip()
+            line_str = re.sub(' +', '', line_str)
             if not line_str.startswith("#"):
                 str_list = line_str.split(',')
                 if str_list[0] in generation_tools:

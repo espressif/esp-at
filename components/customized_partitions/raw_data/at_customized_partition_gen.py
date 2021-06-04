@@ -25,6 +25,7 @@ import sys
 import stat
 import argparse
 import subprocess
+import re
 
 def main():
     """ main """
@@ -59,6 +60,7 @@ def main():
     with open(flash_args_file, 'r') as args_file:
         for line in args_file.readlines():
             line_str = line.strip()
+            line_str = re.sub(' +', ' ', line_str)
             if line_str != '':
                 str_list = line_str.split(' ')
                 full_filename = str_list[1]
