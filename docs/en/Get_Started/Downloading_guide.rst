@@ -187,7 +187,7 @@ To check whether AT works, do as follows:
 - Set Flow Type to None;
 - Enter the command "AT+GMR" with a new line (CR LF). 
 
-If the response is OK as the picture below shows, it means that AT works.
+If the response is OK as the picture below shows, AT works.
 
 .. figure:: ../../_static/esp32_wroom32_version.png
    :align: center
