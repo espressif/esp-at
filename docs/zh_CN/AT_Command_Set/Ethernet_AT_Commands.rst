@@ -21,10 +21,10 @@
 
 - 修改 AT UART 管脚（因为默认的 AT UART 管脚和以太网功能管脚冲突）：
 
-  - 打开 ``factory_param_data.csv`` 表格文件；
-  - 将 ``WROVER-32`` 的 ``uart_tx_pin`` 从 GPIO22 改为 GPIO2， ``uart_rx_pin`` 从 GPIO19 改为 GPIO4， ``uart_cts_pin`` 从 GPIO15 改为 GPIO-1，``uart_rts_pin`` 从 GPIO14 改为 GPIO-1 （硬件流控功能可选，这里未使用该功能），更多信息请见 :doc:`../Compile_and_Develop/How_to_set_AT_port_pin`。
+  - 打开 :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 表格文件；
+  - 将 ``WROVER-32`` 的 ``uart_tx_pin`` 从 GPIO22 改为 GPIO2， ``uart_rx_pin`` 从 GPIO19 改为 GPIO4， ``uart_cts_pin`` 从 GPIO15 改为 GPIO1，``uart_rts_pin`` 从 GPIO14 改为 GPIO1 （硬件流控功能可选，这里未使用该功能），更多信息请见 :doc:`../Compile_and_Develop/How_to_set_AT_port_pin`。
 
-- 使能 ``AT ethernet support``，更多信息请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`。
+- 使能 ``AT ethernet support``，更多信息请见 :doc:`../Compile_and_Develop/How_to_enable_ESP_AT_Ethernet`。
 - 编译后将该工程烧录至 ESP32-Ethernet-Kit。
 - 连接硬件：
  

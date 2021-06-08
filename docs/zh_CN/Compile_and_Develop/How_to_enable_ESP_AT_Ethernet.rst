@@ -1,0 +1,1 @@
+.. include:: ../../en/Compile_and_Develop/How_to_enable_ESP_AT_Ethernet.rst
