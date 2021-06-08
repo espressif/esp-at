@@ -227,12 +227,8 @@ static esp_err_t at_web_try_connect(uint8_t *ssid, uint8_t *password, uint8_t *b
     // force connect to AP
     at_wifi_reconnect_init(true);
     // apply connect
-    ret = at_wifi_connect();
-    if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "wifi connect fail");
-        return ret;
-    }
-
+    at_wifi_connect();
+    
     if (connect_event != NULL) { // need to wait wifi connect result, now it's phone config wifi and ssid is null
         bits = xEventGroupWaitBits(connect_event,
             ESP_AT_WEB_WIFI_CONNECTED_BIT | ESP_AT_WEB_WIFI_FAIL_BIT,
@@ -1062,7 +1058,6 @@ static esp_err_t at_web_apply_wifi_connect_info(int32_t udp_port)
 {
     esp_err_t ret;
     wifi_sta_connect_config_t *connect_config = at_web_get_sta_connect_config();
-    wifi_sta_connection_info_t *current_connection_info = at_web_get_sta_connection_info();
     int32_t reconnnect_timeout = at_web_get_sta_reconnect_timeout();
     wifi_sta_connection_info_t connection_info = {0};
     tcpip_adapter_ip_info_t sta_ip = {0};
@@ -1077,140 +1072,13 @@ static esp_err_t at_web_apply_wifi_connect_info(int32_t udp_port)
     // Calculate the max connect time,unit: s
     int32_t connect_timeout = reconnnect_timeout - ESP_AT_WEB_BROADCAST_TIMES_DEFAULT * ESP_AT_WEB_BROADCAST_INTERVAL_DEFAULT / 1000000;
 
-    if (current_connection_info->config_status != ESP_AT_WIFI_STA_CONFIG_DONE) {
-        printf("Error, connection status is %d\r\n", current_connection_info->config_status);
-        goto err;
-    }
-
     // Clear connect status flag
     at_web_update_sta_got_ip_flag(false);
     // According to config wifi device to try connect
-    if (udp_port != -1) { // Now, It's WeChat post data to config wifi
-        if (strlen((char *)connect_config->ssid) > 0) { // Now, find ssid from HTTP request, direct connect(It's also maybe phone or rounter)
-            ESP_LOGI(TAG, "Use SSID %s direct connect", (char *)connect_config->ssid);
-            ret = at_web_try_connect(connect_config->ssid, connect_config->password, NULL, NULL);
-            if (ret != ESP_OK) {
-                ESP_LOGE(TAG, "Apply connect fail");
-                goto err;
-            } else {
-                ESP_LOGI(TAG, "Apply connect success");
-                connection_info.config_status = ESP_AT_WIFI_STA_CONNECTING;
-                at_web_update_sta_connection_info(&connection_info);
-                // send a message to MCU
-                esp_at_port_write_data((uint8_t*)s_wifi_start_connect_response, strlen(s_wifi_start_connect_response));
-            }
-
-            s_wifi_sta_connect_timer_handler = xTimerCreate("listen_sta_connect_status", ESP_AT_WEB_TIMER_POLLING_PERIOD / portTICK_PERIOD_MS, pdTRUE,
-                NULL, listen_sta_connect_status_timer_cb);
-            xTimerStart(s_wifi_sta_connect_timer_handler, 5);
-            // broadcast and multicast and unicast
-        } else { // Now, It's WeChat post data to config wifi,and user don't enter ssid
-            // if have connect to a ap, then disconnect
-            at_wifi_disconnect();
-            // stop reconnect if reconnect is in process(ensure ESP in disconnect status)
-            at_wifi_reconnect_stop();
-            s_wifi_sta_connect_event_group = xEventGroupCreate();
-
-            s_wifi_sta_connect_timer_handler = xTimerCreate("listen_sta_connect_success", ESP_AT_WEB_TIMER_POLLING_PERIOD / portTICK_PERIOD_MS, pdTRUE,
-                NULL, listen_sta_connect_success_timer_cb);
-            xTimerStart(s_wifi_sta_connect_timer_handler, 5);
-            connection_info.config_status = ESP_AT_WIFI_STA_CONNECTING;
-            at_web_update_sta_connection_info(&connection_info);
-            // send a message to MCU
-            esp_at_port_write_data((uint8_t*)s_wifi_start_connect_response, strlen(s_wifi_start_connect_response));
-            // begin scan and try connect,attention, this function will block until connect successfully or reach max_scan_time or reach connect_num
-            ret = at_web_start_scan_filter(s_mobile_phone_mac, connect_config->password, connect_timeout, s_wifi_sta_connect_event_group);
-            // when function return, it means have finished scan and try connect.
-            // clear connect resource, include Timer and EventGroup.
-            if (s_wifi_sta_connect_timer_handler != NULL) {
-                xTimerStop(s_wifi_sta_connect_timer_handler, portMAX_DELAY);
-                xTimerDelete(s_wifi_sta_connect_timer_handler, portMAX_DELAY);
-                s_wifi_sta_connect_timer_handler = NULL;
-            }
-
-            if (s_wifi_sta_connect_event_group != NULL) {
-                vEventGroupDelete(s_wifi_sta_connect_event_group);
-                s_wifi_sta_connect_event_group = NULL;
-            }
-
-            memset(s_mobile_phone_mac, 0, sizeof(s_mobile_phone_mac));
-            at_web_clear_sta_connect_config();
-            // according to connect result to update or report results
-            if (ret != ESP_OK) { // connect fail
-                ESP_LOGW(TAG, "Scan filter fail, timeout");
-                connection_info.config_status = ESP_AT_WIFI_STA_CONNECT_FAIL;
-                at_wifi_reconnect_stop();
-                at_web_update_sta_connection_info(&connection_info);
-                esp_at_port_write_data((uint8_t*)s_wifi_conncet_finish_response, strlen(s_wifi_conncet_finish_response));
-            } else { // connect ok
-                ESP_LOGI(TAG, "Connect router success");
-                ret = tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &sta_ip);
-                if (ret != ESP_OK) {
-                    ESP_LOGE(TAG, "get sta ip fail");
-                }
-                ESP_LOGI(TAG, "Congratulate, got ip:" IPSTR, IP2STR(&sta_ip.ip));
-                ESP_LOGI(TAG, "got gw:" IPSTR, IP2STR(&sta_ip.gw)); // got gateway, Actually, it's mobile phone's ap ip.
-
-                sprintf(connection_info.sta_ip, IPSTR, IP2STR(&sta_ip.ip));
-                sprintf(gateway, IPSTR, IP2STR(&sta_ip.gw));
-                
-                sprintf(sendline, "ip=%d.%d.%d.%d&port=%d", IP2STR(&sta_ip.ip), ESP_AT_WEB_UDP_PORT_DEFAULT);
-                ESP_LOGD(TAG, "udp send str is %s", sendline);
-
-                connection_info.config_status = ESP_AT_WIFI_STA_CONNECT_OK;
-                at_web_update_sta_connection_info(&connection_info);
-                // creat udp to send wifi connect success to mobile phone.
-                udp_socket = udp_create(ESP_AT_WEB_UDP_PORT_DEFAULT, connection_info.sta_ip);
-                if (udp_socket == -1) {
-                    goto err;
-                }
-
-                broadcast_addr.sin_family = AF_INET;
-                broadcast_addr.sin_addr.s_addr = inet_addr("255.255.255.255"); // broadcast ip (*.*.*.255 can also work).
-                broadcast_addr.sin_port = htons(udp_port);
-
-                unicast_addr.sin_family = AF_INET;
-                unicast_addr.sin_addr.s_addr = inet_addr(gateway); // unicast ip
-                unicast_addr.sin_port = htons(udp_port);
-
-                do {
-                    len = sendto(udp_socket, sendline, strlen(sendline), 0, (struct sockaddr*) &broadcast_addr, sizeof(broadcast_addr));
-                    if (len < 0) {
-                        ESP_LOGE(TAG, "Error occurred during sending: errno %d", errno);
-                    }
-                    len = sendto(udp_socket, sendline, strlen(sendline), 0, (struct sockaddr*) &unicast_addr, sizeof(unicast_addr));
-                    if (len < 0) {
-                        ESP_LOGE(TAG, "Error occurred during sending: errno %d", errno);
-                    }
-                    ESP_LOGI(TAG, "send ok udp");
-                    if (readable_check(udp_socket, 0, ESP_AT_WEB_BROADCAST_INTERVAL_DEFAULT) > 0) { // wait 500ms to check whether mobile phone send "received" ack
-                        len = recvfrom(udp_socket, rx_buffer, sizeof(rx_buffer) - 1, 0, NULL, NULL);
-                        if (len < 0) {
-                            ESP_LOGE(TAG, "recvfrom failed: errno %d", errno);
-                        } else { // Data received
-                            rx_buffer[len] = 0; // Null-terminate whatever we received and treat like a string
-                            ESP_LOGI(TAG, "receive %s", rx_buffer);
-                            if (strcmp(rx_buffer, ESP_AT_WEB_RECEIVED_ACK_MESSAGE) == 0) {
-                                ESP_LOGI(TAG, "Received expected message, finished");
-                                break;
-                            }
-                        }
-                    }
-                    send_count--;
-                } while (send_count > 0);
-
-                if (udp_socket != -1) {
-                    shutdown(udp_socket, 0);
-                    close(udp_socket);
-                }
-                if (send_count == 0) { // can not received ack message from WeChat.
-                    ESP_LOGW(TAG, "not receive ack message from WeChat");
-                } else { // received ack message from WeChat.
-                    esp_at_port_write_data((uint8_t*)s_wifi_conncet_finish_response, strlen(s_wifi_conncet_finish_response));
-                }
-            }
-        }
-    } else {// Now, It's web browser post data to config wifi.
+    // when udp_port == -1, it's web browser post data to config wifi. otherwise, Now, It's WeChat post data to config wifi.
+    // when (strlen((char *)connect_config->ssid) == 0) && (udp_port != -1), it's WeChat post data, and target AP is local phone.
+    if ((strlen((char *)connect_config->ssid) != 0) || (udp_port == -1)) {
+        ESP_LOGI(TAG, "Use SSID %s direct connect", (char *)connect_config->ssid);
         ret = at_web_try_connect(connect_config->ssid, connect_config->password, NULL, NULL);
         if (ret != ESP_OK) {
             ESP_LOGE(TAG, "Apply connect fail");
@@ -1219,13 +1087,118 @@ static esp_err_t at_web_apply_wifi_connect_info(int32_t udp_port)
             ESP_LOGI(TAG, "Apply connect success");
             connection_info.config_status = ESP_AT_WIFI_STA_CONNECTING;
             at_web_update_sta_connection_info(&connection_info);
-            // Send a message to MCU.
+            // send a message to MCU
             esp_at_port_write_data((uint8_t*)s_wifi_start_connect_response, strlen(s_wifi_start_connect_response));
         }
 
         s_wifi_sta_connect_timer_handler = xTimerCreate("listen_sta_connect_status", ESP_AT_WEB_TIMER_POLLING_PERIOD / portTICK_PERIOD_MS, pdTRUE,
             NULL, listen_sta_connect_status_timer_cb);
         xTimerStart(s_wifi_sta_connect_timer_handler, 5);
+    } else {
+        // if have connect to a ap, then disconnect
+        at_wifi_disconnect();
+        // stop reconnect if reconnect is in process(ensure ESP in disconnect status)
+        at_wifi_reconnect_stop();
+        s_wifi_sta_connect_event_group = xEventGroupCreate();
+
+        s_wifi_sta_connect_timer_handler = xTimerCreate("listen_sta_connect_success", ESP_AT_WEB_TIMER_POLLING_PERIOD / portTICK_PERIOD_MS, pdTRUE,
+            NULL, listen_sta_connect_success_timer_cb);
+        xTimerStart(s_wifi_sta_connect_timer_handler, 5);
+        connection_info.config_status = ESP_AT_WIFI_STA_CONNECTING;
+        at_web_update_sta_connection_info(&connection_info);
+        // send a message to MCU
+        esp_at_port_write_data((uint8_t*)s_wifi_start_connect_response, strlen(s_wifi_start_connect_response));
+        // begin scan and try connect,attention, this function will block until connect successfully or reach max_scan_time or reach connect_num
+        ret = at_web_start_scan_filter(s_mobile_phone_mac, connect_config->password, connect_timeout, s_wifi_sta_connect_event_group);
+        // when function return, it means have finished scan and try connect.
+        // clear connect resource, include Timer and EventGroup.
+        if (s_wifi_sta_connect_timer_handler != NULL) {
+            xTimerStop(s_wifi_sta_connect_timer_handler, portMAX_DELAY);
+            xTimerDelete(s_wifi_sta_connect_timer_handler, portMAX_DELAY);
+            s_wifi_sta_connect_timer_handler = NULL;
+        }
+
+        if (s_wifi_sta_connect_event_group != NULL) {
+            vEventGroupDelete(s_wifi_sta_connect_event_group);
+            s_wifi_sta_connect_event_group = NULL;
+        }
+
+        memset(s_mobile_phone_mac, 0, sizeof(s_mobile_phone_mac));
+        at_web_clear_sta_connect_config();
+        // according to connect result to update or report results
+        if (ret != ESP_OK) { // connect fail
+            ESP_LOGW(TAG, "Scan filter fail, timeout");
+            connection_info.config_status = ESP_AT_WIFI_STA_CONNECT_FAIL;
+            at_wifi_reconnect_stop();
+            at_web_update_sta_connection_info(&connection_info);
+            esp_at_port_write_data((uint8_t*)s_wifi_conncet_finish_response, strlen(s_wifi_conncet_finish_response));
+        } else { // connect ok
+            ESP_LOGI(TAG, "Connect router success");
+            ret = tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &sta_ip);
+            if (ret != ESP_OK) {
+                ESP_LOGE(TAG, "get sta ip fail");
+            }
+            ESP_LOGI(TAG, "Congratulate, got ip:" IPSTR, IP2STR(&sta_ip.ip));
+            ESP_LOGI(TAG, "got gw:" IPSTR, IP2STR(&sta_ip.gw)); // got gateway, Actually, it's mobile phone's ap ip.
+
+            sprintf(connection_info.sta_ip, IPSTR, IP2STR(&sta_ip.ip));
+            sprintf(gateway, IPSTR, IP2STR(&sta_ip.gw));
+            
+            sprintf(sendline, "ip=%d.%d.%d.%d&port=%d", IP2STR(&sta_ip.ip), ESP_AT_WEB_UDP_PORT_DEFAULT);
+            ESP_LOGD(TAG, "udp send str is %s", sendline);
+
+            connection_info.config_status = ESP_AT_WIFI_STA_CONNECT_OK;
+            at_web_update_sta_connection_info(&connection_info);
+            // creat udp to send wifi connect success to mobile phone.
+            udp_socket = udp_create(ESP_AT_WEB_UDP_PORT_DEFAULT, connection_info.sta_ip);
+            if (udp_socket == -1) {
+                goto err;
+            }
+
+            broadcast_addr.sin_family = AF_INET;
+            broadcast_addr.sin_addr.s_addr = inet_addr("255.255.255.255"); // broadcast ip (*.*.*.255 can also work).
+            broadcast_addr.sin_port = htons(udp_port);
+
+            unicast_addr.sin_family = AF_INET;
+            unicast_addr.sin_addr.s_addr = inet_addr(gateway); // unicast ip
+            unicast_addr.sin_port = htons(udp_port);
+
+            do {
+                len = sendto(udp_socket, sendline, strlen(sendline), 0, (struct sockaddr*) &broadcast_addr, sizeof(broadcast_addr));
+                if (len < 0) {
+                    ESP_LOGE(TAG, "Error occurred during sending: errno %d", errno);
+                }
+                len = sendto(udp_socket, sendline, strlen(sendline), 0, (struct sockaddr*) &unicast_addr, sizeof(unicast_addr));
+                if (len < 0) {
+                    ESP_LOGE(TAG, "Error occurred during sending: errno %d", errno);
+                }
+                ESP_LOGI(TAG, "send ok udp");
+                if (readable_check(udp_socket, 0, ESP_AT_WEB_BROADCAST_INTERVAL_DEFAULT) > 0) { // wait 500ms to check whether mobile phone send "received" ack
+                    len = recvfrom(udp_socket, rx_buffer, sizeof(rx_buffer) - 1, 0, NULL, NULL);
+                    if (len < 0) {
+                        ESP_LOGE(TAG, "recvfrom failed: errno %d", errno);
+                    } else { // Data received
+                        rx_buffer[len] = 0; // Null-terminate whatever we received and treat like a string
+                        ESP_LOGI(TAG, "receive %s", rx_buffer);
+                        if (strcmp(rx_buffer, ESP_AT_WEB_RECEIVED_ACK_MESSAGE) == 0) {
+                            ESP_LOGI(TAG, "Received expected message, finished");
+                            break;
+                        }
+                    }
+                }
+                send_count--;
+            } while (send_count > 0);
+
+            if (udp_socket != -1) {
+                shutdown(udp_socket, 0);
+                close(udp_socket);
+            }
+            if (send_count == 0) { // can not received ack message from WeChat.
+                ESP_LOGW(TAG, "not receive ack message from WeChat");
+            } else { // received ack message from WeChat.
+                esp_at_port_write_data((uint8_t*)s_wifi_conncet_finish_response, strlen(s_wifi_conncet_finish_response));
+            }
+        }
     }
     return ESP_OK;
 
@@ -1239,7 +1212,6 @@ static esp_err_t config_wifi_post_handler(httpd_req_t *req)
 {
     char *buf = ((web_server_context_t*) (req->user_ctx))->scratch;
     wifi_sta_connect_config_t wifi_config = {0};
-    wifi_sta_connection_info_t wifi_connection_info = {0};
     int str_len = 0;
     int32_t udp_port = -1;
     char temp_str[32] = {0};
@@ -1295,26 +1267,21 @@ static esp_err_t config_wifi_post_handler(httpd_req_t *req)
             }
         }
 
-        wifi_connection_info.config_status = ESP_AT_WIFI_STA_CONFIG_DONE;
-
         at_web_update_sta_connect_config(&wifi_config);
-        at_web_update_sta_connection_info(&wifi_connection_info);
 
+        at_web_response_ok(req);
+        vTaskDelay(300/portTICK_PERIOD_MS); // to avoid wifi ap channel changed so quickly that the response can not be sent.
         // begin connect
         if (ssid_is_null != true) {
             if (at_web_apply_wifi_connect_info(udp_port) != ESP_OK) {
                 ESP_LOGE(TAG, "WiFi config connect fail");
-                at_web_response_error(req, HTTPD_500);
                 return ESP_FAIL;
-            } else {
-                at_web_response_ok(req);
             }
         } else {
             // find mac and then start scan to try connect
             if (at_web_get_mobile_phone_mac(s_mobile_phone_mac) != ESP_OK) {
                 ESP_LOGW(TAG, "Cannot find Mobile phone mac");
             }
-            at_web_response_ok(req);
             if (at_web_apply_wifi_connect_info(udp_port) != ESP_OK) {
                 ESP_LOGE(TAG, "WiFi config connect fail");
                 return ESP_FAIL;
