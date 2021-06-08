@@ -118,6 +118,8 @@ The modified factory_param_data.csv file is as follows.
   ...
   PLATFORM_ESP32,MY_MODULE,MY_DESCRIPTION,0xfcfc,3,0,78,1,1,14,JP,115200,17,16,15,14,-1,-1
 
+.. _modify-esp-at-module-info-structure:
+
 Modify ``esp_at_module_info`` Structure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -133,7 +135,7 @@ The ``esp_at_module_info`` structure provides ``OTA`` upgrade verification ``tok
         char* ota_ssl_token;
     } esp_at_module_info_t;
 
-If you do not want to use ``OTA``` features, member 2 ``ota_token`` and member 3 ``ota_ssl_token`` can be set to ``NULL``, but member 1 ``module_name`` must correspond to the field ``module_name`` in the factory_param_data.csv file.
+If you do not want to use ``OTA`` features, member 2 ``ota_token`` and member 3 ``ota_ssl_token`` can be set to ``NULL``, but member 1 ``module_name`` must correspond to the field ``module_name`` in the factory_param_data.csv file.
 
 The modified ``esp_at_module_info`` structure is as follows:
 
