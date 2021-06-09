@@ -47,6 +47,7 @@ Notes
 -  ESP-AT supports captive portals in ESP32 and ESP32-C series of devices. See :ref:`example <using-captive-portal>`.
 -  For more examples, please refer to :doc:`../AT_Command_Examples/Web_server_AT_Examples`.
 -  The command implementation is open-source. See the source code in :component:`at/src/at_web_server_cmd.c`.
+-  Please refer to :doc:`../Compile_and_Develop/How_to_implement_OTA_update` for more OTA commands.
 
 Example
 ^^^^^^^^

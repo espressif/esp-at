@@ -1587,6 +1587,7 @@ Notes
 -  The timeout of OTA process is ``3`` minutes.
 -  The response ``OK`` in non-blocking mode does not necessarily come before the response ``+CIPUPDATE:<state>``. It may be output before ``+CIPUPDATE:<state>`` or after it.
 -  Upgraded to an older version is not recommended.
+-  Please refer to :doc:`../Compile_and_Develop/How_to_implement_OTA_update` for more OTA commands.
 
 Example
 ^^^^^^^^
