@@ -29,8 +29,6 @@
 
 bool esp_at_get_eth_default_config(esp_eth_config_t* config)
 {
-    ESP_ERROR_CHECK(tcpip_adapter_set_default_eth_handlers());
-
     eth_mac_config_t mac_config = ETH_MAC_DEFAULT_CONFIG();
     eth_phy_config_t phy_config = ETH_PHY_DEFAULT_CONFIG();
     esp_eth_mac_t *mac = esp_eth_mac_new_esp32(&mac_config);
