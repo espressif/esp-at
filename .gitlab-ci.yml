@@ -915,6 +915,11 @@ wrover32_all_function_at:
     - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
     - echo -e "CONFIG_AT_ETHERNET_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
     - echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_BLUFI_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_wrover-32/sdkconfig.defaults
 
     - sed -i '/ota_1/d' module_config/module_wrover-32/partitions_at.csv
     - old_size_str=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
