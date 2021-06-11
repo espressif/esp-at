@@ -21,10 +21,10 @@ Before you run any Ethernet AT Commands, please make the following preparations:
 
 - Change AT UART pins (because default AT UART pins are in conflict with the Ethernet function pins):
 
-  - Open ``factory_param_data.csv`` file
-  - In the row of module ``WROVER-32``, change ``uart_tx_pin`` from GPIO22 to GPIO2, ``uart_rx_pin`` from GPIO19 to GPIO4, ``uart_cts_pin`` from GPIO15 to GPIO-1, and ``uart_rts_pin`` from GPIO14 to GPIO-1 (flow control is optional and is not used here). See :doc:`../Compile_and_Develop/How_to_set_AT_port_pin` for more information.
+  - Open :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` file.
+  - In the row of module ``WROVER-32``, change ``uart_tx_pin`` from GPIO22 to GPIO2, ``uart_rx_pin`` from GPIO19 to GPIO4, ``uart_cts_pin`` from GPIO15 to GPIO1, and ``uart_rts_pin`` from GPIO14 to GPIO1 (flow control is optional and is not used here). See :doc:`../Compile_and_Develop/How_to_set_AT_port_pin` for more information.
 
-- Enable ``AT ethernet support``. See :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` for more information.
+- Enable ``AT ethernet support``. See :doc:`../Compile_and_Develop/How_to_enable_ESP_AT_Ethernet` for more information.
 - Compile and flash the project onto ESP32-Ethernet-Kit.
 - Connect your hardware:
  
