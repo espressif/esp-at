@@ -83,7 +83,7 @@ Parameter
 Notes
 ^^^^^
 
--  The default firmware does not support Ethernet AT commands (see :doc:`../Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT ethernet support`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
+-  The default firmware does not support Ethernet AT commands (see :doc:`../Compile_and_Develop/esp-at_firmware_differences`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT ethernet support`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  Please make sure the MAC address of Ethernet interface you set is different from those of other interfaces.
 -  Bit0 of the ESP MAC address CANNOT be 1. For example, a MAC address can be "1a:…" but not "15:…".
@@ -152,7 +152,7 @@ Parameters
 Notes
 ^^^^^
 
--  The default firmware does not support Ethernet AT commands (see :doc:`../Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT ethernet support`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
+-  The default firmware does not support Ethernet AT commands (see :doc:`../Compile_and_Develop/esp-at_firmware_differences`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT ethernet support`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
 - The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 - This Set Command correlates with DHCP commands, such as :ref:`AT+CWDHCP <cmd-DHCP>`:
 

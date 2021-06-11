@@ -7,7 +7,7 @@ This Guide demonstrates how to download AT firmware and flash it into an ESP dev
 
 Before you start, please make sure you have already connected your hardware. For more details, see :doc:`Hardware_connection`.
 
-For different series of modules, the commands supported by AT firmware are different. Please refer to :doc:`/Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module` for more details.
+For different series of modules, the commands supported by AT firmware are different. Please refer to :doc:`/Compile_and_Develop/esp-at_firmware_differences` for more details.
 
 Download AT Firmware
 ---------------------

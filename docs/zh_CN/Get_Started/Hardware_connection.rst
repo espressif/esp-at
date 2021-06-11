@@ -8,7 +8,7 @@
 - `ESP32 系列`_
 - `ESP32-C3 系列`_
 
-对于不同系列的模组，AT 默认固件所支持的命令会有所差异。具体可参考 :doc:`/Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`。
+对于不同系列的模组，AT 默认固件所支持的命令会有所差异。具体可参考 :doc:`/Compile_and_Develop/esp-at_firmware_differences`。
 
 硬件准备
 ------------
