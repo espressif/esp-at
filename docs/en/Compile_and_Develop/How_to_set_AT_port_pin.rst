@@ -1,366 +1,154 @@
-How to Set ``AT Port`` Pin
+How to Set AT Port Pins
 ==========================
 
-In the project ``esp-at``, UART0 and UART1 are used by default. And users can change those UART pins according to their actual hardware design. Since the ``esp-at`` supports both ESP32 and ESP8266, there are some differences between the configurations.
+This document introduces how to modify :term:`AT port` pins in the firmware for ESP32, ESP32-S2, ESP32-C3, and ESP8266 series of products. By default, ESP-AT uses two UART interfaces as AT ports: one is to output logs (named as log port below) and the other to send AT commands and receive responses (named as command port below). 
 
-ESP32 AT
---------
+To modify the AT port pins of your ESP device, you should:
 
-The UART pin of ESP32 can be user-defined to other pins, refer to `ESP32 Technical Reference Manual <https://www.espressif.com/sites/default/files/documentation/esp32_technical_reference_manual_en.pdf>`__. In the official Espressif ESP32 AT bin, UART0 is the default port to print log, using the following pins:
+- :doc:`clone the esp-at project <How_to_clone_project_and_compile_it>`;
+- modify the pins either in the menuconfig utility or the factory_param_data.csv table;
+- :doc:`compile the project <How_to_clone_project_and_compile_it>` to generate the new bin in ``build/customized_partitions/factory_param.bin``;
+- :ref:`flash the new bin to your device <flash-at-firmware-into-your-device>`.
 
-::
+This document focuses on modifying the pins. Click the links above for details of other steps. Below is the document structure:
 
-    TX ---> GPIO1  
-    RX ---> GPIO3  
+- `ESP32 Series`_
+- `ESP32-S2 Series`_
+- `ESP32-C3 Series`_
+- `ESP8266 Series`_ 
 
-The log pins can be set in ``./build.py menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output``.
-UART1 is for sending AT commands and receiving response, but its pins can be changed. The pins of UART1 is in the ``factory_param.bin``, they can be changed in the component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`. The UART1 pins may be different for different ESP modules. More details of ``factory_param_data.csv`` are in the ``How_to_create_factory_parameter_bin.md``.
+.. note::
+  To use other interfaces as the AT command port, please refer to :at_file:`AT through SDIO <main/interface/sdio/README.md>`, :at_file:`AT through SPI <main/interface/hspi/README.md>`, or :at_file:`AT through socket <main/interface/socket/README.md>` for more details.
 
-For example, the configuration of the ``ESP32-WROOM-32`` is as the following table.
+ESP32 Series
+-------------
 
-+----------------+----------------+
-| Parameter      | Value          |
-+================+================+
-| platform       | PLATFORM_ESP32 |
-+----------------+----------------+
-| module_name    | WROOM-32       |
-+----------------+----------------+
-| magic_flag     | 0xfcfc         |
-+----------------+----------------+
-| version        | 2              |
-+----------------+----------------+
-| reserved1      | 0              |
-+----------------+----------------+
-| tx_max_power   | 78             |
-+----------------+----------------+
-| uart_port      | 1              |
-+----------------+----------------+
-| start_channel  | 1              |
-+----------------+----------------+
-| channel_num    | 13             |
-+----------------+----------------+
-| country_code   | CN             |
-+----------------+----------------+
-| uart_baudrate  | 115200         |
-+----------------+----------------+
-| uart_tx_pin    | 17             |
-+----------------+----------------+
-| uart_rx_pin    | 16             |
-+----------------+----------------+
-| uart_cts_pin   | 15             |
-+----------------+----------------+
-| uart_rts_pin   | 14             |
-+----------------+----------------+
-| tx_control_pin | -1             |
-+----------------+----------------+
-| rx_control_pin | -1             |
-+----------------+----------------+
+The log port and command port pins of ESP32 AT firmware can be user-defined to other pins. Refer to `ESP32 Technical Reference Manual <https://www.espressif.com/sites/default/files/documentation/esp32_technical_reference_manual_en.pdf>`_ for the pins you can use.
 
-In this case, the pins of ``ESP32-WROOM-32`` AT port is:
+Modify Log Port Pins
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-::
+By default, the ESP32 AT firmware provided by Espressif uses the following UART0 pins to output log:
 
-    TX ---> GPIO17  
-    RX ---> GPIO16  
-    CTS ---> GPIO15  
-    RTS ---> GPIO14  
+- TX: GPIO1
+- RX: GPIO3
 
-For example, if you need to set GPIO1 (TX) and GPIO3 (RX) to be both the log pin and AT port pin, then you can set it as the following steps.
+When compiling your esp-at project, you can modify them to other pins with the menuconfig utitlity:
 
-1.  Open component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`.
-2.  Choose the line of ``WROOM-32``, set ``uart_port`` to be 0, ``uart_tx_pin`` to be 1 and ``uart_rx_pin`` to be 3, and then save it.
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART for console output``
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART TX on GPIO#``
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART RX on GPIO#``
 
-    +----------------+----------------+
-    | Parameter      | Value          |
-    +================+================+
-    | platform       | PLATFORM_ESP32 |
-    +----------------+----------------+
-    | module_name    | WROOM-32       |
-    +----------------+----------------+
-    | magic_flag     | 0xfcfc         |
-    +----------------+----------------+
-    | version        | 2              |
-    +----------------+----------------+
-    | reserved1      | 0              |
-    +----------------+----------------+
-    | tx_max_power   | 78             |
-    +----------------+----------------+
-    | uart_port      | 0              |
-    +----------------+----------------+
-    | start_channel  | 1              |
-    +----------------+----------------+
-    | channel_num    | 13             |
-    +----------------+----------------+
-    | country_code   | CN             |
-    +----------------+----------------+
-    | uart_baudrate  | 115200         |
-    +----------------+----------------+
-    | uart_tx_pin    | 1              |
-    +----------------+----------------+
-    | uart_rx_pin    | 3              |
-    +----------------+----------------+
-    | uart_cts_pin   | -1             |
-    +----------------+----------------+
-    | uart_rts_pin   | -1             |
-    +----------------+----------------+
-    | tx_control_pin | -1             |
-    +----------------+----------------+
-    | rx_control_pin | -1             |
-    +----------------+----------------+
+Modify Command Port Pins
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-3. Recompile the ``esp-at`` project, download the new ``factory_param.bin`` and AT bin into flash.
+By default, UART1 is used to send AT commands and receive AT responses, and its pins are defined in Column ``uart_port``, ``uart_tx_pin``, ``uart_rx_pin``, ``uart_cts_pin``, and ``uart_rts_pin`` of the :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
 
-ESP8266 AT
-----------
+You can change them directly in your factory_param_data.csv table:
+  
+- Open your local factory_param_data.csv file.
+- Locate the row of your module.
+- Set ``uart_port`` as needed.
+- Set ``uart_tx_pin`` and ``uart_rx_pin`` as needed.
+- Set ``uart_cts_pin`` and ``uart_rts_pin`` to be -1 if you do not use the hardware flow control function.
+- Save the table.
 
-ESP8266 has two UART ports, UART0 and UART1. UART1 only supports TX pin to print debug log. UART0 has both TX and RX pin, to send AT commands and receive response. Unlike ESP32, UART0 pins of ESP8266 cannot be set to any pins, there are only two choice, ``GPIO15 as TX pin, GPIO13 as RX`` or ``GPIO1 as TX、GPIO3 as RX``.
+ESP32-S2 Series
+---------------
 
-The default setting of ESP8266 AT UART is：
+The log port and command port pins of ESP32-S2 AT firmware can be user-defined to other pins. Refer to `ESP32-S2 Technical Reference Manual <https://www.espressif.com/sites/default/files/documentation/esp32-s2_technical_reference_manual_en.pdf>`_ for the pins you can use.
 
--  Use UART0 is the AT port to send/receive AT commands/responses. GPIO15 is the UART0 TX, GPIO13 is the UART0 RX.
--  Use UART1 to print debug log, GPIO2 is the UART1 TX pin.
+Modify Log Port Pins
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For example, if you need to set GPIO1 (TX) and GPIO3 (RX) of ESP-WROOM-02 to be both the log pin and AT port pin, then you can set it as the following steps.
+By default, the ESP32-S2 AT firmware provided by Espressif uses the following UART0 pins to output log:
 
-1.  ``./build.py menuconfig`` > ``Component config`` > ``ESP8266-specific`` > ``UART for console output`` > ``Default: UART0``
-2.  Open component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`, choose the line of ``WROOM-02``, set ``uart_tx_pin`` to be 1 and ``uart_rx_pin`` to be 3, and then save it.
+- TX: GPIO43
+- RX: GPIO44
 
-    +----------------+------------------+
-    | Parameter      | Value            |
-    +================+==================+
-    | platform       | PLATFORM_ESP8266 |
-    +----------------+------------------+
-    | module_name    | WROOM-02         |
-    +----------------+------------------+
-    | magic_flag     | 0xfcfc           |
-    +----------------+------------------+
-    | ...            | ...              |
-    +----------------+------------------+
-    | uart_baudrate  | 115200           |
-    +----------------+------------------+
-    | uart_tx_pin    | 1                |
-    +----------------+------------------+
-    | uart_rx_pin    | 3                |
-    +----------------+------------------+
-    | uart_cts_pin   | -1               |
-    +----------------+------------------+
-    | uart_rts_pin   | -1               |
-    +----------------+------------------+
-    | ...            | ...              |
-    +----------------+------------------+
+When compiling your esp-at project, you can modify them to other pins with the menuconfig utitlity:
 
-3.  Recompile the ``esp-at`` project, download the new ``factory_param.bin`` and AT bin into flash.
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART for console output``
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART TX on GPIO#``
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART RX on GPIO#``
 
-ESP32S2 AT
-----------
-The UART pin of ESP32S2 can be user-defined to other pins, refer to `ESP32S2 Technical Reference Manual <https://www.espressif.com/sites/default/files/documentation/esp32-s2_technical_reference_manual_en.pdf>`__. In the official Espressif ESP32S2 AT bin, UART0 is the default port to print log, using the following pins:
+Modify Command Port Pins
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-::
+By default, UART1 is used to send AT commands and receive AT responses, and its pins are defined in Column ``uart_port``, ``uart_tx_pin``, ``uart_rx_pin``, ``uart_cts_pin``, and ``uart_rts_pin`` of the :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
 
-    TX ---> GPIO43  
-    RX ---> GPIO44 
+You can change them directly in your factory_param_data.csv table:
+  
+- Open your local factory_param_data.csv file.
+- Locate the row of your module.
+- Set ``uart_port`` as needed.
+- Set ``uart_tx_pin`` and ``uart_rx_pin`` as needed.
+- Set ``uart_cts_pin`` and ``uart_rts_pin`` to be -1 if you do not use the hardware flow control function.
+- Save the table.
 
-The log pins can be set in ``./build.py menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output``.
-UART1 is for sending AT commands and receiving response, but its pins can be changed. The pins of UART1 are configured in the ``factory_param.bin``, they can be changed in the component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`. The UART1 pins may be different for different ESP modules. More details of ``factory_param_data.csv`` are in the ``How_to_create_factory_parameter_bin.md``.
+ESP32-C3 Series
+---------------
 
-For example, the configuration of the ``ESP32S2-WROVER`` is as the following table.
+The log port and command port pins of ESP32-C3 AT firmware can be user-defined to other pins. `ESP32-C3 Technical Reference Manual <https://www.espressif.com/sites/default/files/documentation/esp32-c3_technical_reference_manual_en.pdf>`_ for the pins you can use.
 
-+----------------+------------------+
-| Parameter      | Value            |
-+================+==================+
-| platform       | PLATFORM_ESP32S2 |
-+----------------+------------------+
-| module_name    | WROVER           |
-+----------------+------------------+
-| magic_flag     | 0xfcfc           |
-+----------------+------------------+
-| version        | 2                |
-+----------------+------------------+
-| reserved1      | 0                |
-+----------------+------------------+
-| tx_max_power   | 78               |
-+----------------+------------------+
-| uart_port      | 1                |
-+----------------+------------------+
-| start_channel  | 1                |
-+----------------+------------------+
-| channel_num    | 13               |
-+----------------+------------------+
-| country_code   | CN               |
-+----------------+------------------+
-| uart_baudrate  | 115200           |
-+----------------+------------------+
-| uart_tx_pin    | 17               |
-+----------------+------------------+
-| uart_rx_pin    | 21               |
-+----------------+------------------+
-| uart_cts_pin   | 20               |
-+----------------+------------------+
-| uart_rts_pin   | 19               |
-+----------------+------------------+
-| tx_control_pin | -1               |
-+----------------+------------------+
-| rx_control_pin | -1               |
-+----------------+------------------+
+Modify Log Port Pins
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In this case, the pins of ``ESP32S2-WROVER`` AT port is:
+By default, the ESP32-C3 AT firmware provided by Espressif uses the following UART0 pins to output log:
 
-::
+- TX: GPIO21
+- RX: GPIO20
 
-    TX ---> GPIO17  
-    RX ---> GPIO21  
-    CTS ---> GPIO20  
-    RTS ---> GPIO19  
+When compiling your esp-at project, you can modify them to other pins with the menuconfig utitlity:
 
-For example, if you need to set GPIO43 (TX) and GPIO44 (RX) to be both the log pin and AT port pin, then you can set it as the following steps.
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART for console output``
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART TX on GPIO#``
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART RX on GPIO#``
 
-1.  Open component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`.
-2.  Choose the line of ``WROVER``, set ``uart_port`` to be 0, ``uart_tx_pin`` to be 43 and ``uart_rx_pin`` to be 44, and then save it.
+Modify Command Port Pins
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    +----------------+------------------+
-    | Parameter      | Value            |
-    +================+==================+
-    | platform       | PLATFORM_ESP32S2 |
-    +----------------+------------------+
-    | module_name    | WROVER           |
-    +----------------+------------------+
-    | magic_flag     | 0xfcfc           |
-    +----------------+------------------+
-    | version        | 2                |
-    +----------------+------------------+
-    | reserved1      | 0                |
-    +----------------+------------------+
-    | tx_max_power   | 78               |
-    +----------------+------------------+
-    | uart_port      | 0                |
-    +----------------+------------------+
-    | start_channel  | 1                |
-    +----------------+------------------+
-    | channel_num    | 13               |
-    +----------------+------------------+
-    | country_code   | CN               |
-    +----------------+------------------+
-    | uart_baudrate  | 115200           |
-    +----------------+------------------+
-    | uart_tx_pin    | 43               |
-    +----------------+------------------+
-    | uart_rx_pin    | 44               |
-    +----------------+------------------+
-    | uart_cts_pin   | -1               |
-    +----------------+------------------+
-    | uart_rts_pin   | -1               |
-    +----------------+------------------+
-    | tx_control_pin | -1               |
-    +----------------+------------------+
-    | rx_control_pin | -1               |
-    +----------------+------------------+
+By default, UART1 is used to send AT commands and receive AT responses, and its pins are defined in Column ``uart_port``, ``uart_tx_pin``, ``uart_rx_pin``, ``uart_cts_pin``, and ``uart_rts_pin`` of the :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
 
-3. Recompile the ``esp-at`` project, download the new ``factory_param.bin`` and AT bin into flash.
-4. If you don't want to compile the entire project in the third step, you can refer to ``How_to_create_factory_parameter_bin.md``.
+You can change them directly in your factory_param_data.csv table:
+  
+- Open your local factory_param_data.csv file.
+- Locate the row of your module.
+- Set ``uart_port`` as needed.
+- Set ``uart_tx_pin`` and ``uart_rx_pin`` as needed.
+- Set ``uart_cts_pin`` and ``uart_rts_pin`` to be -1 if you do not use the hardware flow control function.
+- Save the table.
 
-ESP32-C3 AT
-------------
-The UART pin of ESP32-C3 can be user-defined to other pins, refer to `ESP32-C3 Technical Reference Manual <https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf>`__. In the official Espressif ESP32-C3 AT bin, UART0 is the default port to print log, using the following pins:
+ESP8266 Series
+---------------
 
-::
+The log port and command port pins of the ESP8266 AT firmware can be user-defined to other pins, but with limited options. Please refer to `ESP8266 Technical Reference Manual <https://www.espressif.com/sites/default/files/documentation/esp8266-technical_reference_en.pdf>`_ for more details.
 
-    TX ---> GPIO21  
-    RX ---> GPIO20 
+Modify Log Port Pins
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The log pins can be set in ``./build.py menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``Channel for console output``.
-UART1 is for sending AT commands and receiving response, but its pins can be changed. The pins of UART1 are configured in the ``factory_param.bin``, they can be changed in the component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`. The UART1 pins may be different for different ESP modules. More details of ``factory_param_data.csv`` are in the ``How_to_create_factory_parameter_bin.md``.
+By default, the ESP8266 AT firmware provided by Espressif uses UART1 to log output. UART1 only supports GPIO2 as the TX pin, and the pin should not be modified.
 
-For example, the configuration of the ``ESP32-C3-MINI-1`` is as the following table.
+However, you could modify the log port from UART1 to UART0 by:
 
-+----------------+------------------+
-| Parameter      | Value            |
-+================+==================+
-| platform       | PLATFORM_ESP32C3 |
-+----------------+------------------+
-| module_name    | MINI-1           |
-+----------------+------------------+
-| magic_flag     | 0xfcfc           |
-+----------------+------------------+
-| version        | 2                |
-+----------------+------------------+
-| reserved1      | 0                |
-+----------------+------------------+
-| tx_max_power   | 78               |
-+----------------+------------------+
-| uart_port      | 1                |
-+----------------+------------------+
-| start_channel  | 1                |
-+----------------+------------------+
-| channel_num    | 13               |
-+----------------+------------------+
-| country_code   | CN               |
-+----------------+------------------+
-| uart_baudrate  | 115200           |
-+----------------+------------------+
-| uart_tx_pin    | 7                |
-+----------------+------------------+
-| uart_rx_pin    | 6                |
-+----------------+------------------+
-| uart_cts_pin   | 5                |
-+----------------+------------------+
-| uart_rts_pin   | 4                |
-+----------------+------------------+
-| tx_control_pin | -1               |
-+----------------+------------------+
-| rx_control_pin | -1               |
-+----------------+------------------+
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART for console output``
 
-In this case, the pins of ``ESP32-C3-MINI-1`` AT port is:
+Modify Command Port Pins
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-::
+By default, ESP8266 AT firmware uses UART0 to send AT commands and receive AT responses. The UART0 pins are defined in Column ``uart_port``, ``uart_tx_pin``, ``uart_rx_pin``, ``uart_cts_pin``, and ``uart_rts_pin`` of the :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
 
-    TX ---> GPIO7
-    RX ---> GPIO6
-    CTS ---> GPIO5
-    RTS ---> GPIO4
+The UART pins can be changed, but there are only two choices: ``GPIO15 as TX pin, GPIO13 as RX`` or ``GPIO1 as TX, GPIO3 as RX``. Below are the detailed steps:
 
-For example, if you need to set GPIO21 (TX) and GPIO20 (RX) to be both the log pin and AT port pin, then you can set it as the following steps.
+- Open your local factory_param_data.csv file.
+- Locate the row of your module.
+- Set ``uart_port`` as needed.
+- Set ``uart_tx_pin`` and ``uart_rx_pin`` to GPIO15 and GPIO13, or GPIO1 and GPIO3.
+- Set ``uart_cts_pin`` and ``uart_rts_pin`` to be -1 if you do not use the hardware flow control function.
+- Save the table.
 
-1.  Open component file :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`.
-2.  Choose the line of ``MINI-1``, set ``uart_port`` to be 0, ``uart_tx_pin`` to be 21 and ``uart_rx_pin`` to be 20, and then save it.
+For example, if you need to set GPIO1 (TX) and GPIO3 (RX) to be both the log port and command port of ESP-WROOM-02, do as follows:
 
-    +----------------+------------------+
-    | Parameter      | Value            |
-    +================+==================+
-    | platform       | PLATFORM_ESP32C3 |
-    +----------------+------------------+
-    | module_name    | MINI-1           |
-    +----------------+------------------+
-    | magic_flag     | 0xfcfc           |
-    +----------------+------------------+
-    | version        | 2                |
-    +----------------+------------------+
-    | reserved1      | 0                |
-    +----------------+------------------+
-    | tx_max_power   | 78               |
-    +----------------+------------------+
-    | uart_port      | 0                |
-    +----------------+------------------+
-    | start_channel  | 1                |
-    +----------------+------------------+
-    | channel_num    | 13               |
-    +----------------+------------------+
-    | country_code   | CN               |
-    +----------------+------------------+
-    | uart_baudrate  | 115200           |
-    +----------------+------------------+
-    | uart_tx_pin    | 21               |
-    +----------------+------------------+
-    | uart_rx_pin    | 20               |
-    +----------------+------------------+
-    | uart_cts_pin   | -1               |
-    +----------------+------------------+
-    | uart_rts_pin   | -1               |
-    +----------------+------------------+
-    | tx_control_pin | -1               |
-    +----------------+------------------+
-    | rx_control_pin | -1               |
-    +----------------+------------------+
-
-3. Recompile the ``esp-at`` project, download the new ``factory_param.bin`` and AT bin into flash.
-4. If you don't want to compile the entire project in the third step, you can refer to ``How_to_create_factory_parameter_bin.md``.
+1. Set log port to UART0: ``./build.py menuconfig`` --> ``Component config`` --> ``ESP8266-specific`` --> ``UART for console output`` --> ``Default: UART0``
+2. Open your local factory_param_data.csv.
+3. Find the row of ``WROOM-02``, set ``uart_tx_pin`` to 1, ``uart_rx_pin`` to 3, ``uart_cts_pin`` to -1, ``uart_rts_pin`` to -1, and then save the table.
