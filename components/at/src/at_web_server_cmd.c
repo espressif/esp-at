@@ -56,10 +56,9 @@
 // AT web can use fatfs to storge html or use embeded file to storge html.
 // If use fatfs,we should enable AT FS Command support.
 #ifdef CONFIG_AT_WEB_USE_FATFS
-#include "diskio.h"
+#include "esp_vfs_fat.h"
 #include "diskio_wl.h"
 #include "diskio_impl.h"
-#include "esp_vfs_fat.h"
 #endif
 #ifdef CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE
 #include "at_web_dns_server.h"
@@ -82,7 +81,6 @@ static char *s_at_web_redirect_url = NULL;
 #define ESP_AT_WEB_WIFI_MIN_RECONNECT_TIMEOUT          21     // 21sec
 #define ESP_AT_WEB_MOUNT_POINT                         "/www"
 #define ESP_AT_WEB_TIMER_POLLING_PERIOD                500    // 500ms
-#define ESP_AT_WEB_CHECK_FILE_EXTENSION(filename, ext) (strcasecmp(&filename[strlen(filename) - strlen(ext)], ext) == 0)
 #define ESP_AT_WEB_BROADCAST_TIMES_DEFAULT             20     // When connect without ssid, for multicast wifi connect result
 #define ESP_AT_WEB_BROADCAST_INTERVAL_DEFAULT          500000 // 500000us
 #define ESP_AT_WEB_UDP_PORT_DEFAULT                    3339   // When connect without ssid, for multicast wifi connect result
@@ -742,53 +740,26 @@ static int at_web_find_arg(char *line, char *arg, char *buff, int buffLen)
 
 // AT web can use fatfs to storge html or use embeded file to storge html.
 // If use fatfs,we should enable AT FS Command support.
-#ifdef CONFIG_AT_WEB_USE_FATFS 
-/* Set HTTP response content type according to file extension */
-static esp_err_t set_content_type_from_file(httpd_req_t *req, const char *filepath)
-{
-    const char *type = "text/plain";
-    if (ESP_AT_WEB_CHECK_FILE_EXTENSION(filepath, ".html")) {
-        type = "text/html";
-    } else if (ESP_AT_WEB_CHECK_FILE_EXTENSION(filepath, ".js")) {
-        type = "application/javascript";
-    } else if (ESP_AT_WEB_CHECK_FILE_EXTENSION(filepath, ".css")) {
-        type = "text/css";
-    } else if (ESP_AT_WEB_CHECK_FILE_EXTENSION(filepath, ".png")) {
-        type = "image/png";
-    } else if (ESP_AT_WEB_CHECK_FILE_EXTENSION(filepath, ".ico")) {
-        type = "image/x-icon";
-    } else if (ESP_AT_WEB_CHECK_FILE_EXTENSION(filepath, ".svg")) {
-        type = "text/xml";
-    }
-    return httpd_resp_set_type(req, type);
-}
-
+#ifdef CONFIG_AT_WEB_USE_FATFS
 /* Send HTTP response with the contents of the requested file */
 static esp_err_t web_common_get_handler(httpd_req_t *req)
 {
     char filepath[ESP_AT_WEB_FILE_PATH_MAX];
+    esp_err_t err = ESP_FAIL;
     web_server_context_t *s_web_context = (web_server_context_t*) req->user_ctx;
     strlcpy(filepath, s_web_context->base_path, sizeof(filepath));
-    if (req->uri[strlen(req->uri) - 1] == '/') {
-        strlcat(filepath, "/index.html", sizeof(filepath));
-    } else {
-        strlcat(filepath, req->uri, sizeof(filepath));
-    }
-
-    char *p = strrchr(filepath, '?');
-    if (p != NULL) {
-        *p = '\0';
-    }
-
+    strlcat(filepath, "/index.html", sizeof(filepath)); // Now, we just send the index html for the common handler
+    
+    ESP_LOGW(TAG, "open file : %s", filepath);
     int fd = open(filepath, O_RDONLY);
     if (fd == -1) {
         ESP_LOGE(TAG, "Failed to open file : %s, errno =%d", filepath, errno);
-        / *Respond with 500 Internal Server Error */
+        /*Respond with 500 Internal Server Error */
         httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Failed to read existing file");
         return ESP_FAIL;
     }
 
-    set_content_type_from_file(req, filepath);
+    httpd_resp_set_type(req, "text/html");
 
     char *chunk = s_web_context->scratch;
     ssize_t read_bytes;
@@ -799,9 +770,10 @@ static esp_err_t web_common_get_handler(httpd_req_t *req)
             ESP_LOGE(TAG, "Failed to read file : %s", filepath);
         } else if (read_bytes > 0) {
             /* Send the buffer contents as HTTP response chunk */
-            if (httpd_resp_send_chunk(req, chunk, read_bytes) != ESP_OK) {
+            err = httpd_resp_send_chunk(req, chunk, read_bytes);
+            if (err != ESP_OK) {
                 close(fd);
-                ESP_LOGE(TAG, "File sending failed!");
+                ESP_LOGE(TAG, "File sending failed!,err: %d,read_bytes: %d", err, read_bytes);
                 /* Abort sending file */
                 httpd_resp_sendstr_chunk(req, NULL);
                 /* Respond with 500 Internal Server Error */
@@ -1601,12 +1573,10 @@ static esp_err_t start_web_server(const char *base_path, uint16_t server_port)
     config.max_uri_handlers = 8;
     config.max_open_sockets = 7; // It cannot be less than 7.
     config.server_port = server_port;
-#ifndef CONFIG_IDF_TARGET_ESP8266
-    config.uri_match_fn = httpd_uri_match_wildcard;
+
 #ifdef CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE
     /* this is an important option that isn't set up by default.*/
     config.lru_purge_enable = true;
-#endif
 #endif
 
     ESP_LOGD(TAG, "Starting HTTP Server");
@@ -1619,11 +1589,7 @@ static esp_err_t start_web_server(const char *base_path, uint16_t server_port)
         {"/getaprecord", HTTP_GET, ap_record_get_handler, s_web_context},
         {"/getotainfo", HTTP_GET, ota_info_get_handler, s_web_context},
         {"/setotadata", HTTP_POST, ota_data_post_handler, s_web_context},
-#ifdef CONFIG_IDF_TARGET_ESP8266
-        {"/", HTTP_GET, web_common_get_handler,s_web_context} // Catch-all callback function for the filesystem, this must be set to the array last one
-#else
-        {"/*", HTTP_GET, web_common_get_handler,s_web_context},
-#endif
+        {"/", HTTP_GET, web_common_get_handler,s_web_context},
     };
 
     for (int i = 0; i < sizeof(httpd_uri_array) / sizeof(httpd_uri_t); i++) {
