@@ -425,7 +425,7 @@ Parameters
    -  bit 10: determine whether <wps> will be shown.
 
 -  **[<rssi filter>]**: determine whether the result of the command :ref:`AT+CWLAP <cmd-LAP>` will be filtered according to ``rssi filter``. In other words, the result of the command will **NOT** show the APs whose signal strength is below ``rssi filter``. Unit: dBm. Default: –100. Range: [–100,40]. 
--  **[<authmode mask>]**: determine whether APs with the following authmodes are shown in the result of :ref:`AT+CWLAP <cmd-LAP>`. Default: 0xFF. If you set ``bit x`` to 1, the APs with the corresponding authmode will be shown. If you set ``bit x`` to 0, the APs with the corresponding authmode will NOT be shown; 
+-  **[<authmode mask>]**: determine whether APs with the following authmodes are shown in the result of :ref:`AT+CWLAP <cmd-LAP>`. Default: 0xFFFF. If you set ``bit x`` to 1, the APs with the corresponding authmode will be shown. If you set ``bit x`` to 0, the APs with the corresponding authmode will NOT be shown;
 
    -  bit 0: determine whether APs with ``OPEN`` authmode will be shown.
    -  bit 1: determine whether APs with ``WEP`` authmode will be shown.
@@ -435,6 +435,7 @@ Parameters
    -  bit 5: determine whether APs with ``WPA2_ENTERPRISE`` authmode will be shown.
    -  bit 6: determine whether APs with ``WPA3_PSK`` authmode will be shown.
    -  bit 7: determine whether AP with ``WPA2_WPA3_PSK`` authmode will be shown.
+   -  [ESP32-C3 Only] bit 8: determine whether AP with ``WAPI_PSK`` authmode will be shown.
 
 Example
 ^^^^^^^^
@@ -501,6 +502,7 @@ Parameters
    -  5: WPA2_ENTERPRISE
    -  6: WPA3_PSK
    -  7: WPA2_WPA3_PSK
+   -  [ESP32-C3 Only] 8: WAPI_PSK
 
 -  **<ssid>**: string parameter showing SSID of the AP.
 -  **<rssi>**: signal strength.
