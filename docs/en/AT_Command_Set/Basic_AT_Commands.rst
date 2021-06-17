@@ -898,6 +898,14 @@ Parameters
     78        78           19.5
     ========= ============ ==========
 
+  - For ESP32-C3 devices, the range is [40,84]:
+
+    ========= ============ ==========
+    set value actual value actual dBm
+    ========= ============ ==========
+    [40,80]   <set value>  <set value> * 0.25
+    [81,84]   80           20
+    ========= ============ ==========
 
   - For ESP8266 devices, the range is [40,82]:
 
