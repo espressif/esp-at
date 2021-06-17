@@ -1318,6 +1318,7 @@ Notes
 -  If you use Espressif's AT `BIN <https://www.espressif.com/en/support/download/at>`_, ``AT+CIUPDATE`` will download a new AT BIN from the Espressif Cloud.
 -  If you use a user-compiled AT BIN, you need to implement your own AT+CIUPDATE FOTA function. ESP-AT project provides an example of `FOTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_ota_cmd.c>`_.
 -  After you upgrade the AT firmware, you are suggested to call the command :ref:`AT+RESTORE <cmd-RESTORE>` to restore the factory default settings.
+-  Upgraded to an older version is not recommended.
 
 Example
 ^^^^^^^^

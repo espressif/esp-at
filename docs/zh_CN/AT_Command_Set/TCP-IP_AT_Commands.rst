@@ -1315,6 +1315,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 -  如果您直接使用乐鑫提供的 AT `BIN <https://www.espressif.com/zh-hans/support/download/at>`_, 本命令将从 Espressif Cloud 下载 AT 固件升级。
 -  如果您使用的是自行编译的 AT BIN，请自行实现 AT+CIUPDATE FOTA 功能，可参考 ESP-AT 工程提供的示例 `FOTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_ota_cmd.c>`_。
 -  建议升级 AT 固件后，调用 :ref:`AT+RESTORE <cmd-RESTORE>` 恢复出厂设置。
+-  不建议升级到旧版本。
 
 示例
 ^^^^
