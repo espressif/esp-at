@@ -380,7 +380,7 @@ Wi-Fi AT 命令集
    -  bit 10: 是否显示 <wps>
 
 -  **[<rssi filter>]**：:ref:`AT+CWLAP <cmd-LAP>` 的扫描结果是否按照本参数过滤，也即，是否过滤掉信号强度低于 ``rssi filter`` 参数值的 AP，单位：dBm，默认值：–100，范围：[–100,40]
--  **[<authmode mask>]**：:ref:`AT+CWLAP <cmd-LAP>` 的扫描结果是否显示以下认证方式的 AP，默认值：0xFF，如果 ``bit x`` 设为 1，则显示对应认证方式的 AP，若设为 0，则不显示
+-  **[<authmode mask>]**：:ref:`AT+CWLAP <cmd-LAP>` 的扫描结果是否显示以下认证方式的 AP，默认值：0xFFFF，如果 ``bit x`` 设为 1，则显示对应认证方式的 AP，若设为 0，则不显示
 
    -  bit 0: 是否显示 ``OPEN`` 认证方式的 AP
    -  bit 1: 是否显示 ``WEP`` 认证方式的 AP
@@ -390,6 +390,7 @@ Wi-Fi AT 命令集
    -  bit 5: 是否显示 ``WPA2_ENTERPRISE`` 认证方式的 AP
    -  bit 6: 是否显示 ``WPA3_PSK`` 认证方式的 AP
    -  bit 7: 是否显示 ``WPA2_WPA3_PSK`` 认证方式的 AP
+   -  [ESP32-C3 Only] bit 8: 是否显示 ``WAPI_PSK`` 认证方式的 AP
 
 示例
 ^^^^
@@ -456,6 +457,7 @@ Wi-Fi AT 命令集
    -  5: WPA2_ENTERPRISE
    -  6: WPA3_PSK
    -  7: WPA2_WPA3_PSK
+   -  [ESP32-C3 Only] 8: WAPI_PSK
 
 -  **<ssid>**：字符串参数，AP 的 SSID
 -  **<rssi>**：信号强度
