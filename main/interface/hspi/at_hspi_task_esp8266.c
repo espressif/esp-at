@@ -43,10 +43,10 @@
 
 static const char* TAG = "HSPI-AT";
 
-#define SPI_SLAVE_HANDSHARK_GPIO     CONFIG_AT_HSPI_HANDSHAKE_PIN
+#define SPI_SLAVE_HANDSHARK_GPIO     4
 #define SPI_SLAVE_HANDSHARK_SEL      (1ULL<<SPI_SLAVE_HANDSHARK_GPIO)
-#define AT_READ_STREAM_BUFFER_SIZE      1024*2
-#define AT_WRITE_STREAM_BUFFER_SIZE      1024*4
+#define AT_READ_STREAM_BUFFER_SIZE      CONFIG_RX_STREAM_BUFFER_SIZE
+#define AT_WRITE_STREAM_BUFFER_SIZE      CONFIG_TX_STREAM_BUFFER_SIZE
 
 static StreamBufferHandle_t at_spi_slave_rx_ring_buf = NULL;
 static StreamBufferHandle_t at_spi_slave_tx_ring_buf = NULL;      // save slave -> master data

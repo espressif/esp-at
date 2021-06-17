@@ -15,8 +15,8 @@ ESP32 AT （以两个 ESP32 对发为例）中使用了如下管脚进行 SPI �
 | Signal    | Slave  | Master |
 | --------- | ------ | ------ |
 | SCLK      | GPIO15 | GPIO15 |
-| MISO      | GPIO13 | GPIO13 |
-| MOSI      | GPIO12 | GPIO12 |
+| MOSI      | GPIO13 | GPIO13 |
+| MISO      | GPIO12 | GPIO12 |
 | CS        | GPIO14 | GPIO14 |
 | HANDSHAKE | GPIO4  | GPIO4  |
 | GND       | GND    | GND    |
