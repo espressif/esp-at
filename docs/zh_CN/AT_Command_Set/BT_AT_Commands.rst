@@ -710,7 +710,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 ::
 
-    +BTA2DPCONN:<conn_index>,fail
+    +BTA2DPCONN:<conn_index>,-1
 
 参数
 ^^^^

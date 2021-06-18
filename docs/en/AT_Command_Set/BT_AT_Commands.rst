@@ -709,7 +709,7 @@ Otherwise, it will return:
 
 ::
 
-    +BTA2DPCONN:<conn_index>,fail
+    +BTA2DPCONN:<conn_index>,-1
 
 Parameters
 ^^^^^^^^^^
