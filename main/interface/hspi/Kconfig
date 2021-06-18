@@ -1,5 +1,6 @@
 config AT_BASE_ON_HSPI
     bool "AT through HSPI"
+    depends on !IDF_TARGET_ESP8266
     help
         If enable this option, the MCU can send AT command through SPI bus. 
         But besides the standard SPI pins, the more one pin is required to handshake MCU. 
@@ -7,7 +8,7 @@ config AT_BASE_ON_HSPI
 
 choice SPI_TRANSMIT
     prompt "AT SPI Data Transmission Mode"
-    depends on AT_BASE_ON_HSPI && !IDF_TARGET_ESP8266 && !IDF_TARGET_ESP32
+    depends on AT_BASE_ON_HSPI && !IDF_TARGET_ESP32
     default SPI_STANDARD_MODE
 
 config SPI_STANDARD_MODE
@@ -17,20 +18,18 @@ config SPI_STANDARD_MODE
 
 config SPI_DUAL_MODE
     bool "Dual SPI"
-    depends on !IDF_TARGET_ESP8266
     help
         Enable the two-line data transmission. The MCU can transmit data through MOSI and MISO line. 
         
 config SPI_QUAD_MODE
     bool "Quad SPI"
-    depends on !IDF_TARGET_ESP8266
     help
         Enable the four-line data transmission. In this mode, two more I/O lines for sending 4 data bits per clock cycle are needed.
 endchoice
 
 
 menu "AT SPI GPIO settings"
-    depends on AT_BASE_ON_HSPI && !IDF_TARGET_ESP8266
+    depends on AT_BASE_ON_HSPI
     config SPI_SCLK_PIN
         int "SPI sclk pin"
         default 15 if (IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32)
@@ -55,7 +54,7 @@ menu "AT SPI GPIO settings"
         int "SPI handshake pin for slave send"
         default 5 if IDF_TARGET_ESP32S2
         default 3 if IDF_TARGET_ESP32C3
-        default 4 if (IDF_TARGET_ESP8266 || IDF_TARGET_ESP32)
+        default 4 if IDF_TARGET_ESP32
 
     config SPI_WP_PIN
         int "SPI WP pin(quad spi)"
@@ -75,8 +74,7 @@ menu "AT SPI driver settings"
     config SPI_NUM
         int "SPI number"
         default 1
-        range 1 2 if !IDF_TARGET_ESP8266
-        range 1 1 if IDF_TARGET_ESP8266
+        range 1 2
 
     config SPI_MODE
         int "SPI mode"
