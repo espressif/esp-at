@@ -1321,6 +1321,7 @@ Wi-Fi AT 命令集
 -  SmartConfig 仅支持在 ESP Station 模式下调用；
 -  消息 ``Smart get Wi-Fi info`` 表示 SmartConfig 成功获取到 AP 信息，之后 ESP 尝试连接 AP；
 -  消息 ``Smartconfig connected Wi-Fi`` 表示成功连接到 AP；
+-  因为 ESP 设备需要将 SmartConfig 配网结果同步给手机端，所以建议在消息 ``Smartconfig connected Wi-Fi`` 输出后延迟超过 ``6`` 秒再调用 :ref:`AT+CWSTOPSMART <cmd-STOPS>`；
 -  可调用 :ref:`AT+CWSTOPSMART <cmd-STOPS>` 停止 SmartConfig，然后再执行其他命令。注意，在 SmartConfig 过程中请勿执行其他命令。
 
 示例
