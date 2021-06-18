@@ -81,6 +81,7 @@ static int32_t at_sdio_write_data(uint8_t* data, int32_t len)
         return -1;
     }
 
+    xSemaphoreTake(semahandle, portMAX_DELAY);
     sendbuf = heap_caps_malloc(len, MALLOC_CAP_DMA);
     if (sendbuf == NULL) {
         ESP_LOGE(TAG , "Malloc send buffer fail!");
@@ -96,6 +97,7 @@ static int32_t at_sdio_write_data(uint8_t* data, int32_t len)
     }
 
     free(sendbuf);
+    xSemaphoreGive(semahandle);
     return length;
 }
 
