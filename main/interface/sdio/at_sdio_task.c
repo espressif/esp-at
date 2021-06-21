@@ -63,6 +63,8 @@ typedef struct sdio_list {
     uint32_t pos;
 } esp_at_sdio_list_t;
 
+#define ESP32_SDIO_DMA_SIZE 4092
+
 static const char* TAG = "SDIO-AT";
 
 static esp_at_sdio_list_t WORD_ALIGNED_ATTR sdio_buffer_list[ESP_AT_SDIO_BUFFER_NUM];
@@ -74,31 +76,41 @@ static xSemaphoreHandle semahandle;
 static int32_t at_sdio_write_data(uint8_t* data, int32_t len)
 {
     esp_err_t ret = ESP_OK;
-    int32_t length = len;
     uint8_t* sendbuf = NULL;
     if (len < 0 || data == NULL) {
         ESP_LOGE(TAG , "Write data error, len:%d", len);
         return -1;
     }
-
     xSemaphoreTake(semahandle, portMAX_DELAY);
-    sendbuf = heap_caps_malloc(len, MALLOC_CAP_DMA);
-    if (sendbuf == NULL) {
-        ESP_LOGE(TAG , "Malloc send buffer fail!");
-        return 0;
-    }
+    uint32_t len_remain = len;
+    uint8_t* start_ptr = (uint8_t*)data;
 
-    memcpy(sendbuf, data, length);
+    do {
+        int len_to_send = len_remain > ESP32_SDIO_DMA_SIZE ? ESP32_SDIO_DMA_SIZE : len_remain;
+        sendbuf = heap_caps_malloc(len_to_send, MALLOC_CAP_DMA);
+        if (sendbuf == NULL) {
+            ESP_LOGE(TAG , "Malloc send buffer fail!");
+            xSemaphoreGive(semahandle);
+            return 0;
+        }
 
-    ret = sdio_slave_transmit(sendbuf, len);
-    if (ret != ESP_OK) {
-        ESP_LOGE(TAG , "sdio slave transmit error, ret : 0x%x\r\n", ret);
-        length = 0;
-    }
+        memcpy(sendbuf, start_ptr, len_to_send);
 
-    free(sendbuf);
+        ret = sdio_slave_transmit(sendbuf, len_to_send);
+        if (ret != ESP_OK) {
+            ESP_LOGE(TAG , "sdio slave transmit error, return ret : 0x%x\r\n", ret);
+            free(sendbuf);
+            xSemaphoreGive(semahandle);
+            return 0;
+        }
+
+        free(sendbuf);
+        start_ptr += len_to_send;
+        len_remain -= len_to_send;
+    } while (len_remain != 0);
     xSemaphoreGive(semahandle);
-    return length;
+
+    return len;
 }
 
 static int32_t at_sdio_read_data(uint8_t* data, int32_t len)
