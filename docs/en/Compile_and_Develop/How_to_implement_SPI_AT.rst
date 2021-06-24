@@ -256,7 +256,7 @@ SPI AT Throughput
 Introduction of the Test
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- An ESP32-DevKitC development board is been used as SPI master. The application runs in the board can be found under the directory :example:`at_spi-master/spi/esp32_c_series` of the `ESP-AT <https://github.com/espressif/esp-at>`_ project. Some related configurations are described below: 
+- An ESP32-DevKitC development board is been used as SPI master. The application runs in the board can be found under the directory :example:`at_spi_master/spi/esp32_c_series` of the `ESP-AT <https://github.com/espressif/esp-at>`_ project. Some related configurations are described below: 
 
 1. Hardware configuration: The frequency of CPU is 240 MHz，flash SPI mode is in QIO mode with 40 MHz.
 

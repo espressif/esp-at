@@ -256,7 +256,7 @@ SPI AT 速率
 测试说明
 ^^^^^^^^^
 
-- 使用 ESP32-DevKitC 开发板作为 SPI master，运行 `ESP-AT <https://github.com/espressif/esp-at>`_ 中的 :example:`at_spi-master/spi/esp32_c_series` 目录的代码。其软硬件配置如下：
+- 使用 ESP32-DevKitC 开发板作为 SPI master，运行 `ESP-AT <https://github.com/espressif/esp-at>`_ 中的 :example:`at_spi_master/spi/esp32_c_series` 目录的代码。其软硬件配置如下：
 
 1. 硬件：CPU 工作频率设置为 240 MHz，flash SPI mode 配置为 QIO 模式，flash 频率设置为 40 MHz。
 
