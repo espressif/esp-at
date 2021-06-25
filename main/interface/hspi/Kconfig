@@ -6,6 +6,7 @@ config AT_BASE_ON_HSPI
         But besides the standard SPI pins, the more one pin is required to handshake MCU. 
         In order to respond in time, MCU should use the interrupt pin as the handshake pin.
 
+if AT_BASE_ON_HSPI
 choice SPI_TRANSMIT
     prompt "AT SPI Data Transmission Mode"
     depends on AT_BASE_ON_HSPI && !IDF_TARGET_ESP32
@@ -91,3 +92,4 @@ menu "AT SPI driver settings"
         default 4096
         range 1024 8192
 endmenu
+endif
