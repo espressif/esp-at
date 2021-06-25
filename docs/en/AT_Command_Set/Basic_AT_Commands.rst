@@ -883,19 +883,19 @@ Parameters
 
 - **<wifi_power>**: the unit is 0.25 dBm. For example, if you set the value to 78, the actual maximum RF Power value is 78 * 0.25 dBm = 19.5 dBm. After you configure it, please confirm the actual value by entering the command ``AT+RFPOWER?``.
 
-  - For ESP32 and ESP32-S2 devices, the range is [40,78]:
+  - For ESP32 and ESP32-S2 devices, the range is [40,84]:
 
     ========= ============ ==========
     set value actual value actual dBm
     ========= ============ ==========
-    [34,43]   34           8.5
+    [40,43]   34           8.5
     [44,51]   44           11
     [52,55]   52           13
     [56,59]   56           14
     [60,65]   60           15
     [66,71]   66           16.5
     [72,77]   72           18
-    78        78           19.5
+    [78,84]   78           19.5
     ========= ============ ==========
 
   - For ESP32-C3 devices, the range is [40,84]:
