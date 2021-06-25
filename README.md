@@ -1,41 +1,72 @@
-# Overview
-libat_core.a is AT Command Core, and it is the core of AT command, including the default AT instruction set, the AT command parsing, execution and responding. The lib contains 4 kinds of command, such as `AT+TEST=?`, `AT+TEST?`, `AT+TEST=“abc”` and `AT+TEST`. It supports custom AT commands based on the lib and related APIs, and ones can also define input and output medium, like uart, spi, socket, bt, etc.
+# ESP-AT
+[![Documentation Status](https://readthedocs.com/projects/espressif-esp-at/badge/?version=latest)](https://docs.espressif.com/projects/esp-at/en/latest/?badge=latest)
 
-The demo is the AT command set based on uart. You can replace the uart driver with other drivers whichever you want to use. But maybe you have to make some changes to run the new driver. In addition, you can add some custom AT commands in `at_custom_cmd` like `AT+CIUPDATE` if necessary.
+- [中文版](#esp-at-项目)
 
-- Documentation for the latest version: https://docs.espressif.com/projects/esp-at/. This documentation is built from the [docs directory](docs) of this repository
-- [How_to_clone_project_and_compile_it.rst](docs/en/Compile_and_Develop/How_to_clone_project_and_compile_it.rst): How to compile ESP AT  
-- [ESP_AT_Commands_Set.md](https://docs.espressif.com/projects/esp-at/en/latest/index.html): ESP AT Command Set  
-- [How_to_set_AT_port_pin.md](docs/en/Compile_and_Develop/How_to_set_AT_port_pin.md): How to modify AT Port pin  
-- [How_to_create_factory_parameter_bin.md](docs/en/Compile_and_Develop/How_to_create_factory_parameter_bin.md): How to add factory parameter 
-- [How_to_customize_partitions.md](docs/en/Compile_and_Develop/How_to_customize_partitions.md): What is `The Secondary Partitions Table`    
-- [How_to_add_new_platform.md](docs/en/Compile_and_Develop/How_to_add_new_platform.md): How to add new configuration for your module  
-- [How_to_update_IDF.md](docs/en/Compile_and_Develop/How_to_update_IDF.md): How to update idf version  
-- [How_to_enable_ESP32_AT_Classic_Bluetooth.md](docs/en/Compile_and_Develop/How_to_enable_ESP32_AT_Classic_Bluetooth.md): The example for ESP AT classic bluetooth command  
-- [How_to_customize_BLE_services.md](docs/en/Compile_and_Develop/How_to_customize_BLE_services.md): How to customize ble services  
-- [How_to_enable_ESP32_AT_Ethernet.md](docs/en/Compile_and_Develop/How_to_enable_ESP32_AT_Ethernet.md): How to use ethernet  
-- [How_to_implement_ESP32_SDIO_AT.md](docs/en/Compile_and_Develop/How_to_implement_ESP32_SDIO_AT.md): SDIO AT user guide
-- [tools](tools/README.md): Some tools ESP AT used  
-- virtual machine (for windows 64bits user): [`http://download.espressif.com/esp_share/env/ubuntu1804.ova`](http://download.espressif.com/esp_share/env/ubuntu1804.ova)
-- https://blog.csdn.net/espressif/article/details/79316992: CSDN espressif official blog in Chinese
+esp-at project was started and powered by Espressif Systems (@[espressif](https://github.com/espressif/)) as an official project, for the **ESP8266**, **ESP32**, **ESP32-C3**, and **ESP32-S2** Series SoCs provided for Windows, Linux, and macOS.  
+It is now supported and maintained by Espressif esp-at team (@[esp-at](https://github.com/espressif/esp-at)).
 
-# 概述
-libat_core.a 是 AT 命令集的核心部分, 包含默认的 AT 指令集, 具有 AT 命令解析、 执行和回复功能. 在此库中，可以处理 `AT+TEST=?`、 `AT+TEST?`、 `AT+TEST=“abc”` 和 `AT+TEST` 4 种格式的指令集. 可以根据相关 API 自定义命令, 并且还可以定义输入输出介质, 比如 uart, spi, socket, bt 等等.
+esp-at is Free Software under a MIT license.
 
-此工程是基于 uart 实现的命令集，如果需要，你可以使用其它驱动程序替换掉 uart 驱动，为了使用新的驱动程序，可能必须做一些必要的代码改动. 另外，如果需要，你可以仿照 `AT+CIUPDATE` 在 `at_custom_cmd` 中添加自定义命令.
+# Introduction
+Espressif Wi-Fi and Bluetooth® chipsets are often used as add-on modules to seamlessly integrate wireless connectivity features into new and existing products.  
+In an effort to facilitate this and cut down on engineering costs, Espressif Systems has developed a set of AT commands that can be used to interface with Espressif products.
 
-- 最新版的文档：https://docs.espressif.com/projects/esp-at/ ，该文档是由本仓库 [docs 目录](docs) 构建得到
-- [How_to_clone_project_and_compile_it.rst](docs/zh_CN/Compile_and_Develop/How_to_clone_project_and_compile_it.rst): 如何编译 ESP AT 工程  
-- [ESP_AT_Commands_Set.md](https://docs.espressif.com/projects/esp-at/zh_CN/latest/): ESP AT 指令集  
-- [How_to_set_AT_port_pin.md](docs/zh_CN/Compile_and_Develop/How_to_set_AT_port_pin.md): 如何修改 AT 发送命令的管脚  
-- [How_to_create_factory_parameter_bin.md](docs/zh_CN/Compile_and_Develop/How_to_create_factory_parameter_bin.md): 如何创建默认出厂参数  
-- [How_to_customize_partitions.md](docs/zh_CN/Compile_and_Develop/How_to_customize_partitions.md): 如何客制化分区  
-- [How_to_add_new_platform.md](docs/zh_CN/Compile_and_Develop/How_to_add_new_platform.md): 如何针对自己的模组添加新的平台支持  
-- [How_to_update_IDF.md](docs/zh_CN/Compile_and_Develop/How_to_update_IDF.md): 如何更新 IDF 版本  
-- [How_to_enable_ESP32_AT_Classic_Bluetooth.md](docs/zh_CN/Compile_and_Develop/How_to_enable_ESP32_AT_Classic_Bluetooth.md): 如何使能 ESP32 AT 经典蓝牙  
-- [How_to_customize_BLE_services.md](docs/zh_CN/Compile_and_Develop/How_to_customize_BLE_services.md): 如何自定义 ble services  
-- [How_to_enable_ESP32_AT_Ethernet.md](docs/zh_CN/Compile_and_Develop/How_to_enable_ESP32_AT_Ethernet.md): 如何使能 ESP32 AT 网口  
-- [How_to_implement_ESP32_SDIO_AT.md](docs/zh_CN/Compile_and_Develop/How_to_implement_ESP32_SDIO_AT.md): SDIO AT 用法指南
-- [tools](tools/README.md): 其它一些 ESP AT 相关工具  
-- 虚拟机下载地址(供 64 位 windows 虚拟机客户使用): [`http://download.espressif.com/esp_share/env/ubuntu1804.ova`](http://download.espressif.com/esp_share/env/ubuntu1804.ova)
-- https://blog.csdn.net/espressif/article/details/79316992: CSDN espressif 中文官方博客
+"AT" means 'attention'. Each command string is prefixed with "AT", and a number of discrete commands can be concatenated after the "AT".
+
+The AT command firmware allows for rapid integration by providing:
+
+- In-built TCP/IP stack and data buffering
+- Easy integration with resource-constrained host platforms
+- Easy-to-parse command-response protocols
+- Customized, user-defined AT commands
+
+# Resources
+- There are several guides for esp-at developers and users. These guides can be rendered in a number of formats, like HTML and PDF.  
+  Documentation for the latest version: [https://docs.espressif.com/projects/esp-at/en/latest/index.html](https://docs.espressif.com/projects/esp-at/en/latest/index.html). This documentation is built from the [docs directory](https://github.com/espressif/esp-at/tree/master/docs) of this repository.
+
+- [Check the Issues section on GitHub](https://github.com/espressif/esp-at/issues) if you find a bug or have a feature request. Please check existing Issues before opening a new one.
+
+- The [esp-at forum](https://www.esp32.com/viewforum.php?f=42) is a place to ask questions and find community resources.
+
+# Project Roadmap
+1. The next version of ESP-AT firmware (v2.3.0.0) is planned to be released in October 2021, including but not limited to ESP32-C3 series firmware.  
+ESP32-C3 firmware would support Bluetooth LE.
+
+1. ESP-AT will not release the new version for ESP8266, **ESP32-C3 is recommended instead**. It means:
+  - ESP-AT no longer adds new features to ESP8266.
+  - [v2.2.0.0_esp8266](https://github.com/espressif/esp-at/releases/tag/v2.2.0.0_esp8266) is the last version of ESP-AT for ESP8266, corresponding to branch: [release/v2.2.0.0_esp8266](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp8266).
+  - ESP-AT will regularly update [release/v2.2.0.0_esp8266](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp8266) branch for ESP8266. Update includes vital bugfix and security repair.
+
+# ESP-AT 项目
+esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/)) 发起和提供技术支持的官方项目，适用于 Windows、Linux、macOS 上的 **ESP8266**、**ESP32**、**ESP32-C3**、和 **ESP32-S2** 系列芯片。  
+当前该项目由 Espressif esp-at 团队 (@[esp-at](https://github.com/espressif/esp-at)) 负责技术支持和维护。  
+
+esp-at 是 MIT 许可证下的免费软件。
+
+# 简介
+乐鑫 Wi-Fi 和蓝牙芯片可以用作附加模块，完美集成在其他现有产品上，提供无线通讯功能。
+为降低客户开发成本，乐鑫开发了一套 AT 指令集，方便客户简单快速地使用 AT 指令来控制芯片。
+
+乐鑫提供的 AT 指令固件具有以下特色，利于芯片集成到应用中：
+
+- 内置 TCP/IP 堆栈和数据缓冲
+- 能便捷地集成到资源受限的主机平台中
+- 主机对指令的回应易于解析
+- 用户可自定义 AT 指令
+
+# 资源
+- 这里为开发者和用户提供了一些指南，这些指南可以以多种格式呈现，比如 HTML 和 PDF。  
+  最新文档见：[https://docs.espressif.com/projects/esp-at/zh_CN/latest/index.html](https://docs.espressif.com/projects/esp-at/zh_CN/latest/index.html)。该文档是由本仓库 [docs 目录](https://github.com/espressif/esp-at/tree/master/docs) 自动编译构建的。
+
+- 如果你有 bug 上报或者功能需求，可以在 [GitHub Issues](https://github.com/espressif/esp-at/issues) 里提交。请在提交前检索下是否有相同的 Issue。
+
+- [esp-at 社区](https://www.esp32.com/viewforum.php?f=34) 可以用来询问问题或寻找一些社区资源。
+
+# 项目路线图
+1. 下一版本 ESP-AT 固件 (v2.3.0.0)，计划在 2021 年 10 月发布，包括但不限于 ESP32-C3 系列固件，其中 ESP32-C3 固件将支持低功耗蓝牙。
+
+2. ESP-AT 不再为 ESP8266 发布新版本，**推荐使用 ESP32-C3**。这意味着：
+  - ESP-AT 不再为 ESP8266 添加新功能
+  - [v2.2.0.0_esp8266](https://github.com/espressif/esp-at/releases/tag/v2.2.0.0_esp8266) 是 ESP-AT 为 ESP8266 发布的最后一个版本，对应分支为 [release/v2.2.0.0_esp8266](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp8266)
+  - ESP-AT 将定期在 [release/v2.2.0.0_esp8266](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp8266) 分支为 ESP8266 进行重要 bug 修复，安全修补等更新
