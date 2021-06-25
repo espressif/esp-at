@@ -115,7 +115,7 @@ esp32_wroom_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32_default/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32_default/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
@@ -158,7 +158,7 @@ esp32_wrover_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_wrover-32/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_wrover-32/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 1}" > build/module_info.json'
@@ -201,7 +201,7 @@ esp32_pico_d4_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32_default/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32_default/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
@@ -245,7 +245,7 @@ esp32_solo_1_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32_default/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32_default/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
@@ -288,7 +288,7 @@ esp32-d2wd_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32-d2wd/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32-d2wd/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-D2WD\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
@@ -331,7 +331,7 @@ esp32_mini_1_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32_default/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32_default/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
@@ -374,7 +374,7 @@ esp32_qcloud:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32_qcloud/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32_qcloud/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32_QCLOUD\", \"description\": \"QCLOUD TX:17 RX:16\",\"silence\": 0}" > build/module_info.json'
@@ -417,7 +417,7 @@ esp32s2_wroom_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32s2_default/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32s2_default/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROOM\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
@@ -460,7 +460,7 @@ esp32s2_wrover_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32s2_default/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32s2_default/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"WROVER\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
@@ -503,7 +503,7 @@ esp32s2_solo_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32s2_default/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32s2_default/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"SOLO\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
@@ -546,7 +546,7 @@ esp32s2_mini_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32s2_default/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32s2_default/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32S2\", \"module\": \"MINI\",  \"description\": \"\", \"silence\": 0}" > build/module_info.json'
@@ -589,7 +589,7 @@ esp8266_wroom_02_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}/sdk"?g' module_config/module_esp8266_default/IDF_VERSION
+    - sed -i "s?https://github.com/espressif?${GITLAB_SSH_SERVER}/sdk?g" module_config/module_esp8266_default/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02\", \"description\": \"TX:15 RX:13\", \"silence\": 0}" > build/module_info.json'
@@ -632,7 +632,7 @@ esp8266_1MB_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}/sdk"?g' module_config/module_esp8266_default/IDF_VERSION
+    - sed -i "s?https://github.com/espressif?${GITLAB_SSH_SERVER}/sdk?g" module_config/module_esp8266_default/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"ESP8266_1MB\", \"description\": \"\", \"silence\": 0}" > build/module_info.json'
@@ -675,7 +675,7 @@ esp8266_wroom_5V2L_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}/sdk"?g' module_config/module_esp8266_default/IDF_VERSION
+    - sed -i "s?https://github.com/espressif?${GITLAB_SSH_SERVER}/sdk?g" module_config/module_esp8266_default/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-5V2L\", \"description\": \"\", \"silence\": 0}" > build/module_info.json'
@@ -718,7 +718,7 @@ esp8266_wroom_02_N_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}/sdk"?g' module_config/module_esp8266_default/IDF_VERSION
+    - sed -i "s?https://github.com/espressif?${GITLAB_SSH_SERVER}/sdk?g" module_config/module_esp8266_default/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02-N\", \"description\": \"TX:1 RX:3\", \"silence\": 0}" > build/module_info.json'
@@ -761,7 +761,7 @@ esp32c3_mini_1_at:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32c3_default/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32c3_default/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
@@ -804,7 +804,7 @@ esp32c3_qcloud:
 
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_esp32c3_qcloud/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32c3_qcloud/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3_QCLOUD\", \"description\": \"QCLOUD TX:7 RX:6\",\"silence\": 0}" > build/module_info.json'
@@ -860,7 +860,7 @@ esp32_demo:
     # replace submodule esp-idf to internal repository to speedup cloning
     - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
     - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
+    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/espressif/esp-idf.git
     - cd esp-idf
     - git checkout ${commit_str#*commit:}
     # (the same regular expressions are used to set these are used in 'only:' sections below
@@ -929,7 +929,7 @@ wrover32_all_function_at:
     - sed -i '/ota_0/s/'$old_size_str'/'$new_size_str'/g' module_config/module_wrover-32/partitions_at.csv
 
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_wrover-32/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_wrover-32/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
@@ -984,7 +984,7 @@ esp32_ethernet_at:
     - sed -i '/ota_0/s/'$old_size_str'/'$new_size_str'/g' module_config/module_wrover-32/partitions_at.csv
 
     # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}"?g' module_config/module_wrover-32/IDF_VERSION
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_wrover-32/IDF_VERSION
     - mkdir build
     # create module info
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
@@ -1032,7 +1032,7 @@ build_docs:
     # replace submodule esp-idf to internal repository to speedup cloning
     - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
     - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
+    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/espressif/esp-idf.git
     - cd esp-idf
     - git checkout ${commit_str#*commit:}
     # (the same regular expressions are used to set these are used in 'only:' sections below
