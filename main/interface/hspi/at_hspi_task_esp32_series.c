@@ -95,6 +95,18 @@ static uint32_t notify_len = 0;
 
 static bool send_queue_error_flag = false;
 
+static xSemaphoreHandle pxMutex;
+
+void spi_mutex_lock(void)
+{
+    while (xSemaphoreTake(pxMutex, portMAX_DELAY) != pdPASS);
+}
+
+void spi_mutex_unlock(void)
+{
+    xSemaphoreGive(pxMutex);
+}
+
 bool cb_master_write_buffer(void* arg, spi_slave_hd_event_t* event, BaseType_t* awoken)
 {
     //Give the semaphore.
@@ -179,14 +191,18 @@ static int32_t at_spi_write_data(uint8_t* buf, int32_t len)
         return -1;
     }
 
+    spi_mutex_lock();
     if (initiative_send_flag == 0) {
         initiative_send_flag = 1;
         spi_msg_t spi_msg = {
             .direct = SPI_SLAVE_WR,
         };
 
-        xQueueSend(msg_queue, (void*)&spi_msg, portMAX_DELAY);
+        if (xQueueSend(msg_queue, (void*)&spi_msg, 0) != pdPASS) {
+            ESP_LOGE(TAG, "send WR queue for spi_write error");
+        }
     }
+    spi_mutex_unlock();
     return len;
 }
 
@@ -267,15 +283,20 @@ static void at_spi_slave_task(void* pvParameters)
             gpio_set_level(SPI_SLAVE_HANDSHARK_GPIO, 1); // it means slave send done and notify master to recv
             ESP_ERROR_CHECK(spi_slave_hd_get_trans_res(SLAVE_HOST, SPI_SLAVE_CHAN_TX, &ret_trans, portMAX_DELAY));
 
+            spi_mutex_lock();
             remain_len = xStreamBufferBytesAvailable(spi_slave_tx_ring_buf);
             if (remain_len > 0){
                 spi_msg_t spi_msg = {
                     .direct = SPI_SLAVE_WR,
                 };
-                xQueueSend(msg_queue, (void*)&spi_msg, portMAX_DELAY);
+                if (xQueueSend(msg_queue, (void*)&spi_msg, 0) != pdPASS) {
+                    ESP_LOGE(TAG, "send WR queue error");
+                    break;
+                }
             } else {
                 initiative_send_flag = 0;
             }
+            spi_mutex_unlock();
 
         } else {
             ESP_LOGE(TAG, "Unknow direct: %d", trans_msg.direct);
@@ -349,9 +370,10 @@ void at_interface_init(void)
 
 void at_custom_init(void)
 {
+    pxMutex = xSemaphoreCreateMutex();
     spi_slave_rx_ring_buf = xStreamBufferCreate(SPI_READ_STREAM_BUFFER, 1024);
     spi_slave_tx_ring_buf = xStreamBufferCreate(SPI_WRITE_STREAM_BUFFER, 1024);
-    if (spi_slave_rx_ring_buf == NULL || spi_slave_tx_ring_buf == NULL) {
+    if (pxMutex == NULL || spi_slave_rx_ring_buf == NULL || spi_slave_tx_ring_buf == NULL) {
         // There was not enough heap memory space available to create
         ESP_LOGE(TAG, "creat StreamBuffer error, free heap heap: %d", esp_get_free_heap_size());
         return;
