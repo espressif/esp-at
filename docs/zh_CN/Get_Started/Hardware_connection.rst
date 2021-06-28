@@ -45,7 +45,7 @@
 ESP32 系列
 -------------
 
-ESP32 AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。
+ESP32 AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。
 
 所有 ESP32 模组均连接 GPIO1 和 GPIO3 作为 UART0，但连接不同的 GPIO 作为 UART1，下文将详细介绍如何连接 ESP32 系列模组。
 
@@ -217,7 +217,7 @@ ESP32-SOLO 系列
 ESP32-S2 系列
 ----------------
 
-ESP32-S2 AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。
+ESP32-S2 AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。
 
 .. list-table:: ESP32-S2 Series 系列硬件连接管脚分配
    :header-rows: 1
@@ -260,7 +260,7 @@ ESP32-S2 AT 采用两个 UART 接口：UART0 用于下载固件和输出日志�
 ESP32-C3 系列
 ----------------
 
-ESP32-C3 AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。
+ESP32-C3 AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。
 
 .. list-table:: ESP32-C3 Series 系列硬件连接管脚分配
    :header-rows: 1
@@ -303,7 +303,7 @@ ESP32-C3 AT 采用两个 UART 接口：UART0 用于下载固件和输出日志�
 ESP8266 系列
 ---------------
 
-ESP8266 AT 采用两个 UART 接口：UART0 用于下载固件、发送 AT 命令以及接收 AT 响应；UART1 用于输出日志。
+ESP8266 AT 采用两个 UART 接口：UART0 用于下载固件、发送 AT 命令以及接收 AT 响应；UART1 用于输出日志。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。
 
 .. list-table:: ESP8266 系列硬件连接管脚分配
    :header-rows: 1
