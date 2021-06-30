@@ -37,7 +37,7 @@
 5. ESP is connected to the TCP server as a client:
 
    ```
-   AT+CIPSTART="TCP","192.168.3.116",8080   // protocol、server IP & port
+   AT+CIPSTART="TCP","192.168.3.116",8080   // protocol, server IP & port
    ```
 6. Send data:
 
@@ -48,7 +48,7 @@
    Response:
    SEND OK
    ```
-   **Note：**
+   **Note:**
    If the number of bytes inputted are more than the length (n) set by `AT+CIPSEND`, the system will reply `busy`, and send the first n bytes.
 And after sending the first n bytes, the system will reply `SEND OK`.  
 7. Receive data:
@@ -102,7 +102,7 @@ Below is an example showing how a TCP server is established when ESP works in th
    Response:
    SEND OK
    ```
-   **Note：**
+   **Note:**
    If the number of bytes inputted are more than the length (n) set by `AT+CIPSEND`, the system will reply `busy`, and send the first n bytes.
 And after sending the first n bytes, the system will reply `SEND OK`.  
 7. Receive data:
@@ -183,7 +183,7 @@ In UDP transmission, whether the remote IP and port are fixed or not is determin
    Response:
    SEND OK
    ```
-   **Note：**
+   **Note:**
    If the number of bytes inputted are more than the length (n) set by `AT+CIPSEND`, the system will reply `busy`, and send the first n bytes.
 And after sending the first n bytes, the system will reply `SEND OK`.  
 4. Receive data:
@@ -224,7 +224,7 @@ And after sending the first n bytes, the system will reply `SEND OK`.
    Response:
    SEND OK
    ```
-   **Note：**
+   **Note:**
    If the number of bytes inputted are more than the length (n) set by `AT+CIPSEND`, the system will reply `busy`, and send the first n bytes.
 And after sending the first n bytes, the system will reply `SEND OK`.  
 3. If you want to send data to any other UDP terminals, please designate the IP and port of the target terminal in the command.

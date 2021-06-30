@@ -26,32 +26,32 @@ export ESP_AT_MODULE_NAME ?= ESP32-SDIO
 - 3.1. Enter `module_config` folder, copy the `module_esp32_default` to make a new `module_esp32-sdio`.  
 - 3.2. In this example, we need not to change the partition table and the ESP-IDF  version, so the `at_customize.csv`, `IDF_VERSION` and `partitions_at.csv` all need not to be changed.  
 - 3.3. Revise the `sdkconfig.defaults`
-	- Configure to use the partition table in the `module_esp32-sdio` folder, revise the following items：
-	
-	```
-	CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="module_config/module_esp32-sdio/partitions_at.csv"
+    - Configure to use the partition table in the `module_esp32-sdio` folder, revise the following items:
+    
+    ```
+    CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="module_config/module_esp32-sdio/partitions_at.csv"
 
-	CONFIG_PARTITION_TABLE_FILENAME="module_config/module_esp32-sdio/partitions_at.csv"
+    CONFIG_PARTITION_TABLE_FILENAME="module_config/module_esp32-sdio/partitions_at.csv"
 
-	CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE="module_config/module_esp32-sdio/at_customize.csv"
-	```
-	- Since the esp-at project already supports the SDIO configuration, we only need to add it into the `sdkconfig.defaults`.
-		- Remove the UART AT configuration in the `sdkconfig.defaults`.
-		
-		```
-		CONFIG_AT_BASE_ON_UART=y
-		CONFIG_AT_UART_PORT=1
-		CONFIG_AT_UART_PORT_RX_PIN=16
-		CONFIG_AT_UART_PORT_TX_PIN=17
-		CONFIG_AT_UART_PORT_RTS_PIN=14
-		CONFIG_AT_UART_PORT_CTS_PIN=15
-		```
-		
-		And add the following configuration. 
-		
-		```
-		CONFIG_AT_BASE_ON_SDIO=y
-		```
+    CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE="module_config/module_esp32-sdio/at_customize.csv"
+    ```
+    - Since the esp-at project already supports the SDIO configuration, we only need to add it into the `sdkconfig.defaults`.
+        - Remove the UART AT configuration in the `sdkconfig.defaults`.
+        
+        ```
+        CONFIG_AT_BASE_ON_UART=y
+        CONFIG_AT_UART_PORT=1
+        CONFIG_AT_UART_PORT_RX_PIN=16
+        CONFIG_AT_UART_PORT_TX_PIN=17
+        CONFIG_AT_UART_PORT_RTS_PIN=14
+        CONFIG_AT_UART_PORT_CTS_PIN=15
+        ```
+        
+        And add the following configuration. 
+        
+        ```
+        CONFIG_AT_BASE_ON_SDIO=y
+        ```
 
 ## 4. Revise the at_core lib
 

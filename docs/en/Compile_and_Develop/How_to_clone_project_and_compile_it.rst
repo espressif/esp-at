@@ -172,7 +172,7 @@ Flash the binaries that you just built onto your ESP32 board by running:
 
   ./build.py -p (PORT) flash
 
-- Note that you may need to replace ``PORT`` with your ESP device’s serial port name.
+- Note that you may need to replace ``PORT`` with your ESP device's serial port name.
 - Or you can follow the printed instructions to flash the bin files into flash. Note that you may also need to replace the ``PORT``.
 - If the ESP-AT bin fails to boot and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash, and then re-flash the AT firmware.
 
@@ -307,6 +307,6 @@ Flash the binaries that you just built onto your ESP8266 board by running:
 
   ./build.py -p (PORT) flash
 
-- Note that you may need to replace ``PORT`` with your ESP device’s serial port name.
+- Note that you may need to replace ``PORT`` with your ESP device's serial port name.
 - Or you can follow the printed instructions to flash the bin files into flash. Note that you may also need to replace the ``PORT``.
 - If the ESP-AT bin fails to boot and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash, and then re-flash the AT firmware.

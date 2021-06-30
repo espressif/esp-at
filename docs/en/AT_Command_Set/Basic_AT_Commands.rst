@@ -756,7 +756,7 @@ Notes
 ^^^^^
 
 -  Please make sure that you have downloaded at_customize.bin before using this command. For more details, please refer to :doc:`../Compile_and_Develop/How_to_customize_partitions`.
--  When erasing the targeted user partition in its entirety, you can omit the parameters ``<offset>`` and ``<length>``. For example, command ``AT+SYSFLASH=0,"ble_data"`` can erase the entire “ble_data” user partition. But if you want to keep the two parameters, they have to be 4KB-aligned.
+-  When erasing the targeted user partition in its entirety, you can omit the parameters ``<offset>`` and ``<length>``. For example, command ``AT+SYSFLASH=0,"ble_data"`` can erase the entire "ble_data" user partition. But if you want to keep the two parameters, they have to be 4KB-aligned.
 -  The introduction to partitions is in `ESP-IDF Partition Tables <http://esp-idf.readthedocs.io/en/latest/api-guides/partition-tables.html>`_.
 -  If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
 -  If the operator is ``write``, please make sure that you have already erased this partition.

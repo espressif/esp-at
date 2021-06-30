@@ -76,7 +76,7 @@ You can change the default pin assignments by ``./build.py menuconfig`` > ``Comp
 How to Use SPI AT?
 -----------------------
 
-When SPI AT is used，ESP device works in SPI half-duplex mode as a slave. Usually, when SPI protocol works in half-duplex mode, it is the SPI master that starts the read/write operation. However, when AT command is used for data interaction, ESP device (slave) is required to actively report some information. Therefore, we add a handshake line between SPI master and slave to realize the purpose. The specific methods of using handshake line are as follows:
+When SPI AT is used, ESP device works in SPI half-duplex mode as a slave. Usually, when SPI protocol works in half-duplex mode, it is the SPI master that starts the read/write operation. However, when AT command is used for data interaction, ESP device (slave) is required to actively report some information. Therefore, we add a handshake line between SPI master and slave to realize the purpose. The specific methods of using handshake line are as follows:
 
 - When master sends AT commands to slave via SPI, the workflow with an extra handshake line is as follows:
 
@@ -258,7 +258,7 @@ Introduction of the Test
 
 - An ESP32-DevKitC development board is been used as SPI master. The application runs in the board can be found under the directory :example:`at_spi_master/spi/esp32_c_series` of the `ESP-AT <https://github.com/espressif/esp-at>`_ project. Some related configurations are described below: 
 
-1. Hardware configuration: The frequency of CPU is 240 MHz，flash SPI mode is in QIO mode with 40 MHz.
+1. Hardware configuration: The frequency of CPU is 240 MHz, flash SPI mode is in QIO mode with 40 MHz.
 
 2. Software configuration: The `ESP-IDF <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html>`_ version is v4.3. The size of streambuffer is 8192 bytes.
 

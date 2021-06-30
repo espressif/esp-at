@@ -84,7 +84,7 @@ Each of the linked above ESP-AT-Bin files contains several binaries for some spe
          - ``factory_param_WROOM-02.bin``
 
 -   ``ble_data.bin`` is to provide BLE services when the ESP32 works as a BLE server;
--   ``server_cert.bin``, ``server_key.bin`` and ``server_ca.bin`` are examples of SSL server‘s certificate;
--   ``client_cert.bin``, ``client_key.bin`` and ``client_ca.bin`` are examples of SSL client‘s certificate.
+-   ``server_cert.bin``, ``server_key.bin`` and ``server_ca.bin`` are examples of SSL server's certificate;
+-   ``client_cert.bin``, ``client_key.bin`` and ``client_ca.bin`` are examples of SSL client's certificate.
 
 If some of the functions are not used, then the corresponding binaries need not to be downloaded into flash.

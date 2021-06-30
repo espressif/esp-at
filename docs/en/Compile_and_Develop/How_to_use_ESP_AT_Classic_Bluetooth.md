@@ -83,13 +83,13 @@ The scanning results are as follows:
 ```
 +BTSTARTDISC:<bt_addr>,<dev_name>,<major_dev_class>,<minor_dev_class>,<major_srv_class>
 ```
-Initiate the connection using the connection command：
+Initiate the connection using the connection command:
 
 ```
 // conn_index: 0, sec_mode: 0 -> No security, remote_address
 AT+BTSPPCONN=0,0,"24:0a:c4:09:34:23"
 ```
-After the connection is established, the data can be sent and received：
+After the connection is established, the data can be sent and received:
 
 ```
 // conn_index: 0, data length: 30
@@ -106,7 +106,7 @@ AT+BTSPPSEND
 If you want to exit passthrough mode, you can input `+++`.
 
 #### ESP32 CONNECTS TO ESP32
-If you use two ESP32 boards connected to each other，The process is basically the same as described above, The only difference is the initialization. the client initialization is as follow:
+If you use two ESP32 boards connected to each other, The process is basically the same as described above, The only difference is the initialization. the client initialization is as follow:
 
  ```
  AT+BTINIT=1     // init BT stack
@@ -130,7 +130,7 @@ If need to input the Simple Pair Key:
 // conn_index, Key
 AT+BTKEYREPLY=0,123456
 ```
-If ESP32 has the ability to output, You need to enter this password on the remote device：
+If ESP32 has the ability to output, You need to enter this password on the remote device:
 
 ```
 +BTKEYNTF:0,123456
