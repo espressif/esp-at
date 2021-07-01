@@ -542,7 +542,7 @@ Close the MQTT connection and release the resource.
 Parameter
 ^^^^^^^^^^
 
--  **<LinkID>**: only supports link ID 0 currently。
+-  **<LinkID>**: only supports link ID 0 currently.
 
 .. _MQTTErrCod:
 

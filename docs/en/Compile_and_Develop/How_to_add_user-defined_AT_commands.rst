@@ -655,7 +655,7 @@ Assuming that ``ESP-AT`` ends the execution of the command and returns the execu
 
             received_len = esp_at_port_read_data(buf, BUFFER_LEN);
             // check whether to exit the mode
-            // the exit condition is the “+++” string received
+            // the exit condition is the "+++" string received
             if ((received_len == 3) && (strncmp((const char *)buf, "+++", 3)) == 0) {
                 esp_at_port_exit_specific();
 

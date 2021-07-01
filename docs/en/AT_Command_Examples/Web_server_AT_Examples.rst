@@ -19,7 +19,7 @@ Wi-Fi Provisioning Using a Browser
 Introduction
 ^^^^^^^^^^^^^^
 
-With the web server, mobile phone or PC is able to control ESP device‘s Wi-Fi provisioning service. You can use a mobile phone or computer to connect to the SoftAP of the ESP device, open the web pages via browser, start provisioning service, and then the ESP device can connect to the target router as you set.
+With the web server, mobile phone or PC is able to control ESP device's Wi-Fi provisioning service. You can use a mobile phone or computer to connect to the SoftAP of the ESP device, open the web pages via browser, start provisioning service, and then the ESP device can connect to the target router as you set.
 
 Introduction to Operation Steps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -53,7 +53,7 @@ Firstly, ESP device needs to be configured to softAP + STA mode, and creates a w
  
        AT+CWMODE=3
 
-#. Set the configuration of an ESP SoftAP.（For example, set the default connection ssid to "pos_softap", Wi-Fi without password.）
+#. Set the configuration of an ESP SoftAP. (For example, set the default connection ssid to "pos_softap", Wi-Fi without password.)
 
 
    - Command
@@ -216,7 +216,7 @@ At the same time, the following messages will be returned from the ESP-AT comman
 ::
 
     +WEBSERVERRSP:3      // meaning that ESP device begin to receive ota data
-    +WEBSERVERRSP:4      // meaning that ESP device has received all firmware data，and you can choose to restart the ESP device to apply the new firmware
+    +WEBSERVERRSP:4      // meaning that ESP device has received all firmware data, and you can choose to restart the ESP device to apply the new firmware
 
 If the received firmware data verification fails, the following message will be received on the serial port:
 
@@ -265,7 +265,7 @@ Firstly, ESP device needs to be configured to softAP + STA mode, and creates a w
  
        AT+CWMODE=3
 
-#. Set the configuration of an ESP SoftAP.（For example, set the default connection ssid to "pos_softap" , and password to "espressif".）
+#. Set the configuration of an ESP SoftAP. (For example, set the default connection ssid to "pos_softap", and password to "espressif".)
 
 
    - Command

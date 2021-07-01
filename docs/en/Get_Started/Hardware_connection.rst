@@ -298,7 +298,7 @@ ESP32-C3 AT uses two UART ports: UART0 is used to download firmware and log outp
 
    ESP32-C3 Series Hardware Connection
 
-If you want to connect your device directly with ESP32­-C3-­MINI-­1 rather than the ESP board that integrates it, please refer to `ESP32­-C3-­MINI-­1 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-c3-mini-1_datasheet_en.pdf>`_ for more details.
+If you want to connect your device directly with ESP32-C3-MINI-1 rather than the ESP board that integrates it, please refer to `ESP32-C3-MINI-1 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-c3-mini-1_datasheet_en.pdf>`_ for more details.
 
 ESP8266 Series
 ---------------

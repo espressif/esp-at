@@ -74,7 +74,7 @@ The file ``download.config`` contains the configuration to flash the firmware in
    0x2c000 customized_partitions/client_key.bin
 
 - ``--flash_mode dio`` means the firmware is compiled with flash DIO mode.
-- ``--flash_freq 40m`` means the firmware’s flash frequency is 40 MHz.
+- ``--flash_freq 40m`` means the firmware's flash frequency is 40 MHz.
 - ``--flash_size 4MB`` means the firmware is using flash size 4 MB.
 - ``0x10000 ota_data_initial.bin`` means downloading ``ota_data_initial.bin`` into the address ``0x10000``.
 
@@ -100,7 +100,7 @@ Before starting to flash, you need to download `Flash Download Tools for Windows
 
    Flash Download Tools Modes
 
-- Select your target chip. For example, choose "ESP8266 DownloadTool" for ESP8266 chip; choose “ESP32-S2 DownloadTool” for ESP32-S2 chip. (Here, we select ESP32 DownloadTool.)
+- Select your target chip. For example, choose "ESP8266 DownloadTool" for ESP8266 chip; choose "ESP32-S2 DownloadTool" for ESP32-S2 chip. (Here, we select ESP32 DownloadTool.)
 
 .. figure:: ../../_static/esp32_wroom32_download_select.png
    :align: center
@@ -111,7 +111,7 @@ Before starting to flash, you need to download `Flash Download Tools for Windows
 
 - Flash AT firmware into your device. You can select either of the two ways below.
 
-   - To download one combined factory bin to address 0, select “DoNotChgBin” to use the default configuration of the factory bin.
+   - To download one combined factory bin to address 0, select "DoNotChgBin" to use the default configuration of the factory bin.
 
      .. figure:: ../../_static/esp32_wroom32_download_one_bin.png
         :align: center
@@ -120,7 +120,7 @@ Before starting to flash, you need to download `Flash Download Tools for Windows
 
         Download to One Address
 
-   - To download multiple bins separately to different addresses, set up the configurations according to the file ``download.config`` and do NOT select “DoNotChgBin”.
+   - To download multiple bins separately to different addresses, set up the configurations according to the file ``download.config`` and do NOT select "DoNotChgBin".
 
      .. figure:: ../../_static/esp32_wroom32_download_multi_bin.png
         :align: center
@@ -185,7 +185,7 @@ To check whether AT works, do as follows:
 - Set Parity to None;
 - Set Stop Bits to 1;
 - Set Flow Type to None;
-- Enter the command “AT+GMR” with a new line (CR LF). 
+- Enter the command "AT+GMR" with a new line (CR LF). 
 
 If the response is OK as the picture below shows, it means that AT works.
 

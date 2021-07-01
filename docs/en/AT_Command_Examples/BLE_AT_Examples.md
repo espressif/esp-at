@@ -209,7 +209,7 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
 ### Example 2. [ESP32 Only] [iBeacon Examples](#BLE-AT)
 The following demonstrates two examples of iBeacon for ESP32 modules:
 
- * ESP32 advertising iBeacons, which can be discovered by the “Shake Nearby” function of WeChat.
+ * ESP32 advertising iBeacons, which can be discovered by the "Shake Nearby" function of WeChat.
  * ESP32 scanning iBeacons.
 
 This is the structure of iBeacon Frame.
@@ -228,7 +228,7 @@ This is the structure of iBeacon Frame.
     ```
     AT+BLEINIT=2                              // server role  
 
-    Response：
+    Response:
     OK
     ```
 2. Start advertising. Configure the parameters of the iBeacon advertisement as the following table shows:
@@ -252,7 +252,7 @@ The AT command should be as below:
  
     OK
     ```
-Open WeChat on your mobile phone and then select “Shake Nearby” to discover the ESP32 device that is advertising.
+Open WeChat on your mobile phone and then select "Shake Nearby" to discover the ESP32 device that is advertising.
 ![avatar](../../img/Shake-Nearby.png)   
 
 #### Example 2.2. ESP32 Device Scanning for iBeacons
@@ -265,7 +265,7 @@ If the ESP32 device has already been initialized as a BLE server, you need to ca
     ```
     AT+BLEINIT=1                              // client role 
 
-    Response：
+    Response:
     OK
     ```
 2. Enable a scanning for three seconds:
@@ -273,7 +273,7 @@ If the ESP32 device has already been initialized as a BLE server, you need to ca
     ```
     AT+BLESCAN=1,3
 
-    Response：
+    Response:
     OK
     ```
 You will get a scanning result that looks like:
@@ -446,7 +446,7 @@ Below is an example of using two ESP32 modules, one as a BLE server (hereafter n
         
         Response:
         OK
-        >	                 // waiting for serial data
+        >                     // waiting for serial data
 **Note**:
 After ESP32 Client enabling BLE SPP, data received from serial port will be transmitted to the BLE server directly.
 
@@ -464,7 +464,7 @@ After ESP32 Client enabling BLE SPP, data received from serial port will be tran
         
         Response:
         OK
-        >	                 // waiting for serial data
+        >                     // waiting for serial data
 
 **Notes**:  
 

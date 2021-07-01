@@ -20,7 +20,7 @@ SDIO SLAVE pins is as below:
 ## Flashing Firmware
 ### ESP-SDIO-TESTBOARD-V1
 
-1. Turn switch 1, 2, 3, 4, 5 “ON”; and others are “OFF”. 
+1. Turn switch 1, 2, 3, 4, 5 "ON"; and others are "OFF". 
 2. Flashing firmware to the master. After the flashing completed, the light on ESP32 slave will turn on, it means that the master runs successfully, and power on the slave.
 3. Flashing the SDIO AT firmware to the slave.
 
@@ -47,7 +47,7 @@ If you use ESP32-DevKitC or ESP-WROVER-KIT V2 (or earlier versions), please refe
 
 ### SDIO SLAVE
 
-​When SDIO slave receives data from SDIO host, the slave will inform the AT core and give the data to the AT core to handle. After the AT core finished the work, the slave will send data to the host as feedback.
+When SDIO slave receives data from SDIO host, the slave will inform the AT core and give the data to the AT core to handle. After the AT core finished the work, the slave will send data to the host as feedback.
 
 1. Initialize SDIO Slave
     * Call `sdio_slave_initialize` to initialize SDIO slave driver
