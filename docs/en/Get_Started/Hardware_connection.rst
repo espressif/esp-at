@@ -45,7 +45,7 @@ Please note that in the above picture, four jump wires are used to connect the E
 ESP32 Series
 -------------
 
-ESP32 AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. 
+ESP32 AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default.
 
 All ESP32 modules use GPIO1 and GPIO3 as UART0, but they use different GPIOs as UART1. The following sections illustrate which GPIOs you should connect for each ESP32 series of modules.
 
@@ -217,7 +217,7 @@ If you want to connect your device directly with ESP32-SOLO-1 rather than the ES
 ESP32-S2 Series
 ----------------
 
-ESP32-S2 AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses.
+ESP32-S2 AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default.
 
 .. list-table:: ESP32-S2 Series Hardware Connection Pinout
    :header-rows: 1
@@ -260,7 +260,7 @@ If you want to connect your device directly with ESP32-S2-WROOM rather than the 
 ESP32-C3 Series
 ----------------
 
-ESP32-C3 AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses.
+ESP32-C3 AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default.
 
 .. list-table:: ESP32-C3 Series Hardware Connection Pinout
    :header-rows: 1
@@ -303,7 +303,7 @@ If you want to connect your device directly with ESP32­-C3-­MINI-­1 rather th
 ESP8266 Series
 ---------------
 
-ESP8266 AT uses two UART ports: UART0 is used to download firmware and send AT commands and receive AT responses; UART1 is used to log output. 
+ESP8266 AT uses two UART ports: UART0 is used to download firmware and send AT commands and receive AT responses; UART1 is used to log output. Both UART0 and UART1 use ``115200`` baud rate for communication by default.
 
 .. list-table:: ESP8266 Series Hardware Connection Pinout
    :header-rows: 1
