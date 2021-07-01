@@ -281,6 +281,7 @@ Notes
 
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  This command requires Station mode to be enabled.
+- After ESP station is connected to an AP, it is recommended to use this command to query Wi-Fi information; when ESP station is not connected to an AP, it is recommended to use :ref:`AT+CWSTATE <cmd-STATE>` to query Wi-Fi information.
 -  The parameter ``<reconn_interval>`` of this command is the same as ``<interval_second>`` of the command :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`. Therefore, if you omit ``<reconn_interval>`` when running this command, the interval between Wi-Fi reconnections will use the default value 1.
 -  If the ``<ssid>`` and ``<password>`` parameter are omitted, AT will use the last configuration.
 -  Execute command has the same maximum timeout to setup command. The default value is 15 seconds, but you can change it by setting the parameter ``<jap_timeout>``.
