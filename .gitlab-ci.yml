@@ -1058,6 +1058,7 @@ build_docs:
     # - ln -s $(IDF_PATH)/tools tools
     - cd docs
     - ./check_lang_folder_sync.sh
+    - ./check_doc_chars.py
     - cd en
     # - make gh-linkcheck
     - make html
