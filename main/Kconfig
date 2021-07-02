@@ -227,17 +227,17 @@ endchoice
 config AT_FS_COMMAND_SUPPORT
     bool "AT FS command support."
     default "n"
-    depends on AT_ENABLE && !IDF_TARGET_ESP8266
+    depends on AT_ENABLE
 
 config AT_DRIVER_COMMAND_SUPPORT
     bool "AT driver command support."
     default "n"
-    depends on AT_ENABLE && !IDF_TARGET_ESP8266
+    depends on AT_ENABLE
 
 config AT_SIGNALING_COMMAND_SUPPORT
     bool "AT signaling test command support."
     default "y"
-    depends on AT_ENABLE && IDF_TARGET_ESP8266
+    depends on AT_ENABLE
 
 config AT_EAP_COMMAND_SUPPORT
     bool "AT WPA2 Enterprise command support."
@@ -254,14 +254,14 @@ config AT_WEB_SERVER_SUPPORT
 config AT_WEB_USE_FATFS
     bool "Use fatfs to store html"
     default "n"
-    depends on AT_WEB_SERVER_SUPPORT && !IDF_TARGET_ESP8266
+    depends on AT_WEB_SERVER_SUPPORT
     help
         If enable this configure, html will be stored in fatfs(Please enable AT FS Command).
         Otherwise, html file will be compiled as embedded code.
 config AT_WEB_CAPTIVE_PORTAL_ENABLE
     bool "AT WEB captive portal support"
     default "n"
-    depends on AT_WEB_SERVER_SUPPORT && !IDF_TARGET_ESP8266
+    depends on AT_WEB_SERVER_SUPPORT
     help
         If your mobile phone or PC supports captive portal, 
         it will automatically open a browser for setting Wi-Fi station information when connects to ESP softAP. 

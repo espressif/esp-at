@@ -390,11 +390,7 @@ MQTT AT Commands
 
 -  **<LinkID>**：当前仅支持 link ID 0。
 -  **<topic>**：MQTT topic，最大长度：128 字节。
--  **<length>**：MQTT 消息长度，不同 ESP 设备的最大长度不同：
-
-   -  对于 ESP32 设备：最大长度受到可利用内存的限制；
-   -  对于 ESP8266 设备，最大长度受到可利用内存和 ``MQTT_BUFFER_SIZE_BYTE`` 宏的限制。该宏的默认值为 ``512``，可在 ``build.py menuconfig`` 中设置它的值，以此更改对最大长度的限制。该宏的值 = 消息的最大长度 + MQTT 报头长度（取决于 topic 名称的长度）。
-
+-  **<length>**：MQTT 消息长度，不同 ESP 设备的最大长度受到可利用内存的限制。
 -  **<qos>**：发布消息的 QoS，参数可选 0、1、或 2，默认值：0。
 -  **<retain>**：发布 retain。
 

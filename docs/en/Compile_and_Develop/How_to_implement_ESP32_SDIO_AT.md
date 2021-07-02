@@ -32,7 +32,7 @@ If you use ESP32-DevKitC or ESP-WROVER-KIT V2 (or earlier versions), please refe
 ### SDIO HOST 
 
 1. Power on the SDIO SLAVE (this step is for ESP-SDIO-TESTBOARD-V1 only)  
-    * ESP-SDIO-TESTBOARD-V1 contains one master and three slaves (ESP32, ESP8266 and ESP8089). 
+    * ESP-SDIO-TESTBOARD-V1 contains one master and three slaves (ESP32 and ESP8089). 
     * To use ESP32 as SDIO slave, you need to pull down GPIO5, see `slave_power_on`.
 2. Intialize SDIO HOST  
     * To initialize SDIO, including configure one line or four lines mode, SDIO frequency, initialize SD mode.

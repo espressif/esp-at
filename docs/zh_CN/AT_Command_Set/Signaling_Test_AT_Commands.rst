@@ -1,6 +1,6 @@
 .. _FACT-AT:
 
-[ESP8266 Only] 信令测试 AT 命令
+信令测试 AT 命令
 ==========================================
 
 :link_to_translation:`en:[English]`
@@ -9,7 +9,7 @@
 
 .. _cmd-FACTPLCP:
 
-[ESP8266 Only] :ref:`AT+FACTPLCP <FACT-AT>`：发送长 PLCP 或短 PLCP
+:ref:`AT+FACTPLCP <FACT-AT>`：发送长 PLCP 或短 PLCP
 --------------------------------------------------------------------------
 
 设置命令

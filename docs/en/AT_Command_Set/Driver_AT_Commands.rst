@@ -1,6 +1,6 @@
 .. _Driver-AT:
 
-[ESP32 & ESP32-S2 & ESP32-C3] Driver AT Commands
+Driver AT Commands
 ================================================
 
 :link_to_translation:`zh_CN:[中文]`
@@ -56,7 +56,7 @@ Notes
 ^^^^^
 
 -  ESP-AT only supports ADC1.
--  ESP32 and ESP32-C3 support 12-bit width, and ESP32-S2 only supports 13-bit width.
+-  ESP32 and ESP32-C3 support 12-bit width.
 
 Example
 ^^^^^^^^
@@ -65,7 +65,7 @@ Example
 
     AT+DRVADC=0,0   // ADC1 0 channel, voltage: 0 ~ 1.1 V
     +DRVADC:2048    // For ESP32 and ESP32-C3, the voltage is 2048 / 4096 * 1.1 = 0.55 
-                    // For ESP32-S2, the voltage is 2048 / 8192 * 1.1 = 0.264
+
     OK
 
 .. _cmd-DRVPWMINIT:
@@ -100,7 +100,7 @@ Notes
 
 -  AT can support a maximum of 4 channels.
 -  The number of channels that you initialize using this command will determine how many channels you can set using other PWM commands, including :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>` and :ref:`AT+DRVPWMFADE <cmd-DRVPWMFADE>`. For example, if you initialize two channels, you can only change the two channels' PWM duty using command ``AT+DRVPWMDUTY``.
--  The frequency and the duty resolution are interdependent. See `Supported Range of Frequency and Duty Resolutions <https://docs.espressif.com/projects/esp-idf/en/latest/esp32s2/api-reference/peripherals/ledc.html#supported-range-of-frequency-and-duty-resolutions>`_ for more details.
+-  The frequency and the duty resolution are interdependent. See `Supported Range of Frequency and Duty Resolutions <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/ledc.html#supported-range-of-frequency-and-duty-resolutions>`_ for more details.
 
 Example
 ^^^^^^^^

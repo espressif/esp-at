@@ -27,7 +27,6 @@ Basic AT Commands
 -  :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`: Query/Set the light-sleep wakeup source and awake GPIO.
 -  :ref:`AT+SYSSTORE <cmd-SYSSTORE>`: Query/Set parameter store mode.
 -  :ref:`AT+SYSREG <cmd-SYSREG>`: Read/write the register.
--  [ESP32-S2 Only] :ref:`AT+SYSTEMP <cmd-SYSTEMP>`: Read ESP32-S2 internal temperature.
 
 .. _cmd-AT:
 
@@ -179,27 +178,13 @@ Parameter
 
 -  **<time>**: the duration when the device stays in Deep-sleep. Unit: millisecond. When the time is up, the device automatically wakes up, calls Deep-sleep wake stub, and then proceeds to load the application.
 
-   - For ESP32 devices:
-
-     - 0 means restarting right now
-     - the maximum Deep-sleep time is about 28.8 days (2 :sup:`31`-1 milliseconds)
-
-   - For ESP32-S2 devices:
-
-     - 0 means staying in Deep-sleep mode forever
-     - the maximum Deep-sleep time is about 28.8 days (2 :sup:`31`-1 milliseconds)
-   
-   - For ESP8266 devices:
-
-     - 0 means staying in Deep-sleep mode forever
-     - the maximum Deep-sleep time is about 3 hours (due to hardware limitation, more time will lead to setting failure or internal time overflow)
+    - 0 means restarting right now
+    - the maximum Deep-sleep time is about 28.8 days (2 :sup:`31`-1 milliseconds)
 
 Notes
 ^^^^^^
 
-- For ESP8266 devices, you must connect GPIO16 to RST pin to wake them up automatically when time is up.
-- For all devices, affected by external factors, the theoretical and actual time of Deep-sleep will be different.
-- ESP8266 devices can be waken up from Deep-sleep by directly triggering the RST pin low-level pulse.
+- The theoretical and actual time of Deep-sleep may be different due to external factors.
 
 .. _cmd-ATE:
 
@@ -301,8 +286,7 @@ Parameters
 
 -  **<baudrate>**: UART baud rate
 
-   - For ESP32 and ESP32-S2 devices, the supported range is 80 ~ 5000000.
-   - For ESP8266 devices, the supported rang is 80 ~ 4500000.
+   - For ESP32 and ESP32-C3 devices, the supported range is 80 ~ 5000000.
 
 -  **<databits>**: data bits
 
@@ -386,8 +370,7 @@ Parameters
 
 -  **<baudrate>**: UART baud rate
 
-   - For ESP32 and ESP32-S2 devices, the supported range is 80 ~ 5000000.
-   - For ESP8266 devices, the supported rang is 80 ~ 4500000.
+   - For ESP32 and ESP32-C3 devices, the supported range is 80 ~ 5000000.
 
 -  **<databits>**: data bits
 
@@ -883,7 +866,7 @@ Parameters
 
 - **<wifi_power>**: the unit is 0.25 dBm. For example, if you set the value to 78, the actual maximum RF Power value is 78 * 0.25 dBm = 19.5 dBm. After you configure it, please confirm the actual value by entering the command ``AT+RFPOWER?``.
 
-  - For ESP32 and ESP32-S2 devices, the range is [40,84]:
+  - For ESP32 devices, the range is [40,84]:
 
     ========= ============ ==========
     set value actual value actual dBm
@@ -905,21 +888,6 @@ Parameters
     ========= ============ ==========
     [40,80]   <set value>  <set value> * 0.25
     [81,84]   80           20
-    ========= ============ ==========
-
-  - For ESP8266 devices, the range is [40,82]:
-
-    ========= ============ ==========
-    set value actual value actual dBm
-    ========= ============ ==========
-    [40,47]   32           8
-    [48,55]   48           12
-    [56,63]   56           14
-    [64,67]   64           16
-    [68,73]   68           17
-    [74,77]   74           18.5
-    [78,81]   78           19.5
-    82        82           20.5
     ========= ============ ==========
 
 -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,7].
@@ -1207,11 +1175,6 @@ Parameters
      - 0: low level.
      - 1: high level.
 
-Note
-^^^^^
-
--  GPIO16 as the RTC IO can not be set as GPIO wakeup source on ESP8266 platform for light sleep.
-
 Example
 ^^^^^^^^
 
@@ -1358,57 +1321,3 @@ Note
 ^^^^^
 
 - AT does not check address. Make sure that the registers you are operating on are valid.
-
-Example
-^^^^^^^^
-
-::
-
-    // Enable ESP32-S2 IO33 output, 0x3F40402C means base address 0x3F404000 add relative address 0x2C (GPIO_ENABLE1_REG)
-    AT+SYSREG=1,0x3F40402C,0x2
-
-    // ESP32-S2 IO33 output high
-    AT+SYSREG=1,0x3F404010,0x2
-
-    // ESP32-S2 IO33 output low
-    AT+SYSREG=1,0x3F404010,0x0
-
-.. _cmd-SYSTEMP:
-
-[ESP32-S2 Only] :ref:`AT+SYSTEMP <Basic-AT>`: Read ESP32-S2 Internal Temperature
-------------------------------------------------------------------------------------------
-
-Query Command
-^^^^^^^^^^^^^
-
-**Command:**
-
-::
-
-    AT+SYSTEMP?  
-
-**Response:**
-
-::
-
-    +SYSTEMP:<temperature>
-    OK  
-
-Parameter
-^^^^^^^^^^
-
--  **<temperature>**: the measured output value. Unit: Celsius.
-
-Note
-^^^^^
-
--  Measure range: -10℃ ~ 80℃. Error < 1℃.
-
-Example
-^^^^^^^^
-
-::
-
-    AT+SYSTEMP?
-    +SYSTEMP:21.59
-    OK

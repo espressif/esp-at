@@ -974,7 +974,7 @@ Note
 ^^^^^
 
 -  Currently ESP devices only support 802.11b or 802.11bg or 802.11bgn mode.
--  By default, PHY mode of ESP8266 device is 802.11bg mode, and PHY mode of non ESP8266 device is 802.11bgn mode.
+-  By default, PHY mode of ESP devices is 802.11bgn mode.
 
 .. _cmd-STAPROTO:
 
@@ -1025,7 +1025,7 @@ Note
 ^^^^^
 
 -  Currently ESP devices only support 802.11b or 802.11bg or 802.11bgn mode.
--  By default, PHY mode of ESP8266 device is 802.11bg mode, and PHY mode of non ESP8266 device is 802.11bgn mode.
+-  By default, PHY mode of ESP devices is 802.11bgn mode.
 
 .. _cmd-STAMAC:
 

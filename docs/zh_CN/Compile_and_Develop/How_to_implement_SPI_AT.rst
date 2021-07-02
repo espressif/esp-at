@@ -38,36 +38,27 @@ SPI AT 默认管脚
 下表给出了不同系列的 ESP 设备使用 SPI AT 时默认的硬件管脚：
 
 .. list-table:: SPI AT 默认管脚
-   :widths: 10 25 25
+   :widths: 10 25
    :header-rows: 1
 
    * - Signal
      - GPIO Number (ESP32-C3)
-     - GPIO Number (ESP32-S2)
    * - SCLK
      - 6
-     - 12
    * - MISO
      - 2
-     - 13
    * - MOSI
      - 7
-     - 11
    * - CS
-     - 10
      - 10
    * - HANDSHAKE
      - 3
-     - 5
    * - GND
-     - GND
      - GND
    * - QUADWP (qio/qout):sup:`1`
      - 8
-     - 16
    * - QUADHD (qio/qout):sup:`1`
      - 9
-     - 17
 
 **说明** 1：QUADWP 引脚和 QUADHD 引脚仅在使用 4 线 SPI 工作时使用。
 

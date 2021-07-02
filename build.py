@@ -151,12 +151,8 @@ def auto_update_idf(platform_name, module_name):
 def build_project(platform_name, module_name, silence, build_args):
     if platform_name == 'ESP32':
         idf_target = 'esp32'
-    elif platform_name == 'ESP32S2':
-        idf_target = 'esp32s2'
     elif platform_name == 'ESP32C3':
         idf_target = 'esp32c3'
-    elif platform_name == 'ESP8266':
-        idf_target = 'esp8266'
     else:
         sys.exit('Platform "{}" is not supported'.format(platform_name))
 

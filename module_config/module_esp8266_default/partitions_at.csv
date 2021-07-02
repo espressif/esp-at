@@ -1,6 +1,0 @@
-# Name,   Type, SubType, Offset,  Size
-otadata,data,ota,0x9000,8K
-ota_0,app,ota_0,0x10000,0xE0000
-at_customize,0x40,0,0xF0000,0x20000
-ota_1,app,ota_1,0x110000,0xE0000
-nvs,data,nvs,0x1F0000,0x10000
