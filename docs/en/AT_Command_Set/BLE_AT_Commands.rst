@@ -499,6 +499,7 @@ Parameters
 -  **<adv_type>**:
 
    -  0: ADV_TYPE_IND
+   -  1: ADV_TYPE_DIRECT_IND_HIGH
    -  2: ADV_TYPE_SCAN_IND
    -  3: ADV_TYPE_NONCONN_IND
 
