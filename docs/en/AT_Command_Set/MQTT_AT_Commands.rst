@@ -390,11 +390,7 @@ Parameters
 
 -  **<LinkID>**: only supports link ID 0 currently.
 -  **<topic>**: MQTT topic. Maximum length: 128 bytes.
--  **<length>**: length of MQTT message. The maximum length varies on different ESP devices.
-
-   -  For ESP32 devices, the maximum length is limited by available memory.
-   -  For ESP8266 devices, the maximum is limited by available memory and the marco ``MQTT_BUFFER_SIZE_BYTE``. The default value of the macro is ``512``. You can change the max length limitation by setting it in ``build.py menuconfig``. ``MQTT_BUFFER_SIZE_BYTE`` equals maximum published data length plus the MQTT header length (depends on topic name length).
-
+-  **<length>**: length of MQTT message. The maximum length is limited by available memory.
 -  **<qos>**: QoS of the published message, which can be set to 0, 1, or 2. Default is 0.
 -  **<retain>**: retain flag.
 

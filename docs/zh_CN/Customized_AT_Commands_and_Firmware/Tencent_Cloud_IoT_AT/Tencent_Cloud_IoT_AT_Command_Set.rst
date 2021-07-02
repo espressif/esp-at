@@ -1,7 +1,7 @@
 腾讯云 IoT AT 命令集
 ====================
 
-本文档主要介绍腾讯云 IoT AT 命令、错误码及应用说明，仅针对 ESP8266 设备，下表为本文档的目录。
+本文档主要介绍腾讯云 IoT AT 命令、错误码及应用说明，针对 ESP32 & ESP32-C3 设备，下表为本文档的目录。
 
 .. contents::
    :local:
@@ -109,7 +109,7 @@
 ESP-AT 命令说明
 ^^^^^^^^^^^^^^^^
 
-ESP8266 的 AT 命令集及使用说明请参考乐鑫官方 `ESP-AT 用户指南 <https://docs.espressif.com/projects/esp-at/zh_CN/latest/>`_ 及 `GitHub ESP-AT 项目 <https://github.com/espressif/esp32-at>`_。
+ESP-AT 命令集及使用说明请参考乐鑫官方 `ESP-AT 用户指南 <https://docs.espressif.com/projects/esp-at/zh_CN/latest/>`_ 及 `GitHub ESP-AT 项目 <https://github.com/espressif/esp-at>`_。
 
 对于 ESP-AT 机制，有如下注意事项：
 
@@ -181,7 +181,7 @@ AT+TCDEVINFOSET：平台设备信息设置
 
 **说明：**
 
-- ESP8266 模组仅返回 ``<tls_mode>`` 为 1，且不返回 devicesecret 的字符串内容，只返回 devicesecret 字符串的校验和 (BCC)
+- ESP32 & ESP32-C3 模组返回 ``<tls_mode>`` 为 1，且不返回 devicesecret 的字符串内容，只返回 devicesecret 字符串的校验和 (BCC)
 
 设置命令
 """"""""
@@ -214,7 +214,7 @@ AT+TCDEVINFOSET：平台设备信息设置
 
 参数
 """"
-- **<tls_mode>**：接入方式，必填项，ESP8266 模组仅支持模式 1
+- **<tls_mode>**：接入方式，必填项，仅支持模式 1
 
   - 0：直连模式
   - 1：TLS 密钥方式 
@@ -417,7 +417,7 @@ AT+TCMODULE：模组信息读取
 
     Module HW name: 模组硬件信息
     Module FW version: 模组固件信息
-    Module Mac addr: ESP8266 Wi-Fi 模组 mac 地址
+    Module Mac addr: Wi-Fi 模组 mac 地址
     Module FW compiled time: 模组固件编译生成时间
     Module Flash size: 模组 flash 大小
     OK
@@ -427,8 +427,8 @@ AT+TCMODULE：模组信息读取
 ::
 
     AT+TCMODULE
-    Module HW name: ESP-WROOM-02D
-    Module FW version: QCloud_AT_ESP8266_v2.0.0
+    Module HW name: ESP-WROOM-32D
+    Module FW version: QCloud_AT_ESP32_v2.0.0
     Module Mac addr: 3c:71:bf:33:b0:2e
     Module FW compiled time: Jun 17 2020 16:25:27
     Module Flash size: 2MB
@@ -484,7 +484,7 @@ AT+TCRESTORE：清除模组设备信息
 
 - 如果模组已经连接腾讯云 MQTT 服务器，则返回错误，用户需要先发送断开连接命令 (:ref:`AT+TCMQTTDISCONN <cmd-TCMQTTDISCONN>`) 才能执行该命令。
 - 如果状态允许，则返回 OK，然后清除模组上面存储的腾讯云相关设备及产品信息，以及缓存的 OTA 固件信息，并重启模组。
-- 该命令不会清除模组信息（即通过 :ref:`AT+TCMODULE <cmd-TCMODULE>` 可以读取的信息）以及 ESP8266 的 NVS 数据包括 Wi-Fi 配置，如果需要清除 Wi-Fi 配置信息需要执行 AT+RESTORE。
+- 该命令不会清除模组信息（即通过 :ref:`AT+TCMODULE <cmd-TCMODULE>` 可以读取的信息）以及 ESP 设备的 NVS 数据包括 Wi-Fi 配置，如果需要清除 Wi-Fi 配置信息需要执行 AT+RESTORE。
 
 示例
 """"
@@ -568,7 +568,7 @@ AT+TCMQTTCONN：配置 MQTT 连接参数
 
 参数
 """"
-- **<tlsmode>**：接入方式，必填项，ESP8266 模组仅支持  ``<tlsmode>`` 为 1 的模式
+- **<tlsmode>**：接入方式，必填项，仅支持  ``<tlsmode>`` 为 1 的模式
   
   - 0：直连模式
   - 1：TLS密钥方式 
@@ -709,7 +709,6 @@ AT+TCMQTTPUB：向某个 Topic 发布消息
 **说明：**
 
 - 如果模组尚未连接腾讯云 MQTT 服务器，则返回错误，用户需要先发送连接命令 (:ref:`AT+TCMQTTCONN <cmd-TCMQTTCONN>`) 才能发布消息。
-- 如果模组处于 OTA 下载状态中，由于 ESP8266 平台资源限制，执行该命令可能会出现超时错误。如非必要，不建议在 OTA 下载过程中执行该命令。
 - 如果输入合法，首先返回 OK，接下来返回消息发布成功与否。如果是 QoS1 消息，会等到收到 PUBACK 或超时失败再返回。
 
   - ``+TCMQTTPUB: OK``：发布成功
@@ -1819,7 +1818,7 @@ AT+TCMODINFOSET：ESP 模组信息设置
 功能
 """"
 
-设置 ESP8266 模组相关的信息，如模组名称，flash 大小等
+设置 ESP 模组相关的信息，如模组名称，flash 大小等
 
 测试命令
 """"""""
@@ -1889,7 +1888,7 @@ AT+TCMODINFOSET：ESP 模组信息设置
 
 - **<module_name>**：模组名称，字符串类型，最大长度 30
 - **<flash_size>**：模组 flash 大小（单位 MB），2 或者 4，数值类型
-- **<WiFi_LED_GPIO>**：模组使用哪个 GPIO 口来控制 Wi-Fi 状态灯，数值类型，有效范围为 ESP8266 GPIO (0-16) 
+- **<WiFi_LED_GPIO>**：模组使用哪个 GPIO 口来控制 Wi-Fi 状态灯，数值类型
 - **<fw_base_addr>**：模组提供给上位机 OTA 升级的固件数据保存地址，数值类型，该值需为 0x1000 的整数倍并且不小于 0x111000
 - **<fw_max_size>**：模组提供给上位机 OTA 升级的固件最大空间，数值类型，该值不大于 716800 (700 KB) 
 - **<fixed_conn_id>**：保留选项，默认为 1
@@ -2010,7 +2009,7 @@ AT+TCVER：读取模组固件 IoT SDK 版本信息
 ::
 
     AT+TCVER
-    Tencent Cloud IoT AT  version: QCloud_AT_ESP8266_v2.0.0
+    Tencent Cloud IoT AT  version: QCloud_AT_ESP32_v2.0.0
     Tencent Cloud IoT SDK version: 3.2.0
     Firmware compile time: Jun 17 2020 16:25:27
     Tencent Technology Co. Ltd.
@@ -2101,7 +2100,7 @@ AT+TCGWBIND：网关绑定子设备命令
 **说明：**
 
 - 如果模组尚未连接腾讯云 MQTT 服务器，则返回错误，用户需要先发送连接命令 (:ref:`AT+TCMQTTCONN <cmd-TCMQTTCONN>`) 才能发布消息。
-- 该命令为基于 MQTT 消息的同步操作，会阻塞直至绑定或解绑操作完成或超时退出。如果模组处于 OTA 下载状态中，由于 ESP8266 平台资源限制，执行该命令可能会出现超时错误。如非必要，不建议在 OTA 下载过程中执行该命令。
+- 该命令为基于 MQTT 消息的同步操作，会阻塞直至绑定或解绑操作完成或超时退出。
 - 如果输入合法，首先返回 ``OK``，接下来返回绑定或解绑子设备操作成功与否
 
   - ``+TCGWBIND:OK``：操作成功。对于绑定操作，重复绑定也返回成功。对于解绑操作，解绑未绑定的设备也返回成功。
@@ -2209,7 +2208,7 @@ AT+TCGWONLINE：网关代理子设备上下线命令
 **说明：**
 
 - 如果模组尚未连接腾讯云 MQTT 服务器，则返回错误，用户需要先发送连接命令 (:ref:`AT+TCMQTTCONN <cmd-TCMQTTCONN>`) 才能发布消息。
-- 该命令为基于 MQTT 消息的同步操作，会阻塞直至上下线操作完成或超时退出。如果模组处于 OTA 下载状态中，由于 ESP8266 平台资源限制，执行该命令可能会出现超时错误。如非必要，不建议在 OTA 下载过程中执行该命令。
+- 该命令为基于 MQTT 消息的同步操作，会阻塞直至上下线操作完成或超时退出。
 - 如果输入合法，首先返回 OK，接下来返回绑定或解绑子设备操作成功与否
 
   - ``+TCGWONLINE:OK``：操作成功
@@ -2534,7 +2533,6 @@ AT+TCSUBDEVREG：执行子设备动态注册
 
 **说明：**
 
-- 由于 ESP8266 平台资源限制，执行该命令时需先断开网关的 MQTT 连接，否则可能会出现 ``+CME ERROR:208`` 错误。
 - 如果执行状态合法，首先返回 ``OK``，接下来返回子设备注册成功与否
 
  - ``+TCSUBDEVREG:OK``：动态注册成功，子设备密钥信息会保存到 flash
@@ -3031,7 +3029,7 @@ CME ERROR 列表扩展
 使用建议
 ^^^^^^^^^
 
-上位机或 MCU 使用 ESP8266 定制 AT 固件与腾讯云交互，可按下面不同阶段的使用建议进行相关命令的操作。
+上位机或 MCU 使用 ESP 设备定制 AT 固件与腾讯云交互，可按下面不同阶段的使用建议进行相关命令的操作。
 
 1. 检查及配置腾讯云物联网设备信息
 

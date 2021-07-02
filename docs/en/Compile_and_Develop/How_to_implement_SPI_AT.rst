@@ -38,36 +38,27 @@ The Default Pin Assignment
 The following pin assignments are used by default:
 
 .. list-table:: The Default Pins for SPI AT
-   :widths: 10 25 25
+   :widths: 10 25
    :header-rows: 1
 
    * - Signal
      - GPIO Number (ESP32-C3)
-     - GPIO Number (ESP32-S2)
    * - SCLK
      - 6
-     - 12
    * - MISO
      - 2
-     - 13
    * - MOSI
      - 7
-     - 11
    * - CS
-     - 10
      - 10
    * - HANDSHAKE
      - 3
-     - 5
    * - GND
-     - GND
      - GND
    * - QUADWP (qio/qout):sup:`1`
      - 8
-     - 16
    * - QUADHD (qio/qout):sup:`1`
      - 9
-     - 17
 
 **Note** 1: QUADWP and QUADHD signals are only used for 4-bit (qio/qout) transactions.
 

@@ -1,6 +1,6 @@
 .. _Driver-AT:
 
-[ESP32 & ESP32-S2 & ESP32-C3] 驱动 AT 命令
+驱动 AT 命令
 ================================================
 
 :link_to_translation:`en:[English]`
@@ -56,7 +56,7 @@
 ^^^^
 
 -  ESP-AT 只支持 ADC1。
--  ESP32 和 ESP32-C3 支持 12 位宽度，ESP32-S2 只支持 13 位宽度。
+-  ESP32 和 ESP32-C3 支持 12 位宽度
 
 示例
 ^^^^
@@ -65,7 +65,7 @@
 
     AT+DRVADC=0,0   // ADC1 0 通道，电压：0 ~ 1.1 V
     +DRVADC:2048    // ESP32 和 ESP32-C3 的电压为 2048 / 4096 * 1.1 = 0.55 
-                    // ESP32-S2 的电压为 2048 / 8192 * 1.1 = 0.264
+
     OK
 
 .. _cmd-DRVPWMINIT:
@@ -100,7 +100,7 @@
 
 -  ESP-AT 最多能支持 4 个通道。
 -  使用本命令初始化的通道数量直接决定了其它 PWM 命令（如 :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>` 和 :ref:`AT+DRVPWMFADE <cmd-DRVPWMFADE>`）能够设置的通道。例如，如果您只初始化了两个通道，那么 ``AT+DRVPWMDUTY`` 命令只能用来更改这两个通道的 PWM 占空比。
--  频率和占空比分辨率相互影响。更多信息请见 `频率和占空比分辨率支持范围 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32s2/api-reference/peripherals/ledc.html#ledc-api-supported-range-frequency-duty-resolution>`_。
+-  频率和占空比分辨率相互影响。更多信息请见 `频率和占空比分辨率支持范围 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/ledc.html#ledc-api-supported-range-frequency-duty-resolution>`_。
 
 示例
 ^^^^

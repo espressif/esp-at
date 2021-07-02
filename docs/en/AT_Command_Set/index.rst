@@ -4,7 +4,7 @@ AT Command Set
 
 :link_to_translation:`zh_CN:[中文]`
 
-Here is a list of AT commands. Some of them can only work on the ESP32 series, so they are marked as [ESP32 Only] at the beginning; those without any mark can work on all ESP series, including ESP32, ESP8266, ESP32-S2, and ESP32-C3.
+Here is a list of AT commands. Some of them can only work on the ESP32 series, so they are marked as [ESP32 Only] at the beginning; those without any mark can work on all ESP series, including ESP32, and ESP32-C3.
 
 .. toctree::
    :maxdepth: 1
@@ -17,10 +17,9 @@ Here is a list of AT commands. Some of them can only work on the ESP32 series, s
    MQTT AT Commands <MQTT_AT_Commands>
    HTTP AT Commands <HTTP_AT_Commands>
    [ESP32 Only] Ethernet AT Commands <Ethernet_AT_Commands>
-   [ESP8266 Only] Signaling Test AT Commands <Signaling_Test_AT_Commands>
+   Signaling Test AT Commands <Signaling_Test_AT_Commands>
    Web server AT Commands <Web_server_AT_Commands>
-   [ESP32 & ESP32S2 & ESP32-C3] Driver AT Commands <Driver_AT_Commands>
-   AT Command Set Comparison <AT_Command_Set_Comparison>
+   Driver AT Commands <Driver_AT_Commands>
 
 It is strongly recommended to read the following sections for some common information on AT commands before you dive into the details of each command.   
 

@@ -1,6 +1,6 @@
 .. _FACT-AT:
 
-[ESP8266 Only] Signaling Test AT Commands
+Signaling Test AT Commands
 ==========================================
 
 :link_to_translation:`zh_CN:[中文]`
@@ -9,7 +9,7 @@
 
 .. _cmd-FACTPLCP:
 
-[ESP8266 Only] :ref:`AT+FACTPLCP <FACT-AT>`: Send with Long or Short PLCP
+:ref:`AT+FACTPLCP <FACT-AT>`: Send with Long or Short PLCP
 --------------------------------------------------------------------------
 
 Set Command

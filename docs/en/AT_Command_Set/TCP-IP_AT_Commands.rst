@@ -349,7 +349,7 @@ Parameters
 Notes
 """"""
 
--  The number of SSL connections depends on available memory and the maximum number of connections. For ESP8266 devices, only one SSL connection can be established due to limited memory.
+-  The number of SSL connections depends on available memory and the maximum number of connections.
 -  SSL connection needs a large amount of memory. Insufficient memory may cause the system reboot.
 -  If the ``AT+CIPSTART`` is based on an SSL connection and the timeout of each packet is 10 s, the total timeout will be much longer depending on the number of handshake packets.
 -  If you want to establish SSL connection based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
@@ -472,7 +472,7 @@ or
 
     ERROR
 
-Enter the Wi-Fi :term:`Passthrough Mode`. The ESP8266 devices can receive 2048 bytes and send 1460 bytes at most each time; the other ESP devices can receive 8192 bytes and send 2920 bytes at most each time.
+Enter the Wi-Fi :term:`Passthrough Mode`. The ESP devices can receive 8192 bytes and send 2920 bytes at most each time.
 If the length of the currently received data is greater than the maximum number of bytes that can be sent, AT will send the received data immediately; Otherwise, the received data will be sent out within 20 ms.
 When a single packet containing :ref:`+++ <cmd-PLUS>` is received, the ESP device will exit the data sending mode under the Wi-Fi :term:`Passthrough Mode`. Please wait for at least one second before sending the next AT command.
 
@@ -765,8 +765,8 @@ Parameters
     - 0: shutdown the server and keep existing connections.
     - 1: shutdown the server and close all connections.
 
--  **<"type">**: server type: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP". This parameter is **NOT** applicable to ESP8266 platform due to memory limitation.
--  **<CA enable>**: not applicable to ESP8266 devices.
+-  **<"type">**: server type: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP".
+-  **<CA enable>**:
 
    -  0: disable CA.
    -  1: enable CA.
@@ -1766,7 +1766,7 @@ Parameter
 - **<mode>**: the receive mode of socket data. Default: 0.
    
    - 0: active mode. ESP-AT will send all the received socket data instantly to the host MCU with header "+IPD".
-   - 1: passive mode. ESP-AT will keep the received socket data in an internal buffer (socket receive window, 5760 bytes by default for ESP8266 devices, 5744 bytes by default for non ESP8266 devices), and wait for the host MCU to read. If the buffer is full, the socket transmission will be blocked for TCP/SSL connections, or data will be lost for UDP connections.
+   - 1: passive mode. ESP-AT will keep the received socket data in an internal buffer (socket receive window, 5744 bytes by default), and wait for the host MCU to read. If the buffer is full, the socket transmission will be blocked for TCP/SSL connections, or data will be lost for UDP connections.
 
 Notes
 ^^^^^

@@ -38,14 +38,8 @@
 #include "driver/uart.h"
 #include "at_interface.h"
 
-#ifdef CONFIG_IDF_TARGET_ESP8266
-#include "esp8266/uart_register.h"
-#endif
-
 #ifdef CONFIG_IDF_TARGET_ESP32
 #include "esp32/rom/uart.h"
-#elif CONFIG_IDF_TARGET_ESP32S2
-#include "esp32s2/rom/uart.h"
 #elif CONFIG_IDF_TARGET_ESP32C3
 #include "esp32c3/rom/uart.h"
 #endif
@@ -75,26 +69,6 @@ static const uint8_t esp_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PAR
 #define CONFIG_AT_UART_PORT_RX_PIN_DEFAULT          16
 #define CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT         15
 #define CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT         14
-#ifndef CONFIG_AT_UART_PORT
-#define CONFIG_AT_UART_PORT                         UART_NUM_1
-#endif
-#define AT_UART_BAUD_RATE_MAX                  5000000
-#define AT_UART_BAUD_RATE_MIN                       80
-#elif defined(CONFIG_IDF_TARGET_ESP8266)
-#define CONFIG_AT_UART_PORT_TX_PIN_DEFAULT          15
-#define CONFIG_AT_UART_PORT_RX_PIN_DEFAULT          13
-#define CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT         3
-#define CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT         1
-#ifndef CONFIG_AT_UART_PORT
-#define CONFIG_AT_UART_PORT                         UART_NUM_0
-#endif
-#define AT_UART_BAUD_RATE_MAX                  4500000
-#define AT_UART_BAUD_RATE_MIN                       80
-#elif defined(CONFIG_IDF_TARGET_ESP32S2)
-#define CONFIG_AT_UART_PORT_TX_PIN_DEFAULT          17
-#define CONFIG_AT_UART_PORT_RX_PIN_DEFAULT          18
-#define CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT         20
-#define CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT         19
 #ifndef CONFIG_AT_UART_PORT
 #define CONFIG_AT_UART_PORT                         UART_NUM_1
 #endif
@@ -166,17 +140,13 @@ static int32_t at_port_read_data(uint8_t*buf,int32_t len)
 static int32_t at_port_get_data_length (void)
 {
     size_t size = 0;
-#ifndef CONFIG_IDF_TARGET_ESP8266
     int pattern_pos = 0;
-#endif
 
     if (ESP_OK == uart_get_buffered_data_len(esp_at_uart_port,&size)) {
-#ifndef CONFIG_IDF_TARGET_ESP8266
         pattern_pos = uart_pattern_get_pos(esp_at_uart_port);
         if (pattern_pos >= 0) {
             size = pattern_pos;
         }
-#endif
         return size;
     } else {
         return 0;
@@ -197,10 +167,8 @@ static void uart_task(void *pvParameters)
     uart_event_t event;
     uint32_t data_len = 0;
     BaseType_t retry_flag = pdFALSE;
-#ifndef CONFIG_IDF_TARGET_ESP8266
     int pattern_pos = -1;
     uint8_t *data = NULL;
-#endif
 
     for (;;) {
         //Waiting for UART event.
@@ -228,7 +196,6 @@ retry:
                     goto retry;
                 }
                 break;
-#ifndef CONFIG_IDF_TARGET_ESP8266
             case UART_PATTERN_DET:
                 pattern_pos = uart_pattern_pop_pos(esp_at_uart_port);
                 if (pattern_pos >= 0) {
@@ -242,7 +209,6 @@ retry:
                 }
                 esp_at_transmit_terminal();
                 break;
-#endif
             case UART_FIFO_OVF:
                 retry_flag = pdFALSE;
                 while (xQueueReceive(esp_at_uart_queue, (void *)&event, (portTickType)0) == pdTRUE) {
@@ -351,12 +317,8 @@ static void at_uart_init(void)
             if (data[5] != 0xFF) {
 #if defined(CONFIG_IDF_TARGET_ESP32)
                 assert((data[5] == 0) || (data[5] == 1) || (data[5] == 2));
-#elif defined(CONFIG_IDF_TARGET_ESP32S2)
-                assert((data[5] == 0) || (data[5] == 1));
 #elif defined(CONFIG_IDF_TARGET_ESP32C3)
                 assert((data[5] == 0) || (data[5] == 1));
-#elif defined(CONFIG_IDF_TARGET_ESP8266)
-                assert(data[5] == 0);
 #endif
                 esp_at_uart_port = data[5];
             }
@@ -392,22 +354,10 @@ static void at_uart_init(void)
     }
     //Set UART parameters
     uart_param_config(esp_at_uart_port, &uart_config);
-#ifndef CONFIG_IDF_TARGET_ESP8266
     //Set UART pins,(-1: default pin, no change.)
     uart_set_pin(esp_at_uart_port, tx_pin, rx_pin, rts_pin, cts_pin);
     //Install UART driver, and get the queue.
     uart_driver_install(esp_at_uart_port, 2048, 8192, 30,&esp_at_uart_queue,0);
-#else
-    //Install UART driver, and get the queue.
-    uart_driver_install(esp_at_uart_port, 1024, 2048, 10,&esp_at_uart_queue, 0);
-    if ((tx_pin == 15) && (rx_pin == 13)) {         // swap pin
-        uart_enable_swap();
-        assert((cts_pin == -1) || (cts_pin == 3));
-        assert((rts_pin == -1) || (rts_pin == 1));
-    } else {
-        assert((tx_pin == 1) && (rx_pin == 3));
-    }
-#endif
     uart_intr_config(esp_at_uart_port, &intr_config);
 
     // set actual uart pins
@@ -635,10 +585,6 @@ static esp_at_cmd_struct at_custom_cmd[] = {
 
 void at_status_callback (esp_at_status_type status)
 {
-    /**
-     * ESP8266 CAN NOT provide uart_enable_pattern_det_baud_intr() feature due to hardware reason
-    */
-#ifndef CONFIG_IDF_TARGET_ESP8266
     switch (status) {
     case ESP_AT_STATUS_NORMAL:
         uart_disable_pattern_det_intr(esp_at_uart_port);
@@ -650,7 +596,7 @@ void at_status_callback (esp_at_status_type status)
          * the last three timeout parameters is different on ESP32 and non ESP32 platform.
          *
          * That is, on ESP32 platform, it uses the APB clocks as the unit;
-         * on non ESP32 platform (ESP32-S2, ESP32-C3, ..), it uses the UART baud rate clocks as the unit.
+         * on non ESP32 platform (ESP32-C3, ..), it uses the UART baud rate clocks as the unit.
          *
          * Notes:
          * on non ESP32 platform, due to the value of input parameters have a limit of 0xFFFF (see as macro: UART_RX_GAP_TOUT_V..),
@@ -669,7 +615,6 @@ void at_status_callback (esp_at_status_type status)
     }
         break;
     }
-#endif
 }
 
 void at_pre_deepsleep_callback (void)

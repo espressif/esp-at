@@ -32,7 +32,7 @@ SDIO slave 管脚如下所示：
 ### Host 侧
 
 0. SDIO slave 模组上电（此步骤仅针对 ESP-SDIO-TESTBOARD-V1 开发板）  
-    * ESP-SDIO-TESTBOARD-V1 包含了一个 master 和 3个 slave（ESP32,ESP8266以及ESP8089）
+    * ESP-SDIO-TESTBOARD-V1 包含了一个 master 和 3个 slave（ESP32 以及 ESP8089）
     * 如果使用 ESP32 作为 SDIO slave，需要将 GPIO5 拉低，参见 `slave_power_on`。 
 1. 初始化 SDIO host  
     * SDIO host 初始化主要是 SDIO 协议的初始化，包括设置 1 线或者 4 线，SDIO 频率，初始化 SD mode。

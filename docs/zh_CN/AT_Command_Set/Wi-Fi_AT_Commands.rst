@@ -974,7 +974,7 @@ Wi-Fi AT 命令集
 ^^^^
 
 -  当前，ESP 设备只支持 802.11b、802.11bg 或 802.11bgn 协议标准
--  默认情况下，ESP8266 设备的 PHY mode 是 802.11bg 模式，非 ESP8266 设备的 PHY mode 是 802.11bgn 模式
+-  默认情况下，ESP 设备的 PHY mode 是 802.11bgn 模式
 
 .. _cmd-STAPROTO:
 
@@ -1025,7 +1025,7 @@ Wi-Fi AT 命令集
 ^^^^
 
 -  当前，ESP 设备只支持 802.11b、802.11bg 或 802.11bgn 协议标准
--  默认情况下，ESP8266 设备的 PHY mode 是 802.11bg 模式，非 ESP8266 设备的 PHY mode 是 802.11bgn 模式
+-  默认情况下，ESP 设备的 PHY mode 是 802.11bgn 模式
 
 .. _cmd-STAMAC:
 
