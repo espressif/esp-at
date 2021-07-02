@@ -1307,7 +1307,6 @@ Note
   - :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`
   - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`
   - :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`
-  - :ref:`AT+BLECONNPARAM <cmd-BCONNP>`
 
 Examples
 ^^^^^^^^
