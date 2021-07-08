@@ -30,6 +30,7 @@ def setup(app):
     app.add_role('example', autolink('{}/tree/{}/examples/%s'.format(baseurl, rev)))
     app.add_role('example_file', autolink('{}/blob/{}/examples/%s'.format(baseurl, rev)))
     app.add_role('example_raw', autolink('{}/raw/{}/examples/%s'.format(baseurl, rev)))
+    app.add_role('module_config', autolink('{}/tree/{}/module_config/%s'.format(baseurl, rev)))
 
     # link to the current documentation file in specific language version
     on_rtd = os.environ.get('READTHEDOCS', None) == 'True'

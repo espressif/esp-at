@@ -631,6 +631,7 @@ Operate user's free RAM
 **Response:**
 
 ::
+
     +USERRAM:<length>,<data>    // esp-at returns this response only when the operator is ``read``
 
     OK

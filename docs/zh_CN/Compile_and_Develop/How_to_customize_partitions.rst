@@ -1,0 +1,1 @@
+.. include:: ../../en/Compile_and_Develop/How_to_customize_partitions.rst

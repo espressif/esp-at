@@ -78,6 +78,8 @@
 - ``--flash_size 4MB`` 代表此固件适用的 flash 最小为 4 MB；
 - ``0x10000 ota_data_initial.bin`` 代表在 ``0x10000`` 地址烧录 ``ota_data_initial.bin`` 文件。
 
+.. _flash-at-firmware-into-your-device:
+
 烧录 AT 固件至设备
 -------------------
 
