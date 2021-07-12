@@ -1,0 +1,1 @@
+.. include:: ../../en/Compile_and_Develop/How_to_update_IDF.rst
