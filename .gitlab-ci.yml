@@ -392,6 +392,60 @@ esp32c3_mini_1_at:
     - *before_build_esp32c3_series
     - ./build.py build
 
+esp32c3_at_full_function_test:
+  stage: build
+  image: $CI_DOCKER_REGISTRY/esp32-ci-env
+  tags:
+    - build
+
+  variables:
+    <<: *global-variables
+
+  artifacts:
+    paths:
+      - sdkconfig
+      - build/*.bin
+      - build/*.elf
+      - build/*.map
+      - build/bootloader/*.bin
+      - build/partition_table/*.bin
+      - build/customized_partitions/*.bin
+      - build/flasher_args.json
+      - build/download.config
+      - build/factory/*
+    expire_in: 6 mos
+
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
+    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
+  script:
+    # enable all features
+    - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+    - echo -e "CONFIG_AT_BLUFI_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+    - echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+    - echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+    - echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+    - echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+
+    # replace submodule esp-idf to internal repository to speedup cloning
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32c3_default/IDF_VERSION
+
+    # create module info and clone esp-idf
+    - mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure || echo "skip exception"
+    - rm -rf build && mkdir build
+
+    # compile
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
+    - *before_build_esp32c3_series
+    - ./build.py build
+
 esp32c3_qcloud:
   stage: build
   image: $CI_DOCKER_REGISTRY/esp32-ci-env
@@ -500,7 +554,7 @@ esp32_demo:
     - idf.py build
     - cd -
 
-wrover32_all_function_at:
+esp32_at_all_function_test:
   stage: build
   image: $CI_DOCKER_REGISTRY/esp32-ci-env
   tags:
@@ -684,4 +738,3 @@ build_docs:
     # - make gh-linkcheck
     - make html
     - ../check_doc_warnings.sh
-    
