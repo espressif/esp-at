@@ -15,7 +15,7 @@ How to compile and develop your own AT project
    How to customize partitions <How_to_customize_partitions>
    How to enable ESP32 AT Classic Bluetooth <How_to_use_ESP_AT_Classic_Bluetooth>
    How to enable ESP32 AT Ethernet <How_to_enable_ESP_AT_Ethernet>
-   How to add new platform <How_to_add_new_platform>
+   How to add support for a module <How_to_add_support_for_a_module>
    How to implement ESP32 SDIO_AT <How_to_implement_ESP32_SDIO_AT>
    How to implement SPI AT <How_to_implement_SPI_AT>
    How to implement OTA update <How_to_implement_OTA_update>
