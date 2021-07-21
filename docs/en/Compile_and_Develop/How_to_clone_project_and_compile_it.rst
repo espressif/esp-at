@@ -3,7 +3,7 @@ Compile ESP-AT Project
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document details how to build your own ESP-AT project and flash the generated firmware into your ESP devices, including ESP32, and ESP32-C3. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>`, :doc:`Bluetooth service <How_to_enable_ESP32_AT_Classic_Bluetooth>`, and :doc:`partitions <How_to_customize_partitions>`, and so on.
+This document details how to build your own ESP-AT project and flash the generated firmware into your ESP devices, including ESP32, and ESP32-C3. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>`, :doc:`Bluetooth LE services <How_to_customize_BLE_services>`, and :doc:`partitions <How_to_customize_partitions>`, and so on.
 
 The structure of this document is as follows:
 
