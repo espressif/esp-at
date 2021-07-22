@@ -14,10 +14,14 @@ Index of Abbreviations
       模拟数字转换器
     
     ALPN
-    
       Application Layer Protocol Negotiation
     
       应用层协议协商
+
+    AT
+      AT stands for "attention". 
+
+      AT 是 attention 的缩写。
     
     AT port
       AT port is the general name of AT log port (that is used to output log) and AT command port (that is used to send AT commands and receive responses). Please refer to :doc:`Get_Started/Hardware_connection` for default AT port pins and :doc:`Compile_and_Develop/How_to_set_AT_port_pin` for how to customize them.
