@@ -10,6 +10,7 @@ MQTT AT Commands
 -  :ref:`AT+MQTTUSERNAME <cmd-MQTTUSERNAME>`: Set MQTT username
 -  :ref:`AT+MQTTPASSWORD <cmd-MQTTPASSWORD>`: Set MQTT password
 -  :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`: Set configuration of MQTT connection
+-  :ref:`AT+MQTTALPN <cmd-MQTTALPN>`: Set MQTT Application Layer Protocol Negotiation (ALPN)
 -  :ref:`AT+MQTTCONN <cmd-MQTTCONN>`: Connect to MQTT Brokers
 -  :ref:`AT+MQTTPUB <cmd-MQTTPUB>`: Publish MQTT Messages in string
 -  :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>`: Publish MQTT messages in binary
@@ -227,6 +228,60 @@ Parameters
 -  **<lwt_msg>**: LWT message. Maximum length: 64 bytes.
 -  **<lwt_qos>**: LWT QoS, which can be set to 0, 1, or 2. Default: 0.
 -  **<lwt_retain>**: LWT retain, which can be set to 0 or 1. Default: 0.
+
+.. _cmd-MQTTALPN:
+
+:ref:`AT+MQTTALPN <MQTT-AT>`: Set MQTT Application Layer Protocol Negotiation (ALPN)
+-------------------------------------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+Set MQTT Application Layer Protocol Negotiation (ALPN).
+
+**Command:**
+
+::
+
+    AT+MQTTALPN=<LinkID>,<alpn_counts>[,<"alpn">][,<"alpn">][,<"alpn">]
+
+**Response:**
+
+::
+
+   OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<LinkID>**: only supports link ID 0 currently.
+-  **<alpn_counts>**: the number of <"alpn"> parameters. Range: [0,5].
+
+  - 0: clean the MQTT ALPN configuration.
+  - [1,5]: set the MQTT ALPN configuration.
+
+-  **<"alpn">**: you can send more than one ALPN in ClientHello to the server.
+
+Notes
+^^^^^
+
+-  The length of the entire AT command should be less than 256 bytes.
+-  MQTT ALPN will only be effective if the MQTT connection is based on TLS or WSS.
+-  You should set ``AT+MQTTALPN`` after setting the command ``AT+MQTTUSERCFG``.
+
+Example
+^^^^^^^^
+
+::
+
+    AT+CWMODE=1
+    AT+CWJAP="ssid","password"
+    AT+CIPSNTPCFG=1,8,"ntp1.aliyun.com","ntp2.aliyun.com"
+    AT+MQTTUSERCFG=0,5,"ESP32","espressif","1234567890",0,0,""
+    AT+MQTTALPN=0,2,"mqtt-ca.cn","mqtt-ca.us"
+    AT+MQTTCONN=0,"192.168.200.2",8883,1
 
 .. _cmd-MQTTCONN:
 

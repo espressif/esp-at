@@ -10,6 +10,7 @@ MQTT AT Commands
 -  :ref:`AT+MQTTUSERNAME <cmd-MQTTUSERNAME>`：设置 MQTT 登陆用户名
 -  :ref:`AT+MQTTPASSWORD <cmd-MQTTPASSWORD>`：设置 MQTT 登陆密码
 -  :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`：设置 MQTT 连接属性
+-  :ref:`AT+MQTTALPN <cmd-MQTTALPN>`：设置 MQTT 应用层协议协商（ALPN）
 -  :ref:`AT+MQTTCONN <cmd-MQTTCONN>`：连接 MQTT Broker
 -  :ref:`AT+MQTTPUB <cmd-MQTTPUB>`：发布 MQTT 消息（字符串）
 -  :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>`：发布 MQTT 消息（二进制）
@@ -227,6 +228,60 @@ MQTT AT Commands
 -  **<lwt_msg>**：遗嘱 message，最大长度：64 字节。
 -  **<lwt_qos>**：遗嘱 QoS，参数可选 0、1、2，默认值：0。
 -  **<lwt_retain>**：遗嘱 retain，参数可选 0 或 1，默认值：0。
+
+.. _cmd-MQTTALPN:
+
+:ref:`AT+MQTTALPN <MQTT-AT>`：设置 MQTT 应用层协议协商（ALPN）
+-------------------------------------------------------------------------
+
+设置命令
+^^^^^^^^
+
+**功能：**
+
+设置 MQTT 应用层协议协商（ALPN）
+
+**命令：**
+
+::
+
+    AT+MQTTALPN=<LinkID>,<alpn_counts>[,<"alpn">][,<"alpn">][,<"alpn">]
+
+**响应：**
+
+::
+
+   OK
+
+参数
+^^^^
+
+-  **<LinkID>**：当前仅支持 link ID 0。
+-  **<alpn_counts>**：<"alpn"> 参数个数。范围：[0,5]。
+
+   - 0：清除 MQTT ALPN 配置
+   - [1,5]：设置 MQTT ALPN 配置
+
+-  **<"alpn">**：字符串参数，表示 ClientHello 中的 ALPN，用户可以发送多个 ALPN 字段到服务器。
+
+说明
+^^^^
+
+- 整条 AT 命令长度应小于 256 字节。
+- 只有在 MQTT 基于 TLS 或 WSS 时，MQTT ALPN 字段才会生效。
+- 应在设置 ``AT+MQTTUSERCFG`` 后再使用 ``AT+MQTTALPN``。
+
+示例
+^^^^
+
+::
+
+    AT+CWMODE=1
+    AT+CWJAP="ssid","password"
+    AT+CIPSNTPCFG=1,8,"ntp1.aliyun.com","ntp2.aliyun.com"
+    AT+MQTTUSERCFG=0,5,"ESP32","espressif","1234567890",0,0,""
+    AT+MQTTALPN=0,2,"mqtt-ca.cn","mqtt-ca.us"
+    AT+MQTTCONN=0,"192.168.200.2",8883,1
 
 .. _cmd-MQTTCONN:
 
