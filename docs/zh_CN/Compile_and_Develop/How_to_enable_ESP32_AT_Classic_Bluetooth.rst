@@ -1,0 +1,1 @@
+.. include:: ../../en/Compile_and_Develop/How_to_enable_ESP32_AT_Classic_Bluetooth.rst

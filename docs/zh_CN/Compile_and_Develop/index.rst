@@ -13,7 +13,7 @@
    如何创建默认出厂参数 bin 文件 <How_to_create_factory_parameter_bin>
    如何自定义 Ble_services <How_to_customize_BLE_services>
    如何自定义分区 <How_to_customize_partitions>
-   如何使用 ESP-AT 经典蓝牙 <How_to_use_ESP_AT_Classic_Bluetooth>
+   如何使用 ESP-AT 经典蓝牙 <How_to_enable_ESP32_AT_Classic_Bluetooth>
    如何使能 ESP-AT ethernet 接口 <How_to_enable_ESP_AT_Ethernet>
    如何增加一个新的模组支持 <How_to_add_support_for_a_module>
    如何实现 ESP32_SDIO_AT <How_to_implement_ESP32_SDIO_AT>
