@@ -157,7 +157,7 @@ Build the project by running:
   ./build.py build
 
 - If Bluetooth feature is enabled, the firmware size will be much larger. Please make sure it does not exceed the ota partition size.
-- After compiled, the combined factory bin will be created in ``build/factory``. See :doc:`How_to_understand_the_differences_of_each_type_of_module` for more information.
+- After compiled, the combined factory bin will be created in ``build/factory``. See :doc:`esp-at_firmware_differences` for more information.
 
 Flash onto the Device
 ^^^^^^^^^^^^^^^^^^^^^^

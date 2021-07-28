@@ -8,7 +8,7 @@ This document introduces what hardware you need to prepare and how to connect th
 - `ESP32 Series`_
 - `ESP32-C3 Series`_
 
-For different series of modules, the commands supported by AT firmware are different. Please refer to :doc:`/Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module` for more details.
+For different series of modules, the commands supported by AT firmware are different. Please refer to :doc:`/Compile_and_Develop/esp-at_firmware_differences` for more details.
 
 What You Need
 --------------

@@ -20,5 +20,5 @@ How to compile and develop your own AT project
    How to implement SPI AT <How_to_implement_SPI_AT>
    How to implement OTA update <How_to_implement_OTA_update>
    How to update IDF <How_to_update_IDF>
-   How to understand ESP-AT the differences of each type of module <How_to_understand_the_differences_of_each_type_of_module>
+   ESP-AT Firmware Differences <esp-at_firmware_differences>
    AT API Reference <AT_API_Reference>
