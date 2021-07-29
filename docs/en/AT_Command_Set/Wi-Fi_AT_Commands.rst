@@ -540,6 +540,11 @@ Parameters
    - 0: WPS disabled
    - 1: WPS enabled
 
+Note
+^^^^^
+
+-  For ESP8266 devices, **<scan_time_min>** and **<scan_time_max>** must be set to the same value. If these two parameters are omitted or both are set to 0 or the values are different, the firmware will use the default time: 120 ms for active scan; 360 ms for passive scan.
+
 Example
 ^^^^^^^^
 
