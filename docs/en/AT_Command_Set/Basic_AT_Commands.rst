@@ -433,6 +433,23 @@ Example
 :ref:`AT+SLEEP <Basic-AT>`: Set the Sleep Mode
 ---------------------------------------------------
 
+Query Command
+^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+SLEEP?
+
+**Response:**
+
+::
+
+    +SLEEP:<sleep mode>
+
+    OK
+
 Set Command
 ^^^^^^^^^^^
 
@@ -464,6 +481,7 @@ Note
 -  Modem-sleep mode and Light-sleep mode can be set only in station mode.
 -  Before setting the Light-sleep mode, it is recommended to set the wakeup source in advance through the command :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`, otherwise ESP devices can't wake up and will always be in sleep mode.
 -  After setting the Light-sleep mode, if the Light-sleep wakeup condition is not met, ESP devices will automatically enter the sleep mode. When the Light-sleep wakeup condition is met, ESP devices will automatically wake up from sleep mode.
+-  The query command can return 0, 1, 3, but not 2 (Due to query is not supported by ESP-IDF). That is to say, ``AT+SLEEP?`` will return 3 but not 2, if set ``AT+SLEEP=2``.
 
 Example
 ^^^^^^^^
