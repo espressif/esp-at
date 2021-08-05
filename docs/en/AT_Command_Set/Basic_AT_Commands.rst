@@ -416,6 +416,23 @@ Example
 :ref:`AT+SLEEP <Basic-AT>`: Set the Sleep Mode
 ---------------------------------------------------
 
+Query Command
+^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+SLEEP?
+
+**Response:**
+
+::
+
+    +SLEEP:<sleep mode>
+
+    OK
+
 Set Command
 ^^^^^^^^^^^
 
