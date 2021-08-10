@@ -907,10 +907,11 @@ static void listen_sta_connect_status_timer_cb(TimerHandle_t timer)
     int32_t reconnnect_timeout = at_web_get_sta_reconnect_timeout();
     int32_t connect_max_count = (reconnnect_timeout * 1000) / ESP_AT_WEB_TIMER_POLLING_PERIOD;
     esp_err_t ret = ESP_FAIL;
-    tcpip_adapter_ip_info_t sta_ip = {0};
     bool sta_got_ip = false;
     static int connect_count = 1;
     ESP_LOGD(TAG, "Connect callback timer %p count = %d", timer, connect_count);
+    esp_netif_ip_info_t sta_ip = {0};
+    esp_netif_t *sta_if = esp_netif_get_handle_from_ifkey("WIFI_STA_DEF");
 
     if (connect_count < connect_max_count) {
         sta_got_ip = at_web_get_sta_got_ip_flag(); // to check whether sta has connnected to appointed ap(like at_wifi_station_get_connect_status())
@@ -919,7 +920,7 @@ static void listen_sta_connect_status_timer_cb(TimerHandle_t timer)
             return;
         } else {
             ESP_LOGI(TAG, "Connect SSID success");
-            ret = tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &sta_ip);
+            ret = esp_netif_get_ip_info(sta_if, &sta_ip);
             if (ret != ESP_OK) {
                 ESP_LOGE(TAG, "get sta ip fail");
             }
@@ -1032,7 +1033,6 @@ static esp_err_t at_web_apply_wifi_connect_info(int32_t udp_port)
     wifi_sta_connect_config_t *connect_config = at_web_get_sta_connect_config();
     int32_t reconnnect_timeout = at_web_get_sta_reconnect_timeout();
     wifi_sta_connection_info_t connection_info = {0};
-    tcpip_adapter_ip_info_t sta_ip = {0};
     int send_count = ESP_AT_WEB_BROADCAST_TIMES_DEFAULT;
     int udp_socket = -1;
     int len = 0;
@@ -1097,6 +1097,10 @@ static esp_err_t at_web_apply_wifi_connect_info(int32_t udp_port)
 
         memset(s_mobile_phone_mac, 0, sizeof(s_mobile_phone_mac));
         at_web_clear_sta_connect_config();
+
+        esp_netif_ip_info_t sta_ip = {0};
+        esp_netif_t *sta_if = esp_netif_get_handle_from_ifkey("WIFI_STA_DEF");
+
         // according to connect result to update or report results
         if (ret != ESP_OK) { // connect fail
             ESP_LOGW(TAG, "Scan filter fail, timeout");
@@ -1106,7 +1110,7 @@ static esp_err_t at_web_apply_wifi_connect_info(int32_t udp_port)
             esp_at_port_write_data((uint8_t*)s_wifi_conncet_finish_response, strlen(s_wifi_conncet_finish_response));
         } else { // connect ok
             ESP_LOGI(TAG, "Connect router success");
-            ret = tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &sta_ip);
+            ret = esp_netif_get_ip_info(sta_if, &sta_ip);
             if (ret != ESP_OK) {
                 ESP_LOGE(TAG, "get sta ip fail");
             }
@@ -1836,8 +1840,14 @@ static const esp_at_cmd_struct at_web_cmd[] = {
     {"+WEBSERVER", NULL, NULL,  at_setupCmdWebConf, NULL},
 };
 
+static void at_web_got_ip_cb(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data)
+{
+    at_web_update_sta_got_ip_flag(true);
+}
+
 bool esp_at_web_server_cmd_regist(void)
 {
+    esp_event_handler_instance_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &at_web_got_ip_cb, NULL, NULL);
     return esp_at_custom_cmd_array_regist(at_web_cmd, sizeof(at_web_cmd) / sizeof(at_web_cmd[0]));
 }
 #endif

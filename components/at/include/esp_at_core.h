@@ -544,15 +544,4 @@ void esp_at_port_exit_specific(void);
  */
 const uint8_t* esp_at_get_current_cmd_name(void);
 
-/**
- * @brief  Wi-Fi event handler callback, which used in AT core.
- * @param  ctx    reserved for user
- * @param  event  event type defined in this file
- *
- * @return
- *    - ESP_OK: succeed
- *    - others: fail
- */
-esp_err_t esp_at_wifi_event_handler(void *ctx, system_event_t *event);
-
 #endif

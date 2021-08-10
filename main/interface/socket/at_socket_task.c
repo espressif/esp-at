@@ -248,7 +248,6 @@ void at_interface_init (void)
 void at_custom_init(void)
 {
     wifi_mode_t mode;
-    tcpip_adapter_ip_info_t ip;
     at_read_ring_buf = xRingbufferCreate(ESP_AT_RING_ESP_AT_BUFFER_SIZE, RINGBUF_TYPE_ALLOWSPLIT);
 
     if (at_read_ring_buf == NULL) {
@@ -264,7 +263,10 @@ void at_custom_init(void)
         ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
     }
 
-    ESP_ERROR_CHECK(tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_AP, &ip));
+    esp_netif_ip_info_t ip;
+    esp_netif_t * ap_if = esp_netif_get_handle_from_ifkey("WIFI_AP_DEF");
+    ESP_ERROR_CHECK(esp_netif_get_ip_info(ap_if, &ip));
+
     /*This IP is a socket server,you can connect it and use AT command to control esp32*/
     ESP_LOGI(TAG, "IP address of Soft AP is:"IPSTR, IP2STR(&ip.ip));
 
