@@ -1,21 +1,30 @@
-How to enable ESP-AT Ethernet
-===============================
+How to Enable ESP-AT Ethernet
+=================================
+
+:link_to_translation:`zh_CN:[中文]`
 
 Overview
-----------
-Initialises the Ethernet interface and enables it, then sends DHCP requests and tries to obtain a DHCP lease. If successful then you will be able to ping the device.
+------------
+
+This document is intended to help you enable ESP-AT Ethernet. After that, a simple test will show you how to confirm whether the enablement is successful.
+
+Step 1. Configure and Flash
+-----------------------------
+
+1. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``AT ethernet support`` to enable the Ethernet interface.
+2. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``Ethernet PHY`` to choose the PHY model. For more details see `PHY Configuration`_.
+3. Recompile the ``esp-at`` project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`), download AT bin into flash.
 
 PHY Configuration
---------------------
+^^^^^^^^^^^^^^^^^^^^
+
 Use ``./build.py menuconfig`` to set the PHY model. These configuration items will vary depending on the hardware configuration you are using.
 
 The default configuration is correct for Espressif's Ethernet board with TP101 PHY. ESP32 AT supports up to four Ethernet PHY: ``LAN8720``, ``IP101``, ``DP83848`` and ``RTL8201``.
 ``TLK110`` PHY is no longer supported because TI stoped production.
-If you want to use other phy, follow the `document <https://docs.espressif.com/projects/esp-idf/en/latest/hw-reference/get-started-ethernet-kit.html>`__ to design.
+If you want to use other PHY, follow the `ESP32-Ethernet-Kit V1.2 Getting Started Guide <https://docs.espressif.com/projects/esp-idf/en/latest/hw-reference/get-started-ethernet-kit.html>`__ to design.
 
-Compiling
-^^^^^^^^^^
+Step 2. Connect the Board and Test
+-------------------------------------------
 
-1. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``AT ethernet support`` to enable ethernet.
-2. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``Ethernet PHY`` to choose ethernet.
-3. Recompile the ``esp-at`` project, download AT bin into flash.
+Now connect the board to the router via a ethernet cable, the board will automatically send a DHCP request and try to obtain an IP address. If the device obtains the IP address successfully, you can use the PC connected to the router to ping the board.
