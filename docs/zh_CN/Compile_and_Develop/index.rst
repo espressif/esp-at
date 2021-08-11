@@ -16,7 +16,7 @@
    如何使用 ESP-AT 经典蓝牙 <How_to_enable_ESP32_AT_Classic_Bluetooth>
    如何使能 ESP-AT ethernet 接口 <How_to_enable_ESP_AT_Ethernet>
    如何增加一个新的模组支持 <How_to_add_support_for_a_module>
-   如何实现 ESP32_SDIO_AT <How_to_implement_ESP32_SDIO_AT>
+   ESP32 SDIO AT 指南 <esp32-sdio-at-guide.rst>
    如何实现 SPI AT <How_to_implement_SPI_AT>
    如何基于乐鑫服务器实现自己的 OTA 管理 <How_to_implement_OTA_update>
    如何更新 ESP-IDF 版本 <How_to_update_IDF>
