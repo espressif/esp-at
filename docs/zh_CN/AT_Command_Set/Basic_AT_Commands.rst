@@ -452,17 +452,48 @@
 
 -  **<sleep mode>**：
 
-   -  0：禁用睡眠模式
-   -  1：Modem-sleep DTIM 模式，射频模块将根据 AP 的 DTIM 定期关闭
-   -  2：Light-sleep 模式，CPU 将自动进入睡眠，射频模块也将根据 :ref:`AT+CWJAP <cmd-JAP>` 命令设置的 ``listen interval`` 参数定期关闭
-   -  3：Modem-sleep listen interval 模式，射频模块将根据 :ref:`AT+CWJAP <cmd-JAP>` 命令设置的 ``listen interval`` 参数定期关闭
+   - 0：禁用睡眠模式
+
+   - 1：Modem-sleep 模式
+
+     - 单 Wi-Fi 模式
+
+       - 射频模块将根据 AP 的 ``DTIM`` 定期关闭
+
+     - 单 BLE 模式
+
+       - 在 BLE 广播态下，射频模块将根据广播间隔定期关闭
+       - 在 BLE 连接态下，射频模块将根据连接间隔定期关闭
+
+   - 2：Light-sleep 模式
+
+     - 单 Wi-Fi 模式
+
+       - CPU 将自动进入睡眠，射频模块也将根据 :ref:`AT+CWJAP <cmd-JAP>` 命令设置的 ``listen interval`` 参数定期关闭
+
+     - 单 BLE 模式
+
+       - 在 BLE 广播态下，CPU 将自动进入睡眠，射频模块也将根据广播间隔定期关闭
+       - 在 BLE 连接态下，CPU 将自动进入睡眠，射频模块也将根据连接间隔定期关闭
+
+   - 3：Modem-sleep listen interval 模式
+
+     - 单 Wi-Fi 模式
+
+       - 射频模块将根据 :ref:`AT+CWJAP <cmd-JAP>` 命令设置的 ``listen interval`` 参数定期关闭
+
+     - 单 BLE 模式
+
+       - 在 BLE 广播态下，射频模块将根据广播间隔定期关闭
+       - 在 BLE 连接态下，射频模块将根据连接间隔定期关闭
 
 说明
 ^^^^
 
--  只有在 station 模式，才可以设置 Modem-sleep 和 Light-sleep 睡眠模式
+-  Modem-sleep 模式和 Light-sleep 模式均可以在 Wi-Fi 模式或者 BLE 模式下设置，但在 Wi-Fi 模式下，这两种模式只能在 ``station`` 模式下设置
 -  设置 Light-sleep 模式前，建议提前通过 :ref:`AT+SLEEPWKCFG <cmd-WKCFG>` 命令设置好唤醒源，否则没法唤醒，设备将一直处于睡眠状态
 -  设置 Light-sleep 模式后，如果 Light-sleep 唤醒条件不满足时，设备将自动进入睡眠模式，当 Light-sleep 唤醒条件满足时，设备将自动从睡眠模式中唤醒
+-  对于 BLE 模式下的 Light-sleep 模式，用户必须确保外接 32KHz 晶振，否则，Light-sleep 模式会以 Modem-sleep 模式工作。目前 AT 仅支持 ``ESP32`` 模块下的 Light-sleep 模式以 Modem-sleep 模式工作。
 
 示例
 ^^^^
