@@ -185,6 +185,7 @@ static uint32_t esp_at_factory_parameter_init(void)
 
     printf("module_name:%s\r\n", esp_at_get_current_module_name());
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
+    esp_wifi_set_storage(WIFI_STORAGE_RAM);
     // get max tx power
     if (data[4] != 0xFF) {
         if ((version != 1) || ((version == 1) && (data[4] >= 10))) {
@@ -203,7 +204,6 @@ static uint32_t esp_at_factory_parameter_init(void)
             country.nchan = data[7] - data[6] + 1;
             memcpy(country.cc, &data[8], sizeof(country.cc));
             country.policy = WIFI_COUNTRY_POLICY_MANUAL;
-            // esp_wifi_get_max_tx_power(&country.max_tx_power);
             esp_wifi_set_country(&country);
         }
     }

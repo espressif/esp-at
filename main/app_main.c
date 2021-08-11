@@ -49,10 +49,6 @@
 #define CONFIG_AT_SOCKET_MAX_CONN_NUM       1
 #endif
 
-#ifdef CONFIG_AT_WEB_SERVER_SUPPORT
-extern void at_web_update_sta_got_ip_flag(bool flag);
-#endif
-
 #ifdef CONFIG_IDF_TARGET_ESP32
 #include "hal/wdt_hal.h"
 static void at_disable_rtc_wdt(void)
@@ -71,36 +67,31 @@ static void at_disable_rtc_wdt(void)
 #endif
 
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
-static esp_err_t at_wifi_event_handler(void *ctx, system_event_t *event)
-{
-#ifdef CONFIG_AT_WEB_SERVER_SUPPORT
-    if (event->event_id == SYSTEM_EVENT_STA_GOT_IP) {
-        at_web_update_sta_got_ip_flag(true);
-    }
-#endif
-    esp_err_t ret = esp_at_wifi_event_handler(ctx, event);
-
-    return ret;
-}
-
-static void initialise_wifi(void)
+static void at_wifi_init(void)
 {
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-
-// A workaround to avoid compilation warning (deprecated API: esp_event_loop_init)
-// TODO: esp-at should remove it after v2.2.0.0
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-    ESP_ERROR_CHECK( esp_event_loop_init(at_wifi_event_handler, NULL) );
-#pragma GCC diagnostic pop
-    
-    ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
-    ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM) );
-    ESP_ERROR_CHECK( esp_wifi_start() );
+    ESP_ERROR_CHECK(esp_wifi_init(&cfg));
+    ESP_ERROR_CHECK(esp_wifi_start());
 }
 #endif
 
-void app_main()
+static void at_netif_init(void)
+{
+    ESP_ERROR_CHECK(esp_netif_init());
+
+#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
+    esp_netif_create_default_wifi_sta();
+    esp_netif_create_default_wifi_ap();
+#endif
+
+#ifdef CONFIG_AT_ETHERNET_SUPPORT
+    esp_netif_config_t cfg = ESP_NETIF_DEFAULT_ETH();
+    esp_netif_t *eth_netif = esp_netif_new(&cfg);
+    ESP_ERROR_CHECK(esp_eth_set_default_handlers(eth_netif));
+#endif
+}
+
+void app_main(void)
 {
 #ifdef CONFIG_IDF_TARGET_ESP32
     /**
@@ -116,24 +107,19 @@ void app_main()
     at_disable_rtc_wdt();
 #endif
 
-    uint8_t *version = (uint8_t *)malloc(256);
-#ifdef CONFIG_AT_COMMAND_TERMINATOR
-    uint8_t cmd_terminator[2] = {CONFIG_AT_COMMAND_TERMINATOR,0};
+    ESP_ERROR_CHECK(nvs_flash_init());
+    ESP_ERROR_CHECK(esp_event_loop_create_default());
+
+    at_netif_init();
+
+#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
+    at_wifi_init();
 #endif
 
-    nvs_flash_init();
-// A workaround to avoid compilation warning (deprecated API: tcpip_adapter_init)
-// TODO: esp-at should remove it after v2.2.0.0
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-    tcpip_adapter_init();
-#pragma GCC diagnostic pop
-#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
-    initialise_wifi();
-#endif
     at_interface_init();
     esp_at_board_init();
 
+    uint8_t *version = (uint8_t *)malloc(256);
     sprintf((char*)version, "compile time(%s):%s %s\r\n", ESP_AT_PROJECT_COMMIT_ID, __DATE__, __TIME__);
 #ifdef CONFIG_ESP_AT_FW_VERSION
     if ((strlen(CONFIG_ESP_AT_FW_VERSION) > 0) && (strlen(CONFIG_ESP_AT_FW_VERSION) <= 128)){
@@ -141,7 +127,7 @@ void app_main()
         sprintf((char*)version + strlen((char*)version),"Bin version:%s(%s)\r\n", CONFIG_ESP_AT_FW_VERSION, esp_at_get_current_module_name());
     }
 #endif
-    esp_at_module_init (CONFIG_AT_SOCKET_MAX_CONN_NUM, version);  // reserved one for server
+    esp_at_module_init(CONFIG_AT_SOCKET_MAX_CONN_NUM, version);  // reserved one for server
     free(version);
 
 #ifdef CONFIG_AT_BASE_COMMAND_SUPPORT
@@ -295,7 +281,8 @@ void app_main()
 #endif
 
 #ifdef CONFIG_AT_COMMAND_TERMINATOR
-    esp_at_custom_cmd_line_terminator_set((uint8_t*)&cmd_terminator);
+    uint8_t cmd_terminator[] = {CONFIG_AT_COMMAND_TERMINATOR, 0};
+    esp_at_custom_cmd_line_terminator_set((uint8_t *)&cmd_terminator);
 #endif
 
 #ifdef CONFIG_AT_QCLOUD_IOT_COMMAND_SUPPORT
