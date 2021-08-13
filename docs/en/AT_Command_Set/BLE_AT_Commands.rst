@@ -772,21 +772,27 @@ Establish the Bluetooth LE connection.
 
 **Response:**
 
-::
-
-    OK
-
 If the connection is established successfully, it will prompt:
 
 ::
 
     +BLECONN:<conn_index>,<remote_address>
 
-Otherwise, it will prompt:
+    OK
+
+If the connection fails, it will prompt:
 
 ::
 
     +BLECONN:<conn_index>,-1
+
+    ERROR
+
+If the connection fails due to parameters error or other reasons, it will prompt:
+
+::
+
+    ERROR
 
 Parameters
 ^^^^^^^^^^
