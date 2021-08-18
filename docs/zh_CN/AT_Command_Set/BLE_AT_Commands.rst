@@ -771,21 +771,27 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 **响应：**
 
-::
-
-    OK
-
 若建立连接成功，则提示：
 
 ::
 
     +BLECONN:<conn_index>,<remote_address>
 
-若失败，则提示：
+    OK
+
+若建立连接失败，则提示：
 
 ::
 
     +BLECONN:<conn_index>,-1
+
+    ERROR
+
+若是因为参数错误或者其它的一些原因导致连接失败，则提示：
+
+::
+
+    ERROR
 
 参数
 ^^^^
