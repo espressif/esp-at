@@ -14,3 +14,4 @@ AT 命令示例
    Web server AT 示例 <Web_server_AT_Examples>
    HTTP AT 示例 <http_at_examples>
    [ESP32 Only] Classic Bluetooth AT 示例 <classic_bluetooth_at_examples>
+   Sleep AT 示例 <sleep_at_examples>
