@@ -1860,13 +1860,24 @@ GATTC 写服务特征值或描述符值
 
 ::
 
+    OK
+
     >
+
+上述响应表示 AT 已经进入 Bluetooth LE SPP 模式，可以进行数据的发送和接收。
+
+若 Bluetooth LE SPP 状态错误 ( 对端在 Bluetooth LE 连接建立后未使能 Notifications )，则返回：
+
+::
+
+    ERROR
 
 说明
 ^^^^
 
--  若 Bluetooth LE SPP 参数非法，则命令返回 ``ERROR``。
--  在 SPP 传输中，若未设置 :ref:`AT+SYSMSG <cmd-SYSMSG>` 为 1，则 AT 不会提示任何连接状态变更信息。
+-  在 SPP 传输中，若未设置 :ref:`AT+SYSMSG <cmd-SYSMSG>` Bit0 为 1，则 AT 不会提示任何退出 SPP 透传模式的信息。
+-  在 SPP 传输中，若未设置 :ref:`AT+SYSMSG <cmd-SYSMSG>` Bit2 为 1，则 AT 不会提示任何连接状态变更的信息。
+-  当系统收到只含有 +++ 的包时，设备返回到普通命令模式，请至少等待一秒再发送下一个 AT 命令。
 
 示例
 ^^^^

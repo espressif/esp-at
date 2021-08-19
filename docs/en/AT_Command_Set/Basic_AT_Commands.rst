@@ -557,10 +557,10 @@ Parameter
 
 -  **<state>**:
 
-   - Bit0: Prompt information when quitting Wi-Fi :term:`Passthrough Mode`.
+   - Bit0: Prompt information when quitting Wi-Fi :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
 
-     - 0: Print no prompt information when quitting Wi-Fi :term:`Passthrough Mode`.
-     - 1: Print ``+QUITT`` when quitting Wi-Fi :term:`Passthrough Mode`.
+     - 0: Print no prompt information when quitting Wi-Fi :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
+     - 1: Print ``+QUITT`` when quitting Wi-Fi :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
 
    - Bit1: Connection prompt information type.
 
