@@ -147,6 +147,8 @@ If the previous steps have been done correctly, the following menu appears after
 
 You are using this menu to set up project-specific configuration, e.g. changing :term:`AT port` pins, enabling Classic Bluetooth function, etc. If you made no changes, it will run with the default configuration.
 
+.. _build-project-build-the-project:
+
 Build the Project
 ^^^^^^^^^^^^^^^^^
 
@@ -158,6 +160,8 @@ Build the project by running:
 
 - If Bluetooth feature is enabled, the firmware size will be much larger. Please make sure it does not exceed the ota partition size.
 - After compiled, the combined factory bin will be created in ``build/factory``. See :doc:`esp-at_firmware_differences` for more information.
+
+.. _build-project-flash-onto-the-device:
 
 Flash onto the Device
 ^^^^^^^^^^^^^^^^^^^^^^
