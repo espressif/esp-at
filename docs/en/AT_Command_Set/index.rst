@@ -156,6 +156,8 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - Smartconfig type
      * - Smart get wifi info
        - Smartconfig has got the SSID and PASSWORD information
+     * - +SCRD:``<length>``,``<reserved data>``
+       - ESP-Touch v2 has got the reserved information
      * - smartconfig connected wifi
        - Smartconfig done. ESP-AT has connected to the Wi-Fi
      * - WIFI CONNECTED

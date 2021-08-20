@@ -154,6 +154,8 @@ AT 消息
        - Smartconfig 类型
      * - Smart get wifi info
        - Smartconfig 已获取 SSID 和 PASSWORD
+     * - +SCRD:``<length>``,``<reserved data>``
+       - ESP-Touch v2 已获取自定义数据
      * - smartconfig connected wifi
        - Smartconfig 完成，ESP-AT 已连接到 Wi-Fi
      * - WIFI CONNECTED

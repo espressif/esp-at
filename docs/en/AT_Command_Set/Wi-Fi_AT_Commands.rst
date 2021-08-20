@@ -1332,7 +1332,7 @@ Start SmartConfig of a designated type.
 
 ::
 
-    AT+CWSTARTSMART=<type>[,<auth floor>]
+    AT+CWSTARTSMART=<type>[,<auth floor>][,<"esptouch v2 key">]
 
 **Response:**
 
@@ -1348,6 +1348,7 @@ Parameters
    -  1: ESP-TOUCH
    -  2: AirKiss
    -  3: ESP-TOUCH+AirKiss
+   -  [ESP32-C3 Only] 4: ESP-TOUCH v2
 
 -  **<auth floor>**: Wi-Fi authentication mode floor. ESP-AT will not connect to the AP whose authmode is lower than this floor.
 
@@ -1360,12 +1361,15 @@ Parameters
    -  6: WPA3_PSK
    -  7: WPA2_WPA3_PSK
 
+- **[ESP32-C3 Only] <"esptouch v2 key">**: ESP-TOUCH v2 decrypt key. It is used to decrypt Wi-Fi password and reserved data. Length: 16 bytes.
+
 Notes
 ^^^^^
 
 -  For more details on SmartConfig, please see `ESP-TOUCH User Guide <https://www.espressif.com/sites/default/files/documentation/esp-touch_user_guide_en.pdf>`_.
 -  SmartConfig is only available in the ESP station mode.
 -  The message ``Smart get Wi-Fi info`` means that SmartConfig has successfully acquired the AP information. ESP device will try to connect to the target AP.
+-  Message ``+SCRD:<length>,<rvd data>`` means that ESP-Touch v2 has successfully acquired the reserved data information.
 -  Message ``Smartconfig connected Wi-Fi`` is printed if the connection is successful.
 -  When AT returns ``Smartconfig connected Wi-Fi``, it is recommended to delay more than ``6`` seconds before executing :ref:`AT+CWSTOPSMART <cmd-STOPS>` because the ESP device needs to synchronize the SmartConfig results to the mobile phone.
 -  Use command :ref:`AT+CWSTOPSMART <cmd-STOPS>` to stop SmartConfig before running other commands. Please make sure that you do not execute other commands during SmartConfig.
