@@ -1,6 +1,8 @@
 How to Add Support for a Module
 ================================
-  
+
+:link_to_translation:`zh_CN:[中文]`
+
 The ESP-AT project supports multiple modules, and provides configuration for them in the :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` table and the files in the :AT:`module_config` folder. See the table below for the supported platforms (chip series) and modules, as well as locations of the default configuration files.
 
 .. list-table:: default configuration files
@@ -40,17 +42,14 @@ The ESP-AT project supports multiple modules, and provides configuration for the
 
 .. note::
 
-  - When the ``silent mode`` in ``./build.py menuconfig`` is ``0``, the default sdkconfig corresponding to the module is ``sdkconfig.defaults``.
-  - When the ``silent mode`` in ``./build.py menuconfig`` is ``1``, the default sdkconfig corresponding to the module is ``sdkconfig_silence.defaults``.
+  - When the ``silence mode`` in ``./build.py menuconfig`` is ``0``, the default sdkconfig corresponding to the module is ``sdkconfig.defaults``.
+  - When the ``silence mode`` in ``./build.py menuconfig`` is ``1``, the default sdkconfig corresponding to the module is ``sdkconfig_silence.defaults``.
 
 If you want to add support for an ESP module in your ESP-AT project, you need to modify those configuration files. The "ESP module" here means:
 
-- A new module that is not supported by the default ESP-AT project. It can be
+- Modules that the ESP-AT project has not supported yet, including those of supported platform and not supported platform. However, adding support for the latter requires extra huge work, thus not recommended and not explained in this document.
 
-  - A new module of the existing platforms.
-  - A new module of a new platform. However, adding support for it requires extra huge work, thus not recommended and not explained in this document.
-
-- An existing module with different configuration.
+- Modules that the ESP-AT project supports, but you want to modify the default configuration.
 
 The document uses an example to explain how to add support for an ESP module in the ESP-AT project. The example module is ESP32-WROOM-32 that uses SDIO instead of the default UART interface.
 
@@ -104,7 +103,7 @@ In this example, we copy the ``module_esp32_default`` folder as well as the file
   
     ::
 
-      CONFIG_AT_BASE_ON_UART=y
+      CONFIG_AT_BASE_ON_UART=n
 
   - Add the SDIO configuration
 
