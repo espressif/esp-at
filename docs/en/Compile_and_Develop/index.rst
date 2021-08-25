@@ -23,4 +23,6 @@ How to compile and develop your own AT project
    How to update IDF <How_to_update_IDF>
    ESP-AT Firmware Differences <esp-at_firmware_differences>
    How to Download the Latest Temporary Version of AT Firmware from GitHub <How_to_download_the_latest_temporary_version_of_AT_from_github>
+   Customize Bluetooth LE Services Tools <customize_bluetooth_le_services_tools>
+   How to Generate PKI Files <how_to_generate_pki_files>
    AT API Reference <AT_API_Reference>

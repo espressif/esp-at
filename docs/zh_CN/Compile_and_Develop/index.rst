@@ -23,5 +23,6 @@
    如何更新 ESP-IDF 版本 <How_to_update_IDF>
    ESP-AT 固件差异 <esp-at_firmware_differences>
    如何从 GitHub 下载最新临时版本 AT 固件 <How_to_download_the_latest_temporary_version_of_AT_from_github>
+   自定义 Bluetooth LE 服务工具 <customize_bluetooth_le_services_tools>
+   如何生成 PKI 文件 <how_to_generate_pki_files>
    ESP-AT API 参考 <AT_API_Reference>
-   

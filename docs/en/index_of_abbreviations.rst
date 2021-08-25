@@ -182,7 +182,16 @@ Index of Abbreviations
       Payment Card Industry Authentication. In ESP-AT project, it refers to all Wi-Fi authentication modes except OPEN and WEP.
       
       PCI 认证，在 ESP-AT 工程中指的是除 OPEN 和 WEP 以外的 Wi-Fi 认证模式。
-    
+
+    PKI
+      A public key infrastructure (PKI) is a set of roles, policies, hardware, software and procedures needed to create, manage, distribute, use, store and revoke digital certificates and manage public-key encryption.
+
+      More details are in `Public Key Infrastructure <https://en.wikipedia.org/wiki/Public_key_infrastructure>`__.
+
+      公开密钥基础建设。公开密钥基础建设（PKI）是一组由硬件、软件、参与者、管理政策与流程组成的基础架构，其目的在于创造、管理、分配、使用、存储以及撤销数字证书。
+
+      更多介绍请参考 `公开密钥基础建设 <https://zh.wikipedia.org/zh-cn/%E5%85%AC%E9%96%8B%E9%87%91%E9%91%B0%E5%9F%BA%E7%A4%8E%E5%BB%BA%E8%A8%AD>`__。
+
     PLCP
       Physical Layer Convergence Procedure
       
