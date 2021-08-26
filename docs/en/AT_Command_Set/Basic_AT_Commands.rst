@@ -453,17 +453,48 @@ Parameter
 
 -  **<sleep mode>**:
 
-   -  0: Disable the sleep mode.
-   -  1: Modem-sleep DTIM mode. RF will be periodically closed according to AP DTIM.
-   -  2: Light-sleep mode. CPU will automatically sleep and RF will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>`.
-   -  3: Modem-sleep listen interval mode. RF will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>`.
+   - 0: Disable the sleep mode.
+
+   - 1: Modem-sleep mode.
+
+     - Only Wi-Fi mode.
+
+       - RF will be periodically closed according to AP ``DTIM``.
+
+     - Only BLE mode.
+
+       - RF will be periodically closed according to advertising interval ( BLE state in advertising ).
+       - RF will be periodically closed according to connection interval ( BLE state in connection ).
+
+   - 2: Light-sleep mode.
+
+     - Only Wi-Fi mode.
+
+       - CPU will automatically sleep and RF will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>`.
+
+     - Only BLE mode.
+
+       - CPU will automatically sleep and RF will be periodically closed according to advertising interval ( BLE state in advertising ).
+       - CPU will automatically sleep and RF will be periodically closed according to connection interval ( BLE state in connection ).
+
+   - 3: Modem-sleep listen interval mode.
+
+     - Only Wi-Fi mode.
+
+       - RF will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>`.
+
+     - Only BLE mode.
+
+       - RF will be periodically closed according to advertising interval ( BLE state in advertising ).
+       - RF will be periodically closed according to connection interval ( BLE state in connection ).
 
 Note
 ^^^^^
 
--  Modem-sleep mode and Light-sleep mode can be set only in station mode.
+-  Modem-sleep mode and Light-sleep mode can be set under Wi-Fi mode or BLE mode, but in Wi-Fi mode, these two modes can only be set in ``station`` mode.
 -  Before setting the Light-sleep mode, it is recommended to set the wakeup source in advance through the command :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`, otherwise ESP devices can't wake up and will always be in sleep mode.
 -  After setting the Light-sleep mode, if the Light-sleep wakeup condition is not met, ESP devices will automatically enter the sleep mode. When the Light-sleep wakeup condition is met, ESP devices will automatically wake up from sleep mode.
+-  For Light-sleep mode in BLE mode, users must ensure external 32KHz crystal oscillator, otherwise the Light-sleep mode will work in Modem-sleep mode. At present, AT only supports Light-sleep of ``ESP32`` to work in Modem-sleep without external 32KHz crystal oscillator.
 
 Example
 ^^^^^^^^
