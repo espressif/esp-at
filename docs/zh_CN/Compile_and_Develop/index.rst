@@ -22,5 +22,6 @@
    如何基于乐鑫服务器实现自己的 OTA 管理 <How_to_implement_OTA_update>
    如何更新 ESP-IDF 版本 <How_to_update_IDF>
    ESP-AT 固件差异 <esp-at_firmware_differences>
+   如何从 GitHub 下载最新临时版本 AT 固件 <How_to_download_the_latest_temporary_version_of_AT_from_github>
    ESP-AT API 参考 <AT_API_Reference>
    
