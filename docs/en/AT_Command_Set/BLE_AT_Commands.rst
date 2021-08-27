@@ -1861,13 +1861,24 @@ Enter Bluetooth LE SPP mode.
 
 ::
 
+    OK
+
     >
+
+This response indicates that AT has entered Bluetooth LE SPP mode and can send and receive data.
+
+If the Bluetooth LE SPP status is wrong ( Notifications are not enabled at the opposite end after the Bluetooth LE connection is established ), the system returns:
+
+::
+
+    ERROR
 
 Notes
 ^^^^^
 
--  If the Bluetooth LE SPP parameters are illegal, this command will return ``ERROR``.
--  During the SPP transmission, AT will not prompt any connection status changes unless bit2 of :ref:`AT+SYSMSG <cmd-SYSMSG>` is 1.
+-  During the SPP transmission, AT will not prompt any exit the Bluetooth LE SPP passthrough mode information unless Bit0 of :ref:`AT+SYSMSG <cmd-SYSMSG>` is 1.
+-  During the SPP transmission, AT will not prompt any connection status changes unless Bit2 of :ref:`AT+SYSMSG <cmd-SYSMSG>` is 1.
+-  When the packet which only contains +++ is received, the device returns to normal command mode. Please wait for at least one second before sending the next AT command.
 
 Example
 ^^^^^^^^

@@ -587,7 +587,7 @@
 
 -  **<state>**：
 
-   - Bit0：退出 Wi-Fi :term:`透传模式` 时是否打印提示信息
+   - Bit0：退出 Wi-Fi :term:`透传模式`, Bluetooth LE SPP 及 Bluetooth SPP 时是否打印提示信息
 
      - 0：不打印
      - 1：打印 ``+QUITT``
