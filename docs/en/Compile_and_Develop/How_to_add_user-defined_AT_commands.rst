@@ -1,7 +1,9 @@
 How to add user-defined AT commands
 ===================================
 
-This document details how to add a user-defined AT command based on the `esp-at <https://github.com/espressif/esp-at>`_ project. It uses the ``AT+TEST`` command as an example to show the sample code for each step.
+:link_to_translation:`zh_CN:[中文]`
+
+This document details how to add a user-defined AT command based on the `ESP-AT <https://github.com/espressif/esp-at>`_ project. It uses the ``AT+TEST`` command as an example to show the sample code for each step.
 
 Customizing a basic and well-functioned command requires at least the two steps below:
 
@@ -27,18 +29,18 @@ The source code of AT command set is not open-source, and is provided in the for
 Define AT Commands
 ------------------
 
-Before defining any AT command, you should first decide on the name and type of the AT command you want to define.
+Before defining any AT command, you should first decide on the name and type of the command.
 
-**Naming rules:**
+**Command naming rules:**
 
-- AT command should start with the ``+`` character.
+- It should start with the ``+`` character.
 - Alphabetic characters (``A~Z, a~z``), numeric characters (``0~9``), and some other characters (``!``, ``%``, ``-``, ``.``, ``/``, ``:``, ``_``) are supported. See :ref:`at-command-types` for more information.
 
 **Command types:**
 
 Each AT command can have up to four types: Test Command, Query Command, Set Command, and Execute Command. See :ref:`at-command-types` for more information.
 
-Then, define each type of command. Assuming that ``AT+TEST`` supports all the four types. Below is the sample code to define each type.
+Then, define desired type of command. Assuming that ``AT+TEST`` supports all the four types. Below is the sample code to define each type.
 
 Test Command:
 
@@ -150,7 +152,7 @@ Call API :cpp:func:`esp_at_custom_cmd_array_regist` to register your AT command.
 Give it a try
 -------------
 
-If you have finished the above two steps, the command should work after you build the esp-at project and flash the firmware to your device. Give it a try!
+If you have finished the above two steps, the command should work after you build the ESP-AT project and flash the firmware to your device. Give it a try!
 
 Below is how ``AT+TEST`` works out.
 
@@ -221,11 +223,11 @@ Below is how ``AT+TEST`` works out.
 Define Return Values
 ---------------------
 
-``ESP-AT`` has defined return values in :cpp:type:`esp_at_result_code_string_index`. See :ref:`at-messages` for more return values.
+ESP-AT has defined return values in :cpp:type:`esp_at_result_code_string_index`. See :ref:`at-messages` for more return values.
 
 In addition to output return values through the return mode, you can also use API :cpp:func:`esp_at_response_result` to output the execution result of the command. :cpp:enumerator:`ESP_AT_RESULT_CODE_SEND_OK` and :cpp:enumerator:`ESP_AT_RESULT_CODE_SEND_FAIL` can be used with the API in code.
 
-For example, when you send data to the server or MCU with the Execute Command of ``AT+TEST``, you can use ``esp_at_response_result`` to output the sending result, and the return mode to output the command execution result. Below is the sample code:
+For example, when you send data to the server or MCU with the Execute Command of ``AT+TEST``, you can use :cpp:func:`esp_at_response_result` to output the sending result, and the return mode to output the command execution result. Below is the sample code:
 
 .. code-block:: c
 
@@ -375,9 +377,9 @@ Below is the sample code to achieve it:
 .. _omit-the-last-parameter:
 
 Omit the Last Parameter
-------------------------
+^^^^^^^^^^^^^^^^^^^^^^^
 
-Let's say you want to make the string parameter ``<param_3>`` optional, which is also the last parameter.
+Let's say you want to make the string parameter ``<param_3>`` of ``AT+TEST`` optional, which is also the last parameter.
 
 .. code-block:: none
 
@@ -498,7 +500,7 @@ The sample code is as follows:
 Access Input Data from AT Command Port
 --------------------------------------
 
-``ESP-AT`` supports accessing input data from AT Command port. It provides two APIs for this purpose.
+ESP-AT supports accessing input data from AT Command port. It provides two APIs for this purpose.
 
 - :cpp:func:`esp_at_port_enter_specific` sets the callback function which will be called by AT port after receiving the input data.
 - :cpp:func:`esp_at_port_exit_specific` deletes the callback function set by ``esp_at_port_enter_specific``.
@@ -506,7 +508,7 @@ Access Input Data from AT Command Port
 Approaches to access the data vary depending on whether the data length has been specified or not.
 
 Input Data of Specified Length
-------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Assuming that you have specified the data length in ``<param_1>`` as follows:
 
@@ -557,7 +559,7 @@ Below is the sample to access the input data of ``<param_1>`` length from AT Com
         // set the callback function which will be called by AT port after receiving the input data
         esp_at_port_enter_specific(wait_data_callback);
 
-        // receie input data
+        // receive input data
         while(xSemaphoreTake(at_sync_sema, portMAX_DELAY)) {
             received_len += esp_at_port_read_data(buf + received_len, specified_len - received_len);
 
@@ -601,7 +603,7 @@ So, if you set ``AT+TEST=5`` and the input data is ``1234567890``, the ``ESP-AT`
     OK
 
 Input Data of Unspecified Length
---------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This scenario is similar to the Wi-Fi :term:`Passthrough Mode`. You do not specify the data length.
 
@@ -649,7 +651,7 @@ Assuming that ``ESP-AT`` ends the execution of the command and returns the execu
         // set the callback function which will be called by AT port after receiving the input data
         esp_at_port_enter_specific(wait_data_callback);
 
-        // receie input data
+        // receive input data
         while(xSemaphoreTake(at_sync_sema, portMAX_DELAY)) {
             memset(buf, 0, BUFFER_LEN);
 

@@ -1,7 +1,9 @@
-Build Your Own ESP-AT Project
+Compile ESP-AT Project
 =============================
 
-This document details how to build your own ESP-AT project and flash the generated binary files into your ESP devices, including ESP32, and ESP32-C3. It comes in handy when the default :doc:`../AT_Binary_Lists/index` cannot meet your needs, for example, to customize the :term:`AT port` pins, Bluetooth service, partitions, and so on.
+:link_to_translation:`zh_CN:[中文]`
+
+This document details how to build your own ESP-AT project and flash the generated firmware into your ESP devices, including ESP32, and ESP32-C3. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>`, :doc:`Bluetooth service <How_to_enable_ESP32_AT_Classic_Bluetooth>`, and :doc:`partitions <How_to_customize_partitions>`, and so on.
 
 The structure of this document is as follows:
 
@@ -112,9 +114,11 @@ In this step, you will clone the ``esp-idf`` folder into the ``esp-at`` folder, 
   - Enable or disable ``silence mode``. If enabled, it will remove some logs and reduce the firmware size. Generally, it should be disabled.
   - The above three option items will not appear if the file ``build/module_info.json`` exists. So please delete it if you want to reconfigure the module information.
 
-4. Now, the ``esp-idf`` folder is created in ``esp-at`` folder. This ``esp-idf`` is different from that in Step **Get Started with ESP-IDF**. 
+4. Now, the ``esp-idf`` folder is created in ``esp-at`` folder. This ``esp-idf`` is different from that in `Get Started with ESP-IDF`_.
 
-  - If the terminal prompt an error message like the following, please proceed with the next step to set up the develop environment in the ``esp-at/esp-idf``.
+  If you encounter any of the cases below, please proceed with the next step to set up the develop environment in the ``esp-at/esp-idf``.
+
+  - The terminal prompt an error message like the following:
     
     ::
 
@@ -122,9 +126,9 @@ In this step, you will clone the ``esp-idf`` folder into the ``esp-at`` folder, 
       ...
       Please follow the instructions found in the "Set up the tools" section of ESP-IDF Get Started Guide.
 
-  - If you have compiled an ESP-AT project for an ESP series before and want to switch to another series, you must run ``rm -rf esp-idf`` to remove the old esp/idf and then proceed with the next step.
+  - If you have compiled an ESP-AT project for an ESP series before and want to switch to another series, you must run ``rm -rf esp-idf`` to remove the old esp-idf and then proceed with the next step.
 
-  - If your esp-idf is upgraded, you are recommended to proceed with the next step.
+  - Your esp-idf is upgraded.
 
 5. Set up the development environment in the ``esp-at/esp-idf``.
   
@@ -145,7 +149,7 @@ If the previous steps have been done correctly, the following menu appears after
 
    Project configuration - Home window
 
-You are using this menu to set up project-specific configuration, e.g. changing :term:`AT port` pins, enabling Classic Bluetooth function, etc. If you made no changes, it will run with the default configuration.
+You are using this menu to set up project-specific configuration, e.g. changing AT port pins, enabling Classic Bluetooth function, etc. If you made no changes, it will run with the default configuration.
 
 .. _build-project-build-the-project:
 
@@ -166,13 +170,12 @@ Build the project by running:
 Flash onto the Device
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Flash the binaries that you just built onto your ESP32 board by running:
+Flash the firmware that you just compiled onto your ESP device by running:
 
 ::
 
   ./build.py -p (PORT) flash
 
-- Note that you may need to replace ``PORT`` with your ESP device's serial port name.
-- Or you can follow the printed instructions to flash the bin files into flash. Note that you may also need to replace the ``PORT``.
+- Note that you need to replace ``PORT`` with your ESP device's serial port name.
+- Or you can follow the printed instructions to download the bin files into flash. Note that you also need to replace the ``PORT``.
 - If the ESP-AT bin fails to boot and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash, and then re-flash the AT firmware.
-

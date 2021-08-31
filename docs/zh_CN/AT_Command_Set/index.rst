@@ -106,6 +106,8 @@ AT 命令分类
 
 其它一些命令的参数更改是否保存到 flash 可以通过 :ref:`AT+SYSSTORE <cmd-SYSSTORE>` 命令来配置，具体请参见命令的详细说明。
 
+.. _at-messages:
+
 AT 消息
 ===========
 
