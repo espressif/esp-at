@@ -1,6 +1,8 @@
 How to Customize Partitions
 ===========================
 
+:link_to_translation:`zh_CN:[中文]`
+
 This document describes how to customize the partitions in your ESP device by modifying the at_customize.csv table provided by ESP-AT. There are two partition tables: the primary partition and the secondary partition table.
 
 The primary partition table partitions_at.csv is for system usage, based on which the partitions_at.bin file is generated. If the primary partition table goes wrong, the system will fail to startup. Therefore, it is not recommended to modify the partitions_at.csv.
@@ -72,13 +74,13 @@ If you use the script, execute the following command under the root directory of
 
     python esp-idf/components/partition_table/gen_esp32part.py <INPUT> [OUTPUT]
 
-- Replace ``INPUT`` with the path to at_customize.csv or binary file to parse.
+- Replace ``INPUT`` with the path to at_customize.csv or the binary file to parse.
 - Replace ``OUTPUT`` with the path to output converted binary or CSV file. Stdout will be used if omitted.
 
 .. _flash-at-customize-bin-into-ESP:
 
-Flash at_customize.bin into ESP
--------------------------------
+Flash at_customize.bin into ESP Device
+--------------------------------------
 
 Download the at_customize.bin into flash. Please refer to :ref:`flash-at-firmware-into-your-device` for how to flash bin files into ESP and the following table for the download address for your module.
 
@@ -122,7 +124,7 @@ Example
 
 The section demonstrates how to add a 4 KB partition named ``test`` into the ESP32-WROOM-32 module.
 
-Firstly, find the at_customize.csv table for ESP32-WROOM-32 and set the Name, Type, Subtype. Offset, and Size of the new partition:
+Firstly, find the at_customize.csv table for ESP32-WROOM-32 and set the ``Name``, ``Type``, ``Subtype``, ``Offset``, and ``Size`` of the new partition:
 
 ::
 

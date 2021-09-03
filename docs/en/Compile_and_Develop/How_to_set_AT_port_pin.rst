@@ -1,11 +1,13 @@
 How to Set AT Port Pins
 ==========================
 
+:link_to_translation:`zh_CN:[中文]`
+
 This document introduces how to modify :term:`AT port` pins in the firmware for ESP32 and ESP32-C3 series of products. By default, ESP-AT uses two UART interfaces as AT ports: one is to output logs (named as log port below) and the other to send AT commands and receive responses (named as command port below). 
 
 To modify the AT port pins of your ESP device, you should:
 
-- :doc:`clone the esp-at project <How_to_clone_project_and_compile_it>`;
+- :doc:`clone the ESP-AT project <How_to_clone_project_and_compile_it>`;
 - modify the pins either in the menuconfig utility or the factory_param_data.csv table;
 - :doc:`compile the project <How_to_clone_project_and_compile_it>` to generate the new bin in ``build/customized_partitions/factory_param.bin``;
 - :ref:`flash the new bin to your device <flash-at-firmware-into-your-device>`.
@@ -31,7 +33,7 @@ By default, the ESP32 AT firmware provided by Espressif uses the following UART0
 - TX: GPIO1
 - RX: GPIO3
 
-When compiling your esp-at project, you can modify them to other pins with the menuconfig utitlity:
+When compiling your ESP-AT project, you can modify them to other pins with the menuconfig utitlity:
 
 * ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART for console output``
 * ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART TX on GPIO#``
@@ -64,7 +66,7 @@ By default, the ESP32-C3 AT firmware provided by Espressif uses the following UA
 - TX: GPIO21
 - RX: GPIO20
 
-When compiling your esp-at project, you can modify them to other pins with the menuconfig utitlity:
+When compiling your ESP-AT project, you can modify them to other pins with the menuconfig utitlity:
 
 * ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART for console output``
 * ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART TX on GPIO#``

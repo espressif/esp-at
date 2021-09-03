@@ -1,216 +1,87 @@
-如何修改 ``AT port`` 管脚
-=========================
+如何设置 AT 端口管脚
+==========================
 
-在 ``esp-at`` 工程中，默认使用了两个 UART: UART0 和 UART1. 在有些情况下，用户可能想要修改管脚配置已满足自己的产品需求. 由于 ``esp-at`` 当前可支持 ESP32 和 ESP32-C3 两个平台，另个平台硬件有些差异，所以 UART 的配置方式也有少许差异.
+:link_to_translation:`en:[English]`
 
-ESP32 平台
-----------
+本文档介绍了如何修改 ESP32 和 ESP32-C3 系列固件中的 :term:`AT port` 管脚。默认情况下，ESP-AT 使用两个 UART 接口作为 AT 端口：一个用于输出日志（以下称为日志端口），另一个用于发送 AT 命令和接收响应（以下称为命令端口）。
 
-ESP32 的 UART 管脚可以通过管脚映射的方式进行修改, 具体请参见 `ESP32 技术参考手册 <https://www.espressif.com/sites/default/files/documentation/esp32_technical_reference_manual_cn.pdf>`__, 在官方 release 固件中，UART0 作为 Log 的打印，默认管脚为
+要修改 ESP 设备的 AT 端口管脚，应该：
 
-::
+- :doc:`克隆 ESP-AT 工程 <How_to_clone_project_and_compile_it>`。
+- 在 menuconfig 配置工具或 factory_param_data.csv 表格中修改对应管脚。
+- :doc:`编译工程 <How_to_clone_project_and_compile_it>`，在 ``build/customized_partitions/factory_param.bin`` 生成新的 bin 文件。
+- :ref:`将新的 bin 文件烧录进设备 <flash-at-firmware-into-your-device>`。
 
-    TX ---> GPIO1  
-    RX ---> GPIO3  
+本文档重点介绍如何修改管脚，点击上面的链接了解其它步骤的详细信息。以下是本文档的结构。
 
-可以通过 ``./build.py menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output`` 进行修改.
-UART1 作为 AT 命令通讯使用(只能为 UART1, 但管脚可修改)，默认管脚配置在 ``factory_param.bin`` 中, 可以在 :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv` 文件中修改,不同的模组固件可能管脚不同，关于 ``factory_param_data.csv`` 的含义描述，可参阅 ``ESP_AT_Factory_Parameter_Bin.md``.
-比如 ``WROOM-32`` 模组
+- `ESP32 系列`_
+- `ESP32-C3 系列`_
 
-+----------------+----------------+
-| Parameter      | Value          |
-+================+================+
-| platform       | PLATFORM_ESP32 |
-+----------------+----------------+
-| module_name    | WROOM-32       |
-+----------------+----------------+
-| magic_flag     | 0xfcfc         |
-+----------------+----------------+
-| version        | 1              |
-+----------------+----------------+
-| reserved1      | 0              |
-+----------------+----------------+
-| tx_max_power   | 78             |
-+----------------+----------------+
-| uart_port      | 1              |
-+----------------+----------------+
-| start_channel  | 1              |
-+----------------+----------------+
-| channel_num    | 13             |
-+----------------+----------------+
-| country_code   | CN             |
-+----------------+----------------+
-| uart_baudrate  | 115200         |
-+----------------+----------------+
-| uart_tx_pin    | 17             |
-+----------------+----------------+
-| uart_rx_pin    | 16             |
-+----------------+----------------+
-| uart_ctx_pin   | 15             |
-+----------------+----------------+
-| uart_rts_pin   | 14             |
-+----------------+----------------+
-| tx_control_pin | -1             |
-+----------------+----------------+
-| rx_control_pin | -1             |
-+----------------+----------------+
+.. note::
+  使用其它接口作为 AT 命令接口请参考 :at_file:`使用 AT SPI 接口 <main/interface/sdio/README.md>`, :at_file:`AT through SPI <main/interface/hspi/README.md>` 和 :at_file:`使用 AT 套接字接口 <main/interface/socket/README.md>`。
 
-发送命令的 AT port 管脚分别为
+ESP32 系列
+-------------
 
-::
+ESP32 AT 固件的日志端口和命令端口管脚可以自定义为其它管脚，请参阅 `《ESP32 技术参考手册》 <https://www.espressif.com/sites/default/files/documentation/esp32_technical_reference_manual_cn.pdf>`_ 查看可使用的管脚。
 
-    TX ---> GPIO17  
-    RX ---> GPIO16  
-    CTS ---> GPIO15  
-    RTX ---> GPIO14  
+修改日志端口管脚
+^^^^^^^^^^^^^^^^^
 
-如果想要使用 GPIO1 (TX)、GPIO3 (RX) 同时作为 Log 打印和 AT 命令输入，可以采用如下操作:
+默认情况下，乐鑫提供的 ESP32 AT 固件使用以下 UART0 管脚输出日志：
 
-1.  打开 :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv` 文件
-2.  修改 ``WROOM-32`` 模组的 ``uart_port`` 为 0，\ ``uart_tx_pin`` 为 1 以及 ``uart_rx_pin`` 为 3，如下
+- TX：GPIO1
+- RX：GPIO3
 
-    +----------------+----------------+
-    | Parameter      | Value          |
-    +================+================+
-    | platform       | PLATFORM_ESP32 |
-    +----------------+----------------+
-    | module_name    | WROOM-32       |
-    +----------------+----------------+
-    | magic_flag     | 0xfcfc         |
-    +----------------+----------------+
-    | version        | 1              |
-    +----------------+----------------+
-    | reserved1      | 0              |
-    +----------------+----------------+
-    | tx_max_power   | 78             |
-    +----------------+----------------+
-    | uart_port      | 0              |
-    +----------------+----------------+
-    | start_channel  | 1              |
-    +----------------+----------------+
-    | channel_num    | 13             |
-    +----------------+----------------+
-    | country_code   | CN             |
-    +----------------+----------------+
-    | uart_baudrate  | 115200         |
-    +----------------+----------------+
-    | uart_tx_pin    | 1              |
-    +----------------+----------------+
-    | uart_rx_pin    | 3              |
-    +----------------+----------------+
-    | uart_ctx_pin   | -1             |
-    +----------------+----------------+
-    | uart_rts_pin   | -1             |
-    +----------------+----------------+
-    | tx_control_pin | -1             |
-    +----------------+----------------+
-    | rx_control_pin | -1             |
-    +----------------+----------------+
+在编译 ESP-AT 工程时，可使用 menuconfig 配置工具将其修改为其它管脚：
 
-3.  然后保存，重新编译固件，并完全烧录固件即可.注意：一定要同时烧录对应的 ``factory_param.bin``.
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART for console output``
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART TX on GPIO#``
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART RX on GPIO#``
 
-ESP32-C3 平台
---------------
+修改命令端口管脚
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-ESP32-C3 的 UART 管脚可以通过管脚映射的方式进行修改, 具体请参见 `ESP32-C3 系列芯片技术规格书 <https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_cn.pdf>`__, 在官方 release 固件中，UART0 作为 Log 的打印，默认管脚为
+默认情况下，UART1 用于发送 AT 命令和接收 AT 响应，其管脚定义在 :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 表格中的 uart_port、uart_tx_pin、uart_rx_pin、uart_cts_pin 和 uart_rts_pin 列。
 
-::
+您可以直接在 factory_param_data.csv 表中修改端口管脚：
+  
+- 打开您本地的 factory_param_data.csv。
+- 找到模组所在的行。
+- 根据需要设置 ``uart_port``。
+- 根据需要设置 ``uart_tx_pin`` 和 ``uart_rx_pin``。
+- 若不需要使用硬件流控功能，请将 ``uart_cts_pin`` 和 ``uart_rts_pin`` 设置为 -1。
+- 保存表格。
 
-    TX ---> GPIO21  
-    RX ---> GPIO20 
+ESP32-C3 系列
+---------------
 
-可以通过 ``./build.py menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``Channel for console output`` 进行修改.
-UART1 作为 AT 命令通讯使用(只能为 UART1, 但管脚可修改)，默认管脚配置在 ``factory_param.bin`` 中, 可以在 :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv` 文件中修改,不同的模组固件可能管脚不同，关于 ``factory_param_data.csv`` 的含义描述，可参阅 ``ESP_AT_Factory_Parameter_Bin.md``.
-比如 ``MINI-1`` 模组
+ESP32-C3 AT 固件的日志端口和命令端口管脚可以自定义为其它管脚，请参阅 `《ESP32-C3 技术参考手册》 <https://www.espressif.com/sites/default/files/documentation/esp32-c3_technical_reference_manual_cn.pdf>`_ 查看可使用的管脚。
 
-+----------------+------------------+
-| Parameter      | Value            |
-+================+==================+
-| platform       | PLATFORM_ESP32C3 |
-+----------------+------------------+
-| module_name    | MINI-1           |
-+----------------+------------------+
-| magic_flag     | 0xfcfc           |
-+----------------+------------------+
-| version        | 2                |
-+----------------+------------------+
-| module_id      | 1                |
-+----------------+------------------+
-| tx_max_power   | 78               |
-+----------------+------------------+
-| uart_port      | 1                |
-+----------------+------------------+
-| start_channel  | 1                |
-+----------------+------------------+
-| channel_num    | 13               |
-+----------------+------------------+
-| country_code   | CN               |
-+----------------+------------------+
-| uart_baudrate  | 115200           |
-+----------------+------------------+
-| uart_tx_pin    | 7                |
-+----------------+------------------+
-| uart_rx_pin    | 6                |
-+----------------+------------------+
-| uart_cts_pin   | 5                |
-+----------------+------------------+
-| uart_rts_pin   | 4                |
-+----------------+------------------+
-| tx_control_pin | -1               |
-+----------------+------------------+
-| rx_control_pin | -1               |
-+----------------+------------------+
+修改日志端口管脚
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-发送命令的 AT port 管脚分别为
+默认情况下，乐鑫提供的 ESP32-C3 AT 固件使用以下 UART0 管脚输出日志：
 
-::
+- TX：GPIO21
+- RX：GPIO20
 
-    TX ---> GPIO7  
-    RX ---> GPIO6  
-    CTS ---> GPIO5  
-    RTX ---> GPIO4  
+在编译 ESP-AT 工程时，可使用 menuconfig 配置工具将其修改为其它管脚：
 
-如果想要使用 GPIO21 (TX)、GPIO20 (RX) 同时作为 Log 打印和 AT 命令输入，可以采用如下操作:
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART for console output``
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART TX on GPIO#``
+* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART RX on GPIO#``
 
-1.  打开 :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv` 文件
-2.  修改 ``MINI-1`` 模组的 ``uart_port`` 为 0，\ ``uart_tx_pin`` 为 21 以及 ``uart_rx_pin`` 为 20，如下
+修改命令端口管脚
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    +----------------+------------------+
-    | Parameter      | Value            |
-    +================+==================+
-    | platform       | PLATFORM_ESP32C3 |
-    +----------------+------------------+
-    | module_name    | MINI-1           |
-    +----------------+------------------+
-    | magic_flag     | 0xfcfc           |
-    +----------------+------------------+
-    | version        | 2                |
-    +----------------+------------------+
-    | module_id      | 1                |
-    +----------------+------------------+
-    | tx_max_power   | 78               |
-    +----------------+------------------+
-    | uart_port      | 0                |
-    +----------------+------------------+
-    | start_channel  | 1                |
-    +----------------+------------------+
-    | channel_num    | 13               |
-    +----------------+------------------+
-    | country_code   | CN               |
-    +----------------+------------------+
-    | uart_baudrate  | 115200           |
-    +----------------+------------------+
-    | uart_tx_pin    | 21               |
-    +----------------+------------------+
-    | uart_rx_pin    | 20               |
-    +----------------+------------------+
-    | uart_cts_pin   | -1               |
-    +----------------+------------------+
-    | uart_rts_pin   | -1               |
-    +----------------+------------------+
-    | tx_control_pin | -1               |
-    +----------------+------------------+
-    | rx_control_pin | -1               |
-    +----------------+------------------+
+默认情况下，UART1 用于发送 AT 命令和接收 AT 响应，其管脚定义在 :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 表格中的 uart_port、uart_tx_pin、uart_rx_pin、uart_cts_pin 和 uart_rts_pin 列。
 
-3.  然后保存，重新编译固件，并完全烧录固件即可.注意：一定要同时烧录对应的 ``factory_param.bin``.
+您可以直接在 factory_param_data.csv 表中修改端口管脚：
+  
+- 打开您本地的 factory_param_data.csv。
+- 找到模组所在的行。
+- 根据需要设置 ``uart_port``。
+- 根据需要设置 ``uart_tx_pin`` 和 ``uart_rx_pin``。
+- 若不需要使用硬件流控功能，请将 ``uart_cts_pin`` 和 ``uart_rts_pin`` 设置为 -1。
+- 保存表格。
