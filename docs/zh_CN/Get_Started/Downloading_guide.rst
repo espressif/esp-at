@@ -9,6 +9,8 @@
 
 对于不同系列的模组，AT 默认固件所支持的命令会有所差异。具体可参考 :doc:`/Compile_and_Develop/esp-at_firmware_differences`。
 
+.. _download-at-firmware:
+
 下载 AT 固件
 -------------
 

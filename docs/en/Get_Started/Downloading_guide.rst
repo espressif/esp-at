@@ -9,6 +9,8 @@ Before you start, please make sure you have already connected your hardware. For
 
 For different series of modules, the commands supported by AT firmware are different. Please refer to :doc:`/Compile_and_Develop/esp-at_firmware_differences` for more details.
 
+.. _download-at-firmware:
+
 Download AT Firmware
 ---------------------
 
