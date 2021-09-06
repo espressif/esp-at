@@ -6,7 +6,7 @@ Wi-Fi AT Commands
 :link_to_translation:`zh_CN:[中文]`
 
 -  :ref:`AT+CWMODE <cmd-MODE>`: Set the Wi-Fi mode (Station/SoftAP/Station+SoftAP).
--  :ref:`AT+CWSTATE <cmd-STATE>`: Query the Wi-Fi state and Wi-Fi information.
+-  :ref:`AT+CWSTATE <cmd-WSTATE>`: Query the Wi-Fi state and Wi-Fi information.
 -  :ref:`AT+CWJAP <cmd-JAP>`: Connect to an AP.
 -  :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`: Query/Set the Wi-Fi reconnecting configuration.
 -  :ref:`AT+CWLAPOPT <cmd-LAPOPT>`: Set the configuration for the command :ref:`AT+CWLAP <cmd-LAP>`.
@@ -103,7 +103,7 @@ Example
 
     AT+CWMODE=3 
 
-.. _cmd-STATE:
+.. _cmd-WSTATE:
 
 :ref:`AT+CWSTATE <WiFi-AT>`: Query the Wi-Fi state and Wi-Fi information
 ------------------------------------------------------------------------
@@ -281,7 +281,7 @@ Notes
 
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  This command requires Station mode to be enabled.
-- After ESP station is connected to an AP, it is recommended to use this command to query Wi-Fi information; when ESP station is not connected to an AP, it is recommended to use :ref:`AT+CWSTATE <cmd-STATE>` to query Wi-Fi information.
+- After ESP station is connected to an AP, it is recommended to use this command to query Wi-Fi information; when ESP station is not connected to an AP, it is recommended to use :ref:`AT+CWSTATE <cmd-WSTATE>` to query Wi-Fi information.
 -  The parameter ``<reconn_interval>`` of this command is the same as ``<interval_second>`` of the command :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`. Therefore, if you omit ``<reconn_interval>`` when running this command, the interval between Wi-Fi reconnections will use the default value 1.
 -  If the ``<ssid>`` and ``<password>`` parameter are omitted, AT will use the last configuration.
 -  Execute command has the same maximum timeout to setup command. The default value is 15 seconds, but you can change it by setting the parameter ``<jap_timeout>``.
