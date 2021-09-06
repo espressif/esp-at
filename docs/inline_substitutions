@@ -10,8 +10,8 @@
 .. |esp32-c3 idf doc version| replace:: v4.3
 .. _esp32-c3 idf doc version: https://docs.espressif.com/projects/esp-idf/en/release-v4.3/esp32c3/get-started/index.html
 
-.. |icon-check| image:: ../../_static/icon-check.png
+.. |icon-green-check| image:: ../../_static/icon-green-check.png
 
-.. |icon-cross| image:: ../../_static/icon-cross.png
+.. |icon-orange-check| image:: ../../_static/icon-orange-check.png
 
-.. |icon-orange-circle| image:: ../../_static/icon-orange-circle.png
+.. |icon-red-cross| image:: ../../_static/icon-red-cross.png
