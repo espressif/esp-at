@@ -6,7 +6,7 @@ Wi-Fi AT 命令集
 :link_to_translation:`en:[English]`
 
 -  :ref:`AT+CWMODE <cmd-MODE>`：查询/设置 Wi-Fi 模式 (Station/SoftAP/Station+SoftAP)
--  :ref:`AT+CWSTATE <cmd-STATE>`：查询 Wi-Fi 状态和 Wi-Fi 信息
+-  :ref:`AT+CWSTATE <cmd-WSTATE>`：查询 Wi-Fi 状态和 Wi-Fi 信息
 -  :ref:`AT+CWJAP <cmd-JAP>`：连接 AP
 -  :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`：查询/设置 Wi-Fi 重连配置
 -  :ref:`AT+CWLAPOPT <cmd-LAPOPT>`：设置 :ref:`AT+CWLAP <cmd-LAP>` 命令扫描结果的属性
@@ -103,7 +103,7 @@ Wi-Fi AT 命令集
 
     AT+CWMODE=3 
 
-.. _cmd-STATE:
+.. _cmd-WSTATE:
 
 :ref:`AT+CWSTATE <WiFi-AT>`：查询 Wi-Fi 状态和 Wi-Fi 信息
 -------------------------------------------------------------
@@ -281,7 +281,7 @@ Wi-Fi AT 命令集
 
 -  如果 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
 -  使用本命令需要开启 station 模式
-- 当 ESP station 已连接上 AP 后，推荐使用此命令查询 Wi-Fi 信息；当 ESP station 没有连接上 AP 时，推荐使用 :ref:`AT+CWSTATE <cmd-STATE>` 命令查询 Wi-Fi 信息
+- 当 ESP station 已连接上 AP 后，推荐使用此命令查询 Wi-Fi 信息；当 ESP station 没有连接上 AP 时，推荐使用 :ref:`AT+CWSTATE <cmd-WSTATE>` 命令查询 Wi-Fi 信息
 -  本命令中的 ``<reconn_interval>`` 参数与 :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>` 命令中的 ``<interval_second>`` 参数相同。如果运行本命令时不设置 ``<reconn_interval>`` 参数，Wi-Fi 重连间隔时间将采用默认值 1
 -  如果同时省略 ``<ssid>`` 和 ``<password>`` 参数，将使用上一次设置的值
 -  执行命令与设置命令的超时时间相同，默认为 15 秒，可通过参数 ``<jap_timeout>`` 设置
