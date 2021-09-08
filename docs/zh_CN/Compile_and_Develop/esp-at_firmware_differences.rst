@@ -236,13 +236,13 @@ ESP32 系列
      - 2 MB
      - 4 MB
    * - PSRAM
-     - |icon-orange-check|
+     - |icon-red-cross|
      - 8 MB
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
+     - |icon-red-cross|
+     - |icon-red-cross|
+     - |icon-red-cross|
    * - UART 管脚 [#one]_
      - | TX: 17
        | RX: 16
@@ -293,132 +293,132 @@ ESP32 系列
      - QCLOUD Bin
    * - ESP32-WROOM-32E
      - |icon-green-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
    * - ESP32-WROOM-32UE
      - |icon-green-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
    * - ESP32-WROOM-32D
      - |icon-green-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
    * - ESP32-WROOM-32U
      - |icon-green-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
    * - ESP32-WROOM-32
      - |icon-green-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
    * - ESP32-WROOM-32SE
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
+     - |icon-red-cross|
+     - |icon-red-cross|
+     - |icon-red-cross|
+     - |icon-red-cross|
+     - |icon-red-cross|
    * - ESP32-WROVER-E
-     - |icon-orange-check|
+     - |icon-red-cross|
      - |icon-green-check|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
      - |icon-green-check|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
    * - ESP32-WROVER-IE
-     - |icon-orange-check|
+     - |icon-red-cross|
      - |icon-green-check|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
      - |icon-green-check|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
    * - ESP32-WROVER-B
-     - |icon-orange-check|
+     - |icon-red-cross|
      - |icon-green-check|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
      - |icon-green-check|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
    * - ESP32-WROVER-IB
-     - |icon-orange-check|
+     - |icon-red-cross|
      - |icon-green-check|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
      - |icon-green-check|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
    * - ESP32-WROVER
-     - |icon-orange-check|
+     - |icon-red-cross|
      - |icon-green-check|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
      - |icon-green-check|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
    * - ESP32-WROVER-I
-     - |icon-orange-check|
+     - |icon-red-cross|
      - |icon-green-check|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
      - |icon-green-check|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
    * - ESP32-SOLO-1
      - |icon-green-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
    * - ESP32-D2WD
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
+     - |icon-red-cross|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
    * - ESP32-MINI-1
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
      - |icon-green-check|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
    * - ESP32-PICO-D4
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
      - |icon-green-check|
      - |icon-green-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
 
 ESP32-C3 系列
 ----------------
@@ -501,8 +501,8 @@ ESP32-C3 系列
      - 4 MB
      - 4 MB
    * - PSRAM
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-red-cross|
+     - |icon-red-cross|
    * - UART 管脚 [#two]_
      - | TX: 7
        | RX: 6
