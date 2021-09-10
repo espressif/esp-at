@@ -42,16 +42,16 @@ Generic AT command has four types:
      - Command Format 
      - Description
    * - Test Command 
-     - AT+<CommamdName>=?
+     - AT+<CommandName>=?
      - Query the Set Commands' internal parameters and their range of values.
    * - Query Command 
-     - AT+<CommamdName>?
+     - AT+<CommandName>?
      - Return the current value of parameters.
    * - Set Command 
-     - AT+<CommamdName>=<...> 
+     - AT+<CommandName>=<...> 
      - Set the value of user-defined parameters in commands, and run these commands.
    * - Execute Command 
-     - AT+<CommamdName>
+     - AT+<CommandName>
      - Run commands with no user-defined parameters.
 
 -  Not all AT commands support all of the four types mentioned above.

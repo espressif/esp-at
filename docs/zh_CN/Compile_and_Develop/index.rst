@@ -12,9 +12,9 @@
    如何添加自定义 AT 命令 <How_to_add_user-defined_AT_commands>
    如何提高 ESP-AT 吞吐性能 <How_to_optimize_throughput.rst>
    如何生成出厂参数二进制文件 <How_to_create_factory_parameter_bin>
-   如何自定义 Ble_services <How_to_customize_BLE_services>
+   如何自定义低功耗蓝牙服务 <How_to_customize_BLE_services>
    如何自定义分区 <How_to_customize_partitions>
-   如何使用 ESP-AT 经典蓝牙 <How_to_enable_ESP32_AT_Classic_Bluetooth>
+   如何启用 ESP-AT 经典蓝牙 <How_to_enable_ESP32_AT_Classic_Bluetooth>
    如何使能 ESP-AT ethernet 接口 <How_to_enable_ESP_AT_Ethernet>
    如何增加一个新的模组支持 <How_to_add_support_for_a_module>
    ESP32 SDIO AT 指南 <esp32-sdio-at-guide.rst>
