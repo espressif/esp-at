@@ -499,14 +499,15 @@ Set the parameters of advertising.
 Parameters
 ^^^^^^^^^^
 
--  **<adv_int_min>**: minimum advertising interval. It should be less than the value of ``<adv_int_max>``. Range: 0x0020 ~ 0x4000. 
--  **<adv_int_max>**: maximum advertising interval. It should be more than the value of ``<adv_int_min>``. Range: 0x0020 ~ 0x4000. 
+-  **<adv_int_min>**: minimum advertising interval. It should be less than or equal to the value of ``<adv_int_max>``. Range: 0x0020 ~ 0x4000. 
+-  **<adv_int_max>**: maximum advertising interval. It should be more than or equal to the value of ``<adv_int_min>``. Range: 0x0020 ~ 0x4000. 
 -  **<adv_type>**:
 
    -  0: ADV_TYPE_IND
    -  1: ADV_TYPE_DIRECT_IND_HIGH
    -  2: ADV_TYPE_SCAN_IND
    -  3: ADV_TYPE_NONCONN_IND
+   -  4: ADV_TYPE_DIRECT_IND_LOW
 
 -  **<own_addr_type>**: own Bluetooth LE address type.
 
@@ -533,6 +534,11 @@ Parameters
    -  1: RANDOM
 
 -  **[<peer_addr>]**: remote Bluetooth LE address.
+
+Notes
+^^^^^
+
+-  Advertising interval shall be an integer multiple of ``0.625 ms`` in the range of ``20 ms`` to ``10.24 s``.
 
 Example
 ^^^^^^^^
