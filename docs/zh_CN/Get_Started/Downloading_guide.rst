@@ -100,7 +100,7 @@ Windows
 
    Flash 下载工具的模式
 
-- 选择对应的 ESP 下载工具，如 ESP32 设备应选择 "ESP32 DownloadTool"，ESP32-C3 设备应选择 "ESP32-C3 DownloadTool"；（此处，我们选择 "ESP32 DownloadTool"。）
+- 选择对应的 ESP 下载工具。本文以 ESP32 为例，则选择 ESP32 DownloadTool，请您注意根据实际采用的芯片选择对应的下载工具。
 
 .. figure:: ../../_static/esp32_wroom32_download_select.png
    :align: center
@@ -285,4 +285,3 @@ ESP32-C3 开机日志:
     I (544) boot: Disabling RNG early entropy source...
     max tx power=78,ret=0
     2.1.0
-
