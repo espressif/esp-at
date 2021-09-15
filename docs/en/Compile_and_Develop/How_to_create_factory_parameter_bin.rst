@@ -1,7 +1,9 @@
 How to Generate Factory Parameter Bin
 ======================================
 
-This document explains how to generate a customized ESP-AT factory parameter bin file for your module. For example, you may want to self-define the country code, RF restriction, or UART pins in your ESP-AT firmware. The two tables below allow you to define such parameters.
+:link_to_translation:`zh_CN:[中文]`
+
+This document explains how to generate a customized ESP-AT factory parameter bin file (factory_MODULE_NAME.bin) for your module. For example, you may want to self-define the country code, RF restriction, or UART pins in your ESP-AT firmware. The two tables below allow you to define such parameters.
 
 - :ref:`factory-param-type-csv`
 - :ref:`factory-param-data-csv`
@@ -56,13 +58,13 @@ The table below provides some information about each parameter.
    * - uart_rts_pin
      - UART rts pin; it should be set to -1 if not used.
    * - tx_control_pin
-     - For some board, the tx pin needs to be separated from mcu when power on; it should be set to -1 if not used.
+     - For some boards, the tx pin needs to be separated from MCU when power on; it should be set to -1 if not used.
    * - rx_control_pin
-     - For some board, the rx pin needs to be separated from mcu when power on; it should be set to -1 if not used.
+     - For some boards, the rx pin needs to be separated from MCU when power on; it should be set to -1 if not used.
    * - reserved2
      - Reserved.
    * - platform
-     - The platform that the current firmware runs on.
+     - The platform (or called chip series) that the current firmware runs on.
    * - module_name
      - The module that the current firmware runs on.
 
@@ -78,7 +80,7 @@ This factory_param_data.csv table holds the values for all the parameters define
 Add a Customized Module
 -----------------------
 
-This section demonstrates how to add a customized module and generate the factory parameter bin for it with an example. Assuming that you want to generate the factory parameter bin for an ESP32 module named as ``MY_MODULE``, its country code is JP, Wi-Fi channel is from 1 to 14, and other parameters stay the same with ``WROOM-32`` module of ``PLATFORM_ESP32``, you should do as follows:
+This section demonstrates how to add a customized module in factory_param_data.csv and generate the factory parameter bin for it with an example. Assuming that you want to generate the factory parameter bin for an ESP32 module named as ``MY_MODULE``, its country code is JP, Wi-Fi channel is from 1 to 14, and other parameters stay the same with ``WROOM-32`` module of ``PLATFORM_ESP32``, you can do as follows:
 
 .. contents::
   :local:
@@ -87,7 +89,9 @@ This section demonstrates how to add a customized module and generate the factor
 Modify factory_param_data.csv
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Set all parameter values for ``MY_MODULE`` in the factory_param_data.csv table. Firstly, insert a row at the bottom of the table, and then enter the following parameter values:
+Set all parameter values for ``MY_MODULE`` in the factory_param_data.csv table. 
+
+Firstly, insert a row at the bottom of the table, and then enter the following parameter values:
 
 - param_name: value
 - platform: PLATFORM_ESP32
@@ -135,7 +139,7 @@ The ``esp_at_module_info`` structure provides ``OTA`` upgrade verification ``tok
         char* ota_ssl_token;
     } esp_at_module_info_t;
 
-If you do not want to use ``OTA`` features, member 2 ``ota_token`` and member 3 ``ota_ssl_token`` can be set to ``NULL``, but member 1 ``module_name`` must correspond to the field ``module_name`` in the factory_param_data.csv file.
+If you do not want to use ``OTA`` features, member 2 ``ota_token`` and member 3 ``ota_ssl_token`` should be set to ``NULL``. Member 1 ``module_name`` must correspond to the field ``module_name`` in the factory_param_data.csv file.
 
 The modified ``esp_at_module_info`` structure is as follows:
 
@@ -194,12 +198,14 @@ After adding the customized module information, recompile the whole project acco
     8. MY_MODULE (description: MY_DESCRIPTION)
     choose(range[1,8]):8
 
+You can find the factory parameter bin generated in ``esp-at/build/customized_partitions`` folder after the build is completed.
+
 .. _add-a-customized-parameter:
 
 Add a Customized Parameter
 --------------------------
 
-This section demonstrates how to add a customized parameter with an example. Assuming that you want to add the parameter "date" for ``MY_MODULE`` and set it to ``20210603``, you should do as follows:
+This section demonstrates how to add a customized parameter with an example. Assuming that you want to add the parameter ``date`` for ``MY_MODULE`` and set it to ``20210603``, you should do as follows:
 
 .. contents::
   :local:
@@ -208,7 +214,9 @@ This section demonstrates how to add a customized parameter with an example. Ass
 Modify factory_param_type.csv
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Define the parameter ``date`` in the factory_param_type.csv. Firstly, insert a row at the end of the table, and then set the name, offset, type, and size of the parameter:
+Define the parameter ``date`` in the factory_param_type.csv. 
+
+Firstly, insert a row at the end of the table, and then set the name, offset, type, and size of the parameter:
 
 .. list-table::
    :header-rows: 1
@@ -235,7 +243,7 @@ Modify factory_param_data.csv
 
 In the factory_param_data.csv, insert a column named as ``date`` to the right of the last column, then set its value to ``20210603`` for ``MY_MODULE``.
 
-The modified csv table is as follows:
+The modified CSV table is as follows:
 
 ::
 
@@ -289,30 +297,32 @@ Recompile the Project
 
 Recompile the whole project according to :doc:`How_to_clone_project_and_compile_it`.
 
+You can find the factory parameter bin generated in ``esp-at/build/customized_partitions`` folder after the build is completed.
+
 .. _modify-factory-parameter-data-on-an-existing-module:
 
 Modify Factory Parameter Data on an Existing Module
 ---------------------------------------------------
 
-Assuming that you need to modify the factory parameter data of an existing module in factory_param_data.csv, you have the following options:
+Assuming that you need to modify the factory parameter data of an existing module in factory_param_data.csv, you choose one of the following options:
 
 .. contents::
   :local:
   :depth: 1
 
-Recompile the Project
-^^^^^^^^^^^^^^^^^^^^^
+Recompile the Whole Project
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Open the factory_param_data.csv and modify the parameters as needed.
 
-Recompile the ``ESP-AT`` project according to :doc:`How_to_clone_project_and_compile_it`, and download the new ``ESP-AT`` firmware into flash according to :doc:`../Get_Started/Downloading_guide`.
+Recompile the ESP-AT project according to :doc:`How_to_clone_project_and_compile_it` to generate the factory parameter bin in ``esp-at/build/customized_partitions`` folder.
 
-Recompile the Factory Parameter Bin
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Only Recompile the Factory Parameter Bin 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Firstly, clone the entire ``ESP-AT`` project.
+Firstly, clone the entire ESP-AT project.
 
-Secondly, navigate to the root directory of ``ESP-AT`` project, enter the following command, and replace some parameters:
+Secondly, navigate to the root directory of ESP-AT project, enter the following command, and replace some parameters:
 
 ::
 
@@ -342,9 +352,7 @@ After the above command is executed, the three files will be generated in the cu
 - factory_parameter.log
 - factory_param_MY_MODULE.bin
 
-Download the new ``factory_param_MY_MODULE.bin`` into flash. ``ESP-AT`` provides `esptool.py <https://github.com/espressif/esptool/#readme>`_ to do it.
-
-Execute the following command under the root directory of ``ESP-AT`` project and replace some parameters:
+Download the new ``factory_param_MY_MODULE.bin`` into flash. ESP-AT provides `esptool.py <https://github.com/espressif/esptool/#readme>`_ to do it. Execute the following command under the root directory of ESP-AT project and replace some parameters:
 
 ::
 
@@ -354,20 +362,23 @@ Execute the following command under the root directory of ``ESP-AT`` project and
 
 - Replace ``BAUD`` with baud rate
 
-- Replace ``ADDRESS`` with the start address in flash. ``ESP-AT`` has strict requirements on the ``ADDRESS`` parameter. Factory parameter bin has different download addresses on different modules. Please refer to the table below:
+- Replace ``ADDRESS`` with the start address in flash. ESP-AT has strict requirements on the ``ADDRESS`` parameter. The address of factory parameter bin varies from firmware to firmware. Please refer to the table below:
 
-.. list-table:: factory parameter bin download addresses
-   :header-rows: 1
+  .. list-table:: factory parameter bin download addresses
+     :header-rows: 1
 
-   * - platform
-     - module
-     - address
-   * - PLATFORM_ESP32
-     - *
-     - 0x30000
-   * - PLATFORM_ESP32C3
-     - *
-     - 0x30000
+     * - Platform
+       - Firmware
+       - Address
+     * - PLATFORM_ESP32
+       - All firmware
+       - 0x30000
+     * - PLATFORM_ESP32C3
+       - MINI-1 Bin
+       - 0x31000
+     * - PLATFORM_ESP32C3
+       - QCLOUD Bin
+       - 0x30000
 
 - Replace ``FILEDIRECTORY`` with the relative path of the factory parameter bin.
 
@@ -377,9 +388,9 @@ Below is the example command to flash the generated factory parameter bin to ``M
 
     python esp-idf/components/esptool_py/esptool/esptool.py -p /dev/ttyUSB0 -b 921600 --before default_reset --after hard_reset --chip auto  write_flash --flash_mode dio --flash_size detect --flash_freq 40m 0x30000 ./factory_param_MY_MODULE.bin
 
-Modify Factory Parameter Bin
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Directly Modify Factory Parameter Bin
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Open the factory parameter bin with a binary tool, and directly modify the parameters in the corresponding position according to the parameters offset in factory_param_type.csv.
 
-Download the new ``factory_param.bin`` into flash (see :doc:`../Get_Started/Downloading_guide`).
+Download the new factory_param.bin into flash (see :doc:`../Get_Started/Downloading_guide`).
