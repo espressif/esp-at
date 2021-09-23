@@ -499,13 +499,15 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 参数
 ^^^^
 
--  **<adv_int_min>**：最小广播间隔，本参数值应小于 ``<adv_int_max>`` 参数值。参数范围：0x0020 ~ 0x4000。
--  **<adv_int_max>**：最大广播间隔，本参数值应大于 ``<adv_int_min>`` 参数值。参数范围：0x0020 ~ 0x4000。
+-  **<adv_int_min>**：最小广播间隔，本参数值应小于等于 ``<adv_int_max>`` 参数值。参数范围：0x0020 ~ 0x4000。
+-  **<adv_int_max>**：最大广播间隔，本参数值应大于等于 ``<adv_int_min>`` 参数值。参数范围：0x0020 ~ 0x4000。
 -  **<adv_type>**:
 
    -  0: ADV_TYPE_IND
+   -  1: ADV_TYPE_DIRECT_IND_HIGH
    -  2: ADV_TYPE_SCAN_IND
    -  3: ADV_TYPE_NONCONN_IND
+   -  4: ADV_TYPE_DIRECT_IND_LOW
 
 -  **<own_addr_type>**：Bluetooth LE 地址类型
 
@@ -532,6 +534,11 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
    -  1: RANDOM
 
 -  **[<peer_addr>]**：对方 Bluetooth LE 地址
+
+说明
+^^^^
+
+-  广播间隔是 ``0.625`` 毫秒的整数倍，且范围应该在 ``20`` 毫秒到 ``10.24`` 秒之间。
 
 示例
 ^^^^
