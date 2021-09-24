@@ -38,6 +38,12 @@
 #include "driver/gpio.h"
 #include "at_spi_driver.h"
 
+#if CONFIG_SPI_NUM == 1
+#define AT_SPI_HOST HSPI_HOST
+#elif CONFIG_SPI_NUM == 2
+#define AT_SPI_HOST VSPI_HOST
+#endif
+
 static const char* TAG = "HSPI-AT";
 static uint8_t *recv_data;
 static uint32_t notify_len = 0;
@@ -92,7 +98,7 @@ static int32_t at_spi_read_data(uint8_t* data, int32_t len)
     memcpy(data, recv_data, len);
     ESP_LOGD(TAG, "read len: %d", len);
 
-    at_spi_slave_free_receive_buffer(HSPI_HOST);
+    at_spi_slave_free_receive_buffer(AT_SPI_HOST);
     spi_mutex_unlock();
     return len;
 }
@@ -123,7 +129,7 @@ static int32_t at_spi_write_data(uint8_t* buf, int32_t len)
     memcpy(sendbuf, buf, len);
 
     while (wait_time--) {
-        ret = at_spi_slave_send(HSPI_HOST, sendbuf, len, 1000 / portTICK_PERIOD_MS);
+        ret = at_spi_slave_send(AT_SPI_HOST, sendbuf, len, 1000 / portTICK_PERIOD_MS);
         if (ret == ESP_OK) {
             break;
         }
@@ -153,7 +159,9 @@ static void at_spi_slave_task(void* pvParameters)
         .mosi_io_num=GPIO_MOSI,
         .miso_io_num=GPIO_MISO,
         .sclk_io_num=GPIO_SCLK,
-        .intr_flags = ESP_INTR_FLAG_IRAM
+        .intr_flags = ESP_INTR_FLAG_IRAM,
+        .quadwp_io_num = -1,
+        .quadhd_io_num = -1
     };
 
     //Configuration for the SPI slave interface
@@ -186,13 +194,13 @@ static void at_spi_slave_task(void* pvParameters)
     }
 
     //Initialize SPI slave interface
-    ret= at_spi_slave_initialize(HSPI_HOST, &buscfg, &slvcfg, 1);
+    ret= at_spi_slave_initialize(AT_SPI_HOST, &buscfg, &slvcfg, 1);
     assert(ret==ESP_OK);
 
     at_spi_write_data((uint8_t *)"ready\r\n", strlen("ready\r\n"));
 
     while (1) {
-        ret = at_spi_slave_receive(HSPI_HOST, &recv_data, &recv_len, portMAX_DELAY);
+        ret = at_spi_slave_receive(AT_SPI_HOST, &recv_data, &recv_len, portMAX_DELAY);
         if(ret != ESP_OK) {
             ESP_LOGE(TAG, "Recv error: %d\r\n", ret);
             break;
