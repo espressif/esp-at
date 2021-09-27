@@ -12,3 +12,4 @@ AT Command Examples
    MQTT AT Examples <MQTT_AT_Examples>
    [ESP32 Only] Ethernet AT Examples <Ethernet_AT_Examples>
    Web server AT Examples <Web_server_AT_Examples>
+   HTTP AT Examples <http_at_examples>
