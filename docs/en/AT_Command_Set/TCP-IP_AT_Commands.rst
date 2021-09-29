@@ -531,7 +531,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<link ID>**: ID of the connection (0~4), for multiple connections.
--  **<length>**: data length. Maximum: 2048 bytes.
+-  **<length>**: data length. Maximum: 8192 bytes.
 -  **<"remote host">**: IPv4 address or IPv6 address or domain name of remote host, can be set in UDP transmission.
 -  **<remote port>**: the remote port number.
 
@@ -586,7 +586,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<link ID>**: ID of the connection (0~4), for multiple connections.
--  **<length>**: data length. Maximum: 2048 bytes.
+-  **<length>**: data length. Maximum: 8192 bytes.
 -  **<"remote host">**: IPv4 address or IPv6 address or domain name of remote host, can be set in UDP transmission.
 -  **<remote port>**: remote port can be set in UDP transmission.
 
@@ -1815,7 +1815,7 @@ Parameter
 - **<mode>**: the receive mode of socket data. Default: 0.
    
    - 0: active mode. ESP-AT will send all the received socket data instantly to the host MCU with header "+IPD".
-   - 1: passive mode. ESP-AT will keep the received socket data in an internal buffer (socket receive window, 5744 bytes by default), and wait for the host MCU to read. If the buffer is full, the socket transmission will be blocked for TCP/SSL connections, or data will be lost for UDP connections.
+   - 1: passive mode. ESP-AT will keep the received socket data in an internal buffer (socket receive window, 5760 bytes by default), and wait for the host MCU to read. If the buffer is full, the socket transmission will be blocked for TCP/SSL connections, or data will be lost for UDP connections.
 
 Notes
 ^^^^^
