@@ -227,6 +227,13 @@ ESP-AT will be downloaded into ``~/esp/esp-at`` on Linux or macOS, or ``%userpro
 
     This guide uses the directory ``~/esp`` on Linux and macOS or ``%userprofile%\esp`` on Windows as an installation folder for ESP-AT. You can use any directory, but you will need to adjust paths for the commands respectively. Keep in mind that ESP-AT does not support spaces in paths.
 
+Checkout to ESP8266 Branch
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  ::
+
+    git checkout release/v2.2.0.0_esp8266
+
 Connect Your Device
 ^^^^^^^^^^^^^^^^^^^
 
