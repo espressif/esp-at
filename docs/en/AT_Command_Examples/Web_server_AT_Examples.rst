@@ -440,7 +440,9 @@ OTA Firmware Upgrade Using a WeChat Applet
 -------------------------------------------
 The WeChat applet support online firmware upgrade , please refer to the above-described `Configure ESP Device Parameters`_ specific steps performed ESP device configuration (if the configuration has been completed, do not repeat configuration). Once configured, the device performs OTA firmware upgrade processes is similar as `OTA Firmware Upgrade Using a Browser`_ .
 
-[ESP32][ESP32-S Series][ESP32-C Series] Using Capture Portal
+.. _using-captive-portal:
+
+[ESP32][ESP32-C Series] Using Captive Portal
 --------------------------------------------------------------
 
 Introduction
