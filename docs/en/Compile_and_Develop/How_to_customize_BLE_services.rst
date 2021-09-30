@@ -1,13 +1,15 @@
 How to Customize Bluetooth® LE Services
 ========================================
 
+:link_to_translation:`zh_CN:[中文]`
+
 This document describes how to customize Bluetooth LE services on your ESP device with the Bluetooth LE service source file provided by ESP-AT.
 
 .. contents::
    :local:
    :depth: 2
 
-The Bluetooth LE services are defined as a multivariate array of GATT structures, and the array contains at least one service whose UUID is defined as 0x2800. Each service always consists of a service definition and several characteristics. Each characteristic always consists of a value and optional descriptors. Please refer to Section GATT-based Profile Hierarchy of `Bluetooth Core Specification <https://www.bluetooth.com/specifications/specs/core-specification-4-2>`_ for more information.
+The Bluetooth LE services are defined as a multivariate array of GATT structures, and the array contains at least one primary service whose attribute type is defined as 0x2800. Each service always consists of a service definition and several characteristics. Each characteristic always consists of a value and optional descriptors. Please refer to Part Generic Attribute Profile (GATT) of `Bluetooth Core Specification <https://www.bluetooth.com/specifications/specs/core-specification-4-2>`_ for more information.
 
 Bluetooth LE Service Source File
 ---------------------------------
@@ -81,7 +83,7 @@ Below are descriptions of the table above.
     #define    ESP_GATT_PERM_READ_AUTHORIZATION    (1 << 9)   /* bit 9 -  0x0200 */
     #define    ESP_GATT_PERM_WRITE_AUTHORIZATION   (1 << 10)  /* bit 10 - 0x0400 */
 
-- The first line of table is the service definition with a UUID of ``0x2800``.
+- The first line of table is the service definition with a UUID of ``0xA002``.
 - The second line is the declaration of a characteristic. UUID ``0x2803`` means the characteristic declaration. The value ``2`` sets the permission. The length of permission is 8 bits, and each bit represents permission for an operation. ``1`` indicates that the operation is supported, and ``0`` indicates not supported.
 
   .. list-table::
@@ -130,7 +132,7 @@ If you want to customize the Bluetooth LE services, follow the steps below.
 Modify the Bluetooth LE Service Source File
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can define more than one service. For example, if you want to define three services ( ``Server_A``, ``Server_B`` and ``Server_C`` ), these three services need to be arranged in order. Since the definition of each service is similar, here we define one service as an example, and then you can define others one by one accordingly.
+You can define more than one service. For example, if you want to define three services (``Server_A``, ``Server_B`` and ``Server_C``), these three services need to be arranged in order. Since the definition of each service is similar, here we define one service as an example, and then you can define others one by one accordingly.
 
 1. Add the service definition.
 
@@ -205,7 +207,7 @@ You can define more than one service. For example, if you want to define three s
         - 2
         - 0000
 
-After the above three steps, the customized Bluetooth LE service has been defined as follows.
+After the above steps, the customized Bluetooth LE service has been defined as follows.
 
 .. list-table::
    :header-rows: 1
@@ -249,7 +251,7 @@ After the above three steps, the customized Bluetooth LE service has been define
 Generate ble_data.bin
 ^^^^^^^^^^^^^^^^^^^^^
 
-You can generate ble_data.bin in the following two ways:
+You can generate ble_data.bin in either of the following ways:
 
 - Recompile the ESP-AT project to generate ble_data.bin. See :ref:`build-project-build-the-project` for more information.
 
@@ -264,7 +266,7 @@ You can generate ble_data.bin in the following two ways:
 Download ble_data.bin
 ^^^^^^^^^^^^^^^^^^^^^
 
-You can download ble_data.bin in the following two ways, corresponding to the two ways to generate bin files in the `Generate ble_data.bin`_ section.
+You can download ble_data.bin in either of the following ways, corresponding to the ways to generate bin files in the `Generate ble_data.bin`_ section.
 
 - Download recompiled ESP-AT firmware. See :ref:`build-project-flash-onto-the-device` for more information.
 
