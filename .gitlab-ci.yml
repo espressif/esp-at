@@ -860,7 +860,7 @@ esp32_demo:
     # replace submodule esp-idf to internal repository to speedup cloning
     - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
     - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
+    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/espressif/esp-idf.git
     - cd esp-idf
     - git checkout ${commit_str#*commit:}
     # (the same regular expressions are used to set these are used in 'only:' sections below
@@ -1032,7 +1032,7 @@ build_docs:
     # replace submodule esp-idf to internal repository to speedup cloning
     - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
     - branch_str=$(awk '/branch:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
-    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/idf/esp-idf.git
+    - git clone -b ${branch_str#*branch:} ${GITLAB_SSH_SERVER}/espressif/esp-idf.git
     - cd esp-idf
     - git checkout ${commit_str#*commit:}
     # (the same regular expressions are used to set these are used in 'only:' sections below
