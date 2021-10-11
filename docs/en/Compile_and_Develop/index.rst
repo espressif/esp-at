@@ -22,4 +22,5 @@ How to compile and develop your own AT project
    How to implement OTA update <How_to_implement_OTA_update>
    How to update IDF <How_to_update_IDF>
    ESP-AT Firmware Differences <esp-at_firmware_differences>
+   How to Download the Latest Temporary Version of AT Firmware from GitHub <How_to_download_the_latest_temporary_version_of_AT_from_github>
    AT API Reference <AT_API_Reference>
