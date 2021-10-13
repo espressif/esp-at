@@ -5,7 +5,7 @@
 
 :link_to_translation:`en:[English]`
 
-ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/archived-specifications/>`_。
+ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/archived-specifications/>`_。
 
 -  [ESP32 Only] :ref:`AT+BTINIT <cmd-BTINIT>`：Classic Bluetooth 初始化
 -  [ESP32 Only] :ref:`AT+BTNAME <cmd-BTNAME>`：查询/设置 Classic Bluetooth 设备名称

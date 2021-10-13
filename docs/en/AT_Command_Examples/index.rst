@@ -8,7 +8,7 @@ AT Command Examples
    :maxdepth: 1
 
    TCP-IP AT Examples <TCP-IP_AT_Examples>
-   Bluetooth® Low Engergy AT Examples <BLE_AT_Examples>
+   Bluetooth® Low Engergy AT Examples <bluetooth_le_at_examples>
    MQTT AT Examples <MQTT_AT_Examples>
    [ESP32 Only] Ethernet AT Examples <Ethernet_AT_Examples>
    Web server AT Examples <Web_server_AT_Examples>

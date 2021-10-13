@@ -5,7 +5,7 @@
 
 :link_to_translation:`zh_CN:[中文]`
 
-ESP32 AT firmware supports `Bluetooth® Core Specification Version 5.0 <https://www.bluetooth.com/specifications/archived-specifications/>`_.
+ESP32 AT firmware supports `Bluetooth® Core Specification Version 4.2 <https://www.bluetooth.com/specifications/archived-specifications/>`_.
 
 -  [ESP32 Only] :ref:`AT+BTINIT <cmd-BTINIT>`: Classic Bluetooth initialization.
 -  [ESP32 Only] :ref:`AT+BTNAME <cmd-BTNAME>`: Query/Set Classic Bluetooth device name.
