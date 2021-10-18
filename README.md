@@ -46,14 +46,14 @@ The AT command firmware allows for rapid integration by providing:
   - **ESP32-C3 is recommended instead**
   - ESP-AT will not release the major version for ESP8266.
   - ESP-AT no longer adds new features to ESP8266.
-  - [v2.2.1.0_esp8266](https://github.com/espressif/esp-at/releases/tag/v2.2.1.0_esp8266) is the last version of ESP-AT for ESP8266, corresponding to branch: [release/v2.2.0.0_esp8266](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp8266).
+  - [v2.2.1.0_esp8266](https://github.com/espressif/esp-at/releases/tag/v2.2.1.0_esp8266) is the last version of ESP-AT for ESP8266, corresponding to branch [release/v2.2.0.0_esp8266](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp8266), corresponding to documentation [https://docs.espressif.com/projects/esp-at/en/release-v2.2.0.0_esp8266](https://docs.espressif.com/projects/esp-at/en/release-v2.2.0.0_esp8266/).
   - ESP-AT will regularly update [release/v2.2.0.0_esp8266](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp8266) branch for ESP8266. Update includes vital bugfix and security repair.
 
 - ESP32-S2 Series
   - **ESP32-C3 is recommended instead**
   - ESP-AT will not release the major version for ESP32-S2.
   - ESP-AT no longer adds new features to ESP32-S2.
-  - [v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/releases/tag/v2.1.0.0_esp32s2) is the last version of ESP-AT for ESP32-S2, corresponding to branch: [release/v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/tree/release/v2.1.0.0_esp32s2).
+  - [v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/releases/tag/v2.1.0.0_esp32s2) is the last version of ESP-AT for ESP32-S2, corresponding to branch [release/v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/tree/release/v2.1.0.0_esp32s2), corresponding to documentation [https://docs.espressif.com/projects/esp-at/en/release-v2.1.0.0_esp32s2](https://docs.espressif.com/projects/esp-at/en/release-v2.1.0.0_esp32s2/).
   - ESP-AT will regularly update [release/v2.2.0.0_esp32](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp32) branch for ESP32-S2. Update includes vital bugfix and security repair.
 
 # ESP-AT 项目
@@ -98,12 +98,12 @@ esp-at 是 MIT 许可证下的免费软件。
   - **推荐使用 ESP32-C3 芯片**
   - ESP-AT 不再为 ESP8266 添加新功能
   - ESP-AT 不再为 ESP8266 发布大版本
-  - [v2.2.1.0_esp8266](https://github.com/espressif/esp-at/releases/tag/v2.2.1.0_esp8266) 是 ESP-AT 为 ESP8266 发布的最后一个版本，对应分支为 [release/v2.2.0.0_esp8266](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp8266)
+  - [v2.2.1.0_esp8266](https://github.com/espressif/esp-at/releases/tag/v2.2.1.0_esp8266) 是 ESP-AT 为 ESP8266 发布的最后一个版本，对应分支为 [release/v2.2.0.0_esp8266](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp8266)，对应文档为 [https://docs.espressif.com/projects/esp-at/zh_CN/release-v2.2.0.0_esp8266](https://docs.espressif.com/projects/esp-at/zh_CN/release-v2.2.0.0_esp8266/)
   - ESP-AT 将定期在 [release/v2.2.0.0_esp8266](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp8266) 分支为 ESP8266 进行重要 bug 修复，安全修补等更新
 
 - ESP32-S2 系列
   - **推荐使用 ESP32-C3 芯片**
   - ESP-AT 不再为 ESP32-S2 添加新功能
   - ESP-AT 不再为 ESP32-S2 发布大版本
-  - [v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/releases/tag/v2.1.0.0_esp32s2) 是 ESP-AT 为 ESP32-S2 发布的最后一个版本，对应分支为 [release/v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/tree/release/v2.1.0.0_esp32s2)
+  - [v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/releases/tag/v2.1.0.0_esp32s2) 是 ESP-AT 为 ESP32-S2 发布的最后一个版本，对应分支为 [release/v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/tree/release/v2.1.0.0_esp32s2)，对应文档为 [https://docs.espressif.com/projects/esp-at/zh_CN/release-v2.1.0.0_esp32s2](https://docs.espressif.com/projects/esp-at/zh_CN/release-v2.1.0.0_esp32s2/)
   - ESP-AT 将定期在 [release/v2.2.0.0_esp32](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp32) 分支为 ESP32-S2 进行重要 bug 修复，安全修补等更新
