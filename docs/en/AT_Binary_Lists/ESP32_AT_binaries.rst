@@ -18,6 +18,11 @@ ESP32-WROOM-32 Series
 - v1.0.0.0 `ESP32-WROOM-32_AT_Bin_V1.0.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32/ESP32_WROOM/ESP32-WROOM-32_AT_Bin_V1.0.0.0.zip>`__
 - v0.10.0.0 `ESP32-WROOM-32_AT_Bin_V0.10.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32/ESP32_WROOM/ESP32-WROOM-32_AT_Bin_V0.10.0.0.zip>`__
 
+ESP32-MINI-1 Series
+^^^^^^^^^^^^^^^^^^^
+
+- v2.2.0.0 `ESP32-MINI-1_AT_Bin_V2.2.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32/ESP32_MINI/ESP32-MINI-1_AT_Bin_V2.2.0.0.zip>`__ (Recommended)
+
 ESP32-WROVER-32 Series
 ^^^^^^^^^^^^^^^^^^^^^^
 
