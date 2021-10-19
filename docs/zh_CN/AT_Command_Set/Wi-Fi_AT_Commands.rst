@@ -509,7 +509,7 @@ Wi-Fi AT 命令集
 -  **<rssi>**：信号强度
 -  **<mac>**：字符串参数，AP 的 MAC 地址
 -  **<channel>**：信道号
--  **<scan_type>**：Wi-Fi 扫描类型
+-  **<scan_type>**：Wi-Fi 扫描类型，默认值为：0
 
    -  0: 主动扫描
    -  1: 被动扫描
@@ -639,6 +639,7 @@ Wi-Fi AT 命令集
 
 -  本指令只有当 :ref:`AT+CWMODE=2 <cmd-MODE>` 或者 :ref:`AT+CWMODE=3 <cmd-MODE>` 时才有效
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 分区
+-  默认 SSID 因设备而异，因为它由设备的 MAC 地址组成。 您可以使用 :ref:`AT+CWSAP? <cmd-SAP>` 查询默认的SSID。
 
 示例
 ^^^^
@@ -1026,6 +1027,7 @@ Wi-Fi AT 命令集
 
 -  当前，ESP 设备只支持 802.11b、802.11bg 或 802.11bgn 协议标准
 -  默认情况下，ESP 设备的 PHY mode 是 802.11bgn 模式
+-  从 ESP-AT v2.1.0.0 开始支持本命令
 
 .. _cmd-STAMAC:
 
@@ -1506,6 +1508,8 @@ Wi-Fi AT 命令集
 
 ::
 
+    AT+CWMODE=1
+    AT+CWJAP="1234567890","1234567890"
     AT+MDNS=1,"espressif","_iot",8080  
     AT+MDNS=0
 

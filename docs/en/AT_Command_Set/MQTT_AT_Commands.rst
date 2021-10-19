@@ -401,6 +401,17 @@ Notes
 -  The length of the entire AT command should be less than 256 bytes.
 -  This command cannot send data ``\0``. If you need to send ``\0``, please use the command :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` instead.
 
+Example
+^^^^^^^^
+
+::
+
+    AT+CWMODE=1
+    AT+CWJAP="ssid","password"
+    AT+MQTTUSERCFG=0,1,"ESP32","espressif","1234567890",0,0,""
+    AT+MQTTCONN=0,"192.168.10.234",1883,0
+    AT+MQTTPUB=0,"topic","\"{\"timestamp\":\"20201121085253\"}\"",0,0
+
 .. _cmd-MQTTPUBRAW:
 
 :ref:`AT+MQTTPUBRAW <MQTT-AT>`: Publish MQTT Messages in Binary

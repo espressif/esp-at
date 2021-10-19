@@ -401,6 +401,17 @@ MQTT AT Commands
 -  每条 AT 命令的总长度不能超过 256 字节。
 -  本命令不能发送数据 ``\0``，若需要发送该数据，请使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
 
+示例
+^^^^
+
+::
+
+    AT+CWMODE=1
+    AT+CWJAP="ssid","password"
+    AT+MQTTUSERCFG=0,1,"ESP32","espressif","1234567890",0,0,""
+    AT+MQTTCONN=0,"192.168.10.234",1883,0
+    AT+MQTTPUB=0,"topic","\"{\"timestamp\":\"20201121085253\"}\"",0,0
+
 .. _cmd-MQTTPUBRAW:
 
 :ref:`AT+MQTTPUBRAW <MQTT-AT>`：发布 MQTT 消息（二进制）
@@ -523,6 +534,7 @@ MQTT AT Commands
    -  4: 已建立连接；
    -  5: 已连接，但未订阅 topic；
    -  6: 已连接，已订阅过 MQTT topic。
+
 -  **<topic>**：订阅的 topic。
 -  **<qos>**：订阅的 QoS。
 

@@ -2031,8 +2031,16 @@ Example
 
 ::
 
-    AT+BLESECPARAM=1,4,16,3,3
-    AT+BLEENC=0,3
+   AT+RESTORE
+   AT+BLEINIT=2
+   AT+BLEGATTSSRVCRE
+   AT+BLEGATTSSRVSTART
+   AT+BLEADDR?
+   AT+BLESECPARAM=1,0,16,3,3
+   AT+BLESETKEY=123456
+   AT+BLEADVSTART
+   // Use your Bluetooth LE debugging app as a client to establish a Bluetooth LE connection with the ESP device
+   AT+BLEENC=0,3
 
 .. _cmd-BLEENCRSP:
 

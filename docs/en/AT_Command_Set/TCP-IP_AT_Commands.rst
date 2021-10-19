@@ -299,6 +299,7 @@ Example
 
     AT+CIPSTART="TCP","iot.espressif.cn",8000
     AT+CIPSTART="TCP","192.168.101.110",1000
+    AT+CIPSTART="TCP","192.168.101.110",2500,60
     AT+CIPSTART="TCP","192.168.101.110",1000,,"192.168.101.100"
     AT+CIPSTART="TCPv6","test-ipv6.com",80
     AT+CIPSTART="TCPv6","fe80::860d:8eff:fe9d:cd90",1000,,"fe80::411c:1fdb:22a6:4d24"
@@ -1379,13 +1380,21 @@ Example
 
 ::
 
+    AT+CWMODE=1
+    AT+CWJAP="1234567890","1234567890"
     AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
-
+    AT+CIPSNTPTIME?
+    +CIPSNTPTIME:Tue Oct 19 17:47:56 2021
     OK
 
+    or
+
+    AT+CWMODE=1
+    AT+CWJAP="1234567890","1234567890"
+    AT+CIPSNTPCFG=1,530
     AT+CIPSNTPTIME?
-    +CIPSNTPTIME:Mon Dec 12 02:33:32 2016
-    OK  
+    +CIPSNTPTIME:Tue Oct 19 15:17:56 2021
+    OK
 
 .. _cmd-UPDATE:
 
@@ -1525,6 +1534,8 @@ Example
 
 ::
 
+    AT+CWMODE=1
+    AT+CWJAP="1234567890","1234567890"
     AT+CIUPDATE  
     AT+CIUPDATE=1
     AT+CIUPDATE=1,"v1.2.0.0"
