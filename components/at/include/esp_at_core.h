@@ -30,6 +30,9 @@
 #include "esp_partition.h"
 #include "esp_wifi.h"
 
+#define at_min(x,y)     ((x)<(y)?(x):(y))
+#define at_max(x,y)     ((x)>(y)?(x):(y))
+
 /**
  * @brief esp_at_cmd_struct
  *  used for define at command
@@ -172,7 +175,7 @@ typedef enum {
     ESP_AT_RESULT_CODE_SEND_FAIL    = 0x04,       /*!< "SEND FAIL" */
     ESP_AT_RESULT_CODE_IGNORE       = 0x05,       /*!< response nothing, just change internal status */
     ESP_AT_RESULT_CODE_PROCESS_DONE = 0x06,       /*!< response nothing, just change internal status */
-
+    ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT = 0x07,    // "OK" and ">"
     ESP_AT_RESULT_CODE_MAX
 } esp_at_result_code_string_index;
 
