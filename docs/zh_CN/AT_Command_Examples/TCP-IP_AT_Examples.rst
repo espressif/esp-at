@@ -3,6 +3,8 @@ TCP-IP AT 示例
 
 :link_to_translation:`en:[English]`
 
+本文档主要介绍在 ESP 设备上运行 :doc:`../AT_Command_Set/TCP-IP_AT_Commands` 命令的详细示例。
+
 .. contents::
    :local:
    :depth: 1
@@ -10,7 +12,7 @@ TCP-IP AT 示例
 ESP 设备作为 TCP 客户端建立单连接
 --------------------------------------------
 
-#. 设置 Wi-Fi 模式为 Station。
+#. 设置 Wi-Fi 模式为 station。
 
    命令：
 
@@ -126,11 +128,11 @@ ESP 设备作为 TCP 客户端建立单连接
 ESP 设备作为 TCP 服务器建立多连接
 --------------------------------------------
 
-当 ESP 设备作为 TCP 服务器时，必须使能多连接，即允许多个 TCP 客户端连接到 ESP 设备创建的服务器。
+当 ESP 设备作为 TCP 服务器时，必须通过 :ref:`AT+CIPMUX=1 <cmd-MUX>` 命令使能多连接，因为可能有多个 TCP 客户端连接到 ESP 设备。
 
-以下是 ESP 设备作为 SoftAP 建立 TCP 服务器的示例；如果是 ESP 设备作为 station，可在连接路由器后按照同样方法建立服务器。
+以下是 ESP 设备作为 softAP 建立 TCP 服务器的示例；如果是 ESP 设备作为 station，可在连接路由器后按照同样方法建立服务器。
 
-#. 设置 Wi-Fi 模式为 SoftAP。
+#. 设置 Wi-Fi 模式为 softAP。
 
    命令：
 
@@ -158,13 +160,13 @@ ESP 设备作为 TCP 服务器建立多连接
 
      OK
 
-#. 设置 SoftAP。
+#. 设置 softAP。
 
    命令：
 
    .. code-block:: none
 
-     AT+CWSAP="ESP32_SOFTAP","1234567890",5,3
+     AT+CWSAP="ESP32_softAP","1234567890",5,3
 
    响应：
 
@@ -172,7 +174,7 @@ ESP 设备作为 TCP 服务器建立多连接
 
      OK
 
-#. 查询 SoftAP 信息。
+#. 查询 softAP 信息。
 
    命令：
 
@@ -209,7 +211,7 @@ ESP 设备作为 TCP 服务器建立多连接
 
      OK
 
-#. PC 连接到 ESP 设备的 SoftAP。
+#. PC 连接到 ESP 设备的 softAP。
 
    .. figure:: ../../img/Connect-SoftAP.png
        :scale: 100 %
@@ -273,7 +275,7 @@ ESP 设备作为 TCP 服务器建立多连接
 远端 IP 地址和端口固定的 UDP 通信
 -------------------------------------------------
 
-#. 设置 Wi-Fi 模式为 Station。
+#. 设置 Wi-Fi 模式为 station。
 
    命令：
 
@@ -429,7 +431,7 @@ ESP 设备作为 TCP 服务器建立多连接
 远端 IP 地址和端口可变的 UDP 通信
 ----------------------------------------------------
 
-#. 设置 Wi-Fi 模式为 Station。
+#. 设置 Wi-Fi 模式为 station。
 
    命令：
 
@@ -604,10 +606,661 @@ ESP 设备作为 TCP 服务器建立多连接
 
      OK
 
+ESP 设备作为 SSL 客户端建立单连接
+--------------------------------------------
+
+#. 设置 Wi-Fi 模式为 station。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWMODE=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 连接到路由器。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWJAP="espressif","1234567890"
+
+   响应：
+
+   .. code-block:: none
+
+     WIFI CONNECTED
+     WIFI GOT IP
+
+     OK
+
+   说明：
+
+   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+
+#. 查询 ESP 设备 IP 地址。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSTA?
+
+   响应：
+
+   .. code-block:: none
+
+    +CIPSTA:ip:"192.168.3.112"
+    +CIPSTA:gateway:"192.168.3.1"
+    +CIPSTA:netmask:"255.255.255.0"
+
+    OK
+
+   说明：
+
+   - 您的查询结果可能与上述响应中的不同。
+
+#. PC 与 ESP 设备连接同一个路由。
+
+#. 在 PC 上使用 OpenSSL 命令，创建一个 SSL 服务器。例如 SSL 服务器的 IP 地址为 ``192.168.3.102``，端口为 ``8070``。
+
+   命令：
+
+   .. code-block:: none
+
+     openssl s_server -cert /home/esp-at/components/customized_partitions/raw_data/server_cert/server_cert.crt -key /home/esp-at/components/customized_partitions/raw_data/server_key/server.key -port 8070
+
+   响应：
+
+   .. code-block:: none
+
+     ACCEPT
+
+#. ESP 设备作为客户端通过 SSL 连接到 SSL 服务器，服务器 IP 地址为 ``192.168.3.102``，端口为 ``8070``。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSTART="SSL","192.168.3.102",8070
+
+   响应：
+
+   .. code-block:: none
+
+     CONNECT
+
+     OK
+
+#. 发送 4 字节数据。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSEND=4
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+     >
+
+   输入 4 字节数据，例如输入数据是 ``test``，之后 AT 将会输出以下信息。
+
+   .. code-block:: none
+
+     Recv 4 bytes
+
+     SEND OK
+
+   说明：
+
+   - 若输入的字节数目超过 ``AT+CIPSEND`` 命令设定的长度 (n)，则系统会响应 ``busy p...``，并发送数据的前 n 个字节，发送完成后响应 ``SEND OK``。
+
+#. 接收 4 字节数据。
+
+   假设 TCP 服务器发送 4 字节的数据（数据为 ``test``），则系统会提示：
+
+   .. code-block:: none
+
+     +IPD,4:test
+
+ESP 设备作为 SSL 服务器建立多连接
+--------------------------------------------
+
+当 ESP 设备作为 SSL 服务器时，必须通过 :ref:`AT+CIPMUX=1 <cmd-MUX>` 命令使能多连接，因为可能有多个客户端连接到 ESP 设备。
+
+以下是 ESP 设备作为 softAP 建立 SSL 服务器的示例；如果是 ESP 设备作为 station，可在连接路由器后，参照本示例中的建立连接 SSL 服务器的相关步骤。
+
+#. 设置 Wi-Fi 模式为 softAP。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWMODE=2
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 使能多连接。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPMUX=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 配置 ESP softAP。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWSAP="ESP32_softAP","1234567890",5,3
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 查询 softAP 信息。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPAP?
+
+   响应：
+
+   .. code-block:: none
+
+     AT+CIPAP?
+     +CIPAP:ip:"192.168.4.1"
+     +CIPAP:gateway:"192.168.4.1"
+     +CIPAP:netmask:"255.255.255.0"
+
+     OK
+
+   说明：
+
+   - 您查询到的地址可能与上述响应中的不同。
+
+#. 建立 SSL 服务器，端口为 ``8070``。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSERVER=1,8070,"SSL"
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. PC 连接到 ESP 设备的 softAP。
+
+   .. figure:: ../../img/Connect-SoftAP.png
+       :scale: 100 %
+       :align: center
+       :alt: Connect SoftAP
+
+#. 在 PC 上使用 OpenSSL 命令，创建一个 SSL 客户端，连接到 ESP 设备创建的 SSL 服务器。
+
+   命令：
+
+   .. code-block:: none
+
+     openssl s_client -host 192.168.4.1 -port 8070
+
+   ESP 设备上的响应：
+
+   .. code-block:: none
+
+     CONNECT
+
+#. 发送 4 字节数据到网络连接 ID 为 0 的链路上。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSEND=0,4
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+     >
+
+   输入 4 字节数据，例如输入数据是 ``test``，之后 AT 将会输出以下信息。
+
+   .. code-block:: none
+
+     Recv 4 bytes
+
+     SEND OK
+
+   说明：
+
+   - 若输入的字节数目超过 ``AT+CIPSEND`` 命令设定的长度 (n)，则系统会响应 ``busy p...``，并发送数据的前 n 个字节，发送完成后响应 ``SEND OK``。
+
+#. 从网络连接 ID 为 0 的链路上接收 4 字节数据。
+
+   假设 SSL 服务器发送 4 字节的数据（数据为 ``test``），则系统会提示：
+
+   .. code-block:: none
+
+     +IPD,0,4:test
+
+#. 关闭 SSL 连接。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPCLOSE=0
+
+   响应：
+
+   .. code-block:: none
+
+     0,CLOSED
+
+     OK
+
+ESP 设备作为 SSL 客户端建立双向认证单连接
+--------------------------------------------
+
+本示例中使用的证书是 esp-at 中默认的证书，您也可以自己生成证书，并烧录，然后您需要将下面的 SSL 服务器证书路径替换为您的证书路径。获取 SSL 证书，请参考 esp-at/tools/README.md 了解如何生成证书 bin 和烧录地址请参考 esp-at/module_config/module_name/at_customize.csv。
+
+#. 设置 Wi-Fi 模式为 station。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWMODE=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 连接到路由器。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWJAP="espressif","1234567890"
+
+   响应：
+
+   .. code-block:: none
+
+     WIFI CONNECTED
+     WIFI GOT IP
+
+     OK
+
+   说明：
+
+   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+
+#. 设置 SNTP 服务器。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+   说明：
+
+   - 您可以根据自己国家的时区设置 SNTP 服务器。
+
+#. 查询 SNTP 时间。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSNTPTIME?
+
+   响应：
+
+   .. code-block:: none
+
+     +CIPSNTPTIME:Mon Oct 18 20:12:27 2021 
+     OK
+
+   说明：
+
+   - 您可以查询 SNTP 时间与实时时间是否相符来判断您设置的 SNTP 服务器是否生效。
+
+#. 查询 ESP 设备 IP 地址。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSTA?
+
+   响应：
+
+   .. code-block:: none
+
+    +CIPSTA:ip:"192.168.3.112"
+    +CIPSTA:gateway:"192.168.3.1"
+    +CIPSTA:netmask:"255.255.255.0"
+
+    OK
+
+   说明：
+
+   - 您的查询结果可能与上述响应中的不同。
+
+#. PC 与 ESP 设备连接同一个路由。
+
+#. 在 PC 上使用 OpenSSL 命令，创建一个 SSL 服务器。例如 SSL 服务器的 IP 地址为 ``192.168.3.102``，端口为 ``8070``。
+
+   命令：
+
+   .. code-block:: none
+
+     openssl s_server -CAfile /home/esp-at/components/customized_partitions/raw_data/server_ca/server_ca.crt -cert /home/esp-at/components/customized_partitions/raw_data/server_cert/server_cert.crt -key /home/esp-at/components/customized_partitions/raw_data/server_key/server.key -port 8070 -verify_return_error -verify_depth 1 -Verify 1
+
+   ESP 设备上的响应：
+
+   .. code-block:: none
+
+     ACCEPT
+
+   说明：
+
+   - 命令中的证书路径可以根据你的证书位置进行调整。
+
+#. ESP 设备设置 SSL 客户端双向认证配置。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSSLCCONF=3,0,0
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. ESP 设备作为客户端通过 SSL 连接到 SSL 服务器，服务器 IP 地址为 ``192.168.3.102``，端口为 ``8070``。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSTART="SSL","192.168.3.102",8070
+
+   响应：
+
+   .. code-block:: none
+
+     CONNECT
+
+     OK
+
+#. 发送 4 字节数据。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSEND=4
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+     >
+
+   输入 4 字节数据，例如输入数据是 ``test``，之后 AT 将会输出以下信息。
+
+   .. code-block:: none
+
+     Recv 4 bytes
+
+     SEND OK
+
+   说明：
+
+   - 若输入的字节数目超过 ``AT+CIPSEND`` 命令设定的长度 (n)，则系统会响应 ``busy p...``，并发送数据的前 n 个字节，发送完成后响应 ``SEND OK``。
+
+#. 接收 4 字节数据。
+
+   假设 TCP 服务器发送 4 字节的数据（数据为 ``test``），则系统会提示：
+
+   .. code-block:: none
+
+     +IPD,4:test
+
+ESP 设备作为 SSL 服务器建立双向认证多连接
+--------------------------------------------
+
+当 ESP 设备作为 SSL 服务器时，必须通过 :ref:`AT+CIPMUX=1 <cmd-MUX>` 命令使能多连接，因为可能有多个客户端连接到 ESP 设备。
+
+以下是 ESP 设备作为 station 建立 SSL 服务器的示例；如果是 ESP 设备作为 softAP，可参考 ``ESP 设备作为 SSL 服务器建立多连接`` 示例。
+
+#. 设置 Wi-Fi 模式为 station。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWMODE=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 连接到路由器。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWJAP="espressif","1234567890"
+
+   响应：
+
+   .. code-block:: none
+
+     WIFI CONNECTED
+     WIFI GOT IP
+
+     OK
+
+   说明：
+
+   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+
+#. 查询 ESP 设备 IP 地址。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSTA?
+
+   响应：
+
+   .. code-block:: none
+
+    +CIPSTA:ip:"192.168.3.112"
+    +CIPSTA:gateway:"192.168.3.1"
+    +CIPSTA:netmask:"255.255.255.0"
+
+    OK
+
+   说明：
+
+   - 您的查询结果可能与上述响应中的不同。
+
+#. 使能多连接。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPMUX=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 建立 SSL 服务器，端口为 ``8070``。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSERVER=1,8070,"SSL",1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. PC 与 ESP 设备连接同一个路由。
+
+   .. figure:: ../../img/Connect-SoftAP.png
+       :scale: 100 %
+       :align: center
+       :alt: Connect SoftAP
+
+#. 在 PC 上使用 OpenSSL 命令，创建一个 SSL 客户端，连接到 ESP 设备创建的 SSL 服务器。
+
+   命令：
+
+   .. code-block:: none
+
+     openssl s_client -CAfile /home/esp-at/components/customized_partitions/raw_data/client_ca/client_ca_00.crt -cert /home/esp-at/components/customized_partitions/raw_data/client_cert/client_cert_00.crt -key /home/esp-at/components/customized_partitions/raw_data/client_key/client_key_00.key -host 192.168.3.112 -port 8070
+
+   ESP 设备上的响应：
+
+   .. code-block:: none
+
+     0,CONNECT
+
+#. 发送 4 字节数据到网络连接 ID 为 0 的链路上。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSEND=0,4
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+     >
+
+   输入 4 字节数据，例如输入数据是 ``test``，之后 AT 将会输出以下信息。
+
+   .. code-block:: none
+
+     Recv 4 bytes
+
+     SEND OK
+
+   说明：
+
+   - 若输入的字节数目超过 ``AT+CIPSEND`` 命令设定的长度 (n)，则系统会响应 ``busy p...``，并发送数据的前 n 个字节，发送完成后响应 ``SEND OK``。
+
+#. 从网络连接 ID 为 0 的链路上接收 4 字节数据。
+
+   假设 SSL 服务器发送 4 字节的数据（数据为 ``test``），则系统会提示：
+
+   .. code-block:: none
+
+     +IPD,0,4:test
+
+#. 关闭 SSL 连接。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPCLOSE=0
+
+   响应：
+
+   .. code-block:: none
+
+     0,CLOSED
+
+     OK
+
+#. 关闭 SSL 服务端。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSERVER=0
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
 ESP 设备作为 TCP 客户端，建立单连接，实现 UART Wi-Fi 透传
 -----------------------------------------------------------------------------------------
 
-#. 设置 Wi-Fi 模式为 Station。
+#. 设置 Wi-Fi 模式为 station。
 
    命令：
 
@@ -752,10 +1405,10 @@ ESP 设备作为 TCP 客户端，建立单连接，实现 UART Wi-Fi 透传
 
      OK
 
-ESP 设备作为 SoftAP 在 UDP 传输中实现 UART Wi-Fi 透传
+ESP 设备作为 softAP 在 UDP 传输中实现 UART Wi-Fi 透传
 ---------------------------------------------------------------------------------------------------------
 
-#. 设置 Wi-Fi 模式为 SoftAP。
+#. 设置 Wi-Fi 模式为 softAP。
 
    命令：
 
@@ -769,13 +1422,13 @@ ESP 设备作为 SoftAP 在 UDP 传输中实现 UART Wi-Fi 透传
 
      OK
 
-#. 设置 SoftAP。
+#. 设置 softAP。
 
    命令：
 
    .. code-block:: none
 
-     AT+CWSAP="ESP32_SOFTAP","1234567890",5,3
+     AT+CWSAP="ESP32_softAP","1234567890",5,3
 
    响应：
 
@@ -783,7 +1436,7 @@ ESP 设备作为 SoftAP 在 UDP 传输中实现 UART Wi-Fi 透传
 
      OK
 
-#. PC 连接到 ESP 设备的 SoftAP。
+#. PC 连接到 ESP 设备的 softAP。
 
    .. figure:: ../../img/Connect-SoftAP.png
        :scale: 100 %
