@@ -42,6 +42,7 @@ ESP-AT 用户指南
    AT 命令示例 <AT_Command_Examples/index>
    编译和开发 <Compile_and_Develop/index>
    第三方定制化 AT 命令和固件 <Customized_AT_Commands_and_Firmware/index>
+   FAQ <faq>
    缩写词索引 <index_of_abbreviations>
    
 * :ref:`genindex`

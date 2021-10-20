@@ -174,10 +174,13 @@ Linux 或 macOS
 
         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x0 factory/factory_WROOM-32.bin
 
-烧录完成后, 请 `检查 AT 固件是否烧录成功`_。
+烧录完成后，请 `检查 AT 固件是否烧录成功`_。
+
+.. _check-whether-at-works:
 
 检查 AT 固件是否烧录成功
 -------------------------
+
 请按照以下步骤检查 AT 固件是否烧录成功：
 
 - 打开串口工具，如 SecureCRT；

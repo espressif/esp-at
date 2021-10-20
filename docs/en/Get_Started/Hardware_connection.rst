@@ -90,6 +90,8 @@ ESP32-WROOM-32 Series
 
 If you want to connect your device directly with ESP32-WROOM-32 rather than the ESP board that integrates it, please refer to `ESP32-WROOM-32 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf>`_ for more details.
 
+.. _hw-connection-esp32-wrover-series:
+
 ESP32-WROVER Series
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. list-table:: ESP32-WROVER Series Hardware Connection Pinout

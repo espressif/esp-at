@@ -90,6 +90,8 @@ ESP32-WROOM-32 系列
 
 如果需要直接基于 ESP32-WROOM-32 模组进行连接，请参考 `《ESP32-WROOM-32 技术规格书》 <https://www.espressif.com/sites/default/files/documentation/esp32_wrover_datasheet_cn.pdf>`_。
 
+.. _hw-connection-esp32-wrover-series:
+
 ESP32-WROVER 系列
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. list-table:: ESP32-WROVER 系列硬件连接管脚分配

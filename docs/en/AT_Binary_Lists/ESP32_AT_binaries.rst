@@ -25,6 +25,8 @@ ESP32-MINI-1 Series
 
 - v2.2.0.0 `ESP32-MINI-1_AT_Bin_V2.2.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32/ESP32_MINI/ESP32-MINI-1_AT_Bin_V2.2.0.0.zip>`__ (Recommended)
 
+.. _firmware-esp32-wrover-32-series:
+
 ESP32-WROVER-32 Series
 ^^^^^^^^^^^^^^^^^^^^^^
 
