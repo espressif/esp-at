@@ -11,8 +11,10 @@ TCP/IP AT 命令
 -  :ref:`AT+CIPDOMAIN <cmd-DOMAIN>`：域名解析
 -  :ref:`AT+CIPSTART <cmd-START>`：建立 TCP 连接、UDP 传输或 SSL 连接
 -  :ref:`AT+CIPSTARTEX <cmd-STARTEX>`：建立自动分配 ID 的 TCP 连接、UDP 传输或 SSL 连接
--  :ref:`[仅适用透传模式] +++ <cmd-PLUS>`: 退出 :term:`透传模式`
+-  :ref:`[仅适用数据模式] +++ <cmd-PLUS>`: 退出 :term:`数据模式`
 -  :ref:`AT+CIPSEND <cmd-SEND>`：在 :term:`普通传输模式` 或 Wi-Fi :term:`透传模式` 下发送数据
+-  :ref:`AT+CIPSENDL <cmd-SENDL>`：在 :term:`普通传输模式` 下并行发送长数据
+-  :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>`：设置 :ref:`AT+CIPSENDL <cmd-SENDL>` 命令的属性
 -  :ref:`AT+CIPSENDEX <cmd-SENDEX>`：在 :term:`普通传输模式` 下采用扩展的方式发送数据
 -  :ref:`AT+CIPCLOSE <cmd-CLOSE>`：关闭 TCP/UDP/SSL 连接
 -  :ref:`AT+CIFSR <cmd-IFSR>`：查询本地 IP 地址和 MAC 地址
@@ -208,6 +210,7 @@ TCP/IP AT 命令
 ::
 
     +CIPDOMAIN:<"IP address">
+
     OK
 
 参数
@@ -423,7 +426,7 @@ TCP/IP AT 命令
 
 .. _cmd-PLUS:
 
-:ref:`[仅适用透传模式] +++ <TCPIP-AT>`：退出 :term:`透传模式`
+:ref:`[仅适用数据模式] +++ <TCPIP-AT>`：退出 :term:`数据模式`
 --------------------------------------------------------------------------
 
 特殊执行命令
@@ -431,21 +434,22 @@ TCP/IP AT 命令
 
 **功能：**
 
-退出 :term:`透传模式`，进入 :term:`透传接收模式`
+退出 :term:`数据模式`，进入 :term:`命令模式`
 
 **Command:**
 
 ::
 
-    // 仅适用透传模式
+    // 仅适用数据模式
     +++
 
 说明
 """"""
 
 -  此特殊执行命令包含有三个相同的 ``+`` 字符（即 ASCII 码：0x2b），同时命令结尾没有 CR-LF 字符
--  确保第一个 ``+`` 字符前至少有 20 ms 时间间隔内没有其他输入，第三个 ``+`` 字符后至少有 20 ms 时间间隔内没有其他输入，三个 ``+`` 字符之间至多有 20 ms 时间间隔内没有其他输入。否则，``+`` 字符会被当做普通透传数据发送出去
+-  确保第一个 ``+`` 字符前至少有 20 ms 时间间隔内没有其他输入，第三个 ``+`` 字符后至少有 20 ms 时间间隔内没有其他输入，三个 ``+`` 字符之间至多有 20 ms 时间间隔内没有其他输入。否则，``+`` 字符会被当做普通数据发送出去
 -  本条特殊执行命令没有命令回复
+-  请至少间隔 1 秒再发下一条 AT 命令
 
 .. _cmd-SEND:
 
@@ -457,7 +461,7 @@ TCP/IP AT 命令
 
 **功能：**
 
-:term:`普通传输模式` 下，指定长度发送数据
+:term:`普通传输模式` 下，指定长度发送数据。如果您要发送的数据长度大于 8192 字节，请使用 :ref:`AT+CIPSENDL <cmd-SENDL>` 命令发送。
 
 **命令：**
 
@@ -532,6 +536,134 @@ TCP/IP AT 命令
 -  **<"remote host">**：UDP 传输可以指定对端主机：IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：UDP 传输可以指定对端端口
 
+.. _cmd-SENDL:
+
+:ref:`AT+CIPSENDL <TCPIP-AT>`：在 :term:`普通传输模式` 下并行发送长数据
+----------------------------------------------------------------------------------------
+
+设置命令
+^^^^^^^^
+
+**功能：**
+
+:term:`普通传输模式` 下，指定长度，并行发送数据（AT 命令端口接收数据和 AT 往对端发送数据是并行的）。您可以使用 :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>` 命令配置本条命令。如果您要发送的数据长度小于 8192 字节，您也可以使用 :ref:`AT+CIPSEND <cmd-SEND>` 命令发送。
+
+**命令：**
+
+::
+
+    // 单连接：(AT+CIPMUX=0)
+    AT+CIPSENDL=<length>
+
+    // 多连接：(AT+CIPMUX=1)
+    AT+CIPSENDL=<link ID>,<length>
+
+    // UDP 传输可指定对端主机和端口
+    AT+CIPSENDL=[<link ID>,]<length>[,<"remote host">,<remote port>]
+
+**响应：**
+
+::
+
+    OK
+
+    >
+
+上述响应表示 AT 进入 :term:`数据模式` 并且已准备好接收 AT 命令端口的数据，此时您可以输入数据，一旦 AT 命令端口接收到数据，数据就会被发往底层协议，数据传输开始。
+
+如果传输已开始，系统会根据 :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>` 配置上报消息：
+
+::
+
+    +CIPSENDL:<had sent len>,<port recv len>
+
+如果传输被 :ref:`+++ <cmd-PLUS>` 命令取消，系统返回：
+
+::
+
+    SEND CANCELLED
+
+如果所有数据没有被完全发出去，系统最终返回：
+
+::
+
+    SEND FAIL
+
+如果所有数据被成功发往协议栈，系统最终返回：
+
+::
+
+    SEND OK 
+
+当连接断开时，您可以发送 :ref:`+++ <cmd-PLUS>` 命令取消传输，同时 ESP 设备会从 :term:`数据模式` 退出。否则，AT 命令端口会一直接收数据，直到收到指定的 ``<length>`` 长度数据后，才会退出 :term:`数据模式`。
+
+参数
+^^^^
+
+-  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
+-  **<length>**：数据长度，最大值：8192 字节
+-  **<"remote host">**：UDP 传输可以指定对端主机：IPv4 地址、IPv6 地址，或域名
+-  **<remote port>**：UDP 传输可以指定对端端口
+-  **<had sent len>**：成功发到底层协议栈的数据长度
+-  **<port recv len>**：AT 命令端口收到的数据总长度
+
+.. _cmd-SENDLCFG:
+
+:ref:`AT+CIPSENDLCFG <TCPIP-AT>`: 设置 :ref:`AT+CIPSENDL <cmd-SENDL>` 命令的属性
+------------------------------------------------------------------------------------------------------
+
+查询命令
+^^^^^^^^^^^^^
+
+**功能：**
+
+查询 :ref:`AT+CIPSENDL <cmd-SENDL>` 命令的配置
+
+**命令：**
+
+::
+
+    AT+CIPSENDLCFG?
+
+**响应：**
+
+::
+
+    +CIPSENDLCFG:<report size>,<transmit size>
+
+    OK
+
+设置命令
+^^^^^^^^^^^
+
+**功能：**
+
+设置 :ref:`AT+CIPSENDL <cmd-SENDL>` 命令的配置
+
+**命令：**
+
+::
+
+    AT+CIPSENDLCFG:<report size>[,<transmit size>]
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^^^^^^^
+
+-  **<report size>**: :ref:`AT+CIPSENDL <cmd-SENDL>` 命令中的上报块大小。默认值：1024。范围：[100,2 :sup:`20`]。例如：设置 ``<report size>`` 值为 100，则 :ref:`AT+CIPSENDL <cmd-SENDL>` 命令回复里的 ``<had sent len>`` 上报序列为（100，200，300，400，……）。最后的 ``<had sent len>`` 上报值总是等于实际传输的数据长度。
+-  **<transmit size>**: :ref:`AT+CIPSENDL <cmd-SENDL>` 命令中的传输块大小，它指定了数据发往协议栈的数据块大小。默认值：2920。范围：[100,2920]。如果收到的数据长度大于等于 ``<transmit size>``，则数据会被立即发往底层协议栈；否则，数据会等待 20 毫秒后再发往底层协议栈。
+
+说明
+""""""
+
+- 对于吞吐量小但对实时性要求高的设备，推荐您设置较小的 ``<transmit size>``。也推荐您通过 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令设置 ``TCP_NODELAY`` 属性。
+- 对于吞吐量大的设备，推荐您设置较大的 ``<transmit size>``。也推荐您阅读 :doc:`如何提高 ESP-AT 吞吐性能 <../Compile_and_Develop/How_to_optimize_throughput>`。
+
 .. _cmd-SENDEX:
 
 :ref:`AT+CIPSENDEX <TCPIP-AT>`：在 :term:`普通传输模式` 下采用扩展的方式发送数据
@@ -562,6 +694,7 @@ TCP/IP AT 命令
 ::
 
     OK
+
     >
 
 上述响应表示 AT 已准备好接收串行数据，此时您可以输入指定长度的数据，当 AT 接收到的数据长度达到 ``<length>`` 后或数据中出现 ``\0`` 字符时，数据传输开始。
@@ -2057,7 +2190,6 @@ ping 对端主机
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 区。
 -  这三个参数不能设置在同一个服务器上。
 -  当 ``<enable>`` 为 0 时，DNS 服务器可能会根据 ESP 设备所连接的路由器的配置而改变。
-
 
 示例
 ^^^^
