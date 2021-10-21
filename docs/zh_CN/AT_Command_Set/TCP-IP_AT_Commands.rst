@@ -1513,8 +1513,8 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 -  升级速度取决于网络状况。
 -  如果网络条件不佳导致升级失败，AT 将返回 ``ERROR``，请等待一段时间再试。 
--  如果您直接使用乐鑫提供的 AT `BIN <https://www.espressif.com/zh-hans/support/download/at>`_，本命令将从 Espressif Cloud 下载 AT 固件升级。
--  如果您使用的是自行编译的 AT BIN，请自行实现 AT+CIUPDATE FOTA 功能，可参考 ESP-AT 工程提供的示例 `FOTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_ota_cmd.c>`_。
+-  如果您直接使用乐鑫提供的 AT `BIN <https://www.espressif.com/zh-hans/support/download/at>`_, 本命令将从 Espressif Cloud 下载 AT 固件升级。
+-  如果您使用的是自行编译的 AT BIN，请自行实现 AT+CIUPDATE FOTA 功能或者使用 :ref:`AT+USEROTA <cmd-USEROTA>` 或者 :ref:`AT+WEBSERVER <cmd-WEBSERVER>` 命令，可参考 ESP-AT 工程提供的示例 `FOTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_ota_cmd.c>`_。
 -  建议升级 AT 固件后，调用 :ref:`AT+RESTORE <cmd-RESTORE>` 恢复出厂设置。
 -  OTA 过程的超时时间为 ``3`` 分钟。
 -  非阻塞模式响应中的 ``OK`` 和 ``+CIPUPDATE:<state>`` 在输出顺序上没有严格意义上的先后顺序。OK 可能在 ``+CIPUPDATE:<state>`` 之前输出，也有可能在 ``+CIPUPDATE:<state>`` 之后输出。
