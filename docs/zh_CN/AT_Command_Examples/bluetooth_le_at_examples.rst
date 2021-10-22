@@ -54,8 +54,8 @@ GATT 其实是一种属性传输协议，简单的讲可以认为是一种属性
     - 如何生成 ``ble_data.bin`` 文件，请参考文档 :doc:`../Compile_and_Develop/customize_bluetooth_le_services_tools`。
     - ``ble_data.bin`` 文件的烧录地址，见 ``at_customize.csv`` 中 ``ble_data`` 对应的地址，或者在文件 ``build/download.config`` 中记录的地址。
 
-基础 Bluetooth LE 示例
-------------------------
+Bluetooth LE 客户端读写服务特征值
+------------------------------------------
 
 以下示例同时使用两块 ESP32 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何使用 AT 命令建立 Bluetooth LE 连接，完成数据通信。
 
@@ -93,7 +93,7 @@ GATT 其实是一种属性传输协议，简单的讲可以认为是一种属性
 
      OK
 
-#. ESP32 Bluetooth LE 服务端获取 Bluetooth LE 地址。
+#. ESP32 蓝牙 LE 服务器获取其 MAC 地址。
 
    命令：
 
@@ -386,6 +386,443 @@ GATT 其实是一种属性传输协议，简单的讲可以认为是一种属性
    - 如果 ESP32 Bluetooth LE 客户端接收到 indication, 则会提示 ``+INDICATE:<conn_index>,<srv_index>,<char_index>,<len>,<value>``。
    - 对于同一服务，ESP32 Bluetooth LE 客户端的 <srv_index> 值等于 ESP32 Bluetooth LE 服户端的 <srv_index> 值 + 2，这是正常现象。
    - 对于服务中特征的权限，您可参考文档 :doc:`../Compile_and_Develop/How_to_customize_BLE_services`。
+
+Bluetooth LE 服务端读写服务特征值
+------------------------------------------
+
+以下示例同时使用两块 ESP32 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何建立 Bluetooth LE 连接，以及服务端读写服务特征值和客户端设置，notify 服务特征值。
+
+.. Important::
+  步骤中以 ``ESP32 Bluetooth LE 服务端`` 开头的操作只需要在 ESP32 Bluetooth LE 服务端执行即可，以 ``ESP32 Bluetooth LE 客户端`` 开头的操作只需要在 ESP32 Bluetooth LE 客户端执行即可。
+
+#. 初始化 Bluetooth LE 功能。
+
+   ESP32 Bluetooth LE 服务端：
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEINIT=2
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+   ESP32 Bluetooth LE 客户端：
+  
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEINIT=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE 服务端创建服务。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRVCRE
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE 服务端开启服务。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRVSTART
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 蓝牙 LE 服务器获取其 MAC 地址。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADDR?
+
+   响应：
+
+   .. code-block:: none
+
+     +BLEADDR:"24:0a:c4:d6:e4:46"
+     OK
+
+   说明：
+
+   - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
+
+#. 设置 Bluetooth LE 广播数据。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADVDATA="0201060A09457370726573736966030302A0"
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE 服务端开始广播。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADVSTART
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE 客户端创建服务。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRVCRE
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE 客户端开启服务。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRVSTART
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE 客户端获取 Bluetooth LE 地址。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADDR?
+
+   响应：
+
+   .. code-block:: none
+
+     +BLEADDR:"24:0a:c4:03:a7:4e"
+     OK
+
+   说明：
+
+   - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
+
+#. ESP32 Bluetooth LE 客户端开始扫描，持续 3 秒。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLESCAN=1,3
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+     +BLESCAN:"24:0a:c4:d6:e4:46",-78,0201060a09457370726573736966030302a0,,0
+     +BLESCAN:"45:03:cb:ac:aa:a0",-62,0201060aff4c001005441c61df7d,,1
+     +BLESCAN:"24:0a:c4:d6:e4:46",-26,0201060a09457370726573736966030302a0,,0
+
+   说明：
+
+   - 您的扫描结果可能与上述响应中的不同。
+
+#. 建立 the Bluetooth LE 连接。
+
+   ESP32 Bluetooth LE 客户端：
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLECONN=0,"24:0a:c4:d6:e4:46"
+
+   响应：
+
+   .. code-block:: none
+
+     +BLECONN:0,"24:0a:c4:d6:e4:46"
+     
+     OK
+
+   说明：
+
+   - 输入上述命令时，请使用您的 ESP Bluetooth LE 服务端地址。
+   - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
+   - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
+
+  ESP32 Bluetooth LE 服务端：
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLECONN=0,"24:0a:c4:03:a7:4e"
+
+   响应：
+
+   .. code-block:: none
+     
+     +BLECONN:0,"24:0a:c4:03:a7:4e"
+
+     OK
+
+   说明：
+
+   - 输入上述命令时，请使用您的 ESP Bluetooth LE 客户端地址。
+   - 如果 Bluetooth LE 连接成功，则会提示 ``OK``，不会提示 ``+BLECONN:0,"24:0a:c4:03:a7:4e``。
+   - 如果 Bluetooth LE 连接失败，则会提示 ``ERROR``，不会提示 ``+BLECONN:0,-1``。
+
+#. ESP32 Bluetooth LE 客户端查询本地服务。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRV?
+
+   响应：
+
+   .. code-block:: none
+
+     +BLEGATTSSRV:1,1,0xA002,1
+     +BLEGATTSSRV:2,1,0xA003,1
+     
+     OK
+
+#. ESP32 Bluetooth LE 客户端发现本地特征。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTSCHAR?
+
+   响应：
+
+   .. code-block:: none
+
+     +BLEGATTSCHAR:"char",1,1,0xC300,0x02
+     +BLEGATTSCHAR:"desc",1,1,1,0x2901
+     +BLEGATTSCHAR:"char",1,2,0xC301,0x02
+     +BLEGATTSCHAR:"desc",1,2,1,0x2901
+     +BLEGATTSCHAR:"char",1,3,0xC302,0x08
+     +BLEGATTSCHAR:"desc",1,3,1,0x2901
+     +BLEGATTSCHAR:"char",1,4,0xC303,0x04
+     +BLEGATTSCHAR:"desc",1,4,1,0x2901
+     +BLEGATTSCHAR:"char",1,5,0xC304,0x08
+     +BLEGATTSCHAR:"char",1,6,0xC305,0x10
+     +BLEGATTSCHAR:"desc",1,6,1,0x2902
+     +BLEGATTSCHAR:"char",1,7,0xC306,0x20
+     +BLEGATTSCHAR:"desc",1,7,1,0x2902
+     +BLEGATTSCHAR:"char",1,8,0xC307,0x02
+     +BLEGATTSCHAR:"desc",1,8,1,0x2901
+     +BLEGATTSCHAR:"char",2,1,0xC400,0x02
+     +BLEGATTSCHAR:"desc",2,1,1,0x2901
+     +BLEGATTSCHAR:"char",2,2,0xC401,0x02
+     +BLEGATTSCHAR:"desc",2,2,1,0x2901
+
+     OK
+
+#. ESP32 Bluetooth LE 服务端发现对端服务。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTCPRIMSRV=0
+
+   响应：
+
+   .. code-block:: none
+
+     +BLEGATTCPRIMSRV:0,1,0x1801,1
+     +BLEGATTCPRIMSRV:0,2,0x1800,1
+     +BLEGATTCPRIMSRV:0,3,0xA002,1
+     +BLEGATTCPRIMSRV:0,4,0xA003,1
+
+    OK
+
+   说明：
+
+   - ESP32 Bluetooth LE 服务端查询服务的结果，比 ESP32 Bluetooth LE 客户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801）。正因如此，对于同一服务，ESP32 Bluetooth LE 服务端查询的 <srv_index> 值等于 ESP32 Bluetooth LE 客户端查询的 <srv_index> 值 + 2。例如，上述示例中的服务 0xA002，当前在 ESP32 Bluetooth LE 服务端查询到的 <srv_index> 为 3，如果在 ESP32 Bluetooth LE 服务端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
+
+#. ESP32 Bluetooth LE 服务端发现对端特征。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTCCHAR=0,3
+
+   响应：
+
+   .. code-block:: none
+
+     +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+     +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
+     +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+     +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
+     +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+     +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
+     +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+     +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
+     +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+     +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+     +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+     +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+     +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+     +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+     +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
+     
+     OK
+
+#. ESP32 Bluetooth LE 客户端设置服务特征值。
+
+   选择支持写操作的服务特征（characteristic）去设置服务特征值。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTSSETATTR=1,8,,1
+
+   响应：
+
+   .. code-block:: none
+
+     >
+
+   命令：
+
+   .. code-block:: none
+
+     写入一个字节 ``9``
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE 服务端读服务特征值。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTCRD=0,3,8,
+
+   响应：
+
+   .. code-block:: none
+
+     +BLEGATTCRD:0,1,9
+
+     OK
+
+#. ESP32 Bluetooth LE 服务端写服务特征值。
+
+   选择支持写操作的服务特性写入特性。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTCWR=0,3,6,1,2
+
+   响应：
+
+   .. code-block:: none
+
+     >
+  
+   命令：
+
+   .. code-block:: none
+
+     写入2个字节 ``12``
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+   说明：
+
+   - 如果 Bluetooth LE 服务端写服务特征值成功后，Bluetooth LE 客户端则会提示 ``+WRITE:0,1,6,1,2,12``。
+
+#. ESP32 Bluetooth LE 客户端 notify 服务特征值
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTSNTFY=0,1,6,10
+
+   响应：
+
+   .. code-block:: none
+
+     >
+
+   命令：
+
+   .. code-block:: none
+
+     写入 ``1234567890`` 10个字节
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+   说明：
+
+   - 如果 ESP32 Bluetooth LE 客户端 notify 服务特征值给服务端成功，Bluetooth LE 服务端则会提示 ``+NOTIFY:0,3,6,10,1234567890``。
 
 Bluetooth LE 连接加密
 ----------------------------------
@@ -734,8 +1171,8 @@ Bluetooth LE 连接加密
 
    您可以忽略以 ``+BLESECKEYTYPE`` 开头的信息。信息 ``+BLEAUTHCMPL:0,0`` 中的第二个参数为 ``0`` 表示加密成功，为 ``1`` 表示加密失败。
 
-建立 SPP 连接并在 UART-Bluetooth LE 透传模式下传输数据
-------------------------------------------------------------
+两个 ESP32 开发板之间建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下传输数据
+-----------------------------------------------------------------------------------------------------
 
 以下示例同时使用两块 ESP32 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何建立 Bluetooth LE 连接，以及建立透传通信 Bluetooth LE SPP (Serial Port Profile, UART-Bluetooth LE 透传模式)。
 
@@ -801,7 +1238,7 @@ Bluetooth LE 连接加密
 
      OK
 
-#. ESP32 Bluetooth LE 服务端获取 Bluetooth LE 地址。
+#. ESP32 蓝牙 LE 服务器获取其 MAC 地址。
 
    命令：
 
@@ -1074,3 +1511,209 @@ Bluetooth LE 连接加密
    - ESP32 Bluetooth LE 服户端开启 Bluetooth LE SPP 透传模式后，串口收到的数据会通过 Bluetooth LE 传输到 ESP32 Bluetooth LE 客户端。
    - 如果 ESP32 Bluetooth LE 客户端端没有先开启 Bluetooth LE SPP 透传，或者使用其他设备作为 Bluetooth LE 客户端，则 ESP32 Bluetooth LE 客户端需要先开启侦听 Notify 或者 Indicate。例如，ESP32 Bluetooth LE 客户端如果未开启透传，则应先调用 `AT+BLEGATTCWR=0,3,7,1,1` 开启侦听，ESP32 Bluetooth LE 服务端 才能成功实现透传。
    - 对于同一服务，ESP32 Bluetooth LE 客户端的 <srv_index> 值等于 ESP32 Bluetooth LE 服务端的 <srv_index> 值 + 2，这是正常现象。
+
+ESP32 与手机建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下传输数据 
+--------------------------------------------------------------------------------------
+
+该示例展示了如何在 ESP32 开发板（仅作为低功耗蓝牙服务器角色）和手机（仅作为低功耗蓝牙客户端角色）之间建立 SPP 连接，以及如何在 UART-Bluetooth LE 透传模式下传输数据。
+
+.. Important::
+  步骤中以 ``ESP32 Bluetooth LE 服务端`` 开头的操作只需要在 ESP32 Bluetooth LE 服务端执行即可，而以 ``Bluetooth LE 客户端`` 开头的操作只需要在手机的蓝牙调试助手中执行即可。 
+
+#. 在手机端下载 Bluetooth LE 调试助手，例如 nRF Connect (Android) 和 LightBlue (iOS)。
+
+#. 初始化 Bluetooth LE 功能。
+
+   ESP32 Bluetooth LE 服务端：
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEINIT=2
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE 服务端创建服务。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRVCRE
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE 服务端开启服务。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRVSTART
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 蓝牙 LE 服务器获取其 MAC 地址。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADDR?
+
+   响应：
+
+   .. code-block:: none
+
+     +BLEADDR:"24:0a:c4:d6:e4:46"
+     OK
+
+   说明：
+
+   - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
+
+#. 设置 Bluetooth LE 广播数据。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADVDATA="0201060A09457370726573736966030302A0"
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE 服务端开始广播。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADVSTART
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 创建 Bluetooth LE 连接。
+
+   手机打开 nRF 调试助手，并打开 SCAN 开始扫描，找到 ESP32 Bluetooth LE 服务端的 MAC 地址，点击 ``CONNECT`` 进行连接。此时 ESP32 端应该会打印类似于 ``+BLECONN:0,"60:51:42:fe:98:aa"`` 的 log，这表示已经建立了 Bluetooth LE 连接。
+
+#. ESP32 Bluetooth LE 服务端查询服务。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRV?
+
+   响应：
+
+   .. code-block:: none
+
+     +BLEGATTSSRV:1,1,0xA002,1
+     +BLEGATTSSRV:2,1,0xA003,1
+     
+     OK
+
+#. ESP32 Bluetooth LE 服务端发现特征。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEGATTSCHAR?
+
+   响应：
+
+   .. code-block:: none
+
+     +BLEGATTSCHAR:"char",1,1,0xC300,0x02
+     +BLEGATTSCHAR:"desc",1,1,1,0x2901
+     +BLEGATTSCHAR:"char",1,2,0xC301,0x02
+     +BLEGATTSCHAR:"desc",1,2,1,0x2901
+     +BLEGATTSCHAR:"char",1,3,0xC302,0x08
+     +BLEGATTSCHAR:"desc",1,3,1,0x2901
+     +BLEGATTSCHAR:"char",1,4,0xC303,0x04
+     +BLEGATTSCHAR:"desc",1,4,1,0x2901
+     +BLEGATTSCHAR:"char",1,5,0xC304,0x08
+     +BLEGATTSCHAR:"char",1,6,0xC305,0x10
+     +BLEGATTSCHAR:"desc",1,6,1,0x2902
+     +BLEGATTSCHAR:"char",1,7,0xC306,0x20
+     +BLEGATTSCHAR:"desc",1,7,1,0x2902
+     +BLEGATTSCHAR:"char",1,8,0xC307,0x02
+     +BLEGATTSCHAR:"desc",1,8,1,0x2901
+     +BLEGATTSCHAR:"char",2,1,0xC400,0x02
+     +BLEGATTSCHAR:"desc",2,1,1,0x2901
+     +BLEGATTSCHAR:"char",2,2,0xC401,0x02
+     +BLEGATTSCHAR:"desc",2,2,1,0x2901
+
+     OK
+
+#. Bluetooth LE 客户端发现服务。
+
+   此时在手机 nRF 调试助手客户端点击 ``UUID:0xA002`` 的 ``UnKnown Service``。
+
+#. 手机 nRF 调试助手客户端发现特征。
+
+   此时在手机 nRF 调试助手客户端的 ``UUID:0xA002`` 的 ``UnKnown Service`` 服务下一级选项中选择点击 Properties 为 NOTIFY 或者 INDICATE 的服务特征的右侧按钮（这里 ESP-AT 默认 Properties 为 NOTIFY 或者 INDICATE 的服务特征是 0xC305 和 0xC306），开始侦听 Properties 为 NOTIFY 或者 INDICATE 的服务特征。
+
+#. ESP32 Bluetooth LE 服务端配置 Bluetooth LE SPP。
+
+   选择支持 notify 或者 indicate 的 characteristic 作为写通道发送数据，选择支持写操作的 characteristic 作为读通道接收数据。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLESPPCFG=1,1,7,1,5
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE 服务端使能 Bluetooth LE SPP。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLESPP
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+     >
+
+   上述响应表示 AT 已经进入 Bluetooth LE SPP 模式，可以进行数据的发送和接收。
+
+#. Bluetooth LE 客户端发送数据。
+
+   在 nRF 调试助手客户端选择 0xC304 服务特征值发送数据 ``test`` 给 ESP32 Bluetooth LE 服务端，此时 ESP32 Bluetooth LE 服务端可以收到 ``test``。
+
+#. ESP32 Bluetooth LE 服务端发送数据。
+    
+   在 ESP32 Bluetooth LE 服务端直接发送 ``test``，此时 nRF 调试助手客户端可以收到 ``test``。
