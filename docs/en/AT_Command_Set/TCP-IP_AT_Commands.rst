@@ -324,7 +324,7 @@ Set Command
 
 ::
 
-    CONNECT
+    [<link ID>,]CONNECT
 
     OK
 
