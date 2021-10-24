@@ -270,6 +270,13 @@ Set Command
 
     OK
 
+
+or
+
+::
+
+    ERROR
+
 Parameters
 """""""""""
 
@@ -327,6 +334,12 @@ Set Command
     [<link ID>,]CONNECT
 
     OK
+
+or
+
+::
+
+    ERROR
 
 Parameters
 """""""""""
