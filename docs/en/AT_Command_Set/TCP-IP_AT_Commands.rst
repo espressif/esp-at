@@ -1424,12 +1424,12 @@ Query Command
 
 ::
 
-    +CIPDINFO:<true>
+    +CIPDINFO:true
     OK
     
     // or
     
-    +CIPDINFO:<false>
+    +CIPDINFO:false
     OK
 
 
