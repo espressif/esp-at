@@ -1411,6 +1411,28 @@ Example
 :ref:`AT+CIPDINFO <TCPIP-AT>`: Set "+IPD" Message Mode
 ------------------------------------------------------
 
+Query Command
+^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+CIPDINFO? 
+
+**Response:**
+
+::
+
+    +CIPDINFO:<true>
+    OK
+    
+    // or
+    
+    +CIPDINFO:<false>
+    OK
+
+
 Set Command
 ^^^^^^^^^^^
 
