@@ -615,6 +615,14 @@ Close TCP/UDP/SSL connection in the multiple connections mode.
 
     AT+CIPCLOSE=<link ID>
 
+**Response:**
+
+::
+
+    <link ID>,CLOSED
+
+    OK  
+
 Execute Command
 ^^^^^^^^^^^^^^^^^
 
@@ -629,6 +637,8 @@ Close TCP/UDP/SSL connection in the single connection mode.
 **Response:**
 
 ::
+
+    CLOSED
 
     OK  
 
