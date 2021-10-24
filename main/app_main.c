@@ -116,7 +116,7 @@ void app_main()
     at_disable_rtc_wdt();
 #endif
 
-    uint8_t *version = (uint8_t *)malloc(256);
+    //uint8_t *version = (uint8_t *)malloc(256);
 #ifdef CONFIG_AT_COMMAND_TERMINATOR
     uint8_t cmd_terminator[2] = {CONFIG_AT_COMMAND_TERMINATOR,0};
 #endif
@@ -134,7 +134,11 @@ void app_main()
     at_interface_init();
     esp_at_board_init();
 
-    sprintf((char*)version, "compile time(%s):%s %s\r\n", ESP_AT_PROJECT_COMMIT_ID, __DATE__, __TIME__);
+    uint8_t *version = (uint8_t *)malloc( 32 + 256);        
+    sprintf((char*)version, "Vendor:www.sparkleiot.com\r\ncompile time(%s):%s %s\r\n", ESP_AT_PROJECT_COMMIT_ID, __DATE__, __TIME__);
+    
+    //sprintf((char*)version, "compile time(%s):%s %s\r\n", ESP_AT_PROJECT_COMMIT_ID, __DATE__, __TIME__);
+    
 #ifdef CONFIG_ESP_AT_FW_VERSION
     if ((strlen(CONFIG_ESP_AT_FW_VERSION) > 0) && (strlen(CONFIG_ESP_AT_FW_VERSION) <= 128)){
         printf("%s\r\n", CONFIG_ESP_AT_FW_VERSION);
