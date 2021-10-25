@@ -1795,7 +1795,7 @@ GATTC 写服务特征值或描述符值
 
 ::
 
-    +BLESPPCFG:<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>
+    +BLESPPCFG:<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>,<auto_conn>
     OK
 
 设置命令
@@ -1809,7 +1809,7 @@ GATTC 写服务特征值或描述符值
 
 ::
 
-    AT+BLESPPCFG=<cfg_enable>[,<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>]
+    AT+BLESPPCFG=<cfg_enable>[,<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>][,<auto_conn>]
 
 **响应：**
 
@@ -1822,19 +1822,24 @@ GATTC 写服务特征值或描述符值
 
 -  **<cfg_enable>**：
 
-   -  0: 重置所有 SPP 参数，后面四个参数无需填写；
-   -  1: 后面四个参数需要填写。
+   -  0: 重置所有 SPP 参数，后面参数无需填写；
+   -  1: 后面参数需要填写。
 
 -  **<tx_service_index>**：tx 服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 和 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 查询。
 -  **<tx_char_index>**：tx 服务特征序号，可运行 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 和 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
 -  **<rx_service_index>**：rx 服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 和 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 查询。
 -  **<rx_char_index>**：rx 服务特征序号，可运行 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 和 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
+-  **<auto_conn>**: 自动重连标志位，默认情况下，自动重连功能被使能。
+
+   -  0: 禁止 Bluetooth LE 透传自动重连功能。
+   -  1: 使能 Bluetooth LE 透传自动重连功能。
 
 说明
 ^^^^
 
 -  对于 Bluetooth LE 客户端，tx 服务特征属性必须是 ``write with response`` 或 ``write without response``，rx 服务特征属性必须是 ``indicate`` 或 ``notify``。
 -  对于 Bluetooth LE 服务器，tx 服务特征属性必须是 ``indicate`` 或 ``notify``，rx 服务特征属性必须是 ``write with response`` 或 ``write without response``。
+-  禁用了自动重连功能后，如果连接断开，会提示有断开连接信息提示(依赖于 AT+SYSMSG)，需要重新发送连接的命令；使能的情况下，连接断开后，会自动重连， MCU 侧将感知不到连接的断开，如果对端的 MAC 发生了改变，则无法连接成功。
 
 示例
 ^^^^
