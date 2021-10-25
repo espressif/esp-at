@@ -12,7 +12,7 @@ Here is a list of AT commands. Some of them can only work on the ESP32 series, s
    Basic AT Commands <Basic_AT_Commands>
    Wi-Fi AT Commands <Wi-Fi_AT_Commands>
    TCP-IP AT Commands <TCP-IP_AT_Commands>
-   [ESP32 Only] Bluetooth® Low Energy AT Commands <BLE_AT_Commands>
+   Bluetooth® Low Energy AT Commands <BLE_AT_Commands>
    [ESP32 Only] Bluetooth® AT Commands <BT_AT_Commands>
    MQTT AT Commands <MQTT_AT_Commands>
    HTTP AT Commands <HTTP_AT_Commands>

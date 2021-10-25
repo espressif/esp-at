@@ -19,7 +19,7 @@
 -  :ref:`AT+SYSMSG <cmd-SYSMSG>`：查询/设置系统提示信息
 -  :ref:`AT+USERRAM <cmd-USERRAM>`：操作用户的空闲 RAM
 -  :ref:`AT+SYSFLASH <cmd-SYSFLASH>`：查询或读写 flash 用户分区
--  [ESP32 Only] :ref:`AT+FS <cmd-FS>`：文件系统操作
+-  :ref:`AT+FS <cmd-FS>`：文件系统操作
 -  :ref:`AT+RFPOWER <cmd-RFPOWER>`：查询/设置 RF TX Power
 -  :ref:`AT+SYSROLLBACK <cmd-SYSROLLBACK>`：回滚到以前的固件
 -  :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`：查询/设置本地时间戳
@@ -809,7 +809,7 @@
 
 .. _cmd-FS:
 
-[ESP32 Only] :ref:`AT+FS <Basic-AT>`：文件系统操作
+:ref:`AT+FS <Basic-AT>`：文件系统操作
 ---------------------------------------------------------------
 
 设置命令
