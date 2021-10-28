@@ -23,9 +23,22 @@ Index of Abbreviations
 
       AT 是 attention 的缩写。
     
+    AT command port
+      The port that is used to send AT commands and receive responses. More details are in the :term:`AT port` introduction.
+
+    AT 命令端口
+      也称为 AT 命令口，用于发送 AT 命令和接收响应的端口。更多介绍请参考 :term:`AT 端口`。
+
+    AT log port
+      The port that is used to output log. More details are in the :term:`AT port` introduction.
+
+    AT 日志端口
+      也称为 AT 日志口，用于输出 AT 日志的端口。更多介绍请参考 :term:`AT 端口`。
+
     AT port
       AT port is the general name of AT log port (that is used to output log) and AT command port (that is used to send AT commands and receive responses). Please refer to :doc:`Get_Started/Hardware_connection` for default AT port pins and :doc:`Compile_and_Develop/How_to_set_AT_port_pin` for how to customize them.
 
+    AT 端口
       AT 端口是 AT 日志端口（用于输出日志）和 AT 命令端口（用于发送 AT 命令和接收响应）的总称。请参考 :doc:`Get_Started/Hardware_connection` 了解默认的 AT 端口管脚，参考 :doc:`Compile_and_Develop/How_to_set_AT_port_pin` 了解如何自定义 AT 端口管脚。
 
     Bluetooth LE
@@ -37,7 +50,63 @@ Index of Abbreviations
       Wi-Fi network configuration function via Bluetooth channel
     
       BluFi 是一款基于蓝牙通道的 Wi-Fi 网络配置功能
-    
+
+    Command Mode
+      Default operating mode of AT. In the command mode, any character received by the AT command port will be treated as an AT command, and AT returns the command execution result to the AT command port.
+      AT enters :term:`Data Mode` from :term:`Command Mode` in the following cases.
+
+      * After sending the :ref:`AT+CIPSEND <cmd-SEND>` set command successfully and returns `>`.
+      * After sending the :ref:`AT+CIPSEND <cmd-SEND>` execute command successfully and returns `>`.
+      * After sending the :ref:`AT+CIPSENDL <cmd-SENDL>` set command successfully and returns `>`.
+      * After sending the :ref:`AT+CIPSENDEX <cmd-SENDEX>` set command successfully and returns `>`.
+      * After sending the :ref:`AT+SAVETRANSLINK <cmd-SAVET>` set command successfully and sending the :ref:`AT+RST <cmd-RST>` command and restart the module.
+      * After sending the :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` execute command successfully and returns `>`.
+      * After sending the :ref:`AT+BLESPP <cmd-BLESPP>` execute command successfully and returns `>`.
+
+      In the data mode, send the :ref:`+++ <cmd-PLUS>` command, AT will exit from :term:`Data Mode` and enter the :term:`Command Mode`.
+
+    命令模式
+      AT 的默认工作模式。在命令模式下，AT 命令端口收到的任何字符都会被当作 AT 命令进行处理，同时 AT 会在命令端口回复命令执行结果。
+      AT 在下列情况下，会从 :term:`命令模式` 进入 :term:`数据模式`。
+
+      * 发送 :ref:`AT+CIPSEND <cmd-SEND>` 设置命令成功，回复 `>` 之后
+      * 发送 :ref:`AT+CIPSEND <cmd-SEND>` 执行命令成功，回复 `>` 之后
+      * 发送 :ref:`AT+CIPSENDL <cmd-SENDL>` 设置命令成功，回复 `>` 之后
+      * 发送 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 设置命令成功，回复 `>` 之后
+      * 发送 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 设置命令成功，再发送 (:ref:`AT+RST <cmd-RST>`) 命令，模组重启之后
+      * 发送 :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` 执行命令成功，回复 `>` 之后
+      * 发送 :ref:`AT+BLESPP <cmd-BLESPP>` 执行命令成功，回复 `>` 之后
+
+      在数据模式下，发送 :ref:`+++ <cmd-PLUS>` 命令，会从 :term:`数据模式` 退出，进入 :term:`命令模式`。
+
+    Data Mode
+      In the data mode, any character received by the AT command port will be treated as data (except for special :ref:`+++ <cmd-PLUS>`) instead of the AT command, and these data will be sent to the opposite end without modification.
+      AT enters :term:`Data Mode` from :term:`Command Mode` in the following cases.
+
+      * After sending the :ref:`AT+CIPSEND <cmd-SEND>` set command successfully and returns `>`.
+      * After sending the :ref:`AT+CIPSEND <cmd-SEND>` execute command successfully and returns `>`.
+      * After sending the :ref:`AT+CIPSENDL <cmd-SENDL>` set command successfully and returns `>`.
+      * After sending the :ref:`AT+CIPSENDEX <cmd-SENDEX>` set command successfully and returns `>`.
+      * After sending the :ref:`AT+SAVETRANSLINK <cmd-SAVET>` set command successfully and sending the :ref:`AT+RST <cmd-RST>` command and restart the module.
+      * After sending the :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` execute command successfully and returns `>`.
+      * After sending the :ref:`AT+BLESPP <cmd-BLESPP>` execute command successfully and returns `>`.
+
+      In the data mode, send the :ref:`+++ <cmd-PLUS>` command, AT will exit from :term:`Data Mode` and enter the :term:`Command Mode`.
+
+    数据模式
+      在数据模式下，AT 命令端口收到的任何字符都会被当作数据（除了特殊的 :ref:`+++ <cmd-PLUS>`），而不是 AT 命令，这些数据会无修改的发往对端。
+      AT 在下列情况下，会从 :term:`命令模式` 进入 :term:`数据模式`。
+
+      * 发送 :ref:`AT+CIPSEND <cmd-SEND>` 设置命令成功，回复 `>` 之后
+      * 发送 :ref:`AT+CIPSEND <cmd-SEND>` 执行命令成功，回复 `>` 之后
+      * 发送 :ref:`AT+CIPSENDL <cmd-SENDL>` 设置命令成功，回复 `>` 之后
+      * 发送 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 设置命令成功，回复 `>` 之后
+      * 发送 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 设置命令成功，再发送 :ref:`AT+RST <cmd-RST>` 命令，模组重启之后
+      * 发送 :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` 执行命令成功，回复 `>` 之后
+      * 发送 :ref:`AT+BLESPP <cmd-BLESPP>` 执行命令成功，回复 `>` 之后
+
+      在数据模式下，发送 :ref:`+++ <cmd-PLUS>` 命令，会从 :term:`数据模式` 退出，进入 :term:`命令模式`。
+
     DHCP
       Dynamic Host Configuration Protocol
       

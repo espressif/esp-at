@@ -11,8 +11,10 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPDOMAIN <cmd-DOMAIN>`: Resolve a Domain Name.
 -  :ref:`AT+CIPSTART <cmd-START>`: Establish TCP connection, UDP transmission, or SSL connection.
 -  :ref:`AT+CIPSTARTEX <cmd-STARTEX>`: Establish TCP connection, UDP transmission, or SSL connection with an automatically assigned ID.
--  :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`: Exit the :term:`passthrough mode`.
--  :ref:`AT+CIPSEND <cmd-SEND>`: Send data in the :term:`normal transmission mode` or Wi-Fi :term:`passthrough mode`.
+-  :ref:`[Data Mode Only] +++ <cmd-PLUS>`: Exit from the :term:`data mode`.
+-  :ref:`AT+CIPSEND <cmd-SEND>`: Send data in the :term:`normal transmission mode` or Wi-Fi :term:`normal transmission mode`.
+-  :ref:`AT+CIPSENDL <cmd-SENDL>`: Send long data in paraller in the :term:`normal transmission mode`.
+-  :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>`: Set the configuration for the command :ref:`AT+CIPSENDL <cmd-SENDL>`.
 -  :ref:`AT+CIPSENDEX <cmd-SENDEX>`: Send data in the :term:`normal transmission mode` in expanded ways.
 -  :ref:`AT+CIPCLOSE <cmd-CLOSE>`: Close TCP/UDP/SSL connection.
 -  :ref:`AT+CIFSR <cmd-IFSR>`: Obtain the local IP address and MAC address.
@@ -20,7 +22,7 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPSERVER <cmd-SERVER>`: Delete/create a TCP/SSL server.
 -  :ref:`AT+CIPSERVERMAXCONN <cmd-SERVERMAX>`: Query/Set the maximum connections allowed by a server.
 -  :ref:`AT+CIPMODE <cmd-IPMODE>`: Query/Set the transmission mode.
--  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Wi-Fi :term:`passthrough mode` on power-up.
+-  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Wi-Fi :term:`normal transmission mode` on power-up.
 -  :ref:`AT+CIPSTO <cmd-STO>`: Query/Set the local TCP Server Timeout.
 -  :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>`: Query/Set the time zone and SNTP server.
 -  :ref:`AT+CIPSNTPTIME <cmd-SNTPT>`: Query the SNTP time.
@@ -31,7 +33,7 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>`: Query/Set SSL client Server Name Indication (SNI).
 -  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`: Query/Set SSL client Application Layer Protocol Negotiation (ALPN).
 -  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`: Query/Set SSL client Pre-shared Key (PSK).
--  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`: Query/Set the TCP/UDP/SSL reconnection interval for the Wi-Fi :term:`passthrough mode`.
+-  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`: Query/Set the TCP/UDP/SSL reconnection interval for the Wi-Fi :term:`normal transmission mode`.
 -  :ref:`AT+CIPRECVMODE <cmd-CIPRECVMODE>`: Query/Set socket receiving mode.
 -  :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`: Obtain socket data in passive receiving mode.
 -  :ref:`AT+CIPRECVLEN <cmd-CIPRECVLEN>`: Obtain socket data length in passive receiving mode.
@@ -275,7 +277,7 @@ Parameters
 
 -  **<link ID>**: ID of network connection (0~4), used for multiple connections.
 -  **<"type">**: string parameter showing the type of transmission: "TCP", or "TCPv6". Default: "TCP".
--  **<"remote host">**: string parameter showing the IPv4 address or IPv6 address or domain name of remote host.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
 -  **<remote port>**: the remote port number.
 -  **<keep alive>**: TCP keep-alive interval. Default: 0.
 
@@ -333,7 +335,7 @@ Parameters
 
 -  **<link ID>**: ID of network connection (0~4), used for multiple connections.
 -  **<"type">**: string parameter showing the type of transmission: "UDP", or "UDPv6". Default: "TCP".
--  **<"remote host">**: string parameter showing the IPv4 address or IPv6 address or domain name of remote host.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
 -  **<remote port>**: remote port number.
 -  **<local port>**: UDP port of ESP devices.
 -  **<mode>**: In the UDP Wi-Fi passthrough, the value of this parameter has to be 0.
@@ -390,7 +392,7 @@ Parameters
 
 -  **<link ID>**: ID of network connection (0~4), used for multiple connections.
 -  **<"type">**: string parameter showing the type of transmission: "SSL", or "SSLv6". Default: "TCP".
--  **<"remote host">**: string parameter showing the IPv4 address or IPv6 address or domain name of remote host.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
 -  **<remote port>**: the remote port number.
 -  **<keep alive>**: reserved item for SSL. Default: 0.
 -  **<"local IP">**: the local IPv4 address or IPv6 address that the connection binds. This parameter is useful when you are using multiple network interfaces or multiple IP addresses. By default, it is disabled. If you want to use it, you should specify it first. Null is also valid.
@@ -424,29 +426,30 @@ This command is similar to :ref:`AT+CIPSTART <cmd-START>` except that you don't 
 
 .. _cmd-PLUS:
 
-:ref:`[Passthrough Mode Only] +++ <TCPIP-AT>`: Exit from :term:`Passthrough Mode`
------------------------------------------------------------------------------------
+:ref:`[Data Mode Only] +++ <TCPIP-AT>`: Exit from :term:`Data Mode`
+-------------------------------------------------------------------
 
 Special Execute Command
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Function:**
 
-Exit from :term:`Passthrough Mode` and enter the :term:`Passthrough Receiving Mode`.
+Exit from :term:`Data Mode` and enter the :term:`Command Mode`.
 
 **Command:**
 
 ::
 
-    // Only for passthrough mode
+    // Only for data mode
     +++
 
 Notes
 """"""
 
 -  This special execution command consists of three identical ``+`` characters (0x2b ASCII), and no CR-LF appends to the command tail.
--  Make sure there is more than 20 ms interval before the first ``+`` character, more than 20 ms interval after the third ``+`` character, less than 20 ms interval among the three ``+`` characters. Otherwise, the ``+`` characters will be sent out as normal passthrough data.
+-  Make sure there is more than 20 ms interval before the first ``+`` character, more than 20 ms interval after the third ``+`` character, less than 20 ms interval among the three ``+`` characters. Otherwise, the ``+`` characters will be sent out as normal data.
 -  This command returns no reply.
+-  Please wait for at least one second before sending the next AT command.
 
 .. _cmd-SEND:
 
@@ -458,7 +461,7 @@ Set Command
 
 **Function:**
 
-Set the data length to be send in the :term:`Normal Transmission Mode`.
+Set the data length to be send in the :term:`Normal Transmission Mode`. If the length of data you need to send exceeds 8192 bytes, please use the :ref:`AT+CIPSENDL <cmd-SENDL>` command.
 
 **Command:**
 
@@ -521,9 +524,7 @@ or
 
     ERROR
 
-Enter the Wi-Fi :term:`Passthrough Mode`. The ESP devices can receive 8192 bytes and send 2920 bytes at most each time.
-If the length of the currently received data is greater than the maximum number of bytes that can be sent, AT will send the received data immediately; Otherwise, the received data will be sent out within 20 ms.
-When a single packet containing :ref:`+++ <cmd-PLUS>` is received, the ESP device will exit the data sending mode under the Wi-Fi :term:`Passthrough Mode`. Please wait for at least one second before sending the next AT command.
+Enter the Wi-Fi :term:`Passthrough Mode`. The ESP devices can receive 8192 bytes and send 2920 bytes at most each time. If the length of the currently received data is greater than the maximum number of bytes that can be sent, AT will send the received data immediately; Otherwise, the received data will be sent out within 20 ms. When a single packet containing :ref:`+++ <cmd-PLUS>` is received, the ESP device will exit the data sending mode under the Wi-Fi :term:`Passthrough Mode`. Please wait for at least one second before sending the next AT command.
 
 This command can only be used for single connection in the Wi-Fi :term:`Passthrough Mode`. For UDP Wi-Fi passthrough, the ``<mode>`` parameter has to be 0 when using :ref:`AT+CIPSTART <cmd-START>`.
 
@@ -532,8 +533,136 @@ Parameters
 
 -  **<link ID>**: ID of the connection (0~4), for multiple connections.
 -  **<length>**: data length. Maximum: 8192 bytes.
--  **<"remote host">**: IPv4 address or IPv6 address or domain name of remote host, can be set in UDP transmission.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. It can be set in UDP transmission.
 -  **<remote port>**: the remote port number.
+
+.. _cmd-SENDL:
+
+:ref:`AT+CIPSENDL <TCPIP-AT>`: Send Long Data in Paraller in the :term:`Normal Transmission Mode`.
+--------------------------------------------------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+In the :term:`Normal Transmission Mode`, set the data length to be sent, and then send data to remote host in parallel (the AT command port receives data in parallel with the AT sending data to the remote host). You can use the :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>` command to configure this command. If the length of data you need to send is less than 8192 bytes, you also can use the :ref:`AT+CIPSEND <cmd-SEND>` command.
+
+**Command:**
+
+::
+
+    // Single connection: (AT+CIPMUX=0)
+    AT+CIPSENDL=<length>
+
+    // Multiple connections: (AT+CIPMUX=1)
+    AT+CIPSENDL=<link ID>,<length>
+
+    // Remote host and port can be set for UDP transmission:
+    AT+CIPSENDL=[<link ID>,]<length>[,<"remote host">,<remote port>]
+
+**Response:**
+
+::
+
+    OK
+
+    >
+
+This response indicates that AT enters the :term:`Data Mode` and AT command port is ready to receive data. You can enter the data now. Once the port receives data, it will be pushed to underlying protocol stack and the transmission starts.
+
+If the transmission starts, the system reports message according to :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>` configuration:
+
+::
+
+    +CIPSENDL:<had sent len>,<port recv len>
+
+If the transmission is cancelled by :ref:`+++ <cmd-PLUS>` command, the system returns:
+
+::
+
+    SEND CANCELLED
+
+If not all the data has been sent out, the system finally returns:
+
+::
+
+    SEND FAIL
+
+If all the data is transmitted successfully, the system finally returns:
+
+::
+
+    SEND OK 
+
+When the connection is disconnected, you can send :ref:`+++ <cmd-PLUS>` command to cancel the transmission, then the ESP device will exit from the :term:`Data Mode`, otherwise, the :term:`Data Mode` will not end until the AT command port receives all the data of the specified ``<length>``.
+
+Parameters
+^^^^^^^^^^
+
+-  **<link ID>**: ID of the connection (0~4), for multiple connections.
+-  **<length>**: data length. Maximum: 2 :sup:`31` - 1 bytes.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. It can be set in UDP transmission.
+-  **<remote port>**: the remote port number.
+-  **<had sent len>**: the length of data successfully sent to the underlying protocol stack.
+-  **<port recv len>**: data length received by AT command port.
+
+.. _cmd-SENDLCFG:
+
+:ref:`AT+CIPSENDLCFG <TCPIP-AT>`: Set the Configuration for the Command :ref:`AT+CIPSENDL <cmd-SENDL>`
+------------------------------------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Function:**
+
+Query the configuration of :ref:`AT+CIPSENDL <cmd-SENDL>`.
+
+**Command:**
+
+::
+
+    AT+CIPSENDLCFG?
+
+**Response:**
+
+::
+
+    +CIPSENDLCFG:<report size>,<transmit size>
+
+    OK
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+Set the configuration of :ref:`AT+CIPSENDL <cmd-SENDL>`.
+
+**Command:**
+
+::
+
+    AT+CIPSENDLCFG:<report size>[,<transmit size>]
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<report size>**: report block size for :ref:`AT+CIPSENDL <cmd-SENDL>`. Default: 1024. Range: [100,2 :sup:`20`]. For example, set ``<report size>`` to 100, ``<had sent len>`` report sequence in the response of :ref:`AT+CIPSENDL <cmd-SENDL>` will be (100, 200, 300, 400, ...). The final ``<had sent len>`` report is always equal to the data length that had been sent out.
+-  **<transmit size>**: transmit block size of :ref:`AT+CIPSENDL <cmd-SENDL>`. It specifies the size of the data block sent to the underlying protocol stack. Default: 2920. Range: [100,2920]. If the received data length is greater than or equal to ``<transmit size>``, it is pushed to the underlying protocol stack immediately, otherwise, the data waits for 20 ms and then is pushed to the protocol stack.
+
+Note
+""""""
+
+- For devices with small throughput but high real-time requirements, it is recommended to set a smaller ``<transmit size>``. It is also recommended to set ``TCP_NODELAY`` by :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command.
+- For devices with large throughput, it is recommended to set a larger ``<transmit size>``. It is also recommended to read :doc:`How to Improve ESP-AT Throughput Performance <../Compile_and_Develop/How_to_optimize_throughput>` first.
 
 .. _cmd-SENDEX:
 
@@ -587,7 +716,7 @@ Parameters
 
 -  **<link ID>**: ID of the connection (0~4), for multiple connections.
 -  **<length>**: data length. Maximum: 8192 bytes.
--  **<"remote host">**: IPv4 address or IPv6 address or domain name of remote host, can be set in UDP transmission.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. It can be set in UDP transmission.
 -  **<remote port>**: remote port can be set in UDP transmission.
 
 Notes
@@ -1005,7 +1134,7 @@ Parameters
    -  0: ESP will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
    -  1: ESP will enter Wi-Fi :term:`Passthrough Mode` on power-up.
 
--  **<"remote host">**: string parameter showing the IPv4 address or IPv6 address or domain name of remote host.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
 -  **<remote port>**: the remote port number.
 -  **<"type">**: string parameter showing the type of transmission: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP".
 -  **<keep alive>**: TCP keep-alive interval. Default: 0.
@@ -1056,7 +1185,7 @@ Parameters
    -  0: ESP will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
    -  1: ESP will enter Wi-Fi :term:`Passthrough Mode` on power-up.
 
--  **<"remote host">**: string parameter showing the IPv4 address or IPv6 address or domain name of remote host.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
 -  **<remote port>**: the remote port number.
 -  **<"type">**: string parameter showing the type of transmission: "UDP" or "UDPv6". Default: "TCP".
 -  **<local port>**: local port when UDP Wi-Fi passthrough is enabled on power-up.
@@ -1978,6 +2107,7 @@ Parameters
 
 Notes
 ^^^^^
+
 - If you want to ping a remote host based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
 - If the remote host is a domain name string, ping will first resolve the domain name (IPv4 address preferred) from DNS (domain name server), and then ping the remote IP address.
 
