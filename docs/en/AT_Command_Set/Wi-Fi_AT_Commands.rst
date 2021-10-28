@@ -28,7 +28,7 @@ Wi-Fi AT Commands
 -  :ref:`AT+CWSTOPSMART <cmd-STOPS>`: Stop SmartConfig.
 -  :ref:`AT+WPS <cmd-WPS>`: Enable the WPS function.
 -  :ref:`AT+MDNS <cmd-MDNS>`: Configure the mDNS function.
--  [ESP32 Only] :ref:`AT+CWJEAP <cmd-JEAP>`: Connect to a WPA2 Enterprise AP.
+-  :ref:`AT+CWJEAP <cmd-JEAP>`: Connect to a WPA2 Enterprise AP.
 -  :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`: Query/Set the host name of an ESP station.
 -  :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`: Query/Set the Wi-Fi Country Code.
 
@@ -792,7 +792,7 @@ Parameters
      - 0: SoftAP DHCP is disabled.
      - 1: SoftAP DHCP is enabled.
 
-   - Bit2 (ESP32 only):
+   - Bit2:
 
      - 0: Ethernet DHCP is disabled.
      - 1: Ethernet DHCP is enabled.
@@ -1511,7 +1511,7 @@ Example
 
 .. _cmd-JEAP:
 
-[ESP32 Only] :ref:`AT+CWJEAP <WiFi-AT>`: Connect to a WPA2 Enterprise AP
+:ref:`AT+CWJEAP <WiFi-AT>`: Connect to a WPA2 Enterprise AP
 -------------------------------------------------------------------------
 
 Query Command

@@ -19,7 +19,7 @@ Basic AT Commands
 -  :ref:`AT+SYSMSG <cmd-SYSMSG>`: Query/Set System Prompt Information.
 -  :ref:`AT+USERRAM <cmd-USERRAM>`: Operate user's free RAM.
 -  :ref:`AT+SYSFLASH <cmd-SYSFLASH>`: Query/Set User Partitions in Flash.
--  [ESP32 Only] :ref:`AT+FS <cmd-FS>`: Filesystem Operations.
+-  :ref:`AT+FS <cmd-FS>`: Filesystem Operations.
 -  :ref:`AT+RFPOWER <cmd-RFPOWER>`: Query/Set RF TX Power.
 -  :ref:`AT+SYSROLLBACK <cmd-SYSROLLBACK>`: Roll back to the previous firmware.
 -  :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`: Query/Set local time stamp.
@@ -810,7 +810,7 @@ Example
 
 .. _cmd-FS:
 
-[ESP32 Only] :ref:`AT+FS <Basic-AT>`: Filesystem Operations
+:ref:`AT+FS <Basic-AT>`: Filesystem Operations
 ---------------------------------------------------------------
 
 Set Command

@@ -28,7 +28,7 @@ Wi-Fi AT 命令集
 -  :ref:`AT+CWSTOPSMART <cmd-STOPS>`：停止 SmartConfig
 -  :ref:`AT+WPS <cmd-WPS>`：设置 WPS 功能
 -  :ref:`AT+MDNS <cmd-MDNS>`：设置 mDNS 功能
--  [ESP32 Only] :ref:`AT+CWJEAP <cmd-JEAP>`：连接 WPA2 企业版 AP
+-  :ref:`AT+CWJEAP <cmd-JEAP>`：连接 WPA2 企业版 AP
 -  :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`：查询/设置 ESP Station 的主机名称
 -  :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`：查询/设置 Wi-Fi 国家代码
 
@@ -792,7 +792,7 @@ Wi-Fi AT 命令集
      - 0: 禁用 SoftAP 的 DHCP
      - 1: 启用 SoftAP 的 DHCP
 
-   - Bit2 (ESP32 only):
+   - Bit2:
 
      - 0: 禁用 Ethernet 的 DHCP
      - 1: 启用 Ethernet 的 DHCP
@@ -1511,7 +1511,7 @@ Wi-Fi AT 命令集
 
 .. _cmd-JEAP:
 
-[ESP32 Only] :ref:`AT+CWJEAP <WiFi-AT>`：连接 WPA2 企业版 AP
+:ref:`AT+CWJEAP <WiFi-AT>`：连接 WPA2 企业版 AP
 -------------------------------------------------------------------------
 
 查询命令
