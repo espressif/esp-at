@@ -41,7 +41,7 @@ AT firmware supports `Bluetooth® Core Specification Version 5.0 <https://www.bl
 - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`: Query/Set Bluetooth LE encryption parameters.
 - :ref:`AT+BLEENC <cmd-BLEENC>`: Initiate Bluetooth LE encryption request.
 - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`: Respond to the pairing request from the peer device.
-- :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`: Reply the key value to the peer device in the legacy connection stage.
+- :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`: Reply the key value to the peer device.
 - :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`: Reply the confirm value to the peer device in the legacy connection stage.
 - :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`: Query bonded Bluetooth LE encryption device list.
 - :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`: Clear Bluetooth LE encryption device list.
@@ -2088,7 +2088,7 @@ Example
 
 .. _cmd-BLEKEYREPLY:
 
-:ref:`AT+BLEKEYREPLY <BLE-AT>`: Reply the Key Value to the Peer Device in the Legacy Connection Stage
+:ref:`AT+BLEKEYREPLY <BLE-AT>`: Reply the Key Value to the Peer Device
 -------------------------------------------------------------------------------------------------------------------------
 
 Set Command

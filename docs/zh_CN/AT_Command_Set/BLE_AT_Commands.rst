@@ -41,7 +41,7 @@ AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specif
 - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`：查询/设置 Bluetooth LE 加密参数
 - :ref:`AT+BLEENC <cmd-BLEENC>`：发起 Bluetooth LE 加密请求
 - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`：回复对端设备发起的配对请求
-- :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`：给对方设备回复密钥（传统连接阶段）
+- :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`：给对方设备回复密钥
 - :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`：给对方设备回复确认结果（传统连接阶段）
 - :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`：查询绑定的 Bluetooth LE 加密设备列表
 - :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`：清除 Bluetooth LE 加密设备列表
@@ -2088,7 +2088,7 @@ GATTC 写服务特征值或描述符值
 
 .. _cmd-BLEKEYREPLY:
 
-:ref:`AT+BLEKEYREPLY <BLE-AT>`：给对方设备回复密钥（传统连接阶段）
+:ref:`AT+BLEKEYREPLY <BLE-AT>`：给对方设备回复密钥
 ------------------------------------------------------------------------------------------------
 
 设置命令
