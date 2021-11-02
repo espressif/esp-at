@@ -604,7 +604,8 @@ If Classic Bluetooth A2DP profile is initialized, AT will return:
 
 ::
 
-    +BTA2DPINIT:1
+    +BTA2DPINIT:<role>
+
     OK
 
 Otherwise, AT will return:
@@ -612,6 +613,7 @@ Otherwise, AT will return:
 ::
 
     +BTA2DPINIT:0
+
     OK
 
 Set Command
@@ -625,7 +627,7 @@ Initialize or deinitialize Classic Bluetooth A2DP profile.
 
 ::
 
-    AT+BTA2DPINIT=<role>,<init_val>
+    AT+BTA2DPINIT=<role>
 
 **Response:**
 
@@ -636,22 +638,18 @@ Initialize or deinitialize Classic Bluetooth A2DP profile.
 Parameters
 ^^^^^^^^^^
 
--  **<role>**:
-
-   -  0: source.
-   -  1: sink.
-
--  **<init_val>**:
+-  **<role>**: role
 
    -  0: deinitialize Classic Bluetooth A2DP profile.
-   -  1: initialize Classic Bluetooth A2DP profile.
+   -  1: source.
+   -  2: sink.
 
 Example
 ^^^^^^^^
 
 ::
 
-    AT+BTA2DPINIT=0,1
+    AT+BTA2DPINIT=2
 
 .. _cmd-BTA2DPCONN:
 
