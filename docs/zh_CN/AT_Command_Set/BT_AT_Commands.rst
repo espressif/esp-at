@@ -605,7 +605,8 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 ::
 
-    +BTA2DPINIT:1
+    +BTA2DPINIT:<role>
+
     OK
 
 若未初始化，则返回：
@@ -613,6 +614,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 ::
 
     +BTA2DPINIT:0
+
     OK
 
 设置命令
@@ -626,7 +628,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 ::
 
-    AT+BTA2DPINIT=<role>,<init_val>
+    AT+BTA2DPINIT=<role>
 
 **响应：**
 
@@ -639,20 +641,16 @@ ESP32 AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/
 
 -  **<role>**：角色
 
-   -  0: source；
-   -  1: sink。
-
--  **<init_val>**：
-
    -  0: 注销 Classic Bluetooth A2DP 协议；
-   -  1: 初始化 Classic Bluetooth A2DP 协议。
+   -  1: source；
+   -  2: sink。
 
 示例
 ^^^^
 
 ::
 
-    AT+BTA2DPINIT=0,1
+    AT+BTA2DPINIT=2
 
 .. _cmd-BTA2DPCONN:
 
