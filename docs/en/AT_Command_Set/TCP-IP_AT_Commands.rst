@@ -1086,6 +1086,7 @@ Set the transmission mode.
 
 Parameter
 ^^^^^^^^^^
+
 -  **<mode>**:
 
    -  0: :term:`Normal Transmission Mode`.
@@ -1411,6 +1412,7 @@ Query ESP device upgrade status.
 ::
 
     +CIPUPDATE:<state>
+
     OK
 
 Execute Command
@@ -1418,7 +1420,7 @@ Execute Command
 
 **Function:**
 
-Upgrade OTA the latest version of firmware via TCP/SSL from the server.
+Upgrade OTA the latest version of firmware via TCP from the server in blocking mode.
 
 **Command:**
 
@@ -1428,16 +1430,7 @@ Upgrade OTA the latest version of firmware via TCP/SSL from the server.
 
 **Response:**
 
-::
-
-    +CIPUPDATE:<state>
-    OK
-
-or
-
-::
-
-    ERROR
+Please refer to the :ref:`response <cmd-UPDATE-RESPONSE>` in the set command.
 
 Set Command
 ^^^^^^^^^^^
@@ -1445,6 +1438,8 @@ Set Command
 **Function:**
 
 Upgrade the specified version of firmware from the server.
+
+.. _cmd-UPDATE-RESPONSE:
 
 **Command:**
 
@@ -1454,16 +1449,42 @@ Upgrade the specified version of firmware from the server.
 
 **Response:**
 
+If OTA succeeds in blocking mode, the system returns:
+
+::
+
+    +CIPUPDATE:1
+    +CIPUPDATE:2
+    +CIPUPDATE:3
+    +CIPUPDATE:4
+    
+    OK
+
+If OTA succeeds in non-blocking mode, the system returns:
+
+::
+
+    OK
+    +CIPUPDATE:1
+    +CIPUPDATE:2
+    +CIPUPDATE:3
+    +CIPUPDATE:4
+
+If OTA fails in blocking mode, the system returns:
+
 ::
 
     +CIPUPDATE:<state>
-    OK
 
-or
+    ERROR
+
+If OTA fails in non-blocking mode, the system returns:
 
 ::
 
-    ERROR
+    OK
+    +CIPUPDATE:<state>
+    +CIPUPDATE:-1
 
 Parameters
 ^^^^^^^^^^
@@ -1481,12 +1502,11 @@ Parameters
 
 - **<state>**:
 
-    - 0: Idle.
     - 1: Server found.
     - 2: Connected to the server.
     - 3: Got the upgrade version.
     - 4: Upgrade done.
-    - -1: Upgrade failed.
+    - -1: OTA fails in non-blocking mode.
 
 Notes
 ^^^^^
@@ -1496,6 +1516,8 @@ Notes
 -  If you use Espressif's AT `BIN <https://www.espressif.com/en/support/download/at>`_, ``AT+CIUPDATE`` will download a new AT BIN from the Espressif Cloud.
 -  If you use a user-compiled AT BIN, you need to implement your own AT+CIUPDATE FOTA function. ESP-AT project provides an example of `FOTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_ota_cmd.c>`_.
 -  After you upgrade the AT firmware, you are suggested to call the command :ref:`AT+RESTORE <cmd-RESTORE>` to restore the factory default settings.
+-  The timeout of OTA process is ``3`` minutes.
+-  The response ``OK`` in non-blocking mode does not necessarily come before the response ``+CIPUPDATE:<state>``. It may be output before ``+CIPUPDATE:<state>`` or after it.
 -  Upgraded to an older version is not recommended.
 
 Example
@@ -1507,10 +1529,10 @@ Example
     AT+CIUPDATE=1
     AT+CIUPDATE=1,"v1.2.0.0"
     AT+CIUPDATE=1,"v2.2.0.0","mqtt_ca"
-    AT+CIUPDATE=1,"V2.2.0.0","ota",1
+    AT+CIUPDATE=1,"v2.2.0.0","ota",1
     AT+CIUPDATE=1,,,1
     AT+CIUPDATE=1,,"ota",1
-    AT+CIUPDATE=1,"V2.2.0.0",,1
+    AT+CIUPDATE=1,"v2.2.0.0",,1
 
 .. _cmd-IPDINFO:
 

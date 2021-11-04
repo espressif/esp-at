@@ -1412,6 +1412,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 ::
 
     +CIPUPDATE:<state>
+
     OK
 
 执行命令
@@ -1419,7 +1420,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 **功能：**
 
-通过 OTA 升级到 TCP/SSL 服务器上最新版本的固件
+在阻塞模式下通过 OTA 升级到 TCP 服务器上最新版本的固件
 
 **命令：**
 
@@ -1429,16 +1430,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 **响应：**
 
-::
-
-    +CIPUPDATE:<state>
-    OK
-
-或
-
-::
-
-    ERROR
+请参考设置命令中的 :ref:`响应 <cmd-UPDATE-RESPONSE>`
 
 设置命令
 ^^^^^^^^
@@ -1446,6 +1438,8 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 **功能：**
 
 升级到服务器上指定版本的固件
+
+.. _cmd-UPDATE-RESPONSE:
 
 **命令：**
 
@@ -1455,16 +1449,42 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 **响应：**
 
+如果 OTA 在阻塞模式下成功，返回：
+
+::
+
+    +CIPUPDATE:1
+    +CIPUPDATE:2
+    +CIPUPDATE:3
+    +CIPUPDATE:4
+    
+    OK
+
+如果 OTA 在非阻塞模式下成功，返回：
+
+::
+
+    OK
+    +CIPUPDATE:1
+    +CIPUPDATE:2
+    +CIPUPDATE:3
+    +CIPUPDATE:4
+
+如果在阻塞模式下 OTA 失败，返回：
+
 ::
 
     +CIPUPDATE:<state>
-    OK
 
-或
+    ERROR
+
+如果在非阻塞模式下 OTA 失败，返回：
 
 ::
 
-    ERROR
+    OK
+    +CIPUPDATE:<state>
+    +CIPUPDATE:-1
 
 参数
 ^^^^
@@ -1482,21 +1502,22 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 - **<state>**:
 
-    - 0: 空闲；
     - 1: 找到服务器；
     - 2: 连接至服务器；
     - 3: 获得升级版本；
     - 4: 完成升级；
-    - -1: 升级失败。
+    - -1: 非阻塞模式下 OTA 失败。
 
 说明
 ^^^^
 
 -  升级速度取决于网络状况。
 -  如果网络条件不佳导致升级失败，AT 将返回 ``ERROR``，请等待一段时间再试。 
--  如果您直接使用乐鑫提供的 AT `BIN <https://www.espressif.com/zh-hans/support/download/at>`_, 本命令将从 Espressif Cloud 下载 AT 固件升级。
+-  如果您直接使用乐鑫提供的 AT `BIN <https://www.espressif.com/zh-hans/support/download/at>`_，本命令将从 Espressif Cloud 下载 AT 固件升级。
 -  如果您使用的是自行编译的 AT BIN，请自行实现 AT+CIUPDATE FOTA 功能，可参考 ESP-AT 工程提供的示例 `FOTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_ota_cmd.c>`_。
 -  建议升级 AT 固件后，调用 :ref:`AT+RESTORE <cmd-RESTORE>` 恢复出厂设置。
+-  OTA 过程的超时时间为 ``3`` 分钟。
+-  非阻塞模式响应中的 ``OK`` 和 ``+CIPUPDATE:<state>`` 在输出顺序上没有严格意义上的先后顺序。OK 可能在 ``+CIPUPDATE:<state>`` 之前输出，也有可能在 ``+CIPUPDATE:<state>`` 之后输出。
 -  不建议升级到旧版本。
 
 示例
@@ -1508,10 +1529,10 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
     AT+CIUPDATE=1
     AT+CIUPDATE=1,"v1.2.0.0"
     AT+CIUPDATE=1,"v2.2.0.0","mqtt_ca"
-    AT+CIUPDATE=1,"V2.2.0.0","ota",1
+    AT+CIUPDATE=1,"v2.2.0.0","ota",1
     AT+CIUPDATE=1,,,1
     AT+CIUPDATE=1,,"ota",1
-    AT+CIUPDATE=1,"V2.2.0.0",,1
+    AT+CIUPDATE=1,"v2.2.0.0",,1
 
 .. _cmd-IPDINFO:
 
@@ -1701,6 +1722,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
     单连接：(AT+CIPMUX=0)
     AT+CIPSSLCSNI=<"sni">
+
     多连接：(AT+CIPMUX=1)
     AT+CIPSSLCSNI=<link ID>,<"sni">
 
