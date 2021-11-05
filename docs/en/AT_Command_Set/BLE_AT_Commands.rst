@@ -331,13 +331,8 @@ Parameters
    -  2: BLE_SCAN_FILTER_ALLOW_UND_RPA_DIR
    -  3: BLE_SCAN_FILTER_ALLOW_WLIST_PRA_DIR
 
--  **<scan_interval>**: scan interval. Range: 0x0004 ~ 0x4000. It should be an integer multiple of ``0.625 ms`` in the range of ``2.5 ms`` to ``10.24 s``.
--  **<scan_window>**: scan window. Range: 0x0004 ~ 0x4000. It should be an integer multiple of ``0.625 ms`` in the range of ``2.5 ms`` to ``10240 ms``.
-
-Note
-^^^^^
-
--  The parameter ``<scan_window>`` CANNOT be larger than ``<scan_interval>``.
+-  **<scan_interval>**: scan interval. It should be more than or equal to the value of ``<scan_window>``. The range of this parameter is [0x0004,0x4000]. The scan interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual scan interval is [2.5,10240] ms.
+-  **<scan_window>**: scan window. It should be less than or equal to the value of ``<scan_interval>``. The range of this parameter is [0x0004,0x4000]. The scan window equals this parameter multiplied by ``0.625 ms``, so the range for the actual scan window is [2.5,10240] ms.
 
 Example
 ^^^^^^^^
@@ -500,8 +495,8 @@ Set the parameters of advertising.
 Parameters
 ^^^^^^^^^^
 
--  **<adv_int_min>**: minimum advertising interval. It should be less than or equal to the value of ``<adv_int_max>``. Range: 0x0020 ~ 0x4000. 
--  **<adv_int_max>**: maximum advertising interval. It should be more than or equal to the value of ``<adv_int_min>``. Range: 0x0020 ~ 0x4000. 
+-  **<adv_int_min>**: minimum advertising interval. The range of this parameter is [0x0020,0x4000]. The actual advertising interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual minimum interval is [20, 10240] ms. It should be less than or equal to the value of ``<adv_int_max>``.
+-  **<adv_int_max>**: maximum advertising interval. The range of this parameter is [0x0020,0x4000]. The actual advertising interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual maximum interval is [20, 10240] ms. It should be more than or equal to the value of ``<adv_int_min>``.
 -  **<adv_type>**:
 
    -  0: ADV_TYPE_IND
@@ -535,11 +530,6 @@ Parameters
    -  1: RANDOM
 
 -  **[<peer_addr>]**: remote Bluetooth LE address.
-
-Notes
-^^^^^
-
--  Advertising interval should be an integer multiple of ``0.625 ms`` in the range of ``20 ms`` to ``10.24 s``.
 
 Example
 ^^^^^^^^
@@ -823,6 +813,7 @@ Notes
    -  :ref:`AT+BLEGATTCRD <cmd-GCRD>`
    -  :ref:`AT+BLEGATTCWR <cmd-GCWR>`
    -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
+-  If the :ref:`AT+BLECONN? <cmd-BCONN>` is executed when the Bluetooth LE is not initialized (:ref:`AT+BLEINIT=0 <cmd-BINIT>`), the system will not output ``+BLECONN:<conn_index>,<remote_address>`` .
 
 Example
 ^^^^^^^^
@@ -886,17 +877,16 @@ Parameters
 ^^^^^^^^^^
 
 -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
--  **<min_interval>**: minimum connecting interval. It should be less than or equal to the value of ``<max_interval>``. Range: 0x0006 ~ 0x0C80.
--  **<max_interval>**: maximum connecting interval. It should be more than or equal to the value of ``<min_interval>``. Range: 0x0006 ~ 0x0C80.
+-  **<min_interval>**: minimum connecting interval. It should be less than or equal to the value of ``<max_interval>``. The range of this parameter is [0x0006,0x0C80]. The actual connecting interval equals this parameter multiplied by ``1.25 ms``, so the range for the actual minimum interval is [7.5,4000] ms.
+-  **<max_interval>**: maximum connecting interval. It should be more than or equal to the value of ``<min_interval>``. The range of this parameter is [0x0006,0x0C80]. The actual connecting interval equals this parameter multiplied by ``1.25 ms``, so the range for the actual maximum interval is [7.5,4000] ms.
 -  **<cur_interval>**: current connecting interval.
--  **<latency>**: latency. Range: 0x0000 ~ 0x01F3.
--  **<timeout>**: timeout. Range: 0x000A ~ 0x0C80. It should be an integer multiple of ``10 ms`` in the range of ``100 ms`` to ``32 s``.
+-  **<latency>**: latency. Range: [0x0000,0x01F3].
+-  **<timeout>**: timeout. The range of this parameter is [0x000A,0x0C80]. The actual timeout equals this parameter multiplied by ``10 ms``, so the range for the actual timeout is [100,32000] ms.
 
 Note
 ^^^^^
 
 -  This command only supports the client role when updating its connection parameters. Of course, the connection has to be established first.
--  Connection interval should be an integer multiple of ``1.25 ms`` in the range of ``7.5 ms`` to ``4000 ms``.
 
 Example
 ^^^^^^^^
@@ -980,7 +970,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
--  **<pkt_data_len>**: data packet's length. Range: 0x001b ~ 0x00fb.
+-  **<pkt_data_len>**: data packet's length. Range: [0x001B,0x00FB].
 
 Note
 ^^^^^
@@ -1691,8 +1681,10 @@ Parameters
    -  if it is not set, the value of the target characteristic will be read.
 
 -  **<len>**: data length.
--  **<char_value>**: characteristic's value. HEX string is read by command :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index>. For example, if the response is ``+BLEGATTCRD:1,30``, it means that the value length is 1, and the content is "0x30".
--  **[<desc_value>]**: descriptor's value. HEX string is read by command :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index>,<desc_index>. For example, if the response is ``+BLEGATTCRD:4,30313233``, it means that the value length is 4, and the content is "0x30 0x31 0x32 0x33".
+-  **<value>**: ``<char_value>`` or ``<desc_value>``.
+
+  -  **<char_value>**: characteristic's value. String format is read by command :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index>. For example, if the response is ``+BLEGATTCRD:0,1,0``, it means that the value length is 1, and the content is "0".
+  -  **<desc_value>**: descriptor's value. String format is read by command :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index>,<desc_index>. For example, if the response is ``+BLEGATTCRD:0,4,0123``, it means that the value length is 4, and the content is "0123".
 
 Notes
 ^^^^^
@@ -1918,7 +1910,7 @@ Query the parameters of Bluetooth LE SMP.
 
 ::
 
-    +BLESECPARAM:<auth_req>,<iocap>,<key_size>,<init_key>,<rsp_key>,<auth_option>
+    +BLESECPARAM:<auth_req>,<iocap>,<enc_key_size>,<init_key>,<rsp_key>,<auth_option>
     OK
 
 Set Command
@@ -1932,7 +1924,7 @@ Set the parameters of Bluetooth LE SMP.
 
 ::
 
-    AT+BLESECPARAM=<auth_req>,<iocap>,<key_size>,<init_key>,<rsp_key>[,<auth_option>]
+    AT+BLESECPARAM=<auth_req>,<iocap>,<enc_key_size>,<init_key>,<rsp_key>[,<auth_option>]
 
 **Response:**
 
@@ -1961,7 +1953,7 @@ Parameters
    -  3: NoInputNoOutput
    -  4: Keyboard display
 
--  **<key_size>**: key length. Range: 7 ~ 16 bytes.
+-  **<enc_key_size>**: encryption key size. Range: [7,16]. Unit: byte.
 -  **<init_key>**: initial key represented in bit combinations.
 -  **<rsp_key>**: response key represented in bit combinations.
 -  **<auth_option>**: authentication option of security.
@@ -2560,6 +2552,7 @@ If BluFi is not started, it will return:
 ::
 
     +BLUFI:0
+
     OK
 
 If BluFi is started, it will return:
@@ -2567,6 +2560,7 @@ If BluFi is started, it will return:
 ::
 
     +BLUFI:1
+
     OK
 
 Set Command
@@ -2606,6 +2600,11 @@ Parameter
    -  5: WPA2_ENTERPRISE
    -  6: WPA3_PSK
    -  7: WPA2_WPA3_PSK
+
+Note
+^^^^
+
+- You can only start or stop BluFi when Bluetooth LE is not initialized (:ref:`AT+BLEINIT=0 <cmd-BINIT>`).
 
 Example
 ^^^^^^^^

@@ -1179,9 +1179,9 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 参数
 ^^^^
 
--  **<major>**：`主要设备类型 (major class) <https://www.bluetooth.com/specifications/assigned-numbers/baseband/>`_；
--  **<minor>**：`次要设备类型 (minor class) <https://www.bluetooth.com/specifications/assigned-numbers/baseband/>`_；
--  **<service>**：`服务类型 (service class) <https://www.bluetooth.com/specifications/assigned-numbers/baseband/>`_。
+-  **<major>**：`主要设备类型 (major class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Baseband.pdf>`_；
+-  **<minor>**：`次要设备类型 (minor class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Baseband.pdf>`_；
+-  **<service>**：`服务类型 (service class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Baseband.pdf>`_。
 
 示例
 ^^^^

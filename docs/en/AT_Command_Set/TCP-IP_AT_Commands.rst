@@ -969,6 +969,7 @@ Notes
 -  A server monitor will be created automatically when the server is created. Only one server can be created at most.
 -  When a client is connected to the server, it will take up one connection and be assigned an ID.
 -  If you want to create a TCP/SSL server based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and obtain an IPv6 address.
+-  Parameters ``<"type">`` and ``<CA enable>`` must be omitted when delete a server.
 
 Example
 ^^^^^^^^

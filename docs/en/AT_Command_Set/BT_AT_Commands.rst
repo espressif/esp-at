@@ -571,6 +571,7 @@ Start Classic Bluetooth SPP profile.
 
 Note
 ^^^^
+
 -  During the SPP transmission, AT will not prompt any connection status changes unless bit2 of :ref:`AT+SYSMSG <cmd-SYSMSG>` is 1.
 
 Example
@@ -1178,9 +1179,9 @@ Set the Classic Bluetooth class of devices.
 Parameters
 ^^^^^^^^^^
 
--  **<major>**: `major class <https://www.bluetooth.com/specifications/assigned-numbers/baseband/>`_.
--  **<minor>**: `minor class <https://www.bluetooth.com/specifications/assigned-numbers/baseband/>`_.
--  **<service>**: `service class <https://www.bluetooth.com/specifications/assigned-numbers/baseband/>`_.
+-  **<major>**: `major class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Baseband.pdf>`_.
+-  **<minor>**: `minor class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Baseband.pdf>`_.
+-  **<service>**: `service class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Baseband.pdf>`_.
 
 Example
 ^^^^^^^^

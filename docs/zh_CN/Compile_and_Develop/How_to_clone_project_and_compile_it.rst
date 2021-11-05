@@ -76,6 +76,9 @@ ESP-IDF 快速入门
 
 - Windows
 
+  - 对于 ESP32 系列模组，推荐您以管理员权限运行 `ESP-IDF 4.2 CMD <https://dl.espressif.com/dl/esp-idf/?idf=4.2>`__。
+  - 对于 ESP32-C3 系列模组，推荐您以管理员权限运行 `ESP-IDF 4.3 CMD <https://dl.espressif.com/dl/esp-idf/?idf=4.3>`__。
+  
   ::
 
     cd %userprofile%\esp
