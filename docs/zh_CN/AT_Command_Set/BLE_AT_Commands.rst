@@ -256,6 +256,7 @@ AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specif
 ^^^^
 
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 区。
+-  通过该命令设置设备名称后，建议您执行 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令将设备名称放进广播数据当中。
 
 示例
 ^^^^
@@ -330,8 +331,8 @@ AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specif
    -  2: BLE_SCAN_FILTER_ALLOW_UND_RPA_DIR
    -  3: BLE_SCAN_FILTER_ALLOW_WLIST_PRA_DIR
 
--  **<scan_interval>**：扫描间隔
--  **<scan_window>**：扫描窗口
+-  **<scan_interval>**：扫描间隔。参数范围：0x0004 ~ 0x4000。扫描间隔是 ``0.625`` 毫秒的整数倍，且范围应该在 ``2.5`` 毫秒到 ``10.24`` 秒之间。
+-  **<scan_window>**：扫描窗口。参数范围：0x0004 ~ 0x4000。扫描窗口是 ``0.625`` 毫秒的整数倍，且范围应该在 ``2.5`` 毫秒到 ``10240`` 毫秒之间。
 
 说明
 ^^^^
@@ -581,6 +582,7 @@ AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specif
 ^^^^
 
 -  如果之前已经使用命令 :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power> 设置了广播数据，则会被本命令设置的广播数据覆盖。
+-  如果您想使用本命令修改设备名称，则建议在执行完该命令之后执行 :ref:`AT+BLENAME <cmd-BNAME>` 命令将设备名称设置为同样的名称。
 
 示例
 ^^^^
@@ -884,16 +886,17 @@ AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specif
 ^^^^
 
 -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
--  **<min_interval>**：最小连接间隔，范围：0x0006 ~ 0x0C80。
--  **<max_interval>**：最大连接间隔，范围：0x0006 ~ 0x0C80。
+-  **<min_interval>**：最小连接间隔，本参数值应小于等于 ``<max_interval>`` 参数值。范围：0x0006 ~ 0x0C80。
+-  **<max_interval>**：最大连接间隔，本参数值应大于等于 ``<min_interval>`` 参数值。范围：0x0006 ~ 0x0C80。
 -  **<cur_interval>**：当前连接间隔。
 -  **<latency>**：延迟，范围：0x0000 ~ 0x01F3。
--  **<timeout>**：超时，范围：0x000A ~ 0x0C80。
+-  **<timeout>**：超时，范围：0x000A ~ 0x0C80。超时是 ``10`` 毫秒的整数倍，且范围应该在 ``100`` 毫秒到 ``32`` 秒之间。
 
 说明
 ^^^^
 
 -  本命令要求先建立连接，并且仅支持 client 角色更新连接参数。
+-  连接间隔是 ``1.25`` 毫秒的整数倍，且范围应该在 ``7.5`` 毫秒到 ``4000`` 毫秒之间。
 
 示例
 ^^^^
@@ -2191,8 +2194,13 @@ GATTC 写服务特征值或描述符值
 参数
 ^^^^
 
--  **<enc_dev_index>**：已绑定设备的连接号。
+-  **<enc_dev_index>**：已绑定设备的连接号。该参数不一定等于命令 :ref:`AT+BLECONN <cmd-BCONN>` 查询出的 Bluetooth LE 连接列表中的 ``conn_index`` 参数。范围：[0,14]。
 -  **<mac_address>**：MAC 地址。
+
+说明
+^^^^
+
+-  ESP-AT 最多允许绑定 ``15`` 个设备。如果绑定的设备数量超过 15 个，那么新绑定的设备信息会根据绑定顺序从 0 到 14 号依次覆盖之前的设备信息。
 
 示例
 ^^^^
@@ -2424,6 +2432,7 @@ GATTC 写服务特征值或描述符值
 ^^^^
 
 - 更多键代码的信息，请参考 `Universal Serial Bus HID Usage Tables <https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf>`_ 的 Keyboard/Keypad Page 章节。
+- 要使此命令与 iOS 产品交互，您的设备需要先通过 `MFI <https://mfi.apple.com/>`_ 认证。
 
 示例
 ^^^^
@@ -2464,6 +2473,12 @@ GATTC 写服务特征值或描述符值
 -  **<Y_displacement>**：Y 位移。
 -  **<wheel>**：滚轮。
 
+说明
+^^^^
+
+- 更多 HID 鼠标信息，请参考 `Universal Serial Bus HID Usage Tables <https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf>`_ 的 Generic Desktop Page 和 Application Usages 章节。
+- 要使此命令与 iOS 产品交互，您的设备需要先通过 `MFI <https://mfi.apple.com/>`_ 认证。
+
 示例
 ^^^^
 
@@ -2499,6 +2514,11 @@ GATTC 写服务特征值或描述符值
 ^^^^
 
 -  **<consumer_usage_id>**：consumer ID，如 power、reset、help、volume 等。详情请参考 `HID Usage Tables for Universal Serial Bus (USB) <https://usb.org/sites/default/files/hut1_21_0.pdf>`_ 中的 Consumer Page (0x0C) 章节。
+
+说明
+^^^^
+
+- 要使此命令与 iOS 产品交互，您的设备需要先通过 `MFI <https://mfi.apple.com/>`_ 认证。
 
 示例
 ^^^^

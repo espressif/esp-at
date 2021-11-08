@@ -115,7 +115,7 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
 
 - ESP-AT Response Messages (passive)
   
-  Each ESP-AT command input returns response messages to tell the sender the result of the ESP-AT command.
+  Each ESP-AT command input returns response messages to tell the sender the result of the ESP-AT command. The last message in the response is either ``OK`` or ``ERROR``.
     
   .. list-table:: ESP-AT Response Messages
       :header-rows: 1

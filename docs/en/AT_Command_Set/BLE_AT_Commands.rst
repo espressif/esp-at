@@ -256,6 +256,7 @@ Note
 ^^^^^
 
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`. 
+-  After setting the device name with this command, it is recommended that you execute the :ref:`AT+BLEADVDATA <cmd-BADVD>` command to add the device name into the advertising data.
 
 Example
 ^^^^^^^^
@@ -330,8 +331,8 @@ Parameters
    -  2: BLE_SCAN_FILTER_ALLOW_UND_RPA_DIR
    -  3: BLE_SCAN_FILTER_ALLOW_WLIST_PRA_DIR
 
--  **<scan_interval>**: scan interval
--  **<scan_window>**: scan window
+-  **<scan_interval>**: scan interval. Range: 0x0004 ~ 0x4000. It should be an integer multiple of ``0.625 ms`` in the range of ``2.5 ms`` to ``10.24 s``.
+-  **<scan_window>**: scan window. Range: 0x0004 ~ 0x4000. It should be an integer multiple of ``0.625 ms`` in the range of ``2.5 ms`` to ``10240 ms``.
 
 Note
 ^^^^^
@@ -538,7 +539,7 @@ Parameters
 Notes
 ^^^^^
 
--  Advertising interval shall be an integer multiple of ``0.625 ms`` in the range of ``20 ms`` to ``10.24 s``.
+-  Advertising interval should be an integer multiple of ``0.625 ms`` in the range of ``20 ms`` to ``10.24 s``.
 
 Example
 ^^^^^^^^
@@ -581,6 +582,7 @@ Note
 ^^^^^
 
 -  If advertising data is preset by command :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power>, it will be overwritten by this command.
+-  If you run this command to modify the device name, it is recommended to also execute the :ref:`AT+BLENAME <cmd-BNAME>` command to set the same device name afterwards.
 
 Example
 ^^^^^^^^
@@ -884,16 +886,17 @@ Parameters
 ^^^^^^^^^^
 
 -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
--  **<min_interval>**: minimum connecting interval. Range: 0x0006 ~ 0x0C80.
--  **<max_interval>**: maximum connecting interval. Range: 0x0006 ~ 0x0C80.
+-  **<min_interval>**: minimum connecting interval. It should be less than or equal to the value of ``<max_interval>``. Range: 0x0006 ~ 0x0C80.
+-  **<max_interval>**: maximum connecting interval. It should be more than or equal to the value of ``<min_interval>``. Range: 0x0006 ~ 0x0C80.
 -  **<cur_interval>**: current connecting interval.
 -  **<latency>**: latency. Range: 0x0000 ~ 0x01F3.
--  **<timeout>**: timeout. Range: 0x000A ~ 0x0C80.
+-  **<timeout>**: timeout. Range: 0x000A ~ 0x0C80. It should be an integer multiple of ``10 ms`` in the range of ``100 ms`` to ``32 s``.
 
 Note
 ^^^^^
 
 -  This command only supports the client role when updating its connection parameters. Of course, the connection has to be established first.
+-  Connection interval should be an integer multiple of ``1.25 ms`` in the range of ``7.5 ms`` to ``4000 ms``.
 
 Example
 ^^^^^^^^
@@ -2191,8 +2194,13 @@ Query bonded Bluetooth LE encryption device list.
 Parameters
 ^^^^^^^^^^
 
--  **<enc_dev_index>**: index of the bonded devices.
+-  **<enc_dev_index>**: index of the bonded devices. This parameter is not necessarily equal to the ``conn_index`` parameter in the Bluetooth LE connection list queried by the command :ref:`AT+BLECONN <cmd-BCONN>`. Range: [0,14].
 -  **<mac_address>**: MAC address.
+
+Note
+^^^^^
+
+-  ESP-AT allows a maximum of ``15`` devices to be bonded. If the number of bonded devices exceeds 15, the newly bonded device information will sequentially (from 0 to 14) overwrite the previous device information according to the binding order.
 
 Example
 ^^^^^^^^
@@ -2424,6 +2432,7 @@ Note
 ^^^^
 
 - For more information about key codes, please refer to the chapter Keyboard/Keypad Page of `Universal Serial Bus HID Usage Tables <https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf>`_.
+- To use this command to interact with iOS products, your devices need to pass `MFI <https://mfi.apple.com/>`_ certification first.
 
 Example
 ^^^^^^^^
@@ -2464,6 +2473,12 @@ Parameters
 -  **<Y_displacement>**: Y displacement
 -  **<wheel>**: wheel
 
+Note
+^^^^
+
+- For more information about HID mouse, please refer to the section Generic Desktop Page, and Application Usages of `Universal Serial Bus HID Usage Tables <https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf>`_.
+- To use this command to interact with iOS products, your devices need to pass `MFI <https://mfi.apple.com/>`_ certification first.
+
 Example
 ^^^^^^^^
 
@@ -2499,6 +2514,11 @@ Parameter
 ^^^^^^^^^^
 
 -  **<consumer_usage_id>**: consumer ID, such as power, reset, help, volume and so on. See chapter Consumer Page (0x0C) of `HID Usage Tables for Universal Serial Bus (USB) <https://usb.org/sites/default/files/hut1_21_0.pdf>`_ for more information.
+
+Note
+^^^^
+
+- To use this command to interact with iOS products, your devices need to pass `MFI <https://mfi.apple.com/>`_ certification first.
 
 Example
 ^^^^^^^^
