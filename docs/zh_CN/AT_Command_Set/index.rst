@@ -115,7 +115,7 @@ AT 消息
 
 - ESP-AT 响应（被动）
   
-  每个输入的 ESP-AT 命令都会返回响应，告诉发送者 ESP-AT 命令的执行结果。
+  每个输入的 ESP-AT 命令都会返回响应，告诉发送者 ESP-AT 命令的执行结果。响应的最后一条消息必然是 ``OK`` 或者 ``ERROR``。
 
   .. list-table:: ESP-AT 响应
       :header-rows: 1
