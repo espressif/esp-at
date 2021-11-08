@@ -1,10 +1,12 @@
 Released Firmware
 =================
 
-It is recommended to use the lastest version of firmware. Espressif provides AT firmware for the following ESP32-C3 series of modules. 
+:link_to_translation:`zh_CN:[中文]`
+
+It is recommended to use the lastest version of firmware. Currently, Espressif only releases AT firmware for the following ESP32-C3 series of modules. 
 
 .. note::
-  If you are using a module that is not listed here, you can either use the firmware for the module that has the same hardware configuration as yours (:doc:`ESP-AT Firmware Differences <../Compile_and_Develop/esp-at_firmware_differences>`), or create a factory parameter bin for your module (:doc:`How to Generate Factory Parameter Bin <../Compile_and_Develop/How_to_create_factory_parameter_bin>`).
+  If there is no released firmware for your module, you can either use the firmware for the module that has the same hardware configuration as yours (see :doc:`../Compile_and_Develop/esp-at_firmware_differences` for which module has the same configuration), or create a factory parameter bin for your module (see :doc:`../Compile_and_Develop/How_to_create_factory_parameter_bin` for details).
 
 ESP32-C3-MINI-1 Series
 ^^^^^^^^^^^^^^^^^^^^^^
