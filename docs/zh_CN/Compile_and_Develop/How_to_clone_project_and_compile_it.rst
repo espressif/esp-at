@@ -3,7 +3,7 @@
 
 :link_to_translation:`en:[English]`
 
-本文档详细介绍了如何编译 ESP-AT 工程，并将生成的固件烧录到 ESP 设备中，包括 ESP32 和 ESP32-C3。当默认的 :doc:`官方发布的固件 <../AT_Binary_Lists/index>` 无法满足需求时，如您需要自定义 :doc:`AT 端口管脚 <How_to_set_AT_port_pin>`、:doc:`经典蓝牙服务 <How_to_enable_ESP32_AT_Classic_Bluetooth>` 以及 :doc:`分区 <How_to_customize_partitions>` 等，那么就需要编译 ESP-AT 工程。
+本文档详细介绍了如何编译 ESP-AT 工程，并将生成的固件烧录到 ESP 设备中，包括 ESP32 和 ESP32-C3。当默认的 :doc:`官方发布的固件 <../AT_Binary_Lists/index>` 无法满足需求时，如您需要自定义 :doc:`AT 端口管脚 <How_to_set_AT_port_pin>`、:doc:`低功耗蓝牙服务 <How_to_customize_BLE_services>` 以及 :doc:`分区 <How_to_customize_partitions>` 等，那么就需要编译 ESP-AT 工程。
 
 文档结构如下所示。
 

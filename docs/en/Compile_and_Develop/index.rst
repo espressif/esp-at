@@ -14,7 +14,7 @@ How to Compile and Develop Your Own AT Project
    How to Create Factory Parameter Bin <How_to_create_factory_parameter_bin>
    How to Customize Bluetooth® LE Services <How_to_customize_BLE_services>
    How to Customize Partitions <How_to_customize_partitions>
-   How to Enable ESP32 AT Classic Bluetooth® <How_to_enable_ESP32_AT_Classic_Bluetooth>
+   How to Enable ESP32 AT Classic Bluetooth® <how_to_enable_at_classic_bluetooth>
    How to Enable ESP32 AT Ethernet <How_to_enable_ESP_AT_Ethernet>
    How to Add Support for a Module <How_to_add_support_for_a_module>
    ESP32 SDIO AT Guide <esp32-sdio-at-guide.rst>
