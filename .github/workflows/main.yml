@@ -17,8 +17,7 @@ jobs:
         python-version: '3.x'
     - name: clone esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"silence\": 0}" > build/module_info.json
         ./build.py reconfigure || echo "skip exception"
@@ -87,8 +86,7 @@ jobs:
         python-version: '3.x'
     - name: clone esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"silence\": 1}" > build/module_info.json
         ./build.py reconfigure || echo "skip exception"
@@ -98,6 +96,7 @@ jobs:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
         python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+
     - name: Compiling
       env:
         AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
@@ -157,8 +156,7 @@ jobs:
         python-version: '3.x'
     - name: clone esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"silence\": 0}" > build/module_info.json
         ./build.py reconfigure || echo "skip exception"
@@ -226,8 +224,7 @@ jobs:
         python-version: '3.x'
     - name: clone esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"silence\": 0}" > build/module_info.json
         ./build.py reconfigure || echo "skip exception"
@@ -295,8 +292,7 @@ jobs:
         python-version: '3.x'
     - name: clone esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-D2WD\", \"silence\": 0}" > build/module_info.json
         ./build.py reconfigure || echo "skip exception"
@@ -364,8 +360,7 @@ jobs:
         python-version: '3.x'
     - name: clone esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"MINI-1\", \"silence\": 0}" > build/module_info.json
         ./build.py reconfigure || echo "skip exception"
@@ -433,8 +428,7 @@ jobs:
         python-version: '3.x'
     - name: clone esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32_QCLOUD\", \"silence\": 0}" > build/module_info.json
         ./build.py reconfigure || echo "skip exception"
@@ -502,8 +496,7 @@ jobs:
         python-version: '3.x'
     - name: clone esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"silence\": 0}" > build/module_info.json
 
@@ -591,8 +584,7 @@ jobs:
         python-version: '3.x'
     - name: clone esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"silence\": 0}" > build/module_info.json
         ./build.py reconfigure || echo "skip exception"
@@ -648,8 +640,7 @@ jobs:
         python-version: '3.x'
     - name: clone esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"silence\": 0}" > build/module_info.json
         echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
@@ -710,8 +701,7 @@ jobs:
         python-version: '3.x'
     - name: clone esp-idf
       run: |
-        pip install --upgrade pip
-        pip install pyyaml xlrd
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3_QCLOUD\", \"silence\": 0}" > build/module_info.json
         ./build.py reconfigure || echo "skip exception"
