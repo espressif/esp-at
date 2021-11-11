@@ -5,7 +5,7 @@ Bluetooth® Low Energy AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
-AT firmware supports `Bluetooth® Core Specification Version 5.0 <https://www.bluetooth.com/specifications/archived-specifications/>`_. Currently, both ESP32 and ESP32-C3 support Bluetooth LE commands.
+ Currently, both ESP32 and ESP32-C3 support Bluetooth LE commands. AT firmware for ESP32 series supports `Bluetooth® Core Specification Version 4.2 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_, and AT firmware for ESP32-C3 supports `Bluetooth® Core Specification Version 5.0 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_.
 
 - :ref:`AT+BLEINIT <cmd-BINIT>`: Bluetooth LE initialization.
 - :ref:`AT+BLEADDR <cmd-BADDR>`: Query/Set Bluetooth LE device address.
