@@ -562,7 +562,7 @@ static void non_blocking_upgrade_task(void *parameter)
     s_esp_at_ota_started = true;
     ota_param_t *p = (ota_param_t *)parameter;
 
-    if (esp_at_upgrade_process((esp_at_ota_mode_type)(p->ota_mode), (uint8_t *)(p->version), p->partition_name)) {
+    if (esp_at_upgrade_process((esp_at_ota_mode_type)(p->ota_mode), strlen(p->version) != 0 ? (uint8_t *)(p->version) : NULL, p->partition_name)) {
         esp_at_port_wait_write_complete(ESP_AT_PORT_TX_WAIT_MS_MAX);
     } else {
         esp_at_set_upgrade_state(ESP_AT_OTA_STATE_FAILED);
