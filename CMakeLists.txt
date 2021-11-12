@@ -48,7 +48,7 @@ add_compile_options("-DESP_AT_PROJECT_COMMIT_ID=\"${ESP_AT_PROJECT_COMMIT_ID}\""
 
 # add default fallback dns server
 set(FALLBACK_DNS_SERVER "8.8.8.8")
-add_compile_options(-D"FALLBACK_DNS_SERVER_ADDRESS(p)=ipaddr_aton(\"${FALLBACK_DNS_SERVER}\",(p))\;")
+add_compile_options("-DFALLBACK_DNS_SERVER_ADDRESS(p)=ipaddr_aton(\"${FALLBACK_DNS_SERVER}\",(p))")
 
 include(${IDF_PATH}/tools/cmake/project.cmake)
 
