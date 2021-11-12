@@ -494,6 +494,7 @@
 -  设置 Light-sleep 模式前，建议提前通过 :ref:`AT+SLEEPWKCFG <cmd-WKCFG>` 命令设置好唤醒源，否则没法唤醒，设备将一直处于睡眠状态
 -  设置 Light-sleep 模式后，如果 Light-sleep 唤醒条件不满足时，设备将自动进入睡眠模式，当 Light-sleep 唤醒条件满足时，设备将自动从睡眠模式中唤醒
 -  对于 BLE 模式下的 Light-sleep 模式，用户必须确保外接 32KHz 晶振，否则，Light-sleep 模式会以 Modem-sleep 模式工作。目前 AT 仅支持 ``ESP32`` 模块下的 Light-sleep 模式以 Modem-sleep 模式工作。
+-  AT+SLEEP 更多示例请参考文档 :doc:`../AT_Command_Examples/sleep_at_examples`。
 
 示例
 ^^^^

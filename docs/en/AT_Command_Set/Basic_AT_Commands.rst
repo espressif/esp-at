@@ -495,6 +495,7 @@ Note
 -  Before setting the Light-sleep mode, it is recommended to set the wakeup source in advance through the command :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`, otherwise ESP devices can't wake up and will always be in sleep mode.
 -  After setting the Light-sleep mode, if the Light-sleep wakeup condition is not met, ESP devices will automatically enter the sleep mode. When the Light-sleep wakeup condition is met, ESP devices will automatically wake up from sleep mode.
 -  For Light-sleep mode in BLE mode, users must ensure external 32KHz crystal oscillator, otherwise the Light-sleep mode will work in Modem-sleep mode. At present, AT only supports Light-sleep of ``ESP32`` to work in Modem-sleep without external 32KHz crystal oscillator.
+-  For more examples, please refer to :doc:`../AT_Command_Examples/sleep_at_examples`.
 
 Example
 ^^^^^^^^
