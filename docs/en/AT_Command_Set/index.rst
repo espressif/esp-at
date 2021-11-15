@@ -20,6 +20,7 @@ Here is a list of AT commands. Some of them can only work on the ESP32 series, s
    Signaling Test AT Commands <Signaling_Test_AT_Commands>
    Web server AT Commands <Web_server_AT_Commands>
    Driver AT Commands <Driver_AT_Commands>
+   User AT Commands <user_at_commands>
 
 It is strongly recommended to read the following sections for some common information on AT commands before you dive into the details of each command.   
 

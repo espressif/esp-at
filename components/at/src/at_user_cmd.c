@@ -30,12 +30,16 @@
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 
+#include "esp_http_client.h"
+#include "esp_https_ota.h"
 #include "esp_at_core.h"
 #include "esp_at.h"
 
 #ifdef CONFIG_AT_USER_COMMAND_SUPPORT
 
 #define AT_USERRAM_READ_BUFFER_SIZE     1024
+#define AT_USEROTA_URL_LEN_MAX          (8 * 1024)
+
 typedef enum {
     AT_USERRAM_FREE = 0,
     AT_USERRAM_MALLOC,
@@ -47,11 +51,14 @@ typedef enum {
 
 static uint8_t *sp_user_ram = NULL;
 static uint32_t s_user_ram_size = 0;
-static xSemaphoreHandle s_at_userram_sync_sema;
+static int32_t s_user_ota_total_size = 0;
+static int32_t s_user_ota_recv_size = 0;
+static bool s_user_ota_is_chunked = true;
+static xSemaphoreHandle s_at_user_sync_sema;
 
-static void at_userram_wait_data_cb(void)
+static void at_user_wait_data_cb(void)
 {
-    xSemaphoreGive(s_at_userram_sync_sema);
+    xSemaphoreGive(s_at_user_sync_sema);
 }
 
 static uint8_t at_setup_cmd_userram(uint8_t para_num)
@@ -127,17 +134,17 @@ static uint8_t at_setup_cmd_userram(uint8_t para_num)
         }
         esp_at_response_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT);
 
-        if (!s_at_userram_sync_sema) {
-            s_at_userram_sync_sema = xSemaphoreCreateBinary();
-            if (!s_at_userram_sync_sema) {
+        if (!s_at_user_sync_sema) {
+            s_at_user_sync_sema = xSemaphoreCreateBinary();
+            if (!s_at_user_sync_sema) {
                 return ESP_AT_RESULT_CODE_ERROR;
             }
         }
         uint32_t had_written_len = 0;
-        esp_at_port_enter_specific(at_userram_wait_data_cb);
+        esp_at_port_enter_specific(at_user_wait_data_cb);
 
         // receive at cmd port data to user ram
-        while (xSemaphoreTake(s_at_userram_sync_sema, portMAX_DELAY)) {
+        while (xSemaphoreTake(s_at_user_sync_sema, portMAX_DELAY)) {
             had_written_len += esp_at_port_read_data(sp_user_ram + offset + had_written_len, length - had_written_len);
             if (had_written_len == length) {
                 printf("Recv %d bytes\r\n", had_written_len);
@@ -151,8 +158,8 @@ static uint8_t at_setup_cmd_userram(uint8_t para_num)
                 break;
             }
         }
-        vSemaphoreDelete(s_at_userram_sync_sema);
-        s_at_userram_sync_sema = NULL;
+        vSemaphoreDelete(s_at_user_sync_sema);
+        s_at_user_sync_sema = NULL;
         return ESP_AT_RESULT_CODE_PROCESS_DONE;
     }
 
@@ -208,8 +215,141 @@ static uint8_t at_query_cmd_userram(uint8_t *cmd_name)
     return ESP_AT_RESULT_CODE_OK;
 }
 
+static esp_err_t _http_event_handler(esp_http_client_event_t *evt)
+{
+    switch (evt->event_id) {
+    case HTTP_EVENT_ERROR:
+        printf("http(https) error\r\n");
+        break;
+    case HTTP_EVENT_ON_CONNECTED:
+        printf("http(https) connected\r\n");
+        break;
+    case HTTP_EVENT_HEADER_SENT:
+        printf("http(https) header sent\r\n");
+        break;
+    case HTTP_EVENT_ON_HEADER:
+        printf("http(https) headed key=%s, value=%s\r\n", evt->header_key, evt->header_value);
+
+        // get OTA image size
+        if (strcmp(evt->header_key, "Content-Length") == 0) {
+            s_user_ota_total_size = atoi(evt->header_value);
+            s_user_ota_is_chunked = false;
+        }
+
+        break;
+    case HTTP_EVENT_ON_DATA:
+        s_user_ota_recv_size += evt->data_len;
+
+        // chunked check
+        if (s_user_ota_is_chunked) {
+            printf("receive len=%d, receive total len=%d\r\n", evt->data_len, s_user_ota_recv_size);
+        } else {
+            printf("total_len=%d(%d), %0.1f%%!\r\n", s_user_ota_total_size, s_user_ota_recv_size, (s_user_ota_recv_size*1.0) * 100 / s_user_ota_total_size);
+        }
+
+        break;
+    case HTTP_EVENT_ON_FINISH:
+        printf("http(https) finished\r\n");
+        break;
+    case HTTP_EVENT_DISCONNECTED:
+        printf("http(https) disconnected\r\n");
+        break;
+    }
+
+    return ESP_OK;
+}
+
+static uint8_t at_setup_cmd_userota(uint8_t para_num)
+{
+#define TEMP_BUFFER_SIZE    32
+    uint8_t buffer[TEMP_BUFFER_SIZE] = {0};
+    int32_t length = 0;
+    int32_t cnt = 0;
+
+    // length
+    if (esp_at_get_para_as_digit(cnt++, &length) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+    if ((length <= 0) || (length > AT_USEROTA_URL_LEN_MAX)) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    // parameters are ready
+    if (cnt != para_num) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    esp_at_response_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT);
+
+    uint8_t *url = (uint8_t *)calloc(1, length + 1);
+    if (url == NULL) {
+        printf("no mem %d\r\n", length);
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if (!s_at_user_sync_sema) {
+        s_at_user_sync_sema = xSemaphoreCreateBinary();
+        if (!s_at_user_sync_sema) {
+            free(url);
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+    }
+
+    int32_t had_received_len = 0;
+    esp_at_port_enter_specific(at_user_wait_data_cb);
+
+    // receive at cmd port data
+    while (xSemaphoreTake(s_at_user_sync_sema, portMAX_DELAY)) {
+        had_received_len += esp_at_port_read_data(url + had_received_len, length - had_received_len);
+        if (had_received_len == length) {
+            esp_at_port_exit_specific();
+
+            snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\nRecv %d bytes\r\n", length);
+            esp_at_port_write_data(buffer, strlen((char *)buffer));
+
+            had_received_len = esp_at_port_get_data_length();
+            if (had_received_len > 0) {
+                snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\nbusy p...\r\n");
+                esp_at_port_write_data(buffer, strlen((char *)buffer));
+            }
+
+            break;
+        }
+    }
+
+    printf("url is: %s\r\n", url);
+    vSemaphoreDelete(s_at_user_sync_sema);
+    s_at_user_sync_sema = NULL;
+
+    s_user_ota_total_size = 0;
+    s_user_ota_recv_size = 0;
+    s_user_ota_is_chunked = true;
+
+    esp_http_client_config_t config = {
+        .url = (const char*)url,
+        .event_handler = _http_event_handler,
+        .keep_alive_enable = true,
+        .buffer_size = 2048,
+    };
+
+    esp_err_t ret = esp_https_ota(&config);
+
+    free(url);
+
+    if (ret == ESP_OK) {
+        esp_at_response_result(ESP_AT_RESULT_CODE_OK);
+        esp_at_port_wait_write_complete(ESP_AT_PORT_TX_WAIT_MS_MAX);
+        esp_restart();
+        for(;;){
+        }
+    } else {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+}
+
 static const esp_at_cmd_struct s_at_user_cmd[] = {
     {"+USERRAM", NULL, at_query_cmd_userram, at_setup_cmd_userram, NULL},
+    {"+USEROTA", NULL, NULL, at_setup_cmd_userota, NULL},
 };
 
 bool esp_at_user_cmd_regist(void)

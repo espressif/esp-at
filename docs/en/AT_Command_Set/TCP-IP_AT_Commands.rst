@@ -1514,7 +1514,7 @@ Notes
 -  The speed of the upgrade depends on the network status.
 -  If the upgrade fails due to unfavorable network conditions, AT will return ``ERROR``. Please wait for some time before retrying.
 -  If you use Espressif's AT `BIN <https://www.espressif.com/en/support/download/at>`_, ``AT+CIUPDATE`` will download a new AT BIN from the Espressif Cloud.
--  If you use a user-compiled AT BIN, you need to implement your own AT+CIUPDATE FOTA function. ESP-AT project provides an example of `FOTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_ota_cmd.c>`_.
+-  If you use a user-compiled AT BIN, you need to implement your own AT+CIUPDATE FOTA function or use :ref:`AT+USEROTA <cmd-USEROTA>` or :ref:`AT+WEBSERVER <cmd-WEBSERVER>` command. ESP-AT project provides an example of `FOTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_ota_cmd.c>`_.
 -  After you upgrade the AT firmware, you are suggested to call the command :ref:`AT+RESTORE <cmd-RESTORE>` to restore the factory default settings.
 -  The timeout of OTA process is ``3`` minutes.
 -  The response ``OK`` in non-blocking mode does not necessarily come before the response ``+CIPUPDATE:<state>``. It may be output before ``+CIPUPDATE:<state>`` or after it.
