@@ -496,7 +496,7 @@ If data is transmitted successfully, the system returns:
 
 ::
 
-    SEND OK 
+    SEND OK
 
 Execute Command
 ^^^^^^^^^^^^^^^
@@ -535,6 +535,11 @@ Parameters
 -  **<length>**: data length. Maximum: 8192 bytes.
 -  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. It can be set in UDP transmission.
 -  **<remote port>**: the remote port number.
+
+Notes
+^^^^^
+
+- You can use :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command to configure socket options for each TCP connection. For example, setting <so_sndtimeo> to 5000 will enable TCP send to return results within 5 seconds, whether it succeeds or fails. This can save the time that the MCU waits for AT command response.
 
 .. _cmd-SENDL:
 
@@ -606,6 +611,11 @@ Parameters
 -  **<remote port>**: the remote port number.
 -  **<had sent len>**: the length of data successfully sent to the underlying protocol stack.
 -  **<port recv len>**: data length received by AT command port.
+
+Notes
+^^^^^
+
+- You can use :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command to configure socket options for each TCP connection. For example, setting <so_sndtimeo> to 5000 will enable TCP send to return results within 5 seconds, whether it succeeds or fails. This can save the time that the MCU waits for AT command response.
 
 .. _cmd-SENDLCFG:
 
@@ -725,6 +735,7 @@ Notes
 -  When the requirement of data length is met, or when the string ``\0`` (0x5c, 0x30 in ASCII) appears, the transmission of data starts. Go back to the normal command mode and wait for the next AT command.
 -  If the data contains the ``\<any>``, it means that drop backslash symbol and only use ``<any>`` character.
 -  When sending ``\0``, please use a backslash to escape it as ``\\0``.
+- You can use :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command to configure socket options for each TCP connection. For example, setting <so_sndtimeo> to 5000 will enable TCP send to return results within 5 seconds, whether it succeeds or fails. This can save the time that the MCU waits for AT command response.
 
 .. _cmd-CLOSE:
 
@@ -2166,7 +2177,7 @@ Query the current DNS server information.
 
 ::
 
-    +CIPDNS:<enable>[,<"DNS IP1">,<"DNS IP2">,<"DNS IP3">]
+    +CIPDNS:<enable>[,<"DNS IP1">][,<"DNS IP2">][,<"DNS IP3">]
     OK
 
 Set Command
@@ -2180,7 +2191,7 @@ Set DNS server information.
 
 ::
 
-    AT+CIPDNS=<enable>[,<"DNS IP1">,<"DNS IP2">,<"DNS IP3">]
+    AT+CIPDNS=<enable>[,<"DNS IP1">][,<"DNS IP2">][,<"DNS IP3">]
 
 **Response:**
 
@@ -2197,14 +2208,14 @@ or
 Parameters
 ^^^^^^^^^^
 
--  **<enable>**: configure DNS settings
+-  **<enable>**: configure DNS server settings
 
-   -  0: Enable automatic DNS settings from DHCP. The DNS will be restored to ``208.67.222.222``. Only when DHCP is updated will it take effect.
-   -  1: Enable manual DNS settings. If you do not set a value for ``<DNS IPx>``, it will use ``208.67.222.222`` by default.
+   -  0: Enable automatic DNS server settings from DHCP. The DNS will be restored to ``208.67.222.222`` and ``8.8.8.8``. Only when the ESP station completes the DHCP process, the DNS server of the ESP station could be updated.
+   -  1: Enable manual DNS server settings. If you do not set a value for ``<DNS IPx>``, it will use ``208.67.222.222`` and ``8.8.8.8`` by default.
 
--  **<"DNS IP1">**: the first DNS IP. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
--  **<"DNS IP2">**: the second DNS IP. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
--  **<"DNS IP3">**: the third DNS IP. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
+-  **<"DNS IP1">**: the first DNS server IP address. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
+-  **<"DNS IP2">**: the second DNS server IP address. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
+-  **<"DNS IP3">**: the third DNS server IP address. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
 
 Notes
 ^^^^^

@@ -8,7 +8,7 @@ As ESP-AT enables CI (Continuous Integration) on GitHub, temporary versions of E
 .. note::
   **The temporary version of AT firmware is only for testing, and Espressif is not responsible for it**. You need to test and save the firmware by yourself.
 
-The following steps guide you on how to download the latest temporary version of AT firmware from GitHub:
+The following steps guide you on how to download the latest temporary version of AT firmware from GitHub. Before you start, please sign in your GitHub account, as you need login permission to download firmware. 
 
 1. Open the website https://github.com/espressif/esp-at.
 
