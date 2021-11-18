@@ -26,6 +26,7 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPSTO <cmd-STO>`: Query/Set the local TCP Server Timeout.
 -  :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>`: Query/Set the time zone and SNTP server.
 -  :ref:`AT+CIPSNTPTIME <cmd-SNTPT>`: Query the SNTP time.
+-  :ref:`AT+CIPSNTPINTV <cmd-SNTPINTV>`: Query/Set the SNTP time synchronization interval.
 -  :ref:`AT+CIUPDATE <cmd-UPDATE>`: Upgrade the firmware through Wi-Fi.
 -  :ref:`AT+CIPDINFO <cmd-IPDINFO>`: Set "+IPD" message mode.
 -  :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`: Query/Set SSL clients.
@@ -1386,6 +1387,62 @@ Example
     AT+CIPSNTPTIME?
     +CIPSNTPTIME:Mon Dec 12 02:33:32 2016
     OK  
+
+.. _cmd-SNTPINTV:
+
+:ref:`AT+CIPSNTPINTV <TCPIP-AT>`: Query/Set the SNTP time synchronization interval
+----------------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+CIPSNTPINTV? 
+
+**Response:**
+
+::
+
+    +CIPSNTPINTV:<interval second>
+
+    OK
+
+Set Command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+CIPSNTPINTV=<interval second>
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+""""""""""
+
+-  **<interval second>**: the SNTP time synchronization interval. Unit: second. Range: [15,4294967].
+
+Example
+^^^^^^^^
+
+::
+
+    AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
+
+    OK
+
+    // synchronize SNTP time every hour
+    AT+CIPSNTPINTV=3600
+
+    OK
 
 .. _cmd-UPDATE:
 

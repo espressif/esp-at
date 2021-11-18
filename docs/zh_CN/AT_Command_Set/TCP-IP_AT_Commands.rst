@@ -26,6 +26,7 @@ TCP/IP AT 命令
 -  :ref:`AT+CIPSTO <cmd-STO>`：查询/设置本地 TCP 服务器超时时间
 -  :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>`：查询/设置时区和 SNTP 服务器
 -  :ref:`AT+CIPSNTPTIME <cmd-SNTPT>`：查询 SNTP 时间
+-  :ref:`AT+CIPSNTPINTV <cmd-SNTPINTV>`：查询/设置 SNTP 时间同步的间隔
 -  :ref:`AT+CIUPDATE <cmd-UPDATE>`：通过 Wi-Fi 升级固件
 -  :ref:`AT+CIPDINFO <cmd-IPDINFO>`：设置 +IPD 消息详情
 -  :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`：查询/设置 SSL 客户端配置
@@ -1386,6 +1387,62 @@ TCP/IP AT 命令
     AT+CIPSNTPTIME?
     +CIPSNTPTIME:Mon Dec 12 02:33:32 2016
     OK  
+
+.. _cmd-SNTPINTV:
+
+:ref:`AT+CIPSNTPINTV <TCPIP-AT>`：查询/设置 SNTP 时间同步的间隔
+----------------------------------------------------------------------------------
+
+查询命令
+^^^^^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+CIPSNTPINTV? 
+
+**响应：**
+
+::
+
+    +CIPSNTPINTV:<interval second>
+
+    OK
+
+设置命令
+^^^^^^^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+CIPSNTPINTV=<interval second>
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+-  **<interval second>**：SNTP 时间同步间隔。单位：秒。范围：[15,4294967]。
+
+示例
+^^^^
+
+::
+
+    AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
+
+    OK
+
+    // 每小时同步一次时间
+    AT+CIPSNTPINTV=3600
+
+    OK
 
 .. _cmd-UPDATE:
 
