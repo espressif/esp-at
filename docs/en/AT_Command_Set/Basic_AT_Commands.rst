@@ -704,6 +704,7 @@ Notes
 ^^^^^
 
 -  Please make sure that you have downloaded at_customize.bin before using this command. For more details, please refer to :doc:`../Compile_and_Develop/How_to_customize_partitions`.
+-  Before downloading the secondary user partition, please refer :doc:`../Compile_and_Develop/how_to_generate_pki_files` to generate the binary user partition file.
 -  When erasing the targeted user partition in its entirety, you can omit the parameters ``<offset>`` and ``<length>``. For example, command ``AT+SYSFLASH=0,"ble_data"`` can erase the entire "ble_data" user partition. But if you want to keep the two parameters, they have to be 4KB-aligned.
 -  The introduction to partitions is in `ESP-IDF Partition Tables <http://esp-idf.readthedocs.io/en/latest/api-guides/partition-tables.html>`_.
 -  If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
@@ -833,27 +834,27 @@ Parameters
 
   - For ESP32 devices, the range is [40,84]:
 
-    ========= ============ ==========
-    set value actual value actual dBm
-    ========= ============ ==========
-    [40,43]   34           8.5
-    [44,51]   44           11
-    [52,55]   52           13
-    [56,59]   56           14
-    [60,65]   60           15
-    [66,71]   66           16.5
-    [72,77]   72           18
-    [78,84]   78           19.5
-    ========= ============ ==========
+    ========= ============ ============ ==========
+    set value   get value  actual value actual dBm
+    ========= ============ ============ ==========
+    [40,43]   34           34           8.5
+    [44,51]   44           44           11
+    [52,55]   52           52           13
+    [56,59]   56           56           14
+    [60,65]   60           60           15
+    [66,71]   66           66           16.5
+    [72,77]   72           72           18
+    [78,84]   78           78           19.5
+    ========= ============ ============ ==========
 
   - For ESP32-C3 devices, the range is [40,84]:
 
-    ========= ============ ==========
-    set value actual value actual dBm
-    ========= ============ ==========
-    [40,80]   <set value>  <set value> * 0.25
-    [81,84]   80           20
-    ========= ============ ==========
+    ========= ============ ============ ==========
+    set value   get value  actual value actual dBm
+    ========= ============ ============ ==========
+    [40,80]   <set value>  <set value>  <set value> * 0.25
+    [81,84]   <set value>  80           20
+    ========= ============ ============ ==========
 
 -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,7].
 

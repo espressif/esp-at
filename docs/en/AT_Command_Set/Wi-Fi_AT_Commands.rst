@@ -241,7 +241,7 @@ Parameters
 
    -  Escape character syntax is needed if SSID or password contains special characters, such ``,``, ``"``, or ``\\``.
 
--  **<pwd>**: password, MAX: 64-byte ASCII.
+-  **<pwd>**: password, MAX: 63-byte ASCII.
 -  **<bssid>**: the MAC address of the target AP. It cannot be omitted when multiple APs have the same SSID.
 -  **<channel>**: channel.
 -  **<rssi>**: signal strength.
@@ -619,7 +619,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<ssid>**: string parameter showing SSID of the AP.
--  **<pwd>**: string parameter showing the password. Length: 8 ~ 64 bytes ASCII.
+-  **<pwd>**: string parameter showing the password. Length: 8 ~ 63 bytes ASCII.
 -  **<channel>**: channel ID.
 -  **<ecn>**: encryption method; WEP is not supported.
 
