@@ -76,6 +76,7 @@ extensions = ['breathe',
               'sphinxcontrib.rackdiag',
               'sphinxcontrib.packetdiag',
               'html_redirects',
+              'sphinx_markdown_tables'
               ]
 
 # Enabling this fixes cropping of blockdiag edge labels
