@@ -87,7 +87,7 @@ static uint8_t at_setup_cmd_userram(uint8_t para_num)
     // offset
     if (operator == AT_USERRAM_WRITE || operator == AT_USERRAM_READ) {
         if (cnt != para_num) {
-            if (esp_at_get_para_as_digit(cnt++, &offset) != ESP_AT_PARA_PARSE_RESULT_FAIL) {
+            if (esp_at_get_para_as_digit(cnt++, &offset) == ESP_AT_PARA_PARSE_RESULT_FAIL) {
                 return ESP_AT_RESULT_CODE_ERROR;
             }
             if (offset < 0) {
