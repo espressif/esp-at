@@ -9,7 +9,7 @@ This document mainly introduces the implementation and use of SPI AT, mainly inv
 
 .. note::
 
-   This document mainly introduces the implementation and use of SPI AT for ESP32-C and ESP32-S series. For ESP32 series, please refer to `ESP32 SPI AT <https://github.com/espressif/esp-at/tree/master/examples/at_spi_master/spi/esp32>`_.
+   This document mainly introduces the implementation and use of SPI AT for ESP32-C and ESP32-S series. Due to hardware limit, it is not recommended to implement SPI AT on ESP32 series. Instead, use :example:`SDIO SPI AT <at_spi_master/sdspi/>` on ESP32 series.
 
 Overview
 --------------
@@ -239,7 +239,7 @@ step 4. After receiving all data, the master notifies the slave that the data tr
 Sample Code of SPI AT Master
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A code example of SPI AT master can be found under the directory `AT ESP32 SPI Master Example <https://github.com/espressif/esp-at/tree/master/examples/at_spi_master/spi/esp32_c_series>`_.
+A code example of SPI AT master can be found under the directory :example:` AT ESP32 SPI Master Example <at_spi_master/spi/esp32_c_series>`.
 
 SPI AT Throughput
 ----------------------
