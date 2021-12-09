@@ -3,6 +3,8 @@ TCP/IP AT Examples
 
 :link_to_translation:`zh_CN:[中文]`
 
+This document provides detailed command examples to illustrate how to utilize :doc:`../AT_Command_Set/TCP-IP_AT_Commands` on ESP devices.
+
 .. contents::
    :local:
    :depth: 1
@@ -10,7 +12,7 @@ TCP/IP AT Examples
 ESP device as a TCP client in single connection
 --------------------------------------------------
 
-#. Set the Wi-Fi mode to Station.
+#. Set the Wi-Fi mode to station.
 
    Command:
 
@@ -126,11 +128,11 @@ ESP device as a TCP client in single connection
 ESP device as a TCP server in multiple connections
 ----------------------------------------------------
 
-When ESP device works as a TCP server, multiple connections should be enabled; that is to say, there should be more than one client connecting to ESP device.
+When ESP device works as a TCP server, multiple connections should be enabled by :ref:`AT+CIPMUX=1 <cmd-MUX>` command, because in most cases more than one client needs to be connected to the ESP server.
 
-Below is an example showing how a TCP server is established when ESP device works in the SoftAP mode. If ESP device works as a station, you can set up a server in the same way mentioned above after connecting ESP device to the router.
+Below is an example showing how a TCP server is established when ESP device works in the softAP mode. If ESP device works as a station, you can set up a server in the same way mentioned above after connecting ESP device to the router.
 
-#. Set the Wi-Fi mode to SoftAP.
+#. Set the Wi-Fi mode to softAP.
 
    Command:
 
@@ -158,13 +160,13 @@ Below is an example showing how a TCP server is established when ESP device work
 
      OK
 
-#. Set SoftAP.
+#. Set softAP.
 
    Command:
 
    .. code-block:: none
 
-     AT+CWSAP="ESP32_SOFTAP","1234567890",5,3
+     AT+CWSAP="ESP32_softAP","1234567890",5,3
 
    Response:
 
@@ -172,7 +174,7 @@ Below is an example showing how a TCP server is established when ESP device work
 
      OK
 
-#. Query SoftAP information.
+#. Query softAP information.
 
    Command:
 
@@ -209,7 +211,7 @@ Below is an example showing how a TCP server is established when ESP device work
 
      OK
 
-#. Connect the PC to the ESP device SoftAP.
+#. Connect the PC to the ESP device softAP.
 
    .. figure:: ../../img/Connect-SoftAP.png
        :scale: 100 %
@@ -273,7 +275,7 @@ Below is an example showing how a TCP server is established when ESP device work
 UDP transmission with fixed remote IP address and port
 --------------------------------------------------------
 
-#. Set the Wi-Fi mode to Station.
+#. Set the Wi-Fi mode to station.
 
    Command:
 
@@ -429,7 +431,7 @@ UDP transmission with fixed remote IP address and port
 UDP transmission with changeable remote IP address and port
 ------------------------------------------------------------
 
-#. Set the Wi-Fi mode to Station.
+#. Set the Wi-Fi mode to station.
 
    Command:
 
@@ -604,10 +606,661 @@ UDP transmission with changeable remote IP address and port
 
      OK
 
+ESP device as an SSL client in single connection
+--------------------------------------------------
+
+#. Set the Wi-Fi mode to station.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWMODE=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Connect to the router.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWJAP="espressif","1234567890"
+
+   Response:
+
+   .. code-block:: none
+
+     WIFI CONNECTED
+     WIFI GOT IP
+
+     OK
+
+   Note:
+
+   - The SSID and password you entered may be different from those in the above command. Please replace the SSID and password with those of your router settings.
+
+#. Query the device's IP address.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSTA?
+
+   Response:
+
+   .. code-block:: none
+
+    +CIPSTA:ip:"192.168.3.112"
+    +CIPSTA:gateway:"192.168.3.1"
+    +CIPSTA:netmask:"255.255.255.0"
+
+    OK
+
+   Note:
+
+   - The query results you obtained may be different from those in the above response.
+
+#. Connect the PC to the same router which ESP device is connected to.
+
+#. Use the OpenSSL command on the PC to create an SSL server. For example, the SSL server on PC is ``192.168.3.102``, and the port is ``8070``.
+
+   Command:
+
+   .. code-block:: none
+
+     openssl s_server -cert /home/esp-at/components/customized_partitions/raw_data/server_cert/server_cert.crt -key /home/esp-at/components/customized_partitions/raw_data/server_key/server.key -port 8070
+
+   Response:
+
+   .. code-block:: none
+
+     ACCEPT
+
+#. Connect the ESP device to the SSL server as a client over SSL. The server's IP address is ``192.168.3.102``, and the port is ``8070``.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSTART="SSL","192.168.3.102",8070
+
+   Response:
+
+   .. code-block:: none
+
+     CONNECT
+
+     OK
+
+#. Send 4 bytes of data.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSEND=4
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+     >
+
+   Input 4 bytes, for example, ``test``, then AT will respond the following message.
+
+   .. code-block:: none
+
+     Recv 4 bytes
+
+     SEND OK
+
+   Note:
+
+   - If the number of bytes inputted are more than the length (n) set by ``AT+CIPSEND``, the system will reply ``busy p...``, and send the first n bytes. And after sending the first n bytes, the system will reply ``SEND OK``.
+
+#. Receive 4 bytes of data.
+
+   Assume that the SSL server sends 4 bytes of data (data is ``test``), the system will prompt:
+
+   .. code-block:: none
+
+     +IPD,4:test
+
+ESP device as an SSL server in multiple connections
+-----------------------------------------------------
+
+When ESP device works as an SSL server, multiple connections should be enabled by :ref:`AT+CIPMUX=1 <cmd-MUX>` command, because in most cases more than one client needs to be connected to the ESP server.
+
+Below is an example showing how an SSL server is established when ESP device works in the softAP mode. If ESP device works as a station, after connecting to the router, follow the steps for establishing a connection to an SSL server in this example.
+
+#. Set the Wi-Fi mode to softAP.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWMODE=2
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Enable multiple connections.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPMUX=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Configure the ESP softAP.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWSAP="ESP32_softAP","1234567890",5,3
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Query softAP information.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPAP?
+
+   Response:
+
+   .. code-block:: none
+
+     AT+CIPAP?
+     +CIPAP:ip:"192.168.4.1"
+     +CIPAP:gateway:"192.168.4.1"
+     +CIPAP:netmask:"255.255.255.0"
+
+     OK
+
+   Note:
+
+   - The address you obtained may be different from that in the above response.
+
+#. Set up an SSL server.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSERVER=1,8070,"SSL"
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Connect the PC to the ESP device softAP.
+
+   .. figure:: ../../img/Connect-SoftAP.png
+       :scale: 100 %
+       :align: center
+       :alt: Connect SoftAP
+
+#. Use the OpenSSL command on PC to create an SSL client and connect it to the SSL server that ESP device has created.
+
+   Command:
+
+   .. code-block:: none
+
+     openssl s_client -host 192.168.4.1 -port 8070
+
+   Response on the ESP device:
+
+   .. code-block:: none
+
+     CONNECT
+
+#. Send 4 bytes of data to connection link 0.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSEND=0,4
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+     >
+
+   Input 4 bytes, for example, ``test``, then AT will respond the following messages.
+
+   .. code-block:: none
+
+     Recv 4 bytes
+
+     SEND OK
+
+   Note:
+
+   - If the number of bytes inputted are more than the length (n) set by ``AT+CIPSEND``, the system will reply ``busy p...``, and send the first n bytes. And after sending the first n bytes, the system will reply ``SEND OK``.
+
+#. Receive 4 bytes of data from connection link 0.
+
+   Assume that the SSL server sends 4 bytes of data (data is ``test``), the system will prompt:
+
+   .. code-block:: none
+
+     +IPD,0,4:test
+
+#. Close SSL connection.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPCLOSE=0
+
+   Response:
+
+   .. code-block:: none
+
+     0,CLOSED
+
+     OK
+
+ESP device as an SSL client to create a single connection with two-way authentication
+---------------------------------------------------------------------------------------
+
+The certificate used in the example is the default certificate in esp-at. You can also generate and flash your own the certificate, then you need replace the SSL server certificate path below with your certificate path. To obtain the SSL certificate, please refer to :at:`tools/README.md` for how to generate the certificate bin and esp-at/module_config/module_name/at_customize.csv for where to flash it.
+
+#. Set the Wi-Fi mode to station.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWMODE=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Connect to the router.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWJAP="espressif","1234567890"
+
+   Response:
+
+   .. code-block:: none
+
+     WIFI CONNECTED
+     WIFI GOT IP
+
+     OK
+
+   Note:
+
+   - The SSID and password you entered may be different from those in the above command. Please replace the SSID and password with those of your router settings.
+
+#. Set the SNTP server.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSNTPCFG=1,8,"cn.ntp.org.cn","ntp.sjtu.edu.cn"
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+   Note:
+
+   - You can set the SNTP server according to your country's time zone.
+
+#. Query the SNTP time.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSNTPTIME?
+
+   Response:
+
+   .. code-block:: none
+
+     +CIPSNTPTIME:Mon Oct 18 20:12:27 2021 
+     OK
+
+   Note:
+
+   - You can check whether the SNTP time matches the real-time time to determine whether the SNTP server you set takes effect.
+
+#. Query the device's IP address.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSTA?
+
+   Response:
+
+   .. code-block:: none
+
+    +CIPSTA:ip:"192.168.3.112"
+    +CIPSTA:gateway:"192.168.3.1"
+    +CIPSTA:netmask:"255.255.255.0"
+
+    OK
+
+   Note:
+
+   - The query results you obtained may be different from those in the above response.
+
+#. Connect the PC to the same router which ESP device is connected to.
+
+#. Use the OpenSSL command on the PC to create an SSL server. For example, the SSL server on PC is ``192.168.3.102``, and the port is ``8070``.
+
+   Command:
+
+   .. code-block:: none
+
+     openssl s_server -CAfile /home/esp-at/components/customized_partitions/raw_data/server_ca/server_ca.crt -cert /home/esp-at/components/customized_partitions/raw_data/server_cert/server_cert.crt -key /home/esp-at/components/customized_partitions/raw_data/server_key/server.key -port 8070 -verify_return_error -verify_depth 1 -Verify 1
+
+   Response on the ESP device:
+
+   .. code-block:: none
+
+     CONNECT
+
+   Note:
+
+   - The certificate path in the command can be adjusted according to the location of your certificate.
+
+#. The ESP device sets up the SSL client two-way authentication configuration.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSSLCCONF=3,0,0
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Connect the ESP device to the SSL server as a client over SSL. The server's IP address is ``192.168.3.102``, and the port is ``8070``.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSTART="SSL","192.168.3.102",8070
+
+   Response:
+
+   .. code-block:: none
+
+     CONNECT
+
+     OK
+
+#. Send 4 bytes of data.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSEND=4
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+     >
+
+   Input 4 bytes, for example, ``test``, then AT will respond the following message.
+
+   .. code-block:: none
+
+     Recv 4 bytes
+
+     SEND OK
+
+   Note:
+
+   - If the number of bytes inputted are more than the length (n) set by ``AT+CIPSEND``, the system will reply ``busy p...``, and send the first n bytes. And after sending the first n bytes, the system will reply ``SEND OK``.
+
+#. Receive 4 bytes of data.
+
+   Assume that the SSL server sends 4 bytes of data (data is ``test``), the system will prompt:
+
+   .. code-block:: none
+
+     +IPD,4:test
+
+ESP device as an SSL server to create multiple connection with two-way authentication
+---------------------------------------------------------------------------------------
+
+When ESP device works as an SSL server, multiple connections should be enabled by :ref:`AT+CIPMUX=1 <cmd-MUX>` command, because in most cases more than one client needs to be connected to the ESP server.
+
+Below is an example showing how an SSL server is established when ESP device works in the station mode. If ESP device works as a softAP, refer to the example of `ESP device as an SSL server in multiple connections`_.
+
+#. Set the Wi-Fi mode to station.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWMODE=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Connect to the router.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWJAP="espressif","1234567890"
+
+   Response:
+
+   .. code-block:: none
+
+     WIFI CONNECTED
+     WIFI GOT IP
+
+     OK
+
+   Note:
+
+   - The SSID and password you entered may be different from those in the above command. Please replace the SSID and password with those of your router settings.
+
+#. Query the device's IP address.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSTA?
+
+   Response:
+
+   .. code-block:: none
+
+    +CIPSTA:ip:"192.168.3.112"
+    +CIPSTA:gateway:"192.168.3.1"
+    +CIPSTA:netmask:"255.255.255.0"
+
+    OK
+
+   Note:
+
+   - The query results you obtained may be different from those in the above response.
+
+#. Enable multiple connections.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPMUX=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Set up an SSL server.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSERVER=1,8070,"SSL",1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Connect the PC to the ESP device softAP.
+
+   .. figure:: ../../img/Connect-SoftAP.png
+       :scale: 100 %
+       :align: center
+       :alt: Connect SoftAP
+
+#. Use the OpenSSL command on PC to create an SSL client and connect it to the SSL server that ESP device has created.
+
+   Command:
+
+   .. code-block:: none
+
+     openssl s_client -CAfile /home/esp-at/components/customized_partitions/raw_data/client_ca/client_ca_00.crt -cert /home/esp-at/components/customized_partitions/raw_data/client_cert/client_cert_00.crt -key /home/esp-at/components/customized_partitions/raw_data/client_key/client_key_00.key -host 192.168.3.112 -port 8070
+
+   Response on the ESP device:
+
+   .. code-block:: none
+
+     0,CONNECT
+
+#. Send 4 bytes of data to connection link 0.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSEND=0,4
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+     >
+
+   Input 4 bytes, for example, ``test``, then AT will respond the following messages.
+
+   .. code-block:: none
+
+     Recv 4 bytes
+
+     SEND OK
+
+   Note:
+
+   - If the number of bytes inputted are more than the length (n) set by ``AT+CIPSEND``, the system will reply ``busy p...``, and send the first n bytes. And after sending the first n bytes, the system will reply ``SEND OK``.
+
+#. Receive 4 bytes of data from connection link 0.
+
+   Assume that the SSL server sends 4 bytes of data (data is ``test``), the system will prompt:
+
+   .. code-block:: none
+
+     +IPD,0,4:test
+
+#. Close SSL connection.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPCLOSE=0
+
+   Response:
+
+   .. code-block:: none
+
+     0,CLOSED
+
+     OK
+
+#. Close SSL server.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSERVER=0
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
 UART Wi-Fi passthrough transmission when the ESP device works as a TCP client in single connection
 ---------------------------------------------------------------------------------------------------
 
-#. Set the Wi-Fi mode to Station.
+#. Set the Wi-Fi mode to station.
 
    Command:
 
@@ -752,10 +1405,10 @@ UART Wi-Fi passthrough transmission when the ESP device works as a TCP client in
 
      OK
 
-UART Wi-Fi passthrough transmission when the ESP device works as a SoftAP in UDP transparent transmission
+UART Wi-Fi passthrough transmission when the ESP device works as a softAP in UDP transparent transmission
 ---------------------------------------------------------------------------------------------------------
 
-#. Set the Wi-Fi mode to SoftAP.
+#. Set the Wi-Fi mode to softAP.
 
    Command:
 
@@ -769,13 +1422,13 @@ UART Wi-Fi passthrough transmission when the ESP device works as a SoftAP in UDP
 
      OK
 
-#. Set SoftAP.
+#. Set softAP.
 
    Command:
 
    .. code-block:: none
 
-     AT+CWSAP="ESP32_SOFTAP","1234567890",5,3
+     AT+CWSAP="ESP32_softAP","1234567890",5,3
 
    Response:
 
@@ -783,7 +1436,7 @@ UART Wi-Fi passthrough transmission when the ESP device works as a SoftAP in UDP
 
      OK
 
-#. Connect the PC to the ESP device SoftAP.
+#. Connect the PC to the ESP device softAP.
 
    .. figure:: ../../img/Connect-SoftAP.png
        :scale: 100 %
