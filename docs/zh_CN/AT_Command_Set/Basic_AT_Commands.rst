@@ -176,7 +176,8 @@
 ^^^^
 
 -  **<time>**：设备进入 Deep-sleep 的时长，单位：毫秒。设定时间到后，设备自动唤醒，调用深度睡眠唤醒桩，然后加载应用程序。
-
+   
+   - 0 表示立即重启 
    - 最大 Deep-sleep 时长约为 28.8 天（2 :sup:`31`-1 毫秒）。
 
 说明
@@ -636,6 +637,13 @@
     // 连接时打印详细版提示信息
     // 连接状态发生改变时不打印信息
     AT+SYSMSG=2
+
+或
+
+::
+
+    // 透传模式下，Wi-Fi、socket、Bluetooth LE 或 Bluetooth 状态改变时会打印提示信息 
+    AT+SYSMSG=4
 
 .. _cmd-SYSFLASH:
 
@@ -1235,7 +1243,6 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
   - :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`
   - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`
   - :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`
-  - :ref:`AT+BLECONNPARAM <cmd-BCONNP>`
 
 示例
 ^^^^

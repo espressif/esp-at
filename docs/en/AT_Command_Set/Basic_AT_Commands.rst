@@ -638,6 +638,13 @@ Example
     // print no prompt info when the connection status is changed
     AT+SYSMSG=2
 
+or
+
+::
+
+    // In the transparent transmission mode, a prompt message will be printed when the Wi-Fi, socket, Bluetooth LE or Bluetooth status changes
+    AT+SYSMSG=4
+
 .. _cmd-SYSFLASH:
 
 :ref:`AT+SYSFLASH <Basic-AT>`: Query/Set User Partitions in Flash

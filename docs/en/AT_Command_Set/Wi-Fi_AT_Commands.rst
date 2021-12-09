@@ -509,7 +509,7 @@ Parameters
 -  **<rssi>**: signal strength.
 -  **<mac>**: string parameter showing MAC address of the AP.
 -  **<channel>**: channel.
--  **<scan_type>**: Wi-Fi scan type:
+-  **<scan_type>**: Wi-Fi scan type. Default: 0.
 
    -  0: active scan
    -  1: passive scan
@@ -631,7 +631,7 @@ Parameters
 -  **[<max conn>]**: maximum number of stations that ESP SoftAP can connect. Range: [1,10].
 -  **[<ssid hidden>]**:
 
-   -  0: broadcasting SSID (default). 
+   -  0: broadcasting SSID (default).
    -  1: not broadcasting SSID.
 
 Notes
@@ -639,6 +639,7 @@ Notes
 
 -  This command works only when :ref:`AT+CWMODE=2 <cmd-MODE>` or :ref:`AT+CWMODE=3 <cmd-MODE>`.
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+-  The default SSID varies from devices to device as it consists of the MAC address of the device. You can use :ref:`AT+CWSAP? <cmd-SAP>` to query the default SSID.
 
 Example
 ^^^^^^^^
@@ -1026,6 +1027,7 @@ Note
 
 -  Currently ESP devices only support 802.11b or 802.11bg or 802.11bgn mode.
 -  By default, PHY mode of ESP devices is 802.11bgn mode.
+-  This command is supported since ESP-AT v2.1.0.0
 
 .. _cmd-STAMAC:
 
@@ -1506,6 +1508,8 @@ Example
 
 ::
 
+    AT+CWMODE=1
+    AT+CWJAP="1234567890","1234567890"
     AT+MDNS=1,"espressif","_iot",8080  
     AT+MDNS=0
 
