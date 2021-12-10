@@ -132,7 +132,6 @@ static uint8_t at_setup_cmd_userram(uint8_t para_num)
         if (offset + length > s_user_ram_size) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
-        esp_at_response_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT);
 
         if (!s_at_user_sync_sema) {
             s_at_user_sync_sema = xSemaphoreCreateBinary();
@@ -142,6 +141,7 @@ static uint8_t at_setup_cmd_userram(uint8_t para_num)
         }
         uint32_t had_written_len = 0;
         esp_at_port_enter_specific(at_user_wait_data_cb);
+        esp_at_response_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT);
 
         // receive at cmd port data to user ram
         while (xSemaphoreTake(s_at_user_sync_sema, portMAX_DELAY)) {
@@ -279,8 +279,6 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
-    esp_at_response_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT);
-
     uint8_t *url = (uint8_t *)calloc(1, length + 1);
     if (url == NULL) {
         printf("no mem %d\r\n", length);
@@ -297,6 +295,7 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
 
     int32_t had_received_len = 0;
     esp_at_port_enter_specific(at_user_wait_data_cb);
+    esp_at_response_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT);
 
     // receive at cmd port data
     while (xSemaphoreTake(s_at_user_sync_sema, portMAX_DELAY)) {
