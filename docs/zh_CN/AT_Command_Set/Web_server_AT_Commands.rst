@@ -47,6 +47,7 @@ Web 服务器 AT 命令
 -  ESP-AT 在 ESP32 和 ESP32-C 系列设备中支持强制门户 (captive portal)，可参考 :ref:`示例 <using-captive-portal>`。
 -  更多示例可参考文档 :doc:`../AT_Command_Examples/Web_server_AT_Examples`。
 -  该命令的实现开源，源码请参考 :component:`at/src/at_web_server_cmd.c`。
+-  请参考 :doc:`../Compile_and_Develop/How_to_implement_OTA_update` 获取更多 OTA 命令。
 
 示例
 ^^^^

@@ -152,6 +152,7 @@ AT 输出上述信息之后，升级过程开始。如果升级完成，返回�
 -  ``AT+USEROTA`` 支持 ``HTTP`` 和 ``HTTPS``。
 -  AT 输出 ``>`` 字符后，数据中的特殊字符不需要转义字符进行转义，也不需要以新行结尾（CR-LF）。
 -  当 URL 为 ``HTTPS`` 时，不建议 SSL 认证。如果要求 SSL 认证，您必须自行生成 PKI 文件然后将它们下载到对应的分区中，之后在 ``AT+USEROTA`` 命令的实现代码中加载证书。对于 PKI 文件请参考 :doc:`../Compile_and_Develop/how_to_generate_pki_files`。对于 ``AT+USEROTA`` 命令，可参考 ESP-AT 工程提供的示例 `USEROTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_user_cmd.c>`_。
+-  请参考 :doc:`../Compile_and_Develop/How_to_implement_OTA_update` 获取更多 OTA 命令。
 
 示例
 ^^^^
