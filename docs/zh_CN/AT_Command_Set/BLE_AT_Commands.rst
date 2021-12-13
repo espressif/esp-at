@@ -331,13 +331,8 @@ Bluetooth® Low Energy AT 命令集
    -  2: BLE_SCAN_FILTER_ALLOW_UND_RPA_DIR
    -  3: BLE_SCAN_FILTER_ALLOW_WLIST_PRA_DIR
 
--  **<scan_interval>**：扫描间隔。参数范围：0x0004 ~ 0x4000。扫描间隔是 ``0.625`` 毫秒的整数倍，且范围应该在 ``2.5`` 毫秒到 ``10.24`` 秒之间。
--  **<scan_window>**：扫描窗口。参数范围：0x0004 ~ 0x4000。扫描窗口是 ``0.625`` 毫秒的整数倍，且范围应该在 ``2.5`` 毫秒到 ``10240`` 毫秒之间。
-
-说明
-^^^^
-
--  ``<scan_window>`` 参数的值不能大于 ``<scan_interval>`` 的值。
+-  **<scan_interval>**：扫描间隔。本参数值应大于等于 ``<scan_window>`` 参数值。参数范围：[0x0004,0x4000]。扫描间隔是该参数乘以 ``0.625`` 毫秒，所以实际的扫描间隔范围为 [2.5,10240] 毫秒。
+-  **<scan_window>**：扫描窗口。本参数值应小于等于 ``<scan_interval>`` 参数值。参数范围：[0x0004,0x4000]。扫描窗口是该参数乘以 ``0.625`` 毫秒，所以实际的扫描窗口范围为 [2.5,10240] 毫秒。
 
 示例
 ^^^^
@@ -500,8 +495,8 @@ Bluetooth® Low Energy AT 命令集
 参数
 ^^^^
 
--  **<adv_int_min>**：最小广播间隔，本参数值应小于等于 ``<adv_int_max>`` 参数值。参数范围：0x0020 ~ 0x4000。
--  **<adv_int_max>**：最大广播间隔，本参数值应大于等于 ``<adv_int_min>`` 参数值。参数范围：0x0020 ~ 0x4000。
+-  **<adv_int_min>**：最小广播间隔。参数范围：[0x0020,0x4000]。广播间隔等于该参数乘以 ``0.625`` 毫秒，所以实际的最小广播间隔范围为 [20,10240] 毫秒。本参数值应小于等于 ``<adv_int_max>`` 参数值。
+-  **<adv_int_max>**：最大广播间隔。参数范围：[0x0020,0x4000]。广播间隔等于该参数乘以 ``0.625`` 毫秒，所以实际的最大广播间隔范围为 [20,10240] 毫秒。本参数值应大于等于 ``<adv_int_min>`` 参数值。
 -  **<adv_type>**:
 
    -  0: ADV_TYPE_IND
@@ -535,11 +530,6 @@ Bluetooth® Low Energy AT 命令集
    -  1: RANDOM
 
 -  **[<peer_addr>]**：对方 Bluetooth LE 地址
-
-说明
-^^^^
-
--  广播间隔是 ``0.625`` 毫秒的整数倍，且范围应该在 ``20`` 毫秒到 ``10.24`` 秒之间。
 
 示例
 ^^^^
@@ -823,6 +813,7 @@ Bluetooth® Low Energy AT 命令集
    -  :ref:`AT+BLEGATTCRD <cmd-GCRD>`
    -  :ref:`AT+BLEGATTCWR <cmd-GCWR>`
    -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
+-  如果 :ref:`AT+BLECONN? <cmd-BCONN>` 在 Bluetooth LE 未初始的情况下执行 (:ref:`AT+BLEINIT=0 <cmd-BINIT>`)，则系统不会输出 ``+BLECONN:<conn_index>,<remote_address>`` 。
 
 示例
 ^^^^
@@ -886,17 +877,16 @@ Bluetooth® Low Energy AT 命令集
 ^^^^
 
 -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
--  **<min_interval>**：最小连接间隔，本参数值应小于等于 ``<max_interval>`` 参数值。范围：0x0006 ~ 0x0C80。
--  **<max_interval>**：最大连接间隔，本参数值应大于等于 ``<min_interval>`` 参数值。范围：0x0006 ~ 0x0C80。
+-  **<min_interval>**：最小连接间隔。本参数值应小于等于 ``<max_interval>`` 参数值。参数范围：[0x0006,0x0C80]。连接间隔等于该参数乘以 ``1.25`` 毫秒，所以实际的最小连接间隔范围为 [7.5,4000] 毫秒。
+-  **<max_interval>**：最大连接间隔。本参数值应大于等于 ``<min_interval>`` 参数值。参数范围：[0x0006,0x0C80]。连接间隔等于该参数乘以 ``1.25`` 毫秒，所以实际的最大连接间隔范围为 [7.5,4000] 毫秒。
 -  **<cur_interval>**：当前连接间隔。
--  **<latency>**：延迟，范围：0x0000 ~ 0x01F3。
--  **<timeout>**：超时，范围：0x000A ~ 0x0C80。超时是 ``10`` 毫秒的整数倍，且范围应该在 ``100`` 毫秒到 ``32`` 秒之间。
+-  **<latency>**：延迟。参数范围：[0x0000,0x01F3]。
+-  **<timeout>**：超时。参数范围：[0x000A,0x0C80]。超时等于该参数乘以 ``10`` 毫秒，所以实际的超时范围为 [100,32000] 毫秒。
 
 说明
 ^^^^
 
 -  本命令要求先建立连接，并且仅支持 client 角色更新连接参数。
--  连接间隔是 ``1.25`` 毫秒的整数倍，且范围应该在 ``7.5`` 毫秒到 ``4000`` 毫秒之间。
 
 示例
 ^^^^
@@ -980,7 +970,7 @@ Bluetooth® Low Energy AT 命令集
 ^^^^
 
 -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
--  **<pkt_data_len>**：数据包长度，范围：0x001b ~ 0x00fb。
+-  **<pkt_data_len>**：数据包长度，范围：[0x001B,0x00FB]。
 
 说明
 ^^^^
@@ -1691,8 +1681,10 @@ GATTC 读取服务特征值或描述符值
    -  若未设置，读取目标特征的值。
 
 -  **<len>**：数据长度。
--  **<char_value>**：服务特征值，HEX 字符串，运行 :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index> 读取。例如，若响应为 ``+BLEGATTCRD:1,30``，则表示数据长度为 1，内容为 "0x30"。
--  **[<desc_value>]**：服务特征描述符的值，HEX 字符串，运行 :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index>,<desc_index> 读取。例如，若响应为 ``+BLEGATTCRD:4,30313233``，则表示数据长度为 4，内容为 "0x30 0x31 0x32 0x33"。
+-  **<value>**：<char_value> 或者 <desc_value>。
+
+  -  **<char_value>**：服务特征值，字符串格式，运行 :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index> 读取。例如，若响应为 ``+BLEGATTCRD:0,1,0``，则表示数据长度为 1，内容为 "0"。
+  -  **<desc_value>**：服务特征描述符的值，字符串格式，运行 :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index>,<desc_index> 读取。例如，若响应为 ``+BLEGATTCRD:0,4,0123``，则表示数据长度为 4，内容为 "0123"。
 
 说明
 ^^^^
@@ -1918,7 +1910,7 @@ GATTC 写服务特征值或描述符值
 
 ::
 
-    +BLESECPARAM:<auth_req>,<iocap>,<key_size>,<init_key>,<rsp_key>,<auth_option>
+    +BLESECPARAM:<auth_req>,<iocap>,<enc_key_size>,<init_key>,<rsp_key>,<auth_option>
     OK
 
 设置命令
@@ -1932,7 +1924,7 @@ GATTC 写服务特征值或描述符值
 
 ::
 
-    AT+BLESECPARAM=<auth_req>,<iocap>,<key_size>,<init_key>,<rsp_key>[,<auth_option>]
+    AT+BLESECPARAM=<auth_req>,<iocap>,<enc_key_size>,<init_key>,<rsp_key>[,<auth_option>]
 
 **响应：**
 
@@ -1961,7 +1953,7 @@ GATTC 写服务特征值或描述符值
    -  3: NoInputNoOutput
    -  4: Keyboard display
 
--  **<key_size>**：密钥长度，取值范围 7 ~ 16 字节。
+-  **<enc_key_size>**：加密密钥长度。参数范围：[7,16]。单位：字节。
 -  **<init_key>**：多个比特位组成的初始密钥。
 -  **<rsp_key>**：多个比特位组成的响应密钥。
 -  **<auth_option>**：安全认证选项：
@@ -2560,6 +2552,7 @@ GATTC 写服务特征值或描述符值
 ::
 
     +BLUFI:0
+
     OK
 
 若 BluFi 已开启，则返回：
@@ -2567,6 +2560,7 @@ GATTC 写服务特征值或描述符值
 ::
 
     +BLUFI:1
+
     OK
 
 设置命令
@@ -2606,6 +2600,11 @@ GATTC 写服务特征值或描述符值
    -  5: WPA2_ENTERPRISE；
    -  6: WPA3_PSK；
    -  7: WPA2_WPA3_PSK。
+
+说明
+^^^^
+
+- 您只能在 Bluetooth LE 未初始化情况下开启或关闭 BluFi (:ref:`AT+BLEINIT=0 <cmd-BINIT>`)。
 
 示例
 ^^^^

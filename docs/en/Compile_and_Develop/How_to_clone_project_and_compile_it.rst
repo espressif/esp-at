@@ -76,6 +76,9 @@ To get ESP-AT, navigate to your installation directory and clone the repository 
 
 - Windows
 
+  - For ESP32 series of modules, it is recommended that you run `ESP-IDF 4.2 CMD <https://dl.espressif.com/dl/esp-idf/?idf=4.2>`__ as an administrator first. 
+  - For ESP32-C3 series of modules, it is recommended that you run `ESP-IDF 4.3 CMD <https://dl.espressif.com/dl/esp-idf/?idf=4.3>`__ as an administrator first.
+
   ::
 
     cd %userprofile%\esp
