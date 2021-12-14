@@ -7,9 +7,9 @@ SPI AT 指南
    :local:
    :depth: 1
 
-.. 注解::
+.. note::
 
-   本文档仅介绍 ESP32C、ESP32S 系列的 ESP 设备的 SPI AT 的实现与应用，ESP32 系列的 ESP 设备的 SPI AT 相关介绍请参考 `ESP32 SPI AT <https://github.com/espressif/esp-at/tree/master/examples/at_spi_master/spi/esp32>`_。
+   本文档仅介绍 ESP32-C、ESP32-S 系列的 ESP 设备的 SPI AT 的实现与应用。由于硬件限制，ESP32 系列不建议使用 SPI AT，可使用 :example:`SDIO SPI AT <at_spi_master/sdspi/>` 作为替代。
 
 简介
 ------
@@ -19,7 +19,7 @@ SPI AT 基于 AT 工程，使用 SPI 协议进行数据通信。在使用 SPI AT
 使用 SPI AT 的优势
 ^^^^^^^^^^^^^^^^^^^
 
-AT 工程默认使用 UART 协议进行数据通信， 但是 UART 协议在一些需要高速传输数据的应用场景并不适用，因此，使用支持更高传输速率的 SPI 协议传输数据成为一种较好的选择。
+AT 工程默认使用 UART 协议进行数据通信，但是 UART 协议在一些需要高速传输数据的应用场景并不适用，因此，使用支持更高传输速率的 SPI 协议传输数据成为一种较好的选择。
 
 如何启用 SPI AT？
 ^^^^^^^^^^^^^^^^^^^
@@ -30,7 +30,7 @@ AT 工程默认使用 UART 协议进行数据通信， 但是 UART 协议在一�
 2. 通过 ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI Data Transmission Mode`` 选择 SPI 数据传输模式。
 3. 通过 ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI GPIO settings`` 配置 SPI 使用的 GPIO 管脚。
 4. 通过 ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI driver settings`` 选择 SPI 从机的工作模式，并配置相关缓存区的大小。
-5. 重新编译 ``esp-at`` 工程（参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）, 烧录新的固件并运行。
+5. 重新编译 ``esp-at`` 工程（参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`），烧录新的固件并运行。
 
 SPI AT 默认管脚
 ^^^^^^^^^^^^^^^^
@@ -41,8 +41,8 @@ SPI AT 默认管脚
    :widths: 10 25
    :header-rows: 1
 
-   * - Signal
-     - GPIO Number (ESP32-C3)
+   * - 信号
+     - GPIO 编号 (ESP32-C3)
    * - SCLK
      - 6
    * - MISO
@@ -91,10 +91,10 @@ SPI AT 的通信格式为 CMD+ADDR+DUMMY+DATA（读/写）。在使用 SPI AT �
    :header-rows: 1
    :widths: 25 25 15 30
 
-   * - CMD (1 byte)
-     - ADDR (1 byte)
-     - DUMMY (1 byte)
-     - DATA (Up to 4092 bytes)
+   * - CMD（1 字节）
+     - ADDR（1 字节）
+     - DUMMY（1 字节）
+     - DATA（高达 4092 字节）
    * - 0x3
      - 0x0
      - 0x0
@@ -106,9 +106,9 @@ SPI AT 的通信格式为 CMD+ADDR+DUMMY+DATA（读/写）。在使用 SPI AT �
    :header-rows: 1
    :widths: 25 25 15 30
 
-   * - CMD (1 byte)
-     - ADDR (1 byte)
-     - DUMMY (1 byte)
+   * - CMD（1 字节）
+     - ADDR（1 字节）
+     - DUMMY（1 字节）
      - DATA
    * - 0x7
      - 0x0
@@ -121,10 +121,10 @@ SPI AT 的通信格式为 CMD+ADDR+DUMMY+DATA（读/写）。在使用 SPI AT �
    :header-rows: 1
    :widths: 25 25 15 30
 
-   * - CMD (1 byte)
-     - ADDR (1 byte)
-     - DUMMY (1 byte)
-     - DATA (Up to 4092 bytes)
+   * - CMD（1 字节）
+     - ADDR（1 字节）
+     - DUMMY（1 字节）
+     - DATA（高达 4092 字节）
    * - 0x4
      - 0x0
      - 0x0
@@ -136,9 +136,9 @@ SPI AT 的通信格式为 CMD+ADDR+DUMMY+DATA（读/写）。在使用 SPI AT �
    :header-rows: 1
    :widths: 25 25 15 30
 
-   * - CMD (1 byte)
-     - ADDR (1 byte)
-     - DUMMY (1 byte)
+   * - CMD（1 字节）
+     - ADDR（1 字节）
+     - DUMMY（1 字节）
      - DATA
    * - 0x8
      - 0x0
@@ -151,10 +151,10 @@ SPI AT 的通信格式为 CMD+ADDR+DUMMY+DATA（读/写）。在使用 SPI AT �
    :header-rows: 1
    :widths: 25 25 15 30
 
-   * - CMD (1 byte)
-     - ADDR (1 byte)
-     - DUMMY (1 byte)
-     - DATA (4 bytes)
+   * - CMD（1 字节）
+     - ADDR（1 字节）
+     - DUMMY（1 字节）
+     - DATA（4 字节）
    * - 0x1
      - 0x0
      - 0x0
@@ -172,10 +172,10 @@ SPI AT 的通信格式为 CMD+ADDR+DUMMY+DATA（读/写）。在使用 SPI AT �
    :header-rows: 1
    :widths: 25 25 15 30
 
-   * - CMD (1 byte)
-     - ADDR (1 byte)
-     - DUMMY (1 byte)
-     - DATA (4 bytes)
+   * - CMD（1 字节）
+     - ADDR（1 字节）
+     - DUMMY（1 字节）
+     - DATA（4 字节）
    * - 0x2
      - 0x4
      - 0x0
@@ -239,7 +239,7 @@ SPI AT 数据交互流程主要分为两个方面：
 SPI AT Master 示例代码
 ^^^^^^^^^^^^^^^^^^^^^^
 
-使用 SPI master 与 ESP 设备运行的 SPI slave 进行通信的示例代码请参考 `AT ESP32 SPI Master Example <https://github.com/espressif/esp-at/tree/master/examples/at_spi_master/spi/esp32_c_series>`_。
+使用 SPI master 与 ESP 设备运行的 SPI slave 进行通信的示例代码请参考 :example:` AT ESP32 SPI Master 例程 <at_spi_master/spi/esp32_c_series>`。
 
 SPI AT 速率
 --------------
@@ -251,13 +251,13 @@ SPI AT 速率
 
 1. 硬件：CPU 工作频率设置为 240 MHz，flash SPI mode 配置为 QIO 模式，flash 频率设置为 40 MHz。
 
-2. 软件：基于 ESP-IDF v4.3 的编译环境，并将示例代码中的 streambuffer 的大小调整为 8192 bytes。
+2. 软件：基于 ESP-IDF v4.3 的编译环境，并将示例代码中的 streambuffer 的大小调整为 8192 字节。
 
 - 使用 ESP32-C3 作为 SPI slave，编译并烧录 SPI AT 固件（参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`），并将 ESP32-C3 配置工作在 TCP 透传模式。其软硬件配置如下：
 
 1. 硬件：CPU 工作频率设置为 160 MHz。
 
-2. 软件：SPI-AT 的实现代码中，将 streambuffer 的大小设置为 8192 bytes，并使用 ESP-IDF 下的 example/wifi/iperf 中的 `sdkconfig.defaults.esp32c3 <https://github.com/espressif/esp-idf/blob/master/examples/wifi/iperf/sdkconfig.defaults.esp32c3>`_ 中的相关配置参数。
+2. 软件：SPI-AT 的实现代码中，将 streambuffer 的大小设置为 8192 字节，并使用 ESP-IDF 下的 example/wifi/iperf 中的 `sdkconfig.defaults.esp32c3 <https://github.com/espressif/esp-idf/blob/master/examples/wifi/iperf/sdkconfig.defaults.esp32c3>`_ 中的相关配置参数。
 
 测试结果
 ^^^^^^^^^^^^
