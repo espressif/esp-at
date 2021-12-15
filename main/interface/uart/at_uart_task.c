@@ -403,7 +403,7 @@ static void at_uart_init(void)
     uart_driver_install(esp_at_uart_port, 2048, 8192, 30,&esp_at_uart_queue,0);
 #else
     //Install UART driver, and get the queue.
-    uart_driver_install(esp_at_uart_port, 1024, 2048, 10,&esp_at_uart_queue, 0);
+    uart_driver_install(esp_at_uart_port, 1024, 2048, 16, &esp_at_uart_queue, 0);
     if ((tx_pin == 15) && (rx_pin == 13)) {         // swap pin
         uart_enable_swap();
         assert((cts_pin == -1) || (cts_pin == 3));
