@@ -182,8 +182,12 @@ retry:
                 // we can put all data together to process
                 retry_flag = pdFALSE;
                 while (xQueueReceive(esp_at_uart_queue, (void * )&event, (portTickType)0) == pdTRUE) {
-                    if ((event.type == UART_DATA) || (event.type == UART_BUFFER_FULL)) {
+                    if (event.type == UART_DATA) {
                         data_len += event.size;
+                    } else if (event.type == UART_BUFFER_FULL) {
+                        esp_at_port_recv_data_notify(data_len, portMAX_DELAY);
+                        data_len = event.size;
+                        break;
                     } else {
                         retry_flag = pdTRUE;
                         break;
