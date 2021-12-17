@@ -214,8 +214,12 @@ retry:
                 // we can put all data together to process
                 retry_flag = pdFALSE;
                 while (xQueueReceive(esp_at_uart_queue, (void * )&event, (portTickType)0) == pdTRUE) {
-                    if ((event.type == UART_DATA) || (event.type == UART_BUFFER_FULL)) {
+                    if (event.type == UART_DATA) {
                         data_len += event.size;
+                    } else if (event.type == UART_BUFFER_FULL) {
+                        esp_at_port_recv_data_notify(data_len, portMAX_DELAY);
+                        data_len = event.size;
+                        break;
                     } else {
                         retry_flag = pdTRUE;
                         break;
@@ -399,7 +403,7 @@ static void at_uart_init(void)
     uart_driver_install(esp_at_uart_port, 2048, 8192, 30,&esp_at_uart_queue,0);
 #else
     //Install UART driver, and get the queue.
-    uart_driver_install(esp_at_uart_port, 1024, 2048, 10,&esp_at_uart_queue, 0);
+    uart_driver_install(esp_at_uart_port, 1024, 2048, 16, &esp_at_uart_queue, 0);
     if ((tx_pin == 15) && (rx_pin == 13)) {         // swap pin
         uart_enable_swap();
         assert((cts_pin == -1) || (cts_pin == 3));
