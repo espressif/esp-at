@@ -250,7 +250,7 @@ Set the Bluetooth LE device name.
 Parameter
 ^^^^^^^^^^
 
--  **<device_name>**: the Bluetooth LE device name. The maximum length is 32. Default: "BLE_AT".
+-  **<device_name>**: the Bluetooth LE device name. The maximum length is 32. Default: "ESP_AT".
 
 Note
 ^^^^^
