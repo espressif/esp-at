@@ -863,19 +863,40 @@
     [81,84]   <设定值>      80           20
     ========= ============ ============ ==========
 
--  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power，取值范围为 [0,7]。
+-  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。
 
-   -  0：7 dBm
-   -  1：4 dBm
-   -  2：1 dBm
-   -  3：-2 dBm
-   -  4：-5 dBm
-   -  5：-8 dBm
-   -  6：-11 dBm
-   -  7：-14 dBm
+   - ESP32 设备的参数值：
 
--  **<ble_scan_power>**：Bluetooth LE 扫描的 RF TX Power，取值范围及对应值同 ``<ble_adv_power>`` 参数。
--  **<ble_conn_power>**：Bluetooth LE 连接的 RF TX Power，取值范围及对应值同 ``<ble_adv_power>`` 参数。
+     -  0: 7 dBm
+     -  1: 4 dBm
+     -  2: 1 dBm
+     -  3: -2 dBm
+     -  4: -5 dBm
+     -  5: -8 dBm
+     -  6: -11 dBm
+     -  7: -14 dBm
+
+   - ESP32C3 设备的参数值：
+
+     -  0: -27 dBm
+     -  1: -24 dBm
+     -  2: -21 dBm
+     -  3: -18 dBm
+     -  4: -15 dBm
+     -  5: -12 dBm
+     -  6: -9 dBm
+     -  7: -6 dBm
+     -  8: -3 dBm
+     -  9: -0 dBm
+     -  10: 3 dBm
+     -  11: 6 dBm
+     -  12: 9 dBm
+     -  13: 12 dBm
+     -  14: 15 dBm
+     -  15: 18 dBm
+
+-  **<ble_scan_power>**：Bluetooth LE 扫描的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
+-  **<ble_conn_power>**：Bluetooth LE 连接的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
 
 说明
 -----

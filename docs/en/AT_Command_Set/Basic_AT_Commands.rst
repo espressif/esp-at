@@ -865,17 +865,38 @@ Parameters
 
 -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,7].
 
-   -  0: 7 dBm
-   -  1: 4 dBm
-   -  2: 1 dBm
-   -  3: -2 dBm
-   -  4: -5 dBm
-   -  5: -8 dBm
-   -  6: -11 dBm
-   -  7: -14 dBm
+   - For ESP32 devices
 
--  **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. Range: [0,7]: the parameters are the same as ``<ble_adv_power>``.
--  **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. Range: [0,7]: the same as ``<ble_adv_power>``.
+     -  0: 7 dBm
+     -  1: 4 dBm
+     -  2: 1 dBm
+     -  3: -2 dBm
+     -  4: -5 dBm
+     -  5: -8 dBm
+     -  6: -11 dBm
+     -  7: -14 dBm
+
+   - For ESP32C3 devices
+
+     -  0: -27 dBm
+     -  1: -24 dBm
+     -  2: -21 dBm
+     -  3: -18 dBm
+     -  4: -15 dBm
+     -  5: -12 dBm
+     -  6: -9 dBm
+     -  7: -6 dBm
+     -  8: -3 dBm
+     -  9: -0 dBm
+     -  10: 3 dBm
+     -  11: 6 dBm
+     -  12: 9 dBm
+     -  13: 12 dBm
+     -  14: 15 dBm
+     -  15: 18 dBm
+
+-  **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. The parameters are the same as ``<ble_adv_power>``.
+-  **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. The same as ``<ble_adv_power>``.
 
 Note
 ------
