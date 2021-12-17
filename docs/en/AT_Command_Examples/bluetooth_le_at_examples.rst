@@ -54,8 +54,8 @@ GATT is actually an attribute transmission protocol, which can be regarded as an
     * To learn how to generate a ``ble_data.bin``, please refer to :doc:`../Compile_and_Develop/customize_bluetooth_le_services_tools`.
     * The download address of the ``ble_data.bin`` is the address of ``ble_data`` in ``at_customize.csv``, or described in ``build/download.config``.
 
-Basic Bluetooth LE example
-----------------------------------
+Bluetooth LE client reads and write services
+----------------------------------------------
 
 Below is an example of using two ESP32 development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to use Bluetooth LE functions with AT commands.
 
@@ -386,6 +386,443 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
    - If the ESP32 Bluetooth LE client receives the indication, message ``+INDICATE:<conn_index>,<srv_index>,<char_index>,<len>,<value>`` will be prompted.
    - For the same service, the <srv_index> on the ESP32 Bluetooth LE client side equals the <srv_index> on the ESP32 Bluetooth LE server side + 2.
    - For the permissions of the characteristics in the services, please refer to :doc:`../Compile_and_Develop/How_to_customize_BLE_services`.
+
+Bluetooth LE server read and write services
+---------------------------------------------
+
+Below is an example of using two ESP32 development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to establish a Bluetooth LE connection, as well as the read and write characteristics of the server and client settings, and notification characteristics.
+
+.. Important::
+  In the step, the operations starting with ``ESP32 Bluetooth LE server`` only need to be executed at ESP32 Bluetooth LE server, and the operations starting with ``ESP32 Bluetooth LE client`` only need to be executed at ESP32 Bluetooth LE client.
+
+#. Bluetooth LE initialization.
+
+   ESP32 Bluetooth LE server:
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEINIT=2
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+   ESP32 Bluetooth LE client:
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEINIT=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE server creates services.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRVCRE
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE server starts services.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRVSTART
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE server gets its MAC address.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADDR?
+
+   Response:
+
+   .. code-block:: none
+
+     +BLEADDR:"24:0a:c4:d6:e4:46"
+     OK
+
+   Note:
+
+   - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
+
+#. Set Bluetooth LE advertising data.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADVDATA="0201060A09457370726573736966030302A0"
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE server starts advertising.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADVSTART
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE client creates services.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRVCRE
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE client starts services.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRVSTART
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE client gets Bluetooth LE address.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADDR?
+
+   Response:
+
+   .. code-block:: none
+
+     +BLEADDR:"24:0a:c4:03:a7:4e"
+     OK
+
+   Note:
+
+   - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
+
+#. ESP32 Bluetooth LE client enables a scanning for three seconds.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLESCAN=1,3
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+     +BLESCAN:"5b:3b:6c:51:90:49",-87,02011a020a0c0aff4c001005071c3024dc,,1
+     +BLESCAN:"c4:5b:be:93:ec:66",-84,0201060303111809095647543147572d58020a03,,0
+     +BLESCAN:"24:0a:c4:d6:e4:46",-29,,,0
+
+   Note:
+
+   - The scan results you obtain may be different from those in the above response.
+
+#. Establish the Bluetooth LE connection.
+  
+   ESP32 Bluetooth LE client:
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLECONN=0,"24:0a:c4:d6:e4:46"
+
+   Response:
+
+   .. code-block:: none
+
+     +BLECONN:0,"24:0a:c4:d6:e4:46"
+
+     OK
+
+   Note:
+
+   - When entering the above command, replace the address with your ESP Bluetooth LE server address.
+   - If the Bluetooth LE connection is established successfully, message ``+BLECONN:0,"24:0a:c4:d6:e4:46`` will be prompted.
+   - If the Bluetooth LE connection is broken, message ``+BLECONN:0,-1`` will be prompted.
+
+   ESP32 Bluetooth LE server:
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLECONN=0,"24:0a:c4:03:a7:4e"
+
+   Response:
+
+   .. code-block:: none
+
+     +BLECONN:0,"24:0a:c4:03:a7:4e"
+
+     OK
+
+   Note:
+
+   - When entering the above command, replace the address with your ESP Bluetooth LE server address.
+   - If the Bluetooth LE connection is established successfully, the message ``OK`` will be prompted and the message ``+BLECONN:0,"24:0a:c4:03:a7:4e`` will not be prompted.
+   - If the Bluetooth LE connection is broken, the message ``ERROR`` will be prompted and the message ``+BLECONN:0,-1`` will not be prompted.
+
+#. ESP32 Bluetooth LE client discovers local services.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRV?
+
+   Response:
+
+   .. code-block:: none
+
+     +BLEGATTSSRV:1,1,0xA002,1
+     +BLEGATTSSRV:2,1,0xA003,1
+     
+     OK
+
+#. ESP32 Bluetooth LE client discovers local characteristics.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTSCHAR?
+
+   Response:
+
+   .. code-block:: none
+
+     +BLEGATTSCHAR:"char",1,1,0xC300,0x02
+     +BLEGATTSCHAR:"desc",1,1,1,0x2901
+     +BLEGATTSCHAR:"char",1,2,0xC301,0x02
+     +BLEGATTSCHAR:"desc",1,2,1,0x2901
+     +BLEGATTSCHAR:"char",1,3,0xC302,0x08
+     +BLEGATTSCHAR:"desc",1,3,1,0x2901
+     +BLEGATTSCHAR:"char",1,4,0xC303,0x04
+     +BLEGATTSCHAR:"desc",1,4,1,0x2901
+     +BLEGATTSCHAR:"char",1,5,0xC304,0x08
+     +BLEGATTSCHAR:"char",1,6,0xC305,0x10
+     +BLEGATTSCHAR:"desc",1,6,1,0x2902
+     +BLEGATTSCHAR:"char",1,7,0xC306,0x20
+     +BLEGATTSCHAR:"desc",1,7,1,0x2902
+     +BLEGATTSCHAR:"char",1,8,0xC307,0x02
+     +BLEGATTSCHAR:"desc",1,8,1,0x2901
+     +BLEGATTSCHAR:"char",2,1,0xC400,0x02
+     +BLEGATTSCHAR:"desc",2,1,1,0x2901
+     +BLEGATTSCHAR:"char",2,2,0xC401,0x02
+     +BLEGATTSCHAR:"desc",2,2,1,0x2901
+
+     OK
+
+#. ESP32 Bluetooth LE server discovers primary services.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTCPRIMSRV=0
+
+   Response:
+
+   .. code-block:: none
+
+     +BLEGATTCPRIMSRV:0,1,0x1801,1
+     +BLEGATTCPRIMSRV:0,2,0x1800,1
+     +BLEGATTCPRIMSRV:0,3,0xA002,1
+     +BLEGATTCPRIMSRV:0,4,0xA003,1
+
+    OK
+
+   Note:
+
+   - When discovering services, the ESP32 Bluetooth LE server will get two more default services (UUID: 0x1800 and 0x1801) than what the ESP32 Bluetooth LE client will get. So, for the same service, the <srv_index> received by the ESP32 Bluetooth LE server equals the <srv_index> received by the ESP32 Bluetooth LE client + 2. For example, for service 0xA002, the <srv_index> queried on the ESP32 Bluetooth LE client is 3, if the ESP32 Bluetooth LE server is queried through the command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`, then <srv_index> is 1.
+
+#. ESP32 Bluetooth LE server discovers  primary characteristics.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTCCHAR=0,3
+
+   Response:
+
+   .. code-block:: none
+
+     +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+     +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
+     +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+     +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
+     +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+     +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
+     +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+     +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
+     +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+     +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+     +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+     +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+     +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+     +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+     +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
+     
+     OK
+
+#. ESP32 Bluetooth LE client sets characteristics.
+
+   Select the service characteristic that supports the write operation (characteristic) to set the characteristic.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTSSETATTR=1,8,,1
+
+   Response:
+
+   .. code-block:: none
+
+     >
+
+   Command:
+
+   .. code-block:: none
+
+     Write 1 byte ``9``
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE server reads characteristics.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTCRD=0,3,8,
+
+   Response:
+
+   .. code-block:: none
+
+     +BLEGATTCRD:0,1,9
+
+     OK
+
+#. ESP32 Bluetooth LE client write characteristics.
+
+   Select the service characteristic that supports the write operation to write the characteristics.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTCWR=0,3,6,1,2
+
+   Response:
+
+   .. code-block:: none
+
+     >
+
+   Command:
+
+   .. code-block:: none
+
+     Write 2 bytes ``12``
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+   Note:
+
+   - If the Bluetooth LE server successfully writes the service characteristic value, the Bluetooth LE client will prompt ``+WRITE:0,1,6,1,2,12``.
+
+#. ESP32 Bluetooth LE client notify characteristics.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTSNTFY=0,1,6,10
+
+   Response:
+
+   .. code-block:: none
+
+     >
+
+   Command:
+
+   .. code-block:: none
+
+     Write 10 bytes ``1234567890``
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+   Note:
+
+   - If the ESP32 Bluetooth LE client's notify characteristic is successfully sent to the server, the Bluetooth LE server ``+NOTIFY:0,3,6,10,1234567890`` will be prompt.
 
 Encrypt Bluetooth LE connection
 ----------------------------------
@@ -734,8 +1171,8 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    You can ignore the message starting with ``+BLESECKEYTYPE``. In terms of the second parameter in the message ``+BLEAUTHCMPL:0,0``, ``0`` means encryption is successful, and ``1`` means encryption fails.
 
-Establish SPP connection and transmit data in UART-Bluetooth LE Passthrough Mode
-------------------------------------------------------------------------------------
+Establish SPP connection between two ESP32 development boards and transmit data in UART-Bluetooth LE Passthrough Mode
+-----------------------------------------------------------------------------------------------------------------------------
 
 Below is an example of using two ESP32 development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to build Bluetooth LE SPP (Serial Port Profile, UART-Bluetooth LE passthrough mode) with AT commands.
 
@@ -1074,3 +1511,209 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
    - After the ESP32 Bluetooth LE server enables Bluetooth LE SPP, the data received from serial port will be transmitted to the Bluetooth LE client directly.
    - If the ESP32 Bluetooth LE client does not enable Bluetooth LE SPP first, or uses other device as Bluetooth LE client, then the Bluetooth LE client needs to listen to the notification or indication first. For example, if the ESP32 Bluetooth LE client does not enable Bluetooth LE SPP first, then it should use command ``AT+BLEGATTCWR=0,3,7,1,1`` to enable listening function first, so that the ESP32 Bluetooth LE server can transmit successfully.
    - For the same service, the <srv_index> on the ESP32 Bluetooth LE client side equals the <srv_index> on the ESP32 Bluetooth LE server side + 2.
+
+Establish SPP connection between ESP32 and mobile phone and transmit data in UART-Bluetooth LE passthrough mode
+-----------------------------------------------------------------------------------------------------------------
+
+The example shows how to establish SPP connection between an ESP32 development board (only serving as the Bluetooth LE server role) and a mobile phone (only serve as the Bluetooth LE client role) and how to transmit data between them in UART-Bluetooth LE passthrough mode.
+
+.. Important::
+  In the following steps, the operations starting with ``ESP32 Bluetooth LE server`` only need to be executed at ESP32 Bluetooth LE server, and those Bluetooth LE client only need to be executed at the Bluetooth debugging assistant of the mobile phone.
+
+#. First, you need to download the Bluetooth LE debugging assistant on the mobile phone, such as nRF Connect app (Android) and LightBlue (iOS).
+
+#. Bluetooth LE initialization.
+
+   ESP32 Bluetooth LE server:
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEINIT=2
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE server creates services.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRVCRE
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE server starts services.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRVSTART
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE server gets its MAC address.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADDR?
+
+   Response:
+
+   .. code-block:: none
+
+     +BLEADDR:"24:0a:c4:d6:e4:46"
+     OK
+
+   Note:
+
+   - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
+
+#. Set Bluetooth LE advertising data.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADVDATA="0201060A09457370726573736966030302A0"
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE server starts advertising.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADVSTART
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Establish the Bluetooth LE connection.
+
+   Open the nRF debugging assistant on your mobile phone, and open SCAN to start scanning. When you find the MAC address of the ESP32 Bluetooth LE server, click ``CONNECT``. Then, ESP32 should print the log similar to ``+BLECONN:0,"60:51:42:fe:98:aa"``, which indicates that Bluetooth LE connection has been established.
+
+#. ESP32 Bluetooth LE server discovers local services.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTSSRV?
+
+   Response:
+
+   .. code-block:: none
+
+     +BLEGATTSSRV:1,1,0xA002,1
+     +BLEGATTSSRV:2,1,0xA003,1
+     
+     OK
+
+#. ESP32 Bluetooth LE server discovers local characteristics.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEGATTSCHAR?
+
+   Response:
+
+   .. code-block:: none
+
+     +BLEGATTSCHAR:"char",1,1,0xC300,0x02
+     +BLEGATTSCHAR:"desc",1,1,1,0x2901
+     +BLEGATTSCHAR:"char",1,2,0xC301,0x02
+     +BLEGATTSCHAR:"desc",1,2,1,0x2901
+     +BLEGATTSCHAR:"char",1,3,0xC302,0x08
+     +BLEGATTSCHAR:"desc",1,3,1,0x2901
+     +BLEGATTSCHAR:"char",1,4,0xC303,0x04
+     +BLEGATTSCHAR:"desc",1,4,1,0x2901
+     +BLEGATTSCHAR:"char",1,5,0xC304,0x08
+     +BLEGATTSCHAR:"char",1,6,0xC305,0x10
+     +BLEGATTSCHAR:"desc",1,6,1,0x2902
+     +BLEGATTSCHAR:"char",1,7,0xC306,0x20
+     +BLEGATTSCHAR:"desc",1,7,1,0x2902
+     +BLEGATTSCHAR:"char",1,8,0xC307,0x02
+     +BLEGATTSCHAR:"desc",1,8,1,0x2901
+     +BLEGATTSCHAR:"char",2,1,0xC400,0x02
+     +BLEGATTSCHAR:"desc",2,1,1,0x2901
+     +BLEGATTSCHAR:"char",2,2,0xC401,0x02
+     +BLEGATTSCHAR:"desc",2,2,1,0x2901
+
+     OK
+
+#. Bluetooth LE client discovers services.
+
+   Click ``UnKnown Service`` of ``UUID:0xA002`` on the mobile phone nRF debugging assistant client.
+
+#. ESP32 Bluetooth LE client discovers characteristics.
+
+   In the next-level option of ``UnKnown Service`` of ``UUID:0xA002`` of the mobile phone nRF debugging assistant client, click the right button of the service feature whose Properties is NOTIFY or INDICATE (here ESP-AT default Properties The service characteristics of NOTIFY or INDICATE are 0xC305 and 0xC306) and start to listen for the service characteristics of NOTIFY or INDICATE.
+
+#. ESP32 Bluetooth LE server configures Bluetooth LE SPP.
+
+   Set a characteristic that supports notification or indication to TX channel for sending data. Set another characteristic that enables writing permission to RX channel for receiving data.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLESPPCFG=1,1,7,1,5
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. ESP32 Bluetooth LE server enables Bluetooth LE SPP.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLESPP
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+     >
+
+   This response indicates that AT has entered Bluetooth LE SPP mode and can send and receive data.
+
+#. Bluetooth LE client sends data.
+
+   In the nRF debugging assistant client, select the 0xC304 service characteristic value and send the data ``test`` to the ESP32 Bluetooth LE server. Then, the ESP32 Bluetooth LE server can receive the ``test``.
+
+#. ESP32 Bluetooth LE server sends data.
+
+   The ESP32 Bluetooth LE server sends ``test``, and then the nRF debugging assistant client can receive ``test``.
