@@ -176,8 +176,11 @@ You can select either of the two ways below to flash AT firmware into your devic
 
 When you finish flashing, please `Check Whether AT Works`_.
 
+.. _check-whether-at-works:
+
 Check Whether AT Works
 -----------------------
+
 To check whether AT works, do as follows:
 
 - Open a serial port tool, such as SecureCRT;
