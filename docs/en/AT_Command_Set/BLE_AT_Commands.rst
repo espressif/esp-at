@@ -1790,7 +1790,7 @@ Query the parameters of Bluetooth LE Serial Port Profile (SPP).
 
 ::
 
-    +BLESPPCFG:<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>
+    +BLESPPCFG:<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>,<auto_conn>
     OK
 
 Set Command
@@ -1804,7 +1804,7 @@ Set or reset the parameters of Bluetooth LE SPP.
 
 ::
 
-    AT+BLESPPCFG=<cfg_enable>[,<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>]
+    AT+BLESPPCFG=<cfg_enable>[,<tx_service_index>,<tx_char_index>,<rx_service_index>,<rx_char_index>][,<auto_conn>]
 
 **Response:**
 
@@ -1817,19 +1817,25 @@ Parameters
 
 -  **<cfg_enable>**:
 
-   -  0: all the SPP parameters will be reset, and the following four parameters don't need input.
-   -  1: you should input the following four parameters.
+   -  0: all the SPP parameters will be reset, and the following parameters don't need input.
+   -  1: you should input the following parameters.
 
 -  **<tx_service_index>**: tx service's index. It can be fetched with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`.
 -  **<tx_char_index>**: tx characteristic's index. It can be fetched with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> and :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
 -  **<rx_service_index>**: rx service's index. It can be fetched with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`.
 -  **<rx_char_index>**: rx characteristic's index. It can be fetched with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> and :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+-  **<auto_conn>**: Bluetooth LE SPP auto-reconnection flag. By default, automatic reconnection is enabled.
+
+   -  0: disable Bluetooth LE SPP automatic reconnection.
+   -  1: enable Bluetooth LE SPP automatic reconnection
 
 Notes
 ^^^^^
 
 -  In Bluetooth LE client, the property of tx characteristic must be ``write with response`` or ``write without response``, and the property of rx characteristic must be ``indicate`` or ``notify``.
 -  In Bluetooth LE server, the property of tx characteristic must be ``indicate`` or ``notify``, and the property of rx characteristic must be ``write with response`` or ``write without response``.
+-  If the automatic reconnection function is disabled, when the connection is disconnected, a disconnection message is displayed (depending on AT+SYSMSG), customer need to send the connection command again. 
+-  If the automatic reconnection function is enabled, the connection will be automatically reconnected after disconnection, and the MCU side will not be aware of the disconnection. If the MAC of the peer end changes, the connection will fail.
 
 Example
 ^^^^^^^^
