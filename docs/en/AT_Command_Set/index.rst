@@ -132,6 +132,8 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
         - Data has been sent to the protocol stack (specific to :ref:`AT+CIPSEND <cmd-SEND>` and :ref:`AT+CIPSENDEX <cmd-SENDEX>` command). It doesn't mean that the data has been sent to the opposite end
       * - SEND FAIL
         - Error occurred during sending the data to the protocol stack (specific to :ref:`AT+CIPSEND <cmd-SEND>` and :ref:`AT+CIPSENDEX <cmd-SENDEX>` command
+      * - SET OK
+        - The URL has been set successfully (specific to :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command)
       * - +<Command Name>:``...``
         - Response to the sender that describes AT command process results in details   
 
