@@ -8,6 +8,12 @@ variables: &global-variables
   GIT_STRATEGY: clone
   PYTHON_VER: 3
 
+default:
+  retry:
+    max: 2
+    # In case of a runner failure we could hop to another one, or a network error could go away.
+    when: always
+
 .before_build_esp32_series: &before_build_esp32_series
   - cd components/at/private_include
   - rm -f at_ota_token.h
@@ -700,4 +706,3 @@ build_docs:
     # - make gh-linkcheck
     - make html
     - ../check_doc_warnings.sh
-    
