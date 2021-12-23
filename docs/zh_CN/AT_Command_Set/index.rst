@@ -132,6 +132,8 @@ AT 消息
         - 数据已发送到协议栈（针对于 :ref:`AT+CIPSEND <cmd-SEND>` 和 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 命令），但不代表数据已经发到对端
       * - SEND FAIL
         - 向协议栈发送数据时发生错误（针对于 :ref:`AT+CIPSEND <cmd-SEND>` 和 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 命令）
+      * - SET OK
+        - URL 已经成功设置（针对于 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令）
       * - +<Command Name>:``...``
         - 详细描述 AT 命令处理结果
 

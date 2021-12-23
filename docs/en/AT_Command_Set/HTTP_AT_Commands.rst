@@ -7,7 +7,9 @@ HTTP AT Commands
 
 -  :ref:`AT+HTTPCLIENT <cmd-HTTPCLIENT>`: Send HTTP Client Request
 -  :ref:`AT+HTTPGETSIZE <cmd-HTTPGETSIZE>`: Get HTTP Resource Size
+-  :ref:`AT+HTTPCGET <cmd-HTTPCGET>`: Get HTTP Resource
 -  :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>`: Post HTTP data of specified length
+-  :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>`: Set/Get long HTTP URL
 -  :ref:`HTTP AT Error Codes <cmd-HTTPErrCode>`
 
 .. _cmd-HTTPCLIENT:
@@ -63,6 +65,7 @@ Parameters
 
 Notes
 ^^^^^
+-  If the length of the entire command containing the URL exceeds 256 bytes, please use the :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command to preset the URL first, and then set the <"url"> parameter of this command to ``""``.
 -  If the ``url`` parameter is not null, HTTP client will use it and ignore the ``host`` parameter and ``path`` parameter; If the ``url`` parameter is omited or null string, HTTP client will use ``host`` parameter and ``path`` parameter.
 -  In some released firmware, HTTP client commands are not supported (see :doc:`../Compile_and_Develop/esp-at_firmware_differences`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support`` and build the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
 
@@ -93,7 +96,7 @@ Set Command
 
 ::
 
-    AT+HTTPGETSIZE=<url>
+    AT+HTTPGETSIZE=<"url">
 
 **Response:**
 
@@ -105,12 +108,13 @@ Set Command
 
 Parameters
 ^^^^^^^^^^
-- **<url>**: HTTP URL.
+- **<"url">**: HTTP URL. It is a string parameter and should be enclosed with quotes.
 - **<size>**: HTTP resource size.
 
 Note
 ^^^^^
 
+-  If the length of the entire command containing the URL exceeds 256 bytes, please use the :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command to preset the URL first, and then set the <"url"> parameter of this command to ``""``.
 -  In some released firmware, HTTP client commands are not supported (see :doc:`../Compile_and_Develop/esp-at_firmware_differences`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support`` and build the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
 
 Example
@@ -119,6 +123,39 @@ Example
 ::
 
     AT+HTTPGETSIZE="http://www.baidu.com/img/bdlogo.gif"
+
+.. _cmd-HTTPCGET:
+
+:ref:`AT+HTTPCGET <HTTP-AT>`: Get HTTP Resource
+-----------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+HTTPCGET=<"url">[,<tx size>][,<rx size>][,<timeout>]
+
+**Response:**
+
+::
+
+    +HTTPCGET:<size>,<data>
+    OK
+
+Parameters
+^^^^^^^^^^
+- **<"url">**: HTTP URL. It is a string parameter and should be enclosed with quotes.
+- **<tx size>**: HTTP send buffer size. Unit: byte. Default: 2048. Range: [0,10240].
+- **<rx size>**: HTTP receive buffer size. Unit: byte. Default: 2048. Range: [0,10240].
+- **<timeout>**: Network timeout. Unit: millisecond. Default: 5000. Range: [0,180000].
+
+Note
+^^^^^
+
+- If the length of the entire command containing the URL exceeds 256 bytes, please use the :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command to preset the URL first, and then set the <"url"> parameter of this command to ``""``.
 
 .. _cmd-HTTPCPOST:
 
@@ -132,13 +169,14 @@ Set Command
 
 ::
 
-    AT+HTTPCPOST=<url>,<length>[,<http_req_header_cnt>][,<http_req_header>..<http_req_header>]
+    AT+HTTPCPOST=<"url">,<length>[,<http_req_header_cnt>][,<http_req_header>..<http_req_header>]
 
 **Response:**
 
 ::
 
     OK
+
     >
 
 The symbol ``>`` indicates that AT is ready for receiving serial data, and you can enter the data now. When the requirement of message length determined by the parameter ``<length>`` is met, the transmission starts.
@@ -157,10 +195,68 @@ Otherwise, it returns:
 
 Parameters
 ^^^^^^^^^^
-- **<url>**: HTTP URL.
+- **<"url">**: HTTP URL. It is a string parameter and should be enclosed with quotes.
 - **<length>**: HTTP data length to POST. The maximum length is equal to the system allocable heap size.
 - **<http_req_header_cnt>**: the number of <http_req_header> parameters.
 - **[<http_req_header>]**: you can send more than one request header to the server.
+
+Note
+^^^^^
+
+- If the length of the entire command containing the URL exceeds 256 bytes, please use the :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command to preset the URL first, and then set the <"url"> parameter of this command to ``""``.
+
+.. _cmd-HTTPURLCFG:
+
+:ref:`AT+HTTPURLCFG <HTTP-AT>`: Set/Get long HTTP URL
+-----------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+HTTPURLCFG?
+
+**Response:**
+
+::
+
+    [+HTTPURLCFG:<url length>,<data>]
+    OK
+
+Set Command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+HTTPURLCFG=<url length>
+
+**Response:**
+
+::
+
+    OK
+
+    >
+
+This response indicates that AT is ready for receiving serial data. You should enter the URL now, and when the URL length reaches the ``<url length>`` value, the system returns:
+
+::
+
+    SET OK
+
+Parameters
+^^^^^^^^^^
+- **<url length>**: HTTP URL length. Unit: byte.
+
+  - 0: clean the HTTP URL configuration.
+  - [8,8192]: set the HTTP URL configuration.
+
+- **<data>**: HTTP URL data.
 
 .. _cmd-HTTPErrCode:
 
