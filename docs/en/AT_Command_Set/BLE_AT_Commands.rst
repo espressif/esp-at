@@ -118,6 +118,7 @@ Parameter
 Notes
 ^^^^^
 
+-  When using Bluetooth LE function, if you do not need to use SoftAP mode, it is recommended that you can disable the mode through :ref:`AT+CWMODE <cmd-MODE>`.
 -  The file "at_customize.bin" has to be downloaded, so that the relevant commands can be used. Please refer to :doc:`../Compile_and_Develop/How_to_customize_BLE_services` for more details.
 -  Before using other Bluetooth LE AT commands, you should run this command first to trigger the initialization process.
 -  After the initialization, the Bluetooth LE role cannot be changed unless you run :ref:`AT+RST <cmd-RST>` to restart the system first and then re-initialize the Bluetooth LE role.
@@ -1834,8 +1835,7 @@ Notes
 
 -  In Bluetooth LE client, the property of tx characteristic must be ``write with response`` or ``write without response``, and the property of rx characteristic must be ``indicate`` or ``notify``.
 -  In Bluetooth LE server, the property of tx characteristic must be ``indicate`` or ``notify``, and the property of rx characteristic must be ``write with response`` or ``write without response``.
--  If the automatic reconnection function is disabled, when the connection is disconnected, a disconnection message is displayed (depending on AT+SYSMSG), customer need to send the connection command again. 
--  If the automatic reconnection function is enabled, the connection will be automatically reconnected after disconnection, and the MCU side will not be aware of the disconnection. If the MAC of the peer end changes, the connection will fail.
+-  If the automatic reconnection function is disabled, when the connection is disconnected, a disconnection message is displayed (depending on AT+SYSMSG), you need to send the connection command again; If this function is enabled, the connection will be automatically reconnected after disconnection, and the MCU side will not be aware of the disconnection. If the MAC of the peer end changes, the connection will fail.
 
 Example
 ^^^^^^^^
