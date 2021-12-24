@@ -36,7 +36,7 @@ The AT command firmware allows for rapid integration by providing:
 
 - ESP32-C3 Series
   - **Preferred recommended chip by ESP-AT**
-  - Released version is recommended: [v2.2.0.0_esp32c3](https://github.com/espressif/esp-at/releases/tag/v2.2.0.0_esp32c3)
+  - Released version is recommended: [v2.3.0.0_esp32c3](https://github.com/espressif/esp-at/releases/tag/v2.3.0.0_esp32c3)
 
 - ESP32 Series
   - Released version is recommended: [v2.2.0.0_esp32](https://github.com/espressif/esp-at/releases/tag/v2.2.0.0_esp32)
@@ -88,7 +88,7 @@ esp-at 是 MIT 许可证下的免费软件。
 
 - ESP32-C3 系列
   - **ESP-AT 首选推荐芯片**
-  - 推荐使用发布版本：[v2.2.0.0_esp32c3](https://github.com/espressif/esp-at/releases/tag/v2.2.0.0_esp32c3)
+  - 推荐使用发布版本：[v2.3.0.0_esp32c3](https://github.com/espressif/esp-at/releases/tag/v2.3.0.0_esp32c3)
 
 - ESP32 系列
   - 推荐使用发布版本：[v2.2.0.0_esp32](https://github.com/espressif/esp-at/releases/tag/v2.2.0.0_esp32)
