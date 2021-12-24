@@ -270,6 +270,8 @@ Parameters
           
       * - HTTP Client Error Code
         - Description      
+      * - 0x7000
+        - Failed to Establish Connection
       * - 0x7190
         - Bad Request  
       * - 0x7191

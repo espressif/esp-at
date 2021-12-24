@@ -30,6 +30,8 @@ ESP32-MINI-1 系列
 ESP32-WROVER-32 系列
 ^^^^^^^^^^^^^^^^^^^^^^
 
+由于硬件限制，不推荐使用 ESP32-WROVER-B 模组，请使用其他 WROVER 系列模组。
+
 - v2.2.0.0 `ESP32-WROVER_AT_Bin_V2.2.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32/ESP32_WROVER/ESP32-WROVER_AT_Bin_V2.2.0.0.zip>`__ （推荐）
 - v2.1.0.0 `ESP32-WROVER_AT_Bin_V2.1.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32/ESP32_WROVER/ESP32-WROVER_AT_Bin_V2.1.0.0.zip>`__
 - v2.0.0.0 `ESP32-WROVER_AT_Bin_V2.0.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32/ESP32_WROVER/ESP32-WROVER_AT_Bin_V2.0.zip>`__

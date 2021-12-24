@@ -747,7 +747,8 @@ Query Command
 
 ::
 
-  <state>
+  +CWDHCP:<state>
+  OK
 
 Set Command
 ^^^^^^^^^^^
