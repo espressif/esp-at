@@ -267,9 +267,19 @@ TCP/IP AT 命令
 
 **响应：**
 
+单连接模式下，返回：
+
 ::
 
     CONNECT
+
+    OK
+
+多连接模式下，返回：
+
+::
+
+    <link ID>,CONNECT
 
     OK
 
@@ -326,9 +336,19 @@ TCP/IP AT 命令
 
 **响应：**
 
+单连接模式下，返回：
+
 ::
 
     CONNECT
+
+    OK
+
+多连接模式下，返回：
+
+::
+
+    <link ID>,CONNECT
 
     OK
 
@@ -381,11 +401,27 @@ TCP/IP AT 命令
 
 ::
 
-    AT+CIPSTART=[<link ID>,]<"type">,<"remote host">,<remote port>[,<keep alive>,<"local IP">]
+    // 单连接：(AT+CIPMUX=0)
+    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep alive>,<"local IP">]
+
+    // 多连接：(AT+CIPMUX=1)
+    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep alive>,<"local IP">]
 
 **响应：**
 
+单连接模式下，返回：
+
 ::
+
+    CONNECT
+
+    OK
+
+多连接模式下，返回：
+
+::
+
+    <link ID>,CONNECT
 
     OK
 
@@ -757,6 +793,14 @@ TCP/IP AT 命令
 
     AT+CIPCLOSE=<link ID>
 
+**响应：**
+
+::
+
+    <link ID>,CLOSED
+
+    OK
+
 执行命令
 ^^^^^^^^^^
 
@@ -772,7 +816,9 @@ TCP/IP AT 命令
 
 ::
 
-    OK  
+    CLOSED
+
+    OK
 
 参数
 ^^^^
@@ -1620,6 +1666,29 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 :ref:`AT+CIPDINFO <TCPIP-AT>`：设置 +IPD 消息详情
 ----------------------------------------------------------------
 
+查询命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+CIPDINFO?
+
+**响应：**
+
+::
+
+    +CIPDINFO:true
+    OK
+
+或
+
+::
+    
+    +CIPDINFO:false
+    OK
+
 设置命令
 ^^^^^^^^
 
@@ -2061,7 +2130,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 -  ``<len>`` 表示缓存区中 socket 数据的总长度。
 -  一旦有 ``+IPD`` 报出，应该运行 :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` 来读取数据。否则，在前一个 ``+IPD`` 被读取之前，下一个 ``+IPD`` 将不会被报告给主机 MCU。
--  在断开连接的情况下，缓冲的 socket 数据仍然存在，MCU 仍然可以读取，直到发送 :ref:`AT+CIPCLOSE <cmd-CLOSE>`。换句话说，如果 ``+IPD`` 已经被报告，那么在你发送 :ref:`AT+CIPCLOSE <cmd-CLOSE>` 或通过 :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` 命令读取所有数据之前，这个连接的 ``CLOSED`` 信息永远不会出现。
+-  在断开连接的情况下，缓冲的 socket 数据仍然存在，MCU 仍然可以读取，直到发送 :ref:`AT+CIPCLOSE <cmd-CLOSE>` （AT 作为客户端）或 :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` （AT 作为服务器）。换句话说，如果 ``+IPD`` 已经被报告，那么在你发送 :ref:`AT+CIPCLOSE <cmd-CLOSE>` 或发送 :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` 或通过 :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` 命令读取所有数据之前，这个连接的 ``CLOSED`` 信息永远不会出现。
 
 示例
 ^^^^

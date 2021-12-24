@@ -133,13 +133,13 @@ ESP32 系列
      - |icon-green-check|
      - |icon-green-check|
    * - blufi
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
-     - |icon-orange-check|
+     - |icon-green-check|
+     - |icon-green-check|
+     - |icon-green-check|
+     - |icon-green-check|
+     - |icon-green-check|
+     - |icon-green-check|
+     - |icon-green-check|
    * - bt spp
      - |icon-orange-check|
      - |icon-green-check|

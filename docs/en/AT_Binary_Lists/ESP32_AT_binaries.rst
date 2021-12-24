@@ -30,6 +30,8 @@ ESP32-MINI-1 Series
 ESP32-WROVER-32 Series
 ^^^^^^^^^^^^^^^^^^^^^^
 
+It is not recommended to use the ESP32-WROVER-B module due to hardware limit. Please use other WROVER series modules.
+
 - v2.2.0.0 `ESP32-WROVER_AT_Bin_V2.2.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32/ESP32_WROVER/ESP32-WROVER_AT_Bin_V2.2.0.0.zip>`__ (Recommended)
 - v2.1.0.0 `ESP32-WROVER_AT_Bin_V2.1.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32/ESP32_WROVER/ESP32-WROVER_AT_Bin_V2.1.0.0.zip>`__
 - v2.0.0.0 `ESP32-WROVER_AT_Bin_V2.0.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32/ESP32_WROVER/ESP32-WROVER_AT_Bin_V2.0.zip>`__

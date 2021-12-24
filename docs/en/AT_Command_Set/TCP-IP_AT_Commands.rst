@@ -267,9 +267,19 @@ Set Command
 
 **Response:**
 
+For single connection, it returns:
+
 ::
 
     CONNECT
+
+    OK
+
+For multiple connections, it returns:
+
+::
+
+    <link ID>,CONNECT
 
     OK
 
@@ -326,9 +336,19 @@ Set Command
 
 **Response:**
 
+For single connection, it returns:
+
 ::
 
     CONNECT
+
+    OK
+
+For multiple connections, it returns:
+
+::
+
+    <link ID>,CONNECT
 
     OK
 
@@ -381,11 +401,27 @@ Set Command
 
 ::
 
-    AT+CIPSTART=[<link ID>,]<"type">,<"remote host">,<remote port>[,<keep alive>,<"local IP">]
+    // Single connection (AT+CIPMUX=0):
+    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep alive>,<"local IP">]
+
+    // Multiple connections (AT+CIPMUX=1):
+    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep alive>,<"local IP">]
 
 **Response:**
 
+For single connection, it returns:
+
 ::
+
+    CONNECT
+
+    OK
+
+For multiple connections, it returns:
+
+::
+
+    <link ID>,CONNECT
 
     OK
 
@@ -757,6 +793,14 @@ Close TCP/UDP/SSL connection in the multiple connections mode.
 
     AT+CIPCLOSE=<link ID>
 
+**Response:**
+
+::
+
+    <link ID>,CLOSED
+
+    OK
+
 Execute Command
 ^^^^^^^^^^^^^^^^^
 
@@ -772,7 +816,9 @@ Close TCP/UDP/SSL connection in the single connection mode.
 
 ::
 
-    OK  
+    CLOSED
+
+    OK
 
 Parameter
 ^^^^^^^^^^
@@ -1620,6 +1666,29 @@ Example
 :ref:`AT+CIPDINFO <TCPIP-AT>`: Set "+IPD" Message Mode
 ------------------------------------------------------
 
+Query Command
+^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+CIPDINFO?
+
+**Response:**
+
+::
+
+    +CIPDINFO:true
+    OK
+    
+or
+
+::
+    
+    +CIPDINFO:false
+    OK
+
 Set Command
 ^^^^^^^^^^^
 
@@ -2061,7 +2130,7 @@ Notes
 
 -  ``<len>`` is the total length of socket data in the buffer.
 -  You should read data by running :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` once there is a ``+IPD`` reported. Otherwise, the next ``+IPD`` will not be reported to the host MCU until the previous ``+IPD`` has been read.
--  In case of disconnection, the buffered socket data will still be there and can be read by the MCU until you send :ref:`AT+CIPCLOSE <cmd-CLOSE>`. In other words, if ``+IPD`` has been reported, the message ``CLOSED`` of this connection will never come until you send :ref:`AT+CIPCLOSE <cmd-CLOSE>` or read all data by command :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`.
+-  In case of disconnection, the buffered socket data will still be there and can be read by the MCU until you send :ref:`AT+CIPCLOSE <cmd-CLOSE>` (AT as client) or :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` (AT as server). In other words, if ``+IPD`` has been reported, the message ``CLOSED`` of this connection will never come until you send :ref:`AT+CIPCLOSE <cmd-CLOSE>` or :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` or read all data by command :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`.
 
 Example
 ^^^^^^^^

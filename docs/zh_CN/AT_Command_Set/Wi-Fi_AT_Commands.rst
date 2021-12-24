@@ -747,7 +747,8 @@ Wi-Fi AT 命令集
 
 ::
 
-  <state>
+  +CWDHCP:<state>
+  OK
 
 设置命令
 ^^^^^^^^

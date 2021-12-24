@@ -30,7 +30,7 @@ The AT command firmware allows for rapid integration by providing:
 - The [esp-at forum](https://www.esp32.com/viewforum.php?f=42) is a place to ask questions and find community resources.
 
 # Project Roadmap
-1. The next version of ESP-AT firmware (v2.3.0.0) is planned to be released in October 2021. At present, only ESP32-C3 series firmware is planned to be released, and ESP32-C3 firmware would support Bluetooth LE.
+1. The next version of ESP-AT firmware (v2.4.0.0) is planned to be released in March 2022. At present, only ESP32-C3 series firmware is planned to be released, and ESP32-C3 firmware would support Bluetooth LE 5.0.
 
 2. ESP-AT Support Policy for ESP Chip Series
 
@@ -82,7 +82,7 @@ esp-at 是 MIT 许可证下的免费软件。
 - [esp-at 社区](https://www.esp32.com/viewforum.php?f=34) 可以用来询问问题或寻找一些社区资源。
 
 # 项目路线图
-1. 下一版本 ESP-AT 固件 (v2.3.0.0)，计划在 2021 年 10 月发布。当前仅计划发布 ESP32-C3 系列固件，ESP32-C3 固件将支持低功耗蓝牙。
+1. 下一版本 ESP-AT 固件 (v2.4.0.0)，计划在 2022 年 3 月发布。当前仅计划发布 ESP32-C3 系列固件，ESP32-C3 固件将支持低功耗蓝牙 5.0。
 
 2. ESP-AT 对不同芯片系列支持策略
 
