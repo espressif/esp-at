@@ -61,18 +61,17 @@ This document lists the differences between the AT commands supported by the old
        | 2: modem sleep
      - | ESP8266 ✅
        | ESP32 ✅
-       | ESP32-S2 ❌
-       | Note [#one]_
+       | ESP32-S2 ❌ :sup:`1`
    * - AT+WAKEUPGPIO
      - Wakeup from light sleep on GPIO interrupt
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`
    * - :ref:`AT+RFPOWER <cmd-RFPOWER>`
      - Set RF TX Power
      - | ✅
        | Range: [0,82]
        | Unit: 0.25 dBm
-     - ✅ [#two]_
+     - ✅ :sup:`2`
    * - AT+RFVDD
      - Set RF TX power according to VDD33
      - ✅
@@ -112,11 +111,11 @@ This document lists the differences between the AT commands supported by the old
    * - AT+SYSMSG_CUR
      - Set system prompt info, not saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+SYSMSG <cmd-SYSMSG>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+SYSMSG <cmd-SYSMSG>`
    * - AT+SYSMSG_DEF
      - Set default system prompt info, saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+SYSMSG <cmd-SYSMSG>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+SYSMSG <cmd-SYSMSG>`
    * - :ref:`AT+CWMODE <cmd-MODE>`
      - Set Wi-Fi mode
      - ❌
@@ -124,11 +123,11 @@ This document lists the differences between the AT commands supported by the old
    * - AT+CWMODE_CUR
      - Set current Wi-Fi mode, not saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CWMODE <cmd-MODE>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CWMODE <cmd-MODE>`
    * - AT+CWMODE_DEF
      - Set default Wi-Fi mode, saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CWMODE <cmd-MODE>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CWMODE <cmd-MODE>`
    * - :ref:`AT+CWJAP <cmd-JAP>`
      - Connect to an AP
      - ✅
@@ -136,11 +135,11 @@ This document lists the differences between the AT commands supported by the old
    * - AT+CWJAP_CUR
      - Connect to an AP, not saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CWJAP <cmd-JAP>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CWJAP <cmd-JAP>`
    * - AT+CWJAP_DEF
      - Connect to an AP, saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CWJAP <cmd-JAP>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CWJAP <cmd-JAP>`
    * - :ref:`AT+CWLAPOPT <cmd-LAPOPT>`
      - Set configuration for :ref:`AT+CWLAP <cmd-LAP>`
      - ✅
@@ -160,11 +159,11 @@ This document lists the differences between the AT commands supported by the old
    * - AT+CWSAP_CUR
      - Set softAP parameters, not saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CWSAP <cmd-SAP>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CWSAP <cmd-SAP>`
    * - AT+CWSAP_DEF
      - Set softAP parameters, saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CWSAP <cmd-SAP>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CWSAP <cmd-SAP>`
    * - :ref:`AT+CWLIF <cmd-LIF>`
      - Query info of the station that connects to a softAP
      - ✅
@@ -176,11 +175,11 @@ This document lists the differences between the AT commands supported by the old
    * - AT+CWDHCP_CUR
      - Set DHCP, not saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CWDHCP <cmd-DHCP>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CWDHCP <cmd-DHCP>`
    * - AT+CWDHCP_DEF
      - Set DHCP, saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CWDHCP <cmd-DHCP>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CWDHCP <cmd-DHCP>`
    * - :ref:`AT+CWDHCPS <cmd-DHCPS>`
      - Set the IP addresses allocated by an ESP softAP DHCP server
      - ❌
@@ -188,11 +187,11 @@ This document lists the differences between the AT commands supported by the old
    * - AT+CWDHCPS_CUR
      - Same as above, but not saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CWDHCPS <cmd-DHCPS>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CWDHCPS <cmd-DHCPS>`
    * - AT+CWDHCPS_DEF
      - Same as above, but saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CWDHCPS <cmd-DHCPS>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CWDHCPS <cmd-DHCPS>`
    * - :ref:`AT+CWAUTOCONN <cmd-AUTOC>`
      - Connect to an AP automatically when powered on
      - ✅
@@ -204,11 +203,11 @@ This document lists the differences between the AT commands supported by the old
    * - AT+CIPSTAMAC_CUR
      - Same as above, but not saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CIPSTAMAC <cmd-STAMAC>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CIPSTAMAC <cmd-STAMAC>`
    * - AT+CIPSTAMAC_DEF
      - Same as above, but saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CIPSTAMAC <cmd-STAMAC>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CIPSTAMAC <cmd-STAMAC>`
    * - :ref:`AT+CIPAPMAC <cmd-APMAC>`
      - Set the IP address of an ESP softAP
      - ❌
@@ -216,11 +215,11 @@ This document lists the differences between the AT commands supported by the old
    * - AT+CIPAPMAC_CUR
      - Same as above, but not saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CIPAPMAC <cmd-APMAC>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CIPAPMAC <cmd-APMAC>`
    * - AT+CIPAPMAC_DEF
      - Same as above, but saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CIPAPMAC <cmd-APMAC>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CIPAPMAC <cmd-APMAC>`
    * - :ref:`AT+CIPSTA <cmd-IPSTA>`
      - Set the IP address of an ESP station
      - ❌
@@ -228,11 +227,11 @@ This document lists the differences between the AT commands supported by the old
    * - AT+CIPSTA_CUR
      - Same as above, but not saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CIPSTA <cmd-IPSTA>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CIPSTA <cmd-IPSTA>`
    * - AT+CIPSTA_DEF
      - Same as above, but saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CIPSTA <cmd-IPSTA>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CIPSTA <cmd-IPSTA>`
    * - :ref:`AT+CIPAP <cmd-IPAP>`
      - Set the IP address of an ESP softAP
      - ❌
@@ -240,11 +239,11 @@ This document lists the differences between the AT commands supported by the old
    * - AT+CIPAP_CUR
      - Same as above, but not saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CIPAP <cmd-IPAP>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CIPAP <cmd-IPAP>`
    * - AT+CIPAP_DEF
      - Same as above, but saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CIPAP <cmd-IPAP>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CIPAP <cmd-IPAP>`
    * - :ref:`AT+CWSTARTSMART <cmd-STARTS>`
      - Start SmartConfig
      - ✅
@@ -295,11 +294,11 @@ This document lists the differences between the AT commands supported by the old
    * - AT+CWCOUNTRY_CUR
      - Same as above, but not saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`
    * - AT+CWCOUNTRY_DEF
      - Same as above, but saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`
    * - :ref:`AT+CIPSTATUS <cmd-STATUS>`
      - Obtain the TCP/UDP/SSL connection status and info
      - ✅
@@ -331,23 +330,23 @@ This document lists the differences between the AT commands supported by the old
    * - AT+CIPSENDBUF
      - Write data into the TCP-Send-Buffer
      - ✅
-     - ❌ [#three]_
+     - ❌ :sup:`3`
    * - AT+CIPBUFRESET
      - Reset the segment ID count
      - ✅
-     - ❌ [#three]_
+     - ❌ :sup:`3`
    * - AT+CIPBUFSTATUS
      - Query the status of the TCP-Send-Buffer
      - ✅
-     - ❌ [#three]_
+     - ❌ :sup:`3`
    * - AT+CIPCHECKSEQ
      - Query if a specific segment was successfully sent
      - ✅
-     - ❌ [#three]_
+     - ❌ :sup:`3`
    * - AT+CIPCLOSEMODE
      - Set the close mode of TCP connection
      - ✅
-     - ❌ [#three]_
+     - ❌ :sup:`3`
    * - :ref:`AT+CIPCLOSE <cmd-CLOSE>`
      - Close TCP/UDP/SSL connection
      - ✅
@@ -420,31 +419,30 @@ This document lists the differences between the AT commands supported by the old
    * - AT+CIPDNS_CUR
      - Same as above, but not saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CIPDNS <cmd-DNS>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CIPDNS <cmd-DNS>`
    * - AT+CIPDNS_DEF
      - Same as above, but saved in flash
      - ✅
-     - | ❌ [#three]_ Similar command: :ref:`AT+CIPDNS <cmd-DNS>`
+     - | ❌ :sup:`3` Similar command: :ref:`AT+CIPDNS <cmd-DNS>`
    * - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`
      - Set user partitions in flash
      - ❌
      - ✅
 
-Tip: Click the footnote number to jump (back) to where it is marked in the table above.
+**Note** 1: AT+SLEEP in ESP-AT:
 
-.. [#one] AT+SLEEP in ESP-AT:
-
-       * ESP8266 and ESP32 ✅
+    * ESP8266 and ESP32 ✅
+    
+      * 1: modem sleep by DTIM
+      * 2: light sleep
+      * 3: modem sleep by listen interval
        
-         * 1: modem sleep by DTIM
-         * 2: light sleep
-         * 3: modem sleep by listen interval
-       
-       * ESP32-S2 ❌
-.. [#two] AT+RFPOWER in ESP-AT:
+    * ESP32-S2 ❌
 
-       * ESP8266 ✅. Range: [40,82]. Unit: 0.25 dBm
-       * ESP32 ✅. Range: [40,78]. Unit: 0.25 dBm. Support Bluetooth LE.
-       * ESP32-S2 ✅. Range: [40,78]. Unit: 0.25 dBm
+**Note** 2: AT+RFPOWER in ESP-AT:
 
-.. [#three] This command will not be added to the ESP-AT version.
+    * ESP8266 ✅. Range: [40,82]. Unit: 0.25 dBm
+    * ESP32 ✅. Range: [40,78]. Unit: 0.25 dBm. Support Bluetooth LE.
+    * ESP32-S2 ✅. Range: [40,78]. Unit: 0.25 dBm
+
+**Note** 3: This command will not be added to the ESP-AT version.
