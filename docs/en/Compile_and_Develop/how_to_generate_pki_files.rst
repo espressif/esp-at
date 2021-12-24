@@ -135,106 +135,108 @@ Download or Update Certificate Bin Files
 
 The script ``AtPKI.py`` is only responsible for converting the certificate files to bin files. You can download bin files to the corresponding flash partition in one of the following ways:
 
-1. Download certificate bin files with tools
+Download with Tools
+^^^^^^^^^^^^^^^^^^^
 
-  #. Windows
+- Windows
 
-     Please download `Flash Download Tools for Windows <https://www.espressif.com/en/support/download/other-tools>`_.
+  Please download `Flash Download Tools for Windows <https://www.espressif.com/en/support/download/other-tools>`_.
 
-     For more details about the Tools, please see ``readme.pdf`` or the ``doc`` folder in the zip folder.
+  For more details about the Tools, please see ``readme.pdf`` or the ``doc`` folder in the zip folder.
 
-  #. Linux or macOS
+- Linux or macOS
 
-     Please use `esptool.py <https://github.com/espressif/esptool>`_.
+  Please use `esptool.py <https://github.com/espressif/esptool>`_.
 
-     You can execute the following command in the root directory of ESP-AT to download bin files.
+  You can execute the following command in the root directory of ESP-AT to download bin files.
 
-     .. code-block:: none
+  .. code-block:: none
 
-       esptool.py --chip auto --port PORTNAME --baud 921600 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB ADDRESS FILEDIRECTORY
+    esptool.py --chip auto --port PORTNAME --baud 921600 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB ADDRESS FILEDIRECTORY
 
-     Replace ``PORTNAME`` with your port name. Replace ``ADDRESS`` with the the download address. Replace ``FILEDIRECTORY`` with the file directory of the bin.
+  Replace ``PORTNAME`` with your port name. Replace ``ADDRESS`` with the the download address. Replace ``FILEDIRECTORY`` with the file directory of the bin.
 
-2. Update certificate bin files with commands
+Update with Commands
+^^^^^^^^^^^^^^^^^^^^
 
-  #. :ref:`AT+SYSFLASH <cmd-SYSFLASH>`
+- :ref:`AT+SYSFLASH <cmd-SYSFLASH>`
 
-     Taking ``ESP32`` module as an example, you can execute the following command to upgrade the ``client_cert`` partition. Please refer to :ref:`AT+SYSFLASH <cmd-SYSFLASH>` for more details.
+  Taking ``ESP32`` module as an example, you can execute the following command to upgrade the ``client_cert`` partition. Please refer to :ref:`AT+SYSFLASH <cmd-SYSFLASH>` for more details.
 
-     1. Query user partitions in flash
+  1. Query user partitions in flash
 
-       Command:
+    Command:
 
-       .. code-block:: none
+    .. code-block:: none
 
-         AT+SYSFLASH?
+      AT+SYSFLASH?
 
-       Response:
+    Response:
 
-       .. code-block:: none
+    .. code-block:: none
 
-         +SYSFLASH:"ble_data",64,1,0x21000,0x3000
-         +SYSFLASH:"server_cert",64,2,0x24000,0x2000
-         +SYSFLASH:"server_key",64,3,0x26000,0x2000
-         +SYSFLASH:"server_ca",64,4,0x28000,0x2000
-         +SYSFLASH:"client_cert",64,5,0x2a000,0x2000
-         +SYSFLASH:"client_key",64,6,0x2c000,0x2000
-         +SYSFLASH:"client_ca",64,7,0x2e000,0x2000
-         +SYSFLASH:"factory_param",64,8,0x30000,0x1000
-         +SYSFLASH:"wpa2_cert",64,9,0x31000,0x2000
-         +SYSFLASH:"wpa2_key",64,10,0x33000,0x2000
-         +SYSFLASH:"wpa2_ca",64,11,0x35000,0x2000
-         +SYSFLASH:"mqtt_cert",64,12,0x37000,0x2000
-         +SYSFLASH:"mqtt_key",64,13,0x39000,0x2000
-         +SYSFLASH:"mqtt_ca",64,14,0x3b000,0x2000
-         +SYSFLASH:"fatfs",1,129,0x70000,0x90000
+      +SYSFLASH:"ble_data",64,1,0x21000,0x3000
+      +SYSFLASH:"server_cert",64,2,0x24000,0x2000
+      +SYSFLASH:"server_key",64,3,0x26000,0x2000
+      +SYSFLASH:"server_ca",64,4,0x28000,0x2000
+      +SYSFLASH:"client_cert",64,5,0x2a000,0x2000
+      +SYSFLASH:"client_key",64,6,0x2c000,0x2000
+      +SYSFLASH:"client_ca",64,7,0x2e000,0x2000
+      +SYSFLASH:"factory_param",64,8,0x30000,0x1000
+      +SYSFLASH:"wpa2_cert",64,9,0x31000,0x2000
+      +SYSFLASH:"wpa2_key",64,10,0x33000,0x2000
+      +SYSFLASH:"wpa2_ca",64,11,0x35000,0x2000
+      +SYSFLASH:"mqtt_cert",64,12,0x37000,0x2000
+      +SYSFLASH:"mqtt_key",64,13,0x39000,0x2000
+      +SYSFLASH:"mqtt_ca",64,14,0x3b000,0x2000
+      +SYSFLASH:"fatfs",1,129,0x70000,0x90000
 
-         OK
+      OK
 
-     2. Erase ``client_cert`` sector
+  2. Erase ``client_cert`` sector
 
-       Command:
+    Command:
 
-       .. code-block:: none
+    .. code-block:: none
 
-         AT+SYSFLASH=0,"client_cert"
+      AT+SYSFLASH=0,"client_cert"
 
-       Response:
+    Response:
 
-       .. code-block:: none
+    .. code-block:: none
 
-         OK
+      OK
 
-     3. Update ``client_cert`` sector
+  3. Update ``client_cert`` sector
 
-       Command:
+    Command:
 
-       .. code-block:: none
+    .. code-block:: none
 
-         AT+SYSFLASH=1,"client_cert",0,2344
+      AT+SYSFLASH=1,"client_cert",0,2344
 
-       Response:
+    Response:
 
-       .. code-block:: none
+    .. code-block:: none
 
-         >
+      >
 
-       If the ``operator`` is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``. When the write operation is completed, the system will prompt the following information.
+    If the ``operator`` is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``. When the write operation is completed, the system will prompt the following information.
 
-       .. code-block:: none
+    .. code-block:: none
 
-         OK
+      OK
 
-  #. :ref:`AT+CIUPDATE <cmd-UPDATE>`
+- :ref:`AT+CIUPDATE <cmd-UPDATE>`
 
-     For example, you can execute the following command to upgrade the ``client_ca`` partition. Please refer to :ref:`AT+CIUPDATE <cmd-UPDATE>` for more details.
+  For example, you can execute the following command to upgrade the ``client_ca`` partition. Please refer to :ref:`AT+CIUPDATE <cmd-UPDATE>` for more details.
 
-     .. Important::
-       If you want to update the ``client_ca`` partition in this way, you must implement your own OTA device, please refer to :doc:`How_to_implement_OTA_update`.
+  .. Important::
+    If you want to update the ``client_ca`` partition in this way, you must implement your own OTA device, please refer to :doc:`How_to_implement_OTA_update`.
 
-     .. code-block:: none
+  .. code-block:: none
 
-       AT+CIUPDATE=1,"v2.2.0.0","client_ca"
+    AT+CIUPDATE=1,"v2.2.0.0","client_ca"
 
 .. note::
 

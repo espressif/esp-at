@@ -37,34 +37,99 @@
 ::
 
     +DRVADC:<raw data>
+
     OK
 
 参数
 ^^^^
 
--  **<channel>**：ADC1 通道，范围：0 ~ 7，相应管脚请查看技术规格书。
--  **<atten>**：衰减值：
+-  **<channel>**：ADC1 通道。
 
-   - 0: 0 dB 衰减，满量程电压为 1.1 V；
-   - 1: 2.5 dB 衰减，满量程电压 1.5 V；
-   - 2: 6 dB 衰减，满量程电压为 2.2 V；
-   - 3: 11 dB 衰减，满量程电压为 3.9 V。
+   - ESP32 设备的取值范围为 [0,7]。
 
-- **<raw data>**：ADC 通道值，电压值为 raw_data/2 :sup:`width` * atten。
+     .. list-table::
+      :header-rows: 1
+
+      * - 通道
+        - 管脚
+      * - 0
+        - GPIO36
+      * - 1
+        - GPIO37
+      * - 2
+        - GPIO38
+      * - 3
+        - GPIO39
+      * - 4
+        - GPIO32
+      * - 5
+        - GPIO33
+      * - 6
+        - GPIO34
+      * - 7
+        - GPIO35
+
+   - ESP32-C3 设备的取值范围为 [0,4]。
+
+     .. list-table::
+      :header-rows: 1
+
+      * - 通道
+        - 管脚
+      * - 0
+        - GPIO0
+      * - 1
+        - GPIO1
+      * - 2
+        - GPIO2
+      * - 3
+        - GPIO3
+      * - 4
+        - GPIO4
+
+-  **<atten>**：衰减值。
+
+   - ESP32 设备的参数值：
+
+     - 0: 0 dB 衰减，有效测量范围为 [100, 950] mV。
+     - 1: 2.5 dB 衰减，有效测量范围为 [100, 1250] mV。
+     - 2: 6 dB 衰减，有效测量范围为 [150, 1750] mV。
+     - 3: 11 dB 衰减，有效测量范围为 [150, 2450] mV。
+
+   - ESP32-C3 设备的参数值：
+
+     - 0: 0 dB 衰减，有效测量范围为 [0, 750] mV。
+     - 1: 2.5 dB 衰减，有效测量范围为 [0, 1050] mV。
+     - 2: 6 dB 衰减，有效测量范围为 [0, 1300] mV。
+     - 3: 11 dB 衰减，有效测量范围为 [0, 2500] mV。
+
+- **<raw data>**：ADC 通道值。
 
 说明
 ^^^^
 
 -  ESP-AT 只支持 ADC1。
--  ESP32 和 ESP32-C3 支持 12 位宽度
+-  ESP32 和 ESP32-C3 支持 12 位宽度。
+-  对于如何将通道值转换为电压，ESP32 设备可以参考 `ADC 转换 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc.html#adc-conversion>`__，ESP32-C3 设备可以参考 `ADC 转换 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32c3/api-reference/peripherals/adc.html#adc-conversion>`__。
 
 示例
 ^^^^
 
 ::
 
-    AT+DRVADC=0,0   // ADC1 0 通道，电压：0 ~ 1.1 V
-    +DRVADC:2048    // ESP32 和 ESP32-C3 的电压为 2048 / 4096 * 1.1 = 0.55 
+    // ESP32 设备设置为 0 dB 衰减，有效测量范围为 [100, 950] mV
+    // 电压为 2048 / 4095 * 950 = 475.12 mV
+    AT+DRVADC=0,0
+    +DRVADC:2048
+
+    OK
+
+::
+
+    // ESP32-C3 设备设置为 0 dB 衰减，有效测量范围为 [0, 750] mV
+    // 电压为 2048 / 4095 * 750 = 375.09 mV
+    AT+DRVADC=0,0
+    +DRVADC:2048
 
     OK
 

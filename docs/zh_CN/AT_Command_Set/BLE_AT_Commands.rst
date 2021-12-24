@@ -118,6 +118,7 @@ Bluetooth® Low Energy AT 命令集
 说明
 ^^^^
 
+-  使用 Bluetooth LE 功能时，如果您无需使用 SoftAP 模式，则建议您可以通过 :ref:`AT+CWMODE <cmd-MODE>` 禁用 SoftAP 模式。
 -  使用相关命令之前，请先下载 "at_customize.bin" 文件，详情请见 :doc:`../Compile_and_Develop/How_to_customize_BLE_services`。
 -  使用其它 Bluetooth LE 命令之前，请先调用本命令，初始化 Bluetooth LE 角色。
 -  Bluetooth LE 角色初始化后，不能直接切换。如需切换角色，需要先调用 :ref:`AT+RST <cmd-RST>` 命令重启系统，再重新初始化 Bluetooth LE 角色。

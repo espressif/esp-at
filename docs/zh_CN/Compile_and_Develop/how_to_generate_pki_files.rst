@@ -135,106 +135,108 @@ ESP-AT 中证书文件的存储路径为 :at:`components/customized_partitions/r
 
 脚本 ``AtPKI.py`` 仅仅负责将证书文件转换为二进制文件。您可以通过以下方式将二进制文件烧录到 flash 中：
 
-1. 通过烧录工具烧录二进制文件
+通过烧录工具烧录
+^^^^^^^^^^^^^^^^
 
-  #. Windows
+- Windows
 
-     请下载 Windows `Flash 下载工具 <https://www.espressif.com/zh-hans/support/download/other-tools>`_。
+  请下载 Windows `Flash 下载工具 <https://www.espressif.com/zh-hans/support/download/other-tools>`_。
 
-     请参考 zip 文件夹中 ``readme.pdf`` 或者 ``doc`` 目录获取更多有关该工具的信息。
+  请参考 zip 文件夹中 ``readme.pdf`` 或者 ``doc`` 目录获取更多有关该工具的信息。
 
-  #. Linux or macOS
+- Linux or macOS
 
-     请使用 `esptool.py <https://github.com/espressif/esptool>`_。
+  请使用 `esptool.py <https://github.com/espressif/esptool>`_。
 
-     您可以在 ESP-AT 根目录下执行下面的命令烧录二进制文件。
+  您可以在 ESP-AT 根目录下执行下面的命令烧录二进制文件。
 
-     .. code-block:: none
+  .. code-block:: none
 
-       esptool.py --chip auto --port PORTNAME --baud 921600 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB ADDRESS FILEDIRECTORY
+    esptool.py --chip auto --port PORTNAME --baud 921600 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB ADDRESS FILEDIRECTORY
 
-     将 ``PORTNAME`` 替换为您的串口。将 ``ADDRESS`` 替换为烧录地址。将 ``FILEDIRECTORY`` 替换为二进制文件所在的目录。
+  将 ``PORTNAME`` 替换为您的串口。将 ``ADDRESS`` 替换为烧录地址。将 ``FILEDIRECTORY`` 替换为二进制文件所在的目录。
 
-2. 通过命令更新证书二进制文件
+通过命令更新
+^^^^^^^^^^^^^^^^
 
-  #. :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令
+- :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令
 
-     以 ``ESP32`` 模组为例，您可以执行以下命令来更新 ``client_cert`` 分区。请参考 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 获取更多信息。
+  以 ``ESP32`` 模组为例，您可以执行以下命令来更新 ``client_cert`` 分区。请参考 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 获取更多信息。
 
-     1. 查询 flash 用户分区
+  1. 查询 flash 用户分区
 
-       命令：
+    命令：
 
-       .. code-block:: none
+    .. code-block:: none
 
-         AT+SYSFLASH?
+      AT+SYSFLASH?
 
-       响应：
+    响应：
 
-       .. code-block:: none
+    .. code-block:: none
 
-         +SYSFLASH:"ble_data",64,1,0x21000,0x3000
-         +SYSFLASH:"server_cert",64,2,0x24000,0x2000
-         +SYSFLASH:"server_key",64,3,0x26000,0x2000
-         +SYSFLASH:"server_ca",64,4,0x28000,0x2000
-         +SYSFLASH:"client_cert",64,5,0x2a000,0x2000
-         +SYSFLASH:"client_key",64,6,0x2c000,0x2000
-         +SYSFLASH:"client_ca",64,7,0x2e000,0x2000
-         +SYSFLASH:"factory_param",64,8,0x30000,0x1000
-         +SYSFLASH:"wpa2_cert",64,9,0x31000,0x2000
-         +SYSFLASH:"wpa2_key",64,10,0x33000,0x2000
-         +SYSFLASH:"wpa2_ca",64,11,0x35000,0x2000
-         +SYSFLASH:"mqtt_cert",64,12,0x37000,0x2000
-         +SYSFLASH:"mqtt_key",64,13,0x39000,0x2000
-         +SYSFLASH:"mqtt_ca",64,14,0x3b000,0x2000
-         +SYSFLASH:"fatfs",1,129,0x70000,0x90000
+      +SYSFLASH:"ble_data",64,1,0x21000,0x3000
+      +SYSFLASH:"server_cert",64,2,0x24000,0x2000
+      +SYSFLASH:"server_key",64,3,0x26000,0x2000
+      +SYSFLASH:"server_ca",64,4,0x28000,0x2000
+      +SYSFLASH:"client_cert",64,5,0x2a000,0x2000
+      +SYSFLASH:"client_key",64,6,0x2c000,0x2000
+      +SYSFLASH:"client_ca",64,7,0x2e000,0x2000
+      +SYSFLASH:"factory_param",64,8,0x30000,0x1000
+      +SYSFLASH:"wpa2_cert",64,9,0x31000,0x2000
+      +SYSFLASH:"wpa2_key",64,10,0x33000,0x2000
+      +SYSFLASH:"wpa2_ca",64,11,0x35000,0x2000
+      +SYSFLASH:"mqtt_cert",64,12,0x37000,0x2000
+      +SYSFLASH:"mqtt_key",64,13,0x39000,0x2000
+      +SYSFLASH:"mqtt_ca",64,14,0x3b000,0x2000
+      +SYSFLASH:"fatfs",1,129,0x70000,0x90000
 
-         OK
+      OK
 
-     2. 擦除 ``client_cert`` 分区
+  2. 擦除 ``client_cert`` 分区
 
-       命令：
+    命令：
 
-       .. code-block:: none
+    .. code-block:: none
 
-         AT+SYSFLASH=0,"client_cert"
+      AT+SYSFLASH=0,"client_cert"
 
-       响应：
+    响应：
 
-       .. code-block:: none
+    .. code-block:: none
 
-         OK
+      OK
 
-     3. 更新 ``client_cert`` 分区
+  3. 更新 ``client_cert`` 分区
 
-       命令：
+    命令：
 
-       .. code-block:: none
+    .. code-block:: none
 
-         AT+SYSFLASH=1,"client_cert",0,2344
+      AT+SYSFLASH=1,"client_cert",0,2344
 
-       响应：
+    响应：
 
-       .. code-block:: none
+    .. code-block:: none
 
-         >
+      >
 
-       当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时您可以输入要写的数据，数据长度应与 ``<length>`` 一致。当写入操作完成之后，系统会提示以下信息。
+    当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时您可以输入要写的数据，数据长度应与 ``<length>`` 一致。当写入操作完成之后，系统会提示以下信息。
 
-       .. code-block:: none
+    .. code-block:: none
 
-         OK
+      OK
 
-  #. :ref:`AT+CIUPDATE <cmd-UPDATE>` 命令
+- :ref:`AT+CIUPDATE <cmd-UPDATE>` 命令
 
-     例如，您可以执行以下命令来更新 ``client_ca`` 分区。请参考 :ref:`AT+CIUPDATE <cmd-UPDATE>` 获取更多信息。
+  例如，您可以执行以下命令来更新 ``client_ca`` 分区。请参考 :ref:`AT+CIUPDATE <cmd-UPDATE>` 获取更多信息。
 
-     .. Important::
-       如果您想通过这种方式更新 ``client_ca`` 分区，您必须实现自己的 OTA 设备，请参考文档 :doc:`How_to_implement_OTA_update`。
+  .. Important::
+    如果您想通过这种方式更新 ``client_ca`` 分区，您必须实现自己的 OTA 设备，请参考文档 :doc:`How_to_implement_OTA_update`。
 
-     .. code-block:: none
+  .. code-block:: none
 
-       AT+CIUPDATE=1,"v2.2.0.0","client_ca"
+    AT+CIUPDATE=1,"v2.2.0.0","client_ca"
 
 .. note::
 

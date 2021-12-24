@@ -37,34 +37,99 @@ Set Command
 ::
 
     +DRVADC:<raw data>
+
     OK
 
 Parameters
 ^^^^^^^^^^
 
--  **<channel>**: ADC1 channel. Range: 0 ~ 7. See datasheets for corresponding pins.
+-  **<channel>**: ADC1 channel.
+
+   - For ESP32 devices, the range is [0,7].
+
+     .. list-table::
+      :header-rows: 1
+
+      * - CHANNEL
+        - GPIO
+      * - 0
+        - GPIO36
+      * - 1
+        - GPIO37
+      * - 2
+        - GPIO38
+      * - 3
+        - GPIO39
+      * - 4
+        - GPIO32
+      * - 5
+        - GPIO33
+      * - 6
+        - GPIO34
+      * - 7
+        - GPIO35
+
+   - For ESP32-C3 devices, the range is [0,4].
+
+     .. list-table::
+      :header-rows: 1
+
+      * - CHANNEL
+        - GPIO
+      * - 0
+        - GPIO0
+      * - 1
+        - GPIO1
+      * - 2
+        - GPIO2
+      * - 3
+        - GPIO3
+      * - 4
+        - GPIO4
+
 -  **<atten>**: attenuation.
 
-   -  0: 0 dB attenuation gives full-scale voltage 1.1 V.
-   -  1: 2.5 dB attenuation gives full-scale voltage 1.5 V.
-   -  2: 6 dB attenuation gives full-scale voltage 2.2 V.
-   -  3: 11 dB attenuation gives full-scale voltage 3.9 V.
+   - For ESP32 devices:
 
-- **<raw data>**: ADC channel value. The voltage value is raw_data/2 :sup:`width` * atten.
+     -  0: 0 dB attenuation, effective measurement range is [100, 950] mV.
+     -  1: 2.5 dB attenuation, effective measurement range is [100, 1250] mV.
+     -  2: 6 dB attenuation, effective measurement range is [150, 1750] mV.
+     -  3: 11 dB attenuation, effective measurement range is [150, 2450] mV.
+
+   - For ESP32-C3 devices:
+
+     -  0: 0 dB attenuation, effective measurement range is [0, 750] mV.
+     -  1: 2.5 dB attenuation, effective measurement range is [0, 1050] mV.
+     -  2: 6 dB attenuation, effective measurement range is [0, 1300] mV.
+     -  3: 11 dB attenuation, effective measurement range is [0, 2500] mV.
+
+- **<raw data>**: ADC channel value. 
 
 Notes
 ^^^^^
 
 -  ESP-AT only supports ADC1.
 -  ESP32 and ESP32-C3 support 12-bit width.
+-  For details on how to convert the channel value into voltage, please refer to `ADC Conversion <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/adc.html#adc-conversion>`__ for ESP32 devices and `ADC Conversion <https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/api-reference/peripherals/adc.html#adc-conversion>`__ for ESP32-C3 devices.
 
 Example
 ^^^^^^^^
 
 ::
 
-    AT+DRVADC=0,0   // ADC1 0 channel, voltage: 0 ~ 1.1 V
-    +DRVADC:2048    // For ESP32 and ESP32-C3, the voltage is 2048 / 4096 * 1.1 = 0.55 
+    // For ESP32, 0 dB attenuation, effective measurement range is [100, 950] mV
+    // The returned 2048 means the voltage is 2048 / 4095 * 950 = 475.12 mV
+    AT+DRVADC=0,0
+    +DRVADC:2048
+
+    OK
+
+::
+
+    // For ESP32-C3, 0 dB attenuation, effective measurement range is [0, 750] mV
+    // The returned 2048 means the voltage is 2048 / 4095 * 750 = 375.09 mV
+    AT+DRVADC=0,0
+    +DRVADC:2048
 
     OK
 
