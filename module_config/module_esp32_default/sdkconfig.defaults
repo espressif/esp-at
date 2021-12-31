@@ -92,6 +92,7 @@ CONFIG_MBEDTLS_HAVE_TIME_DATE=y
 
 # ESP-TLS
 CONFIG_ESP_TLS_SERVER=y
+CONFIG_ESP_TLS_PSK_VERIFICATION=y
 
 # AT Customized Partitions
 CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE="module_config/module_esp32_default/at_customize.csv"
