@@ -69,14 +69,14 @@ static int32_t at_socket_read_data(uint8_t* data, int32_t len)
     size_t ring_len = len;
     uint8_t* recv_data = (uint8_t*) xRingbufferReceive(at_read_ring_buf, &ring_len, (portTickType) 0);
 
-    if (recv_data == NULL) {
+    if (recv_data == NULL || ring_len < 0 || ring_len > ESP_AT_RING_ESP_AT_BUFFER_SIZE) {
         ESP_LOGE(TAG, "Cannot recieve socket data from ringbuf.");
         return -1;
     } else {
-        memcpy(data, recv_data, len);
+        memcpy(data, recv_data, ring_len);
     }
 
-    return len;
+    return ring_len;
 }
 
 /*Result of AT command, auto call when read_data get data*/
