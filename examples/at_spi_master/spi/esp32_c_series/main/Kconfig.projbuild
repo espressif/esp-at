@@ -21,26 +21,33 @@ endchoice
 menu "spi gpio settings"
     config SPI_SCLK_PIN
         int "SPI sclk pin"
-        default 15
+        default 15 if IDF_TARGET_ESP32
+        default 6 if IDF_TARGET_ESP32C3
     config SPI_MOSI_PIN
         int "SPI mosi pin"
-        default 13
+        default 13 if IDF_TARGET_ESP32
+        default 7 if IDF_TARGET_ESP32C3
     config SPI_MISO_PIN
         int "SPI miso pin"
-        default 12
+        default 12 if IDF_TARGET_ESP32
+        default 2 if IDF_TARGET_ESP32C3
     config SPI_CS_PIN
         int "SPI cs pin"
-        default 14
+        default 14 if IDF_TARGET_ESP32
+        default 10 if IDF_TARGET_ESP32C3
     config SPI_HANDSHAKE_PIN
         int "SPI handshake pin for slave send"
-        default 5
+        default 5 if IDF_TARGET_ESP32
+        default 3 if IDF_TARGET_ESP32C3
     config SPI_WP_PIN
         int "SPI WP pin(quad spi)"
-        default 16
+        default 16 if IDF_TARGET_ESP32
+        default 8 if IDF_TARGET_ESP32C3
         depends on SPI_QUAD_MODE
     config SPI_HD_PIN
         int "SPI HD pin(quad spi)"
-        default 17
+        default 17 if IDF_TARGET_ESP32
+        default 9 if IDF_TARGET_ESP32C3
         depends on SPI_QUAD_MODE
 endmenu
 

@@ -48,8 +48,13 @@ Pins in use. The SPI Master can use the GPIO mux, so feel free to change these i
 #define GPIO_HD               CONFIG_SPI_HD_PIN
 #endif
 
+#ifdef CONFIG_IDF_TARGET_ESP32
 #define MASTER_HOST           HSPI_HOST
-#define DMA_CHAN              2
+#elif defined CONFIG_IDF_TARGET_ESP32C3
+#define MASTER_HOST           SPI2_HOST
+#endif
+
+#define DMA_CHAN              SPI_DMA_CH_AUTO
 #define ESP_SPI_DMA_MAX_LEN   4092
 #define CMD_HD_WRBUF_REG      0x01
 #define CMD_HD_RDBUF_REG      0x02
@@ -451,6 +456,25 @@ static void init_master_hd(spi_device_handle_t* spi)
     spi_device_interface_config_t dev_cfg = {};
     spi_device_default_config(&dev_cfg);
     ESP_ERROR_CHECK(spi_bus_add_device(MASTER_HOST, &dev_cfg, spi));
+
+    spi_mutex_lock();
+
+    spi_recv_opt_t recv_opt = query_slave_data_trans_info();
+    ESP_LOGI(TAG, "now direct:%u", recv_opt.direct);
+
+    if (recv_opt.direct == SPI_READ) { // if slave in waiting response status, master need to give a read done single.
+        if (recv_opt.seq_num != ((current_recv_seq + 1) & 0xFF)) {
+            ESP_LOGE(TAG, "SPI recv seq error, %x, %x", recv_opt.seq_num, (current_recv_seq + 1));
+            if (recv_opt.seq_num == 1) {
+                ESP_LOGE(TAG, "Maybe SLAVE restart, ignore");
+            }
+        }
+
+        current_recv_seq = recv_opt.seq_num;
+        
+        at_spi_rddma_done();
+    }
+    spi_mutex_unlock();
 }
 
 void app_main()
