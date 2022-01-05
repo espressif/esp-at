@@ -21,16 +21,16 @@ Please refer to the example code and set up a serial terminal program to the sam
 
 ## Pin Assignment
 
-| Signal           | Master(ESP32) |
-| ---------------- | ------------- |
-| SCLK             | GPIO15        |
-| MISO             | GPIO12        |
-| MOSI             | GPIO13        |
-| CS               | GPIO14        |
-| HANDSHAKE        | GPIO5         |
-| GND              | GND           |
-| QUADWP(qio/qout) | GPIO16        |
-| QUADHD(qio/qout) | GPIO17        |
+| Signal           | Master(ESP32) | Master(ESP32C3) |
+| ---------------- | ------------- | -------------   |
+| SCLK             | GPIO15        | GPIO6           |
+| MISO             | GPIO12        | GPIO2           |
+| MOSI             | GPIO12        | GPIO7           |
+| CS               | GPIO14        | GPIO10          |
+| HANDSHAKE        | GPIO5         | GPIO3           |
+| GND              | GND           | GND             |
+| QUADWP(qio/qout) | GPIO16        | GPIO8           |
+| QUADHD(qio/qout) | GPIO17        | GPIO9           |
 
 **Note**： QUADWP and QUADHD only used for 4-bit(qio/qout) transactions.
 
