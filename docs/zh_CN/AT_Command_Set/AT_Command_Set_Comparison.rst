@@ -61,18 +61,17 @@ ESP-AT 不同版本命令集支持对比
        | 2: modem sleep
      - | ESP8266 ✅
        | ESP32 ✅
-       | ESP32-S2 ❌
-       | 注释 [#one]_
+       | ESP32-S2 ❌ :sup:`1`
    * - AT+WAKEUPGPIO
      - 配置 GPIO 唤醒 light sleep
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`
    * - :ref:`AT+RFPOWER <cmd-RFPOWER>`
      - 设置 RF TX Power
      - | ✅
        | 范围：[0,82]
        | 单位：0.25 dBm
-     - ✅ [#two]_
+     - ✅ :sup:`2`
    * - AT+RFVDD
      - 根据 VDD33 设置 RF TX Power
      - ✅
@@ -112,11 +111,11 @@ ESP-AT 不同版本命令集支持对比
    * - AT+SYSMSG_CUR
      - 设置当前系统消息，不保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+SYSMSG <cmd-SYSMSG>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+SYSMSG <cmd-SYSMSG>`
    * - AT+SYSMSG_DEF
      - 设置默认系统消息，保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+SYSMSG <cmd-SYSMSG>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+SYSMSG <cmd-SYSMSG>`
    * - :ref:`AT+CWMODE <cmd-MODE>`
      - 设置 Wi-Fi 模式
      - ❌
@@ -124,11 +123,11 @@ ESP-AT 不同版本命令集支持对比
    * - AT+CWMODE_CUR
      - 设置当前 Wi-Fi 模式，不保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWMODE <cmd-MODE>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CWMODE <cmd-MODE>`
    * - AT+CWMODE_DEF
      - 设置默认 Wi-Fi 模式，保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWMODE <cmd-MODE>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CWMODE <cmd-MODE>`
    * - :ref:`AT+CWJAP <cmd-JAP>`
      - 连接 AP
      - ✅
@@ -136,11 +135,11 @@ ESP-AT 不同版本命令集支持对比
    * - AT+CWJAP_CUR
      - 连接 AP，参数不保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWJAP <cmd-JAP>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CWJAP <cmd-JAP>`
    * - AT+CWJAP_DEF
      - 连接 AP，参数保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWJAP <cmd-JAP>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CWJAP <cmd-JAP>`
    * - :ref:`AT+CWLAPOPT <cmd-LAPOPT>`
      - 设置 CWLAP 命令的属性
      - ✅
@@ -160,11 +159,11 @@ ESP-AT 不同版本命令集支持对比
    * - AT+CWSAP_CUR
      - 配置 softAP 参数，不保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWSAP <cmd-SAP>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CWSAP <cmd-SAP>`
    * - AT+CWSAP_DEF
      - 配置 softAP 参数，保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWSAP <cmd-SAP>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CWSAP <cmd-SAP>`
    * - :ref:`AT+CWLIF <cmd-LIF>`
      - 查询连接到 softAP 的 Station 信息
      - ✅
@@ -176,11 +175,11 @@ ESP-AT 不同版本命令集支持对比
    * - AT+CWDHCP_CUR
      - 设置 DHCP，不保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWDHCP <cmd-DHCP>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CWDHCP <cmd-DHCP>`
    * - AT+CWDHCP_DEF
      - 设置 DHCP，保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWDHCP <cmd-DHCP>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CWDHCP <cmd-DHCP>`
    * - :ref:`AT+CWDHCPS <cmd-DHCPS>`
      - 设置 softAP DHCP 分配的 IP 范围
      - ❌
@@ -188,11 +187,11 @@ ESP-AT 不同版本命令集支持对比
    * - AT+CWDHCPS_CUR
      - 设置 softAP DHCP 分配的 IP 范围，不保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWDHCPS <cmd-DHCPS>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CWDHCPS <cmd-DHCPS>`
    * - AT+CWDHCPS_DEF
      - 设置 softAP DHCP 分配的 IP 范围，保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWDHCPS <cmd-DHCPS>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CWDHCPS <cmd-DHCPS>`
    * - :ref:`AT+CWAUTOCONN <cmd-AUTOC>`
      - 上电是否自动连接 AP
      - ✅
@@ -204,11 +203,11 @@ ESP-AT 不同版本命令集支持对比
    * - AT+CIPSTAMAC_CUR
      - 设置 Station 接口 MAC 地址，不保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPSTAMAC <cmd-STAMAC>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CIPSTAMAC <cmd-STAMAC>`
    * - AT+CIPSTAMAC_DEF
      - 设置 Station 接口 MAC 地址，保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPSTAMAC <cmd-STAMAC>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CIPSTAMAC <cmd-STAMAC>`
    * - :ref:`AT+CIPAPMAC <cmd-APMAC>`
      - 设置 softAP 的 MAC 地址
      - ❌
@@ -216,11 +215,11 @@ ESP-AT 不同版本命令集支持对比
    * - AT+CIPAPMAC_CUR
      - 设置 softAP 的 MAC 地址，不保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPAPMAC <cmd-APMAC>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CIPAPMAC <cmd-APMAC>`
    * - AT+CIPAPMAC_DEF
      - 设置 softAP 的 MAC 地址，保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPAPMAC <cmd-APMAC>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CIPAPMAC <cmd-APMAC>`
    * - :ref:`AT+CIPSTA <cmd-IPSTA>`
      - 设置 Station 的 IP 地址
      - ❌
@@ -228,11 +227,11 @@ ESP-AT 不同版本命令集支持对比
    * - AT+CIPSTA_CUR
      - 设置 Station 的 IP 地址，不保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPSTA <cmd-IPSTA>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CIPSTA <cmd-IPSTA>`
    * - AT+CIPSTA_DEF
      - 设置 Station 的 IP 地址，保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPSTA <cmd-IPSTA>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CIPSTA <cmd-IPSTA>`
    * - :ref:`AT+CIPAP <cmd-IPAP>`
      - 设置 softAP 的 IP 地址
      - ❌
@@ -240,11 +239,11 @@ ESP-AT 不同版本命令集支持对比
    * - AT+CIPAP_CUR
      - 设置 softAP 的 IP 地址，不保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPAP <cmd-IPAP>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CIPAP <cmd-IPAP>`
    * - AT+CIPAP_DEF
      - 设置 softAP 的 IP 地址，保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPAP <cmd-IPAP>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CIPAP <cmd-IPAP>`
    * - :ref:`AT+CWSTARTSMART <cmd-STARTS>`
      - 开启 SmartConfig
      - ✅
@@ -295,11 +294,11 @@ ESP-AT 不同版本命令集支持对比
    * - AT+CWCOUNTRY_CUR
      - 设置 Wi-Fi 国家码，不保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`
    * - AT+CWCOUNTRY_DEF
      - 设置 Wi-Fi 国家码，保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`
    * - :ref:`AT+CIPSTATUS <cmd-STATUS>`
      - 查询⽹网络连接信息
      - ✅
@@ -331,23 +330,23 @@ ESP-AT 不同版本命令集支持对比
    * - AT+CIPSENDBUF
      - 数据写入 TCP 发包缓存
      - ✅
-     - ❌ [#three]_
+     - ❌ :sup:`3`
    * - AT+CIPBUFRESET
      - 重新计数
      - ✅
-     - ❌ [#three]_
+     - ❌ :sup:`3`
    * - AT+CIPBUFSTATUS
      - 查询 TCP 发包缓存的状态
      - ✅
-     - ❌ [#three]_
+     - ❌ :sup:`3`
    * - AT+CIPCHECKSEQ
      - 查询写入 TCP 发包缓存的某包是否发送成功
      - ✅
-     - ❌ [#three]_
+     - ❌ :sup:`3`
    * - AT+CIPCLOSEMODE
      - 设置 TCP 连接的断开方式
      - ✅
-     - ❌ [#three]_
+     - ❌ :sup:`3`
    * - :ref:`AT+CIPCLOSE <cmd-CLOSE>`
      - 关闭 TCP/UDP/SSL 传输
      - ✅
@@ -420,31 +419,30 @@ ESP-AT 不同版本命令集支持对比
    * - AT+CIPDNS_CUR
      - 自定义 DNS 服务器，不保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPDNS <cmd-DNS>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CIPDNS <cmd-DNS>`
    * - AT+CIPDNS_DEF
      - 自定义 DNS 服务器，保存到 flash
      - ✅
-     - | ❌ [#three]_ 相似命令参考 :ref:`AT+CIPDNS <cmd-DNS>`
+     - | ❌ :sup:`3` 相似命令参考 :ref:`AT+CIPDNS <cmd-DNS>`
    * - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`
      - 读写 flash 用户分区
      - ❌
      - ✅
 
-提示：点击脚注序号即可返回/跳转到上方表格的标注处。
+**说明** 1：新版 ESP-AT 中的 AT+SLEEP：
 
-.. [#one] 新版 ESP-AT 中的 AT+SLEEP
+    * ESP8266 and ESP32 ✅
+    
+      * 1：modem sleep by DTIM
+      * 2：light sleep
+      * 3：modem sleep by listen interval
+    
+    * ESP32-S2 ❌
 
-       * ESP8266 and ESP32 ✅
-       
-         * 1：modem sleep by DTIM
-         * 2：light sleep
-         * 3：modem sleep by listen interval
-       
-       * ESP32-S2 ❌
-.. [#two] 新版 ESP-AT 中的 AT+RFPOWER
+**说明** 2：新版 ESP-AT 中的 AT+RFPOWER：
 
-       * ESP8266 ✅，范围：[40,82]，单位：0.25 dBm
-       * ESP32 ✅，范围：[40,78]，单位：0.25 dBm，且支持 Bluetooth LE
-       * ESP32-S2 ✅，范围：[40,78]，单位：0.25 dBm
+    * ESP8266 ✅，范围：[40,82]，单位：0.25 dBm
+    * ESP32 ✅，范围：[40,78]，单位：0.25 dBm，且支持 Bluetooth LE
+    * ESP32-S2 ✅，范围：[40,78]，单位：0.25 dBm
 
-.. [#three] 新版 ESP-AT 不添加此命令
+**说明** 3：新版 ESP-AT 不添加此命令。
