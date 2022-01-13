@@ -490,6 +490,7 @@
 说明
 ^^^^
 
+-  当禁用睡眠模式后，Bluetooth LE 不可以被初始化。当 Bluetooth LE 初始化后，不可以禁用睡眠模式。
 -  Modem-sleep 模式和 Light-sleep 模式均可以在 Wi-Fi 模式或者 BLE 模式下设置，但在 Wi-Fi 模式下，这两种模式只能在 ``station`` 模式下设置
 -  设置 Light-sleep 模式前，建议提前通过 :ref:`AT+SLEEPWKCFG <cmd-WKCFG>` 命令设置好唤醒源，否则没法唤醒，设备将一直处于睡眠状态
 -  设置 Light-sleep 模式后，如果 Light-sleep 唤醒条件不满足时，设备将自动进入睡眠模式，当 Light-sleep 唤醒条件满足时，设备将自动从睡眠模式中唤醒
