@@ -286,7 +286,7 @@ For multiple connections, it returns:
 Parameters
 """""""""""
 
--  **<link ID>**: ID of network connection (0~4), used for multiple connections.
+-  **<link ID>**: ID of network connection (0~4), used for multiple connections. The range of this parameter depends on two configuration items in ``menuconfig``. One is ``AT_SOCKET_MAX_CONN_NUM`` of the ``AT`` component, and its default value is 5. The other is ``LWIP_MAX_SOCKETS`` of the ``LWIP`` component, and its default value is 10. To modify the range of this parameter, you need to set ``AT_SOCKET_MAX_CONN_NUM`` and make sure it is no larger than the value of ``LWIP_MAX_SOCKETS``. (See :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` for details on configuring and build ESP-AT projects.)
 -  **<"type">**: string parameter showing the type of transmission: "TCP", or "TCPv6". Default: "TCP".
 -  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
 -  **<remote port>**: the remote port number.
@@ -1084,7 +1084,7 @@ Set the maximum number of clients allowed to connect to the TCP/SSL server.
 Parameter
 ^^^^^^^^^^
 
--  **<num>**: the maximum number of clients allowed to connect to the TCP/SSL server.
+-  **<num>**: the maximum number of clients allowed to connect to the TCP/SSL server. Range: [1,5]. For how to change the upper limit of this range, please refer to the description of the ``<link ID>`` parameter of the :ref:`AT+CIPSTART <cmd-START>` command.
 
 Note
 ^^^^^
