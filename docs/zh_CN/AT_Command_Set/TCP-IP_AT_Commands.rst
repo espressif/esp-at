@@ -286,7 +286,7 @@ TCP/IP AT 命令
 参数
 """"
 
--  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
+-  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况。该参数范围取决于 ``menuconfig`` 中的两个配置项。一个是 ``AT`` 组件中的配置项 ``AT_SOCKET_MAX_CONN_NUM`` ，默认值为 5。另一个是 ``LWIP`` 组件中的配置项 ``LWIP_MAX_SOCKETS`` ，默认值为 10。要修改该参数的范围，您需要修改配置项 ``AT_SOCKET_MAX_CONN_NUM`` 的值并确保该值不大于 ``LWIP_MAX_SOCKETS`` 的值。（请参考 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>` 获取更多信息。）
 -  **<"type">**：字符串参数，表示网络连接类型，"TCP" 或 "TCPv6"。默认值："TCP"
 -  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：远端端口值
@@ -1084,7 +1084,7 @@ TCP/IP AT 命令
 参数
 ^^^^
 
--  **<num>**：TCP 或 SSL 服务器允许建立的最大连接数
+-  **<num>**：TCP 或 SSL 服务器允许建立的最大连接数，范围：[1,5]。如果您想修改该参数的上限阈值，请参考 :ref:`AT+CIPSTART <cmd-START>` 命令中参数 ``<link ID>`` 的描述。
 
 说明
 ^^^^
