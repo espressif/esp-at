@@ -329,7 +329,6 @@ config AT_QCLOUD_IOT_COMMAND_SUPPORT
     bool "AT QCloud IoT command support."
     default "n"
     depends on AT_ENABLE
-    depends on (IDF_TARGET_ESP32 || IDF_TARGET_ESP32C3)
     help
         Please enable this configure if you want use AT QCloud IoT commands.
         AT QCloud IoT commands is specially designed for Tencent Cloud.
