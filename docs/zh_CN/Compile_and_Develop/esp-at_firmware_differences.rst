@@ -529,3 +529,6 @@ ESP32-C3 系列
    * - ESP32-C3-MINI-1
      - |icon-green-check|
      - |icon-green-check|
+   * - ESP32-C3-WROOM-02
+     - |icon-green-check|
+     - |icon-green-check|
