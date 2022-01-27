@@ -59,7 +59,7 @@ def at_write_records(records, format, f):
 
 def at_parameter_assign_int(arg, fixed_len, l, lidx):
     if arg:
-        l[lidx] = arg & (256 ** fixed_len - 1)
+        l[lidx] = arg & (256 ** fixed_len - 1) if arg >= 0 else -1
 
 def at_parameter_assign_str(arg, fixed_len, l, lidx):
     if arg:
@@ -276,8 +276,9 @@ def main(argv=None, esp=None):
 
     try:
         operation_func(esp, args)
-    except:
-        print("Operation exception occurred!")
+    finally:
+        # do final cleanup
+        pass
 
 class FatalError(RuntimeError):
     """
@@ -300,8 +301,10 @@ def _main():
     try:
         main()
     except FatalError as e:
-        print('\nA fatal error occurred: %s' % e)
+        ESP_LOGE("A fatal error occurred: %s" %e)
         sys.exit(2)
+    except Exception as e:
+        ESP_LOGE("A system error occurred: %s" %e)
 
 if __name__ == '__main__':
     _main()
