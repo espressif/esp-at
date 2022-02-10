@@ -490,6 +490,7 @@ Parameter
 Note
 ^^^^^
 
+-  When sleep mode is disabled, you cannot initialize Bluetooth LE. When Bluetooth LE is initialized, you cannot disable sleep mode.
 -  Modem-sleep mode and Light-sleep mode can be set under Wi-Fi mode or BLE mode, but in Wi-Fi mode, these two modes can only be set in ``station`` mode.
 -  Before setting the Light-sleep mode, it is recommended to set the wakeup source in advance through the command :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`, otherwise ESP devices can't wake up and will always be in sleep mode.
 -  After setting the Light-sleep mode, if the Light-sleep wakeup condition is not met, ESP devices will automatically enter the sleep mode. When the Light-sleep wakeup condition is met, ESP devices will automatically wake up from sleep mode.
