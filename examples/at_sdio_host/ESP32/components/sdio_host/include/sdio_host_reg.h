@@ -18,8 +18,6 @@
 
 #define ESP_SLAVE_CMD53_END_ADDR    0x1f800
 
-#if TARGET_ESP32
-
 #define ESP32_SLCHOST_BASE          0x3ff55000
 
 #define ESP_SDIO_PKT_LEN            (ESP32_SLCHOST_BASE + 0x60)&0x3FF
@@ -33,21 +31,5 @@
 
 #define RX_BYTE_MAX                 0x100000
 #define RX_BYTE_MASK                0xFFFFF
-
-#else
-
-#define ESP_SDIO_PKT_LEN            0x20
-#define ESP_SDIO_INT_CLR            0x30
-#define ESP_SDIO_INT_RAW            0x8
-#define ESP_SDIO_INT_ST             0x1C
-#define ESP_SDIO_TOKEN_RDATA        0x4
-#define ESP_SDIO_SEND_OFFSET        0
-#define ESP_SDIO_CONF               0x28
-#define ESP_SDIO_CONF_OFFSET        16
-
-#define RX_BYTE_MAX                 0x10000000       // max
-#define RX_BYTE_MASK                0xFFFFFFF
-
-#endif
 
 #endif /* SDIO_HOST_REG_H_ */

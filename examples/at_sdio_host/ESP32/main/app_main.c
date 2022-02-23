@@ -24,10 +24,6 @@
 #include "driver/gpio.h"
 #include "time.h"
 
-#if (TARGET_ESP32 == 0)    // Target is ESP8266 S2
-#include "guide_8266_boot.h"
-#endif
-
 #define SLAVE_PWR_GPIO       5          // sdio board ESP32 slave, ESP32 is IO5, ESP8266 is IO18
 
 #define WRITE_BUFFER_LEN    2048
@@ -160,12 +156,6 @@ static void sdio_task(void* pvParameters)
     SDIO_LOGI(TAG, "host ready, start initializing slave...");
     err = sdio_init();
     assert(err == ESP_OK);
-
-#if (TARGET_ESP32 == 0)    // Target is ESP8266 S2
-    SDIO_LOGI(TAG, "********** Guide ESP8266 BOOT ***********");
-    err = esp_download_fw();
-    SDIO_ERROR_CHECK(err);
-#endif
 
     //Create the semaphore.
     rdySem = xSemaphoreCreateBinary();
