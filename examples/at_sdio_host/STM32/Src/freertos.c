@@ -39,9 +39,6 @@
 
 #include "time.h"
 
-#if (TARGET_ESP32 == 0)
-#include "guide_8266_boot.h"
-#endif
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -171,11 +168,6 @@ void StartDefaultTask(void const * argument)
 		printf("Sdio init done\r\n");
 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
 
-#if (TARGET_ESP32 == 0)
-    SDIO_LOGI(TAG, "********** Guide ESP8266 BOOT ***********");
-    err = esp_download_fw();
-    SDIO_ERROR_CHECK(err);
-#endif
 	  xTaskCreate(sdio_recv_task, "sdioRecvTask", 128, NULL, 5, NULL);
 
 		xSemaphoreTake(UartBinarySemHandle,0);

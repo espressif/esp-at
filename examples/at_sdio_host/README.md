@@ -1,13 +1,13 @@
 ## 简介
 
-SDIO AT 是 MCU 通过 SDIO 协议与 ESP 设备（代指 ESP32 以及 ESP8266-S2） 侧的 SDIO 进行通信，通信流程如下图所示：
+SDIO AT 是 MCU 通过 SDIO 协议与 ESP32 侧的 SDIO 进行通信，通信流程如下图所示：
 
 ![dataflow](res/sdio_dataflow.jpg)
 
-- 作为 Slave 的 ESP 使用 SDIO 硬件接口，通过 SDIO 协议和 host 进行通信.
+- 作为 Slave 的 ESP32 使用 SDIO 硬件接口，通过 SDIO 协议和 host 进行通信.
 - 作为 host 的 MCU 同样使用 SDIO 硬件接口，通过传输 SDIO 协议数据，和 Slave 进行 SDIO 通信.
 
-考虑到与 ESP SDIO 交互的协议是纯软件的部分，且与硬件耦合程度较低，因此将这部分进行封装，转换为与平台无关的形式，只需要使用 SDIO 驱动适配需要的接口即可。
+考虑到与 ESP32 SDIO 交互的协议是纯软件的部分，且与硬件耦合程度较低，因此将这部分进行封装，转换为与平台无关的形式，只需要使用 SDIO 驱动适配需要的接口即可。
 
 ## 硬件接口
 
@@ -24,19 +24,6 @@ MCU 与  ESP32 的 SDIO 通信硬件管脚连接如下图所示：
 | DAT2 | 12    |
 | DAT3 | 13    |
 
-MCU 与  ESP8266-S2 的 SDIO 通信硬件管脚连接如下图所示：
-
-| MCU  | ESP8266-S2 模组编号 | ESP8266 芯片 IO |
-| ---- | ------------------- | --------------- |
-| CLK  | SCLK                | 6               |
-| CMD  | CMD                 | 11              |
-| DAT0 | SD0                 | 7               |
-| DAT1 | SD1                 | 8               |
-| DAT2 | SD2                 | 9               |
-| DAT3 | SD3                 | 10              |
-
-
-
 - 1-bit SD 模式： 连接 CLK， CMD，DAT0，DAT1 管脚以及 GND
 - 4-bit SD 模式： 连接上述全部管脚以及 GND
 - 无论 1-bit 模式还是 4-bit SD 模式， SDIO slave 的 CMD 和 D0-D3 都应该连接一个 10K 的上拉电阻，另外需要将电压选择 efuse 烧写为 3.3v，具体注意事项请参考[SD Pullup Requirements](https://espressif-docs.readthedocs-hosted.com/projects/esp-idf/en/latest/api-reference/peripherals/sd_pullup_requirements.html)
@@ -47,13 +34,6 @@ MCU 与  ESP8266-S2 的 SDIO 通信硬件管脚连接如下图所示：
 
 ```
 ├── components
-│   ├── guide_boot   // ESP8266 引导 boot 信息，如果使用 ESP32， 可以忽略
-│   │   ├── component.mk
-│   │   ├── guide_8266_boot.c
-│   │   └── include
-│   │       ├── eagle_fw.h
-│   │       ├── fw_boot.h
-│   │       └── guide_8266_boot.h
 │   ├── platform    // MCU 的适配层，移植时需要根据自己的平台适配
 │   │   ├── component.mk
 │   │   └── esp32
@@ -68,7 +48,7 @@ MCU 与  ESP8266-S2 的 SDIO 通信硬件管脚连接如下图所示：
 │       │   ├── sdio_config.h   // 配置信息，选择使用哪个 ESP 设备作为 slave
 │       │   ├── sdio_host_error.h
 │       │   ├── sdio_host_log.h
-│       │   ├── sdio_host_reg.h   // Slave 寄存器, ESP32 和 ESP8266 寄存器地址不同
+│       │   ├── sdio_host_reg.h   // Slave 寄存器
 │       │   └── sdio_host_transport.h
 │       └── sdio_host_transport.c  // 封装了交互需要的流程
 ├── main
@@ -78,12 +58,6 @@ MCU 与  ESP8266-S2 的 SDIO 通信硬件管脚连接如下图所示：
 ├── Makefile
 └── sdkconfig
 ```
-
-### guide_boot
-
-> 本章节只用于 ESP8266 作为 SDIO slave，如果使用 ESP32 可以跳过。
-
-ESP8266-S2 无法像普通 ESP8266 模组一样自己启动，需要进入 SDIO 模式，然后 MCU 通过 SDIO 将 boot 下载到 ESP8266 之后引导 ESP8266 启动。 `guide_boot` 目录主要做下载 boot 到 ESP8266 的工作。详细的介绍请参考  ESP8266 SDIO slave。
 
 ###  platform
 
@@ -97,7 +71,7 @@ OS 的接口目前只需要支持 delay 接口即可， 默认支持 freeRTOS �
 
 平台无关的接口，封装了与 ESP 设备进行 SDIO 通讯时需要用到的各种读写寄存器操作，并提供上层调用接口，上层应该只使用 sdio_host / include 目录下的接口。
 
-例如 SDIO host 要发送数据给 ESP32 或者 ESP8266，在上层只需要调用 sdio_host_send_packet() 即可，而在 sdio_host 内部首先会读取 ESP32 或者 ESP8266 当前可以容纳的最大长度，在满足条件之后才能向指定地址（0x1f800 - 数据长度）发送数据。
+例如 SDIO host 要发送数据给 ESP32，在上层只需要调用 sdio_host_send_packet() 即可，而在 sdio_host 内部首先会读取 ESP32 当前可以容纳的最大长度，在满足条件之后才能向指定地址（0x1f800 - 数据长度）发送数据。
 
 ## STM32 适配
 
@@ -185,7 +159,7 @@ Sdio init done
 
 按照硬件接口的信号线对接即可测试 SDIO 通信
 
-- MCU 需要运行 `at_sdio_host` 示例程序，通过宏定义 TARGET_ESP32 来选择从机使用 ESP32 或者 ESP8266
+- MCU 需要运行 `at_sdio_host` 示例程序
 - ESP 设备在 slave 侧运行 SDIO AT 程序（在 ESP-AT 目录下配置 `./build.py menuconfig` --> `Component config` --> `AT` --> `communicate method for AT command` --> `AT through SDIO`）
 
 ## 测试速率
@@ -204,20 +178,3 @@ Sdio init done
 - TX 表示 MCU 通过 SDIO 传输给 ESP 设备，然后通过 TCP 传输给 TCP server 的速率
 - RX 表示 ESP 设备接收到 TCP server 的数据，然后通过 SDIO 传输给 MCU 的速率
 - 默认配置项考虑到内存因素无法达到如此高的速率要求，如果需要达到此速率，需要参照 iperf 的配置项修改
-
-### ESP8266
-
-测试 ESP8266 作为 SDIO SLAVE， 速率如下
-
-| MCU   | SDIO 速率 | SD 模式 | TX       | RX       |
-| ----- | --------- | ------- | -------- | -------- |
-| ESP32 | 20M       | 4-bit   | 4.42Mbps | 4.02Mbps |
-
-其中，考虑到 ESP8266 内存和吞吐之间的均衡，ESP8266  SDIO AT 只在默认配置的基础上更改了如下配置项：
-
-1. 开启 FULL Cache，（使能 `./build.py menuconfig` --> `Component config` --> `ESP8266-specific` --> `Enable full cache mode`）
-2. 将 SDIO buffer number 改为 MCU 每次发送数据长度 * 2 / 512 的倍数，（在 ESP-AT 目录下配置 `./build.py menuconfig` --> `Component config` --> `AT` --> `AT SDIO settings` --> `SDIO buffer number`），在本次吞吐测试中， MCU 每次发送 2048Bytes，因此 SDIO buffer number 为 8.
-3. CPU 频率调整为 160M， （设置 `./build.py menuconfig` --> `Component config` --> `ESP8266-specific` --> `CPU frequency` 为 `160 MHz`）
-4. TCP 窗口缩小为 2920（设置 `./build.py menuconfig` --> `Component config` --> `LWIP` --> `TCP` --> `Default send buffer size` 为 `2920`）
-
-使用上述配置项， ESP8266-S2 连接到 WiFi 之后所剩内存为 22KB。
