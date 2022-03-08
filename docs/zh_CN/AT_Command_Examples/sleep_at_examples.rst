@@ -36,7 +36,7 @@ Sleep AT 示例
 
 为避免功耗测试过程中出现一些不必要的干扰，建议使用集成芯片的乐鑫模组进行测试。
 
-硬件连接可参考如下。
+硬件连接可参考下图。（注意，图中开发板只保留了 {IDF_TARGET_NAME} ，外围元器件均已移除。）
 
 .. figure:: ../../_static/{IDF_TARGET_HYPHEN_LOWERCASE_NAME}-hardware-connection.png
     :scale: 100 %
@@ -97,19 +97,9 @@ Sleep AT 示例
 
      OK
 
-.. only:: esp32
+.. note::
 
-  .. note::
-
-    * RF 将根据 AP 的 DTIM 定期关闭（路由器一般设置 DTIM 为 1）。
-    * 当 ESP32 模组的 CPU 频率为 80 MHz 并且模组处于单 Wi-Fi 模式下时，Modem-sleep 模式下的平均电流约为 ``21`` mA。
-
-.. only:: esp32c3
-
-  .. note::
-
-    * RF 将根据 AP 的 DTIM 定期关闭（路由器一般设置 DTIM 为 1）。
-    * 当 ESP32-C3 模组的 CPU 频率为 160 MHz 并且模组处于单 Wi-Fi 模式下时，Modem-sleep 模式下的平均电流约为 ``20`` mA。
+  * RF 将根据 AP 的 DTIM 定期关闭（路由器一般设置 DTIM 为 1）。
 
 在 Wi-Fi 模式下设置为 Light-sleep 模式
 -----------------------------------------
@@ -163,19 +153,9 @@ Sleep AT 示例
 
      OK
 
-.. only:: esp32
+.. note::
 
-  .. note::
-
-    * CPU 将会自动休眠，RF 则会根据 :ref:`AT+CWJAP <cmd-JAP>` 设置的监听间隔定期关闭。
-    * 当 ESP32 模组处于单 Wi-Fi 模式下时，Light-sleep 模式下平均电流约为 ``0.8`` mA。
-
-.. only:: esp32c3
-
-  .. note::
-
-    * CPU 将会自动休眠，RF 则会根据 :ref:`AT+CWJAP <cmd-JAP>` 设置的监听间隔定期关闭。
-    * 当 ESP32-C3 模组处于单 Wi-Fi 模式下时，Light-sleep 模式下平均电流约为 ``130`` uA。
+  * CPU 将会自动休眠，RF 则会根据 :ref:`AT+CWJAP <cmd-JAP>` 设置的监听间隔定期关闭。
 
 在蓝牙广播态下设置为 Modem-sleep 模式
 ------------------------------------------------------
@@ -249,18 +229,6 @@ Sleep AT 示例
    .. code-block:: none
 
      OK
-
-.. only:: esp32
-
-  .. note::
-
-    当 ESP32 模组的 CPU 频率为 80 MHz 时并且模组处于单蓝牙广播态模式时，Modem-sleep 模式下的平均电流约为 ``23`` mA。
-
-.. only:: esp32c3
-
-  .. note::
-
-    当 ESP32-C3 模组的 CPU 频率为 160 MHz 时并且模组处于单蓝牙广播态模式时，Modem-sleep 模式下的平均电流约为 ``20`` mA。
 
 在蓝牙连接态下设置为 Modem-sleep 模式
 ------------------------------------------------------
@@ -362,18 +330,6 @@ Sleep AT 示例
 
      OK
 
-.. only:: esp32
-
-  .. note::
-
-    当 ESP32 的 CPU 频率为 80 MHz 时并且处于蓝牙连接态模式时，Modem-sleep 模式下的平均电流约为 ``23`` mA。
-
-.. only:: esp32c3
-
-  .. note::
-
-    当 ESP32-C3 的 CPU 频率为 160 MHz 时并且处于蓝牙连接态模式时，Modem-sleep 模式下的平均电流约为 ``20`` mA。
-
 在蓝牙广播态下设置为 Light-sleep 模式
 -------------------------------------------------------
 
@@ -446,18 +402,6 @@ Sleep AT 示例
    .. code-block:: none
 
      OK
-
-.. only:: esp32
-
-  .. note::
-
-    当 ESP32 模组处于蓝牙广播态模式时，Light-sleep 模式下的平均电流约为 ``0.8`` mA。
-
-.. only:: esp32c3
-
-  .. note::
-
-    当 ESP32-C3 模组处于蓝牙广播态模式时，Light-sleep 模式下的平均电流约为 ``130`` uA。
 
 在蓝牙连接态下设置为 Light-sleep 模式
 -----------------------------------------------------
@@ -559,18 +503,6 @@ Sleep AT 示例
 
      OK
 
-.. only:: esp32
-
-  .. note::
-
-    当 ESP32 模组处于蓝牙连接态模式时，Light-sleep 模式下的平均电流约为 ``0.8`` mA。
-
-.. only:: esp32c3
-
-  .. note::
-
-    当 ESP32-C3 模组处于蓝牙连接态模式时，Light-sleep 模式下的平均电流约为 ``130`` uA。
-
 设置为 Deep-sleep 模式
 -----------------------
 
@@ -592,15 +524,3 @@ Sleep AT 示例
 
    - 设定时间到后，设备自动唤醒，调用深度睡眠唤醒桩，然后加载应用程序。
    - 对于 Deep-sleep 模式，唯一的唤醒方法是定时唤醒。
-
-.. only:: esp32
-
-  .. note::
-
-    当 ESP32 模组处于 Deep-sleep 模式时，Deep-sleep 模式下的平均电流约为 ``10`` uA。
-
-.. only:: esp32c3
-
-  .. note::
-
-    当 ESP32-C3 模组处于 Deep-sleep 模式时，Deep-sleep 模式下的平均电流约为 ``5`` uA。
