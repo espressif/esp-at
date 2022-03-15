@@ -279,7 +279,7 @@ MQTT AT 命令集
     AT+CWMODE=1
     AT+CWJAP="ssid","password"
     AT+CIPSNTPCFG=1,8,"ntp1.aliyun.com","ntp2.aliyun.com"
-    AT+MQTTUSERCFG=0,5,"ESP32","espressif","1234567890",0,0,""
+    AT+MQTTUSERCFG=0,5,"{IDF_TARGET_NAME}","espressif","1234567890",0,0,""
     AT+MQTTALPN=0,2,"mqtt-ca.cn","mqtt-ca.us"
     AT+MQTTCONN=0,"192.168.200.2",8883,1
 
@@ -408,7 +408,7 @@ MQTT AT 命令集
 
     AT+CWMODE=1
     AT+CWJAP="ssid","password"
-    AT+MQTTUSERCFG=0,1,"ESP32","espressif","1234567890",0,0,""
+    AT+MQTTUSERCFG=0,1,"{IDF_TARGET_NAME}","espressif","1234567890",0,0,""
     AT+MQTTCONN=0,"192.168.10.234",1883,0
     AT+MQTTPUB=0,"topic","\"{\"timestamp\":\"20201121085253\"}\"",0,0
 

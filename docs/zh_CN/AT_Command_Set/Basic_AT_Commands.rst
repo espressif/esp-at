@@ -111,7 +111,7 @@
 ::
 
     AT+GMR
-    AT version:2.2.0.0-dev(ca41ec4 - ESP32 - Sep 16 2020 11:28:17)
+    AT version:2.2.0.0-dev(ca41ec4 - {IDF_TARGET_NAME} - Sep 16 2020 11:28:17)
     SDK version:v4.0.1-193-ge7ac221b4
     compile time(98b95fc):Oct 29 2020 11:23:25
     Bin version:2.1.0(MINI-1)
@@ -285,7 +285,7 @@
 
 -  **<baudrate>**：UART 波特率
 
-   - ESP32 和 ESP32-C3 设备：支持范围为 80 ~ 5000000
+   - {IDF_TARGET_NAME} 设备：支持范围为 80 ~ 5000000
 
 -  **<databits>**：数据位
 
@@ -369,7 +369,7 @@
 
 -  **<baudrate>**：UART 波特率
 
-   - ESP32 和 ESP32-C3 设备：支持范围为 80 ~ 5000000
+   - {IDF_TARGET_NAME} 设备：支持范围为 80 ~ 5000000
 
 -  **<databits>**：数据位
 
@@ -494,7 +494,7 @@
 -  Modem-sleep 模式和 Light-sleep 模式均可以在 Wi-Fi 模式或者 BLE 模式下设置，但在 Wi-Fi 模式下，这两种模式只能在 ``station`` 模式下设置
 -  设置 Light-sleep 模式前，建议提前通过 :ref:`AT+SLEEPWKCFG <cmd-WKCFG>` 命令设置好唤醒源，否则没法唤醒，设备将一直处于睡眠状态
 -  设置 Light-sleep 模式后，如果 Light-sleep 唤醒条件不满足时，设备将自动进入睡眠模式，当 Light-sleep 唤醒条件满足时，设备将自动从睡眠模式中唤醒
--  对于 BLE 模式下的 Light-sleep 模式，用户必须确保外接 32KHz 晶振，否则，Light-sleep 模式会以 Modem-sleep 模式工作。目前 AT 仅支持 ``ESP32`` 模块下的 Light-sleep 模式以 Modem-sleep 模式工作。
+-  对于 BLE 模式下的 Light-sleep 模式，用户必须确保外接 32KHz 晶振，否则，Light-sleep 模式会以 Modem-sleep 模式工作。
 -  AT+SLEEP 更多示例请参考文档 :doc:`../AT_Command_Examples/sleep_at_examples`。
 
 示例
@@ -714,7 +714,7 @@
 -  使用本命令需烧录 at_customize.bin，详细信息可参考 :doc:`../Compile_and_Develop/How_to_customize_partitions`。
 -  烧录二级用户分区前，请参考 :doc:`../Compile_and_Develop/how_to_generate_pki_files` 生成二进制用户分区文件。
 -  擦除分区时，设置指令可省略 ``<offset>`` 和 ``<length>`` 参数，用于完整擦除该目标分区。例如，指令 ``AT+SYSFLASH=0,"ble_data"`` 可擦除整个 "ble_data" 区域。如果擦除分区时不省略 ``<offset>`` 和 ``<length>`` 参数，则这两个参数值要求是 4 KB 的整数倍。
--  关于分区的定义可参考 `ESP-IDF 分区表 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/partition-tables.html>`_。
+-  关于分区的定义可参考 `ESP-IDF 分区表 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_。
 -  当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时您可以输入要写的数据，数据长度应与 ``<length>`` 一致。
 -  写分区前，请先擦除该分区。
 -  写 `PKI bin <https://github.com/espressif/esp-at/blob/master/tools/README.md#2-pki-bin>`_ 时，参数 ``<length>`` 应为 4 字节的整数倍。
@@ -774,7 +774,7 @@
 说明
 ^^^^
 
--  使用本命令需烧录 at_customize.bin，详细信息可参考 `ESP-IDF 分区表 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/partition-tables.html>`_ 和 :doc:`../Compile_and_Develop/How_to_customize_partitions`。
+-  使用本命令需烧录 at_customize.bin，详细信息可参考 `ESP-IDF 分区表 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_ 和 :doc:`../Compile_and_Develop/How_to_customize_partitions`。
 -  若读取数据的长度大于实际文件大小，仅返回实际长度的数据。
 -  当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时您可以输入要写的数据，数据长度应与 ``<length>`` 一致。
 
@@ -840,61 +840,65 @@
 
 - **<wifi_power>**：单位为 0.25 dBm，比如设定的参数值为 78，则实际的 RF Power 值为 78 * 0.25 dBm = 19.5 dBm。配置后可运行 ``AT+RFPOWER?`` 命令确认实际的 RF Power 值。
 
-  - ESP32 设备的取值范围为 [40,84]：
+  .. only:: esp32
 
-    ========= ============ ============ ==========
-    设定值     读取值        实际值        实际 dBm
-    ========= ============ ============ ==========
-    [40,43]   34           34           8.5
-    [44,51]   44           44           11
-    [52,55]   52           52           13
-    [56,59]   56           56           14
-    [60,65]   60           60           15
-    [66,71]   66           66           16.5
-    [72,77]   72           72           18
-    [78,84]   78           78           19.5
-    ========= ============ ============ ==========
+    - {IDF_TARGET_NAME} 设备的取值范围为 [40,84]：
 
-  - ESP32-C3 设备的取值范围为 [40,84]：
+      ========= ============ ============ ==========
+      设定值     读取值        实际值        实际 dBm
+      ========= ============ ============ ==========
+      [40,43]   34           34           8.5
+      [44,51]   44           44           11
+      [52,55]   52           52           13
+      [56,59]   56           56           14
+      [60,65]   60           60           15
+      [66,71]   66           66           16.5
+      [72,77]   72           72           18
+      [78,84]   78           78           19.5
+      ========= ============ ============ ==========
 
-    ========= ============ ============ ==========
-    设定值     读取值        实际值        实际 dBm
-    ========= ============ ============ ==========
-    [40,80]   <设定值>      <设定值>      <设定值> * 0.25
-    [81,84]   <设定值>      80           20
-    ========= ============ ============ ==========
+  .. only:: esp32c3
+
+    - {IDF_TARGET_NAME} 设备的取值范围为 [40,84]：
+
+      ========= ============ ============ ==========
+      设定值     读取值        实际值        实际 dBm
+      ========= ============ ============ ==========
+      [40,80]   <设定值>      <设定值>      <设定值> * 0.25
+      [81,84]   <设定值>      80           20
+      ========= ============ ============ ==========
 
 -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。
 
-   - ESP32 设备的参数值：
+  .. only:: esp32
 
-     -  0: 7 dBm
-     -  1: 4 dBm
-     -  2: 1 dBm
-     -  3: -2 dBm
-     -  4: -5 dBm
-     -  5: -8 dBm
-     -  6: -11 dBm
-     -  7: -14 dBm
+    -  0: 7 dBm
+    -  1: 4 dBm
+    -  2: 1 dBm
+    -  3: -2 dBm
+    -  4: -5 dBm
+    -  5: -8 dBm
+    -  6: -11 dBm
+    -  7: -14 dBm
 
-   - ESP32C3 设备的参数值：
+  .. only:: esp32c3
 
-     -  0: -27 dBm
-     -  1: -24 dBm
-     -  2: -21 dBm
-     -  3: -18 dBm
-     -  4: -15 dBm
-     -  5: -12 dBm
-     -  6: -9 dBm
-     -  7: -6 dBm
-     -  8: -3 dBm
-     -  9: -0 dBm
-     -  10: 3 dBm
-     -  11: 6 dBm
-     -  12: 9 dBm
-     -  13: 12 dBm
-     -  14: 15 dBm
-     -  15: 18 dBm
+    -  0: -27 dBm
+    -  1: -24 dBm
+    -  2: -21 dBm
+    -  3: -18 dBm
+    -  4: -15 dBm
+    -  5: -12 dBm
+    -  6: -9 dBm
+    -  7: -6 dBm
+    -  8: -3 dBm
+    -  9: -0 dBm
+    -  10: 3 dBm
+    -  11: 6 dBm
+    -  12: 9 dBm
+    -  13: 12 dBm
+    -  14: 15 dBm
+    -  15: 18 dBm
 
 -  **<ble_scan_power>**：Bluetooth LE 扫描的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
 -  **<ble_conn_power>**：Bluetooth LE 连接的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
@@ -1236,6 +1240,8 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
 - 该命令只影响设置命令，不影响查询命令，因为查询命令总是从 RAM 中调用。
 - 本命令会影响以下命令：
 
+.. list::
+
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`
   - :ref:`AT+CWMODE <cmd-MODE>`
   - :ref:`AT+CIPV6 <cmd-IPV6>`
@@ -1255,16 +1261,16 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
   - :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`
   - :ref:`AT+CWAPPROTO <cmd-APPROTO>`
   - :ref:`AT+CWJEAP <cmd-JEAP>`
-  - :ref:`AT+CIPETH <cmd-ETHIP>`
-  - :ref:`AT+CIPETHMAC <cmd-ETHMAC>`
+  :esp32: - :ref:`AT+CIPETH <cmd-ETHIP>`
+  :esp32: - :ref:`AT+CIPETHMAC <cmd-ETHMAC>`
   - :ref:`AT+BLENAME <cmd-BNAME>`
-  - :ref:`AT+BTNAME <cmd-BTNAME>`
+  :esp32: - :ref:`AT+BTNAME <cmd-BTNAME>`
   - :ref:`AT+BLEADVPARAM <cmd-BADVP>`
   - :ref:`AT+BLEADVDATA <cmd-BADVD>`
   - :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`
   - :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`
   - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`
-  - :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`
+  :esp32: - :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`
 
 示例
 ^^^^

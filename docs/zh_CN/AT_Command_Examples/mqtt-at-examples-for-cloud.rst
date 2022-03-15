@@ -47,9 +47,9 @@ MQTT AT 连接云示例
 
 打开本地 ESP-AT 工程，并执行如下操作：
 
-- 使用 ``Amazon-root-CA-1.pem`` 替换 :component:`customized_partitions/raw_data/mqtt_ca/mqtt_ca.crt`。
-- 使用 ``device.pem.crt`` 替换 :component:`customized_partitions/raw_data/mqtt_cert/mqtt_client.crt`。
-- 使用 ``private.pem.key`` 替换 :component:`customized_partitions/raw_data/mqtt_key/mqtt_client.key`。
+- 使用 ``Amazon-root-CA-1.pem`` 替换 :component_file:`customized_partitions/raw_data/mqtt_ca/mqtt_ca.crt`。
+- 使用 ``device.pem.crt`` 替换 :component_file:`customized_partitions/raw_data/mqtt_cert/mqtt_client.crt`。
+- 使用 ``private.pem.key`` 替换 :component_file:`customized_partitions/raw_data/mqtt_key/mqtt_client.key`。
 
 编译和烧录 AT 固件
 ^^^^^^^^^^^^^^^^^^^^

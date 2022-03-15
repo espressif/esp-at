@@ -1,5 +1,5 @@
-[ESP32 Only] Ethernet AT Examples
-==================================
+{IDF_TARGET_NAME} Ethernet AT Examples
+======================================
 
 :link_to_translation:`zh_CN:[中文]`
 

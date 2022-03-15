@@ -11,8 +11,8 @@ AT Command Examples
    Bluetooth® Low Engergy AT Examples <bluetooth_le_at_examples>
    MQTT AT Examples <MQTT_AT_Examples>
    MQTT AT Examples for Cloud <mqtt-at-examples-for-cloud>
-   [ESP32 Only] Ethernet AT Examples <Ethernet_AT_Examples>
+   :esp32: Ethernet AT Examples <Ethernet_AT_Examples>
    Web server AT Examples <Web_server_AT_Examples>
    HTTP AT Examples <http_at_examples>
-   [ESP32 Only] Classic Bluetooth AT Examples <classic_bluetooth_at_examples>
+   :esp32: Classic Bluetooth AT Examples <classic_bluetooth_at_examples>
    Sleep AT Examples <sleep_at_examples>

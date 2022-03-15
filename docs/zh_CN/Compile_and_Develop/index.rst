@@ -14,10 +14,10 @@
    如何生成出厂参数二进制文件 <How_to_create_factory_parameter_bin>
    如何自定义低功耗蓝牙服务 <How_to_customize_BLE_services>
    如何自定义分区 <How_to_customize_partitions>
-   如何启用 ESP-AT 经典蓝牙 <how_to_enable_at_classic_bluetooth>
-   如何使能 ESP-AT 以太网 <How_to_enable_ESP_AT_Ethernet>
+   :esp32: 如何启用 {IDF_TARGET_NAME}-AT 经典蓝牙 <how_to_enable_at_classic_bluetooth>
+   :esp32: 如何使能 {IDF_TARGET_NAME}-AT 以太网 <How_to_enable_ESP_AT_Ethernet>
    如何增加一个新的模组支持 <How_to_add_support_for_a_module>
-   ESP32 SDIO AT 指南 <esp32-sdio-at-guide.rst>
+   :esp32: {IDF_TARGET_NAME} SDIO AT 指南 <{IDF_TARGET_PATH_NAME}-sdio-at-guide.rst>
    如何实现 SPI AT <How_to_implement_SPI_AT>
    如何基于乐鑫服务器实现自己的 OTA 管理 <How_to_implement_OTA_update>
    如何更新 ESP-IDF 版本 <How_to_update_IDF>

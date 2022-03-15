@@ -4,7 +4,7 @@ AT Command Set
 
 :link_to_translation:`zh_CN:[中文]`
 
-Here is a list of AT commands. Some of them can only work on the ESP32 series, so they are marked as [ESP32 Only] at the beginning; those without any mark can work on all ESP series, including ESP32, and ESP32-C3.
+Here is a list of AT commands.
 
 .. toctree::
    :maxdepth: 1
@@ -13,10 +13,10 @@ Here is a list of AT commands. Some of them can only work on the ESP32 series, s
    Wi-Fi AT Commands <Wi-Fi_AT_Commands>
    TCP-IP AT Commands <TCP-IP_AT_Commands>
    Bluetooth® Low Energy AT Commands <BLE_AT_Commands>
-   [ESP32 Only] Bluetooth® AT Commands <BT_AT_Commands>
+   :esp32: Bluetooth® AT Commands <BT_AT_Commands>
    MQTT AT Commands <MQTT_AT_Commands>
    HTTP AT Commands <HTTP_AT_Commands>
-   [ESP32 Only] Ethernet AT Commands <Ethernet_AT_Commands>
+   :esp32: Ethernet AT Commands <Ethernet_AT_Commands>
    Signaling Test AT Commands <Signaling_Test_AT_Commands>
    Web server AT Commands <Web_server_AT_Commands>
    Driver AT Commands <Driver_AT_Commands>

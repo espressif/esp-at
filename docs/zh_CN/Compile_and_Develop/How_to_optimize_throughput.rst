@@ -3,7 +3,7 @@
 
 :link_to_translation:`en:[English]`
 
-默认情况下，ESP-AT 和主机之间使用 UART 进行通信，因此最高吞吐速率不会超过其默认配置，即不会超过 115200 bps。用户如要 ESP-AT 实现较高的吞吐量，需了解本文，并做出有针对性的配置。本文以 ESP32 为例，介绍如何提高 ESP-AT 吞吐性能。
+默认情况下，ESP-AT 和主机之间使用 UART 进行通信，因此最高吞吐速率不会超过其默认配置，即不会超过 115200 bps。用户如要 ESP-AT 实现较高的吞吐量，需了解本文，并做出有针对性的配置。本文以 {IDF_TARGET_NAME} 为例，介绍如何提高 ESP-AT 吞吐性能。
 
 .. note::
 
@@ -19,7 +19,7 @@
 
 **1. 配置系统、LWIP、Wi-Fi 适用于高吞吐的参数**
 
-  将下面代码段拷贝并追加至 :at_file:`module_config/module_esp32_default/sdkconfig.defaults` 文件最后，其它 ESP 系列设备请修改对应文件夹下的 sdkconfig.defaults 文件。
+  将下面代码段拷贝并追加至 :project_file:`module_config/module_{IDF_TARGET_PATH_NAME}_default/sdkconfig.defaults` 文件最后，其它 ESP 系列设备请修改对应文件夹下的 sdkconfig.defaults 文件。
 
   ::
 
@@ -27,8 +27,8 @@
     CONFIG_ESP_SYSTEM_EVENT_TASK_STACK_SIZE=4096
     CONFIG_FREERTOS_UNICORE=n
     CONFIG_FREERTOS_HZ=1000
-    CONFIG_ESP32_DEFAULT_CPU_FREQ_240=y
-    CONFIG_ESP32_DEFAULT_CPU_FREQ_MHZ=240
+    CONFIG_{IDF_TARGET_CFG_PREFIX}_DEFAULT_CPU_FREQ_240=y
+    CONFIG_{IDF_TARGET_CFG_PREFIX}_DEFAULT_CPU_FREQ_MHZ=240
     CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
     CONFIG_ESPTOOLPY_FLASHFREQ_80M=y
 
@@ -50,7 +50,7 @@
 
 **2. 提高 UART 缓冲区大小**
 
-  将下面代码段拷贝并替换 :at_file:`at_uart_task.c <main/interface/uart/at_uart_task.c>` 文件中 `uart_driver_install()` 行。
+  将下面代码段拷贝并替换 :project_file:`at_uart_task.c <main/interface/uart/at_uart_task.c>` 文件中 `uart_driver_install()` 行。
 
   ::
 
@@ -111,8 +111,8 @@
     CONFIG_ESP_SYSTEM_EVENT_TASK_STACK_SIZE=4096
     CONFIG_FREERTOS_UNICORE=n
     CONFIG_FREERTOS_HZ=1000
-    CONFIG_ESP32_DEFAULT_CPU_FREQ_240=y
-    CONFIG_ESP32_DEFAULT_CPU_FREQ_MHZ=240
+    CONFIG_{IDF_TARGET_CFG_PREFIX}_DEFAULT_CPU_FREQ_240=y
+    CONFIG_{IDF_TARGET_CFG_PREFIX}_DEFAULT_CPU_FREQ_MHZ=240
     CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
     CONFIG_ESPTOOLPY_FLASHFREQ_80M=y
 
@@ -122,7 +122,7 @@
 
 2.1 提高 UART 缓冲区大小
 
-  将下面代码段拷贝并替换 :at_file:`at_uart_task.c <main/interface/uart/at_uart_task.c>` 文件中 `uart_driver_install()` 行。
+  将下面代码段拷贝并替换 :project_file:`at_uart_task.c <main/interface/uart/at_uart_task.c>` 文件中 `uart_driver_install()` 行。
 
   - 提高 UART TX 吞吐
 
@@ -162,9 +162,16 @@
 
     如果用户期望吞吐速率大于或接近于 5 Mbps，可以考虑使用 SPI、SDIO、Socket 等方式。具体请参考：
 
-    - SPI： :doc:`SPI AT 指南 </Compile_and_Develop/How_to_implement_SPI_AT>`
-    - SDIO： :doc:`SDIO AT 指南 </Compile_and_Develop/esp32-sdio-at-guide>`
-    - Socket： :at_file:`Socket AT 指南 <main/interface/socket/README.md>`
+    .. only:: esp32
+
+      - SPI： :doc:`SPI AT 指南 </Compile_and_Develop/How_to_implement_SPI_AT>`
+      - SDIO： :doc:`SDIO AT 指南 </Compile_and_Develop/esp32-sdio-at-guide>`
+      - Socket： :project_file:`Socket AT 指南 <main/interface/socket/README.md>`
+
+    .. only:: esp32c3
+
+      - SPI： :doc:`SPI AT 指南 </Compile_and_Develop/How_to_implement_SPI_AT>`
+      - Socket： :project_file:`Socket AT 指南 <main/interface/socket/README.md>`
 
 **3. S2、R2、R3、S3 吞吐优化**
 
@@ -174,14 +181,14 @@
 
   ESP-AT 和主机之间使用 UART 进行通信，S4、R4、S5、R5、S6、R6 无需优化。ESP-AT 和主机之间使用其他传输介质进行通信时，S4、R4、S5、R5、S6、R6 是影响吞吐的一个因素。
 
-  S4、R4、S5、R5、S6、R6 是通信协议的传输层、网络层、和数据链路层之间的数据流。用户需要阅读 ESP-IDF 中 `如何提高 Wi-Fi 性能 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/wifi.html#how-to-improve-wi-fi-performance>`_ 文档，了解原理，进行合理配置。这些配置均可以在 ``./build.py menuconfig`` 里进行配置。
+  S4、R4、S5、R5、S6、R6 是通信协议的传输层、网络层、和数据链路层之间的数据流。用户需要阅读 ESP-IDF 中 `如何提高 Wi-Fi 性能 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#how-to-improve-wi-fi-performance>`_ 文档，了解原理，进行合理配置。这些配置均可以在 ``./build.py menuconfig`` 里进行配置。
 
-  - 优化 S4 -> S5 -> S6：`发送数据方向配置 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/wifi.html#id64>`_
-  - 优化 R6 -> R5 -> R4：`接收数据方向配置 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-guides/wifi.html#id64>`_
+  - 优化 S4 -> S5 -> S6：`发送数据方向配置 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id64>`_
+  - 优化 R6 -> R5 -> R4：`接收数据方向配置 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id64>`_
 
 **5. S6、R6 吞吐优化**
 
-  S6 和 R6 是通信协议的数据链路层，ESP32 可以使用 Wi-Fi 或者以太网作为传输介质。Wi-Fi 除了上述介绍的优化方法之外，可能还需要用户关心：
+  S6 和 R6 是通信协议的数据链路层，{IDF_TARGET_NAME} 可以使用 Wi-Fi 或者以太网作为传输介质。Wi-Fi 除了上述介绍的优化方法之外，可能还需要用户关心：
 
   - 提高 RF 发射功率
 

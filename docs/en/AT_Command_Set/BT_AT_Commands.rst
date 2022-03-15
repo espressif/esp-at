@@ -1,38 +1,38 @@
 .. _BT-AT:
 
-[ESP32 Only] Classic Bluetooth® AT Commands
-============================================
+{IDF_TARGET_NAME} Classic Bluetooth® AT Commands
+================================================
 
 :link_to_translation:`zh_CN:[中文]`
 
-ESP32 AT firmware supports `Bluetooth® Core Specification Version 4.2 <https://www.bluetooth.com/specifications/archived-specifications/>`_.
+{IDF_TARGET_NAME} AT firmware supports `Bluetooth® Core Specification Version 4.2 <https://www.bluetooth.com/specifications/archived-specifications/>`_.
 
--  [ESP32 Only] :ref:`AT+BTINIT <cmd-BTINIT>`: Classic Bluetooth initialization.
--  [ESP32 Only] :ref:`AT+BTNAME <cmd-BTNAME>`: Query/Set Classic Bluetooth device name.
--  [ESP32 Only] :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`: Set Classic Bluetooth scan mode.
--  [ESP32 Only] :ref:`AT+BTSTARTDISC <cmd-BTDISC>`: Start Classic Bluetooth discovery.
--  [ESP32 Only] :ref:`AT+BTSPPINIT <cmd-BTSPPINIT>`: Classic Bluetooth SPP profile initialization.
--  [ESP32 Only] :ref:`AT+BTSPPCONN <cmd-BTSPPCONN>`: Query/Establish SPP connection.
--  [ESP32 Only] :ref:`AT+BTSPPDISCONN <cmd-BTSPPDISCONN>`: End SPP connection.
--  [ESP32 Only] :ref:`AT+BTSPPSTART <cmd-BTSPPSTART>`: Start Classic Bluetooth SPP profile.
--  [ESP32 Only] :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>`: Send data to remote Classic Bluetooth SPP device.
--  [ESP32 Only] :ref:`AT+BTA2DPINIT <cmd-BTA2DPINIT>`: Classic Bluetooth A2DP profile initialization.
--  [ESP32 Only] :ref:`AT+BTA2DPCONN <cmd-BTA2DPCONN>`: Establish A2DP connection.
--  [ESP32 Only] :ref:`AT+BTA2DPDISCONN <cmd-BTA2DPDISCONN>`: End A2DP connection.
--  [ESP32 Only] :ref:`AT+BTA2DPSRC <cmd-BTA2DPSRC>`: Query/Set the audio file URL.
--  [ESP32 Only] :ref:`AT+BTA2DPCTRL <cmd-BTA2DPCTRL>`: Control the audio play.
--  [ESP32 Only] :ref:`AT+BTSECPARAM <cmd-BTSECPARAM>`: Query/Set the Classic Bluetooth security parameters.
--  [ESP32 Only] :ref:`AT+BTKEYREPLY <cmd-BTKEYREPLY>`: Input the Simple Pair Key.
--  [ESP32 Only] :ref:`AT+BTPINREPLY <cmd-BTPINREPLY>`: Input the Legacy Pair PIN Code.
--  [ESP32 Only] :ref:`AT+BTSECCFM <cmd-BTSECCFM>`: Reply the confirm value to the peer device in the legacy connection stage.
--  [ESP32 Only] :ref:`AT+BTENCDEV <cmd-BTENCDEV>`: Query Classic Bluetooth encryption device list.
--  [ESP32 Only] :ref:`AT+BTENCCLEAR <cmd-BTENCCLEAR>`: Clear Classic Bluetooth encryption device list.
--  [ESP32 Only] :ref:`AT+BTCOD <cmd-BTCOD>`: Set class of devices.
--  [ESP32 Only] :ref:`AT+BTPOWER <cmd-BTPWR>`: Query/Set power of Classic Bluetooth.
+- :ref:`AT+BTINIT <cmd-BTINIT>`: Classic Bluetooth initialization.
+- :ref:`AT+BTNAME <cmd-BTNAME>`: Query/Set Classic Bluetooth device name.
+- :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`: Set Classic Bluetooth scan mode.
+- :ref:`AT+BTSTARTDISC <cmd-BTDISC>`: Start Classic Bluetooth discovery.
+- :ref:`AT+BTSPPINIT <cmd-BTSPPINIT>`: Classic Bluetooth SPP profile initialization.
+- :ref:`AT+BTSPPCONN <cmd-BTSPPCONN>`: Query/Establish SPP connection.
+- :ref:`AT+BTSPPDISCONN <cmd-BTSPPDISCONN>`: End SPP connection.
+- :ref:`AT+BTSPPSTART <cmd-BTSPPSTART>`: Start Classic Bluetooth SPP profile.
+- :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>`: Send data to remote Classic Bluetooth SPP device.
+- :ref:`AT+BTA2DPINIT <cmd-BTA2DPINIT>`: Classic Bluetooth A2DP profile initialization.
+- :ref:`AT+BTA2DPCONN <cmd-BTA2DPCONN>`: Establish A2DP connection.
+- :ref:`AT+BTA2DPDISCONN <cmd-BTA2DPDISCONN>`: End A2DP connection.
+- :ref:`AT+BTA2DPSRC <cmd-BTA2DPSRC>`: Query/Set the audio file URL.
+- :ref:`AT+BTA2DPCTRL <cmd-BTA2DPCTRL>`: Control the audio play.
+- :ref:`AT+BTSECPARAM <cmd-BTSECPARAM>`: Query/Set the Classic Bluetooth security parameters.
+- :ref:`AT+BTKEYREPLY <cmd-BTKEYREPLY>`: Input the Simple Pair Key.
+- :ref:`AT+BTPINREPLY <cmd-BTPINREPLY>`: Input the Legacy Pair PIN Code.
+- :ref:`AT+BTSECCFM <cmd-BTSECCFM>`: Reply the confirm value to the peer device in the legacy connection stage.
+- :ref:`AT+BTENCDEV <cmd-BTENCDEV>`: Query Classic Bluetooth encryption device list.
+- :ref:`AT+BTENCCLEAR <cmd-BTENCCLEAR>`: Clear Classic Bluetooth encryption device list.
+- :ref:`AT+BTCOD <cmd-BTCOD>`: Set class of devices.
+- :ref:`AT+BTPOWER <cmd-BTPWR>`: Query/Set power of Classic Bluetooth.
 
 .. _cmd-BTINIT:
 
-[ESP32 Only] :ref:`AT+BTINIT <BT-AT>`: Classic Bluetooth Initialization
+:ref:`AT+BTINIT <BT-AT>`: Classic Bluetooth Initialization
 ---------------------------------------------------------------------------
 
 Query Command
@@ -101,7 +101,7 @@ Example
 
 .. _cmd-BTNAME:
 
-[ESP32 Only] :ref:`AT+BTNAME <BT-AT>`: Query/Set Classic Bluetooth Device Name
+:ref:`AT+BTNAME <BT-AT>`: Query/Set Classic Bluetooth Device Name
 -------------------------------------------------------------------------------
 
 Query Command
@@ -152,7 +152,7 @@ Notes
 ^^^^^
 
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  The default Classic Bluetooth device name is "ESP32_AT".
+-  The default Classic Bluetooth device name is "{IDF_TARGET_NAME}_AT".
 
 Example
 ^^^^^^^^
@@ -163,7 +163,7 @@ Example
 
 .. _cmd-BTSCANMODE:
 
-[ESP32 Only] :ref:`AT+BTSCANMODE <BT-AT>`: Set Classic Bluetooth Scan Mode
+:ref:`AT+BTSCANMODE <BT-AT>`: Set Classic Bluetooth Scan Mode
 ---------------------------------------------------------------------------
 
 Set Command
@@ -204,7 +204,7 @@ Example
 
 .. _cmd-BTDISC:
 
-[ESP32 Only] :ref:`AT+BTSTARTDISC <BT-AT>`: Start Classic Bluetooth Discovery
+:ref:`AT+BTSTARTDISC <BT-AT>`: Start Classic Bluetooth Discovery
 -------------------------------------------------------------------------------
 
 Set Command
@@ -282,7 +282,7 @@ Example
 
 .. _cmd-BTSPPINIT:
 
-[ESP32 Only] :ref:`AT+BTSPPINIT <BT-AT>`: Classic Bluetooth SPP Profile Initialization
+:ref:`AT+BTSPPINIT <BT-AT>`: Classic Bluetooth SPP Profile Initialization
 ------------------------------------------------------------------------------------------
 
 Query Command
@@ -353,7 +353,7 @@ Example
 
 .. _cmd-BTSPPCONN:
 
-[ESP32 Only] :ref:`AT+BTSPPCONN <BT-AT>`: Query/Establish SPP Connection
+:ref:`AT+BTSPPCONN <BT-AT>`: Query/Establish SPP Connection
 -------------------------------------------------------------------------
 
 Query Command
@@ -436,7 +436,7 @@ Example
 
 .. _cmd-BTSPPDISCONN:
 
-[ESP32 Only] :ref:`AT+BTSPPDISCONN <BT-AT>`: End SPP Connection
+:ref:`AT+BTSPPDISCONN <BT-AT>`: End SPP Connection
 --------------------------------------------------------------------
 
 Execute Command
@@ -485,7 +485,7 @@ Example
 
 .. _cmd-BTSPPSEND:
 
-[ESP32 Only] :ref:`AT+BTSPPSEND <BT-AT>`: Send Data to Remote Classic Bluetooth SPP Device
+:ref:`AT+BTSPPSEND <BT-AT>`: Send Data to Remote Classic Bluetooth SPP Device
 -----------------------------------------------------------------------------------------------
 
 Execute Command
@@ -547,7 +547,7 @@ Example
 
 .. _cmd-BTSPPSTART:
 
-[ESP32 Only] :ref:`AT+BTSPPSTART <BT-AT>`: Start Classic Bluetooth SPP Profile
+:ref:`AT+BTSPPSTART <BT-AT>`: Start Classic Bluetooth SPP Profile
 ---------------------------------------------------------------------------------------
 
 Execute Command
@@ -583,7 +583,7 @@ Example
 
 .. _cmd-BTA2DPINIT:
 
-[ESP32 Only] :ref:`AT+BTA2DPINIT <BT-AT>`: Classic Bluetooth A2DP Profile Initialization
+:ref:`AT+BTA2DPINIT <BT-AT>`: Classic Bluetooth A2DP Profile Initialization
 --------------------------------------------------------------------------------------------
 
 Query Command
@@ -654,7 +654,7 @@ Example
 
 .. _cmd-BTA2DPCONN:
 
-[ESP32 Only] :ref:`AT+BTA2DPCONN <BT-AT>`: Query/Establish A2DP Connection
+:ref:`AT+BTA2DPCONN <BT-AT>`: Query/Establish A2DP Connection
 ---------------------------------------------------------------------------
 
 Query Command
@@ -725,7 +725,7 @@ Example
 
 .. _cmd-BTA2DPDISCONN:
 
-[ESP32 Only] :ref:`AT+BTA2DPDISCONN <BT-AT>`: End A2DP Connection
+:ref:`AT+BTA2DPDISCONN <BT-AT>`: End A2DP Connection
 ----------------------------------------------------------------------
 
 Execute Command
@@ -763,7 +763,7 @@ Example
 
 .. _cmd-BTA2DPSRC:
 
-[ESP32 Only] :ref:`AT+BTA2DPSRC <BT-AT>`: Query/Set the Audio File URL
+:ref:`AT+BTA2DPSRC <BT-AT>`: Query/Set the Audio File URL
 -----------------------------------------------------------------------------
 
 Query Command
@@ -827,7 +827,7 @@ Example
 
 .. _cmd-BTA2DPCTRL:
 
-[ESP32 Only] :ref:`AT+BTA2DPCTRL <BT-AT>`: Control the Audio Play
+:ref:`AT+BTA2DPCTRL <BT-AT>`: Control the Audio Play
 ---------------------------------------------------------------------
 
 Execute Command
@@ -874,7 +874,7 @@ Example
 
 .. _cmd-BTSECPARAM:
 
-[ESP32 Only] :ref:`AT+BTSECPARAM <BT-AT>`: Query/Set the Classic Bluetooth Security Parameters
+:ref:`AT+BTSECPARAM <BT-AT>`: Query/Set the Classic Bluetooth Security Parameters
 ------------------------------------------------------------------------------------------------------
 
 Query Command
@@ -947,7 +947,7 @@ Example
 
 .. _cmd-BTKEYREPLY:
 
-[ESP32 Only] :ref:`AT+BTKEYREPLY <BT-AT>`: Input the Simple Pair Key
+:ref:`AT+BTKEYREPLY <BT-AT>`: Input the Simple Pair Key
 ---------------------------------------------------------------------
 
 Execute Command
@@ -984,7 +984,7 @@ Example
 
 .. _cmd-BTPINREPLY:
 
-[ESP32 Only] :ref:`AT+BTPINREPLY <BT-AT>`: Input the Legacy Pair PIN Code
+:ref:`AT+BTPINREPLY <BT-AT>`: Input the Legacy Pair PIN Code
 -----------------------------------------------------------------------------
 
 Execute Command
@@ -1021,7 +1021,7 @@ Example
 
 .. _cmd-BTSECCFM:
 
-[ESP32 Only] :ref:`AT+BTSECCFM <BT-AT>`: Reply the Confirm Value to the Peer Device in the Legacy Connection Stage
+:ref:`AT+BTSECCFM <BT-AT>`: Reply the Confirm Value to the Peer Device in the Legacy Connection Stage
 ----------------------------------------------------------------------------------------------------------------------
 
 Execute Command
@@ -1061,7 +1061,7 @@ Example
 
 .. _cmd-BTENCDEV:
 
-[ESP32 Only] :ref:`AT+BTENCDEV <BT-AT>`: Query Classic Bluetooth Encryption Device List
+:ref:`AT+BTENCDEV <BT-AT>`: Query Classic Bluetooth Encryption Device List
 ----------------------------------------------------------------------------------------
 
 Query Command
@@ -1099,7 +1099,7 @@ Example
 
 .. _cmd-BTENCCLEAR:
 
-[ESP32 Only] :ref:`AT+BTENCCLEAR <BT-AT>`: Clear Classic Bluetooth Encryption Device List
+:ref:`AT+BTENCCLEAR <BT-AT>`: Clear Classic Bluetooth Encryption Device List
 ------------------------------------------------------------------------------------------
 
 Set Command
@@ -1154,7 +1154,7 @@ Example
 
 .. _cmd-BTCOD:
 
-[ESP32 Only] :ref:`AT+BTCOD <BT-AT>`: Set Class of Devices
+:ref:`AT+BTCOD <BT-AT>`: Set Class of Devices
 -------------------------------------------------------------
 
 Set Command
@@ -1192,7 +1192,7 @@ Example
 
 .. _cmd-BTPWR:
 
-[ESP32 Only] :ref:`AT+BTPOWER <BT-AT>`: Query/Set TX power of Classic Bluetooth
+:ref:`AT+BTPOWER <BT-AT>`: Query/Set TX power of Classic Bluetooth
 -------------------------------------------------------------------------------
 
 Query Command

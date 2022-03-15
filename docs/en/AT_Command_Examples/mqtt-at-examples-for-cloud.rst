@@ -47,9 +47,9 @@ Replace certificates
 
 Open your local ESP-AT project and do the following:
 
-- Replace :component:`customized_partitions/raw_data/mqtt_ca/mqtt_ca.crt` with ``Amazon-root-CA-1.pem``.
-- Replace :component:`customized_partitions/raw_data/mqtt_cert/mqtt_client.crt` with ``device.pem.crt``.
-- Replace :component:`customized_partitions/raw_data/mqtt_key/mqtt_client.key` with ``private.pem.key``.
+- Replace :component_file:`customized_partitions/raw_data/mqtt_ca/mqtt_ca.crt` with ``Amazon-root-CA-1.pem``.
+- Replace :component_file:`customized_partitions/raw_data/mqtt_cert/mqtt_client.crt` with ``device.pem.crt``.
+- Replace :component_file:`customized_partitions/raw_data/mqtt_key/mqtt_client.key` with ``private.pem.key``.
 
 Compile and flash the AT firmware
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

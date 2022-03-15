@@ -896,7 +896,7 @@ Below is an example showing how an SSL server is established when ESP device wor
 ESP device as an SSL client to create a single connection with two-way authentication
 ---------------------------------------------------------------------------------------
 
-The certificate used in the example is the default certificate in esp-at. You can also generate and flash your own the certificate, then you need replace the SSL server certificate path below with your certificate path. To obtain the SSL certificate, please refer to :at:`tools/README.md` for how to generate the certificate bin and esp-at/module_config/module_name/at_customize.csv for where to flash it.
+The certificate used in the example is the default certificate in esp-at. You can also generate and flash your own the certificate, then you need replace the SSL server certificate path below with your certificate path. To obtain the SSL certificate, please refer to :project_file:`tools/README.md` for how to generate the certificate bin and esp-at/module_config/module_name/at_customize.csv for where to flash it.
 
 #. Set the Wi-Fi mode to station.
 
@@ -1447,7 +1447,7 @@ UART Wi-Fi passthrough transmission when the ESP device works as a softAP in UDP
 
    Use a network tool on PC to create a UDP endpoint. For example, the PC's IP address is ``192.168.4.2`` and the port is ``8080``.
 
-#. Create a UDP transmission between ESP32 and the PC with a fixed remote IP address and port. The remote host's IP address is ``192.168.4.2``, the remote port is ``8080``, the local port is ``2233``, and the mode is ``0``.
+#. Create a UDP transmission between {IDF_TARGET_NAME} and the PC with a fixed remote IP address and port. The remote host's IP address is ``192.168.4.2``, the remote port is ``8080``, the local port is ``2233``, and the mode is ``0``.
 
    Command:
 

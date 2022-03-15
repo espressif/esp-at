@@ -1,38 +1,38 @@
 .. _BT-AT:
 
-[ESP32 Only] Classic Bluetooth® AT 命令集
-============================================
+{IDF_TARGET_NAME} Classic Bluetooth® AT 命令集
+===================================================
 
 :link_to_translation:`en:[English]`
 
-ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/archived-specifications/>`_。
+{IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/archived-specifications/>`_。
 
--  [ESP32 Only] :ref:`AT+BTINIT <cmd-BTINIT>`：Classic Bluetooth 初始化
--  [ESP32 Only] :ref:`AT+BTNAME <cmd-BTNAME>`：查询/设置 Classic Bluetooth 设备名称
--  [ESP32 Only] :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`：设置 Classic Bluetooth 扫描模式
--  [ESP32 Only] :ref:`AT+BTSTARTDISC <cmd-BTDISC>`：开始发现周边 Classic Bluetooth 设备
--  [ESP32 Only] :ref:`AT+BTSPPINIT <cmd-BTSPPINIT>`：Classic Bluetooth SPP 协议初始化
--  [ESP32 Only] :ref:`AT+BTSPPCONN <cmd-BTSPPCONN>`：查询/建立 SPP 连接
--  [ESP32 Only] :ref:`AT+BTSPPDISCONN <cmd-BTSPPDISCONN>`：断开 SPP 连接
--  [ESP32 Only] :ref:`AT+BTSPPSTART <cmd-BTSPPSTART>`：开启 Classic Bluetooth SPP 协议
--  [ESP32 Only] :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>`：发送数据到对方 Classic Bluetooth SPP 设备
--  [ESP32 Only] :ref:`AT+BTA2DPINIT <cmd-BTA2DPINIT>`：Classic Bluetooth A2DP 协议初始化
--  [ESP32 Only] :ref:`AT+BTA2DPCONN <cmd-BTA2DPCONN>`：查询/建立 A2DP 连接
--  [ESP32 Only] :ref:`AT+BTA2DPDISCONN <cmd-BTA2DPDISCONN>`：断开 A2DP 连接
--  [ESP32 Only] :ref:`AT+BTA2DPSRC <cmd-BTA2DPSRC>`：查询/设置音频文件 URL
--  [ESP32 Only] :ref:`AT+BTA2DPCTRL <cmd-BTA2DPCTRL>`：控制音频播放
--  [ESP32 Only] :ref:`AT+BTSECPARAM <cmd-BTSECPARAM>`：查询/设置 Classic Bluetooth 安全参数
--  [ESP32 Only] :ref:`AT+BTKEYREPLY <cmd-BTKEYREPLY>`：输入简单配对密钥 (Simple Pair Key)
--  [ESP32 Only] :ref:`AT+BTPINREPLY <cmd-BTPINREPLY>`：输入传统配对密码 (Legacy Pair PIN Code)
--  [ESP32 Only] :ref:`AT+BTSECCFM <cmd-BTSECCFM>`：给对方设备回复确认结果（传统连接阶段）
--  [ESP32 Only] :ref:`AT+BTENCDEV <cmd-BTENCDEV>`：查询 Classic Bluetooth 加密设备列表
--  [ESP32 Only] :ref:`AT+BTENCCLEAR <cmd-BTENCCLEAR>`：清除 Classic Bluetooth 加密设备列表
--  [ESP32 Only] :ref:`AT+BTCOD <cmd-BTCOD>`：设置设备类型
--  [ESP32 Only] :ref:`AT+BTPOWER <cmd-BTPWR>`：查询/设置 Classic Bluetooth 的 TX 功率
+- :ref:`AT+BTINIT <cmd-BTINIT>`：Classic Bluetooth 初始化
+- :ref:`AT+BTNAME <cmd-BTNAME>`：查询/设置 Classic Bluetooth 设备名称
+- :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`：设置 Classic Bluetooth 扫描模式
+- :ref:`AT+BTSTARTDISC <cmd-BTDISC>`：开始发现周边 Classic Bluetooth 设备
+- :ref:`AT+BTSPPINIT <cmd-BTSPPINIT>`：Classic Bluetooth SPP 协议初始化
+- :ref:`AT+BTSPPCONN <cmd-BTSPPCONN>`：查询/建立 SPP 连接
+- :ref:`AT+BTSPPDISCONN <cmd-BTSPPDISCONN>`：断开 SPP 连接
+- :ref:`AT+BTSPPSTART <cmd-BTSPPSTART>`：开启 Classic Bluetooth SPP 协议
+- :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>`：发送数据到对方 Classic Bluetooth SPP 设备
+- :ref:`AT+BTA2DPINIT <cmd-BTA2DPINIT>`：Classic Bluetooth A2DP 协议初始化
+- :ref:`AT+BTA2DPCONN <cmd-BTA2DPCONN>`：查询/建立 A2DP 连接
+- :ref:`AT+BTA2DPDISCONN <cmd-BTA2DPDISCONN>`：断开 A2DP 连接
+- :ref:`AT+BTA2DPSRC <cmd-BTA2DPSRC>`：查询/设置音频文件 URL
+- :ref:`AT+BTA2DPCTRL <cmd-BTA2DPCTRL>`：控制音频播放
+- :ref:`AT+BTSECPARAM <cmd-BTSECPARAM>`：查询/设置 Classic Bluetooth 安全参数
+- :ref:`AT+BTKEYREPLY <cmd-BTKEYREPLY>`：输入简单配对密钥 (Simple Pair Key)
+- :ref:`AT+BTPINREPLY <cmd-BTPINREPLY>`：输入传统配对密码 (Legacy Pair PIN Code)
+- :ref:`AT+BTSECCFM <cmd-BTSECCFM>`：给对方设备回复确认结果（传统连接阶段）
+- :ref:`AT+BTENCDEV <cmd-BTENCDEV>`：查询 Classic Bluetooth 加密设备列表
+- :ref:`AT+BTENCCLEAR <cmd-BTENCCLEAR>`：清除 Classic Bluetooth 加密设备列表
+- :ref:`AT+BTCOD <cmd-BTCOD>`：设置设备类型
+- :ref:`AT+BTPOWER <cmd-BTPWR>`：查询/设置 Classic Bluetooth 的 TX 功率
 
 .. _cmd-BTINIT:
 
-[ESP32 Only] :ref:`AT+BTINIT <BT-AT>`：Classic Bluetooth 初始化
+:ref:`AT+BTINIT <BT-AT>`：Classic Bluetooth 初始化
 ---------------------------------------------------------------------------
 
 查询命令
@@ -101,7 +101,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTNAME:
 
-[ESP32 Only] :ref:`AT+BTNAME <BT-AT>`：查询/设置 Classic Bluetooth 设备名称
+:ref:`AT+BTNAME <BT-AT>`：查询/设置 Classic Bluetooth 设备名称
 -------------------------------------------------------------------------------
 
 查询命令
@@ -152,7 +152,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 ^^^^
 
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 区。
--  默认 Classic Bluetooth 设备名称为 "ESP32_AT"。
+-  默认 Classic Bluetooth 设备名称为 "{IDF_TARGET_NAME}_AT"。
 
 示例
 ^^^^
@@ -163,7 +163,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTSCANMODE:
 
-[ESP32 Only] :ref:`AT+BTSCANMODE <BT-AT>`：设置 Classic Bluetooth 扫描模式
+:ref:`AT+BTSCANMODE <BT-AT>`：设置 Classic Bluetooth 扫描模式
 ---------------------------------------------------------------------------
 
 设置命令
@@ -204,7 +204,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTDISC:
 
-[ESP32 Only] :ref:`AT+BTSTARTDISC <BT-AT>`：开始发现周边 Classic Bluetooth 设备
+:ref:`AT+BTSTARTDISC <BT-AT>`：开始发现周边 Classic Bluetooth 设备
 -------------------------------------------------------------------------------
 
 设置命令
@@ -282,7 +282,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTSPPINIT:
 
-[ESP32 Only] :ref:`AT+BTSPPINIT <BT-AT>`：Classic Bluetooth SPP 协议初始化
+:ref:`AT+BTSPPINIT <BT-AT>`：Classic Bluetooth SPP 协议初始化
 ------------------------------------------------------------------------------------------
 
 查询命令
@@ -353,7 +353,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTSPPCONN:
 
-[ESP32 Only] :ref:`AT+BTSPPCONN <BT-AT>`：查询/建立 SPP 连接
+:ref:`AT+BTSPPCONN <BT-AT>`：查询/建立 SPP 连接
 -------------------------------------------------------------------------
 
 查询命令
@@ -436,7 +436,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTSPPDISCONN:
 
-[ESP32 Only] :ref:`AT+BTSPPDISCONN <BT-AT>`：断开 SPP 连接
+:ref:`AT+BTSPPDISCONN <BT-AT>`：断开 SPP 连接
 --------------------------------------------------------------------
 
 执行命令
@@ -485,7 +485,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTSPPSEND:
 
-[ESP32 Only] :ref:`AT+BTSPPSEND <BT-AT>`：发送数据到对方 Classic Bluetooth SPP 设备
+:ref:`AT+BTSPPSEND <BT-AT>`：发送数据到对方 Classic Bluetooth SPP 设备
 -----------------------------------------------------------------------------------------------
 
 执行命令
@@ -547,7 +547,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTSPPSTART:
 
-[ESP32 Only] :ref:`AT+BTSPPSTART <BT-AT>`：开启 Classic Bluetooth SPP 协议
+:ref:`AT+BTSPPSTART <BT-AT>`：开启 Classic Bluetooth SPP 协议
 ---------------------------------------------------------------------------------------
 
 执行命令
@@ -583,7 +583,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTA2DPINIT:
 
-[ESP32 Only] :ref:`AT+BTA2DPINIT <BT-AT>`：Classic Bluetooth A2DP 协议初始化
+:ref:`AT+BTA2DPINIT <BT-AT>`：Classic Bluetooth A2DP 协议初始化
 --------------------------------------------------------------------------------------------
 
 查询命令
@@ -654,7 +654,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTA2DPCONN:
 
-[ESP32 Only] :ref:`AT+BTA2DPCONN <BT-AT>`：查询/建立 A2DP 连接
+:ref:`AT+BTA2DPCONN <BT-AT>`：查询/建立 A2DP 连接
 ---------------------------------------------------------------------------
 
 查询命令
@@ -725,7 +725,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTA2DPDISCONN:
 
-[ESP32 Only] :ref:`AT+BTA2DPDISCONN <BT-AT>`：断开 A2DP 连接
+:ref:`AT+BTA2DPDISCONN <BT-AT>`：断开 A2DP 连接
 ----------------------------------------------------------------------
 
 执行命令
@@ -763,7 +763,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTA2DPSRC:
 
-[ESP32 Only] :ref:`AT+BTA2DPSRC <BT-AT>`：查询/设置音频文件 URL
+:ref:`AT+BTA2DPSRC <BT-AT>`：查询/设置音频文件 URL
 -----------------------------------------------------------------------------
 
 查询命令
@@ -827,7 +827,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTA2DPCTRL:
 
-[ESP32 Only] :ref:`AT+BTA2DPCTRL <BT-AT>`：控制音频播放
+:ref:`AT+BTA2DPCTRL <BT-AT>`：控制音频播放
 ---------------------------------------------------------------------
 
 执行命令
@@ -874,7 +874,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTSECPARAM:
 
-[ESP32 Only] :ref:`AT+BTSECPARAM <BT-AT>`：查询/设置 Classic Bluetooth 安全参数
+:ref:`AT+BTSECPARAM <BT-AT>`：查询/设置 Classic Bluetooth 安全参数
 ------------------------------------------------------------------------------------------------------
 
 查询命令
@@ -947,7 +947,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTKEYREPLY:
 
-[ESP32 Only] :ref:`AT+BTKEYREPLY <BT-AT>`：输入简单配对密钥 (Simple Pair Key)
+:ref:`AT+BTKEYREPLY <BT-AT>`：输入简单配对密钥 (Simple Pair Key)
 --------------------------------------------------------------------------------------
 
 执行命令
@@ -984,7 +984,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTPINREPLY:
 
-[ESP32 Only] :ref:`AT+BTPINREPLY <BT-AT>`：输入传统配对密码 (Legacy Pair PIN Code)
+:ref:`AT+BTPINREPLY <BT-AT>`：输入传统配对密码 (Legacy Pair PIN Code)
 -----------------------------------------------------------------------------------------
 
 执行命令
@@ -1021,7 +1021,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTSECCFM:
 
-[ESP32 Only] :ref:`AT+BTSECCFM <BT-AT>`：给对方设备回复确认结果（传统连接阶段）
+:ref:`AT+BTSECCFM <BT-AT>`：给对方设备回复确认结果（传统连接阶段）
 --------------------------------------------------------------------------------------------------
 
 执行命令
@@ -1061,7 +1061,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTENCDEV:
 
-[ESP32 Only] :ref:`AT+BTENCDEV <BT-AT>`：查询 Classic Bluetooth 加密设备列表
+:ref:`AT+BTENCDEV <BT-AT>`：查询 Classic Bluetooth 加密设备列表
 ----------------------------------------------------------------------------------------
 
 查询命令
@@ -1099,7 +1099,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTENCCLEAR:
 
-[ESP32 Only] :ref:`AT+BTENCCLEAR <BT-AT>`：清除 Classic Bluetooth 加密设备列表
+:ref:`AT+BTENCCLEAR <BT-AT>`：清除 Classic Bluetooth 加密设备列表
 ------------------------------------------------------------------------------------------
 
 设置命令
@@ -1154,7 +1154,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTCOD:
 
-[ESP32 Only] :ref:`AT+BTCOD <BT-AT>`：设置设备类型
+:ref:`AT+BTCOD <BT-AT>`：设置设备类型
 -------------------------------------------------------------
 
 设置命令
@@ -1192,7 +1192,7 @@ ESP32 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/
 
 .. _cmd-BTPWR:
 
-[ESP32 Only] :ref:`AT+BTPOWER <BT-AT>`：查询/设置 Classic Bluetooth 的 TX 功率
+:ref:`AT+BTPOWER <BT-AT>`：查询/设置 Classic Bluetooth 的 TX 功率
 -------------------------------------------------------------------------------
 
 查询命令

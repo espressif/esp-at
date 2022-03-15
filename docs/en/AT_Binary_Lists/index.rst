@@ -4,10 +4,10 @@ AT Binary Lists
 :link_to_translation:`zh_CN:[中文]`
 
 .. toctree::
-   :maxdepth: 1
-   
-   ESP32 AT binaries <ESP32_AT_binaries>
-   ESP32-C3 AT binaries <ESP32-C3_AT_binaries>
+  :maxdepth: 1
+
+  :esp32: ESP32 AT binaries <ESP32_AT_binaries>
+  :esp32c3: ESP32-C3 AT binaries <ESP32-C3_AT_binaries>
 
 Each of the linked above ESP-AT firmware contains several binaries dedicated to some specific functions, and the ``factory/factory_xxx.bin`` is the combination of all binaries. So you can either download the ``factory/factory_xxx.bin`` to address 0, or several binaries to different addresses according to ``download.config``. Please refer to :ref:`Download AT Firmware <download-at-firmware>` for how to download.
 
@@ -19,6 +19,8 @@ Each of the linked above ESP-AT firmware contains several binaries dedicated to 
       If you design your own module, please configure and compile with reference to :doc:`../Compile_and_Develop/How_to_create_factory_parameter_bin`, and the binaries will be automatically generated after compilation. Or you can select firmware with similar configuration according to the configuration of ``UART pins,PSRAM,Flash`` (The premise is to ensure that the hardware meets the requirements. Please refer to :doc:`../Compile_and_Develop/esp-at_firmware_differences` for the firmware applicable to your module).
 
       When you flash the firmware into module according to the ``download.config``, the ``customized_partitions/factory_param.bin`` should be replaced with the actual module-specific ``customized_partitions/factory_param_XXX.bin``. UART CTS and RTS pins are optional.
+
+.. only:: esp32
 
     - **ESP32 Series**
 
@@ -52,6 +54,8 @@ Each of the linked above ESP-AT firmware contains several binaries dedicated to 
            - GPIO15
            - GPIO14
          - ``factory_param_SOLO-1.bin``
+
+.. only:: esp32c3
 
     - **ESP32-C3 Series**
 

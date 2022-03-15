@@ -102,7 +102,7 @@ Select one of the following ways to generate certificate bin files.
 Script Generation
 ^^^^^^^^^^^^^^^^^^^^
 
-The path of ``AtPKI.py`` is :at:`tools/AtPKI.py`. You can get help information of the script through the ``-h`` option. You can also generate bin files directly through the following commands.
+The path of ``AtPKI.py`` is :project_file:`tools/AtPKI.py`. You can get help information of the script through the ``-h`` option. You can also generate bin files directly through the following commands.
 
 .. code-block:: none
 
@@ -122,7 +122,7 @@ Taking the SSL client certificate files of ESP-AT as an example, you can execute
 Generation During Compilation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The storage path of certificate files in ESP-AT is :at:`components/customized_partitions/raw_data`.
+The storage path of certificate files in ESP-AT is :project:`components/customized_partitions/raw_data`.
 
 Taking the SSL client certificate files of ESP-AT as an example. If you want to generate your own SSL client certificates files, you must replace the ``CA`` certificate in the ``client_ca`` directory with your own ``CA`` certificate, the cert certificate in the ``client_cert`` directory with your own ``cert`` certificate, and the ``private key`` in the ``client_ key`` directory with your own ``private key``.
 
@@ -161,7 +161,7 @@ Update with Commands
 
 - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`
 
-  Taking ``ESP32`` module as an example, you can execute the following command to upgrade the ``client_cert`` partition. Please refer to :ref:`AT+SYSFLASH <cmd-SYSFLASH>` for more details.
+  Taking ``{IDF_TARGET_NAME}`` module as an example, you can execute the following command to upgrade the ``client_cert`` partition. Please refer to :ref:`AT+SYSFLASH <cmd-SYSFLASH>` for more details.
 
   1. Query user partitions in flash
 
@@ -173,25 +173,49 @@ Update with Commands
 
     Response:
 
+    .. only:: esp32
+
+      .. code-block:: none
+
+        +SYSFLASH:"ble_data",64,1,0x21000,0x3000
+        +SYSFLASH:"server_cert",64,2,0x24000,0x2000
+        +SYSFLASH:"server_key",64,3,0x26000,0x2000
+        +SYSFLASH:"server_ca",64,4,0x28000,0x2000
+        +SYSFLASH:"client_cert",64,5,0x2a000,0x2000
+        +SYSFLASH:"client_key",64,6,0x2c000,0x2000
+        +SYSFLASH:"client_ca",64,7,0x2e000,0x2000
+        +SYSFLASH:"factory_param",64,8,0x30000,0x1000
+        +SYSFLASH:"wpa2_cert",64,9,0x31000,0x2000
+        +SYSFLASH:"wpa2_key",64,10,0x33000,0x2000
+        +SYSFLASH:"wpa2_ca",64,11,0x35000,0x2000
+        +SYSFLASH:"mqtt_cert",64,12,0x37000,0x2000
+        +SYSFLASH:"mqtt_key",64,13,0x39000,0x2000
+        +SYSFLASH:"mqtt_ca",64,14,0x3b000,0x2000
+        +SYSFLASH:"fatfs",1,129,0x70000,0x90000
+
+        OK
+
+    .. only:: esp32
+
     .. code-block:: none
 
-      +SYSFLASH:"ble_data",64,1,0x21000,0x3000
-      +SYSFLASH:"server_cert",64,2,0x24000,0x2000
-      +SYSFLASH:"server_key",64,3,0x26000,0x2000
-      +SYSFLASH:"server_ca",64,4,0x28000,0x2000
-      +SYSFLASH:"client_cert",64,5,0x2a000,0x2000
-      +SYSFLASH:"client_key",64,6,0x2c000,0x2000
-      +SYSFLASH:"client_ca",64,7,0x2e000,0x2000
-      +SYSFLASH:"factory_param",64,8,0x30000,0x1000
-      +SYSFLASH:"wpa2_cert",64,9,0x31000,0x2000
-      +SYSFLASH:"wpa2_key",64,10,0x33000,0x2000
-      +SYSFLASH:"wpa2_ca",64,11,0x35000,0x2000
-      +SYSFLASH:"mqtt_cert",64,12,0x37000,0x2000
-      +SYSFLASH:"mqtt_key",64,13,0x39000,0x2000
-      +SYSFLASH:"mqtt_ca",64,14,0x3b000,0x2000
-      +SYSFLASH:"fatfs",1,129,0x70000,0x90000
+        +SYSFLASH:"ble_data",64,1,0x1f000,0x6000
+        +SYSFLASH:"server_cert",64,2,0x25000,0x2000
+        +SYSFLASH:"server_key",64,3,0x27000,0x2000
+        +SYSFLASH:"server_ca",64,4,0x29000,0x2000
+        +SYSFLASH:"client_cert",64,5,0x2b000,0x2000
+        +SYSFLASH:"client_key",64,6,0x2d000,0x2000
+        +SYSFLASH:"client_ca",64,7,0x2f000,0x2000
+        +SYSFLASH:"factory_param",64,8,0x31000,0x1000
+        +SYSFLASH:"wpa2_cert",64,9,0x32000,0x2000
+        +SYSFLASH:"wpa2_key",64,10,0x34000,0x2000
+        +SYSFLASH:"wpa2_ca",64,11,0x36000,0x2000
+        +SYSFLASH:"mqtt_cert",64,12,0x38000,0x2000
+        +SYSFLASH:"mqtt_key",64,13,0x3a000,0x2000
+        +SYSFLASH:"mqtt_ca",64,14,0x3c000,0x2000
+        +SYSFLASH:"fatfs",1,129,0x47000,0x19000
 
-      OK
+        OK
 
   2. Erase ``client_cert`` sector
 

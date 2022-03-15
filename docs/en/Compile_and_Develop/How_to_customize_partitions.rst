@@ -1,6 +1,9 @@
 How to Customize Partitions
 ===========================
 
+{IDF_TARGET_AT_SECOND_PARTITION_ADDR: default="undefined", esp32="0x20000", esp32c3="0x1E000"}
+{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c3="ESP32-C3-MINI-1"}
+
 :link_to_translation:`zh_CN:[中文]`
 
 This document describes how to customize the partitions in your ESP device by modifying the at_customize.csv table provided by ESP-AT. There are two partition tables: the primary partition and the secondary partition table.
@@ -23,33 +26,44 @@ Modify at_customize.csv
 
 Find the at_customize.csv for your module with reference to the following table.
 
-.. list-table:: at_customize.csv paths
-   :header-rows: 1
+.. only:: esp32
 
-   * - Platform
-     - Module
-     - Paths
-   * - ESP32
-     - - WROOM-32
-       - PICO-D4
-       - SOLO-1
-       - MINI-1
-     - :module_config:`module_esp32_default/at_customize.csv`
-   * - ESP32
-     - WROVER-32
-     - :module_config:`module_wrover-32/at_customize.csv`
-   * - ESP32
-     - ESP32-D2WD
-     - :module_config:`module_esp32-d2wd/at_customize.csv`
-   * - ESP32
-     - ESP32_QCLOUD
-     - :module_config:`module_esp32_qcloud/at_customize.csv`
-   * - ESP32-C3
-     - MINI-1
-     - :module_config:`module_esp32c3_default/at_customize.csv`
-   * - ESP32-C3
-     - ESP32C3_QCLOUD
-     - :module_config:`module_esp32c3_qcloud/at_customize.csv`
+  .. list-table:: at_customize.csv paths
+    :header-rows: 1
+
+    * - Platform
+      - Module
+      - Paths
+    * - ESP32
+      - - WROOM-32
+        - PICO-D4
+        - SOLO-1
+        - MINI-1
+      - :project_file:`module_config/module_esp32_default/at_customize.csv`
+    * - ESP32
+      - WROVER-32
+      - :project_file:`module_config/module_wrover-32/at_customize.csv`
+    * - ESP32
+      - ESP32-D2WD
+      - :project_file:`module_config/module_esp32-d2wd/at_customize.csv`
+    * - ESP32
+      - ESP32_QCLOUD
+      - :project_file:`module_config/module_esp32_qcloud/at_customize.csv`
+
+.. only:: esp32c3
+
+  .. list-table:: at_customize.csv paths
+    :header-rows: 1
+
+    * - Platform
+      - Module
+      - Paths
+    * - ESP32-C3
+      - MINI-1
+      - :project_file:`module_config/module_esp32c3_default/at_customize.csv`
+    * - ESP32-C3
+      - ESP32C3_QCLOUD
+      - :project_file:`module_config/module_esp32c3_qcloud/at_customize.csv`
 
 Then, follow the rules below when modifying at_customize.csv.
 
@@ -84,31 +98,43 @@ Flash at_customize.bin into ESP Device
 
 Download the at_customize.bin into flash. Please refer to :ref:`flash-at-firmware-into-your-device` for how to flash bin files into ESP and the following table for the download address for your module.
 
-.. list-table:: at_customize.bin download address of modules
-   :header-rows: 1
+.. only:: esp32
 
-   * - Platform
-     - Module
-     - Address
-     - Size
-   * - ESP32
-     - - WROOM-32
-       - WROVER-32
-       - PICO-D4
-       - SOLO-1
-       - MINI-1
-       - ESP32-D2WD
-       - ESP32_QCLOUD
-     - 0x20000
-     - 0xE0000
-   * - ESP32-C3
-     - MINI-1
-     - 0x1E000
-     - 0x42000
-   * - ESP32-C3
-     - ESP32C3_QCLOUD
-     - 0x20000
-     - 0xE0000
+  .. list-table:: at_customize.bin download address of modules
+    :header-rows: 1
+
+    * - Platform
+      - Module
+      - Address
+      - Size
+    * - ESP32
+      - - WROOM-32
+        - WROVER-32
+        - PICO-D4
+        - SOLO-1
+        - MINI-1
+        - ESP32-D2WD
+        - ESP32_QCLOUD
+      - 0x20000
+      - 0xE0000
+
+.. only:: esp32c3
+
+  .. list-table:: at_customize.bin download address of modules
+    :header-rows: 1
+
+    * - Platform
+      - Module
+      - Address
+      - Size
+    * - ESP32-C3
+      - MINI-1
+      - 0x1E000
+      - 0x42000
+    * - ESP32-C3
+      - ESP32C3_QCLOUD
+      - 0x20000
+      - 0xE0000
 
 There are cases where at_customize.bin must be downloaded to flash in order to use certain AT commands:
 
@@ -122,22 +148,33 @@ There are cases where at_customize.bin must be downloaded to flash in order to u
 Example
 -------
 
-The section demonstrates how to add a 4 KB partition named ``test`` into the ESP32-WROOM-32 module.
+The section demonstrates how to add a 4 KB partition named ``test`` into the {IDF_TARGET_PRODUCT_NAME} module.
 
-Firstly, find the at_customize.csv table for ESP32-WROOM-32 and set the ``Name``, ``Type``, ``Subtype``, ``Offset``, and ``Size`` of the new partition:
+Firstly, find the at_customize.csv table for {IDF_TARGET_PRODUCT_NAME} and set the ``Name``, ``Type``, ``Subtype``, ``Offset``, and ``Size`` of the new partition:
 
-::
+.. only:: esp32
 
-    # Name,Type,SubType,Offset,Size
-    ... ...
-    test,0x40,15,0x3D000,4K
-    fatfs,data,fat,0x70000,576K
+  ::
+
+      # Name,Type,SubType,Offset,Size
+      ... ...
+      test,0x40,15,0x3D000,4K
+      fatfs,data,fat,0x70000,576K
+
+.. only:: esp32c3
+
+  ::
+
+      # Name,Type,SubType,Offset,Size
+      ... ...
+      test,0x40,15,0x3E000,4K
+      fatfs,data,fat,0x47000,100K
 
 Secondly, recompile the ESP-AT project, or execute the python script in the ESP-AT root directory to generate at_customize.bin.
 
 ::
 
-    python esp-idf/components/partition_table/gen_esp32part.py -q ./module_config/module_esp32_default/at_customize.csv at_customize.bin
+    python esp-idf/components/partition_table/gen_esp32part.py -q ./module_config/module_{IDF_TARGET_PATH_NAME}_default/at_customize.csv at_customize.bin
 
 Then, the at_customize.bin will be generated in the ESP-AT root directory.
 
@@ -147,7 +184,7 @@ Execute the following command under the root directory of ESP-AT project and rep
 
 ::
 
-    python esp-idf/components/esptool_py/esptool/esptool.py -p PORT -b BAUD --before default_reset --after hard_reset --chip auto  write_flash --flash_mode dio --flash_size detect --flash_freq 40m 0x20000 ./at_customize.bin
+    python esp-idf/components/esptool_py/esptool/esptool.py -p PORT -b BAUD --before default_reset --after hard_reset --chip auto write_flash --flash_mode dio --flash_size detect --flash_freq 40m {IDF_TARGET_AT_SECOND_PARTITION_ADDR} ./at_customize.bin
 
 - Replace ``PORT`` with your port name.
 - Replace ``BAUD`` with the baud rate.

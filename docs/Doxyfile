@@ -10,7 +10,7 @@
 # Make sure that correct warnings are generated to flag issues with documented code
 #
 # For the complete list of configuration statements see:
-# https://www.stack.nl/~dimitri/doxygen/manual/config.html
+# http://doxygen.nl/manual/config.html
 
 
 PROJECT_NAME = "ESP-AT User Guide"
@@ -21,11 +21,8 @@ PROJECT_NAME = "ESP-AT User Guide"
 ## and used to include in API reference documentation
 
 INPUT = \
-    ##
-    ## ESP-AT - API Reference
-    ##
-    ../../components/at/include/esp_at_core.h \
-    ../../components/at/include/esp_at.h
+    $(PROJECT_PATH)/components/at/include/esp_at_core.h \
+    $(PROJECT_PATH)/components/at/include/esp_at.h
 
 ## Get warnings for functions that have no documentation for their parameters or return value
 ##

@@ -5,7 +5,11 @@ Bluetooth® Low Energy AT 命令集
 
 :link_to_translation:`en:[English]`
 
-当前，ESP32 和 ESP32-C3 都支持 Bluetooth LE 命令。ESP32 系列和 ESP32-C3 系列 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_。下一版本 ESP32-C3 AT 固件将支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_。
+当前，{IDF_TARGET_NAME} 系列 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_。
+
+.. only:: esp32c3
+
+  下一版本 {IDF_TARGET_NAME} AT 固件将支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_。
 
 - :ref:`AT+BLEINIT <cmd-BINIT>`：Bluetooth LE 初始化
 - :ref:`AT+BLEADDR <cmd-BADDR>`：设置 Bluetooth LE 设备地址

@@ -1,12 +1,12 @@
-ESP32 SDIO AT Guide
-===================
+{IDF_TARGET_NAME} SDIO AT Guide
+===============================
 
 :link_to_translation:`zh_CN:[中文]`
 
 Introduction
 ------------
 
-ESP32 SDIO AT uses SDIO rather than UART as the communication interface between ESP32 (SDIO slave) and the host MCU.
+{IDF_TARGET_NAME} SDIO AT uses SDIO rather than UART as the communication interface between {IDF_TARGET_NAME} (SDIO slave) and the host MCU.
 
 SDIO can use either 1-bit or 4-bit data transfer mode.
 
@@ -25,18 +25,18 @@ The SDIO slave pins are as below:
 Implement SDIO AT
 -----------------
 
-Before testing SDIO AT communication, please configure ESP32 hardware according to `SD Pull-up Requirements <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/sd_pullup_requirements.html#solutions>`_, otherwise, exceptions may occur during SDIO communication.
+Before testing SDIO AT communication, please configure {IDF_TARGET_NAME} hardware according to `SD Pull-up Requirements <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/sd_pullup_requirements.html#solutions>`_, otherwise, exceptions may occur during SDIO communication.
 
 SDIO Slave
 ^^^^^^^^^^^
 
-By default, the ESP-AT project uses UART as the the communication interface. When ESP32 serves as the SDIO slave, please go to ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT via SDIO`` to switch to the SDIO interface. Then, recompile the ESP-AT project, flash and run the new bin.
+By default, the ESP-AT project uses UART as the the communication interface. When {IDF_TARGET_NAME} serves as the SDIO slave, please go to ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT via SDIO`` to switch to the SDIO interface. Then, recompile the ESP-AT project, flash and run the new bin.
 
 
 SDIO MCU
 ^^^^^^^^
 
-ESP-AT provides the :example:`at_sdio_host` example for ESP32 or STM32 serving as the SDIO host. For ESP32 serving as the host, you can use the esp-idf of the AT project to compile and flash; for STM32, as the provided solution is based on STM32F103ZET, please use Keil5 to compile and flash as the application.
+ESP-AT provides the :example:`at_sdio_host` example for {IDF_TARGET_NAME} or STM32 serving as the SDIO host. For {IDF_TARGET_NAME} serving as the host, you can use the esp-idf of the AT project to compile and flash; for STM32, as the provided solution is based on STM32F103ZET, please use Keil5 to compile and flash as the application.
 
 For other devices working as SDIO hosts, you can develop based on the above example.
 

@@ -21,7 +21,7 @@ ESP-AT 提供 python 脚本 ``BLEService.py`` 将自定义 Bluetooth LE 服务�
 脚本生成
 ^^^^^^^^^^^^^^^^^^^^
 
-脚本 ``BLEService.py`` 的路径是 :at:`tools/BLEService.py`。您可以通过 ``-h`` 选项获取脚本的帮助信息。您也可以直接通过以下命令生成 ``ble_data.bin`` 二进制文件。
+脚本 ``BLEService.py`` 的路径是 :project_file:`tools/BLEService.py`。您可以通过 ``-h`` 选项获取脚本的帮助信息。您也可以直接通过以下命令生成 ``ble_data.bin`` 二进制文件。
 
 .. code-block:: none
 
@@ -40,7 +40,7 @@ ESP-AT 提供 python 脚本 ``BLEService.py`` 将自定义 Bluetooth LE 服务�
 编译期间生成
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-ESP-AT 中 Bluetooth LE GATT service 文件的存储路径为 :at:`components/customized_partitions/raw_data`。
+ESP-AT 中 Bluetooth LE GATT service 文件的存储路径为 :project:`components/customized_partitions/raw_data`。
 
 对于怎样自定义 Bluetooth LE 服务，请参考文档 :doc:`How_to_customize_BLE_services`。
 
@@ -75,7 +75,7 @@ ESP-AT 中 Bluetooth LE GATT service 文件的存储路径为 :at:`components/cu
 
   #. :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令
 
-     以 ``ESP32`` 模组为例，您可以执行以下命令来更新 ``ble_data`` 分区。请参考 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 获取更多信息。
+     以 ``{IDF_TARGET_NAME}`` 模组为例，您可以执行以下命令来更新 ``ble_data`` 分区。请参考 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 获取更多信息。
 
      1. 查询 flash 用户分区
 

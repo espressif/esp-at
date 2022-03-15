@@ -49,7 +49,7 @@ GATT is actually an attribute transmission protocol, which can be regarded as an
 
 .. Important::
 
-  * The ESP32 Bluetooth LE server needs to download a ``ble_data.bin`` into flash to provide Bluetooth LE services.
+  * The {IDF_TARGET_NAME} Bluetooth LE server needs to download a ``ble_data.bin`` into flash to provide Bluetooth LE services.
 
     * To learn how to generate a ``ble_data.bin``, please refer to :doc:`../Compile_and_Develop/customize_bluetooth_le_services_tools`.
     * The download address of the ``ble_data.bin`` is the address of ``ble_data`` in ``at_customize.csv``, or described in ``build/download.config``.
@@ -57,15 +57,15 @@ GATT is actually an attribute transmission protocol, which can be regarded as an
 Bluetooth LE client reads and write services
 ----------------------------------------------
 
-Below is an example of using two ESP32 development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to use Bluetooth LE functions with AT commands.
+Below is an example of using two {IDF_TARGET_NAME} development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to use Bluetooth LE functions with AT commands.
 
 .. Important::
 
-   In the following steps, the operations starting with ``ESP32 Bluetooth LE server`` only need to be executed at ESP32 Bluetooth LE server, and the operations starting with ``ESP32 Bluetooth LE client`` only need to be executed at ESP32 Bluetooth LE client.
+   In the following steps, the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE server`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE server, and the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE client`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE client.
 
 #. Bluetooth LE initialization.
 
-   ESP32 Bluetooth LE server:
+   {IDF_TARGET_NAME} Bluetooth LE server:
 
    Command:
 
@@ -79,7 +79,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-   ESP32 Bluetooth LE client:
+   {IDF_TARGET_NAME} Bluetooth LE client:
   
    Command:
 
@@ -93,7 +93,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server gets Bluetooth LE address.
+#. {IDF_TARGET_NAME} Bluetooth LE server gets Bluetooth LE address.
 
    Command:
 
@@ -112,7 +112,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
 
-#. ESP32 Bluetooth LE server creates services.
+#. {IDF_TARGET_NAME} Bluetooth LE server creates services.
 
    Command:
 
@@ -126,7 +126,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server starts services.
+#. {IDF_TARGET_NAME} Bluetooth LE server starts services.
 
    Command:
 
@@ -140,7 +140,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server discovers characteristics.
+#. {IDF_TARGET_NAME} Bluetooth LE server discovers characteristics.
 
    Command:
 
@@ -174,9 +174,9 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server starts advertising, then the ESP32 Bluetooth LE client starts scanning and lasts for 3 s. 
+#. {IDF_TARGET_NAME} Bluetooth LE server starts advertising, then the {IDF_TARGET_NAME} Bluetooth LE client starts scanning and lasts for 3 s. 
 
-   ESP32 Bluetooth LE server:
+   {IDF_TARGET_NAME} Bluetooth LE server:
 
    Command:
 
@@ -190,7 +190,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-   ESP32 Bluetooth LE client:
+   {IDF_TARGET_NAME} Bluetooth LE client:
 
    Command:
 
@@ -213,7 +213,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
 #. Establish the Bluetooth LE connection.
   
-   ESP32 Bluetooth LE client:
+   {IDF_TARGET_NAME} Bluetooth LE client:
 
    Command:
 
@@ -235,7 +235,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
    - If the Bluetooth LE connection is established successfully, message ``+BLECONN:0,"24:0a:c4:d6:e4:46`` will be prompted.
    - If the Bluetooth LE connection is broken, message ``+BLECONN:0,-1`` will be prompted.
 
-#. ESP32 Bluetooth LE client discovers services.
+#. {IDF_TARGET_NAME} Bluetooth LE client discovers services.
   
    Command:
 
@@ -256,9 +256,9 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    Note:
 
-   - When discovering services, the ESP32 Bluetooth LE client will get two more default services (UUID: 0x1800 and 0x1801) than what the ESP32 Bluetooth LE server will get. So, for the same service, the <srv_index> received by the ESP32 Bluetooth LE client equals the <srv_index> received by the ESP32 Bluetooth LE server + 2. For example, for service 0xA002, the <srv_index> queried on the ESP32 Bluetooth LE client is 3, if the ESP32 Bluetooth LE server is queried through the command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`, then <srv_index> is 1.
+   - When discovering services, the {IDF_TARGET_NAME} Bluetooth LE client will get two more default services (UUID: 0x1800 and 0x1801) than what the {IDF_TARGET_NAME} Bluetooth LE server will get. So, for the same service, the <srv_index> received by the {IDF_TARGET_NAME} Bluetooth LE client equals the <srv_index> received by the {IDF_TARGET_NAME} Bluetooth LE server + 2. For example, for service 0xA002, the <srv_index> queried on the {IDF_TARGET_NAME} Bluetooth LE client is 3, if the {IDF_TARGET_NAME} Bluetooth LE server is queried through the command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`, then <srv_index> is 1.
 
-#. ESP32 Bluetooth LE client discovers characteristics.
+#. {IDF_TARGET_NAME} Bluetooth LE client discovers characteristics.
 
    Command:
 
@@ -288,7 +288,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
      
      OK
 
-#. ESP32 Bluetooth LE client reads a characteristic.
+#. {IDF_TARGET_NAME} Bluetooth LE client reads a characteristic.
 
    Command:
 
@@ -307,9 +307,9 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
    Note:
 
    - Please note that the target characteristic's property has to support the read operation.
-   - If the ESP32 Bluetooth LE client reads the characteristic successfully, message ``+READ:0,"7c:df:a1:b3:8d:de"`` will be prompted on the ESP32 Bluetooth LE Server side.
+   - If the {IDF_TARGET_NAME} Bluetooth LE client reads the characteristic successfully, message ``+READ:0,"7c:df:a1:b3:8d:de"`` will be prompted on the {IDF_TARGET_NAME} Bluetooth LE Server side.
 
-#. ESP32 Bluetooth LE client writes a characteristic.
+#. {IDF_TARGET_NAME} Bluetooth LE client writes a characteristic.
 
    Command:
 
@@ -331,11 +331,11 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    Note:
 
-   - If the ESP32 Bluetooth LE client writes the characteristic successfully, message ``+WRITE:<conn_index>,<srv_index>,<char_index>,[<desc_index>],<len>,<value>`` will be prompted on the ESP32 Bluetooth LE server side.
+   - If the {IDF_TARGET_NAME} Bluetooth LE client writes the characteristic successfully, message ``+WRITE:<conn_index>,<srv_index>,<char_index>,[<desc_index>],<len>,<value>`` will be prompted on the {IDF_TARGET_NAME} Bluetooth LE server side.
 
 #. Indicate a characteristic.
 
-   ESP32 Bluetooth LE client:
+   {IDF_TARGET_NAME} Bluetooth LE client:
 
    Command:
 
@@ -351,7 +351,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    The symbol ``>`` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter ``<length>`` is met, the writing starts.
 
-   To receive data from ESP32 Bluetooth LE server (through the ``notify`` or the ``indicate`` method), the ESP32 Bluetooth LE client needs to register with the server in advance. Write the value ``0x0001`` to use the ``notify`` method, and ``0x0002`` to use the ``indicate`` method. This example writes the ``0x0002`` to use the ``indicate`` method.
+   To receive data from {IDF_TARGET_NAME} Bluetooth LE server (through the ``notify`` or the ``indicate`` method), the {IDF_TARGET_NAME} Bluetooth LE client needs to register with the server in advance. Write the value ``0x0001`` to use the ``notify`` method, and ``0x0002`` to use the ``indicate`` method. This example writes the ``0x0002`` to use the ``indicate`` method.
 
    .. code-block:: none
 
@@ -359,9 +359,9 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    Note:
 
-   - If the ESP32 Bluetooth LE client writes the descriptor successfully, message ``+WRITE:<conn_index>,<srv_index>,<char_index>,<desc_index>,<len>,<value>`` will be prompted on the ESP32 Bluetooth LE server side.
+   - If the {IDF_TARGET_NAME} Bluetooth LE client writes the descriptor successfully, message ``+WRITE:<conn_index>,<srv_index>,<char_index>,<desc_index>,<len>,<value>`` will be prompted on the {IDF_TARGET_NAME} Bluetooth LE server side.
 
-   ESP32 Bluetooth LE server:
+   {IDF_TARGET_NAME} Bluetooth LE server:
 
    Command:
 
@@ -383,21 +383,21 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    Note:
 
-   - If the ESP32 Bluetooth LE client receives the indication, message ``+INDICATE:<conn_index>,<srv_index>,<char_index>,<len>,<value>`` will be prompted.
-   - For the same service, the <srv_index> on the ESP32 Bluetooth LE client side equals the <srv_index> on the ESP32 Bluetooth LE server side + 2.
+   - If the {IDF_TARGET_NAME} Bluetooth LE client receives the indication, message ``+INDICATE:<conn_index>,<srv_index>,<char_index>,<len>,<value>`` will be prompted.
+   - For the same service, the <srv_index> on the {IDF_TARGET_NAME} Bluetooth LE client side equals the <srv_index> on the {IDF_TARGET_NAME} Bluetooth LE server side + 2.
    - For the permissions of the characteristics in the services, please refer to :doc:`../Compile_and_Develop/How_to_customize_BLE_services`.
 
 Bluetooth LE server read and write services
 ---------------------------------------------
 
-Below is an example of using two ESP32 development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to establish a Bluetooth LE connection, as well as the read and write characteristics of the server and client settings, and notification characteristics.
+Below is an example of using two {IDF_TARGET_NAME} development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to establish a Bluetooth LE connection, as well as the read and write characteristics of the server and client settings, and notification characteristics.
 
 .. Important::
-  In the step, the operations starting with ``ESP32 Bluetooth LE server`` only need to be executed at ESP32 Bluetooth LE server, and the operations starting with ``ESP32 Bluetooth LE client`` only need to be executed at ESP32 Bluetooth LE client.
+  In the step, the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE server`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE server, and the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE client`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE client.
 
 #. Bluetooth LE initialization.
 
-   ESP32 Bluetooth LE server:
+   {IDF_TARGET_NAME} Bluetooth LE server:
 
    Command:
 
@@ -411,7 +411,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-   ESP32 Bluetooth LE client:
+   {IDF_TARGET_NAME} Bluetooth LE client:
 
    Command:
 
@@ -425,7 +425,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server creates services.
+#. {IDF_TARGET_NAME} Bluetooth LE server creates services.
 
    Command:
 
@@ -439,7 +439,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server starts services.
+#. {IDF_TARGET_NAME} Bluetooth LE server starts services.
 
    Command:
 
@@ -453,7 +453,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server gets its MAC address.
+#. {IDF_TARGET_NAME} Bluetooth LE server gets its MAC address.
 
    Command:
 
@@ -486,7 +486,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server starts advertising.
+#. {IDF_TARGET_NAME} Bluetooth LE server starts advertising.
 
    Command:
 
@@ -500,7 +500,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE client creates services.
+#. {IDF_TARGET_NAME} Bluetooth LE client creates services.
 
    Command:
 
@@ -514,7 +514,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE client starts services.
+#. {IDF_TARGET_NAME} Bluetooth LE client starts services.
 
    Command:
 
@@ -528,7 +528,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE client gets Bluetooth LE address.
+#. {IDF_TARGET_NAME} Bluetooth LE client gets Bluetooth LE address.
 
    Command:
 
@@ -547,7 +547,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
 
-#. ESP32 Bluetooth LE client enables a scanning for three seconds.
+#. {IDF_TARGET_NAME} Bluetooth LE client enables a scanning for three seconds.
 
    Command:
 
@@ -570,7 +570,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
 #. Establish the Bluetooth LE connection.
   
-   ESP32 Bluetooth LE client:
+   {IDF_TARGET_NAME} Bluetooth LE client:
 
    Command:
 
@@ -592,7 +592,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
    - If the Bluetooth LE connection is established successfully, message ``+BLECONN:0,"24:0a:c4:d6:e4:46`` will be prompted.
    - If the Bluetooth LE connection is broken, message ``+BLECONN:0,-1`` will be prompted.
 
-   ESP32 Bluetooth LE server:
+   {IDF_TARGET_NAME} Bluetooth LE server:
 
    Command:
 
@@ -614,7 +614,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
    - If the Bluetooth LE connection is established successfully, the message ``OK`` will be prompted and the message ``+BLECONN:0,"24:0a:c4:03:a7:4e`` will not be prompted.
    - If the Bluetooth LE connection is broken, the message ``ERROR`` will be prompted and the message ``+BLECONN:0,-1`` will not be prompted.
 
-#. ESP32 Bluetooth LE client discovers local services.
+#. {IDF_TARGET_NAME} Bluetooth LE client discovers local services.
 
    Command:
 
@@ -631,7 +631,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
      
      OK
 
-#. ESP32 Bluetooth LE client discovers local characteristics.
+#. {IDF_TARGET_NAME} Bluetooth LE client discovers local characteristics.
 
    Command:
 
@@ -665,7 +665,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server discovers primary services.
+#. {IDF_TARGET_NAME} Bluetooth LE server discovers primary services.
 
    Command:
 
@@ -686,9 +686,9 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    Note:
 
-   - When discovering services, the ESP32 Bluetooth LE server will get two more default services (UUID: 0x1800 and 0x1801) than what the ESP32 Bluetooth LE client will get. So, for the same service, the <srv_index> received by the ESP32 Bluetooth LE server equals the <srv_index> received by the ESP32 Bluetooth LE client + 2. For example, for service 0xA002, the <srv_index> queried on the ESP32 Bluetooth LE client is 3, if the ESP32 Bluetooth LE server is queried through the command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`, then <srv_index> is 1.
+   - When discovering services, the {IDF_TARGET_NAME} Bluetooth LE server will get two more default services (UUID: 0x1800 and 0x1801) than what the {IDF_TARGET_NAME} Bluetooth LE client will get. So, for the same service, the <srv_index> received by the {IDF_TARGET_NAME} Bluetooth LE server equals the <srv_index> received by the {IDF_TARGET_NAME} Bluetooth LE client + 2. For example, for service 0xA002, the <srv_index> queried on the {IDF_TARGET_NAME} Bluetooth LE client is 3, if the {IDF_TARGET_NAME} Bluetooth LE server is queried through the command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`, then <srv_index> is 1.
 
-#. ESP32 Bluetooth LE server discovers  primary characteristics.
+#. {IDF_TARGET_NAME} Bluetooth LE server discovers  primary characteristics.
 
    Command:
 
@@ -718,7 +718,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
      
      OK
 
-#. ESP32 Bluetooth LE client sets characteristics.
+#. {IDF_TARGET_NAME} Bluetooth LE client sets characteristics.
 
    Select the service characteristic that supports the write operation (characteristic) to set the characteristic.
 
@@ -746,7 +746,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server reads characteristics.
+#. {IDF_TARGET_NAME} Bluetooth LE server reads characteristics.
 
    Command:
 
@@ -762,7 +762,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE client write characteristics.
+#. {IDF_TARGET_NAME} Bluetooth LE client write characteristics.
 
    Select the service characteristic that supports the write operation to write the characteristics.
 
@@ -794,7 +794,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    - If the Bluetooth LE server successfully writes the service characteristic value, the Bluetooth LE client will prompt ``+WRITE:0,1,6,1,2,12``.
 
-#. ESP32 Bluetooth LE client notify characteristics.
+#. {IDF_TARGET_NAME} Bluetooth LE client notify characteristics.
 
    Command:
 
@@ -822,22 +822,22 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    Note:
 
-   - If the ESP32 Bluetooth LE client's notify characteristic is successfully sent to the server, the Bluetooth LE server ``+NOTIFY:0,3,6,10,1234567890`` will be prompt.
+   - If the {IDF_TARGET_NAME} Bluetooth LE client's notify characteristic is successfully sent to the server, the Bluetooth LE server ``+NOTIFY:0,3,6,10,1234567890`` will be prompt.
 
 Encrypt Bluetooth LE connection
 ----------------------------------
 
-Below is an example of using two ESP32 development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to encrypt Bluetooth LE connection.
+Below is an example of using two {IDF_TARGET_NAME} development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to encrypt Bluetooth LE connection.
 
 .. Important::
 
-  - In the following steps, the operations starting with ``ESP32 Bluetooth LE server`` only need to be executed at ESP32 Bluetooth LE server, and the operations starting with ``ESP32 Bluetooth LE client`` only need to be executed at ESP32 Bluetooth LE client.
+  - In the following steps, the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE server`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE server, and the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE client`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE client.
   - ``Encryption`` and ``bonding`` are two different concepts. ``bonding`` is just a long-term key stored locally after successful encryption.
   - ESP-AT allows a maximum of ``10`` devices to be bonded.
 
 #. Bluetooth LE initialization.
 
-   ESP32 Bluetooth LE server:
+   {IDF_TARGET_NAME} Bluetooth LE server:
 
    Command:
 
@@ -851,7 +851,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-   ESP32 Bluetooth LE client:
+   {IDF_TARGET_NAME} Bluetooth LE client:
 
    Command:
 
@@ -865,7 +865,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server gets Bluetooth LE address.
+#. {IDF_TARGET_NAME} Bluetooth LE server gets Bluetooth LE address.
 
    Command:
 
@@ -884,7 +884,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
 
-#. ESP32 Bluetooth LE server creates services.
+#. {IDF_TARGET_NAME} Bluetooth LE server creates services.
 
    Command:
 
@@ -898,7 +898,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server starts services.
+#. {IDF_TARGET_NAME} Bluetooth LE server starts services.
 
    Command:
 
@@ -912,7 +912,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server discovers characteristics.
+#. {IDF_TARGET_NAME} Bluetooth LE server discovers characteristics.
 
    Command:
 
@@ -946,9 +946,9 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server starts advertising, then the ESP32 Bluetooth LE client starts scanning and lasts for 3 s. 
+#. {IDF_TARGET_NAME} Bluetooth LE server starts advertising, then the {IDF_TARGET_NAME} Bluetooth LE client starts scanning and lasts for 3 s. 
 
-   ESP32 Bluetooth LE server:
+   {IDF_TARGET_NAME} Bluetooth LE server:
 
    Command:
 
@@ -962,7 +962,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-   ESP32 Bluetooth LE client:
+   {IDF_TARGET_NAME} Bluetooth LE client:
 
    Command:
 
@@ -985,7 +985,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
 #. Establish the Bluetooth LE connection.
 
-   ESP32 Bluetooth LE client:
+   {IDF_TARGET_NAME} Bluetooth LE client:
 
    Command:
 
@@ -1007,7 +1007,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
    - If the Bluetooth LE connection is established successfully, message ``+BLECONN:0,"24:0a:c4:d6:e4:46`` will be prompted.
    - If the Bluetooth LE connection is broken, message ``+BLECONN:0,-1`` will be prompted.
 
-#. ESP32 Bluetooth LE client discovers services.
+#. {IDF_TARGET_NAME} Bluetooth LE client discovers services.
 
    Command:
 
@@ -1028,9 +1028,9 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    Note:
 
-   - When discovering services, the ESP32 Bluetooth LE client will get two more default services (UUID: 0x1800 and 0x1801) than what the ESP32 Bluetooth LE server will get. So, for the same service, the <srv_index> received by the ESP32 Bluetooth LE client equals the <srv_index> received by the ESP32 Bluetooth LE server + 2. For example, for service 0xA002, the <srv_index> queried on the ESP32 Bluetooth LE client is 3, if the ESP32 Bluetooth LE server is queried through the command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`, then <srv_index> is 1.
+   - When discovering services, the {IDF_TARGET_NAME} Bluetooth LE client will get two more default services (UUID: 0x1800 and 0x1801) than what the {IDF_TARGET_NAME} Bluetooth LE server will get. So, for the same service, the <srv_index> received by the {IDF_TARGET_NAME} Bluetooth LE client equals the <srv_index> received by the {IDF_TARGET_NAME} Bluetooth LE server + 2. For example, for service 0xA002, the <srv_index> queried on the {IDF_TARGET_NAME} Bluetooth LE client is 3, if the {IDF_TARGET_NAME} Bluetooth LE server is queried through the command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`, then <srv_index> is 1.
 
-#. ESP32 Bluetooth LE client discovers characteristics.
+#. {IDF_TARGET_NAME} Bluetooth LE client discovers characteristics.
 
    Command:
 
@@ -1062,7 +1062,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
 #. Set Bluetooth LE encryption parameters. Set ``auth_req`` to ``SC_MITM_BOND``, server's ``iocap`` to ``KeyboardOnly``, client's ``iocap`` to ``KeyboardDisplay``, ``key_size`` to ``16``, ``init_key`` to ``3``, ``rsp_key`` to ``3``.
 
-   ESP32 Bluetooth LE server:
+   {IDF_TARGET_NAME} Bluetooth LE server:
 
    Command:
 
@@ -1076,7 +1076,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-   ESP32 Bluetooth LE client:
+   {IDF_TARGET_NAME} Bluetooth LE client:
 
    Command:
 
@@ -1092,10 +1092,10 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    Note:
 
-   - In this example, ESP32 Bluetooth LE server enters the pairing code and ESP32 Bluetooth LE client displays the pairing code.
+   - In this example, {IDF_TARGET_NAME} Bluetooth LE server enters the pairing code and {IDF_TARGET_NAME} Bluetooth LE client displays the pairing code.
    - ESP-AT supports ``Legacy Pairing`` and ``Secure Connections`` encryption methods, but the latter has a higher priority. If the peer also supports ``Secure Connections``, then ``Secure Connections`` will be used for encryption.
 
-#. ESP32 Bluetooth LE client initiates encryption request.
+#. {IDF_TARGET_NAME} Bluetooth LE client initiates encryption request.
 
    Command:
 
@@ -1111,9 +1111,9 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    Note:
 
-   If the ESP32 Bluetooth LE server successfully receives the encryption request, message ``+BLESECREQ:0`` will be prompted on the ESP32 Bluetooth LE server side.
+   If the {IDF_TARGET_NAME} Bluetooth LE server successfully receives the encryption request, message ``+BLESECREQ:0`` will be prompted on the {IDF_TARGET_NAME} Bluetooth LE server side.
 
-#. ESP32 Bluetooth LE server responds to the pairing request.
+#. {IDF_TARGET_NAME} Bluetooth LE server responds to the pairing request.
 
    Command:
 
@@ -1129,10 +1129,10 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    Note:
 
-   - If the ESP32 Bluetooth LE client successfully receives the pairing response, a 6-digit pairing code will generate on the ESP32 Bluetooth LE client side. 
-   - In this example, message ``+BLESECNTFYKEY:0,793718`` will be prompted on the ESP32 Bluetooth LE client side. Pairing code is ``793718``.
+   - If the {IDF_TARGET_NAME} Bluetooth LE client successfully receives the pairing response, a 6-digit pairing code will generate on the {IDF_TARGET_NAME} Bluetooth LE client side. 
+   - In this example, message ``+BLESECNTFYKEY:0,793718`` will be prompted on the {IDF_TARGET_NAME} Bluetooth LE client side. Pairing code is ``793718``.
 
-#. ESP32 Bluetooth LE server replies pairing code.
+#. {IDF_TARGET_NAME} Bluetooth LE server replies pairing code.
 
    Command:
 
@@ -1146,9 +1146,9 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-   After running this command, there will be corresponding messages prompt on both the ESP32 Bluetooth LE server and the ESP32 Bluetooth LE client.
+   After running this command, there will be corresponding messages prompt on both the {IDF_TARGET_NAME} Bluetooth LE server and the {IDF_TARGET_NAME} Bluetooth LE client.
 
-   ESP32 Bluetooth LE server:
+   {IDF_TARGET_NAME} Bluetooth LE server:
 
    .. code-block:: none
 
@@ -1158,7 +1158,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
      +BLESECKEYTYPE:0,2
      +BLEAUTHCMPL:0,0
 
-   ESP32 Bluetooth LE client:
+   {IDF_TARGET_NAME} Bluetooth LE client:
 
    .. code-block:: none
 
@@ -1171,18 +1171,18 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    You can ignore the message starting with ``+BLESECKEYTYPE``. In terms of the second parameter in the message ``+BLEAUTHCMPL:0,0``, ``0`` means encryption is successful, and ``1`` means encryption fails.
 
-Establish SPP connection between two ESP32 development boards and transmit data in UART-Bluetooth LE Passthrough Mode
+Establish SPP connection between two {IDF_TARGET_NAME} development boards and transmit data in UART-Bluetooth LE Passthrough Mode
 -----------------------------------------------------------------------------------------------------------------------------
 
-Below is an example of using two ESP32 development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to build Bluetooth LE SPP (Serial Port Profile, UART-Bluetooth LE passthrough mode) with AT commands.
+Below is an example of using two {IDF_TARGET_NAME} development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to build Bluetooth LE SPP (Serial Port Profile, UART-Bluetooth LE passthrough mode) with AT commands.
 
 .. Important::
 
-  In the following steps, the operations starting with ``ESP32 Bluetooth LE server`` only need to be executed at ESP32 Bluetooth LE server, and the operations starting with ``ESP32 Bluetooth LE client`` only need to be executed at ESP32 Bluetooth LE client.
+  In the following steps, the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE server`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE server, and the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE client`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE client.
 
 #. Bluetooth LE initialization.
 
-   ESP32 Bluetooth LE server:
+   {IDF_TARGET_NAME} Bluetooth LE server:
 
    Command:
 
@@ -1196,7 +1196,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-   ESP32 Bluetooth LE client:
+   {IDF_TARGET_NAME} Bluetooth LE client:
 
    Command:
 
@@ -1210,7 +1210,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server creates services.
+#. {IDF_TARGET_NAME} Bluetooth LE server creates services.
 
    Command:
 
@@ -1224,7 +1224,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server starts services.
+#. {IDF_TARGET_NAME} Bluetooth LE server starts services.
 
    Command:
 
@@ -1238,7 +1238,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server gets Bluetooth LE address.
+#. {IDF_TARGET_NAME} Bluetooth LE server gets Bluetooth LE address.
 
    Command:
 
@@ -1271,7 +1271,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server starts advertising.
+#. {IDF_TARGET_NAME} Bluetooth LE server starts advertising.
 
    Command:
 
@@ -1285,7 +1285,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE client enables a scanning for three seconds.
+#. {IDF_TARGET_NAME} Bluetooth LE client enables a scanning for three seconds.
 
    Command:
 
@@ -1308,7 +1308,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
 #. Establish the Bluetooth LE connection.
 
-   ESP32 Bluetooth LE client:
+   {IDF_TARGET_NAME} Bluetooth LE client:
 
    Command:
 
@@ -1330,7 +1330,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
    - If the Bluetooth LE connection is established successfully, message ``+BLECONN:0,"24:0a:c4:d6:e4:46`` will be prompted.
    - If the Bluetooth LE connection is broken, message ``+BLECONN:0,-1`` will be prompted.
 
-#. ESP32 Bluetooth LE server discovers local services.
+#. {IDF_TARGET_NAME} Bluetooth LE server discovers local services.
 
    Command:
 
@@ -1347,7 +1347,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
      
      OK
 
-#. ESP32 Bluetooth LE server discovers local characteristics.
+#. {IDF_TARGET_NAME} Bluetooth LE server discovers local characteristics.
 
    Command:
 
@@ -1381,7 +1381,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE client discovers services.
+#. {IDF_TARGET_NAME} Bluetooth LE client discovers services.
 
    Command:
 
@@ -1402,9 +1402,9 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    Note:
 
-   - When discovering services, the ESP32 Bluetooth LE client will get two more default services (UUID: 0x1800 and 0x1801) than what the ESP32 Bluetooth LE server will get. So, for the same service, the <srv_index> received by the ESP32 Bluetooth LE client equals the <srv_index> received by the ESP32 Bluetooth LE server + 2. For example, for service 0xA002, the <srv_index> queried on the ESP32 Bluetooth LE client is 3, if the ESP32 Bluetooth LE server is queried through the command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`, then <srv_index> is 1.
+   - When discovering services, the {IDF_TARGET_NAME} Bluetooth LE client will get two more default services (UUID: 0x1800 and 0x1801) than what the {IDF_TARGET_NAME} Bluetooth LE server will get. So, for the same service, the <srv_index> received by the {IDF_TARGET_NAME} Bluetooth LE client equals the <srv_index> received by the {IDF_TARGET_NAME} Bluetooth LE server + 2. For example, for service 0xA002, the <srv_index> queried on the {IDF_TARGET_NAME} Bluetooth LE client is 3, if the {IDF_TARGET_NAME} Bluetooth LE server is queried through the command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`, then <srv_index> is 1.
 
-#. ESP32 Bluetooth LE client discovers characteristics.
+#. {IDF_TARGET_NAME} Bluetooth LE client discovers characteristics.
 
    Command:
 
@@ -1434,7 +1434,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
      
      OK
 
-#. ESP32 Bluetooth LE client Configures Bluetooth LE SPP.
+#. {IDF_TARGET_NAME} Bluetooth LE client Configures Bluetooth LE SPP.
 
    Set a characteristic that enables writing permission to TX channel for sending data. Set another characteristic that supports notification or indication to RX channel for receiving data.
 
@@ -1450,7 +1450,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE client enables Bluetooth LE SPP.
+#. {IDF_TARGET_NAME} Bluetooth LE client enables Bluetooth LE SPP.
 
    Command:
 
@@ -1470,9 +1470,9 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    Note:
 
-   - After the ESP32 Bluetooth LE client enables Bluetooth LE SPP, data received from serial port will be transmitted to the Bluetooth LE server directly.
+   - After the {IDF_TARGET_NAME} Bluetooth LE client enables Bluetooth LE SPP, data received from serial port will be transmitted to the Bluetooth LE server directly.
 
-#. ESP32 Bluetooth LE server Configures Bluetooth LE SPP.
+#. {IDF_TARGET_NAME} Bluetooth LE server Configures Bluetooth LE SPP.
 
    Set a characteristic that supports notification or indication to TX channel for sending data. Set another characteristic that enables writing permission to RX channel for receiving data.
 
@@ -1488,7 +1488,7 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
      OK
 
-#. ESP32 Bluetooth LE server enables Bluetooth LE SPP.
+#. {IDF_TARGET_NAME} Bluetooth LE server enables Bluetooth LE SPP.
 
    Command:
 
@@ -1508,23 +1508,23 @@ Below is an example of using two ESP32 development boards, one as a Bluetooth LE
 
    Note:
 
-   - After the ESP32 Bluetooth LE server enables Bluetooth LE SPP, the data received from serial port will be transmitted to the Bluetooth LE client directly.
-   - If the ESP32 Bluetooth LE client does not enable Bluetooth LE SPP first, or uses other device as Bluetooth LE client, then the Bluetooth LE client needs to listen to the notification or indication first. For example, if the ESP32 Bluetooth LE client does not enable Bluetooth LE SPP first, then it should use command ``AT+BLEGATTCWR=0,3,7,1,1`` to enable listening function first, so that the ESP32 Bluetooth LE server can transmit successfully.
-   - For the same service, the <srv_index> on the ESP32 Bluetooth LE client side equals the <srv_index> on the ESP32 Bluetooth LE server side + 2.
+   - After the {IDF_TARGET_NAME} Bluetooth LE server enables Bluetooth LE SPP, the data received from serial port will be transmitted to the Bluetooth LE client directly.
+   - If the {IDF_TARGET_NAME} Bluetooth LE client does not enable Bluetooth LE SPP first, or uses other device as Bluetooth LE client, then the Bluetooth LE client needs to listen to the notification or indication first. For example, if the {IDF_TARGET_NAME} Bluetooth LE client does not enable Bluetooth LE SPP first, then it should use command ``AT+BLEGATTCWR=0,3,7,1,1`` to enable listening function first, so that the {IDF_TARGET_NAME} Bluetooth LE server can transmit successfully.
+   - For the same service, the <srv_index> on the {IDF_TARGET_NAME} Bluetooth LE client side equals the <srv_index> on the {IDF_TARGET_NAME} Bluetooth LE server side + 2.
 
-Establish SPP connection between ESP32 and mobile phone and transmit data in UART-Bluetooth LE passthrough mode
------------------------------------------------------------------------------------------------------------------
+Establish SPP connection between {IDF_TARGET_NAME} and mobile phone and transmit data in UART-Bluetooth LE passthrough mode
+---------------------------------------------------------------------------------------------------------------------------
 
-The example shows how to establish SPP connection between an ESP32 development board (only serving as the Bluetooth LE server role) and a mobile phone (only serve as the Bluetooth LE client role) and how to transmit data between them in UART-Bluetooth LE passthrough mode.
+The example shows how to establish SPP connection between an {IDF_TARGET_NAME} development board (only serving as the Bluetooth LE server role) and a mobile phone (only serve as the Bluetooth LE client role) and how to transmit data between them in UART-Bluetooth LE passthrough mode.
 
 .. Important::
-  In the following steps, the operations starting with ``ESP32 Bluetooth LE server`` only need to be executed at ESP32 Bluetooth LE server, and those Bluetooth LE client only need to be executed at the Bluetooth debugging assistant of the mobile phone.
+  In the following steps, the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE server`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE server, and those Bluetooth LE client only need to be executed at the Bluetooth debugging assistant of the mobile phone.
 
 #. First, you need to download the Bluetooth LE debugging assistant on the mobile phone, such as nRF Connect app (Android) and LightBlue (iOS).
 
 #. Bluetooth LE initialization.
 
-   ESP32 Bluetooth LE server:
+   {IDF_TARGET_NAME} Bluetooth LE server:
 
    Command:
 
@@ -1538,7 +1538,7 @@ The example shows how to establish SPP connection between an ESP32 development b
 
      OK
 
-#. ESP32 Bluetooth LE server creates services.
+#. {IDF_TARGET_NAME} Bluetooth LE server creates services.
 
    Command:
 
@@ -1552,7 +1552,7 @@ The example shows how to establish SPP connection between an ESP32 development b
 
      OK
 
-#. ESP32 Bluetooth LE server starts services.
+#. {IDF_TARGET_NAME} Bluetooth LE server starts services.
 
    Command:
 
@@ -1566,7 +1566,7 @@ The example shows how to establish SPP connection between an ESP32 development b
 
      OK
 
-#. ESP32 Bluetooth LE server gets its MAC address.
+#. {IDF_TARGET_NAME} Bluetooth LE server gets its MAC address.
 
    Command:
 
@@ -1599,7 +1599,7 @@ The example shows how to establish SPP connection between an ESP32 development b
 
      OK
 
-#. ESP32 Bluetooth LE server starts advertising.
+#. {IDF_TARGET_NAME} Bluetooth LE server starts advertising.
 
    Command:
 
@@ -1615,9 +1615,9 @@ The example shows how to establish SPP connection between an ESP32 development b
 
 #. Establish the Bluetooth LE connection.
 
-   Open the nRF debugging assistant on your mobile phone, and open SCAN to start scanning. When you find the MAC address of the ESP32 Bluetooth LE server, click ``CONNECT``. Then, ESP32 should print the log similar to ``+BLECONN:0,"60:51:42:fe:98:aa"``, which indicates that Bluetooth LE connection has been established.
+   Open the nRF debugging assistant on your mobile phone, and open SCAN to start scanning. When you find the MAC address of the {IDF_TARGET_NAME} Bluetooth LE server, click ``CONNECT``. Then, {IDF_TARGET_NAME} should print the log similar to ``+BLECONN:0,"60:51:42:fe:98:aa"``, which indicates that Bluetooth LE connection has been established.
 
-#. ESP32 Bluetooth LE server discovers local services.
+#. {IDF_TARGET_NAME} Bluetooth LE server discovers local services.
 
    Command:
 
@@ -1634,7 +1634,7 @@ The example shows how to establish SPP connection between an ESP32 development b
      
      OK
 
-#. ESP32 Bluetooth LE server discovers local characteristics.
+#. {IDF_TARGET_NAME} Bluetooth LE server discovers local characteristics.
 
    Command:
 
@@ -1672,11 +1672,11 @@ The example shows how to establish SPP connection between an ESP32 development b
 
    Click ``UnKnown Service`` of ``UUID:0xA002`` on the mobile phone nRF debugging assistant client.
 
-#. ESP32 Bluetooth LE client discovers characteristics.
+#. {IDF_TARGET_NAME} Bluetooth LE client discovers characteristics.
 
    In the next-level option of ``UnKnown Service`` of ``UUID:0xA002`` of the mobile phone nRF debugging assistant client, click the right button of the service feature whose Properties is NOTIFY or INDICATE (here ESP-AT default Properties The service characteristics of NOTIFY or INDICATE are 0xC305 and 0xC306) and start to listen for the service characteristics of NOTIFY or INDICATE.
 
-#. ESP32 Bluetooth LE server configures Bluetooth LE SPP.
+#. {IDF_TARGET_NAME} Bluetooth LE server configures Bluetooth LE SPP.
 
    Set a characteristic that supports notification or indication to TX channel for sending data. Set another characteristic that enables writing permission to RX channel for receiving data.
 
@@ -1692,7 +1692,7 @@ The example shows how to establish SPP connection between an ESP32 development b
 
      OK
 
-#. ESP32 Bluetooth LE server enables Bluetooth LE SPP.
+#. {IDF_TARGET_NAME} Bluetooth LE server enables Bluetooth LE SPP.
 
    Command:
 
@@ -1712,8 +1712,8 @@ The example shows how to establish SPP connection between an ESP32 development b
 
 #. Bluetooth LE client sends data.
 
-   In the nRF debugging assistant client, select the 0xC304 service characteristic value and send the data ``test`` to the ESP32 Bluetooth LE server. Then, the ESP32 Bluetooth LE server can receive the ``test``.
+   In the nRF debugging assistant client, select the 0xC304 service characteristic value and send the data ``test`` to the {IDF_TARGET_NAME} Bluetooth LE server. Then, the {IDF_TARGET_NAME} Bluetooth LE server can receive the ``test``.
 
-#. ESP32 Bluetooth LE server sends data.
+#. {IDF_TARGET_NAME} Bluetooth LE server sends data.
 
-   The ESP32 Bluetooth LE server sends ``test``, and then the nRF debugging assistant client can receive ``test``.
+   The {IDF_TARGET_NAME} Bluetooth LE server sends ``test``, and then the nRF debugging assistant client can receive ``test``.

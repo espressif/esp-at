@@ -21,7 +21,7 @@ Select one of the following ways to generate ``ble_data.bin``.
 Script Generation
 ^^^^^^^^^^^^^^^^^^^^
 
-The path of ``BLEService.py`` is :at:`tools/BLEService.py`. You can get help information of the script through the ``-h`` option. You can also generate ``ble_data.bin`` directly through the following commands.
+The path of ``BLEService.py`` is :project_file:`tools/BLEService.py`. You can get help information of the script through the ``-h`` option. You can also generate ``ble_data.bin`` directly through the following commands.
 
 .. code-block:: none
 
@@ -40,7 +40,7 @@ For example, you can execute the following directory to generate ``ble_data.bin`
 Generation During Compilation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The storage path of Bluetooth LE GATT service files in ESP-AT is :at:`components/customized_partitions/raw_data/ble_data/example.csv`.
+The storage path of Bluetooth LE GATT service files in ESP-AT is :project_file:`components/customized_partitions/raw_data/ble_data/example.csv`.
 
 For how to customize Bluetooth LE services, you can refer to :doc:`How_to_customize_BLE_services`.
 
@@ -75,7 +75,7 @@ The script ``BLEService.py`` is only responsible for converting ``example.csv`` 
 
   #. :ref:`AT+SYSFLASH <cmd-SYSFLASH>`
 
-     Taking ``ESP32`` module as an example, you can execute the following command to upgrade the ``ble_data`` partition. Please refer to :ref:`AT+SYSFLASH <cmd-SYSFLASH>` for more details.
+     Taking ``{IDF_TARGET_NAME}`` module as an example, you can execute the following command to upgrade the ``ble_data`` partition. Please refer to :ref:`AT+SYSFLASH <cmd-SYSFLASH>` for more details.
 
      1. Query user partitions in flash
 

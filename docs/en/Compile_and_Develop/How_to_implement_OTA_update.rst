@@ -3,7 +3,7 @@ How to Implement OTA Upgrade
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document introduces how to implement OTA upgrade on ESP32 and ESP32-C3 series of modules. Currently, ESP-AT provides the following three OTA commands targeting at different scenarios. You could choose one command according to your needs.
+This document introduces how to implement OTA upgrade on {IDF_TARGET_NAME} series of modules. Currently, ESP-AT provides the following three OTA commands targeting at different scenarios. You could choose one command according to your needs.
 
   #. :ref:`AT+USEROTA <cmd-USEROTA>`
   #. :ref:`AT+CIUPDATE <cmd-UPDATE>`
@@ -24,7 +24,7 @@ Comparison Among OTA Commands and Their Application Scenarios
 
 This command implements OTA upgrade through a URL. You can upgrade to the firmware placed on the HTTP server. Currently, the command only supports the upgrade of app partitions. For more information on this command, please refer to :ref:`AT+USEROTA <cmd-USEROTA>` for more details.
 
-Since this command is a user-defined command, you can modify the implementation of this command by modifying the :component:`at/src/at_user_cmd.c` source code.
+Since this command is a user-defined command, you can modify the implementation of this command by modifying the :component_file:`at/src/at_user_cmd.c` source code.
 
 The application scenarios of this command are as follows:
 
@@ -42,7 +42,7 @@ This command uses iot.espressif.cn as the default HTTP server. It can upgrade bo
 
 To upgrade the customized bin file with this command, please select one of the following ways.
 
-  #. **replace iot.espressif.cn with the your own HTTP server and implement the interactive process.** For how to implement your own AT+CIUPDATE command, please refer to :component:`at/src/at_ota_cmd.c`.
+  #. **replace iot.espressif.cn with the your own HTTP server and implement the interactive process.** For how to implement your own AT+CIUPDATE command, please refer to :component_file:`at/src/at_ota_cmd.c`.
   #. **create a devices on iot.espressif.cn and upload customized AT firmware on it. (The premise is that the firmware running in the module already corresponds to the device you created on the Espressif server.)** For more information, please refer to `OTA Upgrade with AT+CIUPDATE`_.  
 
 The application scenarios of this command are as follows:
@@ -56,7 +56,7 @@ The application scenarios of this command are as follows:
 
 This command upgrades AT firmware with a browser or WeChat applet. Currently, this command only supports the upgrade of app partitions. Before starting the upgrade, please enable the web server command and copy the AT firmware to the computer or mobile phone in advance. For more information, you can refer to :ref:`AT+WEBSERVER <cmd-WEBSERVER>` and :doc:`../AT_Command_Examples/Web_server_AT_Examples`.
 
-To implement your own HTML page, please refer to the example of :component:`fs_image/index.html`. To implement your own AT+WEBSERVER command, please refer to the example of :component:`at/src/at_web_server_cmd.c`.
+To implement your own HTML page, please refer to the example of :component_file:`fs_image/index.html`. To implement your own AT+WEBSERVER command, please refer to the example of :component_file:`at/src/at_web_server_cmd.c`.
 
 The application scenarios of this command are as follows:
 

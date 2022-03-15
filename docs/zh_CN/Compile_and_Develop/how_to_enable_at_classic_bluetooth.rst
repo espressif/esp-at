@@ -3,7 +3,7 @@
 
 :link_to_translation:`en:[English]`
 
-默认情况下，ESP32 系列 AT 固件禁用经典蓝牙 AT 命令，若需在 ESP32 设备上使用，请按照以下步骤操作。当前 AT 支持的经典蓝牙命令分为三类，通用蓝牙命令、SPP 命令和 A2DP 命令，每类命令可以单独启用和禁用。
+默认情况下，{IDF_TARGET_NAME} 系列 AT 固件禁用经典蓝牙 AT 命令，若需在 {IDF_TARGET_NAME} 设备上使用，请按照以下步骤操作。当前 AT 支持的经典蓝牙命令分为三类，通用蓝牙命令、SPP 命令和 A2DP 命令，每类命令可以单独启用和禁用。
 
 1. :doc:`克隆 ESP-AT 工程 <How_to_clone_project_and_compile_it>`。
 2. 执行 ``./build.py menuconfig`` （Linux 或者 macOS） 或者 ``build.py menuconfig`` (Windows) 来运行配置工具。

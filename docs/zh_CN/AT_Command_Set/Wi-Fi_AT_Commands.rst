@@ -12,7 +12,7 @@ Wi-Fi AT 命令集
 -  :ref:`AT+CWLAPOPT <cmd-LAPOPT>`：设置 :ref:`AT+CWLAP <cmd-LAP>` 命令扫描结果的属性
 -  :ref:`AT+CWLAP <cmd-LAP>`：扫描当前可用的 AP
 -  :ref:`AT+CWQAP <cmd-QAP>`：断开与 AP 的连接
--  :ref:`AT+CWSAP <cmd-SAP>`：配置 ESP32 SoftAP 参数
+-  :ref:`AT+CWSAP <cmd-SAP>`：配置 ESP SoftAP 参数
 -  :ref:`AT+CWLIF <cmd-LIF>`：查询连接到 ESP SoftAP 的 station 信息
 -  :ref:`AT+CWQIF <cmd-QIF>`：断开 station 与 ESP SoftAP 的连接
 -  :ref:`AT+CWDHCP <cmd-DHCP>`：启用/禁用 DHCP
@@ -436,7 +436,7 @@ Wi-Fi AT 命令集
    -  bit 5: 是否显示 ``WPA2_ENTERPRISE`` 认证方式的 AP
    -  bit 6: 是否显示 ``WPA3_PSK`` 认证方式的 AP
    -  bit 7: 是否显示 ``WPA2_WPA3_PSK`` 认证方式的 AP
-   -  [ESP32-C3 Only] bit 8: 是否显示 ``WAPI_PSK`` 认证方式的 AP
+   -  bit 8: 是否显示 ``WAPI_PSK`` 认证方式的 AP
 
 示例
 ^^^^
@@ -503,7 +503,7 @@ Wi-Fi AT 命令集
    -  5: WPA2_ENTERPRISE
    -  6: WPA3_PSK
    -  7: WPA2_WPA3_PSK
-   -  [ESP32-C3 Only] 8: WAPI_PSK
+   -  8: WAPI_PSK
 
 -  **<ssid>**：字符串参数，AP 的 SSID
 -  **<rssi>**：信号强度
@@ -1351,7 +1351,7 @@ Wi-Fi AT 命令集
    -  1: ESP-TOUCH
    -  2: AirKiss
    -  3: ESP-TOUCH+AirKiss
-   -  [ESP32-C3 Only] 4: ESP-TOUCH v2
+   -  4: ESP-TOUCH v2
 
 -  **<auth floor>**：Wi-Fi 认证模式阈值，ESP-AT 不会连接到 authmode 低于此阈值的 AP
 
@@ -1364,7 +1364,7 @@ Wi-Fi AT 命令集
    -  6: WPA3_PSK
    -  7: WPA2_WPA3_PSK
 
-- **[ESP32-C3 Only] <"esptouch v2 key">**：ESP-TOUCH v2 的解密秘钥，用于解密 Wi-Fi 密码和自定义数据。长度应为 16 字节。
+- **<"esptouch v2 key">**：ESP-TOUCH v2 的解密秘钥，用于解密 Wi-Fi 密码和自定义数据。长度应为 16 字节。
 
 说明
 ^^^^

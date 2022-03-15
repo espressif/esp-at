@@ -44,9 +44,9 @@ Notes
 -  There are two ways to provide the HTML files needed by the Web server. One is to use FAT file system, and you need to enable AT FS command at this time. The other one is to use embedded files to store HTML files (default setting). 
 -  Please make sure that the maximum number of open sockets is not less than 12, you may change the number by ``./build.py menuconfig`` > ``Component config`` > ``LWIP`` > ``Max bumber of open sockets`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
 -  The default firmware does not support Web server AT commands (see :doc:`../Compile_and_Develop/esp-at_firmware_differences`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT WEB Server command support`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
--  ESP-AT supports captive portals in ESP32 and ESP32-C series of devices. See :ref:`example <using-captive-portal>`.
+-  ESP-AT supports captive portals in {IDF_TARGET_NAME} series of devices. See :ref:`example <using-captive-portal>`.
 -  For more examples, please refer to :doc:`../AT_Command_Examples/Web_server_AT_Examples`.
--  The command implementation is open-source. See the source code in :component:`at/src/at_web_server_cmd.c`.
+-  The command implementation is open-source. See the source code in :component_file:`at/src/at_web_server_cmd.c`.
 -  Please refer to :doc:`../Compile_and_Develop/How_to_implement_OTA_update` for more OTA commands.
 
 Example

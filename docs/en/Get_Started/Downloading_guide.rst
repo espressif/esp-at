@@ -1,9 +1,12 @@
 Downloading Guide
 =================
 
+{IDF_TARGET_MODULE_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c3="ESP32-C3-MINI-1"}
+{IDF_TARGET_FACTORY_BIN: default="undefined", esp32="ESP32-WROOM-32_AT_Bin_V2.2.0.0", esp32c3="ESP32-C3-MINI-1_AT_Bin_V2.3.0.0"}
+
 :link_to_translation:`zh_CN:[中文]`
 
-This Guide demonstrates how to download AT firmware and flash it into an ESP device by taking ESP32-WROOM-32 as an example. The Guide is also applicable to other ESP modules.
+This Guide demonstrates how to download AT firmware and flash it into an {IDF_TARGET_MODULE_NAME} device by taking {IDF_TARGET_MODULE_NAME} as an example. The Guide is also applicable to other {IDF_TARGET_NAME} modules.
 
 Before you start, please make sure you have already connected your hardware. For more details, see :doc:`Hardware_connection`.
 
@@ -20,65 +23,133 @@ To download AT firmware to your computer, please do as follows:
 - Find the firmware for your device
 - Click the link to download it
 
-Here, we download ``ESP32-WROOM-32_AT_Bin_V2.1`` for ESP32-WROOM-32. The list below describes the structure of this firmware and what each bin file contains. Other AT firmware has similar structure and bin files.
+Here, we download ``{IDF_TARGET_FACTORY_BIN}`` for {IDF_TARGET_MODULE_NAME}. The list below describes the structure of this firmware and what each bin file contains. Other AT firmware has similar structure and bin files.
 
-.. code-block:: none
+.. only:: esp32
 
-   .
-   ├── at_customize.bin                 // secondary partition table
-   ├── bootloader                       // bootloader
-   │   └── bootloader.bin
-   ├── customized_partitions            // AT customized binaries
-   │   ├── ble_data.bin
-   │   ├── client_ca.bin
-   │   ├── client_cert.bin
-   │   ├── client_key.bin
-   │   ├── factory_param.bin
-   │   ├── factory_param_WROOM-32.bin
-   │   ├── mqtt_ca.bin
-   │   ├── mqtt_cert.bin
-   │   ├── mqtt_key.bin
-   │   ├── server_ca.bin
-   │   ├── server_cert.bin
-   │   └── server_key.bin
-   ├── download.config                  // configuration of downloading
-   ├── esp-at.bin                       // AT application binary
-   ├── factory                          // A combined bin for factory downloading
-   │   ├── factory_WROOM-32.bin
-   │   └── factory_parameter.log
-   ├── flasher_args.json                // flasher arguments
-   ├── ota_data_initial.bin             // ota data parameters
-   ├── partition_table                  // primary partition table
-   │   └── partition-table.bin
-   └── phy_init_data.bin                // phy parameters
+   .. code-block:: none
+
+      .
+      ├── at_customize.bin                 // secondary partition table
+      ├── bootloader                       // bootloader
+      │   └── bootloader.bin
+      ├── customized_partitions            // AT customized binaries
+      │   ├── ble_data.bin
+      │   ├── client_ca.bin
+      │   ├── client_cert.bin
+      │   ├── client_key.bin
+      │   ├── factory_param.bin
+      │   ├── factory_param_WROOM-32.bin
+      │   ├── mqtt_ca.bin
+      │   ├── mqtt_cert.bin
+      │   ├── mqtt_key.bin
+      │   ├── server_ca.bin
+      │   ├── server_cert.bin
+      │   └── server_key.bin
+      ├── download.config                  // configuration of downloading
+      ├── esp-at.bin                       // AT application binary
+      ├── esp-at.elf
+      ├── esp-at.map
+      ├── factory                          // A combined bin for factory downloading
+      │   ├── factory_WROOM-32.bin
+      │   └── factory_parameter.log
+      ├── flasher_args.json                // flasher arguments
+      ├── ota_data_initial.bin             // ota data parameters
+      ├── partition_table                  // primary partition table
+      │   └── partition-table.bin
+      ├── phy_init_data.bin                // phy parameters
+      └── sdkconfig                        // compilation configuration for AT firmware
+
+.. only:: esp32c3
+
+   .. code-block:: none
+
+      .
+      ├── at_customize.bin                 // secondary partition table
+      ├── bootloader                       // bootloader
+      │   └── bootloader.bin
+      ├── customized_partitions            // AT customized binaries
+      │   ├── ble_data.bin
+      │   ├── client_ca.bin
+      │   ├── client_cert.bin
+      │   ├── client_key.bin
+      │   ├── factory_param.bin
+      │   ├── factory_param_MINI-1.bin
+      │   ├── mqtt_ca.bin
+      │   ├── mqtt_cert.bin
+      │   ├── mqtt_key.bin
+      │   ├── server_ca.bin
+      │   ├── server_cert.bin
+      │   └── server_key.bin
+      ├── download.config                  // configuration of downloading
+      ├── esp-at.bin                       // AT application binary
+      ├── esp-at.elf
+      ├── esp-at.map
+      ├── factory                          // A combined bin for factory downloading
+      │   ├── factory_MINI-1.bin
+      │   └── factory_parameter.log
+      ├── flasher_args.json                // flasher arguments
+      ├── ota_data_initial.bin             // ota data parameters
+      ├── partition_table                  // primary partition table
+      │   └── partition-table.bin
+      ├── phy_init_data.bin                // phy parameters
+      └── sdkconfig                        // compilation configuration for AT firmware
 
 The file ``download.config`` contains the configuration to flash the firmware into multiple addresses: 
 
-.. code-block:: none
+.. only:: esp32
 
-   --flash_mode dio --flash_freq 40m --flash_size 4MB
-   0x8000 partition_table/partition-table.bin
-   0x10000 ota_data_initial.bin
-   0xf000 phy_init_data.bin
-   0x1000 bootloader/bootloader.bin
-   0x100000 esp-at.bin
-   0x20000 at_customize.bin
-   0x24000 customized_partitions/server_cert.bin
-   0x39000 customized_partitions/mqtt_key.bin
-   0x26000 customized_partitions/server_key.bin
-   0x28000 customized_partitions/server_ca.bin
-   0x2e000 customized_partitions/client_ca.bin
-   0x30000 customized_partitions/factory_param.bin
-   0x21000 customized_partitions/ble_data.bin
-   0x3B000 customized_partitions/mqtt_ca.bin
-   0x37000 customized_partitions/mqtt_cert.bin
-   0x2a000 customized_partitions/client_cert.bin
-   0x2c000 customized_partitions/client_key.bin
+   .. code-block:: none
 
-- ``--flash_mode dio`` means the firmware is compiled with flash DIO mode.
-- ``--flash_freq 40m`` means the firmware's flash frequency is 40 MHz.
-- ``--flash_size 4MB`` means the firmware is using flash size 4 MB.
-- ``0x10000 ota_data_initial.bin`` means downloading ``ota_data_initial.bin`` into the address ``0x10000``.
+      --flash_mode dio --flash_freq 40m --flash_size 4MB
+      0x8000 partition_table/partition-table.bin
+      0x10000 ota_data_initial.bin
+      0xf000 phy_init_data.bin
+      0x1000 bootloader/bootloader.bin
+      0x100000 esp-at.bin
+      0x20000 at_customize.bin
+      0x24000 customized_partitions/server_cert.bin
+      0x39000 customized_partitions/mqtt_key.bin
+      0x26000 customized_partitions/server_key.bin
+      0x28000 customized_partitions/server_ca.bin
+      0x2e000 customized_partitions/client_ca.bin
+      0x30000 customized_partitions/factory_param.bin
+      0x21000 customized_partitions/ble_data.bin
+      0x3B000 customized_partitions/mqtt_ca.bin
+      0x37000 customized_partitions/mqtt_cert.bin
+      0x2a000 customized_partitions/client_cert.bin
+      0x2c000 customized_partitions/client_key.bin
+
+.. only:: esp32c3
+
+   .. code-block:: none
+
+      --flash_mode dio --flash_freq 40m --flash_size 4MB
+      0x8000 partition_table/partition-table.bin
+      0xd000 ota_data_initial.bin
+      0xf000 phy_init_data.bin
+      0x0 bootloader/bootloader.bin
+      0x60000 esp-at.bin
+      0x1e000 at_customize.bin
+      0x1F000 customized_partitions/ble_data.bin
+      0x3a000 customized_partitions/mqtt_key.bin
+      0x27000 customized_partitions/server_key.bin
+      0x3c000 customized_partitions/mqtt_ca.bin
+      0x2d000 customized_partitions/client_key.bin
+      0x2b000 customized_partitions/client_cert.bin
+      0x31000 customized_partitions/factory_param.bin
+      0x2f000 customized_partitions/client_ca.bin
+      0x38000 customized_partitions/mqtt_cert.bin
+      0x29000 customized_partitions/server_ca.bin
+      0x25000 customized_partitions/server_cert.bin
+
+.. list::
+
+   - ``--flash_mode dio`` means the firmware is compiled with flash DIO mode.
+   - ``--flash_freq 40m`` means the firmware's flash frequency is 40 MHz.
+   - ``--flash_size 4MB`` means the firmware is using flash size 4 MB.
+   :esp32: - ``0x10000 ota_data_initial.bin`` means downloading ``ota_data_initial.bin`` into the address ``0x10000``.
+   :esp32c3: - ``0xd000 ota_data_initial.bin`` means downloading ``ota_data_initial.bin`` into the address ``0xd000``.
 
 .. _flash-at-firmware-into-your-device:
 
@@ -90,32 +161,25 @@ Follow the instructions below for your operating system.
 Windows
 ^^^^^^^^
 
-Before starting to flash, you need to download `Flash Download Tools for Windows <https://www.espressif.com/en/support/download/other-tools>`_. For more details about the tools, please see ``readme.pdf`` or the  ``doc`` folder in the zip folder.
+Before starting to flash, you need to download `Flash Download Tools for Windows <https://www.espressif.com/en/support/download/other-tools>`_. For more details about the tools, please see the  ``doc`` folder in the zip folder.
 
 - Open the ESP Flash Download Tool.
-- Select a mode according to your need. (Here, we select ``Developer Mode``.)
+- Select chipType. (Here, we select ``{IDF_TARGET_CFG_PREFIX}``.)
+- Select a workMode according to your need. (Here, we select ``Developer Mode``.)
+- Select a loadMode according to your need. (Here, we select ``uart``.)
 
-.. figure:: ../../_static/Download_tool.png
+.. figure:: ../../_static/download_tool_{IDF_TARGET_PATH_NAME}.png
    :align: center
-   :alt: Flash Download Tools Modes
+   :alt: Firmware Download Configurations
    :figclass: align-center
 
-   Flash Download Tools Modes
-
-- Select a download tool. Here, we select ESP32 DownloadTool because this document takes an ESP32 device as an example. You should select a tool based on what chip you actually use.
-
-.. figure:: ../../_static/esp32_wroom32_download_select.png
-   :align: center
-   :alt: Flash Download Tools Target Chips
-   :figclass: align-center
-
-   Flash Download Tools Target Chip
+   Firmware Download Configurations
 
 - Flash AT firmware into your device. You can select either of the two ways below.
 
    - To download one combined factory bin to address 0, select "DoNotChgBin" to use the default configuration of the factory bin.
 
-     .. figure:: ../../_static/esp32_wroom32_download_one_bin.png
+     .. figure:: ../../_static/download_one_bin_{IDF_TARGET_PATH_NAME}.png
         :align: center
         :scale: 70%
         :alt: Download to One Address
@@ -124,14 +188,14 @@ Before starting to flash, you need to download `Flash Download Tools for Windows
 
    - To download multiple bins separately to different addresses, set up the configurations according to the file ``download.config`` and do NOT select "DoNotChgBin".
 
-     .. figure:: ../../_static/esp32_wroom32_download_multi_bin.png
+     .. figure:: ../../_static/download_multi_bin_{IDF_TARGET_PATH_NAME}.png
         :align: center
         :scale: 60%
         :alt: Download to Multiple Addresses
 
         Download to Multiple Addresses
 
-In case of flashing issues, please verify what the COM port number of download interface of the ESP board is and select it from "COM:" dropdown list. If you don't know the port number, you can refer to `Check port on Windows <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/establish-serial-connection.html#check-port-on-windows>`_ for details.
+In case of flashing issues, please verify what the COM port number of download interface of the ESP board is and select it from "COM:" dropdown list. If you don't know the port number, you can refer to `Check port on Windows <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/get-started/establish-serial-connection.html#check-port-on-windows>`_ for details.
 
 When you finish flashing, please `Check Whether AT Works`_.
 
@@ -148,15 +212,23 @@ You can select either of the two ways below to flash AT firmware into your devic
 
        esptool.py --chip auto --port PORTNAME --baud 115200 --before default_reset --after hard_reset write_flash -z download.config
 
-  Replace ``PORTNAME`` with your port name. If you don't know it, you can refer to `Check port on Linux and macOS <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/establish-serial-connection.html#check-port-on-linux-and-macos>`_ for details.
+  Replace ``PORTNAME`` with your port name. If you don't know it, you can refer to `Check port on Linux and macOS <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/get-started/establish-serial-connection.html#check-port-on-linux-and-macos>`_ for details.
 
   Replace ``download.config`` with the content inside the file.
 
-  Below is the example command for ESP32-WROOM-32.
+  Below is the example command for {IDF_TARGET_MODULE_NAME}.
 
-  .. code-block:: none
+   .. only:: esp32
 
-        esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x8000 partition_table/partition-table.bin 0x10000 ota_data_initial.bin 0xf000 phy_init_data.bin 0x1000 bootloader/bootloader.bin 0x100000 esp-at.bin 0x20000 at_customize.bin 0x24000 customized_partitions/server_cert.bin 0x39000 customized_partitions/mqtt_key.bin 0x26000 customized_partitions/server_key.bin 0x28000 customized_partitions/server_ca.bin 0x2e000 customized_partitions/client_ca.bin 0x30000 customized_partitions/factory_param.bin 0x21000 customized_partitions/ble_data.bin 0x3B000 customized_partitions/mqtt_ca.bin 0x37000 customized_partitions/mqtt_cert.bin 0x2a000 customized_partitions/client_cert.bin 0x2c000 customized_partitions/client_key.bin
+      .. code-block:: none
+
+         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x8000 partition_table/partition-table.bin 0x10000 ota_data_initial.bin 0xf000 phy_init_data.bin 0x1000 bootloader/bootloader.bin 0x100000 esp-at.bin 0x20000 at_customize.bin 0x24000 customized_partitions/server_cert.bin 0x39000 customized_partitions/mqtt_key.bin 0x26000 customized_partitions/server_key.bin 0x28000 customized_partitions/server_ca.bin 0x2e000 customized_partitions/client_ca.bin 0x30000 customized_partitions/factory_param.bin 0x21000 customized_partitions/ble_data.bin 0x3B000 customized_partitions/mqtt_ca.bin 0x37000 customized_partitions/mqtt_cert.bin 0x2a000 customized_partitions/client_cert.bin 0x2c000 customized_partitions/client_key.bin
+
+   .. only:: esp32c3
+
+      .. code-block:: none
+
+         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x8000 partition_table/partition-table.bin 0xd000 ota_data_initial.bin 0xf000 phy_init_data.bin 0x0 bootloader/bootloader.bin 0x60000 esp-at.bin 0x1e000 at_customize.bin 0x1F000 customized_partitions/ble_data.bin 0x3a000 customized_partitions/mqtt_key.bin 0x27000 customized_partitions/server_key.bin 0x3c000 customized_partitions/mqtt_ca.bin 0x2d000 customized_partitions/client_key.bin 0x2b000 customized_partitions/client_cert.bin 0x31000 customized_partitions/factory_param.bin 0x2f000 customized_partitions/client_ca.bin 0x38000 customized_partitions/mqtt_cert.bin 0x29000 customized_partitions/server_ca.bin 0x25000 customized_partitions/server_cert.bin
 
 - To download the bins together to one address, enter the following command and replace ``PORTNAME`` and ``FILEDIRECTORY``:
 
@@ -164,15 +236,23 @@ You can select either of the two ways below to flash AT firmware into your devic
 
         esptool.py --chip auto --port PORTNAME --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x0 FILEDIRECTORY
 
-  Replace ``PORTNAME`` with your port name. If you don't know it, you can refer to `Check port on Linux and macOS <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/establish-serial-connection.html#check-port-on-linux-and-macos>`_ for details.
+  Replace ``PORTNAME`` with your port name. If you don't know it, you can refer to `Check port on Linux and macOS <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/get-started/establish-serial-connection.html#check-port-on-linux-and-macos>`_ for details.
 
   Replace ``FILEDIRECTORY`` with the file directory you would flash to the address ``0x0``. It is normally factory/XXX.bin.
 
-  Below is the example command for ESP32-WROOM-32.
+  Below is the example command for {IDF_TARGET_MODULE_NAME}.
 
-  .. code-block:: none
+   .. only:: esp32
 
-        esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x0 factory/factory_WROOM-32.bin
+      .. code-block:: none
+
+         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x0 factory/factory_WROOM-32.bin
+
+   .. only:: esp32c3
+
+      .. code-block:: none
+
+         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x0 factory/factory_MINI-1.bin
 
 When you finish flashing, please `Check Whether AT Works`_.
 
@@ -194,99 +274,103 @@ To check whether AT works, do as follows:
 
 If the response is OK as the picture below shows, AT works.
 
-.. figure:: ../../_static/esp32_wroom32_version.png
+.. figure:: ../../_static/at_version_{IDF_TARGET_PATH_NAME}.png
    :align: center
    :alt: Response from AT
    :figclass: align-center
 
    Response from AT
 
-Otherwise, you need to check your ESP startup log, which is visible on PC over "Download/Log output connection". If it is like the log below, it means that ESP-AT firmware have been initalized correctly.
+Otherwise, you need to check your {IDF_TARGET_NAME} startup log, which is visible on PC over "Download/Log output connection". If it is like the log below, it means that ESP-AT firmware have been initalized correctly.
 
-ESP32 startup log:
+.. only:: esp32
 
-.. code-block:: none
+   {IDF_TARGET_NAME} startup log:
 
-    ets Jun  8 2016 00:22:57
-    rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
-    configsip: 0, SPIWP:0xee
-    clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
-    mode:DIO, clock div:2
-    load:0x3fff0030,len:4
-    load:0x3fff0034,len:7184
-    ho 0 tail 12 room 4
-    load:0x40078000,len:13200
-    load:0x40080400,len:4564
-    entry 0x400806f4
-    I (30) boot: ESP-IDF v4.2 2nd stage bootloader
-    I (31) boot: compile time 11:23:19
-    I (31) boot: chip revision: 0
-    I (33) boot.esp32: SPI Speed      : 40MHz
-    I (38) boot.esp32: SPI Mode       : DIO
-    I (42) boot.esp32: SPI Flash Size : 4MB
-    I (47) boot: Enabling RNG early entropy source...
-    I (52) boot: Partition Table:
-    I (56) boot: ## Label            Usage          Type ST Offset   Length
-    I (63) boot:  0 phy_init         RF data          01 01 0000f000 00001000
-    I (71) boot:  1 otadata          OTA data         01 00 00010000 00002000
-    I (78) boot:  2 nvs              WiFi data        01 02 00012000 0000e000
-    I (86) boot:  3 at_customize     unknown          40 00 00020000 000e0000
-    I (93) boot:  4 ota_0            OTA app          00 10 00100000 00180000
-    I (101) boot:  5 ota_1            OTA app          00 11 00280000 00180000
-    I (108) boot: End of partition table
-    I (112) esp_image: segment 0: paddr=0x00100020 vaddr=0x3f400020 size=0x2a300 (172800) map
-    I (187) esp_image: segment 1: paddr=0x0012a328 vaddr=0x3ffbdb60 size=0x039e8 ( 14824) load
-    I (194) esp_image: segment 2: paddr=0x0012dd18 vaddr=0x40080000 size=0x00404 (  1028) load
-    I (194) esp_image: segment 3: paddr=0x0012e124 vaddr=0x40080404 size=0x01ef4 (  7924) load
-    I (206) esp_image: segment 4: paddr=0x00130020 vaddr=0x400d0020 size=0x10a470 (1090672) map
-    I (627) esp_image: segment 5: paddr=0x0023a498 vaddr=0x400822f8 size=0x1c3a0 (115616) load
-    I (678) esp_image: segment 6: paddr=0x00256840 vaddr=0x400c0000 size=0x00064 (   100) load
-    I (695) boot: Loaded app from partition at offset 0x100000
-    I (695) boot: Disabling RNG early entropy source...
-    max tx power=78,ret=0
-    2.1.0
+   .. code-block:: none
 
-ESP32-C3 startup log:
+      ets Jun  8 2016 00:22:57
 
-.. code-block:: none
+      rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+      configsip: 0, SPIWP:0xee
+      clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+      mode:DIO, clock div:2
+      load:0x3fff0030,len:7168
+      load:0x40078000,len:13200
+      load:0x40080400,len:4564
+      0x40080400: _init at ??:?
 
-    ESP-ROM:esp32c3-20200918
-    Build:Sep 18 2020
-    rst:0x1 (POWERON),boot:0xc (SPI_FAST_FLASH_BOOT)
-    SPIWP:0xee
-    mode:DIO, clock div:2
-    load:0x3fcd6100,len:0x14
-    load:0x3fcd6114,len:0x179c
-    load:0x403ce000,len:0x894
-    load:0x403d0000,len:0x2bf8
-    entry 0x403ce000
-    I (54) boot: ESP-IDF v4.3-beta1 2nd stage bootloader
-    I (55) boot: compile time 12:09:42
-    I (55) boot: chip revision: 1
-    I (57) boot_comm: chip revision: 1, min. bootloader chip revision: 0
-    I (64) boot.esp32c3: SPI Speed      : 40MHz
-    I (68) boot.esp32c3: SPI Mode       : DIO
-    I (73) boot.esp32c3: SPI Flash Size : 4MB
-    I (78) boot: Enabling RNG early entropy source...
-    I (83) boot: Partition Table:
-    I (87) boot: ## Label            Usage          Type ST Offset   Length
-    I (94) boot:  0 phy_init         RF data          01 01 0000f000 00001000
-    I (102) boot:  1 otadata          OTA data         01 00 00010000 00002000
-    I (109) boot:  2 nvs              WiFi data        01 02 00012000 0000e000
-    I (117) boot:  3 at_customize     unknown          40 00 00020000 000e0000
-    I (124) boot:  4 ota_0            OTA app          00 10 00100000 00180000
-    I (132) boot:  5 ota_1            OTA app          00 11 00280000 00180000
-    I (139) boot: End of partition table
-    I (144) boot: No factory image, trying OTA 0
-    I (149) boot_comm: chip revision: 1, min. application chip revision: 0
-    I (156) esp_image: segment 0: paddr=00100020 vaddr=3c140020 size=29cc8h (171208) map
-    I (201) esp_image: segment 1: paddr=00129cf0 vaddr=3fc8f000 size=03be8h ( 15336) load
-    I (205) esp_image: segment 2: paddr=0012d8e0 vaddr=40380000 size=02738h ( 10040) load
-    I (210) esp_image: segment 3: paddr=00130020 vaddr=42000020 size=135bf0h (1268720) map
-    I (489) esp_image: segment 4: paddr=00265c18 vaddr=40382738 size=0c778h ( 51064) load
-    I (502) esp_image: segment 5: paddr=00272398 vaddr=50000000 size=00004h (     4) load
-    I (508) boot: Loaded app from partition at offset 0x100000
-    I (544) boot: Set actual ota_seq=1 in otadata[0]
-    I (544) boot: Disabling RNG early entropy source...
-    max tx power=78,ret=0
-    2.1.0
+      entry 0x400806f4
+      I (26) boot: ESP-IDF v4.2.2-76-gefa6eca 2nd stage bootloader
+      I (26) boot: compile time 11:54:30
+      I (26) boot: chip revision: 1
+      I (30) boot_comm: chip revision: 1, min. bootloader chip revision: 0
+      I (37) boot.esp32: SPI Speed      : 40MHz
+      I (42) boot.esp32: SPI Mode       : DIO
+      I (46) boot.esp32: SPI Flash Size : 4MB
+      I (51) boot: Enabling RNG early entropy source...
+      I (56) boot: Partition Table:
+      I (60) boot: ## Label            Usage          Type ST Offset   Length
+      I (67) boot:  0 phy_init         RF data          01 01 0000f000 00001000
+      I (75) boot:  1 otadata          OTA data         01 00 00010000 00002000
+      I (82) boot:  2 nvs              WiFi data        01 02 00012000 0000e000
+      I (90) boot:  3 at_customize     unknown          40 00 00020000 000e0000
+      I (97) boot:  4 ota_0            OTA app          00 10 00100000 00180000
+      I (105) boot:  5 ota_1            OTA app          00 11 00280000 00180000
+      I (112) boot: End of partition table
+      I (117) boot_comm: chip revision: 1, min. application chip revision: 0
+      I (124) esp_image: segment 0: paddr=0x00100020 vaddr=0x3f400020 size=0x285f8 (165368) map
+      I (196) esp_image: segment 1: paddr=0x00128620 vaddr=0x3ffbdb60 size=0x03934 ( 14644) load
+      I (202) esp_image: segment 2: paddr=0x0012bf5c vaddr=0x40080000 size=0x040bc ( 16572) load
+      I (210) esp_image: segment 3: paddr=0x00130020 vaddr=0x400d0020 size=0x109f40 (1089344) map
+      I (626) esp_image: segment 4: paddr=0x00239f68 vaddr=0x400840bc size=0x1aa04 (109060) load
+      I (674) esp_image: segment 5: paddr=0x00254974 vaddr=0x400c0000 size=0x00064 (   100) load
+      I (691) boot: Loaded app from partition at offset 0x100000
+      I (691) boot: Disabling RNG early entropy source...
+      module_name:WROOM-32
+      max tx power=78,ret=0
+      2.2.0
+
+.. only:: esp32c3
+
+   {IDF_TARGET_NAME} startup log:
+
+   .. code-block:: none
+
+      ESP-ROM:esp32c3-api1-20210207
+      Build:Feb  7 2021
+      rst:0x1 (POWERON),boot:0xc (SPI_FAST_FLASH_BOOT)
+      SPIWP:0xee
+      mode:DIO, clock div:2
+      load:0x3fcd6100,len:0x1948
+      load:0x403ce000,len:0x8dc
+      load:0x403d0000,len:0x2de0
+      entry 0x403ce000
+      I (31) boot: ESP-IDF v4.3.1-354-g98d34e5 2nd stage bootloader
+      I (32) boot: compile time 11:21:56
+      I (32) boot: chip revision: 3
+      I (34) boot.esp32c3: SPI Speed      : 40MHz
+      I (39) boot.esp32c3: SPI Mode       : DIO
+      I (44) boot.esp32c3: SPI Flash Size : 4MB
+      I (49) boot: Enabling RNG early entropy source...
+      I (54) boot: Partition Table:
+      I (58) boot: ## Label            Usage          Type ST Offset   Length
+      I (65) boot:  0 otadata          OTA data         01 00 0000d000 00002000
+      I (72) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+      I (80) boot:  2 nvs              WiFi data        01 02 00010000 0000e000
+      I (87) boot:  3 at_customize     unknown          40 00 0001e000 00042000
+      I (95) boot:  4 ota_0            OTA app          00 10 00060000 001d0000
+      I (102) boot:  5 ota_1            OTA app          00 11 00230000 001d0000
+      I (110) boot: End of partition table
+      I (114) esp_image: segment 0: paddr=00060020 vaddr=3c140020 size=29060h (168032) map
+      I (158) esp_image: segment 1: paddr=00089088 vaddr=3fc90800 size=03dfch ( 15868) load
+      I (162) esp_image: segment 2: paddr=0008ce8c vaddr=40380000 size=0318ch ( 12684) load
+      I (167) esp_image: segment 3: paddr=00090020 vaddr=42000020 size=130764h (1247076) map
+      I (433) esp_image: segment 4: paddr=001c078c vaddr=4038318c size=0d588h ( 54664) load
+      I (446) esp_image: segment 5: paddr=001cdd1c vaddr=50000000 size=00004h (     4) load
+      I (447) esp_image: segment 6: paddr=001cdd28 vaddr=50000008 size=00010h (    16) load
+      I (457) boot: Loaded app from partition at offset 0x60000
+      I (458) boot: Disabling RNG early entropy source...
+      module_name:MINI-1
+      max tx power=78,ret=0
+      2.3.0

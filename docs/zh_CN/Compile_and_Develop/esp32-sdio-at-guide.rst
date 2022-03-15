@@ -1,12 +1,12 @@
-ESP32 SDIO AT 指南
-==================
+{IDF_TARGET_NAME} SDIO AT 指南
+===============================
 
 :link_to_translation:`en:[English]`
 
 简介
 ----
 
-ESP32 SDIO AT 使用 SDIO 协议进行通讯，其中 ESP32 作为 SDIO slave 与 MCU 进行通信。
+{IDF_TARGET_NAME} SDIO AT 使用 SDIO 协议进行通讯，其中 {IDF_TARGET_NAME} 作为 SDIO slave 与 MCU 进行通信。
 
 SDIO 可使用 一线或四线模式。至少需要 4 根线：CMD、CLK、DAT0 和 DAT1。
 
@@ -25,7 +25,7 @@ SDIO slave 管脚如下所示：
 如何使用 SDIO AT
 ----------------
 
-在测试 SDIO AT 通信之前，首先请参照 `SD Pull-up Requirements <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/sd_pullup_requirements.html#solutions>`_ 的介绍对 ESP32 硬件进行处理，否则 SDIO 通信将会异常。
+在测试 SDIO AT 通信之前，首先请参照 `SD Pull-up Requirements <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/sd_pullup_requirements.html#solutions>`_ 的介绍对 {IDF_TARGET_NAME} 硬件进行处理，否则 SDIO 通信将会异常。
 
 Slave 侧  
 ^^^^^^^^
@@ -35,7 +35,7 @@ AT 项目默认使用 UART 作为传输介质，你可以通过 ``./build.py men
 Host 侧
 ^^^^^^^
 
-ESP-AT 提供了 ESP32 和 STM32 作为 SDIO host 的 :example:`at_sdio_host` 参考示例。对于 ESP32 的参考示例，可以使用 AT 工程的 esp-idf 版本进行编译烧录；对于 STM32，我们提供的方案基于 STM32F103ZET，请使用 Keil5 进行编译烧录。
+ESP-AT 提供了 {IDF_TARGET_NAME} 和 STM32 作为 SDIO host 的 :example:`at_sdio_host` 参考示例。对于 {IDF_TARGET_NAME} 的参考示例，可以使用 AT 工程的 esp-idf 版本进行编译烧录；对于 STM32，我们提供的方案基于 STM32F103ZET，请使用 Keil5 进行编译烧录。
 
 对于其他平台，可以参照这两个示例进行适配。
 

@@ -3,7 +3,15 @@ ESP-AT User Guide
 
 :link_to_translation:`zh_CN:[中文]`
 
-This is the documentation for the ESP-AT. To view documentation for a specific AT firmware version or chip series, please click the small triangle at the bottom left corner of this page and select.
+This is the documentation for `ESP-AT <https://github.com/espressif/esp-at>`_ Development Framework. ESP-AT project was started and powered by `Espressif Systems <https://www.espressif.com>`_ as an official project, for the `ESP32, ESP32-C3, ESP8266, and ESP32-S2 Series SoCs <https://www.espressif.com/en/products/hardware/socs>`_ provided for Windows, Linux, and macOS.
+
+.. only:: html
+
+    **This document describes using ESP-AT with the {IDF_TARGET_NAME} SoC**. To switch to a different SoC target, choose target from the dropdown in the upper left.
+
+.. only:: latex
+
+    **This document describes using ESP-AT with the {IDF_TARGET_NAME} SoC**.
 
 ======================================  ======================================  ======================================
 |Get Started|_                          |AT Binary Lists|_                      |AT Command Set|_    

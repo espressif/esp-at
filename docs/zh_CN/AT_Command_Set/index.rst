@@ -4,7 +4,7 @@ AT 命令集
 
 :link_to_translation:`en:[English]`
 
-本章将具体介绍如何使用各类 AT 命令。如果命令前标注，如 [ESP32 Only]，则表示该（类）命令只适用于 ESP32 系列，若命令前无任何标注，则表示支持所有 ESP 系列，包括 ESP32、ESP32-C3。
+本章将具体介绍如何使用各类 AT 命令。
 
 .. toctree::
    :maxdepth: 1
@@ -13,10 +13,10 @@ AT 命令集
    Wi-Fi AT 命令集 <Wi-Fi_AT_Commands>
    TCP-IP AT 命令集 <TCP-IP_AT_Commands>
    Bluetooth® Low Energy 命令集 <BLE_AT_Commands>
-   [ESP32 Only] Bluetooth® AT 命令集 <BT_AT_Commands>
+   :esp32: Bluetooth® AT 命令集 <BT_AT_Commands>
    MQTT AT 命令集 <MQTT_AT_Commands>
    HTTP AT 命令集 <HTTP_AT_Commands>
-   [ESP32 Only] 以太网 AT 命令集 <Ethernet_AT_Commands>
+   :esp32: 以太网 AT 命令集 <Ethernet_AT_Commands>
    信令测试 AT 命令集 <Signaling_Test_AT_Commands>
    驱动 AT 命令集 <Driver_AT_Commands>
    Web 服务器 AT 命令集 <Web_server_AT_Commands>

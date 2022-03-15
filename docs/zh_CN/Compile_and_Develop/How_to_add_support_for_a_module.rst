@@ -3,7 +3,7 @@
 
 :link_to_translation:`en:[English]`
 
-ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 和 :AT:`module_config`。下表列出了 ESP-AT 工程支持的平台（即芯片系列）、模组以及模组配置文件的位置。
+ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 和 :project:`module_config`。下表列出了 ESP-AT 工程支持的平台（即芯片系列）、模组以及模组配置文件的位置。
 
 .. list-table:: 
    :header-rows: 1
@@ -17,28 +17,28 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
        - PICO-D4
        - SOLO-1
        - MINI-1
-     - - :AT:`module_config/module_esp32_default/sdkconfig.defaults`
-       - :AT:`module_config/module_esp32_default/sdkconfig_silence.defaults`
+     - - :project_file:`module_config/module_esp32_default/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32_default/sdkconfig_silence.defaults`
    * - ESP32
      - WROVER-32
-     - - :AT:`module_config/module_wrover-32/sdkconfig.defaults`
-       - :AT:`module_config/module_wrover-32/sdkconfig_silence.defaults`
+     - - :project_file:`module_config/module_wrover-32/sdkconfig.defaults`
+       - :project_file:`module_config/module_wrover-32/sdkconfig_silence.defaults`
    * - ESP32
      - ESP32-D2WD
-     - - :AT:`module_config/module_esp32-d2wd/sdkconfig.defaults`
-       - :AT:`module_config/module_esp32-d2wd/sdkconfig_silence.defaults`
+     - - :project_file:`module_config/module_esp32-d2wd/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32-d2wd/sdkconfig_silence.defaults`
    * - ESP32
      - ESP32_QCLOUD
-     - - :AT:`module_config/module_esp32_qcloud/sdkconfig.defaults`
-       - :AT:`module_config/module_esp32_qcloud/sdkconfig_silence.defaults`
+     - - :project_file:`module_config/module_esp32_qcloud/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32_qcloud/sdkconfig_silence.defaults`
    * - ESP32-C3
      - MINI-1
-     - - :AT:`module_config/module_esp32c3_default/sdkconfig.defaults`
-       - :AT:`module_config/module_esp32c3_default/sdkconfig_silence.defaults`
+     - - :project_file:`module_config/module_esp32c3_default/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32c3_default/sdkconfig_silence.defaults`
    * - ESP32-C3
      - ESP32C3_QCLOUD
-     - - :AT:`module_config/module_esp32c3_qcloud/sdkconfig.defaults`
-       - :AT:`module_config/module_esp32c3_qcloud/sdkconfig_silence.defaults`
+     - - :project_file:`module_config/module_esp32c3_qcloud/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32c3_qcloud/sdkconfig_silence.defaults`
 
 .. 注意::
 
@@ -56,7 +56,7 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
 在 factory_param_data.csv 添加模组信息
 --------------------------------------
 
-打开本地的 :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`，在表格最后插入一行，根据实际需要设置相关参数。本例中，我们将 ``platform`` 设置为 ``PLATFORM_ESP32``、``module_name`` 设置为 ``WROOM32-SDIO``，其他参数设置值见下表（参数含义请参考 :ref:`factory-param-type-csv`）。
+打开本地的 :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`，在表格最后插入一行，根据实际需要设置相关参数。本例中，我们将 ``platform`` 设置为 ``PLATFORM_ESP32``、``module_name`` 设置为 ``WROOM32-SDIO``，其他参数设置值见下表（参数含义请参考 :ref:`factory-param-type-csv`）。
 
 - platform: PLATFORM_ESP32
 - module_name: WROOM32-SDIO

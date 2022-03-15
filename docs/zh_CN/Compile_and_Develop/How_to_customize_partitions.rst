@@ -1,6 +1,9 @@
 如何自定义分区
 ===========================
 
+{IDF_TARGET_AT_SECOND_PARTITION_ADDR: default="undefined", esp32="0x20000", esp32c3="0x1E000"}
+{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c3="ESP32-C3-MINI-1"}
+
 :link_to_translation:`en:[English]`
 
 本文档介绍了如何通过修改 ESP-AT 提供的 at_customize.csv 表来自定义 ESP 设备中的分区。共有两个分区表：一级分区表和二级分区表。
@@ -23,33 +26,44 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
 
 请参考下表找到模组的 at_customize.csv。
 
-.. list-table:: at_customize.csv 路径
-   :header-rows: 1
+.. only:: esp32
 
-   * - 平台
-     - 模组
-     - 路径
-   * - ESP32
-     - - WROOM-32
-       - PICO-D4
-       - SOLO-1
-       - MINI-1
-     - :module_config:`module_esp32_default/at_customize.csv`
-   * - ESP32
-     - WROVER-32
-     - :module_config:`module_wrover-32/at_customize.csv`
-   * - ESP32
-     - ESP32-D2WD
-     - :module_config:`module_esp32-d2wd/at_customize.csv`
-   * - ESP32
-     - ESP32_QCLOUD
-     - :module_config:`module_esp32_qcloud/at_customize.csv`
-   * - ESP32-C3
-     - MINI-1
-     - :module_config:`module_esp32c3_default/at_customize.csv`
-   * - ESP32-C3
-     - ESP32C3_QCLOUD
-     - :module_config:`module_esp32c3_qcloud/at_customize.csv`
+  .. list-table:: at_customize.csv 路径
+    :header-rows: 1
+
+    * - 平台
+      - 模组
+      - 路径
+    * - ESP32
+      - - WROOM-32
+        - PICO-D4
+        - SOLO-1
+        - MINI-1
+      - :project_file:`module_config/module_esp32_default/at_customize.csv`
+    * - ESP32
+      - WROVER-32
+      - :project_file:`module_config/module_wrover-32/at_customize.csv`
+    * - ESP32
+      - ESP32-D2WD
+      - :project_file:`module_config/module_esp32-d2wd/at_customize.csv`
+    * - ESP32
+      - ESP32_QCLOUD
+      - :project_file:`module_config/module_esp32_qcloud/at_customize.csv`
+
+.. only:: esp32c3
+
+  .. list-table:: at_customize.csv 路径
+    :header-rows: 1
+
+    * - 平台
+      - 模组
+      - 路径
+    * - ESP32-C3
+      - MINI-1
+      - :project_file:`module_config/module_esp32c3_default/at_customize.csv`
+    * - ESP32-C3
+      - ESP32C3_QCLOUD
+      - :project_file:`module_config/module_esp32c3_qcloud/at_customize.csv`
 
 然后，在修改 at_customize.csv 时遵循以下规则。
 
@@ -84,31 +98,43 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
 
 将 at_customize.bin 下载到 flash 中。关于如何将二进制文件烧录至 ESP 设备，请参考 :ref:`flash-at-firmware-into-your-device`。下表为不同模组 at_customize.bin 文件的下载地址。
 
-.. list-table:: 不同模组 at_customize.bin 的下载地址
-   :header-rows: 1
+.. only:: esp32
 
-   * - 平台
-     - 模组
-     - 地址
-     - 大小
-   * - ESP32
-     - - WROOM-32
-       - WROVER-32
-       - PICO-D4
-       - SOLO-1
-       - MINI-1
-       - ESP32-D2WD
-       - ESP32_QCLOUD
-     - 0x20000
-     - 0xE0000
-   * - ESP32-C3
-     - MINI-1
-     - 0x1E000
-     - 0x42000
-   * - ESP32-C3
-     - ESP32C3_QCLOUD
-     - 0x20000
-     - 0xE0000
+  .. list-table:: 不同模组 at_customize.bin 的下载地址
+    :header-rows: 1
+
+    * - 平台
+      - 模组
+      - 地址
+      - 大小
+    * - ESP32
+      - - WROOM-32
+        - WROVER-32
+        - PICO-D4
+        - SOLO-1
+        - MINI-1
+        - ESP32-D2WD
+        - ESP32_QCLOUD
+      - 0x20000
+      - 0xE0000
+
+.. only:: esp32c3
+
+  .. list-table:: 不同模组 at_customize.bin 的下载地址
+    :header-rows: 1
+
+    * - 平台
+      - 模组
+      - 地址
+      - 大小
+    * - ESP32-C3
+      - MINI-1
+      - 0x1E000
+      - 0x42000
+    * - ESP32-C3
+      - ESP32C3_QCLOUD
+      - 0x20000
+      - 0xE0000
 
 在某些情况下，必须将 at_customize.bin 下载到 flash 后才能使用一些 AT 命令：
 
@@ -122,22 +148,33 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
 示例
 -------
 
-本节介绍如何将名为 ``test`` 的 4 KB 分区添加到 ESP32-WROOM-32 模组中。
+本节介绍如何将名为 ``test`` 的 4 KB 分区添加到 {IDF_TARGET_PRODUCT_NAME} 模组中。
 
-首先找到 ESP32-WROOM-32 的 at_customize.csv 表，设置新分区的 ``Name``、``Type``、``SubType``、``Offset`` 和 ``Size``。
+首先找到 {IDF_TARGET_PRODUCT_NAME} 的 at_customize.csv 表，设置新分区的 ``Name``、``Type``、``SubType``、``Offset`` 和 ``Size``。
 
-::
+.. only:: esp32
 
-    # Name,Type,SubType,Offset,Size
-    ... ...
-    test,0x40,15,0x3D000,4K
-    fatfs,data,fat,0x70000,576K
+  ::
+
+      # Name,Type,SubType,Offset,Size
+      ... ...
+      test,0x40,15,0x3D000,4K
+      fatfs,data,fat,0x70000,576K
+
+.. only:: esp32c3
+
+  ::
+
+      # Name,Type,SubType,Offset,Size
+      ... ...
+      test,0x40,15,0x3E000,4K
+      fatfs,data,fat,0x47000,100K
 
 第二步，重新编译 ESP-AT 工程，或者在 ESP-AT 根目录下执行 python 脚本生成 at_customize.bin。
 
 ::
 
-    python esp-idf/components/partition_table/gen_esp32part.py -q ./module_config/module_esp32_default/at_customize.csv at_customize.bin
+    python esp-idf/components/partition_table/gen_esp32part.py -q ./module_config/module_{IDF_TARGET_PATH_NAME}_default/at_customize.csv at_customize.bin
 
 然后，ESP-AT 根目录中会生成 at_customize.bin。
 
@@ -147,7 +184,7 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
 
 ::
 
-    python esp-idf/components/esptool_py/esptool/esptool.py -p PORT -b BAUD --before default_reset --after hard_reset --chip auto  write_flash --flash_mode dio --flash_size detect --flash_freq 40m 0x20000 ./at_customize.bin
+    python esp-idf/components/esptool_py/esptool/esptool.py -p PORT -b BAUD --before default_reset --after hard_reset --chip auto  write_flash --flash_mode dio --flash_size detect --flash_freq 40m {IDF_TARGET_AT_SECOND_PARTITION_ADDR} ./at_customize.bin
 
 - ``PORT`` 替换为端口名称。
 - ``BAUD`` 替换为波特率。

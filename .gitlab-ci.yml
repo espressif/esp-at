@@ -1,6 +1,7 @@
 stages:
   - build
   - deploy
+  - deploy_docs
 
 # global variables
 variables: &global-variables
@@ -761,34 +762,64 @@ esp32_ethernet_at:
 
 build_docs:
   stage: build
-  image: $CI_DOCKER_REGISTRY/esp-idf-doc-env:v7
+  image: $CI_DOCKER_REGISTRY/esp-idf-doc-env-v5.0:2-2
   tags:
     - build_docs
+  needs: []
   artifacts:
     when: always
     paths:
-      # English version of documentation
-      - docs/en/doxygen-warning-log.txt
-      - docs/en/sphinx-warning-log.txt
-      - docs/en/sphinx-warning-log-sanitized.txt
-      - docs/en/_build/html
-      # Chinese version of documentation
-      - docs/zh_CN/doxygen-warning-log.txt
-      - docs/zh_CN/sphinx-warning-log.txt
-      - docs/zh_CN/sphinx-warning-log-sanitized.txt
-      - docs/zh_CN/_build/html
-    expire_in: 1 mos
+      - docs/_build/*/*/*.txt
+      - docs/_build/*/*/html/*
+    expire_in: 6 mos
   script:
-    - source /opt/pyenv/activate && pyenv global 3.6.10
-    - /opt/pyenv/pyenv-1.2.16/versions/3.6.10/bin/python -m pip install --user -r docs/requirements.txt
     - cd docs
     - ./check_lang_folder_sync.sh
     - ./check_doc_chars.py
-    - cd en
-    # - make gh-linkcheck
-    - make html
-    - ../check_doc_warnings.sh
-    - cd ../zh_CN
-    # - make gh-linkcheck
-    - make html
-    - ../check_doc_warnings.sh
+    - pip install -r requirements.txt
+    - build-docs -t {esp32,esp32c3}
+
+.deploy_docs_template:
+  stage: deploy_docs
+  image: $CI_DOCKER_REGISTRY/esp-idf-doc-env-v5.0:2-2
+  tags:
+    - deploy
+  needs:
+    - build_docs
+  script:
+    - source ${CI_PROJECT_DIR}/docs/utils.sh
+    - add_doc_server_ssh_keys $DOCS_DEPLOY_PRIVATEKEY $DOCS_DEPLOY_SERVER $DOCS_DEPLOY_SERVER_USER
+    - export GIT_VER=$(git describe --always)
+    - pip install -r ${CI_PROJECT_DIR}/docs/requirements.txt
+    - deploy-docs
+
+deploy_docs_preview:
+  extends:
+    - .deploy_docs_template
+  except:
+    refs:
+      - master
+  variables:
+    TYPE: "preview"
+    DOCS_BUILD_DIR: "${CI_PROJECT_DIR}/docs/_build/"
+    DOCS_DEPLOY_PRIVATEKEY: "$DOCS_PREVIEW_DEPLOY_KEY"
+    DOCS_DEPLOY_SERVER: "$DOCS_PREVIEW_SERVER"
+    DOCS_DEPLOY_SERVER_USER: "$DOCS_PREVIEW_SERVER_USER"
+    DOCS_DEPLOY_PATH: "$DOCS_PREVIEW_PATH"
+    DOCS_DEPLOY_URL_BASE: "https://$DOCS_PREVIEW_SERVER_URL/docs/esp-at"
+
+deploy_docs_production:
+  extends:
+    - .deploy_docs_template
+  only:
+    refs:
+      - master
+      - /^release\/v.*$/
+  variables:
+    TYPE: "production"
+    DOCS_BUILD_DIR: "${CI_PROJECT_DIR}/docs/_build/"
+    DOCS_DEPLOY_PRIVATEKEY: "$DOCS_PROD_DEPLOY_KEY"
+    DOCS_DEPLOY_SERVER: "$DOCS_PROD_SERVER"
+    DOCS_DEPLOY_SERVER_USER: "$DOCS_PROD_SERVER_USER"
+    DOCS_DEPLOY_PATH: "$DOCS_PROD_PATH"
+    DOCS_DEPLOY_URL_BASE: "https://docs.espressif.com/projects/esp-at"

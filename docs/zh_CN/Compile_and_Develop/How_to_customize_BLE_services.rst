@@ -14,7 +14,7 @@
 低功耗蓝牙服务源文件
 ---------------------------------
 
-低功耗蓝牙服务源文件是 ESP-AT 工程创建低功耗蓝牙服务所依据的文件，文件位于 :component:`components/customized_partitions/raw_data/ble_data/example.csv`，内容如下表所示。
+低功耗蓝牙服务源文件是 ESP-AT 工程创建低功耗蓝牙服务所依据的文件，文件位于 :component_file:`customized_partitions/raw_data/ble_data/example.csv`，内容如下表所示。
 
 .. list-table::
    :header-rows: 1
@@ -280,9 +280,14 @@
 
   将 ``PORTNAME`` 替换为您的串口名称，``ADDRESS`` 替换为下载 ble_data.bin 文件的地址，不同的模组有不同的下载地址。
 
-  - ESP32：0x21000
-  - ESP32-C3：0x1F000
-  - ESP32-C3 QCLOUD：0x21000
+  .. only:: esp32
+
+    - ESP32: 0x21000
+
+  .. only:: esp32c3
+
+    - ESP32-C3: 0x1F000
+    - ESP32-C3 QCLOUD: 0x21000
 
 下载完成后，重新建立低功耗蓝牙连接，在客户端查询的服务器服务如下所示。
 

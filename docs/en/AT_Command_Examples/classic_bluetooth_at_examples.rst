@@ -1,5 +1,5 @@
-[ESP32 Only] Classic Bluetooth AT Examples
-=============================================
+{IDF_TARGET_NAME} Classic Bluetooth AT Examples
+===============================================
 
 :link_to_translation:`zh_CN:[中文]`
 
@@ -13,10 +13,10 @@ This document provides detailed command examples to illustrate how to utilize :d
   
   The default firmware does not support Classic Bluetooth commands, please refer to :doc:`../Compile_and_Develop/how_to_enable_at_classic_bluetooth` to enable Classic Bluetooth commands.
 
-Establish SPP connection between phone (or PC) and ESP32 in Normal Transmission mode with IO capability set to NoInputNoOutput
+Establish SPP connection between phone (or PC) and {IDF_TARGET_NAME} in Normal Transmission mode with IO capability set to NoInputNoOutput
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-In this example, mobile phone or PC is master and ESP32 is slave. The example shows how to establish SPP connection.
+In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. The example shows how to establish SPP connection.
 
 #. Classic Bluetooth initialization.
    
@@ -104,7 +104,7 @@ In this example, mobile phone or PC is master and ESP32 is slave. The example sh
 
 #. The mobile phone or PC initiates the connection.
 
-   The mobile phone or PC should be able to find the Bluetooth device with name "EXAMPLE". If the mobile phone or PC initiates a connection and the connection is established successfully, ESP32 will prompt:
+   The mobile phone or PC should be able to find the Bluetooth device with name "EXAMPLE". If the mobile phone or PC initiates a connection and the connection is established successfully, {IDF_TARGET_NAME} will prompt:
 
    .. code-block:: none
 
@@ -169,10 +169,10 @@ In this example, mobile phone or PC is master and ESP32 is slave. The example sh
 
    - The address you obtained may be different from that in the above response.
 
-Establish SPP connection between phone (or PC) and ESP32 in Passthrough mode with IO capability set to NoInputNoOutput
+Establish SPP connection between phone (or PC) and {IDF_TARGET_NAME} in Passthrough mode with IO capability set to NoInputNoOutput
 -------------------------------------------------------------------------------------------------------------------------------
 
-In this example, mobile phone or PC is master and ESP32 is slave. The example shows how to establish SPP connection.
+In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. The example shows how to establish SPP connection.
 
 #. Classic Bluetooth initialization.
    
@@ -260,7 +260,7 @@ In this example, mobile phone or PC is master and ESP32 is slave. The example sh
 
 #. The mobile phone or PC initiates the connection.
 
-   The mobile phone or PC should be able to find the Bluetooth device with name "EXAMPLE". If the mobile phone or PC initiates a connection and the connection is established successfully, ESP32 will prompt:
+   The mobile phone or PC should be able to find the Bluetooth device with name "EXAMPLE". If the mobile phone or PC initiates a connection and the connection is established successfully, {IDF_TARGET_NAME} will prompt:
 
    .. code-block:: none
 
@@ -320,10 +320,10 @@ In this example, mobile phone or PC is master and ESP32 is slave. The example sh
 
    - The address you obtained may be different from that in the above response.
 
-Establish SPP connection between phone (or PC) and ESP32 with IO capability set to KeyboardOnly
--------------------------------------------------------------------------------------------------
+Establish SPP connection between phone (or PC) and {IDF_TARGET_NAME} with IO capability set to KeyboardOnly
+-----------------------------------------------------------------------------------------------------------
 
-The process is basically the same as in the `Establish SPP connection between phone (or PC) and ESP32 in Normal Transmission mode with IO capability set to NoInputNoOutput`_. The only difference lies in security parameters settings.
+The process is basically the same as in the `Establish SPP connection between phone (or PC) and {IDF_TARGET_NAME} in Normal Transmission mode with IO capability set to NoInputNoOutput`_. The only difference lies in security parameters settings.
 
 #. Classic Bluetooth initialization.
    
@@ -411,7 +411,7 @@ The process is basically the same as in the `Establish SPP connection between ph
 
 #. The mobile phone or PC initiates the connection.
 
-   The mobile phone or PC can initiate a connection and generate a PIN code, then you can enter the PIN code on the ESP32.
+   The mobile phone or PC can initiate a connection and generate a PIN code, then you can enter the PIN code on the {IDF_TARGET_NAME}.
 
    .. code-block:: none
 
@@ -448,10 +448,10 @@ The process is basically the same as in the `Establish SPP connection between ph
 
    - The address you obtained may be different from that in the above response.
 
-Establish SPP connection between two ESP32 development boards
----------------------------------------------------------------
+Establish SPP connection between two {IDF_TARGET_NAME} development boards
+-------------------------------------------------------------------------
 
-Below is an example of using two ESP32 development boards, one as master, the other one as slave.
+Below is an example of using two {IDF_TARGET_NAME} development boards, one as master, the other one as slave.
 
 .. Important::
 
@@ -714,7 +714,7 @@ Establish A2DP connection and enable A2DP Sink to play music
 
 #. Establish connection.
 
-   The source role should be able to find the Bluetooth device with name "EXAMPLE". In this example, you can use your mobile phone to initiate a connection. If the connection is established successfully, ESP32 will prompt:
+   The source role should be able to find the Bluetooth device with name "EXAMPLE". In this example, you can use your mobile phone to initiate a connection. If the connection is established successfully, {IDF_TARGET_NAME} will prompt:
 
    .. code-block:: none
 

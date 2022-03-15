@@ -20,9 +20,9 @@ PHY 配置
 
 使用 ``./build.py menuconfig`` 配置以太网接口要使用的 PHY 模块，配置选项将根据你使用不同的硬件而有所不同。
 
-Espressif 的官方硬件以太网开发板默认的配置是使用 IP101 PHY 模块。ESP32 AT 最多支持四种以太网 PHY：``LAN8720``，``IP101``，``DP83848`` 和 ``RTL8201``。
+Espressif 的官方硬件以太网开发板默认的配置是使用 IP101 PHY 模块。{IDF_TARGET_NAME} AT 最多支持四种以太网 PHY：``LAN8720``，``IP101``，``DP83848`` 和 ``RTL8201``。
 由于 TI 停止生产，``TLK110`` PHY 已经不再支持。
-如果你想使用其他 PHY，请参考 `ESP32-Ethernet-Kit V1.2 入门指南 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/hw-reference/esp32/get-started-ethernet-kit.html>`__ 进行设计。
+如果你想使用其他 PHY，请参考 `{IDF_TARGET_NAME}-Ethernet-Kit V1.2 入门指南 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/hw-reference/{IDF_TARGET_PATH_NAME}/get-started-ethernet-kit.html>`__ 进行设计。
 
 第二步：连接开发板并测试
 ------------------------------------------

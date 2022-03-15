@@ -55,13 +55,15 @@ Index of Abbreviations
       Default operating mode of AT. In the command mode, any character received by the AT command port will be treated as an AT command, and AT returns the command execution result to the AT command port.
       AT enters :term:`Data Mode` from :term:`Command Mode` in the following cases.
 
-      * After sending the :ref:`AT+CIPSEND <cmd-SEND>` set command successfully and returns `>`.
-      * After sending the :ref:`AT+CIPSEND <cmd-SEND>` execute command successfully and returns `>`.
-      * After sending the :ref:`AT+CIPSENDL <cmd-SENDL>` set command successfully and returns `>`.
-      * After sending the :ref:`AT+CIPSENDEX <cmd-SENDEX>` set command successfully and returns `>`.
-      * After sending the :ref:`AT+SAVETRANSLINK <cmd-SAVET>` set command successfully and sending the :ref:`AT+RST <cmd-RST>` command and restart the module.
-      * After sending the :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` execute command successfully and returns `>`.
-      * After sending the :ref:`AT+BLESPP <cmd-BLESPP>` execute command successfully and returns `>`.
+      .. list::
+
+        * After sending the :ref:`AT+CIPSEND <cmd-SEND>` set command successfully and returns `>`.
+        * After sending the :ref:`AT+CIPSEND <cmd-SEND>` execute command successfully and returns `>`.
+        * After sending the :ref:`AT+CIPSENDL <cmd-SENDL>` set command successfully and returns `>`.
+        * After sending the :ref:`AT+CIPSENDEX <cmd-SENDEX>` set command successfully and returns `>`.
+        * After sending the :ref:`AT+SAVETRANSLINK <cmd-SAVET>` set command successfully and sending the :ref:`AT+RST <cmd-RST>` command and restart the module.
+        :esp32: * After sending the :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` execute command successfully and returns `>`.
+        * After sending the :ref:`AT+BLESPP <cmd-BLESPP>` execute command successfully and returns `>`.
 
       In the data mode, send the :ref:`+++ <cmd-PLUS>` command, AT will exit from :term:`Data Mode` and enter the :term:`Command Mode`.
 
@@ -69,13 +71,15 @@ Index of Abbreviations
       AT 的默认工作模式。在命令模式下，AT 命令端口收到的任何字符都会被当作 AT 命令进行处理，同时 AT 会在命令端口回复命令执行结果。
       AT 在下列情况下，会从 :term:`命令模式` 进入 :term:`数据模式`。
 
-      * 发送 :ref:`AT+CIPSEND <cmd-SEND>` 设置命令成功，回复 `>` 之后
-      * 发送 :ref:`AT+CIPSEND <cmd-SEND>` 执行命令成功，回复 `>` 之后
-      * 发送 :ref:`AT+CIPSENDL <cmd-SENDL>` 设置命令成功，回复 `>` 之后
-      * 发送 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 设置命令成功，回复 `>` 之后
-      * 发送 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 设置命令成功，再发送 (:ref:`AT+RST <cmd-RST>`) 命令，模组重启之后
-      * 发送 :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` 执行命令成功，回复 `>` 之后
-      * 发送 :ref:`AT+BLESPP <cmd-BLESPP>` 执行命令成功，回复 `>` 之后
+      .. list::
+
+        * 发送 :ref:`AT+CIPSEND <cmd-SEND>` 设置命令成功，回复 `>` 之后
+        * 发送 :ref:`AT+CIPSEND <cmd-SEND>` 执行命令成功，回复 `>` 之后
+        * 发送 :ref:`AT+CIPSENDL <cmd-SENDL>` 设置命令成功，回复 `>` 之后
+        * 发送 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 设置命令成功，回复 `>` 之后
+        * 发送 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 设置命令成功，再发送 (:ref:`AT+RST <cmd-RST>`) 命令，模组重启之后
+        :esp32: * 发送 :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` 执行命令成功，回复 `>` 之后
+        * 发送 :ref:`AT+BLESPP <cmd-BLESPP>` 执行命令成功，回复 `>` 之后
 
       在数据模式下，发送 :ref:`+++ <cmd-PLUS>` 命令，会从 :term:`数据模式` 退出，进入 :term:`命令模式`。
 
@@ -83,13 +87,15 @@ Index of Abbreviations
       In the data mode, any character received by the AT command port will be treated as data (except for special :ref:`+++ <cmd-PLUS>`) instead of the AT command, and these data will be sent to the opposite end without modification.
       AT enters :term:`Data Mode` from :term:`Command Mode` in the following cases.
 
-      * After sending the :ref:`AT+CIPSEND <cmd-SEND>` set command successfully and returns `>`.
-      * After sending the :ref:`AT+CIPSEND <cmd-SEND>` execute command successfully and returns `>`.
-      * After sending the :ref:`AT+CIPSENDL <cmd-SENDL>` set command successfully and returns `>`.
-      * After sending the :ref:`AT+CIPSENDEX <cmd-SENDEX>` set command successfully and returns `>`.
-      * After sending the :ref:`AT+SAVETRANSLINK <cmd-SAVET>` set command successfully and sending the :ref:`AT+RST <cmd-RST>` command and restart the module.
-      * After sending the :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` execute command successfully and returns `>`.
-      * After sending the :ref:`AT+BLESPP <cmd-BLESPP>` execute command successfully and returns `>`.
+      .. list::
+
+        * After sending the :ref:`AT+CIPSEND <cmd-SEND>` set command successfully and returns `>`.
+        * After sending the :ref:`AT+CIPSEND <cmd-SEND>` execute command successfully and returns `>`.
+        * After sending the :ref:`AT+CIPSENDL <cmd-SENDL>` set command successfully and returns `>`.
+        * After sending the :ref:`AT+CIPSENDEX <cmd-SENDEX>` set command successfully and returns `>`.
+        * After sending the :ref:`AT+SAVETRANSLINK <cmd-SAVET>` set command successfully and sending the :ref:`AT+RST <cmd-RST>` command and restart the module.
+        :esp32: * After sending the :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` execute command successfully and returns `>`.
+        * After sending the :ref:`AT+BLESPP <cmd-BLESPP>` execute command successfully and returns `>`.
 
       In the data mode, send the :ref:`+++ <cmd-PLUS>` command, AT will exit from :term:`Data Mode` and enter the :term:`Command Mode`.
 
@@ -97,13 +103,15 @@ Index of Abbreviations
       在数据模式下，AT 命令端口收到的任何字符都会被当作数据（除了特殊的 :ref:`+++ <cmd-PLUS>`），而不是 AT 命令，这些数据会无修改的发往对端。
       AT 在下列情况下，会从 :term:`命令模式` 进入 :term:`数据模式`。
 
-      * 发送 :ref:`AT+CIPSEND <cmd-SEND>` 设置命令成功，回复 `>` 之后
-      * 发送 :ref:`AT+CIPSEND <cmd-SEND>` 执行命令成功，回复 `>` 之后
-      * 发送 :ref:`AT+CIPSENDL <cmd-SENDL>` 设置命令成功，回复 `>` 之后
-      * 发送 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 设置命令成功，回复 `>` 之后
-      * 发送 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 设置命令成功，再发送 :ref:`AT+RST <cmd-RST>` 命令，模组重启之后
-      * 发送 :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` 执行命令成功，回复 `>` 之后
-      * 发送 :ref:`AT+BLESPP <cmd-BLESPP>` 执行命令成功，回复 `>` 之后
+      .. list::
+
+        * 发送 :ref:`AT+CIPSEND <cmd-SEND>` 设置命令成功，回复 `>` 之后
+        * 发送 :ref:`AT+CIPSEND <cmd-SEND>` 执行命令成功，回复 `>` 之后
+        * 发送 :ref:`AT+CIPSENDL <cmd-SENDL>` 设置命令成功，回复 `>` 之后
+        * 发送 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 设置命令成功，回复 `>` 之后
+        * 发送 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 设置命令成功，再发送 :ref:`AT+RST <cmd-RST>` 命令，模组重启之后
+        :esp32: * 发送 :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` 执行命令成功，回复 `>` 之后
+        * 发送 :ref:`AT+BLESPP <cmd-BLESPP>` 执行命令成功，回复 `>` 之后
 
       在数据模式下，发送 :ref:`+++ <cmd-PLUS>` 命令，会从 :term:`数据模式` 退出，进入 :term:`命令模式`。
 
