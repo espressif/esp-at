@@ -3,7 +3,7 @@
 
 :link_to_translation:`en:[English]`
 
-本文档指导如何为 ESP32 和 ESP32-C3 系列模块实现 OTA 升级。目前，ESP-AT 针对不同场景提供了以下三种 OTA 命令。您可以根据自己的需求选择适合的 OTA 命令。
+本文档指导如何为 {IDF_TARGET_NAME} 系列模块实现 OTA 升级。目前，ESP-AT 针对不同场景提供了以下三种 OTA 命令。您可以根据自己的需求选择适合的 OTA 命令。
 
   #. :ref:`AT+USEROTA <cmd-USEROTA>`
   #. :ref:`AT+CIUPDATE <cmd-UPDATE>`
@@ -24,7 +24,7 @@ OTA 命令对比及应用场景
 
 此命令通过 URL 实现 OTA 升级。您可以升级到放置在 HTTP 服务器上的固件。目前该命令仅支持应用分区升级。请参考 :ref:`AT+USEROTA <cmd-USEROTA>` 获取更多信息。
 
-由于此命令属于用户自定义命令，您可以通过修改 :component:`at/src/at_user_cmd.c` 源代码来实现该命令。
+由于此命令属于用户自定义命令，您可以通过修改 :component_file:`at/src/at_user_cmd.c` 源代码来实现该命令。
 
 此命令的应用场景如下：
 
@@ -42,7 +42,7 @@ OTA 命令对比及应用场景
 
 使用该命令升级自定义 bin 文件，请选择以下方式之一。
 
-  #. **将 iot.espressif.cn 替换为您自己的 HTTP 服务器，并实现交互流程。** 如何实现自己的 AT+CIUPDATE 命令，请参考 :component:`at/src/at_ota_cmd.c`。
+  #. **将 iot.espressif.cn 替换为您自己的 HTTP 服务器，并实现交互流程。** 如何实现自己的 AT+CIUPDATE 命令，请参考 :component_file:`at/src/at_ota_cmd.c`。
   #. **在 iot.espressif.cn 上创建一个设备，并在其上上传 bin 文件。（前提是模组中运行的固件已经对应您在乐鑫服务器上创建的设备。）** 请参考 `使用 AT+CIUPDATE 进行 OTA 升级`_ 获取更多信息。
 
 此命令的应用场景如下：
@@ -56,7 +56,7 @@ OTA 命令对比及应用场景
 
 此命令通过浏览器或微信小程序升级 AT 固件。目前，该命令仅提供升级应用程序分区的功能。在开始升级之前，请启用 web 服务器命令并提前将 AT 固件复制到电脑或者手机上。您可以参考 :ref:`AT+WEBSERVER <cmd-WEBSERVER>` 或者 :doc:`../AT_Command_Examples/Web_server_AT_Examples` 获取更多信息。
 
-为了实现您自己的 HTML 页面，请参考示例 :component:`fs_image/index.html`。为了实现您自己的 AT+WEBSERVER 命令，请参考示例 :component:`at/src/at_web_server_cmd.c`。
+为了实现您自己的 HTML 页面，请参考示例 :component_file:`fs_image/index.html`。为了实现您自己的 AT+WEBSERVER 命令，请参考示例 :component_file:`at/src/at_web_server_cmd.c`。
 
 此命令的应用场景如下：
 

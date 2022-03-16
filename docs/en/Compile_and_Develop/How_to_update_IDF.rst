@@ -1,15 +1,15 @@
 How to Update the ESP-IDF Version
 =================================
 
+{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c3="MINI-1"}
+
 :link_to_translation:`zh_CN:[中文]`
 
-ESP-AT firmware is based on the Espressif IoT Development Framework (ESP-IDF), and each version of ESP-AT firmware corresponds to a specific ESP-IDF version. It is strongly recommended to use the default ESP-IDF version of the ESP-AT project, and **NOT** recommended to update it, because the inconsistency between the underlying ESP-IDF versions of libesp_*_at_core.a and the ESP-AT project may cause incorrect operation of the firmware.
+ESP-AT firmware is based on the Espressif IoT Development Framework (ESP-IDF), and each version of ESP-AT firmware corresponds to a specific ESP-IDF version. It is strongly recommended to use the default ESP-IDF version of the ESP-AT project, and **NOT** recommended to update it, because the inconsistency between the underlying ESP-IDF versions of lib{IDF_TARGET_PATH_NAME}_at_core.a and the ESP-AT project may cause incorrect operation of the firmware.
 
 However, in some special cases, a minor updated ESP-IDF version may be also able to work with the ESP-AT project. In case you should update it, this document can be a reference.
 
-The ESP-IDF version that a specific ESP-AT firmware corresponds to is recorded in the ``IDF_VERSION`` files, which are distributed in different module folders under the :AT:`module_config` folder. The file describes the branch, commit ID, and repository URL of the ESP-IDF that a module firmware is based on.
-
-For example, the ``IDF_VERSION`` of the ``WROOM-32`` module of ``PLATFORM_ESP32`` platform is located at :AT:`module_config/module_esp32_default/IDF_VERSION`.
+The ESP-IDF version that a specific ESP-AT firmware corresponds to is recorded in the ``IDF_VERSION`` files, which are distributed in different module folders under the :project:`module_config` folder. The file describes the branch, commit ID, and repository URL of the ESP-IDF that a module firmware is based on. For example, the ``IDF_VERSION`` of the ``{IDF_TARGET_COMPILE_MNAME}`` module of ``PLATFORM_{IDF_TARGET_CFG_PREFIX}`` platform is located at :project_file:`module_config/module_{IDF_TARGET_PATH_NAME}_default/IDF_VERSION`.
 
 If you want to update the ESP-IDF version for your ESP-AT firmware, please follow the steps:
 

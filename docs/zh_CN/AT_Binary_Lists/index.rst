@@ -4,10 +4,10 @@ AT 固件
 :link_to_translation:`en:[English]`
 
 .. toctree::
-   :maxdepth: 1
-   
-   ESP32 AT binaries <ESP32_AT_binaries>
-   ESP32-C3 AT binaries <ESP32-C3_AT_binaries>
+  :maxdepth: 1
+
+  :esp32: ESP32 AT binaries <ESP32_AT_binaries>
+  :esp32c3: ESP32-C3 AT binaries <ESP32-C3_AT_binaries>
 
 以上链接中下载的 ESP-AT 固件包含了若干个特定功能的二进制文件，``factory/factory_xxx.bin`` 文件是这些特定功能的二进制文件的合集。您可以仅烧录 ``factory/factory_xxx.bin`` 到起始地址为 0 的 flash 空间中，或者根据 ``download.config`` 文件中的信息将若干个二进制文件烧录到 flash 中对应起始地址的空间中。关于如何下载，请参考 :ref:`下载 AT 固件 <download-at-firmware>`。
 
@@ -19,6 +19,8 @@ AT 固件
       如果您设计了自己的模组，那么可以参考 :doc:`../Compile_and_Develop/How_to_create_factory_parameter_bin` 对自定义模组进行配置，编译后会自动生成固件。或者，您也可以根据 ``UART 管脚/PSRAM/Flash`` 配置选择相似配置的固件（前提是要确保硬件满足要求，有关哪些固件适用于您的模组，请参考 :doc:`../Compile_and_Develop/esp-at_firmware_differences`）。
 
       当您根据 ``download.config`` 文件内容将固件下载到自定义模组中时，请使用自定义参数固件 ``customized_partitions/factory_param_XXX.bin`` 来代替 ``customized_partitions/factory_param.bin``。UART CTS 和 RTS 管脚是可选的。
+
+.. only:: esp32
 
     - **ESP32 系列**
 
@@ -52,6 +54,8 @@ AT 固件
            - GPIO15
            - GPIO14
          - ``factory_param_SOLO-1.bin``
+
+.. only:: esp32c3
 
     - **ESP32-C3 系列**
 

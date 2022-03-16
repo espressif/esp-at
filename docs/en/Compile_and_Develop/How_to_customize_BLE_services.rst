@@ -14,7 +14,7 @@ The Bluetooth LE services are defined as a multivariate array of GATT structures
 Bluetooth LE Service Source File
 ---------------------------------
 
-The ESP-AT project creates Bluetooth LE services based on its Bluetooth LE service source file. It is located in :component:`components/customized_partitions/raw_data/ble_data/example.csv`. The table below shows the default source file. 
+The ESP-AT project creates Bluetooth LE services based on its Bluetooth LE service source file. It is located in :component_file:`customized_partitions/raw_data/ble_data/example.csv`. The table below shows the default source file.
 
 .. list-table::
    :header-rows: 1
@@ -280,9 +280,14 @@ You can download ble_data.bin in either of the following ways, corresponding to 
 
   Replace ``PORTNAME`` with your port name and replace ``ADDRESS`` with download ble_data.bin address. The ble_data.bin has different addresses in different modules.
 
-  - ESP32: 0x21000
-  - ESP32-C3: 0x1F000
-  - ESP32-C3 QCLOUD: 0x21000
+  .. only:: esp32
+
+    - ESP32: 0x21000
+
+  .. only:: esp32c3
+
+    - ESP32-C3: 0x1F000
+    - ESP32-C3 QCLOUD: 0x21000
 
 After the download is complete, re-establish the Bluetooth LE connection. Query the server service on the client side as follows:
 

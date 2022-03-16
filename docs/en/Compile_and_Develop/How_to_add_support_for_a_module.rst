@@ -3,7 +3,7 @@ How to Add Support for a Module
 
 :link_to_translation:`zh_CN:[中文]`
 
-The ESP-AT project supports multiple modules, and provides configuration for them in the :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` table and the files in the :AT:`module_config` folder. See the table below for the supported platforms (chip series) and modules, as well as locations of the default configuration files.
+The ESP-AT project supports multiple modules, and provides configuration for them in the :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` table and the files in the :project:`module_config` folder. See the table below for the supported platforms (chip series) and modules, as well as locations of the default configuration files.
 
 .. list-table:: default configuration files
    :header-rows: 1
@@ -17,28 +17,28 @@ The ESP-AT project supports multiple modules, and provides configuration for the
        - PICO-D4
        - SOLO-1
        - MINI-1
-     - - :AT:`module_config/module_esp32_default/sdkconfig.defaults`
-       - :AT:`module_config/module_esp32_default/sdkconfig_silence.defaults`
+     - - :project_file:`module_config/module_esp32_default/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32_default/sdkconfig_silence.defaults`
    * - ESP32
      - WROVER-32
-     - - :AT:`module_config/module_wrover-32/sdkconfig.defaults`
-       - :AT:`module_config/module_wrover-32/sdkconfig_silence.defaults`
+     - - :project_file:`module_config/module_wrover-32/sdkconfig.defaults`
+       - :project_file:`module_config/module_wrover-32/sdkconfig_silence.defaults`
    * - ESP32
      - ESP32-D2WD
-     - - :AT:`module_config/module_esp32-d2wd/sdkconfig.defaults`
-       - :AT:`module_config/module_esp32-d2wd/sdkconfig_silence.defaults`
+     - - :project_file:`module_config/module_esp32-d2wd/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32-d2wd/sdkconfig_silence.defaults`
    * - ESP32
      - ESP32_QCLOUD
-     - - :AT:`module_config/module_esp32_qcloud/sdkconfig.defaults`
-       - :AT:`module_config/module_esp32_qcloud/sdkconfig_silence.defaults`
+     - - :project_file:`module_config/module_esp32_qcloud/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32_qcloud/sdkconfig_silence.defaults`
    * - ESP32-C3
      - MINI-1
-     - - :AT:`module_config/module_esp32c3_default/sdkconfig.defaults`
-       - :AT:`module_config/module_esp32c3_default/sdkconfig_silence.defaults`
+     - - :project_file:`module_config/module_esp32c3_default/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32c3_default/sdkconfig_silence.defaults`
    * - ESP32-C3
      - ESP32C3_QCLOUD
-     - - :AT:`module_config/module_esp32c3_qcloud/sdkconfig.defaults`
-       - :AT:`module_config/module_esp32c3_qcloud/sdkconfig_silence.defaults`
+     - - :project_file:`module_config/module_esp32c3_qcloud/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32c3_qcloud/sdkconfig_silence.defaults`
 
 .. note::
 
@@ -56,7 +56,7 @@ The document uses an example to explain how to add support for an ESP module in 
 Add Module to factory_param_data.csv
 ------------------------------------
 
-Open your local :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`, insert a new row at the end, set the parameters as needed. In the example, we set ``platform`` to ``PLATFORM_ESP32``, ``module_name`` to ``WROOM32-SDIO``, as well as other parameters as follows (see :ref:`factory-param-type-csv` for what each parameter represents):
+Open your local :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`, insert a new row at the end, set the parameters as needed. In the example, we set ``platform`` to ``PLATFORM_ESP32``, ``module_name`` to ``WROOM32-SDIO``, as well as other parameters as follows (see :ref:`factory-param-type-csv` for what each parameter represents):
 
 - platform: PLATFORM_ESP32
 - module_name: WROOM32-SDIO

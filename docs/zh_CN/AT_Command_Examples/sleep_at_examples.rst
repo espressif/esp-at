@@ -1,9 +1,11 @@
 Sleep AT 示例
 ==================================
 
+{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c3="esp32-c3"}
+
 :link_to_translation:`en:[English]`
 
-本文档简要介绍并举例说明如何在 ESP32 和 ESP32-C3 系列产品上使用 AT 命令设置睡眠模式。
+本文档简要介绍并举例说明如何在 {IDF_TARGET_NAME} 系列产品上使用 AT 命令设置睡眠模式。
 
 .. contents::
    :local:
@@ -12,20 +14,20 @@ Sleep AT 示例
 简介
 ----
 
-ESP32 和 ESP32-C3 系列采用先进的电源管理技术，可以在不同的电源模式之间切换。当前，ESP-AT 支持以下四种功耗模式（更多休眠模式请参考技术规格书）：
+{IDF_TARGET_NAME} 系列采用先进的电源管理技术，可以在不同的电源模式之间切换。当前，ESP-AT 支持以下四种功耗模式（更多休眠模式请参考技术规格书）：
 
 1. ``Active`` 模式：芯片射频处于工作状态。芯片可以接收、发射和侦听信号。
 2. ``Modem-sleep`` 模式：CPU 可运行，时钟可被配置。Wi-Fi 基带、蓝牙基带和射频关闭。
 3. ``Light-sleep`` 模式：CPU 暂停运行。RTC 存储器和外设以及 ULP 协处理器运行。任何唤醒事件（MAC、主机、RTC 定时器或外部中断）都会唤醒芯片。
 4. ``Deep-sleep`` 模式：CPU 和大部分外设都会掉电，只有 RTC 存储器和 RTC 外设处于工作状态。
 
-默认情况下，ESP32 和 ESP32-C3 会在系统复位后进入 ``Active`` 模式。当 CPU 不需要一直工作时，例如等待外部活动唤醒时，系统可以进入低功耗模式。
+默认情况下，{IDF_TARGET_NAME} 会在系统复位后进入 ``Active`` 模式。当 CPU 不需要一直工作时，例如等待外部活动唤醒时，系统可以进入低功耗模式。
 
-对于 ESP32 和 ESP32-C3 的功耗，请参考 `ESP32 系列芯片技术规格书 <https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_cn.pdf>`__ 和 `ESP32-C3 系列芯片技术规格书 <https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_cn.pdf>`__。
+{IDF_TARGET_NAME} 的功耗，请参考 `{IDF_TARGET_NAME} 系列芯片技术规格书 <https://www.espressif.com/sites/default/files/documentation/{IDF_TARGET_HYPHEN_LOWERCASE_NAME}_datasheet_cn.pdf>`__。
 
 .. note::
 
-  * 将分别描述在 Wi-Fi 模式和蓝牙模式下将 ESP32 和 ESP32-C3 设置为睡眠模式。
+  * 将分别描述在 Wi-Fi 模式和蓝牙模式下将 {IDF_TARGET_NAME} 设置为睡眠模式。
   * 在单 Wi-Fi 模式下，只有 ``station`` 模式支持 ``Modem-sleep`` 模式和 ``Light-sleep`` 模式。
   * 对于蓝牙模式下的 ``Light-sleep`` 模式，请确保外部存在 32 KHz 晶振。如果外部不存在 32 KHz 晶振，ESP-AT 将工作在 Modem-sleep 模式。
 
@@ -36,23 +38,12 @@ ESP32 和 ESP32-C3 系列采用先进的电源管理技术，可以在不同的�
 
 硬件连接可参考如下。
 
-1. ESP32 系列
-
-.. figure:: ../../_static/esp32-hardware-connection.png
+.. figure:: ../../_static/{IDF_TARGET_HYPHEN_LOWERCASE_NAME}-hardware-connection.png
     :scale: 100 %
     :align: center
-    :alt: ESP32 硬件连接
+    :alt: {IDF_TARGET_NAME} 硬件连接
 
-    ESP32 硬件连接
-
-2. ESP32-C3 系列
-
-.. figure:: ../../_static/esp32-c3-hardware-connection.png
-    :scale: 100 %
-    :align: center
-    :alt: ESP32-C3 硬件连接
-
-    ESP32-C3 硬件连接
+    {IDF_TARGET_NAME} 硬件连接
 
 在 Wi-Fi 模式下设置为 Modem-sleep 模式
 -----------------------------------------
@@ -106,11 +97,19 @@ ESP32 和 ESP32-C3 系列采用先进的电源管理技术，可以在不同的�
 
      OK
 
-.. note::
+.. only:: esp32
 
-  * RF 将根据 AP 的 DTIM 定期关闭（路由器一般设置 DTIM 为 1）。
-  * 当 ESP32 模组的 CPU 频率为 80 MHz 并且模组处于单 Wi-Fi 模式下时，Modem-sleep 模式下的平均电流约为 ``21`` mA。
-  * 当 ESP32-C3 模组的 CPU 频率为 160 MHz 并且模组处于单 Wi-Fi 模式下时，Modem-sleep 模式下的平均电流约为 ``20`` mA。
+  .. note::
+
+    * RF 将根据 AP 的 DTIM 定期关闭（路由器一般设置 DTIM 为 1）。
+    * 当 ESP32 模组的 CPU 频率为 80 MHz 并且模组处于单 Wi-Fi 模式下时，Modem-sleep 模式下的平均电流约为 ``21`` mA。
+
+.. only:: esp32c3
+
+  .. note::
+
+    * RF 将根据 AP 的 DTIM 定期关闭（路由器一般设置 DTIM 为 1）。
+    * 当 ESP32-C3 模组的 CPU 频率为 160 MHz 并且模组处于单 Wi-Fi 模式下时，Modem-sleep 模式下的平均电流约为 ``20`` mA。
 
 在 Wi-Fi 模式下设置为 Light-sleep 模式
 -----------------------------------------
@@ -164,11 +163,19 @@ ESP32 和 ESP32-C3 系列采用先进的电源管理技术，可以在不同的�
 
      OK
 
-.. note::
+.. only:: esp32
 
-  * CPU 将会自动休眠，RF 则会根据 :ref:`AT+CWJAP <cmd-JAP>` 设置的监听间隔定期关闭。
-  * 当 ESP32 模组处于单 Wi-Fi 模式下时，Light-sleep 模式下平均电流约为 ``0.8`` mA。
-  * 当 ESP32-C3 模组处于单 Wi-Fi 模式下时，Light-sleep 模式下平均电流约为 ``130`` uA。
+  .. note::
+
+    * CPU 将会自动休眠，RF 则会根据 :ref:`AT+CWJAP <cmd-JAP>` 设置的监听间隔定期关闭。
+    * 当 ESP32 模组处于单 Wi-Fi 模式下时，Light-sleep 模式下平均电流约为 ``0.8`` mA。
+
+.. only:: esp32c3
+
+  .. note::
+
+    * CPU 将会自动休眠，RF 则会根据 :ref:`AT+CWJAP <cmd-JAP>` 设置的监听间隔定期关闭。
+    * 当 ESP32-C3 模组处于单 Wi-Fi 模式下时，Light-sleep 模式下平均电流约为 ``130`` uA。
 
 在蓝牙广播态下设置为 Modem-sleep 模式
 ------------------------------------------------------
@@ -243,10 +250,17 @@ ESP32 和 ESP32-C3 系列采用先进的电源管理技术，可以在不同的�
 
      OK
 
-.. note::
+.. only:: esp32
 
-  * 当 ESP32 模组的 CPU 频率为 80 MHz 时并且模组处于单蓝牙广播态模式时，Modem-sleep 模式下的平均电流约为 ``23`` mA。
-  * 当 ESP32-C3 模组的 CPU 频率为 160 MHz 时并且模组处于单蓝牙广播态模式时，Modem-sleep 模式下的平均电流约为 ``20`` mA。
+  .. note::
+
+    当 ESP32 模组的 CPU 频率为 80 MHz 时并且模组处于单蓝牙广播态模式时，Modem-sleep 模式下的平均电流约为 ``23`` mA。
+
+.. only:: esp32c3
+
+  .. note::
+
+    当 ESP32-C3 模组的 CPU 频率为 160 MHz 时并且模组处于单蓝牙广播态模式时，Modem-sleep 模式下的平均电流约为 ``20`` mA。
 
 在蓝牙连接态下设置为 Modem-sleep 模式
 ------------------------------------------------------
@@ -348,10 +362,17 @@ ESP32 和 ESP32-C3 系列采用先进的电源管理技术，可以在不同的�
 
      OK
 
-.. note::
+.. only:: esp32
 
-  * 当 ESP32 的 CPU 频率为 80 MHz 时并且处于蓝牙连接态模式时，Modem-sleep 模式下的平均电流约为 ``23`` mA。
-  * 当 ESP32-C3 的 CPU 频率为 160 MHz 时并且处于蓝牙连接态模式时，Modem-sleep 模式下的平均电流约为 ``20`` mA。
+  .. note::
+
+    当 ESP32 的 CPU 频率为 80 MHz 时并且处于蓝牙连接态模式时，Modem-sleep 模式下的平均电流约为 ``23`` mA。
+
+.. only:: esp32c3
+
+  .. note::
+
+    当 ESP32-C3 的 CPU 频率为 160 MHz 时并且处于蓝牙连接态模式时，Modem-sleep 模式下的平均电流约为 ``20`` mA。
 
 在蓝牙广播态下设置为 Light-sleep 模式
 -------------------------------------------------------
@@ -426,10 +447,17 @@ ESP32 和 ESP32-C3 系列采用先进的电源管理技术，可以在不同的�
 
      OK
 
-.. note::
+.. only:: esp32
 
-  * 当 ESP32 模组处于蓝牙广播态模式时，Light-sleep 模式下的平均电流约为 ``0.8`` mA。
-  * 当 ESP32-C3 模组处于蓝牙广播态模式时，Light-sleep 模式下的平均电流约为 ``130`` uA。
+  .. note::
+
+    当 ESP32 模组处于蓝牙广播态模式时，Light-sleep 模式下的平均电流约为 ``0.8`` mA。
+
+.. only:: esp32c3
+
+  .. note::
+
+    当 ESP32-C3 模组处于蓝牙广播态模式时，Light-sleep 模式下的平均电流约为 ``130`` uA。
 
 在蓝牙连接态下设置为 Light-sleep 模式
 -----------------------------------------------------
@@ -531,10 +559,17 @@ ESP32 和 ESP32-C3 系列采用先进的电源管理技术，可以在不同的�
 
      OK
 
-.. note::
+.. only:: esp32
 
-  * 当 ESP32 模组处于蓝牙连接态模式时，Light-sleep 模式下的平均电流约为 ``0.8`` mA。
-  * 当 ESP32-C3 模组处于蓝牙连接态模式时，Light-sleep 模式下的平均电流约为 ``130`` uA。
+  .. note::
+
+    当 ESP32 模组处于蓝牙连接态模式时，Light-sleep 模式下的平均电流约为 ``0.8`` mA。
+
+.. only:: esp32c3
+
+  .. note::
+
+    当 ESP32-C3 模组处于蓝牙连接态模式时，Light-sleep 模式下的平均电流约为 ``130`` uA。
 
 设置为 Deep-sleep 模式
 -----------------------
@@ -558,7 +593,14 @@ ESP32 和 ESP32-C3 系列采用先进的电源管理技术，可以在不同的�
    - 设定时间到后，设备自动唤醒，调用深度睡眠唤醒桩，然后加载应用程序。
    - 对于 Deep-sleep 模式，唯一的唤醒方法是定时唤醒。
 
-.. note::
+.. only:: esp32
 
-  * 当 ESP32 模组处于 Deep-sleep 模式时，Deep-sleep 模式下的平均电流约为 ``10`` uA。
-  * 当 ESP32-C3 模组处于 Deep-sleep 模式时，Deep-sleep 模式下的平均电流约为 ``5`` uA。
+  .. note::
+
+    当 ESP32 模组处于 Deep-sleep 模式时，Deep-sleep 模式下的平均电流约为 ``10`` uA。
+
+.. only:: esp32c3
+
+  .. note::
+
+    当 ESP32-C3 模组处于 Deep-sleep 模式时，Deep-sleep 模式下的平均电流约为 ``5`` uA。

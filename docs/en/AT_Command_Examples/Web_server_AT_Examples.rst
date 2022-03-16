@@ -442,7 +442,7 @@ The WeChat applet support online firmware upgrade , please refer to the above-de
 
 .. _using-captive-portal:
 
-[ESP32][ESP32-C Series] Using Captive Portal
+{IDF_TARGET_NAME} Using Captive Portal
 --------------------------------------------------------------
 
 Introduction

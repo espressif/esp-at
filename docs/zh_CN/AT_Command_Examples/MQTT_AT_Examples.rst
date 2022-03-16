@@ -15,16 +15,16 @@ MQTT AT 示例
 基于 TCP 的 MQTT 连接（需要本地创建 MQTT 代理）（适用于数据量少）
 ------------------------------------------------------------------------
 
-以下示例同时使用两块 ESP32 开发板，其中一块作为 MQTT 发布者（只作为 MQTT 发布者角色），另一块作为 MQTT 订阅者（只作为 MQTT 订阅者角色）。
+以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 MQTT 发布者（只作为 MQTT 发布者角色），另一块作为 MQTT 订阅者（只作为 MQTT 订阅者角色）。
 
 示例介绍了如何基于 TCP 创建 MQTT 连接。首先您需要创建一个本地 MQTT 代理，假设 MQTT 代理的 IP 地址为 ``192.168.3.102``，端口为 ``8883``。
 
 .. Important::
-  步骤中以 ``ESP32 MQTT 发布者`` 开头的操作只需要在 ESP32 MQTT 发布者端执行即可，以 ``ESP32 MQTT 订阅者`` 开头的操作只需要在 ESP32 MQTT 订阅者端执行即可。如果操作没有特别指明在哪端操作，则需要在发布者端和订阅者端都执行。
+  步骤中以 ``{IDF_TARGET_NAME} MQTT 发布者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 发布者端执行即可，以 ``{IDF_TARGET_NAME} MQTT 订阅者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 订阅者端执行即可。如果操作没有特别指明在哪端操作，则需要在发布者端和订阅者端都执行。
 
 #. 设置 MQTT 用户属性。
 
-   ESP32 MQTT 发布者：
+   {IDF_TARGET_NAME} MQTT 发布者：
 
    命令：
 
@@ -38,7 +38,7 @@ MQTT AT 示例
 
      OK
 
-   ESP32 MQTT 订阅者：
+   {IDF_TARGET_NAME} MQTT 订阅者：
 
    命令：
 
@@ -74,7 +74,7 @@ MQTT AT 示例
 
 #. 订阅 MQTT 主题。
 
-   ESP32 MQTT 订阅者：
+   {IDF_TARGET_NAME} MQTT 订阅者：
 
    命令：
 
@@ -90,7 +90,7 @@ MQTT AT 示例
 
 #. 发布 MQTT 消息（字符串）。
 
-   ESP32 MQTT 发布者：
+   {IDF_TARGET_NAME} MQTT 发布者：
 
    命令：
 
@@ -106,7 +106,7 @@ MQTT AT 示例
 
    说明：
 
-   - 如果 ESP32 MQTT 发布者成功发布消息，以下信息将会在 ESP32 MQTT 订阅者端提示。
+   - 如果 {IDF_TARGET_NAME} MQTT 发布者成功发布消息，以下信息将会在 {IDF_TARGET_NAME} MQTT 订阅者端提示。
 
      .. code-block:: none
 
@@ -129,18 +129,18 @@ MQTT AT 示例
 基于 TCP 的 MQTT 连接（需要本地创建 MQTT 代理）（适用于数据量多）
 ---------------------------------------------------------------------------
 
-以下示例同时使用两块 ESP32 开发板，其中一块作为 MQTT 发布者（只作为 MQTT 发布者角色），另一块作为 MQTT 订阅者（只作为 MQTT 订阅者角色）。
+以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 MQTT 发布者（只作为 MQTT 发布者角色），另一块作为 MQTT 订阅者（只作为 MQTT 订阅者角色）。
 
 示例介绍了如何基于 TCP 创建 MQTT 连接。首先您需要创建一个本地 MQTT 代理，假设 MQTT 代理的 IP 地址为 ``192.168.3.102``，端口为 ``8883``。
 
 如果您发布消息的数据量相对较多，已经超过了单条 AT 指令的长度阈值 ``256``，则建议您可以使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
 
 .. Important::
-  步骤中以 ``ESP32 MQTT 发布者`` 开头的操作只需要在 ESP32 MQTT 发布者端执行即可，以 ``ESP32 MQTT 订阅者`` 开头的操作只需要在 ESP32 MQTT 订阅者端执行即可。如果操作没有特别指明在哪端操作，则需要在发布者端和订阅者端都执行。
+  步骤中以 ``{IDF_TARGET_NAME} MQTT 发布者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 发布者端执行即可，以 ``{IDF_TARGET_NAME} MQTT 订阅者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 订阅者端执行即可。如果操作没有特别指明在哪端操作，则需要在发布者端和订阅者端都执行。
 
 #. 设置 MQTT 用户属性。
 
-   ESP32 MQTT 发布者：
+   {IDF_TARGET_NAME} MQTT 发布者：
 
    命令：
 
@@ -154,7 +154,7 @@ MQTT AT 示例
 
      OK
 
-   ESP32 MQTT 订阅者：
+   {IDF_TARGET_NAME} MQTT 订阅者：
 
    命令：
 
@@ -190,7 +190,7 @@ MQTT AT 示例
 
 #. 订阅 MQTT 主题。
 
-   ESP32 MQTT 订阅者：
+   {IDF_TARGET_NAME} MQTT 订阅者：
 
    命令：
 
@@ -212,7 +212,7 @@ MQTT AT 示例
 
      {"headers": {"Accept": "application/json","Accept-Encoding": "gzip, deflate","Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7","Content-Length": "0","Host": "httpbin.org","Origin": "http://httpbin.org","Referer": "http://httpbin.org/","User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36","X-Amzn-Trace-Id": "Root=1-6150581e-1ad4bd5254b4bf5218070413"}}
 
-   ESP32 MQTT 发布者：
+   {IDF_TARGET_NAME} MQTT 发布者：
 
    命令：
 
@@ -237,7 +237,7 @@ MQTT AT 示例
    说明：
 
    - ``AT`` 输出 ``>`` 字符后，数据中的特殊字符不需要转义字符进行转义，也不需要以新行结尾（CR-LF）。
-   - 如果 ESP32 MQTT 发布者成功发布消息，以下信息将会在 ESP32 MQTT 订阅者端提示。
+   - 如果 {IDF_TARGET_NAME} MQTT 发布者成功发布消息，以下信息将会在 {IDF_TARGET_NAME} MQTT 订阅者端提示。
 
      .. code-block:: none
 
@@ -260,12 +260,12 @@ MQTT AT 示例
 基于 TLS 的 MQTT 连接（需要本地创建 MQTT 代理）
 -------------------------------------------------
 
-以下示例同时使用两块 ESP32 开发板，其中一块作为 MQTT 发布者（只作为 MQTT 发布者角色），另一块作为 MQTT 订阅者（只作为 MQTT 订阅者角色）。
+以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 MQTT 发布者（只作为 MQTT 发布者角色），另一块作为 MQTT 订阅者（只作为 MQTT 订阅者角色）。
 
 示例介绍了如何基于 TLS 创建 MQTT 连接。首先您需要创建一个本地 MQTT 代理，假设 MQTT 代理的 IP 地址为 ``192.168.3.102``，端口为 ``8883``。
 
 .. Important::
-  步骤中以 ``ESP32 MQTT 发布者`` 开头的操作只需要在 ESP32 MQTT 发布者端执行即可，以 ``ESP32 MQTT 订阅者`` 开头的操作只需要在 ESP32 MQTT 订阅者端执行即可。如果操作没有特别指明在哪端操作，则需要在发布者端和订阅者端都执行。
+  步骤中以 ``{IDF_TARGET_NAME} MQTT 发布者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 发布者端执行即可，以 ``{IDF_TARGET_NAME} MQTT 订阅者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 订阅者端执行即可。如果操作没有特别指明在哪端操作，则需要在发布者端和订阅者端都执行。
 
 #. 设置时区和 SNTP 服务器。
 
@@ -304,7 +304,7 @@ MQTT AT 示例
 
 #. 设置 MQTT 用户属性。
 
-   ESP32 MQTT 发布者：
+   {IDF_TARGET_NAME} MQTT 发布者：
 
    命令：
 
@@ -318,7 +318,7 @@ MQTT AT 示例
 
      OK
 
-   ESP32 MQTT 订阅者：
+   {IDF_TARGET_NAME} MQTT 订阅者：
 
    命令：
 
@@ -368,7 +368,7 @@ MQTT AT 示例
 
 #. 订阅 MQTT 主题。
 
-   ESP32 MQTT 订阅者：
+   {IDF_TARGET_NAME} MQTT 订阅者：
 
    命令：
 
@@ -384,7 +384,7 @@ MQTT AT 示例
 
 #. 发布 MQTT 消息（字符串）。
 
-   ESP32 MQTT 发布者：
+   {IDF_TARGET_NAME} MQTT 发布者：
 
    命令：
 
@@ -400,7 +400,7 @@ MQTT AT 示例
 
    说明：
 
-   - 如果 ESP32 MQTT 发布者成功发布消息，以下信息将会在 ESP32 MQTT 订阅者端提示。
+   - 如果 {IDF_TARGET_NAME} MQTT 发布者成功发布消息，以下信息将会在 {IDF_TARGET_NAME} MQTT 订阅者端提示。
 
      .. code-block:: none
 
@@ -423,12 +423,12 @@ MQTT AT 示例
 基于 WSS 的 MQTT 连接
 -------------------------------------------------
 
-以下示例同时使用两块 ESP32 开发板，其中一块作为 MQTT 发布者（只作为 MQTT 发布者角色），另一块作为 MQTT 订阅者（只作为 MQTT 订阅者角色）。
+以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 MQTT 发布者（只作为 MQTT 发布者角色），另一块作为 MQTT 订阅者（只作为 MQTT 订阅者角色）。
 
 示例介绍了如何基于 WSS 创建 MQTT 连接。MQTT 代理域名为 ``test.mosquitto.org``，端口为 ``8081`` 。
 
 .. Important::
-  步骤中以 ``ESP32 MQTT 发布者`` 开头的操作只需要在 ESP32 MQTT 发布者端执行即可，以 ``ESP32 MQTT 订阅者`` 开头的操作只需要在 ESP32 MQTT 订阅者端执行即可。如果操作没有特别指明在哪端操作，则需要在发布者端和订阅者端都执行。
+  步骤中以 ``{IDF_TARGET_NAME} MQTT 发布者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 发布者端执行即可，以 ``{IDF_TARGET_NAME} MQTT 订阅者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 订阅者端执行即可。如果操作没有特别指明在哪端操作，则需要在发布者端和订阅者端都执行。
 
 #. 设置时区和 SNTP 服务器。
 
@@ -467,7 +467,7 @@ MQTT AT 示例
 
 #. 设置 MQTT 用户属性。
 
-   ESP32 MQTT 发布者：
+   {IDF_TARGET_NAME} MQTT 发布者：
 
    命令：
 
@@ -481,7 +481,7 @@ MQTT AT 示例
 
      OK
 
-   ESP32 MQTT 订阅者：
+   {IDF_TARGET_NAME} MQTT 订阅者：
 
    命令：
 
@@ -517,7 +517,7 @@ MQTT AT 示例
 
 #. 订阅 MQTT 主题。
 
-   ESP32 MQTT 订阅者：
+   {IDF_TARGET_NAME} MQTT 订阅者：
 
    命令：
 
@@ -533,7 +533,7 @@ MQTT AT 示例
 
 #. 发布 MQTT 消息（字符串）。
 
-   ESP32 MQTT 发布者：
+   {IDF_TARGET_NAME} MQTT 发布者：
 
    命令：
 
@@ -549,7 +549,7 @@ MQTT AT 示例
 
    说明：
 
-   - 如果 ESP32 MQTT 发布者成功发布消息，以下信息将会在 ESP32 MQTT 订阅者端提示。
+   - 如果 {IDF_TARGET_NAME} MQTT 发布者成功发布消息，以下信息将会在 {IDF_TARGET_NAME} MQTT 订阅者端提示。
 
      .. code-block:: none
 

@@ -45,63 +45,67 @@ Parameters
 
 -  **<channel>**: ADC1 channel.
 
-   - For ESP32 devices, the range is [0,7].
+  .. only:: esp32
 
-     .. list-table::
-      :header-rows: 1
+    - For {IDF_TARGET_NAME} devices, the range is [0,7].
 
-      * - CHANNEL
-        - GPIO
-      * - 0
-        - GPIO36
-      * - 1
-        - GPIO37
-      * - 2
-        - GPIO38
-      * - 3
-        - GPIO39
-      * - 4
-        - GPIO32
-      * - 5
-        - GPIO33
-      * - 6
-        - GPIO34
-      * - 7
-        - GPIO35
+      .. list-table::
+        :header-rows: 1
 
-   - For ESP32-C3 devices, the range is [0,4].
+        * - CHANNEL
+          - GPIO
+        * - 0
+          - GPIO36
+        * - 1
+          - GPIO37
+        * - 2
+          - GPIO38
+        * - 3
+          - GPIO39
+        * - 4
+          - GPIO32
+        * - 5
+          - GPIO33
+        * - 6
+          - GPIO34
+        * - 7
+          - GPIO35
 
-     .. list-table::
-      :header-rows: 1
+  .. only:: esp32c3
 
-      * - CHANNEL
-        - GPIO
-      * - 0
-        - GPIO0
-      * - 1
-        - GPIO1
-      * - 2
-        - GPIO2
-      * - 3
-        - GPIO3
-      * - 4
-        - GPIO4
+    - For {IDF_TARGET_NAME} devices, the range is [0,4].
+
+      .. list-table::
+        :header-rows: 1
+
+        * - CHANNEL
+          - GPIO
+        * - 0
+          - GPIO0
+        * - 1
+          - GPIO1
+        * - 2
+          - GPIO2
+        * - 3
+          - GPIO3
+        * - 4
+          - GPIO4
 
 -  **<atten>**: attenuation.
 
-   - For ESP32 devices:
+  .. only:: esp32
 
-     -  0: 0 dB attenuation, effective measurement range is [100, 950] mV.
-     -  1: 2.5 dB attenuation, effective measurement range is [100, 1250] mV.
-     -  2: 6 dB attenuation, effective measurement range is [150, 1750] mV.
-     -  3: 11 dB attenuation, effective measurement range is [150, 2450] mV.
+    -  0: 0 dB attenuation, effective measurement range is [100, 950] mV.
+    -  1: 2.5 dB attenuation, effective measurement range is [100, 1250] mV.
+    -  2: 6 dB attenuation, effective measurement range is [150, 1750] mV.
+    -  3: 11 dB attenuation, effective measurement range is [150, 2450] mV.
 
-   - For ESP32-C3 devices:
+  .. only:: esp32c3
 
-     -  0: 0 dB attenuation, effective measurement range is [0, 750] mV.
-     -  1: 2.5 dB attenuation, effective measurement range is [0, 1050] mV.
-     -  2: 6 dB attenuation, effective measurement range is [0, 1300] mV.
-     -  3: 11 dB attenuation, effective measurement range is [0, 2500] mV.
+    -  0: 0 dB attenuation, effective measurement range is [0, 750] mV.
+    -  1: 2.5 dB attenuation, effective measurement range is [0, 1050] mV.
+    -  2: 6 dB attenuation, effective measurement range is [0, 1300] mV.
+    -  3: 11 dB attenuation, effective measurement range is [0, 2500] mV.
 
 - **<raw data>**: ADC channel value. 
 
@@ -109,24 +113,28 @@ Notes
 ^^^^^
 
 -  ESP-AT only supports ADC1.
--  ESP32 and ESP32-C3 support 12-bit width.
--  For details on how to convert the channel value into voltage, please refer to `ADC Conversion <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/adc.html#adc-conversion>`__ for ESP32 devices and `ADC Conversion <https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/api-reference/peripherals/adc.html#adc-conversion>`__ for ESP32-C3 devices.
+-  {IDF_TARGET_NAME} support 12-bit width.
+-  For details on how to convert the channel value into voltage, please refer to `ADC Conversion <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/adc.html#adc-conversion>`__.
 
 Example
 ^^^^^^^^
 
-::
+.. only:: esp32
 
-    // For ESP32, 0 dB attenuation, effective measurement range is [100, 950] mV
+  ::
+
+    // For {IDF_TARGET_NAME}, 0 dB attenuation, effective measurement range is [100, 950] mV
     // The returned 2048 means the voltage is 2048 / 4095 * 950 = 475.12 mV
     AT+DRVADC=0,0
     +DRVADC:2048
 
     OK
 
-::
+.. only:: esp32c3
 
-    // For ESP32-C3, 0 dB attenuation, effective measurement range is [0, 750] mV
+  ::
+
+    // For {IDF_TARGET_NAME}, 0 dB attenuation, effective measurement range is [0, 750] mV
     // The returned 2048 means the voltage is 2048 / 4095 * 750 = 375.09 mV
     AT+DRVADC=0,0
     +DRVADC:2048
@@ -165,7 +173,7 @@ Notes
 
 -  AT can support a maximum of 4 channels.
 -  The number of channels that you initialize using this command will determine how many channels you can set using other PWM commands, including :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>` and :ref:`AT+DRVPWMFADE <cmd-DRVPWMFADE>`. For example, if you initialize two channels, you can only change the two channels' PWM duty using command ``AT+DRVPWMDUTY``.
--  The frequency and the duty resolution are interdependent. See `Supported Range of Frequency and Duty Resolutions <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/ledc.html#supported-range-of-frequency-and-duty-resolutions>`_ for more details.
+-  The frequency and the duty resolution are interdependent. See `Supported Range of Frequency and Duty Resolutions <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/ledc.html#supported-range-of-frequency-and-duty-resolutions>`_ for more details.
 
 Example
 ^^^^^^^^

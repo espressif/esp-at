@@ -442,7 +442,7 @@ Web Server AT 示例
 
 .. _using-captive-portal:
 
-[ESP32][ESP32-C 系列] 使用 Captive Portal 功能
+{IDF_TARGET_NAME} 使用 Captive Portal 功能
 ----------------------------------------------------------------
 
 简介

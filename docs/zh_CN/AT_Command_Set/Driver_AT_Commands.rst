@@ -45,63 +45,67 @@
 
 -  **<channel>**：ADC1 通道。
 
-   - ESP32 设备的取值范围为 [0,7]。
+  .. only:: esp32
 
-     .. list-table::
-      :header-rows: 1
+    - {IDF_TARGET_NAME} 设备的取值范围为 [0,7]。
 
-      * - 通道
-        - 管脚
-      * - 0
-        - GPIO36
-      * - 1
-        - GPIO37
-      * - 2
-        - GPIO38
-      * - 3
-        - GPIO39
-      * - 4
-        - GPIO32
-      * - 5
-        - GPIO33
-      * - 6
-        - GPIO34
-      * - 7
-        - GPIO35
+      .. list-table::
+        :header-rows: 1
 
-   - ESP32-C3 设备的取值范围为 [0,4]。
+        * - 通道
+          - 管脚
+        * - 0
+          - GPIO36
+        * - 1
+          - GPIO37
+        * - 2
+          - GPIO38
+        * - 3
+          - GPIO39
+        * - 4
+          - GPIO32
+        * - 5
+          - GPIO33
+        * - 6
+          - GPIO34
+        * - 7
+          - GPIO35
 
-     .. list-table::
-      :header-rows: 1
+  .. only:: esp32c3
 
-      * - 通道
-        - 管脚
-      * - 0
-        - GPIO0
-      * - 1
-        - GPIO1
-      * - 2
-        - GPIO2
-      * - 3
-        - GPIO3
-      * - 4
-        - GPIO4
+    - {IDF_TARGET_NAME} 设备的取值范围为 [0,4]。
+
+      .. list-table::
+        :header-rows: 1
+
+        * - 通道
+          - 管脚
+        * - 0
+          - GPIO0
+        * - 1
+          - GPIO1
+        * - 2
+          - GPIO2
+        * - 3
+          - GPIO3
+        * - 4
+          - GPIO4
 
 -  **<atten>**：衰减值。
 
-   - ESP32 设备的参数值：
+  .. only:: esp32
 
-     - 0: 0 dB 衰减，有效测量范围为 [100, 950] mV。
-     - 1: 2.5 dB 衰减，有效测量范围为 [100, 1250] mV。
-     - 2: 6 dB 衰减，有效测量范围为 [150, 1750] mV。
-     - 3: 11 dB 衰减，有效测量范围为 [150, 2450] mV。
+    - 0: 0 dB 衰减，有效测量范围为 [100, 950] mV。
+    - 1: 2.5 dB 衰减，有效测量范围为 [100, 1250] mV。
+    - 2: 6 dB 衰减，有效测量范围为 [150, 1750] mV。
+    - 3: 11 dB 衰减，有效测量范围为 [150, 2450] mV。
 
-   - ESP32-C3 设备的参数值：
+  .. only:: esp32c3
 
-     - 0: 0 dB 衰减，有效测量范围为 [0, 750] mV。
-     - 1: 2.5 dB 衰减，有效测量范围为 [0, 1050] mV。
-     - 2: 6 dB 衰减，有效测量范围为 [0, 1300] mV。
-     - 3: 11 dB 衰减，有效测量范围为 [0, 2500] mV。
+    - 0: 0 dB 衰减，有效测量范围为 [0, 750] mV。
+    - 1: 2.5 dB 衰减，有效测量范围为 [0, 1050] mV。
+    - 2: 6 dB 衰减，有效测量范围为 [0, 1300] mV。
+    - 3: 11 dB 衰减，有效测量范围为 [0, 2500] mV。
 
 - **<raw data>**：ADC 通道值。
 
@@ -109,24 +113,28 @@
 ^^^^
 
 -  ESP-AT 只支持 ADC1。
--  ESP32 和 ESP32-C3 支持 12 位宽度。
--  对于如何将通道值转换为电压，ESP32 设备可以参考 `ADC 转换 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/adc.html#adc-conversion>`__，ESP32-C3 设备可以参考 `ADC 转换 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32c3/api-reference/peripherals/adc.html#adc-conversion>`__。
+-  {IDF_TARGET_NAME} 支持 12 位宽度。
+-  对于如何将通道值转换为电压，可以参考 `ADC 转换 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/adc.html#adc-conversion>`__。
 
 示例
 ^^^^
 
-::
+.. only:: esp32
 
-    // ESP32 设备设置为 0 dB 衰减，有效测量范围为 [100, 950] mV
+  ::
+
+    // {IDF_TARGET_NAME} 设备设置为 0 dB 衰减，有效测量范围为 [100, 950] mV
     // 电压为 2048 / 4095 * 950 = 475.12 mV
     AT+DRVADC=0,0
     +DRVADC:2048
 
     OK
 
-::
+.. only:: esp32c3
 
-    // ESP32-C3 设备设置为 0 dB 衰减，有效测量范围为 [0, 750] mV
+  ::
+
+    // {IDF_TARGET_NAME} 设备设置为 0 dB 衰减，有效测量范围为 [0, 750] mV
     // 电压为 2048 / 4095 * 750 = 375.09 mV
     AT+DRVADC=0,0
     +DRVADC:2048
@@ -165,7 +173,7 @@
 
 -  ESP-AT 最多能支持 4 个通道。
 -  使用本命令初始化的通道数量直接决定了其它 PWM 命令（如 :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>` 和 :ref:`AT+DRVPWMFADE <cmd-DRVPWMFADE>`）能够设置的通道。例如，如果您只初始化了两个通道，那么 ``AT+DRVPWMDUTY`` 命令只能用来更改这两个通道的 PWM 占空比。
--  频率和占空比分辨率相互影响。更多信息请见 `频率和占空比分辨率支持范围 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/peripherals/ledc.html#ledc-api-supported-range-frequency-duty-resolution>`_。
+-  频率和占空比分辨率相互影响。更多信息请见 `频率和占空比分辨率支持范围 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/ledc.html#ledc-api-supported-range-frequency-duty-resolution>`_。
 
 示例
 ^^^^

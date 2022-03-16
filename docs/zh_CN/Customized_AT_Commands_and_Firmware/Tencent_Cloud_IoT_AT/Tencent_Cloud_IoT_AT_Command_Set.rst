@@ -1,7 +1,7 @@
 腾讯云 IoT AT 命令集
 ====================
 
-本文档主要介绍腾讯云 IoT AT 命令、错误码及应用说明，针对 ESP32 & ESP32-C3 设备，下表为本文档的目录。
+本文档主要介绍腾讯云 IoT AT 命令、错误码及应用说明，针对 {IDF_TARGET_NAME} 设备，下表为本文档的目录。
 
 .. contents::
    :local:
@@ -181,7 +181,7 @@ AT+TCDEVINFOSET：平台设备信息设置
 
 **说明：**
 
-- ESP32 & ESP32-C3 模组返回 ``<tls_mode>`` 为 1，且不返回 devicesecret 的字符串内容，只返回 devicesecret 字符串的校验和 (BCC)
+- {IDF_TARGET_NAME} 模组返回 ``<tls_mode>`` 为 1，且不返回 devicesecret 的字符串内容，只返回 devicesecret 字符串的校验和 (BCC)
 
 设置命令
 """"""""
@@ -428,7 +428,7 @@ AT+TCMODULE：模组信息读取
 
     AT+TCMODULE
     Module HW name: ESP-WROOM-32D
-    Module FW version: QCloud_AT_ESP32_v2.0.0
+    Module FW version: QCloud_AT_{IDF_TARGET_CFG_PREFIX}_v2.0.0
     Module Mac addr: 3c:71:bf:33:b0:2e
     Module FW compiled time: Jun 17 2020 16:25:27
     Module Flash size: 2MB
@@ -2009,7 +2009,7 @@ AT+TCVER：读取模组固件 IoT SDK 版本信息
 ::
 
     AT+TCVER
-    Tencent Cloud IoT AT  version: QCloud_AT_ESP32_v2.0.0
+    Tencent Cloud IoT AT  version: QCloud_AT_{IDF_TARGET_CFG_PREFIX}_v2.0.0
     Tencent Cloud IoT SDK version: 3.2.0
     Firmware compile time: Jun 17 2020 16:25:27
     Tencent Technology Co. Ltd.

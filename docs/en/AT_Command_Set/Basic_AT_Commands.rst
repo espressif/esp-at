@@ -111,7 +111,7 @@ Example
 ::
 
     AT+GMR
-    AT version:2.2.0.0-dev(ca41ec4 - ESP32 - Sep 16 2020 11:28:17)
+    AT version:2.2.0.0-dev(ca41ec4 - {IDF_TARGET_NAME} - Sep 16 2020 11:28:17)
     SDK version:v4.0.1-193-ge7ac221b4
     compile time(98b95fc):Oct 29 2020 11:23:25
     Bin version:2.1.0(MINI-1)
@@ -285,7 +285,7 @@ Parameters
 
 -  **<baudrate>**: UART baud rate
 
-   - For ESP32 and ESP32-C3 devices, the supported range is 80 ~ 5000000.
+   - For {IDF_TARGET_NAME} devices, the supported range is 80 ~ 5000000.
 
 -  **<databits>**: data bits
 
@@ -369,7 +369,7 @@ Parameters
 
 -  **<baudrate>**: UART baud rate
 
-   - For ESP32 and ESP32-C3 devices, the supported range is 80 ~ 5000000.
+   - For {IDF_TARGET_NAME} devices, the supported range is 80 ~ 5000000.
 
 -  **<databits>**: data bits
 
@@ -494,7 +494,7 @@ Note
 -  Modem-sleep mode and Light-sleep mode can be set under Wi-Fi mode or BLE mode, but in Wi-Fi mode, these two modes can only be set in ``station`` mode.
 -  Before setting the Light-sleep mode, it is recommended to set the wakeup source in advance through the command :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`, otherwise ESP devices can't wake up and will always be in sleep mode.
 -  After setting the Light-sleep mode, if the Light-sleep wakeup condition is not met, ESP devices will automatically enter the sleep mode. When the Light-sleep wakeup condition is met, ESP devices will automatically wake up from sleep mode.
--  For Light-sleep mode in BLE mode, users must ensure external 32KHz crystal oscillator, otherwise the Light-sleep mode will work in Modem-sleep mode. At present, AT only supports Light-sleep of ``ESP32`` to work in Modem-sleep without external 32KHz crystal oscillator.
+-  For Light-sleep mode in BLE mode, users must ensure external 32KHz crystal oscillator, otherwise the Light-sleep mode will work in Modem-sleep mode.
 -  For more examples, please refer to :doc:`../AT_Command_Examples/sleep_at_examples`.
 
 Example
@@ -714,7 +714,7 @@ Notes
 -  Please make sure that you have downloaded at_customize.bin before using this command. For more details, please refer to :doc:`../Compile_and_Develop/How_to_customize_partitions`.
 -  Before downloading the secondary user partition, please refer :doc:`../Compile_and_Develop/how_to_generate_pki_files` to generate the binary user partition file.
 -  When erasing the targeted user partition in its entirety, you can omit the parameters ``<offset>`` and ``<length>``. For example, command ``AT+SYSFLASH=0,"ble_data"`` can erase the entire "ble_data" user partition. But if you want to keep the two parameters, they have to be 4KB-aligned.
--  The introduction to partitions is in `ESP-IDF Partition Tables <http://esp-idf.readthedocs.io/en/latest/api-guides/partition-tables.html>`_.
+-  The introduction to partitions is in `ESP-IDF Partition Tables <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_.
 -  If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
 -  If the operator is ``write``, please make sure that you have already erased this partition.
 -  If the operator is ``write`` on a `PKI bin <https://github.com/espressif/esp-at/blob/master/tools/README.md#2-pki-bin>`_, the ``<length>`` should be 4 bytes aligned.
@@ -774,7 +774,7 @@ Parameters
 Notes
 ^^^^^
 
--  Please make sure that you have downloaded at_customize.bin before using this command. For more details, refer to `ESP-IDF Partition Tables <http://esp-idf.readthedocs.io/en/latest/api-guides/partition-tables.html>`_ and :doc:`../Compile_and_Develop/How_to_customize_partitions`.
+-  Please make sure that you have downloaded at_customize.bin before using this command. For more details, refer to `ESP-IDF Partition Tables <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_ and :doc:`../Compile_and_Develop/How_to_customize_partitions`.
 -  If the length of the read data is greater than the actual file length, only the actual data length of the file will be returned.
 -  If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
 
@@ -840,61 +840,65 @@ Parameters
 
 - **<wifi_power>**: the unit is 0.25 dBm. For example, if you set the value to 78, the actual maximum RF Power value is 78 * 0.25 dBm = 19.5 dBm. After you configure it, please confirm the actual value by entering the command ``AT+RFPOWER?``.
 
-  - For ESP32 devices, the range is [40,84]:
+  .. only:: esp32
 
-    ========= ============ ============ ==========
-    set value   get value  actual value actual dBm
-    ========= ============ ============ ==========
-    [40,43]   34           34           8.5
-    [44,51]   44           44           11
-    [52,55]   52           52           13
-    [56,59]   56           56           14
-    [60,65]   60           60           15
-    [66,71]   66           66           16.5
-    [72,77]   72           72           18
-    [78,84]   78           78           19.5
-    ========= ============ ============ ==========
+    - For {IDF_TARGET_NAME} devices, the range is [40,84]:
 
-  - For ESP32-C3 devices, the range is [40,84]:
+      ========= ============ ============ ==========
+      set value   get value  actual value actual dBm
+      ========= ============ ============ ==========
+      [40,43]   34           34           8.5
+      [44,51]   44           44           11
+      [52,55]   52           52           13
+      [56,59]   56           56           14
+      [60,65]   60           60           15
+      [66,71]   66           66           16.5
+      [72,77]   72           72           18
+      [78,84]   78           78           19.5
+      ========= ============ ============ ==========
 
-    ========= ============ ============ ==========
-    set value   get value  actual value actual dBm
-    ========= ============ ============ ==========
-    [40,80]   <set value>  <set value>  <set value> * 0.25
-    [81,84]   <set value>  80           20
-    ========= ============ ============ ==========
+  .. only:: esp32c3
+
+    - For {IDF_TARGET_NAME} devices, the range is [40,84]:
+
+      ========= ============ ============ ==========
+      set value   get value  actual value actual dBm
+      ========= ============ ============ ==========
+      [40,80]   <set value>  <set value>  <set value> * 0.25
+      [81,84]   <set value>  80           20
+      ========= ============ ============ ==========
 
 -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,7].
 
-   - For ESP32 devices
+  .. only:: esp32
 
-     -  0: 7 dBm
-     -  1: 4 dBm
-     -  2: 1 dBm
-     -  3: -2 dBm
-     -  4: -5 dBm
-     -  5: -8 dBm
-     -  6: -11 dBm
-     -  7: -14 dBm
+    -  0: 7 dBm
+    -  1: 4 dBm
+    -  2: 1 dBm
+    -  3: -2 dBm
+    -  4: -5 dBm
+    -  5: -8 dBm
+    -  6: -11 dBm
+    -  7: -14 dBm
 
-   - For ESP32C3 devices
+  .. only:: esp32c3
 
-     -  0: -27 dBm
-     -  1: -24 dBm
-     -  2: -21 dBm
-     -  3: -18 dBm
-     -  4: -15 dBm
-     -  5: -12 dBm
-     -  6: -9 dBm
-     -  7: -6 dBm
-     -  8: -3 dBm
-     -  9: -0 dBm
-     -  10: 3 dBm
-     -  11: 6 dBm
-     -  12: 9 dBm
-     -  13: 12 dBm
-     -  14: 15 dBm
-     -  15: 18 dBm
+    -  0: -27 dBm
+    -  1: -24 dBm
+    -  2: -21 dBm
+    -  3: -18 dBm
+    -  4: -15 dBm
+    -  5: -12 dBm
+    -  6: -9 dBm
+    -  7: -6 dBm
+    -  8: -3 dBm
+    -  9: -0 dBm
+    -  10: 3 dBm
+    -  11: 6 dBm
+    -  12: 9 dBm
+    -  13: 12 dBm
+    -  14: 15 dBm
+    -  15: 18 dBm
 
 -  **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. The parameters are the same as ``<ble_adv_power>``.
 -  **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. The same as ``<ble_adv_power>``.
@@ -1236,6 +1240,8 @@ Note
 - This command affects set commands only. Query commands are always fetched from RAM.
 - Affected commands:
 
+.. list::
+
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`
   - :ref:`AT+CWMODE <cmd-MODE>`
   - :ref:`AT+CIPV6 <cmd-IPV6>`
@@ -1255,16 +1261,16 @@ Note
   - :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`
   - :ref:`AT+CWAPPROTO <cmd-APPROTO>`
   - :ref:`AT+CWJEAP <cmd-JEAP>`
-  - :ref:`AT+CIPETH <cmd-ETHIP>`
-  - :ref:`AT+CIPETHMAC <cmd-ETHMAC>`
+  :esp32: - :ref:`AT+CIPETH <cmd-ETHIP>`
+  :esp32: - :ref:`AT+CIPETHMAC <cmd-ETHMAC>`
   - :ref:`AT+BLENAME <cmd-BNAME>`
-  - :ref:`AT+BTNAME <cmd-BTNAME>`
+  :esp32: - :ref:`AT+BTNAME <cmd-BTNAME>`
   - :ref:`AT+BLEADVPARAM <cmd-BADVP>`
   - :ref:`AT+BLEADVDATA <cmd-BADVD>`
   - :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`
   - :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`
   - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`
-  - :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`
+  :esp32: - :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`
 
 Examples
 ^^^^^^^^

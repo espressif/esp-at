@@ -1,6 +1,9 @@
 How to Generate Factory Parameter Bin
 ======================================
 
+{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c3="MINI-1"}
+{IDF_TARGET_AT_PARAMS_ADDR: default="undefined", esp32="0x30000", esp32c3="0x31000"}
+
 :link_to_translation:`zh_CN:[中文]`
 
 This document explains how to generate a customized ESP-AT factory parameter bin file (factory_MODULE_NAME.bin) for your module. For example, you may want to self-define the country code, RF restriction, or UART pins in your ESP-AT firmware. The two tables below allow you to define such parameters.
@@ -19,7 +22,7 @@ The following describes how to generate a customized factory parameter bin by mo
 factory_param_type.csv
 -----------------------
 
-The factory_param_type.csv table lists all the parameters that you can define as well as the offset, type, and size of each parameter. It is located in :component:`customized_partitions/raw_data/factory_param/factory_param_type.csv`.
+The factory_param_type.csv table lists all the parameters that you can define as well as the offset, type, and size of each parameter. It is located in :component_file:`customized_partitions/raw_data/factory_param/factory_param_type.csv`.
 
 The table below provides some information about each parameter.
 
@@ -38,7 +41,7 @@ The table below provides some information about each parameter.
    * - reserved1
      - Reserved.
    * - tx_max_power
-     - Wi-Fi maximum tx power for ESP32 and ESP32-C3: [40,84]. See `ESP32 <https://docs.espressif.com/projects/esp-idf/en/release-v4.2/esp32/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t>`_ and `ESP32-C3 <https://docs.espressif.com/projects/esp-idf/en/release-v4.3/esp32c3/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t>`_ tx power setting range for details.
+     - Wi-Fi maximum tx power for {IDF_TARGET_NAME}: [40,84]. See `{IDF_TARGET_NAME} tx power <https://docs.espressif.com/projects/esp-idf/en/release-v4.3/{IDF_TARGET_PATH_NAME}/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t>`_ setting range for details.
    * - uart_port
      - The UART port that is used to send AT commands and receive AT responses.
    * - start_channel
@@ -73,14 +76,14 @@ The table below provides some information about each parameter.
 factory_param_data.csv
 -----------------------
 
-This factory_param_data.csv table holds the values for all the parameters defined in :ref:`factory-param-type-csv`. It covers the modules of ESP32 and ESP32-C3 series. You can customize your factory parameter bin by modifying the values in the table. It is located in :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv`.
+This factory_param_data.csv table holds the values for all the parameters defined in :ref:`factory-param-type-csv`. It covers the modules of {IDF_TARGET_NAME} series. You can customize your factory parameter bin by modifying the values in the table. It is located in :component_file:`customized_partitions/raw_data/factory_param/factory_param_data.csv`.
 
 .. _add-a-customized-module:
 
 Add a Customized Module
 -----------------------
 
-This section demonstrates how to add a customized module in factory_param_data.csv and generate the factory parameter bin for it with an example. Assuming that you want to generate the factory parameter bin for an ESP32 module named as ``MY_MODULE``, its country code is JP, Wi-Fi channel is from 1 to 14, and other parameters stay the same with ``WROOM-32`` module of ``PLATFORM_ESP32``, you can do as follows:
+This section demonstrates how to add a customized module in factory_param_data.csv and generate the factory parameter bin for it with an example. Assuming that you want to generate the factory parameter bin for an {IDF_TARGET_NAME} module named as ``MY_MODULE``, its country code is JP, Wi-Fi channel is from 1 to 14, and other parameters stay the same with ``{IDF_TARGET_COMPILE_MNAME}`` module of ``PLATFORM_{IDF_TARGET_CFG_PREFIX}``, you can do as follows:
 
 .. contents::
   :local:
@@ -94,7 +97,7 @@ Set all parameter values for ``MY_MODULE`` in the factory_param_data.csv table.
 Firstly, insert a row at the bottom of the table, and then enter the following parameter values:
 
 - param_name: value
-- platform: PLATFORM_ESP32
+- platform: PLATFORM_{IDF_TARGET_CFG_PREFIX}
 - module_name: ``MY_MODULE``
 - description: ``MY_DESCRIPTION``
 - magic_flag: 0xfcfc
@@ -120,14 +123,14 @@ The modified factory_param_data.csv file is as follows.
   platform,module_name,description,magic_flag,version,reserved1,tx_max_power,uart_port,start_channel,channel_num,country_code,uart_baudrate,uart_tx_pin,uart_rx_pin,uart_cts_pin,uart_rts_pin,tx_control_pin,rx_control_pin
   PLATFORM_ESP32,WROOM-32,,0xfcfc,3,0,78,1,1,13,CN,115200,17,16,15,14,-1,-1
   ...
-  PLATFORM_ESP32,MY_MODULE,MY_DESCRIPTION,0xfcfc,3,0,78,1,1,14,JP,115200,17,16,15,14,-1,-1
+  PLATFORM_{IDF_TARGET_CFG_PREFIX},MY_MODULE,MY_DESCRIPTION,0xfcfc,3,0,78,1,1,14,JP,115200,17,16,15,14,-1,-1
 
 .. _modify-esp-at-module-info-structure:
 
 Modify ``esp_at_module_info`` Structure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Add customized module information in the ``esp_at_module_info`` structure in :component:`at/src/at_default_config.c`.
+Add customized module information in the ``esp_at_module_info`` structure in :component_file:`at/src/at_default_config.c`.
 
 The ``esp_at_module_info`` structure provides ``OTA`` upgrade verification ``token``:
 
@@ -164,11 +167,11 @@ The modified ``esp_at_module_info`` structure is as follows:
     #endif
     };
 
-Macro ``CONFIG_ESP_AT_OTA_TOKEN_MY_MODULE`` and macro ``CONFIG_ESP_AT_OTA_SSL_TOKEN_MY_MODULE`` are defined in the header file :component:`at/private_include/at_ota_token.h`.
+Macro ``CONFIG_ESP_AT_OTA_TOKEN_MY_MODULE`` and macro ``CONFIG_ESP_AT_OTA_SSL_TOKEN_MY_MODULE`` are defined in the header file :component_file:`at/private_include/at_ota_token.h`.
 
 .. code-block:: none
 
-    #if defined(CONFIG_IDF_TARGET_ESP32)
+    #if defined(CONFIG_IDF_TARGET_{IDF_TARGET_CFG_PREFIX})
     ...
     #define CONFIG_ESP_AT_OTA_TOKEN_MY_MODULE       CONFIG_ESP_AT_OTA_TOKEN_DEFAULT
 
@@ -250,7 +253,7 @@ The modified CSV table is as follows:
     platform,module_name,description,magic_flag,version,reserved1,tx_max_power,uart_port,start_channel,channel_num,country_code,uart_baudrate,uart_tx_pin,uart_rx_pin,uart_cts_pin,uart_rts_pin,tx_control_pin,rx_control_pin,date
     PLATFORM_ESP32,WROOM-32,,0xfcfc,3,0,78,1,1,13,CN,115200,17,16,15,14,-1,-1
     ...
-    PLATFORM_ESP32,MY_MODULE,MY_DESCRIPTION,0xfcfc,3,0,78,1,1,14,JP,115200,17,16,15,14,-1,-1,20210603
+    PLATFORM_{IDF_TARGET_CFG_PREFIX},MY_MODULE,MY_DESCRIPTION,0xfcfc,3,0,78,1,1,14,JP,115200,17,16,15,14,-1,-1,20210603
 
 Process a Customized Parameter
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -344,7 +347,7 @@ Below is the example command for ``MY_MODULE``:
 
 ::
 
-    python tools/factory_param_generate.py --platform PLATFORM_ESP32 --module MY_MODULE --define_file components/customized_partitions/raw_data/factory_param/factory_param_type.csv --module_file components/customized_partitions/raw_data/factory_param/factory_param_data.csv --bin_name ./factory_param.bin --log_file ./factory_parameter.log
+    python tools/factory_param_generate.py --platform PLATFORM_{IDF_TARGET_CFG_PREFIX} --module MY_MODULE --define_file components/customized_partitions/raw_data/factory_param/factory_param_type.csv --module_file components/customized_partitions/raw_data/factory_param/factory_param_data.csv --bin_name ./factory_param.bin --log_file ./factory_parameter.log
 
 After the above command is executed, the three files will be generated in the current directory:
 
@@ -364,21 +367,32 @@ Download the new ``factory_param_MY_MODULE.bin`` into flash. ESP-AT provides `es
 
 - Replace ``ADDRESS`` with the start address in flash. ESP-AT has strict requirements on the ``ADDRESS`` parameter. The address of factory parameter bin varies from firmware to firmware. Please refer to the table below:
 
-  .. list-table:: factory parameter bin download addresses
-     :header-rows: 1
+  .. only:: esp32
 
-     * - Platform
-       - Firmware
-       - Address
-     * - PLATFORM_ESP32
-       - All firmware
-       - 0x30000
-     * - PLATFORM_ESP32C3
-       - MINI-1 Bin
-       - 0x31000
-     * - PLATFORM_ESP32C3
-       - QCLOUD Bin
-       - 0x30000
+    .. list-table:: factory parameter bin download addresses
+      :header-rows: 1
+
+      * - Platform
+        - Firmware
+        - Address
+      * - PLATFORM_ESP32
+        - All firmware
+        - 0x30000
+
+  .. only:: esp32c3
+
+    .. list-table:: factory parameter bin download addresses
+      :header-rows: 1
+
+      * - Platform
+        - Firmware
+        - Address
+      * - PLATFORM_ESP32C3
+        - MINI-1 Bin
+        - 0x31000
+      * - PLATFORM_ESP32C3
+        - QCLOUD Bin
+        - 0x30000
 
 - Replace ``FILEDIRECTORY`` with the relative path of the factory parameter bin.
 
@@ -386,7 +400,7 @@ Below is the example command to flash the generated factory parameter bin to ``M
 
 ::
 
-    python esp-idf/components/esptool_py/esptool/esptool.py -p /dev/ttyUSB0 -b 921600 --before default_reset --after hard_reset --chip auto  write_flash --flash_mode dio --flash_size detect --flash_freq 40m 0x30000 ./factory_param_MY_MODULE.bin
+    python esp-idf/components/esptool_py/esptool/esptool.py -p /dev/ttyUSB0 -b 921600 --before default_reset --after hard_reset --chip auto  write_flash --flash_mode dio --flash_size detect --flash_freq 40m {IDF_TARGET_AT_PARAMS_ADDR} ./factory_param_MY_MODULE.bin
 
 Directly Modify Factory Parameter Bin
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

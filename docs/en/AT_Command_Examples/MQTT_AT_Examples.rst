@@ -15,16 +15,16 @@ This document provides detailed command examples to illustrate how to utilize :d
 MQTT over TCP (with a local MQTT broker)(suitable for a small amount of data)
 ------------------------------------------------------------------------------
 
-Below is an example of using two ESP32 development boards, one as a MQTT publisher (only as MQTT publisher role), the other one as a MQTT subscriber (only as MQTT subscriber role). 
+Below is an example of using two {IDF_TARGET_NAME} development boards, one as a MQTT publisher (only as MQTT publisher role), the other one as a MQTT subscriber (only as MQTT subscriber role).
 
 The example shows how to establish MQTT connections over TCP. You need to first create a local MQTT broker. For example, the MQTT broker's IP address is ``192.168.3.102``, and the port is ``8883``.
 
 .. Important::
-  In the step, the operations starting with ``ESP32 MQTT publisher`` only need to be executed at ESP32 MQTT publisher, and the operations starting with ``ESP32 MQTT subscriber`` only need to be executed at ESP32 MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
+  In the step, the operations starting with ``{IDF_TARGET_NAME} MQTT publisher`` only need to be executed at {IDF_TARGET_NAME} MQTT publisher, and the operations starting with ``{IDF_TARGET_NAME} MQTT subscriber`` only need to be executed at {IDF_TARGET_NAME} MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
 
 #. Set MQTT user configuration.
 
-   ESP32 MQTT publisher:
+   {IDF_TARGET_NAME} MQTT publisher:
 
    Command:
 
@@ -38,7 +38,7 @@ The example shows how to establish MQTT connections over TCP. You need to first 
 
      OK
 
-   ESP32 MQTT subscriber:
+   {IDF_TARGET_NAME} MQTT subscriber:
 
    Command:
 
@@ -74,7 +74,7 @@ The example shows how to establish MQTT connections over TCP. You need to first 
 
 #. Subscribe to MQTT topics.
 
-   ESP32 MQTT subscriber:
+   {IDF_TARGET_NAME} MQTT subscriber:
 
    Command:
 
@@ -90,7 +90,7 @@ The example shows how to establish MQTT connections over TCP. You need to first 
 
 #. Publish MQTT messages in string.
 
-   ESP32 MQTT publisher:
+   {IDF_TARGET_NAME} MQTT publisher:
 
    Command:
 
@@ -106,7 +106,7 @@ The example shows how to establish MQTT connections over TCP. You need to first 
 
    Note:
 
-   - If the ESP32 MQTT publisher successfully publishes the message, following message will be prompted on the ESP32 MQTT subscriber.
+   - If the {IDF_TARGET_NAME} MQTT publisher successfully publishes the message, following message will be prompted on the {IDF_TARGET_NAME} MQTT subscriber.
 
      .. code-block:: none
 
@@ -129,18 +129,18 @@ The example shows how to establish MQTT connections over TCP. You need to first 
 MQTT over TCP (with a local MQTT broker)(suitable for large amounts of data)
 ------------------------------------------------------------------------------
 
-Below is an example of using two ESP32 development boards, one as a MQTT publisher (only as MQTT publisher role), the other one as a MQTT subscriber (only as MQTT subscriber role). 
+Below is an example of using two {IDF_TARGET_NAME} development boards, one as a MQTT publisher (only as MQTT publisher role), the other one as a MQTT subscriber (only as MQTT subscriber role).
 
 The example shows how to establish MQTT connections over TCP. You need to first create a local MQTT broker. For example, the MQTT broker's IP address is ``192.168.3.102``, and the port is ``8883``.
 
 If the amount of data you publish is relatively large, and the length of a single AT command has exceeded the threshold of ``256``, it is recommended that you use the :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` command.
 
 .. Important::
-  In the step, the operations starting with ``ESP32 MQTT publisher`` only need to be executed at ESP32 MQTT publisher, and the operations starting with ``ESP32 MQTT subscriber`` only need to be executed at ESP32 MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
+  In the step, the operations starting with ``{IDF_TARGET_NAME} MQTT publisher`` only need to be executed at {IDF_TARGET_NAME} MQTT publisher, and the operations starting with ``{IDF_TARGET_NAME} MQTT subscriber`` only need to be executed at {IDF_TARGET_NAME} MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
 
 #. Set MQTT user configuration.
 
-   ESP32 MQTT publisher:
+   {IDF_TARGET_NAME} MQTT publisher:
 
    Command:
 
@@ -154,7 +154,7 @@ If the amount of data you publish is relatively large, and the length of a singl
 
      OK
 
-   ESP32 MQTT subscriber:
+   {IDF_TARGET_NAME} MQTT subscriber:
 
    Command:
 
@@ -190,7 +190,7 @@ If the amount of data you publish is relatively large, and the length of a singl
 
 #. Subscribe to MQTT topics.
 
-   ESP32 MQTT subscriber:
+   {IDF_TARGET_NAME} MQTT subscriber:
 
    Command:
 
@@ -212,7 +212,7 @@ If the amount of data you publish is relatively large, and the length of a singl
 
      {"headers": {"Accept": "application/json","Accept-Encoding": "gzip, deflate","Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7","Content-Length": "0","Host": "httpbin.org","Origin": "http://httpbin.org","Referer": "http://httpbin.org/","User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36","X-Amzn-Trace-Id": "Root=1-6150581e-1ad4bd5254b4bf5218070413"}}
 
-   ESP32 MQTT publisher:
+   {IDF_TARGET_NAME} MQTT publisher:
 
    Command:
 
@@ -237,7 +237,7 @@ If the amount of data you publish is relatively large, and the length of a singl
    Note:
 
    - After AT outputs the ``>`` character, the special characters in the data does not need to be escaped through the escape character, and it does not need to end with a new line(CR-LF).
-   - If the ESP32 MQTT publisher successfully publishes the message, following message will be prompted on the ESP32 MQTT subscriber.
+   - If the {IDF_TARGET_NAME} MQTT publisher successfully publishes the message, following message will be prompted on the {IDF_TARGET_NAME} MQTT subscriber.
 
      .. code-block:: none
 
@@ -260,12 +260,12 @@ If the amount of data you publish is relatively large, and the length of a singl
 MQTT over TLS (with a local MQTT broker)
 ------------------------------------------
 
-Below is an example of using two ESP32 development boards, one as a MQTT publisher (only as MQTT publisher role), the other one as a MQTT subscriber (only as MQTT subscriber role). 
+Below is an example of using two {IDF_TARGET_NAME} development boards, one as a MQTT publisher (only as MQTT publisher role), the other one as a MQTT subscriber (only as MQTT subscriber role).
 
 The example shows how to establish MQTT connections over TLS. You need to first create a local MQTT broker. For example, the MQTT broker's IP address is ``192.168.3.102``, and port is ``8883``.
 
 .. Important::
-  In the step, the operations starting with ``ESP32 MQTT publisher`` only need to be executed at ESP32 MQTT publisher, and the operations starting with ``ESP32 MQTT subscriber`` only need to be executed at ESP32 MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
+  In the step, the operations starting with ``{IDF_TARGET_NAME} MQTT publisher`` only need to be executed at {IDF_TARGET_NAME} MQTT publisher, and the operations starting with ``{IDF_TARGET_NAME} MQTT subscriber`` only need to be executed at {IDF_TARGET_NAME} MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
 
 #. Set the time zone and the SNTP server.
 
@@ -304,7 +304,7 @@ The example shows how to establish MQTT connections over TLS. You need to first 
 
 #. Set MQTT user configuration.
 
-   ESP32 MQTT publisher:
+   {IDF_TARGET_NAME} MQTT publisher:
 
    Command:
 
@@ -318,7 +318,7 @@ The example shows how to establish MQTT connections over TLS. You need to first 
 
      OK
 
-   ESP32 MQTT subscriber:
+   {IDF_TARGET_NAME} MQTT subscriber:
 
    Command:
 
@@ -368,7 +368,7 @@ The example shows how to establish MQTT connections over TLS. You need to first 
 
 #. Subscribe to MQTT topics.
 
-   ESP32 MQTT subscriber:
+   {IDF_TARGET_NAME} MQTT subscriber:
 
    Command:
 
@@ -384,7 +384,7 @@ The example shows how to establish MQTT connections over TLS. You need to first 
 
 #. Publish MQTT messages in string.
 
-   ESP32 MQTT publisher:
+   {IDF_TARGET_NAME} MQTT publisher:
 
    Command:
 
@@ -400,7 +400,7 @@ The example shows how to establish MQTT connections over TLS. You need to first 
 
    Note:
 
-   - If the ESP32 MQTT publisher successfully publishes the message, following message will be prompted on the ESP32 MQTT subscriber.
+   - If the {IDF_TARGET_NAME} MQTT publisher successfully publishes the message, following message will be prompted on the {IDF_TARGET_NAME} MQTT subscriber.
 
      .. code-block:: none
 
@@ -423,12 +423,12 @@ The example shows how to establish MQTT connections over TLS. You need to first 
 MQTT over WSS
 ------------------------------------------
 
-Below is an example of using two ESP32 development boards, one as a MQTT publisher (only as MQTT publisher role), the other one as a MQTT subscriber (only as MQTT subscriber role). 
+Below is an example of using two {IDF_TARGET_NAME} development boards, one as a MQTT publisher (only as MQTT publisher role), the other one as a MQTT subscriber (only as MQTT subscriber role).
 
 The example shows how to establish MQTT connections over WSS and how to communicate with a MQTT broker. For example, the MQTT broker's domain name is ``test.mosquitto.org``, and the port is ``8081``.
 
 .. Important::
-  In the step, the operations starting with ``ESP32 MQTT publisher`` only need to be executed at ESP32 MQTT publisher, and the operations starting with ``ESP32 MQTT subscriber`` only need to be executed at ESP32 MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
+  In the step, the operations starting with ``{IDF_TARGET_NAME} MQTT publisher`` only need to be executed at {IDF_TARGET_NAME} MQTT publisher, and the operations starting with ``{IDF_TARGET_NAME} MQTT subscriber`` only need to be executed at {IDF_TARGET_NAME} MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
 
 #. Set the time zone and the SNTP server.
 
@@ -467,7 +467,7 @@ The example shows how to establish MQTT connections over WSS and how to communic
 
 #. Set MQTT user configuration.
 
-   ESP32 MQTT publisher:
+   {IDF_TARGET_NAME} MQTT publisher:
 
    Command:
 
@@ -481,7 +481,7 @@ The example shows how to establish MQTT connections over WSS and how to communic
 
      OK
 
-   ESP32 MQTT subscriber:
+   {IDF_TARGET_NAME} MQTT subscriber:
 
    Command:
 
@@ -517,7 +517,7 @@ The example shows how to establish MQTT connections over WSS and how to communic
 
 #. Subscribe to MQTT topics.
 
-   ESP32 MQTT subscriber:
+   {IDF_TARGET_NAME} MQTT subscriber:
 
    Command:
 
@@ -533,7 +533,7 @@ The example shows how to establish MQTT connections over WSS and how to communic
 
 #. Publish MQTT messages in string.
 
-   ESP32 MQTT publisher:
+   {IDF_TARGET_NAME} MQTT publisher:
 
    Command:
 
@@ -549,7 +549,7 @@ The example shows how to establish MQTT connections over WSS and how to communic
 
    Note:
 
-   - If the ESP32 MQTT publisher successfully publishes the message, following message will be prompted on the ESP32 MQTT subscriber.
+   - If the {IDF_TARGET_NAME} MQTT publisher successfully publishes the message, following message will be prompted on the {IDF_TARGET_NAME} MQTT subscriber.
 
      .. code-block:: none
 

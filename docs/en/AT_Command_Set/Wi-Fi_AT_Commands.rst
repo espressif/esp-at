@@ -436,7 +436,7 @@ Parameters
    -  bit 5: determine whether APs with ``WPA2_ENTERPRISE`` authmode will be shown.
    -  bit 6: determine whether APs with ``WPA3_PSK`` authmode will be shown.
    -  bit 7: determine whether AP with ``WPA2_WPA3_PSK`` authmode will be shown.
-   -  [ESP32-C3 Only] bit 8: determine whether AP with ``WAPI_PSK`` authmode will be shown.
+   -  bit 8: determine whether AP with ``WAPI_PSK`` authmode will be shown.
 
 Example
 ^^^^^^^^
@@ -503,7 +503,7 @@ Parameters
    -  5: WPA2_ENTERPRISE
    -  6: WPA3_PSK
    -  7: WPA2_WPA3_PSK
-   -  [ESP32-C3 Only] 8: WAPI_PSK
+   -  8: WAPI_PSK
 
 -  **<ssid>**: string parameter showing SSID of the AP.
 -  **<rssi>**: signal strength.
@@ -1351,7 +1351,7 @@ Parameters
    -  1: ESP-TOUCH
    -  2: AirKiss
    -  3: ESP-TOUCH+AirKiss
-   -  [ESP32-C3 Only] 4: ESP-TOUCH v2
+   -  4: ESP-TOUCH v2
 
 -  **<auth floor>**: Wi-Fi authentication mode floor. ESP-AT will not connect to the AP whose authmode is lower than this floor.
 
@@ -1364,7 +1364,7 @@ Parameters
    -  6: WPA3_PSK
    -  7: WPA2_WPA3_PSK
 
-- **[ESP32-C3 Only] <"esptouch v2 key">**: ESP-TOUCH v2 decrypt key. It is used to decrypt Wi-Fi password and reserved data. Length: 16 bytes.
+- **<"esptouch v2 key">**: ESP-TOUCH v2 decrypt key. It is used to decrypt Wi-Fi password and reserved data. Length: 16 bytes.
 
 Notes
 ^^^^^

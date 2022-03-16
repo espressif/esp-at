@@ -102,7 +102,7 @@ ESP-AT 提供 python 脚本 ``AtPKI.py`` 将 SSL 服务器证书文件，SSL 客
 脚本生成
 ^^^^^^^^^^^^^^^^^^^^
 
-脚本 ``AtPKI.py`` 的路径是 :at:`tools/AtPKI.py`。您可以通过 ``-h`` 选项获取脚本的帮助信息。您也可以直接通过以下命令生成二进制文件。
+脚本 ``AtPKI.py`` 的路径是 :project_file:`tools/AtPKI.py`。您可以通过 ``-h`` 选项获取脚本的帮助信息。您也可以直接通过以下命令生成二进制文件。
 
 .. code-block:: none
 
@@ -122,7 +122,7 @@ ESP-AT 提供 python 脚本 ``AtPKI.py`` 将 SSL 服务器证书文件，SSL 客
 编译期间生成
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-ESP-AT 中证书文件的存储路径为 :at:`components/customized_partitions/raw_data`。
+ESP-AT 中证书文件的存储路径为 :project:`components/customized_partitions/raw_data`。
 
 以 ESP-AT 的 SSL 客户端证书文件为例。如果您想生成自己的 SSL 客户端证书二进制文件，您必须将目录 ``client_ca`` 下的 ``CA`` 证书替换为自己的 ``CA`` 证书，将目录 ``client_cert`` 目录下的 ``cert`` 证书替换为自己的 ``cert`` 证书，将 ``client_ key`` 目录下的私钥替换为自己的私钥。
 
@@ -161,7 +161,7 @@ ESP-AT 中证书文件的存储路径为 :at:`components/customized_partitions/r
 
 - :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令
 
-  以 ``ESP32`` 模组为例，您可以执行以下命令来更新 ``client_cert`` 分区。请参考 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 获取更多信息。
+  以 ``{IDF_TARGET_NAME}`` 模组为例，您可以执行以下命令来更新 ``client_cert`` 分区。请参考 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 获取更多信息。
 
   1. 查询 flash 用户分区
 
@@ -173,25 +173,49 @@ ESP-AT 中证书文件的存储路径为 :at:`components/customized_partitions/r
 
     响应：
 
+    .. only:: esp32
+
+      .. code-block:: none
+
+        +SYSFLASH:"ble_data",64,1,0x21000,0x3000
+        +SYSFLASH:"server_cert",64,2,0x24000,0x2000
+        +SYSFLASH:"server_key",64,3,0x26000,0x2000
+        +SYSFLASH:"server_ca",64,4,0x28000,0x2000
+        +SYSFLASH:"client_cert",64,5,0x2a000,0x2000
+        +SYSFLASH:"client_key",64,6,0x2c000,0x2000
+        +SYSFLASH:"client_ca",64,7,0x2e000,0x2000
+        +SYSFLASH:"factory_param",64,8,0x30000,0x1000
+        +SYSFLASH:"wpa2_cert",64,9,0x31000,0x2000
+        +SYSFLASH:"wpa2_key",64,10,0x33000,0x2000
+        +SYSFLASH:"wpa2_ca",64,11,0x35000,0x2000
+        +SYSFLASH:"mqtt_cert",64,12,0x37000,0x2000
+        +SYSFLASH:"mqtt_key",64,13,0x39000,0x2000
+        +SYSFLASH:"mqtt_ca",64,14,0x3b000,0x2000
+        +SYSFLASH:"fatfs",1,129,0x70000,0x90000
+
+        OK
+
+    .. only:: esp32
+
     .. code-block:: none
 
-      +SYSFLASH:"ble_data",64,1,0x21000,0x3000
-      +SYSFLASH:"server_cert",64,2,0x24000,0x2000
-      +SYSFLASH:"server_key",64,3,0x26000,0x2000
-      +SYSFLASH:"server_ca",64,4,0x28000,0x2000
-      +SYSFLASH:"client_cert",64,5,0x2a000,0x2000
-      +SYSFLASH:"client_key",64,6,0x2c000,0x2000
-      +SYSFLASH:"client_ca",64,7,0x2e000,0x2000
-      +SYSFLASH:"factory_param",64,8,0x30000,0x1000
-      +SYSFLASH:"wpa2_cert",64,9,0x31000,0x2000
-      +SYSFLASH:"wpa2_key",64,10,0x33000,0x2000
-      +SYSFLASH:"wpa2_ca",64,11,0x35000,0x2000
-      +SYSFLASH:"mqtt_cert",64,12,0x37000,0x2000
-      +SYSFLASH:"mqtt_key",64,13,0x39000,0x2000
-      +SYSFLASH:"mqtt_ca",64,14,0x3b000,0x2000
-      +SYSFLASH:"fatfs",1,129,0x70000,0x90000
+        +SYSFLASH:"ble_data",64,1,0x1f000,0x6000
+        +SYSFLASH:"server_cert",64,2,0x25000,0x2000
+        +SYSFLASH:"server_key",64,3,0x27000,0x2000
+        +SYSFLASH:"server_ca",64,4,0x29000,0x2000
+        +SYSFLASH:"client_cert",64,5,0x2b000,0x2000
+        +SYSFLASH:"client_key",64,6,0x2d000,0x2000
+        +SYSFLASH:"client_ca",64,7,0x2f000,0x2000
+        +SYSFLASH:"factory_param",64,8,0x31000,0x1000
+        +SYSFLASH:"wpa2_cert",64,9,0x32000,0x2000
+        +SYSFLASH:"wpa2_key",64,10,0x34000,0x2000
+        +SYSFLASH:"wpa2_ca",64,11,0x36000,0x2000
+        +SYSFLASH:"mqtt_cert",64,12,0x38000,0x2000
+        +SYSFLASH:"mqtt_key",64,13,0x3a000,0x2000
+        +SYSFLASH:"mqtt_ca",64,14,0x3c000,0x2000
+        +SYSFLASH:"fatfs",1,129,0x47000,0x19000
 
-      OK
+        OK
 
   2. 擦除 ``client_cert`` 分区
 

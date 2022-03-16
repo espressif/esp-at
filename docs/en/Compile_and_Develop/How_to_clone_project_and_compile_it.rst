@@ -1,14 +1,18 @@
 Compile ESP-AT Project
 =============================
 
+{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c3="esp32-c3"}
+{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c3="MINI-1"}
+{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32D", esp32c3="ESP32-C3-MINI-1"}
+
 :link_to_translation:`zh_CN:[中文]`
 
-This document details how to build your own ESP-AT project and flash the generated firmware into your ESP devices, including ESP32, and ESP32-C3. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>`, :doc:`Bluetooth LE services <How_to_customize_BLE_services>`, and :doc:`partitions <How_to_customize_partitions>`, and so on.
+This document details how to build your own ESP-AT project and flash the generated firmware into your ESP devices. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>`, :doc:`Bluetooth LE services <How_to_customize_BLE_services>`, and :doc:`partitions <How_to_customize_partitions>`, and so on.
 
 The structure of this document is as follows:
 
 - :ref:`build-project-overview`: Overview of the steps to build an ESP-AT project.
-- :ref:`build-project-esp32-and-c3-series`: Details steps to build a project for ESP32, and ESP32-C3 series.
+- :ref:`build-project-series-steps`: Details steps to build a project for {IDF_TARGET_NAME} series.
 
 .. _build-project-overview:
 
@@ -23,12 +27,12 @@ After the environment is ready, install the tools and ESP-AT SDK. Then, connect 
 
   **Please pay attention to possible conflicts of pins**. If choosing ``AT through HSPI``, you can get the information of the HSPI pin by ``./build.py menuconfig`` --> ``Component config`` --> ``AT`` --> ``AT hspi settings``.
 
-.. _build-project-esp32-and-c3-series:
+.. _build-project-series-steps:
 
-ESP32 and ESP32-C3 Series
+{IDF_TARGET_NAME} Series
 -----------------------------------
 
-This section describes how to compile an ESP-AT project for ESP32 and ESP32-C3 series.
+This section describes how to compile an ESP-AT project for {IDF_TARGET_NAME} series.
 
 Get Started with ESP-IDF
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -38,17 +42,14 @@ Get started with ESP-IDF before compiling an ESP-AT project, because ESP-AT is d
 .. include:: ../../inline_substitutions
 
 .. list-table:: ESP-IDF Versions for Different Series
-   :header-rows: 1
+  :header-rows: 0
 
-   * - Project
-     - IDF Version
-     - IDF Documentation Version
-   * - ESP32 ESP-AT
-     - |esp32 idf branch version|
-     - ESP-IDF Get Started Guide |esp32 idf doc version|_
-   * - ESP32-C3 ESP-AT
-     - |esp32-c3 idf branch version|
-     - ESP-IDF Get Started Guide |esp32-c3 idf doc version|_
+  * - Project
+    - IDF Version
+    - IDF Documentation Version
+  * - {IDF_TARGET_NAME} ESP-AT
+    - release/v4.3
+    - `ESP-IDF Get Started Guide v4.3 <https://docs.espressif.com/projects/esp-idf/en/release-v4.3/{IDF_TARGET_PATH_NAME}/get-started/index.html>`__
 
 First, set up the development environment for ESP-IDF according to Step 1 to 4 of *ESP-IDF Get Started Guide* (click the corresponding link in the table above to navigate to the documentation).
 
@@ -76,8 +77,7 @@ To get ESP-AT, navigate to your installation directory and clone the repository 
 
 - Windows
 
-  - For ESP32 series of modules, it is recommended that you run `ESP-IDF 4.2 CMD <https://dl.espressif.com/dl/esp-idf/?idf=4.2>`__ as an administrator first. 
-  - For ESP32-C3 series of modules, it is recommended that you run `ESP-IDF 4.3 CMD <https://dl.espressif.com/dl/esp-idf/?idf=4.3>`__ as an administrator first.
+  - For {IDF_TARGET_NAME} series of modules, it is recommended that you run `ESP-IDF 4.3 CMD <https://dl.espressif.com/dl/esp-idf/?idf=4.3>`__ as an administrator first.
 
   ::
 
@@ -112,8 +112,8 @@ In this step, you will clone the ``esp-idf`` folder into the ``esp-at`` folder, 
 
 3. Select the following configuration options for your ESP device if it is your first time.
 
-  - Select the ``Platform name`` for your ESP device. For example, select ``PLATFORM_ESP32`` for ESP32 series of products, ``PLATFORM_ESP32C3`` for ESP32-C3 series of products. ``Platform name`` is defined in :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
-  - Select the ``Module name`` for your ESP device. For example, select ``WROOM-32`` for the ESP32-WROOM-32D module. ``Module name`` is defined in :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
+  - Select the ``Platform name`` for your ESP device. For example, select ``PLATFORM_{IDF_TARGET_CFG_PREFIX}`` for {IDF_TARGET_NAME} series of products. ``Platform name`` is defined in :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
+  - Select the ``Module name`` for your ESP device. For example, select ``{IDF_TARGET_COMPILE_MNAME}`` for the {IDF_TARGET_PRODUCT_NAME} module. ``Module name`` is defined in :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
   - Enable or disable ``silence mode``. If enabled, it will remove some logs and reduce the firmware size. Generally, it should be disabled.
   - The above three option items will not appear if the file ``build/module_info.json`` exists. So please delete it if you want to reconfigure the module information.
 

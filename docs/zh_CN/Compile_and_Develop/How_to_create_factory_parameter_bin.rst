@@ -1,6 +1,9 @@
 如何生成出厂参数二进制文件
 ======================================
 
+{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c3="MINI-1"}
+{IDF_TARGET_AT_PARAMS_ADDR: default="undefined", esp32="0x30000", esp32c3="0x31000"}
+
 :link_to_translation:`en:[English]`
 
 本文介绍了如何为模组生成一个自定义的 ESP-AT 出厂参数二进制文件 (factory_MODULE_NAME.bin)。例如，您可能想在 ESP-AT 固件中自定义国家代码、射频限制或 UART 管脚，则可以通过下面的两个表格定义此类参数。
@@ -19,7 +22,7 @@
 factory_param_type.csv
 -----------------------
 
-factory_param_type.csv 表列出了您可以定义的所有参数，以及每个参数的偏移量、类型和大小，它储存在 :component:`customized_partitions/raw_data/factory_param/factory_param_type.csv`。
+factory_param_type.csv 表列出了您可以定义的所有参数，以及每个参数的偏移量、类型和大小，它储存在 :component_file:`customized_partitions/raw_data/factory_param/factory_param_type.csv`。
 
 下表提供了每个参数的信息。
 
@@ -38,7 +41,7 @@ factory_param_type.csv 表列出了您可以定义的所有参数，以及每个
    * - reserved1
      - 保留。
    * - tx_max_power
-     - ESP32 和 ESP32-C3 的 Wi-Fi 最大发射功率：[40,84]，详情请见 `ESP32 <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v4.2/esp32/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t>`_ 和 `ESP32-C3 <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v4.3/esp32c3/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t>`_ 发射功率设置范围。
+     - {IDF_TARGET_NAME} 的 Wi-Fi 最大发射功率：[40,84]，详情请见 `{IDF_TARGET_NAME} 发射功率 <https://docs.espressif.com/projects/esp-idf/en/release-v4.3/{IDF_TARGET_PATH_NAME}/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t>`_ 设置范围。
    * - uart_port
      - 用于发送 AT 命令和接收 AT 响应的 UART 端口。
    * - start_channel
@@ -73,14 +76,14 @@ factory_param_type.csv 表列出了您可以定义的所有参数，以及每个
 factory_param_data.csv
 -----------------------
 
-factory_param_data.csv 表格保存了 :ref:`factory-param-type-csv` 中定义的所有参数的值，支持 ESP32 和 ESP32-C3 系列的模组。您可通过修改表中的值来自定义出厂参数二进制文件。该表储存在 :component:`customized_partitions/raw_data/factory_param/factory_param_data.csv` 中。
+factory_param_data.csv 表格保存了 :ref:`factory-param-type-csv` 中定义的所有参数的值，支持 {IDF_TARGET_NAME} 系列的模组。您可通过修改表中的值来自定义出厂参数二进制文件。该表储存在 :component_file:`customized_partitions/raw_data/factory_param/factory_param_data.csv` 中。
 
 .. _add-a-customized-module:
 
 新增一个自定义模组
 -----------------------
 
-本节通过一个示例介绍如何在 factory_param_data.csv 中添加一个自定义模组，并为其生成出厂参数二进制文件。假设您想为一个名为 ``MY_MODULE`` 的 ESP32 模组生成出厂参数二进制文件，其国家代码为 JP，Wi-Fi 信道为 1 至 14，其它参数与 ``PLATFORM_ESP32`` 的 ``WROOM-32`` 模组相同，可按照以下步骤进行操作。
+本节通过一个示例介绍如何在 factory_param_data.csv 中添加一个自定义模组，并为其生成出厂参数二进制文件。假设您想为一个名为 ``MY_MODULE`` 的 {IDF_TARGET_NAME} 模组生成出厂参数二进制文件，其国家代码为 JP，Wi-Fi 信道为 1 至 14，其它参数与 ``PLATFORM_{IDF_TARGET_CFG_PREFIX}`` 的 ``{IDF_TARGET_COMPILE_MNAME}`` 模组相同，可按照以下步骤进行操作。
 
 .. contents::
   :local:
@@ -94,7 +97,7 @@ factory_param_data.csv 表格保存了 :ref:`factory-param-type-csv` 中定义�
 首先，在表格底部插入一行，然后输入以下参数值。
 
 - param_name: value
-- platform: PLATFORM_ESP32
+- platform: PLATFORM_{IDF_TARGET_CFG_PREFIX}
 - module_name: ``MY_MODULE``
 - description: ``MY_DESCRIPTION``
 - magic_flag: 0xfcfc
@@ -120,14 +123,14 @@ factory_param_data.csv 表格保存了 :ref:`factory-param-type-csv` 中定义�
   platform,module_name,description,magic_flag,version,reserved1,tx_max_power,uart_port,start_channel,channel_num,country_code,uart_baudrate,uart_tx_pin,uart_rx_pin,uart_cts_pin,uart_rts_pin,tx_control_pin,rx_control_pin
   PLATFORM_ESP32,WROOM-32,,0xfcfc,3,0,78,1,1,13,CN,115200,17,16,15,14,-1,-1
   ...
-  PLATFORM_ESP32,MY_MODULE,MY_DESCRIPTION,0xfcfc,3,0,78,1,1,14,JP,115200,17,16,15,14,-1,-1
+  PLATFORM_{IDF_TARGET_CFG_PREFIX},MY_MODULE,MY_DESCRIPTION,0xfcfc,3,0,78,1,1,14,JP,115200,17,16,15,14,-1,-1
 
 .. _modify-esp-at-module-info-structure:
 
 修改 ``esp_at_module_info`` 结构体
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-在 :component:`at/src/at_default_config.c` 中的 ``esp_at_module_info`` 结构体中添加自定义模组的信息。 
+在 :component_file:`at/src/at_default_config.c` 中的 ``esp_at_module_info`` 结构体中添加自定义模组的信息。 
 
 ``esp_at_module_info`` 结构体提供 ``OTA`` 升级验证 ``token``：
 
@@ -164,11 +167,11 @@ factory_param_data.csv 表格保存了 :ref:`factory-param-type-csv` 中定义�
     #endif
     };
 
-宏 ``CONFIG_ESP_AT_OTA_TOKEN_MY_MODULE`` 和宏 ``CONFIG_ESP_AT_OTA_SSL_TOKEN_MY_MODULE`` 定义在头文件 :component:`at/private_include/at_ota_token.h` 中。
+宏 ``CONFIG_ESP_AT_OTA_TOKEN_MY_MODULE`` 和宏 ``CONFIG_ESP_AT_OTA_SSL_TOKEN_MY_MODULE`` 定义在头文件 :component_file:`at/private_include/at_ota_token.h` 中。
 
 .. code-block:: none
 
-    #if defined(CONFIG_IDF_TARGET_ESP32)
+    #if defined(CONFIG_IDF_TARGET_{IDF_TARGET_CFG_PREFIX})
     ...
     #define CONFIG_ESP_AT_OTA_TOKEN_MY_MODULE       CONFIG_ESP_AT_OTA_TOKEN_DEFAULT
 
@@ -250,7 +253,7 @@ factory_param_data.csv 表格保存了 :ref:`factory-param-type-csv` 中定义�
     platform,module_name,description,magic_flag,version,reserved1,tx_max_power,uart_port,start_channel,channel_num,country_code,uart_baudrate,uart_tx_pin,uart_rx_pin,uart_cts_pin,uart_rts_pin,tx_control_pin,rx_control_pin,date
     PLATFORM_ESP32,WROOM-32,,0xfcfc,3,0,78,1,1,13,CN,115200,17,16,15,14,-1,-1
     ...
-    PLATFORM_ESP32,MY_MODULE,MY_DESCRIPTION,0xfcfc,3,0,78,1,1,14,JP,115200,17,16,15,14,-1,-1,20210603
+    PLATFORM_{IDF_TARGET_CFG_PREFIX},MY_MODULE,MY_DESCRIPTION,0xfcfc,3,0,78,1,1,14,JP,115200,17,16,15,14,-1,-1,20210603
 
 处理自定义参数
 ^^^^^^^^^^^^^^
@@ -344,7 +347,7 @@ factory_param_data.csv 表格保存了 :ref:`factory-param-type-csv` 中定义�
 
 ::
 
-    python tools/factory_param_generate.py --platform PLATFORM_ESP32 --module MY_MODULE --define_file components/customized_partitions/raw_data/factory_param/factory_param_type.csv --module_file components/customized_partitions/raw_data/factory_param/factory_param_data.csv --bin_name ./factory_param.bin --log_file ./factory_parameter.log
+    python tools/factory_param_generate.py --platform PLATFORM_{IDF_TARGET_CFG_PREFIX} --module MY_MODULE --define_file components/customized_partitions/raw_data/factory_param/factory_param_type.csv --module_file components/customized_partitions/raw_data/factory_param/factory_param_data.csv --bin_name ./factory_param.bin --log_file ./factory_parameter.log
 
 执行上述命令后，将在当前目录下生成以下三个文件。
 
@@ -364,21 +367,32 @@ factory_param_data.csv 表格保存了 :ref:`factory-param-type-csv` 中定义�
 
 - ``ADDRESS`` 替换为 flash 中开始的地址。ESP-AT 对 ``ADDRESS`` 参数有严格的要求，不同固件的出厂参数二进制文件的地址不同，请参考下面的表格。
 
-  .. list-table:: 出厂参数二进制文件下载地址
-     :header-rows: 1
+  .. only:: esp32
 
-     * - 平台
-       - 固件
-       - 地址
-     * - PLATFORM_ESP32
-       - 所有固件
-       - 0x30000
-     * - PLATFORM_ESP32C3
-       - MINI-1 固件
-       - 0x31000
-     * - PLATFORM_ESP32C3
-       - QCLOUD 固件
-       - 0x30000
+    .. list-table:: 出厂参数二进制文件下载地址
+      :header-rows: 1
+
+      * - 平台
+        - 固件
+        - 地址
+      * - PLATFORM_ESP32
+        - 所有固件
+        - 0x30000
+
+  .. only:: esp32c3
+
+    .. list-table:: 出厂参数二进制文件下载地址
+      :header-rows: 1
+
+      * - 平台
+        - 固件
+        - 地址
+      * - PLATFORM_ESP32C3
+        - MINI-1 固件
+        - 0x31000
+      * - PLATFORM_ESP32C3
+        - QCLOUD 固件
+        - 0x30000
 
 - ``FILEDIRECTORY`` 替换为出厂参数二进制文件的相对路径。
 
@@ -386,7 +400,7 @@ factory_param_data.csv 表格保存了 :ref:`factory-param-type-csv` 中定义�
 
 ::
 
-    python esp-idf/components/esptool_py/esptool/esptool.py -p /dev/ttyUSB0 -b 921600 --before default_reset --after hard_reset --chip auto  write_flash --flash_mode dio --flash_size detect --flash_freq 40m 0x30000 ./factory_param_MY_MODULE.bin
+    python esp-idf/components/esptool_py/esptool/esptool.py -p /dev/ttyUSB0 -b 921600 --before default_reset --after hard_reset --chip auto  write_flash --flash_mode dio --flash_size detect --flash_freq 40m {IDF_TARGET_AT_PARAMS_ADDR} ./factory_param_MY_MODULE.bin
 
 直接修改出厂参数二进制文件
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

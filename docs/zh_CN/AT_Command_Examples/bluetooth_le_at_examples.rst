@@ -49,7 +49,7 @@ GATT 其实是一种属性传输协议，简单的讲可以认为是一种属性
 
 .. Important::
 
-  - ESP32 Bluetooth LE 服户端需烧录 ``ble_data.bin`` 文件到 flash 中，用以提供 Bluetooth LE 服务。
+  - {IDF_TARGET_NAME} Bluetooth LE 服户端需烧录 ``ble_data.bin`` 文件到 flash 中，用以提供 Bluetooth LE 服务。
 
     - 如何生成 ``ble_data.bin`` 文件，请参考文档 :doc:`../Compile_and_Develop/customize_bluetooth_le_services_tools`。
     - ``ble_data.bin`` 文件的烧录地址，见 ``at_customize.csv`` 中 ``ble_data`` 对应的地址，或者在文件 ``build/download.config`` 中记录的地址。
@@ -57,15 +57,15 @@ GATT 其实是一种属性传输协议，简单的讲可以认为是一种属性
 Bluetooth LE 客户端读写服务特征值
 ------------------------------------------
 
-以下示例同时使用两块 ESP32 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何使用 AT 命令建立 Bluetooth LE 连接，完成数据通信。
+以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何使用 AT 命令建立 Bluetooth LE 连接，完成数据通信。
 
 .. Important::
 
-  在以下步骤中以 ``ESP32 Bluetooth LE 服务端`` 开头的操作只需要在 ESP32 Bluetooth LE 服务端执行即可，以 ``ESP32 Bluetooth LE 客户端`` 开头的操作只需要在 ESP32 Bluetooth LE 客户端执行即可。
+  在以下步骤中以 ``{IDF_TARGET_NAME} Bluetooth LE 服务端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 服务端执行即可，以 ``{IDF_TARGET_NAME} Bluetooth LE 客户端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 客户端执行即可。
 
 #. 初始化 Bluetooth LE 功能。
 
-   ESP32 Bluetooth LE 服务端：
+   {IDF_TARGET_NAME} Bluetooth LE 服务端：
 
    命令：
 
@@ -79,7 +79,7 @@ Bluetooth LE 客户端读写服务特征值
 
      OK
 
-   ESP32 Bluetooth LE 客户端：
+   {IDF_TARGET_NAME} Bluetooth LE 客户端：
 
    命令：
 
@@ -93,7 +93,7 @@ Bluetooth LE 客户端读写服务特征值
 
      OK
 
-#. ESP32 蓝牙 LE 服务器获取其 MAC 地址。
+#. {IDF_TARGET_NAME} 蓝牙 LE 服务器获取其 MAC 地址。
 
    命令：
 
@@ -112,7 +112,7 @@ Bluetooth LE 客户端读写服务特征值
 
    - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
 
-#. ESP32 Bluetooth LE 服务端创建服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
 
    命令：
 
@@ -126,7 +126,7 @@ Bluetooth LE 客户端读写服务特征值
 
      OK
 
-#. ESP32 Bluetooth LE 服务端开启服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
 
    命令：
 
@@ -140,7 +140,7 @@ Bluetooth LE 客户端读写服务特征值
 
      OK
 
-#. ESP32 Bluetooth LE 服务端发现服务特征。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端发现服务特征。
 
    命令：
 
@@ -174,9 +174,9 @@ Bluetooth LE 客户端读写服务特征值
 
      OK
 
-#. ESP32 Bluetooth LE 服务端开始广播，之后 ESP32 Bluetooth LE 客户端开始扫描并且持续 3 秒钟。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端开始广播，之后 {IDF_TARGET_NAME} Bluetooth LE 客户端开始扫描并且持续 3 秒钟。
 
-   ESP32 Bluetooth LE 服务端：
+   {IDF_TARGET_NAME} Bluetooth LE 服务端：
 
    命令：
 
@@ -190,7 +190,7 @@ Bluetooth LE 客户端读写服务特征值
 
      OK
 
-   ESP32 Bluetooth LE 客户端：
+   {IDF_TARGET_NAME} Bluetooth LE 客户端：
 
    命令：
 
@@ -213,7 +213,7 @@ Bluetooth LE 客户端读写服务特征值
 
 #. 建立 Bluetooth LE 连接。
 
-   ESP32 Bluetooth LE 客户端：
+   {IDF_TARGET_NAME} Bluetooth LE 客户端：
 
    命令：
 
@@ -235,7 +235,7 @@ Bluetooth LE 客户端读写服务特征值
    - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
    - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
 
-#. ESP32 Bluetooth LE 客户端发现服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端发现服务。
 
    命令：
 
@@ -256,9 +256,9 @@ Bluetooth LE 客户端读写服务特征值
 
    说明：
 
-   - ESP32 Bluetooth LE 客户端查询服务的结果，比 ESP32 Bluetooth LE 服户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801），这是正常现象。正因如此，对于同一服务，ESP32 Bluetooth LE 客户端查询的 <srv_index> 值等于 ESP32 Bluetooth LE 服户端查询的 <srv_index> 值 + 2。例如上述示例中的服务 0xA002，当前在 ESP32 Bluetooth LE 客户端查询到的 <srv_index> 为 3，如果在 ESP32 Bluetooth LE 服户端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
+   - {IDF_TARGET_NAME} Bluetooth LE 客户端查询服务的结果，比 {IDF_TARGET_NAME} Bluetooth LE 服户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801），这是正常现象。正因如此，对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端查询的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服户端查询的 <srv_index> 值 + 2。例如上述示例中的服务 0xA002，当前在 {IDF_TARGET_NAME} Bluetooth LE 客户端查询到的 <srv_index> 为 3，如果在 {IDF_TARGET_NAME} Bluetooth LE 服户端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
 
-#. ESP32 Bluetooth LE 客户端发现特征值。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端发现特征值。
 
    命令：
 
@@ -288,7 +288,7 @@ Bluetooth LE 客户端读写服务特征值
      
      OK
 
-#. ESP32 Bluetooth LE 客户端读取一个特征值。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端读取一个特征值。
 
    命令：
 
@@ -307,9 +307,9 @@ Bluetooth LE 客户端读写服务特征值
    说明：
 
    - 请注意目标特征值必须要有读权限。
-   - 如果 ESP32 Bluetooth LE 客户端读取特征成功，ESP32 Bluetooth LE 服务端则会提示 ``+READ:0,"7c:df:a1:b3:8d:de"``。
+   - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端读取特征成功，{IDF_TARGET_NAME} Bluetooth LE 服务端则会提示 ``+READ:0,"7c:df:a1:b3:8d:de"``。
 
-#. ESP32 Bluetooth LE 客户端写一个特征值。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端写一个特征值。
 
    命令：
 
@@ -331,11 +331,11 @@ Bluetooth LE 客户端读写服务特征值
 
    说明：
 
-   - 如果 ESP32 Bluetooth LE 客户端写特征描述符成功，ESP32 Bluetooth LE 服务端则会提示 ``+WRITE:<conn_index>,<srv_index>,<char_index>,[<desc_index>],<len>,<value>``。
+   - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端写特征描述符成功，{IDF_TARGET_NAME} Bluetooth LE 服务端则会提示 ``+WRITE:<conn_index>,<srv_index>,<char_index>,[<desc_index>],<len>,<value>``。
 
 #. Indicate 一个特征值。
 
-   ESP32 Bluetooth LE 客户端：
+   {IDF_TARGET_NAME} Bluetooth LE 客户端：
 
    命令：
 
@@ -351,7 +351,7 @@ Bluetooth LE 客户端读写服务特征值
 
    符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行写入操作。
 
-   为了接收 ESP32 Bluetooth LE 服务端发送过来的数据（通过 ``notify`` 方式或者 ``indicate`` 方式），ESP32 Bluetooth LE 客户端需要提前向服务端注册。对于 ``notify`` 方式，需要写入值 ``0x0001``，对于 ``indicate`` 方式，需要写入值 ``0x0002``。在本例中写入 ``0x0002`` 来使用 ``indicate`` 方式。
+   为了接收 {IDF_TARGET_NAME} Bluetooth LE 服务端发送过来的数据（通过 ``notify`` 方式或者 ``indicate`` 方式），{IDF_TARGET_NAME} Bluetooth LE 客户端需要提前向服务端注册。对于 ``notify`` 方式，需要写入值 ``0x0001``，对于 ``indicate`` 方式，需要写入值 ``0x0002``。在本例中写入 ``0x0002`` 来使用 ``indicate`` 方式。
 
    .. code-block:: none
 
@@ -359,9 +359,9 @@ Bluetooth LE 客户端读写服务特征值
 
    说明：
 
-   - 如果 ESP32 Bluetooth LE 客户端写特征描述符成功，ESP32 Bluetooth LE 服务端则会提示 ``+WRITE:<conn_index>,<srv_index>,<char_index>,<desc_index>,<len>,<value>``。
+   - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端写特征描述符成功，{IDF_TARGET_NAME} Bluetooth LE 服务端则会提示 ``+WRITE:<conn_index>,<srv_index>,<char_index>,<desc_index>,<len>,<value>``。
 
-   ESP32 Bluetooth LE 服务端：
+   {IDF_TARGET_NAME} Bluetooth LE 服务端：
 
    命令：
 
@@ -383,21 +383,21 @@ Bluetooth LE 客户端读写服务特征值
 
    说明：
 
-   - 如果 ESP32 Bluetooth LE 客户端接收到 indication, 则会提示 ``+INDICATE:<conn_index>,<srv_index>,<char_index>,<len>,<value>``。
-   - 对于同一服务，ESP32 Bluetooth LE 客户端的 <srv_index> 值等于 ESP32 Bluetooth LE 服户端的 <srv_index> 值 + 2，这是正常现象。
+   - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端接收到 indication, 则会提示 ``+INDICATE:<conn_index>,<srv_index>,<char_index>,<len>,<value>``。
+   - 对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服户端的 <srv_index> 值 + 2，这是正常现象。
    - 对于服务中特征的权限，您可参考文档 :doc:`../Compile_and_Develop/How_to_customize_BLE_services`。
 
 Bluetooth LE 服务端读写服务特征值
 ------------------------------------------
 
-以下示例同时使用两块 ESP32 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何建立 Bluetooth LE 连接，以及服务端读写服务特征值和客户端设置，notify 服务特征值。
+以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何建立 Bluetooth LE 连接，以及服务端读写服务特征值和客户端设置，notify 服务特征值。
 
 .. Important::
-  步骤中以 ``ESP32 Bluetooth LE 服务端`` 开头的操作只需要在 ESP32 Bluetooth LE 服务端执行即可，以 ``ESP32 Bluetooth LE 客户端`` 开头的操作只需要在 ESP32 Bluetooth LE 客户端执行即可。
+  步骤中以 ``{IDF_TARGET_NAME} Bluetooth LE 服务端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 服务端执行即可，以 ``{IDF_TARGET_NAME} Bluetooth LE 客户端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 客户端执行即可。
 
 #. 初始化 Bluetooth LE 功能。
 
-   ESP32 Bluetooth LE 服务端：
+   {IDF_TARGET_NAME} Bluetooth LE 服务端：
 
    命令：
 
@@ -411,7 +411,7 @@ Bluetooth LE 服务端读写服务特征值
 
      OK
 
-   ESP32 Bluetooth LE 客户端：
+   {IDF_TARGET_NAME} Bluetooth LE 客户端：
   
    命令：
 
@@ -425,7 +425,7 @@ Bluetooth LE 服务端读写服务特征值
 
      OK
 
-#. ESP32 Bluetooth LE 服务端创建服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
 
    命令：
 
@@ -439,7 +439,7 @@ Bluetooth LE 服务端读写服务特征值
 
      OK
 
-#. ESP32 Bluetooth LE 服务端开启服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
 
    命令：
 
@@ -453,7 +453,7 @@ Bluetooth LE 服务端读写服务特征值
 
      OK
 
-#. ESP32 蓝牙 LE 服务器获取其 MAC 地址。
+#. {IDF_TARGET_NAME} 蓝牙 LE 服务器获取其 MAC 地址。
 
    命令：
 
@@ -486,7 +486,7 @@ Bluetooth LE 服务端读写服务特征值
 
      OK
 
-#. ESP32 Bluetooth LE 服务端开始广播。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端开始广播。
 
    命令：
 
@@ -500,7 +500,7 @@ Bluetooth LE 服务端读写服务特征值
 
      OK
 
-#. ESP32 Bluetooth LE 客户端创建服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端创建服务。
 
    命令：
 
@@ -514,7 +514,7 @@ Bluetooth LE 服务端读写服务特征值
 
      OK
 
-#. ESP32 Bluetooth LE 客户端开启服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端开启服务。
 
    命令：
 
@@ -528,7 +528,7 @@ Bluetooth LE 服务端读写服务特征值
 
      OK
 
-#. ESP32 Bluetooth LE 客户端获取 Bluetooth LE 地址。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端获取 Bluetooth LE 地址。
 
    命令：
 
@@ -547,7 +547,7 @@ Bluetooth LE 服务端读写服务特征值
 
    - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
 
-#. ESP32 Bluetooth LE 客户端开始扫描，持续 3 秒。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端开始扫描，持续 3 秒。
 
    命令：
 
@@ -570,7 +570,7 @@ Bluetooth LE 服务端读写服务特征值
 
 #. 建立 the Bluetooth LE 连接。
 
-   ESP32 Bluetooth LE 客户端：
+   {IDF_TARGET_NAME} Bluetooth LE 客户端：
 
    命令：
 
@@ -592,7 +592,7 @@ Bluetooth LE 服务端读写服务特征值
    - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
    - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
 
-  ESP32 Bluetooth LE 服务端：
+  {IDF_TARGET_NAME} Bluetooth LE 服务端：
 
    命令：
 
@@ -614,7 +614,7 @@ Bluetooth LE 服务端读写服务特征值
    - 如果 Bluetooth LE 连接成功，则会提示 ``OK``，不会提示 ``+BLECONN:0,"24:0a:c4:03:a7:4e``。
    - 如果 Bluetooth LE 连接失败，则会提示 ``ERROR``，不会提示 ``+BLECONN:0,-1``。
 
-#. ESP32 Bluetooth LE 客户端查询本地服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端查询本地服务。
 
    命令：
 
@@ -631,7 +631,7 @@ Bluetooth LE 服务端读写服务特征值
      
      OK
 
-#. ESP32 Bluetooth LE 客户端发现本地特征。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端发现本地特征。
 
    命令：
 
@@ -665,7 +665,7 @@ Bluetooth LE 服务端读写服务特征值
 
      OK
 
-#. ESP32 Bluetooth LE 服务端发现对端服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端发现对端服务。
 
    命令：
 
@@ -686,9 +686,9 @@ Bluetooth LE 服务端读写服务特征值
 
    说明：
 
-   - ESP32 Bluetooth LE 服务端查询服务的结果，比 ESP32 Bluetooth LE 客户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801）。正因如此，对于同一服务，ESP32 Bluetooth LE 服务端查询的 <srv_index> 值等于 ESP32 Bluetooth LE 客户端查询的 <srv_index> 值 + 2。例如，上述示例中的服务 0xA002，当前在 ESP32 Bluetooth LE 服务端查询到的 <srv_index> 为 3，如果在 ESP32 Bluetooth LE 服务端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
+   - {IDF_TARGET_NAME} Bluetooth LE 服务端查询服务的结果，比 {IDF_TARGET_NAME} Bluetooth LE 客户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801）。正因如此，对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 服务端查询的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 客户端查询的 <srv_index> 值 + 2。例如，上述示例中的服务 0xA002，当前在 {IDF_TARGET_NAME} Bluetooth LE 服务端查询到的 <srv_index> 为 3，如果在 {IDF_TARGET_NAME} Bluetooth LE 服务端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
 
-#. ESP32 Bluetooth LE 服务端发现对端特征。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端发现对端特征。
 
    命令：
 
@@ -718,7 +718,7 @@ Bluetooth LE 服务端读写服务特征值
      
      OK
 
-#. ESP32 Bluetooth LE 客户端设置服务特征值。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端设置服务特征值。
 
    选择支持写操作的服务特征（characteristic）去设置服务特征值。
 
@@ -746,7 +746,7 @@ Bluetooth LE 服务端读写服务特征值
 
      OK
 
-#. ESP32 Bluetooth LE 服务端读服务特征值。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端读服务特征值。
 
    命令：
 
@@ -762,7 +762,7 @@ Bluetooth LE 服务端读写服务特征值
 
      OK
 
-#. ESP32 Bluetooth LE 服务端写服务特征值。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端写服务特征值。
 
    选择支持写操作的服务特性写入特性。
 
@@ -794,7 +794,7 @@ Bluetooth LE 服务端读写服务特征值
 
    - 如果 Bluetooth LE 服务端写服务特征值成功后，Bluetooth LE 客户端则会提示 ``+WRITE:0,1,6,1,2,12``。
 
-#. ESP32 Bluetooth LE 客户端 notify 服务特征值
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端 notify 服务特征值
 
    命令：
 
@@ -822,22 +822,22 @@ Bluetooth LE 服务端读写服务特征值
 
    说明：
 
-   - 如果 ESP32 Bluetooth LE 客户端 notify 服务特征值给服务端成功，Bluetooth LE 服务端则会提示 ``+NOTIFY:0,3,6,10,1234567890``。
+   - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端 notify 服务特征值给服务端成功，Bluetooth LE 服务端则会提示 ``+NOTIFY:0,3,6,10,1234567890``。
 
 Bluetooth LE 连接加密
 ----------------------------------
 
-以下示例同时使用两块 ESP32 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了怎样加密 Bluetooth LE 连接。
+以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了怎样加密 Bluetooth LE 连接。
 
 .. Important::
 
-  - 在以下步骤中以 ``ESP32 Bluetooth LE 服务端`` 开头的操作只需要在 ESP32 Bluetooth LE 服务端执行即可，以 ``ESP32 Bluetooth LE 客户端`` 开头的操作只需要在 ESP32 Bluetooth LE 客户端执行即可。
+  - 在以下步骤中以 ``{IDF_TARGET_NAME} Bluetooth LE 服务端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 服务端执行即可，以 ``{IDF_TARGET_NAME} Bluetooth LE 客户端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 客户端执行即可。
   - ``加密`` 和 ``绑定`` 是两个不同的概念。``绑定`` 只是加密成功后在本地存储了一个长期的密钥。
   - ESP-AT 最多允许绑定 ``10`` 个设备。
 
 #. 初始化 Bluetooth LE 功能。
 
-   ESP32 Bluetooth LE 服务端：
+   {IDF_TARGET_NAME} Bluetooth LE 服务端：
 
    命令：
 
@@ -851,7 +851,7 @@ Bluetooth LE 连接加密
 
      OK
 
-   ESP32 Bluetooth LE 客户端：
+   {IDF_TARGET_NAME} Bluetooth LE 客户端：
 
    命令：
 
@@ -865,7 +865,7 @@ Bluetooth LE 连接加密
 
      OK
 
-#. ESP32 Bluetooth LE 服务端获取 Bluetooth LE 地址。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端获取 Bluetooth LE 地址。
 
    命令：
 
@@ -884,7 +884,7 @@ Bluetooth LE 连接加密
 
    - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
 
-#. ESP32 Bluetooth LE 服务端创建服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
 
    命令：
 
@@ -898,7 +898,7 @@ Bluetooth LE 连接加密
 
      OK
 
-#. ESP32 Bluetooth LE 服务端开启服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
 
    命令：
 
@@ -912,7 +912,7 @@ Bluetooth LE 连接加密
 
      OK
 
-#. ESP32 Bluetooth LE 服务端发现服务特征。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端发现服务特征。
 
    命令：
 
@@ -946,9 +946,9 @@ Bluetooth LE 连接加密
 
      OK
 
-#. ESP32 Bluetooth LE 服务端开始广播，之后 ESP32 Bluetooth LE 客户端开始扫描并且持续 3 秒钟。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端开始广播，之后 {IDF_TARGET_NAME} Bluetooth LE 客户端开始扫描并且持续 3 秒钟。
 
-   ESP32 Bluetooth LE 服务端：
+   {IDF_TARGET_NAME} Bluetooth LE 服务端：
 
    命令：
 
@@ -962,7 +962,7 @@ Bluetooth LE 连接加密
 
      OK
 
-   ESP32 Bluetooth LE 客户端：
+   {IDF_TARGET_NAME} Bluetooth LE 客户端：
 
    命令：
 
@@ -985,7 +985,7 @@ Bluetooth LE 连接加密
 
 #. 建立 Bluetooth LE 连接。
 
-   ESP32 Bluetooth LE 客户端：
+   {IDF_TARGET_NAME} Bluetooth LE 客户端：
 
    命令：
 
@@ -1007,7 +1007,7 @@ Bluetooth LE 连接加密
    - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
    - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
 
-#. ESP32 Bluetooth LE 客户端发现服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端发现服务。
 
    命令：
 
@@ -1028,9 +1028,9 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - ESP32 Bluetooth LE 客户端查询服务的结果，比 ESP32 Bluetooth LE 服户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801），这是正常现象。正因如此，对于同一服务，ESP32 Bluetooth LE 客户端查询的 <srv_index> 值等于 ESP32 Bluetooth LE 服户端查询的 <srv_index> 值 + 2。例如上述示例中的服务 0xA002，当前在 ESP32 Bluetooth LE 客户端查询到的 <srv_index> 为 3，如果在 ESP32 Bluetooth LE 服户端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
+   - {IDF_TARGET_NAME} Bluetooth LE 客户端查询服务的结果，比 {IDF_TARGET_NAME} Bluetooth LE 服户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801），这是正常现象。正因如此，对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端查询的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服户端查询的 <srv_index> 值 + 2。例如上述示例中的服务 0xA002，当前在 {IDF_TARGET_NAME} Bluetooth LE 客户端查询到的 <srv_index> 为 3，如果在 {IDF_TARGET_NAME} Bluetooth LE 服户端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
 
-#. ESP32 Bluetooth LE 客户端发现特征值。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端发现特征值。
 
    命令：
 
@@ -1062,7 +1062,7 @@ Bluetooth LE 连接加密
 
 #. 设置加密参数。设置 ``auth_req`` 为 ``SC_MITM_BOND``，服务端的 ``iocap`` 为 ``KeyboardOnly``，客户端的 ``iocap`` 为 ``KeyboardDisplay``，``key_size`` 为 ``16``，``init_key`` 为 ``3``, ``rsp_key`` 为 ``3``。
 
-   ESP32 Bluetooth LE 服务端：
+   {IDF_TARGET_NAME} Bluetooth LE 服务端：
 
    命令：
 
@@ -1076,7 +1076,7 @@ Bluetooth LE 连接加密
 
      OK
 
-   ESP32 Bluetooth LE 客户端：
+   {IDF_TARGET_NAME} Bluetooth LE 客户端：
 
    命令：
 
@@ -1092,10 +1092,10 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - 在本例中，ESP32 Bluetooth LE 服务端输入配对码，ESP32 Bluetooth LE 客户端显示配对码。
+   - 在本例中，{IDF_TARGET_NAME} Bluetooth LE 服务端输入配对码，{IDF_TARGET_NAME} Bluetooth LE 客户端显示配对码。
    - ESP-AT 支持 ``Legacy Pairing`` 和 ``Secure Connections`` 两种加密方式，但后者有更高级别的优先级。如果对端也支持 ``Secure Connections``，则会采用 ``Secure Connections`` 方式加密。
 
-#. ESP32 Bluetooth LE 客户端发起加密请求。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端发起加密请求。
 
    命令：
 
@@ -1111,9 +1111,9 @@ Bluetooth LE 连接加密
 
    说明：
 
-   如果 ESP32 Bluetooth LE 服务端成功接收到加密请求，ESP32 Bluetooth LE 服务端则会提示 ``+BLESECREQ:0``。
+   如果 {IDF_TARGET_NAME} Bluetooth LE 服务端成功接收到加密请求，{IDF_TARGET_NAME} Bluetooth LE 服务端则会提示 ``+BLESECREQ:0``。
 
-#. ESP32 Bluetooth LE 服务端响应配对请求。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端响应配对请求。
 
    命令：
 
@@ -1129,10 +1129,10 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - 如果 ESP32 Bluetooth LE 客户端成功收到配对响应，则 ESP32 Bluetooth LE 客户端将会产生一个 6 位的配对码。
-   - 在本例中，ESP32 Bluetooth LE 客户端则会提示 ``+BLESECNTFYKEY:0,793718``。配对码为 ``793718``。
+   - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端成功收到配对响应，则 {IDF_TARGET_NAME} Bluetooth LE 客户端将会产生一个 6 位的配对码。
+   - 在本例中，{IDF_TARGET_NAME} Bluetooth LE 客户端则会提示 ``+BLESECNTFYKEY:0,793718``。配对码为 ``793718``。
 
-#. ESP32 Bluetooth LE 客户端回复配对码。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端回复配对码。
 
    命令：
 
@@ -1146,9 +1146,9 @@ Bluetooth LE 连接加密
 
      OK
 
-   执行这个命令之后，在 ESP32 Bluetooth LE 服务端和 ESP32 Bluetooth LE 客户端会有一些对应信息提示。
+   执行这个命令之后，在 {IDF_TARGET_NAME} Bluetooth LE 服务端和 {IDF_TARGET_NAME} Bluetooth LE 客户端会有一些对应信息提示。
 
-   ESP32 Bluetooth LE 服务端：
+   {IDF_TARGET_NAME} Bluetooth LE 服务端：
 
    .. code-block:: none
 
@@ -1158,7 +1158,7 @@ Bluetooth LE 连接加密
      +BLESECKEYTYPE:0,2
      +BLEAUTHCMPL:0,0
 
-   ESP32 Bluetooth LE 客户端：
+   {IDF_TARGET_NAME} Bluetooth LE 客户端：
 
    .. code-block:: none
 
@@ -1171,18 +1171,18 @@ Bluetooth LE 连接加密
 
    您可以忽略以 ``+BLESECKEYTYPE`` 开头的信息。信息 ``+BLEAUTHCMPL:0,0`` 中的第二个参数为 ``0`` 表示加密成功，为 ``1`` 表示加密失败。
 
-两个 ESP32 开发板之间建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下传输数据
+两个 {IDF_TARGET_NAME} 开发板之间建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下传输数据
 -----------------------------------------------------------------------------------------------------
 
-以下示例同时使用两块 ESP32 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何建立 Bluetooth LE 连接，以及建立透传通信 Bluetooth LE SPP (Serial Port Profile, UART-Bluetooth LE 透传模式)。
+以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何建立 Bluetooth LE 连接，以及建立透传通信 Bluetooth LE SPP (Serial Port Profile, UART-Bluetooth LE 透传模式)。
 
 .. Important::
 
-  在以下步骤中以 ``ESP32 Bluetooth LE 服务端`` 开头的操作只需要在 ESP32 Bluetooth LE 服务端执行即可，以 ``ESP32 Bluetooth LE 客户端`` 开头的操作只需要在 ESP32 Bluetooth LE 客户端执行即可。
+  在以下步骤中以 ``{IDF_TARGET_NAME} Bluetooth LE 服务端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 服务端执行即可，以 ``{IDF_TARGET_NAME} Bluetooth LE 客户端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 客户端执行即可。
 
 #. 初始化 Bluetooth LE 功能。
 
-   ESP32 Bluetooth LE 服务端：
+   {IDF_TARGET_NAME} Bluetooth LE 服务端：
 
    命令：
 
@@ -1196,7 +1196,7 @@ Bluetooth LE 连接加密
 
      OK
 
-   ESP32 Bluetooth LE 客户端：
+   {IDF_TARGET_NAME} Bluetooth LE 客户端：
   
    命令：
 
@@ -1210,7 +1210,7 @@ Bluetooth LE 连接加密
 
      OK
 
-#. ESP32 Bluetooth LE 服务端创建服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
 
    命令：
 
@@ -1224,7 +1224,7 @@ Bluetooth LE 连接加密
 
      OK
 
-#. ESP32 Bluetooth LE 服务端开启服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
 
    命令：
 
@@ -1238,7 +1238,7 @@ Bluetooth LE 连接加密
 
      OK
 
-#. ESP32 蓝牙 LE 服务器获取其 MAC 地址。
+#. {IDF_TARGET_NAME} 蓝牙 LE 服务器获取其 MAC 地址。
 
    命令：
 
@@ -1271,7 +1271,7 @@ Bluetooth LE 连接加密
 
      OK
 
-#. ESP32 Bluetooth LE 服务端开始广播。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端开始广播。
 
    命令：
 
@@ -1285,7 +1285,7 @@ Bluetooth LE 连接加密
 
      OK
 
-#. ESP32 Bluetooth LE 客户端开始扫描，持续 3 秒。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端开始扫描，持续 3 秒。
 
    命令：
 
@@ -1308,7 +1308,7 @@ Bluetooth LE 连接加密
 
 #. 建立 the Bluetooth LE 连接。
 
-   ESP32 Bluetooth LE 客户端：
+   {IDF_TARGET_NAME} Bluetooth LE 客户端：
 
    命令：
 
@@ -1330,7 +1330,7 @@ Bluetooth LE 连接加密
    - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
    - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
 
-#. ESP32 Bluetooth LE 服务端查询服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端查询服务。
 
    命令：
 
@@ -1347,7 +1347,7 @@ Bluetooth LE 连接加密
      
      OK
 
-#. ESP32 Bluetooth LE 服务端发现特征。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端发现特征。
 
    命令：
 
@@ -1381,7 +1381,7 @@ Bluetooth LE 连接加密
 
      OK
 
-#. ESP32 Bluetooth LE 客户端发现服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端发现服务。
 
    命令：
 
@@ -1402,9 +1402,9 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - ESP32 Bluetooth LE 客户端查询服务的结果，比 ESP32 Bluetooth LE 服户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801），这是正常现象。正因如此，对于同一服务，ESP32 Bluetooth LE 客户端查询的 <srv_index> 值等于 ESP32 Bluetooth LE 服户端查询的 <srv_index> 值 + 2。例如，上述示例中的服务 0xA002，当前在 ESP32 Bluetooth LE 客户端查询到的 <srv_index> 为 3，如果在 ESP32 Bluetooth LE 服户端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
+   - {IDF_TARGET_NAME} Bluetooth LE 客户端查询服务的结果，比 {IDF_TARGET_NAME} Bluetooth LE 服户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801），这是正常现象。正因如此，对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端查询的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服户端查询的 <srv_index> 值 + 2。例如，上述示例中的服务 0xA002，当前在 {IDF_TARGET_NAME} Bluetooth LE 客户端查询到的 <srv_index> 为 3，如果在 {IDF_TARGET_NAME} Bluetooth LE 服户端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
 
-#. ESP32 Bluetooth LE 客户端发现特征。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端发现特征。
 
    命令：
 
@@ -1434,7 +1434,7 @@ Bluetooth LE 连接加密
      
      OK
 
-#. ESP32 Bluetooth LE 客户端配置 Bluetooth LE SPP。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端配置 Bluetooth LE SPP。
 
    选择支持写操作的服务特征（characteristic）作为写通道发送数据，选择支持 notify 或者 indicate 的 characteristic 作为读通道接收数据。
 
@@ -1450,7 +1450,7 @@ Bluetooth LE 连接加密
 
      OK
 
-#. ESP32 Bluetooth LE 客户端使能 Bluetooth LE SPP。
+#. {IDF_TARGET_NAME} Bluetooth LE 客户端使能 Bluetooth LE SPP。
 
    命令：
 
@@ -1470,9 +1470,9 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - ESP32 Bluetooth LE 客户端开启 Bluetooth LE SPP 透传模式后，串口收到的数据会通过 Bluetooth LE 传输到 ESP32 Bluetooth LE 服务端。
+   - {IDF_TARGET_NAME} Bluetooth LE 客户端开启 Bluetooth LE SPP 透传模式后，串口收到的数据会通过 Bluetooth LE 传输到 {IDF_TARGET_NAME} Bluetooth LE 服务端。
 
-#. ESP32 Bluetooth LE 服务端配置 Bluetooth LE SPP。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端配置 Bluetooth LE SPP。
 
    选择支持 notify 或者 indicate 的 characteristic 作为写通道发送数据，选择支持写操作的 characteristic 作为读通道接收数据。
 
@@ -1488,7 +1488,7 @@ Bluetooth LE 连接加密
 
      OK
 
-#. ESP32 Bluetooth LE 服务端使能 Bluetooth LE SPP。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端使能 Bluetooth LE SPP。
 
    命令：
 
@@ -1508,23 +1508,23 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - ESP32 Bluetooth LE 服户端开启 Bluetooth LE SPP 透传模式后，串口收到的数据会通过 Bluetooth LE 传输到 ESP32 Bluetooth LE 客户端。
-   - 如果 ESP32 Bluetooth LE 客户端端没有先开启 Bluetooth LE SPP 透传，或者使用其他设备作为 Bluetooth LE 客户端，则 ESP32 Bluetooth LE 客户端需要先开启侦听 Notify 或者 Indicate。例如，ESP32 Bluetooth LE 客户端如果未开启透传，则应先调用 `AT+BLEGATTCWR=0,3,7,1,1` 开启侦听，ESP32 Bluetooth LE 服务端 才能成功实现透传。
-   - 对于同一服务，ESP32 Bluetooth LE 客户端的 <srv_index> 值等于 ESP32 Bluetooth LE 服务端的 <srv_index> 值 + 2，这是正常现象。
+   - {IDF_TARGET_NAME} Bluetooth LE 服户端开启 Bluetooth LE SPP 透传模式后，串口收到的数据会通过 Bluetooth LE 传输到 {IDF_TARGET_NAME} Bluetooth LE 客户端。
+   - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端端没有先开启 Bluetooth LE SPP 透传，或者使用其他设备作为 Bluetooth LE 客户端，则 {IDF_TARGET_NAME} Bluetooth LE 客户端需要先开启侦听 Notify 或者 Indicate。例如，{IDF_TARGET_NAME} Bluetooth LE 客户端如果未开启透传，则应先调用 `AT+BLEGATTCWR=0,3,7,1,1` 开启侦听，{IDF_TARGET_NAME} Bluetooth LE 服务端 才能成功实现透传。
+   - 对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服务端的 <srv_index> 值 + 2，这是正常现象。
 
-ESP32 与手机建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下传输数据 
+{IDF_TARGET_NAME} 与手机建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下传输数据 
 --------------------------------------------------------------------------------------
 
-该示例展示了如何在 ESP32 开发板（仅作为低功耗蓝牙服务器角色）和手机（仅作为低功耗蓝牙客户端角色）之间建立 SPP 连接，以及如何在 UART-Bluetooth LE 透传模式下传输数据。
+该示例展示了如何在 {IDF_TARGET_NAME} 开发板（仅作为低功耗蓝牙服务器角色）和手机（仅作为低功耗蓝牙客户端角色）之间建立 SPP 连接，以及如何在 UART-Bluetooth LE 透传模式下传输数据。
 
 .. Important::
-  步骤中以 ``ESP32 Bluetooth LE 服务端`` 开头的操作只需要在 ESP32 Bluetooth LE 服务端执行即可，而以 ``Bluetooth LE 客户端`` 开头的操作只需要在手机的蓝牙调试助手中执行即可。 
+  步骤中以 ``{IDF_TARGET_NAME} Bluetooth LE 服务端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 服务端执行即可，而以 ``Bluetooth LE 客户端`` 开头的操作只需要在手机的蓝牙调试助手中执行即可。 
 
 #. 在手机端下载 Bluetooth LE 调试助手，例如 nRF Connect (Android) 和 LightBlue (iOS)。
 
 #. 初始化 Bluetooth LE 功能。
 
-   ESP32 Bluetooth LE 服务端：
+   {IDF_TARGET_NAME} Bluetooth LE 服务端：
 
    命令：
 
@@ -1538,7 +1538,7 @@ ESP32 与手机建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下�
 
      OK
 
-#. ESP32 Bluetooth LE 服务端创建服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
 
    命令：
 
@@ -1552,7 +1552,7 @@ ESP32 与手机建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下�
 
      OK
 
-#. ESP32 Bluetooth LE 服务端开启服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
 
    命令：
 
@@ -1566,7 +1566,7 @@ ESP32 与手机建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下�
 
      OK
 
-#. ESP32 蓝牙 LE 服务器获取其 MAC 地址。
+#. {IDF_TARGET_NAME} 蓝牙 LE 服务器获取其 MAC 地址。
 
    命令：
 
@@ -1599,7 +1599,7 @@ ESP32 与手机建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下�
 
      OK
 
-#. ESP32 Bluetooth LE 服务端开始广播。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端开始广播。
 
    命令：
 
@@ -1615,9 +1615,9 @@ ESP32 与手机建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下�
 
 #. 创建 Bluetooth LE 连接。
 
-   手机打开 nRF 调试助手，并打开 SCAN 开始扫描，找到 ESP32 Bluetooth LE 服务端的 MAC 地址，点击 ``CONNECT`` 进行连接。此时 ESP32 端应该会打印类似于 ``+BLECONN:0,"60:51:42:fe:98:aa"`` 的 log，这表示已经建立了 Bluetooth LE 连接。
+   手机打开 nRF 调试助手，并打开 SCAN 开始扫描，找到 {IDF_TARGET_NAME} Bluetooth LE 服务端的 MAC 地址，点击 ``CONNECT`` 进行连接。此时 {IDF_TARGET_NAME} 端应该会打印类似于 ``+BLECONN:0,"60:51:42:fe:98:aa"`` 的 log，这表示已经建立了 Bluetooth LE 连接。
 
-#. ESP32 Bluetooth LE 服务端查询服务。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端查询服务。
 
    命令：
 
@@ -1634,7 +1634,7 @@ ESP32 与手机建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下�
      
      OK
 
-#. ESP32 Bluetooth LE 服务端发现特征。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端发现特征。
 
    命令：
 
@@ -1676,7 +1676,7 @@ ESP32 与手机建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下�
 
    此时在手机 nRF 调试助手客户端的 ``UUID:0xA002`` 的 ``UnKnown Service`` 服务下一级选项中选择点击 Properties 为 NOTIFY 或者 INDICATE 的服务特征的右侧按钮（这里 ESP-AT 默认 Properties 为 NOTIFY 或者 INDICATE 的服务特征是 0xC305 和 0xC306），开始侦听 Properties 为 NOTIFY 或者 INDICATE 的服务特征。
 
-#. ESP32 Bluetooth LE 服务端配置 Bluetooth LE SPP。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端配置 Bluetooth LE SPP。
 
    选择支持 notify 或者 indicate 的 characteristic 作为写通道发送数据，选择支持写操作的 characteristic 作为读通道接收数据。
 
@@ -1692,7 +1692,7 @@ ESP32 与手机建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下�
 
      OK
 
-#. ESP32 Bluetooth LE 服务端使能 Bluetooth LE SPP。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端使能 Bluetooth LE SPP。
 
    命令：
 
@@ -1712,8 +1712,8 @@ ESP32 与手机建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下�
 
 #. Bluetooth LE 客户端发送数据。
 
-   在 nRF 调试助手客户端选择 0xC304 服务特征值发送数据 ``test`` 给 ESP32 Bluetooth LE 服务端，此时 ESP32 Bluetooth LE 服务端可以收到 ``test``。
+   在 nRF 调试助手客户端选择 0xC304 服务特征值发送数据 ``test`` 给 {IDF_TARGET_NAME} Bluetooth LE 服务端，此时 {IDF_TARGET_NAME} Bluetooth LE 服务端可以收到 ``test``。
 
-#. ESP32 Bluetooth LE 服务端发送数据。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端发送数据。
     
-   在 ESP32 Bluetooth LE 服务端直接发送 ``test``，此时 nRF 调试助手客户端可以收到 ``test``。
+   在 {IDF_TARGET_NAME} Bluetooth LE 服务端直接发送 ``test``，此时 nRF 调试助手客户端可以收到 ``test``。

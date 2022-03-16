@@ -3,7 +3,15 @@ ESP-AT 用户指南
 
 :link_to_translation:`en:[English]`
 
-本文档为 ESP-AT 官方文档。若要查看某一版本的 AT 固件或某一芯片系列的文档，可点击页面左下角的三角符号进行选择。
+这里是乐鑫 `ESP-AT <https://github.com/espressif/esp-at>`_ 开发框架的文档中心。ESP-AT 作为由 `Espressif Systems <https://www.espressif.com/zh-hans/home>`_ 发起和提供技术支持的官方项目，适用于 Windows、Linux、macOS 上的 `ESP32、ESP32-C3、ESP8266、和 ESP32-S2 <https://www.espressif.com/zh-hans/products/socs>`_ 系列芯片。
+
+.. only:: html
+
+    **本文档仅包含针对 {IDF_TARGET_NAME} 芯片的 ESP-AT 使用**。如需了解其他芯片，请在页面左上方的下拉菜单中选择您的目标芯片。
+
+.. only:: latex
+
+    **本文档仅包含针对 {IDF_TARGET_NAME} 芯片的 ESP-AT 使用**。
 
 ======================================  ======================================  ======================================
 |入门|_                                  |AT Binary 列表|_                        |AT 命令集|_    

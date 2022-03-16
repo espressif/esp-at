@@ -1,5 +1,9 @@
 _Note that this is a template for an ESP-IDF example README.md file. When using this template, replace all these emphasised placeholders with example-specific content._
 
+| Supported Targets | _Supported target, e.g. ESP32_ | _Another supported target, e.g. ESP32-S3_ |
+| ----------------- | ------------------------------ | ----------------------------------------- |
+
+_If the example supports all targets supported by ESP-IDF then the table can be omitted_
 # _Example Title_
 
 (See the README.md file in the upper level 'examples' directory for more information about examples.)
@@ -57,3 +61,7 @@ _For examples where ESP32 is connected  with some other hardware, include a tabl
 ## Troubleshooting
 
 _If there are any likely problems or errors which many users might encounter, mention them here. Remove this section for very simple examples where nothing is likely to go wrong._
+
+## Example Breakdown
+
+_If the example source code is lengthy, complex, or cannot be easily understood, use this section to break down and explain the source code. This can be done by breaking down the execution path step by step, or explaining what each major function/task/source file does. Add sub titles if necessary. Remove this section for very simple examples where the source code is self explanatory._

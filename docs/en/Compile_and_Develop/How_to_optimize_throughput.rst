@@ -3,7 +3,7 @@ How to Improve ESP-AT Throughput Performance
 
 :link_to_translation:`zh_CN:[中文]`
 
-By default, UART is used for communication between ESP-AT and the host MCU, so the maximum throughput speed will not exceed its default configuration, that is, 115200 bps. If users want ESP-AT to achieve high throughput, it is necessary to understand this document and choose the appropriate configuration method. Taking ESP32 as an example, this document introduces how to improve the throughput performance of ESP-AT.
+By default, UART is used for communication between ESP-AT and the host MCU, so the maximum throughput speed will not exceed its default configuration, that is, 115200 bps. If users want ESP-AT to achieve high throughput, it is necessary to understand this document and choose the appropriate configuration method. Taking {IDF_TARGET_NAME} as an example, this document introduces how to improve the throughput performance of ESP-AT.
 
 .. note::
 
@@ -19,7 +19,7 @@ Users could choose one of the following methods to improve throughput performanc
 
 **1. Configure system, LWIP, Wi-Fi parameters**
 
-  Copy the following code snippet and append to tail of :at_file:`module_config/module_esp32_default/sdkconfig.defaults` file. For other ESP series devices, please modify the sdkconfig.defaults file in the corresponding folder. 
+  Copy the following code snippet and append to tail of :project_file:`module_config/module_{IDF_TARGET_PATH_NAME}_default/sdkconfig.defaults` file. For other ESP series devices, please modify the sdkconfig.defaults file in the corresponding folder.
 
   ::
 
@@ -27,8 +27,8 @@ Users could choose one of the following methods to improve throughput performanc
     CONFIG_ESP_SYSTEM_EVENT_TASK_STACK_SIZE=4096
     CONFIG_FREERTOS_UNICORE=n
     CONFIG_FREERTOS_HZ=1000
-    CONFIG_ESP32_DEFAULT_CPU_FREQ_240=y
-    CONFIG_ESP32_DEFAULT_CPU_FREQ_MHZ=240
+    CONFIG_{IDF_TARGET_CFG_PREFIX}_DEFAULT_CPU_FREQ_240=y
+    CONFIG_{IDF_TARGET_CFG_PREFIX}_DEFAULT_CPU_FREQ_MHZ=240
     CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
     CONFIG_ESPTOOLPY_FLASHFREQ_80M=y
 
@@ -50,7 +50,7 @@ Users could choose one of the following methods to improve throughput performanc
 
 **2. Enlarge UART buffer size**
 
-  Copy the following code snippet and replace the `uart_driver_install()` line of :at_file:`at_uart_task.c <main/interface/uart/at_uart_task.c>` file.
+  Copy the following code snippet and replace the `uart_driver_install()` line of :project_file:`at_uart_task.c <main/interface/uart/at_uart_task.c>` file.
 
   ::
 
@@ -111,8 +111,8 @@ The data stream of throughput is similar to water flow. In order to improve thro
     CONFIG_ESP_SYSTEM_EVENT_TASK_STACK_SIZE=4096
     CONFIG_FREERTOS_UNICORE=n
     CONFIG_FREERTOS_HZ=1000
-    CONFIG_ESP32_DEFAULT_CPU_FREQ_240=y
-    CONFIG_ESP32_DEFAULT_CPU_FREQ_MHZ=240
+    CONFIG_{IDF_TARGET_CFG_PREFIX}_DEFAULT_CPU_FREQ_240=y
+    CONFIG_{IDF_TARGET_CFG_PREFIX}_DEFAULT_CPU_FREQ_MHZ=240
     CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
     CONFIG_ESPTOOLPY_FLASHFREQ_80M=y
 
@@ -122,7 +122,7 @@ The data stream of throughput is similar to water flow. In order to improve thro
 
 2.1 Enlarge UART buffer size
 
-  Copy the following code snippet and replace the `uart_driver_install()` line of :at_file:`at_uart_task.c <main/interface/uart/at_uart_task.c>` file.
+  Copy the following code snippet and replace the `uart_driver_install()` line of :project_file:`at_uart_task.c <main/interface/uart/at_uart_task.c>` file.
 
   - Improve UART TX throughput
 
@@ -162,9 +162,16 @@ The data stream of throughput is similar to water flow. In order to improve thro
 
     If the user expects the throughput rate to be greater than or close to 5 Mbps, then SPI, SDIO, Socket or other methods can be considered. Please refer to:
 
-    - SPI: :doc:`SPI AT Guide </Compile_and_Develop/How_to_implement_SPI_AT>`
-    - SDIO: :doc:`SDIO AT Guide </Compile_and_Develop/esp32-sdio-at-guide>`
-    - Socket: :at_file:`Socket AT Guide <main/interface/socket/README.md>`
+    .. only:: esp32
+
+      - SPI: :doc:`SPI AT Guide </Compile_and_Develop/How_to_implement_SPI_AT>`
+      - SDIO: :doc:`SDIO AT Guide </Compile_and_Develop/esp32-sdio-at-guide>`
+      - Socket: :project_file:`Socket AT Guide <main/interface/socket/README.md>`
+
+    .. only:: esp32c3
+
+      - SPI: :doc:`SPI AT Guide </Compile_and_Develop/How_to_implement_SPI_AT>`
+      - Socket: :project_file:`Socket AT Guide <main/interface/socket/README.md>`
 
 **3. S2, R2, R3, S3 throughput optimization**
 
@@ -174,14 +181,14 @@ The data stream of throughput is similar to water flow. In order to improve thro
 
   If UART is used for communication between ESP-AT and host MCU, S4, R4, S5, R5, S6, R6 need not be optimized. If other transmission media are used, S4, R4, S5, R5, S6, R6 should be a factor affecting throughput.
 
-  S4, R4, S5, R5, S6, R6 is the data stream between the transport layer, network layer and data link layer of the communication protocol. Users need to read `How to improve Wi-Fi performance <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/wifi.html#how-to-improve-wi-fi-performance>`_ in ESP-IDF to understand the principle and make reasonable configuration. These configurations can be configured in ``./build.py menuconfig``.
+  S4, R4, S5, R5, S6, R6 is the data stream between the transport layer, network layer and data link layer of the communication protocol. Users need to read `How to improve Wi-Fi performance <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#how-to-improve-wi-fi-performance>`_ in ESP-IDF to understand the principle and make reasonable configuration. These configurations can be configured in ``./build.py menuconfig``.
 
-  - Improve throughput of S4 -> S5 -> S6: `TX direction <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/wifi.html#parameters>`_
-  - Improve throughput of R6 -> R5 -> R4: `RX direction <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/wifi.html#parameters>`_
+  - Improve throughput of S4 -> S5 -> S6: `TX direction <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#parameters>`_
+  - Improve throughput of R6 -> R5 -> R4: `RX direction <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#parameters>`_
 
 **5. S6, R6 throughput optimization**
 
-  S6 and R6 are the data link layers of the communication protocol. ESP32 can use Wi-Fi or ethernet as the transmission medium. In addition to the optimization methods described above, Wi-Fi throughput optimization may also need users' attention:
+  S6 and R6 are the data link layers of the communication protocol. {IDF_TARGET_NAME} can use Wi-Fi or ethernet as the transmission medium. In addition to the optimization methods described above, Wi-Fi throughput optimization may also need users' attention:
 
   - Improve RF Power
 

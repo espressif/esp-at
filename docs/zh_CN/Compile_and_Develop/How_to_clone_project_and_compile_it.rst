@@ -1,14 +1,18 @@
 编译 ESP-AT 工程
 =============================
 
+{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c3="esp32-c3"}
+{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c3="MINI-1"}
+{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32D", esp32c3="ESP32-C3-MINI-1"}
+
 :link_to_translation:`en:[English]`
 
-本文档详细介绍了如何编译 ESP-AT 工程，并将生成的固件烧录到 ESP 设备中，包括 ESP32 和 ESP32-C3。当默认的 :doc:`官方发布的固件 <../AT_Binary_Lists/index>` 无法满足需求时，如您需要自定义 :doc:`AT 端口管脚 <How_to_set_AT_port_pin>`、:doc:`低功耗蓝牙服务 <How_to_customize_BLE_services>` 以及 :doc:`分区 <How_to_customize_partitions>` 等，那么就需要编译 ESP-AT 工程。
+本文档详细介绍了如何编译 ESP-AT 工程，并将生成的固件烧录到 ESP 设备中。当默认的 :doc:`官方发布的固件 <../AT_Binary_Lists/index>` 无法满足需求时，如您需要自定义 :doc:`AT 端口管脚 <How_to_set_AT_port_pin>`、:doc:`低功耗蓝牙服务 <How_to_customize_BLE_services>` 以及 :doc:`分区 <How_to_customize_partitions>` 等，那么就需要编译 ESP-AT 工程。
 
 文档结构如下所示。
 
 - :ref:`build-project-overview`：ESP-AT 工程编译步骤概述。
-- :ref:`build-project-esp32-and-c3-series`：ESP32、ESP32-C3 系列 AT 工程编译的详细步骤。
+- :ref:`build-project-series-steps`：{IDF_TARGET_NAME} 系列 AT 工程编译的详细步骤。
 
 .. _build-project-overview:
 
@@ -23,12 +27,12 @@
 
   **请注意可能出现管脚冲突**，如果选择 ``AT through HSPI``，那么可通过 ``./build.py menuconfig`` --> ``Component config`` --> ``AT`` --> ``AT hspi settings`` 获取 HSPI 管脚信息。
 
-.. _build-project-esp32-and-c3-series:
+.. _build-project-series-steps:
 
-ESP32 和 ESP32-C3 系列
+{IDF_TARGET_NAME} 系列
 -----------------------------------
 
-本节介绍了如何为 ESP32 和 ESP32-C3 系列编译 ESP-AT 工程。
+本节介绍了如何为 {IDF_TARGET_NAME} 系列编译 ESP-AT 工程。
 
 ESP-IDF 快速入门
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -43,12 +47,9 @@ ESP-IDF 快速入门
    * - 工程
      - IDF 版本
      - IDF 文档版本
-   * - ESP32 ESP-AT
-     - |esp32 idf branch version|
-     - ESP-IDF 快速入门文档 |esp32 idf doc version|_
-   * - ESP32-C3 ESP-AT
-     - |esp32-c3 idf branch version|
-     - ESP-IDF 快速入门文档 |esp32-c3 idf doc version|_
+   * - {IDF_TARGET_NAME} ESP-AT
+     - release/v4.3
+     - `ESP-IDF 快速入门文档 v4.3 <https://docs.espressif.com/projects/esp-idf/en/release-v4.3/{IDF_TARGET_PATH_NAME}/get-started/index.html>`__
 
 首先，按照 *ESP-IDF 快速入门* 文档中的第 1 至 4 步，为 ESP-IDF 创建开发环境（点击上表中的相应链接跳转至文档）。
 
@@ -76,8 +77,7 @@ ESP-IDF 快速入门
 
 - Windows
 
-  - 对于 ESP32 系列模组，推荐您以管理员权限运行 `ESP-IDF 4.2 CMD <https://dl.espressif.com/dl/esp-idf/?idf=4.2>`__。
-  - 对于 ESP32-C3 系列模组，推荐您以管理员权限运行 `ESP-IDF 4.3 CMD <https://dl.espressif.com/dl/esp-idf/?idf=4.3>`__。
+  - 对于 {IDF_TARGET_NAME} 系列模组，推荐您以管理员权限运行 `ESP-IDF 4.3 CMD <https://dl.espressif.com/dl/esp-idf/?idf=4.3>`__。
   
   ::
 
@@ -112,8 +112,8 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 
 3. 如果是第一次编译工程，请为 ESP 设备选择以下配置选项。
 
-  - 选择 ``Platform name``，例如 ESP32 系列设备选择 ``PLATFORM_ESP32``，ESP32-C3 系列设备选择 ``PLATFORM_ESP32C3``。``Platform name`` 由 :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 定义。
-  - 选择 ``Module name``，例如 ESP32-WROOM-32D 模组选择 ``WROOM-32``。``Module name`` 由 :component:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 定义。
+  - 选择 ``Platform name``，例如 {IDF_TARGET_NAME} 系列设备选择 ``PLATFORM_{IDF_TARGET_CFG_PREFIX}``。``Platform name`` 由 :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 定义。
+  - 选择 ``Module name``，例如 {IDF_TARGET_PRODUCT_NAME} 模组选择 ``{IDF_TARGET_COMPILE_MNAME}``。``Module name`` 由 :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 定义。
   - 启用或禁用 ``silence mode``，启用时将删除一些日志并减少固件的大小。一般情况下请禁用。
   - 如果 ``build/module_info.json`` 文件存在，上述三个配置选项将不会出现。因此，如果您想重新配置模组信息，请删除该文件。
 
