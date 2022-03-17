@@ -777,7 +777,12 @@ build_docs:
     - ./check_lang_folder_sync.sh
     - ./check_doc_chars.py
     - pip install -r requirements.txt
-    - build-docs -t {esp32,esp32c3}
+
+    # build html
+    - build-docs -t {esp32,esp32c3} -bs html
+
+    # build pdf
+    - build-docs -t {esp32,esp32c3} -bs latex
 
 .deploy_docs_template:
   stage: deploy_docs
