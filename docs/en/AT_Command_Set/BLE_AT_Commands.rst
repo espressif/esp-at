@@ -5,57 +5,68 @@ Bluetooth® Low Energy AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
- Currently, AT firmware for {IDF_TARGET_NAME} series supports `Bluetooth® Core Specification Version 4.2 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_.
+ .. only:: esp32
+
+  Currently, AT firmware for {IDF_TARGET_NAME} series supports `Bluetooth® Core Specification Version 4.2 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_.
  
  .. only:: esp32c3
 
-  Next AT firmware for {IDF_TARGET_NAME} will support `Bluetooth® Core Specification Version 5.0 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_.
+  Currently, AT firmware for {IDF_TARGET_NAME} supports `Bluetooth® Core Specification Version 5.0 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_.
 
-- :ref:`AT+BLEINIT <cmd-BINIT>`: Bluetooth LE initialization.
-- :ref:`AT+BLEADDR <cmd-BADDR>`: Query/Set Bluetooth LE device address.
-- :ref:`AT+BLENAME <cmd-BNAME>`: Query/Set Bluetooth LE device name.
-- :ref:`AT+BLESCANPARAM <cmd-BSCANP>`: Query/Set parameters of Bluetooth LE scanning.
-- :ref:`AT+BLESCAN <cmd-BSCAN>`: Enable Bluetooth LE scanning.
-- :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`: Set Bluetooth LE scan response.
-- :ref:`AT+BLEADVPARAM <cmd-BADVP>`: Query/Set parameters of Bluetooth LE advertising.
-- :ref:`AT+BLEADVDATA <cmd-BADVD>`: Set Bluetooth LE advertising data.
-- :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`: Automatically set Bluetooth LE advertising data.
-- :ref:`AT+BLEADVSTART <cmd-BADVSTART>`: Start Bluetooth LE advertising.
-- :ref:`AT+BLEADVSTOP <cmd-BADVSTOP>`: Stop Bluetooth LE advertising.
-- :ref:`AT+BLECONN <cmd-BCONN>`: Establish Bluetooth LE connection.
-- :ref:`AT+BLECONNPARAM <cmd-BCONNP>`: Query/Update parameters of Bluetooth LE connection.
-- :ref:`AT+BLEDISCONN <cmd-BDISC>`: End Bluetooth LE connection.
-- :ref:`AT+BLEDATALEN <cmd-BDLEN>`: Set Bluetooth LE data packet length.
-- :ref:`AT+BLECFGMTU <cmd-BMTU>`: Set Bluetooth LE MTU length.
-- :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`: Generic Attributes Server (GATTS) creates services.
-- :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`: GATTS starts services.
-- :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`: GATTS Stops Services.
-- :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`: GATTS discovers services.
-- :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`: GATTS discovers characteristics.
-- :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`: Notify a client of the value of a characteristic value from the server.
-- :ref:`AT+BLEGATTSIND <cmd-GSIND>`: Indicate the characteristic value from the server to a client.
-- :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`: GATTS sets characteristics.
-- :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`: Generic Attributes Client (GATTC) discovers primary services.
-- :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`: GATTC discovers included services.
-- :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`: GATTC discovers characteristics.
-- :ref:`AT+BLEGATTCRD <cmd-GCRD>`: GATTC reads characteristics.
-- :ref:`AT+BLEGATTCWR <cmd-GCWR>`: GATTC writes characteristics.
-- :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`: Query/Set Bluetooth LE SPP parameters.
-- :ref:`AT+BLESPP <cmd-BLESPP>`: Enter Bluetooth LE SPP mode.
-- :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`: Query/Set Bluetooth LE encryption parameters.
-- :ref:`AT+BLEENC <cmd-BLEENC>`: Initiate Bluetooth LE encryption request.
-- :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`: Respond to the pairing request from the peer device.
-- :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`: Reply the key value to the peer device.
-- :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`: Reply the confirm value to the peer device in the legacy connection stage.
-- :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`: Query bonded Bluetooth LE encryption device list.
-- :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`: Clear Bluetooth LE encryption device list.
-- :ref:`AT+BLESETKEY <cmd-BLESETKEY>`: Set Bluetooth LE static pair key.
-- :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`: Bluetooth LE Human Interface Device (HID) profile initialization.
-- :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`: Send Bluetooth LE HID keyboard information.
-- :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`: Send Bluetooth LE HID mouse information.
-- :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`: Send Bluetooth LE HID consumer information.
-- :ref:`AT+BLUFI <cmd-BLUFI>`: Start or Stop BluFi.
-- :ref:`AT+BLUFINAME <cmd-BLUFINAME>`: Query/Set BluFi device name.
+.. list::
+
+    - :ref:`AT+BLEINIT <cmd-BINIT>`: Bluetooth LE initialization.
+    - :ref:`AT+BLEADDR <cmd-BADDR>`: Query/Set Bluetooth LE device address.
+    - :ref:`AT+BLENAME <cmd-BNAME>`: Query/Set Bluetooth LE device name.
+    - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`: Query/Set parameters of Bluetooth LE scanning.
+    - :ref:`AT+BLESCAN <cmd-BSCAN>`: Enable Bluetooth LE scanning.
+    - :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`: Set Bluetooth LE scan response.
+    - :ref:`AT+BLEADVPARAM <cmd-BADVP>`: Query/Set parameters of Bluetooth LE advertising.
+    - :ref:`AT+BLEADVDATA <cmd-BADVD>`: Set Bluetooth LE advertising data.
+    - :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`: Automatically set Bluetooth LE advertising data.
+    - :ref:`AT+BLEADVSTART <cmd-BADVSTART>`: Start Bluetooth LE advertising.
+    - :ref:`AT+BLEADVSTOP <cmd-BADVSTOP>`: Stop Bluetooth LE advertising.
+    - :ref:`AT+BLECONN <cmd-BCONN>`: Establish Bluetooth LE connection.
+    - :ref:`AT+BLECONNPARAM <cmd-BCONNP>`: Query/Update parameters of Bluetooth LE connection.
+    - :ref:`AT+BLEDISCONN <cmd-BDISC>`: End Bluetooth LE connection.
+    - :ref:`AT+BLEDATALEN <cmd-BDLEN>`: Set Bluetooth LE data packet length.
+    - :ref:`AT+BLECFGMTU <cmd-BMTU>`: Set Bluetooth LE MTU length.
+    - :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`: Generic Attributes Server (GATTS) creates services.
+    - :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`: GATTS starts services.
+    - :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`: GATTS Stops Services.
+    - :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`: GATTS discovers services.
+    - :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`: GATTS discovers characteristics.
+    - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`: Notify a client of the value of a characteristic value from the server.
+    - :ref:`AT+BLEGATTSIND <cmd-GSIND>`: Indicate the characteristic value from the server to a client.
+    - :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`: GATTS sets characteristics.
+    - :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`: Generic Attributes Client (GATTC) discovers primary services.
+    - :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`: GATTC discovers included services.
+    - :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`: GATTC discovers characteristics.
+    - :ref:`AT+BLEGATTCRD <cmd-GCRD>`: GATTC reads characteristics.
+    - :ref:`AT+BLEGATTCWR <cmd-GCWR>`: GATTC writes characteristics.
+    - :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`: Query/Set Bluetooth LE SPP parameters.
+    - :ref:`AT+BLESPP <cmd-BLESPP>`: Enter Bluetooth LE SPP mode.
+    - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`: Query/Set Bluetooth LE encryption parameters.
+    - :ref:`AT+BLEENC <cmd-BLEENC>`: Initiate Bluetooth LE encryption request.
+    - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`: Respond to the pairing request from the peer device.
+    - :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`: Reply the key value to the peer device.
+    - :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`: Reply the confirm value to the peer device in the legacy connection stage.
+    - :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`: Query bonded Bluetooth LE encryption device list.
+    - :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`: Clear Bluetooth LE encryption device list.
+    - :ref:`AT+BLESETKEY <cmd-BLESETKEY>`: Set Bluetooth LE static pair key.
+    - :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`: Bluetooth LE Human Interface Device (HID) profile initialization.
+    - :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`: Send Bluetooth LE HID keyboard information.
+    - :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`: Send Bluetooth LE HID mouse information.
+    - :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`: Send Bluetooth LE HID consumer information.
+    - :ref:`AT+BLUFI <cmd-BLUFI>`: Start or Stop BluFi.
+    - :ref:`AT+BLUFINAME <cmd-BLUFINAME>`: Query/Set BluFi device name.
+    :esp32c3: - :ref:`AT+BLEPERIODICDATA <cmd-BLEPADATA>`: Set Bluetooth LE periodic advertising data.
+    :esp32c3: - :ref:`AT+BLEPERIODICSTART <cmd-BLEPASTART>`: Start Bluetooth LE periodic advertising.
+    :esp32c3: - :ref:`AT+BLEPERIODICSTOP <cmd-BLEPASTOP>`: Stop Bluetooth LE periodic advertising.
+    :esp32c3: - :ref:`AT+BLESYNCSTART <cmd-BLESYNCSTART>`: Start to synchronize with periodic advertising.
+    :esp32c3: - :ref:`AT+BLESYNCSTOP <cmd-BLESYNCSTOP>`: Stop synchronizing with periodic advertising.
+    :esp32c3: - :ref:`AT+BLEREADPHY <cmd-BLERDPHY>`: Query the current transmitter PHY.
+    :esp32c3: - :ref:`AT+BLESETPHY <cmd-BLESETPHY>`: Set the current transmitter PHY.
 
 .. _cmd-BINIT:
 
@@ -131,6 +142,8 @@ Notes
    -  To learn how to generate a service bin, please refer to esp-at/tools/readme.md.
    -  The download address of the service bin is the "ble_data" address in esp-at/module_config/module_${platform}_default/at_customize.csv.
 
+-  Before de-initialize Bluetooth stack, it is recommended to stop broadcasting, stop scanning and disconnect all existing connections.
+
 Example
 ^^^^^^^^
 
@@ -198,6 +211,8 @@ Note
    -  The two most significant bits of the address should be equal to 1.
    -  At least one bit of the random part of the address should be 0.
    -  At least one bit of the random part of the address should be 1.
+
+-  The configuration changes will be saved in the NVS area. 
 
 Example
 ^^^^^^^^
@@ -344,7 +359,7 @@ Example
 
 ::
 
-    AT+BLEINIT=1   // role: client
+    AT+BLEINIT=1   // Role: client
     AT+BLESCANPARAM=0,0,0,100,50
 
 .. _cmd-BSCAN:
@@ -410,7 +425,7 @@ Example
 
 ::
 
-    AT+BLEINIT=1    // role: client
+    AT+BLEINIT=1    // Role: client
     AT+BLESCAN=1    // start scanning
     AT+BLESCAN=0    // stop scanning
     AT+BLESCAN=1,3,1,"24:0A:C4:96:E6:88"  // start scanning, filter type is MAC address
@@ -450,7 +465,7 @@ Example
 
 ::
 
-    AT+BLEINIT=2   // role: server
+    AT+BLEINIT=2   // Role: server
     AT+BLESCANRSPDATA="1122334455"
 
 .. _cmd-BADVP:
@@ -473,9 +488,18 @@ Query the parameters of advertising.
 
 **Response:**
 
-::
+.. only:: esp32
+
+  ::
 
     +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<peer_addr>
+    OK
+
+.. only:: esp32c3
+
+  ::
+
+    +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<peer_addr>,<primary_phy>,<secondary_phy>
     OK
 
 Set Command
@@ -487,9 +511,17 @@ Set the parameters of advertising.
 
 **Command:**
 
-::
+.. only:: esp32
 
-    AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>, <adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>] [,<peer_addr>]
+  ::
+
+    AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>,<peer_addr>]
+
+.. only:: esp32c3
+
+  ::
+
+    AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>,<peer_addr>][,<primary_phy>,<secondary_phy>]
 
 **Response:**
 
@@ -504,11 +536,24 @@ Parameters
 -  **<adv_int_max>**: maximum advertising interval. The range of this parameter is [0x0020,0x4000]. The actual advertising interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual maximum interval is [20, 10240] ms. It should be more than or equal to the value of ``<adv_int_min>``.
 -  **<adv_type>**:
 
-   -  0: ADV_TYPE_IND
-   -  1: ADV_TYPE_DIRECT_IND_HIGH
-   -  2: ADV_TYPE_SCAN_IND
-   -  3: ADV_TYPE_NONCONN_IND
-   -  4: ADV_TYPE_DIRECT_IND_LOW
+  .. only:: esp32
+
+    -  0: ADV_TYPE_IND
+    -  1: ADV_TYPE_DIRECT_IND_HIGH
+    -  2: ADV_TYPE_SCAN_IND
+    -  3: ADV_TYPE_NONCONN_IND
+    -  4: ADV_TYPE_DIRECT_IND_LOW
+
+  .. only:: esp32c3
+
+    -  0: ADV_TYPE_IND
+    -  1: ADV_TYPE_DIRECT_IND_HIGH
+    -  2: ADV_TYPE_SCAN_IND
+    -  3: ADV_TYPE_NONCONN_IND
+    -  4: ADV_TYPE_DIRECT_IND_LOW
+    -  5: ADV_TYPE_EXT_NOSCANNABLE_IND
+    -  6: ADV_TYPE_EXT_CONNECTABLE_IND
+    -  7: ADV_TYPE_EXT_SCANNABLE_IND
 
 -  **<own_addr_type>**: own Bluetooth LE address type.
 
@@ -536,13 +581,34 @@ Parameters
 
 -  **[<peer_addr>]**: remote Bluetooth LE address.
 
+-  **[<primary_phy>]**: advertising primary PHY. Default: 1M PHY.
+
+   -  1: 1M PHY
+   -  3: Coded PHY
+
+-  **[<secondary_phy>]**: advertising secondary PHY. Default: 1M PHY.
+
+   -  1: 1M PHY
+   -  2: 2M PHY
+   -  3: Coded PHY
+
+Note
+^^^^^
+
+-  If ``peer_addr`` is not set, the query result will be all zero.
+
+  .. only:: esp32c3
+
+    -  The ``primary_phy`` and ``secondary_phy`` must be set together, otherwise, the default 1M PHY is used for unconfigured parameter.
+
 Example
 ^^^^^^^^
 
 ::
 
-    AT+BLEINIT=2   // role: server
-    AT+BLEADVPARAM=50,50,0,0,4,0,0,"12:34:45:78:66:88"
+    AT+BLEINIT=2   // Role: server
+    AT+BLEADVPARAM=50,50,0,0,4,0,1,"12:34:45:78:66:88"
+    AT+BLEADVPARAM=32,32,6,0,7,0,0,"62:34:45:78:66:88",1,3
 
 .. _cmd-BADVD:
 
@@ -584,7 +650,7 @@ Example
 
 ::
 
-    AT+BLEINIT=2   // role: server
+    AT+BLEINIT=2   // Role: server
     AT+BLEADVDATA="1122334455"
 
 .. _cmd-BADVDEX:
@@ -653,7 +719,7 @@ Example
 
 ::
 
-    AT+BLEINIT=2   // role: server
+    AT+BLEINIT=2   // Role: server
     AT+BLEADVDATAEX="ESP-AT","A002","0102030405",1
 
 .. _cmd-BADVSTART:
@@ -692,7 +758,7 @@ Example
 
 ::
 
-    AT+BLEINIT=2   // role: server
+    AT+BLEINIT=2   // Role: server
     AT+BLEADVSTART
 
 .. _cmd-BADVSTOP:
@@ -729,7 +795,7 @@ Example
 
 ::
 
-    AT+BLEINIT=2   // role: server
+    AT+BLEINIT=2   // Role: server
     AT+BLEADVSTART
     AT+BLEADVSTOP
 
@@ -825,7 +891,7 @@ Example
 
 ::
 
-    AT+BLEINIT=1   // role: client
+    AT+BLEINIT=1   // Role: client
     AT+BLECONN=0,"24:0a:c4:09:34:23",0,10
 
 .. _cmd-BCONNP:
@@ -898,7 +964,7 @@ Example
 
 ::
 
-    AT+BLEINIT=1   // role: client
+    AT+BLEINIT=1   // Role: client
     AT+BLECONN=0,"24:0a:c4:09:34:23"
     AT+BLECONNPARAM=0,12,14,1,500  
 
@@ -943,7 +1009,7 @@ Example
 
 ::
 
-    AT+BLEINIT=1   // role: client
+    AT+BLEINIT=1   // Role: client
     AT+BLECONN=0,"24:0a:c4:09:34:23"
     AT+BLEDISCONN=0
 
@@ -987,7 +1053,7 @@ Example
 
 ::
 
-    AT+BLEINIT=1   // role: client
+    AT+BLEINIT=1   // Role: client
     AT+BLECONN=0,"24:0a:c4:09:34:23"
     AT+BLEDATALEN=0,30
 
@@ -1053,7 +1119,7 @@ Example
 
 ::
 
-    AT+BLEINIT=1   // role: client
+    AT+BLEINIT=1   // Role: client
     AT+BLECONN=0,"24:0a:c4:09:34:23"
     AT+BLECFGMTU=0,300
 
@@ -1105,7 +1171,7 @@ Example
 
 ::
 
-    AT+BLEINIT=2   // role: server
+    AT+BLEINIT=2   // Role: server
     AT+BLEGATTSSRVCRE
 
 .. _cmd-GSSRVSTART:
@@ -1155,7 +1221,7 @@ Example
 
 ::
 
-    AT+BLEINIT=2   // role: server
+    AT+BLEINIT=2   // Role: server
     AT+BLEGATTSSRVCRE
     AT+BLEGATTSSRVSTART
 
@@ -1206,7 +1272,7 @@ Example
 
 ::
 
-    AT+BLEINIT=2   // role: server
+    AT+BLEINIT=2   // Role: server
     AT+BLEGATTSSRVCRE
     AT+BLEGATTSSRVSTART
     AT+BLEGATTSSRVSTOP
@@ -1256,7 +1322,7 @@ Example
 
 ::
 
-    AT+BLEINIT=2   // role: server
+    AT+BLEINIT=2   // Role: server
     AT+BLEGATTSSRVCRE
     AT+BLEGATTSSRV?
 
@@ -1308,7 +1374,7 @@ Example
 
 ::
 
-    AT+BLEINIT=2   // role: server
+    AT+BLEINIT=2   // Role: server
     AT+BLEGATTSSRVCRE
     AT+BLEGATTSSRVSTART
     AT+BLEGATTSCHAR?
@@ -1529,7 +1595,7 @@ Example
 
 ::
 
-    AT+BLEINIT=1   // role: client
+    AT+BLEINIT=1   // Role: client
     AT+BLECONN=0,"24:12:5f:9d:91:98"
     AT+BLEGATTCPRIMSRV=0
 
@@ -1585,7 +1651,7 @@ Example
 
 ::
 
-    AT+BLEINIT=1   // role: client
+    AT+BLEINIT=1   // Role: client
     AT+BLECONN=0,"24:12:5f:9d:91:98"
     AT+BLEGATTCPRIMSRV=0
     AT+BLEGATTCINCLSRV=0,1  // set a specific index according to the result of the previous command
@@ -1644,7 +1710,7 @@ Example
 
 ::
 
-    AT+BLEINIT=1   // role: client
+    AT+BLEINIT=1   // Role: client
     AT+BLECONN=0,"24:12:5f:9d:91:98"
     AT+BLEGATTCPRIMSRV=0
     AT+BLEGATTCCHAR=0,1 // set a specific index according to the result of the previous command
@@ -2685,3 +2751,311 @@ Example
 
     AT+BLUFINAME="BLUFI_DEV"
     AT+BLUFINAME?
+
+.. _cmd-BLEPADATA:
+
+:ref:`AT+BLEPERIODICDATA <BLE-AT>`: Set Bluetooth LE periodic advertising data
+------------------------------------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+Set periodic advertising data.
+
+**Command:**
+
+::
+
+    AT+BLEPERIODICDATA=<periodic_data>
+
+**Response:**
+
+::
+
+    OK
+
+Parameter
+^^^^^^^^^^
+
+-  **<periodic_data>**: Periodic advertising data in HEX string. For example, to set the periodic advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEPERIODICDATA="1122334455"``.
+
+Example
+^^^^^^^^
+
+::
+
+    AT+BLEINIT=2   // Role: server
+    AT+BLEPERIODICDATA="1122334455"
+
+.. _cmd-BLEPASTART:
+
+:ref:`AT+BLEPERIODICSTART <BLE-AT>`: Start Bluetooth LE periodic advertising
+----------------------------------------------------------------------------------
+
+Execute Command
+^^^^^^^^^^^^^^^
+
+**Function:**
+
+Start periodic advertising.
+
+**Command:**
+
+::
+
+    AT+BLEPERIODICSTART
+
+**Response:**
+
+::
+
+    OK
+
+Notes
+^^^^^
+
+-  The extended advertising should be started before the start of periodic advertising, and the adv type should be ADV_TYPE_EXT_NOSCANNABLE_IND.
+
+Example
+^^^^^^^^
+
+::
+
+    AT+BLEINIT=2   // Role: server
+    AT+BLEPERIODICDATA="1122334455" // Set periodic adv data
+    AT+BLEADVPARAM=32,32,5,0,7,0   // Set extended advertising parameters
+    AT+BLEADVSTART  // Start Extend advertising
+    AT+BLEPERIODICSTART  // Start periodic advertising
+
+.. _cmd-BLEPASTOP:
+
+:ref:`AT+BLEPERIODICSTOP <BLE-AT>`: Stop Bluetooth LE periodic advertising
+--------------------------------------------------------------------------------
+
+Execute Command
+^^^^^^^^^^^^^^^
+
+**Function:**
+
+Stop periodic advertising.
+
+**Command:**
+
+::
+
+    AT+BLEPERIODICSTOP
+
+**Response:**
+
+::
+
+    OK
+
+Example
+^^^^^^^^
+
+::
+
+    AT+BLEPERIODICSTOP   // Stop periodic advertising
+
+.. _cmd-BLESYNCSTART:
+
+:ref:`AT+BLESYNCSTART <BLE-AT>`: Start to synchronize with periodic advertising
+---------------------------------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+Synchroize with the target device and get the periodic advertising data.
+
+**Command:**
+
+::
+
+    AT+BLESYNCSTART=<target_address>
+
+**Response:**
+
+::
+
+    +BLESYNC:<addr>,<rssi>,<periodic_adv_data>
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<addr>**: Bluetooth LE address.
+-  **<rssi>**: signal strength.
+-  **<periodic_adv_data>**: periodic advertising data.
+
+Notes
+^^^^^
+
+-  Before you start to synchronize with the remote device, the blescan must be start.
+
+Example
+^^^^^^^^
+
+::
+
+    AT+BLEINIT=1   // Role: client
+    AT+BLESCAN=1   // start Bluetooth LE scan
+    AT+BLESYNCSTART="24:0a:c4:09:34:23"  // try to Synchroize with the remote device
+
+.. _cmd-BLESYNCSTOP:
+
+:ref:`AT+BLESYNCSTOP <BLE-AT>`: Stop synchronizing with periodic advertising
+---------------------------------------------------------------------------------
+
+Execute Command
+^^^^^^^^^^^^^^^
+
+**Function:**
+
+Stop synchronizing with the target device.
+
+**Command:**
+
+::
+
+    AT+BLESYNCSTOP
+
+**Response:**
+
+::
+
+    OK
+
+
+Notes
+^^^^^
+
+-  If you stop blescan with ``AT+BLESCAN=0`` command, the synchronization will be stopped automatically.
+
+Example
+^^^^^^^^
+
+::
+
+    AT+BLEINIT=1   // Role: client
+    AT+BLESCAN=1   // start Bluetooth LE scan
+    AT+BLESYNCSTART="24:0a:c4:09:34:23"  // try to synchronize with the remote device
+    AT+BLESYNCSTOP  // Stop Synchroize with the remote device
+
+.. _cmd-BLERDPHY:
+
+:ref:`AT+BLEREADPHY <BLE-AT>`: Query the current transmitter PHY
+-----------------------------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+Query the current transmitter PHY.
+
+**Command:**
+
+::
+
+    AT+BLEREADPHY=<conn_index>
+
+**Response:**
+
+If the query succeeds, it will return:
+
+::
+
+    +BLEREADPHY:<device_addr>,<tx_PHY>,<rx_PHY>
+    OK
+
+If the query fails, it will return:
+
+::
+
+    +BLEREADPHY:-1
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<device_addr>**: remote device address.
+
+-  **<tx_PHY>**:
+
+   -  1: 1M PHY.
+   -  2: 2M PHY.
+   -  3: Coded PHY.
+
+-  **<rx_PHY>**:
+
+   -  1: 1M PHY.
+   -  2: 2M PHY.
+   -  3: Coded PHY.
+
+Example
+^^^^^^^^
+
+::
+
+    AT+BLEINIT=1   // Role: client
+    AT+BLECONN=0,"24:0a:c4:09:34:23"
+    AT+BLEREADPHY=0 // query current transmitter PHY
+
+.. _cmd-BLESETPHY:
+
+:ref:`AT+BLESETPHY <BLE-AT>`: Set the current transmitter PHY
+-----------------------------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+Set the current transmitter PHY.
+
+**Command:**
+
+::
+
+    AT+BLESETPHY=<conn_index>,<tx_rx_phy>
+
+**Response:**
+
+If the query succeeds, it will return:
+
+::
+
+    +BLESETPHY:<device_addr>,<tx_PHY>,<rx_PHY>
+    OK
+
+If the query fails, it will return:
+
+::
+
+    +BLESETPHY:-1
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<device_addr>**: remote device address.
+
+-  **<tx_rx_phy>**:
+
+   -  1: 1M PHY.
+   -  2: 2M PHY.
+   -  3: Coded PHY.
+
+Example
+^^^^^^^^
+
+::
+
+    AT+BLEINIT=1   // Role: client
+    AT+BLECONN=0,"24:0a:c4:09:34:23"
+    AT+BLESETPHY=0,1

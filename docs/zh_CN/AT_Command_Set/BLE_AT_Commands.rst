@@ -5,57 +5,68 @@ Bluetooth® Low Energy AT 命令集
 
 :link_to_translation:`en:[English]`
 
-当前，{IDF_TARGET_NAME} 系列 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_。
+.. only:: esp32
+
+  当前，{IDF_TARGET_NAME} 系列 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_。
 
 .. only:: esp32c3
 
-  下一版本 {IDF_TARGET_NAME} AT 固件将支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_。
+  当前， {IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_。
 
-- :ref:`AT+BLEINIT <cmd-BINIT>`：Bluetooth LE 初始化
-- :ref:`AT+BLEADDR <cmd-BADDR>`：设置 Bluetooth LE 设备地址
-- :ref:`AT+BLENAME <cmd-BNAME>`：查询/设置 Bluetooth LE 设备名称
-- :ref:`AT+BLESCANPARAM <cmd-BSCANP>`：查询/设置 Bluetooth LE 扫描参数
-- :ref:`AT+BLESCAN <cmd-BSCAN>`：使能 Bluetooth LE 扫描
-- :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`：设置 Bluetooth LE 扫描响应
-- :ref:`AT+BLEADVPARAM <cmd-BADVP>`：查询/设置 Bluetooth LE 广播参数
-- :ref:`AT+BLEADVDATA <cmd-BADVD>`：设置 Bluetooth LE 广播数据
-- :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`：自动设置 Bluetooth LE 广播数据
-- :ref:`AT+BLEADVSTART <cmd-BADVSTART>`：开始 Bluetooth LE 广播
-- :ref:`AT+BLEADVSTOP <cmd-BADVSTOP>`：停止 Bluetooth LE 广播
-- :ref:`AT+BLECONN <cmd-BCONN>`：建立 Bluetooth LE 连接
-- :ref:`AT+BLECONNPARAM <cmd-BCONNP>`：查询/更新 Bluetooth LE 连接参数
-- :ref:`AT+BLEDISCONN <cmd-BDISC>`：断开 Bluetooth LE 连接
-- :ref:`AT+BLEDATALEN <cmd-BDLEN>`：设置 Bluetooth LE 数据包长度
-- :ref:`AT+BLECFGMTU <cmd-BMTU>`：设置 Bluetooth LE MTU 长度
-- :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`：GATTS 创建服务
-- :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`：GATTS 开启服务
-- :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`：GATTS 停止服务
-- :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`：GATTS 发现服务
-- :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`：GATTS 发现服务特征
-- :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`：服务器 notify 服务特征值给客户端
-- :ref:`AT+BLEGATTSIND <cmd-GSIND>`：服务器 indicate 服务特征值给客户端
-- :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`：GATTS 设置服务特征值
-- :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`：GATTC 发现基本服务
-- :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`：GATTC 发现包含的服务
-- :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`：GATTC 发现服务特征
-- :ref:`AT+BLEGATTCRD <cmd-GCRD>`：GATTC 读取服务特征值
-- :ref:`AT+BLEGATTCWR <cmd-GCWR>`：GATTC 写服务特征值
-- :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`：查询/设置 Bluetooth LE SPP 参数
-- :ref:`AT+BLESPP <cmd-BLESPP>`：进入 Bluetooth LE SPP 模式
-- :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`：查询/设置 Bluetooth LE 加密参数
-- :ref:`AT+BLEENC <cmd-BLEENC>`：发起 Bluetooth LE 加密请求
-- :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`：回复对端设备发起的配对请求
-- :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`：给对方设备回复密钥
-- :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`：给对方设备回复确认结果（传统连接阶段）
-- :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`：查询绑定的 Bluetooth LE 加密设备列表
-- :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`：清除 Bluetooth LE 加密设备列表
-- :ref:`AT+BLESETKEY <cmd-BLESETKEY>`：设置 Bluetooth LE 静态配对密钥
-- :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`：Bluetooth LE HID 协议初始化
-- :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`：发送 Bluetooth LE HID 键盘信息
-- :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`：发送 Bluetooth LE HID 鼠标信息
-- :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`：发送 Bluetooth LE HID consumer 信息
-- :ref:`AT+BLUFI <cmd-BLUFI>`：开启或关闭 BluFi
-- :ref:`AT+BLUFINAME <cmd-BLUFINAME>`：查询/设置 BluFi 设备名称
+.. list::
+
+    - :ref:`AT+BLEINIT <cmd-BINIT>`：Bluetooth LE 初始化
+    - :ref:`AT+BLEADDR <cmd-BADDR>`：设置 Bluetooth LE 设备地址
+    - :ref:`AT+BLENAME <cmd-BNAME>`：查询/设置 Bluetooth LE 设备名称
+    - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`：查询/设置 Bluetooth LE 扫描参数
+    - :ref:`AT+BLESCAN <cmd-BSCAN>`：使能 Bluetooth LE 扫描
+    - :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`：设置 Bluetooth LE 扫描响应
+    - :ref:`AT+BLEADVPARAM <cmd-BADVP>`：查询/设置 Bluetooth LE 广播参数
+    - :ref:`AT+BLEADVDATA <cmd-BADVD>`：设置 Bluetooth LE 广播数据
+    - :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`：自动设置 Bluetooth LE 广播数据
+    - :ref:`AT+BLEADVSTART <cmd-BADVSTART>`：开始 Bluetooth LE 广播
+    - :ref:`AT+BLEADVSTOP <cmd-BADVSTOP>`：停止 Bluetooth LE 广播
+    - :ref:`AT+BLECONN <cmd-BCONN>`：建立 Bluetooth LE 连接
+    - :ref:`AT+BLECONNPARAM <cmd-BCONNP>`：查询/更新 Bluetooth LE 连接参数
+    - :ref:`AT+BLEDISCONN <cmd-BDISC>`：断开 Bluetooth LE 连接
+    - :ref:`AT+BLEDATALEN <cmd-BDLEN>`：设置 Bluetooth LE 数据包长度
+    - :ref:`AT+BLECFGMTU <cmd-BMTU>`：设置 Bluetooth LE MTU 长度
+    - :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`：GATTS 创建服务
+    - :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`：GATTS 开启服务
+    - :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`：GATTS 停止服务
+    - :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`：GATTS 发现服务
+    - :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`：GATTS 发现服务特征
+    - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`：服务器 notify 服务特征值给客户端
+    - :ref:`AT+BLEGATTSIND <cmd-GSIND>`：服务器 indicate 服务特征值给客户端
+    - :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`：GATTS 设置服务特征值
+    - :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`：GATTC 发现基本服务
+    - :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`：GATTC 发现包含的服务
+    - :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`：GATTC 发现服务特征
+    - :ref:`AT+BLEGATTCRD <cmd-GCRD>`：GATTC 读取服务特征值
+    - :ref:`AT+BLEGATTCWR <cmd-GCWR>`：GATTC 写服务特征值
+    - :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`：查询/设置 Bluetooth LE SPP 参数
+    - :ref:`AT+BLESPP <cmd-BLESPP>`：进入 Bluetooth LE SPP 模式
+    - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`：查询/设置 Bluetooth LE 加密参数
+    - :ref:`AT+BLEENC <cmd-BLEENC>`：发起 Bluetooth LE 加密请求
+    - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`：回复对端设备发起的配对请求
+    - :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`：给对方设备回复密钥
+    - :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`：给对方设备回复确认结果（传统连接阶段）
+    - :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`：查询绑定的 Bluetooth LE 加密设备列表
+    - :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`：清除 Bluetooth LE 加密设备列表
+    - :ref:`AT+BLESETKEY <cmd-BLESETKEY>`：设置 Bluetooth LE 静态配对密钥
+    - :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`：Bluetooth LE HID 协议初始化
+    - :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`：发送 Bluetooth LE HID 键盘信息
+    - :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`：发送 Bluetooth LE HID 鼠标信息
+    - :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`：发送 Bluetooth LE HID consumer 信息
+    - :ref:`AT+BLUFI <cmd-BLUFI>`：开启或关闭 BluFi
+    - :ref:`AT+BLUFINAME <cmd-BLUFINAME>`：查询/设置 BluFi 设备名称
+    :esp32c3: - :ref:`AT+BLEPERIODICDATA <cmd-BLEPADATA>`：设置 Bluetooth LE 周期性广播数据
+    :esp32c3: - :ref:`AT+BLEPERIODICSTART <cmd-BLEPASTART>`：开启 Bluetooth LE 周期性广播
+    :esp32c3: - :ref:`AT+BLEPERIODICSTOP <cmd-BLEPASTOP>`：停止 Bluetooth LE 周期性广播
+    :esp32c3: - :ref:`AT+BLESYNCSTART <cmd-BLESYNCSTART>`：开启周期性广播同步
+    :esp32c3: - :ref:`AT+BLESYNCSTOP <cmd-BLESYNCSTOP>`：停止周期性广播同步
+    :esp32c3: - :ref:`AT+BLEREADPHY <cmd-BLERDPHY>`：查询当前连接使用的 PHY
+    :esp32c3: - :ref:`AT+BLESETPHY <cmd-BLESETPHY>`：设置当前连接使用的 PHY
 
 .. _cmd-BINIT:
 
@@ -131,6 +142,8 @@ Bluetooth® Low Energy AT 命令集
    -  对于如何生成 service bin 文件，请参考 esp-at/tools/readme.md；
    -  service bin 文件的烧录地址，请见 esp-at/module_config/module_${platform}_default/at_customize.csv 文件中 "ble_data" 对应的地址。
 
+-  建议在注销 Bluetooth LE 之前，停止正在进行的广播、扫描并断开所有的连接。
+
 示例
 ^^^^
 
@@ -198,6 +211,8 @@ Bluetooth® Low Energy AT 命令集
    -  地址最高两位应为 1；
    -  随机地址部分至少有 1 位为 0；
    -  随机地址部分至少有 1 位为 1。
+
+-  设置的静态地址不会被保存在 NVS 区。
 
 示例
 ^^^^
@@ -473,9 +488,18 @@ Bluetooth® Low Energy AT 命令集
 
 **响应：**
 
-::
+.. only:: esp32
+
+  ::
 
     +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<peer_addr>
+    OK
+
+.. only:: esp32c3
+
+  ::
+
+    +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<peer_addr>,<primary_PHY>,<secondary_PHY>
     OK
 
 设置命令
@@ -487,9 +511,17 @@ Bluetooth® Low Energy AT 命令集
 
 **命令：**
 
-::
+.. only:: esp32
 
-    AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>][,<peer_addr>]
+  ::
+
+    AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>,<peer_addr>]
+
+.. only:: esp32c3
+
+  ::
+
+    AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>,<peer_addr>][,<primary_PHY>,<secondary_PHY>]
 
 **响应：**
 
@@ -504,11 +536,24 @@ Bluetooth® Low Energy AT 命令集
 -  **<adv_int_max>**：最大广播间隔。参数范围：[0x0020,0x4000]。广播间隔等于该参数乘以 ``0.625`` 毫秒，所以实际的最大广播间隔范围为 [20,10240] 毫秒。本参数值应大于等于 ``<adv_int_min>`` 参数值。
 -  **<adv_type>**:
 
-   -  0: ADV_TYPE_IND
-   -  1: ADV_TYPE_DIRECT_IND_HIGH
-   -  2: ADV_TYPE_SCAN_IND
-   -  3: ADV_TYPE_NONCONN_IND
-   -  4: ADV_TYPE_DIRECT_IND_LOW
+  .. only:: esp32
+
+    -  0: ADV_TYPE_IND
+    -  1: ADV_TYPE_DIRECT_IND_HIGH
+    -  2: ADV_TYPE_SCAN_IND
+    -  3: ADV_TYPE_NONCONN_IND
+    -  4: ADV_TYPE_DIRECT_IND_LOW
+
+  .. only:: esp32c3
+
+    -  0: ADV_TYPE_IND
+    -  1: ADV_TYPE_DIRECT_IND_HIGH
+    -  2: ADV_TYPE_SCAN_IND
+    -  3: ADV_TYPE_NONCONN_IND
+    -  4: ADV_TYPE_DIRECT_IND_LOW
+    -  5: ADV_TYPE_EXT_NOSCANNABLE_IND
+    -  6: ADV_TYPE_EXT_CONNECTABLE_IND
+    -  7: ADV_TYPE_EXT_SCANNABLE_IND
 
 -  **<own_addr_type>**：Bluetooth LE 地址类型
 
@@ -536,6 +581,26 @@ Bluetooth® Low Energy AT 命令集
 
 -  **[<peer_addr>]**：对方 Bluetooth LE 地址
 
+-  **[<primary_phy>]**：广播 primary PHY。默认值：1M PHY。
+
+   -  1: 1M PHY
+   -  3: Coded PHY
+
+-  **[<secondary_phy>]**：广播 secondary PHY。默认值：1M PHY。
+
+   -  1: 1M PHY
+   -  2: 2M PHY
+   -  3: Coded PHY
+
+说明
+^^^^
+
+-  如果从未设置过 ``peer_addr``, 那么查询出来的结果会是全零。
+
+  .. only:: esp32c3
+
+    -  ``primary_phy`` 和 ``secondary_phy`` 需要一起设置，如果不设置，那么未设置的参数会使用默认 1M PHY。
+
 示例
 ^^^^
 
@@ -543,6 +608,7 @@ Bluetooth® Low Energy AT 命令集
 
     AT+BLEINIT=2   // 角色：服务器
     AT+BLEADVPARAM=50,50,0,0,4,0,0,"12:34:45:78:66:88"
+    AT+BLEADVPARAM=32,32,6,0,7,0,0,"62:34:45:78:66:88",1,3
 
 .. _cmd-BADVD:
 
@@ -2685,3 +2751,311 @@ GATTC 写服务特征值或描述符值
 
     AT+BLUFINAME="BLUFI_DEV"
     AT+BLUFINAME?
+
+.. _cmd-BLEPADATA:
+
+:ref:`AT+BLEPERIODICDATA <BLE-AT>`: 设置 Bluetooth LE 周期性广播数据
+------------------------------------------------------------------------------------
+
+设置命令
+^^^^^^^^^^^
+
+**功能:**
+
+设置周期性广播数据。
+
+**命令:**
+
+::
+
+    AT+BLEPERIODICDATA=<periodic_data>
+
+**响应:**
+
+::
+
+    OK
+
+参数
+^^^^^^^^^^
+
+-  **<periodic_data>**: 周期性广播数据，为 16 进制字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEPERIODICDATA="1122334455"``。
+
+示例
+^^^^^^^^
+
+::
+
+    AT+BLEINIT=2
+    AT+BLEPERIODICDATA="1122334455"
+
+.. _cmd-BLEPASTART:
+
+:ref:`AT+BLEPERIODICSTART <BLE-AT>`: 开启周期性广播
+----------------------------------------------------------------------------------
+
+执行命令
+^^^^^^^^^^^^^^^
+
+**功能:**
+
+开启周期性广播。
+
+**命令:**
+
+::
+
+    AT+BLEPERIODICSTART
+
+**响应:**
+
+::
+
+    OK
+
+说明
+^^^^^
+
+-  在开始周期性广播之前，需要先开启扩展广播，扩展广播类型为 ADV_TYPE_EXT_NOSCANNABLE_IND。
+
+示例
+^^^^^^^^
+
+::
+
+    AT+BLEINIT=2
+    AT+BLEPERIODICDATA="1122334455" // 设置周期性广播数据
+    AT+BLEADVPARAM=32,32,5,0,7,0   // 设置扩展广播参数
+    AT+BLEADVSTART  // 开启扩展广播
+    AT+BLEPERIODICSTART  // 开启周期性广播
+
+.. _cmd-BLEPASTOP:
+
+:ref:`AT+BLEPERIODICSTOP <BLE-AT>`: 停止周期性广播同步
+--------------------------------------------------------------------------------
+
+执行命令
+^^^^^^^^^^^^^^^
+
+**功能:**
+
+停止周期性广播
+
+**命令:**
+
+::
+
+    AT+BLEPERIODICSTOP
+
+**响应:**
+
+::
+
+    OK
+
+示例
+^^^^^^^^
+
+::
+
+    AT+BLEPERIODICSTOP   // 停止周期性广播
+
+.. _cmd-BLESYNCSTART:
+
+:ref:`AT+BLESYNCSTART <BLE-AT>`: 开启同步周期性广播
+---------------------------------------------------------------------------------
+
+设置命令
+^^^^^^^^^^^
+
+**功能:**
+
+与正在进行周期性广播的设备同步。
+
+**命令:**
+
+::
+
+    AT+BLESYNCSTART=<target_address>
+
+**响应:**
+
+::
+
+    +BLESYNC:<addr>,<rssi>,<periodic_adv_data>
+    OK
+
+参数
+^^^^^^^^^^
+
+-  **<addr>**: 设备地址
+-  **<rssi>**: 信号强度
+-  **<periodic_adv_data>**: 周期性广播数据
+
+说明
+^^^^^
+
+-  在开启周期性广播同步之前，需要保持 Bluetooth LE 扫描功能持续进行。
+
+示例
+^^^^^^^^
+
+::
+
+    AT+BLEINIT=1
+    AT+BLESCAN=1   // 开始扫描
+    AT+BLESYNCSTART="24:0a:c4:09:34:23"  // 开始周期性广播同步
+
+.. _cmd-BLESYNCSTOP:
+
+:ref:`AT+BLESYNCSTOP <BLE-AT>`: 停止周期性广播同步
+---------------------------------------------------------------------------------
+
+执行命令
+^^^^^^^^^^^
+
+**功能:**
+
+停止周期性广播同步功能。
+
+**命令:**
+
+::
+
+    AT+BLESYNCSTOP
+
+**响应:**
+
+::
+
+    OK
+
+
+说明
+^^^^^
+
+-  如果客户将 BLE 扫描功能关闭，那么周期性广播同步功能也会被自动停止。
+
+示例
+^^^^^^^^
+
+::
+
+    AT+BLEINIT=1
+    AT+BLESCAN=1
+    AT+BLESYNCSTART="24:0a:c4:09:34:23"
+    AT+BLESYNCSTOP
+
+.. _cmd-BLERDPHY:
+
+:ref:`AT+BLEREADPHY <BLE-AT>`: 查询当前连接使用的 PHY
+-----------------------------------------------------------------------------
+
+设置命令
+^^^^^^^^^^^
+
+**功能:**
+
+查询当前连接使用的 PHY。
+
+**命令:**
+
+::
+
+    AT+BLEREADPHY=<conn_index>
+
+**响应:**
+
+如果查询成功，返回:
+
+::
+
+    +BLEREADPHY:<device_addr>,<tx_phy>,<rx_phy>
+    OK
+
+如果查询失败，返回:
+
+::
+
+    +BLEREADPHY:-1
+    OK
+
+参数
+^^^^^^^^^^
+
+-  **<device_addr>**: 对端设备地址
+
+-  **<tx_phy>**:
+
+   -  1: 1M PHY.
+   -  2: 2M PHY.
+   -  3: Coded PHY.
+
+-  **<rx_phy>**:
+
+   -  1: 1M PHY.
+   -  2: 2M PHY.
+   -  3: Coded PHY.
+
+示例
+^^^^^^^^
+
+::
+
+    AT+BLEINIT=1
+    AT+BLECONN=0,"24:0a:c4:09:34:23"
+    AT+BLEREADPHY=0 // 查询当前连接的 PHY
+
+.. _cmd-BLESETPHY:
+
+:ref:`AT+BLESETPHY <BLE-AT>`: 设置当前连接的 PHY
+-----------------------------------------------------------------------------
+
+设置命令
+^^^^^^^^^^^
+
+**功能:**
+
+设置当前连接的 PHY。
+
+**命令:**
+
+::
+
+    AT+BLESETPHY=<conn_index>,<tx_rx_phy>
+
+**响应:**
+
+如果查询成功，返回:
+
+::
+
+    +BLESETPHY:<device_addr>,<tx_phy>,<rx_phy>
+    OK
+
+如果查询失败，返回:
+
+::
+
+    +BLESETPHY:-1
+    OK
+
+参数
+^^^^^^^^^^
+
+-  **<device_addr>**：对端设备地址
+
+-  **<tx_rx_phy>**:
+
+   -  1: 1M PHY
+   -  2: 2M PHY
+   -  3: Coded PHY
+
+示例
+^^^^^^^^
+
+::
+
+    AT+BLEINIT=1   // 角色：客户端
+    AT+BLECONN=0,"24:0a:c4:09:34:23"
+    AT+BLEREADPHY=0
