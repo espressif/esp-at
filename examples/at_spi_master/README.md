@@ -4,5 +4,7 @@ This section provides examples how the MCU communicates with SPI AT, there are t
 
 See the [README.md](sdspi/README.md) file in the sdspi directory for more information about SDIO SPI.
 
-See the [README.md](spi/esp32/README.md) file in the spi directory for more information about ESP32 SPI.
+See the [README.md](spi/esp32_c_series/README.md) file in the spi directory for more information about ESP32-C3 SPI.
+
+ESP32 SPI is no longer supported, you can choose the SDIO SPI as an alternative.
 
