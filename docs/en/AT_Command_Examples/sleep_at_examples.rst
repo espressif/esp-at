@@ -36,7 +36,7 @@ Measurement Method
 
 In order to avoid some unnecessary interference during the power consumption test process, it is recommended to use the Espressif modules that integrate the chip for the test.
 
-Refer to the following for hardware connection.
+Refer to the following figure for hardware connection. (Note that the development board below only has the {IDF_TARGET_NAME} module on board, and all other peripheral components have been removed.)
 
 .. figure:: ../../_static/{IDF_TARGET_HYPHEN_LOWERCASE_NAME}-hardware-connection.png
     :scale: 100 %
@@ -97,19 +97,9 @@ Set Modem-sleep mode in Wi-Fi mode
 
      OK
 
-.. only:: esp32
+.. note::
 
-  .. note::
-
-    * RF will be periodically closed according to AP DTIM (routers generally set DTIM to 1).
-    * When the CPU frequency of ESP32 is 80 MHz and the module is in single Wi-Fi mode, the average current in Modem-sleep mode is about ``21`` mA.
-
-.. only:: esp32c3
-
-  .. note::
-
-    * RF will be periodically closed according to AP DTIM (routers generally set DTIM to 1).
-    * When the CPU frequency of ESP32-C3 is 160 MHz and the module is in single Wi-Fi mode, the average current in Modem-sleep mode is about ``20`` mA.
+  * RF will be periodically closed according to AP DTIM (routers generally set DTIM to 1).
 
 Set Light-sleep mode in Wi-Fi mode
 -----------------------------------
@@ -163,19 +153,9 @@ Set Light-sleep mode in Wi-Fi mode
 
      OK
 
-.. only:: esp32
+.. note::
 
-  .. note::
-
-    * CPU will automatically sleep and RF will be periodically closed according to listen interval set by :ref:`AT+CWJAP <cmd-JAP>`.
-    * When the module of ESP32 is in single Wi-Fi mode, the average current in Light-sleep mode is about ``0.8`` mA.
-
-.. only:: esp32c3
-
-  .. note::
-
-    * CPU will automatically sleep and RF will be periodically closed according to listen interval set by :ref:`AT+CWJAP <cmd-JAP>`.
-    * When the module of ESP32-C3 is in single Wi-Fi mode, the average current in Light-sleep mode is about ``130`` uA.
+  * CPU will automatically sleep and RF will be periodically closed according to listen interval set by :ref:`AT+CWJAP <cmd-JAP>`.
 
 Set Modem-sleep mode in Bluetooth LE advertising mode
 ------------------------------------------------------
@@ -249,18 +229,6 @@ Set Modem-sleep mode in Bluetooth LE advertising mode
    .. code-block:: none
 
      OK
-
-.. only:: esp32
-
-  .. note::
-
-    When the CPU frequency of ESP32 is 80 MHz and the module in single Bluetooth LE advertising mode, the average current in Modem-sleep mode is about ``23`` mA.
-
-.. only:: esp32c3
-
-  .. note::
-
-    When the CPU frequency of ESP32-C3 is 160 MHz and the module in single Bluetooth LE advertising mode, the average current in Modem-sleep mode is about ``20`` mA.
 
 Set Modem-sleep mode in Bluetooth LE connection mode
 ------------------------------------------------------
@@ -362,18 +330,6 @@ Set Modem-sleep mode in Bluetooth LE connection mode
 
      OK
 
-.. only:: esp32
-
-  .. note::
-
-    When the CPU frequency of ESP32 is 80 MHz and the module in single Bluetooth LE connection mode, the average current in Modem-sleep mode is about ``23`` mA.
-
-.. only:: esp32c3
-
-  .. note::
-
-    When the CPU frequency of ESP32-C3 is 160 MHz and the module in single Bluetooth LE connection mode, the average current in Modem-sleep mode is about ``20`` mA.
-
 Set Light-sleep mode in Bluetooth LE advertising mode
 -------------------------------------------------------
 
@@ -446,18 +402,6 @@ Set Light-sleep mode in Bluetooth LE advertising mode
    .. code-block:: none
 
      OK
-
-.. only:: esp32
-
-  .. note::
-
-    When the module of ESP32 in single Bluetooth LE advertising mode, the average current in Light-sleep mode is about ``0.8`` mA.
-
-.. only:: esp32c3
-
-  .. note::
-
-    When the module of ESP32-C3 in single Bluetooth LE advertising mode, the average current in Light-sleep mode is about ``130`` uA.
 
 Set Light-sleep mode in Bluetooth LE connection mode
 -----------------------------------------------------
@@ -559,18 +503,6 @@ Set Light-sleep mode in Bluetooth LE connection mode
 
      OK
 
-.. only:: esp32
-
-  .. note::
-
-    When the module of ESP32 in single Bluetooth LE connection mode, the average current in Light-sleep mode is about ``0.8`` mA.
-
-.. only:: esp32c3
-
-  .. note::
-
-    When the module of ESP32-C3 in single Bluetooth LE connection mode, the average current in Light-sleep mode is about ``130`` uA.
-
 Set Deep-sleep mode
 --------------------
 
@@ -592,15 +524,3 @@ Set Deep-sleep mode
 
    - When the time is up, the device automatically wakes up, calls Deep-sleep wake stub, and then proceeds to load the application.
    - For Deep-sleep mode, the only wake-up method is timed wake-up.
-
-.. only:: esp32
-
-  .. note::
-
-    When the module of ESP32 in Deep-sleep mode, the average current in Deep-sleep mode is about ``10`` uA.
-
-.. only:: esp32c3
-
-  .. note::
-
-    When the module of ESP32-C3 in Deep-sleep mode, the average current in Deep-sleep mode is about ``5`` uA.
