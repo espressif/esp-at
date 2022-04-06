@@ -106,10 +106,18 @@ In this step, you will clone the ``esp-idf`` folder into the ``esp-at`` folder, 
 
 2. Run the project configuration utility ``menuconfig`` to configure.
 
+- Linux or macOS
+
   ::
     
     ./build.py menuconfig
 
+- Windows
+
+  ::
+    
+    python build.py menuconfig
+    
 3. Select the following configuration options for your ESP device if it is your first time.
 
   - Select the ``Platform name`` for your ESP device. For example, select ``PLATFORM_{IDF_TARGET_CFG_PREFIX}`` for {IDF_TARGET_NAME} series of products. ``Platform name`` is defined in :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
@@ -161,9 +169,17 @@ Build the Project
 
 Build the project by running:
 
-::
+- Linux or macOS
 
-  ./build.py build
+  ::
+
+    ./build.py build
+
+- Windows
+
+  ::
+
+    python build.py build
 
 - If Bluetooth feature is enabled, the firmware size will be much larger. Please make sure it does not exceed the ota partition size.
 - After compiled, the combined factory bin will be created in ``build/factory``. See :doc:`esp-at_firmware_differences` for more information.
@@ -175,9 +191,17 @@ Flash onto the Device
 
 Flash the firmware that you just compiled onto your ESP device by running:
 
-::
+- Linux or macOS
 
-  ./build.py -p (PORT) flash
+  ::
+
+    ./build.py -p (PORT) flash
+
+- Windows
+
+  ::
+
+    python build.py -p (PORT) flash
 
 - Note that you need to replace ``PORT`` with your ESP device's serial port name.
 - Or you can follow the printed instructions to download the bin files into flash. Note that you also need to replace the ``PORT``.

@@ -106,9 +106,17 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 
 2. 运行项目配置工具 ``menuconfig`` 来配置。
 
+- Linux 或 macOS
+  
   ::
     
     ./build.py menuconfig
+
+- Windows
+
+  ::
+    
+    python build.py menuconfig
 
 3. 如果是第一次编译工程，请为 ESP 设备选择以下配置选项。
 
@@ -161,9 +169,17 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 
 运行以下命令编译工程。
 
+- Linux 或 macOS
+
 ::
 
   ./build.py build
+
+- Windows
+
+::
+
+  python build.py build
 
 - 如果启用了蓝牙功能，固件尺寸会大大增加。请确保它不超过 ota 分区的大小。
 - 编译完成后会在 ``build/factory`` 路径下生成打包好的量产固件。更多信息请参见 :doc:`esp-at_firmware_differences`。
@@ -175,9 +191,17 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 
 运行以下命令将生成的固件烧录到 ESP 设备上。
 
+- Linux 或 macOS
+
 ::
 
   ./build.py -p (PORT) flash
+
+- Windows
+
+::
+
+  python build.py -p (PORT) flash
 
 - 注意，请用 ESP 设备的串口名称替换 ``PORT``。
 - 或者按照提示信息将固件烧录到 flash 中。注意，仍然需要替换 ``PORT``。
