@@ -868,7 +868,11 @@ Bluetooth® Low Energy AT 命令集
 
 -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
 -  **<remote_address>**：对方 Bluetooth LE 设备地址。
--  **[<addr_type>]**：广播设备地址类型。
+-  **[<addr_type>]**：广播设备地址类型：
+
+   -  0: 公共地址 (Public Address)
+   -  1: 随机地址 (Random Address)
+
 -  **[<timeout>]**：连接超时时间，单位：秒。范围：[3,30]。
 
 说明
