@@ -7,6 +7,8 @@ stages:
 variables: &global-variables
   IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
   GIT_STRATEGY: clone
+  GIT_SUBMODULE_STRATEGY: recursive
+  ESPCI_TOKEN: $GITLAB_KEY
   PYTHON_VER: 3
 
 default:
