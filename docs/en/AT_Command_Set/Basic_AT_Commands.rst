@@ -5,27 +5,30 @@ Basic AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
--  :ref:`AT <cmd-AT>`: Test AT startup.
--  :ref:`AT+RST <cmd-RST>`: Restart a module.
--  :ref:`AT+GMR <cmd-GMR>`: Check version information.
--  :ref:`AT+CMD <cmd-cmd>`: List all AT commands and types supported in current firmware.
--  :ref:`AT+GSLP <cmd-GSLP>`: Enter Deep-sleep mode.
--  :ref:`ATE <cmd-ATE>`: Configure AT commands echoing.
--  :ref:`AT+RESTORE <cmd-RESTORE>`: Restore factory default settings of the module.
--  :ref:`AT+UART_CUR <cmd-UARTC>`: Current UART configuration, not saved in flash.
--  :ref:`AT+UART_DEF <cmd-UARTD>`: Default UART configuration, saved in flash.
--  :ref:`AT+SLEEP <cmd-SLEEP>`: Set the sleep mode.
--  :ref:`AT+SYSRAM <cmd-SYSRAM>`: Query current remaining heap size and minimum heap size.
--  :ref:`AT+SYSMSG <cmd-SYSMSG>`: Query/Set System Prompt Information.
--  :ref:`AT+SYSFLASH <cmd-SYSFLASH>`: Query/Set User Partitions in Flash.
--  :ref:`AT+FS <cmd-FS>`: Filesystem Operations.
--  :ref:`AT+RFPOWER <cmd-RFPOWER>`: Query/Set RF TX Power.
--  :ref:`AT+SYSROLLBACK <cmd-SYSROLLBACK>`: Roll back to the previous firmware.
--  :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`: Query/Set local time stamp.
--  :ref:`AT+SYSLOG <cmd-SYSLOG>`: Enable or disable the AT error code prompt.
--  :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`: Query/Set the light-sleep wakeup source and awake GPIO.
--  :ref:`AT+SYSSTORE <cmd-SYSSTORE>`: Query/Set parameter store mode.
--  :ref:`AT+SYSREG <cmd-SYSREG>`: Read/write the register.
+.. list::
+
+  - :ref:`AT <cmd-AT>`: Test AT startup.
+  - :ref:`AT+RST <cmd-RST>`: Restart a module.
+  - :ref:`AT+GMR <cmd-GMR>`: Check version information.
+  - :ref:`AT+CMD <cmd-cmd>`: List all AT commands and types supported in current firmware.
+  - :ref:`AT+GSLP <cmd-GSLP>`: Enter Deep-sleep mode.
+  - :ref:`ATE <cmd-ATE>`: Configure AT commands echoing.
+  - :ref:`AT+RESTORE <cmd-RESTORE>`: Restore factory default settings of the module.
+  - :ref:`AT+UART_CUR <cmd-UARTC>`: Current UART configuration, not saved in flash.
+  - :ref:`AT+UART_DEF <cmd-UARTD>`: Default UART configuration, saved in flash.
+  - :ref:`AT+SLEEP <cmd-SLEEP>`: Set the sleep mode.
+  - :ref:`AT+SYSRAM <cmd-SYSRAM>`: Query current remaining heap size and minimum heap size.
+  - :ref:`AT+SYSMSG <cmd-SYSMSG>`: Query/Set System Prompt Information.
+  - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`: Query/Set User Partitions in Flash.
+  - :ref:`AT+FS <cmd-FS>`: Filesystem Operations.
+  - :ref:`AT+RFPOWER <cmd-RFPOWER>`: Query/Set RF TX Power.
+  - :ref:`AT+SYSROLLBACK <cmd-SYSROLLBACK>`: Roll back to the previous firmware.
+  - :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`: Query/Set local time stamp.
+  - :ref:`AT+SYSLOG <cmd-SYSLOG>`: Enable or disable the AT error code prompt.
+  - :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`: Query/Set the light-sleep wakeup source and awake GPIO.
+  - :ref:`AT+SYSSTORE <cmd-SYSSTORE>`: Query/Set parameter store mode.
+  - :ref:`AT+SYSREG <cmd-SYSREG>`: Read/write the register.
+  :esp32c3: - :ref:`AT+SYSTEMP <cmd-SYSTEMP>`: Read the internal chip Celsius temperature value.
 
 .. _cmd-AT:
 
@@ -1321,3 +1324,35 @@ Note
 ^^^^^
 
 - AT does not check address. Make sure that the registers you are operating on are valid.
+
+.. only:: esp32c3
+
+  .. _cmd-SYSTEMP:
+
+  :ref:`AT+SYSTEMP <Basic-AT>`: Read the Internal Chip Celsius Temperature Value
+  ------------------------------------------------------------------------------
+
+  **Function:**
+
+  Read data from the internal chip temperature sensor and convert it into values in Celsius degrees.
+
+  Query Command
+  ^^^^^^^^^^^^^
+
+  **Command:**
+
+  ::
+
+      AT+SYSTEMP?
+
+  **Response:**
+
+  ::
+
+      +SYSTEMP:<value>
+      OK
+
+  Parameter
+  ^^^^^^^^^
+
+  - **<value>**: Celsius temperature value. Floating point type with two decimal places.
