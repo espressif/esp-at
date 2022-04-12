@@ -364,6 +364,14 @@ static void at_uart_init(void)
     uart_driver_install(esp_at_uart_port, 2048, 8192, 30,&esp_at_uart_queue,0);
     uart_intr_config(esp_at_uart_port, &intr_config);
 
+#ifdef CONFIG_IDF_TARGET_ESP32
+    /**
+     * An esp32 workaround for uart1 outputs uninterrupted data during light sleep
+     */
+    PIN_SLP_INPUT_ENABLE(GPIO_PIN_MUX_REG[rx_pin]);
+    gpio_sleep_set_pull_mode(rx_pin, GPIO_PULLUP_ONLY);
+#endif
+
     // set actual uart pins
     s_at_uart_port_pin.tx = tx_pin;
     s_at_uart_port_pin.rx = rx_pin;
