@@ -318,7 +318,7 @@ Notes
 
 -  The Query Command will return actual values of UART configuration parameters, which may have minor differences from the set value because of the clock division.
 -  The configuration changes will NOT be saved in flash.
--  To use hardware flow control, you need to connect CTS/RTS pins of your ESP device. For more details, please refer to :doc:`../Get_Started/Hardware_connection` or ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``.
+-  To use hardware flow control, you need to connect CTS/RTS pins of your {IDF_TARGET_NAME}. For more details, please refer to :doc:`../Get_Started/Hardware_connection` or ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``.
 
 Example
 ^^^^^^^^
@@ -401,7 +401,7 @@ Notes
 ^^^^^
 
 -  The configuration changes will be saved in the NVS area, and will still be valid when the chip is powered on again.
--  To use hardware flow control, you need to connect CTS/RTS pins of your ESP device. For more details, please refer to :doc:`../Get_Started/Hardware_connection` or ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``.
+-  To use hardware flow control, you need to connect CTS/RTS pins of your {IDF_TARGET_NAME}. For more details, please refer to :doc:`../Get_Started/Hardware_connection` or ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``.
 
 Example
 ^^^^^^^^
@@ -492,8 +492,8 @@ Note
 
 -  When sleep mode is disabled, you cannot initialize Bluetooth LE. When Bluetooth LE is initialized, you cannot disable sleep mode.
 -  Modem-sleep mode and Light-sleep mode can be set under Wi-Fi mode or BLE mode, but in Wi-Fi mode, these two modes can only be set in ``station`` mode.
--  Before setting the Light-sleep mode, it is recommended to set the wakeup source in advance through the command :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`, otherwise ESP devices can't wake up and will always be in sleep mode.
--  After setting the Light-sleep mode, if the Light-sleep wakeup condition is not met, ESP devices will automatically enter the sleep mode. When the Light-sleep wakeup condition is met, ESP devices will automatically wake up from sleep mode.
+-  Before setting the Light-sleep mode, it is recommended to set the wakeup source in advance through the command :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`, otherwise {IDF_TARGET_NAME} can't wake up and will always be in sleep mode.
+-  After setting the Light-sleep mode, if the Light-sleep wakeup condition is not met, {IDF_TARGET_NAME} will automatically enter the sleep mode. When the Light-sleep wakeup condition is met, {IDF_TARGET_NAME} will automatically wake up from sleep mode.
 -  For Light-sleep mode in BLE mode, users must ensure external 32KHz crystal oscillator, otherwise the Light-sleep mode will work in Modem-sleep mode.
 -  For more examples, please refer to :doc:`../AT_Command_Examples/sleep_at_examples`.
 

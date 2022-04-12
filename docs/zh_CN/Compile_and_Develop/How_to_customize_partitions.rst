@@ -6,13 +6,13 @@
 
 :link_to_translation:`en:[English]`
 
-本文档介绍了如何通过修改 ESP-AT 提供的 at_customize.csv 表来自定义 ESP 设备中的分区。共有两个分区表：一级分区表和二级分区表。
+本文档介绍了如何通过修改 ESP-AT 提供的 at_customize.csv 表来自定义 {IDF_TARGET_NAME} 设备中的分区。共有两个分区表：一级分区表和二级分区表。
 
 一级分区表 partitions_at.csv 供系统使用，在此基础上生成 partitions_at.bin 文件。如果一级分区表出错，系统将无法启动。因此，不建议修改 partitions_at.csv。
 
 ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块。它基于一级分区表。
 
-要修改 ESP 设备中的分区，请按照前三个步骤操作。第四部分举例说明了前三个步骤。
+要修改 {IDF_TARGET_NAME} 设备中的分区，请按照前三个步骤操作。第四部分举例说明了前三个步骤。
 
 - :ref:`modify-at-customize-csv`
 - :ref:`generate-at-customize-bin`
@@ -93,10 +93,10 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
 
 .. _flash-at-customize-bin-into-ESP:
 
-烧录 at_customize.bin 至 ESP 设备
------------------------------------
+烧录 at_customize.bin 至 {IDF_TARGET_NAME} 设备
+-----------------------------------------------------
 
-将 at_customize.bin 下载到 flash 中。关于如何将二进制文件烧录至 ESP 设备，请参考 :ref:`flash-at-firmware-into-your-device`。下表为不同模组 at_customize.bin 文件的下载地址。
+将 at_customize.bin 下载到 flash 中。关于如何将二进制文件烧录至 {IDF_TARGET_NAME} 设备，请参考 :ref:`flash-at-firmware-into-your-device`。下表为不同模组 at_customize.bin 文件的下载地址。
 
 .. only:: esp32
 

@@ -12,24 +12,24 @@ Wi-Fi AT 命令集
 -  :ref:`AT+CWLAPOPT <cmd-LAPOPT>`：设置 :ref:`AT+CWLAP <cmd-LAP>` 命令扫描结果的属性
 -  :ref:`AT+CWLAP <cmd-LAP>`：扫描当前可用的 AP
 -  :ref:`AT+CWQAP <cmd-QAP>`：断开与 AP 的连接
--  :ref:`AT+CWSAP <cmd-SAP>`：配置 ESP SoftAP 参数
--  :ref:`AT+CWLIF <cmd-LIF>`：查询连接到 ESP SoftAP 的 station 信息
--  :ref:`AT+CWQIF <cmd-QIF>`：断开 station 与 ESP SoftAP 的连接
+-  :ref:`AT+CWSAP <cmd-SAP>`：配置 {IDF_TARGET_NAME} SoftAP 参数
+-  :ref:`AT+CWLIF <cmd-LIF>`：查询连接到 {IDF_TARGET_NAME} SoftAP 的 station 信息
+-  :ref:`AT+CWQIF <cmd-QIF>`：断开 station 与 {IDF_TARGET_NAME} SoftAP 的连接
 -  :ref:`AT+CWDHCP <cmd-DHCP>`：启用/禁用 DHCP
--  :ref:`AT+CWDHCPS <cmd-DHCPS>`：查询/设置 ESP SoftAP DHCP 分配的 IP 地址范围
+-  :ref:`AT+CWDHCPS <cmd-DHCPS>`：查询/设置 {IDF_TARGET_NAME} SoftAP DHCP 分配的 IP 地址范围
 -  :ref:`AT+CWAUTOCONN <cmd-AUTOC>`：上电是否自动连接 AP
 -  :ref:`AT+CWAPPROTO <cmd-APPROTO>`：查询/设置 SoftAP 模式下 802.11 b/g/n 协议标准
 -  :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`：设置 Station 模式下 802.11 b/g/n 协议标准
--  :ref:`AT+CIPSTAMAC <cmd-STAMAC>`：查询/设置 ESP Station 的 MAC 地址
--  :ref:`AT+CIPAPMAC <cmd-APMAC>`：查询/设置 ESP SoftAP 的 MAC 地址
--  :ref:`AT+CIPSTA <cmd-IPSTA>`：查询/设置 ESP Station 的 IP 地址
--  :ref:`AT+CIPAP <cmd-IPAP>`：查询/设置 ESP SoftAP 的 IP 地址
+-  :ref:`AT+CIPSTAMAC <cmd-STAMAC>`：查询/设置 {IDF_TARGET_NAME} Station 的 MAC 地址
+-  :ref:`AT+CIPAPMAC <cmd-APMAC>`：查询/设置 {IDF_TARGET_NAME} SoftAP 的 MAC 地址
+-  :ref:`AT+CIPSTA <cmd-IPSTA>`：查询/设置 {IDF_TARGET_NAME} Station 的 IP 地址
+-  :ref:`AT+CIPAP <cmd-IPAP>`：查询/设置 {IDF_TARGET_NAME} SoftAP 的 IP 地址
 -  :ref:`AT+CWSTARTSMART <cmd-STARTS>`：开启 SmartConfig
 -  :ref:`AT+CWSTOPSMART <cmd-STOPS>`：停止 SmartConfig
 -  :ref:`AT+WPS <cmd-WPS>`：设置 WPS 功能
 -  :ref:`AT+MDNS <cmd-MDNS>`：设置 mDNS 功能
 -  :ref:`AT+CWJEAP <cmd-JEAP>`：连接 WPA2 企业版 AP
--  :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`：查询/设置 ESP Station 的主机名称
+-  :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`：查询/设置 {IDF_TARGET_NAME} Station 的主机名称
 -  :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`：查询/设置 Wi-Fi 国家代码
 
 .. _cmd-MODE:
@@ -42,7 +42,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-查询 ESP 设备的 Wi-Fi 模式
+查询 {IDF_TARGET_NAME} 设备的 Wi-Fi 模式
 
 **命令：**
 
@@ -62,7 +62,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-设置 ESP 设备的 Wi-Fi 模式
+设置 {IDF_TARGET_NAME} 设备的 Wi-Fi 模式
 
 **命令：**
 
@@ -86,10 +86,10 @@ Wi-Fi AT 命令集
    -  2: SoftAP 模式
    -  3: SoftAP+Station 模式
 
--  **<auto_connect>**：切换 ESP 设备的 Wi-Fi 模式时（例如，从 SoftAP 或无 Wi-Fi 模式切换为 Station 模式或 SoftAP+Station 模式），是否启用自动连接 AP 的功能，默认值：1。参数缺省时，使用默认值，也就是能自动连接。
+-  **<auto_connect>**：切换 {IDF_TARGET_NAME} 设备的 Wi-Fi 模式时（例如，从 SoftAP 或无 Wi-Fi 模式切换为 Station 模式或 SoftAP+Station 模式），是否启用自动连接 AP 的功能，默认值：1。参数缺省时，使用默认值，也就是能自动连接。
 
    -  0: 禁用自动连接 AP 的功能
-   -  1: 启用自动连接 AP 的功能，若之前已经将自动连接 AP 的配置保存到 flash 中，则 ESP 设备将自动连接 AP
+   -  1: 启用自动连接 AP 的功能，若之前已经将自动连接 AP 的配置保存到 flash 中，则 {IDF_TARGET_NAME} 设备将自动连接 AP
 
 说明
 ^^^^
@@ -113,7 +113,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-查询 ESP 设备的 Wi-Fi 状态和 Wi-Fi 信息
+查询 {IDF_TARGET_NAME} 设备的 Wi-Fi 状态和 Wi-Fi 信息
 
 **命令：**
 
@@ -134,18 +134,18 @@ Wi-Fi AT 命令集
 
 -  **<state>**：当前 Wi-Fi 状态
 
-   - 0: ESP station 尚未进行任何 Wi-Fi 连接
-   - 1: ESP station 已经连接上 AP，但尚未获取到 IPv4 地址
-   - 2: ESP station 已经连接上 AP，并已经获取到 IPv4 地址
-   - 3: ESP station 正在进行 Wi-Fi 连接或 Wi-Fi 重连
-   - 4: ESP station 处于 Wi-Fi 断开状态
+   - 0: {IDF_TARGET_NAME} station 尚未进行任何 Wi-Fi 连接
+   - 1: {IDF_TARGET_NAME} station 已经连接上 AP，但尚未获取到 IPv4 地址
+   - 2: {IDF_TARGET_NAME} station 已经连接上 AP，并已经获取到 IPv4 地址
+   - 3: {IDF_TARGET_NAME} station 正在进行 Wi-Fi 连接或 Wi-Fi 重连
+   - 4: {IDF_TARGET_NAME} station 处于 Wi-Fi 断开状态
 
 -  **<"ssid">**：目标 AP 的 SSID
 
 说明
 ^^^^
 
-- 当 ESP station 没有连接上 AP 时，推荐使用此命令查询 Wi-Fi 信息；当 ESP station 已连接上 AP 后，推荐使用 :ref:`AT+CWJAP <cmd-JAP>` 命令查询 Wi-Fi 信息
+- 当 {IDF_TARGET_NAME} station 没有连接上 AP 时，推荐使用此命令查询 Wi-Fi 信息；当 {IDF_TARGET_NAME} station 已连接上 AP 后，推荐使用 :ref:`AT+CWJAP <cmd-JAP>` 命令查询 Wi-Fi 信息
 
 .. _cmd-JAP:
 
@@ -157,7 +157,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-查询与 ESP Station 连接的 AP 信息
+查询与 {IDF_TARGET_NAME} Station 连接的 AP 信息
 
 **命令：**
 
@@ -177,7 +177,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-设置 ESP Station 需连接的 AP
+设置 {IDF_TARGET_NAME} Station 需连接的 AP
 
 **命令：**
 
@@ -208,7 +208,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-将 ESP station 连接至上次 Wi-Fi 配置中的 AP
+将 {IDF_TARGET_NAME} station 连接至上次 Wi-Fi 配置中的 AP
 
 **命令：**
 
@@ -247,25 +247,25 @@ Wi-Fi AT 命令集
 -  **<rssi>**：信号强度
 -  **<pci_en>**：PCI 认证
 
-   - 0: ESP station 可与任何一种加密方式的 AP 连接，包括 OPEN 和 WEP
-   - 1: ESP station 可与除 OPEN 和 WEP 之外的任何一种加密方式的 AP 连接
+   - 0: {IDF_TARGET_NAME} station 可与任何一种加密方式的 AP 连接，包括 OPEN 和 WEP
+   - 1: {IDF_TARGET_NAME} station 可与除 OPEN 和 WEP 之外的任何一种加密方式的 AP 连接
 
 -  **<reconn_interval>**：Wi-Fi 重连间隔，单位：秒，默认值：1，最大值：7200
 
-   -  0: 断开连接后，ESP station 不重连 AP
-   -  [1,7200]: 断开连接后，ESP station 每隔指定的时间与 AP 重连
+   -  0: 断开连接后，{IDF_TARGET_NAME} station 不重连 AP
+   -  [1,7200]: 断开连接后，{IDF_TARGET_NAME} station 每隔指定的时间与 AP 重连
 
 -  **<listen_interval>**：监听 AP beacon 的间隔，单位为 AP beacon 间隔，默认值：3，范围：[1,100]
 -  **<scan_mode>**：扫描模式
 
-   -  0: 快速扫描，找到目标 AP 后终止扫描，ESP station 与第一个扫描到的 AP 连接
-   -  1: 全信道扫描，所有信道都扫描后才终止扫描，ESP station 与扫描到的信号最强的 AP 连接
+   -  0: 快速扫描，找到目标 AP 后终止扫描，{IDF_TARGET_NAME} station 与第一个扫描到的 AP 连接
+   -  1: 全信道扫描，所有信道都扫描后才终止扫描，{IDF_TARGET_NAME} station 与扫描到的信号最强的 AP 连接
 
 -  **<jap_timeout>**：:ref:`AT+CWJAP <cmd-JAP>` 命令超时的最大值，单位：秒，默认值：15，范围：[3,600]
 -  **<pmf>**：PMF（Protected Management Frames，受保护的管理帧），默认值 0
 
     - 0 表示禁用 PMF
-    - bit 0: 具有 PMF 功能，提示支持 PMF，如果其他设备具有 PMF 功能，则 ESP 设备将优先选择以 PMF 模式连接
+    - bit 0: 具有 PMF 功能，提示支持 PMF，如果其他设备具有 PMF 功能，则 {IDF_TARGET_NAME} 设备将优先选择以 PMF 模式连接
     - bit 1: 需要 PMF，提示需要 PMF，设备将不会关联不支持 PMF 功能的设备
 
 -  **<error code>**：错误码，仅供参考
@@ -281,7 +281,7 @@ Wi-Fi AT 命令集
 
 -  如果 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
 -  使用本命令需要开启 station 模式
-- 当 ESP station 已连接上 AP 后，推荐使用此命令查询 Wi-Fi 信息；当 ESP station 没有连接上 AP 时，推荐使用 :ref:`AT+CWSTATE <cmd-WSTATE>` 命令查询 Wi-Fi 信息
+- 当 {IDF_TARGET_NAME} station 已连接上 AP 后，推荐使用此命令查询 Wi-Fi 信息；当 {IDF_TARGET_NAME} station 没有连接上 AP 时，推荐使用 :ref:`AT+CWSTATE <cmd-WSTATE>` 命令查询 Wi-Fi 信息
 -  本命令中的 ``<reconn_interval>`` 参数与 :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>` 命令中的 ``<interval_second>`` 参数相同。如果运行本命令时不设置 ``<reconn_interval>`` 参数，Wi-Fi 重连间隔时间将采用默认值 1
 -  如果同时省略 ``<ssid>`` 和 ``<password>`` 参数，将使用上一次设置的值
 -  执行命令与设置命令的超时时间相同，默认为 15 秒，可通过参数 ``<jap_timeout>`` 设置
@@ -356,23 +356,23 @@ Wi-Fi AT 命令集
 
 -  **<interval_second>**：Wi-Fi 重连间隔，单位：秒，默认值：0，最大值 7200
 
-   -  0: 断开连接后，ESP station 不重连 AP
-   -  [1,7200]: 断开连接后，ESP station 每隔指定的时间与 AP 重连
+   -  0: 断开连接后，{IDF_TARGET_NAME} station 不重连 AP
+   -  [1,7200]: 断开连接后，{IDF_TARGET_NAME} station 每隔指定的时间与 AP 重连
 
--  **<repeat_count>**：ESP 设备尝试重连 AP 的次数，本参数在 ``<interval_second>`` 不为 0 时有效，默认值：0，最大值：1000
+-  **<repeat_count>**：{IDF_TARGET_NAME} 设备尝试重连 AP 的次数，本参数在 ``<interval_second>`` 不为 0 时有效，默认值：0，最大值：1000
 
-   -  0: ESP station 始终尝试连接 AP
-   -  [1,1000]: ESP station 按照本参数指定的次数重连 AP
+   -  0: {IDF_TARGET_NAME} station 始终尝试连接 AP
+   -  [1,1000]: {IDF_TARGET_NAME} station 按照本参数指定的次数重连 AP
 
 示例
 ^^^^
 
 ::
 
-    // ESP station 每隔 1 秒尝试重连 AP，共尝试 100 次
+    // {IDF_TARGET_NAME} station 每隔 1 秒尝试重连 AP，共尝试 100 次
     AT+CWRECONNCFG=1,100
 
-    // ESP station 在断开连接后不重连 AP
+    // {IDF_TARGET_NAME} station 在断开连接后不重连 AP
     AT+CWRECONNCFG=0,0
 
 说明
@@ -573,7 +573,7 @@ Wi-Fi AT 命令集
 
 .. _cmd-SAP:
 
-:ref:`AT+CWSAP <WiFi-AT>`：配置 ESP SoftAP 参数
+:ref:`AT+CWSAP <WiFi-AT>`：配置 {IDF_TARGET_NAME} SoftAP 参数
 -------------------------------------------------------------
 
 查询命令
@@ -581,7 +581,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-查询 ESP SoftAP 的配置参数
+查询 {IDF_TARGET_NAME} SoftAP 的配置参数
 
 **命令：**
 
@@ -601,7 +601,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-设置 ESP SoftAP 的配置参数
+设置 {IDF_TARGET_NAME} SoftAP 的配置参数
 
 **命令：**
 
@@ -628,7 +628,7 @@ Wi-Fi AT 命令集
    -  3: WPA2_PSK
    -  4: WPA_WPA2_PSK
 
--  **[<max conn>]**：允许连入 ESP SoftAP 的最多 station 数目，取值范围：[1,10]
+-  **[<max conn>]**：允许连入 {IDF_TARGET_NAME} SoftAP 的最多 station 数目，取值范围：[1,10]
 -  **[<ssid hidden>]**：
 
    -  0: 广播 SSID（默认）
@@ -650,7 +650,7 @@ Wi-Fi AT 命令集
 
 .. _cmd-LIF:
 
-:ref:`AT+CWLIF <WiFi-AT>`：查询连接到 ESP SoftAP 的 station 信息
+:ref:`AT+CWLIF <WiFi-AT>`：查询连接到 {IDF_TARGET_NAME} SoftAP 的 station 信息
 ---------------------------------------------------------------------------------------------
 
 执行命令
@@ -673,17 +673,17 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<ip addr>**：连接到 ESP SoftAP 的 station 的 IP 地址
--  **<mac>**：连接到 ESP SoftAP 的 station 的 MAC 地址
+-  **<ip addr>**：连接到 {IDF_TARGET_NAME} SoftAP 的 station 的 IP 地址
+-  **<mac>**：连接到 {IDF_TARGET_NAME} SoftAP 的 station 的 MAC 地址
 
 说明
 ^^^^
 
--  本指令无法查询静态 IP，仅支持在 ESP SoftAP 和连入的 station DHCP 均使能的情况下有效
+-  本指令无法查询静态 IP，仅支持在 {IDF_TARGET_NAME} SoftAP 和连入的 station DHCP 均使能的情况下有效
 
 .. _cmd-QIF:
 
-:ref:`AT+CWQIF <WiFi-AT>`：断开 station 与 ESP SoftAP 的连接
+:ref:`AT+CWQIF <WiFi-AT>`：断开 station 与 {IDF_TARGET_NAME} SoftAP 的连接
 ---------------------------------------------------------------------
 
 执行命令
@@ -691,7 +691,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-断开所有连入 ESP SoftAP 的 station
+断开所有连入 {IDF_TARGET_NAME} SoftAP 的 station
 
 **命令：**
 
@@ -710,7 +710,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-断开某个连入 ESP SoftAP 的 station
+断开某个连入 {IDF_TARGET_NAME} SoftAP 的 station
 
 **命令：**
 
@@ -821,7 +821,7 @@ Wi-Fi AT 命令集
 
 .. _cmd-DHCPS:
 
-:ref:`AT+CWDHCPS <WiFi-AT>`：查询/设置 ESP SoftAP DHCP 分配的 IP 地址范围
+:ref:`AT+CWDHCPS <WiFi-AT>`：查询/设置 {IDF_TARGET_NAME} SoftAP DHCP 分配的 IP 地址范围
 -----------------------------------------------------------------------------------------------
 
 查询命令
@@ -845,7 +845,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-设置 ESP SoftAP DHCP 服务器分配的 IP 地址范围
+设置 {IDF_TARGET_NAME} SoftAP DHCP 服务器分配的 IP 地址范围
 
 **命令：**
 
@@ -868,15 +868,15 @@ Wi-Fi AT 命令集
    -  0: 清除 DHCP server 信息，恢复默认值，后续参数无需填写
 
 -  **<lease time>**：租约时间，单位：分钟，取值范围：[1,2880]
--  **<start IP>**：ESP SoftAP DHCP 服务器 IP 地址池的起始 IP
--  **<end IP>**：ESP SoftAP DHCP 服务器 IP 地址池的结束 IP
+-  **<start IP>**：{IDF_TARGET_NAME} SoftAP DHCP 服务器 IP 地址池的起始 IP
+-  **<end IP>**：{IDF_TARGET_NAME} SoftAP DHCP 服务器 IP 地址池的结束 IP
 
 说明
 ^^^^
 
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
--  本命令必须在 ESP SoftAP 模式使能，且开启 DHCP server 的情况下使用
--  设置的 IP 地址范围必须与 ESP SoftAP 在同一网段
+-  本命令必须在 {IDF_TARGET_NAME} SoftAP 模式使能，且开启 DHCP server 的情况下使用
+-  设置的 IP 地址范围必须与 {IDF_TARGET_NAME} SoftAP 在同一网段
 
 示例
 ^^^^
@@ -975,8 +975,8 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
--  当前，ESP 设备只支持 802.11b、802.11bg 或 802.11bgn 协议标准
--  默认情况下，ESP 设备的 PHY mode 是 802.11bgn 模式
+-  当前，{IDF_TARGET_NAME} 设备只支持 802.11b、802.11bg 或 802.11bgn 协议标准
+-  默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgn 模式
 
 .. _cmd-STAPROTO:
 
@@ -1026,13 +1026,13 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
--  当前，ESP 设备只支持 802.11b、802.11bg 或 802.11bgn 协议标准
--  默认情况下，ESP 设备的 PHY mode 是 802.11bgn 模式
+-  当前，{IDF_TARGET_NAME} 设备只支持 802.11b、802.11bg 或 802.11bgn 协议标准
+-  默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgn 模式
 -  从 ESP-AT v2.1.0.0 开始支持本命令
 
 .. _cmd-STAMAC:
 
-:ref:`AT+CIPSTAMAC <WiFi-AT>`：查询/设置 ESP Station 的 MAC 地址
+:ref:`AT+CIPSTAMAC <WiFi-AT>`：查询/设置 {IDF_TARGET_NAME} Station 的 MAC 地址
 ----------------------------------------------------------------------------
 
 查询命令
@@ -1040,7 +1040,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-查询 ESP Station 的 MAC 地址
+查询 {IDF_TARGET_NAME} Station 的 MAC 地址
 
 **命令：**
 
@@ -1060,7 +1060,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-设置 ESP Station 的 MAC 地址
+设置 {IDF_TARGET_NAME} Station 的 MAC 地址
 
 **命令：**
 
@@ -1077,15 +1077,18 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<mac>**：字符串参数，表示 ESP Station 的 MAC 地址
+-  **<mac>**：字符串参数，表示 {IDF_TARGET_NAME} Station 的 MAC 地址
 
 说明
 ^^^^
 
--  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
--  ESP SoftAP 的 MAC 地址与 ESP Station 不同，不要为二者设置同样的 MAC 地址
--  MAC 地址的 Bit 0 不能为 1，例如，MAC 地址可以是 "1a:…"，但不可以是 "15:…"
--  FF:FF:FF:FF:FF:FF 和 00:00:00:00:00:00 是无效地址，不能设置
+.. list::
+  
+  - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
+  :esp32: - {IDF_TARGET_NAME} Station 的 MAC 地址与 {IDF_TARGET_NAME} Ethernet 和 {IDF_TARGET_NAME} SoftAP 不同，不要为二者设置同样的 MAC 地址
+  :esp32c3: - {IDF_TARGET_NAME} Station 的 MAC 地址与 {IDF_TARGET_NAME} SoftAP 不同，不要为二者设置同样的 MAC 地址
+  - MAC 地址的 Bit 0 不能为 1，例如，MAC 地址可以是 "1a:…"，但不可以是 "15:…"
+  - FF:FF:FF:FF:FF:FF 和 00:00:00:00:00:00 是无效地址，不能设置
 
 示例
 ^^^^
@@ -1096,14 +1099,14 @@ Wi-Fi AT 命令集
 
 .. _cmd-APMAC:
 
-:ref:`AT+CIPAPMAC <WiFi-AT>`：查询/设置 ESP SoftAP 的 MAC 地址
+:ref:`AT+CIPAPMAC <WiFi-AT>`：查询/设置 {IDF_TARGET_NAME} SoftAP 的 MAC 地址
 --------------------------------------------------------------------------
 
 查询命令
 ^^^^^^^^
 **功能：**
 
-查询 ESP SoftAP 的 MAC 地址
+查询 {IDF_TARGET_NAME} SoftAP 的 MAC 地址
 
 **命令：**
 
@@ -1123,7 +1126,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-设置 ESP SoftAP 的 MAC 地址
+设置 {IDF_TARGET_NAME} SoftAP 的 MAC 地址
 
 **命令：**
 
@@ -1140,15 +1143,18 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<mac>**：字符串参数，表示 ESP SoftAP 的 MAC 地址
+-  **<mac>**：字符串参数，表示 {IDF_TARGET_NAME} SoftAP 的 MAC 地址
 
 说明
 ^^^^
 
--  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
--  ESP SoftAP 的 MAC 地址与 ESP Station 不同，不要为二者设置同样的 MAC 地址
--  MAC 地址的 Bit 0 不能为 1，例如，MAC 地址可以是 "18:…"，但不可以是 "15:…"
--  FF:FF:FF:FF:FF:FF 和 00:00:00:00:00:00 是无效地址，不能设置
+.. list::
+
+  - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
+  :esp32: - {IDF_TARGET_NAME} SoftAP 的 MAC 地址与 {IDF_TARGET_NAME} Station 和 {IDF_TARGET_NAME} Ethernet 不同，不要为二者设置同样的 MAC 地址
+  :esp32c3: - {IDF_TARGET_NAME} SoftAP 的 MAC 地址与 {IDF_TARGET_NAME} Station 不同，不要为二者设置同样的 MAC 地址
+  - MAC 地址的 Bit 0 不能为 1，例如，MAC 地址可以是 "18:…"，但不可以是 "15:…"
+  - FF:FF:FF:FF:FF:FF 和 00:00:00:00:00:00 是无效地址，不能设置
 
 示例
 ^^^^
@@ -1159,7 +1165,7 @@ Wi-Fi AT 命令集
 
 .. _cmd-IPSTA:
 
-:ref:`AT+CIPSTA <WiFi-AT>`：查询/设置 ESP Station 的 IP 地址
+:ref:`AT+CIPSTA <WiFi-AT>`：查询/设置 {IDF_TARGET_NAME} Station 的 IP 地址
 ------------------------------------------------------------------------
 
 查询命令
@@ -1167,7 +1173,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-查询 ESP Station 的 IP 地址
+查询 {IDF_TARGET_NAME} Station 的 IP 地址
 
 **命令：**
 
@@ -1192,7 +1198,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-设置 ESP Station 的 IPv4 地址
+设置 {IDF_TARGET_NAME} Station 的 IPv4 地址
 
 **命令：**
 
@@ -1209,15 +1215,15 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<"ip">**：字符串参数，表示 ESP station 的 IPv4 地址
+-  **<"ip">**：字符串参数，表示 {IDF_TARGET_NAME} station 的 IPv4 地址
 -  **<"gateway">**：网关
 -  **<"netmask">**：子网掩码
--  **<"ipv6 addr">**：ESP station 的 IPv6 地址
+-  **<"ipv6 addr">**：{IDF_TARGET_NAME} station 的 IPv6 地址
 
 说明
 ^^^^
 
--  使用查询命令时，只有当 ESP station 连入 AP 或者配置过静态 IP 地址后，才能查询到它的 IP 地址
+-  使用查询命令时，只有当 {IDF_TARGET_NAME} station 连入 AP 或者配置过静态 IP 地址后，才能查询到它的 IP 地址
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
 -  本设置命令与设置 DHCP 的命令相互影响，如 :ref:`AT+CWDHCP <cmd-DHCP>`
 
@@ -1234,7 +1240,7 @@ Wi-Fi AT 命令集
 
 .. _cmd-IPAP:
 
-:ref:`AT+CIPAP <WiFi-AT>`：查询/设置 ESP SoftAP 的 IP 地址
+:ref:`AT+CIPAP <WiFi-AT>`：查询/设置 {IDF_TARGET_NAME} SoftAP 的 IP 地址
 ----------------------------------------------------------------------
 
 查询命令
@@ -1242,7 +1248,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-查询 ESP SoftAP 的 IP 地址
+查询 {IDF_TARGET_NAME} SoftAP 的 IP 地址
 
 **命令：**
 
@@ -1267,7 +1273,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-设置 ESP SoftAP 的 IPv4 地址
+设置 {IDF_TARGET_NAME} SoftAP 的 IPv4 地址
 
 **命令：**
 
@@ -1284,10 +1290,10 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<"ip">**：字符串参数，表示 ESP SoftAP 的 IPv4 地址
+-  **<"ip">**：字符串参数，表示 {IDF_TARGET_NAME} SoftAP 的 IPv4 地址
 -  **<"gateway">**：网关
 -  **<"netmask">**：子网掩码
--  **<"ipv6 addr">**：ESP SoftAP 的 IPv6 地址
+-  **<"ipv6 addr">**：{IDF_TARGET_NAME} SoftAP 的 IPv6 地址
 
 说明
 ^^^^
@@ -1370,11 +1376,11 @@ Wi-Fi AT 命令集
 ^^^^
 
 -  更多有关 SmartConfig 的信息，请参考 `ESP-TOUCH 使用指南 <https://www.espressif.com/sites/default/files/documentation/esp-touch_user_guide_cn.pdf>`_；
--  SmartConfig 仅支持在 ESP Station 模式下调用；
--  消息 ``Smart get Wi-Fi info`` 表示 SmartConfig 成功获取到 AP 信息，之后 ESP 尝试连接 AP；
+-  SmartConfig 仅支持在 {IDF_TARGET_NAME} Station 模式下调用；
+-  消息 ``Smart get Wi-Fi info`` 表示 SmartConfig 成功获取到 AP 信息，之后 {IDF_TARGET_NAME} 尝试连接 AP；
 -  消息 ``+SCRD:<length>,<rvd data>`` 表示 ESP-Touch v2 成功获取到自定义数据；
 -  消息 ``Smartconfig connected Wi-Fi`` 表示成功连接到 AP；
--  因为 ESP 设备需要将 SmartConfig 配网结果同步给手机端，所以建议在消息 ``Smartconfig connected Wi-Fi`` 输出后延迟超过 ``6`` 秒再调用 :ref:`AT+CWSTOPSMART <cmd-STOPS>`；
+-  因为 {IDF_TARGET_NAME} 设备需要将 SmartConfig 配网结果同步给手机端，所以建议在消息 ``Smartconfig connected Wi-Fi`` 输出后延迟超过 ``6`` 秒再调用 :ref:`AT+CWSTOPSMART <cmd-STOPS>`；
 -  可调用 :ref:`AT+CWSTOPSMART <cmd-STOPS>` 停止 SmartConfig，然后再执行其他命令。注意，在 SmartConfig 过程中请勿执行其他命令。
 
 示例
@@ -1461,7 +1467,7 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
--  WPS 功能必须在 ESP Station 使能的情况下调用
+-  WPS 功能必须在 {IDF_TARGET_NAME} Station 使能的情况下调用
 -  WPS 不支持 WEP 加密方式
 
 示例
@@ -1524,7 +1530,7 @@ Wi-Fi AT 命令集
 
 **功能：**
 
-查询 ESP station 连入的企业版 AP 的配置信息
+查询 {IDF_TARGET_NAME} station 连入的企业版 AP 的配置信息
 
 **命令：**
 
@@ -1689,7 +1695,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 
 .. _cmd-HOSTNAME:
 
-:ref:`AT+CWHOSTNAME <WiFi-AT>`：查询/设置 ESP Station 的主机名称
+:ref:`AT+CWHOSTNAME <WiFi-AT>`：查询/设置 {IDF_TARGET_NAME} Station 的主机名称
 -------------------------------------------------------------------------------
 
 查询命令
@@ -1697,7 +1703,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 
 **功能：**
 
-查询 ESP Station 的主机名称
+查询 {IDF_TARGET_NAME} Station 的主机名称
 
 **命令：**
 
@@ -1718,7 +1724,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 
 **功能：**
 
-设置 ESP Station 的主机名称
+设置 {IDF_TARGET_NAME} Station 的主机名称
 
 **命令：**
 
@@ -1741,7 +1747,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 参数
 ^^^^
 
--  **<hostname>**：ESP Station 的主机名称，最大长度：32 字节
+-  **<hostname>**：{IDF_TARGET_NAME} Station 的主机名称，最大长度：32 字节
 
 说明
 ^^^^
@@ -1806,7 +1812,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 
 -  **<country_policy>**：
 
-   -  0: 将国家代码改为 ESP 设备连入的 AP 的国家代码
+   -  0: 将国家代码改为 {IDF_TARGET_NAME} 设备连入的 AP 的国家代码
    -  1: 不改变国家代码，始终保持本命令设置的国家代码
 
 -  **<country_code>**：国家代码，最大长度：3 个字符

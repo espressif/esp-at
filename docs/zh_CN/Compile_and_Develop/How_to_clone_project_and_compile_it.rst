@@ -7,7 +7,7 @@
 
 :link_to_translation:`en:[English]`
 
-本文档详细介绍了如何编译 ESP-AT 工程，并将生成的固件烧录到 ESP 设备中。当默认的 :doc:`官方发布的固件 <../AT_Binary_Lists/index>` 无法满足需求时，如您需要自定义 :doc:`AT 端口管脚 <How_to_set_AT_port_pin>`、:doc:`低功耗蓝牙服务 <How_to_customize_BLE_services>` 以及 :doc:`分区 <How_to_customize_partitions>` 等，那么就需要编译 ESP-AT 工程。
+本文档详细介绍了如何编译 ESP-AT 工程，并将生成的固件烧录到 {IDF_TARGET_NAME} 设备中。当默认的 :doc:`官方发布的固件 <../AT_Binary_Lists/index>` 无法满足需求时，如您需要自定义 :doc:`AT 端口管脚 <How_to_set_AT_port_pin>`、:doc:`低功耗蓝牙服务 <How_to_customize_BLE_services>` 以及 :doc:`分区 <How_to_customize_partitions>` 等，那么就需要编译 ESP-AT 工程。
 
 文档结构如下所示。
 
@@ -21,7 +21,7 @@
 
 在编译 ESP-AT 工程之前，首先需要学习使用 ESP-IDF，并创建 ESP-IDF 的编译环境，这是因为 ESP-AT 是基于 ESP-IDF 的工程。
 
-环境创建完成后，安装工具和 ESP-AT SDK。然后，将 ESP 设备连接至 PC，使用 ``./build.py menuconfig`` 配置工程。最后，编译工程，并将生成的 bin 文件烧录到 ESP 设备上。
+环境创建完成后，安装工具和 ESP-AT SDK。然后，将 {IDF_TARGET_NAME} 设备连接至 PC，使用 ``./build.py menuconfig`` 配置工程。最后，编译工程，并将生成的 bin 文件烧录到 {IDF_TARGET_NAME} 设备上。
 
 .. note::
 
@@ -118,7 +118,7 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
     
     python build.py menuconfig
 
-3. 如果是第一次编译工程，请为 ESP 设备选择以下配置选项。
+3. 如果是第一次编译工程，请为 {IDF_TARGET_NAME} 设备选择以下配置选项。
 
   - 选择 ``Platform name``，例如 {IDF_TARGET_NAME} 系列设备选择 ``PLATFORM_{IDF_TARGET_CFG_PREFIX}``。``Platform name`` 由 :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 定义。
   - 选择 ``Module name``，例如 {IDF_TARGET_PRODUCT_NAME} 模组选择 ``{IDF_TARGET_COMPILE_MNAME}``。``Module name`` 由 :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 定义。
@@ -137,7 +137,7 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
       ...
       Please follow the instructions found in the "Set up the tools" section of ESP-IDF Get Started Guide.
 
-  - 如果您曾经编译过某个 ESP 系列的 AT 工程，而现在想切换到另一个系列进行编译，则必须运行 ``rm -rf esp-idf`` 来删除旧的 esp-idf，然后再进行下一步操作。
+  - 如果您曾经编译过某个 {IDF_TARGET_NAME} 系列的 AT 工程，而现在想切换到另一个系列进行编译，则必须运行 ``rm -rf esp-idf`` 来删除旧的 esp-idf，然后再进行下一步操作。
 
   - 您的 esp-idf 已经升级。
 
@@ -189,7 +189,7 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 烧录到设备
 ^^^^^^^^^^^^^^^^^^^^^^
 
-运行以下命令将生成的固件烧录到 ESP 设备上。
+运行以下命令将生成的固件烧录到 {IDF_TARGET_NAME} 设备上。
 
 - Linux 或 macOS
 
@@ -203,6 +203,6 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 
   python build.py -p (PORT) flash
 
-- 注意，请用 ESP 设备的串口名称替换 ``PORT``。
+- 注意，请用 {IDF_TARGET_NAME} 设备的串口名称替换 ``PORT``。
 - 或者按照提示信息将固件烧录到 flash 中。注意，仍然需要替换 ``PORT``。
 - 如果 ESP-AT bin 不能启动，并且打印出 "ota data partition invalid"，请运行 ``./build.py erase_flash`` 来擦除整个 flash，然后重新烧录 AT 固件。

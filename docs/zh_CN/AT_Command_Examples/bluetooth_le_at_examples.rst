@@ -3,7 +3,7 @@ Bluetooth LE AT 示例
 
 :link_to_translation:`en:[English]`
 
-本文档主要介绍 :doc:`../AT_Command_Set/BLE_AT_Commands` 的使用方法，并提供在 ESP 设备上运行这些命令的详细示例。
+本文档主要介绍 :doc:`../AT_Command_Set/BLE_AT_Commands` 的使用方法，并提供在 {IDF_TARGET_NAME} 设备上运行这些命令的详细示例。
 
 .. contents::
    :local:
@@ -231,7 +231,7 @@ Bluetooth LE 客户端读写服务特征值
 
    说明：
 
-   - 输入上述命令时，请使用您的 ESP Bluetooth LE 服务端地址。
+   - 输入上述命令时，请使用您的 {IDF_TARGET_NAME} Bluetooth LE 服务端地址。
    - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
    - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
 
@@ -588,7 +588,7 @@ Bluetooth LE 服务端读写服务特征值
 
    说明：
 
-   - 输入上述命令时，请使用您的 ESP Bluetooth LE 服务端地址。
+   - 输入上述命令时，请使用您的 {IDF_TARGET_NAME} Bluetooth LE 服务端地址。
    - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
    - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
 
@@ -610,7 +610,7 @@ Bluetooth LE 服务端读写服务特征值
 
    说明：
 
-   - 输入上述命令时，请使用您的 ESP Bluetooth LE 客户端地址。
+   - 输入上述命令时，请使用您的 {IDF_TARGET_NAME} Bluetooth LE 客户端地址。
    - 如果 Bluetooth LE 连接成功，则会提示 ``OK``，不会提示 ``+BLECONN:0,"24:0a:c4:03:a7:4e``。
    - 如果 Bluetooth LE 连接失败，则会提示 ``ERROR``，不会提示 ``+BLECONN:0,-1``。
 
@@ -1003,7 +1003,7 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - 输入上述命令时，请使用您的 ESP Bluetooth LE 服务端地址。
+   - 输入上述命令时，请使用您的 {IDF_TARGET_NAME} Bluetooth LE 服务端地址。
    - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
    - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
 
@@ -1326,7 +1326,7 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - 输入上述命令时，请使用您的 ESP Bluetooth LE 服务端地址。
+   - 输入上述命令时，请使用您的 {IDF_TARGET_NAME} Bluetooth LE 服务端地址。
    - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
    - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
 

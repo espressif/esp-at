@@ -5,7 +5,7 @@ ESP-AT 固件差异
 
 :link_to_translation:`en:[English]`
 
-本文档比较了同一 ESP 系列的 AT 固件在支持的命令集、硬件、模组方面的差异。
+本文档比较了同一 {IDF_TARGET_NAME} 系列的 AT 固件在支持的命令集、硬件、模组方面的差异。
 
 {IDF_TARGET_NAME} 系列
 ------------------------

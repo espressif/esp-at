@@ -484,7 +484,7 @@ AT+TCRESTORE：清除模组设备信息
 
 - 如果模组已经连接腾讯云 MQTT 服务器，则返回错误，用户需要先发送断开连接命令 (:ref:`AT+TCMQTTDISCONN <cmd-TCMQTTDISCONN>`) 才能执行该命令。
 - 如果状态允许，则返回 OK，然后清除模组上面存储的腾讯云相关设备及产品信息，以及缓存的 OTA 固件信息，并重启模组。
-- 该命令不会清除模组信息（即通过 :ref:`AT+TCMODULE <cmd-TCMODULE>` 可以读取的信息）以及 ESP 设备的 NVS 数据包括 Wi-Fi 配置，如果需要清除 Wi-Fi 配置信息需要执行 AT+RESTORE。
+- 该命令不会清除模组信息（即通过 :ref:`AT+TCMODULE <cmd-TCMODULE>` 可以读取的信息）以及 {IDF_TARGET_NAME} 设备的 NVS 数据包括 Wi-Fi 配置，如果需要清除 Wi-Fi 配置信息需要执行 AT+RESTORE。
 
 示例
 """"
@@ -1812,13 +1812,13 @@ AT+TCSTOPSAP：退出 softAP 方式 Wi-Fi 配网状态
 
 .. _cmd-TCMODINFOSET:
 
-AT+TCMODINFOSET：ESP 模组信息设置
+AT+TCMODINFOSET：{IDF_TARGET_NAME} 模组信息设置
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 功能
 """"
 
-设置 ESP 模组相关的信息，如模组名称，flash 大小等
+设置 {IDF_TARGET_NAME} 模组相关的信息，如模组名称，flash 大小等
 
 测试命令
 """"""""
@@ -1896,7 +1896,7 @@ AT+TCMODINFOSET：ESP 模组信息设置
 说明
 """"
 
-- ESP Wi-Fi 模组固件和模组信息存储于不同 flash 分区，模组固件在启动时候会读取模组信息并做相应配置，这样可以使得同一版本模组固件可以适配不同的模组硬件
+- {IDF_TARGET_NAME} Wi-Fi 模组固件和模组信息存储于不同 flash 分区，模组固件在启动时候会读取模组信息并做相应配置，这样可以使得同一版本模组固件可以适配不同的模组硬件
 
 示例
 """"
@@ -3029,7 +3029,7 @@ CME ERROR 列表扩展
 使用建议
 ^^^^^^^^^
 
-上位机或 MCU 使用 ESP 设备定制 AT 固件与腾讯云交互，可按下面不同阶段的使用建议进行相关命令的操作。
+上位机或 MCU 使用 {IDF_TARGET_NAME} 设备定制 AT 固件与腾讯云交互，可按下面不同阶段的使用建议进行相关命令的操作。
 
 1. 检查及配置腾讯云物联网设备信息
 

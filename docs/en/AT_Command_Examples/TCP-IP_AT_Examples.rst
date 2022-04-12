@@ -3,13 +3,13 @@ TCP/IP AT Examples
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document provides detailed command examples to illustrate how to utilize :doc:`../AT_Command_Set/TCP-IP_AT_Commands` on ESP devices.
+This document provides detailed command examples to illustrate how to utilize :doc:`../AT_Command_Set/TCP-IP_AT_Commands` on {IDF_TARGET_NAME}.
 
 .. contents::
    :local:
    :depth: 1
 
-ESP device as a TCP client in single connection
+{IDF_TARGET_NAME} as a TCP client in single connection
 --------------------------------------------------
 
 #. Set the Wi-Fi mode to station.
@@ -69,11 +69,11 @@ ESP device as a TCP client in single connection
 
    - The query results you obtained may be different from those in the above response.
 
-#. Connect the PC to the same router which ESP device is connected to.
+#. Connect the PC to the same router which {IDF_TARGET_NAME} is connected to.
 
    Use a network tool on the PC to create a TCP server. For example, the TCP server on PC is ``192.168.3.102``, and the port is ``8080``.
 
-#. ESP device is connected to the TCP server as a client over TCP. The server's IP address is ``192.168.3.102``, and the port is ``8080``.
+#. {IDF_TARGET_NAME} is connected to the TCP server as a client over TCP. The server's IP address is ``192.168.3.102``, and the port is ``8080``.
 
    Command:
 
@@ -125,12 +125,12 @@ ESP device as a TCP client in single connection
 
      +IPD,4:test
 
-ESP device as a TCP server in multiple connections
+{IDF_TARGET_NAME} as a TCP server in multiple connections
 ----------------------------------------------------
 
-When ESP device works as a TCP server, multiple connections should be enabled by :ref:`AT+CIPMUX=1 <cmd-MUX>` command, because in most cases more than one client needs to be connected to the ESP server.
+When {IDF_TARGET_NAME} works as a TCP server, multiple connections should be enabled by :ref:`AT+CIPMUX=1 <cmd-MUX>` command, because in most cases more than one client needs to be connected to the {IDF_TARGET_NAME} server.
 
-Below is an example showing how a TCP server is established when ESP device works in the softAP mode. If ESP device works as a station, you can set up a server in the same way mentioned above after connecting ESP device to the router.
+Below is an example showing how a TCP server is established when {IDF_TARGET_NAME} works in the softAP mode. If {IDF_TARGET_NAME} works as a station, you can set up a server in the same way mentioned above after connecting {IDF_TARGET_NAME} to the router.
 
 #. Set the Wi-Fi mode to softAP.
 
@@ -211,14 +211,14 @@ Below is an example showing how a TCP server is established when ESP device work
 
      OK
 
-#. Connect the PC to the ESP device softAP.
+#. Connect the PC to the {IDF_TARGET_NAME} softAP.
 
    .. figure:: ../../img/Connect-SoftAP.png
        :scale: 100 %
        :align: center
        :alt: Connect SoftAP
 
-#. Use a network tool on PC to create a TCP client and connect it to the TCP server that ESP device has created.
+#. Use a network tool on PC to create a TCP client and connect it to the TCP server that {IDF_TARGET_NAME} has created.
 
 #. Send 4 bytes of data to connection link 0.
 
@@ -332,7 +332,7 @@ UDP transmission with fixed remote IP address and port
 
    - The query results you obtained may be different from those in the above response.
 
-#. Connect the PC to the same router which ESP device is connected to.
+#. Connect the PC to the same router which {IDF_TARGET_NAME} is connected to.
 
    Use a network tool on the PC to create UDP transmission. For example, the PC's IP address is ``192.168.3.102``, and the port is ``8080``.
 
@@ -373,8 +373,8 @@ UDP transmission with fixed remote IP address and port
    Note:
 
    - ``"192.168.3.102"`` and ``8080`` are the remote IP address and port of UDP transmission on the remote side, i.e., the UDP configuration set by PC.
-   - ``1112`` is the local port number of ESP device. You can define this port number, or else, a random port will be used.
-   - ``0`` means that the remote IP address and port are fixed and cannot be changed. For example, when there is another PC creating a UDP entity and sending data to ESP device port 1112, ESP device will still receive the data from UDP port 1112, and if the AT command ``AT+CIPSEND=4,X`` is used, the data will still be sent to the first PC end. However, if the parameter is not set as ``0``, the data will be sent to the new PC.
+   - ``1112`` is the local port number of {IDF_TARGET_NAME}. You can define this port number, or else, a random port will be used.
+   - ``0`` means that the remote IP address and port are fixed and cannot be changed. For example, when there is another PC creating a UDP entity and sending data to {IDF_TARGET_NAME} port 1112, {IDF_TARGET_NAME} will still receive the data from UDP port 1112, and if the AT command ``AT+CIPSEND=4,X`` is used, the data will still be sent to the first PC end. However, if the parameter is not set as ``0``, the data will be sent to the new PC.
 
 #. Send 7 bytes of data to connection link 4.
 
@@ -488,7 +488,7 @@ UDP transmission with changeable remote IP address and port
 
    - The query results you obtained may be different from those in the above response.
 
-#. Connect the PC to the same router which ESP device is connected to.
+#. Connect the PC to the same router which {IDF_TARGET_NAME} is connected to.
 
    Use a network tool on the PC to create UDP transmission. For example, the PC's IP address is ``192.168.3.102``, and the port is ``8080``.
 
@@ -525,8 +525,8 @@ UDP transmission with changeable remote IP address and port
    Note:
 
    - ``"192.168.3.102"`` and `8080` are the remote IP address and port of UDP transmission on the remote side, i.e., the UDP configuration set by PC.
-   - ``1112`` is the local port number of ESP device. You can define this port number, or else, a random port will be used.
-   - ``2`` means the opposite terminal of UDP transmission can be changed. The remote IP address and port will be automatically changed to those of the last UDP connection to ESP device.
+   - ``1112`` is the local port number of {IDF_TARGET_NAME}. You can define this port number, or else, a random port will be used.
+   - ``2`` means the opposite terminal of UDP transmission can be changed. The remote IP address and port will be automatically changed to those of the last UDP connection to {IDF_TARGET_NAME}.
 
 #. Send 4 bytes of data.
 
@@ -606,7 +606,7 @@ UDP transmission with changeable remote IP address and port
 
      OK
 
-ESP device as an SSL client in single connection
+{IDF_TARGET_NAME} as an SSL client in single connection
 --------------------------------------------------
 
 #. Set the Wi-Fi mode to station.
@@ -666,7 +666,7 @@ ESP device as an SSL client in single connection
 
    - The query results you obtained may be different from those in the above response.
 
-#. Connect the PC to the same router which ESP device is connected to.
+#. Connect the PC to the same router which {IDF_TARGET_NAME} is connected to.
 
 #. Use the OpenSSL command on the PC to create an SSL server. For example, the SSL server on PC is ``192.168.3.102``, and the port is ``8070``.
 
@@ -682,7 +682,7 @@ ESP device as an SSL client in single connection
 
      ACCEPT
 
-#. Connect the ESP device to the SSL server as a client over SSL. The server's IP address is ``192.168.3.102``, and the port is ``8070``.
+#. Connect the {IDF_TARGET_NAME} to the SSL server as a client over SSL. The server's IP address is ``192.168.3.102``, and the port is ``8070``.
 
    Command:
 
@@ -734,12 +734,12 @@ ESP device as an SSL client in single connection
 
      +IPD,4:test
 
-ESP device as an SSL server in multiple connections
+{IDF_TARGET_NAME} as an SSL server in multiple connections
 -----------------------------------------------------
 
-When ESP device works as an SSL server, multiple connections should be enabled by :ref:`AT+CIPMUX=1 <cmd-MUX>` command, because in most cases more than one client needs to be connected to the ESP server.
+When {IDF_TARGET_NAME} works as an SSL server, multiple connections should be enabled by :ref:`AT+CIPMUX=1 <cmd-MUX>` command, because in most cases more than one client needs to be connected to the {IDF_TARGET_NAME} server.
 
-Below is an example showing how an SSL server is established when ESP device works in the softAP mode. If ESP device works as a station, after connecting to the router, follow the steps for establishing a connection to an SSL server in this example.
+Below is an example showing how an SSL server is established when {IDF_TARGET_NAME} works in the softAP mode. If {IDF_TARGET_NAME} works as a station, after connecting to the router, follow the steps for establishing a connection to an SSL server in this example.
 
 #. Set the Wi-Fi mode to softAP.
 
@@ -769,7 +769,7 @@ Below is an example showing how an SSL server is established when ESP device wor
 
      OK
 
-#. Configure the ESP softAP.
+#. Configure the {IDF_TARGET_NAME} softAP.
 
    Command:
 
@@ -820,14 +820,14 @@ Below is an example showing how an SSL server is established when ESP device wor
 
      OK
 
-#. Connect the PC to the ESP device softAP.
+#. Connect the PC to the {IDF_TARGET_NAME} softAP.
 
    .. figure:: ../../img/Connect-SoftAP.png
        :scale: 100 %
        :align: center
        :alt: Connect SoftAP
 
-#. Use the OpenSSL command on PC to create an SSL client and connect it to the SSL server that ESP device has created.
+#. Use the OpenSSL command on PC to create an SSL client and connect it to the SSL server that {IDF_TARGET_NAME} has created.
 
    Command:
 
@@ -835,7 +835,7 @@ Below is an example showing how an SSL server is established when ESP device wor
 
      openssl s_client -host 192.168.4.1 -port 8070
 
-   Response on the ESP device:
+   Response on the {IDF_TARGET_NAME}:
 
    .. code-block:: none
 
@@ -893,7 +893,7 @@ Below is an example showing how an SSL server is established when ESP device wor
 
      OK
 
-ESP device as an SSL client to create a single connection with two-way authentication
+{IDF_TARGET_NAME} as an SSL client to create a single connection with mutual authentication
 ---------------------------------------------------------------------------------------
 
 The certificate used in the example is the default certificate in esp-at. You can also generate and flash your own the certificate, then you need replace the SSL server certificate path below with your certificate path. To obtain the SSL certificate, please refer to :project_file:`tools/README.md` for how to generate the certificate bin and esp-at/module_config/module_name/at_customize.csv for where to flash it.
@@ -992,7 +992,7 @@ The certificate used in the example is the default certificate in esp-at. You ca
 
    - The query results you obtained may be different from those in the above response.
 
-#. Connect the PC to the same router which ESP device is connected to.
+#. Connect the PC to the same router which {IDF_TARGET_NAME} is connected to.
 
 #. Use the OpenSSL command on the PC to create an SSL server. For example, the SSL server on PC is ``192.168.3.102``, and the port is ``8070``.
 
@@ -1002,7 +1002,7 @@ The certificate used in the example is the default certificate in esp-at. You ca
 
      openssl s_server -CAfile /home/esp-at/components/customized_partitions/raw_data/server_ca/server_ca.crt -cert /home/esp-at/components/customized_partitions/raw_data/server_cert/server_cert.crt -key /home/esp-at/components/customized_partitions/raw_data/server_key/server.key -port 8070 -verify_return_error -verify_depth 1 -Verify 1
 
-   Response on the ESP device:
+   Response on the {IDF_TARGET_NAME}:
 
    .. code-block:: none
 
@@ -1012,7 +1012,7 @@ The certificate used in the example is the default certificate in esp-at. You ca
 
    - The certificate path in the command can be adjusted according to the location of your certificate.
 
-#. The ESP device sets up the SSL client two-way authentication configuration.
+#. The {IDF_TARGET_NAME} sets up the SSL client mutual authentication configuration.
 
    Command:
 
@@ -1026,7 +1026,7 @@ The certificate used in the example is the default certificate in esp-at. You ca
 
      OK
 
-#. Connect the ESP device to the SSL server as a client over SSL. The server's IP address is ``192.168.3.102``, and the port is ``8070``.
+#. Connect the {IDF_TARGET_NAME} to the SSL server as a client over SSL. The server's IP address is ``192.168.3.102``, and the port is ``8070``.
 
    Command:
 
@@ -1078,12 +1078,12 @@ The certificate used in the example is the default certificate in esp-at. You ca
 
      +IPD,4:test
 
-ESP device as an SSL server to create multiple connection with two-way authentication
+{IDF_TARGET_NAME} as an SSL server to create multiple connection with mutual authentication
 ---------------------------------------------------------------------------------------
 
-When ESP device works as an SSL server, multiple connections should be enabled by :ref:`AT+CIPMUX=1 <cmd-MUX>` command, because in most cases more than one client needs to be connected to the ESP server.
+When {IDF_TARGET_NAME} works as an SSL server, multiple connections should be enabled by :ref:`AT+CIPMUX=1 <cmd-MUX>` command, because in most cases more than one client needs to be connected to the {IDF_TARGET_NAME} server.
 
-Below is an example showing how an SSL server is established when ESP device works in the station mode. If ESP device works as a softAP, refer to the example of `ESP device as an SSL server in multiple connections`_.
+Below is an example showing how an SSL server is established when {IDF_TARGET_NAME} works in the station mode. If {IDF_TARGET_NAME} works as a softAP, refer to the example of `{IDF_TARGET_NAME} as an SSL server in multiple connections`_.
 
 #. Set the Wi-Fi mode to station.
 
@@ -1170,14 +1170,14 @@ Below is an example showing how an SSL server is established when ESP device wor
 
      OK
 
-#. Connect the PC to the ESP device softAP.
+#. Connect the PC to the {IDF_TARGET_NAME} softAP.
 
    .. figure:: ../../img/Connect-SoftAP.png
        :scale: 100 %
        :align: center
        :alt: Connect SoftAP
 
-#. Use the OpenSSL command on PC to create an SSL client and connect it to the SSL server that ESP device has created.
+#. Use the OpenSSL command on PC to create an SSL client and connect it to the SSL server that {IDF_TARGET_NAME} has created.
 
    Command:
 
@@ -1185,7 +1185,7 @@ Below is an example showing how an SSL server is established when ESP device wor
 
      openssl s_client -CAfile /home/esp-at/components/customized_partitions/raw_data/client_ca/client_ca_00.crt -cert /home/esp-at/components/customized_partitions/raw_data/client_cert/client_cert_00.crt -key /home/esp-at/components/customized_partitions/raw_data/client_key/client_key_00.key -host 192.168.3.112 -port 8070
 
-   Response on the ESP device:
+   Response on the {IDF_TARGET_NAME}:
 
    .. code-block:: none
 
@@ -1257,7 +1257,7 @@ Below is an example showing how an SSL server is established when ESP device wor
 
      OK
 
-UART Wi-Fi passthrough transmission when the ESP device works as a TCP client in single connection
+UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP client in single connection
 ---------------------------------------------------------------------------------------------------
 
 #. Set the Wi-Fi mode to station.
@@ -1317,11 +1317,11 @@ UART Wi-Fi passthrough transmission when the ESP device works as a TCP client in
 
    - The query results you obtained may be different from those in the above response.
 
-#. Connect the PC to the same router which ESP device is connected to.
+#. Connect the PC to the same router which {IDF_TARGET_NAME} is connected to.
 
    Use a network tool on the PC to create a TCP server. For example, the TCP server on PC is ``192.168.3.102``, and the port is ``8080``.
 
-#. Connect the ESP device to the TCP server as a TCP client over TCP. The server's IP address is ``192.168.3.102``, and the port is ``8080``.
+#. Connect the {IDF_TARGET_NAME} to the TCP server as a TCP client over TCP. The server's IP address is ``192.168.3.102``, and the port is ``8080``.
 
    Command:
 
@@ -1405,7 +1405,7 @@ UART Wi-Fi passthrough transmission when the ESP device works as a TCP client in
 
      OK
 
-UART Wi-Fi passthrough transmission when the ESP device works as a softAP in UDP transparent transmission
+UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a softAP in UDP transparent transmission
 ---------------------------------------------------------------------------------------------------------
 
 #. Set the Wi-Fi mode to softAP.
@@ -1436,7 +1436,7 @@ UART Wi-Fi passthrough transmission when the ESP device works as a softAP in UDP
 
      OK
 
-#. Connect the PC to the ESP device softAP.
+#. Connect the PC to the {IDF_TARGET_NAME} softAP.
 
    .. figure:: ../../img/Connect-SoftAP.png
        :scale: 100 %

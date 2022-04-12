@@ -45,13 +45,13 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
   - 当 ``./build.py menuconfig`` 中的 ``silence mode`` 为 ``0`` 时，对应模块的配置文件为 ``sdkconfig.defaults``。
   - 当 ``./build.py menuconfig`` 中的 ``silence mode`` 为 ``1`` 时，对应模块的配置文件为 ``sdkconfig_silence.defaults``。
 
-如果要在 ESP-AT 工程中添加对某个 ESP 模组的支持，则需要修改这些配置文件。此处的“ESP 模组”指的是：
+如果要在 ESP-AT 工程中添加对某个 {IDF_TARGET_NAME} 模组的支持，则需要修改这些配置文件。此处的“{IDF_TARGET_NAME} 模组”指的是：
 
 - ESP-AT 工程暂未适配支持的模组，包括 ESP-AT 已适配相应芯片的模组，和未适配相应芯片的模组。但不建议添加后者，因为工作量巨大，此文档也不做阐述。
 
 - ESP-AT 工程已适配支持的模组，但用户需要对其修改默认配置的。
 
-本文档将说明如何在 ESP-AT 工程中为 ESP-AT 已支持的某款 ESP 芯片添加新的模组支持，下文中以添加对 ESP32-WROOM-32 支持为例，该模组使用 SDIO 而不是默认的 UART 接口。
+本文档将说明如何在 ESP-AT 工程中为 ESP-AT 已支持的某款 {IDF_TARGET_NAME} 芯片添加新的模组支持，下文中以添加对 ESP32-WROOM-32 支持为例，该模组使用 SDIO 而不是默认的 UART 接口。
 
 在 factory_param_data.csv 添加模组信息
 --------------------------------------

@@ -9,7 +9,7 @@ MQTT AT 连接云示例
     有关如何使用 MQTT AT 命令的详细信息，请参阅 :doc:`../AT_Command_Set/MQTT_AT_Commands`。
     您需要通过阅读 `AWS IoT 开发指南 <https://docs.aws.amazon.com/zh_cn/iot/latest/developerguide/iot-gs.html>`_ 来熟悉 AWS IoT。
 
-请按照以下步骤使用 ESP-AT 将您的 ESP 设备连接到 AWS IoT。
+请按照以下步骤使用 ESP-AT 将您的 {IDF_TARGET_NAME} 设备连接到 AWS IoT。
 
 .. contents::
    :local:
@@ -54,7 +54,7 @@ MQTT AT 连接云示例
 编译和烧录 AT 固件
 ^^^^^^^^^^^^^^^^^^^^
 
-编译 ESP-AT 项目以构建 AT 固件，并将固件烧录到您的 ESP 设备。欲了解更多信息，请参阅 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`。
+编译 ESP-AT 项目以构建 AT 固件，并将固件烧录到您的 {IDF_TARGET_NAME} 设备。欲了解更多信息，请参阅 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`。
 
 .. note::
   若不想编译 ESP-AT 工程替换证书，可直接使用 AT 命令替换固件中的证书，具体请参阅 :doc:`../Compile_and_Develop/how_to_generate_pki_files`。

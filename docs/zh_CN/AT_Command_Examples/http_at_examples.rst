@@ -3,7 +3,7 @@ HTTP AT 示例
 
 :link_to_translation:`en:[English]`
 
-本文档主要提供在 ESP 设备上运行 :doc:`../AT_Command_Set/HTTP_AT_Commands` 命令的详细示例。
+本文档主要提供在 {IDF_TARGET_NAME} 设备上运行 :doc:`../AT_Command_Set/HTTP_AT_Commands` 命令的详细示例。
 
 .. contents::
    :local:

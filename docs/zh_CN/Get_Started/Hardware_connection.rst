@@ -15,9 +15,9 @@
 
    * - 硬件
      - 功能
-   * - ESP 开发板
+   * - {IDF_TARGET_NAME} 开发板
      - 从机
-   * - USB 数据线（连接 ESP 开发板和 PC）
+   * - USB 数据线（连接 {IDF_TARGET_NAME} 开发板和 PC）
      - 下载固件、输出日志数据连接
    * - PC
      - 主机，将固件下载至从机
@@ -25,7 +25,7 @@
      - 发送 AT 命令、接收 AT 响应数据连接
    * - USB 转 UART 串口模块
      - 转换 USB 信号和 TTL 信号
-   * - 杜邦线（连接 USB 转 UART 串口模块和 ESP 开发板）
+   * - 杜邦线（连接 USB 转 UART 串口模块和 {IDF_TARGET_NAME} 开发板）
      - 发送 AT 命令、接收 AT 响应数据连接
 
 .. figure:: ../../_static/hw-connection-what-you-need.png
@@ -35,7 +35,7 @@
 
    ESP-AT 测试硬件连接示意图
 
-注意：上图使用 4 根杜邦线连接 ESP 开发板和 USB 转 UART 串口模块，但如果您不使用硬件流控功能，只需 2 根杜邦线连接 TX/RX 即可。
+注意：上图使用 4 根杜邦线连接 {IDF_TARGET_NAME} 开发板和 USB 转 UART 串口模块，但如果您不使用硬件流控功能，只需 2 根杜邦线连接 TX/RX 即可。
 
 .. only:: esp32
 
@@ -55,7 +55,7 @@
     :header-rows: 1
 
     * - 功能
-      - ESP 开发板管脚
+      - {IDF_TARGET_NAME} 开发板管脚
       - 其它设备管脚
     * - 下载固件/输出日志 :sup:`1`
       - UART0
@@ -76,7 +76,7 @@
           * RTS
           * CTS
 
-  **说明** 1：ESP 开发板和 PC 之间的管脚连接已内置在 ESP 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -97,7 +97,7 @@
     :header-rows: 1
 
     * - 功能
-      - ESP 开发板管脚
+      - {IDF_TARGET_NAME} 开发板管脚
       - 其它设备管脚
     * - 下载固件/输出日志 :sup:`1`
       - UART0
@@ -118,7 +118,7 @@
           * RTS
           * CTS
 
-  **说明** 1：ESP 开发板和 PC 之间的管脚连接已内置在 ESP 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -138,7 +138,7 @@
     :header-rows: 1
 
     * - 功能
-      - ESP 开发板管脚
+      - {IDF_TARGET_NAME} 开发板管脚
       - 其它设备管脚
     * - 下载固件/输出日志 :sup:`1`
       - UART0
@@ -159,7 +159,7 @@
           * RTS
           * CTS
 
-  **说明** 1：ESP 开发板和 PC 之间的管脚连接已内置在 ESP 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -179,7 +179,7 @@
     :header-rows: 1
 
     * - 功能
-      - ESP 开发板管脚
+      - {IDF_TARGET_NAME} 开发板管脚
       - 其它设备管脚
     * - 下载固件/输出日志 :sup:`1`
       - UART0
@@ -200,7 +200,7 @@
           * RTS
           * CTS
 
-  **说明** 1：ESP 开发板和 PC 之间的管脚连接已内置在 ESP 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -224,7 +224,7 @@
     :header-rows: 1
 
     * - 功能
-      - ESP 开发板管脚
+      - {IDF_TARGET_NAME} 开发板管脚
       - 其它设备管脚
     * - 下载固件/输出日志 :sup:`1`
       - UART0
@@ -245,7 +245,7 @@
           * RTS
           * CTS
 
-  **说明** 1：ESP 开发板和 PC 之间的管脚连接已内置在 ESP 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 

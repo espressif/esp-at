@@ -216,8 +216,8 @@ How to test and optimize the throughput of {IDF_TARGET_NAME} AT?
 Other
 -----
 
-What interfaces of ESP chips can be used to transmit AT commands?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+What interfaces of {IDF_TARGET_NAME} chips can be used to transmit AT commands?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
   .. list::
 

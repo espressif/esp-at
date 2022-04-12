@@ -45,13 +45,13 @@ The ESP-AT project supports multiple modules, and provides configuration for the
   - When the ``silence mode`` in ``./build.py menuconfig`` is ``0``, the default sdkconfig corresponding to the module is ``sdkconfig.defaults``.
   - When the ``silence mode`` in ``./build.py menuconfig`` is ``1``, the default sdkconfig corresponding to the module is ``sdkconfig_silence.defaults``.
 
-If you want to add support for an ESP module in your ESP-AT project, you need to modify those configuration files. The "ESP module" here means:
+If you want to add support for an {IDF_TARGET_NAME} module in your ESP-AT project, you need to modify those configuration files. The "{IDF_TARGET_NAME} module" here means:
 
 - Modules that the ESP-AT project has not supported yet, including those of supported platform and not supported platform. However, adding support for the latter requires extra huge work, thus not recommended and not explained in this document.
 
 - Modules that the ESP-AT project supports, but you want to modify the default configuration.
 
-The document uses an example to explain how to add support for an ESP module in the ESP-AT project. The example module is ESP32-WROOM-32 that uses SDIO instead of the default UART interface.
+The document uses an example to explain how to add support for an {IDF_TARGET_NAME} module in the ESP-AT project. The example module is ESP32-WROOM-32 that uses SDIO instead of the default UART interface.
 
 Add Module to factory_param_data.csv
 ------------------------------------

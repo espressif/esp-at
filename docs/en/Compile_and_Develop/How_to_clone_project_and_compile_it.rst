@@ -7,7 +7,7 @@ Compile ESP-AT Project
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document details how to build your own ESP-AT project and flash the generated firmware into your ESP devices. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>`, :doc:`Bluetooth LE services <How_to_customize_BLE_services>`, and :doc:`partitions <How_to_customize_partitions>`, and so on.
+This document details how to build your own ESP-AT project and flash the generated firmware into your {IDF_TARGET_NAME}. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>`, :doc:`Bluetooth LE services <How_to_customize_BLE_services>`, and :doc:`partitions <How_to_customize_partitions>`, and so on.
 
 The structure of this document is as follows:
 
@@ -21,7 +21,7 @@ Overview
 
 Before compiling an ESP-AT project, you need first get started with ESP-IDF and set up the environment for ESP-IDF, because ESP-AT is based on ESP-IDF. 
 
-After the environment is ready, install the tools and ESP-AT SDK. Then, connect your ESP device to PC. Use ``./build.py menuconfig`` to set up some configuration for the project. Build the project and flash the generated bin files onto your ESP device.
+After the environment is ready, install the tools and ESP-AT SDK. Then, connect your {IDF_TARGET_NAME} to PC. Use ``./build.py menuconfig`` to set up some configuration for the project. Build the project and flash the generated bin files onto your {IDF_TARGET_NAME}.
 
 .. note::
 
@@ -118,10 +118,10 @@ In this step, you will clone the ``esp-idf`` folder into the ``esp-at`` folder, 
     
     python build.py menuconfig
     
-3. Select the following configuration options for your ESP device if it is your first time.
+3. Select the following configuration options for your {IDF_TARGET_NAME} if it is your first time.
 
-  - Select the ``Platform name`` for your ESP device. For example, select ``PLATFORM_{IDF_TARGET_CFG_PREFIX}`` for {IDF_TARGET_NAME} series of products. ``Platform name`` is defined in :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
-  - Select the ``Module name`` for your ESP device. For example, select ``{IDF_TARGET_COMPILE_MNAME}`` for the {IDF_TARGET_PRODUCT_NAME} module. ``Module name`` is defined in :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
+  - Select the ``Platform name`` for your {IDF_TARGET_NAME}. For example, select ``PLATFORM_{IDF_TARGET_CFG_PREFIX}`` for {IDF_TARGET_NAME} series of products. ``Platform name`` is defined in :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
+  - Select the ``Module name`` for your {IDF_TARGET_NAME}. For example, select ``{IDF_TARGET_COMPILE_MNAME}`` for the {IDF_TARGET_PRODUCT_NAME} module. ``Module name`` is defined in :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
   - Enable or disable ``silence mode``. If enabled, it will remove some logs and reduce the firmware size. Generally, it should be disabled.
   - The above three option items will not appear if the file ``build/module_info.json`` exists. So please delete it if you want to reconfigure the module information.
 
@@ -137,7 +137,7 @@ In this step, you will clone the ``esp-idf`` folder into the ``esp-at`` folder, 
       ...
       Please follow the instructions found in the "Set up the tools" section of ESP-IDF Get Started Guide.
 
-  - If you have compiled an ESP-AT project for an ESP series before and want to switch to another series, you must run ``rm -rf esp-idf`` to remove the old esp-idf and then proceed with the next step.
+  - If you have compiled an ESP-AT project for an {IDF_TARGET_NAME} series before and want to switch to another series, you must run ``rm -rf esp-idf`` to remove the old esp-idf and then proceed with the next step.
 
   - Your esp-idf is upgraded.
 
@@ -189,7 +189,7 @@ Build the project by running:
 Flash onto the Device
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Flash the firmware that you just compiled onto your ESP device by running:
+Flash the firmware that you just compiled onto your {IDF_TARGET_NAME} by running:
 
 - Linux or macOS
 
@@ -203,6 +203,6 @@ Flash the firmware that you just compiled onto your ESP device by running:
 
     python build.py -p (PORT) flash
 
-- Note that you need to replace ``PORT`` with your ESP device's serial port name.
+- Note that you need to replace ``PORT`` with your {IDF_TARGET_NAME}'s serial port name.
 - Or you can follow the printed instructions to download the bin files into flash. Note that you also need to replace the ``PORT``.
 - If the ESP-AT bin fails to boot and prints "ota data partition invalid", you should run ``./build.py erase_flash`` to erase the entire flash, and then re-flash the AT firmware.

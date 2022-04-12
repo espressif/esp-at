@@ -6,13 +6,13 @@ How to Customize Partitions
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document describes how to customize the partitions in your ESP device by modifying the at_customize.csv table provided by ESP-AT. There are two partition tables: the primary partition and the secondary partition table.
+This document describes how to customize the partitions in your {IDF_TARGET_NAME} by modifying the at_customize.csv table provided by ESP-AT. There are two partition tables: the primary partition and the secondary partition table.
 
 The primary partition table partitions_at.csv is for system usage, based on which the partitions_at.bin file is generated. If the primary partition table goes wrong, the system will fail to startup. Therefore, it is not recommended to modify the partitions_at.csv.
 
 ESP-AT provides a secondary partition table at_customize.csv that you can customize to store self-defined blocks of data. It is based on the primary partition table.
 
-To modify the partition in your ESP device, please follow the first three steps. The fourth section illustrates the three steps with an example.
+To modify the partition in your {IDF_TARGET_NAME}, please follow the first three steps. The fourth section illustrates the three steps with an example.
 
 - :ref:`modify-at-customize-csv`
 - :ref:`generate-at-customize-bin`
@@ -93,10 +93,10 @@ If you use the script, execute the following command under the root directory of
 
 .. _flash-at-customize-bin-into-ESP:
 
-Flash at_customize.bin into ESP Device
---------------------------------------
+Flash at_customize.bin into {IDF_TARGET_NAME} Device
+----------------------------------------------------
 
-Download the at_customize.bin into flash. Please refer to :ref:`flash-at-firmware-into-your-device` for how to flash bin files into ESP and the following table for the download address for your module.
+Download the at_customize.bin into flash. Please refer to :ref:`flash-at-firmware-into-your-device` for how to flash bin files into {IDF_TARGET_NAME} device and the following table for the download address for your module.
 
 .. only:: esp32
 

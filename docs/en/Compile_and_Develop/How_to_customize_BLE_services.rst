@@ -3,7 +3,7 @@ How to Customize Bluetooth® LE Services
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document describes how to customize Bluetooth LE services on your ESP device with the Bluetooth LE service source file provided by ESP-AT.
+This document describes how to customize Bluetooth LE services on your {IDF_TARGET_NAME} with the Bluetooth LE service source file provided by ESP-AT.
 
 .. contents::
    :local:
@@ -113,7 +113,7 @@ Below are descriptions of the table above.
 
 For more information about UUID, please refer to `Bluetooth Special Interest Group (SIG) Assigned Numbers <https://www.bluetooth.com/specifications/assigned-numbers/>`_.
 
-If you use the default source file on your ESP device without any modification and establish a Bluetooth LE connection, you will get the following result after querying the server service on the client side.
+If you use the default source file on your {IDF_TARGET_NAME} without any modification and establish a Bluetooth LE connection, you will get the following result after querying the server service on the client side.
 
 .. figure:: ../../_static/ble_default_service.png
     :scale: 100 %

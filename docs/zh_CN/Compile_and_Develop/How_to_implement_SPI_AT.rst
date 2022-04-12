@@ -7,14 +7,10 @@ SPI AT 指南
    :local:
    :depth: 1
 
-.. note::
-
-   本文档仅介绍 ESP32-C、ESP32-S 系列的 ESP 设备的 SPI AT 的实现与应用。由于硬件限制，ESP32 系列不建议使用 SPI AT，可使用 :example:`SDIO SPI AT <at_spi_master/sdspi/>` 作为替代。
-
 简介
 ------
 
-SPI AT 基于 AT 工程，使用 SPI 协议进行数据通信。在使用 SPI AT 时，MCU 设备作为 SPI master，ESP 设备作为 SPI slave，通信双方通过 SPI 协议实现基于 AT 命令的数据交互。
+SPI AT 基于 AT 工程，使用 SPI 协议进行数据通信。在使用 SPI AT 时，MCU 设备作为 SPI master，{IDF_TARGET_NAME} 设备作为 SPI slave，通信双方通过 SPI 协议实现基于 AT 命令的数据交互。
 
 使用 SPI AT 的优势
 ^^^^^^^^^^^^^^^^^^^
@@ -35,14 +31,14 @@ AT 工程默认使用 UART 协议进行数据通信，但是 UART 协议在一�
 SPI AT 默认管脚
 ^^^^^^^^^^^^^^^^
 
-下表给出了不同系列的 ESP 设备使用 SPI AT 时默认的硬件管脚：
+下表给出了不同系列的 {IDF_TARGET_NAME} 设备使用 SPI AT 时默认的硬件管脚：
 
 .. list-table:: SPI AT 默认管脚
    :widths: 10 25
    :header-rows: 1
 
    * - 信号
-     - GPIO 编号 (ESP32-C3)
+     - GPIO 编号
    * - SCLK
      - 6
    * - MISO
@@ -67,7 +63,7 @@ SPI AT 默认管脚
 使用 SPI AT
 --------------
 
-在使用 SPI AT 时，ESP 设备上运行的 SPI slave 工作在半双工通信模式下。通常，在使用 SPI 协议进行半双工通信时，由 SPI master 启动对 SPI slave 的读/写操作，但是，使用 AT 命令进行数据交互时，需要 ESP 设备主动能够主动上报一些信息。因此，我们在 SPI master 和 slave 之间添加了一个握手线，来实现 slave 主动向 master 上报信息的功能。使用握手线的具体方法为：
+在使用 SPI AT 时，{IDF_TARGET_NAME} 设备上运行的 SPI slave 工作在半双工通信模式下。通常，在使用 SPI 协议进行半双工通信时，由 SPI master 启动对 SPI slave 的读/写操作，但是，使用 AT 命令进行数据交互时，需要 {IDF_TARGET_NAME} 设备主动能够主动上报一些信息。因此，我们在 SPI master 和 slave 之间添加了一个握手线，来实现 slave 主动向 master 上报信息的功能。使用握手线的具体方法为：
 
 - Master 向 slave 发送 AT 数据时，使用握手线的方法为：
 
@@ -239,7 +235,7 @@ SPI AT 数据交互流程主要分为两个方面：
 SPI AT Master 示例代码
 ^^^^^^^^^^^^^^^^^^^^^^
 
-使用 SPI master 与 ESP 设备运行的 SPI slave 进行通信的示例代码请参考 :example:` AT ESP32 SPI Master 例程 <at_spi_master/spi/esp32_c_series>`。
+使用 SPI master 与 {IDF_TARGET_NAME} 设备运行的 SPI slave 进行通信的示例代码请参考 :example:` AT ESP32 SPI Master 例程 <at_spi_master/spi/esp32_c_series>`。
 
 SPI AT 速率
 --------------
@@ -253,7 +249,7 @@ SPI AT 速率
 
 2. 软件：基于 ESP-IDF v4.3 的编译环境，并将示例代码中的 streambuffer 的大小调整为 8192 字节。
 
-- 使用 ESP32-C3 作为 SPI slave，编译并烧录 SPI AT 固件（参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`），并将 ESP32-C3 配置工作在 TCP 透传模式。其软硬件配置如下：
+- 使用 {IDF_TARGET_NAME} 作为 SPI slave，编译并烧录 SPI AT 固件（参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`），并将 {IDF_TARGET_NAME} 配置工作在 TCP 透传模式。其软硬件配置如下：
 
 1. 硬件：CPU 工作频率设置为 160 MHz。
 

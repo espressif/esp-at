@@ -137,7 +137,7 @@ Bluetooth® Low Energy AT 命令集
 -  使用相关命令之前，请先下载 "at_customize.bin" 文件，详情请见 :doc:`../Compile_and_Develop/How_to_customize_BLE_services`。
 -  使用其它 Bluetooth LE 命令之前，请先调用本命令，初始化 Bluetooth LE 角色。
 -  Bluetooth LE 角色初始化后，不能直接切换。如需切换角色，需要先调用 :ref:`AT+RST <cmd-RST>` 命令重启系统，再重新初始化 Bluetooth LE 角色。
--  若使用 ESP 作为 Bluetooth LE server，需烧录 service bin 到 flash：
+-  若使用 {IDF_TARGET_NAME} 作为 Bluetooth LE server，需烧录 service bin 到 flash：
 
    -  对于如何生成 service bin 文件，请参考 esp-at/tools/readme.md；
    -  service bin 文件的烧录地址，请见 esp-at/module_config/module_${platform}_default/at_customize.csv 文件中 "ble_data" 对应的地址。
@@ -1150,7 +1150,7 @@ GATTS (Generic Attributes Server) 创建 Bluetooth LE 服务
 说明
 ^^^^
 
--  使用 ESP 作为 Bluetooth LE server 创建服务，需烧录 service bin 文件到 flash 中。
+-  使用 {IDF_TARGET_NAME} 作为 Bluetooth LE server 创建服务，需烧录 service bin 文件到 flash 中。
 
    -  如何生成 service bin 文件，请参考 esp-at/tools/readme.md。
    -  service bin 文件的烧录地址为 esp-at/module_config/module_${platform}_default/at_customize.csv 文件中的 "ble_data" 地址。
@@ -2107,7 +2107,7 @@ GATTC 写服务特征值或描述符值
    AT+BLESECPARAM=1,0,16,3,3
    AT+BLESETKEY=123456
    AT+BLEADVSTART
-   // 使用 Bluetooth LE 调试 app 作为 client 与 ESP 设备建立 Bluetooth LE 连接
+   // 使用 Bluetooth LE 调试 app 作为 client 与 {IDF_TARGET_NAME} 设备建立 Bluetooth LE 连接
    AT+BLEENC=0,3
 
 .. _cmd-BLEENCRSP:

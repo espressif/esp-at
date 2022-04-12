@@ -15,9 +15,9 @@ What You Need
 
    * - Component
      - Function
-   * - ESP board
+   * - {IDF_TARGET_NAME} board
      - Slave MCU.
-   * - USB cable (ESP borad to PC)
+   * - USB cable ({IDF_TARGET_NAME} borad to PC)
      - Download/Log output connection.
    * - PC
      - Act as Host MCU. Download firmware to Slave MCU.
@@ -25,7 +25,7 @@ What You Need
      - AT command/response connection.
    * - USB to serial port converter
      - Convert between USB signals and TTL signals.
-   * - Jumper wires (serial port converter to ESP board)
+   * - Jumper wires (serial port converter to {IDF_TARGET_NAME} board)
      - AT command/response connection.
 
 .. figure:: ../../_static/hw-connection-what-you-need.png
@@ -35,7 +35,7 @@ What You Need
 
    Connection of Components for ESP-AT Testing
 
-Please note that in the above picture, four jump wires are used to connect the ESP board and USB to serial converter. If you don't use hardware flow control, two wires connecting TX/RX and a simpler converter will be enough.
+Please note that in the above picture, four jump wires are used to connect the {IDF_TARGET_NAME} board and USB to serial converter. If you don't use hardware flow control, two wires connecting TX/RX and a simpler converter will be enough.
 
 .. only:: esp32
 
@@ -55,7 +55,7 @@ Please note that in the above picture, four jump wires are used to connect the E
     :header-rows: 1
 
     * - Function of Connection
-      - ESP Board Pins
+      - {IDF_TARGET_NAME} Board Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -76,7 +76,7 @@ Please note that in the above picture, four jump wires are used to connect the E
           * RTS
           * CTS
 
-  **Note** 1: Connection between individual pins of the ESP board and the PC is already established internally on the ESP board. You only need to provide USB cable between the board and PC.
+  **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
   **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
 
@@ -87,7 +87,7 @@ Please note that in the above picture, four jump wires are used to connect the E
 
     ESP32-WROOM-32 Series Hardware Connection
 
-  If you want to connect your device directly with ESP32-WROOM-32 rather than the ESP board that integrates it, please refer to `ESP32-WROOM-32 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf>`_ for more details.
+  If you want to connect your device directly with ESP32-WROOM-32 rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-WROOM-32 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf>`_ for more details.
 
   .. _hw-connection-esp32-wrover-series:
 
@@ -97,7 +97,7 @@ Please note that in the above picture, four jump wires are used to connect the E
     :header-rows: 1
 
     * - Function of Connection
-      - ESP Board Pins
+      - {IDF_TARGET_NAME} Board Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -118,7 +118,7 @@ Please note that in the above picture, four jump wires are used to connect the E
           * RTS
           * CTS
 
-  **Note** 1: Connection between individual pins of the ESP board and the PC is already established internally on the ESP board. You only need to provide USB cable between the board and PC.
+  **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
   **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
 
@@ -129,7 +129,7 @@ Please note that in the above picture, four jump wires are used to connect the E
 
     ESP32-WROVER Series Hardware Connection
 
-  If you want to connect your device directly with ESP32-WROVER rather than the ESP board that integrates it, please refer to `ESP32-WROVER Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-wrover_datasheet_en.pdf>`_ for more details.
+  If you want to connect your device directly with ESP32-WROVER rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-WROVER Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-wrover_datasheet_en.pdf>`_ for more details.
 
   ESP32-PICO Series
   ^^^^^^^^^^^^^^^^^^
@@ -138,7 +138,7 @@ Please note that in the above picture, four jump wires are used to connect the E
     :header-rows: 1
 
     * - Function of Connection
-      - ESP Board Pins
+      - {IDF_TARGET_NAME} Board Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -159,7 +159,7 @@ Please note that in the above picture, four jump wires are used to connect the E
           * RTS
           * CTS
 
-  **Note** 1: Connection between individual pins of the ESP board and the PC is already established internally on the ESP board. You only need to provide USB cable between the board and PC.
+  **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
   **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
 
@@ -170,7 +170,7 @@ Please note that in the above picture, four jump wires are used to connect the E
 
     ESP32-PICO Series Hardware Connection
 
-  If you want to connect your device directly with ESP32-PICO-D4 rather than the ESP board that integrates it, please refer to `ESP32-PICO-D4 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-pico-d4_datasheet_en.pdf>`_ for more details.
+  If you want to connect your device directly with ESP32-PICO-D4 rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-PICO-D4 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-pico-d4_datasheet_en.pdf>`_ for more details.
 
   ESP32-SOLO Series
   ^^^^^^^^^^^^^^^^^^
@@ -179,7 +179,7 @@ Please note that in the above picture, four jump wires are used to connect the E
     :header-rows: 1
 
     * - Function of Connection
-      - ESP Board Pins
+      - {IDF_TARGET_NAME} Board Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -200,7 +200,7 @@ Please note that in the above picture, four jump wires are used to connect the E
           * RTS
           * CTS
 
-  **Note** 1: Connection between individual pins of the ESP board and the PC is already established internally on the ESP board. You only need to provide USB cable between the board and PC.
+  **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
   **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
 
@@ -211,7 +211,7 @@ Please note that in the above picture, four jump wires are used to connect the E
 
     ESP32-SOLO Series Hardware Connection
 
-  If you want to connect your device directly with ESP32-SOLO-1 rather than the ESP board that integrates it, please refer to `ESP32-SOLO-1 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-solo-1_datasheet_en.pdf>`_ for more details.
+  If you want to connect your device directly with ESP32-SOLO-1 rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-SOLO-1 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-solo-1_datasheet_en.pdf>`_ for more details.
 
 .. only:: esp32c3
 
@@ -224,7 +224,7 @@ Please note that in the above picture, four jump wires are used to connect the E
     :header-rows: 1
 
     * - Function of Connection
-      - ESP Board Pins
+      - {IDF_TARGET_NAME} Board Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -245,7 +245,7 @@ Please note that in the above picture, four jump wires are used to connect the E
           * RTS
           * CTS
 
-  **Note** 1: Connection between individual pins of the ESP board and the PC is already established internally on the ESP board. You only need to provide USB cable between the board and PC.
+  **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
   **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
 
@@ -256,4 +256,4 @@ Please note that in the above picture, four jump wires are used to connect the E
 
     {IDF_TARGET_NAME} Series Hardware Connection
 
-  If you want to connect your device directly with ESP32-C3-MINI-1 module rather than the ESP board that integrates it, please refer to `ESP32-C3-MINI-1 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-c3-mini-1_datasheet_en.pdf>`_ for more details.
+  If you want to connect your device directly with ESP32-C3-MINI-1 module rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-C3-MINI-1 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-c3-mini-1_datasheet_en.pdf>`_ for more details.

@@ -7,14 +7,10 @@ This document mainly introduces the implementation and use of SPI AT, mainly inv
    :local:
    :depth: 1
 
-.. note::
-
-   This document mainly introduces the implementation and use of SPI AT for ESP32-C and ESP32-S series. Due to hardware limit, it is not recommended to implement SPI AT on ESP32 series. Instead, use :example:`SDIO SPI AT <at_spi_master/sdspi/>` on ESP32 series.
-
 Overview
 --------------
 
-SPI AT is based on ESP-AT project and uses SPI protocol for data communication. When SPI AT is used, MCU works as SPI master and ESP AT device works as SPI slave. Both sides of communication exchange data based on AT command through SPI protocol.
+SPI AT is based on ESP-AT project and uses SPI protocol for data communication. When SPI AT is used, MCU works as SPI master and {IDF_TARGET_NAME} AT device works as SPI slave. Both sides of communication exchange data based on AT command through SPI protocol.
 
 Why SPI AT?
 ^^^^^^^^^^^^^^^^^^^
@@ -42,7 +38,7 @@ The following pin assignments are used by default:
    :header-rows: 1
 
    * - Signal
-     - GPIO Number (ESP32-C3)
+     - GPIO Number
    * - SCLK
      - 6
    * - MISO
@@ -67,7 +63,7 @@ You can change the default pin assignments by ``./build.py menuconfig`` > ``Comp
 How to Use SPI AT?
 -----------------------
 
-When SPI AT is used, ESP device works in SPI half-duplex mode as a slave. Usually, when SPI protocol works in half-duplex mode, it is the SPI master that starts the read/write operation. However, when AT command is used for data interaction, ESP device (slave) is required to actively report some information. Therefore, we add a handshake line between SPI master and slave to realize the purpose. The specific methods of using handshake line are as follows:
+When SPI AT is used, {IDF_TARGET_NAME} works in SPI half-duplex mode as a slave. Usually, when SPI protocol works in half-duplex mode, it is the SPI master that starts the read/write operation. However, when AT command is used for data interaction, {IDF_TARGET_NAME} (slave) is required to actively report some information. Therefore, we add a handshake line between SPI master and slave to realize the purpose. The specific methods of using handshake line are as follows:
 
 - When master sends AT commands to slave via SPI, the workflow with an extra handshake line is as follows:
 
@@ -253,7 +249,7 @@ Introduction of the Test
 
 2. Software configuration: The `ESP-IDF <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html>`_ version is v4.3. The size of streambuffer is 8192 bytes.
 
-- An ESP32-C3-DevKitC development board is been used as SPI slave. Please refer to :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` to build your own ESP-AT project and flash the generated binary files into the board. The board works in the TCP passthrough mode, and some related configurations are described below:
+- An {IDF_TARGET_NAME}-DevKitC development board is been used as SPI slave. Please refer to :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` to build your own ESP-AT project and flash the generated binary files into the board. The board works in the TCP passthrough mode, and some related configurations are described below:
 
 1. Hardware configuration: The frequency of CPU is 160 MHz.
 

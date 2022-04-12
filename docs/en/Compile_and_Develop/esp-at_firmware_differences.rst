@@ -5,7 +5,7 @@ ESP-AT Firmware Differences
 
 :link_to_translation:`zh_CN:[中文]` 
 
-This document compares the differences among AT firmwares of a certain ESP series in terms of the supported commands set, hardware, and supported modules.
+This document compares the differences among AT firmwares of a certain {IDF_TARGET_NAME} series in terms of the supported commands set, hardware, and supported modules.
 
 {IDF_TARGET_NAME} Series
 ------------------------
@@ -370,7 +370,7 @@ Hardware Differences
 Supported Modules
 ^^^^^^^^^^^^^^^^^
 
-The table lists the ESP modules or chips that each AT firmware supports.
+The table lists the {IDF_TARGET_NAME} modules or chips that each AT firmware supports.
 
 .. only:: esp32
 

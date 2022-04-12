@@ -8,8 +8,8 @@
 :link_to_translation:`en:[English]`
 
 - :ref:`准备工作 <cmd-ETHPRE>`
-- :ref:`AT+CIPETHMAC <cmd-ETHMAC>`：查询/设置 ESP 以太网的 MAC 地址
-- :ref:`AT+CIPETH <cmd-ETHIP>`：查询/设置 ESP 以太网的 IP 地址
+- :ref:`AT+CIPETHMAC <cmd-ETHMAC>`：查询/设置 {IDF_TARGET_NAME} 以太网的 MAC 地址
+- :ref:`AT+CIPETH <cmd-ETHIP>`：查询/设置 {IDF_TARGET_NAME} 以太网的 IP 地址
 
 .. _cmd-ETHPRE:
 
@@ -36,14 +36,14 @@
 
 .. _cmd-ETHMAC:
 
-:ref:`AT+CIPETHMAC <ETH-AT>`：查询/设置 ESP 以太网的 MAC 地址
+:ref:`AT+CIPETHMAC <ETH-AT>`：查询/设置 {IDF_TARGET_NAME} 以太网的 MAC 地址
 --------------------------------------------------------------------------------------------
 
 查询命令
 ^^^^^^^^
 **功能：**
 
-查询 ESP 以太网的 MAC 地址
+查询 {IDF_TARGET_NAME} 以太网的 MAC 地址
 
 **命令：**
 
@@ -63,7 +63,7 @@
 
 **功能：**
 
-设置 ESP 以太网的 MAC 地址
+设置 {IDF_TARGET_NAME} 以太网的 MAC 地址
 
 **命令：**
 
@@ -88,7 +88,7 @@
 -  固件默认不支持以太网 AT 命令 (详情请见 :doc:`../Compile_and_Develop/esp-at_firmware_differences`)，但是可通过以下方式使其支持该命令：``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT ethernet support``，然后编译工程（详情请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 区。
 -  以太网接口的 MAC 地址不能与其他接口的相同。
--  ESP MAC 地址的 bit0 不能设为 1。例如，可设为 "1a:…"，但不可设为 "15:…"。
+-  {IDF_TARGET_NAME} MAC 地址的 bit0 不能设为 1。例如，可设为 "1a:…"，但不可设为 "15:…"。
 -  ``FF:FF:FF:FF:FF:FF`` 和 ``00:00:00:00:00:00`` 为无效 MAC 地址，不能设置。
 
 示例
@@ -100,7 +100,7 @@
 
 .. _cmd-ETHIP:
 
-:ref:`AT+CIPETH <ETH-AT>`：查询/设置 ESP 以太网的 IP 地址
+:ref:`AT+CIPETH <ETH-AT>`：查询/设置 {IDF_TARGET_NAME} 以太网的 IP 地址
 -------------------------------------------------------------------------------------------
 
 查询命令
@@ -108,7 +108,7 @@
 
 **功能：**
 
-查询 ESP 以太网的 IP 地址
+查询 {IDF_TARGET_NAME} 以太网的 IP 地址
 
 **命令：**
 
@@ -130,7 +130,7 @@
 
 **功能：**
 
-设置 ESP 以太网的 IP 地址
+设置 {IDF_TARGET_NAME} 以太网的 IP 地址
 
 **命令：**
 
@@ -147,7 +147,7 @@
 参数
 ^^^^
 
--  **<ip>**：字符串参数，表示 ESP 以太网的 IP 地址。
+-  **<ip>**：字符串参数，表示 {IDF_TARGET_NAME} 以太网的 IP 地址。
 -  **[<gateway>]**：网关。
 -  **[<netmask>]**：网络掩码。
 

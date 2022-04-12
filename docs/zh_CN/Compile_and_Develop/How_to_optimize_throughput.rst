@@ -19,7 +19,7 @@
 
 **1. 配置系统、LWIP、Wi-Fi 适用于高吞吐的参数**
 
-  将下面代码段拷贝并追加至 :project_file:`module_config/module_{IDF_TARGET_PATH_NAME}_default/sdkconfig.defaults` 文件最后，其它 ESP 系列设备请修改对应文件夹下的 sdkconfig.defaults 文件。
+  将下面代码段拷贝并追加至 :project_file:`module_config/module_{IDF_TARGET_PATH_NAME}_default/sdkconfig.defaults` 文件最后，其它 {IDF_TARGET_NAME} 系列设备请修改对应文件夹下的 sdkconfig.defaults 文件。
 
   ::
 
@@ -164,7 +164,6 @@
 
     .. only:: esp32
 
-      - SPI： :doc:`SPI AT 指南 </Compile_and_Develop/How_to_implement_SPI_AT>`
       - SDIO： :doc:`SDIO AT 指南 </Compile_and_Develop/esp32-sdio-at-guide>`
       - Socket： :project_file:`Socket AT 指南 <main/interface/socket/README.md>`
 

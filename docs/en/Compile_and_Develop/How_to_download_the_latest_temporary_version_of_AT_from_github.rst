@@ -5,12 +5,18 @@ How to Download the Latest Temporary Version of AT Firmware from GitHub
 
 As ESP-AT enables CI (Continuous Integration) on GitHub, temporary versions of ESP-AT firmware is generated every time when the code is pushed to GitHub.
 
-.. note::
-  **The temporary version of AT firmware is only for testing, and Espressif is not responsible for it**. You need to test and save the firmware by yourself.
+.. attention::
+  **The temporary version of AT firmware is only for testing, and Espressif is not responsible for it**. You need to test functions what you need by yourself.
+  
+  **Please save the firmware and download link**, for possible issue location in your follow-ups.
 
-The following steps guide you on how to download the latest temporary version of AT firmware from GitHub. Before you start, please sign in your GitHub account, as you need login permission to download firmware. 
+The following steps guide you on how to download the latest temporary version of AT firmware from GitHub.
 
-1. Open the website https://github.com/espressif/esp-at.
+#. Sign in your GitHub account
+
+   Before you start, **please sign in your GitHub account**, as you need login permission to download firmware. 
+
+#. Open the website https://github.com/espressif/esp-at
 
    .. figure:: ../../_static/download_temp_version/download-temp-version-github.png
     :align: center
@@ -19,7 +25,7 @@ The following steps guide you on how to download the latest temporary version of
 
     ESP-AT GitHub Home Page
 
-2. Click "Actions" to enter the "Actions" page.
+#. Click "Actions" to enter the "Actions" page
 
    .. figure:: ../../_static/download_temp_version/download-temp-version-click-actions.png
     :align: center
@@ -35,7 +41,18 @@ The following steps guide you on how to download the latest temporary version of
 
     Actions Page
 
-3. Click the latest workflow and enter the latest workflow page.
+#. Click the branch and choose the specified branch
+
+   Default branch is master. If you want to download the temporary firmware of the specified branch, click "Branch" to enter the workflow page of the specified branch.
+
+   .. figure:: ../../_static/download_temp_version/download-temp-version-click-branch-workflow.png
+    :align: center
+    :figclass: align-center
+    :alt: Click the Branch
+
+    Click the Branch
+
+#. Click the latest workflow and enter the latest workflow page
 
    .. figure:: ../../_static/download_temp_version/download-temp-version-click-workflow.png
     :align: center
@@ -51,16 +68,7 @@ The following steps guide you on how to download the latest temporary version of
 
     Latest Workflow Page
 
-   If you want to download the temporary firmware of the specified branch, click "Branch" to enter the workflow page of the specified branch.
-
-   .. figure:: ../../_static/download_temp_version/download-temp-version-click-branch-workflow.png
-    :align: center
-    :figclass: align-center
-    :alt: Click the Branch
-
-    Click the Branch
-
-4. Scroll the page to the end, select the corresponding module on the ``Artifacts`` page.
+#. Scroll the page to the end, select the corresponding module on the ``Artifacts`` page
 
    .. figure:: ../../_static/download_temp_version/download-temp-version-artifacts.png
     :align: center
@@ -69,7 +77,7 @@ The following steps guide you on how to download the latest temporary version of
 
     Artifacts Page
 
-5. Click to download the temporary version of AT firmware for modules.
+#. Click to download the temporary version of AT firmware for modules
 
-.. note::
-  If you do not find the firmware of the corresponding module on the ``Artifacts`` page, you can refer to :doc:`esp-at_firmware_differences` to select a similar firmware to download.
+   .. note::
+    If you do not find the firmware of the corresponding module on the ``Artifacts`` page, you can refer to :doc:`esp-at_firmware_differences` to select a similar firmware to download.

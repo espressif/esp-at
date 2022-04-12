@@ -3,7 +3,7 @@
 
 :link_to_translation:`en:[English]`
 
-本文档介绍了如何利用 ESP-AT 提供的低功耗蓝牙服务源文件在 ESP 设备上自定义低功耗蓝牙服务。
+本文档介绍了如何利用 ESP-AT 提供的低功耗蓝牙服务源文件在 {IDF_TARGET_NAME} 设备上自定义低功耗蓝牙服务。
 
 .. contents::
    :local:
@@ -113,7 +113,7 @@
 
 有关 UUID 的更多信息请参考 `蓝牙技术联盟分配符 <https://www.bluetooth.com/specifications/assigned-numbers/>`_。
 
-如果直接在 ESP 设备上使用默认源文件，不做任何修改，并建立低功耗蓝牙连接，那么在客户端查询服务器服务后，会得到如下结果。
+如果直接在 {IDF_TARGET_NAME} 设备上使用默认源文件，不做任何修改，并建立低功耗蓝牙连接，那么在客户端查询服务器服务后，会得到如下结果。
 
 .. figure:: ../../_static/ble_default_service.png
     :scale: 100 %

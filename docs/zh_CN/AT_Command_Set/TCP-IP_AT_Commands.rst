@@ -35,12 +35,12 @@ TCP/IP AT 命令
 -  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`：查询/设置 SSL 客户端 ALPN
 -  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`：查询/设置 SSL 客户端的 PSK
 -  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`：查询/设置 Wi-Fi :term:`透传模式` 下的 TCP/UDP/SSL 重连间隔
--  :ref:`AT+CIPRECVMODE <cmd-CIPRECVMODE>`：查询/设置 socket 接收模式
--  :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`：获取被动接收模式下的 socket 数据
--  :ref:`AT+CIPRECVLEN <cmd-CIPRECVLEN>`：查询被动接收模式下 socket 数据的长度
+-  :ref:`AT+CIPRECVMODE <cmd-CIPRECVMODE>`：查询/设置套接字接收模式
+-  :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`：获取被动接收模式下的套接字数据
+-  :ref:`AT+CIPRECVLEN <cmd-CIPRECVLEN>`：查询被动接收模式下套接字数据的长度
 -  :ref:`AT+PING <cmd-CIPPING>`：ping 对端主机
 -  :ref:`AT+CIPDNS <cmd-DNS>`：查询/设置 DNS 服务器信息
--  :ref:`AT+CIPTCPOPT <cmd-TCPOPT>`：查询/设置 socket 选项
+-  :ref:`AT+CIPTCPOPT <cmd-TCPOPT>`：查询/设置套接字选项
 
 .. _cmd-IPV6:
 
@@ -137,11 +137,11 @@ TCP/IP AT 命令
 -  **<"type">**：字符串参数，表示传输类型："TCP"、"UDP"、"SSL"、"TCPv6"、"UDPv6" 或 "SSLv6"
 -  **<"remote IP">**：字符串参数，表示远端 IPv4 地址或 IPv6 地址
 -  **<remote port>**：远端端口值
--  **<local port>**：ESP 本地端口值
+-  **<local port>**：{IDF_TARGET_NAME} 本地端口值
 -  **<tetype>**:
 
-   -  0: ESP 设备作为客户端
-   -  1: ESP 设备作为服务器
+   -  0: {IDF_TARGET_NAME} 设备作为客户端
+   -  1: {IDF_TARGET_NAME} 设备作为服务器
 
 .. _cmd-STATUS:
 
@@ -168,24 +168,24 @@ TCP/IP AT 命令
 参数
 ^^^^
 
--  **<stat>**：ESP station 接⼝的状态
+-  **<stat>**：{IDF_TARGET_NAME} station 接⼝的状态
 
-   -  0: ESP station 为未初始化状态
-   -  1: ESP station 为已初始化状态，但还未开始 Wi-Fi 连接
-   -  2: ESP station 已连接 AP，获得 IP 地址
-   -  3: ESP station 已建立 TCP、UDP 或 SSL 传输
-   -  4: ESP 设备所有的 TCP、UDP 和 SSL 均断开
-   -  5: ESP station 开始过 Wi-Fi 连接，但尚未连接上 AP 或从 AP 断开
+   -  0: {IDF_TARGET_NAME} station 为未初始化状态
+   -  1: {IDF_TARGET_NAME} station 为已初始化状态，但还未开始 Wi-Fi 连接
+   -  2: {IDF_TARGET_NAME} station 已连接 AP，获得 IP 地址
+   -  3: {IDF_TARGET_NAME} station 已建立 TCP、UDP 或 SSL 传输
+   -  4: {IDF_TARGET_NAME} 设备所有的 TCP、UDP 和 SSL 均断开
+   -  5: {IDF_TARGET_NAME} station 开始过 Wi-Fi 连接，但尚未连接上 AP 或从 AP 断开
 
 -  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
 -  **<"type">**：字符串参数，表示传输类型："TCP"、"UDP"、"SSL"、"TCPv6"、"UDPv6" 或 "SSLv6"
 -  **<"remote IP">**：字符串参数，表示远端 IPv4 地址或 IPv6 地址
 -  **<remote port>**：远端端口值
--  **<local port>**：ESP 本地端口值
+-  **<local port>**：{IDF_TARGET_NAME} 本地端口值
 -  **<tetype>**:
 
-   -  0: ESP 设备作为客户端
-   -  1: ESP 设备作为服务器
+   -  0: {IDF_TARGET_NAME} 设备作为客户端
+   -  1: {IDF_TARGET_NAME} 设备作为服务器
 
 说明
 ^^^^
@@ -301,7 +301,7 @@ TCP/IP AT 命令
 """"""
 
 - 如果想基于 IPv6 网络建立 TCP 连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
-- ``<keep alive>`` 参数最终会配置到 socket 选项 ``TCP_KEEPIDLE``，keepalive 另外的　socket 选项 ``TCP_KEEPINTVL`` 默认会使用 ``1``，``TCP_KEEPCNT`` 默认会使用 ``3``
+- ``<keep alive>`` 参数最终会配置到套接字选项 ``TCP_KEEPIDLE``，keepalive 另外的套接字选项 ``TCP_KEEPINTVL`` 默认会使用 ``1``，``TCP_KEEPCNT`` 默认会使用 ``3``
 
 示例
 """"
@@ -359,7 +359,7 @@ TCP/IP AT 命令
 -  **<"type">**：字符串参数，表示网络连接类型，"UDP" 或 "UDPv6"。默认值："TCP"
 -  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：远端端口值
--  **<local port>**：ESP 设备的 UDP 端口值
+-  **<local port>**：{IDF_TARGET_NAME} 设备的 UDP 端口值
 -  **<mode>**：在 UDP Wi-Fi 透传下，本参数的值必须设为 0
 
    -  0: 接收到 UDP 数据后，不改变对端 UDP 地址信息（默认）
@@ -370,9 +370,9 @@ TCP/IP AT 命令
 
 说明
 """""
-- 如果 UDP 连接中的远端 IP 地址是 IPv4 组播地址 (224.0.0.0 ~ 239.255.255.255)，ESP 设备将发送和接收 UDPv4 组播
-- 如果 UDP 连接中的远端 IP 地址是 IPv4 广播地址 (255.255.255.255)，ESP 设备将发送和接收 UDPv4 广播
-- 如果 UDP 连接中的远端 IP 地址是 IPv6 组播地址 (FF00:0:0:0:0:0:0:0 ~ FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF)，ESP 设备将基于 IPv6 网络，发送和接收 UDP 组播
+- 如果 UDP 连接中的远端 IP 地址是 IPv4 组播地址 (224.0.0.0 ~ 239.255.255.255)，{IDF_TARGET_NAME} 设备将发送和接收 UDPv4 组播
+- 如果 UDP 连接中的远端 IP 地址是 IPv4 广播地址 (255.255.255.255)，{IDF_TARGET_NAME} 设备将发送和接收 UDPv4 广播
+- 如果 UDP 连接中的远端 IP 地址是 IPv6 组播地址 (FF00:0:0:0:0:0:0:0 ~ FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF)，{IDF_TARGET_NAME} 设备将基于 IPv6 网络，发送和接收 UDP 组播
 - 使用参数 ``<mode>`` 前，需先设置参数 ``<local port>``
 - 如果想基于 IPv6 网络建立 UDP 连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`, 再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
 
@@ -442,7 +442,7 @@ TCP/IP AT 命令
 - SSL 连接需占用大量内存，内存不足会导致系统重启
 - 如果 ``AT+CIPSTART`` 命令是基于 SSL 连接，且每个数据包的超时时间为 10 秒，则总超时时间会变得更长，具体取决于握手数据包的个数
 - 如果想基于 IPv6 网络建立 SSL 连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`, 再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
-- ``<keep alive>`` 参数最终会配置到 socket 选项 ``TCP_KEEPIDLE``，keepalive 另外的　socket 选项 ``TCP_KEEPINTVL`` 默认会使用 ``1``，``TCP_KEEPCNT`` 默认会使用 ``3``
+- ``<keep alive>`` 参数最终会配置到套接字选项 ``TCP_KEEPIDLE``，keepalive 另外的套接字选项 ``TCP_KEEPINTVL`` 默认会使用 ``1``，``TCP_KEEPCNT`` 默认会使用 ``3``
 
 示例
 """"""""
@@ -562,7 +562,7 @@ TCP/IP AT 命令
 
     ERROR
 
-进入 Wi-Fi :term:`透传模式`，ESP 设备每次最大接收 8192 字节，最大发送 2920 字节。如果当前接收的数据长度大于最大发送字节数，AT 将立即发送；否则，接收的数据将在 20 ms 内发送。当输入单独一包 :ref:`+++ <cmd-PLUS>` 时，退出 :term:`透传模式` 下的数据发送模式，请至少间隔 1 秒再发下一条 AT 命令。
+进入 Wi-Fi :term:`透传模式`，{IDF_TARGET_NAME} 设备每次最大接收 8192 字节，最大发送 2920 字节。如果当前接收的数据长度大于最大发送字节数，AT 将立即发送；否则，接收的数据将在 20 ms 内发送。当输入单独一包 :ref:`+++ <cmd-PLUS>` 时，退出 :term:`透传模式` 下的数据发送模式，请至少间隔 1 秒再发下一条 AT 命令。
 
 本命令必须在开启 :term:`透传模式` 以及单连接下使用。若为 Wi-Fi UDP 透传，:ref:`AT+CIPSTART <cmd-START>` 命令的参数 ``<mode>`` 必须设置为 0。
 
@@ -638,7 +638,7 @@ TCP/IP AT 命令
 
     SEND OK 
 
-当连接断开时，您可以发送 :ref:`+++ <cmd-PLUS>` 命令取消传输，同时 ESP 设备会从 :term:`数据模式` 退出。否则，AT 命令端口会一直接收数据，直到收到指定的 ``<length>`` 长度数据后，才会退出 :term:`数据模式`。
+当连接断开时，您可以发送 :ref:`+++ <cmd-PLUS>` 命令取消传输，同时 {IDF_TARGET_NAME} 设备会从 :term:`数据模式` 退出。否则，AT 命令端口会一直接收数据，直到收到指定的 ``<length>`` 长度数据后，才会退出 :term:`数据模式`。
 
 参数
 ^^^^
@@ -861,23 +861,23 @@ TCP/IP AT 命令
 参数
 ^^^^
 
-- **<"APIP">**: ESP SoftAP 的 IPv4 地址
-- **<"APIP6LL">**: ESP SoftAP 的 IPv6 本地链路地址
-- **<"APIP6GL">**: ESP SoftAP 的 IPv6 全局地址
-- **<"APMAC">**: ESP SoftAP 的 MAC 地址
-- **<"STAIP">**: ESP station 的 IPv4 地址
-- **<"STAIP6LL">**: ESP station 的 IPv6 本地链路地址
-- **<"STAIP6GL">**: ESP station 的 IPv6 全局地址
-- **<"STAMAC">**: ESP station 的 MAC 地址
-- **<"ETHIP">**: ESP ethernet 的 IPv4 地址
-- **<"ETHIP6LL">**: ESP ethernet 的 IPv6 本地链路地址
-- **<"ETHIP6GL">**: ESP ethernet 的 IPv6 全局地址
-- **<"ETHMAC">**: ESP ethernet 的 MAC 地址
+- **<"APIP">**: {IDF_TARGET_NAME} SoftAP 的 IPv4 地址
+- **<"APIP6LL">**: {IDF_TARGET_NAME} SoftAP 的 IPv6 本地链路地址
+- **<"APIP6GL">**: {IDF_TARGET_NAME} SoftAP 的 IPv6 全局地址
+- **<"APMAC">**: {IDF_TARGET_NAME} SoftAP 的 MAC 地址
+- **<"STAIP">**: {IDF_TARGET_NAME} station 的 IPv4 地址
+- **<"STAIP6LL">**: {IDF_TARGET_NAME} station 的 IPv6 本地链路地址
+- **<"STAIP6GL">**: {IDF_TARGET_NAME} station 的 IPv6 全局地址
+- **<"STAMAC">**: {IDF_TARGET_NAME} station 的 MAC 地址
+- **<"ETHIP">**: {IDF_TARGET_NAME} ethernet 的 IPv4 地址
+- **<"ETHIP6LL">**: {IDF_TARGET_NAME} ethernet 的 IPv6 本地链路地址
+- **<"ETHIP6GL">**: {IDF_TARGET_NAME} ethernet 的 IPv6 全局地址
+- **<"ETHMAC">**: {IDF_TARGET_NAME} ethernet 的 MAC 地址
 
 说明
 ^^^^
 
--  只有当 ESP 设备获取到有效接口信息后，才能查询到它的 IP 地址和 MAC 地址
+-  只有当 {IDF_TARGET_NAME} 设备获取到有效接口信息后，才能查询到它的 IP 地址和 MAC 地址
 
 .. _cmd-MUX:
 
@@ -1192,8 +1192,8 @@ TCP/IP AT 命令
 
 -  **<mode>**:
 
-   -  0: 关闭 ESP 上电进入 Wi-Fi :term:`透传模式`
-   -  1: 开启 ESP 上电进入 Wi-Fi :term:`透传模式`
+   -  0: 关闭 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
+   -  1: 开启 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
 
 -  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：远端端口值
@@ -1243,8 +1243,8 @@ TCP/IP AT 命令
 
 -  **<mode>**:
 
-   -  0: 关闭 ESP 上电进入 Wi-Fi :term:`透传模式`
-   -  1: 开启 ESP 上电进入 Wi-Fi :term:`透传模式`
+   -  0: 关闭 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
+   -  1: 开启 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
 
 -  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：远端端口值
@@ -1318,7 +1318,7 @@ TCP/IP AT 命令
 说明
 ^^^^
 
--  当 TCP/SSL 客户端在 ``<time>`` 时间内未发生数据通讯时，ESP 服务器会断开此连接。
+-  当 TCP/SSL 客户端在 ``<time>`` 时间内未发生数据通讯时，{IDF_TARGET_NAME} 服务器会断开此连接。
 -  如果设置参数 ``<time>`` 为 0，则连接永远不会超时，不建议这样设置。
 -  在设定的时间内，当客户端发起与服务器的通信时，计时器将重新计时。超时后，客户端被关闭。在设定的时间内，如果服务器发起与客户端的通信，计时器将不会重新计时。超时后，客户端被关闭。
 
@@ -1497,6 +1497,11 @@ TCP/IP AT 命令
 
 -  **<interval second>**：SNTP 时间同步间隔。单位：秒。范围：[15,4294967]。
 
+说明
+^^^^
+
+- 配置了时间同步间隔，意味着 {IDF_TARGET_NAME} 多久一次向 NTP 服务器获取新的时间。
+
 示例
 ^^^^
 
@@ -1523,7 +1528,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 **功能：**
 
-查询 ESP 设备的升级状态
+查询 {IDF_TARGET_NAME} 设备的升级状态
 
 **命令：**
 
@@ -1729,7 +1734,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 **功能：**
 
-查询 ESP 作为 SSL 客户端时每个连接的配置信息
+查询 {IDF_TARGET_NAME} 作为 SSL 客户端时每个连接的配置信息
 
 **命令：**
 
@@ -1781,7 +1786,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 ^^^^
 
 -  如果想要本配置立即生效，请在建立 SSL 连接前运行本命令。
--  配置更改将保存在 NVS 区，如果您使用 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 命令设置开机进入 Wi-Fi SSL :term:`透传模式`，ESP 将在下次上电时基于本配置建立 SSL 连接。
+-  配置更改将保存在 NVS 区，如果您使用 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 命令设置开机进入 Wi-Fi SSL :term:`透传模式`，{IDF_TARGET_NAME} 将在下次上电时基于本配置建立 SSL 连接。
 
 .. _cmd-SSLCCN:
 
@@ -1903,7 +1908,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 **功能：**
 
-查询 ESP 作为 SSL 客户端时每个连接的 ALPN 配置
+查询 {IDF_TARGET_NAME} 作为 SSL 客户端时每个连接的 ALPN 配置
 
 **命令：**
 
@@ -1964,7 +1969,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 **功能：**
 
-查询 ESP 作为 SSL 客户端时每个连接的 PSK 配置
+查询 {IDF_TARGET_NAME} 作为 SSL 客户端时每个连接的 PSK 配置
 
 **命令：**
 
@@ -2072,7 +2077,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 .. _cmd-CIPRECVMODE:
 
-:ref:`AT+CIPRECVMODE <TCPIP-AT>`：查询/设置 socket 接收模式
+:ref:`AT+CIPRECVMODE <TCPIP-AT>`：查询/设置套接字接收模式
 -----------------------------------------------------------------
 
 查询命令
@@ -2080,7 +2085,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 **功能：**
 
-查询 socket 接收模式
+查询套接字接收模式
 
 **命令：**
 
@@ -2113,24 +2118,24 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 参数
 ^^^^
 
-- **<mode>**：socket 数据接收模式，默认值：0。
+- **<mode>**：套接字数据接收模式，默认值：0。
    
-   - 0: 主动模式，ESP-AT 将所有接收到的 socket 数据立即发送给主机 MCU，头为 "+IPD"。
-   - 1: 被动模式，ESP-AT 将所有接收到的 socket 数据保存到内部缓存区 (socket 接收窗口，默认值为 5760 字节），等待 MCU 读取。对于 TCP 和 SSL 连接，如果缓存区满了，将阻止 socket 传输；对于 UDP 传输，如果缓存区满了，则会发生数据丢失。
+   - 0: 主动模式，ESP-AT 将所有接收到的套接字数据立即发送给主机 MCU，头为 "+IPD"。
+   - 1: 被动模式，ESP-AT 将所有接收到的套接字数据保存到内部缓存区（套接字接收窗口，默认值为 5760 字节），等待 MCU 读取。对于 TCP 和 SSL 连接，如果缓存区满了，将阻止套接字传输；对于 UDP 传输，如果缓存区满了，则会发生数据丢失。
 
 说明
 ^^^^
 
 -  该配置不能用于 Wi-Fi :term:`透传模式`。
 
--  当 ESP-AT 在被动模式下收到 socket 数据时，会根据情况的不同提示不同的信息：
+-  当 ESP-AT 在被动模式下收到套接字数据时，会根据情况的不同提示不同的信息：
 
    -  多连接时 (AT+CIPMUX=1)，提示 ``+IPD,<link ID>,<len>``；
    -  单连接时 (AT+CIPMUX=0)，提示 ``+IPD,<len>``。
 
--  ``<len>`` 表示缓存区中 socket 数据的总长度。
+-  ``<len>`` 表示缓存区中套接字数据的总长度。
 -  一旦有 ``+IPD`` 报出，应该运行 :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` 来读取数据。否则，在前一个 ``+IPD`` 被读取之前，下一个 ``+IPD`` 将不会被报告给主机 MCU。
--  在断开连接的情况下，缓冲的 socket 数据仍然存在，MCU 仍然可以读取，直到发送 :ref:`AT+CIPCLOSE <cmd-CLOSE>` （AT 作为客户端）或 :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` （AT 作为服务器）。换句话说，如果 ``+IPD`` 已经被报告，那么在你发送 :ref:`AT+CIPCLOSE <cmd-CLOSE>` 或发送 :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` 或通过 :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` 命令读取所有数据之前，这个连接的 ``CLOSED`` 信息永远不会出现。
+-  在断开连接的情况下，缓冲的套接字数据仍然存在，MCU 仍然可以读取，直到发送 :ref:`AT+CIPCLOSE <cmd-CLOSE>` （AT 作为客户端）或 :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` （AT 作为服务器）。换句话说，如果 ``+IPD`` 已经被报告，那么在你发送 :ref:`AT+CIPCLOSE <cmd-CLOSE>` 或发送 :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` 或通过 :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` 命令读取所有数据之前，这个连接的 ``CLOSED`` 信息永远不会出现。
 
 示例
 ^^^^
@@ -2141,7 +2146,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 .. _cmd-CIPRECVDATA:
 
-:ref:`AT+CIPRECVDATA <TCPIP-AT>`：获取被动接收模式下的 socket 数据
+:ref:`AT+CIPRECVDATA <TCPIP-AT>`：获取被动接收模式下的套接字数据
 -------------------------------------------------------------------------------
 
 设置命令
@@ -2195,7 +2200,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 .. _cmd-CIPRECVLEN:
 
-:ref:`AT+CIPRECVLEN <TCPIP-AT>`：查询被动接收模式下 socket 数据的长度
+:ref:`AT+CIPRECVLEN <TCPIP-AT>`：查询被动接收模式下套接字数据的长度
 -------------------------------------------------------------------------------------
 
 查询命令
@@ -2349,7 +2354,7 @@ ping 对端主机
 
 -  **<enable>**：设置 DNS 服务器
 
-   -  0: 启用自动获取 DNS 服务器设置，DNS 服务器将会恢复为 ``208.67.222.222`` 和 ``8.8.8.8``，只有当 ESP station 完成了 DHCP 过程，DNS 服务器才有可能会更新。
+   -  0: 启用自动获取 DNS 服务器设置，DNS 服务器将会恢复为 ``208.67.222.222`` 和 ``8.8.8.8``，只有当 {IDF_TARGET_NAME} station 完成了 DHCP 过程，DNS 服务器才有可能会更新。
    -  1: 启用手动设置 DNS 服务器信息，如果不设置参数 ``<DNS IPx>`` 的值，则使用默认值 ``208.67.222.222`` 和 ``8.8.8.8``。
 
 -  **<DNS IP1>**：第一个 DNS 服务器 IP 地址，对于设置命令，只有当 <enable> 参数为 1 时，也就是启用手动 DNS 设置，本参数才有效；如果设置 <enable> 为 1，并为本参数设置一个值，当您运行查询命令时，ESP-AT 将把该参数作为当前的 DNS 设置返回。
@@ -2361,7 +2366,7 @@ ping 对端主机
 
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 区。
 -  这三个参数不能设置在同一个服务器上。
--  当 ``<enable>`` 为 0 时，DNS 服务器可能会根据 ESP 设备所连接的路由器的配置而改变。
+-  当 ``<enable>`` 为 0 时，DNS 服务器可能会根据 {IDF_TARGET_NAME} 设备所连接的路由器的配置而改变。
 
 示例
 ^^^^
@@ -2378,7 +2383,7 @@ ping 对端主机
 
 .. _cmd-TCPOPT:
 
-:ref:`AT+CIPTCPOPT <TCPIP-AT>`：查询/设置 socket 选项
+:ref:`AT+CIPTCPOPT <TCPIP-AT>`：查询/设置套接字选项
 ---------------------------------------------------------------------
 
 查询命令
@@ -2386,7 +2391,7 @@ ping 对端主机
 
 **功能：**
 
-查询当前 socket 选项
+查询当前套接字选项
 
 **命令：**
 
@@ -2430,15 +2435,23 @@ ping 对端主机
 ^^^^
 
 -  **<link_id>**：网络连接 ID (0 ~ max)，在多连接的情况下，若参数值设为 max，则表示所有连接；本参数默认值为 5。
--  **<so_linger>**：配置 socket 的 ``SO_LINGER`` 选项，单位：秒，默认值：-1。
+-  **<so_linger>**：配置套接字的 ``SO_LINGER`` 选项（参考：`SO_LINGER 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_LINGER>`_），单位：秒，默认值：-1。
 
    -  = -1: 关闭；
    -  = 0: 开启，linger time = 0；
    -  > 0: 开启，linger time = <so_linger>；
 
--  **<tcp_nodelay>**：配置 socket 的 ``TCP_NODELAY`` 选项，默认值：0。
+-  **<tcp_nodelay>**：配置套接字的 ``TCP_NODELAY`` 选项（参考：`TCP_NODELAY 介绍 <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_NODELAY>`_），默认值：0。
 
    -  0: 禁用 TCP_NODELAY
    -  1: 启用 TCP_NODELAY
 
--  **<so_sndtimeo>**：配置 socket 的 ``SO_SNDTIMEO`` 选项，单位：毫秒，默认值：0。
+-  **<so_sndtimeo>**：配置套接字的 ``SO_SNDTIMEO`` 选项（参考：`SO_SNDTIMEO 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_SNDTIMEO>`_），单位：毫秒，默认值：0。
+
+说明
+^^^^
+
+-  在配置套接字选项前，**请充分了解该选项功能，以及配置后可能的影响**。
+-  SO_LINGER 选项不建议配置较大的值。例如配置 SO_LINGER 值为 60，则 :ref:`AT+CIPCLOSE <cmd-CLOSE>` 命令在收不到对端 TCP FIN 包情况下，会导致 AT 阻塞 60 秒，从而无法响应其它命令。因此，SO_LINGER 建议保持默认值。
+-  TCP_NODELAY 选项适用于吞吐量小但对实时性要求高的场景。开启后，:term:`LwIP` 会加快 TCP 的发送，但如果网络环境较差，会由于重传而导致吞吐降低。因此，TCP_NODELAY 建议保持默认值。
+-  SO_SNDTIMEO 选项适用于 :ref:`AT+CIPSTART <cmd-START>` 命令未配置 keepalive 参数的应用场景。配置本选项后，:ref:`AT+CIPSEND <cmd-SEND>`、:ref:`AT+CIPSENDL <cmd-SENDL>`、:ref:`AT+CIPSENDEX <cmd-SENDEX>` 命令将会在该超时内退出，无论是否发送成功。这里，SO_SNDTIMEO 建议配置为 5 ~ 10 秒。

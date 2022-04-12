@@ -7,7 +7,7 @@
 
 本文档介绍了如何修改 {IDF_TARGET_NAME} 系列固件中的 :term:`AT port` 管脚。默认情况下，ESP-AT 使用两个 UART 接口作为 AT 端口：一个用于输出日志（以下称为日志端口），另一个用于发送 AT 命令和接收响应（以下称为命令端口）。
 
-要修改 ESP 设备的 AT 端口管脚，应该：
+要修改 {IDF_TARGET_NAME} 设备的 AT 端口管脚，应该：
 
 - :doc:`克隆 ESP-AT 工程 <How_to_clone_project_and_compile_it>`。
 - 在 menuconfig 配置工具或 factory_param_data.csv 表格中修改对应管脚。

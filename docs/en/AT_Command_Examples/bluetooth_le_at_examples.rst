@@ -3,7 +3,7 @@ Bluetooth LE AT Examples
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document provides an introduction and detailed command examples to illustrate how to utilize :doc:`../AT_Command_Set/BLE_AT_Commands` on ESP devices.
+This document provides an introduction and detailed command examples to illustrate how to utilize :doc:`../AT_Command_Set/BLE_AT_Commands` on {IDF_TARGET_NAME}.
 
 .. contents::
    :local:
@@ -231,7 +231,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Note:
 
-   - When entering the above command, replace the address with your ESP Bluetooth LE server address.
+   - When entering the above command, replace the address with your {IDF_TARGET_NAME} Bluetooth LE server address.
    - If the Bluetooth LE connection is established successfully, message ``+BLECONN:0,"24:0a:c4:d6:e4:46`` will be prompted.
    - If the Bluetooth LE connection is broken, message ``+BLECONN:0,-1`` will be prompted.
 
@@ -588,7 +588,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Note:
 
-   - When entering the above command, replace the address with your ESP Bluetooth LE server address.
+   - When entering the above command, replace the address with your {IDF_TARGET_NAME} Bluetooth LE server address.
    - If the Bluetooth LE connection is established successfully, message ``+BLECONN:0,"24:0a:c4:d6:e4:46`` will be prompted.
    - If the Bluetooth LE connection is broken, message ``+BLECONN:0,-1`` will be prompted.
 
@@ -610,7 +610,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Note:
 
-   - When entering the above command, replace the address with your ESP Bluetooth LE server address.
+   - When entering the above command, replace the address with your {IDF_TARGET_NAME} Bluetooth LE server address.
    - If the Bluetooth LE connection is established successfully, the message ``OK`` will be prompted and the message ``+BLECONN:0,"24:0a:c4:03:a7:4e`` will not be prompted.
    - If the Bluetooth LE connection is broken, the message ``ERROR`` will be prompted and the message ``+BLECONN:0,-1`` will not be prompted.
 
@@ -1003,7 +1003,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Note:
 
-   - When entering the above command, replace the address with your ESP Bluetooth LE server address.
+   - When entering the above command, replace the address with your {IDF_TARGET_NAME} Bluetooth LE server address.
    - If the Bluetooth LE connection is established successfully, message ``+BLECONN:0,"24:0a:c4:d6:e4:46`` will be prompted.
    - If the Bluetooth LE connection is broken, message ``+BLECONN:0,-1`` will be prompted.
 
@@ -1326,7 +1326,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Note:
 
-   - When entering the above command, replace the address your ESP Bluetooth LE server address.
+   - When entering the above command, replace the address your {IDF_TARGET_NAME} Bluetooth LE server address.
    - If the Bluetooth LE connection is established successfully, message ``+BLECONN:0,"24:0a:c4:d6:e4:46`` will be prompted.
    - If the Bluetooth LE connection is broken, message ``+BLECONN:0,-1`` will be prompted.
 

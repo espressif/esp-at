@@ -28,7 +28,8 @@ ESP32_DOCS = ['AT_Binary_Lists/ESP32_AT_binaries.rst',
               'Compile_and_Develop/how_to_enable_at_classic_bluetooth.rst',
               'Compile_and_Develop/How_to_enable_ESP_AT_Ethernet.rst']
 
-ESP32C3_DOCS = ['AT_Binary_Lists/ESP32-C3_AT_binaries.rst']
+ESP32C3_DOCS = ['AT_Binary_Lists/ESP32-C3_AT_binaries.rst',
+                'Compile_and_Develop/How_to_implement_SPI_AT.rst']
 
 # reserved item
 ESP8266_DOCS = []

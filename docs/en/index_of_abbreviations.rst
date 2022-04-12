@@ -155,6 +155,11 @@ Index of Abbreviations
     
       因特网控制报文协议
     
+    LwIP
+      A Lightweight TCP/IP stack
+
+      一个轻量级的 TCP/IP 协议栈
+
     LWT
       Last Will and Testament
     
@@ -190,7 +195,7 @@ Index of Abbreviations
 
       In normal transmission mode, users can send AT commands. For examples, users can send MCU data received by AT command port to the opposite end of transmission by :ref:`AT+CIPSEND <cmd-SEND>`; and the data received from the opposite end of transmission will also be returned to MCU through AT command port with additional prompt: `+IPD`.
 
-      During a normal transmission, if the connection breaks, ESP devices will give a prompt and will not attempt to reconnect.
+      During a normal transmission, if the connection breaks, {IDF_TARGET_NAME} will give a prompt and will not attempt to reconnect.
 
       More details are in :term:`Transmission Mode Shift Diagram`.
 
@@ -200,7 +205,7 @@ Index of Abbreviations
       在普通传输模式下，用户可以发送 AT 命令。
       例如，用户可以通过 :ref:`AT+CIPSEND <cmd-SEND>` 命令，发送 AT 命令口收到的 MCU 数据到传输对端。从传输对端收到的数据，会通过 AT 命令口返回给 MCU，同时会附带 `+IPD` 信息。
 
-      普通传输模式时，如果连接断开，ESP 不会重连，并提示连接断开。
+      普通传输模式时，如果连接断开，{IDF_TARGET_NAME} 不会重连，并提示连接断开。
 
       更多介绍请参考 :term:`Transmission Mode Shift Diagram`。
 
@@ -209,7 +214,7 @@ Index of Abbreviations
       
       In passthrough mode, users cannot send AT commands except special :ref:`+++ <cmd-PLUS>` command. All MCU data received by AT command port will be sent to the opposite end of transmission without any modification; and the data received from the opposite end of transmission will also be returned to MCU through AT command port without any modification.
 
-      During the Wi-Fi passthrough transmission, if the connection breaks, ESP devices will keep trying to reconnect until :ref:`+++ <cmd-PLUS>` is input to exit the passthrough transmission.
+      During the Wi-Fi passthrough transmission, if the connection breaks, {IDF_TARGET_NAME} (as client) will keep trying to reconnect until :ref:`+++ <cmd-PLUS>` is input to exit the passthrough transmission; {IDF_TARGET_NAME} (as server) will shutdown the old connection and listen new connection until :ref:`+++ <cmd-PLUS>` is input to exit the passthrough transmission.
 
       More details are in :term:`Transmission Mode Shift Diagram`.
 
@@ -218,7 +223,7 @@ Index of Abbreviations
 
       在透传模式下，用户不能发送其它 AT 命令，除了特别的 :ref:`+++ <cmd-PLUS>` 命令。AT 命令口收到的所有的 MCU 数据都将无修改地，发送到传输对端。从传输对端收到的数据也会通过 AT 命令口无修改地，返回给 MCU。
 
-      Wi-Fi 透传模式传输时，如果连接断开，ESP 会不停地尝试重连，此时单独输入 :ref:`+++ <cmd-PLUS>` 退出透传，则停止重连。
+      Wi-Fi 透传模式传输时，如果连接断开，{IDF_TARGET_NAME} 作为客户端时，会不停地尝试重连，此时单独输入 :ref:`+++ <cmd-PLUS>` 退出透传，则停止重连；{IDF_TARGET_NAME} 作为服务器时，会关闭连接同时监听新的连接，此时单独输入 :ref:`+++ <cmd-PLUS>` 退出透传。
 
       更多介绍请参考 :term:`Transmission Mode Shift Diagram`。
 

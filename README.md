@@ -1,9 +1,9 @@
 # ESP-AT
-[![Documentation Status](https://readthedocs.com/projects/espressif-esp-at/badge/?version=latest)](https://docs.espressif.com/projects/esp-at/en/latest/?badge=latest)
+[![Documentation Version](./docs/_static/at_doc_latest.svg)](https://docs.espressif.com/projects/esp-at/en/latest/)
 
 - [中文版](#esp-at-项目)
 
-esp-at project was started and powered by Espressif Systems (@[espressif](https://github.com/espressif/)) as an official project, for the **ESP8266**, **ESP32**, **ESP32-C3**, and **ESP32-S2** Series SoCs provided for Windows, Linux, and macOS.  
+esp-at project was started and powered by Espressif Systems (@[espressif](https://github.com/espressif/)) as an official project, for the **ESP32-C3**, **ESP32**, **ESP8266**, and **ESP32-S2** Series SoCs provided for Windows, Linux, and macOS.  
 It is now supported and maintained by Espressif esp-at team (@[esp-at](https://github.com/espressif/esp-at)).
 
 esp-at is Free Software under a MIT license.
@@ -30,7 +30,7 @@ The AT command firmware allows for rapid integration by providing:
 - The [esp-at forum](https://www.esp32.com/viewforum.php?f=42) is a place to ask questions and find community resources.
 
 # Project Roadmap
-1. The next version of ESP-AT firmware (v2.4.0.0) is planned to be released in March 2022. At present, only ESP32-C3 series firmware is planned to be released, and ESP32-C3 firmware would support Bluetooth LE 5.0.
+1. The next version of ESP-AT firmware (v2.4.0.0) is planned to be released in April 2022. At present, ESP32 and ESP32-C3 series firmware is planned to be released, and ESP32-C3 firmware would support Bluetooth LE 5.0.
 
 2. ESP-AT Support Policy for ESP Chip Series
 
@@ -56,8 +56,12 @@ The AT command firmware allows for rapid integration by providing:
   - [v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/releases/tag/v2.1.0.0_esp32s2) is the last version of ESP-AT for ESP32-S2, corresponding to branch [release/v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/tree/release/v2.1.0.0_esp32s2), corresponding to documentation [https://docs.espressif.com/projects/esp-at/en/release-v2.1.0.0_esp32s2](https://docs.espressif.com/projects/esp-at/en/release-v2.1.0.0_esp32s2/).
   - ESP-AT will regularly update [release/v2.2.0.0_esp32](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp32) branch for ESP32-S2. Update includes vital bugfix and security repair.
 
+- Other Series
+  - ESP-AT will support ESP32-C2 and ESP32-C6 series of chips.
+  - ESP-AT will not support ESP32-S and ESP32-H series of chips.
+
 # ESP-AT 项目
-esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/)) 发起和提供技术支持的官方项目，适用于 Windows、Linux、macOS 上的 **ESP8266**、**ESP32**、**ESP32-C3**、和 **ESP32-S2** 系列芯片。  
+esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/)) 发起和提供技术支持的官方项目，适用于 Windows、Linux、macOS 上的 **ESP32-C3**、**ESP32**、**ESP8266**、和 **ESP32-S2** 系列芯片。  
 当前该项目由 Espressif esp-at 团队 (@[esp-at](https://github.com/espressif/esp-at)) 负责技术支持和维护。  
 
 esp-at 是 MIT 许可证下的免费软件。
@@ -82,7 +86,7 @@ esp-at 是 MIT 许可证下的免费软件。
 - [esp-at 社区](https://www.esp32.com/viewforum.php?f=34) 可以用来询问问题或寻找一些社区资源。
 
 # 项目路线图
-1. 下一版本 ESP-AT 固件 (v2.4.0.0)，计划在 2022 年 3 月发布。当前仅计划发布 ESP32-C3 系列固件，ESP32-C3 固件将支持低功耗蓝牙 5.0。
+1. 下一版本 ESP-AT 固件 (v2.4.0.0)，计划在 2022 年 4 月发布。当前计划发布 ESP32 和 ESP32-C3 系列固件，ESP32-C3 固件将支持低功耗蓝牙 5.0。
 
 2. ESP-AT 对不同芯片系列支持策略
 
@@ -107,3 +111,7 @@ esp-at 是 MIT 许可证下的免费软件。
   - ESP-AT 不再为 ESP32-S2 发布大版本
   - [v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/releases/tag/v2.1.0.0_esp32s2) 是 ESP-AT 为 ESP32-S2 发布的最后一个版本，对应分支为 [release/v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/tree/release/v2.1.0.0_esp32s2)，对应文档为 [https://docs.espressif.com/projects/esp-at/zh_CN/release-v2.1.0.0_esp32s2](https://docs.espressif.com/projects/esp-at/zh_CN/release-v2.1.0.0_esp32s2/)
   - ESP-AT 将定期在 [release/v2.2.0.0_esp32](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp32) 分支为 ESP32-S2 进行重要 bug 修复，安全修补等更新
+
+- 其它系列
+  - ESP-AT 将计划支持 ESP32-C2、ESP32-C6 系列芯片
+  - ESP-AT 无计划支持 ESP32-S、ESP32-H 系列芯片
