@@ -5,27 +5,30 @@
 
 :link_to_translation:`en:[English]`
 
--  :ref:`AT <cmd-AT>`：测试 AT 启动
--  :ref:`AT+RST <cmd-RST>`：重启模块
--  :ref:`AT+GMR <cmd-GMR>`：查看版本信息
--  :ref:`AT+CMD <cmd-cmd>`：查询当前固件支持的所有命令及命令类型
--  :ref:`AT+GSLP <cmd-GSLP>`：进⼊ Deep-sleep 模式
--  :ref:`ATE <cmd-ATE>`：开启或关闭 AT 回显功能
--  :ref:`AT+RESTORE <cmd-RESTORE>`：恢复出厂设置
--  :ref:`AT+UART_CUR <cmd-UARTC>`：设置 UART 当前临时配置，不保存到 flash
--  :ref:`AT+UART_DEF <cmd-UARTD>`：设置 UART 默认配置, 保存到 flash
--  :ref:`AT+SLEEP <cmd-SLEEP>`：设置 sleep 模式
--  :ref:`AT+SYSRAM <cmd-SYSRAM>`：查询当前剩余堆空间和最小堆空间
--  :ref:`AT+SYSMSG <cmd-SYSMSG>`：查询/设置系统提示信息
--  :ref:`AT+SYSFLASH <cmd-SYSFLASH>`：查询或读写 flash 用户分区
--  :ref:`AT+FS <cmd-FS>`：文件系统操作
--  :ref:`AT+RFPOWER <cmd-RFPOWER>`：查询/设置 RF TX Power
--  :ref:`AT+SYSROLLBACK <cmd-SYSROLLBACK>`：回滚到以前的固件
--  :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`：查询/设置本地时间戳
--  :ref:`AT+SYSLOG <cmd-SYSLOG>`：启用或禁用 AT 错误代码提示
--  :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`：设置 Light-sleep 唤醒源和唤醒 GPIO
--  :ref:`AT+SYSSTORE <cmd-SYSSTORE>`：设置参数存储模式
--  :ref:`AT+SYSREG <cmd-SYSREG>`：读写寄存器
+.. list::
+
+  - :ref:`AT <cmd-AT>`：测试 AT 启动
+  - :ref:`AT+RST <cmd-RST>`：重启模块
+  - :ref:`AT+GMR <cmd-GMR>`：查看版本信息
+  - :ref:`AT+CMD <cmd-cmd>`：查询当前固件支持的所有命令及命令类型
+  - :ref:`AT+GSLP <cmd-GSLP>`：进⼊ Deep-sleep 模式
+  - :ref:`ATE <cmd-ATE>`：开启或关闭 AT 回显功能
+  - :ref:`AT+RESTORE <cmd-RESTORE>`：恢复出厂设置
+  - :ref:`AT+UART_CUR <cmd-UARTC>`：设置 UART 当前临时配置，不保存到 flash
+  - :ref:`AT+UART_DEF <cmd-UARTD>`：设置 UART 默认配置, 保存到 flash
+  - :ref:`AT+SLEEP <cmd-SLEEP>`：设置 sleep 模式
+  - :ref:`AT+SYSRAM <cmd-SYSRAM>`：查询当前剩余堆空间和最小堆空间
+  - :ref:`AT+SYSMSG <cmd-SYSMSG>`：查询/设置系统提示信息
+  - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`：查询或读写 flash 用户分区
+  - :ref:`AT+FS <cmd-FS>`：文件系统操作
+  - :ref:`AT+RFPOWER <cmd-RFPOWER>`：查询/设置 RF TX Power
+  - :ref:`AT+SYSROLLBACK <cmd-SYSROLLBACK>`：回滚到以前的固件
+  - :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`：查询/设置本地时间戳
+  - :ref:`AT+SYSLOG <cmd-SYSLOG>`：启用或禁用 AT 错误代码提示
+  - :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`：设置 Light-sleep 唤醒源和唤醒 GPIO
+  - :ref:`AT+SYSSTORE <cmd-SYSSTORE>`：设置参数存储模式
+  - :ref:`AT+SYSREG <cmd-SYSREG>`：读写寄存器
+  :esp32c3: - :ref:`AT+SYSTEMP <cmd-SYSTEMP>`：读取芯片内部摄氏温度值
 
 .. _cmd-AT:
 
@@ -1321,3 +1324,35 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
 ^^^^
 
 - AT 不检查寄存器地址，因此请确保操作的寄存器地址有效
+
+.. only:: esp32c3
+
+  .. _cmd-SYSTEMP:
+
+  :ref:`AT+SYSTEMP <Basic-AT>`：读取芯片内部摄氏温度值
+  -----------------------------------------------------
+
+  **功能：**
+
+  读取芯片内部温度传感器的数据，转为摄氏温度。
+
+  查询命令
+  ^^^^^^^^
+
+  **命令：**
+
+  ::
+
+      AT+SYSTEMP?
+
+  **响应：**
+
+  ::
+
+      +SYSTEMP:<value>
+      OK
+
+  参数
+  ^^^^
+
+  - **<value>**：摄氏温度值。浮点类型，保留两位小数。
