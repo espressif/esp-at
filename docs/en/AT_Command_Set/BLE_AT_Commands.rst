@@ -868,7 +868,11 @@ Parameters
 
 -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
 -  **<remote_address>**: remote Bluetooth LE address.
--  **[<addr_type>]**: the address type of broadcasters.
+-  **[<addr_type>]**: the address type of broadcasters:
+
+   -  0: Public Address
+   -  1: Random Address
+
 -  **[<timeout>]**: the timeout for the connection command. Unit: second. Range: [3,30].
 
 Notes
