@@ -47,7 +47,7 @@ MQTT AT Commands
 ^^^^
 
 -  **<LinkID>**：当前仅支持 link ID 0。
--  **<scheme>**：
+-  **<scheme>**：由于 ESP8266 内存限制，不支持 MQTT over TLS，即 ``<scheme>`` 只能取 1 或 6。
 
    -  1: MQTT over TCP；
    -  2: MQTT over TLS（不校验证书）；

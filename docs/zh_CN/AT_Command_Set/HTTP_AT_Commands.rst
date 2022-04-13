@@ -66,6 +66,7 @@ HTTP AT 命令集
 
 -  如果 ``url`` 参数不为空，HTTP 客户端将使用它并忽略 ``host`` 参数和 ``path`` 参数；如果 ``url`` 参数被省略或字符串为空，HTTP 客户端将使用 ``host`` 参数和 ``path`` 参数。
 -  某些已发布的固件默认不支持 HTTP 客户端命令（详情请见 :doc:`../Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`），但是可通过以下方式使其支持该命令：``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support``，然后编译项目（详情请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
+-  在 ESP8266 平台上，如果 URL 是 HTTPS 类型或 ``<transport_type>`` 参数是 2，需要将 at_process_task 任务堆栈增加到 4096 以上。即配置：`./build.py menuconfig` -> `Component config` -> `AT` -> `The stack size of the AT process task`，否则会由于堆栈不足而导致重启。
 
 示例
 ^^^^
@@ -113,6 +114,7 @@ HTTP AT 命令集
 ^^^^
 
 -  某些已发布的固件默认不支持 HTTP 客户端命令（详情请见 :doc:`../Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`），但是可通过以下方式使其支持该命令：``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support``，然后编译项目（详情请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
+-  在 ESP8266 平台上，如果 URL 是 HTTPS 类型或 ``<transport_type>`` 参数是 2，需要将 at_process_task 任务堆栈增加到 4096 以上。即配置：`./build.py menuconfig` -> `Component config` -> `AT` -> `The stack size of the AT process task`，否则会由于堆栈不足而导致重启。
 
 示例
 ^^^^
@@ -162,6 +164,11 @@ HTTP AT 命令集
 - **<length>**：需 POST 的 HTTP 数据长度。最大长度等于系统可分配的堆空间大小。
 - **<http_req_header_cnt>**：``<http_req_header>`` 参数的数量。
 - **[<http_req_header>]**：可发送多个请求头给服务器。
+
+说明
+^^^^
+
+- 在 ESP8266 平台上，如果 URL 是 HTTPS 类型或 ``<transport_type>`` 参数是 2，需要将 at_process_task 任务堆栈增加到 4096 以上。即配置：`./build.py menuconfig` -> `Component config` -> `AT` -> `The stack size of the AT process task`，否则会由于堆栈不足而导致重启。
 
 .. _cmd-HTTPErrCode:
 

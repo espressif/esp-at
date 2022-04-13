@@ -47,7 +47,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<LinkID>**: currently only supports link ID 0.
--  **<scheme>**:
+-  **<scheme>**: MQTT over TLS is not supported due to memory limit on ESP8266, that is to say, this parameter can only be set to 1 or 6.
 
    -  1: MQTT over TCP.
    -  2: MQTT over TLS (no certificate verify).

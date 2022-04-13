@@ -63,8 +63,10 @@ Parameters
 
 Notes
 ^^^^^
+
 -  If the ``url`` parameter is not null, HTTP client will use it and ignore the ``host`` parameter and ``path`` parameter; If the ``url`` parameter is omited or null string, HTTP client will use ``host`` parameter and ``path`` parameter.
 -  In some released firmware, HTTP client commands are not supported (see :doc:`../Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support`` and build the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
+-  For ESP8266 series of devices, if the URL is HTTPS type or ``<transport_type>`` parameter is 2, you need to enlarge at_process_task stack size to more than 4096 by configuring `./build.py menuconfig` -> `Component config` -> `AT` -> `The stack size of the AT process task`, otherwise ESP8266 will restart due to insufficient stack.
 
 Example
 ^^^^^^^^
@@ -112,6 +114,7 @@ Note
 ^^^^^
 
 -  In some released firmware, HTTP client commands are not supported (see :doc:`../Compile_and_Develop/How_to_understand_the_differences_of_each_type_of_module`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support`` and build the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
+-  For ESP8266 series of devices, if the URL is HTTPS type or ``<transport_type>`` parameter is 2, you need to enlarge at_process_task stack size to more than 4096 by configuring `./build.py menuconfig` -> `Component config` -> `AT` -> `The stack size of the AT process task`, otherwise ESP8266 will restart due to insufficient stack.
 
 Example
 ^^^^^^^^
@@ -161,6 +164,11 @@ Parameters
 - **<length>**: HTTP data length to POST. The maximum length is equal to the system allocable heap size.
 - **<http_req_header_cnt>**: the number of <http_req_header> parameters.
 - **[<http_req_header>]**: you can send more than one request header to the server.
+
+Note
+^^^^^
+
+-  For ESP8266 series of devices, if the URL is HTTPS type or ``<transport_type>`` parameter is 2, you need to enlarge at_process_task stack size to more than 4096 by configuring `./build.py menuconfig` -> `Component config` -> `AT` -> `The stack size of the AT process task`, otherwise ESP8266 will restart due to insufficient stack.
 
 .. _cmd-HTTPErrCode:
 
