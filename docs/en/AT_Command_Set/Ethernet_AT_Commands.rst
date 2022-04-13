@@ -8,8 +8,8 @@
 :link_to_translation:`zh_CN:[中文]`
 
 - :ref:`Prerequisite <cmd-ETHPRE>`
-- :ref:`AT+CIPETHMAC <cmd-ETHMAC>`: Query/Set the MAC address of the ESP Ethernet.
-- :ref:`AT+CIPETH <cmd-ETHIP>`: Query/Set the IP address of the ESP Ethernet.
+- :ref:`AT+CIPETHMAC <cmd-ETHMAC>`: Query/Set the MAC address of the {IDF_TARGET_NAME} Ethernet.
+- :ref:`AT+CIPETH <cmd-ETHIP>`: Query/Set the IP address of the {IDF_TARGET_NAME} Ethernet.
 
 .. _cmd-ETHPRE:
 
@@ -36,14 +36,14 @@ Before you run any Ethernet AT Commands, please make the following preparations:
 
 .. _cmd-ETHMAC:
 
-:ref:`AT+CIPETHMAC <ETH-AT>`: Query/Set the MAC Address of the ESP Ethernet
+:ref:`AT+CIPETHMAC <ETH-AT>`: Query/Set the MAC Address of the {IDF_TARGET_NAME} Ethernet
 --------------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 **Function:**
 
-Query the MAC address of the ESP Ethernet.
+Query the MAC address of the {IDF_TARGET_NAME} Ethernet.
 
 **Command:**
 
@@ -63,7 +63,7 @@ Set Command
 
 **Function:**
 
-Set the MAC address of the ESP Ethernet.
+Set the MAC address of the {IDF_TARGET_NAME} Ethernet.
 
 **Command:**
 
@@ -88,7 +88,7 @@ Notes
 -  The default firmware does not support Ethernet AT commands (see :doc:`../Compile_and_Develop/esp-at_firmware_differences`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT ethernet support`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  Please make sure the MAC address of Ethernet interface you set is different from those of other interfaces.
--  Bit0 of the ESP MAC address CANNOT be 1. For example, a MAC address can be "1a:…" but not "15:…".
+-  Bit0 of the {IDF_TARGET_NAME} MAC address CANNOT be 1. For example, a MAC address can be "1a:…" but not "15:…".
 -  ``FF:FF:FF:FF:FF:FF`` and ``00:00:00:00:00:00`` are invalid MAC addresses and cannot be set.
 
 Example
@@ -100,7 +100,7 @@ Example
 
 .. _cmd-ETHIP:
 
-:ref:`AT+CIPETH <ETH-AT>`: Query/Set the IP Address of the the ESP Ethernet
+:ref:`AT+CIPETH <ETH-AT>`: Query/Set the IP Address of the the {IDF_TARGET_NAME} Ethernet
 -------------------------------------------------------------------------------------------
 
 Query Command
@@ -108,7 +108,7 @@ Query Command
 
 **Function:**
 
-Query the IP address of the ESP Ethernet.
+Query the IP address of the {IDF_TARGET_NAME} Ethernet.
 
 **Command:**
 
@@ -130,7 +130,7 @@ Set Command
 
 **Function:**
 
-Set the IP address of the ESP Ethernet.
+Set the IP address of the {IDF_TARGET_NAME} Ethernet.
 
 **Command:**
 
@@ -147,7 +147,7 @@ Set the IP address of the ESP Ethernet.
 Parameters
 ^^^^^^^^^^
 
--  **<ip>**: string parameter showing the IP address of the ESP Ethernet.
+-  **<ip>**: string parameter showing the IP address of the {IDF_TARGET_NAME} Ethernet.
 -  **[<gateway>]**: gateway.
 -  **[<netmask>]**: netmask.
 

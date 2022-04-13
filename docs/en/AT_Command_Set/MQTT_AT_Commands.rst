@@ -13,7 +13,7 @@ MQTT AT Commands
 -  :ref:`AT+MQTTALPN <cmd-MQTTALPN>`: Set MQTT Application Layer Protocol Negotiation (ALPN)
 -  :ref:`AT+MQTTCONN <cmd-MQTTCONN>`: Connect to MQTT Brokers
 -  :ref:`AT+MQTTPUB <cmd-MQTTPUB>`: Publish MQTT Messages in string
--  :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>`: Publish MQTT messages in binary
+-  :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>`: Publish long MQTT messages
 -  :ref:`AT+MQTTSUB <cmd-MQTTSUB>`: Subscribe to MQTT topics
 -  :ref:`AT+MQTTUNSUB <cmd-MQTTUNSUB>`: Unsubscribe from MQTT topics
 -  :ref:`AT+MQTTCLEAN <cmd-MQTTCLEAN>`: Close MQTT connections
@@ -293,7 +293,7 @@ Query Command
 
 **Function:**
 
-Query the MQTT broker that ESP devices are connected to.
+Query the MQTT broker that {IDF_TARGET_NAME} are connected to.
 
 **Command:**
 
@@ -372,7 +372,7 @@ Set Command
 
 **Function:**
 
-Publish MQTT messages in string to a defined topic. If you need to publish messages in binary, please use the :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` command.
+Publish MQTT messages in string to a defined topic. If the amount of data you publish is relatively large, and the length of a single AT command has exceeded the threshold of ``256``, please use the :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` command.
 
 **Command:**
 
@@ -414,15 +414,15 @@ Example
 
 .. _cmd-MQTTPUBRAW:
 
-:ref:`AT+MQTTPUBRAW <MQTT-AT>`: Publish MQTT Messages in Binary
-------------------------------------------------------------------
+:ref:`AT+MQTTPUBRAW <MQTT-AT>`: Publish Long MQTT Messages
+----------------------------------------------------------
 
 Set Command
 ^^^^^^^^^^^
 
 **Function:**
 
-Publish MQTT messages in binary to a defined topic.
+Publish long MQTT messages to a defined topic. If the amount of data you publish is relatively small, and the length of a single AT command is not greater than the threshold of ``256``, you also can use the :ref:`AT+MQTTPUB <cmd-MQTTPUB>` command.
 
 **Command:**
 

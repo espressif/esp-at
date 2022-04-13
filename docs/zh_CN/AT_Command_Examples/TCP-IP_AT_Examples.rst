@@ -3,13 +3,13 @@ TCP-IP AT 示例
 
 :link_to_translation:`en:[English]`
 
-本文档主要介绍在 ESP 设备上运行 :doc:`../AT_Command_Set/TCP-IP_AT_Commands` 命令的详细示例。
+本文档主要介绍在 {IDF_TARGET_NAME} 设备上运行 :doc:`../AT_Command_Set/TCP-IP_AT_Commands` 命令的详细示例。
 
 .. contents::
    :local:
    :depth: 1
 
-ESP 设备作为 TCP 客户端建立单连接
+{IDF_TARGET_NAME} 设备作为 TCP 客户端建立单连接
 --------------------------------------------
 
 #. 设置 Wi-Fi 模式为 station。
@@ -47,7 +47,7 @@ ESP 设备作为 TCP 客户端建立单连接
 
    - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
 
-#. 查询 ESP 设备 IP 地址。
+#. 查询 {IDF_TARGET_NAME} 设备 IP 地址。
 
    命令：
 
@@ -69,11 +69,11 @@ ESP 设备作为 TCP 客户端建立单连接
 
    - 您的查询结果可能与上述响应中的不同。
 
-#. PC 与 ESP 设备连接同一个路由。
+#. PC 与 {IDF_TARGET_NAME} 设备连接同一个路由。
 
    在 PC 上使用网络调试工具，创建一个 TCP 服务器。例如 TCP 服务器的 IP 地址为 ``192.168.3.102``，端口为 ``8080``。
 
-#. ESP 设备作为客户端通过 TCP 连接到 TCP 服务器，服务器 IP 地址为 ``192.168.3.102``，端口为 ``8080``。
+#. {IDF_TARGET_NAME} 设备作为客户端通过 TCP 连接到 TCP 服务器，服务器 IP 地址为 ``192.168.3.102``，端口为 ``8080``。
 
    命令：
 
@@ -125,12 +125,12 @@ ESP 设备作为 TCP 客户端建立单连接
 
      +IPD,4:test
 
-ESP 设备作为 TCP 服务器建立多连接
+{IDF_TARGET_NAME} 设备作为 TCP 服务器建立多连接
 --------------------------------------------
 
-当 ESP 设备作为 TCP 服务器时，必须通过 :ref:`AT+CIPMUX=1 <cmd-MUX>` 命令使能多连接，因为可能有多个 TCP 客户端连接到 ESP 设备。
+当 {IDF_TARGET_NAME} 设备作为 TCP 服务器时，必须通过 :ref:`AT+CIPMUX=1 <cmd-MUX>` 命令使能多连接，因为可能有多个 TCP 客户端连接到 {IDF_TARGET_NAME} 设备。
 
-以下是 ESP 设备作为 softAP 建立 TCP 服务器的示例；如果是 ESP 设备作为 station，可在连接路由器后按照同样方法建立服务器。
+以下是 {IDF_TARGET_NAME} 设备作为 softAP 建立 TCP 服务器的示例；如果是 {IDF_TARGET_NAME} 设备作为 station，可在连接路由器后按照同样方法建立服务器。
 
 #. 设置 Wi-Fi 模式为 softAP。
 
@@ -211,14 +211,14 @@ ESP 设备作为 TCP 服务器建立多连接
 
      OK
 
-#. PC 连接到 ESP 设备的 softAP。
+#. PC 连接到 {IDF_TARGET_NAME} 设备的 softAP。
 
    .. figure:: ../../img/Connect-SoftAP.png
        :scale: 100 %
        :align: center
        :alt: Connect SoftAP
 
-#. 在 PC 上使用网络调试工具创建一个 TCP 客户端，连接到 ESP 设备创建的 TCP 服务器。
+#. 在 PC 上使用网络调试工具创建一个 TCP 客户端，连接到 {IDF_TARGET_NAME} 设备创建的 TCP 服务器。
 
 #. 发送 4 字节数据到网络连接 ID 为 0 的链路上。
 
@@ -310,7 +310,7 @@ ESP 设备作为 TCP 服务器建立多连接
 
    - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
 
-#. 查询 ESP 设备 IP 地址。
+#. 查询 {IDF_TARGET_NAME} 设备 IP 地址。
 
    命令：
 
@@ -332,7 +332,7 @@ ESP 设备作为 TCP 服务器建立多连接
 
    - 您的查询结果可能与上述响应中的不同。
 
-#. PC 与 ESP 设备连接到同一个路由。
+#. PC 与 {IDF_TARGET_NAME} 设备连接到同一个路由。
 
    在 PC 上使用网络调试工具，创建一个 UDP 传输。例如 PC 的 IP 地址为 ``192.168.3.102``，端口为 ``8080``。
 
@@ -373,8 +373,8 @@ ESP 设备作为 TCP 服务器建立多连接
    说明：
 
    - ``"192.168.3.102"`` 和 ``8080`` 为 UDP 传输的远端 IP 地址和远端端口，也就是 PC 建立的 UDP 配置。
-   - ``1112`` 为 ESP 设备的 UDP 本地端口，您可自行设置，如不设置则为随机值。
-   - ``0`` 表示 UDP 远端 IP 地址和端口是固定的，不能更改。比如有另外一台 PC 创建了 UDP 端并且向 ESP 设备端口 1112 发送数据，ESP 设备仍然会接收来自 UDP 端口 1112 的数据，如果使用 AT 命令 ``AT+CIPSEND=4,X``，那么数据仍然只会发送到第一台 PC 端。但是如果这个参数未设置为 ``0``，那么数据将会被发送到新的 PC 端。
+   - ``1112`` 为 {IDF_TARGET_NAME} 设备的 UDP 本地端口，您可自行设置，如不设置则为随机值。
+   - ``0`` 表示 UDP 远端 IP 地址和端口是固定的，不能更改。比如有另外一台 PC 创建了 UDP 端并且向 {IDF_TARGET_NAME} 设备端口 1112 发送数据，{IDF_TARGET_NAME} 设备仍然会接收来自 UDP 端口 1112 的数据，如果使用 AT 命令 ``AT+CIPSEND=4,X``，那么数据仍然只会发送到第一台 PC 端。但是如果这个参数未设置为 ``0``，那么数据将会被发送到新的 PC 端。
 
 #. 发送 7 字节数据到网络连接 ID 为 4 的链路上。
 
@@ -466,7 +466,7 @@ ESP 设备作为 TCP 服务器建立多连接
 
    - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
 
-#. 查询 ESP 设备 IP 地址。
+#. 查询 {IDF_TARGET_NAME} 设备 IP 地址。
 
    命令：
 
@@ -488,7 +488,7 @@ ESP 设备作为 TCP 服务器建立多连接
 
    - 您的查询结果可能与上述响应中的不同。
 
-#. PC 与 ESP 设备连接到同一个路由。
+#. PC 与 {IDF_TARGET_NAME} 设备连接到同一个路由。
 
    在 PC 上使用网络调试工具，创建一个 UDP 传输。例如 IP 地址为 ``192.168.3.102``，端口为 ``8080``。
 
@@ -525,8 +525,8 @@ ESP 设备作为 TCP 服务器建立多连接
    说明：
 
    - ``"192.168.3.102"`` 和 `8080` 为 UDP 传输的远端 IP 地址和远端端口，也就是 PC 建立的 UDP 配置。
-   - ``1112`` 为 ESP 设备的 UDP 本地端口，您可自行设置，如不设置则为随机值。
-   - ``2`` 表示当前 UDP 传输建立后，UDP 传输远端信息仍然会更改；UDP 传输的远端信息会自动更改为最近一次与 ESP 设备 UDP 通信的远端 IP 地址和端口。
+   - ``1112`` 为 {IDF_TARGET_NAME} 设备的 UDP 本地端口，您可自行设置，如不设置则为随机值。
+   - ``2`` 表示当前 UDP 传输建立后，UDP 传输远端信息仍然会更改；UDP 传输的远端信息会自动更改为最近一次与 {IDF_TARGET_NAME} 设备 UDP 通信的远端 IP 地址和端口。
 
 #. 发送 4 字节数据。
 
@@ -606,7 +606,7 @@ ESP 设备作为 TCP 服务器建立多连接
 
      OK
 
-ESP 设备作为 SSL 客户端建立单连接
+{IDF_TARGET_NAME} 设备作为 SSL 客户端建立单连接
 --------------------------------------------
 
 #. 设置 Wi-Fi 模式为 station。
@@ -644,7 +644,7 @@ ESP 设备作为 SSL 客户端建立单连接
 
    - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
 
-#. 查询 ESP 设备 IP 地址。
+#. 查询 {IDF_TARGET_NAME} 设备 IP 地址。
 
    命令：
 
@@ -666,7 +666,7 @@ ESP 设备作为 SSL 客户端建立单连接
 
    - 您的查询结果可能与上述响应中的不同。
 
-#. PC 与 ESP 设备连接同一个路由。
+#. PC 与 {IDF_TARGET_NAME} 设备连接同一个路由。
 
 #. 在 PC 上使用 OpenSSL 命令，创建一个 SSL 服务器。例如 SSL 服务器的 IP 地址为 ``192.168.3.102``，端口为 ``8070``。
 
@@ -682,7 +682,7 @@ ESP 设备作为 SSL 客户端建立单连接
 
      ACCEPT
 
-#. ESP 设备作为客户端通过 SSL 连接到 SSL 服务器，服务器 IP 地址为 ``192.168.3.102``，端口为 ``8070``。
+#. {IDF_TARGET_NAME} 设备作为客户端通过 SSL 连接到 SSL 服务器，服务器 IP 地址为 ``192.168.3.102``，端口为 ``8070``。
 
    命令：
 
@@ -734,12 +734,12 @@ ESP 设备作为 SSL 客户端建立单连接
 
      +IPD,4:test
 
-ESP 设备作为 SSL 服务器建立多连接
+{IDF_TARGET_NAME} 设备作为 SSL 服务器建立多连接
 --------------------------------------------
 
-当 ESP 设备作为 SSL 服务器时，必须通过 :ref:`AT+CIPMUX=1 <cmd-MUX>` 命令使能多连接，因为可能有多个客户端连接到 ESP 设备。
+当 {IDF_TARGET_NAME} 设备作为 SSL 服务器时，必须通过 :ref:`AT+CIPMUX=1 <cmd-MUX>` 命令使能多连接，因为可能有多个客户端连接到 {IDF_TARGET_NAME} 设备。
 
-以下是 ESP 设备作为 softAP 建立 SSL 服务器的示例；如果是 ESP 设备作为 station，可在连接路由器后，参照本示例中的建立连接 SSL 服务器的相关步骤。
+以下是 {IDF_TARGET_NAME} 设备作为 softAP 建立 SSL 服务器的示例；如果是 {IDF_TARGET_NAME} 设备作为 station，可在连接路由器后，参照本示例中的建立连接 SSL 服务器的相关步骤。
 
 #. 设置 Wi-Fi 模式为 softAP。
 
@@ -769,7 +769,7 @@ ESP 设备作为 SSL 服务器建立多连接
 
      OK
 
-#. 配置 ESP softAP。
+#. 配置 {IDF_TARGET_NAME} softAP。
 
    命令：
 
@@ -820,14 +820,14 @@ ESP 设备作为 SSL 服务器建立多连接
 
      OK
 
-#. PC 连接到 ESP 设备的 softAP。
+#. PC 连接到 {IDF_TARGET_NAME} 设备的 softAP。
 
    .. figure:: ../../img/Connect-SoftAP.png
        :scale: 100 %
        :align: center
        :alt: Connect SoftAP
 
-#. 在 PC 上使用 OpenSSL 命令，创建一个 SSL 客户端，连接到 ESP 设备创建的 SSL 服务器。
+#. 在 PC 上使用 OpenSSL 命令，创建一个 SSL 客户端，连接到 {IDF_TARGET_NAME} 设备创建的 SSL 服务器。
 
    命令：
 
@@ -835,7 +835,7 @@ ESP 设备作为 SSL 服务器建立多连接
 
      openssl s_client -host 192.168.4.1 -port 8070
 
-   ESP 设备上的响应：
+   {IDF_TARGET_NAME} 设备上的响应：
 
    .. code-block:: none
 
@@ -893,8 +893,8 @@ ESP 设备作为 SSL 服务器建立多连接
 
      OK
 
-ESP 设备作为 SSL 客户端建立双向认证单连接
---------------------------------------------
+{IDF_TARGET_NAME} 设备作为 SSL 客户端建立双向认证单连接
+---------------------------------------------------------
 
 本示例中使用的证书是 esp-at 中默认的证书，您也可以自己生成证书，并烧录，然后您需要将下面的 SSL 服务器证书路径替换为您的证书路径。获取 SSL 证书，请参考 esp-at/tools/README.md 了解如何生成证书 bin 和烧录地址请参考 esp-at/module_config/module_name/at_customize.csv。
 
@@ -970,7 +970,7 @@ ESP 设备作为 SSL 客户端建立双向认证单连接
 
    - 您可以查询 SNTP 时间与实时时间是否相符来判断您设置的 SNTP 服务器是否生效。
 
-#. 查询 ESP 设备 IP 地址。
+#. 查询 {IDF_TARGET_NAME} 设备 IP 地址。
 
    命令：
 
@@ -992,7 +992,7 @@ ESP 设备作为 SSL 客户端建立双向认证单连接
 
    - 您的查询结果可能与上述响应中的不同。
 
-#. PC 与 ESP 设备连接同一个路由。
+#. PC 与 {IDF_TARGET_NAME} 设备连接同一个路由。
 
 #. 在 PC 上使用 OpenSSL 命令，创建一个 SSL 服务器。例如 SSL 服务器的 IP 地址为 ``192.168.3.102``，端口为 ``8070``。
 
@@ -1002,7 +1002,7 @@ ESP 设备作为 SSL 客户端建立双向认证单连接
 
      openssl s_server -CAfile /home/esp-at/components/customized_partitions/raw_data/server_ca/server_ca.crt -cert /home/esp-at/components/customized_partitions/raw_data/server_cert/server_cert.crt -key /home/esp-at/components/customized_partitions/raw_data/server_key/server.key -port 8070 -verify_return_error -verify_depth 1 -Verify 1
 
-   ESP 设备上的响应：
+   {IDF_TARGET_NAME} 设备上的响应：
 
    .. code-block:: none
 
@@ -1012,7 +1012,7 @@ ESP 设备作为 SSL 客户端建立双向认证单连接
 
    - 命令中的证书路径可以根据你的证书位置进行调整。
 
-#. ESP 设备设置 SSL 客户端双向认证配置。
+#. {IDF_TARGET_NAME} 设备设置 SSL 客户端双向认证配置。
 
    命令：
 
@@ -1026,7 +1026,7 @@ ESP 设备作为 SSL 客户端建立双向认证单连接
 
      OK
 
-#. ESP 设备作为客户端通过 SSL 连接到 SSL 服务器，服务器 IP 地址为 ``192.168.3.102``，端口为 ``8070``。
+#. {IDF_TARGET_NAME} 设备作为客户端通过 SSL 连接到 SSL 服务器，服务器 IP 地址为 ``192.168.3.102``，端口为 ``8070``。
 
    命令：
 
@@ -1078,12 +1078,12 @@ ESP 设备作为 SSL 客户端建立双向认证单连接
 
      +IPD,4:test
 
-ESP 设备作为 SSL 服务器建立双向认证多连接
---------------------------------------------
+{IDF_TARGET_NAME} 设备作为 SSL 服务器建立双向认证多连接
+----------------------------------------------------------
 
-当 ESP 设备作为 SSL 服务器时，必须通过 :ref:`AT+CIPMUX=1 <cmd-MUX>` 命令使能多连接，因为可能有多个客户端连接到 ESP 设备。
+当 {IDF_TARGET_NAME} 设备作为 SSL 服务器时，必须通过 :ref:`AT+CIPMUX=1 <cmd-MUX>` 命令使能多连接，因为可能有多个客户端连接到 {IDF_TARGET_NAME} 设备。
 
-以下是 ESP 设备作为 station 建立 SSL 服务器的示例；如果是 ESP 设备作为 softAP，可参考 ``ESP 设备作为 SSL 服务器建立多连接`` 示例。
+以下是 {IDF_TARGET_NAME} 设备作为 station 建立 SSL 服务器的示例；如果是 {IDF_TARGET_NAME} 设备作为 softAP，可参考 ``{IDF_TARGET_NAME} 设备作为 SSL 服务器建立多连接`` 示例。
 
 #. 设置 Wi-Fi 模式为 station。
 
@@ -1120,7 +1120,7 @@ ESP 设备作为 SSL 服务器建立双向认证多连接
 
    - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
 
-#. 查询 ESP 设备 IP 地址。
+#. 查询 {IDF_TARGET_NAME} 设备 IP 地址。
 
    命令：
 
@@ -1170,14 +1170,14 @@ ESP 设备作为 SSL 服务器建立双向认证多连接
 
      OK
 
-#. PC 与 ESP 设备连接同一个路由。
+#. PC 与 {IDF_TARGET_NAME} 设备连接同一个路由。
 
    .. figure:: ../../img/Connect-SoftAP.png
        :scale: 100 %
        :align: center
        :alt: Connect SoftAP
 
-#. 在 PC 上使用 OpenSSL 命令，创建一个 SSL 客户端，连接到 ESP 设备创建的 SSL 服务器。
+#. 在 PC 上使用 OpenSSL 命令，创建一个 SSL 客户端，连接到 {IDF_TARGET_NAME} 设备创建的 SSL 服务器。
 
    命令：
 
@@ -1185,7 +1185,7 @@ ESP 设备作为 SSL 服务器建立双向认证多连接
 
      openssl s_client -CAfile /home/esp-at/components/customized_partitions/raw_data/client_ca/client_ca_00.crt -cert /home/esp-at/components/customized_partitions/raw_data/client_cert/client_cert_00.crt -key /home/esp-at/components/customized_partitions/raw_data/client_key/client_key_00.key -host 192.168.3.112 -port 8070
 
-   ESP 设备上的响应：
+   {IDF_TARGET_NAME} 设备上的响应：
 
    .. code-block:: none
 
@@ -1257,7 +1257,7 @@ ESP 设备作为 SSL 服务器建立双向认证多连接
 
      OK
 
-ESP 设备作为 TCP 客户端，建立单连接，实现 UART Wi-Fi 透传
+{IDF_TARGET_NAME} 设备作为 TCP 客户端，建立单连接，实现 UART Wi-Fi 透传
 -----------------------------------------------------------------------------------------
 
 #. 设置 Wi-Fi 模式为 station。
@@ -1295,7 +1295,7 @@ ESP 设备作为 TCP 客户端，建立单连接，实现 UART Wi-Fi 透传
 
    - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
 
-#. 查询 ESP 设备 IP 地址。
+#. 查询 {IDF_TARGET_NAME} 设备 IP 地址。
 
    命令：
 
@@ -1317,11 +1317,11 @@ ESP 设备作为 TCP 客户端，建立单连接，实现 UART Wi-Fi 透传
 
    - 您的查询结果可能与上述响应中的不同。
 
-#. PC 与 ESP 设备连接到同一个路由。
+#. PC 与 {IDF_TARGET_NAME} 设备连接到同一个路由。
 
    在 PC 上使用网络调试工具，创建一个 TCP 服务器。例如 IP 地址为 ``192.168.3.102``，端口为 ``8080``。
 
-#. ESP 设备作为客户端通过 TCP 连接到 TCP 服务器，服务器 IP 地址为 ``192.168.3.102``，端口为 ``8080``。
+#. {IDF_TARGET_NAME} 设备作为客户端通过 TCP 连接到 TCP 服务器，服务器 IP 地址为 ``192.168.3.102``，端口为 ``8080``。
 
    命令：
 
@@ -1405,7 +1405,7 @@ ESP 设备作为 TCP 客户端，建立单连接，实现 UART Wi-Fi 透传
 
      OK
 
-ESP 设备作为 softAP 在 UDP 传输中实现 UART Wi-Fi 透传
+{IDF_TARGET_NAME} 设备作为 softAP 在 UDP 传输中实现 UART Wi-Fi 透传
 ---------------------------------------------------------------------------------------------------------
 
 #. 设置 Wi-Fi 模式为 softAP。
@@ -1436,7 +1436,7 @@ ESP 设备作为 softAP 在 UDP 传输中实现 UART Wi-Fi 透传
 
      OK
 
-#. PC 连接到 ESP 设备的 softAP。
+#. PC 连接到 {IDF_TARGET_NAME} 设备的 softAP。
 
    .. figure:: ../../img/Connect-SoftAP.png
        :scale: 100 %

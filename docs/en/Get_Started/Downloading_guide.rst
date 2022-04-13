@@ -163,7 +163,7 @@ Windows
 
 Before starting to flash, you need to download `Flash Download Tools for Windows <https://www.espressif.com/en/support/download/other-tools>`_. For more details about the tools, please see the  ``doc`` folder in the zip folder.
 
-- Open the ESP Flash Download Tool.
+- Open the {IDF_TARGET_NAME} Flash Download Tool.
 - Select chipType. (Here, we select ``{IDF_TARGET_CFG_PREFIX}``.)
 - Select a workMode according to your need. (Here, we select ``Developer Mode``.)
 - Select a loadMode according to your need. (Here, we select ``uart``.)
@@ -195,7 +195,7 @@ Before starting to flash, you need to download `Flash Download Tools for Windows
 
         Download to Multiple Addresses
 
-In case of flashing issues, please verify what the COM port number of download interface of the ESP board is and select it from "COM:" dropdown list. If you don't know the port number, you can refer to `Check port on Windows <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/get-started/establish-serial-connection.html#check-port-on-windows>`_ for details.
+In case of flashing issues, please verify what the COM port number of download interface of the {IDF_TARGET_NAME} board is and select it from "COM:" dropdown list. If you don't know the port number, you can refer to `Check port on Windows <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/get-started/establish-serial-connection.html#check-port-on-windows>`_ for details.
 
 When you finish flashing, please `Check Whether AT Works`_.
 

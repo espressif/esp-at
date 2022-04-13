@@ -3,13 +3,13 @@ MQTT AT Examples for Cloud
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document mainly describes how to connect your ESP device to AWS IoT with MQTT AT commands.
+This document mainly describes how to connect your {IDF_TARGET_NAME} to AWS IoT with MQTT AT commands.
 
 .. Important::
     For details on how to use MQTT AT commands, please refer to :doc:`../AT_Command_Set/MQTT_AT_Commands`.
     You need to become familiar with the AWS IoT by reading the `AWS IoT Development Guide <https://docs.aws.amazon.com/iot/latest/developerguide/iot-gs.html>`_.
 
-Please follow the steps below to connect your ESP device to AWS IoT with ESP-AT.
+Please follow the steps below to connect your {IDF_TARGET_NAME} to AWS IoT with ESP-AT.
 
 .. contents::
    :local:
@@ -39,7 +39,7 @@ Obtain certificates and endpoints from AWS IoT
   - Information on how to activate certificates.
   - Select Ohio as your region.
 
-Connect to AWS IoT based on two-way authentication with MQTT AT commands
+Connect to AWS IoT based on mutual authentication with MQTT AT commands
 ---------------------------------------------------------------------------
 
 Replace certificates
@@ -54,7 +54,7 @@ Open your local ESP-AT project and do the following:
 Compile and flash the AT firmware
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Compile the ESP-AT project to build the AT firmware, and flash the firmware to your ESP device. For more information, please refer to :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`.
+Compile the ESP-AT project to build the AT firmware, and flash the firmware to your {IDF_TARGET_NAME}. For more information, please refer to :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`.
 
 .. note::
   If you don't want to compile the ESP-AT project to replace certificates, you can directly use the AT command to replace certificates in the firmware. For more information, please refer to :doc:`../Compile_and_Develop/how_to_generate_pki_files`.

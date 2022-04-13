@@ -19,7 +19,7 @@ Web Server AT 示例
 简介
 ^^^^
 
-通过 web server，手机或 PC 可以设置 ESP 设备的 Wi-Fi 连接信息。您可以使用手机或电脑连接到 ESP 设备的 AP，通过浏览器打开配网网页，并将 Wi-Fi 配置信息发送给 ESP 设备，然后 ESP 设备将根据该配置信息连接到指定的路由器。
+通过 web server，手机或 PC 可以设置 {IDF_TARGET_NAME} 设备的 Wi-Fi 连接信息。您可以使用手机或电脑连接到 {IDF_TARGET_NAME} 设备的 AP，通过浏览器打开配网网页，并将 Wi-Fi 配置信息发送给 {IDF_TARGET_NAME} 设备，然后 {IDF_TARGET_NAME} 设备将根据该配置信息连接到指定的路由器。
 
 流程
 ^^^^
@@ -30,10 +30,10 @@ Web Server AT 示例
    :local:
    :depth: 1
 
-配网设备连接 ESP 设备
-""""""""""""""""""""""""
+配网设备连接 {IDF_TARGET_NAME} 设备
+""""""""""""""""""""""""""""""""""""
 
-首先，为了让配网设备连接 ESP 设备，ESP 设备需要配置成 AP + STA 模式， 并创建一个 WEB 服务器等待配网信息，对应的 AT 命令如下：
+首先，为了让配网设备连接 {IDF_TARGET_NAME} 设备，{IDF_TARGET_NAME} 设备需要配置成 AP + STA 模式， 并创建一个 WEB 服务器等待配网信息，对应的 AT 命令如下：
 
 #. 清除之前的配网信息，如果不清除配网信息，可能因为依然保留之前的配置信息从而导致 WEB 服务器无法创建。
 
@@ -44,7 +44,7 @@ Web Server AT 示例
  
        AT+RESTORE
 
-#. 配置 ESP 设备为 Station + SoftAP 模式。
+#. 配置 {IDF_TARGET_NAME} 设备为 Station + SoftAP 模式。
 
 
    - Command
@@ -80,20 +80,20 @@ Web Server AT 示例
  
        AT+WEBSERVER=1,80,25
 
-然后，使用上述命令启动 web server 后，打开配网设备的 Wi-Fi 连接功能，连接 ESP 设备的 AP：
+然后，使用上述命令启动 web server 后，打开配网设备的 Wi-Fi 连接功能，连接 {IDF_TARGET_NAME} 设备的 AP：
 
 .. figure:: ../../_static/Web_server/web_brower_wifi_ap.png
    :align: center
-   :alt: 浏览器连接 ESP AP
+   :alt: 浏览器连接 {IDF_TARGET_NAME} AP
    :figclass: align-center
 
-   浏览器连接 ESP AP
+   浏览器连接 {IDF_TARGET_NAME} AP
 
 使用浏览器发送配网信息
 """"""""""""""""""""""""
 
-在配网设备连接到 ESP 设备后，即可发送 HTTP 请求，配置待接入的路由器的信息：（注意，浏览器配网不支持配网设备作为待接入 AP，例如，如果使用手机连接到 ESP 的 AP，则该手机不建议作为 ESP 设备待接入的热点。）
-在浏览器中输入 web server 默认的 IP 地址（如果未设置 ESP 设备的 SoftAP IP 地址，默认为 192.168.4.1，您可以通过 AT+CIPAP? 命令查询当前的 SoftAP IP 地址)，打开配网界面，输入拟连接的路由器的 ssid、password，点击“开始配网”即可开始配网：
+在配网设备连接到 {IDF_TARGET_NAME} 设备后，即可发送 HTTP 请求，配置待接入的路由器的信息：（注意，浏览器配网不支持配网设备作为待接入 AP，例如，如果使用手机连接到 {IDF_TARGET_NAME} 的 AP，则该手机不建议作为 {IDF_TARGET_NAME} 设备待接入的热点。）
+在浏览器中输入 web server 默认的 IP 地址（如果未设置 {IDF_TARGET_NAME} 设备的 SoftAP IP 地址，默认为 192.168.4.1，您可以通过 AT+CIPAP? 命令查询当前的 SoftAP IP 地址)，打开配网界面，输入拟连接的路由器的 ssid、password，点击“开始配网”即可开始配网：
 
 .. figure:: ../../_static/Web_server/web_brower_open_html.png
    :align: center
@@ -102,7 +102,7 @@ Web Server AT 示例
 
    浏览器打开配网界面
 
-用户也可以点击配网页面中 SSID 输入框右方的下拉框，查看 ESP 模块附近的 AP 列表，选择目标 AP 并输入 password 后，点击“开始配网”即可启动配网：
+用户也可以点击配网页面中 SSID 输入框右方的下拉框，查看 {IDF_TARGET_NAME} 模块附近的 AP 列表，选择目标 AP 并输入 password 后，点击“开始配网”即可启动配网：
 
 .. figure:: ../../_static/Web_server/web_brower_get_ap_record.png
    :align: center
@@ -123,7 +123,7 @@ Web Server AT 示例
 
    浏览器配网成功
 
-**说明** 1：配网成功后，网页将自动关闭，若想继续访问网页，请重新输入 ESP 设备的 IP 地址，重新打开网页。
+**说明** 1：配网成功后，网页将自动关闭，若想继续访问网页，请重新输入 {IDF_TARGET_NAME} 设备的 IP 地址，重新打开网页。
 
 同时，在串口端将收到如下信息：
 
@@ -152,7 +152,7 @@ Web Server AT 示例
 常见故障排除
 ^^^^^^^^^^^^
 
-**说明** 1：配网页面收到提示“数据发送失败”。请检查 ESP 模块的 Wi-Fi AP 是否正确开启，以及 AP 的相关配置，并确认已经输入正确的 AT 命令成功启用 web server。
+**说明** 1：配网页面收到提示“数据发送失败”。请检查 {IDF_TARGET_NAME} 模块的 Wi-Fi AP 是否正确开启，以及 AP 的相关配置，并确认已经输入正确的 AT 命令成功启用 web server。
 
 使用浏览器进行 OTA 固件升级
 ------------------------------
@@ -160,7 +160,7 @@ Web Server AT 示例
 简介
 ^^^^
 
-浏览器打开 web server 的网页后，可以选择进入 OTA 升级页面，通过网页对 ESP 模块进行固件升级。
+浏览器打开 web server 的网页后，可以选择进入 OTA 升级页面，通过网页对 {IDF_TARGET_NAME} 模块进行固件升级。
 
 流程
 ^^^^
@@ -181,7 +181,7 @@ Web Server AT 示例
 
    OTA 配置页面
 
-**说明** 1：仅当浏览器连接 ESP 模块的AP，或者访问 OTA 配置页面的设备与 ESP 模块连接在同一个子网中时，才可以打开该配置界面。
+**说明** 1：仅当浏览器连接 {IDF_TARGET_NAME} 模块的AP，或者访问 OTA 配置页面的设备与 {IDF_TARGET_NAME} 模块连接在同一个子网中时，才可以打开该配置界面。
 
 **说明** 2：网页上显示的“当前固件版本”为当前用户编译的应用程序版本号，用户可通过 ``./build.py menuconfig`` --> ``Component config`` --> ``AT`` --> ``AT firmware version`` (参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`)更改该版本号，建立固件版本与应用程序的同步关系，以便于管理应用程序固件版本。
 
@@ -216,7 +216,7 @@ Web Server AT 示例
 ::
 
     +WEBSERVERRSP:3      // 代表开始接收 OTA 固件数据
-    +WEBSERVERRSP:4      // 代表成功接收 OTA 固件数据并且对数据的校验正确，此时 MCU 可以选择重启 ESP 设备，以应用新版本的固件
+    +WEBSERVERRSP:4      // 代表成功接收 OTA 固件数据并且对数据的校验正确，此时 MCU 可以选择重启 {IDF_TARGET_NAME} 设备，以应用新版本的固件
 
 若接收的 OTA 固件数据校验失败，在串口端将收到如下信息：
 
@@ -231,7 +231,7 @@ Web Server AT 示例
 简介
 ^^^^
 
-微信小程序配网是通过微信小程序连接 ESP 设备创建的 AP，并通过微信小程序将需要连接的 AP 信息传输给 ESP 设备，ESP 设备通过这些信息连接到对应的 AP，并通知微信小程序配网结果的解决方案。
+微信小程序配网是通过微信小程序连接 {IDF_TARGET_NAME} 设备创建的 AP，并通过微信小程序将需要连接的 AP 信息传输给 {IDF_TARGET_NAME} 设备，{IDF_TARGET_NAME} 设备通过这些信息连接到对应的 AP，并通知微信小程序配网结果的解决方案。
 
 流程
 ^^^^
@@ -242,10 +242,10 @@ Web Server AT 示例
    :local:
    :depth: 1
 
-配置 ESP 设备参数
-"""""""""""""""""""""
+配置 {IDF_TARGET_NAME} 设备参数
+""""""""""""""""""""""""""""""""""
 
-为了让小程序连接 ESP 设备，ESP 设备需要配置成 AP + STA 模式， 并创建一个 WEB 服务器等待小程序连接，对应的 AT 命令如下：
+为了让小程序连接 {IDF_TARGET_NAME} 设备，{IDF_TARGET_NAME} 设备需要配置成 AP + STA 模式， 并创建一个 WEB 服务器等待小程序连接，对应的 AT 命令如下：
 
 #. 清除之前的配网信息，如果不清除配网信息，可能因为依然保留之前的配置信息从而导致 WEB 服务器无法创建。
 
@@ -256,7 +256,7 @@ Web Server AT 示例
  
        AT+RESTORE
 
-#. 配置 ESP 设备为 Station + SoftAP 模式。
+#. 配置 {IDF_TARGET_NAME} 设备为 Station + SoftAP 模式。
 
 
    - Command
@@ -276,7 +276,7 @@ Web Server AT 示例
 
   .. 注解::
 
-      微信小程序默认向 ssid 为 `pos_softap`，password 为 `espressif` 的 SoftAP 发起连接，请确保将 ESP 设备的参数按照上述配置进行设置。
+      微信小程序默认向 ssid 为 `pos_softap`，password 为 `espressif` 的 SoftAP 发起连接，请确保将 {IDF_TARGET_NAME} 设备的参数按照上述配置进行设置。
 
 #. 使能多连接。
 
@@ -365,10 +365,10 @@ Web Server AT 示例
 
 .. figure:: ../../_static/Web_server/web_wechat_rounter_connecting.png
    :align: center
-   :alt: 小程序启动 ESP 模块连接路由器
+   :alt: 小程序启动 {IDF_TARGET_NAME} 模块连接路由器
    :figclass: align-center
 
-   小程序启动 ESP 模块连接路由器
+   小程序启动 {IDF_TARGET_NAME} 模块连接路由器
 
 4.配网成功，小程序页面显示：
 
@@ -417,7 +417,7 @@ Web Server AT 示例
 
    输入本机 AP 的 password
 
-2.启动配网后，在收到提示“连接手机热点中”的提示后，请检查本机手机热点已经开启，此时 ESP 设备将自动扫描周围热点并发起连接。
+2.启动配网后，在收到提示“连接手机热点中”的提示后，请检查本机手机热点已经开启，此时 {IDF_TARGET_NAME} 设备将自动扫描周围热点并发起连接。
 
 .. figure:: ../../_static/Web_server/web_wechat_start_connect.png
    :align: center
@@ -430,15 +430,15 @@ Web Server AT 示例
 
 常见故障排除
 ^^^^^^^^^^^^
-**说明** 1：配网页面收到提示“数据发送失败”。请检查 ESP 模块的 Wi-Fi AP 是否正确开启，以及 AP 的相关配置，并确认已经输入正确的 AT 命令成功启用 web server。
+**说明** 1：配网页面收到提示“数据发送失败”。请检查 {IDF_TARGET_NAME} 模块的 Wi-Fi AP 是否正确开启，以及 AP 的相关配置，并确认已经输入正确的 AT 命令成功启用 web server。
 
-**说明** 2：配网页面收到提示“连接 AP 失败”。请检查配网设备的 Wi-Fi 连接功能是否打开，检查 ESP 模块的 Wi-Fi AP 是否正确开启，以及 AP 的 ssid、password 是否按上述步骤进行配置。
+**说明** 2：配网页面收到提示“连接 AP 失败”。请检查配网设备的 Wi-Fi 连接功能是否打开，检查 {IDF_TARGET_NAME} 模块的 Wi-Fi AP 是否正确开启，以及 AP 的 ssid、password 是否按上述步骤进行配置。
 
-**说明** 3：配网页面收到提示“系统保存的 Wi-Fi 配置过期”。请手动使用手机连接 ESP 模块 AP，确认 ESP 模块的 ssid、password 已经按照上述步骤进行配置。
+**说明** 3：配网页面收到提示“系统保存的 Wi-Fi 配置过期”。请手动使用手机连接 {IDF_TARGET_NAME} 模块 AP，确认 {IDF_TARGET_NAME} 模块的 ssid、password 已经按照上述步骤进行配置。
 
 使用微信小程序进行 OTA 固件升级
 ---------------------------------
-微信小程序支持在线完成 ESP 设备的固件升级，请参考上述 `配置 ESP 设备参数`_  的具体步骤完成 ESP 模块的配置（如果已经在配网时完成配置，不用重复配置）。完成配置后，设备执行 OTA 固件升级的流程与使用浏览器进行 OTA 固件升级类似，请参考 `使用浏览器进行 OTA 固件升级`_。
+微信小程序支持在线完成 {IDF_TARGET_NAME} 设备的固件升级，请参考上述 `配置 {IDF_TARGET_NAME} 设备参数`_  的具体步骤完成 {IDF_TARGET_NAME} 模块的配置（如果已经在配网时完成配置，不用重复配置）。完成配置后，设备执行 OTA 固件升级的流程与使用浏览器进行 OTA 固件升级类似，请参考 `使用浏览器进行 OTA 固件升级`_。
 
 .. _using-captive-portal:
 
@@ -457,7 +457,7 @@ Captive Portal，是一种“强制认证主页”技术，当使用支持 Capti
 流程
 ^^^^
 
-启用 Captive Portal 功能后，请参考上述 `配网设备连接 ESP 设备`_ 的具体步骤完成 ESP 模块的配置，然后连接 ESP 设备的 AP：
+启用 Captive Portal 功能后，请参考上述 `配网设备连接 {IDF_TARGET_NAME} 设备`_ 的具体步骤完成 {IDF_TARGET_NAME} 模块的配置，然后连接 {IDF_TARGET_NAME} 设备的 AP：
 
 .. figure:: ../../_static/Web_server/captive_portal_auth_pages.png
    :align: center
@@ -466,9 +466,9 @@ Captive Portal，是一种“强制认证主页”技术，当使用支持 Capti
 
    连接打开 Captive Portal 功能的 AP
 
-如上图，station 设备连接打开 Captive Portal 功能的 ESP 设备的 AP 后，提示“需登录/认证”，然后将自动打开浏览器，并跳转到 AT web 的主界面。若不能自动跳转，请根据 station 设备的提示，点击“认证”或点击上图中的“pos_softap”热点的名称，手动触发 Captive Portal 自动打开浏览器，进入到 AT web 的主界面。
+如上图，station 设备连接打开 Captive Portal 功能的 {IDF_TARGET_NAME} 设备的 AP 后，提示“需登录/认证”，然后将自动打开浏览器，并跳转到 AT web 的主界面。若不能自动跳转，请根据 station 设备的提示，点击“认证”或点击上图中的“pos_softap”热点的名称，手动触发 Captive Portal 自动打开浏览器，进入到 AT web 的主界面。
 
 常见故障排除
 ^^^^^^^^^^^^
 
-**说明** 1：通信双方（station 设备、AP 设备）都支持 Captive Portal 功能才能保证该功能正常使用，因此，若设备连接 ESP 设备的 AP 后未提示“需登录/认证”，并且没有自动进入到 AT web 的主界面，可能是 station 设备不支持该功能，此时，请参考上述 `使用浏览器发送配网信息`_ 的具体步骤手动打开 AT web 的主界面。
+**说明** 1：通信双方（station 设备、AP 设备）都支持 Captive Portal 功能才能保证该功能正常使用，因此，若设备连接 {IDF_TARGET_NAME} 设备的 AP 后未提示“需登录/认证”，并且没有自动进入到 AT web 的主界面，可能是 station 设备不支持该功能，此时，请参考上述 `使用浏览器发送配网信息`_ 的具体步骤手动打开 AT web 的主界面。

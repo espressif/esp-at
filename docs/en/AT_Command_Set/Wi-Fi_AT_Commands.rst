@@ -12,24 +12,24 @@ Wi-Fi AT Commands
 -  :ref:`AT+CWLAPOPT <cmd-LAPOPT>`: Set the configuration for the command :ref:`AT+CWLAP <cmd-LAP>`.
 -  :ref:`AT+CWLAP <cmd-LAP>`: List available APs.
 -  :ref:`AT+CWQAP <cmd-QAP>`: Disconnect from an AP.
--  :ref:`AT+CWSAP <cmd-SAP>`: Query/Set the configuration of an ESP SoftAP.
--  :ref:`AT+CWLIF <cmd-LIF>`: Obtain IP address of the station that connects to an ESP SoftAP.
--  :ref:`AT+CWQIF <cmd-QIF>`: Disconnect stations from an ESP SoftAP.
+-  :ref:`AT+CWSAP <cmd-SAP>`: Query/Set the configuration of an {IDF_TARGET_NAME} SoftAP.
+-  :ref:`AT+CWLIF <cmd-LIF>`: Obtain IP address of the station that connects to an {IDF_TARGET_NAME} SoftAP.
+-  :ref:`AT+CWQIF <cmd-QIF>`: Disconnect stations from an {IDF_TARGET_NAME} SoftAP.
 -  :ref:`AT+CWDHCP <cmd-DHCP>`: Enable/disable DHCP.
--  :ref:`AT+CWDHCPS <cmd-DHCPS>`: Query/Set the IP addresses allocated by an ESP SoftAP DHCP server.
+-  :ref:`AT+CWDHCPS <cmd-DHCPS>`: Query/Set the IP addresses allocated by an {IDF_TARGET_NAME} SoftAP DHCP server.
 -  :ref:`AT+CWAUTOCONN <cmd-AUTOC>`: Connect to an AP automatically when powered on.
 -  :ref:`AT+CWAPPROTO <cmd-APPROTO>`: Query/Set the 802.11 b/g/n protocol standard of SoftAP mode.
 -  :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`: Query/Set the 802.11 b/g/n protocol standard of station mode.
--  :ref:`AT+CIPSTAMAC <cmd-STAMAC>`: Query/Set the MAC address of an ESP station.
--  :ref:`AT+CIPAPMAC <cmd-APMAC>`: Query/Set the MAC address of an ESP SoftAP.
--  :ref:`AT+CIPSTA <cmd-IPSTA>`: Query/Set the IP address of an ESP station.
--  :ref:`AT+CIPAP <cmd-IPAP>`: Query/Set the IP address of an ESP SoftAP.
+-  :ref:`AT+CIPSTAMAC <cmd-STAMAC>`: Query/Set the MAC address of an {IDF_TARGET_NAME} station.
+-  :ref:`AT+CIPAPMAC <cmd-APMAC>`: Query/Set the MAC address of an {IDF_TARGET_NAME} SoftAP.
+-  :ref:`AT+CIPSTA <cmd-IPSTA>`: Query/Set the IP address of an {IDF_TARGET_NAME} station.
+-  :ref:`AT+CIPAP <cmd-IPAP>`: Query/Set the IP address of an {IDF_TARGET_NAME} SoftAP.
 -  :ref:`AT+CWSTARTSMART <cmd-STARTS>`: Start SmartConfig.
 -  :ref:`AT+CWSTOPSMART <cmd-STOPS>`: Stop SmartConfig.
 -  :ref:`AT+WPS <cmd-WPS>`: Enable the WPS function.
 -  :ref:`AT+MDNS <cmd-MDNS>`: Configure the mDNS function.
 -  :ref:`AT+CWJEAP <cmd-JEAP>`: Connect to a WPA2 Enterprise AP.
--  :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`: Query/Set the host name of an ESP station.
+-  :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`: Query/Set the host name of an {IDF_TARGET_NAME} station.
 -  :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`: Query/Set the Wi-Fi Country Code.
 
 .. _cmd-MODE:
@@ -42,7 +42,7 @@ Query Command
 
 **Function:**
 
-Query the Wi-Fi mode of ESP devices.
+Query the Wi-Fi mode of {IDF_TARGET_NAME}.
 
 **Command:**
 
@@ -62,7 +62,7 @@ Set Command
 
 **Function:**
 
-Set the Wi-Fi mode of ESP devices.
+Set the Wi-Fi mode of {IDF_TARGET_NAME}.
 
 **Command:**
 
@@ -86,10 +86,10 @@ Parameters
    -  2: SoftAP mode.
    -  3: SoftAP+Station mode.
 
--  **<auto_connect>**: Enable or disable automatic connection to an AP when you change the mode of the ESP device from the SoftAP mode or null mode to the station mode or the SoftAP+Station mode. Default: 1. If you omit the parameter, the default value will be used, i.e. automatically connecting to an AP. 
+-  **<auto_connect>**: Enable or disable automatic connection to an AP when you change the mode of the {IDF_TARGET_NAME} from the SoftAP mode or null mode to the station mode or the SoftAP+Station mode. Default: 1. If you omit the parameter, the default value will be used, i.e. automatically connecting to an AP. 
 
-   -  0: The ESP device will not automatically connect to an AP.
-   -  1: The ESP device will automatically connect to an AP if the configuration to connect to the AP has already been saved in flash before.
+   -  0: The {IDF_TARGET_NAME} will not automatically connect to an AP.
+   -  1: The {IDF_TARGET_NAME} will automatically connect to an AP if the configuration to connect to the AP has already been saved in flash before.
 
 Note
 ^^^^^
@@ -113,7 +113,7 @@ Query Command
 
 **Function:**
 
-Query the Wi-Fi state and Wi-Fi information of ESP devices.
+Query the Wi-Fi state and Wi-Fi information of {IDF_TARGET_NAME}.
 
 **Command:**
 
@@ -134,18 +134,18 @@ Parameters
 
 -  **<state>**: current Wi-Fi state.
 
-   -  0: ESP station has not started any Wi-Fi connection.
-   -  1: ESP station has connected to an AP, but does not get an IPv4 address yet.
-   -  2: ESP station has connected to an AP, and got an IPv4 address.
-   -  3: ESP station is in Wi-Fi connecting or reconnecting state.
-   -  4: ESP station is in Wi-Fi disconnected state.
+   -  0: {IDF_TARGET_NAME} station has not started any Wi-Fi connection.
+   -  1: {IDF_TARGET_NAME} station has connected to an AP, but does not get an IPv4 address yet.
+   -  2: {IDF_TARGET_NAME} station has connected to an AP, and got an IPv4 address.
+   -  3: {IDF_TARGET_NAME} station is in Wi-Fi connecting or reconnecting state.
+   -  4: {IDF_TARGET_NAME} station is in Wi-Fi disconnected state.
 
 -  **<"ssid">**: the SSID of the target AP.
 
 Note
 ^^^^^
 
-- When ESP station is not connected to an AP, it is recommended to use this command to query Wi-Fi information; after ESP station is connected to an AP, it is recommended to use :ref:`AT+CWJAP <cmd-JAP>` to query Wi-Fi information.
+- When {IDF_TARGET_NAME} station is not connected to an AP, it is recommended to use this command to query Wi-Fi information; after {IDF_TARGET_NAME} station is connected to an AP, it is recommended to use :ref:`AT+CWJAP <cmd-JAP>` to query Wi-Fi information.
 
 .. _cmd-JAP:
 
@@ -157,7 +157,7 @@ Query Command
 
 **Function:**
 
-Query the AP to which the ESP Station is already connected.
+Query the AP to which the {IDF_TARGET_NAME} Station is already connected.
 
 **Command:**
 
@@ -177,7 +177,7 @@ Set Command
 
 **Function:**
 
-Connect an ESP station to a targeted AP.
+Connect an {IDF_TARGET_NAME} station to a targeted AP.
 
 **Command:**
 
@@ -208,7 +208,7 @@ Execute Command
 
 **Function:**
 
-Connect an ESP station to a targeted AP with last Wi-Fi configuration.
+Connect an {IDF_TARGET_NAME} station to a targeted AP with last Wi-Fi configuration.
 
 **Command:**
 
@@ -247,18 +247,18 @@ Parameters
 -  **<rssi>**: signal strength.
 -  **<pci_en>**: PCI Authentication.
 
-   - 0: The ESP station will connect APs with all encryption methods, including OPEN and WEP.
-   - 1: The ESP station will connect APs with all encryption methods, except OPEN and WEP.
+   - 0: The {IDF_TARGET_NAME} station will connect APs with all encryption methods, including OPEN and WEP.
+   - 1: The {IDF_TARGET_NAME} station will connect APs with all encryption methods, except OPEN and WEP.
 
 -  **<reconn_interval>**: the interval between Wi-Fi reconnections. Unit: second. Default: 1. Maximum: 7200.
 
-   -  0: The ESP station will not reconnect to the AP when disconnected.
-   -  [1,7200]: The ESP station will reconnect to the AP at the specified interval when disconnected.
+   -  0: The {IDF_TARGET_NAME} station will not reconnect to the AP when disconnected.
+   -  [1,7200]: The {IDF_TARGET_NAME} station will reconnect to the AP at the specified interval when disconnected.
 
 -  **<listen_interval>**: the interval of listening to the AP's beacon. Unit: AP beacon intervals. Default: 3. Range: [1,100].
 -  **<scan_mode>**:
 
-   -  0: fast scan. It will end after finding the targeted AP. The ESP station will connect to the first scanned AP.
+   -  0: fast scan. It will end after finding the targeted AP. The {IDF_TARGET_NAME} station will connect to the first scanned AP.
    -  1: all-channel scan. It will end after all the channels are scanned. The device will connect to the scanned AP with the strongest signal.
 
 -  **<jap_timeout>**: maximum timeout for :ref:`AT+CWJAP <cmd-JAP>` command. Unit: second. Default: 15. Range: [3,600].
@@ -281,7 +281,7 @@ Notes
 
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  This command requires Station mode to be enabled.
-- After ESP station is connected to an AP, it is recommended to use this command to query Wi-Fi information; when ESP station is not connected to an AP, it is recommended to use :ref:`AT+CWSTATE <cmd-WSTATE>` to query Wi-Fi information.
+- After {IDF_TARGET_NAME} station is connected to an AP, it is recommended to use this command to query Wi-Fi information; when {IDF_TARGET_NAME} station is not connected to an AP, it is recommended to use :ref:`AT+CWSTATE <cmd-WSTATE>` to query Wi-Fi information.
 -  The parameter ``<reconn_interval>`` of this command is the same as ``<interval_second>`` of the command :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`. Therefore, if you omit ``<reconn_interval>`` when running this command, the interval between Wi-Fi reconnections will use the default value 1.
 -  If the ``<ssid>`` and ``<password>`` parameter are omitted, AT will use the last configuration.
 -  Execute command has the same maximum timeout to setup command. The default value is 15 seconds, but you can change it by setting the parameter ``<jap_timeout>``.
@@ -356,23 +356,23 @@ Parameters
 
 -  **<interval_second>**: the interval between Wi-Fi reconnections. Unit: second. Default: 0. Maximum: 7200.
 
-   -  0: The ESP station will not reconnect to the AP when disconnected.
-   -  [1,7200]: The ESP station will reconnect to the AP at the specified interval when disconnected.
+   -  0: The {IDF_TARGET_NAME} station will not reconnect to the AP when disconnected.
+   -  [1,7200]: The {IDF_TARGET_NAME} station will reconnect to the AP at the specified interval when disconnected.
 
--  **<repeat_count>**: the number of attempts the ESP device makes to reconnect to the AP. This parameter only works when the parameter ``<interval_second>`` is not 0. Default: 0. Maximum: 1000.
+-  **<repeat_count>**: the number of attempts the {IDF_TARGET_NAME} makes to reconnect to the AP. This parameter only works when the parameter ``<interval_second>`` is not 0. Default: 0. Maximum: 1000.
 
-   -  0: The ESP station will always try to reconnect to AP.
-   -  [1,1000]: The ESP station will attempt to reconnect to AP for the specified times.
+   -  0: The {IDF_TARGET_NAME} station will always try to reconnect to AP.
+   -  [1,1000]: The {IDF_TARGET_NAME} station will attempt to reconnect to AP for the specified times.
 
 Example
 ^^^^^^^^
 
 ::
 
-    // The ESP station tries to reconnect to AP at the interval of one second for 100 times.
+    // The {IDF_TARGET_NAME} station tries to reconnect to AP at the interval of one second for 100 times.
     AT+CWRECONNCFG=1,100
 
-    // The ESP station will not reconnect to AP when disconnected.
+    // The {IDF_TARGET_NAME} station will not reconnect to AP when disconnected.
     AT+CWRECONNCFG=0,0
 
 Notes
@@ -573,15 +573,15 @@ Execute Command
 
 .. _cmd-SAP:
 
-:ref:`AT+CWSAP <WiFi-AT>`: Query/Set the configuration of an ESP SoftAP
-------------------------------------------------------------------------
+:ref:`AT+CWSAP <WiFi-AT>`: Query/Set the configuration of an {IDF_TARGET_NAME} SoftAP
+-------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 
 **Function:**
 
-Query the configuration parameters of an ESP SoftAP.
+Query the configuration parameters of an {IDF_TARGET_NAME} SoftAP.
 
 **Command:**
 
@@ -601,7 +601,7 @@ Set Command
 
 **Function:**
 
-Set the configuration of an ESP SoftAP.
+Set the configuration of an {IDF_TARGET_NAME} SoftAP.
 
 **Command:**
 
@@ -628,7 +628,7 @@ Parameters
    -  3: WPA2_PSK
    -  4: WPA_WPA2_PSK
 
--  **[<max conn>]**: maximum number of stations that ESP SoftAP can connect. Range: [1,10].
+-  **[<max conn>]**: maximum number of stations that {IDF_TARGET_NAME} SoftAP can connect. Range: [1,10].
 -  **[<ssid hidden>]**:
 
    -  0: broadcasting SSID (default).
@@ -650,8 +650,8 @@ Example
 
 .. _cmd-LIF:
 
-:ref:`AT+CWLIF <WiFi-AT>`: Obtain IP Address of the Station That Connects to an ESP SoftAP
----------------------------------------------------------------------------------------------
+:ref:`AT+CWLIF <WiFi-AT>`: Obtain IP Address of the Station That Connects to an {IDF_TARGET_NAME} SoftAP
+--------------------------------------------------------------------------------------------------------
 
 Execute Command
 ^^^^^^^^^^^^^^^
@@ -673,25 +673,25 @@ Execute Command
 Parameters
 ^^^^^^^^^^
 
--  **<ip addr>**: IP address of the station that connects to the ESP SoftAP.
--  **<mac>**: MAC address of the station that connects to the ESP SoftAP.
+-  **<ip addr>**: IP address of the station that connects to the {IDF_TARGET_NAME} SoftAP.
+-  **<mac>**: MAC address of the station that connects to the {IDF_TARGET_NAME} SoftAP.
 
 Note
 ^^^^^
 
--  This command cannot get a static IP. It works only when DHCP of both the ESP SoftAP and the connected station are enabled.
+-  This command cannot get a static IP. It works only when DHCP of both the {IDF_TARGET_NAME} SoftAP and the connected station are enabled.
 
 .. _cmd-QIF:
 
-:ref:`AT+CWQIF <WiFi-AT>`: Disconnect Stations from an ESP SoftAP
----------------------------------------------------------------------
+:ref:`AT+CWQIF <WiFi-AT>`: Disconnect Stations from an {IDF_TARGET_NAME} SoftAP
+-------------------------------------------------------------------------------
 
 Execute Command
 ^^^^^^^^^^^^^^^
 
 **Function:**
 
-Disconnect all stations that are connected to the ESP SoftAP.
+Disconnect all stations that are connected to the {IDF_TARGET_NAME} SoftAP.
 
 **Command:**
 
@@ -710,7 +710,7 @@ Set Command
 
 **Function:**
 
-Disconnect a specific station from the ESP SoftAP.
+Disconnect a specific station from the {IDF_TARGET_NAME} SoftAP.
 
 **Command:**
 
@@ -821,8 +821,8 @@ Example
 
 .. _cmd-DHCPS:
 
-:ref:`AT+CWDHCPS <WiFi-AT>`: Query/Set the IP Addresses Allocated by an ESP SoftAP DHCP Server
------------------------------------------------------------------------------------------------
+:ref:`AT+CWDHCPS <WiFi-AT>`: Query/Set the IP Addresses Allocated by an {IDF_TARGET_NAME} SoftAP DHCP Server
+------------------------------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -845,7 +845,7 @@ Set Command
 
 **Function:**
 
-Set the IP address range of the ESP SoftAP DHCP server.
+Set the IP address range of the {IDF_TARGET_NAME} SoftAP DHCP server.
 
 **Command:**
 
@@ -868,15 +868,15 @@ Parameters
    -  0: Disable DHCP server settings and use the default IP address range.
 
 -  **<lease time>**: lease time. Unit: minute. Range [1,2880].
--  **<start IP>**: start IP address of the IP address range that can be obtained from ESP SoftAP DHCP server.
--  **<end IP>**: end IP address of the IP address range that can be obtained from ESP SoftAP DHCP server.
+-  **<start IP>**: start IP address of the IP address range that can be obtained from {IDF_TARGET_NAME} SoftAP DHCP server.
+-  **<end IP>**: end IP address of the IP address range that can be obtained from {IDF_TARGET_NAME} SoftAP DHCP server.
 
 Notes
 ^^^^^
 
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  This AT command works only when both SoftAP and DHCP server are enabled for ESP devices.
--  The IP address should be in the same network segment as the IP address of ESP SoftAP.
+-  This AT command works only when both SoftAP and DHCP server are enabled for {IDF_TARGET_NAME}.
+-  The IP address should be in the same network segment as the IP address of {IDF_TARGET_NAME} SoftAP.
 
 Example
 ^^^^^^^^
@@ -975,8 +975,8 @@ Parameters
 Note
 ^^^^^
 
--  Currently ESP devices only support 802.11b or 802.11bg or 802.11bgn mode.
--  By default, PHY mode of ESP devices is 802.11bgn mode.
+-  Currently {IDF_TARGET_NAME} only support 802.11b or 802.11bg or 802.11bgn mode.
+-  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgn mode.
 
 .. _cmd-STAPROTO:
 
@@ -1026,21 +1026,21 @@ Parameters
 Note
 ^^^^^
 
--  Currently ESP devices only support 802.11b or 802.11bg or 802.11bgn mode.
--  By default, PHY mode of ESP devices is 802.11bgn mode.
+-  Currently {IDF_TARGET_NAME} only support 802.11b or 802.11bg or 802.11bgn mode.
+-  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgn mode.
 -  This command is supported since ESP-AT v2.1.0.0
 
 .. _cmd-STAMAC:
 
-:ref:`AT+CIPSTAMAC <WiFi-AT>`: Query/Set the MAC Address of an ESP Station
-----------------------------------------------------------------------------
+:ref:`AT+CIPSTAMAC <WiFi-AT>`: Query/Set the MAC Address of an {IDF_TARGET_NAME} Station
+----------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 
 **Function:**
 
-Query the MAC address of the ESP Station.
+Query the MAC address of the {IDF_TARGET_NAME} Station.
 
 **Command:**
 
@@ -1060,7 +1060,7 @@ Set Command
 
 **Function:**
 
-Set the MAC address of an ESP station.
+Set the MAC address of an {IDF_TARGET_NAME} station.
 
 **Command:**
 
@@ -1077,15 +1077,18 @@ Set the MAC address of an ESP station.
 Parameters
 ^^^^^^^^^^
 
--  **<mac>**: string parameter showing MAC address of an ESP station.
+-  **<mac>**: string parameter showing MAC address of an {IDF_TARGET_NAME} station.
 
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  The MAC address of ESP SoftAP is different from that of the ESP Station. Please make sure that you do not set the same MAC address for both of them.
--  Bit 0 of the ESP MAC address CANNOT be 1. For example, a MAC address can be "1a:…" but not "15:…".
--  FF:FF:FF:FF:FF:FF and 00:00:00:00:00:00 are invalid MAC address and cannot be set.
+.. list::
+
+  - The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+  :esp32: - The MAC address of {IDF_TARGET_NAME} Station is different from that of the {IDF_TARGET_NAME} SoftAP and {IDF_TARGET_NAME} Ethernet. Please make sure that you do not set the same MAC address for both of them.
+  :esp32c3: - The MAC address of {IDF_TARGET_NAME} Station is different from that of the {IDF_TARGET_NAME} SoftAP. Please make sure that you do not set the same MAC address for both of them.
+  - Bit 0 of the {IDF_TARGET_NAME} MAC address CANNOT be 1. For example, a MAC address can be "1a:…" but not "15:…".
+  - FF:FF:FF:FF:FF:FF and 00:00:00:00:00:00 are invalid MAC address and cannot be set.
 
 Example
 ^^^^^^^^
@@ -1096,14 +1099,14 @@ Example
 
 .. _cmd-APMAC:
 
-:ref:`AT+CIPAPMAC <WiFi-AT>`: Query/Set the MAC Address of an ESP SoftAP
---------------------------------------------------------------------------
+:ref:`AT+CIPAPMAC <WiFi-AT>`: Query/Set the MAC Address of an {IDF_TARGET_NAME} SoftAP
+--------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 **Function:**
 
-Query the MAC address of the ESP SoftAP.
+Query the MAC address of the {IDF_TARGET_NAME} SoftAP.
 
 **Command:**
 
@@ -1123,7 +1126,7 @@ Set Command
 
 **Function:**
 
-Set the MAC address of the ESP SoftAP.
+Set the MAC address of the {IDF_TARGET_NAME} SoftAP.
 
 **Command:**
 
@@ -1140,15 +1143,18 @@ Set the MAC address of the ESP SoftAP.
 Parameters
 ^^^^^^^^^^
 
--  **<mac>**: string parameter showing MAC address of the ESP SoftAP.
+-  **<mac>**: string parameter showing MAC address of the {IDF_TARGET_NAME} SoftAP.
 
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  The MAC address of ESP SoftAP is different from that of the ESP station. Please make sure that you do not set the same MAC address for both of them.
--  Bit 0 of the ESP MAC address CANNOT be 1. For example, a MAC address can be "18:…" but not "15:…".
--  FF:FF:FF:FF:FF:FF and 00:00:00:00:00:00 are invalid MAC and cannot be set.
+.. list::
+
+  - The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+  :esp32: - The MAC address of {IDF_TARGET_NAME} SoftAP is different from that of the {IDF_TARGET_NAME} station and {IDF_TARGET_NAME} Ethernet. Please make sure that you do not set the same MAC address for both of them.
+  :esp32c3: - The MAC address of {IDF_TARGET_NAME} SoftAP is different from that of the {IDF_TARGET_NAME} station. Please make sure that you do not set the same MAC address for both of them.
+  - Bit 0 of the {IDF_TARGET_NAME} MAC address CANNOT be 1. For example, a MAC address can be "18:…" but not "15:…".
+  - FF:FF:FF:FF:FF:FF and 00:00:00:00:00:00 are invalid MAC and cannot be set.
 
 Example
 ^^^^^^^^
@@ -1159,15 +1165,15 @@ Example
 
 .. _cmd-IPSTA:
 
-:ref:`AT+CIPSTA <WiFi-AT>`: Query/Set the IP Address of an ESP Station
-------------------------------------------------------------------------
+:ref:`AT+CIPSTA <WiFi-AT>`: Query/Set the IP Address of an {IDF_TARGET_NAME} Station
+------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 
 **Function:**
 
-Query the IP address of the ESP Station.
+Query the IP address of the {IDF_TARGET_NAME} Station.
 
 **Command:**
 
@@ -1192,7 +1198,7 @@ Set Command
 
 **Function:**
 
-Set the IPv4 address of the ESP station.
+Set the IPv4 address of the {IDF_TARGET_NAME} station.
 
 **Command:**
 
@@ -1209,15 +1215,15 @@ Set the IPv4 address of the ESP station.
 Parameters
 ^^^^^^^^^^
 
--  **<"ip">**: string parameter showing the IPv4 address of the ESP station.
+-  **<"ip">**: string parameter showing the IPv4 address of the {IDF_TARGET_NAME} station.
 -  **<"gateway">**: gateway.
 -  **<"netmask">**: netmask.
--  **<"ipv6 addr">**: string parameter showing the IPv6 address of the ESP station.
+-  **<"ipv6 addr">**: string parameter showing the IPv6 address of the {IDF_TARGET_NAME} station.
 
 Notes
 ^^^^^
 
--  For the query command, only when the ESP station is connected to an AP or the static IP address is configured can its IP address be queried.
+-  For the query command, only when the {IDF_TARGET_NAME} station is connected to an AP or the static IP address is configured can its IP address be queried.
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The Set Command correlates with the commands that set DHCP, such as :ref:`AT+CWDHCP <cmd-DHCP>`.
 
@@ -1234,15 +1240,15 @@ Example
 
 .. _cmd-IPAP:
 
-:ref:`AT+CIPAP <WiFi-AT>`: Query/Set the IP Address of an ESP SoftAP
-----------------------------------------------------------------------
+:ref:`AT+CIPAP <WiFi-AT>`: Query/Set the IP Address of an {IDF_TARGET_NAME} SoftAP
+----------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 
 **Function:**
 
-Query the IP address of the ESP SoftAP.
+Query the IP address of the {IDF_TARGET_NAME} SoftAP.
 
 **Command:**
 
@@ -1267,7 +1273,7 @@ Set Command
 
 **Function:**
 
-Set the IPv4 address of the ESP SoftAP.
+Set the IPv4 address of the {IDF_TARGET_NAME} SoftAP.
 
 **Command:**
 
@@ -1284,10 +1290,10 @@ Set the IPv4 address of the ESP SoftAP.
 Parameters
 ^^^^^^^^^^
 
--  **<"ip">**: string parameter showing the IPv4 address of the ESP SoftAP.
+-  **<"ip">**: string parameter showing the IPv4 address of the {IDF_TARGET_NAME} SoftAP.
 -  **<"gateway">**: gateway.
 -  **<"netmask">**: netmask.
--  **<"ipv6 addr">**: string parameter showing the IPv6 address of the ESP SoftAP.
+-  **<"ipv6 addr">**: string parameter showing the IPv6 address of the {IDF_TARGET_NAME} SoftAP.
 
 Notes
 ^^^^^
@@ -1370,11 +1376,11 @@ Notes
 ^^^^^
 
 -  For more details on SmartConfig, please see `ESP-TOUCH User Guide <https://www.espressif.com/sites/default/files/documentation/esp-touch_user_guide_en.pdf>`_.
--  SmartConfig is only available in the ESP station mode.
--  The message ``Smart get Wi-Fi info`` means that SmartConfig has successfully acquired the AP information. ESP device will try to connect to the target AP.
+-  SmartConfig is only available in the {IDF_TARGET_NAME} station mode.
+-  The message ``Smart get Wi-Fi info`` means that SmartConfig has successfully acquired the AP information. {IDF_TARGET_NAME} will try to connect to the target AP.
 -  Message ``+SCRD:<length>,<rvd data>`` means that ESP-Touch v2 has successfully acquired the reserved data information.
 -  Message ``Smartconfig connected Wi-Fi`` is printed if the connection is successful.
--  When AT returns ``Smartconfig connected Wi-Fi``, it is recommended to delay more than ``6`` seconds before executing :ref:`AT+CWSTOPSMART <cmd-STOPS>` because the ESP device needs to synchronize the SmartConfig results to the mobile phone.
+-  When AT returns ``Smartconfig connected Wi-Fi``, it is recommended to delay more than ``6`` seconds before executing :ref:`AT+CWSTOPSMART <cmd-STOPS>` because the {IDF_TARGET_NAME} needs to synchronize the SmartConfig results to the mobile phone.
 -  Use command :ref:`AT+CWSTOPSMART <cmd-STOPS>` to stop SmartConfig before running other commands. Please make sure that you do not execute other commands during SmartConfig.
 
 Example
@@ -1461,7 +1467,7 @@ Parameters
 Notes
 ^^^^^
 
--  WPS can only be used when the ESP station is enabled.
+-  WPS can only be used when the {IDF_TARGET_NAME} station is enabled.
 -  WPS does not support WEP (Wired-Equivalent Privacy) encryption.
 
 Example
@@ -1524,7 +1530,7 @@ Query Command
 
 **Function:**
 
-Query the configuration information of the Enterprise AP to which the ESP station is already connected.
+Query the configuration information of the Enterprise AP to which the {IDF_TARGET_NAME} station is already connected.
 
 **Command:**
 
@@ -1689,15 +1695,15 @@ Note
 
 .. _cmd-HOSTNAME:
 
-:ref:`AT+CWHOSTNAME <WiFi-AT>`: Query/Set the Host Name of an ESP Station
---------------------------------------------------------------------------
+:ref:`AT+CWHOSTNAME <WiFi-AT>`: Query/Set the Host Name of an {IDF_TARGET_NAME} Station
+---------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 
 **Function:**
 
-Query the host name of ESP Station.
+Query the host name of {IDF_TARGET_NAME} Station.
 
 **Command:**
 
@@ -1718,7 +1724,7 @@ Set Command
 
 **Function:**
 
-Set the host name of ESP Station.
+Set the host name of {IDF_TARGET_NAME} Station.
 
 **Command:**
 
@@ -1741,7 +1747,7 @@ If the Station mode is not enabled, the command will return:
 Parameters
 ^^^^^^^^^^
 
--  **<hostname>**: the host name of the ESP Station. Maximum length: 32 bytes.
+-  **<hostname>**: the host name of the {IDF_TARGET_NAME} Station. Maximum length: 32 bytes.
 
 Note
 ^^^^^
@@ -1806,7 +1812,7 @@ Parameters
 
 -  **<country_policy>**:
 
-   -  0: will change the county code to be the same as the AP that the ESP device is connected to.
+   -  0: will change the county code to be the same as the AP that the {IDF_TARGET_NAME} is connected to.
    -  1: the country code will not change, always be the one set by command.
 
 -  **<country_code>**: country code. Maximum length: 3 characters.

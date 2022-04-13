@@ -3,7 +3,7 @@ HTTP AT Examples
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document provides detailed command examples to illustrate how to utilize :doc:`../AT_Command_Set/HTTP_AT_Commands` on ESP devices.
+This document provides detailed command examples to illustrate how to utilize :doc:`../AT_Command_Set/HTTP_AT_Commands` on {IDF_TARGET_NAME}.
 
 .. contents::
    :local:

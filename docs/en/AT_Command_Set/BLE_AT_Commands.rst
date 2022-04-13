@@ -137,7 +137,7 @@ Notes
 -  The file "at_customize.bin" has to be downloaded, so that the relevant commands can be used. Please refer to :doc:`../Compile_and_Develop/How_to_customize_BLE_services` for more details.
 -  Before using other Bluetooth LE AT commands, you should run this command first to trigger the initialization process.
 -  After the initialization, the Bluetooth LE role cannot be changed unless you run :ref:`AT+RST <cmd-RST>` to restart the system first and then re-initialize the Bluetooth LE role.
--  If you use an ESP device as a Bluetooth LE server, a service bin should be downloaded into flash.
+-  If you use an {IDF_TARGET_NAME} as a Bluetooth LE server, a service bin should be downloaded into flash.
 
    -  To learn how to generate a service bin, please refer to esp-at/tools/readme.md.
    -  The download address of the service bin is the "ble_data" address in esp-at/module_config/module_${platform}_default/at_customize.csv.
@@ -1154,7 +1154,7 @@ The Generic Attributes Server (GATTS) creates Bluetooth LE services.
 Notes
 ^^^^^
 
--  If you are using an ESP device as a Bluetooth LE server, a service bin should be downloaded into flash in order to provide services.
+-  If you are using an {IDF_TARGET_NAME} as a Bluetooth LE server, a service bin should be downloaded into flash in order to provide services.
 
    -  To learn how to generate a service bin, please refer to esp-at/tools/readme.md.
    -  The download address of the service bin is the "ble_data" address in esp-at/module_config/module_${platform}_default/at_customize.csv.
@@ -2111,7 +2111,7 @@ Example
    AT+BLESECPARAM=1,0,16,3,3
    AT+BLESETKEY=123456
    AT+BLEADVSTART
-   // Use your Bluetooth LE debugging app as a client to establish a Bluetooth LE connection with the ESP device
+   // Use your Bluetooth LE debugging app as a client to establish a Bluetooth LE connection with the {IDF_TARGET_NAME}
    AT+BLEENC=0,3
 
 .. _cmd-BLEENCRSP:

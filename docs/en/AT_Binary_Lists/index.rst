@@ -12,7 +12,7 @@ AT Binary Lists
 Each of the linked above ESP-AT firmware contains several binaries dedicated to some specific functions, and the ``factory/factory_xxx.bin`` is the combination of all binaries. So you can either download the ``factory/factory_xxx.bin`` to address 0, or several binaries to different addresses according to ``download.config``. Please refer to :ref:`Download AT Firmware <download-at-firmware>` for how to download.
 
 -   ``at_customize.bin`` provides a user partition table, which lists the starting address and partition size for the ``ble_data.bin``, SSL certificates, MQTT certificates, ``factory_param_XXX.bin``, and so on. You can read and write contents of the partition listed in this file with the command :ref:`AT+FS <cmd-FS>` and :ref:`AT+SYSFLASH <cmd-SYSFLASH>`.
--   ``factory_param_XXX.bin`` indicates the hardware configurations for different ESP modules (see the table below). Please make sure the correct bin is used for your specific module.
+-   ``factory_param_XXX.bin`` indicates the hardware configurations for different {IDF_TARGET_NAME} modules (see the table below). Please make sure the correct bin is used for your specific module.
 
     .. note::
 
@@ -72,7 +72,7 @@ Each of the linked above ESP-AT firmware contains several binaries dedicated to 
            - GPIO4
          - ``factory_param_MINI-1.bin``
 
--   ``ble_data.bin`` provides Bluetooth LE services when the ESP device works as a Bluetooth LE server;
+-   ``ble_data.bin`` provides Bluetooth LE services when the {IDF_TARGET_NAME} works as a Bluetooth LE server;
 -   ``server_cert.bin``, ``server_key.bin`` and ``server_ca.bin`` are examples of SSL server's certificate;
 -   ``client_cert.bin``, ``client_key.bin`` and ``client_ca.bin`` are examples of SSL client's certificate;
 -   ``mqtt_cert.bin``, ``mqtt_key.bin`` and ``mqtt_ca.bin`` are examples of MQTT SSL client's certificate;

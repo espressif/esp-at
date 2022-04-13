@@ -5,12 +5,18 @@
 
 由于 ESP-AT 在 GitHub 上启用 CI（持续集成），因此每次代码被推送到 GitHub 都会生成 ESP-AT 固件的临时版本。
 
-.. note::
-  **AT 固件的临时版本仅用于测试，乐鑫不对其负责**。您需要自行测试和保存固件。
+.. attention::
+  **AT 固件的临时版本仅用于测试，乐鑫不对其负责**，您需要自行测试功能。
+  
+  **请保存好下载的固件以及下载链接**，用于后续可能的问题定位。
 
-以下步骤指导您如何从 GitHub 下载最新临时版本 AT 固件。在开始之前，请先登录您的 GitHub 账号，因为下载固件需要登录权限。
+以下步骤指导您如何从 GitHub 下载最新临时版本 AT 固件。
 
-1. 打开网页 https://github.com/espressif/esp-at。
+#. 登录您的 GitHub 账号
+
+   在开始之前，**请先登录您的 GitHub 账号**，因为下载固件需要登录权限。
+
+#. 打开网页 https://github.com/espressif/esp-at
 
    .. figure:: ../../_static/download_temp_version/download-temp-version-github.png
     :align: center
@@ -19,7 +25,7 @@
 
     ESP-AT GitHub 官方页面
 
-2. 点击 "Actions" 进入 "Actions" 页面。
+#. 点击 "Actions" 进入 "Actions" 页面
 
    .. figure:: ../../_static/download_temp_version/download-temp-version-click-actions.png
     :align: center
@@ -35,7 +41,18 @@
 
     Actions 页面
 
-3. 点击最新的 workflow 进入 workflow 页面。
+#. 点击 "Branch" 选择指定分支
+
+    默认为 master 分支。如果您想下载指定分支的临时固件，点击 "Branch" 进入指定分支的 workflow 页面。
+
+    .. figure:: ../../_static/download_temp_version/download-temp-version-click-branch-workflow.png
+      :align: center
+      :figclass: align-center
+      :alt: 点击 Branch
+
+      点击 Branch
+
+#. 点击最新的 workflow 进入 workflow 页面
 
    .. figure:: ../../_static/download_temp_version/download-temp-version-click-workflow.png
     :align: center
@@ -51,16 +68,7 @@
 
     最新的 Workflow 页面
 
-   如果您想下载指定分支的临时固件，点击 "Branch" 进入指定分支的 workflow 页面。
-
-   .. figure:: ../../_static/download_temp_version/download-temp-version-click-branch-workflow.png
-    :align: center
-    :figclass: align-center
-    :alt: 点击 Branch
-
-    点击 Branch
-
-4. 将页面滚动到最后，在 ``Artifacts`` 页面中选择相对应的模组。
+#. 将页面滚动到最后，在 ``Artifacts`` 页面中选择相对应的模组
 
    .. figure:: ../../_static/download_temp_version/download-temp-version-artifacts.png
     :align: center
@@ -69,7 +77,7 @@
 
     Artifacts 页面
 
-5. 点击下载模组的最新临时版本 AT 固件。
+#. 点击下载模组的最新临时版本 AT 固件
 
-.. note::
-  如果您在 ``Artifacts`` 页面中没有找到对应的模组，请参考 :doc:`esp-at_firmware_differences` 选择类似固件进行下载。
+   .. note::
+    如果您在 ``Artifacts`` 页面中没有找到对应的模组，请参考 :doc:`esp-at_firmware_differences` 选择类似固件进行下载。

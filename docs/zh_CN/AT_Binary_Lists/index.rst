@@ -12,7 +12,7 @@ AT 固件
 以上链接中下载的 ESP-AT 固件包含了若干个特定功能的二进制文件，``factory/factory_xxx.bin`` 文件是这些特定功能的二进制文件的合集。您可以仅烧录 ``factory/factory_xxx.bin`` 到起始地址为 0 的 flash 空间中，或者根据 ``download.config`` 文件中的信息将若干个二进制文件烧录到 flash 中对应起始地址的空间中。关于如何下载，请参考 :ref:`下载 AT 固件 <download-at-firmware>`。
 
 -  ``at_customize.bin`` 提供了用户分区表，该表列出了 ``ble_data.bin`` 分区、SSL 证书分区、MQTT 证书分区以及 ``factory_param_XXX.bin`` 分区和其它一些分区的的起始地址和分区大小。您可以通过 AT 命令 :ref:`AT+FS <cmd-FS>` 和 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 来读和写该文件中罗列的分区里的内容。
--  ``factory_param_XXX.bin`` 指出了不同 ESP 模组之间的硬件配置（见下表）。请确保您的模组使用了正确的固件。
+-  ``factory_param_XXX.bin`` 指出了不同 {IDF_TARGET_NAME} 模组之间的硬件配置（见下表）。请确保您的模组使用了正确的固件。
 
     .. note::
 
@@ -72,7 +72,7 @@ AT 固件
            - GPIO4
          - ``factory_param_MINI-1.bin``
 
--   ``ble_data.bin`` 在 ESP 工作于 Bluetooth LE 服务端的时候提供蓝牙服务；
+-   ``ble_data.bin`` 在 {IDF_TARGET_NAME} 工作于 Bluetooth LE 服务端的时候提供蓝牙服务；
 -   ``server_cert.bin``、``server_key.bin`` 和 ``server_ca.bin`` 是 SSL 服务端示例证书；
 -   ``client_cert.bin``、``client_key.bin`` 和 ``client_ca.bin`` 是 SSL 客户端示例证书；
 -   ``mqtt_cert.bin``、``mqtt_key.bin`` 和 ``mqtt_ca.bin`` 是 MQTT SSL 客户端示例证书；

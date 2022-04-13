@@ -18,7 +18,7 @@
    :esp32: 如何使能 {IDF_TARGET_NAME}-AT 以太网 <How_to_enable_ESP_AT_Ethernet>
    如何增加一个新的模组支持 <How_to_add_support_for_a_module>
    :esp32: {IDF_TARGET_NAME} SDIO AT 指南 <{IDF_TARGET_PATH_NAME}-sdio-at-guide.rst>
-   如何实现 SPI AT <How_to_implement_SPI_AT>
+   :esp32c3: 如何实现 SPI AT <How_to_implement_SPI_AT>
    如何基于乐鑫服务器实现自己的 OTA 管理 <How_to_implement_OTA_update>
    如何更新 ESP-IDF 版本 <How_to_update_IDF>
    ESP-AT 固件差异 <esp-at_firmware_differences>

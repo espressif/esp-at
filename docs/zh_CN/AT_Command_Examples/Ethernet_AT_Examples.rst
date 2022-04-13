@@ -3,7 +3,7 @@
 
 :link_to_translation:`en:[English]`
 
-本文档主要介绍 :doc:`../AT_Command_Set/Ethernet_AT_Commands` 的使用方法，并提供在 ESP 设备上运行这些命令的详细示例。
+本文档主要介绍 :doc:`../AT_Command_Set/Ethernet_AT_Commands` 的使用方法，并提供在 {IDF_TARGET_NAME} 设备上运行这些命令的详细示例。
 
 .. contents::
    :local:

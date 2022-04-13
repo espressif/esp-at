@@ -13,7 +13,7 @@ MQTT AT 命令集
 -  :ref:`AT+MQTTALPN <cmd-MQTTALPN>`：设置 MQTT 应用层协议协商（ALPN）
 -  :ref:`AT+MQTTCONN <cmd-MQTTCONN>`：连接 MQTT Broker
 -  :ref:`AT+MQTTPUB <cmd-MQTTPUB>`：发布 MQTT 消息（字符串）
--  :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>`：发布 MQTT 消息（二进制）
+-  :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>`：发布长 MQTT 消息
 -  :ref:`AT+MQTTSUB <cmd-MQTTSUB>`：订阅 MQTT Topic
 -  :ref:`AT+MQTTUNSUB <cmd-MQTTUNSUB>`：取消订阅 MQTT Topic
 -  :ref:`AT+MQTTCLEAN <cmd-MQTTCLEAN>`：断开 MQTT 连接
@@ -293,7 +293,7 @@ MQTT AT 命令集
 
 **功能：**
 
-查询 ESP 设备已连接的 MQTT broker
+查询 {IDF_TARGET_NAME} 设备已连接的 MQTT broker
 
 **命令：**
 
@@ -372,7 +372,7 @@ MQTT AT 命令集
 
 **功能：**
 
-通过 topic 发布 MQTT **字符串** 消息，若要发布 **二进制** 消息，请使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
+通过 topic 发布 MQTT **字符串** 消息。如果您发布消息的数据量相对较多，已经超过了单条 AT 指令的长度阈值 ``256`` 字节，请使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
 
 **命令：**
 
@@ -414,7 +414,7 @@ MQTT AT 命令集
 
 .. _cmd-MQTTPUBRAW:
 
-:ref:`AT+MQTTPUBRAW <MQTT-AT>`：发布 MQTT 消息（二进制）
+:ref:`AT+MQTTPUBRAW <MQTT-AT>`：发布长 MQTT 消息
 ------------------------------------------------------------------
 
 设置命令
@@ -422,7 +422,7 @@ MQTT AT 命令集
 
 **功能：**
 
-通过 topic 发布 MQTT **二进制** 消息
+通过 topic 发布长 MQTT 消息。如果您发布消息的数据量相对较少，不大于单条 AT 指令的长度阈值 ``256`` 字节，也可以使用 :ref:`AT+MQTTPUB <cmd-MQTTPUB>` 命令。
 
 **命令：**
 
@@ -456,7 +456,7 @@ MQTT AT 命令集
 
 -  **<LinkID>**：当前仅支持 link ID 0。
 -  **<topic>**：MQTT topic，最大长度：128 字节。
--  **<length>**：MQTT 消息长度，不同 ESP 设备的最大长度受到可利用内存的限制。
+-  **<length>**：MQTT 消息长度，不同 {IDF_TARGET_NAME} 设备的最大长度受到可利用内存的限制。
 -  **<qos>**：发布消息的 QoS，参数可选 0、1、或 2，默认值：0。
 -  **<retain>**：发布 retain。
 

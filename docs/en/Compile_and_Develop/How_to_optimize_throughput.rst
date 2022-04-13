@@ -19,7 +19,7 @@ Users could choose one of the following methods to improve throughput performanc
 
 **1. Configure system, LWIP, Wi-Fi parameters**
 
-  Copy the following code snippet and append to tail of :project_file:`module_config/module_{IDF_TARGET_PATH_NAME}_default/sdkconfig.defaults` file. For other ESP series devices, please modify the sdkconfig.defaults file in the corresponding folder.
+  Copy the following code snippet and append to tail of :project_file:`module_config/module_{IDF_TARGET_PATH_NAME}_default/sdkconfig.defaults` file. For other {IDF_TARGET_NAME} series devices, please modify the sdkconfig.defaults file in the corresponding folder.
 
   ::
 
@@ -164,7 +164,6 @@ The data stream of throughput is similar to water flow. In order to improve thro
 
     .. only:: esp32
 
-      - SPI: :doc:`SPI AT Guide </Compile_and_Develop/How_to_implement_SPI_AT>`
       - SDIO: :doc:`SDIO AT Guide </Compile_and_Develop/esp32-sdio-at-guide>`
       - Socket: :project_file:`Socket AT Guide <main/interface/socket/README.md>`
 

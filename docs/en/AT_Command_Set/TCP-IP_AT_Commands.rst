@@ -140,8 +140,8 @@ Parameters
 -  **<local port>**: the local port number.
 -  **<tetype>**:
 
-   -  0: ESP device runs as a client.
-   -  1: ESP device runs as a server.
+   -  0: {IDF_TARGET_NAME} runs as a client.
+   -  1: {IDF_TARGET_NAME} runs as a server.
 
 .. _cmd-STATUS:
 
@@ -168,14 +168,14 @@ Execute Command
 Parameters
 ^^^^^^^^^^
 
--  **<stat>**: status of the ESP station interface.
+-  **<stat>**: status of the {IDF_TARGET_NAME} station interface.
 
-   -  0: The ESP station is not initialized.
-   -  1: The ESP station is initialized, but not started a Wi-Fi connection yet.
-   -  2: The ESP station is connected to an AP and its IP address is obtained.
-   -  3: The ESP station has created a TCP/SSL transmission.
-   -  4: All of the TCP/UDP/SSL connections of the ESP device station are disconnected.
-   -  5: The ESP station started a Wi-Fi connection, but was not connected to an AP or disconnected from an AP.
+   -  0: The {IDF_TARGET_NAME} station is not initialized.
+   -  1: The {IDF_TARGET_NAME} station is initialized, but not started a Wi-Fi connection yet.
+   -  2: The {IDF_TARGET_NAME} station is connected to an AP and its IP address is obtained.
+   -  3: The {IDF_TARGET_NAME} station has created a TCP/SSL transmission.
+   -  4: All of the TCP/UDP/SSL connections of the {IDF_TARGET_NAME} station are disconnected.
+   -  5: The {IDF_TARGET_NAME} station started a Wi-Fi connection, but was not connected to an AP or disconnected from an AP.
 
 -  **<link ID>**: ID of the connection (0~4), used for multiple connections.
 -  **<"type">**: string parameter showing the type of transmission: "TCP", "TCPv6", "UDP", "UDPv6", "SSL", or "SSLv6".
@@ -184,8 +184,8 @@ Parameters
 -  **<local port>**: the local port number.
 -  **<tetype>**:
 
-   -  0: ESP device runs as a client.
-   -  1: ESP device runs as a server.
+   -  0: {IDF_TARGET_NAME} runs as a client.
+   -  1: {IDF_TARGET_NAME} runs as a server.
 
 Notes
 """"""
@@ -359,7 +359,7 @@ Parameters
 -  **<"type">**: string parameter showing the type of transmission: "UDP", or "UDPv6". Default: "TCP".
 -  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
 -  **<remote port>**: remote port number.
--  **<local port>**: UDP port of ESP devices.
+-  **<local port>**: UDP port of {IDF_TARGET_NAME}.
 -  **<mode>**: In the UDP Wi-Fi passthrough, the value of this parameter has to be 0.
 
    -  0: After UDP data is received, the parameters ``<"remote host">`` and ``<remote port>`` will stay unchanged (default).
@@ -370,9 +370,9 @@ Parameters
 
 Notes
 """"""
-- If the remote host over the UDP is an IPv4 multicast address (224.0.0.0 ~ 239.255.255.255), the ESP device will send and receive the UDPv4 multicast.
-- If the remote host over the UDP is an IPv4 broadcast address (255.255.255.255), the ESP device will send and receive the UDPv4 broadcast.
-- If the remote host over the UDP is an IPv6 multicast address (FF00:0:0:0:0:0:0:0 ~ FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF), the ESP device will send and receive the UDP multicast based on IPv6 network.
+- If the remote host over the UDP is an IPv4 multicast address (224.0.0.0 ~ 239.255.255.255), the {IDF_TARGET_NAME} will send and receive the UDPv4 multicast.
+- If the remote host over the UDP is an IPv4 broadcast address (255.255.255.255), the {IDF_TARGET_NAME} will send and receive the UDPv4 broadcast.
+- If the remote host over the UDP is an IPv6 multicast address (FF00:0:0:0:0:0:0:0 ~ FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF), the {IDF_TARGET_NAME} will send and receive the UDP multicast based on IPv6 network.
 - To use the parameter ``<mode>``, parameter ``<local port>`` must be set first.
 - If you want to establish UDP connection based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
 
@@ -562,7 +562,7 @@ or
 
     ERROR
 
-Enter the Wi-Fi :term:`Passthrough Mode`. The ESP devices can receive 8192 bytes and send 2920 bytes at most each time. If the length of the currently received data is greater than the maximum number of bytes that can be sent, AT will send the received data immediately; Otherwise, the received data will be sent out within 20 ms. When a single packet containing :ref:`+++ <cmd-PLUS>` is received, the ESP device will exit the data sending mode under the Wi-Fi :term:`Passthrough Mode`. Please wait for at least one second before sending the next AT command.
+Enter the Wi-Fi :term:`Passthrough Mode`. The {IDF_TARGET_NAME} can receive 8192 bytes and send 2920 bytes at most each time. If the length of the currently received data is greater than the maximum number of bytes that can be sent, AT will send the received data immediately; Otherwise, the received data will be sent out within 20 ms. When a single packet containing :ref:`+++ <cmd-PLUS>` is received, the {IDF_TARGET_NAME} will exit the data sending mode under the Wi-Fi :term:`Passthrough Mode`. Please wait for at least one second before sending the next AT command.
 
 This command can only be used for single connection in the Wi-Fi :term:`Passthrough Mode`. For UDP Wi-Fi passthrough, the ``<mode>`` parameter has to be 0 when using :ref:`AT+CIPSTART <cmd-START>`.
 
@@ -638,7 +638,7 @@ If all the data is transmitted successfully, the system finally returns:
 
     SEND OK 
 
-When the connection is disconnected, you can send :ref:`+++ <cmd-PLUS>` command to cancel the transmission, then the ESP device will exit from the :term:`Data Mode`, otherwise, the :term:`Data Mode` will not end until the AT command port receives all the data of the specified ``<length>``.
+When the connection is disconnected, you can send :ref:`+++ <cmd-PLUS>` command to cancel the transmission, then the {IDF_TARGET_NAME} will exit from the :term:`Data Mode`, otherwise, the :term:`Data Mode` will not end until the AT command port receives all the data of the specified ``<length>``.
 
 Parameters
 ^^^^^^^^^^
@@ -877,7 +877,7 @@ Parameters
 Note
 ^^^^^
 
--  Only when the ESP device has the valid interface information can you query its IP address and MAC address.
+-  Only when the {IDF_TARGET_NAME} has the valid interface information can you query its IP address and MAC address.
 
 .. _cmd-MUX:
 
@@ -935,7 +935,7 @@ Notes
 ^^^^^
 
 -  This mode can only be changed after all connections are disconnected.
--  If you want to set the multiple connections mode, ESP devices should be in the :term:`Normal Transmission Mode` (:ref:`AT+CIPMODE=0 <cmd-IPMODE>`).  
+-  If you want to set the multiple connections mode, {IDF_TARGET_NAME} should be in the :term:`Normal Transmission Mode` (:ref:`AT+CIPMODE=0 <cmd-IPMODE>`).  
 -  If you want to set the single connection mode when the TCP/SSL server is running, you should delete the server first. (:ref:`AT+CIPSERVER=0 <cmd-SERVER>`).
 
 Example
@@ -1192,8 +1192,8 @@ Parameters
 
 -  **<mode>**:
 
-   -  0: ESP will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
-   -  1: ESP will enter Wi-Fi :term:`Passthrough Mode` on power-up.
+   -  0: {IDF_TARGET_NAME} will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
+   -  1: {IDF_TARGET_NAME} will enter Wi-Fi :term:`Passthrough Mode` on power-up.
 
 -  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
 -  **<remote port>**: the remote port number.
@@ -1206,7 +1206,7 @@ Parameters
 Notes
 """""""
 
--  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 1, ESP device will enter the Wi-Fi :term:`Passthrough Mode` in any subsequent power cycles. The configuration will take effect after ESP reboots.
+-  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in any subsequent power cycles. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 -  As long as the remote host and port are valid, the configuration will be saved in flash.
 -  If you want to establish TCP/SSL connection based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
 
@@ -1243,8 +1243,8 @@ Parameters
 
 -  **<mode>**:
 
-   -  0: ESP will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
-   -  1: ESP will enter Wi-Fi :term:`Passthrough Mode` on power-up.
+   -  0: {IDF_TARGET_NAME} will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
+   -  1: {IDF_TARGET_NAME} will enter Wi-Fi :term:`Passthrough Mode` on power-up.
 
 -  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
 -  **<remote port>**: the remote port number.
@@ -1254,7 +1254,7 @@ Parameters
 Notes
 """""""
 
--  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 1, ESP device will enter the Wi-Fi :term:`Passthrough Mode` in any subsequent power cycles. The configuration will take effect after ESP reboots.
+-  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in any subsequent power cycles. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 -  As long as the remote host and port are valid, the configuration will be saved in flash.
 -  If you want to establish UDP transmission based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
 
@@ -1318,7 +1318,7 @@ Parameter
 Notes
 ^^^^^
 
--  When a TCP/SSL client does not communicate with the ESP server within the ``<time>`` value, the server will terminate this connection.
+-  When a TCP/SSL client does not communicate with the {IDF_TARGET_NAME} server within the ``<time>`` value, the server will terminate this connection.
 -  If you set ``<time>`` to 0, the connection will never timeout. This configuration is not recommended.
 -  When the client initiates a communication with the server within the set time, the timer will restart. After the timeout expires, the client is closed. During the set time, if the server initiate a communication with the client, the timer will not restart. After the timeout expires, the client is closed.
 
@@ -1497,6 +1497,11 @@ Parameters
 
 -  **<interval second>**: the SNTP time synchronization interval. Unit: second. Range: [15,4294967].
 
+Notes
+^^^^^
+
+- It configures interval for synchronization, which means that it sets interval how often {IDF_TARGET_NAME} connects to NTP servers to get new time.
+
 Example
 ^^^^^^^^
 
@@ -1523,7 +1528,7 @@ Query Command
 
 **Function:**
 
-Query ESP device upgrade status.
+Query {IDF_TARGET_NAME} upgrade status.
 
 **Command:**
 
@@ -1729,7 +1734,7 @@ Query Command
 
 **Function:**
 
-Query the configuration of each connection where the ESP device runs as an SSL client.
+Query the configuration of each connection where the {IDF_TARGET_NAME} runs as an SSL client.
 
 **Command:**
 
@@ -1781,7 +1786,7 @@ Notes
 ^^^^^
 
 -  If you want this configuration to take effect immediately, run this command before establishing an SSL connection.
--  The configuration changes will be saved in the NVS area. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL Wi-Fi :term:`Passthrough Mode` on power-up, the ESP device will establish an SSL connection based on this configuration when powered up next time.
+-  The configuration changes will be saved in the NVS area. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL Wi-Fi :term:`Passthrough Mode` on power-up, the {IDF_TARGET_NAME} will establish an SSL connection based on this configuration when powered up next time.
 
 .. _cmd-SSLCCN:
 
@@ -1903,7 +1908,7 @@ Query Command
 
 **Function:**
 
-Query the ALPN configuration of each connection where the ESP device runs as an SSL client.
+Query the ALPN configuration of each connection where the {IDF_TARGET_NAME} runs as an SSL client.
 
 **Command:**
 
@@ -1964,7 +1969,7 @@ Query Command
 
 **Function:**
 
-Query the PSK configuration of each connection where the ESP device runs as an SSL client.
+Query the PSK configuration of each connection where the {IDF_TARGET_NAME} runs as an SSL client.
 
 **Command:**
 
@@ -2349,7 +2354,7 @@ Parameters
 
 -  **<enable>**: configure DNS server settings
 
-   -  0: Enable automatic DNS server settings from DHCP. The DNS will be restored to ``208.67.222.222`` and ``8.8.8.8``. Only when the ESP station completes the DHCP process, the DNS server of the ESP station could be updated.
+   -  0: Enable automatic DNS server settings from DHCP. The DNS will be restored to ``208.67.222.222`` and ``8.8.8.8``. Only when the {IDF_TARGET_NAME} station completes the DHCP process, the DNS server of the {IDF_TARGET_NAME} station could be updated.
    -  1: Enable manual DNS server settings. If you do not set a value for ``<DNS IPx>``, it will use ``208.67.222.222`` and ``8.8.8.8`` by default.
 
 -  **<"DNS IP1">**: the first DNS server IP address. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
@@ -2361,7 +2366,7 @@ Notes
 
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The three parameters cannot be set to the same server.
--  When ``<enable>`` is set to 1, the DNS server may change according to the configuration of the router which the ESP device is connected to.
+-  When ``<enable>`` is set to 1, the DNS server may change according to the configuration of the router which the {IDF_TARGET_NAME} is connected to.
 
 Example
 ^^^^^^^^
@@ -2430,15 +2435,23 @@ Parameters
 ^^^^^^^^^^
 
 -  **<link_id>**: ID of the connection (0 ~ max). For multiple connections, if the value is max, it means all connections. By default, max is 5.
--  **<so_linger>**: configure the ``SO_LINGER`` options for the socket. Unit: second. Default: -1.
+-  **<so_linger>**: configure the ``SO_LINGER`` options for the socket (refer to `SO_LINGER description <https://man7.org/linux/man-pages/man7/socket.7.html#SO_LINGER>`_). Unit: second. Default: -1.
 
    -  = -1: off
    -  = 0: on, linger time = 0
    -  > 0: on, linger time = <so_linger>
 
--  **<tcp_nodelay>**: configure the ``TCP_NODELAY`` option for the socket. Default: 0.
+-  **<tcp_nodelay>**: configure the ``TCP_NODELAY`` option for the socket (refer to `TCP_NODELAY description <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_NODELAY>`_). Default: 0.
 
    -  0: disable TCP_NODELAY
    -  1: enable TCP_NODELAY
 
--  **<so_sndtimeo>**: configure the ``SO_SNDTIMEO`` option for socket. Unit: millisecond. Default: 0.
+-  **<so_sndtimeo>**: configure the ``SO_SNDTIMEO`` option for socket (refer to `SO_SNDTIMEO description <https://man7.org/linux/man-pages/man7/socket.7.html#SO_SNDTIMEO>`_). Unit: millisecond. Default: 0.
+
+Notes
+^^^^^
+
+-  Before configuring these socket options, **please make sure you fully understand the function of them and the possible impact after configuration**.
+-  The SO_LINGER option is not recommended to be set to a large value. For example, if you set SO_LINGER value to 60, then :ref:`AT+CIPCLOSE <cmd-CLOSE>` command will block for 60 seconds if {IDF_TARGET_NAME} cannot receive TCP FIN packet from the remote TCP peer due to network issues, so {IDF_TARGET_NAME} is unable to respond to any other AT commands. Therefore, it is recommended to keep the default value of the SO_LINGER option.
+-  The TCP_NODELAY option is used for situations with small throughput but high real-time requirements. If this option is enabled, :term:`LwIP` will speed up TCP transmission, but in a poor network environment, the throughput will be reduced due to retransmission. Therefore, it is recommended to keep the default value of the TCP_NODELAY option.
+-  The SO_SNDTIMEO option is used for situations where the keepalive parameter is not configured in :ref:`AT+CIPSTART <cmd-START>` command. After this option is configured, :ref:`AT+CIPSEND <cmd-SEND>`, :ref:`AT+CIPSENDL <cmd-SENDL>`, and :ref:`AT+CIPSENDEX <cmd-SENDEX>` commands will exit within this timeout, regardless of whether data are sent successfully or not. Here, SO_SNDTIMEO is recommended to be set to 5 ~ 10 seconds.

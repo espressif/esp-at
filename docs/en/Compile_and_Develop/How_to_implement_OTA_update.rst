@@ -171,7 +171,7 @@ To upgrade the customized bin file with :ref:`AT+CIUPDATE <cmd-UPDATE>` command,
 
     Save the current version of ota.bin
 
-8. Run the command :ref:`AT+USEROTA <cmd-USEROTA>` on the ESP device. If the network is connected, OTA upgrade will begin.
+8. Run the command :ref:`AT+USEROTA <cmd-USEROTA>` on the {IDF_TARGET_NAME}. If the network is connected, OTA upgrade will begin.
 
 .. Important::
 

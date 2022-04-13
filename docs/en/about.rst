@@ -3,7 +3,7 @@ About
 
 :link_to_translation:`zh_CN:[中文]`
 
-This is documentation of `ESP-AT <https://github.com/espressif/esp-at>`_, a solution developed by Espressif to quickly and easily interface with ESP products.
+This is documentation of `ESP-AT <https://github.com/espressif/esp-at>`_, a solution developed by Espressif to quickly and easily interface with {IDF_TARGET_NAME} products.
 
 Espressif Wi-Fi and Bluetooth chipsets are often used as add-on modules to seamlessly integrate wireless connectivity features into new and existing products. In an effort to facilitate this and cut down on engineering costs, Espressif Systems has developed :doc:`AT firmware <AT_Binary_Lists/index>` as well as a rich set of :doc:`AT commands <AT_Command_Set/index>` that can be used to interface with Espressif products.
 
