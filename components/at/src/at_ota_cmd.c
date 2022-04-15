@@ -80,6 +80,33 @@ static bool esp_at_ota_timeout_flag = false;
 static int esp_at_ota_socket_id = -1;
 static esp_at_ota_state_t s_ota_status = ESP_AT_OTA_STATE_IDLE;
 
+#define AT_PARTITION_MAGIC_LEN_MAX  2
+
+typedef struct at_partition_sig {
+    const char *name;
+    uint32_t len;
+    uint32_t offset;
+    uint8_t magic[AT_PARTITION_MAGIC_LEN_MAX];
+} at_partition_sig_t;
+
+static const at_partition_sig_t s_at_partition_sig[] = {
+    {"ota", 1, 0, {0xE9}},
+    {"mqtt_ca", 2, 0, {0xF1, 0xF1}},
+    {"mqtt_cert", 2, 0, {0xF1, 0xF1}},
+    {"mqtt_key", 2, 0, {0xF1, 0xF1}},
+    {"ble_data", 2, 2, {0x27, 0x95}},
+    {"client_ca", 2, 0, {0xF1, 0xF1}},
+    {"client_cert", 2, 0, {0xF1, 0xF1}},
+    {"client_key", 2, 0, {0xF1, 0xF1}},
+    {"server_ca", 2, 0, {0xF1, 0xF1}},
+    {"server_cert", 2, 0, {0xF1, 0xF1}},
+    {"server_key", 2, 0, {0xF1, 0xF1}},
+    {"wpa2_ca", 2, 0, {0xF1, 0xF1}},
+    {"wpa2_cert", 2, 0, {0xF1, 0xF1}},
+    {"wpa2_key", 2, 0, {0xF1, 0xF1}},
+    {"factory_param", 2, 0, {0xFC, 0xFC}},
+};
+
 #define ESP_AT_OTA_DEBUG  printf
 
 #define ESP_AT_VERSION_LEN_MAX                64
@@ -112,6 +139,37 @@ static void esp_at_ota_timeout_callback( TimerHandle_t xTimer )
         close(esp_at_ota_socket_id);
         esp_at_ota_socket_id = -1;
     }
+}
+
+static esp_err_t at_partition_verify(const char *name, uint8_t *data, int len)
+{
+    int partition_num = sizeof(s_at_partition_sig) / sizeof(s_at_partition_sig[0]);
+
+    for (int i = 0; i < partition_num; ++i) {
+        // check name
+        if (strcmp(name, s_at_partition_sig[i].name)) {
+            continue;
+        }
+
+        // check len
+        if (s_at_partition_sig[i].len > len) {
+            return ESP_FAIL;
+        }
+
+        // check magic
+        for (int loop = 0; loop < s_at_partition_sig[i].len; ++loop) {
+            int offset = s_at_partition_sig[i].offset + loop;
+            if (s_at_partition_sig[i].magic[loop] != data[offset]) {
+                ESP_AT_OTA_DEBUG("%s partition has an invalid magic byte (index:%d expected 0x%02x, saw 0x%02x)\r\n",
+                name, loop, s_at_partition_sig[i].magic[loop], data[offset]);
+                return ESP_FAIL;
+            }
+        }
+
+        return ESP_OK;
+    }
+
+    return ESP_FAIL;
 }
 
 bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, const char *partition_name)
@@ -436,14 +494,11 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
             if (pStr) {
                 pkg_body_start = true;
                 pStr += 4; // skip "\r\n"
-                if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {
-                    if (pStr[0] != 0xE9) {
-                        ESP_AT_OTA_DEBUG("OTA Write Header format Check Failed! first byte is %02x\r\n", pStr[0]);
-                        goto OTA_ERROR;
-                    }
-                }
-                // pStr += 2;
                 buff_len -= (pStr - data_buffer);
+
+                if (at_partition_verify(partition_name, pStr, buff_len) != ESP_OK) {
+                    goto OTA_ERROR;
+                }
 
                 if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {
                     if(esp_ota_write(out_handle, (const void*)pStr, buff_len) != ESP_OK)
