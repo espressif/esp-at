@@ -183,7 +183,7 @@ config AT_I2S_BCK_PIN
 
 config AT_I2S_DATA_PIN
     int "I2S DATA GPIO"
-    default 33
+    default 25
     depends on AT_BT_A2DP_COMMAND_SUPPORT
     help
         GPIO number to use for I2S Data Driver.
