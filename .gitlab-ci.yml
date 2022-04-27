@@ -35,7 +35,6 @@ default:
   - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
   - cd -
   # (the same regular expressions are used to set these are used in 'only:' sections below
-  - source ./esp-idf/tools/ci/setup_python.sh
   - source ./esp-idf/tools/ci/configure_ci_environment.sh
   - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
   # fetch the submodules (& if necessary re-fetch repo) from gitlab
@@ -50,7 +49,6 @@ default:
   - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI_QCLOUD \"$AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD\"" >> at_ota_token.h
   - cd -
   # (the same regular expressions are used to set these are used in 'only:' sections below
-  - source ./esp-idf/tools/ci/setup_python.sh
   - source ./esp-idf/tools/ci/configure_ci_environment.sh
   - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
   # fetch the submodules (& if necessary re-fetch repo) from gitlab
