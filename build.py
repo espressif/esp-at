@@ -22,27 +22,29 @@
 # any external libraries here - put in external script, or import in
 # their specific function instead.
 
-import xlrd
-import csv
 import os
 import sys
 import subprocess
 import json
 
+def ESP_LOGI(x):
+    print('\033[32m%s\033[0m' %x)
+
+def ESP_LOGE(x):
+    print('\033[31m%s\033[0m' %x)
 
 def gitee_repo_preprocess():
     print('Redirect IDF url to https://gitee.com/EspressifSystems')
     return 'https://gitee.com/EspressifSystems'
-
 
 def gitee_repo_postprocess():
     print('IDF is Cloned from https://gitee.com/EspressifSystems')
 
     ret = subprocess.call('cd esp-idf && git submodule init', shell = True)
     if ret:
-        raise Exception("git submodule init failed")
+        raise Exception('git submodule init failed')
     submodule_lists = \
-        subprocess.check_output(['git', 'config', '-f', os.path.join('esp-idf', '.gitmodules'), '--list']).decode(encoding="utf-8")
+        subprocess.check_output(['git', 'config', '-f', os.path.join('esp-idf', '.gitmodules'), '--list']).decode(encoding='utf-8')
 
     for line in submodule_lists.split():
         if line.find('.url=') > 0:
@@ -56,7 +58,7 @@ def gitee_repo_postprocess():
     print('Update submodule...')
     ret = subprocess.call('cd esp-idf && git submodule update', shell = True)
     if ret:
-        raise Exception("git submodule update failed")
+        raise Exception('git submodule update failed')
 
 preprocess_url = {
     'https://gitee.com/EspressifSystems/esp-at': {'proprocess': gitee_repo_preprocess,
@@ -66,7 +68,6 @@ preprocess_url = {
     'git@gitee.com:EspressifSystems/esp-at.git': {'proprocess': gitee_repo_preprocess,
                                                    'postprocess': gitee_repo_postprocess},
 }
-
 
 def auto_update_idf(platform_name, module_name):
     config_dir = os.path.join(os.getcwd(), 'module_config', 'module_{}'.format(module_name.lower()))
@@ -114,7 +115,7 @@ def auto_update_idf(platform_name, module_name):
     if len(idf_url) <= 0:
         sys.exit('ERROR: idf url is not defined')
 
-    project_remote_url = subprocess.check_output(['git', 'remote', '-v']).decode(encoding="utf-8")
+    project_remote_url = subprocess.check_output(['git', 'remote', '-v']).decode(encoding='utf-8')
     project_url = project_remote_url.split()[1]
 
     if not os.path.exists('esp-idf'):
@@ -126,27 +127,29 @@ def auto_update_idf(platform_name, module_name):
         print('Please wait for the SDK download to finish...')
         ret = subprocess.call('git clone -b {} {} esp-idf'.format(idf_branch, idf_url), shell = True)
         if ret:
-            raise Exception("git clone failed")
+            raise Exception('git clone failed')
 
         if project_url in preprocess_url:
             new_url = preprocess_url[project_url]['postprocess']()
 
-    rev_parse_head = subprocess.check_output('cd esp-idf && git rev-parse HEAD', shell = True).decode(encoding="utf-8").strip()
+    rev_parse_head = subprocess.check_output('cd esp-idf && git rev-parse HEAD', shell = True).decode(encoding='utf-8').strip()
     if rev_parse_head != idf_commit:
         print('old commit:{}'.format(rev_parse_head))
         print('checkout commit:{}'.format(idf_commit))
         print('Please wait for the update to complete, which will take some time')
-        ret = subprocess.call('cd esp-idf && git pull', shell = True)
+        ret = subprocess.call('cd esp-idf && git fetch origin {}'.format(idf_branch), shell = True)
         if ret:
-            raise Exception("git pull failed")
+            raise Exception('git fetch failed')
+        ret = subprocess.call('cd esp-idf && git merge origin/{} {}'.format(idf_branch, idf_branch), shell = True)
+        if ret:
+            raise Exception('git merge failed')
         ret = subprocess.call('cd esp-idf && git checkout {}'.format(idf_commit), shell = True)
         if ret:
-            raise Exception("git checkout failed")
+            raise Exception('git checkout failed')
         ret = subprocess.call('cd esp-idf && git submodule update --init --recursive', shell = True)
         if ret:
-            raise Exception("git submodule update failed")
+            raise Exception('git submodule update failed')
         print('Update completed')
-
 
 def build_project(platform_name, module_name, silence, build_args):
     if platform_name == 'ESP32':
@@ -156,24 +159,22 @@ def build_project(platform_name, module_name, silence, build_args):
     else:
         sys.exit('Platform "{}" is not supported'.format(platform_name))
 
-    # os.environ['srctree'] = os.getcwd()
     tool = os.path.join('esp-idf', 'tools', 'idf.py')
     if sys.platform == 'win32':
         sys_cmd = 'set'
+        sys_python_path = sys.executable
+    elif sys.platform == 'linux2':
+        sys_cmd = 'export'
+        sys_python_path = sys.executable
     else:
         sys_cmd = 'export'
-    
-    cmd = '{0} ESP_AT_PROJECT_PLATFORM=PLATFORM_{1}&& \
-        {0} ESP_AT_MODULE_NAME={2}&& \
-        {0} ESP_AT_PROJECT_PATH={3}&& \
-        {0} SILENCE={4}&& \
-        {5} {6} -DIDF_TARGET={7} {8}'.format(sys_cmd, platform_name, module_name, os.getcwd(), silence, sys.executable, tool, idf_target, build_args)
+        sys_python_path = os.path.join(os.environ.get('IDF_PYTHON_ENV_PATH'), 'bin', 'python')
 
+    cmd = '{0} ESP_AT_PROJECT_PLATFORM=PLATFORM_{1} && {0} ESP_AT_MODULE_NAME={2} && {0} ESP_AT_PROJECT_PATH={3} && \
+       {0} SILENCE={4} && {5} {6} -DIDF_TARGET={7} {8}'.format(sys_cmd, platform_name, module_name, os.getcwd(), silence, sys_python_path, tool, idf_target, build_args)
     ret = subprocess.call(cmd, shell = True)
-    print('idf.py build ret: {}'.format(ret))
     if ret:
-        raise Exception("idf.py build failed")
-    # subprocess.call('cat build/flash_project_args | sed ":label;N;s/\n/ /;b label" > build/download.config', shell = True)
+        raise Exception('idf.py build failed')
     
     with open(os.path.join('build', 'flash_project_args'), 'r') as rd_f:
         with open(os.path.join('build', 'download.config'), 'w') as wr_f:
@@ -181,6 +182,8 @@ def build_project(platform_name, module_name, silence, build_args):
             wr_f.write(' '.join(data))
 
 def get_param_data_info(source_file, sheet_name):
+    import xlrd
+    import csv
     filename, filetype = os.path.splitext(source_file)
     if filetype == '.xlsx':
         data = xlrd.open_workbook(source_file)
@@ -199,7 +202,7 @@ def get_param_data_info(source_file, sheet_name):
             param_data_list = list(csv_data)
 
     else:
-        print("The file type is not supported.")
+        print('The file type is not supported.')
         exit()
 
     return param_data_list
@@ -233,13 +236,13 @@ def get_platform_and_module_lists():
             break
 
     if platform_index == ncols:
-        sys.exit("ERROR: Not found platform in header.")
+        sys.exit('ERROR: Not found platform in header.')
 
     if module_name_index == ncols:
-        sys.exit("ERROR: Not found module name in header.")
+        sys.exit('ERROR: Not found module name in header.')
 
     if description_index == ncols:
-        sys.exit("ERROR: Not found description in header.")
+        sys.exit('ERROR: Not found description in header.')
 
     for row in range(1, nrows):  # skip header
         data_list = data_lists[row]
@@ -274,7 +277,6 @@ def choose_project_config():
 
             # get module_info
             found = False
-            print('module_name {}'.format(module_name))
             for index, module in enumerate(info_lists[platform_name]):
                 if module_name == module['module_name']:
                     found = True
@@ -286,7 +288,6 @@ def choose_project_config():
             if info['silence'] != 0 and info['silence'] != 1:
                 sys.exit('"{}" configuration error, please delete and reconfigure it'.format(module_info_file))
 
-            # return info['platform'].replace('PLATFORM_', ''), info['module'], info['silence']
             return platform_name.replace('PLATFORM_', ''), module_name, info['silence']
 
     print('Platform name:')
@@ -353,23 +354,124 @@ def choose_project_config():
 
     return platform_name.replace('PLATFORM_', ''), module_name, info['silence']
 
+def setup_env_variables():
+    ESP_LOGI('Ready to set up environment variables..')
+    # set IDF_PATH
+    idf_path=os.path.join(os.getcwd(), 'esp-idf')
+    os.environ['IDF_PATH']=idf_path
 
+    # get ESP-IDF toolchain path and virtual python path
+    print('PATH is {}'.format(os.environ.get('PATH')))
+    print('IDF_PYTHON_ENV_PATH is {}'.format(os.environ.get('IDF_PYTHON_ENV_PATH')))
+    print('sys.platform is {}'.format(sys.platform))
+
+    if sys.platform == 'win32' or sys.platform == 'linux2':
+        export_str = ''
+    else:
+        cmd = '{} {} export --format=key-value'.format(sys.executable, os.path.join('esp-idf', 'tools', 'idf_tools.py'))
+        export_str = subprocess.check_output(cmd, shell=True).decode('utf-8')
+
+    if export_str:
+        # extract toolchain PATH and IDF_PYTHON_ENV_PATH
+        idf_tc_env_path = ''
+        idf_python_env_path = ''
+        for line in export_str.splitlines():
+            if line.startswith('PATH='):
+                idf_tc_env_path = line.split('PATH=')[1]
+            if line.startswith('IDF_PYTHON_ENV_PATH='):
+                idf_python_env_path = line.split('IDF_PYTHON_ENV_PATH=')[1]
+        # set PATH and IDF_PYTHON_ENV_PATH and print
+        at_env_path = os.environ.get('PATH') + idf_tc_env_path
+        os.environ['PATH']=at_env_path
+        os.environ['IDF_PYTHON_ENV_PATH']=idf_python_env_path
+
+    print('PATH is {}'.format(os.environ.get('PATH')))
+    print('IDF_PYTHON_ENV_PATH is {}'.format(os.environ.get('IDF_PYTHON_ENV_PATH')))
+
+def install_compilation_env():
+    # set up ESP-IDF tools
+    ESP_LOGI('Ready to set up ESP-IDF tools..')
+    cmd = '{} {} install-python-env'.format(sys.executable, os.path.join('esp-idf', 'tools', 'idf_tools.py'))
+    ret = subprocess.call(cmd, shell = True)
+    if ret:
+        raise Exception('set up ESP-IDF python-env failed')
+    cmd = '{} {} install'.format(sys.executable, os.path.join('esp-idf', 'tools', 'idf_tools.py'))
+    ret = subprocess.call(cmd, shell = True)
+    if ret:
+        raise Exception('set up ESP-IDF toolchains failed')
+
+    # set up environment variables
+    setup_env_variables()
+
+    # install ESP-AT python packages
+    ESP_LOGI('Ready to install ESP-AT python packages..')
+    if sys.platform == 'win32':
+        py_env_path = sys.executable
+    else:
+        py_env_path = os.path.join(os.environ.get('IDF_PYTHON_ENV_PATH'), 'bin', 'python')
+    cmd = '{} -m pip install -r requirements.txt'.format(py_env_path)
+    ret = subprocess.call(cmd, shell = True)
+    if ret:
+        raise Exception('install ESP-AT python packages failed!')
+
+    print('\r\nAll done! You can now run:\r\n\r\n  {}build.py build\r\n'.format('python ' if sys.platform == 'win32' else './'))
+
+def install_prerequisites():
+    # install ESP-IDF prerequisites
+    ESP_LOGI('Ready to install ESP-IDF prerequisites..')
+    cmd = ''
+    if sys.platform == 'linux':
+        cmd = 'sudo apt-get install git wget flex bison gperf python3 python3-pip python3-setuptools cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0'
+    elif sys.platform == 'darwin':
+        cmd = 'sudo easy_install pip && brew install cmake ninja dfu-util ccache python3'
+    elif sys.platform == 'win32':
+        print('Windows Installer Download has already installed all prerequisites.')
+    elif sys.platform == 'linux2':
+        print('GitLab CI has already installed all prerequisites.')
+    else:
+        raise Exception('unsupported platform: {} till now.'.format(sys.platform))
+    ret = subprocess.call(cmd, shell = True)
+    if ret:
+        raise Exception('install prerequisites failed! Please manually run:\r\n{}'.format(cmd))
+
+    # install ESP-AT prerequisites
+    ESP_LOGI('Ready to install ESP-AT prerequisites..')
+    cmd = '{} -m pip install -r requirements.txt'.format(sys.executable)
+    ret = subprocess.call(cmd, shell = True)
+    if ret:
+        raise Exception('install ESP-AT prerequisites failed!')
+
+"""
+TODOs:
+  1. optimise ESP-IDF clone and version update workflow
+  2. optimise ESP-AT and ESP-IDF tools/packages install workflow
+  3. remove workaround for windows
+"""
 def main():
-    platform_name, module_name, silence = choose_project_config()
-
     argv = sys.argv[1:]
 
-    print('platform_name={},module_name={}'.format(platform_name, module_name))
+    # install prerequisites
+    if (len(argv) == 1 and sys.argv[1] == 'install'):
+        install_prerequisites()
+
+    platform_name, module_name, silence = choose_project_config()
+    ESP_LOGI('Platform name:{}\tModule name:{}\tSilence:{}'.format(platform_name, module_name, silence))
     build_args = ' '.join(argv)
 
     auto_update_idf(platform_name, module_name)
 
-    build_project(platform_name, module_name, silence, build_args)
+    if (len(argv) == 1 and sys.argv[1] == 'install'):
+        # install tools and packages only after esp-idf cloned
+        install_compilation_env()
+        sys.exit(0)
 
+    setup_env_variables()
+
+    build_project(platform_name, module_name, silence, build_args)
 
 if __name__ == '__main__':
     try:
         main()
     except Exception as e:
-        print(e)
+        ESP_LOGE('A fatal error occurred: %s' %e)
         sys.exit(2)
