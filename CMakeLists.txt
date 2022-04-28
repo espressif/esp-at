@@ -50,6 +50,12 @@ add_compile_options("-DESP_AT_PROJECT_COMMIT_ID=\"${ESP_AT_PROJECT_COMMIT_ID}\""
 set(FALLBACK_DNS_SERVER "8.8.8.8")
 add_compile_options("-DFALLBACK_DNS_SERVER_ADDRESS(p)=ipaddr_aton(\"${FALLBACK_DNS_SERVER}\",(p))")
 
+# add cmake flags
+### (unused typedefs, unused function, unused-but-set-variable) should not be treated as warnings and errors
+add_compile_options("-Wno-unused-local-typedefs")
+add_compile_options("-Wno-unused-function")
+add_compile_options("-Wno-unused-but-set-variable")
+
 include(${IDF_PATH}/tools/cmake/project.cmake)
 
 project(esp-at)
