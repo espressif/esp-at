@@ -46,6 +46,25 @@ execute_process(COMMAND git rev-parse --short HEAD
 
 add_compile_options("-DESP_AT_PROJECT_COMMIT_ID=\"${ESP_AT_PROJECT_COMMIT_ID}\"")
 
+
+# get branch name and set docs version
+if(NOT DEFINED ENV{ESP_AT_PROJECT_BRANCH})
+execute_process(COMMAND git rev-parse --abbrev-ref HEAD
+                OUTPUT_VARIABLE ESP_AT_PROJECT_BRANCH
+                OUTPUT_STRIP_TRAILING_WHITESPACE)
+else()
+### GitLab CI and GitHub Actions should already set it
+set(ESP_AT_PROJECT_BRANCH $ENV{ESP_AT_PROJECT_BRANCH})
+endif()
+message("esp-at branch: ${ESP_AT_PROJECT_BRANCH}")
+if(${ESP_AT_PROJECT_BRANCH} STREQUAL "master")
+set(ESP_AT_DOCS_VERSION "latest")
+else()
+string(REPLACE "/" "-" ESP_AT_DOCS_VERSION ${ESP_AT_PROJECT_BRANCH})
+endif()
+add_compile_options("-DESP_AT_DOCS_VERSION=\"${ESP_AT_DOCS_VERSION}\"")
+message("esp-at docs version: ${ESP_AT_DOCS_VERSION}")
+
 # add default fallback dns server
 set(FALLBACK_DNS_SERVER "8.8.8.8")
 add_compile_options("-DFALLBACK_DNS_SERVER_ADDRESS(p)=ipaddr_aton(\"${FALLBACK_DNS_SERVER}\",(p))")
