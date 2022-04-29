@@ -39,6 +39,13 @@
 
 #define AT_USERRAM_READ_BUFFER_SIZE     1024
 #define AT_USEROTA_URL_LEN_MAX          (8 * 1024)
+#define AT_USERDOCS_BUFFER_LEN_MAX      (1024)
+#define AT_DOCS_SERVER_HOSTNAME         "docs.espressif.com"
+#define AT_DOCS_PROJECT_PATH            "projects/esp-at"
+#define AT_DOCS_LANGUAGE_EN             "en"
+#define AT_DOCS_LANGUAGE_CN             "zh_CN"
+#define AT_DOCS_VERSION                 ESP_AT_DOCS_VERSION
+#define AT_DOCS_HOME_WEB_PAGE           "index.html"
 
 typedef enum {
     AT_USERRAM_FREE = 0,
@@ -346,9 +353,33 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
     }
 }
 
+static uint8_t at_query_cmd_userdocs(uint8_t *cmd_name)
+{
+    int ret = 0;
+    uint8_t *buffer = calloc(1, AT_USERDOCS_BUFFER_LEN_MAX);
+    if (!buffer) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    // https:<hostname>/<project>/<language>/<version>/<target>/<home_web_page>
+    ret += snprintf((char *)buffer + ret, AT_USERDOCS_BUFFER_LEN_MAX - ret, "%s:\"https://%s/%s/%s/%s/%s/%s\"\r\n",
+        cmd_name, AT_DOCS_SERVER_HOSTNAME, AT_DOCS_PROJECT_PATH, AT_DOCS_LANGUAGE_EN,
+        AT_DOCS_VERSION, CONFIG_IDF_TARGET, AT_DOCS_HOME_WEB_PAGE);
+
+    ret += snprintf((char *)buffer + ret, AT_USERDOCS_BUFFER_LEN_MAX - ret, "%s:\"https://%s/%s/%s/%s/%s/%s\"\r\n",
+        cmd_name, AT_DOCS_SERVER_HOSTNAME, AT_DOCS_PROJECT_PATH, AT_DOCS_LANGUAGE_CN,
+        AT_DOCS_VERSION, CONFIG_IDF_TARGET, AT_DOCS_HOME_WEB_PAGE);
+
+    esp_at_port_write_data(buffer, ret);
+    free(buffer);
+
+    return ESP_AT_RESULT_CODE_OK;
+}
+
 static const esp_at_cmd_struct s_at_user_cmd[] = {
     {"+USERRAM", NULL, at_query_cmd_userram, at_setup_cmd_userram, NULL},
     {"+USEROTA", NULL, NULL, at_setup_cmd_userota, NULL},
+    {"+USERDOCS", NULL, at_query_cmd_userdocs, NULL, NULL},
 };
 
 bool esp_at_user_cmd_regist(void)

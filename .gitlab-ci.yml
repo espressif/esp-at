@@ -39,6 +39,7 @@ default:
   - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
   # fetch the submodules (& if necessary re-fetch repo) from gitlab
   - time ./esp-idf/tools/ci/get-full-sources.sh
+  - export ESP_AT_PROJECT_BRANCH=${CI_COMMIT_REF_NAME}
 
 .before_build_esp32c3_series: &before_build_esp32c3_series
   - cd components/at/private_include
@@ -53,6 +54,7 @@ default:
   - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
   # fetch the submodules (& if necessary re-fetch repo) from gitlab
   - time ./esp-idf/tools/ci/get-full-sources.sh
+  - export ESP_AT_PROJECT_BRANCH=${CI_COMMIT_REF_NAME}
 
 esp32_wroom_at:
   stage: build
