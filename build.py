@@ -26,12 +26,14 @@ import os
 import sys
 import subprocess
 import json
+if sys.platform == 'win32':
+    from colorama import init
 
 def ESP_LOGI(x):
-    print('\033[32m%s\033[0m' %x)
+    print('\033[32m{}\033[0m'.format(x))
 
 def ESP_LOGE(x):
-    print('\033[31m%s\033[0m' %x)
+    print('\033[31m{}\033[0m'.format(x))
 
 def gitee_repo_preprocess():
     print('Redirect IDF url to https://gitee.com/EspressifSystems')
@@ -168,7 +170,10 @@ def build_project(platform_name, module_name, silence, build_args):
         sys_python_path = sys.executable
     else:
         sys_cmd = 'export'
-        sys_python_path = os.path.join(os.environ.get('IDF_PYTHON_ENV_PATH'), 'bin', 'python')
+        if os.environ.get('IDF_PYTHON_ENV_PATH') is None:
+            sys_python_path = 'python'
+        else:
+            sys_python_path = os.path.join(os.environ.get('IDF_PYTHON_ENV_PATH'), 'bin', 'python')
 
     cmd = '{0} ESP_AT_PROJECT_PLATFORM=PLATFORM_{1} && {0} ESP_AT_MODULE_NAME={2} && {0} ESP_AT_PROJECT_PATH={3} && \
        {0} SILENCE={4} && {5} {6} -DIDF_TARGET={7} {8}'.format(sys_cmd, platform_name, module_name, os.getcwd(), silence, sys_python_path, tool, idf_target, build_args)
@@ -185,18 +190,7 @@ def get_param_data_info(source_file, sheet_name):
     import xlrd
     import csv
     filename, filetype = os.path.splitext(source_file)
-    if filetype == '.xlsx':
-        data = xlrd.open_workbook(source_file)
-        sheet = data.sheet_by_name(sheet_name)
-        headers = sheet.row_values(0)
-
-        for row in range(1, sheet.nrows):
-            dict = {}
-            for col in range(1, sheet.ncols):
-                dict[headers[col]] = sheet.row_values(row)[col]
-
-            param_data_dicts[sheet.row_values(row)[0]] = dict
-    elif filetype == '.csv':
+    if filetype == '.csv':
         with open(source_file) as f:
             csv_data = csv.reader(f)
             param_data_list = list(csv_data)
@@ -365,11 +359,13 @@ def setup_env_variables():
     print('IDF_PYTHON_ENV_PATH is {}'.format(os.environ.get('IDF_PYTHON_ENV_PATH')))
     print('sys.platform is {}'.format(sys.platform))
 
-    if sys.platform == 'win32' or sys.platform == 'linux2':
-        export_str = ''
-    else:
+    export_str = ''
+    if sys.platform != 'win32' and sys.platform != 'linux2':
         cmd = '{} {} export --format=key-value'.format(sys.executable, os.path.join('esp-idf', 'tools', 'idf_tools.py'))
-        export_str = subprocess.check_output(cmd, shell=True).decode('utf-8')
+        try:
+            export_str = subprocess.check_output(cmd, shell=True).decode('utf-8')
+        except Exception as e:
+            print('Not found the environment installed by "install" command, and using the default system environment')
 
     if export_str:
         # extract toolchain PATH and IDF_PYTHON_ENV_PATH
@@ -448,6 +444,8 @@ TODOs:
   3. remove workaround for windows
 """
 def main():
+    if sys.platform == 'win32':
+        init(autoreset=True)
     argv = sys.argv[1:]
 
     # install prerequisites
@@ -473,5 +471,5 @@ if __name__ == '__main__':
     try:
         main()
     except Exception as e:
-        ESP_LOGE('A fatal error occurred: %s' %e)
+        ESP_LOGE('A fatal error occurred: {}'.format(e))
         sys.exit(2)
