@@ -26,7 +26,7 @@ jobs:
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+        ./build.py install
     - name: Compiling
       env:
         AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
@@ -95,7 +95,7 @@ jobs:
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+        ./build.py install
 
     - name: Compiling
       env:
@@ -165,7 +165,7 @@ jobs:
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+        ./build.py install
     - name: Compiling
       env:
         AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
@@ -233,7 +233,7 @@ jobs:
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+        ./build.py install
     - name: Compiling
       env:
         AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
@@ -301,7 +301,7 @@ jobs:
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+        ./build.py install
     - name: Compiling
       env:
         AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
@@ -369,7 +369,7 @@ jobs:
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+        ./build.py install
     - name: Compiling
       env:
         AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
@@ -437,7 +437,7 @@ jobs:
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+        ./build.py install
     - name: Compiling
       run: |
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
@@ -481,7 +481,7 @@ jobs:
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+        ./build.py install
     - name: Compiling
       env:
         AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
@@ -569,7 +569,7 @@ jobs:
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+        ./build.py install
     - name: Compiling
       env:
         AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
@@ -637,7 +637,7 @@ jobs:
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+        ./build.py install
     - name: Compiling
       env:
         AT_OTA_TOKEN_ESP32C3_MINI: ${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI }}
@@ -698,7 +698,7 @@ jobs:
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+        ./build.py install
     - name: Compiling
       env:
         AT_OTA_TOKEN_ESP32C3_MINI: ${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI }}
@@ -754,7 +754,7 @@ jobs:
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+        ./build.py install
     - name: Compiling
       run: |
         python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
@@ -798,7 +798,7 @@ jobs:
       env:
         IDF_PATH: ${{ github.workspace }}/esp-idf
       run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/esp-idf/requirements.txt
+        ./build.py install
     - name: Compiling
       env:
         AT_OTA_TOKEN_ESP32C3_MINI: ${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI }}
