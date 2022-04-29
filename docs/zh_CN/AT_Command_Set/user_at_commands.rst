@@ -7,6 +7,7 @@
 
 -  :ref:`AT+USERRAM <cmd-USERRAM>`：操作用户的空闲 RAM
 -  :ref:`AT+USEROTA <cmd-USEROTA>`：根据指定 URL 升级固件
+-  :ref:`AT+USERDOCS <cmd-USERDOCS>`：查询固件对应的用户文档链接
 
 .. _cmd-USERRAM:
 
@@ -165,5 +166,49 @@ AT 输出上述信息之后，升级过程开始。如果升级完成，返回�
 
     >
     Recv 36 bytes
+
+    OK
+
+.. _cmd-USERDOCS:
+
+:ref:`AT+USERDOCS <User-AT>`：查询固件对应的用户文档链接
+---------------------------------------------------------------------
+
+查询命令
+^^^^^^^^
+
+**功能：**
+
+查询当前运行固件对应的中英文用户文档链接。
+
+**命令：**
+
+::
+
+    AT+USERDOCS?
+
+**响应：**
+
+::
+
+    +USERDOCS:<"en url">
+    +USERDOCS:<"cn url">
+
+    OK
+
+参数
+^^^^
+
+-  **<"en url">**：英文文档链接
+-  **<"cn url">**：中文文档链接
+
+示例
+^^^^
+
+::
+
+    AT+USERDOCS?
+    +USERDOCS:"https://docs.espressif.com/projects/esp-at/en/latest/{IDF_TARGET_PATH_NAME}/index.html"
+    +USERDOCS:"https://docs.espressif.com/projects/esp-at/zh_CN/latest/{IDF_TARGET_PATH_NAME}/index.html"
 
     OK

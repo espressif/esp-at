@@ -7,6 +7,7 @@ User AT Commands
 
 -  :ref:`AT+USERRAM <cmd-USERRAM>`: Operate user's free RAM.
 -  :ref:`AT+USEROTA <cmd-USEROTA>`: Upgrade the firmware according to the specified URL.
+-  :ref:`AT+USERDOCS <cmd-USERDOCS>`: Query the ESP-AT user guide for current firmware.
 
 .. _cmd-USERRAM:
 
@@ -165,5 +166,49 @@ Example
 
     >
     Recv 36 bytes
+
+    OK
+
+.. _cmd-USERDOCS:
+
+:ref:`AT+USERDOCS <User-AT>`: Query the ESP-AT User Guide for Current Firmware
+------------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Function:**
+
+Query the ESP-AT English and Chinese user guide for current running firmware.
+
+**Command:**
+
+::
+
+    AT+USERDOCS?
+
+**Response:**
+
+::
+
+    +USERDOCS:<"en url">
+    +USERDOCS:<"cn url">
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<"en url">**: the URL for English document
+-  **<"cn url">**: the URL for Chinese document
+
+Example
+^^^^^^^
+
+::
+
+    AT+USERDOCS?
+    +USERDOCS:"https://docs.espressif.com/projects/esp-at/en/latest/{IDF_TARGET_PATH_NAME}/index.html"
+    +USERDOCS:"https://docs.espressif.com/projects/esp-at/zh_CN/latest/{IDF_TARGET_PATH_NAME}/index.html"
 
     OK
