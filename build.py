@@ -377,7 +377,7 @@ def setup_env_variables():
             if line.startswith('IDF_PYTHON_ENV_PATH='):
                 idf_python_env_path = line.split('IDF_PYTHON_ENV_PATH=')[1]
         # set PATH and IDF_PYTHON_ENV_PATH and print
-        at_env_path = os.environ.get('PATH') + idf_tc_env_path
+        at_env_path = os.environ.get('PATH') + ':' + idf_tc_env_path
         os.environ['PATH']=at_env_path
         os.environ['IDF_PYTHON_ENV_PATH']=idf_python_env_path
 
