@@ -448,6 +448,10 @@ def main():
         init(autoreset=True)
     argv = sys.argv[1:]
 
+    # unset IDF_PATH
+    if os.environ.get('IDF_PATH'):
+        os.environ['IDF_PATH']=''
+
     # install prerequisites
     if (len(argv) == 1 and sys.argv[1] == 'install'):
         install_prerequisites()
