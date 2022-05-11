@@ -91,7 +91,6 @@ static StreamBufferHandle_t spi_slave_rx_ring_buf = NULL;
 static StreamBufferHandle_t spi_slave_tx_ring_buf = NULL;
 static xQueueHandle msg_queue;
 static uint8_t initiative_send_flag = 0;
-static uint32_t notify_len = 0;
 
 static bool send_queue_error_flag = false;
 
@@ -152,7 +151,7 @@ static int32_t at_spi_read_data(uint8_t* data, int32_t len)
         ESP_LOGI(TAG, "Empty read data.");
         return 0;
     }
-    ESP_LOGI(TAG, "read len: %d", len);
+    ESP_LOGD(TAG, "read len: %d", len);
 
     ring_len = xStreamBufferReceive(spi_slave_rx_ring_buf, (void*) data, len, 0);
 
@@ -208,7 +207,10 @@ static int32_t at_spi_write_data(uint8_t* buf, int32_t len)
 
 int32_t at_spi_get_data_length(void)
 {
-    return notify_len;
+    if (spi_slave_rx_ring_buf ==  NULL) {
+        return 0;
+    }
+    return xStreamBufferBytesAvailable(spi_slave_rx_ring_buf);
 }
 
 static void at_spi_slave_task(void* pvParameters)
@@ -255,7 +257,6 @@ static void at_spi_slave_task(void* pvParameters)
             xStreamBufferSend(spi_slave_rx_ring_buf, (void*) data_buf, ret_trans->trans_len, portMAX_DELAY);
             // notify length to AT core
             esp_at_port_recv_data_notify(ret_trans->trans_len, portMAX_DELAY);
-            notify_len = ret_trans->trans_len;
 
         } else if (trans_msg.direct == SPI_SLAVE_WR) {     // slave -> master
             remain_len = xStreamBufferBytesAvailable(spi_slave_tx_ring_buf);
