@@ -25,7 +25,7 @@ Please refer to the example code and set up a serial terminal program to the sam
 | ---------------- | ------------- | -------------   |
 | SCLK             | GPIO15        | GPIO6           |
 | MISO             | GPIO12        | GPIO2           |
-| MOSI             | GPIO12        | GPIO7           |
+| MOSI             | GPIO13        | GPIO7           |
 | CS               | GPIO14        | GPIO10          |
 | HANDSHAKE        | GPIO5         | GPIO3           |
 | GND              | GND           | GND             |
@@ -38,7 +38,7 @@ Please refer to the example code and set up a serial terminal program to the sam
 
 ### Hardware Required
 
-To run this example, you need an ESP32 dev board (e.g. ESP32-WROVER Kit) or ESP32 core board (e.g. ESP32-DevKitC).
+To run this example, you need an ESP32 or ESP32-C3 development board.
 
 ### Configure the project
 
