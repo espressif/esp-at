@@ -1787,6 +1787,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 -  如果想要本配置立即生效，请在建立 SSL 连接前运行本命令。
 -  配置更改将保存在 NVS 区，如果您使用 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 命令设置开机进入 Wi-Fi SSL :term:`透传模式`，{IDF_TARGET_NAME} 将在下次上电时基于本配置建立 SSL 连接。
+-  如果您想使用自己的证书或者使用多套证书，请参考文档：:doc:`../Compile_and_Develop/how_to_generate_pki_files`。
 
 .. _cmd-SSLCCN:
 

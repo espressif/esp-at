@@ -146,7 +146,7 @@
 参数
 ^^^^
 
--  **<device_name>**：Classic Bluetooth 设备名称，最大长度为：32。
+-  **<device_name>**：Classic Bluetooth 设备名称，最大长度为：32。默认："ESP32_AT"。
 
 说明
 ^^^^

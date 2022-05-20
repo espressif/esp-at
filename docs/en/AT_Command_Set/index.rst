@@ -107,6 +107,9 @@ Configuration settings entered by the following AT Commands will always be saved
 
 Saving of configuration settings by several other commands can be switched on or off with :ref:`AT+SYSSTORE <cmd-SYSSTORE>` command, which is mentioned in the Note section of these commands.
 
+.. note::
+  The parameters of AT commands are saved based on `NVS <https://docs.espressif.com/projects/esp-idf/en/release-v4.3/{IDF_TARGET_PATH_NAME}/api-reference/storage/nvs_flash.html>`_ library. Therefore, if the command is configured with the same parameter value, flash will not be written; If the command is configured with the different parameter value, flash will not be erased frequently.
+
 .. _at-messages:
 
 AT Messages

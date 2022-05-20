@@ -262,7 +262,7 @@ Parameters
    -  1: all-channel scan. It will end after all the channels are scanned. The device will connect to the scanned AP with the strongest signal.
 
 -  **<jap_timeout>**: maximum timeout for :ref:`AT+CWJAP <cmd-JAP>` command. Unit: second. Default: 15. Range: [3,600].
--  **<pmf>**: Protected Management Frames. Default: 0.
+-  **<pmf>**: Protected Management Frames. Default: 1.
 
     - 0 means disable PMF.
     - bit 0: PMF capable, advertizes support for protected management frame. Device will prefer to connect in PMF mode if other device also advertizes PMF capability.
