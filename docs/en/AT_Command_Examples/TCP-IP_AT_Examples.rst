@@ -1078,8 +1078,8 @@ The certificate used in the example is the default certificate in esp-at. You ca
 
      +IPD,4:test
 
-{IDF_TARGET_NAME} as an SSL server to create multiple connection with mutual authentication
----------------------------------------------------------------------------------------
+{IDF_TARGET_NAME} as an SSL server to create multiple connections with mutual authentication
+--------------------------------------------------------------------------------------------
 
 When {IDF_TARGET_NAME} works as an SSL server, multiple connections should be enabled by :ref:`AT+CIPMUX=1 <cmd-MUX>` command, because in most cases more than one client needs to be connected to the {IDF_TARGET_NAME} server.
 
@@ -1337,7 +1337,7 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP cl
 
      OK
 
-#. Enable the UART Wi-Fi transmission mode.
+#. Enable the UART Wi-Fi :term:`Passthrough Receiving Mode`.
 
    Command:
 
@@ -1351,7 +1351,7 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP cl
 
      OK
 
-#. Send data in :term:`Passthrough Mode`.
+#. Enter the UART Wi-Fi :term:`Passthrough Mode` and send data.
 
    Command:
 
@@ -1369,13 +1369,207 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP cl
 
 #. Stop sending data.
 
-   When receiving a packet that contains only ``+++``,  the UART Wi-Fi passthrough transmission process will be stopped. Then please wait at least 1 second before sending next AT command. Please be noted that if you input ``+++`` directly by typing, the ``+++`` may not be recognised as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
+   When receiving a packet that contains only ``+++``,  the UART Wi-Fi passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
 
    .. Important::
 
-     The aim of ending the packet with ``+++`` is to exit transparent transmission and to accept normal AT commands, while TCP still remains connected. However, you can also use command ``AT+CIPSEND`` to go back into transparent transmission.
+     The aim of ending the packet with ``+++`` is to exit :term:`Passthrough Mode` and to accept normal AT commands, while TCP still remains connected. However, you can also use command ``AT+CIPSEND`` to go back into :term:`Passthrough Mode`.
 
-#. Exit the UART Wi-Fi passthrough mode.
+#. Exit the UART Wi-Fi :term:`Passthrough Receiving Mode`.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPMODE=0
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Close TCP connection.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPCLOSE
+
+   Response:
+
+   .. code-block:: none
+
+     CLOSED
+
+     OK
+
+UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP server
+------------------------------------------------------------------------------------
+
+#. Set the Wi-Fi mode to station.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWMODE=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Connect to the router.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWJAP="espressif","1234567890"
+
+   Response:
+
+   .. code-block:: none
+
+     WIFI CONNECTED
+     WIFI GOT IP
+
+     OK
+
+   Note:
+
+   - The SSID and password you entered may be different from those in the above command. Please replace the SSID and password with those of your router settings.
+
+#. Enable multiple connections.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPMUX=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+   Note:
+
+   - TCP server can be created only in multiple connections.
+
+#. Set the maximum number of TCP server connections to 1.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSERVERMAXCONN=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+   Note:
+
+   - The passthrough mode is point-to-point, so the maximum number of connections to the TCP server can only be 1.
+
+#. Create TCP server.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSERVER=1,8080
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+   Note:
+
+   - Set the TCP server port to 8080. You can also set it to other port.
+
+#. Query the device's IP address.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSTA?
+
+   Response:
+
+   .. code-block:: none
+
+    +CIPSTA:ip:"192.168.3.112"
+    +CIPSTA:gateway:"192.168.3.1"
+    +CIPSTA:netmask:"255.255.255.0"
+
+    OK
+
+   Note:
+
+   - The query results you obtained may be different from those in the above response.
+
+#. Connect the PC to the {IDF_TARGET_NAME} TCP server
+
+   Connect the PC to the same router which {IDF_TARGET_NAME} is connected to.
+
+   Use a network tool on the PC to create a TCP client and connect to the {IDF_TARGET_NAME} TCP server. The remote address is ``192.168.3.112``, and the port is ``8080``.
+
+   AT Response:
+
+   .. code-block:: none
+
+     0,CONNECT
+
+#. Enable the UART Wi-Fi :term:`Passthrough Receiving Mode`.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPMODE=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Enter the UART Wi-Fi :term:`Passthrough Mode` and send data.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSEND
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+     >
+
+#. Stop sending data.
+
+   When receiving a packet that contains only ``+++``,  the UART Wi-Fi passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
+
+   .. Important::
+
+     The aim of ending the packet with ``+++`` is to exit :term:`Passthrough Mode` and to accept normal AT commands, while TCP still remains connected. However, you can also use command ``AT+CIPSEND`` to go back into :term:`Passthrough Mode`.
+
+#. Exit the UART Wi-Fi :term:`Passthrough Receiving Mode`.
 
    Command:
 
@@ -1463,7 +1657,7 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a softAP
 
      OK
 
-#. Enable the UART Wi-Fi transmission mode.
+#. Enter the UART Wi-Fi :term:`Passthrough Receiving Mode`.
 
    Command:
 
@@ -1477,7 +1671,7 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a softAP
 
      OK
 
-#. Send data in :term:`Passthrough Mode`.
+#. Enter the UART Wi-Fi :term:`Passthrough Mode` and send data.
 
    Command:
 
@@ -1495,13 +1689,13 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a softAP
 
 #. Stop sending data.
 
-   When receiving a packet that contains only ``+++``,  the UART Wi-Fi passthrough transmission process will be stopped. Then please wait at least 1 second before sending next AT command. Please be noted that if you input ``+++`` directly by typing, the ``+++`` may not be recognised as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
+   When receiving a packet that contains only ``+++``,  the UART Wi-Fi passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
 
    .. Important::
 
-     The aim of ending the packet with ``+++`` is to exit transparent transmission and to accept normal AT commands, while TCP still remains connected. However, you can also use command ``AT+CIPSEND`` to go back into transparent transmission.
+     The aim of ending the packet with ``+++`` is to exit :term:`Passthrough Mode` and to accept normal AT commands, while TCP still remains connected. However, you can also use command ``AT+CIPSEND`` to go back into :term:`Passthrough Mode`.
 
-#. Exit the UART Wi-Fi passthrough mode.
+#. Exit the UART Wi-Fi :term:`Passthrough Receiving Mode`.
 
    Command:
 

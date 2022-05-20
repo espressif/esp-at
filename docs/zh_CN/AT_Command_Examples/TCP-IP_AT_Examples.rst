@@ -1337,7 +1337,7 @@ TCP-IP AT 示例
 
      OK
 
-#. 使能 UART Wi-Fi 透传模式。
+#. 进入 UART Wi-Fi :term:`透传接收模式`。
 
    命令：
 
@@ -1351,7 +1351,7 @@ TCP-IP AT 示例
 
      OK
 
-#. 在 :term:`透传模式` 下发送数据。
+#. 进入 UART Wi-Fi :term:`透传模式` 并发送数据。
 
    命令：
 
@@ -1373,9 +1373,203 @@ TCP-IP AT 示例
 
    .. Important::
 
-     使用 ``+++`` 可退出透传发送数据，回到正常 AT 命令模式，此时 TCP 连接仍然有效。您也可以使用 ``AT+CIPSEND`` 命令恢复透传。
+     使用 ``+++`` 可退出 :term:`透传模式`，回到 :term:`透传接收模式`，此时 TCP 连接仍然有效。您也可以使用 ``AT+CIPSEND`` 命令恢复透传。
 
-#. 退出 UART Wi-Fi 透传模式。
+#. 退出 UART Wi-Fi :term:`透传接收模式`。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPMODE=0
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 关闭 TCP 连接。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPCLOSE
+
+   响应：
+
+   .. code-block:: none
+
+     CLOSED
+
+     OK
+
+{IDF_TARGET_NAME} 设备作为 TCP 服务器，实现 UART Wi-Fi 透传
+-----------------------------------------------------------------------------------------
+
+#. 设置 Wi-Fi 模式为 station。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWMODE=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 连接到路由器。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWJAP="espressif","1234567890"
+
+   响应：
+
+   .. code-block:: none
+
+     WIFI CONNECTED
+     WIFI GOT IP
+
+     OK
+
+   说明：
+
+   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+
+#. 设置多连接模式。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPMUX=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+   说明：
+
+   - TCP 服务器必须在多连接模式下才能开启。
+
+#. 设置 TCP 服务器最大连接数为 1。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSERVERMAXCONN=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+   说明：
+
+   - 透传模式是点对点的，因此 TCP 服务器的最大连接数只能是 1。
+
+#. 开启 TCP 服务器。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSERVER=1,8080
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+   说明：
+
+   - 设置 TCP 服务器端口为 8080，您也可以设置为其它端口。
+
+#. 查询 {IDF_TARGET_NAME} 设备 IP 地址。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSTA?
+
+   响应：
+
+   .. code-block:: none
+
+    +CIPSTA:ip:"192.168.3.112"
+    +CIPSTA:gateway:"192.168.3.1"
+    +CIPSTA:netmask:"255.255.255.0"
+
+    OK
+
+   说明：
+
+   - 您的查询结果可能与上述响应中的不同。
+
+#. PC 连接到 {IDF_TARGET_NAME} TCP 服务器。
+
+   PC 与 {IDF_TARGET_NAME} 设备连接到同一个路由。
+
+   在 PC 上使用网络调试工具，创建一个 TCP 客户端。连接到 {IDF_TARGET_NAME} 的 TCP 服务器。地址为 ``192.168.3.112``，端口为 ``8080``。
+
+   AT 响应：
+
+   .. code-block:: none
+
+    0,CONNECT
+
+#. 进入 UART Wi-Fi :term:`透传接收模式`。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPMODE=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 进入 UART Wi-Fi :term:`透传模式` 并发送数据。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSEND
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+     >
+
+#. 停止发送数据
+
+   在透传发送数据过程中，若识别到单独的一包数据 ``+++``，则系统会退出透传发送。此时请至少等待 1 秒，再发下一条 AT 命令。请注意，如果直接用键盘打字输入 ``+++``，有可能因时间太慢而不能被识别为连续的三个 ``+``。更多介绍请参考 :ref:`[仅适用透传模式] +++ <cmd-PLUS>`。
+
+   .. Important::
+
+     使用 ``+++`` 可退出 :term:`透传模式`，回到 :term:`透传接收模式`，此时 TCP 连接仍然有效。您也可以使用 ``AT+CIPSEND`` 命令恢复透传。
+
+#. 退出 UART Wi-Fi :term:`透传接收模式`。
 
    命令：
 
@@ -1463,7 +1657,7 @@ TCP-IP AT 示例
 
      OK
 
-#. 使能 UART Wi-Fi 透传模式。
+#. 进入 UART Wi-Fi :term:`透传接收模式`。
 
    命令：
 
@@ -1477,7 +1671,7 @@ TCP-IP AT 示例
 
      OK
 
-#. 在 :term:`透传模式` 下发送数据。
+#. 进入 UART Wi-Fi :term:`透传模式` 并发送数据。
 
    命令：
 
@@ -1499,9 +1693,9 @@ TCP-IP AT 示例
 
    .. Important::
 
-     使用 ``+++`` 可退出透传发送数据，回到正常 AT 命令模式，此时 TCP 连接仍然有效。您也可以使用 ``AT+CIPSEND`` 命令恢复透传。
+     使用 ``+++`` 可退出 :term:`透传模式`，回到 :term:`透传接收模式`，此时 TCP 连接仍然有效。您也可以使用 ``AT+CIPSEND`` 命令恢复透传。
 
-#. 退出 UART Wi-Fi 透传模式。
+#. 退出 UART Wi-Fi :term:`透传接收模式`。
 
    命令：
 
