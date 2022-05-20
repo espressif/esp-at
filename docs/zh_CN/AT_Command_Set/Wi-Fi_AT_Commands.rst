@@ -262,7 +262,7 @@ Wi-Fi AT 命令集
    -  1: 全信道扫描，所有信道都扫描后才终止扫描，{IDF_TARGET_NAME} station 与扫描到的信号最强的 AP 连接
 
 -  **<jap_timeout>**：:ref:`AT+CWJAP <cmd-JAP>` 命令超时的最大值，单位：秒，默认值：15，范围：[3,600]
--  **<pmf>**：PMF（Protected Management Frames，受保护的管理帧），默认值 0
+-  **<pmf>**：PMF（Protected Management Frames，受保护的管理帧），默认值 1
 
     - 0 表示禁用 PMF
     - bit 0: 具有 PMF 功能，提示支持 PMF，如果其他设备具有 PMF 功能，则 {IDF_TARGET_NAME} 设备将优先选择以 PMF 模式连接

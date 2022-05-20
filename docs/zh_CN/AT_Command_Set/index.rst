@@ -107,6 +107,9 @@ AT 命令分类
 
 其它一些命令的参数更改是否保存到 flash 可以通过 :ref:`AT+SYSSTORE <cmd-SYSSTORE>` 命令来配置，具体请参见命令的详细说明。
 
+.. note::
+  AT 命令里的参数保存，是通过 `NVS <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v4.3/{IDF_TARGET_PATH_NAME}/api-reference/storage/nvs_flash.html>`_ 库实现的。因此，如果命令配置相同的参数值，则不会写入 flash；如果命令配置不同的参数值，flash 也不会被频繁擦除。
+
 .. _at-messages:
 
 AT 消息

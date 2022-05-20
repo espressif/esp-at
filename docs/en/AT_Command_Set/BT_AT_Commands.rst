@@ -146,7 +146,7 @@ Set the Classic Bluetooth device name.
 Parameter
 ^^^^^^^^^^
 
--  **<device_name>**: the Classic Bluetooth device name. The maximum length is 32.
+-  **<device_name>**: the Classic Bluetooth device name. The maximum length is 32. Default: "ESP32_AT".
 
 Notes
 ^^^^^

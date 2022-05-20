@@ -270,7 +270,7 @@ Bluetooth® Low Energy AT 命令集
 参数
 ^^^^
 
--  **<device_name>**：Bluetooth LE 设备名称，最大长度：32，默认名称为 "ESP_AT"。
+-  **<device_name>**：Bluetooth LE 设备名称，最大长度：32，默认名称为 "ESP-AT"。
 
 说明
 ^^^^

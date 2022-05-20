@@ -1801,6 +1801,7 @@ Notes
 
 -  If you want this configuration to take effect immediately, run this command before establishing an SSL connection.
 -  The configuration changes will be saved in the NVS area. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL Wi-Fi :term:`Passthrough Mode` on power-up, the {IDF_TARGET_NAME} will establish an SSL connection based on this configuration when powered up next time.
+-  If you want to use your own certificate or use multiple sets of certificates, please refer to the documentation: :doc:`../Compile_and_Develop/how_to_generate_pki_files`.
 
 .. _cmd-SSLCCN:
 
