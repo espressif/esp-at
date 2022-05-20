@@ -40,6 +40,7 @@
 
 #ifdef CONFIG_AT_QCLOUD_IOT_COMMAND_SUPPORT
 #include "qcloud_iot_at.h"
+#include "qcloud_iot_export_log.h"
 #endif
 
 #include "esp_at.h"
@@ -286,6 +287,8 @@ void app_main(void)
 #endif
 
 #ifdef CONFIG_AT_QCLOUD_IOT_COMMAND_SUPPORT
+    IOT_Log_Set_Level(CONFIG_AT_QCLOUD_IOT_LOG_LEVEL);
+
     if(esp_at_qcloud_iot_cmd_regist() == false) {
         printf("qcloud at init fail\r\n");
     }

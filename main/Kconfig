@@ -337,7 +337,33 @@ config AT_QCLOUD_IOT_COMMAND_SUPPORT
 config AT_QCLOUD_IOT_GENERATE_FACTORY_INFO
 
     bool "Automatically generate qcloud_modinfo.bin, qcloud_devinfo.bin and qcloud_prdinfo.bin"
-    default "y"
+    default "y" 
     depends on AT_QCLOUD_IOT_COMMAND_SUPPORT
+
+choice AT_QCLOUD_IOT_LOG_LEVEL
+
+    bool "QCLOUD default log verbosity"
+    default AT_QCLOUD_IOT_LOG_LEVEL_ERROR
+    depends on AT_QCLOUD_IOT_COMMAND_SUPPORT
+
+    config AT_QCLOUD_IOT_LOG_LEVEL_NONE
+        bool "No output"
+    config AT_QCLOUD_IOT_LOG_LEVEL_ERROR
+        bool "Error"
+    config AT_QCLOUD_IOT_LOG_LEVEL_WARN
+        bool "Warning"
+    config AT_QCLOUD_IOT_LOG_LEVEL_INFO
+        bool "Info"
+    config AT_QCLOUD_IOT_LOG_LEVEL_DEBUG
+        bool "Debug"
+endchoice
+
+config AT_QCLOUD_IOT_LOG_LEVEL
+    int
+    default 0 if AT_QCLOUD_IOT_LOG_LEVEL_NONE
+    default 1 if AT_QCLOUD_IOT_LOG_LEVEL_ERROR
+    default 2 if AT_QCLOUD_IOT_LOG_LEVEL_WARN
+    default 3 if AT_QCLOUD_IOT_LOG_LEVEL_INFO
+    default 4 if AT_QCLOUD_IOT_LOG_LEVEL_DEBUG
 endmenu
 endmenu
