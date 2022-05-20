@@ -260,10 +260,10 @@ TCP/IP AT 命令
 ::
 
     // 单连接 (AT+CIPMUX=0):
-    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep alive>][,<"local IP">]
+    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep_alive>][,<"local IP">]
 
     // 多连接 (AT+CIPMUX=1):
-    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep alive>][,<"local IP">]
+    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep_alive>][,<"local IP">]
 
 **响应：**
 
@@ -290,10 +290,14 @@ TCP/IP AT 命令
 -  **<"type">**：字符串参数，表示网络连接类型，"TCP" 或 "TCPv6"。默认值："TCP"
 -  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：远端端口值
--  **<keep alive>**：TCP keep-alive 间隔，默认值：0
+-  **<keep_alive>**：配置套接字的 ``SO_KEEPALIVE`` 选项（参考：`SO_KEEPALIVE 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`_），单位：秒。
 
-   -  0: 禁用 TCP keep-alive 功能
-   -  1 ~ 7200: 检测间隔，单位：秒
+  - 范围：[0,7200]。
+
+    - 0：禁用 keep-alive 功能；（默认）
+    - 1 ~ 7200：开启 keep-alive 功能。`TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ 值为 **<keep_alive>**，`TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ 值为 1，`TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ 值为 3。
+
+  -  本命令中的 ``<keep_alive>`` 参数与 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令中的 ``<keep_alive>`` 参数相同，最终值由后设置的命令决定。如果运行本命令时不设置 ``<keep_alive>`` 参数，则默认使用上次配置的值。
 
 -  **<"local IP">**：连接绑定的本机 IPv4 地址或 IPv6 地址，该参数在本地多网络接口时和本地多 IP 地址时非常有用。默认为禁用，如果您想使用，需自行设置，空值也为有效值
 
@@ -301,7 +305,6 @@ TCP/IP AT 命令
 """"""
 
 - 如果想基于 IPv6 网络建立 TCP 连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
-- ``<keep alive>`` 参数最终会配置到套接字选项 ``TCP_KEEPIDLE``，keepalive 另外的套接字选项 ``TCP_KEEPINTVL`` 默认会使用 ``1``，``TCP_KEEPCNT`` 默认会使用 ``3``
 
 示例
 """"
@@ -402,10 +405,10 @@ TCP/IP AT 命令
 ::
 
     // 单连接：(AT+CIPMUX=0)
-    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep alive>,<"local IP">]
+    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep_alive>,<"local IP">]
 
     // 多连接：(AT+CIPMUX=1)
-    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep alive>,<"local IP">]
+    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep_alive>,<"local IP">]
 
 **响应：**
 
@@ -432,7 +435,15 @@ TCP/IP AT 命令
 -  **<"type">**：字符串参数，表示网络连接类型，"SSL" 或 "SSLv6"。默认值："TCP"
 -  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：远端端口值
--  **<keep alive>**：SSL 保留配置，默认值：0
+-  **<keep_alive>**：配置套接字的 ``SO_KEEPALIVE`` 选项（参考：`SO_KEEPALIVE 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`_），单位：秒。
+
+  - 范围：[0,7200]。
+
+    - 0：禁用 keep-alive 功能；（默认）
+    - 1 ~ 7200：开启 keep-alive 功能。`TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ 值为 **<keep_alive>**，`TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ 值为 1，`TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ 值为 3。
+
+  -  本命令中的 ``<keep_alive>`` 参数与 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令中的 ``<keep_alive>`` 参数相同，最终值由后设置的命令决定。如果运行本命令时不设置 ``<keep_alive>`` 参数，则默认使用上次配置的值。
+
 -  **<"local IP">**：连接绑定的本机 IPv4 地址或 IPv6 地址，该参数在本地多网络接口时和本地多 IP 地址时非常有用。默认为禁用，如果您想使用，需自行设置，空值也为有效值
 
 说明
@@ -442,7 +453,6 @@ TCP/IP AT 命令
 - SSL 连接需占用大量内存，内存不足会导致系统重启
 - 如果 ``AT+CIPSTART`` 命令是基于 SSL 连接，且每个数据包的超时时间为 10 秒，则总超时时间会变得更长，具体取决于握手数据包的个数
 - 如果想基于 IPv6 网络建立 SSL 连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`, 再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
-- ``<keep alive>`` 参数最终会配置到套接字选项 ``TCP_KEEPIDLE``，keepalive 另外的套接字选项 ``TCP_KEEPINTVL`` 默认会使用 ``1``，``TCP_KEEPCNT`` 默认会使用 ``3``
 
 示例
 """"""""
@@ -1179,7 +1189,7 @@ TCP/IP AT 命令
 
 ::
 
-    AT+SAVETRANSLINK=<mode>,<"remote host">,<remote port>[,<"type">,<keep alive>]
+    AT+SAVETRANSLINK=<mode>,<"remote host">,<remote port>[,<"type">,<keep_alive>]
 
 **响应：**
 
@@ -1198,10 +1208,14 @@ TCP/IP AT 命令
 -  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
 -  **<remote port>**：远端端口值
 -  **<"type">**：字符串参数，表示传输类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6"。默认值："TCP"
--  **<keep alive>**：TCP keep-alive 间隔，默认值：0
+-  **<keep_alive>**：配置套接字的 ``SO_KEEPALIVE`` 选项（参考：`SO_KEEPALIVE 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`_），单位：秒。
 
-   -  0: 禁用 keep-alive 功能
-   -  1 ~ 7200: 检测间隔，单位：秒
+  - 范围：[0,7200]。
+
+    - 0：禁用 keep-alive 功能；（默认）
+    - 1 ~ 7200：开启 keep-alive 功能。`TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ 值为 **<keep_alive>**，`TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ 值为 1，`TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ 值为 3。
+
+  -  本命令中的 ``<keep_alive>`` 参数与 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令中的 ``<keep_alive>`` 参数相同，最终值由后设置的命令决定。如果运行本命令时不设置 ``<keep_alive>`` 参数，则默认使用上次配置的值。
 
 说明
 """""""
@@ -2403,7 +2417,7 @@ ping 对端主机
 
 ::
 
-    +CIPTCPOPT:<link_id>,<so_linger>,<tcp_nodelay>,<so_sndtimeo>
+    +CIPTCPOPT:<link_id>,<so_linger>,<tcp_nodelay>,<so_sndtimeo>,<keep_alive>
     OK
 
 设置命令
@@ -2414,10 +2428,10 @@ ping 对端主机
 ::
 
     // 单连接：(AT+CIPMUX=0):
-    AT+CIPTCPOPT=[<so_linger>],[<tcp_nodelay>],[<so_sndtimeo>]
+    AT+CIPTCPOPT=[<so_linger>],[<tcp_nodelay>],[<so_sndtimeo>][,<keep_alive>]
 
     // 多连接：(AT+CIPMUX=1):
-    AT+CIPTCPOPT=<link ID>,[<so_linger>],[<tcp_nodelay>],[<so_sndtimeo>]
+    AT+CIPTCPOPT=<link ID>,[<so_linger>],[<tcp_nodelay>],[<so_sndtimeo>][,<keep_alive>]
 
 **响应：**
 
@@ -2448,6 +2462,15 @@ ping 对端主机
 
 -  **<so_sndtimeo>**：配置套接字的 ``SO_SNDTIMEO`` 选项（参考：`SO_SNDTIMEO 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_SNDTIMEO>`_），单位：毫秒，默认值：0。
 
+-  **<keep_alive>**：配置套接字的 ``SO_KEEPALIVE`` 选项（参考：`SO_KEEPALIVE 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`_），单位：秒。
+
+  - 范围：[0,7200]。
+
+    - 0：禁用 keep-alive 功能；（默认）
+    - 1 ~ 7200：开启 keep-alive 功能。`TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ 值为 **<keep_alive>**，`TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ 值为 1，`TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ 值为 3。
+
+  -  本命令中的 ``<keep_alive>`` 参数与 :ref:`AT+CIPSTART <cmd-START>` 命令中的 ``<keep_alive>`` 参数相同，最终值由后设置的命令决定。如果运行本命令时不设置 ``<keep_alive>`` 参数，则默认使用上次配置的值。
+
 说明
 ^^^^
 
@@ -2455,3 +2478,4 @@ ping 对端主机
 -  SO_LINGER 选项不建议配置较大的值。例如配置 SO_LINGER 值为 60，则 :ref:`AT+CIPCLOSE <cmd-CLOSE>` 命令在收不到对端 TCP FIN 包情况下，会导致 AT 阻塞 60 秒，从而无法响应其它命令。因此，SO_LINGER 建议保持默认值。
 -  TCP_NODELAY 选项适用于吞吐量小但对实时性要求高的场景。开启后，:term:`LwIP` 会加快 TCP 的发送，但如果网络环境较差，会由于重传而导致吞吐降低。因此，TCP_NODELAY 建议保持默认值。
 -  SO_SNDTIMEO 选项适用于 :ref:`AT+CIPSTART <cmd-START>` 命令未配置 keepalive 参数的应用场景。配置本选项后，:ref:`AT+CIPSEND <cmd-SEND>`、:ref:`AT+CIPSENDL <cmd-SENDL>`、:ref:`AT+CIPSENDEX <cmd-SENDEX>` 命令将会在该超时内退出，无论是否发送成功。这里，SO_SNDTIMEO 建议配置为 5 ~ 10 秒。
+-  SO_KEEPALIVE 选项适用于主动定时检测连接是否断开的应用场景，通常 AT 作为 TCP 服务器时建议配置该选项。配置本选项后，会增加额外的网络带宽。SO_KEEPALIVE 建议配置值不小于 60 秒。

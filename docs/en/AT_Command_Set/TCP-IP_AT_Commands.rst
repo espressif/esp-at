@@ -260,10 +260,10 @@ Set Command
 ::
 
     // Single connection (AT+CIPMUX=0):
-    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep alive>][,<"local IP">]
+    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep_alive>][,<"local IP">]
 
     // Multiple Connections (AT+CIPMUX=1):
-    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep alive>][,<"local IP">]
+    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep_alive>][,<"local IP">]
 
 **Response:**
 
@@ -290,10 +290,14 @@ Parameters
 -  **<"type">**: string parameter showing the type of transmission: "TCP", or "TCPv6". Default: "TCP".
 -  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
 -  **<remote port>**: the remote port number.
--  **<keep alive>**: TCP keep-alive interval. Default: 0.
+-  **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
 
-   -  0: disable TCP keep-alive function.
-   -  1 ~ 7200: detection interval. Unit: second.
+   - Range: [0,7200].
+
+     - 0: disable keep-alive function (default).
+     - 1 ~ 7200: enable keep-alive function. `TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ value is **<keep_alive>**, `TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ value is 1, and `TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ value is 3.
+
+   - This parameter of this command is the same as the ``<keep_alive>`` parameter of :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command. It always takes the value set later by either of the two commands. If it is omitted or not set, the last configured value is used by default.
 
 -  **<"local IP">**: the local IPv4 address or IPv6 address that the connection binds. This parameter is useful when you are using multiple network interfaces or multiple IP addresses. By default, it is disabled. If you want to use it, you should specify it first. Null is also valid.
 
@@ -301,7 +305,6 @@ Notes
 """"""
 
 - If you want to establish TCP connection based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
-- ``<keep alive>`` parameter will eventually be configured to the socket option ``TCP_KEEPIDLE``. As for other socket options of keepalive, ``TCP_KEEPINTVL`` will use ``1`` by default, and ``TCP_KEEPCNT`` will use ``3`` by default.
 
 Example
 """""""""
@@ -402,10 +405,10 @@ Set Command
 ::
 
     // Single connection (AT+CIPMUX=0):
-    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep alive>,<"local IP">]
+    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep_alive>,<"local IP">]
 
     // Multiple connections (AT+CIPMUX=1):
-    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep alive>,<"local IP">]
+    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep_alive>,<"local IP">]
 
 **Response:**
 
@@ -432,7 +435,15 @@ Parameters
 -  **<"type">**: string parameter showing the type of transmission: "SSL", or "SSLv6". Default: "TCP".
 -  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
 -  **<remote port>**: the remote port number.
--  **<keep alive>**: reserved item for SSL. Default: 0.
+-  **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
+
+   - Range: [0,7200].
+
+     - 0: disable keep-alive function (default).
+     - 1 ~ 7200: enable keep-alive function. `TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ value is **<keep_alive>**, `TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ value is 1, and `TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ value is 3.
+
+   - This parameter of this command is the same as the ``<keep_alive>`` parameter of :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command. It always takes the value set later by either of the two commands. If it is omitted or not set, the last configured value is used by default.
+
 -  **<"local IP">**: the local IPv4 address or IPv6 address that the connection binds. This parameter is useful when you are using multiple network interfaces or multiple IP addresses. By default, it is disabled. If you want to use it, you should specify it first. Null is also valid.
 
 Notes
@@ -442,7 +453,6 @@ Notes
 -  SSL connection needs a large amount of memory. Insufficient memory may cause the system reboot.
 -  If the ``AT+CIPSTART`` is based on an SSL connection and the timeout of each packet is 10 s, the total timeout will be much longer depending on the number of handshake packets.
 -  If you want to establish SSL connection based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
-- ``<keep alive>`` parameter will eventually be configured to the socket option ``TCP_KEEPIDLE``. As for other socket options of keepalive, ``TCP_KEEPINTVL`` will use ``1`` by default, and ``TCP_KEEPCNT`` will use ``3`` by default.
 
 Example
 """"""""
@@ -1179,7 +1189,7 @@ Set Command
 
 ::
 
-    AT+SAVETRANSLINK=<mode>,<"remote host">,<remote port>[,<"type">,<keep alive>]
+    AT+SAVETRANSLINK=<mode>,<"remote host">,<remote port>[,<"type">,<keep_alive>]
 
 **Response:**
 
@@ -1198,10 +1208,14 @@ Parameters
 -  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
 -  **<remote port>**: the remote port number.
 -  **<"type">**: string parameter showing the type of transmission: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP".
--  **<keep alive>**: TCP keep-alive interval. Default: 0.
+-  **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
 
-   -  0: disable the keep-alive function.
-   -  1 ~ 7200: detection interval. Unit: second.
+   - Range: [0,7200].
+
+     - 0: disable keep-alive function (default).
+     - 1 ~ 7200: enable keep-alive function. `TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ value is **<keep_alive>**, `TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ value is 1, and `TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ value is 3.
+
+   - This parameter of this command is the same as the ``<keep_alive>`` parameter of :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command. It always takes the value set later by either of the two commands. If it is omitted or not set, the last configured value is used by default.
 
 Notes
 """""""
@@ -2403,7 +2417,7 @@ Query current socket options.
 
 ::
 
-    +CIPTCPOPT:<link_id>,<so_linger>,<tcp_nodelay>,<so_sndtimeo>
+    +CIPTCPOPT:<link_id>,<so_linger>,<tcp_nodelay>,<so_sndtimeo>,<keep_alive>
     OK
 
 Set Command
@@ -2414,10 +2428,10 @@ Set Command
 ::
 
     // Single TCP connection (AT+CIPMUX=0):
-    AT+CIPTCPOPT=[<so_linger>],[<tcp_nodelay>],[<so_sndtimeo>]
+    AT+CIPTCPOPT=[<so_linger>],[<tcp_nodelay>],[<so_sndtimeo>][,<keep_alive>]
 
     // Multiple TCP Connections (AT+CIPMUX=1):
-    AT+CIPTCPOPT=<link ID>,[<so_linger>],[<tcp_nodelay>],[<so_sndtimeo>]
+    AT+CIPTCPOPT=<link ID>,[<so_linger>],[<tcp_nodelay>],[<so_sndtimeo>][,<keep_alive>]
 
 **Response:**
 
@@ -2448,6 +2462,15 @@ Parameters
 
 -  **<so_sndtimeo>**: configure the ``SO_SNDTIMEO`` option for socket (refer to `SO_SNDTIMEO description <https://man7.org/linux/man-pages/man7/socket.7.html#SO_SNDTIMEO>`_). Unit: millisecond. Default: 0.
 
+-  **<keep_alive>**: configure the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
+
+   - Range: [0,7200].
+
+     - 0: disable keep-alive function (default).
+     - 1 ~ 7200: enable keep-alive function. `TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ value is **<keep_alive>**, `TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ value is 1, and `TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ value is 3.
+
+   - This parameter of this command is the same as the ``<keep_alive>`` parameter of :ref:`AT+CIPSTART <cmd-START>` command. It always takes the value set later by either of the two commands. If it is omitted or not set, the last configured value is used by default.
+
 Notes
 ^^^^^
 
@@ -2455,3 +2478,4 @@ Notes
 -  The SO_LINGER option is not recommended to be set to a large value. For example, if you set SO_LINGER value to 60, then :ref:`AT+CIPCLOSE <cmd-CLOSE>` command will block for 60 seconds if {IDF_TARGET_NAME} cannot receive TCP FIN packet from the remote TCP peer due to network issues, so {IDF_TARGET_NAME} is unable to respond to any other AT commands. Therefore, it is recommended to keep the default value of the SO_LINGER option.
 -  The TCP_NODELAY option is used for situations with small throughput but high real-time requirements. If this option is enabled, :term:`LwIP` will speed up TCP transmission, but in a poor network environment, the throughput will be reduced due to retransmission. Therefore, it is recommended to keep the default value of the TCP_NODELAY option.
 -  The SO_SNDTIMEO option is used for situations where the keepalive parameter is not configured in :ref:`AT+CIPSTART <cmd-START>` command. After this option is configured, :ref:`AT+CIPSEND <cmd-SEND>`, :ref:`AT+CIPSENDL <cmd-SENDL>`, and :ref:`AT+CIPSENDEX <cmd-SENDEX>` commands will exit within this timeout, regardless of whether data are sent successfully or not. Here, SO_SNDTIMEO is recommended to be set to 5 ~ 10 seconds.
+-  The SO_KEEPALIVE option is used for actively and regularly detecting whether the connection is disconnected. It is generally recommended to configure this option when AT is used as a TCP server. After this option is configured, additional network bandwidth will be cost. Recommended value of SO_KEEPALIVE should be not less than 60 seconds.
