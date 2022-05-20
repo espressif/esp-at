@@ -253,7 +253,7 @@
 
 可采用以下任意一种方式生成 ble_data.bin 文件。
 
-- 重新编译 ESP-AT 工程，生成 ble_data.bin，详情请见 :ref:`build-project-build-the-project`。
+- 重新编译 ESP-AT 工程，生成 ble_data.bin，详情请见 :ref:`esp-at-project-build`。
 
 - 执行 ``BLEService.py`` 脚本，生成 ble_data.bin 文件。
 
@@ -268,7 +268,7 @@
 
 可采用以下任意一种方式下载 ble_data.bin 文件，分别对应 `生成 ble_data.bin 文件`_ 这一小节中提到的生成 ble_data.bin 文件的方法。
 
-- 下载重新编译过的 ESP-AT 固件，详情请见 :ref:`build-project-flash-onto-the-device`。
+- 下载重新编译过的 ESP-AT 固件，详情请见 :ref:`esp-at-project-flash`。
 
 - 仅下载 ble_data.bin，这种方法只更新设备中的 ble_data 区域。
 

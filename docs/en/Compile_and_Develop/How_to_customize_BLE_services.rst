@@ -253,7 +253,7 @@ Generate ble_data.bin
 
 You can generate ble_data.bin in either of the following ways:
 
-- Recompile the ESP-AT project to generate ble_data.bin. See :ref:`build-project-build-the-project` for more information.
+- Recompile the ESP-AT project to generate ble_data.bin. See :ref:`esp-at-project-build` for more information.
 
 - Execute the ``BLEService.py`` script to generate ble_data.bin
 
@@ -268,7 +268,7 @@ Download ble_data.bin
 
 You can download ble_data.bin in either of the following ways, corresponding to the ways to generate bin files in the `Generate ble_data.bin`_ section.
 
-- Download recompiled ESP-AT firmware. See :ref:`build-project-flash-onto-the-device` for more information.
+- Download recompiled ESP-AT firmware. See :ref:`esp-at-project-flash` for more information.
 
 - Download ble_data.bin only. This way only updates the ble_data area in the device.
 
