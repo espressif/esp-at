@@ -1815,7 +1815,7 @@ Parameters
    -  0: will change the county code to be the same as the AP that the {IDF_TARGET_NAME} is connected to.
    -  1: the country code will not change, always be the one set by command.
 
--  **<country_code>**: country code. Maximum length: 3 characters.
+-  **<country_code>**: country code. Maximum length: 3 characters. Refer to `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ for country codes.
 -  **<start_channel>**: the channel number to start. Range: [1,14].
 -  **<total_channel_count>**: total number of channels.
 
