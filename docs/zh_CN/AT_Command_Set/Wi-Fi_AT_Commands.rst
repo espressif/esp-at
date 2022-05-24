@@ -1815,7 +1815,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
    -  0: 将国家代码改为 {IDF_TARGET_NAME} 设备连入的 AP 的国家代码
    -  1: 不改变国家代码，始终保持本命令设置的国家代码
 
--  **<country_code>**：国家代码，最大长度：3 个字符
+-  **<country_code>**：国家代码，最大长度：3 个字符，各国国家代码请参考 `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ 标准。
 -  **<start_channel>**：起始信号道，范围：[1,14]
 -  **<total_channel_count>**：信道总个数
 
