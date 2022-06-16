@@ -7,6 +7,7 @@ cmake_minimum_required(VERSION 3.5)
 set(IDF_PATH ${CMAKE_SOURCE_DIR}/esp-idf)
 
 string(TOLOWER $ENV{ESP_AT_MODULE_NAME} LOWER_NAME)
+string(STRIP $ENV{ESP_AT_MODULE_NAME} ESP_AT_MODULE_NAME)
 
 set(ESP_AT_MODULE_CONFIG_DIR ${CMAKE_SOURCE_DIR}/module_config/module_${LOWER_NAME})
 if (NOT EXISTS "${ESP_AT_MODULE_CONFIG_DIR}")
@@ -91,7 +92,7 @@ file(MAKE_DIRECTORY $ENV{ESP_AT_PROJECT_PATH}/build/factory)
 add_custom_command(TARGET factory_bin
   POST_BUILD
   COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/tools/esp_at_factory_bin_combine.py
-		--module_name $ENV{ESP_AT_MODULE_NAME}
+		--module_name ${ESP_AT_MODULE_NAME}
  		--bin_directory $ENV{ESP_AT_PROJECT_PATH}/build
 		--flash_mode ${CONFIG_ESPTOOLPY_FLASHMODE}
 		--flash_size ${CONFIG_ESPTOOLPY_FLASHSIZE}
