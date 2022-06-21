@@ -6,9 +6,9 @@ MQTT AT Commands
 :link_to_translation:`zh_CN:[中文]`
 
 -  :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`: Set MQTT user configuration
--  :ref:`AT+MQTTCLIENTID <cmd-MQTTCLIENTID>`: Set MQTT client ID
--  :ref:`AT+MQTTUSERNAME <cmd-MQTTUSERNAME>`: Set MQTT username
--  :ref:`AT+MQTTPASSWORD <cmd-MQTTPASSWORD>`: Set MQTT password
+-  :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>`: Set MQTT client ID
+-  :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>`: Set MQTT username
+-  :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>`: Set MQTT password
 -  :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`: Set configuration of MQTT connection
 -  :ref:`AT+MQTTALPN <cmd-MQTTALPN>`: Set MQTT Application Layer Protocol Negotiation (ALPN)
 -  :ref:`AT+MQTTCONN <cmd-MQTTCONN>`: Connect to MQTT Brokers
@@ -73,9 +73,9 @@ Note
 
 -  The length of the entire AT command should be less than 256 bytes.
 
-.. _cmd-MQTTCLIENTID:
+.. _cmd-MQTTLONGCLIENTID:
 
-:ref:`AT+MQTTCLIENTID <MQTT-AT>`: Set MQTT Client ID
+:ref:`AT+MQTTLONGCLIENTID <MQTT-AT>`: Set MQTT Client ID
 --------------------------------------------------------
 
 Set Command
@@ -89,32 +89,39 @@ Set MQTT Client ID.
 
 ::
 
-    AT+MQTTCLIENTID=<LinkID>,<"client_id">
+    AT+MQTTLONGCLIENTID=<LinkID>,<length>
 
 **Response:**
 
 ::
 
-   OK
+    OK
+
+    >
+
+This response indicates that AT is ready for receiving MQTT Client ID. You should enter the Client ID, and when the Client ID length reaches the ``<length>`` value, the system returns:
+
+::
+
+    OK
 
 Parameters
 ^^^^^^^^^^
 
 -  **<LinkID>**: currently only supports link ID 0.
--  **<client_id>**: MQTT client ID.
+-  **<length>**: MQTT client ID length. Range: [1,1024].
 
 Notes
 ^^^^^
 
--  The length of the entire AT command should be less than 256 bytes.
 -  The command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` can also set MQTT client ID. The differences between the two commands include:
 
-   - You can use ``AT+MQTTCLIENTID`` to set a relatively long client ID since there is a limitation on the length of the ``AT+MQTTUSERCFG`` command.
-   - You should set ``AT+MQTTCLIENTID`` after setting the ``AT+MQTTUSERCFG`` command.
+   - You can use ``AT+MQTTLONGCLIENTID`` to set a relatively long client ID since there is a limitation on the length of the ``AT+MQTTUSERCFG`` command.
+   - You should set ``AT+MQTTLONGCLIENTID`` after setting the ``AT+MQTTUSERCFG`` command.
 
-.. _cmd-MQTTUSERNAME:
+.. _cmd-MQTTLONGUSERNAME:
 
-:ref:`AT+MQTTUSERNAME <MQTT-AT>`: Set MQTT Username
+:ref:`AT+MQTTLONGUSERNAME <MQTT-AT>`: Set MQTT Username
 -------------------------------------------------------
 
 Set Command
@@ -128,32 +135,39 @@ Set MQTT username.
 
 ::
 
-    AT+MQTTUSERNAME=<LinkID>,<"username">
+    AT+MQTTLONGUSERNAME=<LinkID>,<length>
 
 **Response:**
 
 ::
 
-   OK
+    OK
+
+    >
+
+This response indicates that AT is ready for receiving MQTT username. You should enter the MQTT username, and when the MQTT username length reaches the ``<length>`` value, the system returns:
+
+::
+
+    OK
 
 Parameters
 ^^^^^^^^^^
 
 -  **<LinkID>**: only supports link ID 0 currently.
--  **<username>**: the username to login to the MQTT broker.
+-  **<length>**: MQTT username length. Range: [1,1024].
 
 Notes
 ^^^^^
 
--  The length of the entire AT command should be less than 256 bytes.
 -  The command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` can also set MQTT username. The differences between the two commands include:
 
-   - You can use ``AT+MQTTUSERNAME`` to set a relatively long username since there is a limitation on the length of the ``AT+MQTTUSERCFG`` command.
-   - You should set ``AT+MQTTUSERNAME`` after setting the command ``AT+MQTTUSERCFG``.
+   - You can use ``AT+MQTTLONGUSERNAME`` to set a relatively long username since there is a limitation on the length of the ``AT+MQTTUSERCFG`` command.
+   - You should set ``AT+MQTTLONGUSERNAME`` after setting the command ``AT+MQTTUSERCFG``.
 
-.. _cmd-MQTTPASSWORD:
+.. _cmd-MQTTLONGPASSWORD:
 
-:ref:`AT+MQTTPASSWORD <MQTT-AT>`: Set MQTT Password
+:ref:`AT+MQTTLONGPASSWORD <MQTT-AT>`: Set MQTT Password
 -------------------------------------------------------
 
 Set Command
@@ -167,28 +181,35 @@ Set MQTT password.
 
 ::
 
-    AT+MQTTPASSWORD=<LinkID>,<"password">
+    AT+MQTTLONGPASSWORD=<LinkID>,<length>
 
 **Response:**
 
 ::
 
-   OK
+    OK
+
+    >
+
+This response indicates that AT is ready for receiving MQTT password. You should enter the MQTT password, and when the MQTT password length reaches the ``<length>`` value, the system returns:
+
+::
+
+    OK
 
 Parameters
 ^^^^^^^^^^
 
 -  **<LinkID>**: only supports link ID 0 currently.
--  **<password>**: the password to login to the MQTT broker.
+-  **<length>**: MQTT password length. Range: [1,1024].
 
 Notes
 ^^^^^
 
--  The length of the entire AT command should be less than 256 bytes.
 -  The command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` can also set MQTT password. The differences between the two commands include:
 
-   - You can use ``AT+MQTTPASSWORD`` to set a relatively long password since there is a limitation on the length of the ``AT+MQTTUSERCFG`` command.
-   - You should set ``AT+MQTTPASSWORD`` after setting the command ``AT+MQTTUSERCFG``.
+   - You can use ``AT+MQTTLONGPASSWORD`` to set a relatively long password since there is a limitation on the length of the ``AT+MQTTUSERCFG`` command.
+   - You should set ``AT+MQTTLONGPASSWORD`` after setting the command ``AT+MQTTUSERCFG``.
 
 .. _cmd-MQTTCONNCFG:
 
