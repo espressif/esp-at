@@ -1060,7 +1060,7 @@ static esp_err_t at_web_apply_wifi_connect_info(int32_t udp_port)
             connection_info.config_status = ESP_AT_WIFI_STA_CONNECTING;
             at_web_update_sta_connection_info(&connection_info);
             // send a message to MCU
-            esp_at_port_write_data((uint8_t*)s_wifi_start_connect_response, strlen(s_wifi_start_connect_response));
+            esp_at_port_active_write_data((uint8_t*)s_wifi_start_connect_response, strlen(s_wifi_start_connect_response));
         }
 
         s_wifi_sta_connect_timer_handler = xTimerCreate("listen_sta_connect_status", ESP_AT_WEB_TIMER_POLLING_PERIOD / portTICK_PERIOD_MS, pdTRUE,
@@ -1079,7 +1079,7 @@ static esp_err_t at_web_apply_wifi_connect_info(int32_t udp_port)
         connection_info.config_status = ESP_AT_WIFI_STA_CONNECTING;
         at_web_update_sta_connection_info(&connection_info);
         // send a message to MCU
-        esp_at_port_write_data((uint8_t*)s_wifi_start_connect_response, strlen(s_wifi_start_connect_response));
+        esp_at_port_active_write_data((uint8_t*)s_wifi_start_connect_response, strlen(s_wifi_start_connect_response));
         // begin scan and try connect,attention, this function will block until connect successfully or reach max_scan_time or reach connect_num
         ret = at_web_start_scan_filter(s_mobile_phone_mac, connect_config->password, connect_timeout, s_wifi_sta_connect_event_group);
         // when function return, it means have finished scan and try connect.
@@ -1107,7 +1107,7 @@ static esp_err_t at_web_apply_wifi_connect_info(int32_t udp_port)
             connection_info.config_status = ESP_AT_WIFI_STA_CONNECT_FAIL;
             at_wifi_reconnect_stop();
             at_web_update_sta_connection_info(&connection_info);
-            esp_at_port_write_data((uint8_t*)s_wifi_conncet_finish_response, strlen(s_wifi_conncet_finish_response));
+            esp_at_port_active_write_data((uint8_t*)s_wifi_conncet_finish_response, strlen(s_wifi_conncet_finish_response));
         } else { // connect ok
             ESP_LOGI(TAG, "Connect router success");
             ret = esp_netif_get_ip_info(sta_if, &sta_ip);
@@ -1172,7 +1172,7 @@ static esp_err_t at_web_apply_wifi_connect_info(int32_t udp_port)
             if (send_count == 0) { // can not received ack message from WeChat.
                 ESP_LOGW(TAG, "not receive ack message from WeChat");
             } else { // received ack message from WeChat.
-                esp_at_port_write_data((uint8_t*)s_wifi_conncet_finish_response, strlen(s_wifi_conncet_finish_response));
+                esp_at_port_active_write_data((uint8_t*)s_wifi_conncet_finish_response, strlen(s_wifi_conncet_finish_response));
             }
         }
     }
@@ -1337,7 +1337,7 @@ static esp_err_t accept_wifi_result_post_handler(httpd_req_t *req)
         break;
     case ESP_AT_WIFI_STA_CONFIG_DONE:
     case ESP_AT_WIFI_STA_CONNECTING:
-        esp_at_port_write_data((uint8_t*)s_wifi_conncet_finish_response, strlen(s_wifi_conncet_finish_response));
+        esp_at_port_active_write_data((uint8_t*)s_wifi_conncet_finish_response, strlen(s_wifi_conncet_finish_response));
         break;
     case ESP_AT_WIFI_STA_CONNECT_FAIL:
     case ESP_AT_WIFI_STA_CONNECT_OK:
@@ -1363,7 +1363,7 @@ static esp_err_t accept_wifi_result_post_handler(httpd_req_t *req)
         at_web_update_sta_connection_info(&wifi_connection_info);
 
         // send a message to MCU
-        esp_at_port_write_data((uint8_t*)s_wifi_conncet_finish_response, strlen(s_wifi_conncet_finish_response));
+        esp_at_port_active_write_data((uint8_t*)s_wifi_conncet_finish_response, strlen(s_wifi_conncet_finish_response));
         break;
     default:
         break;
@@ -1502,7 +1502,7 @@ static esp_err_t ota_data_post_handler(httpd_req_t *req)
     ESP_LOGI(TAG, "bin size is %d", total_len);
     memset(buf, 0x0, ESP_AT_WEB_SCRATCH_BUFSIZE * sizeof(char));
     // Send a message to MCU.
-    esp_at_port_write_data((uint8_t*)s_ota_start_response, strlen(s_ota_start_response));
+    esp_at_port_active_write_data((uint8_t*)s_ota_start_response, strlen(s_ota_start_response));
     // start ota
     err = esp_ota_begin(update_partition, OTA_SIZE_UNKNOWN, &update_handle);
     if (err != ESP_OK) {
@@ -1535,13 +1535,13 @@ static esp_err_t ota_data_post_handler(httpd_req_t *req)
         goto err_handler;
     }
     at_web_response_ok(req);
-    esp_at_port_write_data((uint8_t*)s_ota_receive_success_response, strlen(s_ota_receive_success_response));
+    esp_at_port_active_write_data((uint8_t*)s_ota_receive_success_response, strlen(s_ota_receive_success_response));
     ESP_LOGI(TAG, "ota end successfully, please restart");
     return ESP_OK;
 
 err_handler:
     at_web_response_error(req, HTTPD_500);
-    esp_at_port_write_data((uint8_t*)s_ota_receive_fail_response, strlen(s_ota_receive_fail_response));
+    esp_at_port_active_write_data((uint8_t*)s_ota_receive_fail_response, strlen(s_ota_receive_fail_response));
     return ESP_FAIL;
 }
 

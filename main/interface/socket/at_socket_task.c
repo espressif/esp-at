@@ -220,6 +220,21 @@ static void at_status_callback(esp_at_status_type status)
     }
 }
 
+void at_pre_active_write_data_callback(at_write_data_fn_t fn)
+{
+    // Do something before active write data
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+    at_wkmcu_if_config(fn);
+#endif
+}
+
+void at_pre_sleep_callback(at_sleep_mode_t mode)
+{
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+    at_set_mcu_state_if_sleep(mode);
+#endif
+}
+
 void at_interface_init (void)
 {
     uint8_t* version = (uint8_t*)malloc(192);
@@ -239,6 +254,10 @@ void at_interface_init (void)
 
     esp_at_custom_ops_struct esp_at_custom_ops = {
         .status_callback = at_status_callback,
+        .pre_sleep_callback = at_pre_sleep_callback,
+        .pre_deepsleep_callback = NULL,
+        .pre_restart_callback = NULL,
+        .pre_active_write_data_callback = at_pre_active_write_data_callback,
     };
 
     esp_at_device_ops_regist(&esp_at_device_ops);
@@ -272,6 +291,6 @@ void at_custom_init(void)
 
     xTaskCreate(&socket_task, "socket_task", 4096, NULL, 5, NULL);
 
-    esp_at_port_write_data((uint8_t*) "\r\nready\r\n", strlen("\r\nready\r\n"));
+    esp_at_port_active_write_data((uint8_t*) "\r\nready\r\n", strlen("\r\nready\r\n"));
 }
 #endif

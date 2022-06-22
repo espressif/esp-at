@@ -356,6 +356,21 @@ static void init_slave_hd(void)
     ESP_ERROR_CHECK(spi_slave_hd_init(SLAVE_HOST, &bus_cfg, &slave_hd_cfg));
 }
 
+void at_pre_active_write_data_callback(at_write_data_fn_t fn)
+{
+    // Do something before active write data
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+    at_wkmcu_if_config(fn);
+#endif
+}
+
+void at_pre_sleep_callback(at_sleep_mode_t mode)
+{
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+    at_set_mcu_state_if_sleep(mode);
+#endif
+}
+
 void at_interface_init(void)
 {
     esp_at_device_ops_struct esp_at_device_ops = {
@@ -365,8 +380,17 @@ void at_interface_init(void)
         .wait_write_complete = NULL
 
     };
-    
+
+    esp_at_custom_ops_struct esp_at_custom_ops = {
+        .status_callback = NULL,
+        .pre_sleep_callback = at_pre_sleep_callback,
+        .pre_deepsleep_callback = NULL,
+        .pre_restart_callback = NULL,
+        .pre_active_write_data_callback = at_pre_active_write_data_callback,
+    };
+
     esp_at_device_ops_regist(&esp_at_device_ops);
+    esp_at_custom_ops_regist(&esp_at_custom_ops);
 }
 
 void at_custom_init(void)

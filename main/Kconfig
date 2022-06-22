@@ -49,6 +49,11 @@ config AT_USER_COMMAND_SUPPORT
     default "y"
     depends on AT_ENABLE
 
+config AT_USERWKMCU_COMMAND_SUPPORT
+    bool "AT+USERWKMCU command support."
+    default "y"
+    depends on AT_USER_COMMAND_SUPPORT
+
 config AT_WIFI_COMMAND_SUPPORT
     bool "AT wifi command support."
     default "y"

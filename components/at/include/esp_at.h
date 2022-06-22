@@ -75,4 +75,19 @@ void esp_at_board_init(void);
 *
 */
 bool esp_at_web_server_cmd_regist(void);
+
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+/**
+ * @brief wake up MCU if AT is ready to send data to MCU
+ *
+ */
+void at_wkmcu_if_config(at_write_data_fn_t write_data_fn);
+
+/**
+ * @brief set MCU awake state according to AT+SLEEP command
+ *
+ */
+void at_set_mcu_state_if_sleep(at_sleep_mode_t mode);
+#endif
+
 #endif

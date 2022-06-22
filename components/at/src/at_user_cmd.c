@@ -30,6 +30,11 @@
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+#include "freertos/event_groups.h"
+#include "driver/gpio.h"
+#endif
+
 #include "esp_http_client.h"
 #include "esp_https_ota.h"
 #include "esp_at_core.h"
@@ -55,6 +60,43 @@ typedef enum {
     AT_USERRAM_CLEAR,
     AT_USERRAM_MAX,
 } at_userram_op_t;
+
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+typedef enum {
+    CHECK_MCU_AWAKE_BY_MCU_SLP = 0,
+    CHECK_MCU_AWAKE_BY_AT_SLP = 1,
+    CHECK_MCU_AWAKE_BY_TIMEO = 2,
+    CHECK_MCU_AWAKE_BY_GPIO = 3,
+    CHECK_MCU_AWAKE_BY_MAX,
+} at_check_mcu_awake_t;
+
+typedef enum {
+    WKMCU_MODE_MIN = 0,
+    WKMCU_MODE_GPIO = 1,
+    WKMCU_MODE_UART = 2,
+    WKMCU_MODE_MAX,
+} at_wkmcu_mode_t;
+
+typedef struct {
+    bool enable;
+    at_wkmcu_mode_t wake_mode;
+    uint8_t wake_number;
+    uint8_t wake_signal;
+    uint32_t delay_ms;
+    uint32_t check_mcu_awake;
+} at_wkmcu_cfg_t;
+
+static bool s_mcu_sleep;
+static at_wkmcu_cfg_t s_wkmcu_cfg;
+static EventGroupHandle_t s_wkmcu_evt_group;
+
+#define AT_MCU_AWAKE_ON_MCU_SLEEP       BIT(CHECK_MCU_AWAKE_BY_MCU_SLP)
+#define AT_MCU_AWAKE_ON_AT_SLEEP        BIT(CHECK_MCU_AWAKE_BY_AT_SLP)
+#define AT_MCU_AWAKE_ON_TIMEO           BIT(CHECK_MCU_AWAKE_BY_TIMEO)
+#define AT_MCU_AWAKE_ON_GPIO            BIT(CHECK_MCU_AWAKE_BY_GPIO)    // unimplemented: check mcu awake state by gpio level
+#define AT_MCU_AWAKE_BIT                (AT_MCU_AWAKE_ON_MCU_SLEEP | AT_MCU_AWAKE_ON_AT_SLEEP | AT_MCU_AWAKE_ON_TIMEO | AT_MCU_AWAKE_ON_GPIO)
+#define AT_WKMCU_DELAY_MS_MAX           (60 * 1000) // 1 minute
+#endif
 
 static uint8_t *sp_user_ram = NULL;
 static uint32_t s_user_ram_size = 0;
@@ -376,14 +418,254 @@ static uint8_t at_query_cmd_userdocs(uint8_t *cmd_name)
     return ESP_AT_RESULT_CODE_OK;
 }
 
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+void at_set_mcu_state_if_sleep(at_sleep_mode_t mode)
+{
+    switch (mode) {
+    case AT_DISABLE_SLEEP:
+        xEventGroupSetBits(s_wkmcu_evt_group, AT_MCU_AWAKE_ON_AT_SLEEP);
+        s_mcu_sleep = false;
+        break;
+
+    case AT_MIN_MODEM_SLEEP:
+    case AT_LIGHT_SLEEP:
+    case AT_MAX_MODEM_SLEEP:
+        xEventGroupClearBits(s_wkmcu_evt_group, AT_MCU_AWAKE_BIT);
+        s_mcu_sleep = true;
+        break;
+
+    default:
+        break;
+    }
+
+    if (s_wkmcu_cfg.enable) {
+        gpio_set_level(s_wkmcu_cfg.wake_number, !s_wkmcu_cfg.wake_signal);
+    }
+
+    return;
+}
+
+void at_wkmcu_if_config(at_write_data_fn_t write_data_fn)
+{
+    if (!s_wkmcu_cfg.enable || !s_mcu_sleep) {
+        return;
+    }
+
+    switch (s_wkmcu_cfg.wake_mode) {
+    case WKMCU_MODE_GPIO:
+        gpio_set_level(s_wkmcu_cfg.wake_number, s_wkmcu_cfg.wake_signal);
+        break;
+
+    case WKMCU_MODE_UART:
+        write_data_fn(&s_wkmcu_cfg.wake_signal, 1);
+        break;
+
+    default:
+        break;
+    }
+
+    printf("wait %ums or wake-up signal\r\n", s_wkmcu_cfg.delay_ms);
+    EventBits_t uxBits = xEventGroupWaitBits(s_wkmcu_evt_group, s_wkmcu_cfg.check_mcu_awake, pdFALSE, pdFALSE, s_wkmcu_cfg.delay_ms / portTICK_PERIOD_MS);
+
+    if (!(uxBits & s_wkmcu_cfg.check_mcu_awake)) {
+        // timeout
+        xEventGroupSetBits(s_wkmcu_evt_group, AT_MCU_AWAKE_ON_TIMEO);
+        s_mcu_sleep = true;
+    }
+
+    // reverse wake up signal
+    if (s_wkmcu_cfg.wake_mode == WKMCU_MODE_GPIO) {
+        gpio_set_level(s_wkmcu_cfg.wake_number, !s_wkmcu_cfg.wake_signal);
+    }
+
+    return;
+}
+
+static uint8_t at_setup_cmd_userwkmcucfg(uint8_t para_num)
+{
+    int32_t cnt = 0, enable = 0, wk_mode = 0, wk_number = 0, wk_signal = 0, delay_ms = 0, check_awake = 0;
+
+    if (s_mcu_sleep == true) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    // enable
+    if (esp_at_get_para_as_digit(cnt++, &enable) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+    if (enable < 0 || enable > 1) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if (enable) {
+        if (s_wkmcu_cfg.enable == 1) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+        // wake mode
+        if (esp_at_get_para_as_digit(cnt++, &wk_mode) != ESP_AT_PARA_PARSE_RESULT_OK) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+        if (wk_mode <= WKMCU_MODE_MIN || wk_mode >= WKMCU_MODE_MAX) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+
+        // wake number
+        if (esp_at_get_para_as_digit(cnt++, &wk_number) != ESP_AT_PARA_PARSE_RESULT_OK) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+        if (wk_mode == WKMCU_MODE_GPIO) {
+            if (!GPIO_IS_VALID_GPIO(wk_number)) {
+                return ESP_AT_RESULT_CODE_ERROR;
+            }
+        } else if (wk_mode == WKMCU_MODE_UART) {
+#ifdef CONFIG_IDF_TARGET_ESP8266
+            if (wk_number != 0) {
+#else
+            if (wk_number != 1) {
+#endif
+                return ESP_AT_RESULT_CODE_ERROR;
+            }
+        }
+
+        // wake signal
+        if (esp_at_get_para_as_digit(cnt++, &wk_signal) != ESP_AT_PARA_PARSE_RESULT_OK) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+        if (wk_mode == WKMCU_MODE_GPIO) {
+            if (wk_signal < 0 || wk_signal > 1) {
+                return ESP_AT_RESULT_CODE_ERROR;
+            }
+        } else if (wk_mode == WKMCU_MODE_UART) {
+            if (wk_signal < 0 || wk_signal > 0xFF) {
+                return ESP_AT_RESULT_CODE_ERROR;
+            }
+        }
+
+        // delay time
+        if (esp_at_get_para_as_digit(cnt++, &delay_ms) != ESP_AT_PARA_PARSE_RESULT_OK) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+        if (delay_ms < 0 || delay_ms > AT_WKMCU_DELAY_MS_MAX) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+
+        // check mcu awake bit
+        if (cnt < para_num) {
+            if (esp_at_get_para_as_digit(cnt++, &check_awake) != ESP_AT_PARA_PARSE_RESULT_OK) {
+                return ESP_AT_RESULT_CODE_ERROR;
+            }
+        } else {
+            check_awake = BIT(CHECK_MCU_AWAKE_BY_MCU_SLP);
+        }
+        if (check_awake < 0 || check_awake >= BIT(CHECK_MCU_AWAKE_BY_GPIO)) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+    } else {
+        // already disabled
+        if (s_wkmcu_cfg.enable == 0) {
+            return ESP_AT_RESULT_CODE_OK;
+        }
+    }
+
+    // parameters are ready
+    if (cnt != para_num) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    // preset gpio status
+    if (enable) {
+        if (wk_mode == WKMCU_MODE_GPIO) {
+            gpio_config_t io_conf;
+            io_conf.pin_bit_mask = (1ULL << wk_number);
+            io_conf.mode = GPIO_MODE_OUTPUT;
+            io_conf.pull_up_en = false;
+            io_conf.pull_down_en = false;
+            io_conf.intr_type = GPIO_INTR_DISABLE;
+            gpio_config(&io_conf);
+            gpio_set_level(wk_number, !wk_signal);
+        }
+    } else {
+        if (s_wkmcu_cfg.wake_mode == WKMCU_MODE_GPIO) {
+            gpio_config_t io_conf;
+            io_conf.pin_bit_mask = (1ULL << s_wkmcu_cfg.wake_number);
+            io_conf.mode = GPIO_MODE_DISABLE;
+            io_conf.pull_up_en = false;
+            io_conf.pull_down_en = false;
+            io_conf.intr_type = GPIO_INTR_DISABLE;
+            gpio_config(&io_conf);
+        }
+    }
+
+    // set config
+    if (enable) {
+        s_wkmcu_cfg.wake_mode = wk_mode;
+        s_wkmcu_cfg.wake_number = wk_number;
+        s_wkmcu_cfg.wake_signal = wk_signal;
+        s_wkmcu_cfg.delay_ms = delay_ms;
+        s_wkmcu_cfg.check_mcu_awake = check_awake;
+        s_wkmcu_cfg.enable = enable;
+    } else {
+        memset(&s_wkmcu_cfg, 0x0, sizeof(s_wkmcu_cfg));
+    }
+
+    return ESP_AT_RESULT_CODE_OK;
+}
+
+static uint8_t at_setup_cmd_usermcusleep(uint8_t para_num)
+{
+    int32_t cnt = 0, mcu_sleep = 0;
+
+    if (s_wkmcu_cfg.enable != 1) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    // mcu sleep state
+    if (esp_at_get_para_as_digit(cnt++, &mcu_sleep) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+    if (mcu_sleep < 0 || mcu_sleep > 1) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    // parameters are ready
+    if (cnt != para_num) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    at_handle_result_code(ESP_AT_RESULT_CODE_OK, NULL);
+
+    if (s_wkmcu_cfg.check_mcu_awake & AT_MCU_AWAKE_ON_MCU_SLEEP) {
+        if (mcu_sleep) {
+            xEventGroupClearBits(s_wkmcu_evt_group, AT_MCU_AWAKE_BIT);
+        } else {
+            xEventGroupSetBits(s_wkmcu_evt_group, AT_MCU_AWAKE_ON_MCU_SLEEP);
+        }
+        s_mcu_sleep = mcu_sleep;
+
+        if (s_wkmcu_cfg.wake_mode == WKMCU_MODE_GPIO) {
+            gpio_set_level(s_wkmcu_cfg.wake_number, !s_wkmcu_cfg.wake_signal);
+        }
+    }
+
+    return ESP_AT_RESULT_CODE_IGNORE;
+}
+#endif
+
 static const esp_at_cmd_struct s_at_user_cmd[] = {
     {"+USERRAM", NULL, at_query_cmd_userram, at_setup_cmd_userram, NULL},
     {"+USEROTA", NULL, NULL, at_setup_cmd_userota, NULL},
     {"+USERDOCS", NULL, at_query_cmd_userdocs, NULL, NULL},
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+    {"+USERWKMCUCFG", NULL, NULL, at_setup_cmd_userwkmcucfg, NULL},
+    {"+USERMCUSLEEP", NULL, NULL, at_setup_cmd_usermcusleep, NULL},
+#endif
 };
 
 bool esp_at_user_cmd_regist(void)
 {
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+    s_wkmcu_evt_group = xEventGroupCreate();
+#endif
     return esp_at_custom_cmd_array_regist(s_at_user_cmd, sizeof(s_at_user_cmd) / sizeof(s_at_user_cmd[0]));
 }
 

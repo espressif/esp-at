@@ -81,6 +81,7 @@ static int32_t at_sdio_write_data(uint8_t* data, int32_t len)
         ESP_LOGE(TAG , "Write data error, len:%d", len);
         return -1;
     }
+
     xSemaphoreTake(semahandle, portMAX_DELAY);
     uint32_t len_remain = len;
     uint8_t* start_ptr = (uint8_t*)data;
@@ -198,7 +199,7 @@ static void at_sdio_recv_task(void* pvParameters)
     size_t length = 0;
     uint8_t* ptr = NULL;
 
-    at_sdio_write_data((uint8_t *) "\r\nready\r\n" , strlen("\r\nready\r\n"));
+    esp_at_port_active_write_data((uint8_t *) "\r\nready\r\n" , strlen("\r\nready\r\n"));
 
     for (;;) {
 
@@ -232,6 +233,21 @@ static void at_sdio_recv_task(void* pvParameters)
     }
 }
 
+void at_pre_active_write_data_callback(at_write_data_fn_t fn)
+{
+    // Do something before active write data
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+    at_wkmcu_if_config(fn);
+#endif
+}
+
+void at_pre_sleep_callback(at_sleep_mode_t mode)
+{
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+    at_set_mcu_state_if_sleep(mode);
+#endif
+}
+
 void at_interface_init(void)
 {
     //If you want to use AT lib, make sure obey this function.
@@ -242,7 +258,16 @@ void at_interface_init(void)
         .wait_write_complete = NULL,
     };
 
+    esp_at_custom_ops_struct esp_at_custom_ops = {
+        .status_callback = NULL,
+        .pre_sleep_callback = at_pre_sleep_callback,
+        .pre_deepsleep_callback = NULL,
+        .pre_restart_callback = NULL,
+        .pre_active_write_data_callback = at_pre_active_write_data_callback,
+    };
+
     esp_at_device_ops_regist(&esp_at_device_ops);
+    esp_at_custom_ops_regist(&esp_at_custom_ops);
 }
 
 void at_custom_init(void)
