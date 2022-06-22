@@ -59,6 +59,8 @@ typedef struct {
     bool (*wait_write_complete)(int32_t timeout_msec);              /*!< wait write finish */
 } esp_at_device_ops_struct;
 
+typedef int32_t (*at_write_data_fn_t)(uint8_t *data, int32_t len);
+
 /**
  * @brief esp_at_custom_net_ops_struct
  * custom socket callback for AT
@@ -91,6 +93,14 @@ typedef enum {
 
 } esp_at_status_type;
 
+typedef enum {
+    AT_DISABLE_SLEEP = 0,
+    AT_MIN_MODEM_SLEEP,
+    AT_LIGHT_SLEEP,
+    AT_MAX_MODEM_SLEEP,
+    AT_SLEEP_MAX,
+} at_sleep_mode_t;
+
 /**
  * @brief esp_at_ops_struct
  *  some custom function interacting with AT
@@ -98,8 +108,10 @@ typedef enum {
  */
 typedef struct {
     void (*status_callback) (esp_at_status_type status);              /*!< callback when AT status changes */
+    void (*pre_sleep_callback)(at_sleep_mode_t mode);                 /*!< callback before enter modem sleep and light sleep */
     void (*pre_deepsleep_callback) (void);                            /*!< callback before enter deep sleep */
     void (*pre_restart_callback) (void);                              /*!< callback before restart */
+    void (*pre_active_write_data_callback)(at_write_data_fn_t);       /*!< callback before write data */
 } esp_at_custom_ops_struct;
 
 /**
@@ -324,6 +336,18 @@ void esp_at_response_result(uint8_t result_code);
 int32_t  esp_at_port_write_data(uint8_t *data, int32_t len);
 
 /**
+ * @brief call pre_active_write_data_callback() first and then write data into device,
+ *
+ * @param data data buffer to be written
+ * @param len data length
+ *
+ * @return
+ *  - >= 0 : the real length of the data written
+ *  - others : fail.
+ */
+int32_t  esp_at_port_active_write_data(uint8_t *data, int32_t len);
+
+/**
  * @brief   read data from device,
  *
  * @param data data buffer
@@ -546,5 +570,7 @@ void esp_at_port_exit_specific(void);
  *
  */
 const uint8_t* esp_at_get_current_cmd_name(void);
+
+void at_handle_result_code(esp_at_result_code_string_index code, void *pbuf);
 
 #endif
