@@ -676,6 +676,13 @@ void at_status_callback (esp_at_status_type status)
 #endif
 }
 
+void at_pre_sleep_callback(at_sleep_mode_t mode)
+{
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+    at_set_mcu_state_if_sleep(mode);
+#endif
+}
+
 void at_pre_deepsleep_callback (void)
 {
     /* Do something before deep sleep
@@ -703,6 +710,14 @@ void at_pre_restart_callback (void)
     esp_at_port_wait_write_complete(ESP_AT_PORT_TX_WAIT_MS_MAX);
 }
 
+void at_pre_active_write_data_callback(at_write_data_fn_t fn)
+{
+    // Do something before active write data
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+    at_wkmcu_if_config(fn);
+#endif
+}
+
 void at_interface_init (void)
 {
     esp_at_device_ops_struct esp_at_device_ops = {
@@ -714,13 +729,15 @@ void at_interface_init (void)
     
     esp_at_custom_ops_struct esp_at_custom_ops = {
         .status_callback = at_status_callback,
+        .pre_sleep_callback = at_pre_sleep_callback,
         .pre_deepsleep_callback = at_pre_deepsleep_callback,
         .pre_restart_callback = at_pre_restart_callback,
+        .pre_active_write_data_callback = at_pre_active_write_data_callback,
     };
 
     at_uart_init();
 
-    esp_at_device_ops_regist (&esp_at_device_ops);
+    esp_at_device_ops_regist(&esp_at_device_ops);
     esp_at_custom_ops_regist(&esp_at_custom_ops);
 }
 
@@ -728,6 +745,6 @@ void at_interface_init (void)
 void at_custom_init(void)
 {
     esp_at_custom_cmd_array_regist (at_custom_cmd, sizeof(at_custom_cmd)/sizeof(at_custom_cmd[0]));
-    esp_at_port_write_data((uint8_t *)"\r\nready\r\n",strlen("\r\nready\r\n"));
+    esp_at_port_active_write_data((uint8_t *)"\r\nready\r\n",strlen("\r\nready\r\n"));
 }
 #endif

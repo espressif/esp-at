@@ -30,6 +30,9 @@
 #include "esp_partition.h"
 #include "esp_wifi.h"
 
+#define at_min(x,y)     ((x)<(y)?(x):(y))
+#define at_max(x,y)     ((x)>(y)?(x):(y))
+
 /**
  * @brief esp_at_cmd_struct
  *  used for define at command
@@ -55,6 +58,8 @@ typedef struct {
     int32_t (*get_data_length)(void);                               /*!< get the length of data received */
     bool (*wait_write_complete)(int32_t timeout_msec);              /*!< wait write finish */
 } esp_at_device_ops_struct;
+
+typedef int32_t (*at_write_data_fn_t)(uint8_t *data, int32_t len);
 
 /**
  * @brief esp_at_custom_net_ops_struct
@@ -88,6 +93,14 @@ typedef enum {
 
 } esp_at_status_type;
 
+typedef enum {
+    AT_DISABLE_SLEEP = 0,
+    AT_MIN_MODEM_SLEEP,
+    AT_LIGHT_SLEEP,
+    AT_MAX_MODEM_SLEEP,
+    AT_SLEEP_MAX,
+} at_sleep_mode_t;
+
 /**
  * @brief esp_at_ops_struct
  *  some custom function interacting with AT
@@ -95,8 +108,10 @@ typedef enum {
  */
 typedef struct {
     void (*status_callback) (esp_at_status_type status);              /*!< callback when AT status changes */
+    void (*pre_sleep_callback)(at_sleep_mode_t mode);                 /*!< callback before enter modem sleep and light sleep */
     void (*pre_deepsleep_callback) (void);                            /*!< callback before enter deep sleep */
     void (*pre_restart_callback) (void);                              /*!< callback before restart */
+    void (*pre_active_write_data_callback)(at_write_data_fn_t);       /*!< callback before write data */
 } esp_at_custom_ops_struct;
 
 /**
@@ -172,7 +187,7 @@ typedef enum {
     ESP_AT_RESULT_CODE_SEND_FAIL    = 0x04,       /*!< "SEND FAIL" */
     ESP_AT_RESULT_CODE_IGNORE       = 0x05,       /*!< response nothing, just change internal status */
     ESP_AT_RESULT_CODE_PROCESS_DONE = 0x06,       /*!< response nothing, just change internal status */
-
+    ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT = 0x07,/*!< response nothing, just change internal status */
     ESP_AT_RESULT_CODE_MAX
 } esp_at_result_code_string_index;
 
@@ -319,6 +334,18 @@ void esp_at_response_result(uint8_t result_code);
  *  - others : fail.
  */
 int32_t  esp_at_port_write_data(uint8_t *data, int32_t len);
+
+/**
+ * @brief call pre_active_write_data_callback() first and then write data into device,
+ *
+ * @param data data buffer to be written
+ * @param len data length
+ *
+ * @return
+ *  - >= 0 : the real length of the data written
+ *  - others : fail.
+ */
+int32_t  esp_at_port_active_write_data(uint8_t *data, int32_t len);
 
 /**
  * @brief   read data from device,
@@ -555,4 +582,5 @@ const uint8_t* esp_at_get_current_cmd_name(void);
  */
 esp_err_t esp_at_wifi_event_handler(void *ctx, system_event_t *event);
 
+void at_handle_result_code(esp_at_result_code_string_index code, void *pbuf);
 #endif
