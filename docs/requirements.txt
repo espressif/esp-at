@@ -1,7 +1,7 @@
 # This is a list of python packages used to generate documentation. This file is used with pip:
 # pip install --user -r requirements.txt
 #
-setuptools<58
+setuptools==40.6.2
 sphinx==2.3.1
 breathe==4.14.1
 sphinx-rtd-theme==1.0.0
@@ -15,3 +15,5 @@ nwdiag==2.0.0
 recommonmark==0.7.0
 sphinx_markdown_tables
 future==0.16.0 # for ../tools/gen_esp_err_to_name.py
+funcparserlib==1.0.0a0
+

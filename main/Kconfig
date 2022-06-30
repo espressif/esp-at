@@ -49,6 +49,13 @@ config AT_USER_COMMAND_SUPPORT
     default "y"
     depends on AT_ENABLE
 
+config AT_USERWKMCU_COMMAND_SUPPORT
+    bool "AT+USERWKMCUCFG and AT+USERMCUSLEEP command support."
+    default "y"
+    depends on AT_USER_COMMAND_SUPPORT
+    help
+        The throughput performance may be affected if enabled AT+USERWKMCUCFG command.
+
 config AT_WIFI_COMMAND_SUPPORT
     bool "AT wifi command support."
     default "y"
