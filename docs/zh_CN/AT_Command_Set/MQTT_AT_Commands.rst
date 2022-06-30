@@ -6,9 +6,9 @@ MQTT AT 命令集
 :link_to_translation:`en:[English]`
 
 -  :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`：设置 MQTT 用户属性
--  :ref:`AT+MQTTCLIENTID <cmd-MQTTCLIENTID>`：设置 MQTT 客户端 ID
--  :ref:`AT+MQTTUSERNAME <cmd-MQTTUSERNAME>`：设置 MQTT 登陆用户名
--  :ref:`AT+MQTTPASSWORD <cmd-MQTTPASSWORD>`：设置 MQTT 登陆密码
+-  :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>`：设置 MQTT 客户端 ID
+-  :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>`：设置 MQTT 登陆用户名
+-  :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>`：设置 MQTT 登陆密码
 -  :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`：设置 MQTT 连接属性
 -  :ref:`AT+MQTTALPN <cmd-MQTTALPN>`：设置 MQTT 应用层协议协商（ALPN）
 -  :ref:`AT+MQTTCONN <cmd-MQTTCONN>`：连接 MQTT Broker
@@ -73,10 +73,10 @@ MQTT AT 命令集
 
 -  每条 AT 命令的总长度不能超过 256 字节。
 
-.. _cmd-MQTTCLIENTID:
+.. _cmd-MQTTLONGCLIENTID:
 
-:ref:`AT+MQTTCLIENTID <MQTT-AT>`：设置 MQTT 客户端 ID
---------------------------------------------------------
+:ref:`AT+MQTTLONGCLIENTID <MQTT-AT>`：设置 MQTT 客户端 ID
+------------------------------------------------------------
 
 设置命令
 ^^^^^^^^
@@ -89,32 +89,39 @@ MQTT AT 命令集
 
 ::
 
-    AT+MQTTCLIENTID=<LinkID>,<"client_id">
+    AT+MQTTLONGCLIENTID=<LinkID>,<length>
 
 **响应：**
 
 ::
 
-   OK
+    OK
+
+    >
+
+上述响应表示 AT 已准备好接收 MQTT 客户端 ID，此时您可以输入客户端 ID，当 AT 接收到的客户端 ID 长度达到 ``<length>`` 后，返回：
+
+::
+
+    OK
 
 参数
 ^^^^
 
 -  **<LinkID>**：当前仅支持 link ID 0。
--  **<client_id>**：MQTT 客户端 ID。
+-  **<length>**：MQTT 客户端 ID 长度。范围：[1,1024]。
 
 说明
 ^^^^
 
--  每条 AT 命令的总长度不能超过 256 字节。
 -  :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令也可以设置 MQTT 客户端 ID，二者之间的差别包括：
 
-   - ``AT+MQTTCLIENTID`` 命令可以用来设置相对较长的客户端 ID，因为 ``AT+MQTTUSERCFG`` 命令的长度受限；
-   - 应在设置 ``AT+MQTTUSERCFG`` 后再使用 ``AT+MQTTCLIENTID``。
+   - ``AT+MQTTLONGCLIENTID`` 命令可以用来设置相对较长的客户端 ID，因为 ``AT+MQTTUSERCFG`` 命令的长度受限；
+   - 应在设置 ``AT+MQTTUSERCFG`` 后再使用 ``AT+MQTTLONGCLIENTID``。
 
-.. _cmd-MQTTUSERNAME:
+.. _cmd-MQTTLONGUSERNAME:
 
-:ref:`AT+MQTTUSERNAME <MQTT-AT>`：设置 MQTT 登陆用户名
+:ref:`AT+MQTTLONGUSERNAME <MQTT-AT>`：设置 MQTT 登陆用户名
 ----------------------------------------------------------
 
 设置命令
@@ -128,33 +135,40 @@ MQTT AT 命令集
 
 ::
 
-    AT+MQTTUSERNAME=<LinkID>,<"username">
+    AT+MQTTLONGUSERNAME=<LinkID>,<length>
 
 **响应：**
 
 ::
 
-   OK
+    OK
+
+    >
+
+上述响应表示 AT 已准备好接收 MQTT 用户名，此时您可以输入 MQTT 用户名，当 AT 接收到的 MQTT 用户名长度达到 ``<length>`` 后，返回：
+
+::
+
+    OK
 
 参数
 ^^^^
 
 -  **<LinkID>**：当前仅支持 link ID 0。
--  **<username>**：用于登陆 MQTT broker 的用户名。
+-  **<length>**：MQTT 用户名长度。范围：[1,1024]。
 
 说明
 ^^^^
 
--  每条 AT 命令的总长度不能超过 256 字节。
 -  :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令也可以设置 MQTT 用户名，二者之间的差别包括：
 
-   - ``AT+MQTTUSERNAME`` 命令可以用来设置相对较长的用户名，因为 ``AT+MQTTUSERCFG`` 命令的长度受限。
-   - 应在设置 ``AT+MQTTUSERCFG`` 后再使用 ``AT+MQTTUSERNAME``。
+   - ``AT+MQTTLONGUSERNAME`` 命令可以用来设置相对较长的用户名，因为 ``AT+MQTTUSERCFG`` 命令的长度受限。
+   - 应在设置 ``AT+MQTTUSERCFG`` 后再使用 ``AT+MQTTLONGUSERNAME``。
 
-.. _cmd-MQTTPASSWORD:
+.. _cmd-MQTTLONGPASSWORD:
 
-:ref:`AT+MQTTPASSWORD <MQTT-AT>`：设置 MQTT 登陆密码
--------------------------------------------------------
+:ref:`AT+MQTTLONGPASSWORD <MQTT-AT>`：设置 MQTT 登陆密码
+------------------------------------------------------------
 
 设置命令
 ^^^^^^^^
@@ -167,28 +181,35 @@ MQTT AT 命令集
 
 ::
 
-    AT+MQTTPASSWORD=<LinkID>,<"password">
+    AT+MQTTLONGPASSWORD=<LinkID>,<length>
 
 **响应：**
 
 ::
 
-   OK
+    OK
+
+    >
+
+上述响应表示 AT 已准备好接收 MQTT 密码，此时您可以输入 MQTT 密码，当 AT 接收到的 MQTT 密码长度达到 ``<length>`` 后，返回：
+
+::
+
+    OK
 
 参数
 ^^^^
 
 -  **<LinkID>**：当前仅支持 link ID 0。
--  **<password>**：用于登陆 MQTT broker 的密码。
+-  **<length>**：MQTT 密码长度。范围：[1,1024]。
 
 说明
 ^^^^
 
--  每条 AT 命令的总长度不能超过 256 字节。
 -  :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令也可以设置 MQTT 密码，二者之间的差别包括：
 
-   - ``AT+MQTTPASSWORD`` 可以用来设置相对较长的密码，因为 ``AT+MQTTUSERCFG`` 命令的长度受限；
-   - 应在设置 ``AT+MQTTUSERCFG`` 后再使用 ``AT+MQTTPASSWORD``。
+   - ``AT+MQTTLONGPASSWORD`` 可以用来设置相对较长的密码，因为 ``AT+MQTTUSERCFG`` 命令的长度受限；
+   - 应在设置 ``AT+MQTTUSERCFG`` 后再使用 ``AT+MQTTLONGPASSWORD``。
 
 .. _cmd-MQTTCONNCFG:
 
