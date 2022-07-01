@@ -281,7 +281,29 @@ If the response is OK as the picture below shows, AT works.
 
    Response from AT
 
-Otherwise, you need to check your {IDF_TARGET_NAME} startup log, which is visible on PC over "Download/Log output connection". If it is like the log below, it means that ESP-AT firmware have been initalized correctly.
+Otherwise, you need to check your {IDF_TARGET_NAME} startup log in one of the following ways:
+
+**Method 1:**
+
+- Open a serial port tool, such as SecureCRT;
+- Select the port attached to the "Download/Log output" line. For more information on this line, see :doc:`Hardware_connection`.
+- Set Baudrate to 115200;
+- Set Data Bits to 8;
+- Set Parity to None;
+- Set Stop Bits to 1;
+- Set Flow Type to None;
+- Press the RST key of the board directly. If it is like the log below, it means that ESP-AT firmware have been initalized correctly.
+
+**Method 2:**
+
+- Open two serial port tools, such as SecureCRT;
+- In one serial port tool, select the port attached to the "AT command/response" line. In the other tool, select the port attached to the "Download/Log output" line. For more information on these lines, see :doc:`Hardware_connection`.
+- Set Baudrate to 115200;
+- Set Data Bits to 8;
+- Set Parity to None;
+- Set Stop Bits to 1;
+- Set Flow Type to None;
+- Enter the command :ref:`AT+RST <cmd-RST>` with a new line (CR LF) to the "AT command/response" line. If the serial log from the "Download/Output log" line is like the log below, it means that ESP-AT firmware have been initialized correctly.
 
 .. only:: esp32
 
