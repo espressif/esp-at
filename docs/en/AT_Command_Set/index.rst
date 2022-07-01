@@ -117,6 +117,8 @@ AT Messages
 
 There are two types of ESP-AT messages returned from the ESP-AT command port:
 
+.. _at-messages-response:
+
 - ESP-AT Response Messages (passive)
   
   Each ESP-AT command input returns response messages to tell the sender the result of the ESP-AT command. The last message in the response is either ``OK`` or ``ERROR``.
@@ -139,6 +141,8 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
         - The URL has been set successfully (specific to :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command)
       * - +<Command Name>:``...``
         - Response to the sender that describes AT command process results in details   
+
+.. _at-messages-report:
 
 - ESP-AT Message Reports (active)
 
@@ -199,7 +203,9 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
      * - Recv ``<xxx>`` bytes
        - ESP-AT has already received ``<xxx>`` bytes from the ESP-AT command port
      * - +IPD
-       - ESP-AT received the data from the network
+       - ESP-AT received the data from the network when AT is not in :term:`Passthrough Mode`
+     * - The Data in :term:`Passthrough Mode`
+       - ESP-AT received the data from the network or Bluetooth when AT is in :term:`Passthrough Mode`
      * - SEND Canceled
        - Cancel to send in :ref:`Wi-Fi normal sending mode <cmd-SEND>`
      * - Have ``<xxx>`` Connections

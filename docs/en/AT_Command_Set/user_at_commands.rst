@@ -7,6 +7,8 @@ User AT Commands
 
 -  :ref:`AT+USERRAM <cmd-USERRAM>`: Operate user's free RAM.
 -  :ref:`AT+USEROTA <cmd-USEROTA>`: Upgrade the firmware according to the specified URL.
+-  :ref:`AT+USERWKMCUCFG <cmd-USERWKMCUCFG>`: Configure how AT wakes up MCU.
+-  :ref:`AT+USERMCUSLEEP <cmd-USERMCUSLEEP>`: MCU indicates its sleep state.
 -  :ref:`AT+USERDOCS <cmd-USERDOCS>`: Query the ESP-AT user guide for current firmware.
 
 .. _cmd-USERRAM:
@@ -168,6 +170,130 @@ Example
     Recv 36 bytes
 
     OK
+
+.. _cmd-USERWKMCUCFG:
+
+:ref:`AT+USERWKMCUCFG <User-AT>`: Configure How AT Wakes Up MCU
+---------------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+This command configures how AT checks whether MCU is in awake state and how to wake it up.
+
+- If MCU is in awake state, AT will directly send the data to it without waking it up.
+- If MCU is in sleep state and AT is ready to actively send the data to MCU (the data sent actively is same to :ref:`ESP-AT Message Reports <at-messages-report>`), AT will send wake signals to wake it up first and then send the data to it. Wake signals will be cleared after MCU is waked up or timeout.
+
+**Command:**
+
+::
+
+    AT+USERWKMCUCFG=<enable>,<wake mode>,<wake number>,<wake signal>,<delay time>[,<check mcu awake method>]
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+- **<enable>**: Enable or disable wake-up configuration.
+
+  - 0: Disable wake-up configuration
+  - 1: Enable wake-up configuration
+
+- **<wake mode>**: wake mode.
+
+  - 1: GPIO wake-up
+  - 2: UART wake-up
+
+- **<wake number>**: It means differently depending on the parameter ``<wake mode>``.
+
+  - If ``<wake mode>`` is 1, ``<wake number>`` represents GPIO number for wake-up. You need to ensure that the configured GPIO wake-up pin is not used for other purposes. Otherwise, you need to perform compatibility processing.
+  - If ``<wake mode>`` is 2, ``<wake number>`` represents UART number. Currently, only 1 is supported for ``<wake number>``, which means only UART1 can wake up MCU.
+
+- **<wake signal>**: It means differently depending on the parameter ``<wake mode>``.
+
+  - If ``<wake mode>`` is 1, ``<wake signal>`` represents wake-up level.
+
+    - 0: low level
+    - 1: high level
+
+  - If ``<wake mode>`` is 2, ``<wake signal>`` represents wake-up byte. Range: [0,255].
+
+- **<delay time>**: Maximum waiting time. Unit: milliseconds. Range: [0,60000]. It means differently depending on the parameter ``<wake mode>``.
+
+  - If ``<wake mode>`` is 1, the ``<wake signal>`` level will be held on during the ``<delay time>``. After the ``<delay time>`` is reached, the ``<wake signal>`` level is reversed.
+  - If ``<wake mode>`` is 2, AT will send ``<wake signal>`` byte immediately and wait until timeout.
+
+- **<check mcu awake method>**: AT checks whether MCU is in awake state.
+
+  - Bit 0: Whether to enable :ref:`AT+USERMCUSLEEP <cmd-USERMCUSLEEP>` command linkage. Enabled by default. That is, when receiving AT+USERMCUSLEEP=0 command from MCU, AT knows that MCU is in awake state; when receiving AT+USERMCUSLEEP=1 command, AT knows that MCU is in sleep.
+  - Bit 1: Whether to enable AT+SLEEP command linkage. Disabled by default. That is, when receiving AT+SLEEP=0 command, AT knows that MCU is in awake state; when receiving :ref:`AT+SLEEP=1/2/3 <cmd-SLEEP>` command, AT knows that MCU is in sleep.
+  - Bit 2: Whether to enable the function of indicating MCU state after ``<delay time>`` timeout. Disabled by default. That is, when disabled, it indicates that MCU is in sleep after ``<delay time>``; when enabled, it indicates that MCU is in awake state after ``<delay time>``.
+  - Bit 3 (not implemented yet): Whether to enable the function of indicating MCU state via GPIO. Unsupported by default.
+
+Notes
+^^^^^
+
+- This command needs to be configured only once.
+- Each time before the AT actively sends data to MCU, it will send a wake-up signal first and then enter the waiting time. When ``<delay time>`` is reached, it will directly send data. This wait timeout will reduce the transmission efficiency with MCU.
+- If AT receives any wake-up event in ``<check mcu wake method>`` before ``<delay time>``, it will immediately clear the wake-up state; otherwise, the wake-up state will be cleared automatically after the ``<delay time>`` timeout.
+
+Example
+^^^^^^^
+
+::
+
+    // Enable wake-up MCU configuration. Before each time the AT sends data to the MCU, it will first use the GPIO18 pin of the Wi-Fi module to wake up the MCU at a high level and hold on the high level for 10 seconds.
+    AT+USERWKMCUCFG=1,1,18,1,10000,3
+
+    // Enable wake-up configuration
+    AT+USERWKMCUCFG=0
+
+.. _cmd-USERMCUSLEEP:
+
+:ref:`AT+USERMCUSLEEP <User-AT>`: MCU Indicates Its Sleep State
+---------------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+This command can only be taken effect when the ``<check mcu wake method>`` Bit 0 of the :ref:`AT+USERWKMCUCFG <cmd-USERWKMCUCFG>` command is configured. It used to inform AT that the current MCU sleep state.
+
+**Command:**
+
+::
+
+    AT+USERMCUSLEEP=<state>
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+- **<state>**:
+
+  - 0: Indicates that MCU is in awake state.
+  - 1: Indicates that MCU is in sleep state.
+
+Example
+^^^^^^^
+
+::
+
+    // MCU tells AT that the current MCU is in awake state
+    AT+USERMCUSLEEP=0
 
 .. _cmd-USERDOCS:
 
