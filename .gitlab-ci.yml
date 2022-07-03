@@ -9,13 +9,20 @@ variables: &global-variables
   GIT_STRATEGY: clone
   GIT_SUBMODULE_STRATEGY: recursive
   ESPCI_TOKEN: $GITLAB_KEY
-  PYTHON_VER: 3
+  PYTHON_VER: "3.8"
 
 default:
   retry:
     max: 2
     # In case of a runner failure we could hop to another one, or a network error could go away.
     when: always
+
+.setup_idf_ci_env: &setup_idf_ci_env
+  - source esp-idf/tools/ci/utils.sh
+  - source esp-idf/tools/ci/setup_python.sh
+  - source esp-idf/tools/ci/configure_ci_environment.sh
+  - esp-idf/tools/idf_tools.py install
+  - esp-idf/tools/idf_tools.py export
 
 .before_build_esp32_series: &before_build_esp32_series
   - cd components/at/private_include
@@ -34,11 +41,8 @@ default:
   - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
   - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
   - cd -
-  # (the same regular expressions are used to set these are used in 'only:' sections below
-  - source ./esp-idf/tools/ci/configure_ci_environment.sh
-  - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-  # fetch the submodules (& if necessary re-fetch repo) from gitlab
-  - time ./esp-idf/tools/ci/get-full-sources.sh
+
+  - *setup_idf_ci_env
   - export ESP_AT_PROJECT_BRANCH=${CI_COMMIT_REF_NAME}
 
 .before_build_esp32c3_series: &before_build_esp32c3_series
@@ -49,23 +53,26 @@ default:
   - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD \"$AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD\"" >> at_ota_token.h
   - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI_QCLOUD \"$AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD\"" >> at_ota_token.h
   - cd -
-  # (the same regular expressions are used to set these are used in 'only:' sections below
-  - source ./esp-idf/tools/ci/configure_ci_environment.sh
-  - ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-  # fetch the submodules (& if necessary re-fetch repo) from gitlab
-  - time ./esp-idf/tools/ci/get-full-sources.sh
+
+  - *setup_idf_ci_env
   - export ESP_AT_PROJECT_BRANCH=${CI_COMMIT_REF_NAME}
 
-esp32_wroom_at:
+.esp_at_build_template:
   stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
+  image: $CI_DOCKER_REGISTRY/esp-env-v4.4:1
   tags:
     - build
-
   variables:
     <<: *global-variables
-    
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
+    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
   artifacts:
+    name: esp-at-artifacts
     paths:
       - sdkconfig
       - build/*.bin
@@ -79,402 +86,143 @@ esp32_wroom_at:
       - build/factory/*
     expire_in: 6 mos
 
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+.execute_script_esp32: &execute_script_esp32
+  - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/${MODULE_CFG_DIR}/IDF_VERSION
+  - mkdir build
+  - cp module_info.json build/module_info.json
+  - ./build.py reconfigure || true
+  - rm -rf build && mkdir build
+  - mv module_info.json build/module_info.json
+  - *before_build_esp32_series
+  - ./build.py build
 
+.execute_script_esp32c3: &execute_script_esp32c3
+  - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/${MODULE_CFG_DIR}/IDF_VERSION
+  - mkdir build
+  - cp module_info.json build/module_info.json
+  - ./build.py reconfigure || true
+  - rm -rf build && mkdir build
+  - mv module_info.json build/module_info.json
+  - *before_build_esp32c3_series
+  - ./build.py build
+
+esp32_wroom_at:
+  extends:
+    - .esp_at_build_template
   script:
-    # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32_default/IDF_VERSION
-    - mkdir build
-    # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure || echo "skip exception"
-    - rm -rf build && mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - *before_build_esp32_series
-    - ./build.py build
+    - export MODULE_CFG_DIR=module_esp32_default
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32
 
 esp32_wrover_at:
-  stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
-  tags:
-    - build
-
-  variables:
-    <<: *global-variables
-    
-  artifacts:
-    paths:
-      - sdkconfig
-      - build/*.bin
-      - build/*.elf
-      - build/*.map
-      - build/bootloader/*.bin
-      - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
-      - build/flasher_args.json
-      - build/download.config
-      - build/factory/*
-    expire_in: 6 mos
-
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
+  extends:
+    - .esp_at_build_template
   script:
-    # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_wrover-32/IDF_VERSION
-    - mkdir build
-    # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 1}" > build/module_info.json'
-    - ./build.py reconfigure || echo "skip exception"
-    - rm -rf build && mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 1}" > build/module_info.json'
-    - *before_build_esp32_series
-    - ./build.py build
+    - export MODULE_CFG_DIR=module_wrover-32
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 1}" > module_info.json'
+    - *execute_script_esp32
 
 esp32_pico_d4_at:
-  stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
-  tags:
-    - build
-
-  variables:
-    <<: *global-variables
-    
-  artifacts:
-    paths:
-      - sdkconfig
-      - build/*.bin
-      - build/*.elf
-      - build/*.map
-      - build/bootloader/*.bin
-      - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
-      - build/flasher_args.json
-      - build/download.config
-      - build/factory/*
-    expire_in: 6 mos
-
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
+  extends:
+    - .esp_at_build_template
   script:
-    # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32_default/IDF_VERSION
-    - mkdir build
-    # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure || echo "skip exception"
-    - rm -rf build && mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - *before_build_esp32_series
-    - ./build.py build
-
+    - export MODULE_CFG_DIR=module_esp32_default
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32
 
 esp32_solo_1_at:
-  stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
-  tags:
-    - build
-
-  variables:
-    <<: *global-variables
-    
-  artifacts:
-    paths:
-      - sdkconfig
-      - build/*.bin
-      - build/*.elf
-      - build/*.map
-      - build/bootloader/*.bin
-      - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
-      - build/flasher_args.json
-      - build/download.config
-      - build/factory/*
-    expire_in: 6 mos
-
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
+  extends:
+    - .esp_at_build_template
   script:
-    # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32_default/IDF_VERSION
-    - mkdir build
-    # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure || echo "skip exception"
-    - rm -rf build && mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - *before_build_esp32_series
-    - ./build.py build
+    - export MODULE_CFG_DIR=module_esp32_default
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32
 
 esp32-d2wd_at:
-  stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
-  tags:
-    - build
-
-  variables:
-    <<: *global-variables
-    
-  artifacts:
-    paths:
-      - sdkconfig
-      - build/*.bin
-      - build/*.elf
-      - build/*.map
-      - build/bootloader/*.bin
-      - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
-      - build/flasher_args.json
-      - build/download.config
-      - build/factory/*
-    expire_in: 6 mos
-
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
+  extends:
+    - .esp_at_build_template
   script:
-    # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32-d2wd/IDF_VERSION
-    - mkdir build
-    # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-D2WD\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure || echo "skip exception"
-    - rm -rf build && mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-D2WD\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - *before_build_esp32_series
-    - ./build.py build
+    - export MODULE_CFG_DIR=module_esp32-d2wd
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-D2WD\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32
 
 esp32_mini_1_at:
-  stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
-  tags:
-    - build
-
-  variables:
-    <<: *global-variables
-    
-  artifacts:
-    paths:
-      - sdkconfig
-      - build/*.bin
-      - build/*.elf
-      - build/*.map
-      - build/bootloader/*.bin
-      - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
-      - build/flasher_args.json
-      - build/download.config
-      - build/factory/*
-    expire_in: 6 mos
-
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
+  extends:
+    - .esp_at_build_template
   script:
-    # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32_default/IDF_VERSION
-    - mkdir build
-    # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure || echo "skip exception"
-    - rm -rf build && mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - *before_build_esp32_series
-    - ./build.py build
+    - export MODULE_CFG_DIR=module_esp32_default
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32
 
 esp32_sdio_at:
-  stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
-  tags:
-    - build
-
-  variables:
-    <<: *global-variables
-
-  artifacts:
-    paths:
-      - sdkconfig
-      - build/*.bin
-      - build/*.elf
-      - build/*.map
-      - build/bootloader/*.bin
-      - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
-      - build/flasher_args.json
-      - build/download.config
-      - build/factory/*
-    expire_in: 6 mos
-
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
+  extends:
+    - .esp_at_build_template
   script:
-    # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32-sdio/IDF_VERSION
-    - mkdir build
-    # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-SDIO\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure || echo "skip exception"
-    - rm -rf build && mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-SDIO\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - *before_build_esp32_series
-    - ./build.py build
+    - export MODULE_CFG_DIR=module_esp32-sdio
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-SDIO\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32
 
 esp32_qcloud:
-  stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
-  tags:
-    - build
-
-  variables:
-    <<: *global-variables
-
-  artifacts:
-    paths:
-      - sdkconfig
-      - build/*.bin
-      - build/*.elf
-      - build/*.map
-      - build/bootloader/*.bin
-      - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
-      - build/flasher_args.json
-      - build/download.config
-      - build/factory/*
-    expire_in: 6 mos
-
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
+  extends:
+    - .esp_at_build_template
   script:
-    # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32_qcloud/IDF_VERSION
-    - mkdir build
-    # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32_QCLOUD\", \"description\": \"QCLOUD TX:17 RX:16\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure || echo "skip exception"
-    - rm -rf build && mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32_QCLOUD\", \"description\": \"QCLOUD TX:17 RX:16\",\"silence\": 0}" > build/module_info.json'
-    - *before_build_esp32_series
-    - ./build.py build
+    - export MODULE_CFG_DIR=module_esp32_qcloud
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32_QCLOUD\", \"description\": \"QCLOUD TX:17 RX:16\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32
+
+esp32_at_all_function_test:
+  extends:
+    - .esp_at_build_template
+  script:
+    - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_ETHERNET_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_wrover-32/sdkconfig.defaults
+
+    - sed -i '/ota_1/d' module_config/module_wrover-32/partitions_at.csv
+    - old_size_str=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
+    - let old_value=$old_size_str
+    - new_value=`expr $old_value + $old_value`
+    - new_size_str=`printf "0x%x" ${new_value}`
+    - sed -i '/ota_0/s/'$old_size_str'/'$new_size_str'/g' module_config/module_wrover-32/partitions_at.csv
+
+    - export MODULE_CFG_DIR=module_wrover-32
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32
+
+esp32_ethernet_at:
+  extends:
+    - .esp_at_build_template
+  script:
+    - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_ETHERNET_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+
+    - sed -i '/ota_1/d' module_config/module_wrover-32/partitions_at.csv
+    - old_size_str=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
+    - let old_value=$old_size_str
+    - new_value=`expr $old_value + $old_value`
+    - new_size_str=`printf "0x%x" ${new_value}`
+    - sed -i '/ota_0/s/'$old_size_str'/'$new_size_str'/g' module_config/module_wrover-32/partitions_at.csv
+
+    - export MODULE_CFG_DIR=module_wrover-32
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32
 
 esp32c3_mini_1_at:
-  stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
-  tags:
-    - build
-
-  variables:
-    <<: *global-variables
-
-  artifacts:
-    paths:
-      - sdkconfig
-      - build/*.bin
-      - build/*.elf
-      - build/*.map
-      - build/bootloader/*.bin
-      - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
-      - build/flasher_args.json
-      - build/download.config
-      - build/factory/*
-    expire_in: 6 mos
-
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
+  extends:
+    - .esp_at_build_template
   script:
-    # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32c3_default/IDF_VERSION
-    - mkdir build
-    # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure || echo "skip exception"
-    - rm -rf build && mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - *before_build_esp32c3_series
-    - ./build.py build
+    - export MODULE_CFG_DIR=module_esp32c3_default
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32c3
 
 esp32c3_at_full_function_test:
-  stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
-  tags:
-    - build
-
-  variables:
-    <<: *global-variables
-
-  artifacts:
-    paths:
-      - sdkconfig
-      - build/*.bin
-      - build/*.elf
-      - build/*.map
-      - build/bootloader/*.bin
-      - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
-      - build/flasher_args.json
-      - build/download.config
-      - build/factory/*
-    expire_in: 6 mos
-
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
+  extends:
+    - .esp_at_build_template
   script:
     # enable all features
     - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
@@ -483,105 +231,25 @@ esp32c3_at_full_function_test:
     - echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
     - echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
 
-    # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32c3_default/IDF_VERSION
-
-    # create module info and clone esp-idf
-    - mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure || echo "skip exception"
-    - rm -rf build && mkdir build
-
-    # compile
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - *before_build_esp32c3_series
-    - ./build.py build
+    - export MODULE_CFG_DIR=module_esp32c3_default
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32c3
 
 esp32c3_spi_at:
-  stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
-  tags:
-    - build
-
-  variables:
-    <<: *global-variables
-
-  artifacts:
-    paths:
-      - sdkconfig
-      - build/*.bin
-      - build/*.elf
-      - build/*.map
-      - build/bootloader/*.bin
-      - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
-      - build/flasher_args.json
-      - build/download.config
-      - build/factory/*
-    expire_in: 6 mos
-
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
+  extends:
+    - .esp_at_build_template
   script:
-    # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32c3-spi/IDF_VERSION
-    - mkdir build
-    # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3-SPI\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure || echo "skip exception"
-    - rm -rf build && mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3-SPI\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - *before_build_esp32c3_series
-    - ./build.py build
+    - export MODULE_CFG_DIR=module_esp32c3-spi
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3-SPI\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32c3
 
 esp32c3_qcloud:
-  stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
-  tags:
-    - build
-
-  variables:
-    <<: *global-variables
-
-  artifacts:
-    paths:
-      - sdkconfig
-      - build/*.bin
-      - build/*.elf
-      - build/*.map
-      - build/bootloader/*.bin
-      - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
-      - build/flasher_args.json
-      - build/download.config
-      - build/factory/*
-    expire_in: 6 mos
-
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
+  extends:
+    - .esp_at_build_template
   script:
-    # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_esp32c3_qcloud/IDF_VERSION
-    - mkdir build
-    # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3_QCLOUD\", \"description\": \"QCLOUD TX:7 RX:6\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure || echo "skip exception"
-    - rm -rf build && mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3_QCLOUD\", \"description\": \"QCLOUD TX:7 RX:6\",\"silence\": 0}" > build/module_info.json'
-    - *before_build_esp32c3_series
-    - ./build.py build
+    - export MODULE_CFG_DIR=module_esp32c3_qcloud
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3_QCLOUD\", \"description\": \"QCLOUD TX:7 RX:6\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32c3
 
 push_master_to_github:
   stage: deploy
@@ -591,7 +259,7 @@ push_master_to_github:
   tags:
     - deploy
   when: on_success
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
+  image: $CI_DOCKER_REGISTRY/esp-env-v4.4:1
   variables:
     GIT_STRATEGY: clone
     GITHUB_PUSH_REFS: refs/remotes/origin/release refs/remotes/origin/master
@@ -606,25 +274,9 @@ push_master_to_github:
     # - git push --follow-tags github HEAD:master
     - eval $(git for-each-ref --shell bash --format 'if [ $CI_COMMIT_SHA == %(objectname) ]; then git checkout -B %(refname:strip=3); git push --follow-tags github %(refname:strip=3); fi;' $GITHUB_PUSH_REFS)
 
-
 esp32_demo:
-  stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
-  tags:
-    - build
-
-  variables:
-    <<: *global-variables
-
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - git submodule update --init --recursive
-
+  extends:
+    - .esp_at_build_template
   script:
     # replace submodule esp-idf to internal repository to speedup cloning
     - commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32_default/IDF_VERSION)
@@ -647,120 +299,6 @@ esp32_demo:
     - cd examples/at_spi_master/sdspi/ESP32
     - idf.py build
     - cd -
-
-esp32_at_all_function_test:
-  stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
-  tags:
-    - build
-
-  variables:
-    <<: *global-variables
-    
-  artifacts:
-    paths:
-      - sdkconfig
-      - build/*.bin
-      - build/*.elf
-      - build/*.map
-      - build/bootloader/*.bin
-      - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
-      - build/flasher_args.json
-      - build/download.config
-      - build/factory/*
-    expire_in: 6 mos
-
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - git submodule update --init --recursive
-
-  script:
-    - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-    - echo -e "CONFIG_AT_ETHERNET_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
-    - echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-    - echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-    - echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-    - echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-    - echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_wrover-32/sdkconfig.defaults
-
-    - sed -i '/ota_1/d' module_config/module_wrover-32/partitions_at.csv
-    - old_size_str=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
-    - let old_value=$old_size_str
-    - new_value=`expr $old_value + $old_value`
-    - new_size_str=`printf "0x%x" ${new_value}`
-    - sed -i '/ota_0/s/'$old_size_str'/'$new_size_str'/g' module_config/module_wrover-32/partitions_at.csv
-
-    # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_wrover-32/IDF_VERSION
-    - mkdir build
-    # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure || echo "skip exception"
-    - rm -rf build && mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - *before_build_esp32_series
-    - ./build.py build
-
-esp32_ethernet_at:
-  stage: build
-  image: $CI_DOCKER_REGISTRY/esp32-ci-env
-  tags:
-    - build
-
-  variables:
-    <<: *global-variables
-    
-  artifacts:
-    paths:
-      - sdkconfig
-      - build/*.bin
-      - build/*.elf
-      - build/*.map
-      - build/bootloader/*.bin
-      - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
-      - build/flasher_args.json
-      - build/download.config
-      - build/factory/*
-    expire_in: 6 mos
-
-  before_script:
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
-    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - git submodule update --init --recursive
-
-  script:
-    - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-    - echo -e "CONFIG_AT_ETHERNET_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-    - echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-
-    - sed -i '/ota_1/d' module_config/module_wrover-32/partitions_at.csv
-    - old_size_str=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
-    - let old_value=$old_size_str
-    - new_value=`expr $old_value + $old_value`
-    - new_size_str=`printf "0x%x" ${new_value}`
-    - sed -i '/ota_0/s/'$old_size_str'/'$new_size_str'/g' module_config/module_wrover-32/partitions_at.csv
-
-    # replace submodule esp-idf to internal repository to speedup cloning
-    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/module_wrover-32/IDF_VERSION
-    - mkdir build
-    # create module info
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - ./build.py reconfigure || echo "skip exception"
-    - rm -rf build && mkdir build
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > build/module_info.json'
-    - *before_build_esp32_series
-    - ./build.py build
 
 doc_build_html:
   stage: build
