@@ -7,6 +7,8 @@
 
 -  :ref:`AT+USERRAM <cmd-USERRAM>`：操作用户的空闲 RAM
 -  :ref:`AT+USEROTA <cmd-USEROTA>`：根据指定 URL 升级固件
+-  :ref:`AT+USERWKMCUCFG <cmd-USERWKMCUCFG>`：设置 AT 唤醒 MCU 的配置
+-  :ref:`AT+USERMCUSLEEP <cmd-USERMCUSLEEP>`：MCU 指示自己睡眠状态
 -  :ref:`AT+USERDOCS <cmd-USERDOCS>`：查询固件对应的用户文档链接
 
 .. _cmd-USERRAM:
@@ -168,6 +170,130 @@ AT 输出上述信息之后，升级过程开始。如果升级完成，返回�
     Recv 36 bytes
 
     OK
+
+.. _cmd-USERWKMCUCFG:
+
+:ref:`AT+USERWKMCUCFG <User-AT>`：设置 AT 唤醒 MCU 的配置
+---------------------------------------------------------------------
+
+设置命令
+^^^^^^^^
+
+**功能：**
+
+此命令配置 AT 如何检查 MCU 的唤醒状态，以及 AT 如何唤醒 MCU。
+
+- 当 MCU 是醒来的状态，AT 将直接向 MCU 发送数据，不会发送唤醒信号。
+- 当 MCU 是睡眠的状态，AT 准备向 MCU 主动发送数据时（主动发送的数据和 :ref:`ESP-AT 消息报告 <at-messages-report>` 中定义的相同），AT 会先发送唤醒信号再发送数据。MCU 被唤醒或者超时后会清除唤醒信号。
+
+**命令：**
+
+::
+
+    AT+USERWKMCUCFG=<enable>,<wake mode>,<wake number>,<wake signal>,<delay time>[,<check mcu awake method>]
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+- **<enable>**：启用或禁用唤醒配置。
+
+  - 0：禁用唤醒 MCU 配置
+  - 1：使能唤醒 MCU 配置
+
+- **<wake mode>**：唤醒模式。
+
+  - 1：GPIO 唤醒
+  - 2：UART 唤醒
+
+- **<wake number>**：该参数的意义取决于 ``<wake mode>`` 的值。
+
+  - 如果 ``<wake mode>`` 是 1，``<wake number>`` 代表唤醒管脚 GPIO 编号。用户需要保证配置的唤醒管脚没有用作其它用途，否则需要用户做兼容性处理。
+  - 如果 ``<wake mode>`` 是 2，``<wake number>`` 代表唤醒 UART 编号。当前只支持 1，即支持 UART1 唤醒 MCU。
+
+- **<wake signal>**：该参数的意义取决于 ``<wake mode>`` 的值。
+
+  - 如果 ``<wake mode>`` 是 1，``<wake signal>`` 代表唤醒电平。
+
+    - 0：低电平
+    - 1：高电平
+
+  - 如果 ``<wake mode>`` 是 2，``<wake signal>`` 代表唤醒字节。范围：[0,255]。
+
+- **<delay time>**：最大等待时间。单位：毫秒。范围：[0,60000]。该参数的意义取决于 ``<wake mode>`` 的值。
+
+  - 如果 ``<wake mode>`` 是 1，则在 ``<delay time>`` 期间内，将一直保持 ``<wake signal>`` 电平。``<delay time>`` 到后，则反转 ``<wake signal>`` 电平。
+  - 如果 ``<wake mode>`` 是 2，则立即发送 ``<wake signal>`` 字节，进入等待直到超时。
+
+- **<check mcu awake method>**：AT 检查 MCU 是否处于醒来的状态。
+
+  - Bit 0：是否开启与 :ref:`AT+USERMCUSLEEP <cmd-USERMCUSLEEP>` 命令的关联。默认开启。即：收到 AT+USERMCUSLEEP=0 命令，指示 MCU 醒来；收到 AT+USERMCUSLEEP=1 命令，指示 MCU 睡眠。
+  - Bit 1：是否开启与 :ref:`AT+SLEEP=1/2/3 <cmd-SLEEP>` 命令的关联。默认禁用。即：收到 AT+SLEEP=0 命令，指示 MCU 醒来；收到 AT+USERMCUSLEEP=1/2/3 命令，指示 MCU 睡眠。
+  - Bit 2：是否开启 ``<delay time>`` 超时后指示 MCU 醒来功能。默认禁用。即：禁用时，delay time 后，指示 MCU 睡眠；使能时，delay time 后，指示 MCU 醒来。
+  - Bit 3（暂未实现）：是否开启 GPIO 指示 MCU 醒来功能。默认不支持。
+
+说明
+^^^^
+
+- 此命令只需要配置一次。
+- 每次 AT 向 MCU 主动发送数据前，会先发送唤醒信号再进入等待，``<delay time>`` 时间到了之后直接发送数据。此超时会降低与 MCU 间的传输效率。
+- 如果在 ``<delay time>`` 毫秒之前，AT 收到 ``<check mcu awake method>`` 里的任意唤醒事件，则立即清除唤醒状态；否则会等待 ``<delay time>`` 超时后，会自动清除唤醒状态。
+
+示例
+^^^^
+
+::
+
+    // 使能唤醒 MCU 配置。每次 AT 向 MCU 发送数据前，会先使用 Wi-Fi 模块的 GPIO18 管脚，高电平唤醒 MCU，同时保持高电平 10 秒。
+    AT+USERWKMCUCFG=1,1,18,1,10000,3
+
+    // 禁用唤醒 MCU 配置
+    AT+USERWKMCUCFG=0
+
+.. _cmd-USERMCUSLEEP:
+
+:ref:`AT+USERMCUSLEEP <User-AT>`：MCU 指示自己睡眠状态
+-----------------------------------------------------------
+
+设置命令
+^^^^^^^^
+
+**功能：**
+
+在 :ref:`AT+USERWKMCUCFG <cmd-USERWKMCUCFG>` 命令的 ``<check mcu awake method>`` Bit 0 配置情况下，此命令才会生效。用于告知 AT 当前 MCU 的睡眠状态。
+
+**命令：**
+
+::
+
+    AT+USERMCUSLEEP=<state>
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+- **<state>**：
+
+  - 0：指示 MCU 醒来。
+  - 1：指示 MCU 睡眠。
+
+示例
+^^^^
+
+::
+
+    // MCU 告知 AT 当前 MCU 醒来
+    AT+USERMCUSLEEP=0
 
 .. _cmd-USERDOCS:
 

@@ -117,6 +117,8 @@ AT 消息
 
 从 ESP-AT 命令端口返回的 ESP-AT 消息有两种类型：ESP-AT 响应（被动）和 ESP-AT 消息报告（主动）。
 
+.. _at-messages-response:
+
 - ESP-AT 响应（被动）
   
   每个输入的 ESP-AT 命令都会返回响应，告诉发送者 ESP-AT 命令的执行结果。响应的最后一条消息必然是 ``OK`` 或者 ``ERROR``。
@@ -139,6 +141,8 @@ AT 消息
         - URL 已经成功设置（针对于 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令）
       * - +<Command Name>:``...``
         - 详细描述 AT 命令处理结果
+
+.. _at-messages-report:
 
 - ESP-AT 消息报告（主动）
 
@@ -199,7 +203,9 @@ AT 消息
      * - Recv ``<xxx>`` bytes
        - ESP-AT 从命令端口已接收到 ``<xxx>`` 字节
      * - +IPD
-       - ESP-AT 已收到来自网络的数据
+       - ESP-AT 在非透传模式下，已收到来自网络的数据
+     * - :term:`透传模式` 下的数据
+       - ESP-AT 在透传模式下，已收到来自网络或蓝牙的数据
      * - SEND Canceled
        - 取消在 Wi-Fi :term:`普通传输模式` 下发送数据
      * - Have ``<xxx>`` Connections
