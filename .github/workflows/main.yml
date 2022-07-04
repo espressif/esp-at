@@ -6,8 +6,17 @@ on:
     branches:
       - master
       - release/*
+      - chore/simplify_github_yml
 
 jobs:
+  new-build-esp32-wroom-at:
+    uses: ./.github/workflows/build_template_esp32.yml
+    with:
+      module_name: WROOM-32
+      silence_mode: 0
+      artifacts_name: new-esp32-wroom-at
+    secrets: inherit
+
   build-esp32-wroom-at:
     runs-on: ubuntu-latest
     steps:

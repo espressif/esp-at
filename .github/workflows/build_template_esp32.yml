@@ -1,0 +1,45 @@
+name: Reusable esp32-at workflow template
+
+on:
+  workflow_call:
+    # parameters from upstream workflow
+    inputs:
+      module_name:
+        required: true
+        type: string
+      silence_mode:
+        required: true
+        type: number
+      artifacts_name:
+        required: true
+        type: string
+    # parameters from upstream inherit
+    secrets:
+      AT_OTA_TOKEN_WROOM32:
+        required: true
+      AT_OTA_TOKEN_WROVER32:
+        required: true
+      AT_OTA_TOKEN_ESP32_PICO_D4:
+        required: true
+      AT_OTA_TOKEN_ESP32_SOLO_1:
+        required: true
+      AT_OTA_TOKEN_ESP32_MINI_1:
+        required: true
+      AT_OTA_TOKEN_ESP32_QCLOUD:
+        required: true
+
+jobs:
+  build-template-esp32:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: clone esp-idf
+      run: |
+        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
+        mkdir build
+        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"${{ inputs.module_name }}\", \"silence\": ${{ inputs.silence_mode }}}" > build/module_info.json
+        ./build.py reconfigure || true
+      shell: bash
