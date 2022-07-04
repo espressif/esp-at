@@ -1,0 +1,103 @@
+name: Reusable esp32-at workflow template
+
+on:
+  workflow_call:
+    # parameters from upstream workflow
+    inputs:
+      module_name:
+        required: true
+        type: string
+      artifacts_name:
+        required: true
+        type: string
+    # parameters from upstream inherit
+    secrets:
+      AT_OTA_TOKEN_WROOM32:
+        required: true
+      AT_OTA_TOKEN_WROVER32:
+        required: true
+      AT_OTA_TOKEN_ESP32_PICO_D4:
+        required: true
+      AT_OTA_TOKEN_ESP32_SOLO_1:
+        required: true
+      AT_OTA_TOKEN_ESP32_MINI_1:
+        required: true
+      AT_OTA_TOKEN_ESP32_QCLOUD:
+        required: true
+
+jobs:
+  build-template-esp32:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Configure prerequisites
+      run: |
+        # set module information
+        if ${{ inputs.artifacts_name == 'esp32-wrover-at' }}; then
+          silence_mode=1
+        else
+          silence_mode=0
+        fi
+        mkdir build
+        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"${{ inputs.module_name }}\", \"silence\": ${silence_mode}}" > build/module_info.json
+
+        # enable full function for test job
+        if ${{ inputs.artifacts_name == 'esp32-at-full-function-test' }}; then
+          echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+          echo -e "CONFIG_AT_ETHERNET_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+          echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+          echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+          echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+          echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+          echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+          echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_wrover-32/sdkconfig.defaults
+
+          # enlarge partition table
+          sed -i '/ota_1/d' module_config/module_wrover-32/partitions_at.csv
+          old_size_str=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
+          let old_value=$old_size_str
+          new_value=`expr $old_value + $old_value`
+          new_size_str=`printf "0x%x" ${new_value}`
+          sed -i '/ota_0/s/'$old_size_str'/'$new_size_str'/g' module_config/module_wrover-32/partitions_at.csv
+        fi
+
+        # update esp32 ota token
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"${{ secrets.AT_OTA_TOKEN_WROOM32 }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"${{ secrets.AT_OTA_TOKEN_WROOM32 }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"${{ secrets.AT_OTA_TOKEN_WROVER32 }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"${{ secrets.AT_OTA_TOKEN_WROVER32 }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_QCLOUD \"${{ secrets.AT_OTA_TOKEN_ESP32_QCLOUD }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_QCLOUD \"${{ secrets.AT_OTA_TOKEN_ESP32_QCLOUD }}\"" >> at_ota_token.h
+        cd -
+    - name: Install ESP-IDF environment variables
+      run: |
+        ./build.py install
+    - name: Compile
+      run: |
+        ./build.py build
+        # copy artifacts
+        upload_dir=${{ inputs.artifacts_name }}
+        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
+        cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig build/*.bin build/*.elf build/*.map build/flasher_args.json $upload_dir/
+        cp build/bootloader/*.bin $upload_dir/bootloader/
+        cp build/partition_table/*.bin $upload_dir/partition_table/
+        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
+        cp build/factory/* $upload_dir/factory
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ inputs.artifacts_name }}
+        path: ${{ inputs.artifacts_name }}
