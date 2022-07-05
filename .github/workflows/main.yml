@@ -1,5 +1,5 @@
   
-name: C/C++ CI
+name: Build ESP-AT Project
 
 on:
   push:
@@ -9,829 +9,92 @@ on:
 
 jobs:
   build-esp32-wroom-at:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: clone esp-idf
-      run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure || echo "skip exception"
-      shell: bash
-    - name: Install dependencies
-      env:
-        IDF_PATH: ${{ github.workspace }}/esp-idf
-      run: |
-        ./build.py install
-    - name: Compiling
-      env:
-        AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
-        AT_OTA_TOKEN_WROVER32: ${{ secrets.AT_OTA_TOKEN_WROVER32 }}
-        AT_OTA_TOKEN_ESP32_PICO_D4: ${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}
-        AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
-        AT_OTA_TOKEN_ESP32_MINI_1: ${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}
-        AT_OTA_TOKEN_ESP32_QCLOUD: ${{ secrets.AT_OTA_TOKEN_ESP32_QCLOUD }}
-      run: |
-        cd components/at/private_include
-        rm -f at_ota_token.h
-        echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        cd -
-        
-        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-        python ./esp-idf/tools/idf_tools.py export --prefer-system
-        
-        ./build.py build
-        upload_dir=esp32-wroom-at
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
-        cp build/flash_project_args $upload_dir/download.config
-        cp sdkconfig $upload_dir/
-        cp build/*.bin $upload_dir/
-        cp build/*.elf $upload_dir/
-        cp build/*.map $upload_dir/
-        cp build/bootloader/*.bin $upload_dir/bootloader/
-        cp build/partition_table/*.bin $upload_dir/partition_table/
-        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
-        cp build/flasher_args.json $upload_dir/
-        cp build/flash_project_args $upload_dir/download.config
-        cp build/factory/* $upload_dir/factory
-      shell: bash
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: esp32-wroom-at
-        path: esp32-wroom-at
-           
+    uses: ./.github/workflows/build_template_esp32.yml
+    with:
+      module_name: WROOM-32
+      artifacts_name: esp32-wroom-at
+    secrets: inherit
+
   build-esp32-wrover-at:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: clone esp-idf
-      run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"silence\": 1}" > build/module_info.json
-        ./build.py reconfigure || echo "skip exception"
-      shell: bash
-    - name: Install dependencies
-      env:
-        IDF_PATH: ${{ github.workspace }}/esp-idf
-      run: |
-        ./build.py install
+    uses: ./.github/workflows/build_template_esp32.yml
+    with:
+      module_name: WROVER-32
+      artifacts_name: esp32-wrover-at
+    secrets: inherit
 
-    - name: Compiling
-      env:
-        AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
-        AT_OTA_TOKEN_WROVER32: ${{ secrets.AT_OTA_TOKEN_WROVER32 }}
-        AT_OTA_TOKEN_ESP32_PICO_D4: ${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}
-        AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
-        AT_OTA_TOKEN_ESP32_MINI_1: ${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}
-        AT_OTA_TOKEN_ESP32_QCLOUD: ${{ secrets.AT_OTA_TOKEN_ESP32_QCLOUD }}
-      run: |
-        cd components/at/private_include
-        rm -f at_ota_token.h
-        echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        cd -
-        
-        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-        python ./esp-idf/tools/idf_tools.py export --prefer-system
-
-        ./build.py build
-        upload_dir=esp32-wrover-at
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
-        cp build/flash_project_args $upload_dir/download.config
-        cp sdkconfig $upload_dir/
-        cp build/*.bin $upload_dir/
-        cp build/*.elf $upload_dir/
-        cp build/*.map $upload_dir/
-        cp build/bootloader/*.bin $upload_dir/bootloader/
-        cp build/partition_table/*.bin $upload_dir/partition_table/
-        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
-        cp build/flasher_args.json $upload_dir/
-        cp build/flash_project_args $upload_dir/download.config
-        cp build/factory/* $upload_dir/factory
-      shell: bash
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: esp32-wrover-at
-        path: esp32-wrover-at
-        
   build-esp32-pico-d4-at:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: clone esp-idf
-      run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure || echo "skip exception"
-      shell: bash
-    - name: Install dependencies
-      env:
-        IDF_PATH: ${{ github.workspace }}/esp-idf
-      run: |
-        ./build.py install
-    - name: Compiling
-      env:
-        AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
-        AT_OTA_TOKEN_WROVER32: ${{ secrets.AT_OTA_TOKEN_WROVER32 }}
-        AT_OTA_TOKEN_ESP32_PICO_D4: ${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}
-        AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
-        AT_OTA_TOKEN_ESP32_MINI_1: ${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}
-        AT_OTA_TOKEN_ESP32_QCLOUD: ${{ secrets.AT_OTA_TOKEN_ESP32_QCLOUD }}
-      run: |
-        cd components/at/private_include
-        rm -f at_ota_token.h
-        echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        cd -
-        
-        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-        python ./esp-idf/tools/idf_tools.py export --prefer-system
-        ./build.py build
-        upload_dir=esp32-pico-d4-at
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
-        cp build/flash_project_args $upload_dir/download.config
-        cp sdkconfig $upload_dir/
-        cp build/*.bin $upload_dir/
-        cp build/*.elf $upload_dir/
-        cp build/*.map $upload_dir/
-        cp build/bootloader/*.bin $upload_dir/bootloader/
-        cp build/partition_table/*.bin $upload_dir/partition_table/
-        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
-        cp build/flasher_args.json $upload_dir/
-        cp build/flash_project_args $upload_dir/download.config
-        cp build/factory/* $upload_dir/factory
-      shell: bash
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: esp32-pico-d4-at
-        path: esp32-pico-d4-at
+    uses: ./.github/workflows/build_template_esp32.yml
+    with:
+      module_name: PICO-D4
+      artifacts_name: esp32-pico-d4-at
+    secrets: inherit
 
   build-esp32-solo-at:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: clone esp-idf
-      run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure || echo "skip exception"
-      shell: bash
-    - name: Install dependencies
-      env:
-        IDF_PATH: ${{ github.workspace }}/esp-idf
-      run: |
-        ./build.py install
-    - name: Compiling
-      env:
-        AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
-        AT_OTA_TOKEN_WROVER32: ${{ secrets.AT_OTA_TOKEN_WROVER32 }}
-        AT_OTA_TOKEN_ESP32_PICO_D4: ${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}
-        AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
-        AT_OTA_TOKEN_ESP32_MINI_1: ${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}
-        AT_OTA_TOKEN_ESP32_QCLOUD: ${{ secrets.AT_OTA_TOKEN_ESP32_QCLOUD }}
-      run: |
-        cd components/at/private_include
-        rm -f at_ota_token.h
-        echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        cd -
-        
-        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-        python ./esp-idf/tools/idf_tools.py export --prefer-system
-        ./build.py build
-        upload_dir=esp32-solo-1-at
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
-        cp build/flash_project_args $upload_dir/download.config
-        cp sdkconfig $upload_dir/
-        cp build/*.bin $upload_dir/
-        cp build/*.elf $upload_dir/
-        cp build/*.map $upload_dir/
-        cp build/bootloader/*.bin $upload_dir/bootloader/
-        cp build/partition_table/*.bin $upload_dir/partition_table/
-        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
-        cp build/flasher_args.json $upload_dir/
-        cp build/flash_project_args $upload_dir/download.config
-        cp build/factory/* $upload_dir/factory
-      shell: bash
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: esp32-solo-1-at
-        path: esp32-solo-1-at
+    uses: ./.github/workflows/build_template_esp32.yml
+    with:
+      module_name: SOLO-1
+      artifacts_name: esp32-solo-1-at
+    secrets: inherit
 
   build-esp32-d2wd-at:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: clone esp-idf
-      run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-D2WD\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure || echo "skip exception"
-      shell: bash
-    - name: Install dependencies
-      env:
-        IDF_PATH: ${{ github.workspace }}/esp-idf
-      run: |
-        ./build.py install
-    - name: Compiling
-      env:
-        AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
-        AT_OTA_TOKEN_WROVER32: ${{ secrets.AT_OTA_TOKEN_WROVER32 }}
-        AT_OTA_TOKEN_ESP32_PICO_D4: ${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}
-        AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
-        AT_OTA_TOKEN_ESP32_MINI_1: ${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}
-        AT_OTA_TOKEN_ESP32_QCLOUD: ${{ secrets.AT_OTA_TOKEN_ESP32_QCLOUD }}
-      run: |
-        cd components/at/private_include
-        rm -f at_ota_token.h
-        echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        cd -
-        
-        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-        python ./esp-idf/tools/idf_tools.py export --prefer-system
-        ./build.py build
-        upload_dir=esp32-d2wd-at
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
-        cp build/flash_project_args $upload_dir/download.config
-        cp sdkconfig $upload_dir/
-        cp build/*.bin $upload_dir/
-        cp build/*.elf $upload_dir/
-        cp build/*.map $upload_dir/
-        cp build/bootloader/*.bin $upload_dir/bootloader/
-        cp build/partition_table/*.bin $upload_dir/partition_table/
-        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
-        cp build/flasher_args.json $upload_dir/
-        cp build/flash_project_args $upload_dir/download.config
-        cp build/factory/* $upload_dir/factory
-      shell: bash
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: esp32-d2wd-at
-        path: esp32-d2wd-at
+    uses: ./.github/workflows/build_template_esp32.yml
+    with:
+      module_name: ESP32-D2WD
+      artifacts_name: esp32-d2wd-at
+    secrets: inherit
 
   build-esp32-mini-1-at:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: clone esp-idf
-      run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"MINI-1\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure || echo "skip exception"
-      shell: bash
-    - name: Install dependencies
-      env:
-        IDF_PATH: ${{ github.workspace }}/esp-idf
-      run: |
-        ./build.py install
-    - name: Compiling
-      env:
-        AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
-        AT_OTA_TOKEN_WROVER32: ${{ secrets.AT_OTA_TOKEN_WROVER32 }}
-        AT_OTA_TOKEN_ESP32_PICO_D4: ${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}
-        AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
-        AT_OTA_TOKEN_ESP32_MINI_1: ${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}
-        AT_OTA_TOKEN_ESP32_QCLOUD: ${{ secrets.AT_OTA_TOKEN_ESP32_QCLOUD }}
-      run: |
-        cd components/at/private_include
-        rm -f at_ota_token.h
-        echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        cd -
-        
-        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-        python ./esp-idf/tools/idf_tools.py export --prefer-system
-        ./build.py build
-        upload_dir=esp32-mini-1-at
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
-        cp build/flash_project_args $upload_dir/download.config
-        cp sdkconfig $upload_dir/
-        cp build/*.bin $upload_dir/
-        cp build/*.elf $upload_dir/
-        cp build/*.map $upload_dir/
-        cp build/bootloader/*.bin $upload_dir/bootloader/
-        cp build/partition_table/*.bin $upload_dir/partition_table/
-        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
-        cp build/flasher_args.json $upload_dir/
-        cp build/flash_project_args $upload_dir/download.config
-        cp build/factory/* $upload_dir/factory
-      shell: bash
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: esp32-mini-1-at
-        path: esp32-mini-1-at
+    uses: ./.github/workflows/build_template_esp32.yml
+    with:
+      module_name: MINI-1
+      artifacts_name: esp32-mini-1-at
+    secrets: inherit
 
   build-esp32-sdio-at:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: clone esp-idf
-      run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-SDIO\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure || echo "skip exception"
-      shell: bash
-    - name: Install dependencies
-      env:
-        IDF_PATH: ${{ github.workspace }}/esp-idf
-      run: |
-        ./build.py install
-    - name: Compiling
-      run: |
-        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-        python ./esp-idf/tools/idf_tools.py export --prefer-system
-        ./build.py build
-        upload_dir=esp32-sdio-at
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
-        cp build/flash_project_args $upload_dir/download.config
-        cp sdkconfig $upload_dir/
-        cp build/*.bin $upload_dir/
-        cp build/*.elf $upload_dir/
-        cp build/*.map $upload_dir/
-        cp build/bootloader/*.bin $upload_dir/bootloader/
-        cp build/partition_table/*.bin $upload_dir/partition_table/
-        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
-        cp build/flasher_args.json $upload_dir/
-        cp build/flash_project_args $upload_dir/download.config
-        cp build/factory/* $upload_dir/factory
-      shell: bash
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: esp32-sdio-at
-        path: esp32-sdio-at
+    uses: ./.github/workflows/build_template_esp32.yml
+    with:
+      module_name: ESP32-SDIO
+      artifacts_name: esp32-sdio-at
+    secrets: inherit
 
   build-esp32-qcloud:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: clone esp-idf
-      run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32_QCLOUD\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure || echo "skip exception"
-      shell: bash
-    - name: Install dependencies
-      env:
-        IDF_PATH: ${{ github.workspace }}/esp-idf
-      run: |
-        ./build.py install
-    - name: Compiling
-      env:
-        AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
-        AT_OTA_TOKEN_WROVER32: ${{ secrets.AT_OTA_TOKEN_WROVER32 }}
-        AT_OTA_TOKEN_ESP32_PICO_D4: ${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}
-        AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
-        AT_OTA_TOKEN_ESP32_MINI_1: ${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}
-        AT_OTA_TOKEN_ESP32_QCLOUD: ${{ secrets.AT_OTA_TOKEN_ESP32_QCLOUD }}
-      run: |
-        cd components/at/private_include
-        rm -f at_ota_token.h
-        echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        cd -
-
-        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-        python ./esp-idf/tools/idf_tools.py export --prefer-system
-        ./build.py build
-        upload_dir=esp32-qcloud
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
-        cp build/flash_project_args $upload_dir/download.config
-        cp sdkconfig $upload_dir/
-        cp build/*.bin $upload_dir/
-        cp build/*.elf $upload_dir/
-        cp build/*.map $upload_dir/
-        cp build/bootloader/*.bin $upload_dir/bootloader/
-        cp build/partition_table/*.bin $upload_dir/partition_table/
-        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
-        cp build/flasher_args.json $upload_dir/
-        cp build/flash_project_args $upload_dir/download.config
-        cp build/factory/* $upload_dir/factory
-      shell: bash
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: esp32-qcloud
-        path: esp32-qcloud
+    uses: ./.github/workflows/build_template_esp32.yml
+    with:
+      module_name: ESP32_QCLOUD
+      artifacts_name: esp32-qcloud
+    secrets: inherit
 
   build-esp32-at-full-function-test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: clone esp-idf
-      run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"silence\": 0}" > build/module_info.json
-
-        # enable full function
-        echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-        echo -e "CONFIG_AT_ETHERNET_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
-        echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-        echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-        echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-        echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-        echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-        echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_wrover-32/sdkconfig.defaults
-
-        # enlarge partition table
-        sed -i '/ota_1/d' module_config/module_wrover-32/partitions_at.csv
-        old_size_str=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
-        let old_value=$old_size_str
-        new_value=`expr $old_value + $old_value`
-        new_size_str=`printf "0x%x" ${new_value}`
-        sed -i '/ota_0/s/'$old_size_str'/'$new_size_str'/g' module_config/module_wrover-32/partitions_at.csv
-
-        # clone esp-idf
-        ./build.py reconfigure || echo "skip exception"
-      shell: bash
-    - name: Install dependencies
-      env:
-        IDF_PATH: ${{ github.workspace }}/esp-idf
-      run: |
-        ./build.py install
-    - name: Compiling
-      env:
-        AT_OTA_TOKEN_WROOM32: ${{ secrets.AT_OTA_TOKEN_WROOM32 }}
-        AT_OTA_TOKEN_WROVER32: ${{ secrets.AT_OTA_TOKEN_WROVER32 }}
-        AT_OTA_TOKEN_ESP32_PICO_D4: ${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}
-        AT_OTA_TOKEN_ESP32_SOLO_1: ${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}
-        AT_OTA_TOKEN_ESP32_MINI_1: ${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}
-        AT_OTA_TOKEN_ESP32_QCLOUD: ${{ secrets.AT_OTA_TOKEN_ESP32_QCLOUD }}
-      run: |
-        cd components/at/private_include
-        rm -f at_ota_token.h
-        echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"$AT_OTA_TOKEN_WROOM32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"$AT_OTA_TOKEN_WROVER32\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"$AT_OTA_TOKEN_ESP32_PICO_D4\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"$AT_OTA_TOKEN_ESP32_SOLO_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"$AT_OTA_TOKEN_ESP32_MINI_1\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_QCLOUD \"$AT_OTA_TOKEN_ESP32_QCLOUD\"" >> at_ota_token.h
-        cd -
-
-        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-        python ./esp-idf/tools/idf_tools.py export --prefer-system
-        ./build.py build
-        upload_dir=esp32-at-full-function-test
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
-        cp build/flash_project_args $upload_dir/download.config
-        cp sdkconfig $upload_dir/
-        cp build/*.bin $upload_dir/
-        cp build/*.elf $upload_dir/
-        cp build/*.map $upload_dir/
-        cp build/bootloader/*.bin $upload_dir/bootloader/
-        cp build/partition_table/*.bin $upload_dir/partition_table/
-        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
-        cp build/flasher_args.json $upload_dir/
-        cp build/flash_project_args $upload_dir/download.config
-        cp build/factory/* $upload_dir/factory
-      shell: bash
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: esp32-at-full-function-test
-        path: esp32-at-full-function-test
+    uses: ./.github/workflows/build_template_esp32.yml
+    with:
+      module_name: WROVER-32
+      artifacts_name: esp32-at-full-function-test
+    secrets: inherit
 
   build-esp32c3-mini-1-at:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: clone esp-idf
-      run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure || echo "skip exception"
-      shell: bash
-    - name: Install dependencies
-      env:
-        IDF_PATH: ${{ github.workspace }}/esp-idf
-      run: |
-        ./build.py install
-    - name: Compiling
-      env:
-        AT_OTA_TOKEN_ESP32C3_MINI: ${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI }}
-        AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD: ${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD }}
-      run: |
-        cd components/at/private_include
-        rm -f at_ota_token.h
-        echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI \"$AT_OTA_TOKEN_ESP32C3_MINI\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI \"$AT_OTA_TOKEN_ESP32C3_MINI\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD \"$AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI_QCLOUD \"$AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD\"" >> at_ota_token.h
-        cd -
-
-        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-        python ./esp-idf/tools/idf_tools.py export --prefer-system
-        ./build.py build
-        upload_dir=esp32c3-mini-1-at
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
-        cp build/flash_project_args $upload_dir/download.config
-        cp sdkconfig $upload_dir/
-        cp build/*.bin $upload_dir/
-        cp build/*.elf $upload_dir/
-        cp build/*.map $upload_dir/
-        cp build/bootloader/*.bin $upload_dir/bootloader/
-        cp build/partition_table/*.bin $upload_dir/partition_table/
-        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
-        cp build/flasher_args.json $upload_dir/
-        cp build/flash_project_args $upload_dir/download.config
-        cp build/factory/* $upload_dir/factory
-      shell: bash
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: esp32c3-mini-1-at
-        path: esp32c3-mini-1-at
-
-  build-esp32c3-at-full-function-test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: clone esp-idf
-      run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"silence\": 0}" > build/module_info.json
-        echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-        echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-        echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-        echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-        echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-        ./build.py reconfigure || echo "skip exception"
-      shell: bash
-    - name: Install dependencies
-      env:
-        IDF_PATH: ${{ github.workspace }}/esp-idf
-      run: |
-        ./build.py install
-    - name: Compiling
-      env:
-        AT_OTA_TOKEN_ESP32C3_MINI: ${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI }}
-        AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD: ${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD }}
-      run: |
-        cd components/at/private_include
-        rm -f at_ota_token.h
-        echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI \"$AT_OTA_TOKEN_ESP32C3_MINI\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI \"$AT_OTA_TOKEN_ESP32C3_MINI\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD \"$AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI_QCLOUD \"$AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD\"" >> at_ota_token.h
-        cd -
-
-        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-        python ./esp-idf/tools/idf_tools.py export --prefer-system
-        ./build.py build
-        upload_dir=esp32c3-at-full-function-test
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
-        cp build/flash_project_args $upload_dir/download.config
-        cp sdkconfig $upload_dir/
-        cp build/*.bin $upload_dir/
-        cp build/*.elf $upload_dir/
-        cp build/*.map $upload_dir/
-        cp build/bootloader/*.bin $upload_dir/bootloader/
-        cp build/partition_table/*.bin $upload_dir/partition_table/
-        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
-        cp build/flasher_args.json $upload_dir/
-        cp build/flash_project_args $upload_dir/download.config
-        cp build/factory/* $upload_dir/factory
-      shell: bash
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: esp32c3-at-full-function-test
-        path: esp32c3-at-full-function-test
+    uses: ./.github/workflows/build_template_esp32c3.yml
+    with:
+      module_name: MINI-1
+      artifacts_name: esp32c3-mini-1-at
+    secrets: inherit
 
   build-esp32c3-spi-at:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: clone esp-idf
-      run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3-SPI\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure || echo "skip exception"
-      shell: bash
-    - name: Install dependencies
-      env:
-        IDF_PATH: ${{ github.workspace }}/esp-idf
-      run: |
-        ./build.py install
-    - name: Compiling
-      run: |
-        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-        python ./esp-idf/tools/idf_tools.py export --prefer-system
-        ./build.py build
-        upload_dir=esp32c3-spi-at
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
-        cp build/flash_project_args $upload_dir/download.config
-        cp sdkconfig $upload_dir/
-        cp build/*.bin $upload_dir/
-        cp build/*.elf $upload_dir/
-        cp build/*.map $upload_dir/
-        cp build/bootloader/*.bin $upload_dir/bootloader/
-        cp build/partition_table/*.bin $upload_dir/partition_table/
-        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
-        cp build/flasher_args.json $upload_dir/
-        cp build/flash_project_args $upload_dir/download.config
-        cp build/factory/* $upload_dir/factory
-      shell: bash
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: esp32c3-spi-at
-        path: esp32c3-spi-at
+    uses: ./.github/workflows/build_template_esp32c3.yml
+    with:
+      module_name: ESP32C3-SPI
+      artifacts_name: esp32c3-spi-at
+    secrets: inherit
 
   build-esp32c3-qcloud:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: clone esp-idf
-      run: |
-        python -m pip install --user -r /home/runner/work/esp-at/esp-at/requirements.txt
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3_QCLOUD\", \"silence\": 0}" > build/module_info.json
-        ./build.py reconfigure || echo "skip exception"
-      shell: bash
-    - name: Install dependencies
-      env:
-        IDF_PATH: ${{ github.workspace }}/esp-idf
-      run: |
-        ./build.py install
-    - name: Compiling
-      env:
-        AT_OTA_TOKEN_ESP32C3_MINI: ${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI }}
-        AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD: ${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD }}
-      run: |
-        cd components/at/private_include
-        rm -f at_ota_token.h
-        echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI \"$AT_OTA_TOKEN_ESP32C3_MINI\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI \"$AT_OTA_TOKEN_ESP32C3_MINI\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD \"$AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI_QCLOUD \"$AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD\"" >> at_ota_token.h
-        cd -
+    uses: ./.github/workflows/build_template_esp32c3.yml
+    with:
+      module_name: ESP32C3_QCLOUD
+      artifacts_name: esp32c3-qcloud
+    secrets: inherit
 
-        python ./esp-idf/tools/idf_tools.py --non-interactive install && eval "$(python ./esp-idf/tools/idf_tools.py --non-interactive export)" || exit 1
-        python ./esp-idf/tools/idf_tools.py export --prefer-system
-        ./build.py build
-        upload_dir=esp32c3-qcloud
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
-        cp build/flash_project_args $upload_dir/download.config
-        cp sdkconfig $upload_dir/
-        cp build/*.bin $upload_dir/
-        cp build/*.elf $upload_dir/
-        cp build/*.map $upload_dir/
-        cp build/bootloader/*.bin $upload_dir/bootloader/
-        cp build/partition_table/*.bin $upload_dir/partition_table/
-        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
-        cp build/flasher_args.json $upload_dir/
-        cp build/flash_project_args $upload_dir/download.config
-        cp build/factory/* $upload_dir/factory
-      shell: bash
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: esp32c3-qcloud
-        path: esp32c3-qcloud
+  build-esp32c3-at-full-function-test:
+    uses: ./.github/workflows/build_template_esp32c3.yml
+    with:
+      module_name: MINI-1
+      artifacts_name: esp32c3-at-full-function-test
+    secrets: inherit

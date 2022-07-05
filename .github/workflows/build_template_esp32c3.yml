@@ -1,0 +1,71 @@
+name: Reusable esp32c3-at workflow template
+
+on:
+  workflow_call:
+    # parameters from upstream workflow
+    inputs:
+      module_name:
+        required: true
+        type: string
+      artifacts_name:
+        required: true
+        type: string
+    # parameters from upstream inherit
+    secrets:
+      AT_OTA_TOKEN_ESP32C3_MINI:
+        required: true
+      AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD:
+        required: true
+
+jobs:
+  build-template-esp32c3:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Configure prerequisites
+      run: |
+        # set module information
+        mkdir build
+        echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"${{ inputs.module_name }}\", \"silence\": 0}" > build/module_info.json
+
+        # enable full function for test job
+        if ${{ inputs.artifacts_name == 'esp32c3-at-full-function-test' }}; then
+          echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+          echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+          echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+          echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+          echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+        fi
+
+        # update esp32c3 ota token
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI \"${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI \"${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD \"${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI_QCLOUD \"${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD }}\"" >> at_ota_token.h
+        cd -
+    - name: Install ESP-IDF environment variables
+      run: |
+        ./build.py install
+    - name: Compile
+      run: |
+        ./build.py build
+        # copy artifacts
+        upload_dir=${{ inputs.artifacts_name }}
+        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
+        cp build/flash_project_args $upload_dir/download.config
+        cp sdkconfig build/*.bin build/*.elf build/*.map build/flasher_args.json $upload_dir/
+        cp build/bootloader/*.bin $upload_dir/bootloader/
+        cp build/partition_table/*.bin $upload_dir/partition_table/
+        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
+        cp build/factory/* $upload_dir/factory
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ inputs.artifacts_name }}
+        path: ${{ inputs.artifacts_name }}
