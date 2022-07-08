@@ -752,6 +752,7 @@ Bluetooth® Low Energy AT 命令集
 -  若未使用命令 :ref:`AT+BLEADVPARAM <cmd-BADVP>`\=<adv_parameter> 设置广播参数，则使用默认广播参数。
 -  若未使用命令 :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data> 设置广播数据，则发送全 0 数据包。
 -  若之前已经使用命令 :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data> 设置过广播数据，则会被 :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power> 设置的广播数据覆盖，相反，如果先使用 AT+BLEADVDATAEX，则会被 AT+BLEADVDATA 设置的广播数据覆盖。
+-  开启 Bluetooth LE 广播后，如果没有建立 Bluetooth LE 连接，那么将会一直保持广播；如果建立了连接，则会自动结束广播。
 
 示例
 ^^^^
