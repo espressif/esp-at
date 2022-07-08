@@ -41,6 +41,7 @@
 
 #ifdef CONFIG_AT_OTA_SUPPORT
 #include "at_ota.h"
+#include "esp_http_client.h"
 
 typedef enum {
     AT_UPGRADE_SYSTEM_FIRMWARE = 0,         /**< upgrade type is system firmware */
@@ -112,6 +113,8 @@ static const at_partition_sig_t s_at_partition_sig[] = {
 #define ESP_AT_VERSION_LEN_MAX                64
 #define ESP_AT_PARTITION_NAME_LEN_MAX         64
 #define NB_OTA_TASK_STACK_SIZE              5120  // for non-blocking ota
+#define AT_HTTP_CONTENT_LEN_MAX             8192
+#define AT_BUFFER_ON_STACK_SIZE              128
 
 typedef struct {
     int32_t ota_mode;
@@ -120,6 +123,9 @@ typedef struct {
 } ota_param_t;
 
 static bool s_esp_at_ota_started = false;
+
+static uint8_t *s_http_buffer = NULL;
+static int s_http_buffer_offset = 0;
 
 static void esp_at_set_upgrade_state(esp_at_ota_state_t status)
 {
@@ -738,8 +744,95 @@ static uint8_t at_queryCmdCipupgrade(uint8_t *cmd_name)
     return ESP_AT_RESULT_CODE_OK;
 }
 
+static esp_err_t at_cipfwver_http_event_handler(esp_http_client_event_t *evt)
+{
+    switch(evt->event_id) {
+    case HTTP_EVENT_ON_DATA:
+        memcpy(s_http_buffer + s_http_buffer_offset, evt->data, evt->data_len);
+        s_http_buffer_offset += evt->data_len;
+
+    default:
+        break;;
+    }
+
+    return ESP_OK;
+}
+
+static uint8_t at_query_cmd_cipfwver(uint8_t *cmd_name)
+{
+    uint8_t ret = ESP_AT_RESULT_CODE_ERROR;
+
+    // init http config
+    esp_http_client_config_t config = {
+#ifdef CONFIG_AT_OTA_SSL_SUPPORT
+        .host = CONFIG_AT_OTA_SSL_SERVER_IP,
+        .transport_type = HTTP_TRANSPORT_OVER_SSL,
+#else
+        .host = CONFIG_AT_OTA_SERVER_IP,
+        .transport_type = HTTP_TRANSPORT_OVER_TCP,
+#endif
+        .path = "/v1/device/rom",
+        .event_handler = at_cipfwver_http_event_handler,
+        .timeout_ms = 10000,
+    };
+    esp_http_client_handle_t client = esp_http_client_init(&config);
+
+    // set http authorization
+    const char *auth_token = NULL;
+#ifdef CONFIG_AT_OTA_SSL_SUPPORT
+    auth_token = esp_at_get_ota_token_by_id(esp_at_get_module_id(), ESP_AT_OTA_MODE_SSL);
+#else
+    auth_token = esp_at_get_ota_token_by_id(esp_at_get_module_id(), ESP_AT_OTA_MODE_NORMAL);
+#endif
+    char buffer[AT_BUFFER_ON_STACK_SIZE] = {0};
+    snprintf(buffer, AT_BUFFER_ON_STACK_SIZE, "token %s", auth_token);
+    esp_http_client_set_header(client, "Authorization", buffer);
+
+    // rough buffer for http response (due to http response is chunked)
+    s_http_buffer = calloc(1, AT_HTTP_CONTENT_LEN_MAX);
+    if (!s_http_buffer) {
+        goto _over;
+    }
+
+    // perform http workflow
+    if (esp_http_client_perform(client) != ESP_OK) {
+        goto _over;
+    }
+    if (esp_http_client_get_status_code(client) >= 400) {
+        goto _over;
+    }
+
+    // pick up version through rudely string matching instead of json parser
+    char *pstr = (char *)s_http_buffer;
+    char *ver_head = NULL, *ver_tail = NULL;
+    while ((uint8_t *)pstr < s_http_buffer + s_http_buffer_offset) {
+        pstr = strstr((char *)pstr, "\"version\": ");
+        if (pstr) {
+            ver_head = pstr + strlen("\"version\": ");
+            ver_tail = strstr((char *)(ver_head + 1), "\", ");
+            snprintf(buffer, AT_BUFFER_ON_STACK_SIZE, "%s:%.*s\r\n", esp_at_get_current_cmd_name(), ver_tail - ver_head + 1, ver_head);
+            esp_at_port_write_data((uint8_t *)buffer, strlen(buffer));
+            pstr = ver_tail;
+        } else {
+            break;
+        }
+    }
+    ret = ESP_AT_RESULT_CODE_OK;
+
+_over:
+    if (s_http_buffer) {
+        free(s_http_buffer);
+        s_http_buffer = NULL;
+        s_http_buffer_offset = 0;
+    }
+    esp_http_client_cleanup(client);
+
+    return ret;
+}
+
 static esp_at_cmd_struct at_upgrade_cmd[] = {
     {"+CIUPDATE", NULL, at_queryCmdCipupgrade, at_setupCmdCipupgrade, at_exeCmdCipupgrade},
+    {"+CIPFWVER", NULL, at_query_cmd_cipfwver, NULL, NULL},
 };
 
 bool esp_at_ota_cmd_regist(void)
