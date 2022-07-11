@@ -27,6 +27,7 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>`: Query/Set the time zone and SNTP server.
 -  :ref:`AT+CIPSNTPTIME <cmd-SNTPT>`: Query the SNTP time.
 -  :ref:`AT+CIPSNTPINTV <cmd-SNTPINTV>`: Query/Set the SNTP time synchronization interval.
+-  :ref:`AT+CIPFWVER <cmd-FWVER>`: Query the existing AT firmware version on the server.
 -  :ref:`AT+CIUPDATE <cmd-UPDATE>`: Upgrade the firmware through Wi-Fi.
 -  :ref:`AT+CIPDINFO <cmd-IPDINFO>`: Set "+IPD" message mode.
 -  :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`: Query/Set SSL clients.
@@ -1529,6 +1530,41 @@ Example
     AT+CIPSNTPINTV=3600
 
     OK
+
+.. _cmd-FWVER:
+
+:ref:`AT+CIPFWVER <TCPIP-AT>`: Query the Existing AT Firmware Version on the Server
+-----------------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Function:**
+
+Query the existing {IDF_TARGET_NAME} AT firmware version on the server.
+
+**Command:**
+
+::
+
+    AT+CIPFWVER?
+
+**Response:**
+
+::
+
+    +CIPFWVER:<"version">
+
+    OK
+
+Parameters
+^^^^^^^^^^
+- **<"version">**: {IDF_TARGET_NAME} AT firmware version.
+
+Notes
+^^^^^
+
+- When selecting the OTA version to be upgraded, it is strongly not recommended to upgrade from a high version to a low version.
 
 .. _cmd-UPDATE:
 
