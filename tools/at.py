@@ -32,16 +32,16 @@ from struct import Struct
 __version__ = "v1.0-dev"
 
 # To locate the starting position of the parameter partition
-parameter_pattern = re.compile(b'PLATFORM_ESP')
+parameter_pattern = re.compile(b'\xFC\xFC[\x03|\x02|\x01]')
 
 sec_size = 4096
 min_firmware_size = (1024 * 1024)
 
 def ESP_LOGI(x):
-    print("\033[32m%s\033[0m" %x)
+    print("\033[32m{}\033[0m".format(x))
 
 def ESP_LOGE(x):
-    print("\033[31m%s\033[0m" %x)
+    print("\033[31m{}\033[0m".format(x))
 
 def arg_auto_int(x):
     r = int(x, 0)
@@ -74,27 +74,29 @@ def modify_bin(esp, args):
     if not os.path.exists(args.input) \
         or (os.path.getsize(args.input) % min_firmware_size) \
         or (os.path.getsize(args.input) / min_firmware_size > 16):
-        ESP_LOGE("Invalid input file: " + args.input)
+        ESP_LOGE("Invalid input file: {}".format(args.input))
         sys.exit(2)
 
     copyfile(args.input, args.output)
 
     # find out the parameter start address
-    with open(args.output, "rb") as fp:
-        data = fp.read()
-        repl = re.search(parameter_pattern, data).span()
+    # prefer to use input configuation
+    if args.parameter_offset:
+        param_addr = args.parameter_offset
+    else:
+        with open(args.output, "rb") as fp:
+            data = fp.read()
+            try:
+                param_addr = re.search(parameter_pattern, data).span()[0]
+            except Exception as e:
+                ESP_LOGE("Can not find valid entry of parameter partition, please check firmware: {}".format(args.input))
+                sys.exit(2)
 
-        if repl:
-            # offset from <platform> parameter to parameter partition starting position is the fixed value: 24
-            param_addr = repl[0] - 24
-        else:
-            param_addr = args.parameter_offset
-
-        if not param_addr or (param_addr % sec_size != 0):
-            ESP_LOGE("Cannot find entry of parameter partition entry, please check firmware or specify \"--parameter_offset\" parameter.")
-            sys.exit(2)
-        else:
-            ESP_LOGI("factory parameter entry address: " + hex(param_addr))
+    if param_addr % sec_size != 0:
+        ESP_LOGE("Found wrong entry of parameter partition: {}, please manually specify \"--parameter_offset\" parameter!".format(hex(param_addr)))
+        sys.exit(2)
+    else:
+        ESP_LOGI("factory parameter entry address: {}".format(hex(param_addr)))
 
     # modify parameter
     with open(args.output, "rb+") as fp:
@@ -131,7 +133,7 @@ def modify_bin(esp, args):
         raw_at_parameter = at_read_records(param_format, fp)
         print("new parameters: {}\r\n".format(raw_at_parameter))
 
-        ESP_LOGI("New esp-at firmware successfully generated! ----> " + os.path.abspath(args.output))
+        ESP_LOGI("New esp-at firmware successfully generated! ----> {}".format(os.path.abspath(args.output)))
 
 def generate_bin(esp, args):
     print("TODOs: ESP-AT will add this feature in v2.4.0.0+")
@@ -140,7 +142,7 @@ def version(esp, args):
     print(__version__)
 
 def main(argv=None, esp=None):
-    parser = argparse.ArgumentParser(description='at.py %s - ESP-AT Utility' % __version__, prog='at.py')
+    parser = argparse.ArgumentParser(description='at.py {} - ESP-AT Utility'.format(__version__), prog='at.py')
 
     subparsers = parser.add_subparsers(
     dest='operation',
@@ -155,7 +157,8 @@ def main(argv=None, esp=None):
         help='TODOs: ESP-AT will add this feature in v2.4.0.0+')
 
     subparsers.add_parser(
-        'version', help='Print at.py version')
+        'version',
+        help='Print at.py version')
 
     """
     A typic format of esp-at parameter binary (4KB) is like the following:
@@ -264,7 +267,7 @@ def main(argv=None, esp=None):
         default='target.bin')
 
     for operation in subparsers.choices.keys():
-        assert operation in globals(), "%s should be a module function" % operation
+        assert operation in globals(), "{} should be a module function".format(operation)
 
     args = parser.parse_args(argv)
 
@@ -294,17 +297,17 @@ class FatalError(RuntimeError):
         Return a fatal error object that appends the hex values of
         'result' as a string formatted argument.
         """
-        message += " (result was %s)" % hexify(result)
+        message += " (result was {})".format(hexify(result))
         return FatalError(message)
 
 def _main():
     try:
         main()
     except FatalError as e:
-        ESP_LOGE("A fatal error occurred: %s" %e)
+        ESP_LOGE("A fatal error occurred: {}".format(e))
         sys.exit(2)
     except Exception as e:
-        ESP_LOGE("A system error occurred: %s" %e)
+        ESP_LOGE("A system error occurred: {}".format(e))
 
 if __name__ == '__main__':
     _main()
