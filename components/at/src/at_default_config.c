@@ -71,6 +71,10 @@ static const esp_at_module_info_t esp_at_module_info[] = {
     {"ESP32C3-SPI",    NULL,  NULL },   // ESP32C3-SPI
     {"ESP32C3_QCLOUD", CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD, CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI_QCLOUD },
 #endif
+
+#if defined(CONFIG_IDF_TARGET_ESP32C2)
+    {"MINI-1",         CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_MINI,        CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_MINI},
+#endif
 };
 
 static uint8_t esp_at_module_id = 0x0;

@@ -277,7 +277,7 @@ static void IRAM_ATTR spi_trans_control_task(void* arg)
     }
 
     while (1) {
-        xQueueReceive(msg_queue, (void*)&trans_msg, (portTickType)portMAX_DELAY);
+        xQueueReceive(msg_queue, (void*)&trans_msg, (TickType_t)portMAX_DELAY);
         spi_mutex_lock();
         spi_recv_opt_t recv_opt = query_slave_data_trans_info();
 
@@ -365,7 +365,7 @@ void uart_task(void* pvParameters)
     for (;;) {
         //Waiting for UART event.
         if (xQueueReceive(esp_at_uart_queue, (void*) &event,
-                          (portTickType) portMAX_DELAY)) {
+                          (TickType_t) portMAX_DELAY)) {
             switch (event.type) {
                     //Event of UART receving data
                 case UART_DATA:

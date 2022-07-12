@@ -29,7 +29,7 @@ import argparse
 ESP_FLASH_MODE = {"QIO": 0, "QOUT": 1, "DIO": 2, "DOUT": 3, "FAST_READ": 4, "SLOW_READ": 5}
 ESP_FLASH_SIZE = {"1MB": 0, "2MB": 1, "4MB": 2, "8MB": 3, "16MB": 4}
 ESP_BIN_SIZE = {"1MB": 1024*1024, "2MB": 2*1024*1024, "4MB": 4*1024*1024, "8MB": 8*1024*1024, "16MB": 16*1024*1024}
-ESP_FLASH_SPEED = {"40M": 0, "26M": 1, "20M": 2, "80M": 0x0F}
+ESP_FLASH_SPEED = {"40M": 0, "26M": 1, "20M": 2, "60M": 0x0F, "80M": 0x0F}
 
 def esp32_at_combine_bin(module, flash_mode, flash_size, flash_speed, build_dir, parameter_file, download_config):
     bin_data = bytearray([0xFF] * (ESP_BIN_SIZE[flash_size]))

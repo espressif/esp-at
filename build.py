@@ -168,6 +168,8 @@ def build_project(platform_name, module_name, silence, build_args):
         idf_target = 'esp32'
     elif platform_name == 'ESP32C3':
         idf_target = 'esp32c3'
+    elif platform_name == 'ESP32C2':
+        idf_target = 'esp32c2'
     else:
         sys.exit('Platform "{}" is not supported'.format(platform_name))
 
@@ -377,7 +379,7 @@ def setup_env_variables():
     if export_str:
         # extract toolchain PATH and IDF_PYTHON_ENV_PATH
         idf_tc_env_path = ''
-        idf_python_env_path = ''
+        idf_python_env_path = os.environ.get('IDF_PYTHON_ENV_PATH')
         for line in export_str.splitlines():
             if line.startswith('PATH='):
                 idf_tc_env_path = line.split('PATH=')[1]
@@ -389,6 +391,7 @@ def setup_env_variables():
         if idf_python_env_path:
             os.environ['IDF_PYTHON_ENV_PATH'] = idf_python_env_path
 
+    print('export str is {}'.format(export_str))
     print('PATH is {}'.format(os.environ.get('PATH')))
     print('IDF_PYTHON_ENV_PATH is {}'.format(os.environ.get('IDF_PYTHON_ENV_PATH')))
 
@@ -434,9 +437,11 @@ def install_prerequisites():
         print('GitLab CI has already installed all prerequisites.')
     else:
         raise Exception('unsupported platform: {} till now.'.format(sys.platform))
-    ret = subprocess.call(cmd, shell = True)
-    if ret:
-        raise Exception('install prerequisites failed! Please manually run:\r\n{}'.format(cmd))
+
+    if not os.environ.get('HAS_IDF_PREREQUISITES'):
+        ret = subprocess.call(cmd, shell = True)
+        if ret:
+            raise Exception('install prerequisites failed! Please manually run:\r\n{}'.format(cmd))
 
     # install ESP-AT prerequisites
     ESP_LOGI('Ready to install ESP-AT prerequisites..')
