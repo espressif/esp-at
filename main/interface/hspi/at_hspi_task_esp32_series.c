@@ -232,7 +232,7 @@ static void at_spi_slave_task(void* pvParameters)
         memset(data_buf, 0x0, SPI_DMA_MAX_LEN);
         memset(&trans_msg, 0x0, sizeof(spi_msg_t));
 
-        xQueueReceive(msg_queue, (void*)&trans_msg, (portTickType)portMAX_DELAY);
+        xQueueReceive(msg_queue, (void*)&trans_msg, (TickType_t)portMAX_DELAY);
         ESP_LOGD(TAG, "Direct: %d", trans_msg.direct);
         if (trans_msg.direct == SPI_SLAVE_RD) {    // master -> slave
 

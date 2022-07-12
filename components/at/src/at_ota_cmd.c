@@ -76,7 +76,7 @@ Accept-Language: zh-CN,zh;q=0.8\r\n\r\n"
 
 #define ESP_AT_OTA_TIMEOUT_MS               (60*3*1000)
 
-static xTimerHandle esp_at_ota_timeout_timer = NULL;
+static TimerHandle_t esp_at_ota_timeout_timer = NULL;
 static bool esp_at_ota_timeout_flag = false;
 static int esp_at_ota_socket_id = -1;
 static esp_at_ota_state_t s_ota_status = ESP_AT_OTA_STATE_IDLE;
@@ -336,7 +336,7 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
         else if (ota_mode == ESP_AT_OTA_MODE_SSL) {
             result = esp_tls_conn_read(tls, data_buffer, TEXT_BUFFSIZE);
         }
-        esp_tls_conn_delete(tls);
+        esp_tls_conn_destroy(tls);
         tls = NULL;
     #endif
         close(esp_at_ota_socket_id);
@@ -437,7 +437,7 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
 #ifdef CONFIG_AT_OTA_SSL_SUPPORT
     else if (ota_mode == ESP_AT_OTA_MODE_SSL) {
         if (tls) {
-            esp_tls_conn_delete(tls);
+            esp_tls_conn_destroy(tls);
         }
         tls = esp_tls_init();
         if (!tls_cfg) {
@@ -593,7 +593,7 @@ OTA_ERROR:
         free(tls_cfg);
     }
 
-    esp_tls_conn_delete(tls);
+    esp_tls_conn_destroy(tls);
     tls = NULL;
 #endif
     return ret;

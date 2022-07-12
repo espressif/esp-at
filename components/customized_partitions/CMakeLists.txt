@@ -15,7 +15,7 @@ execute_process (
         ${project_dir}/${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE} ${build_dir}/${customize_bin_full_name}
 )
 
-if(CONFIG_IDF_TARGET_ESP32 OR CONFIG_IDF_TARGET_ESP32C3)
+if(CONFIG_IDF_TARGET_ESP32 OR CONFIG_IDF_TARGET_ESP32C3 OR CONFIG_IDF_TARGET_ESP32C2)
 esptool_py_custom_target(${customize_bin} ${customize_bin} "${customize_bin}")
 esptool_py_flash_target_image(flash "${customize_bin}" "${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_OFFSET}" "${build_dir}/${customize_bin_full_name}")
 else()
@@ -40,7 +40,7 @@ foreach(partition_args ${customized_partition_args})
     list(GET args_lists 1 file_path)
     STRING(REGEX REPLACE ".*[/\\](.*)\.bin" "\\1" file_name ${file_path})
 
-    if(CONFIG_IDF_TARGET_ESP32 OR CONFIG_IDF_TARGET_ESP32C3)
+    if(CONFIG_IDF_TARGET_ESP32 OR CONFIG_IDF_TARGET_ESP32C3 OR CONFIG_IDF_TARGET_ESP32C2)
         esptool_py_custom_target(${file_name} ${file_name} "${file_name}")
         esptool_py_flash_target_image(flash "${file_name}" "${offset}" "${file_path}")
     else()
