@@ -6,6 +6,8 @@ if ("${IDF_TARGET}" STREQUAL "esp32")
     list(APPEND require_components bt fatfs)
 elseif ("${IDF_TARGET}" STREQUAL "esp32c3")
     list(APPEND require_components bt fatfs)
+elseif ("${IDF_TARGET}" STREQUAL "esp32c2")
+    list(APPEND require_components bt fatfs)
 endif()
 
 file(GLOB_RECURSE srcs src/*.c)
