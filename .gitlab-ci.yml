@@ -220,17 +220,57 @@ esp32_qcloud:
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32_QCLOUD\", \"description\": \"QCLOUD TX:17 RX:16\",\"silence\": 0}" > module_info.json'
     - *execute_script_esp32
 
-esp32_at_all_function_test:
+esp32_at_all_function_test_without_bt:
   extends:
     - .esp_at_build_template
   script:
     - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-    - echo -e "CONFIG_AT_ETHERNET_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_ETHERNET_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
     - echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
     - echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-    - echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
     - echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
     - echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    # disable BT
+    - echo -e "CONFIG_AT_BLE_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_BLE_HID_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_BLUFI_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+
+    - sed -i '/ota_1/d' module_config/module_wrover-32/partitions_at.csv
+    - old_size_str=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
+    - let old_value=$old_size_str
+    - new_value=`expr $old_value + $old_value`
+    - new_size_str=`printf "0x%x" ${new_value}`
+    - sed -i '/ota_0/s/'$old_size_str'/'$new_size_str'/g' module_config/module_wrover-32/partitions_at.csv
+
+    - export MODULE_CFG_DIR=module_wrover-32
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32
+
+esp32_at_all_function_test_just_bt:
+  extends:
+    - .esp_at_build_template
+  script:
+    # enable BT
+    - echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_BT_SPP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+    # disable non BT
+    - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_ETHERNET_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_OTA_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_MDNS_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_WPS_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_SMARTCONFIG_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_PING_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_MQTT_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_HTTP_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_AT_SIGNALING_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
+    - echo -e "CONFIG_ESP_WIFI_SLP_IRAM_OPT=n" >> module_config/module_wrover-32/sdkconfig.defaults
 
     - sed -i '/ota_1/d' module_config/module_wrover-32/partitions_at.csv
     - old_size_str=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
