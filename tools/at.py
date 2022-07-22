@@ -36,6 +36,7 @@ parameter_pattern = re.compile(b'\xFC\xFC[\x03|\x02|\x01]')
 
 sec_size = 4096
 min_firmware_size = (1024 * 1024)
+para_partition_size = (4 * 1024)
 
 def ESP_LOGI(x):
     print("\033[32m{}\033[0m".format(x))
@@ -71,10 +72,12 @@ def at_parameter_assign_str(arg, fixed_len, l, lidx):
 def modify_bin(esp, args):
     print(args)
 
-    if not os.path.exists(args.input) \
-        or (os.path.getsize(args.input) % min_firmware_size) \
-        or (os.path.getsize(args.input) / min_firmware_size > 16):
-        ESP_LOGE("Invalid input file: {}".format(args.input))
+    if not os.path.exists(args.input):
+        ESP_LOGE("File does not exist: {}".format(args.input))
+        sys.exit(2)
+    fsize = os.path.getsize(args.input)
+    if (fsize != para_partition_size) and ((fsize % min_firmware_size) or (fsize / min_firmware_size > 16)):
+        ESP_LOGE("Invalid file size: {}".format(fsize))
         sys.exit(2)
 
     copyfile(args.input, args.output)
