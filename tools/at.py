@@ -251,17 +251,17 @@ def main(argv=None, esp=None):
         type=arg_auto_int)
 
     parser_modify_bin.add_argument('--parameter_offset', '-os',
-        help='Offset of parameter partition in AT firmware, it works only if "--input filename" does not have a entry of parameter offset',
+        help='Offset of parameter partition in AT firmware. If this parameter is set, the input file will be parsed directly according to the parameter instead of automatically matching the parameter partition header.',
         type=arg_auto_int)
 
     parser_modify_bin.add_argument('--input', '-in',
-        help='Filename of original AT firmware',
+        help='Input filename of AT firmware or parameter partition',
         metavar='filename',
         type=str,
         required=True)
 
     parser_modify_bin.add_argument('--output', '-o',
-        help='Filename of putput AT firmware',
+        help='Output filename of AT firmware or parameter partition',
         metavar='filename',
         type=str,
         default='target.bin')
