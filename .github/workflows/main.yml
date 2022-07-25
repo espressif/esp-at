@@ -64,11 +64,18 @@ jobs:
       artifacts_name: esp32-qcloud
     secrets: inherit
 
-  build-esp32-at-full-function-test:
+  build-esp32-at-all-function-test-without-bt:
     uses: ./.github/workflows/build_template_esp32.yml
     with:
       module_name: WROVER-32
-      artifacts_name: esp32-at-full-function-test
+      artifacts_name: esp32-at-all-function-test-without-bt
+    secrets: inherit
+
+  build-esp32-at-all-function-test-just-bt:
+    uses: ./.github/workflows/build_template_esp32.yml
+    with:
+      module_name: WROVER-32
+      artifacts_name: esp32-at-all-function-test-just-bt
     secrets: inherit
 
   build-esp32c3-mini-1-at:
