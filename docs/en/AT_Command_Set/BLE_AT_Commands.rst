@@ -752,6 +752,7 @@ Notes
 -  If advertising parameters are NOT set by command :ref:`AT+BLEADVPARAM <cmd-BADVP>`\=<adv_parameter>, the default parameters will be used.
 -  If advertising data is NOT set by command :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data>, the advertising playload will be empty.
 -  If advertising data is preset by command :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data>, it will be overwritten by :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power> and vice versa.
+-  After the start of Bluetooth LE advertisement, if no connection is established, the advertisement will keep going on; if a connection is established, the advertisement will automatically end.
 
 Example
 ^^^^^^^^
