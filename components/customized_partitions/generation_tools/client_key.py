@@ -54,7 +54,7 @@ def main():
         print('none raw data file for ble_data exists')
         return
 
-    cmd = '{} {} generate_bin -b {} {}'.format(sys.executable, tool_path, os.path.join(outdir, ''.join([partition_name, '.bin'])), ' cert '.join(raw_data_files))
+    cmd = '{} {} generate_bin -b {} {}'.format(sys.executable, tool_path, os.path.join(outdir, ''.join([partition_name, '.bin'])), ' key '.join(raw_data_files))
     print('generating {}: {}'.format(''.join([partition_name, '.bin']), cmd))
     subprocess.call(cmd, shell = True)
 
