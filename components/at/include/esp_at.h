@@ -90,4 +90,9 @@ void at_wkmcu_if_config(at_write_data_fn_t write_data_fn);
 void at_set_mcu_state_if_sleep(at_sleep_mode_t mode);
 #endif
 
+/**
+ * @brief some workarounds for esp-at project
+ *
+ */
+void esp_at_main_preprocess(void);
 #endif

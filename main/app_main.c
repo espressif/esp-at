@@ -50,23 +50,6 @@
 #define CONFIG_AT_SOCKET_MAX_CONN_NUM       1
 #endif
 
-#ifdef CONFIG_IDF_TARGET_ESP32
-#include "hal/wdt_hal.h"
-static void at_disable_rtc_wdt(void)
-{
-    /*
-     * At this point, the flashboot protection of RWDT will have been
-     * automatically enabled. We can disable flashboot protection as it's not
-     * needed anymore.
-     */
-    // Disable RWDT flashboot protection.
-    wdt_hal_context_t rtc_wdt_ctx = {.inst = WDT_RWDT, .rwdt_dev = &RTCCNTL};
-    wdt_hal_write_protect_disable(&rtc_wdt_ctx);
-    wdt_hal_set_flashboot_en(&rtc_wdt_ctx, false);
-    wdt_hal_write_protect_enable(&rtc_wdt_ctx);
-}
-#endif
-
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
 static void at_wifi_init(void)
 {
@@ -94,20 +77,7 @@ static void at_netif_init(void)
 
 void app_main(void)
 {
-#ifdef CONFIG_IDF_TARGET_ESP32
-    /**
-     * A workaround for ota compatibility issue, description as the following:
-     *
-     * If esp32 upgraded from v1.1.3.0 to v2.2.0.0+, after the upgraded done,
-     * then each call the esp_restart() will trigger the restart twice.
-     * The first is normal SW_CPU_RESET, the second is extra RTCWDT_RTC_RESET.
-     * (it could happen if upgraded from an old firmware to the new firmware)
-     *
-     * Here, disable RWDT to avoid the second restart (RTCWDT_RTC_RESET).
-     */
-    at_disable_rtc_wdt();
-#endif
-
+    esp_at_main_preprocess();
     ESP_ERROR_CHECK(nvs_flash_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());
 
