@@ -75,4 +75,11 @@ void esp_at_board_init(void);
 *
 */
 bool esp_at_web_server_cmd_regist(void);
+
+/**
+ * @brief some workarounds for esp-at project
+ *
+ */
+void esp_at_main_preprocess(void);
 #endif
+
