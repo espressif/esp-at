@@ -1086,7 +1086,7 @@ Notes
 
   - The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
   :esp32: - The MAC address of {IDF_TARGET_NAME} Station is different from that of the {IDF_TARGET_NAME} SoftAP and {IDF_TARGET_NAME} Ethernet. Please make sure that you do not set the same MAC address for both of them.
-  :esp32c3: - The MAC address of {IDF_TARGET_NAME} Station is different from that of the {IDF_TARGET_NAME} SoftAP. Please make sure that you do not set the same MAC address for both of them.
+  :esp32c2 or esp32c3: - The MAC address of {IDF_TARGET_NAME} Station is different from that of the {IDF_TARGET_NAME} SoftAP. Please make sure that you do not set the same MAC address for both of them.
   - Bit 0 of the {IDF_TARGET_NAME} MAC address CANNOT be 1. For example, a MAC address can be "1a:…" but not "15:…".
   - FF:FF:FF:FF:FF:FF and 00:00:00:00:00:00 are invalid MAC address and cannot be set.
 

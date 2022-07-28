@@ -108,7 +108,9 @@ AT 是否支持 websocket 命令？
   - 阿里云应用参考：`AT+MQTT aliyun <https://blog.csdn.net/espressif/article/details/107367189>`_。
   - 腾讯云应用参考：`AT+MQTT QCloud <https://blog.csdn.net/espressif/article/details/104714464>`_。
 
-  若使用 :doc:`QCloud AT 固件 <Customized_AT_Commands_and_Firmware/Tencent_Cloud_IoT_AT/tencent_cloud_iot_at_binaries>`，请采用 :doc:`腾讯云 AT 命令 <Customized_AT_Commands_and_Firmware/Tencent_Cloud_IoT_AT/Tencent_Cloud_IoT_AT_Command_Set>` 连接至腾讯云。
+  .. only:: esp32 or esp32c3
+
+    若使用 :doc:`QCloud AT 固件 <Customized_AT_Commands_and_Firmware/Tencent_Cloud_IoT_AT/tencent_cloud_iot_at_binaries>`，请采用 :doc:`腾讯云 AT 命令 <Customized_AT_Commands_and_Firmware/Tencent_Cloud_IoT_AT/Tencent_Cloud_IoT_AT_Command_Set>` 连接至腾讯云。
 
 AT 命令是否可以设置低功耗蓝牙发射功率？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -146,10 +148,12 @@ AT 命令中串口波特率是否可以修改？（默认：115200）
   - 可以通过命令 :ref:`AT+SYSMSG <cmd-SYSMSG>` 进行配置，可设置 AT+SYSMSG=4，如果连接的热点断开，串口会上报 "WIFI DISCONNECT\r\n"。
   - 需要注意的是，该命令在 AT v2.1.0 之后添加，v2.1.0 及之前的版本无法使用该命令。
 
-ADV 广播参数超过 32 字节之后应该如何设置？
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. only:: esp32 or esp32c3
 
-  :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令支持 adv 广播参数最大为 32 字节，如果需要设置更长的广播参数，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 命令来设置。
+  ADV 广播参数超过 32 字节之后应该如何设置？
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令支持 adv 广播参数最大为 32 字节，如果需要设置更长的广播参数，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 命令来设置。
 
 硬件
 ----
@@ -176,7 +180,7 @@ AT 固件如何查看 error log？
   .. list::
 
     :esp32: - {IDF_TARGET_NAME} 在 download port 查看 error log，默认 UART0 为 GPIO1、GPIO3。
-    :esp32c3: - {IDF_TARGET_NAME} 在 download port 查看 error log，默认 UART0 为 GPIO21、GPIO20。
+    :esp32c2 or esp32c3: - {IDF_TARGET_NAME} 在 download port 查看 error log，默认 UART0 为 GPIO21、GPIO20。
     - 详情可以参阅 :doc:`硬件连接 <Get_Started/Hardware_connection>`。
 
 AT 在 {IDF_TARGET_NAME} 模组上的 UART1 通信管脚与 {IDF_TARGET_NAME} 模组的 datasheet 默认 UART1 管脚不一致？
@@ -222,6 +226,7 @@ ESP-AT 固件中 TCP 发送窗口大小是否可以修改？
   .. list::
 
     :esp32: - {IDF_TARGET_NAME} 支持 UART、SDIO 接口通信。
+    :esp32c2: - {IDF_TARGET_NAME} 支持 UART 接口通信。
     :esp32c3: - {IDF_TARGET_NAME} 支持 UART、SPI 接口通信。
     - AT 默认固件是使用 UART 接口来传输。用户如果需要使用 SDIO 或者 SPI 接口进行通信，可以基于 ESP-AT 配置编译，详情请见 :doc:`编译和开发 <Compile_and_Develop/index>`。
     - 更多资料请参考 :project_file:`使用 AT SDIO 接口 <main/interface/sdio/README.md>`，:project_file:`使用 AT SPI 接口 <main/interface/hspi/README.md>`，或 :project_file:`使用 AT 套接字接口 <main/interface/socket/README.md>`。

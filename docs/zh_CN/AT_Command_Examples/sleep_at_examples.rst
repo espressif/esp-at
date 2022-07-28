@@ -1,7 +1,7 @@
 Sleep AT 示例
 ==================================
 
-{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c3="esp32-c3"}
+{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3"}
 
 :link_to_translation:`en:[English]`
 
@@ -27,9 +27,11 @@ Sleep AT 示例
 
 .. note::
 
-  * 将分别描述在 Wi-Fi 模式和蓝牙模式下将 {IDF_TARGET_NAME} 设置为睡眠模式。
-  * 在单 Wi-Fi 模式下，只有 ``station`` 模式支持 ``Modem-sleep`` 模式和 ``Light-sleep`` 模式。
-  * 对于蓝牙模式下的 ``Light-sleep`` 模式，请确保外部存在 32 KHz 晶振。如果外部不存在 32 KHz 晶振，ESP-AT 将工作在 Modem-sleep 模式。
+  .. list::
+
+    - 将分别描述在 Wi-Fi 模式和蓝牙模式下将 {IDF_TARGET_NAME} 设置为睡眠模式。
+    - 在单 Wi-Fi 模式下，只有 ``station`` 模式支持 ``Modem-sleep`` 模式和 ``Light-sleep`` 模式。
+    :esp32 or esp32c3: - 对于蓝牙模式下的 ``Light-sleep`` 模式，请确保外部存在 32 KHz 晶振。如果外部不存在 32 KHz 晶振，ESP-AT 将工作在 Modem-sleep 模式。
 
 测量方法
 ^^^^^^^^^^^^^^^^^^^^
@@ -157,351 +159,353 @@ Sleep AT 示例
 
   * CPU 将会自动休眠，RF 则会根据 :ref:`AT+CWJAP <cmd-JAP>` 设置的监听间隔定期关闭。
 
-在蓝牙广播态下设置为 Modem-sleep 模式
-------------------------------------------------------
+.. only:: esp32 or esp32c3
 
-#. 初始化为角色为蓝牙服务端。
+  在蓝牙广播态下设置为 Modem-sleep 模式
+  ------------------------------------------------------
 
-   命令：
+  #. 初始化为角色为蓝牙服务端。
 
-   .. code-block:: none
+    命令：
 
-     AT+BLEINIT=2
+    .. code-block:: none
 
-   响应：
+      AT+BLEINIT=2
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-#. 设置蓝牙广播参数。设置蓝牙广播间隔为 1 s。
+      OK
 
-   命令：
+  #. 设置蓝牙广播参数。设置蓝牙广播间隔为 1 s。
 
-   .. code-block:: none
+    命令：
 
-     AT+BLEADVPARAM=1600,1600,0,0,7,0,0,"00:00:00:00:00:00"
+    .. code-block:: none
 
-   响应：
+      AT+BLEADVPARAM=1600,1600,0,0,7,0,0,"00:00:00:00:00:00"
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-#. 开始广播
+      OK
 
-   命令：
+  #. 开始广播
 
-   .. code-block:: none
+    命令：
 
-     AT+BLEADVSTART
+    .. code-block:: none
 
-   响应：
+      AT+BLEADVSTART
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-#. 禁用 Wi-Fi。
+      OK
 
-   命令：
+  #. 禁用 Wi-Fi。
 
-   .. code-block:: none
+    命令：
 
-     AT+CWMODE=0
+    .. code-block:: none
 
-   响应：
+      AT+CWMODE=0
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-#. 设置休眠模式为 Modem-sleep 模式。
+      OK
 
-   命令：
+  #. 设置休眠模式为 Modem-sleep 模式。
 
-   .. code-block:: none
+    命令：
 
-     AT+SLEEP=1
+    .. code-block:: none
 
-   响应：
+      AT+SLEEP=1
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-在蓝牙连接态下设置为 Modem-sleep 模式
-------------------------------------------------------
+      OK
 
-#. 初始化为角色为蓝牙服务端。
+  在蓝牙连接态下设置为 Modem-sleep 模式
+  ------------------------------------------------------
 
-   命令：
+  #. 初始化为角色为蓝牙服务端。
 
-   .. code-block:: none
+    命令：
 
-     AT+BLEINIT=2
+    .. code-block:: none
 
-   响应：
+      AT+BLEINIT=2
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-#. 开启蓝牙广播。
+      OK
 
-   命令：
+  #. 开启蓝牙广播。
 
-   .. code-block:: none
+    命令：
 
-     AT+BLEADVSTART
+    .. code-block:: none
 
-   响应：
+      AT+BLEADVSTART
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-#. 等待连接。
+      OK
 
-   如果连接建立成功，则 AT 将会提示：
+  #. 等待连接。
 
-   .. code-block:: none
+    如果连接建立成功，则 AT 将会提示：
 
-     +BLECONN:0,"47:3f:86:dc:e4:7d"
-     +BLECONNPARAM:0,0,0,6,0,500
-     +BLECONNPARAM:0,0,0,24,0,500
+    .. code-block:: none
 
-     OK
+      +BLECONN:0,"47:3f:86:dc:e4:7d"
+      +BLECONNPARAM:0,0,0,6,0,500
+      +BLECONNPARAM:0,0,0,24,0,500
 
-   说明：
+      OK
 
-   - 在这个示例中，蓝牙客户端的地址为 47:3f:86:dc:e4:7d。
-   - 对于提示信息（+BLECONN and +BLECONNPARAM），请参考 :ref:`AT+BLECONN <cmd-BCONN>` 和 :ref:`AT+BLECONNPARAM <cmd-BCONNP>` 获取更多信息。
+    说明：
 
-#. 更新蓝牙连接参数。设置蓝牙连接间隔为 1 s。
+    - 在这个示例中，蓝牙客户端的地址为 47:3f:86:dc:e4:7d。
+    - 对于提示信息（+BLECONN and +BLECONNPARAM），请参考 :ref:`AT+BLECONN <cmd-BCONN>` 和 :ref:`AT+BLECONNPARAM <cmd-BCONNP>` 获取更多信息。
 
-   命令：
+  #. 更新蓝牙连接参数。设置蓝牙连接间隔为 1 s。
 
-   .. code-block:: none
+    命令：
 
-     AT+BLECONNPARAM=0,800,800,0,500
+    .. code-block:: none
 
-   响应：
+      AT+BLECONNPARAM=0,800,800,0,500
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-   如果连接参数更新成功，则 AT 将会提示：
+      OK
 
-   .. code-block:: none
+    如果连接参数更新成功，则 AT 将会提示：
 
-      +BLECONNPARAM:0,800,800,800,0,500
+    .. code-block:: none
 
-   说明：
+        +BLECONNPARAM:0,800,800,800,0,500
 
-   - 对于提示信息（+BLECONNPARAM），请参考 :ref:`AT+BLECONNPARAM <cmd-BCONNP>` 获取更多信息。
+    说明：
 
-#. 禁用 Wi-Fi。
+    - 对于提示信息（+BLECONNPARAM），请参考 :ref:`AT+BLECONNPARAM <cmd-BCONNP>` 获取更多信息。
 
-   命令：
+  #. 禁用 Wi-Fi。
 
-   .. code-block:: none
+    命令：
 
-     AT+CWMODE=0
+    .. code-block:: none
 
-   响应：
+      AT+CWMODE=0
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-#. 设置休眠模式为 Modem-sleep 模式。
+      OK
 
-   命令：
+  #. 设置休眠模式为 Modem-sleep 模式。
 
-   .. code-block:: none
+    命令：
 
-     AT+SLEEP=1
+    .. code-block:: none
 
-   响应：
+      AT+SLEEP=1
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-在蓝牙广播态下设置为 Light-sleep 模式
--------------------------------------------------------
+      OK
 
-#. 初始化为角色为蓝牙服务端。
+  在蓝牙广播态下设置为 Light-sleep 模式
+  -------------------------------------------------------
 
-   命令：
+  #. 初始化为角色为蓝牙服务端。
 
-   .. code-block:: none
+    命令：
 
-     AT+BLEINIT=2
+    .. code-block:: none
 
-   响应：
+      AT+BLEINIT=2
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-#. 设置蓝牙广播参数。设置蓝牙广播间隔为 1 s。
+      OK
 
-   命令：
+  #. 设置蓝牙广播参数。设置蓝牙广播间隔为 1 s。
 
-   .. code-block:: none
+    命令：
 
-     AT+BLEADVPARAM=1600,1600,0,0,7,0,0,"00:00:00:00:00:00"
+    .. code-block:: none
 
-   响应：
+      AT+BLEADVPARAM=1600,1600,0,0,7,0,0,"00:00:00:00:00:00"
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-#. 开始广播。
+      OK
 
-   命令：
+  #. 开始广播。
 
-   .. code-block:: none
+    命令：
 
-     AT+BLEADVSTART
+    .. code-block:: none
 
-   响应：
+      AT+BLEADVSTART
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-#. 禁用 Wi-Fi。
+      OK
 
-   命令：
+  #. 禁用 Wi-Fi。
 
-   .. code-block:: none
+    命令：
 
-     AT+CWMODE=0
+    .. code-block:: none
 
-   响应：
+      AT+CWMODE=0
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-#. 设置休眠模式为 Light-sleep 模式。
+      OK
 
-   命令：
+  #. 设置休眠模式为 Light-sleep 模式。
 
-   .. code-block:: none
+    命令：
 
-     AT+SLEEP=2
+    .. code-block:: none
 
-   响应：
+      AT+SLEEP=2
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-在蓝牙连接态下设置为 Light-sleep 模式
------------------------------------------------------
+      OK
 
-#. 初始化为角色为蓝牙服务端。
+  在蓝牙连接态下设置为 Light-sleep 模式
+  -----------------------------------------------------
 
-   命令：
+  #. 初始化为角色为蓝牙服务端。
 
-   .. code-block:: none
+    命令：
 
-     AT+BLEINIT=2
+    .. code-block:: none
 
-   响应：
+      AT+BLEINIT=2
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-#. 开始广播。
+      OK
 
-   命令：
+  #. 开始广播。
 
-   .. code-block:: none
+    命令：
 
-     AT+BLEADVSTART
+    .. code-block:: none
 
-   响应：
+      AT+BLEADVSTART
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-#. 等待连接。
+      OK
 
-   如果连接建立成功，则 AT 将会提示：
+  #. 等待连接。
 
-   .. code-block:: none
+    如果连接建立成功，则 AT 将会提示：
 
-     +BLECONN:0,"47:3f:86:dc:e4:7d"
-     +BLECONNPARAM:0,0,0,6,0,500
-     +BLECONNPARAM:0,0,0,24,0,500
+    .. code-block:: none
 
-     OK
+      +BLECONN:0,"47:3f:86:dc:e4:7d"
+      +BLECONNPARAM:0,0,0,6,0,500
+      +BLECONNPARAM:0,0,0,24,0,500
 
-   说明：
+      OK
 
-   - 在这个示例中，蓝牙客户端的地址为 47:3f:86:dc:e4:7d。
-   - 对于提示信息（+BLECONN and +BLECONNPARAM），请参考 :ref:`AT+BLECONN <cmd-BCONN>` 和 :ref:`AT+BLECONNPARAM <cmd-BCONNP>` 获取更多信息。
+    说明：
 
-#. 更新蓝牙连接参数。设置蓝牙连接间隔为 1 s。
+    - 在这个示例中，蓝牙客户端的地址为 47:3f:86:dc:e4:7d。
+    - 对于提示信息（+BLECONN and +BLECONNPARAM），请参考 :ref:`AT+BLECONN <cmd-BCONN>` 和 :ref:`AT+BLECONNPARAM <cmd-BCONNP>` 获取更多信息。
 
-   命令：
+  #. 更新蓝牙连接参数。设置蓝牙连接间隔为 1 s。
 
-   .. code-block:: none
+    命令：
 
-     AT+BLECONNPARAM=0,800,800,0,500
+    .. code-block:: none
 
-   响应：
+      AT+BLECONNPARAM=0,800,800,0,500
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-   如果连接参数更新成功，则 AT 将会提示：
+      OK
 
-   .. code-block:: none
+    如果连接参数更新成功，则 AT 将会提示：
 
-      +BLECONNPARAM:0,800,800,800,0,500
+    .. code-block:: none
 
-   说明：
+        +BLECONNPARAM:0,800,800,800,0,500
 
-   - 对于提示信息（+BLECONNPARAM），请参考 :ref:`AT+BLECONNPARAM <cmd-BCONNP>` 获取更多信息。
+    说明：
 
-#. 禁用 Wi-Fi。
+    - 对于提示信息（+BLECONNPARAM），请参考 :ref:`AT+BLECONNPARAM <cmd-BCONNP>` 获取更多信息。
 
-   命令：
+  #. 禁用 Wi-Fi。
 
-   .. code-block:: none
+    命令：
 
-     AT+CWMODE=0
+    .. code-block:: none
 
-   响应：
+      AT+CWMODE=0
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-#. 设置休眠模式为 Light-sleep 模式。
+      OK
 
-   命令：
+  #. 设置休眠模式为 Light-sleep 模式。
 
-   .. code-block:: none
+    命令：
 
-     AT+SLEEP=2
+    .. code-block:: none
 
-   响应：
+      AT+SLEEP=2
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
+
+      OK
 
 设置为 Deep-sleep 模式
 -----------------------

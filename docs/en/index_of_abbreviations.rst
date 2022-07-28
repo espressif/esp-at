@@ -63,7 +63,7 @@ Index of Abbreviations
         * After sending the :ref:`AT+CIPSENDEX <cmd-SENDEX>` set command successfully and returns `>`.
         * After sending the :ref:`AT+SAVETRANSLINK <cmd-SAVET>` set command successfully and sending the :ref:`AT+RST <cmd-RST>` command and restart the module.
         :esp32: * After sending the :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` execute command successfully and returns `>`.
-        * After sending the :ref:`AT+BLESPP <cmd-BLESPP>` execute command successfully and returns `>`.
+        :esp32 or esp32c3: * After sending the :ref:`AT+BLESPP <cmd-BLESPP>` execute command successfully and returns `>`.
 
       In the data mode, send the :ref:`+++ <cmd-PLUS>` command, AT will exit from :term:`Data Mode` and enter the :term:`Command Mode`.
 
@@ -79,7 +79,7 @@ Index of Abbreviations
         * 发送 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 设置命令成功，回复 `>` 之后
         * 发送 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 设置命令成功，再发送 (:ref:`AT+RST <cmd-RST>`) 命令，模组重启之后
         :esp32: * 发送 :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` 执行命令成功，回复 `>` 之后
-        * 发送 :ref:`AT+BLESPP <cmd-BLESPP>` 执行命令成功，回复 `>` 之后
+        :esp32 or esp32c3: * 发送 :ref:`AT+BLESPP <cmd-BLESPP>` 执行命令成功，回复 `>` 之后
 
       在数据模式下，发送 :ref:`+++ <cmd-PLUS>` 命令，会从 :term:`数据模式` 退出，进入 :term:`命令模式`。
 
@@ -95,7 +95,7 @@ Index of Abbreviations
         * After sending the :ref:`AT+CIPSENDEX <cmd-SENDEX>` set command successfully and returns `>`.
         * After sending the :ref:`AT+SAVETRANSLINK <cmd-SAVET>` set command successfully and sending the :ref:`AT+RST <cmd-RST>` command and restart the module.
         :esp32: * After sending the :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` execute command successfully and returns `>`.
-        * After sending the :ref:`AT+BLESPP <cmd-BLESPP>` execute command successfully and returns `>`.
+        :esp32 or esp32c3: * After sending the :ref:`AT+BLESPP <cmd-BLESPP>` execute command successfully and returns `>`.
 
       In the data mode, send the :ref:`+++ <cmd-PLUS>` command, AT will exit from :term:`Data Mode` and enter the :term:`Command Mode`.
 
@@ -111,7 +111,7 @@ Index of Abbreviations
         * 发送 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 设置命令成功，回复 `>` 之后
         * 发送 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 设置命令成功，再发送 :ref:`AT+RST <cmd-RST>` 命令，模组重启之后
         :esp32: * 发送 :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>` 执行命令成功，回复 `>` 之后
-        * 发送 :ref:`AT+BLESPP <cmd-BLESPP>` 执行命令成功，回复 `>` 之后
+        :esp32 or esp32c3: * 发送 :ref:`AT+BLESPP <cmd-BLESPP>` 执行命令成功，回复 `>` 之后
 
       在数据模式下，发送 :ref:`+++ <cmd-PLUS>` 命令，会从 :term:`数据模式` 退出，进入 :term:`命令模式`。
 

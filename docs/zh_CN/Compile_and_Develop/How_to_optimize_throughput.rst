@@ -167,6 +167,10 @@
       - SDIO： :doc:`SDIO AT 指南 </Compile_and_Develop/esp32-sdio-at-guide>`
       - Socket： :project_file:`Socket AT 指南 <main/interface/socket/README.md>`
 
+    .. only:: esp32c2
+
+      - Socket： :project_file:`Socket AT 指南 <main/interface/socket/README.md>`
+
     .. only:: esp32c3
 
       - SPI： :doc:`SPI AT 指南 </Compile_and_Develop/How_to_implement_SPI_AT>`

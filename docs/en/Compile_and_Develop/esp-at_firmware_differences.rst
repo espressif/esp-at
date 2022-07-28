@@ -22,6 +22,10 @@ This section describes the differences among AT firmwares of {IDF_TARGET_NAME} s
   - ESP32-D2WD_AT_Bin (referred to as **D2WD Bin** in this section);
   - ESP32-QLOUD_AT_Bin (referred to as **QCLOUD Bin** in this section).
 
+.. only:: esp32c2
+
+  - ESP32-C2-MINI-1_AT_Bin (referred to as **MINI-1 Bin** in this section);
+
 .. only:: esp32c3
 
   - ESP32-C3-MINI-1_AT_Bin (referred to as **MINI-1 Bin** in this section);
@@ -222,6 +226,44 @@ The table lists which command set is supported by default in the official AT fir
       - |icon-orange-check|
       - |icon-green-check|
 
+.. only:: esp32c2
+
+  .. list-table::
+    :header-rows: 1
+
+    * - Command Set
+      - MINI-1 Bin
+    * - base
+      - |icon-green-check|
+    * - user
+      - |icon-green-check|
+    * - wifi
+      - |icon-green-check|
+    * - net
+      - |icon-green-check|
+    * - MDNS
+      - |icon-green-check|
+    * - WPS
+      - |icon-green-check|
+    * - smartconfig
+      - |icon-green-check|
+    * - ping
+      - |icon-green-check|
+    * - MQTT
+      - |icon-green-check|
+    * - http
+      - |icon-green-check|
+    * - FS
+      - |icon-orange-check|
+    * - driver
+      - |icon-orange-check|
+    * - WPA2
+      - |icon-orange-check|
+    * - WEB
+      - |icon-orange-check|
+    * - OTA
+      - |icon-green-check|
+
 .. only:: esp32c3
 
   .. list-table::
@@ -340,6 +382,23 @@ Hardware Differences
         | RX: 16 
         | CTS: 15 
         | RTS: 14
+
+.. only:: esp32c2
+
+  .. list-table::
+    :header-rows: 1
+
+    * - Hardware
+      - MINI-1
+    * - Flash
+      - 4 MB
+    * - PSRAM
+      - |icon-red-cross|
+    * - UART Pins [#one]_
+      - | TX: 7
+        | RX: 6
+        | CTS: 5
+        | RTS: 4
 
 .. only:: esp32c3
 
@@ -513,6 +572,18 @@ The table lists the {IDF_TARGET_NAME} modules or chips that each AT firmware sup
       - |icon-green-check|
       - |icon-green-check|
       - |icon-red-cross|
+
+.. only:: esp32c2
+
+  .. list-table::
+    :header-rows: 1
+
+    * - Module/Chip
+      - MINI-1 Bin
+    * - ESP32-C2-MINI-1
+      - |icon-green-check|
+    * - ESP32-C2-WROOM-02
+      - |icon-green-check|
 
 .. only:: esp32c3
 

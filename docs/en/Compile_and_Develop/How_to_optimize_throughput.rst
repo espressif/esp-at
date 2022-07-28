@@ -167,6 +167,10 @@ The data stream of throughput is similar to water flow. In order to improve thro
       - SDIO: :doc:`SDIO AT Guide </Compile_and_Develop/esp32-sdio-at-guide>`
       - Socket: :project_file:`Socket AT Guide <main/interface/socket/README.md>`
 
+    .. only:: esp32c2
+
+      - Socket: :project_file:`Socket AT Guide <main/interface/socket/README.md>`
+
     .. only:: esp32c3
 
       - SPI: :doc:`SPI AT Guide </Compile_and_Develop/How_to_implement_SPI_AT>`

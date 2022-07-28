@@ -860,7 +860,7 @@
       [78,84]   78           78           19.5
       ========= ============ ============ ==========
 
-  .. only:: esp32c3
+  .. only:: esp32c3 or esp32c2
 
     - {IDF_TARGET_NAME} 设备的取值范围为 [40,84]：
 
@@ -884,7 +884,7 @@
     -  6: -11 dBm
     -  7: -14 dBm
 
-  .. only:: esp32c3
+  .. only:: esp32c3 or esp32c2
 
     -  0: -27 dBm
     -  1: -24 dBm
@@ -1266,13 +1266,13 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
   - :ref:`AT+CWJEAP <cmd-JEAP>`
   :esp32: - :ref:`AT+CIPETH <cmd-ETHIP>`
   :esp32: - :ref:`AT+CIPETHMAC <cmd-ETHMAC>`
-  - :ref:`AT+BLENAME <cmd-BNAME>`
+  :esp32 or esp32c3: - :ref:`AT+BLENAME <cmd-BNAME>`
   :esp32: - :ref:`AT+BTNAME <cmd-BTNAME>`
-  - :ref:`AT+BLEADVPARAM <cmd-BADVP>`
-  - :ref:`AT+BLEADVDATA <cmd-BADVD>`
-  - :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`
-  - :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`
-  - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`
+  :esp32 or esp32c3: - :ref:`AT+BLEADVPARAM <cmd-BADVP>`
+  :esp32 or esp32c3: - :ref:`AT+BLEADVDATA <cmd-BADVD>`
+  :esp32 or esp32c3: - :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`
+  :esp32 or esp32c3: - :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`
+  :esp32 or esp32c3: - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`
   :esp32: - :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`
 
 示例

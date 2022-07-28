@@ -109,6 +109,8 @@ Does AT support websocket commands?
 ..
 ..
 ..
+..
+..
 
 Can AT command set Bluetooth LE transmit power?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -146,10 +148,12 @@ After {IDF_TARGET_NAME} enters the passthrough mode using AT commands, can {IDF_
   - Yes, you can configure it with :ref:`AT+SYSMSG <cmd-SYSMSG>`, i.e., set AT+SYSMSG=4. In this way, the serial port will report "WIFI DISCONNECT\r\n" when the connected hotspot is disconnected.
   - Note that this command is added after AT v2.1.0. It is not available for v2.1.0 and earlier versions.
 
-How to set ADV broadcast parameters after it exceeds 32 bytes?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. only:: esp32 or esp32c3
 
-  The :ref:`AT+BLEADVDATA <cmd-BADVD>` command supports up to 32 bytes of ADV broadcast parameters. If you need to set a bigger parameter, please use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
+  How to set ADV broadcast parameters after it exceeds 32 bytes?
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    The :ref:`AT+BLEADVDATA <cmd-BADVD>` command supports up to 32 bytes of ADV broadcast parameters. If you need to set a bigger parameter, please use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
 
 Hardware
 --------
@@ -176,7 +180,7 @@ How to view the error log of AT firmware?
   .. list::
 
     :esp32: - For {IDF_TARGET_NAME}, the error log is output through the download port. By default, UART0 is GPIO1 and GPIO3.
-    :esp32c3: - For {IDF_TARGET_NAME}, the error log is output through the download port. By default, UART0 is GPIO21 and GPIO20.
+    :esp32c2 or esp32c3: - For {IDF_TARGET_NAME}, the error log is output through the download port. By default, UART0 is GPIO21 and GPIO20.
     - See :doc:`Get_Started/Hardware_connection` for more details.
 
 The UART1 communication pin used by ESP-AT on the {IDF_TARGET_NAME} module is inconsistent with the default UART1 pin described in the {IDF_TARGET_NAME} module's datasheet?
@@ -222,6 +226,7 @@ What interfaces of {IDF_TARGET_NAME} chips can be used to transmit AT commands?
   .. list::
 
     :esp32: - {IDF_TARGET_NAME} can transmit AT commands through UART and SDIO.
+    :esp32c2: - {IDF_TARGET_NAME} can transmit AT commands through UART.
     :esp32c3: - {IDF_TARGET_NAME} can transmit AT commands through UART and SPI.
     - The default firmware uses UART for transmission. If you need SDIO or SPI interface to transmit AT commands, you can configure it through ``./build.py menuconfig -> Component config -> AT`` when compiling the ESP-AT project by yourself.
     - See :project_file:`AT through SDIO <main/interface/sdio/README.md>`, :project_file:`AT through SPI <main/interface/hspi/README.md>`, or :project_file:`AT through socket <main/interface/socket/README.md>` for more details.

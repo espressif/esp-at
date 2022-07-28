@@ -7,19 +7,19 @@ AT 固件
   :hidden:
   :maxdepth: 1
 
-  :esp32: ESP32 AT 发布版固件 <ESP32_AT_binaries>
-  :esp32c3: ESP32-C3 AT 发布版固件 <ESP32-C3_AT_binaries>
+  {IDF_TARGET_NAME} AT 发布版固件 <{IDF_TARGET_NAME}_AT_binaries>
 
 本文档包含以下小节：
 
 .. list::
 
-  :esp32: - :doc:`下载 ESP32 AT 发布版固件 <ESP32_AT_binaries>`
-  :esp32c3: - :doc:`下载 ESP32-C3 AT 发布版固件 <ESP32-C3_AT_binaries>`
+  - :doc:`下载 {IDF_TARGET_NAME} AT 发布版固件 <{IDF_TARGET_NAME}_AT_binaries>`
   - :ref:`brief-intro-firmware`：AT 固件包含哪些二进制文件及其作用
   - :ref:`firmware-selection`：不同类型的 AT 固件及其获取方式、适用情况、优缺点等
   - :ref:`what-next-after-you-get-firmware`
 
+.. note::
+  若需下载其他芯片系列的发布版固件，请在页面左上方的下拉菜单栏选择相应的芯片，即可跳转至该芯片的文档进行下载。
 
 .. _brief-intro-firmware:
 
@@ -39,7 +39,7 @@ ESP-AT 固件包含了若干个特定功能的二进制文件：
 
        * - 模组
          - UART 管脚（TX、RX、CTS、RTS）
-         - Factory Parameter Bin 
+         - Factory Parameter Bin
        * - ESP32-WROOM-32 系列（ESP32 默认模组）
          - - GPIO17
            - GPIO16
@@ -65,20 +65,35 @@ ESP-AT 固件包含了若干个特定功能的二进制文件：
            - GPIO14
          - ``factory_param_SOLO-1.bin``
 
-.. only:: esp32c3
+  .. only:: esp32c2
 
-    .. list-table:: {IDF_TARGET_NAME} 模组的硬件配置
-       :header-rows: 1
+      .. list-table:: {IDF_TARGET_NAME} 模组的硬件配置
+        :header-rows: 1
 
-       * - 模组
-         - UART 管脚（TX、RX、CTS、RTS）
-         - Factory Parameter Bin 
-       * - ESP32-C3-MINI 系列
-         - - GPIO7
-           - GPIO6
-           - GPIO5
-           - GPIO4
-         - ``factory_param_MINI-1.bin``
+        * - 模组
+          - UART 管脚（TX、RX、CTS、RTS）
+          - Factory Parameter Bin
+        * - ESP32-C2-MINI-1 系列
+          - - GPIO7
+            - GPIO6
+            - GPIO5
+            - GPIO4
+          - ``factory_param_MINI-1.bin``
+
+  .. only:: esp32c3
+
+      .. list-table:: {IDF_TARGET_NAME} 模组的硬件配置
+        :header-rows: 1
+
+        * - 模组
+          - UART 管脚（TX、RX、CTS、RTS）
+          - Factory Parameter Bin
+        * - ESP32-C3-MINI-1 系列
+          - - GPIO7
+            - GPIO6
+            - GPIO5
+            - GPIO4
+          - ``factory_param_MINI-1.bin``
 
 -   ``ble_data.bin`` 在 {IDF_TARGET_NAME} 工作于 Bluetooth LE 服务端的时候提供蓝牙服务；
 -   ``server_cert.bin``、``server_key.bin`` 和 ``server_ca.bin`` 是 SSL 服务端示例证书；
@@ -108,8 +123,7 @@ ESP-AT 固件有以下几种类型，其中下载或准备固件的工作量自�
 
 .. list::
 
-  :esp32:- 获取途径：:doc:`ESP32 AT 固件 <ESP32_AT_binaries>`
-  :esp32c3:- 获取途径：:doc:`ESP32-C3 AT 固件 <ESP32-C3_AT_binaries>`
+  - 获取途径：:doc:`{IDF_TARGET_NAME} AT 固件 <{IDF_TARGET_NAME}_AT_binaries>`
   - 优点：
   
     - 稳定

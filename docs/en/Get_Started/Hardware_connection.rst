@@ -213,6 +213,51 @@ Please note that in the above picture, four jump wires are used to connect the {
 
   If you want to connect your device directly with ESP32-SOLO-1 rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-SOLO-1 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-solo-1_datasheet_en.pdf>`_ for more details.
 
+.. only:: esp32c2
+
+  {IDF_TARGET_NAME} Series
+  ------------------------
+
+  {IDF_TARGET_NAME} AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default.
+
+  .. list-table:: {IDF_TARGET_NAME} Series Hardware Connection Pinout
+    :header-rows: 1
+
+    * - Function of Connection
+      - {IDF_TARGET_NAME} Board Pins
+      - Other Device Pins
+    * - Download/Log output :sup:`1`
+      - UART0
+          * GPIO20 (RX)
+          * GPIO21 (TX)
+      - PC
+          * TX
+          * RX
+    * - AT command/response :sup:`2`
+      - UART1
+          * GPIO6 (RX)
+          * GPIO7 (TX)
+          * GPIO5 (CTS)
+          * GPIO4 (RTS)
+      - USB to serial converter
+          * TX
+          * RX
+          * RTS
+          * CTS
+
+  **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
+
+  **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
+
+  .. figure:: ../../_static/esp32-c2-hw-connection.png
+    :align: center
+    :alt: {IDF_TARGET_NAME} Series Hardware Connection
+    :figclass: align-center
+
+    {IDF_TARGET_NAME} Series Hardware Connection
+
+  If you want to connect your device directly with ESP32-C2-MINI-1 module rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-C2-MINI-1 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-c2-mini-1_datasheet_en.pdf>`_ for more details.
+
 .. only:: esp32c3
 
   {IDF_TARGET_NAME} Series
