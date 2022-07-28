@@ -12,7 +12,7 @@ How to Compile and Develop Your Own AT Project
    How to Add User-Defined AT Commands <How_to_add_user-defined_AT_commands>
    How to Improve ESP-AT Throughput Performance <How_to_optimize_throughput>
    How to Create Factory Parameter Bin <How_to_create_factory_parameter_bin>
-   How to Customize Bluetooth® LE Services <How_to_customize_BLE_services>
+   :esp32 or esp32c3: How to Customize Bluetooth® LE Services <How_to_customize_BLE_services>
    How to Customize Partitions <How_to_customize_partitions>
    :esp32: How to Enable {IDF_TARGET_NAME} AT Classic Bluetooth® <how_to_enable_at_classic_bluetooth>
    :esp32: How to Enable {IDF_TARGET_NAME} AT Ethernet <How_to_enable_ESP_AT_Ethernet>
@@ -23,6 +23,6 @@ How to Compile and Develop Your Own AT Project
    How to Update IDF <How_to_update_IDF>
    ESP-AT Firmware Differences <esp-at_firmware_differences>
    How to Download the Latest Temporary Version of AT Firmware from GitHub <How_to_download_the_latest_temporary_version_of_AT_from_github>
-   Customize Bluetooth LE Services Tools <customize_bluetooth_le_services_tools>
+   :esp32 or esp32c3: Customize Bluetooth LE Services Tools <customize_bluetooth_le_services_tools>
    How to Generate PKI Files <how_to_generate_pki_files>
    AT API Reference <AT_API_Reference>

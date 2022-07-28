@@ -1,8 +1,9 @@
 How to Generate Factory Parameter Bin
 ======================================
 
-{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c3="MINI-1"}
-{IDF_TARGET_AT_PARAMS_ADDR: default="undefined", esp32="0x30000", esp32c3="0x31000"}
+{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="MINI-1", esp32c3="MINI-1"}
+{IDF_TARGET_AT_PARAMS_ADDR: default="undefined", esp32="0x30000", esp32c2="0x2B000", esp32c3="0x31000"}
+{IDF_TARGET_INDEX: default="undefined", esp32="1", esp32c2="2", esp32c3="3"}
 
 :link_to_translation:`zh_CN:[中文]`
 
@@ -150,20 +151,19 @@ The modified ``esp_at_module_info`` structure is as follows:
 
     static const esp_at_module_info_t esp_at_module_info[] = {
     #if defined(CONFIG_IDF_TARGET_ESP32)
-        {"WROOM-32",        CONFIG_ESP_AT_OTA_TOKEN_WROOM32,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 },        // default:ESP32-WROOM-32
-        {"WROOM-32",        CONFIG_ESP_AT_OTA_TOKEN_WROOM32,       CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 },        // ESP32-WROOM-32
-        {"WROVER-32",       CONFIG_ESP_AT_OTA_TOKEN_WROVER32,      CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 },       // ESP32-WROVER
-        {"PICO-D4",         CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4, CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4},   // ESP32-PICO-D4
-        {"SOLO-1",          CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1,  CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 },   // ESP32-SOLO-1
-        {"MINI-1",          CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1,  CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 },   // ESP32-MINI-1
-        {"ESP32-D2WD",      NULL,  NULL },   // ESP32-D2WD
-        {"ESP32_QCLOUD",    CONFIG_ESP_AT_OTA_TOKEN_ESP32_QCLOUD,   CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_QCLOUD },  // ESP32-QCLOUD
-        {"MY_MODULE",       CONFIG_ESP_AT_OTA_TOKEN_MY_MODULE,      CONFIG_ESP_AT_OTA_SSL_TOKEN_MY_MODULE },     // MY_MODULE
+      ...
     #endif
 
     #if defined(CONFIG_IDF_TARGET_ESP32C3)
-        {"MINI-1",         CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI,        CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI },
-        {"ESP32C3_QCLOUD", CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD, CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI_QCLOUD },
+      ...
+    #endif
+
+    #if defined(CONFIG_IDF_TARGET_ESP32C2)
+      ...
+    #endif
+
+    #if defined(CONFIG_IDF_TARGET_{IDF_TARGET_CFG_PREFIX})
+      {"MY_MODULE",       CONFIG_ESP_AT_OTA_TOKEN_MY_MODULE,      CONFIG_ESP_AT_OTA_SSL_TOKEN_MY_MODULE },     // MY_MODULE
     #endif
     };
 
@@ -188,18 +188,13 @@ After adding the customized module information, recompile the whole project acco
     Platform name:
     1. PLATFORM_ESP32
     2. PLATFORM_ESP32C3
-    choose(range[1,2]):1
+    2. PLATFORM_ESP32C2
+    choose(range[1,3]):{IDF_TARGET_INDEX}
 
     Module name:
-    1. WROOM-32
-    2. WROVER-32
-    3. PICO-D4
-    4. SOLO-1
-    5. MINI-1 (description: ESP32-U4WDH chip inside)
-    6. ESP32-D2WD (description: 2MB flash, No OTA)
-    7. ESP32_QCLOUD (description: QCLOUD TX:17 RX:16)
-    8. MY_MODULE (description: MY_DESCRIPTION)
-    choose(range[1,8]):8
+    ...
+    x. MY_MODULE (description: MY_DESCRIPTION)
+    choose(range[1,x]):x
 
 You can find the factory parameter bin generated in ``esp-at/build/customized_partitions`` folder after the build is completed.
 
@@ -377,7 +372,19 @@ Download the new ``factory_param_MY_MODULE.bin`` into flash. ESP-AT provides `es
         - Address
       * - PLATFORM_ESP32
         - All firmware
-        - 0x30000
+        - {IDF_TARGET_AT_PARAMS_ADDR}
+
+  .. only:: esp32c2
+
+    .. list-table:: factory parameter bin download addresses
+      :header-rows: 1
+
+      * - Platform
+        - Firmware
+        - Address
+      * - PLATFORM_ESP32C2
+        - MINI-1 Bin
+        - {IDF_TARGET_AT_PARAMS_ADDR}
 
   .. only:: esp32c3
 
@@ -389,7 +396,7 @@ Download the new ``factory_param_MY_MODULE.bin`` into flash. ESP-AT provides `es
         - Address
       * - PLATFORM_ESP32C3
         - MINI-1 Bin
-        - 0x31000
+        - {IDF_TARGET_AT_PARAMS_ADDR}
       * - PLATFORM_ESP32C3
         - QCLOUD Bin
         - 0x30000

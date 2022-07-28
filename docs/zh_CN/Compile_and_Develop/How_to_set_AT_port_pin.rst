@@ -1,7 +1,7 @@
 如何设置 AT 端口管脚
 ==========================
 
-{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c3="esp32-c3"}
+{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3"}
 
 :link_to_translation:`en:[English]`
 
@@ -34,7 +34,7 @@
   - TX：GPIO1
   - RX：GPIO3
 
-.. only:: esp32c3
+.. only:: esp32c3 or esp32c2
 
   - TX：GPIO21
   - RX：GPIO20

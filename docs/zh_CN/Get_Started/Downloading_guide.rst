@@ -1,8 +1,8 @@
 下载指导
 ==========
 
-{IDF_TARGET_MODULE_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c3="ESP32-C3-MINI-1"}
-{IDF_TARGET_FACTORY_BIN: default="undefined", esp32="ESP32-WROOM-32_AT_Bin_V2.2.0.0", esp32c3="ESP32-C3-MINI-1_AT_Bin_V2.3.0.0"}
+{IDF_TARGET_MODULE_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c2="ESP32-C2-MINI-1", esp32c3="ESP32-C3-MINI-1"}
+{IDF_TARGET_FACTORY_BIN: default="undefined", esp32="ESP32-WROOM-32_AT_Bin_V2.2.0.0", esp32c2="ESP32-C2-MINI-1_AT_Bin_V2.5.0.0", esp32c3="ESP32-C3-MINI-1_AT_Bin_V2.3.0.0"}
 
 :link_to_translation:`en:[English]`
 
@@ -60,7 +60,7 @@
       ├── phy_init_data.bin                // phy 初始值信息
       └── sdkconfig                        // AT 固件对应的编译配置
 
-.. only:: esp32c3
+.. only:: esp32c3 or esp32c2
 
    .. code-block:: none
 
@@ -120,6 +120,28 @@
       0x2a000 customized_partitions/client_cert.bin
       0x2c000 customized_partitions/client_key.bin
 
+.. only:: esp32c2
+
+   .. code-block:: none
+
+      --flash_mode dio --flash_freq 60m --flash_size 4MB
+      0x0 bootloader/bootloader.bin
+      0x60000 esp-at.bin
+      0x8000 partition_table/partition-table.bin
+      0xd000 ota_data_initial.bin
+      0xf000 phy_init_data.bin
+      0x1e000 at_customize.bin
+      0x1F000 customized_partitions/server_cert.bin
+      0x21000 customized_partitions/server_key.bin
+      0x23000 customized_partitions/server_ca.bin
+      0x25000 customized_partitions/client_cert.bin
+      0x27000 customized_partitions/client_key.bin
+      0x29000 customized_partitions/client_ca.bin
+      0x32000 customized_partitions/mqtt_cert.bin
+      0x34000 customized_partitions/mqtt_key.bin
+      0x36000 customized_partitions/mqtt_ca.bin
+      0x2B000 customized_partitions/factory_param.bin
+
 .. only:: esp32c3
 
    .. code-block:: none
@@ -146,10 +168,11 @@
 .. list::
 
    - ``--flash_mode dio`` 代表此固件采用的 flash dio 模式进行编译；
-   - ``--flash_freq 40m`` 代表此固件采用的 flash 通讯频率为 40 MHz；
+   :esp32 or esp32c3: - ``--flash_freq 40m`` 代表此固件采用的 flash 通讯频率为 40 MHz；
+   :esp32c2: - ``--flash_freq 60m`` 代表此固件采用的 flash 通讯频率为 60 MHz；
    - ``--flash_size 4MB`` 代表此固件适用的 flash 最小为 4 MB；
    :esp32: - ``0x10000 ota_data_initial.bin`` 代表在 ``0x10000`` 地址烧录 ``ota_data_initial.bin`` 文件。
-   :esp32c3: - ``0xd000 ota_data_initial.bin`` 代表在 ``0xd000`` 地址烧录 ``ota_data_initial.bin`` 文件。
+   :esp32c2 or esp32c3: - ``0xd000 ota_data_initial.bin`` 代表在 ``0xd000`` 地址烧录 ``ota_data_initial.bin`` 文件。
 
 .. _flash-at-firmware-into-your-device:
 
@@ -184,7 +207,7 @@ Windows
         :scale: 70%
         :alt: 下载至单个地址界面图
 
-        下载至单个地址界面图
+        下载至单个地址界面图（点击放大）
 
    - 分开下载多个 bin 文件至不同的地址：根据 ``download.config`` 文件进行配置，请勿勾选 "DoNotChgBin"；
 
@@ -193,7 +216,7 @@ Windows
         :scale: 60%
         :alt: 下载至多个地址界面图
 
-        下载至多个地址界面图
+        下载至多个地址界面图（点击放大）
 
 为了避免烧录出现问题，请查看开发板的下载接口的 COM 端口号，并从 "COM:" 下拉列表中选择该端口号。有关如何查看端口号的详细介绍请参考 `在 Windows 上查看端口 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/get-started/establish-serial-connection.html#windows>`_。 
 
@@ -224,6 +247,12 @@ Linux 或 macOS
 
          esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x8000 partition_table/partition-table.bin 0x10000 ota_data_initial.bin 0xf000 phy_init_data.bin 0x1000 bootloader/bootloader.bin 0x100000 esp-at.bin 0x20000 at_customize.bin 0x24000 customized_partitions/server_cert.bin 0x39000 customized_partitions/mqtt_key.bin 0x26000 customized_partitions/server_key.bin 0x28000 customized_partitions/server_ca.bin 0x2e000 customized_partitions/client_ca.bin 0x30000 customized_partitions/factory_param.bin 0x21000 customized_partitions/ble_data.bin 0x3B000 customized_partitions/mqtt_ca.bin 0x37000 customized_partitions/mqtt_cert.bin 0x2a000 customized_partitions/client_cert.bin 0x2c000 customized_partitions/client_key.bin
 
+   .. only:: esp32c2
+
+      .. code-block:: none
+
+         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 60m --flash_size 4MB 0x0 bootloader/bootloader.bin 0x60000 esp-at.bin 0x8000 partition_table/partition-table.bin 0xd000 ota_data_initial.bin 0xf000 phy_init_data.bin 0x1e000 at_customize.bin 0x1F000 customized_partitions/server_cert.bin 0x21000 customized_partitions/server_key.bin 0x23000 customized_partitions/server_ca.bin 0x25000 customized_partitions/client_cert.bin 0x27000 customized_partitions/client_key.bin 0x29000 customized_partitions/client_ca.bin 0x32000 customized_partitions/mqtt_cert.bin 0x34000 customized_partitions/mqtt_key.bin 0x36000 customized_partitions/mqtt_ca.bin 0x2B000 customized_partitions/factory_param.bin
+
    .. only:: esp32c3
 
       .. code-block:: none
@@ -247,6 +276,12 @@ Linux 或 macOS
       .. code-block:: none
 
          esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x0 factory/factory_WROOM-32.bin
+
+   .. only:: esp32c2
+
+      .. code-block:: none
+
+         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 60m --flash_size 4MB 0x0 factory/factory_MINI-1.bin
 
    .. only:: esp32c3
 
@@ -352,6 +387,49 @@ Linux 或 macOS
       module_name:WROOM-32
       max tx power=78,ret=0
       2.2.0
+
+.. only:: esp32c2
+
+   {IDF_TARGET_NAME} 开机日志:
+
+   .. code-block:: none
+
+      ESP-ROM:esp8684-api2-20220127
+      Build:Jan 27 2022
+      rst:0x1 (POWERON),boot:0xc (SPI_FAST_FLASH_BOOT)
+      SPIWP:0xee
+      mode:DIO, clock div:1
+      load:0x3fcd6108,len:0x18b0
+      load:0x403ae000,len:0x854
+      load:0x403b0000,len:0x2724
+      entry 0x403ae000
+      I (21) boot: ESP-IDF v5.0-dev-3424-gbb23d783c0 2nd stage bootloader
+      I (21) boot: compile time 19:44:11
+      I (21) boot: chip revision: 0
+      I (24) boot.esp32c2: MMU Page Size  : 64K
+      I (29) boot.esp32c2: SPI Speed      : 60MHz
+      I (34) boot.esp32c2: SPI Mode       : DIO
+      I (38) boot.esp32c2: SPI Flash Size : 4MB
+      I (43) boot: Enabling RNG early entropy source...
+      I (49) boot: Partition Table:
+      I (52) boot: ## Label            Usage          Type ST Offset   Length
+      I (59) boot:  0 otadata          OTA data         01 00 0000d000 00002000
+      I (67) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+      I (74) boot:  2 nvs              WiFi data        01 02 00010000 0000e000
+      I (82) boot:  3 at_customize     unknown          40 00 0001e000 00042000
+      I (89) boot:  4 ota_0            OTA app          00 10 00060000 001d0000
+      I (97) boot:  5 ota_1            OTA app          00 11 00230000 001d0000
+      I (104) boot: End of partition table
+      I (108) esp_image: segment 0: paddr=00060020 vaddr=3c0d0020 size=279d8h (162264) map
+      I (153) esp_image: segment 1: paddr=00087a00 vaddr=3fcab2b0 size=018a0h (  6304) load
+      I (155) esp_image: segment 2: paddr=000892a8 vaddr=40380000 size=06d70h ( 28016) load
+      I (166) esp_image: segment 3: paddr=00090020 vaddr=42000020 size=c10f8h (790776) map
+      I (344) esp_image: segment 4: paddr=00151120 vaddr=40386d70 size=04534h ( 17716) load
+      I (353) boot: Loaded app from partition at offset 0x60000
+      I (353) boot: Disabling RNG early entropy source...
+      module_name:MINI-1
+      max tx power=78,ret=0
+      2.5.0
 
 .. only:: esp32c3
 

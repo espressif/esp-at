@@ -8,7 +8,7 @@ AT 命令示例
    :maxdepth: 1
    
    TCP-IP AT 示例 <TCP-IP_AT_Examples>
-   Bluetooth® Low Engergy AT 示例 <bluetooth_le_at_examples>
+   :esp32 or esp32c3: Bluetooth® Low Engergy AT 示例 <bluetooth_le_at_examples>
    MQTT AT 示例 <MQTT_AT_Examples>
    MQTT AT 连接云示例 <mqtt-at-examples-for-cloud>
    :esp32: Ethernet AT 示例 <Ethernet_AT_Examples>

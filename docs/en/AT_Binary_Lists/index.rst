@@ -7,19 +7,19 @@ AT Binary Lists
   :hidden:
   :maxdepth: 1
 
-  :esp32: ESP32 AT Released Firmware <ESP32_AT_binaries>
-  :esp32c3: ESP32-C3 AT Released Firmware <ESP32-C3_AT_binaries>
+  {IDF_TARGET_NAME} AT Released Firmware <{IDF_TARGET_NAME}_AT_binaries>
 
 This document covers the following sections:
 
 .. list::
 
-  :esp32: - :doc:`Download ESP32 AT Released Firmware <ESP32_AT_binaries>`
-  :esp32c3: - :doc:`Download ESP32-C3 AT Released Firmware <ESP32-C3_AT_binaries>`
+  - :doc:`Download {IDF_TARGET_NAME} AT Released Firmware <{IDF_TARGET_NAME}_AT_binaries>`
   - :ref:`brief-intro-firmware`: What binary files the AT firmware contains and their functions
   - :ref:`firmware-selection`: Types of AT firmware, ways to access them, their application scenarios, pros, cons, etc.
   - :ref:`what-next-after-you-get-firmware`
 
+.. note::
+  To download AT firmware for other chip series, please go to the drop-down list on the upper left corner of this page and select a chip series to navigate to the documentation of that chip for downloading.
 
 .. _brief-intro-firmware:
 
@@ -39,7 +39,7 @@ ESP-AT firmware contains several binaries, and each of them is dedicated to a sp
 
        * - Modules
          - UART Pins (TX, RX, CTS, RTS)
-         - Factory Parameter Bin 
+         - Factory Parameter Bin
        * - ESP32-WROOM-32 Series (ESP32 Default Module)
          - - GPIO17
            - GPIO16
@@ -65,6 +65,21 @@ ESP-AT firmware contains several binaries, and each of them is dedicated to a sp
            - GPIO14
          - ``factory_param_SOLO-1.bin``
 
+  .. only:: esp32c2
+
+    .. list-table:: Hardware Configuration of {IDF_TARGET_NAME} Modules
+       :header-rows: 1
+
+       * - Modules
+         - UART Pins (TX, RX, CTS, RTS)
+         - Factory Parameter Bin
+       * - ESP32-C2-MINI-1 Series
+         - - GPIO7
+           - GPIO6
+           - GPIO5
+           - GPIO4
+         - ``factory_param_MINI-1.bin``
+
   .. only:: esp32c3
 
     .. list-table:: Hardware Configuration of {IDF_TARGET_NAME} Modules
@@ -72,8 +87,8 @@ ESP-AT firmware contains several binaries, and each of them is dedicated to a sp
 
        * - Modules
          - UART Pins (TX, RX, CTS, RTS)
-         - Factory Parameter Bin 
-       * - ESP32-C3-MINI Series
+         - Factory Parameter Bin
+       * - ESP32-C3-MINI-1 Series
          - - GPIO7
            - GPIO6
            - GPIO5
@@ -108,8 +123,7 @@ Officially Released Firmware (Recommended)
 
 .. list::
 
-  :esp32:- How to obtain firmware: :doc:`ESP32 AT firmware <ESP32_AT_binaries>`
-  :esp32c3:- How to obtain firmware: :doc:`ESP32-C3 AT firmware <ESP32-C3_AT_binaries>`
+  - How to obtain firmware: :doc:`{IDF_TARGET_NAME} AT firmware <{IDF_TARGET_NAME}_AT_binaries>`
   - Pros: 
     
     - Stable

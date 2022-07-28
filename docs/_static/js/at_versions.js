@@ -4,7 +4,7 @@ var DOCUMENTATION_VERSIONS = {
               },
     VERSIONS: [
         // latest
-        { name: "latest", has_targets: true, supported_targets: [ "esp32", "esp32c3" ] },
+        { name: "latest", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3" ] },
 
         // v2.4.0.0
         { name: "release-v2.4.0.0", has_targets: true, supported_targets: [ "esp32", "esp32c3" ]},
@@ -23,6 +23,7 @@ var DOCUMENTATION_VERSIONS = {
         { name: "release-v2.1.0.0_esp32s2", has_targets: false, supported_targets: [ "esp32s2" ]},
     ],
     IDF_TARGETS: [
+       { text: "ESP32-C2", value: "esp32c2"},
        { text: "ESP32-C3", value: "esp32c3"},
        { text: "ESP32", value: "esp32"},
        { text: "ESP8266", value: "esp8266"},

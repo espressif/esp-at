@@ -1086,7 +1086,7 @@ Wi-Fi AT 命令集
   
   - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
   :esp32: - {IDF_TARGET_NAME} Station 的 MAC 地址与 {IDF_TARGET_NAME} Ethernet 和 {IDF_TARGET_NAME} SoftAP 不同，不要为二者设置同样的 MAC 地址
-  :esp32c3: - {IDF_TARGET_NAME} Station 的 MAC 地址与 {IDF_TARGET_NAME} SoftAP 不同，不要为二者设置同样的 MAC 地址
+  :esp32c2 or esp32c3: - {IDF_TARGET_NAME} Station 的 MAC 地址与 {IDF_TARGET_NAME} SoftAP 不同，不要为二者设置同样的 MAC 地址
   - MAC 地址的 Bit 0 不能为 1，例如，MAC 地址可以是 "1a:…"，但不可以是 "15:…"
   - FF:FF:FF:FF:FF:FF 和 00:00:00:00:00:00 是无效地址，不能设置
 

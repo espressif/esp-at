@@ -22,6 +22,10 @@ ESP-AT 固件差异
   - ESP32-D2WD_AT_Bin（本节简称为 **D2WD Bin**）
   - ESP32-QLOUD_AT_Bin（本节简称为 **QCLOUD Bin**）
 
+.. only:: esp32c2
+
+  - ESP32-C2-MINI-1_AT_Bin（本节简称为 **MINI-1 Bin**）
+
 .. only:: esp32c3
 
   - ESP32-C3-MINI-1_AT_Bin（本节简称为 **MINI-1 Bin**）
@@ -222,6 +226,44 @@ ESP-AT 固件差异
       - |icon-orange-check|
       - |icon-green-check|
 
+.. only:: esp32c2
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 命令集
+      - MINI-1 Bin
+    * - base
+      - |icon-green-check|
+    * - user
+      - |icon-green-check|
+    * - wifi
+      - |icon-green-check|
+    * - net
+      - |icon-green-check|
+    * - MDNS
+      - |icon-green-check|
+    * - WPS
+      - |icon-green-check|
+    * - smartconfig
+      - |icon-green-check|
+    * - ping
+      - |icon-green-check|
+    * - MQTT
+      - |icon-green-check|
+    * - http
+      - |icon-green-check|
+    * - FS
+      - |icon-orange-check|
+    * - driver
+      - |icon-orange-check|
+    * - WPA2
+      - |icon-orange-check|
+    * - WEB
+      - |icon-orange-check|
+    * - OTA
+      - |icon-green-check|
+
 .. only:: esp32c3
 
   .. list-table::
@@ -340,6 +382,23 @@ ESP-AT 固件差异
         | RX: 16 
         | CTS: 15 
         | RTS: 14
+
+.. only:: esp32c2
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 硬件
+      - MINI-1
+    * - Flash
+      - 4 MB
+    * - PSRAM
+      - |icon-red-cross|
+    * - UART 管脚 [#one]_
+      - | TX: 7
+        | RX: 6
+        | CTS: 5
+        | RTS: 4
 
 .. only:: esp32c3
 
@@ -513,6 +572,18 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-green-check|
       - |icon-red-cross|
+
+.. only:: esp32c2
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 模组/芯片
+      - MINI-1 Bin
+    * - ESP32-C2-MINI-1
+      - |icon-green-check|
+    * - ESP32-C2-WROOM-02
+      - |icon-green-check|
 
 .. only:: esp32c3
 

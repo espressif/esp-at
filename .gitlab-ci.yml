@@ -358,7 +358,7 @@ esp32_demo:
     - idf.py build
     - cd -
 
-doc_build_html:
+doc_build_html_en:
   stage: build
   image: $CI_DOCKER_REGISTRY/esp-idf-doc-env-v5.0:2-2
   tags:
@@ -376,10 +376,30 @@ doc_build_html:
     - ./check_doc_chars.py
     - pip install -r requirements.txt
     # build html
-    - build-docs -t {esp32,esp32c3} -bs html
+    - build-docs -t {esp32,esp32c2,esp32c3} -l en -bs html
+
+doc_build_html_cn:
+  stage: build
+  image: $CI_DOCKER_REGISTRY/esp-idf-doc-env-v5.0:2-2
+  tags:
+    - build_docs
+  needs: []
+  artifacts:
+    when: always
+    paths:
+      - docs/_build/*/*/*.txt
+      - docs/_build/*/*/html/*
+    expire_in: 6 mos
+  script:
+    - cd docs
+    - ./check_lang_folder_sync.sh
+    - ./check_doc_chars.py
+    - pip install -r requirements.txt
+    # build html
+    - build-docs -t {esp32,esp32c2,esp32c3} -l zh_CN -bs html
 
 # Separate PDF build and HTML build due to artifacts size limit.
-doc_build_pdf:
+doc_build_pdf_en:
   stage: build
   image: $CI_DOCKER_REGISTRY/esp-idf-doc-env-v5.0:2-2
   tags:
@@ -397,7 +417,27 @@ doc_build_pdf:
     - ./check_doc_chars.py
     - pip install -r requirements.txt
     # build pdf
-    - build-docs -t {esp32,esp32c3} -bs latex
+    - build-docs -t {esp32,esp32c2,esp32c3} -l en -bs latex
+
+doc_build_pdf_cn:
+  stage: build
+  image: $CI_DOCKER_REGISTRY/esp-idf-doc-env-v5.0:2-2
+  tags:
+    - build_docs
+  needs: []
+  artifacts:
+    when: always
+    paths:
+      - docs/_build/*/*/*.txt
+      - docs/_build/*/*/latex/*
+    expire_in: 6 mos
+  script:
+    - cd docs
+    - ./check_lang_folder_sync.sh
+    - ./check_doc_chars.py
+    - pip install -r requirements.txt
+    # build pdf
+    - build-docs -t {esp32,esp32c2,esp32c3} -l zh_CN -bs latex
 
 .deploy_docs_template:
   stage: deploy_docs
@@ -405,8 +445,10 @@ doc_build_pdf:
   tags:
     - deploy
   needs:
-    - doc_build_html
-    - doc_build_pdf
+    - doc_build_html_en
+    - doc_build_html_cn
+    - doc_build_pdf_en
+    - doc_build_pdf_cn
   script:
     - source ${CI_PROJECT_DIR}/docs/utils.sh
     - add_doc_server_ssh_keys $DOCS_DEPLOY_PRIVATEKEY $DOCS_DEPLOY_SERVER $DOCS_DEPLOY_SERVER_USER

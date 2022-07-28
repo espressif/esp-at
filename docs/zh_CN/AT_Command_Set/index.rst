@@ -8,11 +8,11 @@ AT 命令集
 
 .. toctree::
    :maxdepth: 1
-   
+
    基础 AT 命令集 <Basic_AT_Commands>
    Wi-Fi AT 命令集 <Wi-Fi_AT_Commands>
    TCP-IP AT 命令集 <TCP-IP_AT_Commands>
-   Bluetooth® Low Energy 命令集 <BLE_AT_Commands>
+   :esp32 or esp32c3: Bluetooth® Low Energy 命令集 <BLE_AT_Commands>
    :esp32: Bluetooth® AT 命令集 <BT_AT_Commands>
    MQTT AT 命令集 <MQTT_AT_Commands>
    HTTP AT 命令集 <HTTP_AT_Commands>

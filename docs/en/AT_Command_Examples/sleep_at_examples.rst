@@ -1,7 +1,7 @@
 Sleep AT Examples
 ==========================
 
-{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c3="esp32-c3"}
+{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3"}
 
 :link_to_translation:`zh_CN:[中文]`
 
@@ -27,9 +27,11 @@ For current consumption of {IDF_TARGET_NAME}, please refer to `{IDF_TARGET_NAME}
 
 .. note::
 
-  * Setting {IDF_TARGET_NAME} to sleep modes in Wi-Fi mode and Bluetooth LE mode will be described separately.
-  * In single Wi-Fi mode, only ``station`` mode supports ``Modem-sleep`` mode and ``Light-sleep`` mode.
-  * For Light-sleep mode in Bluetooth LE mode, please ensure that there is an external 32 KHz crystal oscillator. If there is no external 32 KHz crystal oscillator, ESP-AT will work as the Modem-sleep mode.
+  .. list::
+
+    - Setting {IDF_TARGET_NAME} to sleep modes in Wi-Fi mode and Bluetooth LE mode will be described separately.
+    - In single Wi-Fi mode, only ``station`` mode supports ``Modem-sleep`` mode and ``Light-sleep`` mode.
+    :esp32 or esp32c3: - For Light-sleep mode in Bluetooth LE mode, please ensure that there is an external 32 KHz crystal oscillator. If there is no external 32 KHz crystal oscillator, ESP-AT will work as the Modem-sleep mode.
 
 Measurement Method
 ^^^^^^^^^^^^^^^^^^^^
@@ -157,351 +159,353 @@ Set Light-sleep mode in Wi-Fi mode
 
   * CPU will automatically sleep and RF will be periodically closed according to listen interval set by :ref:`AT+CWJAP <cmd-JAP>`.
 
-Set Modem-sleep mode in Bluetooth LE advertising mode
-------------------------------------------------------
+.. only:: esp32 or esp32c3
 
-#. Initialize the role of Bluetooth LE as server.
+  Set Modem-sleep mode in Bluetooth LE advertising mode
+  ------------------------------------------------------
 
-   Command:
+  #. Initialize the role of Bluetooth LE as server.
 
-   .. code-block:: none
+    Command:
 
-     AT+BLEINIT=2
+    .. code-block:: none
 
-   Response:
+      AT+BLEINIT=2
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-#. Set parameters of Bluetooth LE advertising. Set Bluetooth LE advertising interval to 1 s.
+      OK
 
-   Command:
+  #. Set parameters of Bluetooth LE advertising. Set Bluetooth LE advertising interval to 1 s.
 
-   .. code-block:: none
+    Command:
 
-     AT+BLEADVPARAM=1600,1600,0,0,7,0,0,"00:00:00:00:00:00"
+    .. code-block:: none
 
-   Response:
+      AT+BLEADVPARAM=1600,1600,0,0,7,0,0,"00:00:00:00:00:00"
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-#. Start Bluetooth LE advertising.
+      OK
 
-   Command:
+  #. Start Bluetooth LE advertising.
 
-   .. code-block:: none
+    Command:
 
-     AT+BLEADVSTART
+    .. code-block:: none
 
-   Response:
+      AT+BLEADVSTART
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-#. Disable Wi-Fi.
+      OK
 
-   Command:
+  #. Disable Wi-Fi.
 
-   .. code-block:: none
+    Command:
 
-     AT+CWMODE=0
+    .. code-block:: none
 
-   Response:
+      AT+CWMODE=0
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-#. Set the sleep mode to Modem-sleep mode.
+      OK
 
-   Command:
+  #. Set the sleep mode to Modem-sleep mode.
 
-   .. code-block:: none
+    Command:
 
-     AT+SLEEP=1
+    .. code-block:: none
 
-   Response:
+      AT+SLEEP=1
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-Set Modem-sleep mode in Bluetooth LE connection mode
-------------------------------------------------------
+      OK
 
-#. Initialize the role of Bluetooth LE as server.
+  Set Modem-sleep mode in Bluetooth LE connection mode
+  ------------------------------------------------------
 
-   Command:
+  #. Initialize the role of Bluetooth LE as server.
 
-   .. code-block:: none
+    Command:
 
-     AT+BLEINIT=2
+    .. code-block:: none
 
-   Response:
+      AT+BLEINIT=2
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-#. Start Bluetooth LE advertising.
+      OK
 
-   Command:
+  #. Start Bluetooth LE advertising.
 
-   .. code-block:: none
+    Command:
 
-     AT+BLEADVSTART
+    .. code-block:: none
 
-   Response:
+      AT+BLEADVSTART
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-#. Waiting for connection.
+      OK
 
-   If the connection is established successfully, AT will prompt:
+  #. Waiting for connection.
 
-   .. code-block:: none
+    If the connection is established successfully, AT will prompt:
 
-     +BLECONN:0,"47:3f:86:dc:e4:7d"
-     +BLECONNPARAM:0,0,0,6,0,500
-     +BLECONNPARAM:0,0,0,24,0,500
+    .. code-block:: none
 
-     OK
+      +BLECONN:0,"47:3f:86:dc:e4:7d"
+      +BLECONNPARAM:0,0,0,6,0,500
+      +BLECONNPARAM:0,0,0,24,0,500
 
-   Note:
+      OK
 
-   - In this example, Bluetooth LE client address is 47:3f:86:dc:e4:7d.
-   - For prompt information (+BLECONN and +BLECONNPARAM), please refer to :ref:`AT+BLECONN <cmd-BCONN>` and :ref:`AT+BLECONNPARAM <cmd-BCONNP>` for more details.
+    Note:
 
-#. Update parameters of Bluetooth LE connection. Set Bluetooth LE connection interval to 1 s.
+    - In this example, Bluetooth LE client address is 47:3f:86:dc:e4:7d.
+    - For prompt information (+BLECONN and +BLECONNPARAM), please refer to :ref:`AT+BLECONN <cmd-BCONN>` and :ref:`AT+BLECONNPARAM <cmd-BCONNP>` for more details.
 
-   Command:
+  #. Update parameters of Bluetooth LE connection. Set Bluetooth LE connection interval to 1 s.
 
-   .. code-block:: none
+    Command:
 
-     AT+BLECONNPARAM=0,800,800,0,500
+    .. code-block:: none
 
-   Response:
+      AT+BLECONNPARAM=0,800,800,0,500
 
-   .. code-block:: none
+    Response:
 
-     OK
-  
-   If the connection parameters are updated successfully, AT will output:
+    .. code-block:: none
 
-   .. code-block:: none
+      OK
+    
+    If the connection parameters are updated successfully, AT will output:
 
-      +BLECONNPARAM:0,800,800,800,0,500
+    .. code-block:: none
 
-   Note:
+        +BLECONNPARAM:0,800,800,800,0,500
 
-   - For prompt information (+BLECONNPARAM), please refer to :ref:`AT+BLECONNPARAM <cmd-BCONNP>` for more details. 
+    Note:
 
-#. Disable Wi-Fi.
+    - For prompt information (+BLECONNPARAM), please refer to :ref:`AT+BLECONNPARAM <cmd-BCONNP>` for more details. 
 
-   Command:
+  #. Disable Wi-Fi.
 
-   .. code-block:: none
+    Command:
 
-     AT+CWMODE=0
+    .. code-block:: none
 
-   Response:
+      AT+CWMODE=0
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-#. Set the sleep mode to Modem-sleep mode.
+      OK
 
-   Command:
+  #. Set the sleep mode to Modem-sleep mode.
 
-   .. code-block:: none
+    Command:
 
-     AT+SLEEP=1
+    .. code-block:: none
 
-   Response:
+      AT+SLEEP=1
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-Set Light-sleep mode in Bluetooth LE advertising mode
--------------------------------------------------------
+      OK
 
-#. Initialize the role of Bluetooth LE as server.
+  Set Light-sleep mode in Bluetooth LE advertising mode
+  -------------------------------------------------------
 
-   Command:
+  #. Initialize the role of Bluetooth LE as server.
 
-   .. code-block:: none
+    Command:
 
-     AT+BLEINIT=2
+    .. code-block:: none
 
-   Response:
+      AT+BLEINIT=2
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-#. Set parameters of Bluetooth LE advertising. Set Bluetooth LE advertising interval to 1 s.
+      OK
 
-   Command:
+  #. Set parameters of Bluetooth LE advertising. Set Bluetooth LE advertising interval to 1 s.
 
-   .. code-block:: none
+    Command:
 
-     AT+BLEADVPARAM=1600,1600,0,0,7,0,0,"00:00:00:00:00:00"
+    .. code-block:: none
 
-   Response:
+      AT+BLEADVPARAM=1600,1600,0,0,7,0,0,"00:00:00:00:00:00"
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-#. Start Bluetooth LE advertising.
+      OK
 
-   Command:
+  #. Start Bluetooth LE advertising.
 
-   .. code-block:: none
+    Command:
 
-     AT+BLEADVSTART
+    .. code-block:: none
 
-   Response:
+      AT+BLEADVSTART
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-#. Disable Wi-Fi.
+      OK
 
-   Command:
+  #. Disable Wi-Fi.
 
-   .. code-block:: none
+    Command:
 
-     AT+CWMODE=0
+    .. code-block:: none
 
-   Response:
+      AT+CWMODE=0
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-#. Set the sleep mode to Light-sleep mode.
+      OK
 
-   Command:
+  #. Set the sleep mode to Light-sleep mode.
 
-   .. code-block:: none
+    Command:
 
-     AT+SLEEP=2
+    .. code-block:: none
 
-   Response:
+      AT+SLEEP=2
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-Set Light-sleep mode in Bluetooth LE connection mode
------------------------------------------------------
+      OK
 
-#. Initialize the role of Bluetooth LE as server.
+  Set Light-sleep mode in Bluetooth LE connection mode
+  -----------------------------------------------------
 
-   Command:
+  #. Initialize the role of Bluetooth LE as server.
 
-   .. code-block:: none
+    Command:
 
-     AT+BLEINIT=2
+    .. code-block:: none
 
-   Response:
+      AT+BLEINIT=2
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-#. Start Bluetooth LE advertising.
+      OK
 
-   Command:
+  #. Start Bluetooth LE advertising.
 
-   .. code-block:: none
+    Command:
 
-     AT+BLEADVSTART
+    .. code-block:: none
 
-   Response:
+      AT+BLEADVSTART
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-#. Waiting for connection.
+      OK
 
-   If the connection is established successfully, AT will prompt:
+  #. Waiting for connection.
 
-   .. code-block:: none
+    If the connection is established successfully, AT will prompt:
 
-     +BLECONN:0,"47:3f:86:dc:e4:7d"
-     +BLECONNPARAM:0,0,0,6,0,500
-     +BLECONNPARAM:0,0,0,24,0,500
+    .. code-block:: none
 
-     OK
+      +BLECONN:0,"47:3f:86:dc:e4:7d"
+      +BLECONNPARAM:0,0,0,6,0,500
+      +BLECONNPARAM:0,0,0,24,0,500
 
-   Note:
+      OK
 
-   - In this example, Bluetooth LE client address is 47:3f:86:dc:e4:7d.
-   - For prompt information (+BLECONN and +BLECONNPARAM), please refer to :ref:`AT+BLECONN <cmd-BCONN>` and :ref:`AT+BLECONNPARAM <cmd-BCONNP>` for more details.
+    Note:
 
-#. Update parameters of Bluetooth LE connection. Set Bluetooth LE connection interval to 1 s.
+    - In this example, Bluetooth LE client address is 47:3f:86:dc:e4:7d.
+    - For prompt information (+BLECONN and +BLECONNPARAM), please refer to :ref:`AT+BLECONN <cmd-BCONN>` and :ref:`AT+BLECONNPARAM <cmd-BCONNP>` for more details.
 
-   Command:
+  #. Update parameters of Bluetooth LE connection. Set Bluetooth LE connection interval to 1 s.
 
-   .. code-block:: none
+    Command:
 
-     AT+BLECONNPARAM=0,800,800,0,500
+    .. code-block:: none
 
-   Response:
+      AT+BLECONNPARAM=0,800,800,0,500
 
-   .. code-block:: none
+    Response:
 
-     OK
-  
-   If the connection parameters are updated successfully, AT will output:
+    .. code-block:: none
 
-   .. code-block:: none
+      OK
+    
+    If the connection parameters are updated successfully, AT will output:
 
-      +BLECONNPARAM:0,800,800,800,0,500
+    .. code-block:: none
 
-   Note:
+        +BLECONNPARAM:0,800,800,800,0,500
 
-   - For prompt information (+BLECONNPARAM), please refer to :ref:`AT+BLECONNPARAM <cmd-BCONNP>` for more details.
+    Note:
 
-#. Disable Wi-Fi.
+    - For prompt information (+BLECONNPARAM), please refer to :ref:`AT+BLECONNPARAM <cmd-BCONNP>` for more details.
 
-   Command:
+  #. Disable Wi-Fi.
 
-   .. code-block:: none
+    Command:
 
-     AT+CWMODE=0
+    .. code-block:: none
 
-   Response:
+      AT+CWMODE=0
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-#. Set the sleep mode to Light-sleep mode.
+      OK
 
-   Command:
+  #. Set the sleep mode to Light-sleep mode.
 
-   .. code-block:: none
+    Command:
 
-     AT+SLEEP=2
+    .. code-block:: none
 
-   Response:
+      AT+SLEEP=2
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
+
+      OK
 
 Set Deep-sleep mode
 --------------------

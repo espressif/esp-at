@@ -71,7 +71,7 @@ Parameters
         * - 7
           - GPIO35
 
-  .. only:: esp32c3
+  .. only:: esp32c3 or esp32c2
 
     - For {IDF_TARGET_NAME} devices, the range is [0,4].
 
@@ -100,7 +100,7 @@ Parameters
     -  2: 6 dB attenuation, effective measurement range is [150, 1750] mV.
     -  3: 11 dB attenuation, effective measurement range is [150, 2450] mV.
 
-  .. only:: esp32c3
+  .. only:: esp32c3 or esp32c2
 
     -  0: 0 dB attenuation, effective measurement range is [0, 750] mV.
     -  1: 2.5 dB attenuation, effective measurement range is [0, 1050] mV.
@@ -130,7 +130,7 @@ Example
 
     OK
 
-.. only:: esp32c3
+.. only:: esp32c3 or esp32c2
 
   ::
 

@@ -195,27 +195,49 @@ ESP-AT 中证书文件的存储路径为 :project:`components/customized_partiti
 
         OK
 
-    .. only:: esp32
+    .. only:: esp32c2
 
-    .. code-block:: none
+      .. code-block:: none
 
-        +SYSFLASH:"ble_data",64,1,0x1f000,0x6000
-        +SYSFLASH:"server_cert",64,2,0x25000,0x2000
-        +SYSFLASH:"server_key",64,3,0x27000,0x2000
-        +SYSFLASH:"server_ca",64,4,0x29000,0x2000
-        +SYSFLASH:"client_cert",64,5,0x2b000,0x2000
-        +SYSFLASH:"client_key",64,6,0x2d000,0x2000
-        +SYSFLASH:"client_ca",64,7,0x2f000,0x2000
-        +SYSFLASH:"factory_param",64,8,0x31000,0x1000
-        +SYSFLASH:"wpa2_cert",64,9,0x32000,0x2000
-        +SYSFLASH:"wpa2_key",64,10,0x34000,0x2000
-        +SYSFLASH:"wpa2_ca",64,11,0x36000,0x2000
-        +SYSFLASH:"mqtt_cert",64,12,0x38000,0x2000
-        +SYSFLASH:"mqtt_key",64,13,0x3a000,0x2000
-        +SYSFLASH:"mqtt_ca",64,14,0x3c000,0x2000
-        +SYSFLASH:"fatfs",1,129,0x47000,0x19000
+          +SYSFLASH:"server_cert",64,1,0x1f000,0x2000
+          +SYSFLASH:"server_key",64,2,0x21000,0x2000
+          +SYSFLASH:"server_ca",64,3,0x23000,0x2000
+          +SYSFLASH:"client_cert",64,4,0x25000,0x2000
+          +SYSFLASH:"client_key",64,5,0x27000,0x2000
+          +SYSFLASH:"client_ca",64,6,0x29000,0x2000
+          +SYSFLASH:"factory_param",64,7,0x2b000,0x1000
+          +SYSFLASH:"wpa2_cert",64,8,0x2c000,0x2000
+          +SYSFLASH:"wpa2_key",64,9,0x2e000,0x2000
+          +SYSFLASH:"wpa2_ca",64,10,0x30000,0x2000
+          +SYSFLASH:"mqtt_cert",64,11,0x32000,0x2000
+          +SYSFLASH:"mqtt_key",64,12,0x34000,0x2000
+          +SYSFLASH:"mqtt_ca",64,13,0x36000,0x2000
+          +SYSFLASH:"ble_data",64,14,0x38000,0x6000
+          +SYSFLASH:"fatfs",1,129,0x47000,0x19000
 
-        OK
+          OK
+
+    .. only:: esp32c3
+
+      .. code-block:: none
+
+          +SYSFLASH:"ble_data",64,1,0x1f000,0x6000
+          +SYSFLASH:"server_cert",64,2,0x25000,0x2000
+          +SYSFLASH:"server_key",64,3,0x27000,0x2000
+          +SYSFLASH:"server_ca",64,4,0x29000,0x2000
+          +SYSFLASH:"client_cert",64,5,0x2b000,0x2000
+          +SYSFLASH:"client_key",64,6,0x2d000,0x2000
+          +SYSFLASH:"client_ca",64,7,0x2f000,0x2000
+          +SYSFLASH:"factory_param",64,8,0x31000,0x1000
+          +SYSFLASH:"wpa2_cert",64,9,0x32000,0x2000
+          +SYSFLASH:"wpa2_key",64,10,0x34000,0x2000
+          +SYSFLASH:"wpa2_ca",64,11,0x36000,0x2000
+          +SYSFLASH:"mqtt_cert",64,12,0x38000,0x2000
+          +SYSFLASH:"mqtt_key",64,13,0x3a000,0x2000
+          +SYSFLASH:"mqtt_ca",64,14,0x3c000,0x2000
+          +SYSFLASH:"fatfs",1,129,0x47000,0x19000
+
+          OK
 
   2. 擦除 ``client_cert`` 分区
 
