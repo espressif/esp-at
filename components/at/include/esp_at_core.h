@@ -213,6 +213,19 @@ void esp_at_module_init(uint32_t netconn_max, const uint8_t *custom_version);
 esp_at_para_parse_result_type esp_at_get_para_as_digit(int32_t para_index, int32_t *value);
 
 /**
+ * @brief Parse float parameter from command string.
+ *
+ * @param para_index the index of parameter
+ * @param value the value parsed
+ *
+ * @return
+ *  - ESP_AT_PARA_PARSE_RESULT_OK : succeed
+ *  - ESP_AT_PARA_PARSE_RESULT_FAIL : fail
+ *  - ESP_AT_PARA_PARSE_RESULT_OMITTED : this parameter is OMITTED
+ */
+esp_at_para_parse_result_type esp_at_get_para_as_float(int32_t para_index, float *value);
+
+/**
  * @brief Parse string parameter from command string.
  *
  * @param para_index the index of parameter
