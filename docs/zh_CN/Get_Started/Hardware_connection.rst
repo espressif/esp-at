@@ -350,6 +350,10 @@ ESP8266 AT 采用两个 UART 接口：UART0 用于下载固件、发送 AT 命�
 
     默认配置下，基于 ESP8266_RTOS_SDK 的 ESP-WROOM-02 AT 固件具有 swap 功能，会将 RX/TX 与 CTS/RTS 进行交换。若想使用硬件流控功能，您需要断开 UART1, 从 ESP 开发板拆焊 CP2102N 芯片，并将开发板与 USB 转 UART 串口模块的 3.3 V 和 GND 相连进行供电。
 
+    如果您基于 ESP8266 芯片自行设计模组，并且采用 GPIO15/GPIO13 进行 AT 命令通讯，则您需要关注 GPIO5 管脚的走线，具体请参考 `《ESP8266 硬件设计指南》 <https://www.espressif.com/sites/default/files/documentation/esp8266_hardware_design_guidelines_cn.pdf>`_ > 图 ESP8266EX UART SWAP。
+
+    :doc:`ESP8266 AT 发布版固件 <../AT_Binary_Lists/ESP8266_AT_binaries>` 中，上电后会将 GPIO5 输出为高电平，以此控制 GPIO15 和 MCU 的导通状态。
+
 如果需要直接基于 ESP-WROOM-02 或 ESP-WROOM-02D/02U 模组进行连接, 请参考 `《ESP-WROOM-02 技术规格书》 <https://www.espressif.com/sites/default/files/documentation/0c-esp-wroom-02_datasheet_cn.pdf>`_ 或 `《ESP-WROOM-02D/02U 技术规格书》 <https://www.espressif.com/sites/default/files/documentation/esp-wroom-02d_esp-wroom-02u_datasheet_cn.pdf>`_。
 
 更多有关 ESP8266 模组的信息可参考 `ESP8266 文档 <https://www.espressif.com/zh-hans/products/socs/esp8266>`_。

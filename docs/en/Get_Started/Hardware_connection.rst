@@ -350,6 +350,10 @@ ESP8266 AT uses two UART ports: UART0 is used to download firmware and send AT c
 
     The default ESP8266 RTOS AT firmware for ESP-WROOM-02 swaps RX/TX with CTS/RTS. If you want to use hardware flow control, you need to disconnect UART1, desolder CP2102N chip from the ESP board, and connect the board with 3.3 V and GND of the converter to supply power.
 
+    If you design your module based on the ESP8266 chip and use GPIO15/GPIO13 as the AT commands communication, then you need to pay attention to the layout of GPIO5 pin. For more information, please see `ESP8266 Hardware Design Guidelines <https://www.espressif.com/sites/default/files/documentation/esp8266_hardware_design_guidelines_en.pdf>`_ > Figure ESP8266EX UART SWAP.
+
+    In :doc:`ESP8266 AT released firmware <../AT_Binary_Lists/ESP8266_AT_binaries>`, GPIO5 will output high level after power on to control the conduction state between GPIO15 and MCU.
+
 If you want to connect your device directly with ESP-WROOM-02 or ESP-WROOM-02D/02U rather than the ESP board that integrates it, please refer to `ESP-WROOM-02 Datasheet <https://www.espressif.com/sites/default/files/documentation/0c-esp-wroom-02_datasheet_en.pdf>`_ or `ESP-WROOM-02D/02U Datasheet <https://www.espressif.com/sites/default/files/documentation/esp-wroom-02u_esp-wroom-02d_datasheet_en.pdf>`_ for more details.
 
 For more details about ESP8266 modules, please refer to `ESP8266 documentation <https://www.espressif.com/en/products/socs/esp8266>`_.
