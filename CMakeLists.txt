@@ -78,6 +78,14 @@ add_compile_options("-Wno-unused-function")
 add_compile_options("-Wno-unused-but-set-variable")
 add_compile_options("-Wno-format")
 
+# add rainmaker extra components
+if (DEFINED ENV{AT_RAINMAKER_SUPPORT})
+    if (NOT DEFINED ENV{RMAKER_PATH})
+        set(RMAKER_PATH ${CMAKE_SOURCE_DIR}/components/rainmaker/esp-rainmaker)
+        set(EXTRA_COMPONENT_DIRS ${RMAKER_PATH}/components)
+    endif()
+endif()
+
 include(${IDF_PATH}/tools/cmake/project.cmake)
 
 project(esp-at)

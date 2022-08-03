@@ -96,3 +96,11 @@ void at_set_mcu_state_if_sleep(at_sleep_mode_t mode);
  */
 void esp_at_main_preprocess(void);
 #endif
+
+#ifdef CONFIG_AT_RAINMAKER_COMMAND_SUPPORT
+/**
+ * @brief regist at rainmaker command set. If not,you can not use AT rainmaker command
+ *
+ */
+bool esp_at_rainmaker_cmd_regist(void);
+#endif

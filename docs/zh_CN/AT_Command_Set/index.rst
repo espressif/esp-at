@@ -248,3 +248,16 @@ AT 消息
        - Bluetooth LE SMP 配对完成
      * - +BLUFIDATA:<len>,<data>
        - ESP 设备收到从手机端发送的 BluFi 用户自定义数据
+
+  .. only:: esp32c3
+
+    如果使用第三方云命令，ESP-AT 会在系统中报告云重要状态变化或消息。
+
+    .. list-table:: ESP-AT 第三方云消息报告
+      :header-rows: 1
+      :widths: 60 60
+
+      * - ESP-AT 消息报告
+        - 说明
+      * - RainMaker AT 消息
+        - 请参考 :ref:`ESP-AT RainMaker 消息报告（主动） <rm-at-messages>`

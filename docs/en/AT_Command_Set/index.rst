@@ -248,3 +248,16 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - Bluetooth LE SMP pairing completed
      * - +BLUFIDATA:<len>,<data>
        - The ESP device received customized data from the phone over BluFi
+
+  .. only:: esp32c3
+
+    If third-party cloud commands are used, ESP-AT will report cloud important state changes or messages in the system.
+
+    .. list-table:: ESP-AT Message Report for Third-Party Cloud
+      :header-rows: 1
+      :widths: 60 60
+
+      * - ESP-AT Message Report
+        - Description
+      * - RainMaker AT Messages
+        - Please refer to :ref:`ESP-AT RainMaker Message Reports (active) <rm-at-messages>`

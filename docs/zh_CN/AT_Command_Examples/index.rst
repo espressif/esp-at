@@ -16,3 +16,9 @@ AT 命令示例
    HTTP AT 示例 <http_at_examples>
    :esp32: Classic Bluetooth AT 示例 <classic_bluetooth_at_examples>
    Sleep AT 示例 <sleep_at_examples>
+
+.. only:: esp32c3
+
+  第三方云 AT 命令请参考以下示例。
+
+  - :doc:`../Customized_AT_Commands_and_Firmware/RainMaker_AT/RainMaker_AT_Examples`

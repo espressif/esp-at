@@ -16,3 +16,9 @@ AT Command Examples
    HTTP AT Examples <http_at_examples>
    :esp32: Classic Bluetooth AT Examples <classic_bluetooth_at_examples>
    Sleep AT Examples <sleep_at_examples>
+
+.. only:: esp32c3
+
+  Please refer to the following examples for third-party cloud AT commands.
+
+  - :doc:`../Customized_AT_Commands_and_Firmware/RainMaker_AT/RainMaker_AT_Examples`

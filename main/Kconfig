@@ -371,4 +371,10 @@ config AT_QCLOUD_IOT_LOG_LEVEL
     default 3 if AT_QCLOUD_IOT_LOG_LEVEL_INFO
     default 4 if AT_QCLOUD_IOT_LOG_LEVEL_DEBUG
 endmenu
+
+config AT_RAINMAKER_COMMAND_SUPPORT
+    bool "AT RAINMAKER command support."
+    default n
+    depends on AT_ENABLE
+    depends on IDF_TARGET_ESP32C3
 endmenu
