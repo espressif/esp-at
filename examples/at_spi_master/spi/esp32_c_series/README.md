@@ -2,7 +2,7 @@
 
 ## Overview
 
-This code demonstrates how to implement the SPI master to read/write a SPI AT slave. Please refer to [ESP SPI AT](https://docs.espressif.com/projects/esp-at/en/latest/Compile_and_Develop/How_to_implement_SPI_AT.html)  for more information about SPI AT.
+This code demonstrates how to implement the SPI master to read/write a SPI AT slave. Please refer to [ESP SPI AT](https://docs.espressif.com/projects/esp-at/en/latest/esp32c3/Compile_and_Develop/How_to_implement_SPI_AT.html)  for more information about SPI AT.
 
 To facilitate testing, we added an UART task to receive AT commands and print the AT responses. So the schematic of data transmission is as follows：
 
