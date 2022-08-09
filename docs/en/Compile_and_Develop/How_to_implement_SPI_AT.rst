@@ -179,9 +179,9 @@ The 4-byte length ``data_info`` contains the information about the packet to be 
 
 After sending the query request, the slave's status returned will be stored in the 4-byte length ``slave_status``, the specific format is as follows:
 
-1. 0~15 bits: the length of the data the slave want to sent to the master. This field is valid only when the slave is readable.
-2. 16~23 bits: the sequence number of the packet to been sent. The maximum sequence number is 0xFF, and if the number is reached, the sequence number is incremented by 1 from 0.
-3. 24~31 bits: the slave status(readable/writable).
+1. 0~15 bits: the length of the data the slave wants to send to the master. This field is valid only when the slave is readable.
+2. 16~23 bits: the sequence number of the packet to be sent. The maximum sequence number is 0xFF, and if the number is reached, the sequence number is incremented by 1 from 0.
+3. 24~31 bits: the slave status (readable/writable). 0x1 means readable, and 0x2 means writable.
 
 SPI AT Workflow
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -232,10 +232,12 @@ step 2. After receiving the interrupt, master will query the status register of 
 step 3. The master receives the data send by the slave.
 step 4. After receiving all data, the master notifies the slave that the data transmission is finished.
 
-Sample Code of SPI AT Master
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sample Code of SPI Master for SPI AT
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A code example of SPI AT master can be found under the directory :example:` AT ESP32 SPI Master Example <at_spi_master/spi/esp32_c_series>`.
+SPI AT is used as the SPI slave. For a code example of communication between the SPI master and the SPI slave, please refer to :example:`at_spi_master/spi/esp32_c_series`.
+
+**Note** 1. Before developing with MCU, it is highly recommended to run this example using ESP32-C3 or ESP32 emulated MCU as SPI master to make it easier to debug problems.
 
 SPI AT Throughput
 ----------------------
@@ -243,7 +245,7 @@ SPI AT Throughput
 Introduction of the Test
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- An ESP32-DevKitC development board is been used as SPI master. The application runs in the board can be found under the directory :example:`at_spi_master/spi/esp32_c_series` of the `ESP-AT <https://github.com/espressif/esp-at>`_ project. Some related configurations are described below: 
+- An ESP32 or ESP32-C3 development board is been used as SPI master. The application runs in the board can be found under the directory :example:`at_spi_master/spi/esp32_c_series` of the `ESP-AT <https://github.com/espressif/esp-at>`_ project. Some related configurations are described below: 
 
 1. Hardware configuration: The frequency of CPU is 240 MHz, flash SPI mode is in QIO mode with 40 MHz.
 
