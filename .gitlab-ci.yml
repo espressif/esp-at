@@ -62,6 +62,8 @@ default:
   - rm -f at_ota_token.h
   - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_MINI \"$AT_OTA_TOKEN_ESP32C2_MINI\"" >> at_ota_token.h
   - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_MINI \"$AT_OTA_TOKEN_ESP32C2_MINI\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_2MB \"$ESP32C2_2MB_TOKEN\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_2MB \"$ESP32C2_2MB_TOKEN\"" >> at_ota_token.h
   - cd -
 
   - *setup_idf_ci_env
@@ -347,6 +349,14 @@ esp32c2_mini_1_at:
   script:
     - export MODULE_CFG_DIR=module_esp32c2_default
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32C2\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32c2
+
+esp32c2_2mb_at:
+  extends:
+    - .esp_at_build_template_esp32c2
+  script:
+    - export MODULE_CFG_DIR=module_esp32c2-2mb
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C2\", \"module\": \"ESP32C2-2MB\", \"description\": \"\",\"silence\": 0}" > module_info.json'
     - *execute_script_esp32c2
 
 push_master_to_github:

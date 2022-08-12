@@ -18,9 +18,15 @@ if (CONFIG_AT_WEB_SERVER_SUPPORT)
     endif()
 endif()
 
+set(includes "include")
+
+if (CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
+    list(APPEND includes "${CMAKE_SOURCE_DIR}/bootloader_components/include")
+endif()
+
 idf_component_register (
     SRCS ${srcs}
-    INCLUDE_DIRS include
+    INCLUDE_DIRS ${includes}
     PRIV_INCLUDE_DIRS private_include
     REQUIRES ${require_components}
     EMBED_TXTFILES ${embed_txt_files})

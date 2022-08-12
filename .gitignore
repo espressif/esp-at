@@ -1,6 +1,10 @@
 # SDK
 esp-idf
 
+# compress ota
+bootloader_components
+custom_ota_binaries
+
 # VS Code Settings
 .vscode/
 

@@ -43,6 +43,10 @@
 #include "at_ota.h"
 #include "esp_http_client.h"
 
+#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#include "at_compress_ota.h"
+#endif
+
 typedef enum {
     AT_UPGRADE_SYSTEM_FIRMWARE = 0,         /**< upgrade type is system firmware */
     AT_UPGRADE_CUSTOM_PARTITION,            /**< upgrade type is custom partition */
@@ -81,7 +85,7 @@ static bool esp_at_ota_timeout_flag = false;
 static int esp_at_ota_socket_id = -1;
 static esp_at_ota_state_t s_ota_status = ESP_AT_OTA_STATE_IDLE;
 
-#define AT_PARTITION_MAGIC_LEN_MAX  2
+#define AT_PARTITION_MAGIC_LEN_MAX  3
 
 typedef struct at_partition_sig {
     const char *name;
@@ -91,7 +95,11 @@ typedef struct at_partition_sig {
 } at_partition_sig_t;
 
 static const at_partition_sig_t s_at_partition_sig[] = {
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
+    {"ota", 3, 0, {0x45, 0x53, 0x50}},
+#else
     {"ota", 1, 0, {0xE9}},
+#endif
     {"mqtt_ca", 2, 0, {0xF1, 0xF1}},
     {"mqtt_cert", 2, 0, {0xF1, 0xF1}},
     {"mqtt_key", 2, 0, {0xF1, 0xF1}},
@@ -203,7 +211,9 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
     uint32_t module_id = esp_at_get_module_id();
     at_upgrade_type_t upgrade_type = 0;
     const esp_partition_t *at_custom_partition = NULL;
-
+#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+    at_compress_ota_handle_t handle;
+#endif
 #ifdef CONFIG_AT_OTA_SSL_SUPPORT
     esp_tls_t *tls = NULL;
     esp_tls_cfg_t *tls_cfg = NULL;
@@ -371,6 +381,11 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
 
     // search partition
     if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {  // search ota partition
+#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+        if (at_compress_ota_begin(&handle) != ESP_OK) {
+            goto OTA_ERROR;
+        }
+#else
         partition_ptr = (esp_partition_t*)esp_ota_get_boot_partition();
         if (partition_ptr == NULL) {
             ESP_AT_OTA_DEBUG("boot partition NULL!\r\n");
@@ -408,6 +423,7 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
             goto OTA_ERROR;
         }
         ESP_AT_OTA_DEBUG("ready to upgrade system firmware.\r\n");
+#endif
     } else {    // custom partition
         at_custom_partition = esp_at_custom_partition_find(0x0, 0x0, partition_name);
         if (at_custom_partition == NULL) {
@@ -507,11 +523,17 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
                 }
 
                 if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {
+#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+                    if (at_compress_ota_write(&handle, pStr, buff_len) != ESP_OK) {
+                        goto OTA_ERROR;
+                    }
+#else
                     if(esp_ota_write(out_handle, (const void*)pStr, buff_len) != ESP_OK)
                     {
                         ESP_AT_OTA_DEBUG("esp_ota_write failed!\r\n");
                         goto OTA_ERROR;
                     }
+#endif
                 } else {
                     if (esp_partition_write(at_custom_partition, recv_len, pStr, buff_len) != ESP_OK) {
                         ESP_AT_OTA_DEBUG("esp_partition_write failed!\r\n");
@@ -523,10 +545,16 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
             }
         } else if (buff_len > 0 && pkg_body_start) {
             if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {
+#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+                if (at_compress_ota_write(&handle, data_buffer, buff_len) != ESP_OK) {
+                    goto OTA_ERROR;
+                }
+#else
                 if(esp_ota_write( out_handle, (const void*)data_buffer, buff_len) != ESP_OK) {
                     ESP_AT_OTA_DEBUG("esp_ota_write failed!\r\n");
                     goto OTA_ERROR;
                 }
+#endif
             } else {
                 if (esp_partition_write(at_custom_partition, recv_len, data_buffer, buff_len) != ESP_OK) {
                     ESP_AT_OTA_DEBUG("esp_partition_write failed!\r\n");
@@ -550,6 +578,11 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
     }
 
     if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {
+#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+        if (at_compress_ota_end(&handle) != ESP_OK) {
+            goto OTA_ERROR;
+        }
+#else
         if(esp_ota_end(out_handle) != ESP_OK)
         {
             ESP_AT_OTA_DEBUG("esp_ota_end failed!\r\n");
@@ -561,6 +594,7 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
             ESP_AT_OTA_DEBUG("esp_ota_set_boot_partition failed!\r\n");
             goto OTA_ERROR;
         }
+#endif
     }
     esp_at_set_upgrade_state(ESP_AT_OTA_STATE_DONE);
     esp_at_port_write_data((uint8_t*)"+CIPUPDATE:4\r\n",strlen("+CIPUPDATE:4\r\n"));
