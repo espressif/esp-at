@@ -3,31 +3,24 @@ var DOCUMENTATION_VERSIONS = {
                 supported_targets: [ "esp32c2" ]
               },
     VERSIONS: [
-        // tag list
-        { name: "v2.4.1.0", old:false, has_targets: true, supported_targets: [ "esp32c3" ]},
-        { name: "v2.4.0.0", old:false, has_targets: true, supported_targets: [ "esp32" ]},
-        { name: "v2.2.1.0_esp8266", old:false, has_targets: true, supported_targets: [ "esp8266" ]},
-        { name: "v2.1.0.0_esp32s2", old:false, has_targets: true, supported_targets: [ "esp32s2" ]},
-
-        // branch list
         // latest
         { name: "latest", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3" ] },
 
         // v2.4.0.0
-        { name: "release-v2.4.0.0", pre_release: true, has_targets: true, supported_targets: [ "esp32", "esp32c3" ]},
+        { name: "release-v2.4.0.0", has_targets: true, supported_targets: [ "esp32", "esp32c3" ]},
 
         // v2.3.0.0
-        { name: "release-v2.3.0.0_esp32c3", pre_release: true, has_targets: false, supported_targets: [ "esp32c3" ]},
+        { name: "release-v2.3.0.0_esp32c3", has_targets: false, supported_targets: [ "esp32c3" ]},
 
         // v2.2.0.0
-        { name: "release-v2.2.0.0_esp32c3", pre_release: true, has_targets: false, supported_targets: [ "esp32c3" ]},
-        { name: "release-v2.2.0.0_esp32", pre_release: true, has_targets: false, supported_targets: [ "esp32", "esp32s2" ]},
-        { name: "release-v2.2.0.0_esp8266", pre_release: true, has_targets: false, supported_targets: [ "esp8266" ]},
+        { name: "release-v2.2.0.0_esp32c3", has_targets: false, supported_targets: [ "esp32c3" ]},
+        { name: "release-v2.2.0.0_esp32", has_targets: false, supported_targets: [ "esp32", "esp32s2" ]},
+        { name: "release-v2.2.0.0_esp8266", has_targets: false, supported_targets: [ "esp8266" ]},
 
         // v2.1.0.0
-        { name: "release-v2.1.0.0_esp32", pre_release: true, has_targets: false, supported_targets: [ "esp32" ]},
-        { name: "release-v2.1.0.0_esp8266", pre_release: true, has_targets: false, supported_targets: [ "esp8266" ]},
-        { name: "release-v2.1.0.0_esp32s2", pre_release: true, has_targets: false, supported_targets: [ "esp32s2" ]},
+        { name: "release-v2.1.0.0_esp32", has_targets: false, supported_targets: [ "esp32" ]},
+        { name: "release-v2.1.0.0_esp8266", has_targets: false, supported_targets: [ "esp8266" ]},
+        { name: "release-v2.1.0.0_esp32s2", has_targets: false, supported_targets: [ "esp32s2" ]},
     ],
     IDF_TARGETS: [
        { text: "ESP32-C2 (ESP8684)", value: "esp32c2"},
