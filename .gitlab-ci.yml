@@ -60,10 +60,10 @@ default:
 .before_build_esp32c2_series: &before_build_esp32c2_series
   - cd components/at/private_include
   - rm -f at_ota_token.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_MINI \"$AT_OTA_TOKEN_ESP32C2_MINI\"" >> at_ota_token.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_MINI \"$AT_OTA_TOKEN_ESP32C2_MINI\"" >> at_ota_token.h
   - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_2MB \"$ESP32C2_2MB_TOKEN\"" >> at_ota_token.h
   - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_2MB \"$ESP32C2_2MB_TOKEN\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_4MB \"$ESP32C2_4MB_TOKEN\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_4MB \"$ESP32C2_4MB_TOKEN\"" >> at_ota_token.h
   - cd -
 
   - *setup_idf_ci_env
@@ -343,12 +343,12 @@ esp32c3_qcloud:
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3_QCLOUD\", \"description\": \"QCLOUD TX:7 RX:6\",\"silence\": 0}" > module_info.json'
     - *execute_script_esp32c3
 
-esp32c2_mini_1_at:
+esp32c2_4mb_at:
   extends:
     - .esp_at_build_template_esp32c2
   script:
     - export MODULE_CFG_DIR=module_esp32c2_default
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C2\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C2\", \"module\": \"ESP32C2-4MB\", \"description\": \"\",\"silence\": 0}" > module_info.json'
     - *execute_script_esp32c2
 
 esp32c2_2mb_at:

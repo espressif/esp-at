@@ -32,7 +32,7 @@ The ESP-AT project supports multiple modules, and provides configuration for the
      - - :project_file:`module_config/module_esp32_qcloud/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32_qcloud/sdkconfig_silence.defaults`
    * - ESP32-C2
-     - MINI-1
+     - ESP32C2-4MB (all ESP32C2 (ESP8684) series with 4 MB flash)
      - - :project_file:`module_config/module_esp32c2_default/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32c2_default/sdkconfig_silence.defaults`
    * - ESP32-C3

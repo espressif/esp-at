@@ -73,12 +73,12 @@ ESP-AT firmware contains several binaries, and each of them is dedicated to a sp
        * - Modules
          - UART Pins (TX, RX, CTS, RTS)
          - Factory Parameter Bin
-       * - ESP32-C2-MINI-1 Series
+       * - ESP32C2-4MB Series
          - - GPIO7
            - GPIO6
            - GPIO5
            - GPIO4
-         - ``factory_param_MINI-1.bin``
+         - ``factory_param_ESP32C2-4MB.bin``
 
   .. only:: esp32c3
 

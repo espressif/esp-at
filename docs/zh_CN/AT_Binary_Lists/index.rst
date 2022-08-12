@@ -73,12 +73,12 @@ ESP-AT 固件包含了若干个特定功能的二进制文件：
         * - 模组
           - UART 管脚（TX、RX、CTS、RTS）
           - Factory Parameter Bin
-        * - ESP32-C2-MINI-1 系列
+        * - ESP32C2-4MB 系列
           - - GPIO7
             - GPIO6
             - GPIO5
             - GPIO4
-          - ``factory_param_MINI-1.bin``
+          - ``factory_param_ESP32C2-4MB.bin``
 
   .. only:: esp32c3
 

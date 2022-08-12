@@ -12,7 +12,7 @@ on:
         type: string
     # parameters from upstream inherit
     secrets:
-      AT_OTA_TOKEN_ESP32C2_MINI:
+      ESP32C2_4MB_TOKEN:
         required: true
       ESP32C2_2MB_TOKEN:
         required: true
@@ -35,10 +35,10 @@ jobs:
         cd components/at/private_include
         rm -f at_ota_token.h
         echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_MINI \"${{ secrets.AT_OTA_TOKEN_ESP32C2_MINI }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_MINI \"${{ secrets.AT_OTA_TOKEN_ESP32C2_MINI }}\"" >> at_ota_token.h
         echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_2MB \"${{ secrets.ESP32C2_2MB_TOKEN }}\"" >> at_ota_token.h
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_2MB \"${{ secrets.ESP32C2_2MB_TOKEN }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_4MB \"${{ secrets.ESP32C2_4MB_TOKEN }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_4MB \"${{ secrets.ESP32C2_4MB_TOKEN }}\"" >> at_ota_token.h
         cd -
     - name: Install ESP-IDF environment variables
       run: |
