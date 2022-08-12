@@ -35,6 +35,10 @@
 #include "driver/gpio.h"
 #endif
 
+#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#include "at_compress_ota.h"
+#endif
+
 #include "esp_idf_version.h"
 #include "esp_http_client.h"
 #include "esp_https_ota.h"
@@ -380,15 +384,20 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
         .url = (const char*)url,
         .event_handler = _http_event_handler,
         .keep_alive_enable = true,
+        .timeout_ms = 10000,
         .buffer_size = 2048,
     };
 
 #if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
+#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+    esp_err_t ret = at_compress_https_ota(&config);
+#else
     esp_https_ota_config_t ota_config = {
         .http_config = &config,
     };
 
     esp_err_t ret = esp_https_ota(&ota_config);
+#endif
 #else
     esp_err_t ret = esp_https_ota(&config);
 #endif

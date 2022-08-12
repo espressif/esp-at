@@ -9,3 +9,4 @@ setuptools>=21
 cryptography>=2.1.4,<35
 pyyaml
 xlrd
+pycrypto
