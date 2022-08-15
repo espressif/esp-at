@@ -2,7 +2,7 @@ How to Customize Partitions
 ===========================
 
 {IDF_TARGET_AT_SECOND_PARTITION_ADDR: default="undefined", esp32="0x20000", esp32c2="0x1E000", esp32c3="0x1E000"}
-{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c2="ESP32-C2-MINI-1", esp32c3="ESP32-C3-MINI-1"}
+{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c2="ESP8684-MINI-1", esp32c3="ESP32-C3-MINI-1"}
 
 :link_to_translation:`zh_CN:[中文]`
 
@@ -59,7 +59,7 @@ Find the at_customize.csv for your module with reference to the following table.
       - Module
       - Paths
     * - ESP32-C2
-      - MINI-1
+      - ESP32C2-4MB (all ESP32C2 (ESP8684) series with 4 MB flash)
       - :project_file:`module_config/module_esp32c2_default/at_customize.csv`
 
 .. only:: esp32c3
@@ -140,7 +140,7 @@ Download the at_customize.bin into flash. Please refer to :ref:`flash-at-firmwar
       - Address
       - Size
     * - ESP32-C2
-      - MINI-1
+      - ESP32C2-4MB (all ESP32C2 (ESP8684) series with 4 MB flash)
       - {IDF_TARGET_AT_SECOND_PARTITION_ADDR}
       - 0x42000
 

@@ -1,7 +1,7 @@
 如何生成出厂参数二进制文件
 ======================================
 
-{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="MINI-1", esp32c3="MINI-1"}
+{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="ESP32C2-4MB", esp32c3="MINI-1"}
 {IDF_TARGET_AT_PARAMS_ADDR: default="undefined", esp32="0x30000", esp32c2="0x2B000", esp32c3="0x31000"}
 {IDF_TARGET_INDEX: default="undefined", esp32="1", esp32c2="2", esp32c3="3"}
 
@@ -383,7 +383,7 @@ factory_param_data.csv 表格保存了 :ref:`factory-param-type-csv` 中定义�
         - 固件
         - 地址
       * - PLATFORM_ESP32C2
-        - MINI-1 固件
+        - ESP32C2-4MB 固件
         - {IDF_TARGET_AT_PARAMS_ADDR}
 
   .. only:: esp32c3

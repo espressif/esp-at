@@ -2,8 +2,8 @@
 =============================
 
 {IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3"}
-{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="MINI-1", esp32c3="MINI-1"}
-{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32D", esp32c2="ESP32-C2-MINI-1", esp32c3="ESP32-C3-MINI-1"}
+{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="ESP32C2-4MB", esp32c3="MINI-1"}
+{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32D", esp32c2="ESP8684-MINI-1", esp32c3="ESP32-C3-MINI-1"}
 
 :link_to_translation:`en:[English]`
 

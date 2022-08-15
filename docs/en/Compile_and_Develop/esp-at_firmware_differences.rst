@@ -24,7 +24,7 @@ This section describes the differences among AT firmwares of {IDF_TARGET_NAME} s
 
 .. only:: esp32c2
 
-  - ESP32-C2-MINI-1_AT_Bin (referred to as **MINI-1 Bin** in this section);
+  - ESP32C2-4MB_AT_Bin (referred to as **ESP32C2-4MB Bin** in this section);
 
 .. only:: esp32c3
 
@@ -232,7 +232,7 @@ The table lists which command set is supported by default in the official AT fir
     :header-rows: 1
 
     * - Command Set
-      - MINI-1 Bin
+      - ESP32C2-4MB Bin
     * - base
       - |icon-green-check|
     * - user
@@ -389,7 +389,7 @@ Hardware Differences
     :header-rows: 1
 
     * - Hardware
-      - MINI-1
+      - ESP32C2-4MB
     * - Flash
       - 4 MB
     * - PSRAM
@@ -579,10 +579,10 @@ The table lists the {IDF_TARGET_NAME} modules or chips that each AT firmware sup
     :header-rows: 1
 
     * - Module/Chip
-      - MINI-1 Bin
-    * - ESP32-C2-MINI-1
+      - ESP32C2-4MB Bin
+    * - ESP8684 MINI series
       - |icon-green-check|
-    * - ESP32-C2-WROOM-02
+    * - ESP8684 WROOM series
       - |icon-green-check|
 
 .. only:: esp32c3

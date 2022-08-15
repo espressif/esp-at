@@ -106,16 +106,16 @@ jobs:
       artifacts_name: esp32c3-at-full-function-test
     secrets: inherit
 
-  build-esp32c2-mini-1-at:
+  build-esp32c2-4mb-at:
     uses: ./.github/workflows/build_template_esp32c2.yml
     with:
-      module_name: MINI-1
-      artifacts_name: esp32c2-mini-1-at
+      module_name: ESP32C2-4MB
+      artifacts_name: esp32c2-4MB-at
     secrets: inherit
 
   build-esp32c2-2mb-at:
     uses: ./.github/workflows/build_template_esp32c2.yml
     with:
       module_name: ESP32C2-2MB
-      artifacts_name: esp32c2-2mb-at
+      artifacts_name: esp32c2-2MB-at
     secrets: inherit

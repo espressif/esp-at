@@ -24,7 +24,7 @@ ESP-AT 固件差异
 
 .. only:: esp32c2
 
-  - ESP32-C2-MINI-1_AT_Bin（本节简称为 **MINI-1 Bin**）
+  - ESP32C2-4MB_AT_Bin（本节简称为 **ESP32C2-4MB Bin**）
 
 .. only:: esp32c3
 
@@ -232,7 +232,7 @@ ESP-AT 固件差异
     :header-rows: 1
 
     * - 命令集
-      - MINI-1 Bin
+      - ESP32C2-4MB Bin
     * - base
       - |icon-green-check|
     * - user
@@ -389,7 +389,7 @@ ESP-AT 固件差异
     :header-rows: 1
 
     * - 硬件
-      - MINI-1
+      - ESP32C2-4MB
     * - Flash
       - 4 MB
     * - PSRAM
@@ -579,10 +579,10 @@ ESP-AT 固件差异
     :header-rows: 1
 
     * - 模组/芯片
-      - MINI-1 Bin
-    * - ESP32-C2-MINI-1
+      - ESP32C2-4MB Bin
+    * - ESP8684 MINI 系列
       - |icon-green-check|
-    * - ESP32-C2-WROOM-02
+    * - ESP8684 WROOM 系列
       - |icon-green-check|
 
 .. only:: esp32c3
