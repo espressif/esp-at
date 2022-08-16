@@ -10,3 +10,4 @@ cryptography>=2.1.4,<35
 pyyaml
 xlrd
 pycrypto
+idf-component-manager==1.1.4

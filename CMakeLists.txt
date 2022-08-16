@@ -76,6 +76,7 @@ add_compile_options("-Wno-unused-local-typedefs")
 add_compile_options("-Wno-unused-variable")
 add_compile_options("-Wno-unused-function")
 add_compile_options("-Wno-unused-but-set-variable")
+add_compile_options("-Wno-format")
 
 include(${IDF_PATH}/tools/cmake/project.cmake)
 
