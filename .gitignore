@@ -5,6 +5,10 @@ esp-idf
 bootloader_components
 custom_ota_binaries
 
+# managed extra components
+managed_components
+dependencies.lock
+
 # VS Code Settings
 .vscode/
 
