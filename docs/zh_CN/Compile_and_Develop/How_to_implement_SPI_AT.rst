@@ -63,7 +63,16 @@ SPI AT 默认管脚
 使用 SPI AT
 --------------
 
-在使用 SPI AT 时，{IDF_TARGET_NAME} 设备上运行的 SPI slave 工作在半双工通信模式下。通常，在使用 SPI 协议进行半双工通信时，由 SPI master 启动对 SPI slave 的读/写操作，但是，使用 AT 命令进行数据交互时，需要 {IDF_TARGET_NAME} 设备主动能够主动上报一些信息。因此，我们在 SPI master 和 slave 之间添加了一个握手线，来实现 slave 主动向 master 上报信息的功能。使用握手线的具体方法为：
+在使用 SPI AT 时，{IDF_TARGET_NAME} 设备上运行的 SPI slave 工作在半双工通信模式下。
+
+握手线 (handshake line)
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+SPI 是一种 master-slave 结构的外设，所有的传输均由 master 发起，slave 无法主动传输数据。但是，使用 AT 命令进行数据交互时，需要 {IDF_TARGET_NAME} 设备主动能够主动上报一些信息。因此，我们在 SPI master 和 slave 之间添加了一个握手线，来实现 slave 主动向 master 上报信息的功能。
+
+当 slave 需要传输数据时，将会把握手管脚主动拉高，这会在 master 侧产生一个上升沿的 GPIO 中断，master 发起与 slave 的通信，传输完成后，slave 将握手管脚拉低，结束此次通信。 
+
+使用握手线的具体方法为：
 
 - Master 向 slave 发送 AT 数据时，使用握手线的方法为：
 
