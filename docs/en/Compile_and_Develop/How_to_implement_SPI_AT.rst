@@ -63,7 +63,16 @@ You can change the default pin assignments by ``./build.py menuconfig`` > ``Comp
 How to Use SPI AT?
 -----------------------
 
-When SPI AT is used, {IDF_TARGET_NAME} works in SPI half-duplex mode as a slave. Usually, when SPI protocol works in half-duplex mode, it is the SPI master that starts the read/write operation. However, when AT command is used for data interaction, {IDF_TARGET_NAME} (slave) is required to actively report some information. Therefore, we add a handshake line between SPI master and slave to realize the purpose. The specific methods of using handshake line are as follows:
+When SPI AT is used, {IDF_TARGET_NAME} works in SPI half-duplex mode as a slave. 
+
+Handshake Pin
+^^^^^^^^^^^^^^^^
+
+Since SPI is a master-slave model, all transmission is initiated by the master, and the slave cannot actively transmit data. However, when AT command is used for data interaction, {IDF_TARGET_NAME} (slave) is required to actively report some information. Therefore, a handshake line is added between SPI master and slave to achieve the purpose.
+
+When the slave needs to transfer data, it pulls up the handshake pin, generating a rising edge GPIO interrupt on the master side. Then, the master initiates communication with the slave. After the data is transferred, the slave pulls down the handshake pin to end this communication.
+
+The specific methods of using the handshake line are as follows:
 
 - When master sends AT commands to slave via SPI, the workflow with an extra handshake line is as follows:
 
