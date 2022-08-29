@@ -9,5 +9,5 @@ setuptools>=21
 cryptography>=2.1.4,<35
 pyyaml
 xlrd
-pycrypto
+pycryptodome==3.15.0
 idf-component-manager==1.1.4
