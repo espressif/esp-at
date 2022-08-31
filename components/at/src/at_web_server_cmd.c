@@ -101,6 +101,9 @@ static char *s_at_web_redirect_url = NULL;
 #define ESP_AT_WEB_ROOT_DIR_DEFAULT                    CONFIG_AT_WEB_ROOT_DIR
 #define ESP_AT_WEB_REDIRECT_URL_PREFIX_LEN             24
 
+#define ESP_AT_WEB_HEADER_AUTH_NAME                    ("Object")
+#define ESP_AT_UPGRADE_PARTITION_NAME                  ("ota")
+
 extern void at_wifi_reconnect_stop(void);
 extern void at_wifi_reconnect_init(bool force);
 extern esp_err_t at_wifi_connect(void);
@@ -1232,7 +1235,7 @@ static esp_err_t config_wifi_get_handler(httpd_req_t *req)
     char temp_str[32] = {0};
     int32_t json_len = 0;
     char *temp_json_str = ((web_server_context_t*) (req->user_ctx))->scratch;
-    memset(temp_json_str, '\0', ESP_AT_WEB_SCRATCH_BUFSIZE * sizeof(char));
+
     httpd_resp_set_type(req, "application/json");
 
     // according wifi connect status, update state
@@ -1379,27 +1382,6 @@ error_handle:
     return ESP_FAIL;
 }
 
-static esp_err_t ota_info_get_handler(httpd_req_t *req)
-{
-    uint32_t version_uint32 =  esp_at_get_version();
-    int32_t json_len = 0;
-    uint8_t version[4] = {0};
-    char *temp_json_str = ((web_server_context_t*) (req->user_ctx))->scratch;
-    
-    memset(temp_json_str, '\0', ESP_AT_WEB_SCRATCH_BUFSIZE * sizeof(char));
-    memcpy(version, &version_uint32, sizeof(version_uint32));
-
-    httpd_resp_set_type(req, "application/json");
-    json_len += sprintf(temp_json_str + json_len, "{\"state\":0,"); // it means http context OK
-    json_len += sprintf(temp_json_str + json_len, "\"fw_version\":\"%s\",", CONFIG_ESP_AT_FW_VERSION); // it means http context OK
-    json_len += sprintf(temp_json_str + json_len, "\"at_core_version\":\"%d.%d.%d.%d\"}", version[3], version[2], version[1], version[0]);
-
-    ESP_LOGD(TAG, "now ota get json str is %s\n", temp_json_str);
-    httpd_resp_send(req, temp_json_str, strlen(temp_json_str));
-
-    return ESP_OK;
-}
-
 const esp_partition_t *at_web_get_ota_update_partition(void)
 {
     const esp_partition_t *update_partition = NULL;
@@ -1414,9 +1396,15 @@ const esp_partition_t *at_web_get_ota_update_partition(void)
     ESP_LOGI(TAG, "Running partition type %d subtype %d (offset 0x%08x)",
              running->type, running->subtype, running->address);
     
-    update_partition = esp_ota_get_next_update_partition(NULL);
+    update_partition = esp_ota_get_next_update_partition(running);
     ESP_LOGI(TAG, "Writing to partition subtype %d at offset 0x%x",
              update_partition->subtype, update_partition->address);
+
+    if (update_partition->address == running->address) {
+        ESP_LOGE(TAG, "The partition to be updated is the current running partition");
+        update_partition = NULL;
+    }
+
     return update_partition;
 }
 
@@ -1439,7 +1427,7 @@ esp_err_t at_web_ota_end(esp_ota_handle_t handle, const esp_partition_t *partiti
     return err;
 }
 
-static esp_err_t ota_data_post_handler(httpd_req_t *req)
+static esp_err_t ota_upgrade(httpd_req_t *req)
 {
     char *buf = ((web_server_context_t*) (req->user_ctx))->scratch;
     int total_len = req->content_len;
@@ -1455,8 +1443,7 @@ static esp_err_t ota_data_post_handler(httpd_req_t *req)
     }
     ESP_LOGI(TAG, "bin size is %d", total_len);
     memset(buf, 0x0, ESP_AT_WEB_SCRATCH_BUFSIZE * sizeof(char));
-    // Send a message to MCU.
-    esp_at_port_active_write_data((uint8_t*)s_ota_start_response, strlen(s_ota_start_response));
+
     // start ota
     err = esp_ota_begin(update_partition, OTA_SIZE_UNKNOWN, &update_handle);
     if (err != ESP_OK) {
@@ -1497,6 +1484,170 @@ err_handler:
     at_web_response_error(req, HTTPD_500);
     esp_at_port_active_write_data((uint8_t*)s_ota_receive_fail_response, strlen(s_ota_receive_fail_response));
     return ESP_FAIL;
+}
+
+static esp_err_t partition_upgrade(httpd_req_t *req, char *buf, const int total_len, const char *partition_name)
+{
+    int single_received_len = 0;
+    int total_received_len = 0;
+    int remaining_len = total_len;
+    esp_err_t err = ESP_FAIL;
+
+    if ((buf == NULL) || (total_len == 0) || (partition_name == NULL)) {
+        return ESP_FAIL;
+    }
+
+    const esp_partition_t *at_custom_partition = esp_at_custom_partition_find(0x0, 0x0, partition_name);
+    if (at_custom_partition == NULL) {
+        ESP_LOGE(TAG, "no custom partition: %s", partition_name);
+        return ESP_FAIL;
+    }
+
+    if (total_len > at_custom_partition->size) {
+        ESP_LOGE(TAG, "received size %d is not equal %s size %d", total_len, partition_name, at_custom_partition->size);
+        return ESP_FAIL;
+    }
+
+    if (esp_partition_erase_range(at_custom_partition, 0, at_custom_partition->size) != ESP_OK) {
+        ESP_LOGE(TAG, "esp_partition_erase_range failed!");
+        return ESP_FAIL;
+    }
+
+    for (;;) {
+        single_received_len = httpd_req_recv(req, buf, MIN(remaining_len, ESP_AT_WEB_SCRATCH_BUFSIZE));
+        if (single_received_len <= 0) {
+            if (single_received_len == HTTPD_SOCK_ERR_TIMEOUT) {
+                /* Retry if timeout occurred */
+                continue;
+            }
+            ESP_LOGE(TAG, "Failed to receive post ota data, err = %d", single_received_len);
+            return ESP_FAIL;
+        } else {
+            if (esp_partition_write(at_custom_partition, total_received_len, (uint8_t *)buf, single_received_len) != ESP_OK) {
+                ESP_LOGE(TAG, "esp_partition_write failed!");
+                return ESP_FAIL;
+            }
+
+            total_received_len += single_received_len;
+            remaining_len -= single_received_len;
+
+            if (total_received_len == total_len) {
+                break;
+            }
+        }
+    }
+
+    return ESP_OK;
+}
+
+static esp_err_t at_customize_partition_upgrade(httpd_req_t *req, const char* partition_name)
+{
+    esp_err_t err = ESP_OK;
+    char *buf = ((web_server_context_t*) (req->user_ctx))->scratch;
+    int total_len = req->content_len;
+
+    err = partition_upgrade(req, buf, total_len, partition_name);
+    if (err == ESP_OK) {
+        at_web_response_ok(req);
+        esp_at_port_active_write_data((uint8_t*)s_ota_receive_success_response, strlen(s_ota_receive_success_response));
+        return ESP_OK;
+    } else {
+        at_web_response_error(req, HTTPD_500);
+        esp_at_port_active_write_data((uint8_t*)s_ota_receive_fail_response, strlen(s_ota_receive_fail_response));
+        ESP_LOGE(TAG, "%s partition upgrade failed", partition_name);
+        return ESP_FAIL;
+    }
+
+    return ESP_FAIL;
+}
+
+extern const esp_partition_t *esp_at_custom_partition_find_next(const esp_partition_t *start_from);
+static esp_err_t ota_info_get_handler(httpd_req_t *req)
+{
+    uint32_t version_uint32 =  esp_at_get_version();
+    int32_t json_len = 0;
+    uint8_t version[4] = {0};
+    char *temp_json_str = ((web_server_context_t*) (req->user_ctx))->scratch;
+    esp_partition_t *cur_partition = NULL;
+
+    memcpy(version, &version_uint32, sizeof(version_uint32));
+
+    httpd_resp_set_type(req, "application/json");
+
+    // OTA information start
+    json_len += sprintf(temp_json_str + json_len, "{");
+
+    // OTA information
+    json_len += sprintf(temp_json_str + json_len, "\"state\":0,"); // it means http context OK
+    json_len += sprintf(temp_json_str + json_len, "\"fw_version\":\"%s\",", CONFIG_ESP_AT_FW_VERSION); // it means http context OK
+    json_len += sprintf(temp_json_str + json_len, "\"at_core_version\":\"%d.%d.%d.%d\",", version[3], version[2], version[1], version[0]);
+
+    // partition information array start
+    json_len += sprintf(temp_json_str + json_len, "\"partitions\":");
+    json_len += sprintf(temp_json_str + json_len, "[");
+
+    // OTA partition information
+    if (at_web_get_ota_update_partition()) {
+        json_len += sprintf(temp_json_str + json_len, "\"ota\",");
+    }
+
+    // AT customize partition information
+    for (;;) {
+        const esp_partition_t *partition = esp_at_custom_partition_find_next((const esp_partition_t *)cur_partition);
+        if (partition) {
+            json_len += sprintf(temp_json_str + json_len, "\"%s\",", partition->label);
+            cur_partition = (esp_partition_t *)partition;
+        } else {
+            json_len -= 1;
+            break;
+        }
+    }
+
+    // partition information array end
+    json_len += sprintf(temp_json_str + json_len, "]");
+
+    // OTA information end
+    json_len += sprintf(temp_json_str + json_len, "}");
+
+    ESP_LOGD(TAG, "now ota get json str is %s\n", temp_json_str);
+    httpd_resp_send(req, temp_json_str, strlen(temp_json_str));
+
+    return ESP_OK;
+}
+
+static esp_err_t ota_data_post_handler(httpd_req_t *req)
+{
+    char* obj_name = NULL;
+    size_t obj_len = 0;
+    esp_err_t err = ESP_OK;
+
+    // now the key "Object" in header indicates operation object
+    // value "ota" indicates data belong to OTA
+    // others indicate data belong AT customize partition, for example "mqtt_key" represents AT customize mqtt_key partition
+    obj_len = httpd_req_get_hdr_value_len(req, ESP_AT_WEB_HEADER_AUTH_NAME) + 1;
+    if (obj_len) {
+        obj_name = calloc(1, obj_len);
+
+        if (httpd_req_get_hdr_value_str(req, ESP_AT_WEB_HEADER_AUTH_NAME, obj_name, obj_len) != ESP_OK) {
+            ESP_LOGE(TAG, "%s get error", ESP_AT_WEB_HEADER_AUTH_NAME);
+
+            free(obj_name);
+            return ESP_FAIL;
+        }
+
+        // Send a message to MCU.
+        esp_at_port_active_write_data((uint8_t*)s_ota_start_response, strlen(s_ota_start_response));
+
+        if (strncmp(obj_name, ESP_AT_UPGRADE_PARTITION_NAME, strlen(ESP_AT_UPGRADE_PARTITION_NAME)) == 0) {
+            err = ota_upgrade(req);
+        } else {
+            err = at_customize_partition_upgrade(req, obj_name);
+        }
+
+        free(obj_name);
+    }
+
+    return err;
 }
 
 #ifdef CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE
