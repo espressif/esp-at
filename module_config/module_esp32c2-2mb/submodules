@@ -2,4 +2,4 @@
     path = bootloader_components
     url = https://github.com/espressif/esp-bootloader-plus.git
     branch = master
-    commit = b0b07a9d3d16d5459f734e54af30f0adc9e49a5b
+    commit = 3ff7bf9287fba42cd15362b5d47cd78dfefc93f2
