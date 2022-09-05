@@ -125,6 +125,7 @@ default:
       - build/flasher_args.json
       - build/download.config
       - build/factory/*
+      - build/custom_ota_binaries/*
     expire_in: 6 mos
 
 .execute_script_esp32: &execute_script_esp32

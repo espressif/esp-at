@@ -48,13 +48,14 @@ jobs:
         ./build.py build
         # copy artifacts
         upload_dir=${{ inputs.artifacts_name }}
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
+        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory $upload_dir/custom_ota_binaries
         cp build/flash_project_args $upload_dir/download.config
         cp sdkconfig build/*.bin build/*.elf build/*.map build/flasher_args.json $upload_dir/
         cp build/bootloader/*.bin $upload_dir/bootloader/
         cp build/partition_table/*.bin $upload_dir/partition_table/
         cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
         cp build/factory/* $upload_dir/factory
+        cp build/custom_ota_binaries/* $upload_dir/custom_ota_binaries
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
