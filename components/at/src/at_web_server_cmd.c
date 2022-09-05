@@ -641,60 +641,14 @@ err:
     return ESP_FAIL;
 }
 
-// Stupid helper function that returns the value of a hex char.
-static int at_web_char2hex(char c)
+static int at_web_url_decode(char *src, int src_len, char *des, int des_len)
 {
-    if (c >= '0' && c <= '9') {
-        return c - '0';
-    }
+    int len = MIN(src_len, des_len);
 
-    if (c >= 'A' && c <= 'F') {
-        return c - 'A' + 10;
-    }
+    memset(des, 0, des_len);
+    memcpy(des, src, len);
 
-    if (c >= 'a' && c <= 'f') {
-        return c - 'a' + 10;
-    }
-
-    return 0;
-}
-
-/**
- * @brief Decode a percent-encoded value.
- * Takes the valLen bytes stored in val, and converts it into at most retLen bytes that
- * are stored in the ret buffer. Returns the actual amount of bytes used in ret. Also
- * zero-terminates the ret buffer.
- *
- */
-static int at_web_url_decode(char *val, int valLen, char *ret, int retLen)
-{
-    int s = 0, d = 0;
-    int esced = 0, escVal = 0;
-
-    while (s < valLen && d < retLen) {
-        if (esced == 1) {
-            escVal = at_web_char2hex(val[s]) << 4;
-            esced = 2;
-        } else if (esced == 2) {
-            escVal += at_web_char2hex(val[s]);
-            ret[d++] = escVal;
-            esced = 0;
-        } else if (val[s] == '%') {
-            esced = 1;
-        } else if (val[s] == '+') {
-            ret[d++] = ' ';
-        } else {
-            ret[d++] = val[s];
-        }
-
-        s++;
-    }
-
-    if (d < retLen) {
-        ret[d] = 0;
-    }
-
-    return d;
+    return len;
 }
 
 /**
