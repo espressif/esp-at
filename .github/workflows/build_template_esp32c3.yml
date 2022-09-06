@@ -55,17 +55,18 @@ jobs:
     - name: Compile
       run: |
         ./build.py build
-        # copy artifacts
-        upload_dir=${{ inputs.artifacts_name }}
-        mkdir -p $upload_dir $upload_dir/bootloader $upload_dir/partition_table $upload_dir/customized_partitions $upload_dir/factory
-        cp build/flash_project_args $upload_dir/download.config
-        cp sdkconfig build/*.bin build/*.elf build/*.map build/flasher_args.json $upload_dir/
-        cp build/bootloader/*.bin $upload_dir/bootloader/
-        cp build/partition_table/*.bin $upload_dir/partition_table/
-        cp build/customized_partitions/*.bin $upload_dir/customized_partitions/
-        cp build/factory/* $upload_dir/factory
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
         name: ${{ inputs.artifacts_name }}
-        path: ${{ inputs.artifacts_name }}
+        path: |
+          sdkconfig
+          build/*.bin
+          build/*.elf
+          build/*.map
+          build/bootloader/*.bin
+          build/partition_table/*.bin
+          build/customized_partitions/*.bin
+          build/flasher_args.json
+          build/download.config
+          build/factory/*
