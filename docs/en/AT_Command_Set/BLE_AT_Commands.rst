@@ -378,7 +378,7 @@ Enable/disable scanning.
 
 ::
 
-    AT+BLESCAN=<enable>[,<interval>][,<filter_type>,<filter_param>]
+    AT+BLESCAN=<enable>[,<duration>][,<filter_type>,<filter_param>]
 
 **Response:**
 
@@ -395,7 +395,7 @@ Parameters
    -  1: enable continuous scanning.
    -  0: disable continuous scanning.
 
--  **[<interval>]**: optional parameter. Unit: second.
+-  **[<duration>]**: optional parameter. Unit: second.
 
    -  If you want to disable the scanning, this parameter should be omitted.
    -  If you want to enable the scanning, set a value for this parameter:

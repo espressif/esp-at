@@ -378,7 +378,7 @@ Bluetooth® Low Energy AT 命令集
 
 ::
 
-    AT+BLESCAN=<enable>[,<interval>][,<filter_type>,<filter_param>]
+    AT+BLESCAN=<enable>[,<duration>][,<filter_type>,<filter_param>]
 
 **响应：**
 
@@ -395,7 +395,7 @@ Bluetooth® Low Energy AT 命令集
    -  1: 开始持续扫描
    -  0: 停止持续扫描
 
--  **[<interval>]**：扫描持续时间，单位：秒。
+-  **[<duration>]**：扫描持续时间，单位：秒。
 
    -  若设置停止扫描，无需设置本参数；
    -  若设置开始扫描，需设置本参数：
