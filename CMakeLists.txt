@@ -78,10 +78,6 @@ add_compile_options("-Wno-unused-function")
 add_compile_options("-Wno-unused-but-set-variable")
 add_compile_options("-Wno-format")
 
-# Set the special identifier for the esp-at project,
-# then the header of the finally generated image (esp-at.bin) will contain this special identifier.
-set(PROJECT_VER "ESP-AT")
-
 include(${IDF_PATH}/tools/cmake/project.cmake)
 
 project(esp-at)
