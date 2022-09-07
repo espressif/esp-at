@@ -39,6 +39,8 @@ else:
     sys_cmd = 'export'
     sys_delimiter = ':'
 
+at_targets = ['esp32', 'esp32c2', 'esp32c3']
+
 def ESP_LOGI(x):
     print('\033[32m{}\033[0m'.format(x))
 
@@ -172,15 +174,6 @@ def at_submodules_update(platform, module):
     ESP_LOGI('submodules check completed for updates.')
 
 def build_project(platform_name, module_name, silence, build_args):
-    if platform_name == 'ESP32':
-        idf_target = 'esp32'
-    elif platform_name == 'ESP32C3':
-        idf_target = 'esp32c3'
-    elif platform_name == 'ESP32C2':
-        idf_target = 'esp32c2'
-    else:
-        sys.exit('Platform "{}" is not supported'.format(platform_name))
-
     tool = os.path.join('esp-idf', 'tools', 'idf.py')
     if sys.platform == 'win32':
         sys_python_path = sys.executable
@@ -193,7 +186,7 @@ def build_project(platform_name, module_name, silence, build_args):
             sys_python_path = os.path.join(os.environ.get('IDF_PYTHON_ENV_PATH'), 'bin', 'python')
 
     cmd = '{0} ESP_AT_PROJECT_PLATFORM=PLATFORM_{1} && {0} ESP_AT_MODULE_NAME={2} && {0} ESP_AT_PROJECT_PATH={3} && \
-       {0} SILENCE={4} && {5} {6} -DIDF_TARGET={7} {8}'.format(sys_cmd, platform_name, module_name, os.getcwd(), silence, sys_python_path, tool, idf_target, build_args)
+       {0} SILENCE={4} && {5} {6} -DIDF_TARGET={7} {8}'.format(sys_cmd, platform_name, module_name, os.getcwd(), silence, sys_python_path, tool, platform_name.lower(), build_args)
     ret = subprocess.call(cmd, shell = True)
     if ret:
         raise Exception('idf.py build failed')
@@ -403,14 +396,14 @@ def setup_env_variables():
     print('PATH is {}'.format(os.environ.get('PATH')))
     print('IDF_PYTHON_ENV_PATH is {}'.format(os.environ.get('IDF_PYTHON_ENV_PATH')))
 
-def install_compilation_env():
+def install_compilation_env(target):
     # set up ESP-IDF tools
     ESP_LOGI('Ready to set up ESP-IDF tools..')
     cmd = '{} {} install-python-env'.format(sys.executable, os.path.join('esp-idf', 'tools', 'idf_tools.py'))
     ret = subprocess.call(cmd, shell = True)
     if ret:
         raise Exception('set up ESP-IDF python-env failed')
-    cmd = '{} {} install'.format(sys.executable, os.path.join('esp-idf', 'tools', 'idf_tools.py'))
+    cmd = '{} {} install --targets {}'.format(sys.executable, os.path.join('esp-idf', 'tools', 'idf_tools.py'), target)
     ret = subprocess.call(cmd, shell = True)
     if ret:
         raise Exception('set up ESP-IDF toolchains failed')
@@ -478,18 +471,22 @@ def main():
         install_prerequisites()
 
     platform_name, module_name, silence = choose_project_config()
-    ESP_LOGI('Platform name:{}\tModule name:{}\tSilence:{}'.format(platform_name, module_name, silence))
-    build_args = ' '.join(argv)
+    if platform_name.lower() in at_targets:
+        ESP_LOGI('Platform name:{}\tModule name:{}\tSilence:{}'.format(platform_name, module_name, silence))
+    else:
+        ESP_LOGE('Unsupported platform: <{}> till now.'.format(platform_name))
+        sys.exit(2)
 
     at_submodules_update(platform_name, module_name)
 
     if (len(argv) == 1 and sys.argv[1] == 'install'):
         # install tools and packages only after esp-idf cloned
-        install_compilation_env()
+        install_compilation_env(platform_name.lower())
         sys.exit(0)
 
     setup_env_variables()
 
+    build_args = ' '.join(argv)
     build_project(platform_name, module_name, silence, build_args)
 
 if __name__ == '__main__':
