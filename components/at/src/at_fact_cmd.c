@@ -63,7 +63,7 @@ static uint8_t at_setupCmdFactPlcp(uint8_t para_num)
     return ESP_AT_RESULT_CODE_OK;
 }
 
-static esp_at_cmd_struct at_fact_cmd[] = {
+static const esp_at_cmd_struct at_fact_cmd[] = {
     {"+FACTPLCP", NULL, NULL, at_setupCmdFactPlcp, NULL},
 };
 

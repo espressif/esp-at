@@ -864,7 +864,7 @@ _over:
     return ret;
 }
 
-static esp_at_cmd_struct at_upgrade_cmd[] = {
+static const esp_at_cmd_struct at_upgrade_cmd[] = {
     {"+CIUPDATE", NULL, at_queryCmdCipupgrade, at_setupCmdCipupgrade, at_exeCmdCipupgrade},
     {"+CIPFWVER", NULL, at_query_cmd_cipfwver, NULL, NULL},
 };
