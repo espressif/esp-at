@@ -357,7 +357,7 @@ Parameters
 -  **<path>**: path. Maximum length: 32 bytes.
 -  **<reconnect>**:
 
-   -  0: MQTT will not reconnect automatically.
+   -  0: MQTT will not reconnect automatically. If MQTT connection established and then disconnected, you cannot use this command to reestablish MQTT connection. Please send :ref:`AT+MQTTCLEAN=0 <cmd-MQTTCLEAN>` command to clean MQTT connection first, reconfigure the connection parameters, and then establish a new MQTT connection.
    -  1: MQTT will reconnect automatically. It takes more resources.
 
 -  **<state>**: MQTT state.

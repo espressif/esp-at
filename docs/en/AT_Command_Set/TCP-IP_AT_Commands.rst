@@ -2171,7 +2171,7 @@ Parameter
 
 - **<mode>**: the receive mode of socket data. Default: 0.
    
-   - 0: active mode. ESP-AT will send all the received socket data instantly to the host MCU with header "+IPD".
+   - 0: active mode. ESP-AT will send all the received socket data instantly to the host MCU with the header "+IPD". (The socket receive window is 5760 bytes by default. The maximum valid bytes sent to MCU is 2920 bytes each time.)
    - 1: passive mode. ESP-AT will keep the received socket data in an internal buffer (socket receive window, 5760 bytes by default), and wait for the host MCU to read. If the buffer is full, the socket transmission will be blocked for TCP/SSL connections, or data will be lost for UDP connections.
 
 Notes

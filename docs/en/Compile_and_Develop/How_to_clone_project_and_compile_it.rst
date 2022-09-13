@@ -4,6 +4,7 @@ Compile ESP-AT Project
 {IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3"}
 {IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="ESP32C2-4MB", esp32c3="MINI-1"}
 {IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32D", esp32c2="ESP8684-MINI-1", esp32c3="ESP32-C3-MINI-1"}
+{IDF_VER: default="undefined", esp32="4.3", esp32c2="5.0", esp32c3="4.3"}
 
 :link_to_translation:`zh_CN:[中文]`
 
@@ -38,7 +39,7 @@ Step 1. Get Started with ESP-IDF
 
 Get started with ESP-IDF before compiling an ESP-AT project, because ESP-AT is developed based on ESP-IDF.
 
-Please follow `ESP-IDF v4.3 Get Started <https://docs.espressif.com/projects/esp-idf/en/release-v4.3/{IDF_TARGET_PATH_NAME}/get-started/index.html>`_ guide, configure, build, flash onto the {IDF_TARGET_NAME} device of the ``hello_world`` example.
+Please follow `ESP-IDF v${IDF_VER} Get Started <https://docs.espressif.com/projects/esp-idf/en/release-v${IDF_VER}/{IDF_TARGET_PATH_NAME}/get-started/index.html>`_ guide, configure, build, flash onto the {IDF_TARGET_NAME} device of the ``hello_world`` example.
 
 .. note::
 
@@ -64,7 +65,7 @@ To get ESP-AT, navigate to your installation directory and clone the repository 
 
 - Windows
 
-  For {IDF_TARGET_NAME} series of modules, it is recommended that you run `ESP-IDF 4.3 CMD <https://dl.espressif.com/dl/esp-idf/?idf=4.3>`__ as an administrator first.
+  For {IDF_TARGET_NAME} series of modules, it is recommended that you run `ESP-IDF ${IDF_VER} CMD <https://dl.espressif.com/dl/esp-idf/?idf=${IDF_VER}>`__ as an administrator first.
 
   ::
 
@@ -193,7 +194,7 @@ If the ESP-AT bin fails to boot and prints "ota data partition invalid", you sho
 build.py Advanced Usage
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The script ``build.py`` is based on `idf.py <https://docs.espressif.com/projects/esp-idf/en/release-v4.3/{IDF_TARGET_PATH_NAME}/api-guides/build-system.html#idf-py>`__, which means that all ``idf.py <cmd>`` features should be included in ``build.py <cmd>``. You can run the following command for more details.
+The script ``build.py`` is based on `idf.py <https://docs.espressif.com/projects/esp-idf/en/release-v${IDF_VER}/{IDF_TARGET_PATH_NAME}/api-guides/build-system.html#idf-py>`__, which means that all ``idf.py <cmd>`` features should be included in ``build.py <cmd>``. You can run the following command for more details.
 
 - Linux or macOS
 

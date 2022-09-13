@@ -4,6 +4,7 @@
 {IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3"}
 {IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="ESP32C2-4MB", esp32c3="MINI-1"}
 {IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32D", esp32c2="ESP8684-MINI-1", esp32c3="ESP32-C3-MINI-1"}
+{IDF_VER: default="undefined", esp32="4.3", esp32c2="5.0", esp32c3="4.3"}
 
 :link_to_translation:`en:[English]`
 
@@ -38,7 +39,7 @@
 
 在编译 ESP-AT 工程之前，请先学习使用 ESP-IDF，因为 ESP-AT 是基于 ESP-IDF 开发的。
 
-请您根据 `ESP-IDF v4.3 快速入门文档 <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v4.3/{IDF_TARGET_PATH_NAME}/get-started/index.html>`__ 的指导，完成 ``hello_world`` 工程的配置、编译以及下载固件至 {IDF_TARGET_NAME} 开发板等步骤。
+请您根据 `ESP-IDF v${IDF_VER} 快速入门文档 <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v${IDF_VER}/{IDF_TARGET_PATH_NAME}/get-started/index.html>`__ 的指导，完成 ``hello_world`` 工程的配置、编译以及下载固件至 {IDF_TARGET_NAME} 开发板等步骤。
 
 .. note::
 
@@ -64,7 +65,7 @@
 
 - Windows
 
-  对于 {IDF_TARGET_NAME} 系列模组，推荐您以管理员权限运行 `ESP-IDF 4.3 CMD <https://dl.espressif.com/dl/esp-idf/?idf=4.3>`__。
+  对于 {IDF_TARGET_NAME} 系列模组，推荐您以管理员权限运行 `ESP-IDF ${IDF_VER} CMD <https://dl.espressif.com/dl/esp-idf/?idf=${IDF_VER}>`__。
 
   ::
 
@@ -193,7 +194,7 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 build.py 进阶用法
 ^^^^^^^^^^^^^^^^^^^^^^
 
-``build.py`` 脚本是基于 `idf.py <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v4.3/{IDF_TARGET_PATH_NAME}/api-guides/build-system.html#idf-py>`__ 封装的工具（即 ``idf.py <cmd>`` 功能均包含在 ``build.py <cmd>`` 里），您可以运行以下命令查看更多用法。
+``build.py`` 脚本是基于 `idf.py <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v${IDF_VER}/{IDF_TARGET_PATH_NAME}/api-guides/build-system.html#idf-py>`__ 封装的工具（即 ``idf.py <cmd>`` 功能均包含在 ``build.py <cmd>`` 里），您可以运行以下命令查看更多用法。
 
 - Linux 或 macOS
 
