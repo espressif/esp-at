@@ -16,7 +16,7 @@ Wi-Fi AT Commands
 -  :ref:`AT+CWLIF <cmd-LIF>`: Obtain IP address of the station that connects to an {IDF_TARGET_NAME} SoftAP.
 -  :ref:`AT+CWQIF <cmd-QIF>`: Disconnect stations from an {IDF_TARGET_NAME} SoftAP.
 -  :ref:`AT+CWDHCP <cmd-DHCP>`: Enable/disable DHCP.
--  :ref:`AT+CWDHCPS <cmd-DHCPS>`: Query/Set the IP addresses allocated by an {IDF_TARGET_NAME} SoftAP DHCP server.
+-  :ref:`AT+CWDHCPS <cmd-DHCPS>`: Query/Set the IPv4 addresses allocated by an {IDF_TARGET_NAME} SoftAP DHCP server.
 -  :ref:`AT+CWAUTOCONN <cmd-AUTOC>`: Connect to an AP automatically when powered on.
 -  :ref:`AT+CWAPPROTO <cmd-APPROTO>`: Query/Set the 802.11 b/g/n protocol standard of SoftAP mode.
 -  :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`: Query/Set the 802.11 b/g/n protocol standard of station mode.
@@ -804,8 +804,8 @@ Notes
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  This Set Command correlates with the commands that set static IP, such as :ref:`AT+CIPSTA <cmd-IPSTA>` and :ref:`AT+CIPAP <cmd-IPAP>`:
 
-   -  If DHCP is enabled, static IP address will be disabled;
-   -  If static IP address is enabled, DHCP will be disabled;
+   -  If DHCP is enabled, static IPv4 address will be disabled;
+   -  If static IPv4 address is enabled, DHCP will be disabled;
    -  The last configuration overwrites the previous configuration.
 
 Example
@@ -821,7 +821,7 @@ Example
 
 .. _cmd-DHCPS:
 
-:ref:`AT+CWDHCPS <WiFi-AT>`: Query/Set the IP Addresses Allocated by an {IDF_TARGET_NAME} SoftAP DHCP Server
+:ref:`AT+CWDHCPS <WiFi-AT>`: Query/Set the IPv4 Addresses Allocated by an {IDF_TARGET_NAME} SoftAP DHCP Server
 ------------------------------------------------------------------------------------------------------------
 
 Query Command
@@ -845,7 +845,7 @@ Set Command
 
 **Function:**
 
-Set the IP address range of the {IDF_TARGET_NAME} SoftAP DHCP server.
+Set the IPv4 address range of the {IDF_TARGET_NAME} SoftAP DHCP server.
 
 **Command:**
 
@@ -865,18 +865,18 @@ Parameters
 -  **<enable>**:
    
    -  1: Enable DHCP server settings. The parameters below have to be set.
-   -  0: Disable DHCP server settings and use the default IP address range.
+   -  0: Disable DHCP server settings and use the default IPv4 address range.
 
 -  **<lease time>**: lease time. Unit: minute. Range [1,2880].
--  **<start IP>**: start IP address of the IP address range that can be obtained from {IDF_TARGET_NAME} SoftAP DHCP server.
--  **<end IP>**: end IP address of the IP address range that can be obtained from {IDF_TARGET_NAME} SoftAP DHCP server.
+-  **<start IP>**: start IPv4 address of the IPv4 address range that can be obtained from {IDF_TARGET_NAME} SoftAP DHCP server.
+-  **<end IP>**: end IPv4 address of the IPv4 address range that can be obtained from {IDF_TARGET_NAME} SoftAP DHCP server.
 
 Notes
 ^^^^^
 
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  This AT command works only when both SoftAP and DHCP server are enabled for {IDF_TARGET_NAME}.
--  The IP address should be in the same network segment as the IP address of {IDF_TARGET_NAME} SoftAP.
+-  The IPv4 address should be in the same network segment as the IPv4 address of {IDF_TARGET_NAME} SoftAP.
 
 Example
 ^^^^^^^^
@@ -885,7 +885,7 @@ Example
 
     AT+CWDHCPS=1,3,"192.168.4.10","192.168.4.15"
     
-    AT+CWDHCPS=0 // Disable the settings and use the default IP address range.
+    AT+CWDHCPS=0 // Disable the settings and use the default IPv4 address range.
 
 .. _cmd-AUTOC:
 
@@ -1227,8 +1227,8 @@ Notes
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The Set Command correlates with the commands that set DHCP, such as :ref:`AT+CWDHCP <cmd-DHCP>`.
 
-   -  If static IP address is enabled, DHCP will be disabled;
-   -  If DHCP is enabled, static IP address will be disabled;
+   -  If static IPv4 address is enabled, DHCP will be disabled;
+   -  If DHCP is enabled, static IPv4 address will be disabled;
    -  The last configuration overwrites the previous configuration.
 
 Example
@@ -1241,7 +1241,7 @@ Example
 .. _cmd-IPAP:
 
 :ref:`AT+CIPAP <WiFi-AT>`: Query/Set the IP Address of an {IDF_TARGET_NAME} SoftAP
-----------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1264,7 +1264,6 @@ Query the IP address of the {IDF_TARGET_NAME} SoftAP.
     +CIPAP:gateway:<"gateway">
     +CIPAP:netmask:<"netmask">
     +CIPAP:ip6ll:<"ipv6 addr">
-    +CIPAP:ip6gl:<"ipv6 addr">
 
     OK
 
@@ -1298,11 +1297,12 @@ Parameters
 Notes
 ^^^^^
 
+-  The set command is just applied to the IPv4 network, but not the IPv6 network.
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The set command correlates with the commands that set DHCP, such as :ref:`AT+CWDHCP <cmd-DHCP>`.
 
-   -  If static IP address is enabled, DHCP will be disabled;
-   -  If DHCP is enabled, static IP address will be disabled;
+   -  If static IPv4 address is enabled, DHCP will be disabled;
+   -  If DHCP is enabled, static IPv4 address will be disabled;
    -  The last configuration overwrites the previous configuration.
 
 Example

@@ -35,11 +35,11 @@ The AT command firmware allows for rapid integration by providing:
 
 - ESP32-C2 Series
   - **Preferred recommended chip for using ESP-AT on**
-  - The first version of ESP-AT firmware (v2.5.0.0) is planned to be released at the end of August or early September.
+  - The first version of ESP-AT firmware (v2.5.0.0) is planned to be released in October.
 
 - ESP32-C3 Series
   - **Preferred recommended chip for using ESP-AT on**
-  - Recommended released version: [v2.4.1.0](https://github.com/espressif/esp-at/releases/tag/v2.4.1.0)
+  - Recommended released version: [v2.4.2.0](https://github.com/espressif/esp-at/releases/tag/v2.4.2.0)
 
 - ESP32 Series
   - Recommended released version: [v2.4.0.0](https://github.com/espressif/esp-at/releases/tag/v2.4.0.0)
@@ -93,11 +93,11 @@ esp-at 是 MIT 许可证下的免费软件。
 
 - ESP32-C2 系列
   - **ESP-AT 首选推荐芯片**
-  - 计划在 8 月底或 9 月初发布首版 ESP-AT 固件（v2.5.0.0）。
+  - 计划在 10 月发布首版 ESP-AT 固件（v2.5.0.0）。
 
 - ESP32-C3 系列
   - **ESP-AT 首选推荐芯片**
-  - 推荐使用的发布版本：[v2.4.1.0](https://github.com/espressif/esp-at/releases/tag/v2.4.1.0)
+  - 推荐使用的发布版本：[v2.4.2.0](https://github.com/espressif/esp-at/releases/tag/v2.4.2.0)
 
 - ESP32 系列
   - 推荐使用的发布版本：[v2.4.0.0](https://github.com/espressif/esp-at/releases/tag/v2.4.0.0)
