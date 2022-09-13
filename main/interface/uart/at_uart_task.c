@@ -273,6 +273,11 @@ static void at_uart_init(void)
         .stop_bits = CONFIG_AT_UART_DEFAULT_STOPBITS,
         .flow_ctrl = CONFIG_AT_UART_DEFAULT_FLOW_CONTROL,
         .rx_flow_ctrl_thresh = 122,
+#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
+        .source_clk = UART_SCLK_DEFAULT,
+#else
+        .source_clk = UART_SCLK_APB,
+#endif
     };
 
     uart_intr_config_t intr_config = {
