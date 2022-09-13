@@ -9,7 +9,6 @@ variables: &global-variables
   GIT_STRATEGY: clone
   GIT_SUBMODULE_STRATEGY: recursive
   ESPCI_TOKEN: $GITLAB_KEY
-  PYTHON_VER: "3.8"
 
 default:
   retry:
@@ -19,7 +18,6 @@ default:
 
 .setup_idf_ci_env: &setup_idf_ci_env
   - source esp-idf/tools/ci/utils.sh
-  - source esp-idf/tools/ci/setup_python.sh
   - source esp-idf/tools/ci/configure_ci_environment.sh
   - esp-idf/tools/idf_tools.py install
   - esp-idf/tools/idf_tools.py export
@@ -357,7 +355,7 @@ esp32c2_4mb_at_xtal_40mhz_test:
     - .esp_at_build_template_esp32c2
   script:
     # enable 40mhz xtal freq
-    - echo -e "CONFIG_ESP32C2_XTAL_FREQ_40=y" >> module_config/module_esp32c2_default/sdkconfig.defaults
+    - echo -e "CONFIG_XTAL_FREQ_40=y" >> module_config/module_esp32c2_default/sdkconfig.defaults
 
     - export MODULE_CFG_DIR=module_esp32c2_default
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32C2\", \"module\": \"ESP32C2-4MB\", \"description\": \"\",\"silence\": 0}" > module_info.json'
