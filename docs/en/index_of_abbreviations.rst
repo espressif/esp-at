@@ -209,6 +209,15 @@ Index of Abbreviations
 
       更多介绍请参考 :term:`Transmission Mode Shift Diagram`。
 
+    OWE
+      Opportunistic Wireless Encryption. OWE is a Wi-Fi standard which ensures that the communication between each pair of endpoints is protected from other endpoints.
+
+      More details are in `Wikipedia <https://en.wikipedia.org/wiki/Opportunistic_Wireless_Encryption>`__.
+
+      机会性无线加密。OWE 是一种 Wi-Fi 标准，它确保每对端点之间的通信受到保护，不受其他端点的影响。
+
+      更多介绍请参考 `维基百科 <https://en.wikipedia.org/wiki/Opportunistic_Wireless_Encryption>`__。
+
     Passthrough Mode
       Also called as "Passthrough Sending & Receiving Mode".
       
