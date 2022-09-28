@@ -60,6 +60,7 @@ Bluetooth® Low Energy AT Commands
     - :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`: Send Bluetooth LE HID consumer information.
     - :ref:`AT+BLUFI <cmd-BLUFI>`: Start or Stop BluFi.
     - :ref:`AT+BLUFINAME <cmd-BLUFINAME>`: Query/Set BluFi device name.
+    - :ref:`AT+BLUFISEND <cmd-BLUFISEND>`: Send user-customized data over BluFi.
     :esp32c3: - :ref:`AT+BLEPERIODICDATA <cmd-BLEPADATA>`: Set Bluetooth LE periodic advertising data.
     :esp32c3: - :ref:`AT+BLEPERIODICSTART <cmd-BLEPASTART>`: Start Bluetooth LE periodic advertising.
     :esp32c3: - :ref:`AT+BLEPERIODICSTOP <cmd-BLEPASTOP>`: Stop Bluetooth LE periodic advertising.
@@ -2756,6 +2757,57 @@ Example
 
     AT+BLUFINAME="BLUFI_DEV"
     AT+BLUFINAME?
+
+.. _cmd-BLUFISEND:
+
+:ref:`AT+BLUFISEND <BLE-AT>`: Send User-Customized Data over BluFi
+-----------------------------------------------------------------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+ 
+Send user-customized data from the ESP side to a phone over BluFi.
+
+**Command:**
+
+::
+
+    AT+BLUFISEND=<length>
+
+**Response:**
+
+::
+
+    >
+
+The symbol ``>`` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter <length> is met, the transmission starts.
+
+If the data transmission is successful, AT returns:
+
+::
+
+   OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<length>**: customized data length. Unit: byte.
+
+Notes
+^^^^^
+
+-  The length of customized data cannot exceed 600 bytes.
+-  If your ESP chip receives customized data from the phone, the data will be printed in the form of ``+BLUFIDATA:<len>,<data>``.
+
+Example
+^^^^^^^^
+
+::
+
+    AT+BLUFISEND=4 
+    // After the symbol ">" shows, input 4 bytes of data, such as "1234". Then the data will be transmitted automatically.
 
 .. _cmd-BLEPADATA:
 

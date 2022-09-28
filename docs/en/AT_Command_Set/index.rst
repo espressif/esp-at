@@ -246,3 +246,5 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - Received encryption request which index is <conn_index>
      * - +BLEAUTHCMPL:<conn_index>,<enc_result>
        - Bluetooth LE SMP pairing completed
+     * - +BLUFIDATA:<len>,<data>
+       - The ESP device received customized data from the phone over BluFi
