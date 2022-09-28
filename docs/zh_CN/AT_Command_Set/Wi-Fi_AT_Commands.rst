@@ -438,6 +438,10 @@ Wi-Fi AT 命令集
    -  bit 7: 是否显示 ``WPA2_WPA3_PSK`` 认证方式的 AP
    -  bit 8: 是否显示 ``WAPI_PSK`` 认证方式的 AP
 
+   .. only:: esp32c2
+
+       -  bit 9: 是否显示 ``OWE`` 认证方式的 AP
+
 示例
 ^^^^
 
@@ -504,6 +508,7 @@ Wi-Fi AT 命令集
    -  6: WPA3_PSK
    -  7: WPA2_WPA3_PSK
    -  8: WAPI_PSK
+   -  9: OWE
 
 -  **<ssid>**：字符串参数，AP 的 SSID
 -  **<rssi>**：信号强度
