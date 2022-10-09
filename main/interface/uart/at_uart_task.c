@@ -406,6 +406,7 @@ static void at_uart_init(void)
     s_at_uart_port_pin.cts = cts_pin;
     s_at_uart_port_pin.rts = rts_pin;
 
+    printf("AT cmd port:uart%d tx:%d rx:%d cts:%d rts:%d baudrate:%d\r\n", esp_at_uart_port, tx_pin, rx_pin, cts_pin, rts_pin, uart_config.baud_rate);
     xTaskCreate(uart_task, "uTask", 1024, (void*)esp_at_uart_port, 1, NULL);
 }
 
