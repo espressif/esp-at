@@ -27,7 +27,7 @@
 
 #include "esp_at.h"
 
-#if defined (CONFIG_IDF_TARGET_ESP32C3)
+#ifdef CONFIG_AT_BASE_ON_HSPI
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/semphr.h"
@@ -36,7 +36,6 @@
 #include "esp_system.h"
 #include "esp_log.h"
 
-#ifdef CONFIG_AT_BASE_ON_HSPI
 #include "driver/gpio.h"
 #include "driver/spi_slave_hd.h"
 
@@ -89,12 +88,12 @@ static uint8_t spi_slave_recv_seq_num = 0;
 
 static StreamBufferHandle_t spi_slave_rx_ring_buf = NULL;
 static StreamBufferHandle_t spi_slave_tx_ring_buf = NULL;
-static xQueueHandle msg_queue;
+static QueueHandle_t msg_queue;
 static uint8_t initiative_send_flag = 0;
 
 static bool send_queue_error_flag = false;
 
-static xSemaphoreHandle pxMutex;
+static SemaphoreHandle_t pxMutex;
 
 void spi_mutex_lock(void)
 {
@@ -114,7 +113,6 @@ bool cb_master_write_buffer(void* arg, spi_slave_hd_event_t* event, BaseType_t* 
         .direct = SPI_SLAVE_RD,
     };
     if (xQueueSendFromISR(msg_queue, (void*)&spi_msg, &mustYield) != pdPASS) {
-        ets_printf("send queue from isr error\n");
         send_queue_error_flag = true;
     }
     return true;
@@ -181,7 +179,7 @@ static int32_t at_spi_write_data(uint8_t* buf, int32_t len)
         return -1;
     }
 
-    ESP_LOGI(TAG, "Write data len: %d", len);
+    ESP_LOGD(TAG, "Write data len: %d", len);
 
     length = xStreamBufferSend(spi_slave_tx_ring_buf, buf, len, portMAX_DELAY);
 
@@ -425,5 +423,4 @@ void at_custom_init(void)
     }
     xTaskCreate(at_spi_slave_task , "at_spi_task" , 4096 , NULL , 10 , NULL);
 }
-#endif
 #endif
