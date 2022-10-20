@@ -60,6 +60,7 @@ Bluetooth® Low Energy AT 命令集
     - :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`：发送 Bluetooth LE HID consumer 信息
     - :ref:`AT+BLUFI <cmd-BLUFI>`：开启或关闭 BluFi
     - :ref:`AT+BLUFINAME <cmd-BLUFINAME>`：查询/设置 BluFi 设备名称
+    - :ref:`AT+BLUFISEND <cmd-BLUFISEND>`: 发送 BluFi 用户自定义数据
     :esp32c3: - :ref:`AT+BLEPERIODICDATA <cmd-BLEPADATA>`：设置 Bluetooth LE 周期性广播数据
     :esp32c3: - :ref:`AT+BLEPERIODICSTART <cmd-BLEPASTART>`：开启 Bluetooth LE 周期性广播
     :esp32c3: - :ref:`AT+BLEPERIODICSTOP <cmd-BLEPASTOP>`：停止 Bluetooth LE 周期性广播
@@ -2756,6 +2757,57 @@ GATTC 写服务特征值或描述符值
 
     AT+BLUFINAME="BLUFI_DEV"
     AT+BLUFINAME?
+
+.. _cmd-BLUFISEND:
+
+:ref:`AT+BLUFISEND <BLE-AT>`: 发送 BluFi 用户自定义数据
+---------------------------------------------------------------------------
+
+设置命令
+^^^^^^^^
+
+**功能：**
+
+发送 BluFi 用户自定义数据给手机端
+
+**命令：**
+
+::
+
+    AT+BLUFISEND=<length>
+
+**Response:**
+
+::
+
+    >
+
+符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，开始传输数据。
+
+若数据传输成功，则提示：
+
+::
+
+   OK
+
+参数
+^^^^
+
+-  **<length>**：数据长度，单位：字节。
+
+说明
+^^^^
+
+-  自定义数据的长度不能超过 600 字节。
+-  如果 ESP 收到手机发来的用户自定义数据，那么会以 ``+BLUFIDATA:<len>,<data>`` 格式打印。
+
+示例
+^^^^
+
+::
+
+    AT+BLUFISEND=4
+    // 提示 ">" 符号后，输入 4 字节的数据即可，如 "1234"，然后数据会被自动发送给手机
 
 .. _cmd-BLEPADATA:
 

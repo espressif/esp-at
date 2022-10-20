@@ -246,3 +246,5 @@ AT 消息
        - 收到来自 Bluetooth LE 连接的加密配对请求
      * - +BLEAUTHCMPL:<conn_index>,<enc_result>
        - Bluetooth LE SMP 配对完成
+     * - +BLUFIDATA:<len>,<data>
+       - ESP 设备收到从手机端发送的 BluFi 用户自定义数据
