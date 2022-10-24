@@ -231,6 +231,7 @@ static void at_spi_slave_task(void* pvParameters)
     while (1) {
         memset(data_buf, 0x0, SPI_DMA_MAX_LEN);
         memset(&trans_msg, 0x0, sizeof(spi_msg_t));
+        gpio_set_level(SPI_SLAVE_HANDSHARK_GPIO, 0);
 
         xQueueReceive(msg_queue, (void*)&trans_msg, (TickType_t)portMAX_DELAY);
         ESP_LOGD(TAG, "Direct: %d", trans_msg.direct);
@@ -239,8 +240,6 @@ static void at_spi_slave_task(void* pvParameters)
             // Tell master transmit mode is master send
             write_transmit_len(SPI_SLAVE_RD, SPI_DMA_MAX_LEN); 
 
-            gpio_set_level(SPI_SLAVE_HANDSHARK_GPIO, 0);
-            
             memset(&slave_trans, 0x0, sizeof(spi_slave_hd_data_t));
             slave_trans.data = data_buf;
             slave_trans.len = SPI_DMA_MAX_LEN;
@@ -270,7 +269,6 @@ static void at_spi_slave_task(void* pvParameters)
                 continue;
             }
 
-            gpio_set_level(SPI_SLAVE_HANDSHARK_GPIO, 0);
             tmp_send_len = xStreamBufferReceive(spi_slave_tx_ring_buf, (void*) data_buf, send_len, 0);
 
             if (send_len != tmp_send_len) {
