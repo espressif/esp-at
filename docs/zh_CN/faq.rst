@@ -148,12 +148,12 @@ AT 命令中串口波特率是否可以修改？（默认：115200）
   - 可以通过命令 :ref:`AT+SYSMSG <cmd-SYSMSG>` 进行配置，可设置 AT+SYSMSG=4，如果连接的热点断开，串口会上报 "WIFI DISCONNECT\r\n"。
   - 需要注意的是，该命令在 AT v2.1.0 之后添加，v2.1.0 及之前的版本无法使用该命令。
 
-.. only:: esp32 or esp32c3
+.. only:: esp32
 
-  ADV 广播参数超过 32 字节之后应该如何设置？
+  ADV 广播参数超过 31 字节之后应该如何设置？
   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令支持 adv 广播参数最大为 32 字节，如果需要设置更长的广播参数，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 命令来设置。
+    :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令支持 adv 广播参数最大为 31 字节，如果需要设置更长的广播参数，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 命令来设置。
 
 硬件
 ----

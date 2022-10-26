@@ -582,16 +582,18 @@ Parameters
 
 -  **[<peer_addr>]**: remote Bluetooth LE address.
 
--  **[<primary_phy>]**: advertising primary PHY. Default: 1M PHY.
+.. only:: esp32c3
 
-   -  1: 1M PHY
-   -  3: Coded PHY
-
--  **[<secondary_phy>]**: advertising secondary PHY. Default: 1M PHY.
-
-   -  1: 1M PHY
-   -  2: 2M PHY
-   -  3: Coded PHY
+  -  **[<primary_phy>]**: advertising primary PHY. Default: 1M PHY.
+  
+     -  1: 1M PHY
+     -  3: Coded PHY
+  
+  -  **[<secondary_phy>]**: advertising secondary PHY. Default: 1M PHY.
+  
+     -  1: 1M PHY
+     -  2: 2M PHY
+     -  3: Coded PHY
 
 Note
 ^^^^^
@@ -638,13 +640,23 @@ Set advertising data.
 Parameter
 ^^^^^^^^^^
 
--  **<adv_data>**: advertising data in HEX string. For example, to set the advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATA="1122334455"``.
+.. only:: esp32c3
+
+  -  **<adv_data>**: advertising data in HEX string. For example, to set the advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATA="1122334455"``. The maximum length is 119 bytes.
+
+.. only:: esp32
+
+  -  **<adv_data>**: advertising data in HEX string. For example, to set the advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATA="1122334455"``. The maximum length is 31 bytes.
 
 Note
 ^^^^^
 
 -  If advertising data is preset by command :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power>, it will be overwritten by this command.
 -  If you run this command to modify the device name, it is recommended to also execute the :ref:`AT+BLENAME <cmd-BNAME>` command to set the same device name afterwards.
+
+  .. only:: esp32c3
+
+    -  Please set the Bluetooth LE advertising parameters by the :ref:`AT+BLEADVPARAM <cmd-BADVP>` command before you use the :ref:`AT+BLEADVDATA <cmd-BADVD>` command.
 
 Example
 ^^^^^^^^
