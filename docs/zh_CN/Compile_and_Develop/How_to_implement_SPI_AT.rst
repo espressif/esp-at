@@ -241,6 +241,8 @@ SPI AT 数据交互流程主要分为两个方面：
 3. master 开始接收来自 slave 的数据。
 4. 数据接收完毕后，master 向 slave 发送一条代表接收数据结束的消息。
 
+**说明** 1. 为了方便理解，我们还以发送 AT 命令为例，提供了通信涉及的所有交互流程和逻辑分析仪数据，请参考 :example_file:`at_spi_master/spi/esp32_c_series/README.md`。
+
 SPI AT 对应的 SPI master 侧示例代码
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
