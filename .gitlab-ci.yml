@@ -69,7 +69,7 @@ default:
 
 .esp_at_build_template:
   stage: build
-  image: $CI_DOCKER_REGISTRY/esp-env-v4.4:1
+  image: $CI_DOCKER_REGISTRY/esp-env-v5.0:2
   tags:
     - build
   variables:
@@ -130,7 +130,8 @@ default:
   - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/${MODULE_CFG_DIR}/IDF_VERSION
   - mkdir build
   - cp module_info.json build/module_info.json
-  - ./build.py reconfigure || true
+  - export HAS_IDF_PREREQUISITES=1
+  - ./build.py install
   - rm -rf build && mkdir build
   - mv module_info.json build/module_info.json
   - *before_build_esp32_series
@@ -140,7 +141,8 @@ default:
   - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/${MODULE_CFG_DIR}/IDF_VERSION
   - mkdir build
   - cp module_info.json build/module_info.json
-  - ./build.py reconfigure || true
+  - export HAS_IDF_PREREQUISITES=1
+  - ./build.py install
   - rm -rf build && mkdir build
   - mv module_info.json build/module_info.json
   - *before_build_esp32c3_series
@@ -408,6 +410,7 @@ esp32_demo:
     # fetch the submodules (& if necessary re-fetch repo) from gitlab
     - time ./tools/ci/get-full-sources.sh
     - git submodule update --init
+    - pip install -r requirements.txt
     - cd -
 
     - cd examples/at_sdio_host/ESP32
