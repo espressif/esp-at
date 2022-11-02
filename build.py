@@ -173,6 +173,19 @@ def at_submodules_update(platform, module):
 
     ESP_LOGI('submodules check completed for updates.')
 
+def at_patch_if_config(platform, module):
+    config_dir = os.path.join(os.getcwd(), 'module_config', 'module_{}'.format(module.lower()))
+    if not os.path.exists(config_dir):
+        config_dir = os.path.join(os.getcwd(), 'module_config',  'module_{}_default'.format(platform.lower()))
+
+    fabspath = os.path.join(config_dir, 'patch.py')
+    if os.path.exists(fabspath):
+        cmd = 'python {}'.format(fabspath)
+        if subprocess.call(cmd, shell = True):
+            raise Exception('apply patch {} failed'.format(fabspath))
+
+    ESP_LOGI('patches check completed for updates.')
+
 def build_project(platform_name, module_name, silence, build_args):
     tool = os.path.join('esp-idf', 'tools', 'idf.py')
     if sys.platform == 'win32':
@@ -478,6 +491,9 @@ def main():
         sys.exit(2)
 
     at_submodules_update(platform_name, module_name)
+
+    # apply possible patches to source code
+    at_patch_if_config(platform_name, module_name)
 
     if (len(argv) == 1 and sys.argv[1] == 'install'):
         # install tools and packages only after esp-idf cloned
