@@ -40,6 +40,7 @@ else:
     sys_delimiter = ':'
 
 at_targets = ['esp32', 'esp32c2', 'esp32c3']
+at_macro_pairs = []
 
 def ESP_LOGI(x):
     print('\033[32m{}\033[0m'.format(x))
@@ -150,6 +151,7 @@ def at_parse_submodules(submodules_file, pairs):
     config = configparser.ConfigParser()
     config.read(submodules_file)
     for item in config.sections():
+        at_macro_pairs.append('AT_' + item.split()[1].strip('"').upper() + '_SUPPORT')
         pairs.append((config[item]['path'], config[item]['url'], config[item]['branch'], config[item]['commit'], 0))
 
 def at_submodules_update(platform, module):
@@ -198,8 +200,16 @@ def build_project(platform_name, module_name, silence, build_args):
         else:
             sys_python_path = os.path.join(os.environ.get('IDF_PYTHON_ENV_PATH'), 'bin', 'python')
 
-    cmd = '{0} ESP_AT_PROJECT_PLATFORM=PLATFORM_{1} && {0} ESP_AT_MODULE_NAME={2} && {0} ESP_AT_PROJECT_PATH={3} && \
-       {0} SILENCE={4} && {5} {6} -DIDF_TARGET={7} {8}'.format(sys_cmd, platform_name, module_name, os.getcwd(), silence, sys_python_path, tool, platform_name.lower(), build_args)
+    exp_macro_cmd = ''
+    for item in at_macro_pairs:
+        exp_macro_cmd += '{} {}={} &&'.format(sys_cmd, item, item)
+    exp_macro_cmd += '{} ESP_AT_PROJECT_PLATFORM=PLATFORM_{} &&'.format(sys_cmd, platform_name)
+    exp_macro_cmd += '{} ESP_AT_MODULE_NAME={} &&'.format(sys_cmd, module_name)
+    exp_macro_cmd += '{} ESP_AT_PROJECT_PATH={} &&'.format(sys_cmd, os.getcwd())
+    exp_macro_cmd += '{} SILENCE={}'.format(sys_cmd, silence)
+
+    compile_cmd = '{} {} -DIDF_TARGET={} {}'.format(sys_python_path, tool, platform_name.lower(), build_args)
+    cmd = exp_macro_cmd + '&&' + compile_cmd
     ret = subprocess.call(cmd, shell = True)
     if ret:
         raise Exception('idf.py build failed')
