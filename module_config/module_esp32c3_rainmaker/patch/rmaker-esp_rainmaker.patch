@@ -1,0 +1,26 @@
+diff --git a/components/esp_rainmaker/src/core/esp_rmaker_param.c b/components/esp_rainmaker/src/core/esp_rmaker_param.c
+index 36575ef..6b403c0 100644
+--- a/components/esp_rainmaker/src/core/esp_rmaker_param.c
++++ b/components/esp_rainmaker/src/core/esp_rmaker_param.c
+@@ -59,6 +59,15 @@ static const char *cb_srcs[ESP_RMAKER_REQ_SRC_MAX] = {
+     [ESP_RMAKER_REQ_SRC_LOCAL] = "Local",
+ };
+ 
++esp_rmaker_val_type_t esp_rmaker_param_get_data_type(const esp_rmaker_param_t *param)
++{
++    if (!param) {
++        ESP_LOGE(TAG, "Param handle cannot be NULL.");
++        return RMAKER_VAL_TYPE_INVALID;
++    }
++    return ((_esp_rmaker_param_t *)param)->val.type;
++}
++
+ const char *esp_rmaker_device_cb_src_to_str(esp_rmaker_req_src_t src)
+ {
+     if ((src >= 0) && (src < ESP_RMAKER_REQ_SRC_MAX)) {
+diff --git a/components/rmaker_common b/components/rmaker_common
+--- a/components/rmaker_common
++++ b/components/rmaker_common
+@@ -1 +1 @@
+-Subproject commit a64ad7a6806c242de468a8fa72e801d634403442
++Subproject commit a64ad7a6806c242de468a8fa72e801d634403442-dirty

@@ -344,6 +344,14 @@ esp32c3_qcloud:
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3_QCLOUD\", \"description\": \"QCLOUD TX:7 RX:6\",\"silence\": 0}" > module_info.json'
     - *execute_script_esp32c3
 
+esp32c3_rainmaker:
+  extends:
+    - .esp_at_build_template
+  script:
+    - export MODULE_CFG_DIR=module_esp32c3_rainmaker
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"ESP32C3_RAINMAKER\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32c3
+
 esp32c2_4mb_at:
   extends:
     - .esp_at_build_template_esp32c2

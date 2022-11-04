@@ -1,0 +1,5 @@
+[submodule "rainmaker"]
+    path = components/rainmaker/esp-rainmaker
+    url = https://github.com/espressif/esp-rainmaker.git
+    branch = master
+    commit = e05c4ed6b708dcf3eebfce4ce37a49250bb3d10f
