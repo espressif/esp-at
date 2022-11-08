@@ -75,6 +75,7 @@
 #define RAINMAKER_PARAM_STR_LIST_ARAAY_MAX          (RAINMAKER_PARAM_STR_LIST_MAX_SETS + 1) // +1 for NULL termination
 
 #define RAINMAKER_PASSTHROUGH_BUFFER_LEN            (2048)
+#define RAINMAKER_PASSTHROUGH_MAX_PARAM_NUMS        (1)
 
 #define RAINMAKER_NODE_NAME                         ("ESP RainMaker AT Node")
 #define RAINMAKER_NODE_TYPE                         ("AT Node")
@@ -108,6 +109,7 @@ typedef enum {
 } rm_connect_status_t;
 
 static rm_connect_status_t rm_connect_status = RM_CONNECT_STATUS_OFF;
+static uint32_t s_rm_param_nums = 0;
 
 extern esp_rmaker_val_type_t esp_rmaker_param_get_data_type(const esp_rmaker_param_t *param);
 extern esp_err_t esp_rmaker_reset_user_node_mapping(void);
@@ -688,8 +690,6 @@ static uint8_t at_setup_cmd_rmdev(uint8_t para_num)
         s_profile.device_type_code = rmaker_get_device_code(device_type);
 
         xEventGroupSetBits(s_rm_event_group, RM_DEVICE_ADDED_EVENT);
-
-        return ESP_AT_RESULT_CODE_OK;
     } else {
         // unique_name
         if (esp_at_get_para_as_str(cnt++, &unique_name) == ESP_AT_PARA_PARSE_RESULT_FAIL) {
@@ -709,9 +709,12 @@ static uint8_t at_setup_cmd_rmdev(uint8_t para_num)
         esp_rmaker_device_delete(device);
 
         xEventGroupClearBits(s_rm_event_group, RM_DEVICE_ADDED_EVENT);
-
-        return ESP_AT_RESULT_CODE_OK;
     }
+
+    /* Reset the number of parameters in the device */
+    s_rm_param_nums = 0;
+
+    return ESP_AT_RESULT_CODE_OK;
 }
 
 static uint8_t at_setup_cmd_rmparam(uint8_t para_num)
@@ -789,6 +792,7 @@ static uint8_t at_setup_cmd_rmparam(uint8_t para_num)
                                 (const char *)param_type,
                                 val,
                                 properties);
+
     // Add ui type
     esp_rmaker_param_add_ui_type(param, (const char *)ui_type);
 
@@ -799,8 +803,11 @@ static uint8_t at_setup_cmd_rmparam(uint8_t para_num)
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
-    // Passthrough mode only allows one parameter
-    if (!s_profile.passthrough_param_handle) {
+    /* Record the number of parameters, which will be checked in the transmission mode */
+    s_rm_param_nums++;
+
+    /* Passthrough mode only allows one parameter */
+    if (s_rm_param_nums == RAINMAKER_PASSTHROUGH_MAX_PARAM_NUMS) {
         s_profile.passthrough_param_handle = param;
     } else {
         s_profile.passthrough_param_handle = NULL;
@@ -1393,9 +1400,9 @@ static uint8_t at_setup_cmd_rmmode(uint8_t para_num)
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
-    if (!s_profile.passthrough_param_handle) {
-        //TODO: error code, Multiple parameters, not supported
-        return ESP_AT_RESULT_CODE_FAIL;
+    /* Passthrough only supports one parameter in the device */
+    if ((mode == AT_RM_PASSTHROUGH) && (s_rm_param_nums != RAINMAKER_PASSTHROUGH_MAX_PARAM_NUMS)) {
+        return ESP_AT_RESULT_CODE_ERROR;
     }
 
     // parameters are ready
@@ -1481,22 +1488,21 @@ static uint8_t at_setup_cmd_rmsend(uint8_t para_num)
     while (xSemaphoreTake(s_at_rainmaker_sync_sema, portMAX_DELAY)) {
         had_received_len += esp_at_port_read_data(buf + had_received_len, len - had_received_len);
         if (had_received_len == len) {
-            esp_at_port_exit_specific();
-
             snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\nRecv %d bytes\r\n", len);
             esp_at_port_write_data(buffer, strlen((char *)buffer));
+
+            esp_at_port_exit_specific();
 
             /* Report to the cloud */
             esp_rmaker_param_val_t val;
             memset(&val, 0, sizeof(esp_rmaker_param_val_t));
-            val.type = esp_rmaker_param_get_data_type(s_profile.passthrough_param_handle);
+            val.type = esp_rmaker_param_get_data_type(param);
             rmaker_structure_data(val.type, buf, &val);
-            esp_rmaker_param_update_and_report(s_profile.passthrough_param_handle, val);
+            esp_rmaker_param_update_and_report(param, val);
 
             had_received_len = esp_at_port_get_data_length();
             if (had_received_len > 0) {
-                snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\nbusy p...\r\n");
-                esp_at_port_write_data(buffer, strlen((char *)buffer));
+                esp_at_port_recv_data_notify(had_received_len, portMAX_DELAY);
             }
 
             break;
@@ -1619,11 +1625,11 @@ void *esp_rmaker_factory_get(const char *key)
     esp_err_t err;
 
     if ((err = nvs_open(RAINMAKER_PRE_NAMESPACE, NVS_READONLY, &handle)) == ESP_OK) {
-        ESP_LOGI(TAG, "NVS open for %s %s success", RAINMAKER_PRE_NAMESPACE, key);
+        ESP_LOGD(TAG, "NVS open for %s %s success", RAINMAKER_PRE_NAMESPACE, key);
     } else {
         if ((err = nvs_open_from_partition(RAINMAKER_PRE_CFG_PARTITION, RAINMAKER_PRE_NAMESPACE,
                                            NVS_READONLY, &handle)) != ESP_OK) {
-            ESP_LOGE(TAG, "NVS open for %s %s %s failed with error %d", RAINMAKER_PRE_CFG_PARTITION, RAINMAKER_PRE_NAMESPACE, key, err);
+            ESP_LOGD(TAG, "NVS open for %s %s %s failed with error %d", RAINMAKER_PRE_CFG_PARTITION, RAINMAKER_PRE_NAMESPACE, key, err);
             return NULL;
         }
     }
