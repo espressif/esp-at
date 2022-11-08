@@ -472,7 +472,21 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
 
-#. Set Bluetooth LE advertising data.
+#. {IDF_TARGET_NAME} Bluetooth LE server setting advertising parameters.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADVPARAM=50,50,0,0,7,0,,
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE server setting advertising data.
 
    Command:
 
@@ -1257,7 +1271,21 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
 
-#. Set Bluetooth LE advertising data.
+#. {IDF_TARGET_NAME} Bluetooth LE server setting advertising parameters.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADVPARAM=50,50,0,0,7,0,,
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE server setting advertising data.
 
    Command:
 
@@ -1520,7 +1548,7 @@ The example shows how to establish SPP connection between an {IDF_TARGET_NAME} d
 .. Important::
   In the following steps, the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE server`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE server, and those Bluetooth LE client only need to be executed at the Bluetooth debugging assistant of the mobile phone.
 
-#. First, you need to download the Bluetooth LE debugging assistant on the mobile phone, such as nRF Connect app (Android) and LightBlue (iOS).
+#. First, you need to download the Bluetooth LE debugging assistant on the mobile phone, such as LightBlue.
 
 #. Bluetooth LE initialization.
 
@@ -1585,7 +1613,21 @@ The example shows how to establish SPP connection between an {IDF_TARGET_NAME} d
 
    - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
 
-#. Set Bluetooth LE advertising data.
+#. {IDF_TARGET_NAME} Bluetooth LE server setting advertising parameters.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADVPARAM=50,50,0,0,7,0,,
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE server setting advertising data.
 
    Command:
 
@@ -1615,7 +1657,7 @@ The example shows how to establish SPP connection between an {IDF_TARGET_NAME} d
 
 #. Establish the Bluetooth LE connection.
 
-   Open the nRF debugging assistant on your mobile phone, and open SCAN to start scanning. When you find the MAC address of the {IDF_TARGET_NAME} Bluetooth LE server, click ``CONNECT``. Then, {IDF_TARGET_NAME} should print the log similar to ``+BLECONN:0,"60:51:42:fe:98:aa"``, which indicates that Bluetooth LE connection has been established.
+   Open the LightBlue APP on your mobile phone, and open SCAN to start scanning. When you find the MAC address of the {IDF_TARGET_NAME} Bluetooth LE server, click ``CONNECT``. Then, {IDF_TARGET_NAME} should print the log similar to ``+BLECONN:0,"60:51:42:fe:98:aa"``, which indicates that Bluetooth LE connection has been established.
 
 #. {IDF_TARGET_NAME} Bluetooth LE server discovers local services.
 
@@ -1668,13 +1710,9 @@ The example shows how to establish SPP connection between an {IDF_TARGET_NAME} d
 
      OK
 
-#. Bluetooth LE client discovers services.
-
-   Click ``UnKnown Service`` of ``UUID:0xA002`` on the mobile phone nRF debugging assistant client.
-
 #. {IDF_TARGET_NAME} Bluetooth LE client discovers characteristics.
 
-   In the next-level option of ``UnKnown Service`` of ``UUID:0xA002`` of the mobile phone nRF debugging assistant client, click the right button of the service feature whose Properties is NOTIFY or INDICATE (here ESP-AT default Properties The service characteristics of NOTIFY or INDICATE are 0xC305 and 0xC306) and start to listen for the service characteristics of NOTIFY or INDICATE.
+   Click the button of the service feature whose Properties is NOTIFY or INDICATE in the mobile phone LightBlue client (here ESP-AT default Properties The service characteristics of NOTIFY or INDICATE are 0xC305 and 0xC306) and start to listen for the service characteristics of NOTIFY or INDICATE.
 
 #. {IDF_TARGET_NAME} Bluetooth LE server configures Bluetooth LE SPP.
 
@@ -1712,8 +1750,8 @@ The example shows how to establish SPP connection between an {IDF_TARGET_NAME} d
 
 #. Bluetooth LE client sends data.
 
-   In the nRF debugging assistant client, select the 0xC304 service characteristic value and send the data ``test`` to the {IDF_TARGET_NAME} Bluetooth LE server. Then, the {IDF_TARGET_NAME} Bluetooth LE server can receive the ``test``.
+   In the LightBlue client, select the 0xC304 service characteristic value and send the data ``test`` to the {IDF_TARGET_NAME} Bluetooth LE server. Then, the {IDF_TARGET_NAME} Bluetooth LE server can receive the ``test``.
 
 #. {IDF_TARGET_NAME} Bluetooth LE server sends data.
 
-   The {IDF_TARGET_NAME} Bluetooth LE server sends ``test``, and then the nRF debugging assistant client can receive ``test``.
+   The {IDF_TARGET_NAME} Bluetooth LE server sends ``test``, and then the LightBlue client can receive ``test``.

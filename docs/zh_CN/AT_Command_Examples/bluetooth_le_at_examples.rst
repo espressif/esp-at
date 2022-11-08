@@ -472,7 +472,21 @@ Bluetooth LE 服务端读写服务特征值
 
    - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
 
-#. 设置 Bluetooth LE 广播数据。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播参数。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADVPARAM=50,50,0,0,7,0,,
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播数据。
 
    命令：
 
@@ -1257,7 +1271,21 @@ Bluetooth LE 连接加密
 
    - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
 
-#. 设置 Bluetooth LE 广播数据。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播参数。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADVPARAM=50,50,0,0,7,0,,
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播数据。
 
    命令：
 
@@ -1520,7 +1548,7 @@ Bluetooth LE 连接加密
 .. Important::
   步骤中以 ``{IDF_TARGET_NAME} Bluetooth LE 服务端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 服务端执行即可，而以 ``Bluetooth LE 客户端`` 开头的操作只需要在手机的蓝牙调试助手中执行即可。 
 
-#. 在手机端下载 Bluetooth LE 调试助手，例如 nRF Connect (Android) 和 LightBlue (iOS)。
+#. 在手机端下载 Bluetooth LE 调试助手，例如 LightBlue。
 
 #. 初始化 Bluetooth LE 功能。
 
@@ -1585,7 +1613,21 @@ Bluetooth LE 连接加密
 
    - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
 
-#. 设置 Bluetooth LE 广播数据。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播参数。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADVPARAM=50,50,0,0,7,0,,
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播数据。
 
    命令：
 
@@ -1615,7 +1657,7 @@ Bluetooth LE 连接加密
 
 #. 创建 Bluetooth LE 连接。
 
-   手机打开 nRF 调试助手，并打开 SCAN 开始扫描，找到 {IDF_TARGET_NAME} Bluetooth LE 服务端的 MAC 地址，点击 ``CONNECT`` 进行连接。此时 {IDF_TARGET_NAME} 端应该会打印类似于 ``+BLECONN:0,"60:51:42:fe:98:aa"`` 的 log，这表示已经建立了 Bluetooth LE 连接。
+   手机打开 LightBlue APP，并打开 SCAN 开始扫描，找到 {IDF_TARGET_NAME} Bluetooth LE 服务端的 MAC 地址，点击 ``CONNECT`` 进行连接。此时 {IDF_TARGET_NAME} 端应该会打印类似于 ``+BLECONN:0,"60:51:42:fe:98:aa"`` 的 log，这表示已经建立了 Bluetooth LE 连接。
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端查询服务。
 
@@ -1668,13 +1710,9 @@ Bluetooth LE 连接加密
 
      OK
 
-#. Bluetooth LE 客户端发现服务。
+#. Bluetooth LE 客户端发现特征。
 
-   此时在手机 nRF 调试助手客户端点击 ``UUID:0xA002`` 的 ``UnKnown Service``。
-
-#. 手机 nRF 调试助手客户端发现特征。
-
-   此时在手机 nRF 调试助手客户端的 ``UUID:0xA002`` 的 ``UnKnown Service`` 服务下一级选项中选择点击 Properties 为 NOTIFY 或者 INDICATE 的服务特征的右侧按钮（这里 ESP-AT 默认 Properties 为 NOTIFY 或者 INDICATE 的服务特征是 0xC305 和 0xC306），开始侦听 Properties 为 NOTIFY 或者 INDICATE 的服务特征。
+   此时在手机 LightBlue 客户端选择点击 Properties 为 NOTIFY 或者 INDICATE 的服务特征（这里 ESP-AT 默认 Properties 为 NOTIFY 或者 INDICATE 的服务特征是 0xC305 和 0xC306），开始侦听 Properties 为 NOTIFY 或者 INDICATE 的服务特征。
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端配置 Bluetooth LE SPP。
 
@@ -1712,8 +1750,8 @@ Bluetooth LE 连接加密
 
 #. Bluetooth LE 客户端发送数据。
 
-   在 nRF 调试助手客户端选择 0xC304 服务特征值发送数据 ``test`` 给 {IDF_TARGET_NAME} Bluetooth LE 服务端，此时 {IDF_TARGET_NAME} Bluetooth LE 服务端可以收到 ``test``。
+   在 LightBlue 客户端选择 0xC304 服务特征值发送数据 ``test`` 给 {IDF_TARGET_NAME} Bluetooth LE 服务端，此时 {IDF_TARGET_NAME} Bluetooth LE 服务端可以收到 ``test``。
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端发送数据。
     
-   在 {IDF_TARGET_NAME} Bluetooth LE 服务端直接发送 ``test``，此时 nRF 调试助手客户端可以收到 ``test``。
+   在 {IDF_TARGET_NAME} Bluetooth LE 服务端直接发送 ``test``，此时 LightBlue 客户端可以收到 ``test``。
