@@ -811,6 +811,7 @@ RainMaker AT 命令集
 
 -  参数 ``<"param_value">`` 必须匹配命令 :ref:`AT+RMPARAM <RainMaker-AT>` 中参数 ``<data_type>`` 设置的类型。
 -  该命令最多支持 15 个参数，即 1 个 ``<"unique_name">`` + 7 个 ``<"param_name">`` + 7 个 ``<"param_value">``。
+-  整条 AT 命令的长度应小于 ``256`` 字节。如果你想更新的数据量较大，请使用 :ref:`AT+RMSEND <cmd-RMSEND>` 命令。
 
 示例
 ^^^^
@@ -925,7 +926,16 @@ RainMaker AT 命令集
 
 进入 :term:`RainMaker 透传模式`。当输入单独一包 ``+++`` 时，{IDF_TARGET_NAME} 将会退出 :term:`RainMaker 透传模式` 下的数据发送模式。请至少间隔 1 秒在发下一条 AT 命令。
 
+参数
+^^^^
+
+-  **<"unique_name">**：设备唯一标识名。
+-  **<"param_name">**：参数名。
+-   **<len>**：数据长度。长度值取决于 RAM 大小。你可以使用 :ref:`AT+SYSRAM <cmd-SYSRAM>` 命令来查询剩余可用 RAM 大小。
+
 说明
 ^^^^
 
 -  在 :term:`RainMaker 透传模式` 中，只允许存在一个参数（不包含命令 :ref:`AT+RMDEV <cmd-RMDEV>` 添加的节点默认参数）。如果在设备下存在多个参数，则无法进入 :term:`RainMaker 透传模式`。
+
+-  如果你想同时更新多个参数，请参考 :ref:`AT+RMPARAMUPDATE <cmd-RMPARAMUPDATE>` 命令。
