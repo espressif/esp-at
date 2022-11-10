@@ -84,10 +84,10 @@ After starting the web sever according to the above commands, you can turn on th
 
 .. figure:: ../../_static/Web_server/web_brower_wifi_ap_en.png
    :align: center
-   :alt: connects_to_the_ESP_AP
+   :alt: Connection to the {IDF_TARGET_NAME} AP
    :figclass: align-center
 
-   The browser connects to the {IDF_TARGET_NAME} AP
+   Connection to the {IDF_TARGET_NAME} AP
 
 Use the Browser to Send Wi-Fi Connection Information
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -97,19 +97,19 @@ You can enter the default IP address of the web server in the browser (the defau
 
 .. figure:: ../../_static/Web_server/web_brower_open_html_en.png
    :align: center
-   :alt: opens_the_Wi-Fi_configuration_interface
+   :alt: Opening the Wi-Fi Provisioning Interface
    :figclass: align-center
 
-   The browser opens the Wi-Fi provisioning interface
+   Opening the Wi-Fi Provisioning Interface
 
 Or you can click the drop-down box of SSID to list all APs nearby, select the target AP and enter the password, and then click "Connect" to let the {IDF_TARGET_NAME} start connecting to the router:
 
 .. figure:: ../../_static/Web_server/web_brower_get_ap_record_en.png
    :align: center
-   :alt: Schematic_diagram_of_browser_obtaining_Wi-Fi_AP_list
+   :alt: Schematic Diagram Of Browser Obtaining Wi-Fi AP List
    :figclass: align-center
 
-   Schematic diagram of browser obtaining Wi-Fi AP list
+   Schematic Diagram Of Browser Obtaining Wi-Fi AP List
 
 Get the Result of Wi-Fi Connection
 """"""""""""""""""""""""""""""""""""
@@ -118,10 +118,10 @@ After the Wi-Fi connection is established successfully, the web page will be dis
 
 .. figure:: ../../_static/Web_server/web_brower_wifi_connect_success_en.png
    :align: center
-   :alt: Browser_Wi-Fi_configuration_is_successful
+   :alt: Wi-Fi Connection Established Successfully
    :figclass: align-center
 
-   Wi-Fi connection is established successfully
+   Wi-Fi Connection Established Successfully
 
 **Note** 1: After the Wi-Fi connection is established successfully, the webpage will be closed automatically. If you want to continue to access the webpage, please re-enter the IP address of the {IDF_TARGET_NAME} and reopen the webpage.
 
@@ -131,23 +131,23 @@ At the same time, the following messages will be returned from the ESP-AT comman
 
     +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information  
     WIFI CONNECTED       // meaning that {IDF_TARGET_NAME} is connecting 
-    WIFI GOT IP          // meaning that {IDF_TARGET_NAME} connect successfully to the destination rounter
+    WIFI GOT IP          // meaning that {IDF_TARGET_NAME} connect successfully to the destination router
     +WEBSERVERRSP:2      // meaning that STA device has received Wi-Fi connection result, and web resources can be released  
 
 If the {IDF_TARGET_NAME} fails to connect to the router, the web page will display:
 
 .. figure:: ../../_static/Web_server/web_brower_wifi_connect_fail_en.png
    :align: center
-   :alt: ESP_device_connects_fail
+   :alt: Failed Connection to the Router
    :figclass: align-center
 
-   {IDF_TARGET_NAME} fails to connect to the router
+   Failed Connection to the Router
 
 At the same time, the following messages will be returned from the ESP-AT command port:
 
 ::
 
-    +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information, but failed to connect to the rounter.
+    +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information, but failed to connect to the router.
 
 Troubleshooting
 ^^^^^^^^^^^^^^^^^^^
@@ -160,7 +160,7 @@ OTA Firmware Upgrade Using a Browser
 Introduction
 ^^^^^^^^^^^^^^
 
-After the browser opens the web page of the web server, you can choose to enter the OTA upgrade page to upgrade the firmware of the {IDF_TARGET_NAME} through the web page.
+After the browser opens the web page of the web server, you can choose to enter the OTA upgrade page to upgrade the firmware in the app partitions or the certificate binaries in other partitions (please refer to :doc:`../Compile_and_Develop/how_to_generate_pki_files` for more about certificate information).
 
 Introduction to Operation Steps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -176,54 +176,83 @@ As shown in the figure, click on the "OTA" option in the lower right corner of t
 
 .. figure:: ../../_static/Web_server/web_brower_ota_config_page_en.png
    :align: center
-   :alt: OTA_configuration_page
+   :alt: OTA Configuration Page
    :figclass: align-center
 
-   OTA configuration page
+   OTA Configuration Page
 
 **Note** 1: The configuration interface can only be opened when the STA device is connected to the AP of the {IDF_TARGET_NAME}, or the STA device accessing the OTA configuration page is connected to the {IDF_TARGET_NAME} in the same subnet.
 
 **Note** 2: The "current app version" displayed on the webpage is the version number of the application. You can change the version number through ``./build.py menuconfig`` --> ``Component config`` --> ``AT`` --> ``AT firmware version`` (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`). In this case, you can manage your application firmware version.
 
-Select and Send the New Firmware
+Selecting the Partition to Upgrade
+"""""""""""""""""""""""""""""""""""""""
+
+As shown in the figure, click the drop-down box of "Partition" to obtain all partitions that can be upgraded:
+
+.. figure:: ../../_static/Web_server/web_brower_obtain_partitions_en.png
+   :align: center
+   :alt: Obtaining All Partitions That Can Be Upgraded
+   :figclass: align-center
+
+   Obtaining All Partitions That Can Be Upgraded
+
+Send the New Firmware
 """""""""""""""""""""""""""""""""
 
 As shown in the figure, click the "Browse" button on the page and select the new firmware to be sent:
 
-.. figure:: ../../_static/Web_server/web_brower_ota_chose_app_en.png
+.. figure:: ../../_static/Web_server/web_brower_ota_chose_firmware_en.png
    :align: center
-   :alt: Select_the_new_version_of_firmware_to_be_sent
+   :alt: Selecting the New Firmware to Be Sent
    :figclass: align-center
 
-   Select the new version of firmware to be sent
+   Selecting the New Firmware to Be Sent
 
-**Note** 1: Before sending the new firmware, the system will check the selected firmware. The suffix of the firmware name must be .bin, and its size should not exceed 2M.
+Then you can click "OTA upgrade" button to send the firmware.
+
+**Note** 1: For the ``ota`` partition, the web page will check the selected firmware. The suffix of the firmware name must be ``.bin``. Please make sure that the firmware size does not exceed the size of the ``ota`` partition defined in the ``partitions_at.csv`` file. For more information on this file, please refer to :doc:`../Compile_and_Develop/How_to_add_support_for_a_module`.
+
+**Note** 2: For other partitions, the web page will check the selected firmware. The suffix of the firmware name must be ``.bin``. Please make sure that the firmware size does not exceed the size defined in the ``at_customize.csv`` file. For more information on this file, please refer to :doc:`../Compile_and_Develop/How_to_customize_partitions`.
 
 Get the Result of OTA
 """""""""""""""""""""""
 
 As shown in the figure, if the {IDF_TARGET_NAME} OTA successfully, it will prompt "OTA Succeeded":
 
-.. figure:: ../../_static/Web_server/web_brower_send_app_result_en.png
+.. figure:: ../../_static/Web_server/web_brower_send_firmware_successfully_en.png
    :align: center
-   :alt: The_new_firmware_was_sent_successfully
+   :alt: The New Firmware Sent Successfully
    :figclass: align-center
 
-   The new firmware was sent successfully
+   The New Firmware Sent Successfully
 
 At the same time, the following messages will be returned from the ESP-AT command port:
 
 ::
 
-    +WEBSERVERRSP:3      // meaning that {IDF_TARGET_NAME} begin to receive ota data
-    +WEBSERVERRSP:4      // meaning that {IDF_TARGET_NAME} has received all firmware data, and you can choose to restart the {IDF_TARGET_NAME} to apply the new firmware
+    +WEBSERVERRSP:3      // meaning that {IDF_TARGET_NAME} begin to receive OTA data
+    +WEBSERVERRSP:4      // meaning that {IDF_TARGET_NAME} has received all firmware data
 
-If the received firmware data verification fails, the following message will be received on the serial port:
+If the {IDF_TARGET_NAME} OTA failed, it will prompt "OTA Failed":
+
+.. figure:: ../../_static/Web_server/web_brower_failed_to_send_firmware_en.png
+   :align: center
+   :alt: Failed Sending of the New Firmware
+   :figclass: align-center
+
+   Failed Sending of the New Firmware
+
+At the same time, the following message will be received on the serial port:
 
 ::
 
-    +WEBSERVERRSP:3      // meaning that {IDF_TARGET_NAME} begin to receive ota data
-    +WEBSERVERRSP:5      // meaning that the received OTA data verification failed. You can choose to reopen the OTA configuration interface and follow the above steps to restart the firmware upgrade
+    +WEBSERVERRSP:3      // meaning that {IDF_TARGET_NAME} begin to receive OTA data
+    +WEBSERVERRSP:5      // meaning a failure of receiving OTA data failed. You can choose to reopen the OTA configuration interface and follow the above steps to restart the firmware upgrade
+
+**Note** 1: For the ``ota`` partition, you need to execute :ref:`AT+RST <cmd-RST>` to restart the {IDF_TARGET_NAME} to apply the new firmware.
+
+**Note** 2: {IDF_TARGET_NAME} will only verify the received ``ota`` firmware content. The firmware data received by other partitions will not be verified, so please make sure its content is correct.
 
 Wi-Fi Provisioning Using a WeChat Applet
 -------------------------------------------
@@ -303,19 +332,19 @@ Open the mobile phone WeChat, scan the following QR code:
 
 .. figure:: ../../_static/Web_server/web_wechat_applet_qr.png
    :align: center
-   :alt: Get_the_QR_code_of_the_applet
+   :alt: Getting the QR Code of the Applet
    :figclass: align-center
 
-   Get the QR code of the applet
+   Getting the QR Code of the Applet
 
 Open the WeChat applet and enter the Wi-Fi provisioning interface:
 
 .. figure:: ../../_static/Web_server/web_wechat_open_applet.png
    :align: center
-   :alt: Wi-Fi_configuration_interface
+   :alt: Wi-Fi Configuration Interface
    :figclass: align-center
 
-   Wi-Fi provisioning interface
+   Wi-Fi Provisioning Interface
 
 Target AP Selection
 """""""""""""""""""""
@@ -336,48 +365,48 @@ Here, take connecting to a router as an example, the process of Wi-Fi Connection
 
 1.Turn on the mobile Wi-Fi and connect to the router:
 
-.. figure:: ../../_static/Web_server/web_wechat_connect_rounter.png
+.. figure:: ../../_static/Web_server/web_wechat_connect_router.png
    :align: center
-   :alt: connect_to_the_rounter
+   :alt: Connection to the Router
    :figclass: align-center
 
-   connect to the rounter
+   Connection to the Router
 
 2.Open the WeChat applet, you can see that the applet page has automatically displayed the ssid of the current router as "FAST_FWR310_02".
 
-.. figure:: ../../_static/Web_server/web_wechat_get_rounter_info.png
+.. figure:: ../../_static/Web_server/web_wechat_get_router_info.png
    :align: center
-   :alt: get_rounter_info
+   :alt: Getting Router Information
    :figclass: align-center
 
-   The applet obtains the information of the router to be connected
+   Getting Router Information
 
 Note: If the ssid of the connected router is not displayed on the current page, please click "Re-enter applet" in the following figure to refresh the current page:
 
-.. figure:: ../../_static/Web_server/web_wechat_update_rounter_info.png
+.. figure:: ../../_static/Web_server/web_wechat_update_router_info.png
    :align: center
-   :alt: Re-enter_the_applet
+   :alt: Re-entering the Applet
    :figclass: align-center
 
-   Re-enter the applet
+   Re-entering the Applet
 
 3.After entering the password of the router, click "Connect".
 
-.. figure:: ../../_static/Web_server/web_wechat_rounter_connecting.png
+.. figure:: ../../_static/Web_server/web_wechat_router_connecting.png
    :align: center
-   :alt: wechat_rounter_connecting
+   :alt: Connection to the Router via the Applet
    :figclass: align-center
 
-   The applet starts the {IDF_TARGET_NAME} to connect to the router
+   Connection to the Router via the Applet
 
 4.After the Wi-Fi connection is established successfully, the web page will be displayed as follows:
 
-.. figure:: ../../_static/Web_server/web_wechat_rounter_connect_success.png
+.. figure:: ../../_static/Web_server/web_wechat_router_connect_success.png
    :align: center
-   :alt: wechat_rounter_connect_success
+   :alt: Successfully connection to the Router via the Applet
    :figclass: align-center
 
-   The applet Wi-Fi provisioning is successful
+   Successfully connection to the Router via the Applet
 
 At the same time, the following messages will be returned from the ESP-AT command port:
 
@@ -385,46 +414,50 @@ At the same time, the following messages will be returned from the ESP-AT comman
 
     +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information  
     WIFI CONNECTED       // meaning that {IDF_TARGET_NAME} is connecting 
-    WIFI GOT IP          // meaning that {IDF_TARGET_NAME} connect successfully to the destination rounter
+    WIFI GOT IP          // meaning that {IDF_TARGET_NAME} connect successfully to the destination router
     +WEBSERVERRSP:2      // meaning that STA device has received Wi-Fi connection result, and web resources can be released  
 
 5.If the {IDF_TARGET_NAME} fails to connect to the router, the page will display:
 
-.. figure:: ../../_static/Web_server/web_wechat_rounter_connect_fail.png
+.. figure:: ../../_static/Web_server/web_wechat_router_connect_fail.png
    :align: center
-   :alt: wechat_rounter_connect_fail
+   :alt: Failed Connection to the Router via the Applet
    :figclass: align-center
 
-   The applet Wi-Fi provisioning is failed
+   Failed Connection to the Router via the Applet
 
 At the same time, the following messages will be returned from the ESP-AT command port:
 
 ::
 
-    +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information, but failed to connect to the rounter.
+    +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information, but failed to connect to the router.
 
 The target AP to be accessed is the hotspot provided by the mobile phone which loading the WeChat applet.
 **************************************************************************************************************
 
 If the target AP to be accessed is the hotspot provided by the mobile phone which loading the WeChat applet, it is not necessary to enter the ssid, but only needs to enter the password of the AP, and turn on the mobile AP in time according to the prompts.
 
+.. note::
+
+   To use this function, keep at least the first five bytes of the phone's Personal Hotspot MAC address the same as those of the WLAN MAC address.
+
 1.Select the "Local phone hotspot" option box on the WeChat applet page, enter the password of the local hotspot, and click "Connect".
 
 .. figure:: ../../_static/Web_server/web_wechat_enter_local_password.png
    :align: center
-   :alt: wechat_enter_local_password
+   :alt: Entering the Password of the AP
    :figclass: align-center
 
-   Enter the password of the AP
+   Entering the Password of the AP
 
 2.After receiving the prompt "Connecting to the mobile phone hotspot", please check that the local mobile phone hotspot is turned on. At this time, the {IDF_TARGET_NAME} will automatically scan the surrounding hotspots and initiate a connection.
 
 .. figure:: ../../_static/Web_server/web_wechat_start_connect.png
    :align: center
-   :alt: wechat_start_connect
+   :alt: Starting Connection to the AP
    :figclass: align-center
 
-   Start to connect to the AP
+   Starting Connection to the AP
 
 3.The display of the WiFi connection results on the applet page and the data output from the serial port are the same as the above-mentioned "The target AP to be accessed is not the hotspot provided by the mobile phone which loading the WeChat applet.", please refer to the above.
 
@@ -461,10 +494,10 @@ After Enable Captive Portal support, please refer to `Use STA Device to Connect 
 
 .. figure:: ../../_static/Web_server/captive_portal_auth_pages_en.png
    :align: center
-   :alt: auth_pages
+   :alt: Connection to the AP with Captive Portal Enabled
    :figclass: align-center
 
-   Connect to the AP with Captive Portal enabled
+   Connection to the AP with Captive Portal Enabled
 
 As shown in the figure above, after the Station device is connected to the AP of the {IDF_TARGET_NAME} with the Captive Portal function enabled, it will prompt "requires login/authentication", and then the browser will automatically open and jump to the main interface of AT Web. If it cannot be redirected automatically, please follow the instructions of the Station device, click "Authentication" or click the name of the "pos_softap" hotspot in the figure above to manually trigger the Captive Portal to automatically open the browser and enter the main interface of AT Web.
 
