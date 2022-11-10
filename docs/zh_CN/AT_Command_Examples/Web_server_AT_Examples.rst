@@ -84,10 +84,10 @@ Web Server AT 示例
 
 .. figure:: ../../_static/Web_server/web_brower_wifi_ap.png
    :align: center
-   :alt: 浏览器连接 {IDF_TARGET_NAME} AP
+   :alt: 连接 {IDF_TARGET_NAME} AP
    :figclass: align-center
 
-   浏览器连接 {IDF_TARGET_NAME} AP
+   连接 {IDF_TARGET_NAME} AP
 
 使用浏览器发送配网信息
 """"""""""""""""""""""""
@@ -97,10 +97,10 @@ Web Server AT 示例
 
 .. figure:: ../../_static/Web_server/web_brower_open_html.png
    :align: center
-   :alt: 浏览器打开配网界面
+   :alt: 打开配网界面
    :figclass: align-center
 
-   浏览器打开配网界面
+   打开配网界面
 
 用户也可以点击配网页面中 SSID 输入框右方的下拉框，查看 {IDF_TARGET_NAME} 模块附近的 AP 列表，选择目标 AP 并输入 password 后，点击“开始配网”即可启动配网：
 
@@ -118,10 +118,10 @@ Web Server AT 示例
 
 .. figure:: ../../_static/Web_server/web_brower_wifi_connect_success.png
    :align: center
-   :alt: 浏览器配网成功
+   :alt: 配网成功
    :figclass: align-center
 
-   浏览器配网成功
+   配网成功
 
 **说明** 1：配网成功后，网页将自动关闭，若想继续访问网页，请重新输入 {IDF_TARGET_NAME} 设备的 IP 地址，重新打开网页。
 
@@ -138,10 +138,10 @@ Web Server AT 示例
 
 .. figure:: ../../_static/Web_server/web_brower_wifi_connect_fail.png
    :align: center
-   :alt: 浏览器配网失败
+   :alt: 配网失败
    :figclass: align-center
 
-   浏览器配网失败
+   配网失败
 
 同时，在串口端将收到如下信息：
 
@@ -160,7 +160,7 @@ Web Server AT 示例
 简介
 ^^^^
 
-浏览器打开 web server 的网页后，可以选择进入 OTA 升级页面，通过网页对 {IDF_TARGET_NAME} 模块进行固件升级。
+浏览器打开 web server 的网页后，可以选择进入 OTA 升级页面，通过网页升级应用分区中的固件或者其它分区中的证书二进制固件（请参考文档 :doc:`../Compile_and_Develop/how_to_generate_pki_files` 了解更多证书信息）。
 
 流程
 ^^^^
@@ -185,26 +185,42 @@ Web Server AT 示例
 
 **说明** 2：网页上显示的“当前固件版本”为当前用户编译的应用程序版本号，用户可通过 ``./build.py menuconfig`` --> ``Component config`` --> ``AT`` --> ``AT firmware version`` (参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`)更改该版本号，建立固件版本与应用程序的同步关系，以便于管理应用程序固件版本。
 
-选择并发送新版固件
+选择要更新的分区
+"""""""""""""""""""""
+
+如图，点击 "Partition" 下拉框来获取所有可以升级的分区：
+
+.. figure:: ../../_static/Web_server/web_brower_obtain_partitions.png
+   :align: center
+   :alt: 获取所有可以升级的分区
+   :figclass: align-center
+
+   获取所有可以升级的分区
+
+发送新版固件
 """""""""""""""""""""
 
 如图，点击页面中的“浏览”按钮，选择待发送的新版固件：
 
-.. figure:: ../../_static/Web_server/web_brower_ota_chose_app.png
+.. figure:: ../../_static/Web_server/web_brower_ota_chose_firmware.png
    :align: center
    :alt: 选择待发送的新版固件
    :figclass: align-center
 
    选择待发送的新版固件
 
-**说明** 1：在发送新版固件之前，系统会对选择的固件进行检查。固件命名的后缀必须为.bin，且其大小不超过 2M。
+之后点击 “固件升级” 按钮发送新版固件。
 
-通知固件发送结果
+**说明** 1：对于 ``ota`` 分区，网页会对选择的固件进行检查。固件命名的后缀必须为 ``.bin``。请确保固件的大小不要超过 ``partitions_at.csv`` 文件中定义的 ``ota`` 分区大小。有关此文件的详细信息，请参考文档 :doc:`../Compile_and_Develop/How_to_add_support_for_a_module`。
+
+**说明** 2：对于其它分区，网页会对选择的固件进行检查。固件命名的后缀必须为 ``.bin``。请确保固件的大小不要超过 ``at_customize.csv`` 文件中定义的分区大小。有关此文件的详细信息，请参考文档 :doc:`../Compile_and_Develop/How_to_customize_partitions`。
+
+获取 OTA 结果
 """"""""""""""""
 
 如图，固件发送成功，将提示“升级成功”：
 
-.. figure:: ../../_static/Web_server/web_brower_send_app_result.png
+.. figure:: ../../_static/Web_server/web_brower_send_firmware_successfully.png
    :align: center
    :alt: 新版固件发送成功
    :figclass: align-center
@@ -216,14 +232,27 @@ Web Server AT 示例
 ::
 
     +WEBSERVERRSP:3      // 代表开始接收 OTA 固件数据
-    +WEBSERVERRSP:4      // 代表成功接收 OTA 固件数据并且对数据的校验正确，此时 MCU 可以选择重启 {IDF_TARGET_NAME} 设备，以应用新版本的固件
+    +WEBSERVERRSP:4      // 代表成功接收 OTA 固件数据
 
-若接收的 OTA 固件数据校验失败，在串口端将收到如下信息：
+若接收的 OTA 固件数据失败，将提示“升级失败，请稍后重试”：
+
+.. figure:: ../../_static/Web_server/web_brower_failed_to_send_firmware.png
+   :align: center
+   :alt: 新版固件发送失败
+   :figclass: align-center
+
+   新版固件发送失败
+
+同时，在串口端将收到如下信息：
 
 ::
 
     +WEBSERVERRSP:3      // 代表开始接收 OTA 固件数据
-    +WEBSERVERRSP:5      // 代表接收的 OTA 固件数据校验失败，用户可以选择重新打开 OTA 配置界面，按照上述步骤进行 OTA 固件升级
+    +WEBSERVERRSP:5      // 代表接收的 OTA 固件数据失败，用户可以选择重新打开 OTA 配置界面，按照上述步骤进行 OTA 固件升级
+
+**说明** 1：对于 ``ota`` 分区，需要执行 :ref:`AT+RST <cmd-RST>` 重启 {IDF_TARGET_NAME} 以应用新版固件。
+
+**说明** 2：{IDF_TARGET_NAME} 会校验接收到的 ``ota`` 固件内容。但不会校验接收到的其它分区固件内容，所以请确保其它分区固件内容的正确性。
 
 使用微信小程序进行 Wi-Fi 配网
 -------------------------------
@@ -336,25 +365,25 @@ Web Server AT 示例
 
 1.打开手机 Wi-Fi，连接路由器：
 
-.. figure:: ../../_static/Web_server/web_wechat_connect_rounter.png
+.. figure:: ../../_static/Web_server/web_wechat_connect_router.png
    :align: center
-   :alt: 配网设备连接拟接入的路由器
+   :alt: 连接到路由器
    :figclass: align-center
 
-   配网设备连接拟接入的路由器
+   连接到路由器
 
 2.打开微信小程序，可以看到小程序页面已经自动显示当前路由器的 ssid 为"FAST_FWR310_02"。
 
-.. figure:: ../../_static/Web_server/web_wechat_get_rounter_info.png
+.. figure:: ../../_static/Web_server/web_wechat_get_router_info.png
    :align: center
-   :alt: 小程序获取拟接入的路由器信息
+   :alt: 获取路由器信息
    :figclass: align-center
 
-   小程序获取拟接入的路由器信息
+   获取路由器信息
 
 注意：如果当前页面未显示已经连接的路由器的 ssid，请点击下图中的“重新进入小程序”，刷新当前页面：
 
-.. figure:: ../../_static/Web_server/web_wechat_update_rounter_info.png
+.. figure:: ../../_static/Web_server/web_wechat_update_router_info.png
    :align: center
    :alt: 重新进入小程序
    :figclass: align-center
@@ -363,21 +392,21 @@ Web Server AT 示例
 
 3.输入路由器的 password 后，点击“开始配网”。
 
-.. figure:: ../../_static/Web_server/web_wechat_rounter_connecting.png
+.. figure:: ../../_static/Web_server/web_wechat_router_connecting.png
    :align: center
-   :alt: 小程序启动 {IDF_TARGET_NAME} 模块连接路由器
+   :alt: 通过小程序连接到路由器
    :figclass: align-center
 
-   小程序启动 {IDF_TARGET_NAME} 模块连接路由器
+   通过小程序连接到路由器
 
 4.配网成功，小程序页面显示：
 
-.. figure:: ../../_static/Web_server/web_wechat_rounter_connect_success.png
+.. figure:: ../../_static/Web_server/web_wechat_router_connect_success.png
    :align: center
-   :alt: 小程序配网成功界面
+   :alt: 通过小程序成功连接到路由器
    :figclass: align-center
 
-   小程序配网成功界面
+   通过小程序成功连接到路由器
 
 同时，在串口端将收到如下信息：
 
@@ -390,12 +419,12 @@ Web Server AT 示例
 
 5.若配网失败，则小程序页面显示：
 
-.. figure:: ../../_static/Web_server/web_wechat_rounter_connect_fail.png
+.. figure:: ../../_static/Web_server/web_wechat_router_connect_fail.png
    :align: center
-   :alt: 小程序配网失败界面
+   :alt: 通过小程序连接到路由器失败
    :figclass: align-center
 
-   小程序配网失败界面
+   通过小程序连接到路由器失败
 
 同时，在串口端将收到如下信息：
 
@@ -408,23 +437,27 @@ Web Server AT 示例
 
 如果正在配网的手机作为待接入 AP，则用户不需要输入 ssid，只需要输入本机的 AP 的 password，并根据提示及时打开手机 AP 即可（如果手机支持同时打开 Wi-Fi 和分享热点，也可提前打开手机 AP）。
 
+.. note::
+
+   要使用该功能，手机的个人热点 MAC 地址和无线局域网 MAC 地址必须确保至少前五个字节相同。
+
 1.选中微信小程序页面的“本机手机热点”选项框，输入本机热点的 password 后，点击“开始配网”。
 
 .. figure:: ../../_static/Web_server/web_wechat_enter_local_password.png
    :align: center
-   :alt: 输入本机 AP 的 password
+   :alt: 输入 AP 的密码
    :figclass: align-center
 
-   输入本机 AP 的 password
+   输入 AP 的密码
 
 2.启动配网后，在收到提示“连接手机热点中”的提示后，请检查本机手机热点已经开启，此时 {IDF_TARGET_NAME} 设备将自动扫描周围热点并发起连接。
 
 .. figure:: ../../_static/Web_server/web_wechat_start_connect.png
    :align: center
-   :alt: 开始连接本机 AP
+   :alt: 开始连接到 AP
    :figclass: align-center
 
-   开始连接本机 AP
+   开始连接到 AP
 
 3.配网结果在小程序页面的显示以及串口端输出的数据与上述“待接入的目标 AP 不是本机配网手机”时的情况一样，请参考上文。
 
