@@ -8,12 +8,16 @@
 # parts to this conf module
 import sys
 import os
+import datetime
+
 sys.path.insert(0, os.path.abspath('..'))
 from conf_common import *  # noqa: F401, F403 - need to make available everything from common
 
+current_year = datetime.datetime.now().year
+
 # General information about the project.
 project = u'ESP-AT User Guide'
-copyright = u'2016 - 2022, Espressif Systems (Shanghai) Co., Ltd.'
+copyright = u'2016 - {}, Espressif Systems (Shanghai) Co., Ltd.'.format(current_year)
 
 pdf_title = u'ESP-AT User Guide'
 # Final PDF filename will contains target and version
