@@ -379,6 +379,21 @@ esp32c2_2mb_at:
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32C2\", \"module\": \"ESP32C2-2MB\", \"description\": \"\",\"silence\": 0}" > module_info.json'
     - *execute_script_esp32c2
 
+esp32c2_at_full_function_test:
+  extends:
+    - .esp_at_build_template_esp32c2
+  script:
+    # enable all features
+    - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_esp32c2_default/sdkconfig.defaults
+    - echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/module_esp32c2_default/sdkconfig.defaults
+    - echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_esp32c2_default/sdkconfig.defaults
+    - echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_esp32c2_default/sdkconfig.defaults
+    - echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_esp32c2_default/sdkconfig.defaults
+
+    - export MODULE_CFG_DIR=module_esp32c2_default
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C2\", \"module\": \"ESP32C2-4MB\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32c2
+
 push_master_to_github:
   stage: deploy
   only:
