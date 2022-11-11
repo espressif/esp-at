@@ -13,4 +13,3 @@ mqtt_cert, 0x40, 11, 0x25000, 4K
 mqtt_key, 0x40, 12, 0x26000, 4K
 mqtt_ca, 0x40, 13, 0x27000, 4K
 ble_data, 0x40, 14, 0x28000, 8K
-fatfs, data, fat, 0x2a000, 88K
