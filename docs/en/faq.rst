@@ -148,12 +148,12 @@ After {IDF_TARGET_NAME} enters the passthrough mode using AT commands, can {IDF_
   - Yes, you can configure it with :ref:`AT+SYSMSG <cmd-SYSMSG>`, i.e., set AT+SYSMSG=4. In this way, the serial port will report "WIFI DISCONNECT\r\n" when the connected hotspot is disconnected.
   - Note that this command is added after AT v2.1.0. It is not available for v2.1.0 and earlier versions.
 
-.. only:: esp32 or esp32c3
+.. only:: esp32
 
-  How to set ADV broadcast parameters after it exceeds 32 bytes?
+  How to set ADV broadcast parameters after it exceeds 31 bytes?
   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    The :ref:`AT+BLEADVDATA <cmd-BADVD>` command supports up to 32 bytes of ADV broadcast parameters. If you need to set a bigger parameter, please use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
+    The :ref:`AT+BLEADVDATA <cmd-BADVD>` command supports up to 31 bytes of ADV broadcast parameters. If you need to set a bigger parameter, please use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
 
 Hardware
 --------

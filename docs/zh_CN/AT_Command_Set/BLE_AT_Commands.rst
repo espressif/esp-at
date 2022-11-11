@@ -582,16 +582,18 @@ Bluetooth® Low Energy AT 命令集
 
 -  **[<peer_addr>]**：对方 Bluetooth LE 地址
 
--  **[<primary_phy>]**：广播 primary PHY。默认值：1M PHY。
+.. only:: esp32c3
 
-   -  1: 1M PHY
-   -  3: Coded PHY
-
--  **[<secondary_phy>]**：广播 secondary PHY。默认值：1M PHY。
-
-   -  1: 1M PHY
-   -  2: 2M PHY
-   -  3: Coded PHY
+  -  **[<primary_phy>]**：广播 primary PHY。默认值：1M PHY。
+  
+     -  1: 1M PHY
+     -  3: Coded PHY
+  
+  -  **[<secondary_phy>]**：广播 secondary PHY。默认值：1M PHY。
+  
+     -  1: 1M PHY
+     -  2: 2M PHY
+     -  3: Coded PHY
 
 说明
 ^^^^
@@ -608,7 +610,7 @@ Bluetooth® Low Energy AT 命令集
 ::
 
     AT+BLEINIT=2   // 角色：服务器
-    AT+BLEADVPARAM=50,50,0,0,4,0,0,"12:34:45:78:66:88"
+    AT+BLEADVPARAM=50,50,0,0,4,0,1,"12:34:45:78:66:88"
     AT+BLEADVPARAM=32,32,6,0,7,0,0,"62:34:45:78:66:88",1,3
 
 .. _cmd-BADVD:
@@ -638,13 +640,23 @@ Bluetooth® Low Energy AT 命令集
 参数
 ^^^^
 
--  **<adv_data>**：广播数据，为 HEX 字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATA="1122334455"``。
+.. only:: esp32c3
+
+  -  **<adv_data>**：广播数据，为 HEX 字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATA="1122334455"``。最大长度：119 字节。
+
+.. only:: esp32
+
+  -  **<adv_data>**：广播数据，为 HEX 字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATA="1122334455"``。最大长度：31 字节。
 
 说明
 ^^^^
 
 -  如果之前已经使用命令 :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power> 设置了广播数据，则会被本命令设置的广播数据覆盖。
 -  如果您想使用本命令修改设备名称，则建议在执行完该命令之后执行 :ref:`AT+BLENAME <cmd-BNAME>` 命令将设备名称设置为同样的名称。
+
+  .. only:: esp32c3
+
+    -  在使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令之前，必须先通过 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播参数。
 
 示例
 ^^^^
