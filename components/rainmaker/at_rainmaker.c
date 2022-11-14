@@ -39,6 +39,10 @@
 #include "nvs.h"
 #include "esp_at.h"
 #include "esp_at_core.h"
+#include "esp_http_client.h"
+#include "esp_https_ota.h"
+#include "esp_bt.h"
+#include "esp_ota_ops.h"
 
 #include "esp_rmaker_core.h"
 #include "esp_rmaker_standard_types.h"
@@ -57,6 +61,9 @@
 
 #include <esp_rmaker_mqtt.h>
 #include <esp_rmaker_common_events.h>
+
+#include "json_generator.h"
+#include "json_parser.h"
 
 #define CHECK_PARAMS_NUM(cnt, total)                \
     if (cnt != total) {                             \
@@ -80,7 +87,7 @@
 #define RAINMAKER_NODE_NAME                         ("ESP RainMaker AT Node")
 #define RAINMAKER_NODE_TYPE                         ("AT Node")
 
-#define DATA_FORMAT                                 "+RMRECV:%s,%s,%s:"
+#define DATA_FORMAT                                 ("+RMRECV")
 #define SWAP_16(x)                                  ((uint16_t)((((x)&0xff00) >> 8) | (((x)&0x00ff) << 8)))
 #define BLE_NAME_LEN_MAX                            (12)
 
@@ -90,6 +97,11 @@
 #define RAINMAKER_MESS_RMREBOOT                     ("+RMREBOOT")
 #define RAINMAKER_MESS_RMTIMEZONE                   ("+RMTIMEZONE")
 #define RAINMAKER_MESS_MAPPINGDONE                  ("+RMMAPPINGDONE")
+#define RAINMAKER_MESS_OTA                          ("+RMOTA")
+
+#define RAINMAKER_OTA_NOTIFY_FORMAT                 ("+RMFWNOTIFY")
+#define RAINMAKER_OTA_TOPIC_LEN                     (256)
+#define RAINMAKER_OTA_MES_PAYLOAD_LEN               RAINMAKER_OTA_TOPIC_LEN
 
 #define RAINMAKER_CONN_TIMEOUT_S_MIN                (3)     // 3 seconds
 #define RAINMAKER_CONN_TIMEOUT_S_MAX                (600)   // 600 seconds
@@ -102,19 +114,12 @@ static const int RM_IN_PASSTHROUGH_MODE             = BIT3;
 static const int RM_CORE_STARTED_EVENT              = BIT4;
 static const int RM_DEVICE_ADDED_EVENT              = BIT5;
 static const int RM_WIFI_GOT_IP_STATUS              = BIT6;
+static const int RM_HOST_MCU_OTA_EXIST              = BIT7;
 
 typedef enum {
     RM_CONNECT_STATUS_ON = 0,
     RM_CONNECT_STATUS_OFF = 1,
 } rm_connect_status_t;
-
-static rm_connect_status_t rm_connect_status = RM_CONNECT_STATUS_OFF;
-static uint32_t s_rm_param_nums = 0;
-
-extern esp_rmaker_val_type_t esp_rmaker_param_get_data_type(const esp_rmaker_param_t *param);
-extern esp_err_t esp_rmaker_reset_user_node_mapping(void);
-static esp_err_t rmaker_prov_start(uint8_t *mfg, int mfg_len, uint8_t timeout_s, char *broadcast_name);
-static esp_err_t rmaker_prov_stop(void);
 
 typedef enum {
     AT_START_RM_PROV = 0,
@@ -133,12 +138,21 @@ typedef enum {
     AT_RM_REBOOT,
     AT_RM_TIMEZONE,
     AT_RM_MAPPINGDONE,
+    AT_RM_WIFI_MCU_OTA_IN_PROGRESS,
+    AT_RM_WIFI_MCU_OTA_SUCCESSFUL,
+    AT_RM_WIFI_MCU_OTA_FAILED,
+    AT_RM_WIFI_MCU_OTA_REJECTED,
+    AT_RM_WIFI_MCU_OTA_DELAYED,
 } at_rainmaker_mess_t;
 
 typedef enum {
     AT_RM_DEV_OPT_ADD = 0,
     AT_RM_DEV_OPT_DEL,
 } at_rainmaker_dev_opt_t;
+
+typedef enum {
+    AT_RM_HOST_MCU_OTA = 0,
+} at_rainmaker_ota_type_t;
 
 typedef struct {
     char *device_type;
@@ -157,6 +171,28 @@ typedef struct {
     uint32_t device_type_code;
     esp_rmaker_param_t *passthrough_param_handle;
 } at_rm_profile_t;
+
+extern esp_rmaker_val_type_t esp_rmaker_param_get_data_type(const esp_rmaker_param_t *param);
+extern esp_err_t esp_rmaker_reset_user_node_mapping(void);
+extern char *esp_rmaker_ota_status_to_string(ota_status_t status);
+
+static const char *TAG = "rainmaker";
+
+static rm_connect_status_t s_rm_connect_status = RM_CONNECT_STATUS_OFF;
+static ota_status_t s_rm_ota_status = OTA_STATUS_SUCCESS;
+static SemaphoreHandle_t s_at_rainmaker_sync_sema;
+static TimerHandle_t s_prov_timer;
+static EventGroupHandle_t s_rm_event_group;
+static at_rainmaker_mode_t s_mode = AT_RM_NORMAL;
+static uint32_t s_rm_param_nums = 0;
+
+static at_rm_profile_t s_profile = {
+    .customer_id = 0x0001,
+    .ble_name = "PROV_",
+    .device_extra_code = 0x00,
+    /* For test data only, the actual value is 0x00ff */
+    .device_type_code = 0x0005,
+};
 
 static const at_rm_device_code_t code_list[10] = {
     {
@@ -195,21 +231,28 @@ static const at_rm_device_code_t code_list[10] = {
     }
 };
 
-static const char *TAG = "rainmaker";
+static esp_err_t rmaker_prov_start(uint8_t *mfg, int mfg_len, uint8_t timeout_s, char *broadcast_name)
+{
+    wifi_prov_mgr_config_t mgr_config = {
+        .scheme = wifi_prov_scheme_ble,
+        .scheme_event_handler = WIFI_PROV_SCHEME_BLE_EVENT_HANDLER_FREE_BTDM
+    };
 
-static SemaphoreHandle_t s_at_rainmaker_sync_sema;
-static TimerHandle_t s_prov_timer;
-static TimerHandle_t s_mqtt_conn_timer;
-static EventGroupHandle_t s_rm_event_group;
-static at_rainmaker_mode_t s_mode = AT_RM_NORMAL;
+    wifi_prov_mgr_init(mgr_config);
+    ESP_LOGI(TAG, "Starting provisioning");
 
-static at_rm_profile_t s_profile = {
-    .customer_id = 0x0001,
-    .ble_name = "PROV_",
-    .device_extra_code = 0x00,
-    /* For test data only, the actual value is 0x00ff */
-    .device_type_code = 0x0005,
-};
+    wifi_prov_scheme_ble_set_mfg_data(mfg, mfg_len);
+    wifi_prov_mgr_start_provisioning(WIFI_PROV_SECURITY_1, NULL, broadcast_name, NULL);
+
+    xEventGroupSetBits(s_rm_event_group, RM_PROVISIONING_STATUS);
+
+    return ESP_OK;
+}
+
+static void rmaker_prov_stop(void)
+{
+    return wifi_prov_mgr_deinit();
+}
 
 static void at_rainmaker_wait_data_cb(void)
 {
@@ -218,12 +261,8 @@ static void at_rainmaker_wait_data_cb(void)
 
 static void timer_cb(TimerHandle_t tmr)
 {
-    if (tmr == s_prov_timer) {
-        ESP_LOGI(TAG, "Provisioning stop.");
-        rmaker_prov_stop();
-    } else if (tmr == s_mqtt_conn_timer) {
-        esp_rmaker_mqtt_connect();
-    }
+    ESP_LOGI(TAG, "Provisioning stop.");
+    rmaker_prov_stop();
 }
 
 static void rmaker_response_result(at_rainmaker_mess_t message)
@@ -232,44 +271,162 @@ static void rmaker_response_result(at_rainmaker_mess_t message)
     uint8_t buffer[TEMP_BUFFER_SIZE] = {0};
 
     switch (message) {
-    case AT_RM_CONNECTED:
-        if (rm_connect_status == RM_CONNECT_STATUS_OFF) {
-            snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\n%s", RAINMAKER_MESS_CONNECTED);
-            rm_connect_status = RM_CONNECT_STATUS_ON;
-        }
-        break;
+        case AT_RM_CONNECTED:
+            if (s_rm_connect_status == RM_CONNECT_STATUS_OFF) {
+                snprintf((char *)buffer, TEMP_BUFFER_SIZE, "%s\r\n", RAINMAKER_MESS_CONNECTED);
+                s_rm_connect_status = RM_CONNECT_STATUS_ON;
+            }
+            break;
 
-    case AT_RM_DISCONNECTED:
-        if (rm_connect_status == RM_CONNECT_STATUS_ON) {
-            snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\n%s", RAINMAKER_MESS_DISCONNECTED);
-            rm_connect_status = RM_CONNECT_STATUS_OFF;
-        }
-        break;
+        case AT_RM_DISCONNECTED:
+            if (s_rm_connect_status == RM_CONNECT_STATUS_ON) {
+                snprintf((char *)buffer, TEMP_BUFFER_SIZE, "%s\r\n", RAINMAKER_MESS_DISCONNECTED);
+                s_rm_connect_status = RM_CONNECT_STATUS_OFF;
+            }
+            break;
 
-    case AT_RM_RESET:
-        snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\n%s", RAINMAKER_MESS_RMRESET);
-        break;
+        case AT_RM_RESET:
+            snprintf((char *)buffer, TEMP_BUFFER_SIZE, "%s\r\n", RAINMAKER_MESS_RMRESET);
+            break;
 
-    case AT_RM_REBOOT:
-        snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\n%s", RAINMAKER_MESS_RMREBOOT);
-        break;
+        case AT_RM_REBOOT:
+            snprintf((char *)buffer, TEMP_BUFFER_SIZE, "%s\r\n", RAINMAKER_MESS_RMREBOOT);
+            break;
 
-    case AT_RM_TIMEZONE:
-        snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\n%s", RAINMAKER_MESS_RMTIMEZONE);
-        break;
+        case AT_RM_TIMEZONE:
+            snprintf((char *)buffer, TEMP_BUFFER_SIZE, "%s\r\n", RAINMAKER_MESS_RMTIMEZONE);
+            break;
 
-    case AT_RM_MAPPINGDONE:
-        snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\n%s", RAINMAKER_MESS_MAPPINGDONE);
-        break;
+        case AT_RM_MAPPINGDONE:
+            snprintf((char *)buffer, TEMP_BUFFER_SIZE, "%s\r\n", RAINMAKER_MESS_MAPPINGDONE);
+            break;
 
-    default:
-        break;
+        case AT_RM_WIFI_MCU_OTA_IN_PROGRESS:
+            if ((s_rm_ota_status != OTA_STATUS_IN_PROGRESS) && ((xEventGroupGetBits(s_rm_event_group) & RM_HOST_MCU_OTA_EXIST) == 0)) {
+                snprintf((char *)buffer, TEMP_BUFFER_SIZE, "%s:%d\r\n", RAINMAKER_MESS_OTA, OTA_STATUS_IN_PROGRESS);
+                s_rm_ota_status = OTA_STATUS_IN_PROGRESS;
+            }
+            break;
 
+        case AT_RM_WIFI_MCU_OTA_SUCCESSFUL:
+            if ((s_rm_ota_status != OTA_STATUS_SUCCESS) && ((xEventGroupGetBits(s_rm_event_group) & RM_HOST_MCU_OTA_EXIST) == 0)) {
+                snprintf((char *)buffer, TEMP_BUFFER_SIZE, "%s:%d\r\n", RAINMAKER_MESS_OTA, OTA_STATUS_SUCCESS);
+                s_rm_ota_status = OTA_STATUS_SUCCESS;
+            }
+            break;
+
+        case AT_RM_WIFI_MCU_OTA_FAILED:
+            if ((s_rm_ota_status != OTA_STATUS_FAILED) && ((xEventGroupGetBits(s_rm_event_group) & RM_HOST_MCU_OTA_EXIST) == 0)) {
+                snprintf((char *)buffer, TEMP_BUFFER_SIZE, "%s:%d\r\n", RAINMAKER_MESS_OTA, OTA_STATUS_FAILED);
+                s_rm_ota_status = OTA_STATUS_FAILED;
+            }
+            break;
+
+        case AT_RM_WIFI_MCU_OTA_REJECTED:
+            if ((s_rm_ota_status != OTA_STATUS_REJECTED) && ((xEventGroupGetBits(s_rm_event_group) & RM_HOST_MCU_OTA_EXIST) == 0)) {
+                snprintf((char *)buffer, TEMP_BUFFER_SIZE, "%s:%d\r\n", RAINMAKER_MESS_OTA, OTA_STATUS_REJECTED);
+                s_rm_ota_status = OTA_STATUS_REJECTED;
+            }
+            break;
+
+        case AT_RM_WIFI_MCU_OTA_DELAYED:
+            if ((s_rm_ota_status != OTA_STATUS_DELAYED) && ((xEventGroupGetBits(s_rm_event_group) & RM_HOST_MCU_OTA_EXIST) == 0)) {
+                snprintf((char *)buffer, TEMP_BUFFER_SIZE, "%s:%d\r\n", RAINMAKER_MESS_OTA, OTA_STATUS_REJECTED);
+                s_rm_ota_status = OTA_STATUS_REJECTED;
+            }
+            break;
+
+        default:
+            break;
     }
 
     esp_at_port_write_data(buffer, strlen((char *)buffer));
 
     return;
+}
+
+esp_err_t rmaker_ota_handle(esp_rmaker_ota_handle_t ota_handle, esp_rmaker_ota_data_t *ota_data)
+{
+    /* Host MCU OTA
+     * If the value of key "metadata" is "{"esp.ota.target":"host_mcu"}", it means Host MCU OTA
+     */
+    if (ota_data->metadata != NULL) {
+        jparse_ctx_t jctx = { 0 };
+
+        if (json_parse_start(&jctx, ota_data->metadata, (int)(strlen(ota_data->metadata))) != ESP_OK) {
+            ESP_LOGE(TAG, "Invalid JSON received: %s", ota_data->metadata);
+            esp_rmaker_ota_report_status(ota_handle, OTA_STATUS_FAILED, "Aborted. JSON Payload error");
+            return ESP_FAIL;
+        }
+
+        int len = 0;
+        if (json_obj_get_strlen(&jctx, "esp.ota.target", &len) != ESP_OK) {
+            ESP_LOGE(TAG, "Aborted. esp.ota.target not found in JSON", "");
+            esp_rmaker_ota_report_status(ota_handle, OTA_STATUS_FAILED, "Aborted. esp.ota.target not found in JSON");
+            return ESP_FAIL;
+        }
+
+        /* Increment for NULL character */
+        len++;
+
+        char *hmcu_ota_value = calloc(1, len);
+        if (hmcu_ota_value == NULL) {
+            ESP_LOGE(TAG, "Aborted. OTA host mcu value memory allocation failed");
+            esp_rmaker_ota_report_status(ota_handle, OTA_STATUS_FAILED, "Aborted. OTA host mcu value memory allocation failed");
+            return ESP_FAIL;
+        }
+
+        json_obj_get_string(&jctx, "esp.ota.target", hmcu_ota_value, len);
+
+        json_parse_end(&jctx);
+
+        if (strncmp(hmcu_ota_value, "host_mcu", strlen("host_mcu")) == 0) {
+            free(hmcu_ota_value);
+            hmcu_ota_value = NULL;
+
+            char *host_ota_info = (char *)calloc(1, strlen(ota_data->url) + 256);
+            if (host_ota_info == NULL) {
+                esp_rmaker_ota_report_status(ota_handle, OTA_STATUS_FAILED, "ESP no ram to notify host mcu OTA info");
+                return ESP_FAIL;
+            }
+
+            /* Format: +RMFWNOTIFY:<type>,<size>,<url>,<fw_version>,<ota_job_id> */
+            if (ota_data->fw_version) {
+                sprintf(host_ota_info, "%s:%d,%d,%s,%s,%s\r\n",
+                                    RAINMAKER_OTA_NOTIFY_FORMAT,
+                                    AT_RM_HOST_MCU_OTA,
+                                    ota_data->filesize,
+                                    ota_data->url,
+                                    ota_data->fw_version,
+                                    ota_data->ota_job_id);
+            } else {
+                sprintf(host_ota_info, "%s:%d,%d,%s,%s,%s\r\n",
+                                    RAINMAKER_OTA_NOTIFY_FORMAT,
+                                    AT_RM_HOST_MCU_OTA,
+                                    ota_data->filesize,
+                                    ota_data->url,
+                                    "null",
+                                    ota_data->ota_job_id);
+            }
+
+            esp_at_port_write_data((uint8_t *)host_ota_info, strlen((host_ota_info)));
+            free(host_ota_info);
+
+            xEventGroupSetBits(s_rm_event_group, RM_HOST_MCU_OTA_EXIST);
+
+            return ESP_OK;
+        } else {
+            free(hmcu_ota_value);
+            hmcu_ota_value = NULL;
+
+            ESP_LOGE(TAG, "Aborted. OTA host mcu value error");
+            esp_rmaker_ota_report_status(ota_handle, OTA_STATUS_FAILED, "Aborted. OTA host mcu value error");
+            return ESP_FAIL;
+        }
+    }
+
+    /* WiFi MCU OTA */
+    return esp_rmaker_ota_default_cb(ota_handle, ota_data);
 }
 
 static esp_err_t write_cb(const esp_rmaker_device_t *device, const esp_rmaker_param_t *param,
@@ -299,13 +456,13 @@ static esp_err_t write_cb(const esp_rmaker_device_t *device, const esp_rmaker_pa
     } else {
         char *buf = NULL;
         if (val.type == RMAKER_VAL_TYPE_BOOLEAN) {
-            asprintf(&buf, "\r\n"DATA_FORMAT"%d""\r\n", src_name, device_name, param_name, val.val.b);
+            asprintf(&buf, "%s:%s,%s,%s:%d\r\n", DATA_FORMAT, src_name, device_name, param_name, val.val.b);
         } else if (val.type == RMAKER_VAL_TYPE_INTEGER) {
-            asprintf(&buf, "\r\n"DATA_FORMAT"%d""\r\n", src_name, device_name, param_name, val.val.i);
+            asprintf(&buf, "%s:%s,%s,%s:%d\r\n", DATA_FORMAT, src_name, device_name, param_name, val.val.i);
         } else if (val.type == RMAKER_VAL_TYPE_FLOAT) {
-            asprintf(&buf, "\r\n"DATA_FORMAT"%f""\r\n", src_name, device_name, param_name, val.val.f);
+            asprintf(&buf, "%s:%s,%s,%s:%f\r\n", DATA_FORMAT, src_name, device_name, param_name, val.val.f);
         } else {
-            asprintf(&buf, "\r\n"DATA_FORMAT"%s""\r\n", src_name, device_name, param_name, val.val.s);
+            asprintf(&buf, "%s:%s,%s,%s:%s\r\n", DATA_FORMAT, src_name, device_name, param_name, val.val.s);
         }
         esp_at_port_write_data((uint8_t *)buf, strlen((char *)buf));
         free(buf);
@@ -316,96 +473,160 @@ static esp_err_t write_cb(const esp_rmaker_device_t *device, const esp_rmaker_pa
     return ESP_OK;
 }
 
-static void event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
+static void rmaker_wifi_prov_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
 {
-    if (event_base == WIFI_PROV_EVENT) {
-        switch (event_id) {
-        case WIFI_PROV_START:
+    switch (event_id) {
+        case WIFI_PROV_START: {
             ESP_LOGI(TAG, "Provisioning started");
             break;
+        }
+
         case WIFI_PROV_CRED_RECV: {
             wifi_sta_config_t *wifi_sta_cfg = (wifi_sta_config_t *)event_data;
             ESP_LOGI(TAG, "Received Wi-Fi credentials"
-                     "\n\tSSID     : %s\n\tPassword : %s",
-                     (const char *)wifi_sta_cfg->ssid,
-                     (const char *)wifi_sta_cfg->password);
+                    "\n\tSSID     : %s\n\tPassword : %s",
+                    (const char *)wifi_sta_cfg->ssid,
+                    (const char *)wifi_sta_cfg->password);
             break;
         }
+
         case WIFI_PROV_CRED_FAIL: {
             wifi_prov_sta_fail_reason_t *reason = (wifi_prov_sta_fail_reason_t *)event_data;
             ESP_LOGE(TAG, "Provisioning failed!\n\tReason : %s",
-                     (*reason == WIFI_PROV_STA_AUTH_ERROR) ? "Wi-Fi station authentication failed" : "Wi-Fi access-point not found");
+                    (*reason == WIFI_PROV_STA_AUTH_ERROR) ? "Wi-Fi station authentication failed" : "Wi-Fi access-point not found");
             wifi_prov_mgr_reset_sm_state_on_failure();
             break;
         }
-        case WIFI_PROV_CRED_SUCCESS:
+
+        case WIFI_PROV_CRED_SUCCESS: {
             ESP_LOGI(TAG, "Provisioning successful");
             if (!s_prov_timer) {
                 s_prov_timer = xTimerCreate("prov stop timer", pdMS_TO_TICKS(1000 * 5), false, NULL, timer_cb);
             }
             xTimerReset(s_prov_timer, 0);
             break;
-        case WIFI_PROV_END:
-            wifi_prov_mgr_deinit();
-            break;
-        default:
+        }
+
+        case WIFI_PROV_DEINIT:  {
+            xEventGroupClearBits(s_rm_event_group, RM_PROVISIONING_STATUS);
             break;
         }
-    } else if (event_base == RMAKER_COMMON_EVENT) {
-        switch (event_id) {
+
+        default:
+            break;
+    }
+}
+
+static void rmaker_common_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
+{
+    switch (event_id) {
         case RMAKER_MQTT_EVENT_CONNECTED:
             rmaker_response_result(AT_RM_CONNECTED);
             ESP_LOGI(TAG, "MQTT Connected.");
             xEventGroupSetBits(s_rm_event_group, RM_MQTT_CONNECTED_EVENT);
             break;
+
         case RMAKER_MQTT_EVENT_DISCONNECTED:
             rmaker_response_result(AT_RM_DISCONNECTED);
             ESP_LOGI(TAG, "MQTT Disconnected.");
             xEventGroupClearBits(s_rm_event_group, RM_MQTT_CONNECTED_EVENT);
             break;
+
         case RMAKER_EVENT_REBOOT:
             rmaker_response_result(AT_RM_REBOOT);
             ESP_LOGI(TAG, "AT_RM_REBOOT.");
             break;
+
         case RMAKER_EVENT_WIFI_RESET:
         case RMAKER_EVENT_FACTORY_RESET:
             rmaker_response_result(AT_RM_RESET);
             ESP_LOGI(TAG, "AT_RM_RESET.");
             break;
+
         case RMAKER_EVENT_TZ_POSIX_CHANGED:
         case RMAKER_EVENT_TZ_CHANGED:
             //rmaker_response_result(AT_RM_TIMEZONE);
             ESP_LOGI(TAG, "AT_RM_TIMEZONE.");
             break;
+
         default:
             break;
-        }
-    } else if (event_base == RMAKER_EVENT) {
-        switch (event_id) {
+    }
+}
+
+static void rmaker_wifi_mcu_ota_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
+{
+    switch (event_id)
+    {
+        case RMAKER_OTA_EVENT_INVALID:
+            break;
+
+        case RMAKER_OTA_EVENT_STARTING:
+            break;
+
+        case RMAKER_OTA_EVENT_IN_PROGRESS:
+            rmaker_response_result(AT_RM_WIFI_MCU_OTA_IN_PROGRESS);
+            break;
+
+        case RMAKER_OTA_EVENT_SUCCESSFUL:
+            break;
+
+        case RMAKER_OTA_EVENT_FAILED:
+            rmaker_response_result(AT_RM_WIFI_MCU_OTA_FAILED);
+            break;
+
+        case RMAKER_OTA_EVENT_REJECTED:
+            rmaker_response_result(AT_RM_WIFI_MCU_OTA_REJECTED);
+            break;
+
+        case RMAKER_OTA_EVENT_DELAYED:
+            rmaker_response_result(AT_RM_WIFI_MCU_OTA_DELAYED);
+            break;
+
+        case RMAKER_OTA_EVENT_REQ_FOR_REBOOT:
+            rmaker_response_result(AT_RM_WIFI_MCU_OTA_SUCCESSFUL);
+            break;
+
+        default:
+            break;
+    }
+}
+
+static void rmaker_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
+{
+    switch (event_id) {
         case RMAKER_EVENT_USER_NODE_MAPPING_DONE:
             rmaker_response_result(AT_RM_MAPPINGDONE);
             break;
+
         default:
             break;
-        }
-    } else if (event_base == WIFI_EVENT) {
-        switch (event_id) {
+    }
+}
+
+static void rmaker_wifi_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
+{
+    switch (event_id) {
         case WIFI_EVENT_STA_DISCONNECTED:
             xEventGroupClearBits(s_rm_event_group, RM_WIFI_GOT_IP_STATUS);
             break;
+
         default:
             ESP_LOGI(TAG, "WIFI_EVENT: %d", event_id);
             break;
-        }
-    } else if (event_base == IP_EVENT) {
-        switch (event_id) {
+    }
+}
+
+static void rmaker_ip_event_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
+{
+    switch (event_id) {
         case IP_EVENT_STA_GOT_IP:
             xEventGroupSetBits(s_rm_event_group, RM_WIFI_GOT_IP_STATUS);
             break;
+
         default:
             ESP_LOGI(TAG, "IP_EVENT: %d", event_id);
             break;
-        }
     }
 }
 
@@ -472,32 +693,67 @@ static void rmaker_structure_data(esp_rmaker_val_type_t type, uint8_t *inbuf, es
     memcpy(out_val, &val, sizeof(esp_rmaker_param_val_t));
 }
 
-static esp_err_t rmaker_prov_start(uint8_t *mfg, int mfg_len, uint8_t timeout_s, char *broadcast_name)
+static esp_err_t rmaker_ota_report_status(const char *ota_job, ota_status_t status, char *additional_info)
 {
-    wifi_prov_mgr_config_t mgr_config = {
-        .scheme = wifi_prov_scheme_ble,
-        .scheme_event_handler = WIFI_PROV_SCHEME_BLE_EVENT_HANDLER_FREE_BTDM
-    };
+    char *publish_payload = NULL;
+    char *publish_topic = NULL;
+    char *node_id = NULL;
 
-    wifi_prov_mgr_init(mgr_config);
-    ESP_LOGI(TAG, "Starting provisioning");
+    if ((ota_job == NULL) || (status > OTA_STATUS_REJECTED) || (additional_info == NULL)) {
+        return ESP_FAIL;
+    }
 
-    wifi_prov_scheme_ble_set_mfg_data(mfg, mfg_len);
-    wifi_prov_mgr_start_provisioning(WIFI_PROV_SECURITY_1, NULL, broadcast_name, NULL);
+    publish_payload = (char *)calloc(1, RAINMAKER_OTA_MES_PAYLOAD_LEN);
+    if (publish_payload == NULL) {
+        goto report_status_failed;
+    }
 
-    xEventGroupSetBits(s_rm_event_group, RM_PROVISIONING_STATUS);
+    publish_topic = (char *)calloc(1, RAINMAKER_OTA_TOPIC_LEN);
+    if (publish_topic == NULL) {
+        goto report_status_failed;
+    }
 
-    return ESP_OK;
-}
+    node_id = esp_rmaker_get_node_id();
+    if (node_id == NULL) {
+        goto report_status_failed;
+    }
 
-static esp_err_t rmaker_prov_stop(void)
-{
-    wifi_prov_mgr_stop_provisioning();
-    vTaskDelay(2000 / portTICK_PERIOD_MS);
+    /* payload format:
+     * {"ota_job_id":"","status":"","additional_info":""}
+     */
+    json_gen_str_t jstr;
+    json_gen_str_start(&jstr, publish_payload, RAINMAKER_OTA_MES_PAYLOAD_LEN, NULL, NULL);
+    json_gen_start_object(&jstr);
+    json_gen_obj_set_string(&jstr, "ota_job_id", ota_job);
+    json_gen_obj_set_string(&jstr, "status", esp_rmaker_ota_status_to_string(status));
+    json_gen_obj_set_string(&jstr, "additional_info", additional_info);
+    json_gen_end_object(&jstr);
+    json_gen_str_end(&jstr);
 
-    xEventGroupClearBits(s_rm_event_group, RM_PROVISIONING_STATUS);
+    /* topic format:
+     * node/node_id/otastatus
+     */
+    snprintf(publish_topic, RAINMAKER_OTA_TOPIC_LEN, "node/%s/%s", node_id, "otastatus");
 
-    return ESP_OK;
+    if (esp_rmaker_mqtt_publish(publish_topic, publish_payload, strlen(publish_payload), RMAKER_MQTT_QOS1, NULL) == ESP_OK) {
+        free(publish_payload);
+        free(publish_topic);
+
+        return ESP_OK;
+    } else {
+        goto report_status_failed;
+    }
+
+report_status_failed:
+    if (publish_payload) {
+        free(publish_payload);
+    }
+
+    if (publish_topic) {
+        free(publish_topic);
+    }
+
+    return ESP_FAIL;
 }
 
 static uint8_t at_exe_cmd_rmnodeinit(uint8_t *cmd_name)
@@ -529,13 +785,15 @@ static uint8_t at_exe_cmd_rmnodeinit(uint8_t *cmd_name)
     //TODO: Load configuration from flash
 
     //register event
-    esp_event_handler_register(RMAKER_COMMON_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL);
-    esp_event_handler_register(RMAKER_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL);
-    esp_event_handler_register(WIFI_PROV_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL);
+    esp_event_handler_register(RMAKER_COMMON_EVENT, ESP_EVENT_ANY_ID, &rmaker_common_event_handler, NULL);
+    esp_event_handler_register(RMAKER_EVENT, ESP_EVENT_ANY_ID, &rmaker_event_handler, NULL);
+    esp_event_handler_register(RMAKER_OTA_EVENT, ESP_EVENT_ANY_ID, &rmaker_wifi_mcu_ota_event_handler, NULL);
+    esp_event_handler_register(WIFI_PROV_EVENT, ESP_EVENT_ANY_ID, &rmaker_wifi_prov_event_handler, NULL);
 
     //enable service
     esp_rmaker_ota_config_t ota_config = {
         .server_cert = ESP_RMAKER_OTA_DEFAULT_SERVER_CERT,
+        .ota_cb = rmaker_ota_handle,
     };
     esp_rmaker_system_serv_config_t serv_config = {
         .flags = SYSTEM_SERV_FLAGS_ALL,
@@ -1170,8 +1428,11 @@ static uint8_t at_setup_cmd_rmprov(uint8_t para_num)
         }
         rmaker_generate_mfg_info(mfg, sizeof(mfg), s_profile.customer_id, s_profile.device_type_code, s_profile.device_extra_code);
         ESP_LOG_BUFFER_HEXDUMP(TAG, mfg, sizeof(mfg), ESP_LOG_INFO);
-        //Start the rmaker framework
-        esp_rmaker_mqtt_disconnect();
+
+        if ((xEventGroupGetBits(s_rm_event_group) & RM_MQTT_CONNECTED_EVENT)) {
+            esp_rmaker_mqtt_disconnect();
+        }
+
         esp_wifi_restore();
 
         if (!(xEventGroupGetBits(s_rm_event_group) & RM_CORE_STARTED_EVENT)) {
@@ -1286,7 +1547,7 @@ static uint8_t at_setup_cmd_rmclose(uint8_t *cmd_name)
     if ((xEventGroupGetBits(s_rm_event_group) & RM_MQTT_CONNECTED_EVENT)) {
         esp_rmaker_mqtt_disconnect();
 
-        rm_connect_status = RM_CONNECT_STATUS_OFF;
+        s_rm_connect_status = RM_CONNECT_STATUS_OFF;
 
         // No disconnect event will be reported if the device actively disconnects the MQTT connection
         // So here to clear the RM_MQTT_CONNECTED_EVENT bit
@@ -1582,6 +1843,97 @@ static uint8_t at_exe_cmd_rmsend(uint8_t *cmd_name)
     return ESP_AT_RESULT_CODE_PROCESS_DONE;
 }
 
+static uint8_t at_setup_cmd_rmotaresult(uint8_t para_num)
+{
+    int32_t cnt = 0;
+    int32_t type = 0;
+    uint8_t *ota_job_id = NULL;
+    int32_t result = OTA_STATUS_SUCCESS;
+    uint8_t *additional_info = NULL;
+
+    /* Node is not initialized */
+    if (!(xEventGroupGetBits(s_rm_event_group) & RM_NODE_INIT_DONE_EVENT)) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    /* WiFi not connected */
+    if (!(xEventGroupGetBits(s_rm_event_group) & RM_WIFI_GOT_IP_STATUS)) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    /* Not connected to the cloud */
+    if (!(xEventGroupGetBits(s_rm_event_group) & RM_MQTT_CONNECTED_EVENT)) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    /* type */
+    if (esp_at_get_para_as_digit(cnt++, &type) == ESP_AT_PARA_PARSE_RESULT_FAIL) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    /* OTA job id */
+    if (esp_at_get_para_as_str(cnt++, &ota_job_id) == ESP_AT_PARA_PARSE_RESULT_FAIL) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    /* result */
+    if (esp_at_get_para_as_digit(cnt++, &result) == ESP_AT_PARA_PARSE_RESULT_FAIL) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if ((result < 0) || (result > OTA_STATUS_REJECTED)) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    /* additional_info */
+    if (esp_at_get_para_as_str(cnt++, &additional_info) == ESP_AT_PARA_PARSE_RESULT_FAIL) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    /* parameters are ready */
+    CHECK_PARAMS_NUM(cnt, para_num);
+
+    if ((xEventGroupGetBits(s_rm_event_group) & RM_HOST_MCU_OTA_EXIST)) {
+        if (rmaker_ota_report_status((const char *)ota_job_id, (ota_status_t)result, (char *)additional_info) == ESP_OK) {
+
+            /* Only rejected and success can end OTA job in ESP RainMaker */
+            if ((result == OTA_STATUS_REJECTED) || (result == OTA_STATUS_SUCCESS)) {
+                xEventGroupClearBits(s_rm_event_group, RM_HOST_MCU_OTA_EXIST);
+            }
+
+            return ESP_AT_RESULT_CODE_OK;
+        } else {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+    } else {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+}
+
+static uint8_t at_exe_cmd_rmotafetch(uint8_t *cmd_name)
+{
+    /* Node is not initialized */
+    if (!(xEventGroupGetBits(s_rm_event_group) & RM_NODE_INIT_DONE_EVENT)) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    /* WiFi not connected */
+    if (!(xEventGroupGetBits(s_rm_event_group) & RM_WIFI_GOT_IP_STATUS)) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    /* Not connected to the cloud */
+    if (!(xEventGroupGetBits(s_rm_event_group) & RM_MQTT_CONNECTED_EVENT)) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    if (esp_rmaker_ota_fetch() == ESP_OK) {
+        return ESP_AT_RESULT_CODE_OK;
+    } else {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+}
+
 static const esp_at_cmd_struct s_at_rainmaker_cmd[] = {
     {"+RMNODEINIT", NULL, NULL, NULL, at_exe_cmd_rmnodeinit},
     {"+RMNODEATTR", NULL, NULL, at_setup_cmd_rmnodeattr, NULL},
@@ -1598,6 +1950,8 @@ static const esp_at_cmd_struct s_at_rainmaker_cmd[] = {
     {"+RMPARAMUPDATE", NULL, NULL, at_setup_cmd_rmparamupdate, NULL},
     {"+RMMODE", NULL, NULL, at_setup_cmd_rmmode, NULL},
     {"+RMSEND", NULL, NULL, at_setup_cmd_rmsend, at_exe_cmd_rmsend},
+    {"+RMOTARESULT", NULL, NULL, at_setup_cmd_rmotaresult, NULL},
+    {"+RMOTAFETCH", NULL, NULL, NULL, at_exe_cmd_rmotafetch},
 };
 
 esp_err_t esp_rmaker_factory_init(void)
@@ -1676,8 +2030,8 @@ esp_err_t at_rmaker_wifi_event_register(void)
         }
     }
     esp_rmaker_factory_init();
-    esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL);
-    esp_event_handler_register(IP_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL);
+    esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &rmaker_wifi_event_handler, NULL);
+    esp_event_handler_register(IP_EVENT, ESP_EVENT_ANY_ID, &rmaker_ip_event_handler, NULL);
 
     return ESP_OK;
 }
