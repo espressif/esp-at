@@ -20,6 +20,8 @@ RainMaker AT Command Set
 -  :ref:`AT+RMPARAMUPDATE <cmd-RMPARAMUPDATE>`: Update parameters.
 -  :ref:`AT+RMMODE <cmd-RMMODE>`: Set the transmission mode.
 -  :ref:`AT+RMSEND <cmd-RMSEND>`: Send data in the :term:`RainMaker Normal Transmission Mode` or :term:`RainMaker Passthrough Mode`.
+-  :ref:`AT+RMOTARESULT <cmd-RMOTARESULT>`: Send the OTA result.
+-  :ref:`AT+RMOTAFETCH <cmd-RMOTAFETCH>`: Fetch OTA information.
 
 .. _cmd-RMNODEINIT:
 
@@ -939,3 +941,84 @@ Note
 -  In the :term:`RainMaker Passthrough Mode`, only one parameter in the devices is allowed (the default parameter created by the :ref:`AT+RMDEV <cmd-RMDEV>` command is not included). If there are multiple parameters, the device cannot enter the :term:`RainMaker Passthrough Mode`.
 
 -  If you want to update multiple parameters at the same time, please refer to :ref:`AT+RMPARAMUPDATE <cmd-RMPARAMUPDATE>` command.
+
+.. _cmd-RMOTARESULT:
+
+:ref:`AT+RMOTARESULT <RainMaker-AT>`: Send the OTA Result
+----------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+RMOTARESULT=<type>,<"ota_job_id">,<result>,<"additional_info">
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<type>**: reserved.
+-  **<"ota_job_id">**: OTA job ID.
+-  **<result>**: OTA result.
+
+   -  1: OTA in progress.
+   -  2: OTA succeeded.
+   -  3: OTA failed.
+   -  4: OTA delayed by the application.
+   -  5: OTA rejected due to some reason.
+
+-  **<"additional_info">**: Additional information for the OTA status.
+
+Note
+^^^^^
+
+-  This command is only applicable to host MCU OTA. For {IDF_TARGET_NAME} Wi-Fi OTA, the system will automatically send the OTA status.
+
+.. _cmd-RMOTAFETCH:
+
+:ref:`AT+RMOTAFETCH <RainMaker-AT>`: Fetch OTA Information
+-------------------------------------------------------------
+
+Execute Command
+^^^^^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+RMOTAFETCH
+
+**Response:**
+
+::
+
+    OK
+
+Note
+^^^^^
+
+-  For host MCU OTA, ESP-AT will send the received OTA informations instantly to the host MCU in the format of ``+RMFWNOTIFY:<type>,<size>,<url>,<fw_version>,<ota_job_id>``.
+
+    -  **<type>**: reserved. It is always set to 0 by ESP-AT.
+    -  **<size>**: host MCU OTA firmware size. Unit: byte.
+    -  **<url>**: host MCU OTA download URI. You can use the :ref:`AT+HTTPCGET <cmd-HTTPCGET>` command to download firmware.
+    -  **<fw_version>**: host MCU OTA firmware version.
+    -  **<ota_job_id>**: host MCU OTA job ID. You can use the :ref:`AT+RMOTARESULT <cmd-RMOTARESULT>` command to send the OTA result.
+
+-  For {IDF_TARGET_NAME} Wi-Fi OTA, the system will automatically executes the OTA. ESP-AT will send the OTA status to the host MCU in the format of ``+RMOTA:<status>``.
+
+    -  1: OTA in progress.
+    -  2: OTA succeeded.
+    -  3: OTA failed.
+    -  4: OTA delayed by the application.
+    -  5: OTA rejected due to some reason.
+
+-  Please refer to :doc:`RainMaker_AT_OTA_Guide` for how to implement OTA via ESP RainMaker cloud.

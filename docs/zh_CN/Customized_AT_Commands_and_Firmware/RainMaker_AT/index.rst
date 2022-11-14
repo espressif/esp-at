@@ -7,6 +7,7 @@ RainMaker AT 命令和固件
    
    RainMaker AT 命令集 <RainMaker_AT_Command_Set>
    RainMaker AT 示例 <RainMaker_AT_Examples>
+   RainMaker AT OTA 指南 <RainMaker_AT_OTA_Guide>
    缩写词索引 <index_of_abbreviations>
 
 .. _rm-at-messages:
@@ -35,10 +36,14 @@ RainMaker AT 消息
      * - +RMDISCONNECTED
        - RainMaker 设备被动断开了与云的连接
      * - +RMRESET
-       - RainMaker 设备接收到 reset 消息。Host MCU 在接收到消息后应主动执行命令 :ref:`AT+RST <cmd-RST>` 来重启模块
+       - RainMaker 设备接收到 reset 消息。主控 MCU 在接收到消息后应主动执行命令 :ref:`AT+RST <cmd-RST>` 来重启模块
      * - +RMREBOOT
-       - RainMaker 设备接收到 reboot 消息。Host MCU 在接收到消息后应主动执行命令 :ref:`AT+RST <cmd-RST>` 来重启模块
+       - RainMaker 设备接收到 reboot 消息。主控 MCU 在接收到消息后应主动执行命令 :ref:`AT+RST <cmd-RST>` 来重启模块
      * - +RMTIMEZONE
        - RainMaker 设备接收到 timezone 消息
      * - +RMMAPPINGDONE
        - RainMaker 设备完成用户和节点之间的映射
+     * - +RMFWNOTIFY:<type>,<size>,<url>,<fw_version>,<ota_job_id>
+       - RainMaker 设备输出接收到的主控 MCU OTA 信息
+     * - +RMOTA:<status>
+       - RainMaker 设备输出 Wi-Fi MCU OTA 状态

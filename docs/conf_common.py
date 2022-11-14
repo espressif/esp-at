@@ -44,7 +44,8 @@ ESP32C3_DOCS = ['AT_Binary_Lists/ESP32-C3_AT_binaries.rst',
                 'Customized_AT_Commands_and_Firmware/RainMaker_AT/index_of_abbreviations.rst',
                 'Customized_AT_Commands_and_Firmware/RainMaker_AT/index.rst',
                 'Customized_AT_Commands_and_Firmware/RainMaker_AT/RainMaker_AT_Command_Set.rst',
-                'Customized_AT_Commands_and_Firmware/RainMaker_AT/RainMaker_AT_Examples.rst'
+                'Customized_AT_Commands_and_Firmware/RainMaker_AT/RainMaker_AT_Examples.rst',
+                'Customized_AT_Commands_and_Firmware/RainMaker_AT/RainMaker_AT_OTA_Guide.rst'
                 ]
 
 ESP32C2_DOCS = ['AT_Binary_Lists/ESP32-C2_AT_binaries.rst',

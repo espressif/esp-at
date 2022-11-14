@@ -20,6 +20,8 @@ RainMaker AT 命令集
 -  :ref:`AT+RMPARAMUPDATE <cmd-RMPARAMUPDATE>`：参数更新
 -  :ref:`AT+RMMODE <cmd-RMMODE>`：设置传输模式
 -  :ref:`AT+RMSEND <cmd-RMSEND>`：在 :term:`RainMaker 普通传输模式` 或 :term:`RainMaker 透传模式` 下发送数据
+-  :ref:`AT+RMOTARESULT <cmd-RMOTARESULT>`：发送 OTA 结果
+-  :ref:`AT+RMOTAFETCH <cmd-RMOTAFETCH>`：获取 OTA 信息
 
 .. _cmd-RMNODEINIT:
 
@@ -939,3 +941,84 @@ RainMaker AT 命令集
 -  在 :term:`RainMaker 透传模式` 中，只允许存在一个参数（不包含命令 :ref:`AT+RMDEV <cmd-RMDEV>` 添加的节点默认参数）。如果在设备下存在多个参数，则无法进入 :term:`RainMaker 透传模式`。
 
 -  如果你想同时更新多个参数，请参考 :ref:`AT+RMPARAMUPDATE <cmd-RMPARAMUPDATE>` 命令。
+
+.. _cmd-RMOTARESULT:
+
+:ref:`AT+RMOTARESULT <RainMaker-AT>`：上报 OTA 结果
+----------------------------------------------------------
+
+设置命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+RMOTARESULT=<type>,<"ota_job_id">,<result>,<"additional_info">
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+-  **<type>**：保留。
+-  **<"ota_job_id">**：OTA job ID.
+-  **<result>**：OTA 结果。
+
+   -  1：OTA 进行中。
+   -  2：OTA 成功。
+   -  3：OTA 失败。
+   -  4：OTA 被应用程序延迟。
+   -  5：OTA 由于某种原因被拒绝。
+
+-  **<"additional_info">**：OTA 状态的附加信息。
+
+说明
+^^^^
+
+-  此命令只适用于主控 MCU OTA。对于 {IDF_TARGET_NAME} Wi-Fi OTA，系统会自动上报 OTA 状态。
+
+.. _cmd-RMOTAFETCH:
+
+:ref:`AT+RMOTAFETCH <RainMaker-AT>`：获取 OTA 信息
+----------------------------------------------------------
+
+执行命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+RMOTAFETCH
+
+**响应：**
+
+::
+
+    OK
+
+说明
+^^^^
+
+-  对于主控 MCU OTA，ESP-AT 会立即将接收到的 OTA 信息发送到主控 MCU，格式为 ``+RMFWNOTIFY:<type>,<size>,<url>,<fw_version>,<ota_job_id>``。
+
+    -  **<type>**：保留。ESP-AT 总是设置为 0。
+    -  **<size>**：主控 MCU OTA 固件大小。单位：字节。
+    -  **<url>**：主控 MCU OTA 固件下载 URI。你可以执行 :ref:`AT+HTTPCGET <cmd-HTTPCGET>` 命令来下载固件。
+    -  **<fw_version>**：主控 MCU OTA 固件版本。
+    -  **<ota_job_id>**：主控 MCU OTA job ID. 你可以执行 :ref:`AT+RMOTARESULT <cmd-RMOTARESULT>` 命令上报 OTA 结果。
+
+-  对于 {IDF_TARGET_NAME} Wi-Fi OTA，系统会自动执行 OTA。ESP-AT 会将 OTA 状态发送到主控 MCU，格式为 ``+RMOTA:<status>``。
+
+    -  1： OTA 进行中。
+    -  2： OTA 成功。
+    -  3： OTA 失败。
+    -  4： OTA 被应用程序延迟。
+    -  5： OTA 由于某种原因被拒绝。
+
+- 请参考 :doc:`RainMaker_AT_OTA_Guide` 了解如何通过 ESP RainMaker 云实现 OTA。
