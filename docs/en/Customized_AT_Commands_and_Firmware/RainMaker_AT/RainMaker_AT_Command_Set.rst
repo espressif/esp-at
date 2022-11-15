@@ -811,6 +811,7 @@ Note
 
 -  The parameter ``<"param_value">`` must match the parameter ``<data_type>`` set in :ref:`AT+RMPARAM <cmd-RMPARAM>`.
 -  The command supports up to 15 parameters, namely, 1 ``<"unique_name">`` + 7 ``<"param_name">`` + 7 ``<"param_value">``.
+-  The length of the entire AT command should be less than ``256`` bytes. If the amount of data you want to update is relatively large, please use the :ref:`AT+RMSEND <cmd-RMSEND>` command.
 
 Example
 ^^^^^^^^
@@ -925,7 +926,16 @@ or
 
 Enter the :term:`RainMaker Passthrough Mode`. When a single packet containing ``+++`` is received, the {IDF_TARGET_NAME} will exit the data sending mode under the :term:`RainMaker Passthrough Mode`. Please wait for at least one second before sending the next AT command.
 
+Parameters
+^^^^^^^^^^
+
+-  **<"unique_name">**: device unique name.
+-  **<"param_name">**: parameter name.
+-  **<len>**: data length. The length depends on the RAM size. You can use :ref:`AT+SYSRAM <cmd-SYSRAM>` to query the remaining RAM size.
+
 Note
 ^^^^^
 
 -  In the :term:`RainMaker Passthrough Mode`, only one parameter in the devices is allowed (the default parameter created by the :ref:`AT+RMDEV <cmd-RMDEV>` command is not included). If there are multiple parameters, the device cannot enter the :term:`RainMaker Passthrough Mode`.
+
+-  If you want to update multiple parameters at the same time, please refer to :ref:`AT+RMPARAMUPDATE <cmd-RMPARAMUPDATE>` command.
