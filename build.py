@@ -102,18 +102,22 @@ def at_sync_submodule(path, repo, branch, commit, redirect):
         ESP_LOGI('Synchronizing submodule:"{}" from "{}" (This may take time)..'.format(path, repo))
         print('old commit: {}'.format(rev_parse_head))
         print('checkout commit: {}'.format(commit))
-        ret = subprocess.call('cd {} && git fetch origin {}'.format(path, branch), shell = True)
+        cmd = 'cd {} && git fetch origin {}'.format(path, branch)
+        ret = subprocess.call(cmd, shell = True)
         if ret:
-            raise Exception('git fetch failed')
-        ret = subprocess.call('cd {} && git merge origin/{} {}'.format(path, branch, branch), shell = True)
+            raise Exception('git fetch failed! Please manually run:\r\n{}'.format(cmd))
+        cmd = 'cd {} && git merge origin/{} {}'.format(path, branch, branch)
+        ret = subprocess.call(cmd, shell = True)
         if ret:
-            raise Exception('git merge failed')
-        ret = subprocess.call('cd {} && git checkout -q {}'.format(path, commit), shell = True)
+            raise Exception('git merge failed! Please manually run:\r\n{}'.format(cmd))
+        cmd = 'cd {} && git checkout -q {}'.format(path, commit)
+        ret = subprocess.call(cmd, shell = True)
         if ret:
-            raise Exception('git checkout failed')
-        ret = subprocess.call('cd {} && git submodule update --init --recursive'.format(path), shell = True)
+            raise Exception('git checkout failed! Please manually run:\r\n{}'.format(cmd))
+        cmd = 'cd {} && git submodule update --init --recursive'.format(path)
+        ret = subprocess.call(cmd, shell = True)
         if ret:
-            raise Exception('git submodule update failed')
+            raise Exception('git submodule update failed! Please manually run:\r\n{}'.format(cmd))
 
 def at_parse_idf_version(idf_ver_file, pairs):
     if not os.path.exists(idf_ver_file):
