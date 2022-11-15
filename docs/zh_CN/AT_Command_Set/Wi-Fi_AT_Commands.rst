@@ -977,10 +977,14 @@ Wi-Fi AT 命令集
    -  bit1: 802.11g 协议标准
    -  bit2: 802.11n 协议标准
 
+   .. only:: esp32 or esp32c3
+
+     - bit3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+
 说明
 ^^^^
 
--  当前，{IDF_TARGET_NAME} 设备只支持 802.11b、802.11bg 或 802.11bgn 协议标准
+-  当前，{IDF_TARGET_NAME} 设备支持的 PHY mode 见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id40>`_
 -  默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgn 模式
 
 .. _cmd-STAPROTO:
@@ -1028,12 +1032,15 @@ Wi-Fi AT 命令集
    -  bit1: 802.11g 协议标准
    -  bit2: 802.11n 协议标准
 
+   .. only:: esp32 or esp32c3
+
+     - bit3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+
 说明
 ^^^^
 
--  当前，{IDF_TARGET_NAME} 设备只支持 802.11b、802.11bg 或 802.11bgn 协议标准
+-  当前，{IDF_TARGET_NAME} 设备支持的 PHY mode 见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id40>`_
 -  默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgn 模式
--  从 ESP-AT v2.1.0.0 开始支持本命令
 
 .. _cmd-STAMAC:
 
@@ -1827,6 +1834,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 说明
 ^^^^
 
+-  详细说明请参考：`Wi-Fi 国家/地区代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id45>`_。
 -  配置更改不保存到 flash
 
 示例

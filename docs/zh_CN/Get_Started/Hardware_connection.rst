@@ -35,7 +35,17 @@
 
    ESP-AT 测试硬件连接示意图
 
-注意：上图使用 4 根杜邦线连接 {IDF_TARGET_NAME} 开发板和 USB 转 UART 串口模块，但如果您不使用硬件流控功能，只需 2 根杜邦线连接 TX/RX 即可。
+注意：
+
+.. only:: esp32c2
+
+  - 官方提供的默认 :doc:`../AT_Binary_Lists/index` 仅支持 26 MHz 晶振。如果您的 {IDF_TARGET_NAME} 晶振为 40 MHz，请参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` 自行编译 {IDF_TARGET_NAME} AT 固件。在第五步配置：
+
+    ::
+
+      python build.py menuconfig -> Component config -> Hardware Settings -> Main XTAL Config -> Main XTAL frequency -> 40 MHz
+
+- 上图使用 4 根杜邦线连接 {IDF_TARGET_NAME} 开发板和 USB 转 UART 串口模块，但如果您不使用硬件流控功能，只需 2 根杜邦线连接 TX/RX 即可。
 
 .. only:: esp32
 
@@ -87,7 +97,7 @@
 
     ESP32-WROOM-32 系列硬件连接示意图
 
-  如果需要直接基于 ESP32-WROOM-32 模组进行连接，请参考 `《ESP32-WROOM-32 技术规格书》 <https://www.espressif.com/sites/default/files/documentation/esp32_wrover_datasheet_cn.pdf>`_。
+  如果需要直接基于 ESP32-WROOM-32 模组进行连接，请参考 `《ESP32-WROOM-32 技术规格书》 <https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32e_esp32-wroom-32ue_datasheet_cn.pdf>`_。
 
   .. _hw-connection-esp32-wrover-series:
 
@@ -129,7 +139,7 @@
 
     ESP32-WROVER 系列硬件连接示意图
 
-  如果需要直接基于 ESP32-WROVER 模组进行连接，请参考 `《ESP32-WROVER 技术规格书》 <https://www.espressif.com/sites/default/files/documentation/esp32_wrover_datasheet_cn.pdf>`_。
+  如果需要直接基于 ESP32-WROVER 模组进行连接，请参考 `《ESP32-WROVER 技术规格书》 <https://www.espressif.com/sites/default/files/documentation/esp32-wrover-e_esp32-wrover-ie_datasheet_cn.pdf>`_。
 
   ESP32-PICO 系列
   ^^^^^^^^^^^^^^^^^^
@@ -215,21 +225,23 @@
 
 .. only:: esp32c2
 
-  {IDF_TARGET_NAME} 系列
-  -----------------------
+  {IDF_TARGET_CFG_PREFIX}-4MB 系列
+  --------------------------------
 
-  {IDF_TARGET_NAME} AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。
+  {IDF_TARGET_CFG_PREFIX}-4MB 系列指的是内置 {IDF_TARGET_NAME}/ESP8684 芯片，同时有 4 MB flash 的模组/开发板，例如：{IDF_TARGET_CFG_PREFIX} MINI 系列设备、{IDF_TARGET_CFG_PREFIX} WROOM 系列设备。
 
-  .. list-table:: {IDF_TARGET_NAME} Series 系列硬件连接管脚分配
+  {IDF_TARGET_CFG_PREFIX}-4MB AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。
+
+  .. list-table:: {IDF_TARGET_CFG_PREFIX}-4MB Series 系列硬件连接管脚分配
     :header-rows: 1
 
     * - 功能
-      - {IDF_TARGET_NAME} 开发板管脚
+      - {IDF_TARGET_CFG_PREFIX}-4MB 开发板管脚
       - 其它设备管脚
     * - 下载固件/输出日志 :sup:`1`
       - UART0
-          * GPIO20 (RX)
-          * GPIO21 (TX)
+          * GPIO19 (RX)
+          * GPIO20 (TX)
       - PC
           * TX
           * RX
@@ -245,18 +257,68 @@
           * RTS
           * CTS
 
-  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_CFG_PREFIX}-4MB 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_CFG_PREFIX}-4MB 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
-  .. figure:: ../../_static/esp32-c2-hw-connection.png
+  .. figure:: ../../_static/esp32-c2-4mb-hw-connection.png
     :align: center
-    :alt: {IDF_TARGET_NAME} 系列硬件连接示意图
+    :alt: {IDF_TARGET_CFG_PREFIX}-4MB 系列硬件连接示意图
     :figclass: align-center
 
-    {IDF_TARGET_NAME} 系列硬件连接示意图
+    {IDF_TARGET_CFG_PREFIX}-4MB 系列硬件连接示意图
 
-  如果需要直接基于 ESP32-C2-MINI-1 模组进行连接，请参考 `《ESP32-C2-MINI-1 技术规格书》 <https://www.espressif.com/sites/default/files/documentation/esp32-c2-mini-1_datasheet_cn.pdf>`_。
+  如果需要直接基于 {IDF_TARGET_CFG_PREFIX}-4MB 模组进行连接，请参考对应模组的 `技术规格书 <https://www.espressif.com/zh-hans/support/documents/technical-documents>`_。
+
+  {IDF_TARGET_CFG_PREFIX}-2MB 系列
+  --------------------------------
+
+  {IDF_TARGET_CFG_PREFIX}-2MB 系列指的是内置 {IDF_TARGET_NAME}/ESP8684 芯片，同时有 2 MB flash 的模组/开发板。
+
+  {IDF_TARGET_CFG_PREFIX}-2MB AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。
+
+  .. list-table:: {IDF_TARGET_CFG_PREFIX}-2MB Series 系列硬件连接管脚分配
+    :header-rows: 1
+
+    * - 功能
+      - {IDF_TARGET_CFG_PREFIX}-2MB 开发板管脚
+      - 其它设备管脚
+    * - 下载固件 :sup:`1`
+      - UART0
+          * GPIO19 (RX)
+          * GPIO20 (TX)
+      - PC
+          * TX
+          * RX
+    * - AT 命令/响应 :sup:`2`
+      - UART1
+          * GPIO6 (RX)
+          * GPIO7 (TX)
+          * GPIO19 (CTS)
+          * GPIO20 (RTS)
+      - USB 转 UART 串口模块
+          * TX
+          * RX
+          * RTS
+          * CTS
+    * - 输出日志
+      - UART0
+          * GPIO8 (TX)
+      - USB 转 UART 串口模块
+          * RX
+
+  **说明** 1：{IDF_TARGET_CFG_PREFIX}-2MB 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_CFG_PREFIX}-2MB 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+
+  **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
+
+  .. figure:: ../../_static/esp32-c2-2mb-hw-connection.png
+    :align: center
+    :alt: {IDF_TARGET_CFG_PREFIX}-2MB 系列硬件连接示意图
+    :figclass: align-center
+
+    {IDF_TARGET_CFG_PREFIX}-2MB 系列硬件连接示意图
+
+  如果需要直接基于 {IDF_TARGET_CFG_PREFIX}-2MB 模组进行连接，请参考对应模组的 `技术规格书 <https://www.espressif.com/zh-hans/support/documents/technical-documents>`_。
 
 .. only:: esp32c3
 

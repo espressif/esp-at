@@ -3,7 +3,7 @@ How to Generate Factory Parameter Bin
 
 {IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="ESP32C2-4MB", esp32c3="MINI-1"}
 {IDF_TARGET_AT_PARAMS_ADDR: default="undefined", esp32="0x30000", esp32c2="0x2B000", esp32c3="0x31000"}
-{IDF_TARGET_INDEX: default="undefined", esp32="1", esp32c2="2", esp32c3="3"}
+{IDF_TARGET_INDEX: default="undefined", esp32="1", esp32c2="3", esp32c3="2"}
 
 :link_to_translation:`zh_CN:[中文]`
 
@@ -188,7 +188,7 @@ After adding the customized module information, recompile the whole project acco
     Platform name:
     1. PLATFORM_ESP32
     2. PLATFORM_ESP32C3
-    2. PLATFORM_ESP32C2
+    3. PLATFORM_ESP32C2
     choose(range[1,3]):{IDF_TARGET_INDEX}
 
     Module name:
@@ -382,6 +382,9 @@ Download the new ``factory_param_MY_MODULE.bin`` into flash. ESP-AT provides `es
       * - Platform
         - Firmware
         - Address
+      * - PLATFORM_ESP32C2
+        - ESP32C2-2MB Bin
+        - 0x1B000
       * - PLATFORM_ESP32C2
         - ESP32C2-4MB Bin
         - {IDF_TARGET_AT_PARAMS_ADDR}

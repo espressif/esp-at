@@ -35,7 +35,17 @@ What You Need
 
    Connection of Components for ESP-AT Testing
 
-Please note that in the above picture, four jump wires are used to connect the {IDF_TARGET_NAME} board and USB to serial converter. If you don't use hardware flow control, two wires connecting TX/RX and a simpler converter will be enough.
+Note:
+
+.. only:: esp32c2
+
+  - The official default :doc:`../AT_Binary_Lists/index` only supports 26 MHz crystal oscillator. If your crystal oscillator of {IDF_TARGET_NAME} is 40 MHz, please refer to :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` document to compile {IDF_TARGET_NAME} AT firmware, and configurate in the step 5:
+
+    ::
+
+      python build.py menuconfig -> Component config -> Hardware Settings -> Main XTAL Config -> Main XTAL frequency -> 40 MHz
+
+- In the above picture, four jump wires are used to connect the {IDF_TARGET_NAME} board and USB to serial converter. If you don't use hardware flow control, two wires connecting TX/RX and a simpler converter will be enough.
 
 .. only:: esp32
 
@@ -87,7 +97,7 @@ Please note that in the above picture, four jump wires are used to connect the {
 
     ESP32-WROOM-32 Series Hardware Connection
 
-  If you want to connect your device directly with ESP32-WROOM-32 rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-WROOM-32 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf>`_ for more details.
+  If you want to connect your device directly with ESP32-WROOM-32 rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-WROOM-32 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.pdf>`_ for more details.
 
   .. _hw-connection-esp32-wrover-series:
 
@@ -129,7 +139,7 @@ Please note that in the above picture, four jump wires are used to connect the {
 
     ESP32-WROVER Series Hardware Connection
 
-  If you want to connect your device directly with ESP32-WROVER rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-WROVER Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-wrover_datasheet_en.pdf>`_ for more details.
+  If you want to connect your device directly with ESP32-WROVER rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-WROVER Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-wrover-e_esp32-wrover-ie_datasheet_en.pdf>`_ for more details.
 
   ESP32-PICO Series
   ^^^^^^^^^^^^^^^^^^
@@ -215,21 +225,23 @@ Please note that in the above picture, four jump wires are used to connect the {
 
 .. only:: esp32c2
 
-  {IDF_TARGET_NAME} Series
-  ------------------------
+  {IDF_TARGET_CFG_PREFIX}-4MB Series
+  ----------------------------------
 
-  {IDF_TARGET_NAME} AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default.
+  {IDF_TARGET_CFG_PREFIX}-4MB series refer to the module or board that has a built-in {IDF_TARGET_NAME}/ESP8684 chip with a 4 MB flash, such as {IDF_TARGET_CFG_PREFIX}-MINI series device and {IDF_TARGET_CFG_PREFIX}-WROOM series device.
 
-  .. list-table:: {IDF_TARGET_NAME} Series Hardware Connection Pinout
+  {IDF_TARGET_CFG_PREFIX}-4MB AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default.
+
+  .. list-table:: {IDF_TARGET_CFG_PREFIX}-4MB Series Hardware Connection Pinout
     :header-rows: 1
 
     * - Function of Connection
-      - {IDF_TARGET_NAME} Board Pins
+      - {IDF_TARGET_CFG_PREFIX}-4MB Board Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
-          * GPIO20 (RX)
-          * GPIO21 (TX)
+          * GPIO19 (RX)
+          * GPIO20 (TX)
       - PC
           * TX
           * RX
@@ -245,18 +257,68 @@ Please note that in the above picture, four jump wires are used to connect the {
           * RTS
           * CTS
 
-  **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
+  **Note** 1: Connection between individual pins of the {IDF_TARGET_CFG_PREFIX}-4MB board and the PC is already established internally on the {IDF_TARGET_CFG_PREFIX}-4MB board. You only need to provide USB cable between the board and PC.
 
   **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
 
-  .. figure:: ../../_static/esp32-c2-hw-connection.png
+  .. figure:: ../../_static/esp32-c2-4mb-hw-connection.png
     :align: center
-    :alt: {IDF_TARGET_NAME} Series Hardware Connection
+    :alt: {IDF_TARGET_CFG_PREFIX}-4MB Series Hardware Connection
     :figclass: align-center
 
-    {IDF_TARGET_NAME} Series Hardware Connection
+    {IDF_TARGET_CFG_PREFIX}-4MB Series Hardware Connection
 
-  If you want to connect your device directly with ESP32-C2-MINI-1 module rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-C2-MINI-1 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-c2-mini-1_datasheet_en.pdf>`_ for more details.
+  If you want to connect your device directly with {IDF_TARGET_CFG_PREFIX}-4MB module rather than the {IDF_TARGET_CFG_PREFIX}-4MB board that integrates it, please refer to the corresponding module `datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for more details.
+
+  {IDF_TARGET_CFG_PREFIX}-2MB Series
+  ----------------------------------
+
+  {IDF_TARGET_CFG_PREFIX}-2MB series refers to the module or board that has a built-in {IDF_TARGET_NAME}/ESP8684 chip with a 2 MB flash.
+
+  {IDF_TARGET_CFG_PREFIX}-2MB AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default.
+
+  .. list-table:: {IDF_TARGET_CFG_PREFIX}-2MB Series Hardware Connection Pinout
+    :header-rows: 1
+
+    * - Function of Connection
+      - {IDF_TARGET_CFG_PREFIX}-2MB Board Pins
+      - Other Device Pins
+    * - Download/Log output :sup:`1`
+      - UART0
+          * GPIO19 (RX)
+          * GPIO20 (TX)
+      - PC
+          * TX
+          * RX
+    * - AT command/response :sup:`2`
+      - UART1
+          * GPIO6 (RX)
+          * GPIO7 (TX)
+          * GPIO5 (CTS)
+          * GPIO4 (RTS)
+      - USB to serial converter
+          * TX
+          * RX
+          * RTS
+          * CTS
+    * - Log output
+      - UART0
+          * GPIO8 (TX)
+      - USB to serial converter
+          * RX
+
+  **Note** 1: Connection between individual pins of the {IDF_TARGET_CFG_PREFIX}-2MB board and the PC is already established internally on the {IDF_TARGET_CFG_PREFIX}-2MB board. You only need to provide USB cable between the board and PC.
+
+  **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
+
+  .. figure:: ../../_static/esp32-c2-2mb-hw-connection.png
+    :align: center
+    :alt: {IDF_TARGET_CFG_PREFIX}-2MB Series Hardware Connection
+    :figclass: align-center
+
+    {IDF_TARGET_CFG_PREFIX}-2MB Series Hardware Connection
+
+  If you want to connect your device directly with {IDF_TARGET_CFG_PREFIX}-2MB module rather than the {IDF_TARGET_CFG_PREFIX}-2MB board that integrates it, please refer to the corresponding module `datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for more details.
 
 .. only:: esp32c3
 
