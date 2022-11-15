@@ -259,7 +259,7 @@ config AT_WEB_SERVER_SUPPORT
 config AT_WEB_USE_FATFS
     bool "Use fatfs to store html"
     default "n"
-    depends on AT_WEB_SERVER_SUPPORT
+    depends on AT_WEB_SERVER_SUPPORT && AT_FS_COMMAND_SUPPORT
     help
         If enable this configure, html will be stored in fatfs(Please enable AT FS Command).
         Otherwise, html file will be compiled as embedded code.
