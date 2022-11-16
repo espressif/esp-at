@@ -327,7 +327,7 @@ In this example, the HTTP server is http://httpbin.org and the data type is ``ap
 
 #. Post HTTP data of specified length. The command specifies that the number of HTTP header fields is 2, which are ``connection`` field and ``content-type`` field respectively. ``connection`` is ``keep-alive`` and ``content-type`` is ``application/json``.
 
-   Assume the JSON data you want to post is as follows, length is 472 bytes.
+   Assume the JSON data you want to post is of 427 bytes as follows.
 
    .. code-block:: none
 
@@ -347,7 +347,7 @@ In this example, the HTTP server is http://httpbin.org and the data type is ``ap
 
      >
 
-   This response indicates that AT is ready for receiving serial data. You should enter the data, and when the data length reaches the ``<length>`` value, the transmission of data starts. 
+   This response indicates that AT is ready for receiving serial data. You should enter the 427-byte data mentioned above, and when the data length reaches the ``<length>`` value, data transmission starts.
 
    .. code-block:: none
 
@@ -388,10 +388,10 @@ In this example, the HTTP server is http://httpbin.org and the data type is ``ap
 
    Note:
 
-   - After AT outputs the ``>`` character, the special characters in the HTTP body does not need to be escaped through the escape character, and it does not need to end with a new line(CR-LF).
+   - After AT outputs the ``>`` character, the special characters in the HTTP body do not need to be escaped using the escape character, and the data do not need to end with a new line (CR-LF).
 
-The PUT method of HTTP client
----------------------------------------------------
+The PUT method of HTTP client (suitable for no data put)
+--------------------------------------------------------
 
 In this example, the HTTP server is http://httpbin.org. PUT request supports `Query String Parameters <https://www.postman.com/postman/workspace/published-postman-templates/documentation/631643-f695cab7-6878-eb55-7943-ad88e1ccfd65?ctx=documentation>`__ mode.
 
@@ -404,7 +404,7 @@ In this example, the HTTP server is http://httpbin.org. PUT request supports `Qu
      AT+RESTORE
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -418,7 +418,7 @@ In this example, the HTTP server is http://httpbin.org. PUT request supports `Qu
      AT+CWMODE=1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -482,6 +482,125 @@ In this example, the HTTP server is http://httpbin.org. PUT request supports `Qu
    Note:
 
    - The results you obtain may be different from those in the above response.
+
+The PUT method of HTTP client (recommended method)
+-------------------------------------------------------------------------------------
+
+In this example, the HTTP server is http://httpbin.org and the data type is ``application/json``.
+
+#. Restore factory default settings of the module.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+RESTORE
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Set the Wi-Fi mode to station.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWMODE=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Connect to the router.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWJAP="espressif","1234567890"
+
+   Response:
+
+   .. code-block:: none
+
+     WIFI CONNECTED
+     WIFI GOT IP
+
+     OK
+
+   Note:
+
+   - The SSID and password you entered may be different from those in the above command. Please replace the SSID and password with those of your router settings.
+
+#. PUT HTTP data of specified length. The command specifies that the number of HTTP header fields is 2, which are ``connection`` field and ``content-type`` field respectively. ``connection`` is ``keep-alive`` and ``content-type`` is ``application/json``.
+
+   Assume the JSON data you want to post is of 427 bytes as follows.
+
+   .. code-block:: none
+
+     {"headers": {"Accept": "application/json","Accept-Encoding": "gzip, deflate","Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7","Content-Length": "0","Host": "httpbin.org","Origin": "http://httpbin.org","Referer": "http://httpbin.org/","User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36","X-Amzn-Trace-Id": "Root=1-6150581e-1ad4bd5254b4bf5218070413"}}
+
+   Command:
+
+   .. code-block:: none
+
+     AT+HTTPCPUT="http://httpbin.org/put",427,2,"connection: keep-alive","content-type: application/json"
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+     >
+
+   This response indicates that AT is ready for receiving serial data. You should enter the 427-byte data mentioned above, and when the data length reaches the ``<length>`` value, data transmission starts.
+
+   .. code-block:: none
+
+      +HTTPCPUT:281,{
+        "args": {}, 
+        "data": "{\"headers\": {\"Accept\": \"application/json\",\"Accept-Encoding\": \"gzip, deflate\",\"Accept-Language\": \"en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7\",\"Content-Length\": \"0\",\"Host\": \"httpbin.org\",\"Origin\": \"http://httpbin.org\",\"Referer\": \"htt
+      +HTTPCPUT:512,p://httpbin.org/\",\"User-Agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36\",\"X-Amzn-Trace-Id\": \"Root=1-6150581e-1ad4bd5254b4bf5218070413\"}}", 
+        "files": {}, 
+        "form": {}, 
+        "headers": {
+          "Content-Length": "427", 
+          "Content-Type": "application/json", 
+          "Host": "httpbin.org", 
+          "User-Agent": "ESP32 HTTP Client/1.0", 
+          "X-Amzn-Trace-Id": "Root=1-635f7009-681be2d5478504dc5b83624a"
+        }, 
+        "json": {
+          "headers": {
+            
+      +HTTPCPUT:512,"Accept": "application/json", 
+            "Accept-Encoding": "gzip, deflate", 
+            "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7", 
+            "Content-Length": "0", 
+            "Host": "httpbin.org", 
+            "Origin": "http://httpbin.org", 
+            "Referer": "http://httpbin.org/", 
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36", 
+            "X-Amzn-Trace-Id": "Root=1-6150581e-1ad4bd5254b4bf5218070413"
+          }
+        }, 
+        "origin": "52.246.135
+      +HTTPCPUT:43,.57", 
+        "url": "http://httpbin.org/put"
+      }
+
+
+      SEND OK
+
+   Note:
+
+   - After AT outputs the ``>`` character, the special characters in the HTTP body do not need to be escaped using the escape character, and the data do not need to end with a new line (CR-LF).
 
 The DELETE method of HTTP client
 ---------------------------------------------------

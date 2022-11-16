@@ -327,7 +327,7 @@ HTTP 客户端 POST 请求方法（推荐方式）
 
 #. Post 指定长度数据。该命令设置 HTTP 头部字段数量为 2，分别是 ``connection`` 字段和 ``content-type`` 字段，``connection`` 字段值为 ``keep-alive``，``connection`` 字段值为 ``application/json``。
 
-   假设你想要 post 的 JSON 数据如下，长度为 472 字节。
+   假设你想要 post 的 JSON 数据如下，长度为 427 字节。
 
    .. code-block:: none
 
@@ -347,7 +347,7 @@ HTTP 客户端 POST 请求方法（推荐方式）
 
      >
 
-   上述响应表示 AT 已准备好接收串行数据，此时您可以输入数据，当 AT 接收到的数据长度达到 ``<length>`` 后，数据传输开始。
+   上述响应表示 AT 已准备好接收串行数据，此时您可以输入上面提到的 427 字节长的数据，当 AT 接收到的数据长度达到 ``<length>`` 后，数据传输开始。
 
    .. code-block:: none
 
@@ -390,7 +390,7 @@ HTTP 客户端 POST 请求方法（推荐方式）
 
    - ``AT`` 输出 ``>`` 字符后，HTTP body 中的特殊字符不需要转义字符进行转义，也不需要以新行结尾（CR-LF）。
 
-HTTP 客户端 PUT 请求方法
+HTTP 客户端 PUT 请求方法（适用于无数据情况）
 ---------------------------------------------------
 
 该示例以 http://httpbin.org 作为 HTTP 服务器。PUT 请求支持 `查询字符串参数 <https://www.postman.com/postman/workspace/published-postman-templates/documentation/631643-f695cab7-6878-eb55-7943-ad88e1ccfd65?ctx=documentation>`__ 模式。
@@ -482,6 +482,125 @@ HTTP 客户端 PUT 请求方法
    说明：
 
    - 您获取到的结果可能与上述响应中的不同。
+
+HTTP 客户端 PUT 请求方法（推荐方式）
+-------------------------------------------------------------------------------------
+
+该示例以 http://httpbin.org 作为 HTTP 服务器，数据类型为 ``application/json``。
+
+#. 恢复出厂设置。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+RESTORE
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 设置 Wi-Fi 模式为 station。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWMODE=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 连接路由器。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWJAP="espressif","1234567890"
+
+   响应：
+
+   .. code-block:: none
+
+     WIFI CONNECTED
+     WIFI GOT IP
+
+     OK
+
+   说明：
+
+   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+
+#. PUT 指定长度数据。该命令设置 HTTP 头部字段数量为 2，分别是 ``connection`` 字段和 ``content-type`` 字段，``connection`` 字段值为 ``keep-alive``，``connection`` 字段值为 ``application/json``。
+
+   假设你想要 put 的 JSON 数据如下，长度为 427 字节。
+
+   .. code-block:: none
+
+     {"headers": {"Accept": "application/json","Accept-Encoding": "gzip, deflate","Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7","Content-Length": "0","Host": "httpbin.org","Origin": "http://httpbin.org","Referer": "http://httpbin.org/","User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36","X-Amzn-Trace-Id": "Root=1-6150581e-1ad4bd5254b4bf5218070413"}}
+
+   命令：
+
+   .. code-block:: none
+
+     AT+HTTPCPUT="http://httpbin.org/put",427,2,"connection: keep-alive","content-type: application/json"
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+     >
+
+   上述响应表示 AT 已准备好接收串行数据，此时您可以输入上面提到的 427 字节长的数据，当 AT 接收到的数据长度达到 ``<length>`` 后，数据传输开始。
+
+   .. code-block:: none
+
+      +HTTPCPUT:281,{
+        "args": {}, 
+        "data": "{\"headers\": {\"Accept\": \"application/json\",\"Accept-Encoding\": \"gzip, deflate\",\"Accept-Language\": \"en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7\",\"Content-Length\": \"0\",\"Host\": \"httpbin.org\",\"Origin\": \"http://httpbin.org\",\"Referer\": \"htt
+      +HTTPCPUT:512,p://httpbin.org/\",\"User-Agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36\",\"X-Amzn-Trace-Id\": \"Root=1-6150581e-1ad4bd5254b4bf5218070413\"}}", 
+        "files": {}, 
+        "form": {}, 
+        "headers": {
+          "Content-Length": "427", 
+          "Content-Type": "application/json", 
+          "Host": "httpbin.org", 
+          "User-Agent": "ESP32 HTTP Client/1.0", 
+          "X-Amzn-Trace-Id": "Root=1-635f7009-681be2d5478504dc5b83624a"
+        }, 
+        "json": {
+          "headers": {
+            
+      +HTTPCPUT:512,"Accept": "application/json", 
+            "Accept-Encoding": "gzip, deflate", 
+            "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7", 
+            "Content-Length": "0", 
+            "Host": "httpbin.org", 
+            "Origin": "http://httpbin.org", 
+            "Referer": "http://httpbin.org/", 
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36", 
+            "X-Amzn-Trace-Id": "Root=1-6150581e-1ad4bd5254b4bf5218070413"
+          }
+        }, 
+        "origin": "52.246.135
+      +HTTPCPUT:43,.57", 
+        "url": "http://httpbin.org/put"
+      }
+
+
+      SEND OK
+
+   说明：
+
+   - ``AT`` 输出 ``>`` 字符后，HTTP body 中的特殊字符不需要转义字符进行转义，也不需要以新行结尾（CR-LF）。
 
 HTTP 客户端 DELETE 请求方法
 ---------------------------------------------------

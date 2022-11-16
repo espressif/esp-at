@@ -9,6 +9,7 @@ HTTP AT 命令集
 -  :ref:`AT+HTTPGETSIZE <cmd-HTTPGETSIZE>`：获取 HTTP 资源大小
 -  :ref:`AT+HTTPCGET <cmd-HTTPCGET>`：获取 HTTP 资源
 -  :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>`：Post 指定长度的 HTTP 数据
+-  :ref:`AT+HTTPCPUT <cmd-HTTPCPUT>`：Put 指定长度的 HTTP 数据
 -  :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>`：设置/获取长的 HTTP URL
 -  :ref:`HTTP AT 错误码 <cmd-HTTPErrCode>`
 
@@ -65,7 +66,7 @@ HTTP AT 命令集
 
 说明
 ^^^^
--  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 <"url"> 参数需要设置为 ``""``。
+-  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
 -  如果 ``url`` 参数不为空，HTTP 客户端将使用它并忽略 ``host`` 参数和 ``path`` 参数；如果 ``url`` 参数被省略或字符串为空，HTTP 客户端将使用 ``host`` 参数和 ``path`` 参数。
 -  某些已发布的固件默认不支持 HTTP 客户端命令（详情请见 :doc:`../Compile_and_Develop/esp-at_firmware_differences`），但是可通过以下方式使其支持该命令：``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support``，然后编译项目（详情请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
 
@@ -96,7 +97,7 @@ HTTP AT 命令集
 
 ::
 
-    AT+HTTPGETSIZE=<"url">
+    AT+HTTPGETSIZE=<"url">[,<tx size>][,<rx size>][,<timeout>]
 
 **响应：**
 
@@ -109,12 +110,15 @@ HTTP AT 命令集
 参数
 ^^^^
 - **<"url">**：HTTP URL。
+- **<tx size>**：HTTP 发送缓存大小。单位：字节。默认值：2048。范围：[0,10240]。
+- **<rx size>**：HTTP 接收缓存大小。单位：字节。默认值：2048。范围：[0,10240]。
+- **<timeout>**：网络超时。单位：毫秒。默认值：5000。范围：[0,180000]。
 - **<size>**：HTTP 资源大小。
 
 说明
 ^^^^
 
--  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 <"url"> 参数需要设置为 ``""``。
+-  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
 -  某些已发布的固件默认不支持 HTTP 客户端命令（详情请见 :doc:`../Compile_and_Develop/esp-at_firmware_differences`），但是可通过以下方式使其支持该命令：``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support``，然后编译项目（详情请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
 
 示例
@@ -155,7 +159,7 @@ HTTP AT 命令集
 说明
 ^^^^^
 
--  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 <"url"> 参数需要设置为 ``""``。
+-  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
 
 .. _cmd-HTTPCPOST:
 
@@ -198,12 +202,60 @@ HTTP AT 命令集
 - **<"url">**：HTTP URL。
 - **<length>**：需 POST 的 HTTP 数据长度。最大长度等于系统可分配的堆空间大小。
 - **<http_req_header_cnt>**：``<http_req_header>`` 参数的数量。
-- **[<http_req_header>]**：可发送多个请求头给服务器。
+- **[<http_req_header>]**：HTTP 请求头。可发送多个请求头给服务器。
 
 说明
 ^^^^^
 
--  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 <"url"> 参数需要设置为 ``""``。
+-  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
+
+.. _cmd-HTTPCPUT:
+
+:ref:`AT+HTTPCPUT <HTTP-AT>`：Put 指定长度的 HTTP 数据
+------------------------------------------------------------------
+
+设置命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+HTTPCPUT=<"url">,<length>[,<http_req_header_cnt>][,<http_req_header>..<http_req_header>]
+
+**响应：**
+
+::
+
+    OK
+
+    >
+
+符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，传输开始。
+
+若传输成功，则返回：
+
+::
+
+    SEND OK
+
+若传输失败，则返回：
+
+::
+
+    SEND FAIL
+
+参数
+^^^^
+- **<"url">**：HTTP URL。
+- **<length>**：需 Put 的 HTTP 数据长度。最大长度等于系统可分配的堆空间大小。
+- **<http_req_header_cnt>**：``<http_req_header>`` 参数的数量。
+- **[<http_req_header>]**：HTTP 请求头。可发送多个请求头给服务器。
+
+说明
+^^^^^
+
+-  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
 
 .. _cmd-HTTPURLCFG:
 

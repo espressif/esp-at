@@ -149,6 +149,16 @@ AT 输出上述信息之后，升级过程开始。如果升级完成，返回�
 说明
 ^^^^
 
+-  您可以 :doc:`从 GitHub Actions 里下载 <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` 所需要的 OTA 固件，也可以自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>` 生成所需要的 OTA 固件。
+
+.. only:: esp32c2
+
+  - 如果您使用的是 ESP32C2-2MB 模组配置，OTA 固件为 ``build/custom_ota_binaries/esp-at.bin.xz.packed``；如果您使用的是 ESP32C2-4MB 模组配置，OTA 固件为 ``build/esp-at.bin``。
+
+.. only:: esp32 or esp32c3
+
+  - OTA 固件为 ``build/esp-at.bin``。
+
 -  升级速度取决于网络状况。
 -  如果网络条件不佳导致升级失败，AT 将返回 ``ERROR``，请等待一段时间再试。
 -  建议升级 AT 固件后，调用 :ref:`AT+RESTORE <cmd-RESTORE>` 恢复出厂设置。

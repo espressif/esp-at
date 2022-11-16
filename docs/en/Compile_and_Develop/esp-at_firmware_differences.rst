@@ -24,6 +24,7 @@ This section describes the differences among AT firmwares of {IDF_TARGET_NAME} s
 
 .. only:: esp32c2
 
+  - ESP32C2-2MB_AT_Bin (referred to as **ESP32C2-2MB Bin** in this section);
   - ESP32C2-4MB_AT_Bin (referred to as **ESP32C2-4MB Bin** in this section);
 
 .. only:: esp32c3
@@ -232,36 +233,55 @@ The table lists which command set is supported by default in the official AT fir
     :header-rows: 1
 
     * - Command Set
+      - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
     * - base
       - |icon-green-check|
+      - |icon-green-check|
     * - user
+      - |icon-green-check|
       - |icon-green-check|
     * - wifi
       - |icon-green-check|
+      - |icon-green-check|
     * - net
+      - |icon-green-check|
       - |icon-green-check|
     * - MDNS
       - |icon-green-check|
+      - |icon-green-check|
     * - WPS
+      - |icon-green-check|
       - |icon-green-check|
     * - smartconfig
       - |icon-green-check|
+      - |icon-green-check|
     * - ping
+      - |icon-green-check|
       - |icon-green-check|
     * - MQTT
       - |icon-green-check|
+      - |icon-green-check|
     * - http
+      - |icon-orange-check|
       - |icon-green-check|
     * - FS
       - |icon-orange-check|
+      - |icon-orange-check|
     * - driver
+      - |icon-orange-check|
       - |icon-orange-check|
     * - WPA2
       - |icon-orange-check|
+      - |icon-orange-check|
     * - WEB
       - |icon-orange-check|
+      - |icon-orange-check|
     * - OTA
+      - |icon-green-check|
+      - |icon-green-check|
+    * - blufi
+      - |icon-orange-check|
       - |icon-green-check|
 
 .. only:: esp32c3
@@ -389,12 +409,19 @@ Hardware Differences
     :header-rows: 1
 
     * - Hardware
+      - ESP32C2-2MB
       - ESP32C2-4MB
     * - Flash
+      - 2 MB
       - 4 MB
     * - PSRAM
       - |icon-red-cross|
+      - |icon-red-cross|
     * - UART Pins [#one]_
+      - | TX: 7
+        | RX: 6
+        | CTS: 19
+        | RTS: 20
       - | TX: 7
         | RX: 6
         | CTS: 5
@@ -579,10 +606,13 @@ The table lists the {IDF_TARGET_NAME} modules or chips that each AT firmware sup
     :header-rows: 1
 
     * - Module/Chip
+      - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
     * - ESP8684 MINI series
       - |icon-green-check|
+      - |icon-green-check|
     * - ESP8684 WROOM series
+      - |icon-green-check|
       - |icon-green-check|
 
 .. only:: esp32c3

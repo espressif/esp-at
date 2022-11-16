@@ -2,7 +2,7 @@
 ===========================
 
 {IDF_TARGET_AT_SECOND_PARTITION_ADDR: default="undefined", esp32="0x20000", esp32c2="0x1E000", esp32c3="0x1E000"}
-{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c2="ESP8684-MINI-1", esp32c3="ESP32-C3-MINI-1"}
+{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c2="ESP8684-MINI-1 4MB", esp32c3="ESP32-C3-MINI-1"}
 
 :link_to_translation:`en:[English]`
 
@@ -58,6 +58,9 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
     * - 平台
       - 模组
       - 路径
+    * - ESP32-C2
+      - ESP32C2-2MB（所有带 2 MB flash 的 ESP32C2（ESP8684） 系列）
+      - :project_file:`module_config/module_esp32c2-2mb/at_customize.csv`
     * - ESP32-C2
       - ESP32C2-4MB（所有带 4 MB flash 的 ESP32C2（ESP8684） 系列）
       - :project_file:`module_config/module_esp32c2_default/at_customize.csv`
@@ -139,6 +142,10 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
       - 模组
       - 地址
       - 大小
+    * - ESP32-C2
+      - ESP32C2-2MB（所有带 2 MB flash 的 ESP32C2（ESP8684） 系列）
+      - 0x1A000
+      - 0x26000
     * - ESP32-C2
       - ESP32C2-4MB（所有带 4 MB flash 的 ESP32C2（ESP8684） 系列）
       - {IDF_TARGET_AT_SECOND_PARTITION_ADDR}

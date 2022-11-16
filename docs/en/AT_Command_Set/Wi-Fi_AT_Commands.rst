@@ -977,10 +977,14 @@ Parameters
    -  bit1: 802.11g protocol standard.
    -  bit2: 802.11n protocol standard.
 
+   .. only:: esp32 or esp32c3
+
+     - bit3: `802.11 LR Espressif-patented protocol standard <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#long-range-lr>`_.
+
 Note
 ^^^^^
 
--  Currently {IDF_TARGET_NAME} only support 802.11b or 802.11bg or 802.11bgn mode.
+-  See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-protocol-mode>`_ for the PHY mode supported by the {IDF_TARGET_NAME} device.
 -  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgn mode.
 
 .. _cmd-STAPROTO:
@@ -1028,12 +1032,15 @@ Parameters
    -  bit1: 802.11g protocol standard.
    -  bit2: 802.11n protocol standard.
 
+   .. only:: esp32 or esp32c3
+
+     - bit3: `802.11 LR Espressif-patented protocol standard <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#long-range-lr>`_.
+
 Note
 ^^^^^
 
--  Currently {IDF_TARGET_NAME} only support 802.11b or 802.11bg or 802.11bgn mode.
+-  See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-protocol-mode>`_ for the PHY mode supported by the {IDF_TARGET_NAME} device.
 -  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgn mode.
--  This command is supported since ESP-AT v2.1.0.0
 
 .. _cmd-STAMAC:
 
@@ -1827,6 +1834,7 @@ Parameters
 Note
 ^^^^^
 
+-  See `Wi-Fi Country Code <https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/api-guides/wifi.html#wi-fi-country-code>`_ for more details.
 -  The configuration changes are not saved in the flash.
 
 Example

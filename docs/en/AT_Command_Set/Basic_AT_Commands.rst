@@ -21,6 +21,7 @@ Basic AT Commands
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`: Query/Set System Prompt Information.
   - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`: Query/Set User Partitions in Flash.
   - :ref:`AT+FS <cmd-FS>`: Filesystem Operations.
+  - :ref:`AT+FSMOUNT <cmd-FSMOUNT>`: Mount/Unmount Filesystem.
   - :ref:`AT+RFPOWER <cmd-RFPOWER>`: Query/Set RF TX Power.
   - :ref:`AT+SYSROLLBACK <cmd-SYSROLLBACK>`: Roll back to the previous firmware.
   - :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`: Query/Set local time stamp.
@@ -777,6 +778,7 @@ Parameters
 Notes
 ^^^^^
 
+-  This command will automatically mount the filesystem. After the :ref:`AT+FS <cmd-FS>` filesystem operation is all done, it is strongly recommended to use the :ref:`AT+FSMOUNT=0 <cmd-FSMOUNT>` command to unmount the filesystem to free a large amount of RAM space.
 -  Please make sure that you have downloaded at_customize.bin before using this command. For more details, refer to `ESP-IDF Partition Tables <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_ and :doc:`../Compile_and_Develop/How_to_customize_partitions`.
 -  If the length of the read data is greater than the actual file length, only the actual data length of the file will be returned.
 -  If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
@@ -798,6 +800,50 @@ Example
     // list all files in the root directory.
     AT+FS=0,4,"."
 
+.. _cmd-FSMOUNT:
+
+:ref:`AT+FSMOUNT <Basic-AT>`: Mount/Unmount Filesystem
+------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+FSMOUNT=<mount>
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<mount>**:
+
+   -  0: Unmount filesystem
+   -  1: Mount filesystem
+
+Notes
+^^^^^
+
+-  After the :ref:`AT+FS <cmd-FS>` filesystem operation is all done, it is strongly recommended to use the :ref:`AT+FSMOUNT=0 <cmd-FSMOUNT>` command to unmount the filesystem to free a large amount of RAM space.
+
+Example
+^^^^^^^^
+
+::
+
+    // unmount the filesystem manually
+    AT+FSMOUNT=0
+
+    // mount the filesystem manually
+    AT+FSMOUNT=1
+
 .. _cmd-RFPOWER:
 
 :ref:`AT+RFPOWER <Basic-AT>`: Query/Set RF TX Power
@@ -818,9 +864,18 @@ Query the RF TX Power.
 
 **Response:**
 
-::
+.. only:: esp32 or esp32c3
+
+  ::
 
     +RFPOWER:<wifi_power>,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>
+    OK
+
+.. only:: esp32c2
+
+  ::
+
+    +RFPOWER:<wifi_power>
     OK
 
 Set Command
@@ -828,9 +883,17 @@ Set Command
 
 **Command:**
 
-::
+.. only:: esp32 or esp32c3
+
+  ::
 
     AT+RFPOWER=<wifi_power>[,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>]
+
+.. only:: esp32c2
+
+  ::
+
+    AT+RFPOWER=<wifi_power>
 
 **Response:**
 
@@ -871,9 +934,9 @@ Parameters
       [81,84]   <set value>  80           20
       ========= ============ ============ ==========
 
--  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,7].
+.. only:: esp32
 
-  .. only:: esp32
+  -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,7].
 
     -  0: 7 dBm
     -  1: 4 dBm
@@ -884,7 +947,9 @@ Parameters
     -  6: -11 dBm
     -  7: -14 dBm
 
-  .. only:: esp32c3 or esp32c2
+.. only:: esp32c3
+
+  -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,7].
 
     -  0: -27 dBm
     -  1: -24 dBm
@@ -903,8 +968,10 @@ Parameters
     -  14: 15 dBm
     -  15: 18 dBm
 
--  **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. The parameters are the same as ``<ble_adv_power>``.
--  **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. The same as ``<ble_adv_power>``.
+.. only:: esp32 or esp32c3
+
+  -  **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. The parameters are the same as ``<ble_adv_power>``.
+  -  **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. The same as ``<ble_adv_power>``.
 
 Note
 ------
@@ -933,6 +1000,10 @@ Execute Command
 
 Note
 ^^^^^
+
+.. only:: esp32c2
+
+  - **{IDF_TARGET_CFG_PREFIX}-4MB AT firmware supports this command, but {IDF_TARGET_CFG_PREFIX}-2MB AT firmware does not due to the compressed OTA firmware**.
 
 -  This command will not upgrade via OTA. It only rolls back to the firmware which is in the other OTA partition.
 

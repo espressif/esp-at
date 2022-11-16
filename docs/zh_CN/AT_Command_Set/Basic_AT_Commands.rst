@@ -21,6 +21,7 @@
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`：查询/设置系统提示信息
   - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`：查询或读写 flash 用户分区
   - :ref:`AT+FS <cmd-FS>`：文件系统操作
+  - :ref:`AT+FSMOUNT <cmd-FSMOUNT>`：挂载/卸载文件系统
   - :ref:`AT+RFPOWER <cmd-RFPOWER>`：查询/设置 RF TX Power
   - :ref:`AT+SYSROLLBACK <cmd-SYSROLLBACK>`：回滚到以前的固件
   - :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`：查询/设置本地时间戳
@@ -777,6 +778,7 @@
 说明
 ^^^^
 
+-  本命令会自动挂载文件系统。:ref:`AT+FS <cmd-FS>` 文件系统操作完成后，强烈建议使用 :ref:`AT+FSMOUNT=0 <cmd-FSMOUNT>` 命令卸载文件系统，来释放大量 RAM 空间。
 -  使用本命令需烧录 at_customize.bin，详细信息可参考 `ESP-IDF 分区表 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_ 和 :doc:`../Compile_and_Develop/How_to_customize_partitions`。
 -  若读取数据的长度大于实际文件大小，仅返回实际长度的数据。
 -  当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时您可以输入要写的数据，数据长度应与 ``<length>`` 一致。
@@ -798,6 +800,50 @@
     // 列出根目录下所有文件
     AT+FS=0,4,"."
 
+.. _cmd-FSMOUNT:
+
+:ref:`AT+FSMOUNT <Basic-AT>`：挂载/卸载 FS 文件系统
+---------------------------------------------------------------
+
+设置命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+FSMOUNT=<mount>
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+-  **<mount>**：
+
+   -  0：卸载 FS 文件系统
+   -  1：挂载 FS 文件系统
+
+说明
+^^^^
+
+-  :ref:`AT+FS <cmd-FS>` 文件系统操作完成后，强烈建议使用本命令 :ref:`AT+FSMOUNT=0 <cmd-FSMOUNT>` 命令卸载文件系统，来释放大量 RAM 空间。
+
+示例
+^^^^
+
+::
+
+    // 手动卸载文件系统
+    AT+FSMOUNT=0
+
+    // 手动挂载文件系统
+    AT+FSMOUNT=1
+
 .. _cmd-RFPOWER:
 
 :ref:`AT+RFPOWER <Basic-AT>`：查询/设置 RF TX Power
@@ -818,9 +864,18 @@
 
 **响应：**
 
-::
+.. only:: esp32 or esp32c3
+
+  ::
 
     +RFPOWER:<wifi_power>,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>
+    OK
+
+.. only:: esp32c2
+
+  ::
+
+    +RFPOWER:<wifi_power>
     OK
 
 设置命令
@@ -828,9 +883,17 @@
 
 **命令：**
 
-::
+.. only:: esp32 or esp32c3
+
+  ::
 
     AT+RFPOWER=<wifi_power>[,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>]
+
+.. only:: esp32c2
+
+  ::
+
+    AT+RFPOWER=<wifi_power>
 
 **响应：**
 
@@ -871,9 +934,9 @@
       [81,84]   <设定值>      80           20
       ========= ============ ============ ==========
 
--  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。
+.. only:: esp32
 
-  .. only:: esp32
+  -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。
 
     -  0: 7 dBm
     -  1: 4 dBm
@@ -884,7 +947,9 @@
     -  6: -11 dBm
     -  7: -14 dBm
 
-  .. only:: esp32c3 or esp32c2
+.. only:: esp32c3
+
+  -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。
 
     -  0: -27 dBm
     -  1: -24 dBm
@@ -903,8 +968,10 @@
     -  14: 15 dBm
     -  15: 18 dBm
 
--  **<ble_scan_power>**：Bluetooth LE 扫描的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
--  **<ble_conn_power>**：Bluetooth LE 连接的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
+.. only:: esp32 or esp32c3
+
+  -  **<ble_scan_power>**：Bluetooth LE 扫描的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
+  -  **<ble_conn_power>**：Bluetooth LE 连接的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
 
 说明
 -----
@@ -933,6 +1000,10 @@
 
 说明
 ^^^^
+
+.. only:: esp32c2
+
+  - **{IDF_TARGET_CFG_PREFIX}-4MB AT 固件支持此命令，而 {IDF_TARGET_CFG_PREFIX}-2MB AT 固件由于采用了压缩 OTA 分区，因此不支持此命令**。
 
 -  本命令不通过 OTA 升级，只会回滚到另一 OTA 分区的固件。
 

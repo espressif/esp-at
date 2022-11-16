@@ -149,6 +149,16 @@ Parameters
 Note
 ^^^^^
 
+-  You can :doc:`Download AT firmware from GitHub Actions <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>`, or you can generate AT firmware from :doc:`Compile ESP-AT Project <../Compile_and_Develop/How_to_clone_project_and_compile_it>` as well.
+
+.. only:: esp32c2
+
+  - If you use ESP32C2-2MB module config, OTA firmware is ``build/custom_ota_binaries/esp-at.bin.xz.packed``. If you use ESP32C2-4MB module config, OTA firmware is ``build/esp-at.bin``.
+
+.. only:: esp32 or esp32c3
+
+  - OTA firmware is ``build/esp-at.bin``.
+
 -  The speed of the upgrade depends on the network status.
 -  If the upgrade fails due to unfavorable network conditions, AT will return ``ERROR``. Please wait for some time before retrying.
 -  After you upgrade the AT firmware, you are suggested to call the command AT+RESTORE to restore the factory default settings.
