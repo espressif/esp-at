@@ -157,7 +157,7 @@ static int32_t at_spi_read_data(uint8_t* data, int32_t len)
         ESP_LOGD(TAG, "Read len expect %d, but actual read %d", len, ring_len);
     }
 
-    return len;
+    return ring_len;
 }
 
 /* Result of AT command, auto call when read_data get data */
