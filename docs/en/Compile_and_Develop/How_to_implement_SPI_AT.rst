@@ -241,6 +241,8 @@ step 2. After receiving the interrupt, master will query the status register of 
 step 3. The master receives the data send by the slave.
 step 4. After receiving all data, the master notifies the slave that the data transmission is finished.
 
+**Note** 1. To facilitate understanding, the :example_file:`at_spi_master/spi/esp32_c_series/README.md` provides all the interaction workflow and logic analyzer data involved in the communication by taking sending an AT command as an example.
+
 Sample Code of SPI Master for SPI AT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

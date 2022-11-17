@@ -59,3 +59,57 @@ For more details about AT commands, please refer to [AT Command Set](https://doc
 
 ## Troubleshooting
 If you do not see any output from UART port, please check the pin used by the project.
+
+## Communication sample
+This section uses the sending of the `AT\r\n` command as an example to describe the process of SPI AT. Because the response flow is the same, we'll just show returning `AT\r\n`.
+
+You can also view the [logic analyzer data](res/send_at_command.dsl) using [DSView](https://www.dreamsourcelab.com/download/).
+
+![](res/send_at_command.png)
+
+### 1. Master requests to send data 
+
+Master cannot actively send data to the ESP chip, so before sending, Master needs to request to send data and wait for the ESP chip to pull up the Handshake pin.
+As shown below, `Seq num` accumulates each time a Master request is sent.
+
+![](res/write_status.png)
+
+### 2. Master sends data
+
+Below is the flow of Master sending data.
+
+1. The ESP chip pulls up the Handshake pin.
+2. After receiving the Handshake pullup signal, Master reads the slave status, and checks if the status is 0x2 (writable). If yes, Master will start to send data of the length specified in the previous request.
+3. Master sends data and notifies the ESP chip that writing data is done.
+4. The ESP chip pulls the Handshake pin down.
+
+**2.1 Master reads the status of the slave**
+
+Master needs to read the slave's status to determine whether it can send data. When the status value is 0x2 (writable), Master can write data.
+
+> If the salve status value is 0x1 (readable), it means the ESP chip needs to send data. Master **must** receive the data first. After it is received, the ESP chip detects that Master has data to send and will pull up the Handshake pin.
+
+![](res/read_status.png)
+
+**2.2 Master sends data**
+
+Master sends data. After sending data, it needs to tell the ESP chip that sending data is done.
+
+![](res/write_data.png)
+
+### 3. ESP chip response data
+
+The ESP chip response data can be divided into the following steps.
+
+1. The ESP chip pulls up the Handshake pin.
+2. Master reads the status and finds the slave status value is 0x1 (readable), and the length of data that is currently being sent by the ESP chip.
+3. Master reads data and tells the ESP chip that the reading is done.
+4. The ESP chip pulls down the Handshake pin.
+
+**3.1 Master reads the status**
+
+![](res/slave_send_status.png)
+
+3.2 Master reads the data
+
+![](res/mcu_read_data.png)
