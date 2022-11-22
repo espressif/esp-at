@@ -44,6 +44,11 @@
 #include "esp_bt.h"
 #include "esp_ota_ops.h"
 
+#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#include "bootloader_custom_ota.h"
+#include "at_compress_ota.h"
+#endif
+
 #include "esp_rmaker_core.h"
 #include "esp_rmaker_standard_types.h"
 #include "esp_rmaker_standard_params.h"
@@ -61,6 +66,11 @@
 
 #include <esp_rmaker_mqtt.h>
 #include <esp_rmaker_common_events.h>
+
+#ifdef CONFIG_ESP_RMAKER_USE_CERT_BUNDLE
+#define ESP_RMAKER_USE_CERT_BUNDLE
+#include <esp_crt_bundle.h>
+#endif
 
 #include "json_generator.h"
 #include "json_parser.h"
@@ -102,6 +112,7 @@
 #define RAINMAKER_OTA_NOTIFY_FORMAT                 ("+RMFWNOTIFY")
 #define RAINMAKER_OTA_TOPIC_LEN                     (256)
 #define RAINMAKER_OTA_MES_PAYLOAD_LEN               RAINMAKER_OTA_TOPIC_LEN
+#define RAINMAKER_OTA_DEF_HTTP_TX_BUFFER_SIZE       (1024)
 
 #define RAINMAKER_CONN_TIMEOUT_S_MIN                (3)     // 3 seconds
 #define RAINMAKER_CONN_TIMEOUT_S_MAX                (600)   // 600 seconds
@@ -185,6 +196,7 @@ static TimerHandle_t s_prov_timer;
 static EventGroupHandle_t s_rm_event_group;
 static at_rainmaker_mode_t s_mode = AT_RM_NORMAL;
 static uint32_t s_rm_param_nums = 0;
+static esp_rmaker_node_t *sp_node = NULL;
 
 static at_rm_profile_t s_profile = {
     .customer_id = 0x0001,
@@ -345,6 +357,154 @@ static void rmaker_response_result(at_rainmaker_mess_t message)
     return;
 }
 
+#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+static inline esp_err_t esp_rmaker_ota_post_event(esp_rmaker_event_t event_id, void* data, size_t data_size)
+{
+    return esp_event_post(RMAKER_OTA_EVENT, event_id, data, data_size, portMAX_DELAY);
+}
+
+esp_err_t rmaker_wifi_mcu_validate_image(const char *fw_version)
+{
+    if (sp_node == NULL) {
+        return ESP_FAIL;
+    }
+
+    esp_rmaker_node_info_t *info = esp_rmaker_node_get_info(sp_node);
+    if (info == NULL) {
+        ESP_LOGE(TAG, "Failed to get Node Info.");
+        return ESP_FAIL;
+    }
+
+    if (info->fw_version == NULL) {
+        return ESP_OK;
+    }
+
+    /* Only the first 5 bytes of version information are compared here, for example "2.5.0" */
+    if (strncmp(fw_version, info->fw_version, 5) == 0) {
+        return ESP_ERR_INVALID_VERSION;
+    } else {
+        return ESP_OK;
+    }
+}
+
+esp_err_t rmaker_wifi_mcu_ota(esp_rmaker_ota_handle_t ota_handle, esp_rmaker_ota_data_t *ota_data)
+{
+    esp_err_t validate_err = ESP_OK;
+    esp_err_t ota_err = ESP_OK;
+
+    if (!ota_data->url) {
+        return ESP_FAIL;
+    }
+
+    esp_rmaker_ota_post_event(RMAKER_OTA_EVENT_STARTING, NULL, 0);
+
+    int buffer_size_tx = RAINMAKER_OTA_DEF_HTTP_TX_BUFFER_SIZE;
+    /* In case received url is longer, we will increase the tx buffer size
+     * to accomodate the longer url and other headers.
+     */
+    if (strlen(ota_data->url) > buffer_size_tx) {
+        buffer_size_tx = strlen(ota_data->url) + 128;
+    }
+    esp_err_t ota_finish_err = ESP_OK;
+    esp_http_client_config_t config = {
+        .url = ota_data->url,
+#ifdef ESP_RMAKER_USE_CERT_BUNDLE
+        .crt_bundle_attach = esp_crt_bundle_attach,
+#else
+        .cert_pem = ota_data->server_cert,
+#endif
+        .timeout_ms = 5000,
+        .buffer_size = RAINMAKER_OTA_DEF_HTTP_TX_BUFFER_SIZE,
+        .buffer_size_tx = buffer_size_tx,
+        .keep_alive_enable = true,
+    };
+#ifdef CONFIG_ESP_RMAKER_SKIP_COMMON_NAME_CHECK
+    config.skip_cert_common_name_check = true;
+#endif
+
+    if (ota_data->filesize) {
+        ESP_LOGD(TAG, "Received file size: %d", ota_data->filesize);
+    }
+
+    esp_rmaker_ota_report_status(ota_handle, OTA_STATUS_IN_PROGRESS, "Starting OTA Upgrade");
+
+/* Get the current Wi-Fi power save type. In case OTA fails and we need this
+ * to restore power saving.
+ */
+    wifi_ps_type_t ps_type;
+    esp_wifi_get_ps(&ps_type);
+/* Disable Wi-Fi power save to speed up OTA, if BT is controller is idle/disabled.
+ * Co-ex requirement, device panics otherwise.*/
+#if CONFIG_BT_ENABLED
+    if (esp_bt_controller_get_status() == ESP_BT_CONTROLLER_STATUS_IDLE) {
+        esp_wifi_set_ps(WIFI_PS_NONE);
+    }
+#else
+    esp_wifi_set_ps(WIFI_PS_NONE);
+#endif /* CONFIG_BT_ENABLED */
+
+#ifndef CONFIG_ESP_RMAKER_SKIP_VERSION_CHECK
+    if (ota_data->fw_version != NULL) {
+        validate_err = rmaker_wifi_mcu_validate_image(ota_data->fw_version);
+        if (validate_err != ESP_OK) {
+            goto ota_end;
+        }
+    }
+#endif /* CONFIG_ESP_RMAKER_SKIP_VERSION_CHECK */
+
+    esp_rmaker_ota_report_status(ota_handle, OTA_STATUS_IN_PROGRESS, "Downloading Firmware Image");
+
+    ota_err = at_compress_https_ota(&config);
+
+#ifndef CONFIG_ESP_RMAKER_SKIP_VERSION_CHECK
+ota_end:
+#endif /* CONFIG_ESP_RMAKER_SKIP_VERSION_CHECK */
+
+#ifdef CONFIG_BT_ENABLED
+    if (esp_bt_controller_get_status() == ESP_BT_CONTROLLER_STATUS_IDLE) {
+        esp_wifi_set_ps(ps_type);
+    }
+#else
+    esp_wifi_set_ps(ps_type);
+#endif /* CONFIG_BT_ENABLED */
+
+    /* First check the verification result of version */
+#ifndef CONFIG_ESP_RMAKER_SKIP_VERSION_CHECK
+    if (validate_err == ESP_ERR_INVALID_VERSION) {
+        ESP_LOGE(TAG, "Current running version is same as the new. The system will not continue the update.");
+        esp_rmaker_ota_report_status(ota_handle, OTA_STATUS_REJECTED, "Same version received");
+        return ESP_FAIL;
+    } else if (validate_err == ESP_FAIL) {
+        esp_rmaker_ota_report_status(ota_handle, OTA_STATUS_FAILED, "Image version verification failed");
+        return ESP_FAIL;
+    } 
+#endif /* CONFIG_ESP_RMAKER_SKIP_VERSION_CHECK */
+
+    /* Second check OTA result */
+    if (ota_err != ESP_OK) {
+        ESP_LOGE(TAG, "ESP_HTTPS_OTA upgrade failed %s", esp_err_to_name(ota_err));
+        char description[32];
+        snprintf(description, sizeof(description), "OTA failed: Error %s", esp_err_to_name(ota_err));
+        esp_rmaker_ota_report_status(ota_handle, OTA_STATUS_FAILED, description);
+        return ESP_FAIL;
+    } else {
+        esp_rmaker_ota_report_status(ota_handle, OTA_STATUS_SUCCESS, "OTA Upgrade finished successfully");
+    }
+
+    /* Third check whether reboot is required */
+#ifndef CONFIG_ESP_RMAKER_OTA_DISABLE_AUTO_REBOOT
+    ESP_LOGI(TAG, "OTA upgrade successful. Rebooting in %d seconds...", OTA_REBOOT_TIMER_SEC);
+    esp_rmaker_reboot(OTA_REBOOT_TIMER_SEC);
+#else
+    ESP_LOGI(TAG, "OTA upgrade successful. Auto reboot is disabled. Requesting a Reboot via Event handler.");
+    esp_rmaker_ota_post_event(RMAKER_OTA_EVENT_REQ_FOR_REBOOT, NULL, 0);
+#endif
+
+    return ESP_OK;
+}
+
+#endif /* CONFIG_BOOTLOADER_COMPRESSED_ENABLED */
+
 esp_err_t rmaker_ota_handle(esp_rmaker_ota_handle_t ota_handle, esp_rmaker_ota_data_t *ota_data)
 {
     /* Host MCU OTA
@@ -426,7 +586,11 @@ esp_err_t rmaker_ota_handle(esp_rmaker_ota_handle_t ota_handle, esp_rmaker_ota_d
     }
 
     /* WiFi MCU OTA */
+#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+    return rmaker_wifi_mcu_ota(ota_handle, ota_data);
+#else
     return esp_rmaker_ota_default_cb(ota_handle, ota_data);
+#endif /* CONFIG_BOOTLOADER_COMPRESSED_ENABLED */
 }
 
 static esp_err_t write_cb(const esp_rmaker_device_t *device, const esp_rmaker_param_t *param,
@@ -775,8 +939,9 @@ static uint8_t at_exe_cmd_rmnodeinit(uint8_t *cmd_name)
     esp_rmaker_config_t rainmaker_cfg = {
         .enable_time_sync = false,
     };
-    esp_rmaker_node_t *node = esp_rmaker_node_init(&rainmaker_cfg, RAINMAKER_NODE_NAME, RAINMAKER_NODE_TYPE);
-    if (!node) {
+
+    sp_node = esp_rmaker_node_init(&rainmaker_cfg, RAINMAKER_NODE_NAME, RAINMAKER_NODE_TYPE);
+    if (sp_node == NULL) {
         ESP_LOGE(TAG, "Could not initialise node. Aborting!!!");
         //TODO: error code, Claiming fail
         return ESP_AT_RESULT_CODE_ERROR;
@@ -819,7 +984,7 @@ static uint8_t at_exe_cmd_rmnodeinit(uint8_t *cmd_name)
         ESP_AT_PROJECT_COMMIT_ID,
         __DATE__,
         __TIME__);
-    esp_rmaker_node_add_fw_version(node, (const char*)version);
+    esp_rmaker_node_add_fw_version(sp_node, (const char*)version);
     free(version);
 
     return ESP_AT_RESULT_CODE_OK;
