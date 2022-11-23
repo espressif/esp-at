@@ -7,6 +7,7 @@ RainMaker AT Commands and Firmware
    
    RainMaker AT Command Set <RainMaker_AT_Command_Set>
    RainMaker AT Examples <RainMaker_AT_Examples>
+   RainMaker_AT_OTA_Guide <RainMaker_AT_OTA_Guide>
    Index of Abbreviations <index_of_abbreviations>
 
 .. _rm-at-messages:
@@ -42,3 +43,7 @@ RainMaker AT Messages
        - RainMaker device received timezone message
      * - +RMMAPPINGDONE
        - RainMaker device completed user-node mapping
+     * - +RMFWNOTIFY:<type>,<size>,<url>,<fw_version>,<ota_job_id>
+       - RainMaker device outputs the received host MCU OTA information
+     * - +RMOTA:<status>
+       - RainMaker device outputs the Wi-Fi MCU OTA status
