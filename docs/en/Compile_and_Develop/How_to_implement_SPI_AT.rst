@@ -51,9 +51,9 @@ The following pin assignments are used by default:
      - 3
    * - GND
      - GND
-   * - QUADWP (qio/qout):sup:`1`
+   * - QUADWP (qio/qout) :sup:`1`
      - 8
-   * - QUADHD (qio/qout):sup:`1`
+   * - QUADHD (qio/qout) :sup:`1`
      - 9
 
 **Note** 1: QUADWP and QUADHD signals are only used for 4-bit (qio/qout) transactions.

@@ -379,6 +379,7 @@ Notes
 - If the remote host over the UDP is an IPv6 multicast address (FF00:0:0:0:0:0:0:0 ~ FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF), the {IDF_TARGET_NAME} will send and receive the UDP multicast based on IPv6 network.
 - To use the parameter ``<mode>``, parameter ``<local port>`` must be set first.
 - If you want to establish UDP connection based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
+- If you want to receive a UDP packet longer than 1460 bytes, please compile the firmware on your own by following :doc:`Compile ESP-AT Project <../Compile_and_Develop/How_to_clone_project_and_compile_it>` and choosing the following configurations in the Step 5. Configure: ``Component config`` -> ``LWIP`` -> ``Enable reassembly incoming fragmented IP4 packets``.
 
 Example
 """""""""
@@ -1838,6 +1839,7 @@ Notes
 -  If you want this configuration to take effect immediately, run this command before establishing an SSL connection.
 -  The configuration changes will be saved in the NVS area. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL Wi-Fi :term:`Passthrough Mode` on power-up, the {IDF_TARGET_NAME} will establish an SSL connection based on this configuration when powered up next time.
 -  If you want to use your own certificate or use multiple sets of certificates, please refer to the documentation: :doc:`../Compile_and_Develop/how_to_generate_pki_files`.
+-  If ``<auth_mode>`` is configured to 2 or 3, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+CIPSTART <cmd-START>` command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNPTIME? <cmd-SNTPT>` command to query the current time.)
 
 .. _cmd-SSLCCN:
 
