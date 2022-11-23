@@ -70,7 +70,7 @@ static const char* TAG = "SDIO-AT";
 static esp_at_sdio_list_t WORD_ALIGNED_ATTR sdio_buffer_list[ESP_AT_SDIO_BUFFER_NUM];
 static esp_at_sdio_list_t* pHead;
 static esp_at_sdio_list_t* pTail;
-static xSemaphoreHandle semahandle;
+static SemaphoreHandle_t semahandle;
 
 // AT response data , send them to SDIO
 static int32_t at_sdio_write_data(uint8_t* data, int32_t len)
@@ -99,7 +99,7 @@ static int32_t at_sdio_write_data(uint8_t* data, int32_t len)
 
         ret = sdio_slave_transmit(sendbuf, len_to_send);
         if (ret != ESP_OK) {
-            ESP_LOGE(TAG , "sdio slave transmit error, return ret : 0x%x\r\n", ret);
+            ESP_LOGE(TAG , "sdio slave transmit error");
             free(sendbuf);
             xSemaphoreGive(semahandle);
             return 0;
