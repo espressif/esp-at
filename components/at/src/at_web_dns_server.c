@@ -26,6 +26,7 @@
 #include <esp_system.h>
 #include <sys/param.h>
 #include "esp_netif.h"
+#include "freertos/event_groups.h"
 
 #include "lwip/err.h"
 #include "lwip/sockets.h"
@@ -35,6 +36,8 @@
 #ifdef CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE
 #include "at_web_dns_server.h"
 
+#define MAX(a, b)                                     ((a) > (b) ? (a) : (b))
+
 #define AT_WEB_DNS_PORT                                53
 #define AT_WEB_DNS_MAX_LEN                             200
 
@@ -42,11 +45,17 @@
 #define AT_WEB_OPCODE_MASK                             0x7800
 #define AT_WEB_QD_TYPE_A                               0x0001
 #define AT_WEB_ANS_TTL_SEC                             300
+#define AT_WEB_LOCALHOST_PORT                          (5001)
+#define AT_WEB_TASK_EXIT_STR                           ("exit")
 #define CAPTIVE_PORTAL_DNS_SERVER_TASK_PRIORITY        5
 
+#define AT_WEB_TASK_EXIT_SUCCESS_BIT                   BIT0
+
 static const char *TAG = "dns_redirect_server";
-static TaskHandle_t s_dns_server_task_handler = NULL;
 static int s_dns_server_socket_fd = -1;
+static int s_dns_server_localhost_fd = -1;
+static struct sockaddr_in s_dest_addr = { 0 };
+static EventGroupHandle_t s_web_dns_event_group = NULL;
 
 typedef struct __attribute__((__packed__)) {
     uint16_t id; // identification number
@@ -70,6 +79,57 @@ typedef struct __attribute__((__packed__)) {
     uint16_t addr_len;
     uint32_t ip_addr;
 } dns_answer_t;
+
+/**
+ * @brief close socket created in dns_server_task
+ *
+ */
+static void web_dns_socket_close(void)
+{
+    if (s_dns_server_localhost_fd != -1) {
+        shutdown(s_dns_server_localhost_fd, 0);
+        close(s_dns_server_localhost_fd);
+        s_dns_server_localhost_fd = -1;
+    }
+
+    if (s_dns_server_socket_fd != -1) {
+        shutdown(s_dns_server_socket_fd, 0);
+        close(s_dns_server_socket_fd);
+        s_dns_server_socket_fd = -1;
+    }
+}
+
+/**
+ * @brief localhost udp is only used to exit dns_server_task
+ *
+ */
+static esp_err_t localhost_udp_create(void)
+{
+    int addr_family = AF_INET;
+    int ip_protocol = IPPROTO_UDP;
+
+    memset(&s_dest_addr, 0, sizeof(struct sockaddr));
+
+    s_dest_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+    s_dest_addr.sin_family = AF_INET;
+    s_dest_addr.sin_port = htons(AT_WEB_LOCALHOST_PORT);
+
+    s_dns_server_localhost_fd = socket(addr_family, SOCK_DGRAM, ip_protocol);
+    if (s_dns_server_localhost_fd < 0) {
+        ESP_LOGE(TAG, "Unable to create localhost socket: errno %d", errno);
+        return ESP_FAIL;
+    }
+    ESP_LOGI(TAG, "Localhost socket created");
+
+    if (bind(s_dns_server_localhost_fd, (struct sockaddr *)&s_dest_addr, sizeof(s_dest_addr)) < 0) {
+        ESP_LOGE(TAG, "Socket unable to bind: errno %d", errno);
+        web_dns_socket_close();
+        return ESP_FAIL;
+    }
+    ESP_LOGI(TAG, "Localhost socket bound, port %d", AT_WEB_LOCALHOST_PORT);
+
+    return ESP_OK;
+}
 
 /* Parse the name from the packet from the dns name format to a regular .-seperated name
    returns the pointer to the next part of the packet
@@ -187,6 +247,10 @@ void dns_server_task(void *pvParameters)
     int ip_protocol;
 
     while (1) {
+        if (localhost_udp_create() != ESP_OK) {
+            break;
+        }
+
         struct sockaddr_in dest_addr = {0};
         dest_addr.sin_addr.s_addr = htonl(INADDR_ANY);
         dest_addr.sin_family = AF_INET;
@@ -205,80 +269,111 @@ void dns_server_task(void *pvParameters)
         int err = bind(s_dns_server_socket_fd, (struct sockaddr *)&dest_addr, sizeof(dest_addr));
         if (err < 0) {
             ESP_LOGE(TAG, "Socket unable to bind: errno %d", errno);
+            break;
         }
         ESP_LOGI(TAG, "Socket bound, port %d", AT_WEB_DNS_PORT);
 
         while (1) {
-
-            ESP_LOGI(TAG, "Waiting for data");
             struct sockaddr_in6 source_addr = {0}; // Large enough for both IPv4 or IPv6
             socklen_t socklen = sizeof(source_addr);
-            int len = recvfrom(s_dns_server_socket_fd, rx_buffer, sizeof(rx_buffer) - 1, 0, (struct sockaddr *)&source_addr, &socklen);
 
-            // Error occurred during receiving
-            if (len < 0) {
-                ESP_LOGE(TAG, "recvfrom failed: errno %d", errno);
+            fd_set rfds;
+            FD_ZERO(&rfds);
+            FD_SET(s_dns_server_socket_fd, &rfds);
+            FD_SET(s_dns_server_localhost_fd, &rfds);
+
+            int s = select(MAX(s_dns_server_socket_fd, s_dns_server_localhost_fd) + 1, &rfds, NULL, NULL, NULL);
+            if (s < 0) {
+                ESP_LOGE(TAG, "select failed: errno %d", errno);
                 break;
             } else {
-                // Get the sender's ip address as string
-                if (source_addr.sin6_family == PF_INET) {
-                    inet_ntoa_r(((struct sockaddr_in *)&source_addr)->sin_addr.s_addr, addr_str, sizeof(addr_str) - 1);
-                } else if (source_addr.sin6_family == PF_INET6) {
-                    inet6_ntoa_r(source_addr.sin6_addr, addr_str, sizeof(addr_str) - 1);
-                }
+                if (FD_ISSET(s_dns_server_socket_fd, &rfds)) {
+                    /* DNS request data needs to be processed */
+                    int len = recvfrom(s_dns_server_socket_fd, rx_buffer, sizeof(rx_buffer) - 1, 0, (struct sockaddr *)&source_addr, &socklen);
 
-                rx_buffer[len] = 0; // Null-terminate whatever we received and treat like a string...
-                ESP_LOGI(TAG, "Received %d bytes from %s:", len, addr_str);
+                    if (len < 0) {
+                        ESP_LOGE(TAG, "recvfrom failed: errno %d", errno);
+                        break;
+                    } else {
+                        /* Get the sender's ip address as string */
+                        if (source_addr.sin6_family == PF_INET) {
+                            inet_ntoa_r(((struct sockaddr_in *)&source_addr)->sin_addr.s_addr, addr_str, sizeof(addr_str) - 1);
+                        } else if (source_addr.sin6_family == PF_INET6) {
+                            inet6_ntoa_r(source_addr.sin6_addr, addr_str, sizeof(addr_str) - 1);
+                        }
+
+                        rx_buffer[len] = 0; // Null-terminate whatever we received and treat like a string...
+                        ESP_LOGI(TAG, "Received %d bytes from %s:", len, addr_str);
 #ifdef ESP_OPEN_DNS_REAUEST_DOMAIN_LOG // This is just for test
-                printf("DNS request is:");
-                for(int i = 0x4; i< len; i++) {
-                    if((rx_buffer[i] >= 'a' && rx_buffer[i] <= 'z') || (rx_buffer[i] >= 'A' && rx_buffer[i] <= 'Z') ||(rx_buffer[i] >= '0' && rx_buffer[i] <= '9'))
-                        printf("%c",rx_buffer[i]);
-                    else {
-                        printf("_");
+                        printf("DNS request is:");
+                        for(int i = 0x4; i< len; i++) {
+                            if((rx_buffer[i] >= 'a' && rx_buffer[i] <= 'z') || (rx_buffer[i] >= 'A' && rx_buffer[i] <= 'Z') ||(rx_buffer[i] >= '0' && rx_buffer[i] <= '9'))
+                                printf("%c",rx_buffer[i]);
+                            else {
+                                printf("_");
+                            }
+                        }
+                        printf("\r\n");
+#endif
+                        char reply[AT_WEB_DNS_MAX_LEN];
+                        int reply_len = parse_dns_request(rx_buffer, len, reply, AT_WEB_DNS_MAX_LEN);
+
+                        ESP_LOGD(TAG, "DNS reply with len: %d", reply_len);
+                        if( reply_len <= 0) {
+                            ESP_LOGD(TAG, "Failed to prepare a DNS reply");
+                        } else {
+                            int err = sendto(s_dns_server_socket_fd, reply, reply_len, 0, (struct sockaddr *)&source_addr, sizeof(source_addr));
+                            if (err < 0) {
+                                ESP_LOGE(TAG, "Error occurred during sending: errno %d", errno);
+                                break;
+                            }
+                        }
                     }
                 }
-                printf("\r\n");
-#endif
-                char reply[AT_WEB_DNS_MAX_LEN];
-                int reply_len = parse_dns_request(rx_buffer, len, reply, AT_WEB_DNS_MAX_LEN);
 
-                ESP_LOGD(TAG, "DNS reply with len: %d", reply_len);
-                if( reply_len <= 0) {
-                    ESP_LOGD(TAG, "Failed to prepare a DNS reply");
-                } else {
-                    int err = sendto(s_dns_server_socket_fd, reply, reply_len, 0, (struct sockaddr *)&source_addr, sizeof(source_addr));
-                    if (err < 0) {
-                        ESP_LOGE(TAG, "Error occurred during sending: errno %d", errno);
-                        break;
+                /* Localhost receives the data indicating that ESP-AT wants to exit the dns_server_task */
+                if (FD_ISSET(s_dns_server_localhost_fd, &rfds)) {
+                    int len = recvfrom(s_dns_server_localhost_fd, rx_buffer, sizeof(rx_buffer) - 1, 0, (struct sockaddr *)&source_addr, &socklen);
+                    if (len > 0) {
+                        if (strncmp(rx_buffer, AT_WEB_TASK_EXIT_STR, strlen(AT_WEB_TASK_EXIT_STR)) == 0) {
+                            goto dns_server_end;
+                        }
                     }
                 }
             }
         }
 
-        if (s_dns_server_socket_fd != -1) {
-            ESP_LOGE(TAG, "Shutting down socket");
-            shutdown(s_dns_server_socket_fd, 0);
-            close(s_dns_server_socket_fd);
-        }
+        web_dns_socket_close();
     }
+
+dns_server_end:
+    /* Unable to create socket, exit the task */
+    web_dns_socket_close();
+    xEventGroupSetBits(s_web_dns_event_group, AT_WEB_TASK_EXIT_SUCCESS_BIT);
     vTaskDelete(NULL);
 }
 
 void at_dns_server_start(void)
 {
-    if (s_dns_server_task_handler == NULL) {
-		xTaskCreate(dns_server_task, "dns", 3072, NULL, CAPTIVE_PORTAL_DNS_SERVER_TASK_PRIORITY, &s_dns_server_task_handler);
-	}
-    printf("dns server start\n");
+    if (s_web_dns_event_group == NULL) {
+        s_web_dns_event_group = xEventGroupCreate();
+    }
+
+    xTaskCreate(dns_server_task, "dns", 3072, NULL, CAPTIVE_PORTAL_DNS_SERVER_TASK_PRIORITY, NULL);
+
+    printf("dns server start\r\n");
 }
 
 void at_dns_server_stop(void)
 {
-	if (s_dns_server_task_handler) {
-		vTaskDelete(s_dns_server_task_handler);
-		close(s_dns_server_socket_fd);
-		s_dns_server_task_handler = NULL;
-	}
+    sendto(s_dns_server_localhost_fd, AT_WEB_TASK_EXIT_STR, strlen(AT_WEB_TASK_EXIT_STR), 0, (struct sockaddr *)&s_dest_addr, sizeof(s_dest_addr));
+
+    EventBits_t bits = xEventGroupWaitBits(s_web_dns_event_group,
+                                        AT_WEB_TASK_EXIT_SUCCESS_BIT,
+                                        pdTRUE,
+                                        pdFALSE,
+                                        portMAX_DELAY);
+
+    printf("dns server stop\r\n");
 }
 #endif
