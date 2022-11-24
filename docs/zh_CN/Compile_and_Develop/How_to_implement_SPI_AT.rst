@@ -51,9 +51,9 @@ SPI AT 默认管脚
      - 3
    * - GND
      - GND
-   * - QUADWP (qio/qout):sup:`1`
+   * - QUADWP (qio/qout) :sup:`1`
      - 8
-   * - QUADHD (qio/qout):sup:`1`
+   * - QUADHD (qio/qout) :sup:`1`
      - 9
 
 **说明** 1：QUADWP 引脚和 QUADHD 引脚仅在使用 4 线 SPI 工作时使用。

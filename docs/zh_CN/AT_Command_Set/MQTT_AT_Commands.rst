@@ -72,6 +72,7 @@ MQTT AT 命令集
 ^^^^
 
 -  每条 AT 命令的总长度不能超过 256 字节。
+-  如果 ``<scheme>`` 配置为 3、5、8、10，为了校验服务器的证书有效期，请在发送 :ref:`AT+MQTTCONN <cmd-MQTTCONN>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（您可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间。）
 
 .. _cmd-MQTTLONGCLIENTID:
 

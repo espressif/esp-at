@@ -533,7 +533,7 @@
 ^^^^
 
 -  **<remaining RAM size>**：当前剩余堆空间，单位：byte
--  **<minimum heap size>**：最小堆空间，单位：byte
+-  **<minimum heap size>**：运行时的最小堆空间，单位：byte。当 ``<minimum heap size>`` 小于或接近于 10 KB 时，{IDF_TARGET_NAME} 的 Wi-Fi 和低功耗蓝牙的功能可能会受影响。
 
 示例
 ^^^^

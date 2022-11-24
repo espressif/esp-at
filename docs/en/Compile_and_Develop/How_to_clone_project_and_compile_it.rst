@@ -21,7 +21,7 @@ Compile ESP-AT Project
 Detailed Steps
 ^^^^^^^^^^^^^^
 
-Please follow the detailed steps below to set up your environment and build the project.
+Please follow the detailed steps below to set up your environment and build the project. **It is recommended that you develop the esp-at project on Linux system.**
 
 * :ref:`esp-at-idf-prerequisites`
 * :ref:`esp-at-get-at-sdk`

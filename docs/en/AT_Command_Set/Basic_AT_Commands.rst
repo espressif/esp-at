@@ -533,7 +533,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<remaining RAM size>**: current remaining heap size. Unit: byte.
--  **<minimum heap size>**: minimum heap size that has ever been available. Unit: byte.
+-  **<minimum heap size>**: minimum available heap size in the runtime. Unit: byte. When the parameter's value is less than or close to 10 KB, the Wi-Fi and BLE functions of {IDF_TARGET_NAME} may be affected.
 
 Example
 ^^^^^^^^

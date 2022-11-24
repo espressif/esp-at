@@ -72,6 +72,7 @@ Note
 ^^^^^
 
 -  The length of the entire AT command should be less than 256 bytes.
+-  If ``<scheme>`` is configured to 3, 5, 8, or 10, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+MQTTCONN <cmd-MQTTCONN>` command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNPTIME? <cmd-SNTPT>` command to query the current time.)
 
 .. _cmd-MQTTLONGCLIENTID:
 
