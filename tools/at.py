@@ -59,11 +59,11 @@ def at_write_records(records, format, f):
     f.write(x)
 
 def at_parameter_assign_int(arg, fixed_len, l, lidx):
-    if arg:
+    if arg != None:
         l[lidx] = arg & (256 ** fixed_len - 1) if arg >= 0 else -1
 
 def at_parameter_assign_str(arg, fixed_len, l, lidx):
-    if arg:
+    if arg != None:
         larg = list(arg)
         larg = larg + ['\x00'] * (fixed_len - len(larg))
         arg_tmp = [x.encode() for x in larg]
