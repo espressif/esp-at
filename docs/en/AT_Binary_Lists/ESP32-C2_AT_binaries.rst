@@ -3,4 +3,17 @@ Released Firmware
 
 :link_to_translation:`zh_CN:[中文]`
 
-- The first version of ESP-AT firmware (v3.0.0.0) is planned to be released in November 2022.
+It is recommended to use the lastest version of firmware. Currently, Espressif only releases AT firmware for the following {IDF_TARGET_NAME} series of modules. 
+
+.. note::
+  If there is no released firmware for your module, you can either use the firmware for the module that has the same hardware configuration as yours (see :doc:`../Compile_and_Develop/esp-at_firmware_differences` for which module has the same configuration), or create a factory parameter bin for your module (see :doc:`../Compile_and_Develop/How_to_create_factory_parameter_bin` for details).
+
+ESP32-C2 2MB Series
+^^^^^^^^^^^^^^^^^^^
+
+- v3.0.0.0 `ESP32-C2-2MB_AT_Bin_V3.0.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32C2/ESP32-C2-2MB_AT_Bin_V3.0.0.0.zip>`__ (Recommended)
+
+ESP32-C2 4MB Series
+^^^^^^^^^^^^^^^^^^^
+
+- v3.0.0.0 `ESP32-C2-4MB_AT_Bin_V3.0.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32C2/ESP32-C2-4MB_AT_Bin_V3.0.0.0.zip>`__ (Recommended)
