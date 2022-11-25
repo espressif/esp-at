@@ -26,6 +26,7 @@
 #include <esp_system.h>
 #include <sys/param.h>
 #include "esp_netif.h"
+#include "freertos/FreeRTOS.h"
 #include "freertos/event_groups.h"
 
 #include "lwip/err.h"
