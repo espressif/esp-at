@@ -106,6 +106,13 @@ jobs:
       artifacts_name: esp32c3-at-full-function-test
     secrets: inherit
 
+  build-esp32c3-rainmaker:
+    uses: ./.github/workflows/build_template_esp32c3.yml
+    with:
+      module_name: ESP32C3_RAINMAKER
+      artifacts_name: esp32c3-rainmaker-at
+    secrets: inherit
+
   build-esp32c2-4mb-at:
     uses: ./.github/workflows/build_template_esp32c2.yml
     with:
