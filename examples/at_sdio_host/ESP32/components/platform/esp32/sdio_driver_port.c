@@ -21,7 +21,6 @@
 
 #include "driver/sdmmc_host.h"
 #include "driver/sdmmc_defs.h"
-#include "driver/periph_ctrl.h"
 
 #include "sdmmc_cmd.h"
 #include "soc/host_reg.h"
@@ -40,14 +39,14 @@ sdio_err_t sdio_driver_init(void)
 {
     /* Probe */
     sdmmc_host_t config = SDMMC_HOST_DEFAULT();
-    config.flags = SDMMC_HOST_FLAG_4BIT;
+    config.flags = SDMMC_HOST_FLAG_1BIT;
     config.max_freq_khz = SDMMC_FREQ_DEFAULT;
     //config.max_freq_khz = SDMMC_FREQ_HIGHSPEED;
     //config.max_freq_khz = SDMMC_FREQ_PROBING;
 
     sdmmc_slot_config_t slot_config = SDMMC_SLOT_CONFIG_DEFAULT();
 
-    printf("SDIO clock: %d, bit: %d\r\n", config.max_freq_khz, config.flags);
+    printf("SDIO clock: %d, bit: %lu\r\n", config.max_freq_khz, config.flags);
     sdmmc_host_init();
     sdmmc_host_init_slot(SDMMC_HOST_SLOT_1, &slot_config);
     card = (sdmmc_card_t *)malloc(sizeof(sdmmc_card_t));

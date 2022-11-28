@@ -46,7 +46,7 @@ static const char TAG[] = "spi_host";
 
 spi_context_t context;
 
-static xSemaphoreHandle rdySem;
+static SemaphoreHandle_t rdySem;
 static QueueHandle_t esp_at_uart_queue = NULL;
 
 static uint8_t esp_at_sendbuf[READ_BUFFER_LEN] = "";
@@ -76,8 +76,7 @@ void uart_task(void* pvParameters)
 
     for (;;) {
         //Waiting for UART event.
-        if (xQueueReceive(esp_at_uart_queue, (void*) &event,
-                          (portTickType) portMAX_DELAY)) {
+        if (xQueueReceive(esp_at_uart_queue, (void*) &event, portMAX_DELAY)) {
             switch (event.type) {
                     //Event of UART receving data
                 case UART_DATA:

@@ -67,12 +67,6 @@ static void at_netif_init(void)
     esp_netif_create_default_wifi_sta();
     esp_netif_create_default_wifi_ap();
 #endif
-
-#ifdef CONFIG_AT_ETHERNET_SUPPORT
-    esp_netif_config_t cfg = ESP_NETIF_DEFAULT_ETH();
-    esp_netif_t *eth_netif = esp_netif_new(&cfg);
-    ESP_ERROR_CHECK(esp_eth_set_default_handlers(eth_netif));
-#endif
 }
 
 void app_main(void)

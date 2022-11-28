@@ -207,7 +207,7 @@ sdio_err_t sdio_host_get_packet(void* out_data, size_t size, size_t* out_length,
         platform_os_delay(1);
     }
 
-    SDIO_LOGD(TAG, "get_packet: slave len=%d, max read size=%d", len, size);
+    SDIO_LOGD(TAG, "get_packet: slave len=%lu, max read size=%lu", len, (uint32_t)size);
 
     if (len > size) {
         len = size;
@@ -251,7 +251,7 @@ sdio_err_t sdio_host_get_packet(void* out_data, size_t size, size_t* out_length,
 
 sdio_err_t sdio_host_clear_intr(uint32_t intr_mask)
 {
-    SDIO_LOGD(TAG, "clear_intr: %08X", intr_mask);
+    SDIO_LOGD(TAG, "clear_intr: %08X", (unsigned int)intr_mask);
     return sdio_driver_write_bytes(1, ESP_SDIO_INT_CLR, (uint8_t*)&intr_mask, 4);
 }
 
@@ -300,7 +300,7 @@ static uint32_t esp_sdio_host_get_buffer_size(void)
         return 0;
     }
     test_count = len;
-    SDIO_LOGD(TAG, " Read ESP32 len: %d\r\n", len);
+    SDIO_LOGD(TAG, " Read ESP32 len: %lu\r\n", len);
     len = (len >> ESP_SDIO_SEND_OFFSET) & TX_BUFFER_MASK;
     len = (len + TX_BUFFER_MAX - tx_sent_buffers) % TX_BUFFER_MAX;
     return len;
@@ -335,17 +335,17 @@ sdio_err_t sdio_host_send_packet(const void* start, size_t length)
 
     while (1) {
         uint32_t num = esp_sdio_host_get_buffer_size();
-        SDIO_LOGD(TAG, "Buffer size %d can be send", num);
+        SDIO_LOGD(TAG, "Buffer size %lu can be send", num);
 
         if (num * block_size < length) {
             if (!--cnt) {
-                SDIO_LOGI(TAG, "buffer is not enough: %d, %d required.", num, buffer_used);
+                SDIO_LOGI(TAG, "buffer is not enough: %lu, %d required.", num, buffer_used);
                 return ERR_TIMEOUT;
             } else {
-                SDIO_LOGD(TAG, "buffer is not enough: %d, %d required. Retry...", num, buffer_used);
+                SDIO_LOGD(TAG, "buffer is not enough: %lu, %d required. Retry...", num, buffer_used);
             }
             if(cnt%1000 == 0) {
-                SDIO_LOGI(TAG, "Get buffer too many times, num:%d, test_count: %d, tx_sent_buffers: %d", num, test_count, tx_sent_buffers);
+                SDIO_LOGI(TAG, "Get buffer too many times, num:%lu, test_count: %lu, tx_sent_buffers: %lu", num, test_count, tx_sent_buffers);
             }
 
             platform_os_delay(1);

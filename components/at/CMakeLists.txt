@@ -1,13 +1,9 @@
 
 set(require_components mqtt mdns esp_http_client esp_https_ota json freertos spiffs
-    bootloader_support app_update wpa_supplicant spi_flash esp_http_server)
+    bootloader_support app_update wpa_supplicant spi_flash esp_http_server bt fatfs)
 
 if ("${IDF_TARGET}" STREQUAL "esp32")
-    list(APPEND require_components bt fatfs)
-elseif ("${IDF_TARGET}" STREQUAL "esp32c3")
-    list(APPEND require_components bt fatfs)
-elseif ("${IDF_TARGET}" STREQUAL "esp32c2")
-    list(APPEND require_components bt fatfs)
+    list(APPEND require_components esp_eth)
 endif()
 
 # collect the source file to be compiled

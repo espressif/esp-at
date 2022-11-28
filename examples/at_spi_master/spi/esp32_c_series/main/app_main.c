@@ -92,12 +92,12 @@ typedef struct {
     spi_mode_t direct;
 } spi_msg_t;
 
-static xQueueHandle msg_queue; // meaasge queue used for communicating read/write start
+static QueueHandle_t msg_queue; // meaasge queue used for communicating read/write start
 static QueueHandle_t esp_at_uart_queue = NULL;
 static spi_device_handle_t handle;
 static StreamBufferHandle_t spi_master_tx_ring_buf = NULL;
 static const char* TAG = "SPI AT Master";
-static xSemaphoreHandle pxMutex;
+static SemaphoreHandle_t pxMutex;
 static uint8_t initiative_send_flag = 0; // it means master has data to send to slave
 static uint32_t plan_send_len = 0; // master plan to send data len
 
@@ -227,7 +227,7 @@ static void spi_master_request_to_write(uint8_t send_seq, uint16_t send_len)
 static int8_t spi_write_data(uint8_t* buf, int32_t len)
 {
     if (len > ESP_SPI_DMA_MAX_LEN) {
-        ESP_LOGE(TAG, "Send length errot, len:%d", len);
+        ESP_LOGE(TAG, "Send length errot, len:%ld", len);
         return -1;
     }
     at_spi_master_send_data(buf, len);
@@ -241,7 +241,7 @@ static int32_t write_data_to_spi_task_tx_ring_buf(const void* data, size_t size)
     int32_t length = size;
 
     if (data == NULL  || length > STREAM_BUFFER_SIZE) {
-        ESP_LOGE(TAG, "Write data error, len:%d", length);
+        ESP_LOGE(TAG, "Write data error, len:%ld", length);
         return -1;
     }
 
@@ -301,7 +301,7 @@ static void IRAM_ATTR spi_trans_control_task(void* arg)
             send_len = xStreamBufferReceive(spi_master_tx_ring_buf, (void*) trans_data, plan_send_len, 0);
 
             if (send_len != plan_send_len) {
-                ESP_LOGE(TAG, "Read len expect %d, but actual read %d", plan_send_len, send_len);
+                ESP_LOGE(TAG, "Read len expect %lu, but actual read%lu", plan_send_len, send_len);
                 break;
             }
 
@@ -428,7 +428,7 @@ static void init_master_hd(spi_device_handle_t* spi)
 {
     // GPIO config for the handshake line.
     gpio_config_t io_conf = {
-        .intr_type = GPIO_PIN_INTR_POSEDGE,
+        .intr_type = GPIO_INTR_POSEDGE,
         .mode = GPIO_MODE_INPUT,
         .pull_up_en = 1,
         .pin_bit_mask = (1 << GPIO_HANDSHAKE)
@@ -437,7 +437,7 @@ static void init_master_hd(spi_device_handle_t* spi)
     //Set up handshake line interrupt.
     gpio_config(&io_conf);
     gpio_install_isr_service(0);
-    gpio_set_intr_type(GPIO_HANDSHAKE, GPIO_PIN_INTR_POSEDGE);
+    gpio_set_intr_type(GPIO_HANDSHAKE, GPIO_INTR_POSEDGE);
     gpio_isr_handler_add(GPIO_HANDSHAKE, gpio_handshake_isr_handler, NULL);
 
     // Create the meaasge queue.
