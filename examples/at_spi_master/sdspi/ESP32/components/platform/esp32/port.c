@@ -25,7 +25,6 @@
 
 #include "driver/spi_master.h"
 #include "esp_log.h"
-#include "esp_spi_flash.h"
 
 #include "soc/gpio_reg.h"
 #include "driver/gpio.h"
@@ -41,7 +40,7 @@
 
 static spi_device_handle_t spi_handle;
 //The semaphore indicating the slave is ready to receive stuff.
-static xQueueHandle rdySem;
+static QueueHandle_t rdySem;
 
 #define AT_SDSPI_MISO GPIO_NUM_2
 #define AT_SDSPI_MOSI GPIO_NUM_15
@@ -115,7 +114,7 @@ esp_err_t at_spi_slot_init(void)
 
     // Configure CS pin
     gpio_config_t io_conf = {
-        .intr_type = GPIO_PIN_INTR_DISABLE,
+        .intr_type = GPIO_INTR_DISABLE,
         .mode = GPIO_MODE_OUTPUT,
         .pin_bit_mask = 1LL << AT_SDSPI_CS,
     };

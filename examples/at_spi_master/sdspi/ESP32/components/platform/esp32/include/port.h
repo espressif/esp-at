@@ -26,11 +26,10 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stddef.h>
+#include "esp_err.h"
 
 //typedef SemaphoreHandle_t AT_MUTEX_T;
 typedef void* AT_MUTEX_T;
-
-typedef int32_t esp_err_t;
 
 /* Definitions for error constants. */
 

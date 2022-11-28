@@ -35,7 +35,7 @@ uint8_t rcv_buffer[READ_BUFFER_LEN] = "";
 static const char TAG[] = "sdio_at_host";
 
 int sdio_debugLevel = 2;    // print info log, set to 3 if you want to debug
-static xSemaphoreHandle rdySem;
+static SemaphoreHandle_t rdySem;
 static QueueHandle_t esp_at_uart_queue = NULL;
 
 #define SDIO_ERROR_CHECK(x) do {                                         \
@@ -63,7 +63,7 @@ static void slave_power_on()
 static void sdio_recv_task(void* pvParameters)
 {
     while (1) {
-        esp_err_t ret = sdio_host_wait_int(1000 / portTICK_RATE_MS);
+        esp_err_t ret = sdio_host_wait_int(1000 / portTICK_PERIOD_MS);
 
         if (ret != SUCCESS) {
             continue;
@@ -80,7 +80,7 @@ static void sdio_recv_task(void* pvParameters)
 
         ret = sdio_host_clear_intr(intr_raw);
         SDIO_ERROR_CHECK(ret);
-        SDIO_LOGD(TAG, "intr raw: %x, intr_st: %x", intr_raw, intr_st);
+        SDIO_LOGD(TAG, "intr raw: %x, intr_st: %x", (unsigned int)intr_raw, (unsigned int)intr_st);
 
         const int wait_ms = 50;
 
@@ -122,8 +122,7 @@ void uart_task(void* pvParameters)
 
     for (;;) {
         //Waiting for UART event.
-        if (xQueueReceive(esp_at_uart_queue, (void*) &event,
-                          (portTickType) portMAX_DELAY)) {
+        if (xQueueReceive(esp_at_uart_queue, (void*) &event, portMAX_DELAY)) {
             switch (event.type) {
                     //Event of UART receving data
                 case UART_DATA:
@@ -185,5 +184,5 @@ static void sdio_task(void* pvParameters)
 
 void app_main()
 {
-    xTaskCreate(sdio_task, "sdio_task", 2 * 1024, NULL, 5, NULL);
+    xTaskCreate(sdio_task, "sdio_task", 3 * 1024, NULL, 5, NULL);
 }

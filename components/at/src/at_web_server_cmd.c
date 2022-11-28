@@ -48,10 +48,7 @@
 #include "esp_image_format.h"
 #include "esp_flash_partitions.h"
 #include "esp_partition.h"
-
-#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
 #include "esp_mac.h"
-#endif
 
 #include "esp_at.h"
 

@@ -478,7 +478,7 @@ esp_err_t sdspi_host_start_command(sdspi_hw_cmd_t* cmd, void* data,
     return ret;
 }
 
-esp_err_t spi_send_cmd(spi_command_t* cmdinfo)
+esp_err_t spi_send_cmd(sdspi_command_t* cmdinfo)
 {
     if (spi_lock == NULL) {
         spi_lock = at_mutex_init();
@@ -560,7 +560,7 @@ esp_err_t at_spi_init_io()
      * Non-IO cards will not respond to this command.
      */
     uint32_t ocr = MMC_OCR_3_3V_3_4V;
-    spi_command_t cmd = {
+    sdspi_command_t cmd = {
         .flags = SCF_CMD_BCR | SCF_RSP_R4,
         .arg = ocr,
         .opcode = SD_IO_SEND_OP_COND
@@ -590,7 +590,7 @@ esp_err_t at_spi_cmd_go_idle_state()
 {
     go_idle_clockout();
 
-    spi_command_t cmd = {
+    sdspi_command_t cmd = {
         .opcode =  0,  // MMC_GO_IDLE_STATE,
         .flags = SCF_CMD_BC | SCF_RSP_R0,
     };
@@ -617,7 +617,7 @@ esp_err_t at_spi_io_rw_direct(int func,
                               uint32_t reg, uint32_t arg, uint8_t* byte)
 {
     esp_err_t err;
-    spi_command_t cmd = {
+    sdspi_command_t cmd = {
         .flags = SCF_CMD_AC | SCF_RSP_R5,
         .arg = 0,
         .opcode = SD_IO_RW_DIRECT
@@ -645,7 +645,7 @@ esp_err_t spi_io_rw_extended(int func,
 {
     esp_err_t err;
     const size_t max_byte_transfer_size = 512;
-    spi_command_t cmd = {
+    sdspi_command_t cmd = {
         .flags = SCF_CMD_AC | SCF_RSP_R5,
         .arg = 0,
         .opcode = SD_IO_RW_EXTENDED,

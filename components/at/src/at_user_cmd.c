@@ -39,7 +39,6 @@
 #include "at_compress_ota.h"
 #endif
 
-#include "esp_idf_version.h"
 #include "esp_http_client.h"
 #include "esp_https_ota.h"
 #include "esp_at_core.h"
@@ -388,7 +387,6 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
         .buffer_size = 2048,
     };
 
-#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
 #ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
     esp_err_t ret = at_compress_https_ota(&config);
 #else
@@ -397,9 +395,6 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
     };
 
     esp_err_t ret = esp_https_ota(&ota_config);
-#endif
-#else
-    esp_err_t ret = esp_https_ota(&config);
 #endif
 
     free(url);
