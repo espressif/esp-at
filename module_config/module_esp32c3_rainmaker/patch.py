@@ -38,7 +38,6 @@ def main():
     cur_abs_dir = os.getcwd()
 
     patch_list = {
-        'idf-nvs_flash.patch': os.path.join(cur_abs_dir, 'esp-idf','components','nvs_flash','src'),
         'rmaker-esp_rainmaker.patch': os.path.join(cur_abs_dir, 'components', 'rainmaker', 'esp-rainmaker', 'components', 'esp_rainmaker'),
         'rmaker-rmaker_common.patch': os.path.join(cur_abs_dir, 'components', 'rainmaker', 'esp-rainmaker', 'components', 'rmaker_common')
     }
