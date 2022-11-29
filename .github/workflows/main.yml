@@ -57,13 +57,6 @@ jobs:
       artifacts_name: esp32-sdio-at
     secrets: inherit
 
-  build-esp32-qcloud:
-    uses: ./.github/workflows/build_template_esp32.yml
-    with:
-      module_name: ESP32_QCLOUD
-      artifacts_name: esp32-qcloud
-    secrets: inherit
-
   build-esp32-at-all-function-test-without-bt:
     uses: ./.github/workflows/build_template_esp32.yml
     with:
@@ -90,13 +83,6 @@ jobs:
     with:
       module_name: ESP32C3-SPI
       artifacts_name: esp32c3-spi-at
-    secrets: inherit
-
-  build-esp32c3-qcloud:
-    uses: ./.github/workflows/build_template_esp32c3.yml
-    with:
-      module_name: ESP32C3_QCLOUD
-      artifacts_name: esp32c3-qcloud
     secrets: inherit
 
   build-esp32c3-at-full-function-test:
