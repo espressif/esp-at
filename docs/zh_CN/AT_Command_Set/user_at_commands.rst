@@ -243,7 +243,7 @@ AT 输出上述信息之后，升级过程开始。如果升级完成，返回�
 - **<check mcu awake method>**：AT 检查 MCU 是否处于醒来的状态。
 
   - Bit 0：是否开启与 :ref:`AT+USERMCUSLEEP <cmd-USERMCUSLEEP>` 命令的关联。默认开启。即：收到 AT+USERMCUSLEEP=0 命令，指示 MCU 醒来；收到 AT+USERMCUSLEEP=1 命令，指示 MCU 睡眠。
-  - Bit 1：是否开启与 :ref:`AT+SLEEP=1/2/3 <cmd-SLEEP>` 命令的关联。默认禁用。即：收到 AT+SLEEP=0 命令，指示 MCU 醒来；收到 AT+USERMCUSLEEP=1/2/3 命令，指示 MCU 睡眠。
+  - Bit 1：是否开启与 :ref:`AT+SLEEP=0/1/2/3 <cmd-SLEEP>` 命令的关联。默认禁用。即：收到 AT+SLEEP=0 命令，指示 MCU 醒来；收到 AT+SLEEP=1/2/3 命令，指示 MCU 睡眠。
   - Bit 2：是否开启 ``<delay time>`` 超时后指示 MCU 醒来功能。默认禁用。即：禁用时，delay time 后，指示 MCU 睡眠；使能时，delay time 后，指示 MCU 醒来。
   - Bit 3（暂未实现）：是否开启 GPIO 指示 MCU 醒来功能。默认不支持。
 
