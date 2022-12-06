@@ -243,7 +243,7 @@ Parameters
 - **<check mcu awake method>**: AT checks whether MCU is in awake state.
 
   - Bit 0: Whether to enable :ref:`AT+USERMCUSLEEP <cmd-USERMCUSLEEP>` command linkage. Enabled by default. That is, when receiving AT+USERMCUSLEEP=0 command from MCU, AT knows that MCU is in awake state; when receiving AT+USERMCUSLEEP=1 command, AT knows that MCU is in sleep.
-  - Bit 1: Whether to enable AT+SLEEP command linkage. Disabled by default. That is, when receiving AT+SLEEP=0 command, AT knows that MCU is in awake state; when receiving :ref:`AT+SLEEP=1/2/3 <cmd-SLEEP>` command, AT knows that MCU is in sleep.
+  - Bit 1: Whether to enable :ref:`AT+SLEEP=0/1/2/3 <cmd-SLEEP>` command linkage. Disabled by default. That is, when receiving AT+SLEEP=0 command, AT knows that MCU is in awake state; when receiving AT+SLEEP=1/2/3 command, AT knows that MCU is in sleep.
   - Bit 2: Whether to enable the function of indicating MCU state after ``<delay time>`` timeout. Disabled by default. That is, when disabled, it indicates that MCU is in sleep after ``<delay time>``; when enabled, it indicates that MCU is in awake state after ``<delay time>``.
   - Bit 3 (not implemented yet): Whether to enable the function of indicating MCU state via GPIO. Unsupported by default.
 
