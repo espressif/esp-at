@@ -81,7 +81,7 @@
     }
 
 #define RAINMAKER_PRE_CFG_PARTITION                 ("rmaker_mfg")      // please refer to at_customize.csv
-#define RAINMAKER_PRE_NAMESPACE                     ("mfg_params")
+#define RAINMAKER_PRE_NAMESPACE                     CONFIG_ESP_RMAKER_FACTORY_NAMESPACE
 #define RAINMAKER_PRE_KEY                           ("params")
 
 #define RAINMAKER_PARAMS_MAX_SETS                   (16)
