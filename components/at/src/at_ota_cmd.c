@@ -314,9 +314,8 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
         esp_at_set_upgrade_state(ESP_AT_OTA_STATE_CONNECTED_TO_SERVER);
         esp_at_port_write_data((uint8_t*)"+CIPUPDATE:2\r\n",strlen("+CIPUPDATE:2\r\n"));
 
-        snprintf((char*)http_request,TEXT_BUFFSIZE,"GET /v1/device/rom/?is_format_simple=true HTTP/1.0\r\nHost: "IPSTR":%d\r\n"pheadbuffer"",
-                 IP2STR(&ip_address.u_addr.ip4),
-                 server_port, ota_key);
+        snprintf((char*)http_request,TEXT_BUFFSIZE,"GET /v1/device/rom/?is_format_simple=true HTTP/1.0\r\nHost: %s:%d\r\n"pheadbuffer"",
+                 server_ip, server_port, ota_key);
 
         printf("http request length %d bytes\r\n",strlen((char*)http_request));
         /*send GET request to http server*/
@@ -376,8 +375,8 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
     printf("version:%s\r\n",version);
 
     snprintf((char*)http_request,TEXT_BUFFSIZE,
-        "GET /v1/device/rom/?action=download_rom&version=%s&filename=%s.bin HTTP/1.1\r\nHost: "IPSTR":%d\r\n"pheadbuffer"",
-        (char*)version, partition_name, IP2STR(&ip_address.u_addr.ip4), server_port, ota_key);
+        "GET /v1/device/rom/?action=download_rom&version=%s&filename=%s.bin HTTP/1.1\r\nHost: %s:%d\r\n"pheadbuffer"",
+        (char*)version, partition_name, server_ip, server_port, ota_key);
 
     // search partition
     if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {  // search ota partition
