@@ -16,6 +16,7 @@ Here is a list of AT commands.
    :esp32: Bluetooth® AT Commands <BT_AT_Commands>
    MQTT AT Commands <MQTT_AT_Commands>
    HTTP AT Commands <HTTP_AT_Commands>
+   WebSocket AT Commands <websocket_at_commands>
    :esp32: Ethernet AT Commands <Ethernet_AT_Commands>
    Signaling Test AT Commands <Signaling_Test_AT_Commands>
    Web server AT Commands <Web_server_AT_Commands>
@@ -248,6 +249,14 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - Bluetooth LE SMP pairing completed
      * - +BLUFIDATA:<len>,<data>
        - The ESP device received customized data from the phone over BluFi
+     * - +WS_DISCONNECTED:<link_id>
+       - The WebSocket connection of ID <link_id> is disconnected.
+     * - +WS_CONNECTED:<link_id>
+       - The WebSocket connection of ID ``<link_id>`` is established.
+     * - +WS_DATA:<link_id>,<data_len>,<data>
+       - The Websocket connection of ID ``<link_id>`` has received the data.
+     * - +WS_CLOSED:<link_id>
+       - The WebSocket connection of ID ``<link_id>`` is closed.
 
   .. only:: esp32c3
 
