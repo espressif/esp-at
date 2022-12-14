@@ -138,6 +138,11 @@ config AT_HTTP_COMMAND_SUPPORT
         Please enlarge AT_PROCESS_TASK_STACK_SIZE to be more than 4096 if HTTPS link need to establish,
         otherwise, unexpected crash probably occur due to AT process task overflow.
 
+config AT_WS_COMMAND_SUPPORT
+    bool "AT WebSocket command support."
+    default "n"
+    depends on AT_ENABLE
+
 config AT_BLE_COMMAND_SUPPORT
     bool "AT ble command support."
     default "y"

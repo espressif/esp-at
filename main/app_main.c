@@ -131,6 +131,12 @@ void app_main(void)
     }
 #endif
 
+#ifdef CONFIG_AT_WS_COMMAND_SUPPORT
+    if(esp_at_ws_cmd_regist() == false) {
+        printf("regist ws cmd fail\r\n");
+    }
+#endif
+
 #ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
     if(esp_at_ble_cmd_regist() == false) {
         printf("regist ble cmd fail\r\n");
