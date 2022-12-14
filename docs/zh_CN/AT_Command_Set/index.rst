@@ -16,6 +16,7 @@ AT 命令集
    :esp32: Bluetooth® AT 命令集 <BT_AT_Commands>
    MQTT AT 命令集 <MQTT_AT_Commands>
    HTTP AT 命令集 <HTTP_AT_Commands>
+   WebSocket AT 命令集 <websocket_at_commands>
    :esp32: 以太网 AT 命令集 <Ethernet_AT_Commands>
    信令测试 AT 命令集 <Signaling_Test_AT_Commands>
    驱动 AT 命令集 <Driver_AT_Commands>
@@ -248,6 +249,14 @@ AT 消息
        - Bluetooth LE SMP 配对完成
      * - +BLUFIDATA:<len>,<data>
        - ESP 设备收到从手机端发送的 BluFi 用户自定义数据
+     * - +WS_DISCONNECTED:<link_id>
+       - 连接 ID 为 <link_id> 的 WebSocket 连接已断开
+     * - +WS_CONNECTED:<link_id>
+       - 连接 ID 为 <link_id> 的 WebSocket 连接已建立
+     * - +WS_DATA:<link_id>,<data_len>,<data>
+       - 连接 ID 为 <link_id> 的 WebSocket 连接收到数据
+     * - +WS_CLOSED:<link_id>
+       - 连接 ID 为 <link_id> 的 WebSocket 连接已关闭
 
   .. only:: esp32c3
 
