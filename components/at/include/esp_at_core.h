@@ -510,6 +510,11 @@ bool esp_at_eap_cmd_regist(void);
 bool esp_at_eth_cmd_regist(void);
 
 /**
+ * @brief regist at websocket command set. If not, you can not use AT fs command
+ */
+bool esp_at_ws_cmd_regist(void);
+
+/**
  * @brief Set AT command terminator, by default, the terminator is "\r\n"
  * You can change it by calling this function, but it just supports one character now.
  * @param terminator: the line terminator
