@@ -1,0 +1,193 @@
+From 07d69b7cae428f548bbff0d3ae229f584ec4e6f7 Mon Sep 17 00:00:00 2001
+From: jingli <jingli@espressif.com>
+Date: Thu, 11 Aug 2022 11:48:50 +0800
+Subject: [PATCH 1/2] esp_hw_support/clk_cali: fix xtal32k error detect
+
+---
+ components/esp_hw_support/port/esp32/rtc_time.c   | 12 ++++++++++++
+ components/esp_hw_support/port/esp32c3/rtc_time.c | 12 ++++++++++++
+ components/esp_hw_support/port/esp32s2/rtc_time.c | 15 +++++++++++++--
+ components/esp_hw_support/port/esp32s3/rtc_time.c | 12 ++++++++++++
+ components/soc/esp32/include/soc/rtc.h            |  5 +++++
+ components/soc/esp32c3/include/soc/rtc.h          |  5 +++++
+ components/soc/esp32s2/include/soc/rtc.h          |  5 +++++
+ components/soc/esp32s3/include/soc/rtc.h          |  5 +++++
+ 8 files changed, 69 insertions(+), 2 deletions(-)
+
+diff --git a/components/esp_hw_support/port/esp32/rtc_time.c b/components/esp_hw_support/port/esp32/rtc_time.c
+index 80e2ae2ccb..64771bc841 100644
+--- a/components/esp_hw_support/port/esp32/rtc_time.c
++++ b/components/esp_hw_support/port/esp32/rtc_time.c
+@@ -117,10 +117,22 @@ uint32_t rtc_clk_cal_ratio(rtc_cal_sel_t cal_clk, uint32_t slowclk_cycles)
+     return ratio;
+ }
+ 
++static inline bool rtc_clk_cal_32k_valid(rtc_xtal_freq_t xtal_freq, uint32_t slowclk_cycles, uint64_t actual_xtal_cycles)
++{
++    uint64_t expected_xtal_cycles = (xtal_freq * 1000000ULL * slowclk_cycles) >> 15; // xtal_freq(hz) * slowclk_cycles / 32768
++    uint64_t delta = expected_xtal_cycles / 2000;                                    // 5/10000
++    return (actual_xtal_cycles >= (expected_xtal_cycles - delta)) && (actual_xtal_cycles <= (expected_xtal_cycles + delta));
++}
++
+ uint32_t rtc_clk_cal(rtc_cal_sel_t cal_clk, uint32_t slowclk_cycles)
+ {
+     rtc_xtal_freq_t xtal_freq = rtc_clk_xtal_freq_get();
+     uint64_t xtal_cycles = rtc_clk_cal_internal(cal_clk, slowclk_cycles);
++
++    if ((cal_clk == RTC_CAL_32K_XTAL) && !rtc_clk_cal_32k_valid(xtal_freq, slowclk_cycles, xtal_cycles)) {
++        return 0;
++    }
++
+     uint64_t divider = ((uint64_t)xtal_freq) * slowclk_cycles;
+     uint64_t period_64 = ((xtal_cycles << RTC_CLK_CAL_FRACT) + divider / 2 - 1) / divider;
+     uint32_t period = (uint32_t)(period_64 & UINT32_MAX);
+diff --git a/components/esp_hw_support/port/esp32c3/rtc_time.c b/components/esp_hw_support/port/esp32c3/rtc_time.c
+index e3ba461b19..d96cfe5c24 100644
+--- a/components/esp_hw_support/port/esp32c3/rtc_time.c
++++ b/components/esp_hw_support/port/esp32c3/rtc_time.c
+@@ -129,10 +129,22 @@ uint32_t rtc_clk_cal_ratio(rtc_cal_sel_t cal_clk, uint32_t slowclk_cycles)
+     return ratio;
+ }
+ 
++static bool rtc_clk_cal_32k_valid(rtc_xtal_freq_t xtal_freq, uint32_t slowclk_cycles, uint64_t actual_xtal_cycles)
++{
++    uint64_t expected_xtal_cycles = (xtal_freq * 1000000ULL * slowclk_cycles) >> 15; // xtal_freq(hz) * slowclk_cycles / 32768
++    uint64_t delta = expected_xtal_cycles / 2000;                                    // 5/10000
++    return (actual_xtal_cycles >= (expected_xtal_cycles - delta)) && (actual_xtal_cycles <= (expected_xtal_cycles + delta));
++}
++
+ uint32_t rtc_clk_cal(rtc_cal_sel_t cal_clk, uint32_t slowclk_cycles)
+ {
+     rtc_xtal_freq_t xtal_freq = rtc_clk_xtal_freq_get();
+     uint64_t xtal_cycles = rtc_clk_cal_internal(cal_clk, slowclk_cycles);
++
++    if ((cal_clk == RTC_CAL_32K_XTAL) && !rtc_clk_cal_32k_valid(xtal_freq, slowclk_cycles, xtal_cycles)) {
++        return 0;
++    }
++
+     uint64_t divider = ((uint64_t)xtal_freq) * slowclk_cycles;
+     uint64_t period_64 = ((xtal_cycles << RTC_CLK_CAL_FRACT) + divider / 2 - 1) / divider;
+     uint32_t period = (uint32_t)(period_64 & UINT32_MAX);
+diff --git a/components/esp_hw_support/port/esp32s2/rtc_time.c b/components/esp_hw_support/port/esp32s2/rtc_time.c
+index b96a2b23d6..ce4c7487e4 100644
+--- a/components/esp_hw_support/port/esp32s2/rtc_time.c
++++ b/components/esp_hw_support/port/esp32s2/rtc_time.c
+@@ -191,11 +191,22 @@ uint32_t rtc_clk_cal_ratio(rtc_cal_sel_t cal_clk, uint32_t slowclk_cycles)
+     return ratio;
+ }
+ 
++static inline bool rtc_clk_cal_32k_valid(rtc_xtal_freq_t xtal_freq, uint32_t slowclk_cycles, uint64_t actual_xtal_cycles)
++{
++    uint64_t expected_xtal_cycles = (xtal_freq * 1000000ULL * slowclk_cycles) >> 15; // xtal_freq(hz) * slowclk_cycles / 32768
++    uint64_t delta = expected_xtal_cycles / 2000;                                    // 5/10000
++    return (actual_xtal_cycles >= (expected_xtal_cycles - delta)) && (actual_xtal_cycles <= (expected_xtal_cycles + delta));
++}
++
+ uint32_t rtc_clk_cal(rtc_cal_sel_t cal_clk, uint32_t slowclk_cycles)
+ {
+     uint64_t xtal_cycles = rtc_clk_cal_internal(cal_clk, slowclk_cycles, RTC_TIME_CAL_ONEOFF_MODE);
+-    uint32_t period = rtc_clk_xtal_to_slowclk(xtal_cycles, slowclk_cycles);
+-    return period;
++
++    if ((cal_clk == RTC_CAL_32K_XTAL) && !rtc_clk_cal_32k_valid(rtc_clk_xtal_freq_get(), slowclk_cycles, xtal_cycles)) {
++        return 0;
++    }
++
++    return rtc_clk_xtal_to_slowclk(xtal_cycles, slowclk_cycles);
+ }
+ 
+ uint32_t rtc_clk_cal_cycling(rtc_cal_sel_t cal_clk, uint32_t slowclk_cycles)
+diff --git a/components/esp_hw_support/port/esp32s3/rtc_time.c b/components/esp_hw_support/port/esp32s3/rtc_time.c
+index 4323b479d8..66cbd65924 100644
+--- a/components/esp_hw_support/port/esp32s3/rtc_time.c
++++ b/components/esp_hw_support/port/esp32s3/rtc_time.c
+@@ -128,10 +128,22 @@ uint32_t rtc_clk_cal_ratio(rtc_cal_sel_t cal_clk, uint32_t slowclk_cycles)
+     return ratio;
+ }
+ 
++static inline bool rtc_clk_cal_32k_valid(rtc_xtal_freq_t xtal_freq, uint32_t slowclk_cycles, uint64_t actual_xtal_cycles)
++{
++    uint64_t expected_xtal_cycles = (xtal_freq * 1000000ULL * slowclk_cycles) >> 15; // xtal_freq(hz) * slowclk_cycles / 32768
++    uint64_t delta = expected_xtal_cycles / 2000;                                    // 5/10000
++    return (actual_xtal_cycles >= (expected_xtal_cycles - delta)) && (actual_xtal_cycles <= (expected_xtal_cycles + delta));
++}
++
+ uint32_t rtc_clk_cal(rtc_cal_sel_t cal_clk, uint32_t slowclk_cycles)
+ {
+     rtc_xtal_freq_t xtal_freq = rtc_clk_xtal_freq_get();
+     uint64_t xtal_cycles = rtc_clk_cal_internal(cal_clk, slowclk_cycles);
++
++    if ((cal_clk == RTC_CAL_32K_XTAL) && !rtc_clk_cal_32k_valid(xtal_freq, slowclk_cycles, xtal_cycles)) {
++        return 0;
++    }
++
+     uint64_t divider = ((uint64_t)xtal_freq) * slowclk_cycles;
+     uint64_t period_64 = ((xtal_cycles << RTC_CLK_CAL_FRACT) + divider / 2 - 1) / divider;
+     uint32_t period = (uint32_t)(period_64 & UINT32_MAX);
+diff --git a/components/soc/esp32/include/soc/rtc.h b/components/soc/esp32/include/soc/rtc.h
+index bbbf3c7550..d8d97247eb 100644
+--- a/components/soc/esp32/include/soc/rtc.h
++++ b/components/soc/esp32/include/soc/rtc.h
+@@ -403,6 +403,11 @@ uint32_t rtc_clk_apb_freq_get(void);
+  * 32k XTAL is being calibrated, but the oscillator has not started up (due to
+  * incorrect loading capacitance, board design issue, or lack of 32 XTAL on board).
+  *
++ * @note When 32k CLK is being calibrated, this function will check the accuracy
++ * of the clock. Since the xtal 32k or ext osc 32k is generally very stable, if
++ * the check fails, then consider this an invalid 32k clock and return 0. This
++ * check can filter some jamming signal.
++ *
+  * @param cal_clk  clock to be measured
+  * @param slow_clk_cycles  number of slow clock cycles to average
+  * @return average slow clock period in microseconds, Q13.19 fixed point format,
+diff --git a/components/soc/esp32c3/include/soc/rtc.h b/components/soc/esp32c3/include/soc/rtc.h
+index 6985c30ee0..da775ce464 100644
+--- a/components/soc/esp32c3/include/soc/rtc.h
++++ b/components/soc/esp32c3/include/soc/rtc.h
+@@ -509,6 +509,11 @@ uint32_t rtc_clk_cal_internal(rtc_cal_sel_t cal_clk, uint32_t slowclk_cycles);
+  * 32k XTAL is being calibrated, but the oscillator has not started up (due to
+  * incorrect loading capacitance, board design issue, or lack of 32 XTAL on board).
+  *
++ * @note When 32k CLK is being calibrated, this function will check the accuracy
++ * of the clock. Since the xtal 32k or ext osc 32k is generally very stable, if
++ * the check fails, then consider this an invalid 32k clock and return 0. This
++ * check can filter some jamming signal.
++ *
+  * @param cal_clk  clock to be measured
+  * @param slow_clk_cycles  number of slow clock cycles to average
+  * @return average slow clock period in microseconds, Q13.19 fixed point format,
+diff --git a/components/soc/esp32s2/include/soc/rtc.h b/components/soc/esp32s2/include/soc/rtc.h
+index 9874b4fb62..727f611441 100644
+--- a/components/soc/esp32s2/include/soc/rtc.h
++++ b/components/soc/esp32s2/include/soc/rtc.h
+@@ -539,6 +539,11 @@ uint32_t rtc_clk_cal_internal(rtc_cal_sel_t cal_clk, uint32_t slowclk_cycles, ui
+  * 32k XTAL is being calibrated, but the oscillator has not started up (due to
+  * incorrect loading capacitance, board design issue, or lack of 32 XTAL on board).
+  *
++ * @note When 32k CLK is being calibrated, this function will check the accuracy
++ * of the clock. Since the xtal 32k or ext osc 32k is generally very stable, if
++ * the check fails, then consider this an invalid 32k clock and return 0. This
++ * check can filter some jamming signal.
++ *
+  * @param cal_clk  clock to be measured
+  * @param slow_clk_cycles  number of slow clock cycles to average
+  * @return average slow clock period in microseconds, Q13.19 fixed point format,
+diff --git a/components/soc/esp32s3/include/soc/rtc.h b/components/soc/esp32s3/include/soc/rtc.h
+index 7ca1d44201..4c06c2e3e5 100644
+--- a/components/soc/esp32s3/include/soc/rtc.h
++++ b/components/soc/esp32s3/include/soc/rtc.h
+@@ -503,6 +503,11 @@ uint32_t rtc_clk_cal_internal(rtc_cal_sel_t cal_clk, uint32_t slowclk_cycles);
+  * 32k XTAL is being calibrated, but the oscillator has not started up (due to
+  * incorrect loading capacitance, board design issue, or lack of 32 XTAL on board).
+  *
++ * @note When 32k CLK is being calibrated, this function will check the accuracy
++ * of the clock. Since the xtal 32k or ext osc 32k is generally very stable, if
++ * the check fails, then consider this an invalid 32k clock and return 0. This
++ * check can filter some jamming signal.
++ *
+  * @param cal_clk  clock to be measured
+  * @param slow_clk_cycles  number of slow clock cycles to average
+  * @return average slow clock period in microseconds, Q13.19 fixed point format,
+-- 
+2.25.1
+
