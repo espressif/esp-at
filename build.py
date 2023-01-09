@@ -39,6 +39,9 @@ else:
     sys_cmd = 'export'
     sys_delimiter = ':'
 
+at_targets = ['esp32', 'esp32c3']
+at_macro_pairs = []
+
 def ESP_LOGI(x):
     print('\033[32m{}\033[0m'.format(x))
 
@@ -46,131 +49,150 @@ def ESP_LOGE(x):
     print('\033[31m{}\033[0m'.format(x))
 
 def gitee_repo_preprocess():
-    print('Redirect IDF url to https://gitee.com/EspressifSystems')
+    print('Redirect repository to https://gitee.com/EspressifSystems')
     return 'https://gitee.com/EspressifSystems'
 
-def gitee_repo_postprocess():
-    print('IDF is Cloned from https://gitee.com/EspressifSystems')
-
-    ret = subprocess.call('cd esp-idf && git submodule init', shell = True)
-    if ret:
-        raise Exception('git submodule init failed')
-    submodule_lists = \
-        subprocess.check_output(['git', 'config', '-f', os.path.join('esp-idf', '.gitmodules'), '--list']).decode(encoding='utf-8')
+def gitee_repo_postprocess(path, redirect_repo):
+    submodule_lists = subprocess.check_output(['git', 'config', '-f', os.path.join(path, '.gitmodules'), '--list']).decode(encoding='utf-8')
 
     for line in submodule_lists.split():
         if line.find('.url=') > 0:
             submodule = line.split('=')
             submodule_name = os.path.basename(submodule[1])
-            print('Redirect {} to {}'.format(submodule[0],
-                                '/'.join(['https://gitee.com/esp-submodules', submodule_name])))
-            subprocess.call('cd esp-idf && git config {} {}'.format(submodule[0],
-                                '/'.join(['https://gitee.com/esp-submodules',submodule_name])), shell = True)
+            print('Redirect {} to {}'.format(submodule[0], '/'.join([redirect_repo, submodule_name])))
+            subprocess.call('cd {} && git config {} {}'.format(path, submodule[0], '/'.join([redirect_repo, submodule_name])), shell = True)
 
-    print('Update submodule...')
-    ret = subprocess.call('cd esp-idf && git submodule update', shell = True)
-    if ret:
-        raise Exception('git submodule update failed')
-
-preprocess_url = {
-    'https://gitee.com/EspressifSystems/esp-at': {'proprocess': gitee_repo_preprocess,
-                                                  'postprocess': gitee_repo_postprocess},
-    'https://gitee.com/EspressifSystems/esp-at.git': {'proprocess': gitee_repo_preprocess,
-                                                      'postprocess': gitee_repo_postprocess},
-    'git@gitee.com:EspressifSystems/esp-at.git': {'proprocess': gitee_repo_preprocess,
-                                                   'postprocess': gitee_repo_postprocess},
+preset_origins = {
+    'https://gitee.com/EspressifSystems/esp-at': {'preprocess': gitee_repo_preprocess, 'postprocess': gitee_repo_postprocess},
+    'https://gitee.com/EspressifSystems/esp-at.git': {'preprocess': gitee_repo_preprocess, 'postprocess': gitee_repo_postprocess},
+    'git@gitee.com:EspressifSystems/esp-at.git': {'preprocess': gitee_repo_preprocess, 'postprocess': gitee_repo_postprocess},
 }
 
-def auto_update_idf(platform_name, module_name):
-    config_dir = os.path.join(os.getcwd(), 'module_config', 'module_{}'.format(module_name.lower()))
+def at_sync_submodule(path, repo, branch, commit, redirect):
+    at_origin = subprocess.check_output(['git', 'remote', '-v']).decode(encoding = 'utf-8').split()[1]
 
-    if not os.path.exists(config_dir):
-        config_dir = os.path.join(os.getcwd(), 'module_config',  'module_{}_default'.format(platform_name.lower()))
+    if not os.path.exists(path):
+        # clone repository
+        if at_origin in preset_origins:
+             if redirect == 1:
+                repo = '/'.join([preset_origins[at_origin]['preprocess'](), os.path.basename(repo)])
 
-    idf_branch = ''
-    idf_commit = ''
-    idf_url = ''
-
-    with open(os.path.join(config_dir, 'IDF_VERSION')) as f:
-        for line in f.readlines():
-            line = line.strip()
-            index = line.find('branch:')
-            if index >= 0:
-                if len(idf_branch) > 0:
-                    sys.exit('ERROR: idf branch is defined')
-
-                idf_branch = line[index + len('branch:'):]
-                continue
-
-            index = line.find('commit:')
-            if index >= 0:
-                if len(idf_commit) > 0:
-                    sys.exit('ERROR: idf commit is defined')
-
-                idf_commit = line[index + len('commit:'):]
-                continue
-
-            index = line.find('repository:')
-            if index >= 0:
-                if len(idf_url) > 0:
-                    sys.exit('ERROR: idf repository is defined')
-
-                idf_url = line[index + len('repository:'):]
-                continue
-
-    if len(idf_branch) <= 0:
-        sys.exit('ERROR: idf branch is not defined')
-
-    if len(idf_commit) <= 0:
-        sys.exit('ERROR: idf commit is not defined')
-
-    if len(idf_url) <= 0:
-        sys.exit('ERROR: idf url is not defined')
-
-    project_remote_url = subprocess.check_output(['git', 'remote', '-v']).decode(encoding='utf-8')
-    project_url = project_remote_url.split()[1]
-
-    if not os.path.exists('esp-idf'):
-        # check repo
-        if project_url in preprocess_url:
-            new_url = preprocess_url[project_url]['proprocess']()
-            idf_url = '/'.join([new_url, os.path.basename(idf_url)])
-
-        print('Please wait for the SDK download to finish...')
-        ret = subprocess.call('git clone -b {} {} esp-idf'.format(idf_branch, idf_url), shell = True)
+        ESP_LOGI('Cloning into submodule:"{}" from "{}" (This may take time)..'.format(path, repo))
+        ret = subprocess.call('git clone -b {} {} {}'.format(branch, repo, path), shell = True)
         if ret:
             raise Exception('git clone failed')
 
-        if project_url in preprocess_url:
-            new_url = preprocess_url[project_url]['postprocess']()
+        # init submoules for cloned repository
+        ret = subprocess.call('cd {} && git submodule init'.format(path), shell = True)
+        if ret:
+            raise Exception('git submodule init failed')
 
-    rev_parse_head = subprocess.check_output('cd esp-idf && git rev-parse HEAD', shell = True).decode(encoding='utf-8').strip()
-    if rev_parse_head != idf_commit:
-        print('old commit:{}'.format(rev_parse_head))
-        print('checkout commit:{}'.format(idf_commit))
-        print('Please wait for the update to complete, which will take some time')
-        ret = subprocess.call('cd esp-idf && git fetch origin {}'.format(idf_branch), shell = True)
-        if ret:
-            raise Exception('git fetch failed')
-        ret = subprocess.call('cd esp-idf && git merge origin/{} {}'.format(idf_branch, idf_branch), shell = True)
-        if ret:
-            raise Exception('git merge failed')
-        ret = subprocess.call('cd esp-idf && git checkout {}'.format(idf_commit), shell = True)
-        if ret:
-            raise Exception('git checkout failed')
-        ret = subprocess.call('cd esp-idf && git submodule update --init --recursive', shell = True)
+        if at_origin in preset_origins:
+            # redirect esp-idf submodules if esp-idf itself is redirected (just redirect one-level submodules currently)
+            if redirect and path == 'esp-idf':
+                preset_origins[at_origin]['postprocess'](path, 'https://gitee.com/esp-submodules')
+
+        # update submoules recursively for cloned repository
+        ret = subprocess.call('cd {} && git submodule update --init --recursive'.format(path), shell = True)
         if ret:
             raise Exception('git submodule update failed')
-        print('Update completed')
+
+    rev_parse_head = subprocess.check_output('cd {} && git rev-parse HEAD'.format(path), shell = True).decode(encoding='utf-8').strip()
+    if rev_parse_head != commit:
+        ESP_LOGI('Synchronizing submodule:"{}" from "{}" (This may take time)..'.format(path, repo))
+        print('old commit: {}'.format(rev_parse_head))
+        print('checkout commit: {}'.format(commit))
+        cmd = 'cd {} && git fetch origin {}'.format(path, branch)
+        ret = subprocess.call(cmd, shell = True)
+        if ret:
+            raise Exception('git fetch failed! Please manually run:\r\n{}'.format(cmd))
+        cmd = 'cd {} && git merge origin/{} {}'.format(path, branch, branch)
+        ret = subprocess.call(cmd, shell = True)
+        if ret:
+            raise Exception('git merge failed! Please manually run:\r\n{}'.format(cmd))
+        cmd = 'cd {} && git checkout -q {}'.format(path, commit)
+        ret = subprocess.call(cmd, shell = True)
+        if ret:
+            raise Exception('git checkout failed! Please manually run:\r\n{}'.format(cmd))
+        cmd = 'cd {} && git submodule update --init --recursive'.format(path)
+        ret = subprocess.call(cmd, shell = True)
+        if ret:
+            raise Exception('git submodule update failed! Please manually run:\r\n{}'.format(cmd))
+
+def at_parse_idf_version(idf_ver_file, pairs):
+    if not os.path.exists(idf_ver_file):
+        ESP_LOGE('File does not exist: {}'.format(idf_ver_file))
+        sys.exit(2)
+
+    with open(idf_ver_file) as f:
+        for line in f.readlines():
+            index = line.strip().find('branch:')
+            if index >= 0:
+                branch = line[index + len('branch:'):].rstrip('\n')
+                continue
+            index = line.strip().find('commit:')
+            if index >= 0:
+                commit = line[index + len('commit:'):].rstrip('\n')
+                continue
+            index = line.strip().find('repository:')
+            if index >= 0:
+                repo = line[index + len('repository:'):].rstrip('\n')
+                continue
+
+    if len(branch) <= 0:
+        sys.exit('ERROR: idf branch is not defined')
+    if len(commit) <= 0:
+        sys.exit('ERROR: idf commit is not defined')
+    if len(repo) <= 0:
+        sys.exit('ERROR: idf url is not defined')
+
+    pairs.append(('esp-idf', repo, branch, commit, 1))
+
+def at_parse_submodules(submodules_file, pairs):
+    import configparser
+    if not os.path.exists(submodules_file):
+        return None
+    config = configparser.ConfigParser()
+    config.read(submodules_file)
+    for item in config.sections():
+        at_macro_pairs.append('AT_' + item.split()[1].strip('"').upper() + '_SUPPORT')
+        pairs.append((config[item]['path'], config[item]['url'], config[item]['branch'], config[item]['commit'], 0))
+
+def at_submodules_update(platform, module):
+    config_dir = os.path.join(os.getcwd(), 'module_config', 'module_{}'.format(module.lower()))
+    if not os.path.exists(config_dir):
+        config_dir = os.path.join(os.getcwd(), 'module_config',  'module_{}_default'.format(platform.lower()))
+
+    pairs = []
+    idf_ver_file = os.path.join(config_dir, 'IDF_VERSION')
+    at_parse_idf_version(idf_ver_file, pairs)
+
+    try:
+        submodules_file = os.path.join(config_dir, 'submodules')
+        at_parse_submodules(submodules_file, pairs)
+    except Exception as e:
+        ESP_LOGE('Failed to parse submodules:"{}" ({})'.format(submodules_file, e))
+        sys.exit(2)
+
+    for path, repo, branch, commit, redirect in list(filter(None, pairs)):
+        at_sync_submodule(path, repo, branch, commit, redirect)
+
+    ESP_LOGI('submodules check completed for updates.')
+
+def at_patch_if_config(platform, module):
+    config_dir = os.path.join(os.getcwd(), 'module_config', 'module_{}'.format(module.lower()))
+    if not os.path.exists(config_dir):
+        config_dir = os.path.join(os.getcwd(), 'module_config',  'module_{}_default'.format(platform.lower()))
+
+    fabspath = os.path.join(config_dir, 'patch.py')
+    if os.path.exists(fabspath):
+        cmd = 'python {}'.format(fabspath)
+        if subprocess.call(cmd, shell = True):
+            raise Exception('apply patch {} failed'.format(fabspath))
+
+    ESP_LOGI('patches check completed for updates.')
 
 def build_project(platform_name, module_name, silence, build_args):
-    if platform_name == 'ESP32':
-        idf_target = 'esp32'
-    elif platform_name == 'ESP32C3':
-        idf_target = 'esp32c3'
-    else:
-        sys.exit('Platform "{}" is not supported'.format(platform_name))
-
     tool = os.path.join('esp-idf', 'tools', 'idf.py')
     if sys.platform == 'win32':
         sys_python_path = sys.executable
@@ -182,8 +204,16 @@ def build_project(platform_name, module_name, silence, build_args):
         else:
             sys_python_path = os.path.join(os.environ.get('IDF_PYTHON_ENV_PATH'), 'bin', 'python')
 
-    cmd = '{0} ESP_AT_PROJECT_PLATFORM=PLATFORM_{1} && {0} ESP_AT_MODULE_NAME={2} && {0} ESP_AT_PROJECT_PATH={3} && \
-       {0} SILENCE={4} && {5} {6} -DIDF_TARGET={7} {8}'.format(sys_cmd, platform_name, module_name, os.getcwd(), silence, sys_python_path, tool, idf_target, build_args)
+    exp_macro_cmd = ''
+    for item in at_macro_pairs:
+        exp_macro_cmd += '{} {}={} &&'.format(sys_cmd, item, item)
+    exp_macro_cmd += '{} ESP_AT_PROJECT_PLATFORM=PLATFORM_{} &&'.format(sys_cmd, platform_name)
+    exp_macro_cmd += '{} ESP_AT_MODULE_NAME={} &&'.format(sys_cmd, module_name)
+    exp_macro_cmd += '{} ESP_AT_PROJECT_PATH={} &&'.format(sys_cmd, os.getcwd())
+    exp_macro_cmd += '{} SILENCE={}'.format(sys_cmd, silence)
+
+    compile_cmd = '{} {} -DIDF_TARGET={} {}'.format(sys_python_path, tool, platform_name.lower(), build_args)
+    cmd = exp_macro_cmd + '&&' + compile_cmd
     ret = subprocess.call(cmd, shell = True)
     if ret:
         raise Exception('idf.py build failed')
@@ -377,7 +407,7 @@ def setup_env_variables():
     if export_str:
         # extract toolchain PATH and IDF_PYTHON_ENV_PATH
         idf_tc_env_path = ''
-        idf_python_env_path = ''
+        idf_python_env_path = os.environ.get('IDF_PYTHON_ENV_PATH')
         for line in export_str.splitlines():
             if line.startswith('PATH='):
                 idf_tc_env_path = line.split('PATH=')[1]
@@ -389,17 +419,18 @@ def setup_env_variables():
         if idf_python_env_path:
             os.environ['IDF_PYTHON_ENV_PATH'] = idf_python_env_path
 
+    print('export str is {}'.format(export_str))
     print('PATH is {}'.format(os.environ.get('PATH')))
     print('IDF_PYTHON_ENV_PATH is {}'.format(os.environ.get('IDF_PYTHON_ENV_PATH')))
 
-def install_compilation_env():
+def install_compilation_env(target):
     # set up ESP-IDF tools
     ESP_LOGI('Ready to set up ESP-IDF tools..')
     cmd = '{} {} install-python-env'.format(sys.executable, os.path.join('esp-idf', 'tools', 'idf_tools.py'))
     ret = subprocess.call(cmd, shell = True)
     if ret:
         raise Exception('set up ESP-IDF python-env failed')
-    cmd = '{} {} install'.format(sys.executable, os.path.join('esp-idf', 'tools', 'idf_tools.py'))
+    cmd = '{} {} install --targets {}'.format(sys.executable, os.path.join('esp-idf', 'tools', 'idf_tools.py'), target)
     ret = subprocess.call(cmd, shell = True)
     if ret:
         raise Exception('set up ESP-IDF toolchains failed')
@@ -425,7 +456,7 @@ def install_prerequisites():
     ESP_LOGI('Ready to install ESP-IDF prerequisites..')
     cmd = ''
     if sys.platform == 'linux':
-        cmd = 'sudo apt-get install git wget flex bison gperf python3 python3-pip python3-setuptools cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0'
+        cmd = 'sudo apt-get install git wget flex bison gperf python3 python3-pip python3-venv python3-setuptools cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0'
     elif sys.platform == 'darwin':
         cmd = 'sudo easy_install pip && brew install cmake ninja dfu-util ccache python3'
     elif sys.platform == 'win32':
@@ -434,9 +465,11 @@ def install_prerequisites():
         print('GitLab CI has already installed all prerequisites.')
     else:
         raise Exception('unsupported platform: {} till now.'.format(sys.platform))
-    ret = subprocess.call(cmd, shell = True)
-    if ret:
-        raise Exception('install prerequisites failed! Please manually run:\r\n{}'.format(cmd))
+
+    if not os.environ.get('HAS_IDF_PREREQUISITES'):
+        ret = subprocess.call(cmd, shell = True)
+        if ret:
+            raise Exception('install prerequisites failed! Please manually run:\r\n{}'.format(cmd))
 
     # install ESP-AT prerequisites
     ESP_LOGI('Ready to install ESP-AT prerequisites..')
@@ -465,18 +498,25 @@ def main():
         install_prerequisites()
 
     platform_name, module_name, silence = choose_project_config()
-    ESP_LOGI('Platform name:{}\tModule name:{}\tSilence:{}'.format(platform_name, module_name, silence))
-    build_args = ' '.join(argv)
+    if platform_name.lower() in at_targets:
+        ESP_LOGI('Platform name:{}\tModule name:{}\tSilence:{}'.format(platform_name, module_name, silence))
+    else:
+        ESP_LOGE('Unsupported platform: <{}> till now.'.format(platform_name))
+        sys.exit(2)
 
-    auto_update_idf(platform_name, module_name)
+    at_submodules_update(platform_name, module_name)
+
+    # apply possible patches to source code
+    at_patch_if_config(platform_name, module_name)
 
     if (len(argv) == 1 and sys.argv[1] == 'install'):
         # install tools and packages only after esp-idf cloned
-        install_compilation_env()
+        install_compilation_env(platform_name.lower())
         sys.exit(0)
 
     setup_env_variables()
 
+    build_args = ' '.join(argv)
     build_project(platform_name, module_name, silence, build_args)
 
 if __name__ == '__main__':
