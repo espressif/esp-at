@@ -276,7 +276,7 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
     if (http_request == NULL) {
         goto OTA_ERROR;
     }
-    data_buffer = (uint8_t*)malloc(TEXT_BUFFSIZE);
+    data_buffer = (uint8_t*)malloc(TEXT_BUFFSIZE + 1);
     if (data_buffer == NULL) {
         goto OTA_ERROR;
     }
@@ -335,26 +335,47 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
             goto OTA_ERROR;
         }
 
-        memset(data_buffer,0x0,TEXT_BUFFSIZE);
+        memset(data_buffer, 0x0, TEXT_BUFFSIZE + 1);
 
         result = -1;
-        if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
-            result = read(esp_at_ota_socket_id, data_buffer, TEXT_BUFFSIZE);
-        }
-    #ifdef CONFIG_AT_OTA_SSL_SUPPORT
-        else if (ota_mode == ESP_AT_OTA_MODE_SSL) {
-            result = esp_tls_conn_read(tls, data_buffer, TEXT_BUFFSIZE);
-        }
-        esp_tls_conn_destroy(tls);
-        tls = NULL;
-    #endif
-        close(esp_at_ota_socket_id);
-        esp_at_ota_socket_id = -1;
+        int offset = 0;
+
+        do {
+            if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
+                result = read(esp_at_ota_socket_id, data_buffer + offset, TEXT_BUFFSIZE - offset);
+            }
+#ifdef CONFIG_AT_OTA_SSL_SUPPORT
+            else if (ota_mode == ESP_AT_OTA_MODE_SSL) {
+                result = esp_tls_conn_read(tls, data_buffer + offset, TEXT_BUFFSIZE - offset);
+            }
+#endif
+            if (result > 0) {
+                data_buffer[offset + result] = 0;
+                char *p1 = strstr((char *)data_buffer, "rom_version\": ");
+                char *p2 = strstr((char *)data_buffer, "status");
+                if (p1 && p2) {
+                    break;
+                } else {
+                    offset = result > 64 ? 64 : 0;
+                    memmove(data_buffer, data_buffer + result - offset, offset);
+                }
+            }
+        } while (result > 0);
 
         if (result < 0) {
             ESP_AT_OTA_DEBUG("recv data from server failed!\r\n");
             goto OTA_ERROR;
+        } else {
+#ifdef CONFIG_AT_OTA_SSL_SUPPORT
+            if (ota_mode == ESP_AT_OTA_MODE_SSL) {
+                esp_tls_conn_destroy(tls);
+                tls = NULL;
+            }
+#endif
+            close(esp_at_ota_socket_id);
+            esp_at_ota_socket_id = -1;
         }
+
         pStr = (uint8_t*)strstr((char*)data_buffer,"rom_version\": ");
         if (pStr == NULL) {
             ESP_AT_OTA_DEBUG("rom_version error!\r\n");
@@ -373,7 +394,6 @@ bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, con
         esp_at_port_write_data((uint8_t*)"+CIPUPDATE:3\r\n",strlen("+CIPUPDATE:3\r\n"));
     }
     printf("version:%s\r\n",version);
-
     snprintf((char*)http_request,TEXT_BUFFSIZE,
         "GET /v1/device/rom/?action=download_rom&version=%s&filename=%s.bin HTTP/1.1\r\nHost: %s:%d\r\n"pheadbuffer"",
         (char*)version, partition_name, server_ip, server_port, ota_key);
