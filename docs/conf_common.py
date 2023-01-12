@@ -84,7 +84,7 @@ html_context['github_repo'] = 'esp-at'
 idf_targets = ['esp32', 'esp32c2', 'esp32c3', 'esp8266', 'esp32s2']
 languages = ['en', 'zh_CN']
 
-google_analytics_id = os.environ.get('CI_GOOGLE_ANALYTICS_ID', None)
+google_analytics_id = 'UA-132861133-1'
 
 project_homepage = 'https://github.com/espressif/esp-at'
 
