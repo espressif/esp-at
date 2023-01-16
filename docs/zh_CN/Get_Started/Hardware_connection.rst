@@ -49,6 +49,24 @@
 
 .. only:: esp32
 
+  - 如果您使用的是 {IDF_TARGET_NAME} 模组，而不是开发板，则通过 UART 烧录时，您需要预留出 UART 管脚（参考 {IDF_TARGET_DATASHEET_CN_URL} > 章节管脚描述），预留出 Strapping 管脚（参考 {IDF_TARGET_DATASHEET_CN_URL} > 章节 Strapping 管脚），通过控制 Strapping 管脚电平进入下载模式。
+
+.. only:: esp32c2
+
+  - 如果您使用的是 {IDF_TARGET_NAME} 模组，而不是开发板，则通过 UART 烧录时，您需要预留出 UART 管脚（参考 {IDF_TARGET_DATASHEET_CN_URL} > 章节管脚描述），同时需要满足以下条件之一：
+
+    - 预留出 Strapping 管脚（参考 {IDF_TARGET_DATASHEET_CN_URL} > 章节 Strapping 管脚），通过控制管脚电平进入下载模式
+    - 通过发送 :ref:`AT+RST=1,1 <cmd-RST>` 命令，进入下载模式
+
+.. only:: esp32c3
+
+  - 如果您使用的是 {IDF_TARGET_NAME} 模组，而不是开发板，则通过 UART/USB 烧录时，您需要预留出 UART/USB 管脚（参考 {IDF_TARGET_DATASHEET_CN_URL} > 章节管脚描述），同时需要满足以下条件之一：
+
+    - 预留出 Strapping 管脚（参考 {IDF_TARGET_DATASHEET_CN_URL} > 章节 Strapping 管脚），通过控制管脚电平进入下载模式
+    - 通过发送 :ref:`AT+RST=1,1 <cmd-RST>` 命令，进入下载模式
+
+.. only:: esp32
+
   {IDF_TARGET_NAME} 系列
   -----------------------
 

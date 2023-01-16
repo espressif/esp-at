@@ -71,6 +71,36 @@ Execute Command
 
     OK  
 
+.. only:: esp32c2 or esp32c3
+
+    Set Command
+    ^^^^^^^^^^^
+
+    **Command:**
+
+    ::
+
+        AT+RST=<mode>
+
+    **Response:**
+
+    ::
+
+        OK
+
+    Parameter
+    ^^^^^^^^^^
+
+    - **<mode>**:
+
+      - 0: Restart {IDF_TARGET_NAME} and the chip enters normal running mode.
+      - 1: Restart {IDF_TARGET_NAME} and the chip enters firmware downloading mode.
+
+    Note
+    ^^^^^
+
+    - If you want to achieve the firmware download, you could send this set command to let {IDF_TARGET_NAME} enter the download mode, so that you can save Boot pins on the hardware.
+
 .. _cmd-GMR:
 
 :ref:`AT+GMR <Basic-AT>`: Check Version Information
