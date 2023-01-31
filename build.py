@@ -84,31 +84,18 @@ preset_origins = {
 def at_sync_submodule(path, repo, branch, commit, redirect):
     at_origin = subprocess.check_output(['git', 'remote', '-v']).decode(encoding = 'utf-8').split()[1]
 
+    new_clone = False
     if not os.path.exists(path):
         # clone repository
         if at_origin in preset_origins:
              if redirect == 1:
                 repo = '/'.join([preset_origins[at_origin]['preprocess'](), os.path.basename(repo)])
 
-        ESP_LOGI('Cloning into submodule:"{}" from "{}" (This may take time)..'.format(path, repo))
+        ESP_LOGI('Cloning into submodule:"{}" from "{}" (This may take some time)..'.format(path, repo))
         ret = subprocess.call('git clone -b {} {} {}'.format(branch, repo, path), shell = True)
         if ret:
             raise Exception('git clone failed')
-
-        # init submoules for cloned repository
-        ret = subprocess.call('cd {} && git submodule init'.format(path), shell = True)
-        if ret:
-            raise Exception('git submodule init failed')
-
-        if at_origin in preset_origins:
-            # redirect esp-idf submodules if esp-idf itself is redirected (just redirect one-level submodules currently)
-            if redirect and path == 'esp-idf':
-                preset_origins[at_origin]['postprocess'](path, None)
-
-        # update submoules recursively for cloned repository
-        ret = subprocess.call('cd {} && git submodule update --init --recursive'.format(path), shell = True)
-        if ret:
-            raise Exception('git submodule update failed')
+        new_clone = True
 
     rev_parse_head = subprocess.check_output('cd {} && git rev-parse HEAD'.format(path), shell = True).decode(encoding='utf-8').strip()
     if rev_parse_head != commit:
@@ -127,6 +114,19 @@ def at_sync_submodule(path, repo, branch, commit, redirect):
         ret = subprocess.call(cmd, shell = True)
         if ret:
             raise Exception('git checkout failed! Please manually run:\r\n{}'.format(cmd))
+
+    if new_clone:        
+        # init submoules for cloned repository
+        ret = subprocess.call('cd {} && git submodule init'.format(path), shell = True)
+        if ret:
+            raise Exception('git submodule init failed')
+
+        if at_origin in preset_origins:
+            # redirect esp-idf submodules if esp-idf itself is redirected (just redirect one-level submodules currently)
+            if redirect and path == 'esp-idf':
+                preset_origins[at_origin]['postprocess'](path, None)
+
+    if rev_parse_head != commit or new_clone:
         cmd = 'cd {} && git submodule update --init --recursive'.format(path)
         ret = subprocess.call(cmd, shell = True)
         if ret:
