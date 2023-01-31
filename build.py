@@ -55,6 +55,9 @@ def gitee_repo_preprocess():
 def gitee_repo_postprocess(path, redirect_repo):
     submodule_lists = subprocess.check_output(['git', 'config', '-f', os.path.join(path, '.gitmodules'), '--list']).decode(encoding='utf-8')
 
+    if redirect_repo is None:
+        redirect_repo = 'https://gitee.com/esp-submodules'
+
     for line in submodule_lists.split():
         if line.find('.url=') > 0:
             submodule = line.split('=')
@@ -62,10 +65,20 @@ def gitee_repo_postprocess(path, redirect_repo):
             print('Redirect {} to {}'.format(submodule[0], '/'.join([redirect_repo, submodule_name])))
             subprocess.call('cd {} && git config {} {}'.format(path, submodule[0], '/'.join([redirect_repo, submodule_name])), shell = True)
 
+def jihulab_repo_preprocess():
+    print('Redirect repository to https://jihulab.com/esp-mirror/espressif')
+    return 'https://jihulab.com/esp-mirror/espressif'
+
+def jihulab_repo_postprocess(path, redirect_repo):
+    pass
+
 preset_origins = {
     'https://gitee.com/EspressifSystems/esp-at': {'preprocess': gitee_repo_preprocess, 'postprocess': gitee_repo_postprocess},
     'https://gitee.com/EspressifSystems/esp-at.git': {'preprocess': gitee_repo_preprocess, 'postprocess': gitee_repo_postprocess},
     'git@gitee.com:EspressifSystems/esp-at.git': {'preprocess': gitee_repo_preprocess, 'postprocess': gitee_repo_postprocess},
+    'https://jihulab.com/esp-mirror/espressif/esp-at':{'preprocess': jihulab_repo_preprocess, 'postprocess': jihulab_repo_postprocess},
+    'https://jihulab.com/esp-mirror/espressif/esp-at.git':{'preprocess': jihulab_repo_preprocess, 'postprocess': jihulab_repo_postprocess},
+    'git@jihulab.com:esp-mirror/espressif/esp-at.git':{'preprocess': jihulab_repo_preprocess, 'postprocess': jihulab_repo_postprocess},
 }
 
 def at_sync_submodule(path, repo, branch, commit, redirect):
@@ -90,7 +103,7 @@ def at_sync_submodule(path, repo, branch, commit, redirect):
         if at_origin in preset_origins:
             # redirect esp-idf submodules if esp-idf itself is redirected (just redirect one-level submodules currently)
             if redirect and path == 'esp-idf':
-                preset_origins[at_origin]['postprocess'](path, 'https://gitee.com/esp-submodules')
+                preset_origins[at_origin]['postprocess'](path, None)
 
         # update submoules recursively for cloned repository
         ret = subprocess.call('cd {} && git submodule update --init --recursive'.format(path), shell = True)
