@@ -46,7 +46,7 @@ Please note that in the above picture, four jump wires are used to connect the {
 
   All {IDF_TARGET_NAME} modules use GPIO1 and GPIO3 as UART0, but they use different GPIOs as UART1. The following sections illustrate which GPIOs you should connect for each {IDF_TARGET_NAME} series of modules.
 
-  For more details of {IDF_TARGET_NAME} modules and boards, please refer to `{IDF_TARGET_NAME} Modules and Boards <https://docs.espressif.com/projects/esp-idf/en/stable/hw-reference/modules-and-boards.html#wroom-solo-wrover-and-pico-modules>`_.
+  For more details of {IDF_TARGET_NAME} modules and boards, please refer to `{IDF_TARGET_NAME} modules <https://espressif.com/en/products/modules?id={IDF_TARGET_NAME}>`_ and `{IDF_TARGET_NAME} boards <https://www.espressif.com/en/products/devkits?id={IDF_TARGET_NAME}>`_.
 
   ESP32-WROOM-32 Series
   ^^^^^^^^^^^^^^^^^^^^^^
