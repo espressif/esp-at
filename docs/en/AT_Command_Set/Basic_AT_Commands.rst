@@ -1209,8 +1209,8 @@ Parameters
 
 -  **<wakeup source>**:
 
-   -  0: wakeup by a timer.
-   -  1: reserved.
+   -  0: reserved, not supported now.
+   -  1: reserved, not supported now.
    -  2: wakeup by GPIO.
 
 -  **<param1>**:
@@ -1234,9 +1234,6 @@ Example
 ^^^^^^^^
 
 ::
-
-    // Timer wakeup
-    AT+SLEEPWKCFG=0,1000
 
     // GPIO12 wakeup, low level
     AT+SLEEPWKCFG=2,12,0
