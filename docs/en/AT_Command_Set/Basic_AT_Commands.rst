@@ -466,19 +466,27 @@ Parameter
 
      - Only BLE mode.
 
-       - RF will be periodically closed according to advertising interval ( BLE state in advertising ).
-       - RF will be periodically closed according to connection interval ( BLE state in connection ).
+       - When Bluetooth LE is advertising, RF will be periodically closed according to advertising interval.
+       - When Bluetooth LE is connected, RF will be periodically closed according to connection interval.
 
    - 2: Light-sleep mode.
+
+     - Null Wi-Fi mode.
+
+       - CPU will automatically sleep and RF will be closed.
 
      - Only Wi-Fi mode.
 
        - CPU will automatically sleep and RF will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>`.
 
-     - Only BLE mode.
+     - Only Bluetooth mode.
 
-       - CPU will automatically sleep and RF will be periodically closed according to advertising interval ( BLE state in advertising ).
-       - CPU will automatically sleep and RF will be periodically closed according to connection interval ( BLE state in connection ).
+       - When Bluetooth LE is advertising, CPU will automatically sleep and RF will be periodically closed according to advertising interval of Bluetooth.
+       - When Bluetooth LE is connected, CPU will automatically sleep and RF will be periodically closed according to connection interval of Bluetooth.
+
+    - Wi-Fi and Bluetooth coexistence mode.
+
+        - CPU will automatically sleep and RF will be periodically closed according to power management module.
 
    - 3: Modem-sleep listen interval mode.
 
@@ -488,8 +496,8 @@ Parameter
 
      - Only BLE mode.
 
-       - RF will be periodically closed according to advertising interval ( BLE state in advertising ).
-       - RF will be periodically closed according to connection interval ( BLE state in connection ).
+       - When Bluetooth LE is advertising, RF will be periodically closed according to advertising interval.
+       - When Bluetooth LE is connected, RF will be periodically closed according to connection interval.
 
 Note
 ^^^^^

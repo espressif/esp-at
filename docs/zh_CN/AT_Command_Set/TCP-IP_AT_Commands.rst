@@ -1168,6 +1168,7 @@ TCP/IP AT 命令
 ^^^^
 
 -  配置更改不保存到 flash。
+-  在 {IDF_TARGET_NAME} 进入 Wi-Fi :term:`透传接收模式` 后，任何蓝牙功能将无法使用。
 
 示例
 ^^^^

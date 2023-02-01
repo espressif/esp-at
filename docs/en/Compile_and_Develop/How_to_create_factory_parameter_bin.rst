@@ -4,6 +4,7 @@ How to Generate Factory Parameter Bin
 {IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="ESP32C2-4MB", esp32c3="MINI-1"}
 {IDF_TARGET_AT_PARAMS_ADDR: default="undefined", esp32="0x30000", esp32c2="0x2B000", esp32c3="0x31000"}
 {IDF_TARGET_INDEX: default="undefined", esp32="1", esp32c2="3", esp32c3="2"}
+{IDF_TARGET_VER: default="undefined", esp32="5.0", esp32c2="5.0", esp32c3="5.0"}
 
 :link_to_translation:`zh_CN:[中文]`
 
@@ -42,7 +43,7 @@ The table below provides some information about each parameter.
    * - reserved1
      - Reserved.
    * - tx_max_power
-     - Wi-Fi maximum tx power for {IDF_TARGET_NAME}: [40,84]. See `{IDF_TARGET_NAME} tx power <https://docs.espressif.com/projects/esp-idf/en/release-v4.3/{IDF_TARGET_PATH_NAME}/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t>`_ setting range for details.
+     - Wi-Fi maximum tx power for {IDF_TARGET_NAME}: [40,84]. See `{IDF_TARGET_NAME} tx power <https://docs.espressif.com/projects/esp-idf/en/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t>`_ setting range for details.
    * - uart_port
      - The UART port that is used to send AT commands and receive AT responses.
    * - start_channel

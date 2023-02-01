@@ -2,6 +2,8 @@
 AT Command Set
 **************
 
+{IDF_TARGET_VER: default="undefined", esp32="5.0", esp32c2="5.0", esp32c3="5.0"}
+
 :link_to_translation:`zh_CN:[中文]`
 
 Here is a list of AT commands.
@@ -109,7 +111,7 @@ Configuration settings entered by the following AT Commands will always be saved
 Saving of configuration settings by several other commands can be switched on or off with :ref:`AT+SYSSTORE <cmd-SYSSTORE>` command, which is mentioned in the Note section of these commands.
 
 .. note::
-  The parameters of AT commands are saved based on `NVS <https://docs.espressif.com/projects/esp-idf/en/release-v4.3/{IDF_TARGET_PATH_NAME}/api-reference/storage/nvs_flash.html>`_ library. Therefore, if the command is configured with the same parameter value, flash will not be written; If the command is configured with the different parameter value, flash will not be erased frequently.
+  The parameters of AT commands are saved based on `NVS <https://docs.espressif.com/projects/esp-idf/en/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-reference/storage/nvs_flash.html>`_ library. Therefore, if the command is configured with the same parameter value, flash will not be written; If the command is configured with the different parameter value, flash will not be erased frequently.
 
 .. _at-messages:
 
@@ -204,7 +206,15 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
      * - Recv ``<xxx>`` bytes
        - ESP-AT has already received ``<xxx>`` bytes from the ESP-AT command port
      * - +IPD
-       - ESP-AT received the data from the network when AT is not in :term:`Passthrough Mode`
+       - ESP-AT received the data from the network when AT is not in :term:`Passthrough Mode`. The message formats are as follows:
+
+         - ``+IPD,<length>`` will be outputted if AT+CIPMUX=0 and AT+CIPRECVMODE=1.
+         - ``+IPD,<link_id>,<length>`` will be outputted if AT+CIPMUX=1 and AT+CIPRECVMODE=1.
+         - ``+IPD,<length>:<data>`` will be outputted if AT+CIPMUX=0, AT+CIPRECVMODE=0, and AT+CIPDINFO=0.
+         - ``+IPD,<link_id>,<length>:<data>`` will be outputted if AT+CIPMUX=1, AT+CIPRECVMODE=0, and AT+CIPDINFO=0.
+         - ``+IPD,<length>,<"remote_ip">,<remote_port>:<data>`` will be outputted if AT+CIPMUX=0, AT+CIPRECVMODE=0, and AT+CIPDINFO=1.
+         - ``+IPD,<link_id>,<length>,<"remote_ip">,<remote_port>:<data>`` will be outputted if AT+CIPMUX=1, AT+CIPRECVMODE=0, and AT+CIPDINFO=1.
+
      * - The Data in :term:`Passthrough Mode`
        - ESP-AT received the data from the network or Bluetooth when AT is in :term:`Passthrough Mode`
      * - SEND Canceled
@@ -219,6 +229,8 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - No valid private key found in custom partition
      * - NO CA FOUND
        - No valid CA certificate found in custom partition
+     * - +TIME_UPDATED
+       - The system time has been updated. Only after sending the :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command or power on will this message be outputted if the module fetches a new time from the SNTP server.
      * - +MQTTCONNECTED
        - MQTT connected to the broker
      * - +MQTTDISCONNECTED

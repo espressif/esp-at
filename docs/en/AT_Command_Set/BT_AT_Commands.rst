@@ -92,6 +92,11 @@ Parameter
    -  0: deinitialize Classic Bluetooth.
    -  1: initialize Classic Bluetooth.
 
+Notes
+^^^^^
+
+- If Classic Bluetooth is initialized, :ref:`AT+CIPMODE <cmd-IPMODE>` cannot be set to 1.
+
 Example
 ^^^^^^^^
 

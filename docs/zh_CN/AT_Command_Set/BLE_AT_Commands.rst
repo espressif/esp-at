@@ -150,6 +150,7 @@ Bluetooth® Low Energy AT 命令集
     -  Bluetooth LE 角色初始化后，不能直接切换。如需切换角色，需要先调用 :ref:`AT+RST <cmd-RST>` 命令重启系统，再重新初始化 Bluetooth LE 角色。
     -  若使用 {IDF_TARGET_NAME} 作为 Bluetooth LE server，需烧录 service bin 到 flash。对于如何生成 service bin 文件，请参考 :project_file:`README <tools/README.md>`。service bin 文件的烧录地址，请见模组配置下的 :project:`at_customize.csv <module_config>` 文件中 "ble_data" 对应的地址。
     -  建议在注销 Bluetooth LE 之前，停止正在进行的广播、扫描并断开所有的连接。
+    -  如果 Bluetooth LE 已初始化，则 :ref:`AT+CIPMODE <cmd-IPMODE>` 无法设置为 1。
 
     示例
     ^^^^

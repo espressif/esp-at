@@ -92,6 +92,11 @@
    -  0: 注销 Classic Bluetooth；
    -  1: 初始化 Classic Bluetooth。
 
+说明
+^^^^
+
+- 如果 Classic Bluetooth 已初始化，则 :ref:`AT+CIPMODE <cmd-IPMODE>` 无法设置为 1。
+
 示例
 ^^^^
 
