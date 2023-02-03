@@ -12,6 +12,7 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPSTART <cmd-START>`: Establish TCP connection, UDP transmission, or SSL connection.
 -  :ref:`AT+CIPSTARTEX <cmd-STARTEX>`: Establish TCP connection, UDP transmission, or SSL connection with an automatically assigned ID.
 -  :ref:`[Data Mode Only] +++ <cmd-PLUS>`: Exit from the :term:`data mode`.
+-  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Wi-Fi :term:`Passthrough Mode` on power-up.
 -  :ref:`AT+CIPSEND <cmd-SEND>`: Send data in the :term:`normal transmission mode` or Wi-Fi :term:`normal transmission mode`.
 -  :ref:`AT+CIPSENDL <cmd-SENDL>`: Send long data in paraller in the :term:`normal transmission mode`.
 -  :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>`: Set the configuration for the command :ref:`AT+CIPSENDL <cmd-SENDL>`.
@@ -22,7 +23,6 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPSERVER <cmd-SERVER>`: Delete/create a TCP/SSL server.
 -  :ref:`AT+CIPSERVERMAXCONN <cmd-SERVERMAX>`: Query/Set the maximum connections allowed by a server.
 -  :ref:`AT+CIPMODE <cmd-IPMODE>`: Query/Set the transmission mode.
--  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Wi-Fi :term:`normal transmission mode` on power-up.
 -  :ref:`AT+CIPSTO <cmd-STO>`: Query/Set the local TCP Server Timeout.
 -  :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>`: Query/Set the time zone and SNTP server.
 -  :ref:`AT+CIPSNTPTIME <cmd-SNTPT>`: Query the SNTP time.
@@ -305,7 +305,12 @@ Parameters
 Notes
 """"""
 
-- If you want to establish TCP connection based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
+- To establish a TCP connection based on an IPv6 network, do as follows:
+
+  -  Make sure that the AP supports IPv6
+  -  Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  -  Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
+  - (Optional) Check whether {IDF_TARGET_NAME} has obtained an IPv6 address using the :ref:`AT+CIPSTA? <cmd-IPSTA>` command
 
 Example
 """""""""
@@ -378,7 +383,14 @@ Notes
 - If the remote host over the UDP is an IPv4 broadcast address (255.255.255.255), the {IDF_TARGET_NAME} will send and receive the UDPv4 broadcast.
 - If the remote host over the UDP is an IPv6 multicast address (FF00:0:0:0:0:0:0:0 ~ FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF), the {IDF_TARGET_NAME} will send and receive the UDP multicast based on IPv6 network.
 - To use the parameter ``<mode>``, parameter ``<local port>`` must be set first.
-- If you want to establish UDP connection based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
+
+- To establish an UDP transmission based on an IPv6 network, do as follows:
+
+  -  Make sure that the AP supports IPv6
+  -  Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  -  Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
+  - (Optional) Check whether {IDF_TARGET_NAME} has obtained an IPv6 address using the :ref:`AT+CIPSTA? <cmd-IPSTA>` command
+
 - If you want to receive a UDP packet longer than 1460 bytes, please compile the firmware on your own by following :doc:`Compile ESP-AT Project <../Compile_and_Develop/How_to_clone_project_and_compile_it>` and choosing the following configurations in the Step 5. Configure: ``Component config`` -> ``LWIP`` -> ``Enable reassembly incoming fragmented IP4 packets``.
 
 Example
@@ -454,7 +466,13 @@ Notes
 -  The number of SSL connections depends on available memory and the maximum number of connections.
 -  SSL connection needs a large amount of memory. Insufficient memory may cause the system reboot.
 -  If the ``AT+CIPSTART`` is based on an SSL connection and the timeout of each packet is 10 s, the total timeout will be much longer depending on the number of handshake packets.
--  If you want to establish SSL connection based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
+
+- To establish a SSL connection based on an IPv6 network, do as follows:
+
+  -  Make sure that the AP supports IPv6
+  -  Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  -  Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
+  - (Optional) Check whether {IDF_TARGET_NAME} has obtained an IPv6 address using the :ref:`AT+CIPSTA? <cmd-IPSTA>` command
 
 Example
 """"""""
@@ -1175,112 +1193,6 @@ Example
 ::
 
     AT+CIPMODE=1    
-
-.. _cmd-SAVET:
-
-:ref:`AT+SAVETRANSLINK <TCPIP-AT>`: Set Whether to Enter Wi-Fi :term:`Passthrough Mode` on Power-up
-----------------------------------------------------------------------------------------------------
-
-For TCP/SSL Single Connection
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Set Command
-""""""""""""""
-
-**Command:**
-
-::
-
-    AT+SAVETRANSLINK=<mode>,<"remote host">,<remote port>[,<"type">,<keep_alive>]
-
-**Response:**
-
-::
-
-    OK
-
-Parameters
-""""""""""""""
-
--  **<mode>**:
-
-   -  0: {IDF_TARGET_NAME} will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
-   -  1: {IDF_TARGET_NAME} will enter Wi-Fi :term:`Passthrough Mode` on power-up.
-
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
--  **<remote port>**: the remote port number.
--  **<"type">**: string parameter showing the type of transmission: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP".
--  **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
-
-   - Range: [0,7200].
-
-     - 0: disable keep-alive function (default).
-     - 1 ~ 7200: enable keep-alive function. `TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ value is **<keep_alive>**, `TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ value is 1, and `TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ value is 3.
-
-   - This parameter of this command is the same as the ``<keep_alive>`` parameter of :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command. It always takes the value set later by either of the two commands. If it is omitted or not set, the last configured value is used by default.
-
-Notes
-"""""""
-
--  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in any subsequent power cycles. The configuration will take effect after {IDF_TARGET_NAME} reboots.
--  As long as the remote host and port are valid, the configuration will be saved in flash.
--  If you want to establish TCP/SSL connection based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
-
-Example
-""""""""
-
-::
-
-    AT+SAVETRANSLINK=1,"192.168.6.110",1002,"TCP"
-    AT+SAVETRANSLINK=1,"www.baidu.com",443,"SSL"
-    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"TCPv6"
-    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"SSLv6"
-
-For UDP Transmission
-^^^^^^^^^^^^^^^^^^^^
-
-Set Command
-""""""""""""""
-
-**Command:**
-
-::
-
-    AT+SAVETRANSLINK=<mode>,<"remote host">,<remote port>,[<"type">,<local port>]
-
-**Response:**
-
-::
-
-    OK
-
-Parameters
-""""""""""""""
-
--  **<mode>**:
-
-   -  0: {IDF_TARGET_NAME} will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
-   -  1: {IDF_TARGET_NAME} will enter Wi-Fi :term:`Passthrough Mode` on power-up.
-
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
--  **<remote port>**: the remote port number.
--  **<"type">**: string parameter showing the type of transmission: "UDP" or "UDPv6". Default: "TCP".
--  **<local port>**: local port when UDP Wi-Fi passthrough is enabled on power-up.
-
-Notes
-"""""""
-
--  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in any subsequent power cycles. The configuration will take effect after {IDF_TARGET_NAME} reboots.
--  As long as the remote host and port are valid, the configuration will be saved in flash.
--  If you want to establish UDP transmission based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
-
-Example
-"""""""""
-
-::
-
-    AT+SAVETRANSLINK=1,"192.168.6.110",1002,"UDP",1005
-    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8081,"UDPv6",1005
 
 .. _cmd-STO:
 
@@ -2338,7 +2250,13 @@ Parameters
 Notes
 ^^^^^
 
-- If you want to ping a remote host based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and ensure the connected AP by :ref:`AT+CWJAP <cmd-JAP>` supports IPv6 and esp-at got the IPv6 address which you can check it by AT+CIPSTA.
+-  To ping a remote host based on an IPv6 network, do as follows:
+
+  -  Make sure that the AP supports IPv6
+  -  Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  -  Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
+  - (Optional) Check whether {IDF_TARGET_NAME} has obtained an IPv6 address using the :ref:`AT+CIPSTA? <cmd-IPSTA>` command
+
 - If the remote host is a domain name string, ping will first resolve the domain name (IPv4 address preferred) from DNS (domain name server), and then ping the remote IP address.
 
 Example

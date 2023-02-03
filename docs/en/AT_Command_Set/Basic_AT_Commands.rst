@@ -14,6 +14,7 @@ Basic AT Commands
   - :ref:`AT+GSLP <cmd-GSLP>`: Enter Deep-sleep mode.
   - :ref:`ATE <cmd-ATE>`: Configure AT commands echoing.
   - :ref:`AT+RESTORE <cmd-RESTORE>`: Restore factory default settings of the module.
+  - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter :term:`Passthrough Mode` on power-up.
   - :ref:`AT+UART_CUR <cmd-UARTC>`: Current UART configuration, not saved in flash.
   - :ref:`AT+UART_DEF <cmd-UARTD>`: Default UART configuration, saved in flash.
   - :ref:`AT+SLEEP <cmd-SLEEP>`: Set the sleep mode.
@@ -246,6 +247,183 @@ Notes
 
 -  The execution of this command will restore all parameters saved in flash to factory default settings of the module.
 -  The device will be restarted when this command is executed.
+
+.. _cmd-SAVET:
+
+:ref:`AT+SAVETRANSLINK <TCPIP-AT>`: Set Whether to Enter Wi-Fi/Bluetooth LE :term:`Passthrough Mode` on Power-up
+----------------------------------------------------------------------------------------------------------------
+
+.. only:: esp32 or esp32c3
+
+    * :ref:`savetrans-tcpssl`
+    * :ref:`savetrans-udp`
+    * :ref:`savetrans-ble`
+
+.. only:: esp32c2
+
+    * :ref:`savetrans-tcpssl`
+    * :ref:`savetrans-udp`
+
+.. _savetrans-tcpssl:
+
+For TCP/SSL Single Connection
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Set Command
+""""""""""""""
+
+**Command:**
+
+::
+
+    AT+SAVETRANSLINK=<mode>,<"remote host">,<remote port>[,<"type">,<keep_alive>]
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+""""""""""""""
+
+-  **<mode>**:
+
+   -  0: {IDF_TARGET_NAME} will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
+   -  1: {IDF_TARGET_NAME} will enter Wi-Fi :term:`Passthrough Mode` on power-up.
+
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
+-  **<remote port>**: the remote port number.
+-  **<"type">**: string parameter showing the type of transmission: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP".
+-  **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
+
+   - Range: [0,7200].
+
+     - 0: disable keep-alive function (default).
+     - 1 ~ 7200: enable keep-alive function. `TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ value is **<keep_alive>**, `TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ value is 1, and `TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ value is 3.
+
+   - This parameter of this command is the same as the ``<keep_alive>`` parameter of :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command. It always takes the value set later by either of the two commands. If it is omitted or not set, the last configured value is used by default.
+
+Notes
+"""""""
+
+-  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+
+Example
+""""""""
+
+::
+
+    AT+SAVETRANSLINK=1,"192.168.6.110",1002,"TCP"
+    AT+SAVETRANSLINK=1,"www.baidu.com",443,"SSL"
+    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"TCPv6"
+    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"SSLv6"
+
+.. _savetrans-udp:
+
+For UDP Transmission
+^^^^^^^^^^^^^^^^^^^^
+
+Set Command
+""""""""""""""
+
+**Command:**
+
+::
+
+    AT+SAVETRANSLINK=<mode>,<"remote host">,<remote port>,[<"type">,<local port>]
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+""""""""""""""
+
+-  **<mode>**:
+
+   -  0: {IDF_TARGET_NAME} will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
+   -  1: {IDF_TARGET_NAME} will enter Wi-Fi :term:`Passthrough Mode` on power-up.
+
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
+-  **<remote port>**: the remote port number.
+-  **<"type">**: string parameter showing the type of transmission: "UDP" or "UDPv6". Default: "TCP".
+-  **<local port>**: local port when UDP Wi-Fi passthrough is enabled on power-up.
+
+Notes
+"""""""
+
+-  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+
+-  To establish an UDP transmission based on an IPv6 network, do as follows:
+
+  -  Make sure that the AP supports IPv6
+  -  Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  -  Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
+  - (Optional) Check whether {IDF_TARGET_NAME} has obtained an IPv6 address using the :ref:`AT+CIPSTA? <cmd-IPSTA>` command
+
+Example
+"""""""""
+
+::
+
+    AT+SAVETRANSLINK=1,"192.168.6.110",1002,"UDP",1005
+    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8081,"UDPv6",1005
+
+.. only:: esp32 or esp32c3
+
+    .. _savetrans-ble:
+
+    For BLE Connection
+    ^^^^^^^^^^^^^^^^^^^^
+
+    Set Command
+    """"""""""""""
+
+    **Command:**
+
+    ::
+
+        AT+SAVETRANSLINK=<mode>,<role>,<tx_srv>,<tx_char>,<rx_srv>,<rx_char>,<peer_addr>
+
+    **Response:**
+
+    ::
+
+        OK
+
+    Parameters
+    """"""""""""""
+
+    -  **<mode>**:
+
+      -  0: {IDF_TARGET_NAME} will NOT enter BLE :term:`Passthrough Mode` on power-up.
+      -  2: {IDF_TARGET_NAME} will enter BLE :term:`Passthrough Mode` on power-up.
+
+    -  **<role>**:
+
+      -  1: client role.
+      -  2: server role.
+
+    -  **<tx_srv>**: tx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` if AT works as GATTS role.
+    -  **<tx_char>**: tx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` if AT works as GATTS role.
+    -  **<rx_srv>**: rx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` if AT works as GATTS role.
+    -  **<rx_char>**: rx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` if AT works as GATTS role.
+    -  **<peer_addr>**: remote Bluetooth LE address.
+
+    Notes
+    """""""
+
+    -  This command will save the BLE :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 2, {IDF_TARGET_NAME} will enter the Bluetooth LE :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+
+    Example
+    """""""""
+
+    ::
+
+        AT+SAVETRANSLINK=2,2,1,7,1,5,"26:a2:11:22:33:88"
 
 .. _cmd-UARTC:
 

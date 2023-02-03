@@ -54,6 +54,7 @@ Bluetooth® Low Energy AT 命令集
     :esp32 or esp32c3: - :ref:`AT+BLEGATTCWR <cmd-GCWR>`：GATTC 写服务特征值
     :esp32 or esp32c3: - :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`：查询/设置 Bluetooth LE SPP 参数
     :esp32 or esp32c3: - :ref:`AT+BLESPP <cmd-BLESPP>`：进入 Bluetooth LE SPP 模式
+    :esp32 or esp32c3: - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`：设置 Bluetooth LE 开机 :term:`透传模式` 信息
     :esp32 or esp32c3: - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`：查询/设置 Bluetooth LE 加密参数
     :esp32 or esp32c3: - :ref:`AT+BLEENC <cmd-BLEENC>`：发起 Bluetooth LE 加密请求
     :esp32 or esp32c3: - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`：回复对端设备发起的配对请求

@@ -12,6 +12,7 @@ TCP/IP AT 命令
 -  :ref:`AT+CIPSTART <cmd-START>`：建立 TCP 连接、UDP 传输或 SSL 连接
 -  :ref:`AT+CIPSTARTEX <cmd-STARTEX>`：建立自动分配 ID 的 TCP 连接、UDP 传输或 SSL 连接
 -  :ref:`[仅适用数据模式] +++ <cmd-PLUS>`: 退出 :term:`数据模式`
+-  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`：设置 Wi-Fi 开机 :term:`透传模式` 信息
 -  :ref:`AT+CIPSEND <cmd-SEND>`：在 :term:`普通传输模式` 或 Wi-Fi :term:`透传模式` 下发送数据
 -  :ref:`AT+CIPSENDL <cmd-SENDL>`：在 :term:`普通传输模式` 下并行发送长数据
 -  :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>`：设置 :ref:`AT+CIPSENDL <cmd-SENDL>` 命令的属性
@@ -22,7 +23,6 @@ TCP/IP AT 命令
 -  :ref:`AT+CIPSERVER <cmd-SERVER>`：建立/关闭 TCP 或 SSL 服务器
 -  :ref:`AT+CIPSERVERMAXCONN <cmd-SERVERMAX>`：查询/设置服务器允许建立的最大连接数
 -  :ref:`AT+CIPMODE <cmd-IPMODE>`：查询/设置传输模式
--  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`：设置开机 :term:`透传模式` 信息
 -  :ref:`AT+CIPSTO <cmd-STO>`：查询/设置本地 TCP 服务器超时时间
 -  :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>`：查询/设置时区和 SNTP 服务器
 -  :ref:`AT+CIPSNTPTIME <cmd-SNTPT>`：查询 SNTP 时间
@@ -305,7 +305,12 @@ TCP/IP AT 命令
 说明
 """"""
 
-- 如果想基于 IPv6 网络建立 TCP 连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
+- 如果您想基于 IPv6 网络建立一个 TCP 连接，请执行以下操作：
+
+  - 确保 AP 支持 IPv6
+  - 设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  - 通过 :ref:`AT+CWJAP <cmd-JAP>` 命令获取到一个 IPv6 地址
+  - （可选）通过 :ref:`AT+CIPSTA? <cmd-IPSTA>` 命令检查 {IDF_TARGET_NAME} 是否获取到 IPv6 地址
 
 示例
 """"
@@ -378,7 +383,14 @@ TCP/IP AT 命令
 - 如果 UDP 连接中的远端 IP 地址是 IPv4 广播地址 (255.255.255.255)，{IDF_TARGET_NAME} 设备将发送和接收 UDPv4 广播
 - 如果 UDP 连接中的远端 IP 地址是 IPv6 组播地址 (FF00:0:0:0:0:0:0:0 ~ FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF)，{IDF_TARGET_NAME} 设备将基于 IPv6 网络，发送和接收 UDP 组播
 - 使用参数 ``<mode>`` 前，需先设置参数 ``<local port>``
-- 如果想基于 IPv6 网络建立 UDP 连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`, 再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
+
+- 如果您想基于 IPv6 网络建立一个 UDP 传输，请执行以下操作：
+
+  - 确保 AP 支持 IPv6
+  - 设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  - 通过 :ref:`AT+CWJAP <cmd-JAP>` 命令获取到一个 IPv6 地址
+  - （可选）通过 :ref:`AT+CIPSTA? <cmd-IPSTA>` 命令检查 {IDF_TARGET_NAME} 是否获取到 IPv6 地址
+
 - 如果想接收长度大于 1460 字节的 UDP 包，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：``Component config`` -> ``LWIP`` -> ``Enable reassembly incoming fragmented IP4 packets``
 
 示例
@@ -454,7 +466,13 @@ TCP/IP AT 命令
 - SSL 连接数量取决于可用内存和最大连接数量
 - SSL 连接需占用大量内存，内存不足会导致系统重启
 - 如果 ``AT+CIPSTART`` 命令是基于 SSL 连接，且每个数据包的超时时间为 10 秒，则总超时时间会变得更长，具体取决于握手数据包的个数
-- 如果想基于 IPv6 网络建立 SSL 连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`, 再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
+
+- 如果您想基于 IPv6 网络建立一个 SSL 连接，请执行以下操作：
+
+  - 确保 AP 支持 IPv6
+  - 设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  - 通过 :ref:`AT+CWJAP <cmd-JAP>` 命令获取到一个 IPv6 地址
+  - （可选）通过 :ref:`AT+CIPSTA? <cmd-IPSTA>` 命令检查 {IDF_TARGET_NAME} 是否获取到 IPv6 地址
 
 示例
 """"""""
@@ -1023,11 +1041,11 @@ TCP/IP AT 命令
 说明
 ^^^^
 
-- 多连接情况下 (:ref:`AT+CIPMUX=1 <cmd-MUX>`)，才能开启服务器
-- 创建服务器后，自动建立服务器监听，最多只允许创建一个服务器
-- 当有客户端接入，会自动占用一个连接 ID
-- 如果想基于 IPv6 网络建立服务器，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
-- 关闭服务器时参数 ``<"type">`` 和 ``<CA enable>`` 必须省略
+- 多连接情况下 (:ref:`AT+CIPMUX=1 <cmd-MUX>`)，才能开启服务器。
+- 创建服务器后，自动建立服务器监听，最多只允许创建一个服务器。
+- 当有客户端接入，会自动占用一个连接 ID。
+- 如果您想基于 IPv6 网络创建一个 TCP/SSL 服务器，请首先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，并获取一个IPv6地址。
+- 关闭服务器时参数 ``<"type">`` 和 ``<CA enable>`` 必须省略。
 
 示例
 ^^^^
@@ -1175,112 +1193,6 @@ TCP/IP AT 命令
 ::
 
     AT+CIPMODE=1
-
-.. _cmd-SAVET:
-
-:ref:`AT+SAVETRANSLINK <TCPIP-AT>`：设置开机 :term:`透传模式` 信息
--------------------------------------------------------------------------------------
-
-设置开机进入 TCP/SSL :term:`透传模式` 信息
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-设置命令
-""""""""""""""
-
-**命令：**
-
-::
-
-    AT+SAVETRANSLINK=<mode>,<"remote host">,<remote port>[,<"type">,<keep_alive>]
-
-**响应：**
-
-::
-
-    OK
-
-参数
-""""""""""""""
-
--  **<mode>**:
-
-   -  0: 关闭 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
-   -  1: 开启 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
-
--  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
--  **<remote port>**：远端端口值
--  **<"type">**：字符串参数，表示传输类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6"。默认值："TCP"
--  **<keep_alive>**：配置套接字的 ``SO_KEEPALIVE`` 选项（参考：`SO_KEEPALIVE 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`_），单位：秒。
-
-  - 范围：[0,7200]。
-
-    - 0：禁用 keep-alive 功能；（默认）
-    - 1 ~ 7200：开启 keep-alive 功能。`TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ 值为 **<keep_alive>**，`TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ 值为 1，`TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ 值为 3。
-
-  -  本命令中的 ``<keep_alive>`` 参数与 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令中的 ``<keep_alive>`` 参数相同，最终值由后设置的命令决定。如果运行本命令时不设置 ``<keep_alive>`` 参数，则默认使用上次配置的值。
-
-说明
-"""""""
-
-- 本设置将 Wi-Fi 开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入 :term:`透传模式`。需重启生效。
-- 只要远端 IP 地址（域名）、端口的值符合规范，本设置就会被保存到 flash。
-- 如果想基于 IPv6 网络建立透传连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
-
-示例
-""""""""
-
-::
-
-    AT+SAVETRANSLINK=1,"192.168.6.110",1002,"TCP"
-    AT+SAVETRANSLINK=1,"www.baidu.com",443,"SSL"
-    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"TCPv6"
-    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"SSLv6
-
-设置开机进入 UDP :term:`透传模式` 信息
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-设置
-""""
-
-**命令：**
-
-::
-
-    AT+SAVETRANSLINK=<mode>,<"remote host">,<remote port>,[<"type">,<local port>]
-
-**响应：**
-
-::
-
-    OK
-
-参数
-""""
-
--  **<mode>**:
-
-   -  0: 关闭 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
-   -  1: 开启 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
-
--  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
--  **<remote port>**：远端端口值
--  **<"type">**：字符串参数，表示传输类型："UDP" 或 "UDPv6"。默认值："TCP"
--  **[<local port>]**：开机进入 UDP 传输时，使用的本地端口
-
-说明
-"""""""
-
-- 本设置将 Wi-Fi 开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入 :term:`透传模式`。需重启生效
-- 只要远端 IP 地址（域名）、端口的值符合规范，本设置就会被保存到 flash
-- 如果想基于 IPv6 网络建立透传连接，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
-
-示例
-"""""""""
-
-::
-
-    AT+SAVETRANSLINK=1,"192.168.6.110",1002,"UDP",1005
-    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8081,"UDPv6",1005
 
 .. _cmd-STO:
 
@@ -2338,7 +2250,13 @@ ping 对端主机
 说明
 ^^^^
 
-- 如果想基于 IPv6 网络 ping 对端主机，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，再通过 :ref:`AT+CWJAP <cmd-JAP>` 获取到一个 IPv6 地址
+- 如果您想基于 IPv6 网络 Ping 对端主机，请执行以下操作：
+
+  - 确保 AP 支持 IPv6
+  - 设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  - 通过 :ref:`AT+CWJAP <cmd-JAP>` 命令获取到一个 IPv6 地址
+  - （可选）通过 :ref:`AT+CIPSTA? <cmd-IPSTA>` 命令检查 {IDF_TARGET_NAME} 是否获取到 IPv6 地址
+
 - 如果远端主机是域名字符串，则 ping 将先通过 DNS 进行域名解析（优先解析 IPv4 地址），再 ping 对端主机 IP 地址
 
 示例

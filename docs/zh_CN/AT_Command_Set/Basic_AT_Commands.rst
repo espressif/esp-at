@@ -14,6 +14,7 @@
   - :ref:`AT+GSLP <cmd-GSLP>`：进⼊ Deep-sleep 模式
   - :ref:`ATE <cmd-ATE>`：开启或关闭 AT 回显功能
   - :ref:`AT+RESTORE <cmd-RESTORE>`：恢复出厂设置
+  - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`：设置开机 :term:`透传模式` 信息
   - :ref:`AT+UART_CUR <cmd-UARTC>`：设置 UART 当前临时配置，不保存到 flash
   - :ref:`AT+UART_DEF <cmd-UARTD>`：设置 UART 默认配置, 保存到 flash
   - :ref:`AT+SLEEP <cmd-SLEEP>`：设置 sleep 模式
@@ -246,6 +247,183 @@
 
 -  该命令将擦除所有保存到 flash 的参数，并恢复为默认参数。
 -  运行该命令会重启设备。
+
+.. _cmd-SAVET:
+
+:ref:`AT+SAVETRANSLINK <Basic-AT>`：设置开机 Wi-Fi/Bluetooth LE :term:`透传模式` 信息
+-----------------------------------------------------------------------------------------
+
+.. only:: esp32 or esp32c3
+
+    * :ref:`savetrans-tcpssl`
+    * :ref:`savetrans-udp`
+    * :ref:`savetrans-ble`
+
+.. only:: esp32c2
+
+    * :ref:`savetrans-tcpssl`
+    * :ref:`savetrans-udp`
+
+.. _savetrans-tcpssl:
+
+设置开机进入 TCP/SSL :term:`透传模式` 信息
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+设置命令
+""""""""""""""
+
+**命令：**
+
+::
+
+    AT+SAVETRANSLINK=<mode>,<"remote host">,<remote port>[,<"type">,<keep_alive>]
+
+**响应：**
+
+::
+
+    OK
+
+参数
+""""""""""""""
+
+-  **<mode>**:
+
+   -  0: 关闭 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
+   -  1: 开启 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
+
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
+-  **<remote port>**：远端端口值
+-  **<"type">**：字符串参数，表示传输类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6"。默认值："TCP"
+-  **<keep_alive>**：配置套接字的 ``SO_KEEPALIVE`` 选项（参考：`SO_KEEPALIVE 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`_），单位：秒。
+
+  - 范围：[0,7200]。
+
+    - 0：禁用 keep-alive 功能；（默认）
+    - 1 ~ 7200：开启 keep-alive 功能。`TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ 值为 **<keep_alive>**，`TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ 值为 1，`TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ 值为 3。
+
+  -  本命令中的 ``<keep_alive>`` 参数与 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令中的 ``<keep_alive>`` 参数相同，最终值由后设置的命令决定。如果运行本命令时不设置 ``<keep_alive>`` 参数，则默认使用上次配置的值。
+
+说明
+"""""""
+
+- 本设置将 Wi-Fi 开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入 :term:`透传模式`。需重启生效。
+
+示例
+""""""""
+
+::
+
+    AT+SAVETRANSLINK=1,"192.168.6.110",1002,"TCP"
+    AT+SAVETRANSLINK=1,"www.baidu.com",443,"SSL"
+    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"TCPv6"
+    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"SSLv6
+
+.. _savetrans-udp:
+
+设置开机进入 UDP :term:`透传模式` 信息
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+设置
+""""
+
+**命令：**
+
+::
+
+    AT+SAVETRANSLINK=<mode>,<"remote host">,<remote port>,[<"type">,<local port>]
+
+**响应：**
+
+::
+
+    OK
+
+参数
+""""
+
+-  **<mode>**:
+
+   -  0: 关闭 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
+   -  1: 开启 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
+
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
+-  **<remote port>**：远端端口值
+-  **<"type">**：字符串参数，表示传输类型："UDP" 或 "UDPv6"。默认值："TCP"
+-  **[<local port>]**：开机进入 UDP 传输时，使用的本地端口
+
+说明
+"""""""
+
+- 本设置将 Wi-Fi 开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入 :term:`透传模式`。需重启生效。
+
+- 如果您想基于 IPv6 网络建立一个 UDP 传输，请执行以下操作：
+
+  - 确保 AP 支持 IPv6
+  - 设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  - 通过 :ref:`AT+CWJAP <cmd-JAP>` 命令获取到一个 IPv6 地址
+  - （可选）通过 :ref:`AT+CIPSTA? <cmd-IPSTA>` 命令检查 {IDF_TARGET_NAME} 是否获取到 IPv6 地址
+
+示例
+"""""""""
+
+::
+
+    AT+SAVETRANSLINK=1,"192.168.6.110",1002,"UDP",1005
+    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8081,"UDPv6",1005
+
+.. only:: esp32 or esp32c3
+
+    .. _savetrans-ble:
+
+    设置开机进入 BLE :term:`透传模式` 信息
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    设置
+    """"
+
+    **命令：**
+
+    ::
+
+        AT+SAVETRANSLINK=<mode>,<role>,<tx_srv>,<tx_char>,<rx_srv>,<rx_char>,<peer_addr>
+
+    **响应：**
+
+    ::
+
+        OK
+
+    参数
+    """"
+
+    -  **<mode>**：
+
+      -  0: 关闭 {IDF_TARGET_NAME} 上电进入 BLE :term:`透传模式`
+      -  2: 开启 {IDF_TARGET_NAME} 上电进入 BLE :term:`透传模式`
+
+    -  **<role>**：
+
+      -  1: client 角色
+      -  2: server 角色
+
+    -  **<tx_srv>**：tx 服务序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询。
+    -  **<tx_char>**：tx 服务特征序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 命令查询。
+    -  **<rx_srv>**：rx 服务序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询。
+    -  **<rx_char>**：rx 服务特征序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 命令查询。
+    -  **<peer_addr>**：对方 Bluetooth LE 地址
+
+    说明
+    """""""
+
+    - 本设置将 BLE 开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 2，下次上电自动进入 Bluetooth LE :term:`透传模式`。需重启生效。
+
+    示例
+    """""""""
+
+    ::
+
+        AT+SAVETRANSLINK=2,2,1,7,1,5,"26:a2:11:22:33:88"
 
 .. _cmd-UARTC:
 

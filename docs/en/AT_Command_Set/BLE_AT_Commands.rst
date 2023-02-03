@@ -54,6 +54,7 @@ Bluetooth® Low Energy AT Commands
     :esp32 or esp32c3: - :ref:`AT+BLEGATTCWR <cmd-GCWR>`: GATTC writes characteristics.
     :esp32 or esp32c3: - :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`: Query/Set Bluetooth LE SPP parameters.
     :esp32 or esp32c3: - :ref:`AT+BLESPP <cmd-BLESPP>`: Enter Bluetooth LE SPP mode.
+    :esp32 or esp32c3: - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Bluetooth LE :term:`Passthrough Mode` on power-up.
     :esp32 or esp32c3: - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`: Query/Set Bluetooth LE encryption parameters.
     :esp32 or esp32c3: - :ref:`AT+BLEENC <cmd-BLEENC>`: Initiate Bluetooth LE encryption request.
     :esp32 or esp32c3: - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`: Respond to the pairing request from the peer device.
@@ -1439,8 +1440,8 @@ Bluetooth® Low Energy AT Commands
     ^^^^^^^^^^
 
     -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<srv_index>**: service's index. It can be fetched with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
-    -  **<char_index>**: characteristic's index. It can be fetched with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+    -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+    -  **<char_index>**: characteristic's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
     -  **<length>**: data length.
 
     Example
@@ -1493,7 +1494,7 @@ Bluetooth® Low Energy AT Commands
     ^^^^^^^^^^
 
     -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<srv_index>**: service's index. It can be fetched with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+    -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
     -  **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
     -  **<length>**: data length.
 
@@ -1546,7 +1547,7 @@ Bluetooth® Low Energy AT Commands
     Parameters
     ^^^^^^^^^^
 
-    -  **<srv_index>**: service's index. It can be fetched with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+    -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
     -  **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
     -  **[<desc_index>]**: descriptor's index.
 
@@ -1652,7 +1653,7 @@ Bluetooth® Low Energy AT Commands
     ^^^^^^^^^^
 
     -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<srv_index>**: service's index. It can be fetched with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
+    -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
     -  **<srv_uuid>**: service's UUID.
     -  **<srv_type>**: service's type.
 
@@ -1717,7 +1718,7 @@ Bluetooth® Low Energy AT Commands
     ^^^^^^^^^^
 
     -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<srv_index>**: service's index. It can be fetched with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
+    -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
     -  **<char_index>**: characteristic's index starting from 1.
     -  **<char_uuid>**: characteristic's UUID.
     -  **<char_prop>**: characteristic's properties.
@@ -1768,7 +1769,7 @@ Bluetooth® Low Energy AT Commands
     ^^^^^^^^^^^
 
     -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<srv_index>**: service's index. It can be fetched with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
+    -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
     -  **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index>.
     -  **[<desc_index>]**: descriptor's index.
 
@@ -1835,7 +1836,7 @@ Bluetooth® Low Energy AT Commands
     ^^^^^^^^^^
 
     -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<srv_index>**: service's index. It can be fetched with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
+    -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
     -  **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index>.
     -  **[<desc_index>]**: descriptor's index.
 
@@ -1915,10 +1916,10 @@ Bluetooth® Low Energy AT Commands
     -  0: all the SPP parameters will be reset, and the following parameters don't need input.
     -  1: you should input the following parameters.
 
-    -  **<tx_service_index>**: tx service's index. It can be fetched with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`.
-    -  **<tx_char_index>**: tx characteristic's index. It can be fetched with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> and :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
-    -  **<rx_service_index>**: rx service's index. It can be fetched with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`.
-    -  **<rx_char_index>**: rx characteristic's index. It can be fetched with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> and :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+    -  **<tx_service_index>**: tx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`.
+    -  **<tx_char_index>**: tx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> and :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+    -  **<rx_service_index>**: rx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`.
+    -  **<rx_char_index>**: rx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> and :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
     -  **<auto_conn>**: Bluetooth LE SPP auto-reconnection flag. By default, automatic reconnection is enabled.
 
     -  0: disable Bluetooth LE SPP automatic reconnection.
