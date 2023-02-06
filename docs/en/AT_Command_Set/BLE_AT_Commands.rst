@@ -428,6 +428,7 @@ Bluetooth® Low Energy AT Commands
     ^^^^^
 
     -  The response ``OK`` does not necessarily come before the response ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>``. It may be output before ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` or after it.
+    -  To obtain the scan response data, use the :ref:`AT+BLESCANPARAM <BLE-AT>` command to set the scan type to ``active scan (AT+BLESCANPARAM=1,0,0,100,50)``, and the peer device needs to set the ``scan_rsp_data``.
 
     Example
     ^^^^^^^^
@@ -661,6 +662,7 @@ Bluetooth® Low Energy AT Commands
 
     -  If advertising data is preset by command :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power>, it will be overwritten by this command.
     -  If you run this command to modify the device name, it is recommended to also execute the :ref:`AT+BLENAME <cmd-BNAME>` command to set the same device name afterwards.
+    -  If the advertising data exceeds the maximum limit of this command, use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
 
     .. only:: esp32c3
 
@@ -1131,13 +1133,13 @@ Bluetooth® Low Energy AT Commands
     ^^^^^^^^^^
 
     -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<mtu_size>**: MTU length.
+    -  **<mtu_size>**: MTU length. Unit: byte. Range: [23,517].
 
     Notes
     ^^^^^
 
     -  Bluetooth LE connection has to be established first.
-    -  Only the client can call this command to set the length of MTU. 
+    -  Only the client can call this command to set the length of MTU.
     -  The actual length of MTU needs to be negotiated. The ``OK`` response only indicates an attempt to negotiate the length. The actual length may not be the value you set. Therefore, it is recommended to run command :ref:`AT+BLECFGMTU? <cmd-BMTU>` to query the actual length.
 
     Example
@@ -1443,7 +1445,7 @@ Bluetooth® Low Energy AT Commands
     -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
     -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
     -  **<char_index>**: characteristic's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
-    -  **<length>**: data length.
+    -  **<length>**: data length. The maximum length is ``( :ref:`MTU <cmd-BMTU>` - 3)``.
 
     Example
     ^^^^^^^^
@@ -1497,7 +1499,7 @@ Bluetooth® Low Energy AT Commands
     -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
     -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
     -  **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
-    -  **<length>**: data length.
+    -  **<length>**: data length. The maximum length is (:ref:`MTU <cmd-BMTU>` - 3).
 
     Example
     ^^^^^^^^
@@ -1844,7 +1846,7 @@ Bluetooth® Low Energy AT Commands
     -  If it is set, the value of the target descriptor will be written.
     -  If it is not set, the value of the target characteristic will be written.
 
-    -  **<length>**: data length.
+    -  **<length>**: data length. The value range of this parameter is subject to :project_file:`example.csv <components/customized_partitions/raw_data/ble_data/example.csv>` in ``val_max_len`` parameter.
 
     Notes
     ^^^^^

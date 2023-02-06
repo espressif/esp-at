@@ -151,6 +151,27 @@ After {IDF_TARGET_NAME} enters the passthrough mode using AT commands, can {IDF_
 
     The :ref:`AT+BLEADVDATA <cmd-BADVD>` command supports up to 31 bytes of ADV broadcast parameters. If you need to set a bigger parameter, please use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
 
+How to enable the notify and indicate functions on Bluetooth LE clients?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  - Besides the read and write properties, Bluetooth LE characteristics also have the ``notify`` and ``indicate`` properties, which allow the server to send data to the client, but the client must first register for ``notification`` by writing the value of "CCCD".
+  - To enable ``notify``, write ``0x01``. To enable ``indicate``, write ``0x02`` (for the descriptor "0x2902"). To enable both ``notify`` and ``indicate``, write ``0x03``.
+  - The example below demonstrates how to enable the ``notify`` and ``indicate`` properties for the descriptor ``0x2902`` under the services ``0xC305`` and ``0xC306`` respectively. The two services are default services in ESP-AT, of which ``0xC305`` can be notified and ``0xC306`` can be indicated. 
+
+  .. code-block:: text
+
+    AT+BLEGATTCWR=0,3,6,1,2
+    >
+    // Write 0x01
+    OK
+    // Server: +WRITE:0,1,6,1,2,<0x01>,<0x00>
+    AT+BLEGATTCWR=0,3,7,1,2
+    >
+    // Write 0x02
+    OK
+    // Server: +WRITE:0,1,6,1,2,<0x02>,<0x00>
+    // Writing ccc is a prerequisite for the server to be able to send notify and indicate
+
 Hardware
 --------
 
@@ -168,7 +189,7 @@ How big is the chip flash required for ESP-AT firmware on different modules?
 
     - Refer to :doc:`Compile_and_Develop/How_to_clone_project_and_compile_it` to set up the compiling environment;
     - Modify the module's UART pins in your :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`, i.e. change uart_tx_pin to GPIO1, and uart_tx_pin to GPIO3;
-    - Configure your esp-at project: ./build.py menuconfig > Component config > Common ESP-related > UART for console output(Custom) > Uart peripheral to use for console output(0-1)(UART1) > (1)UART TX on GPIO# (NEW) > (3)UART TX on GPIO# (NEW).
+    - Configure your esp-at project: ``./build.py menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output(Custom)`` > ``Uart peripheral to use for console output(0-1)(UART1)`` > ``(1)UART TX on GPIO# (NEW)`` > ``(3)UART TX on GPIO# (NEW)``.
 
 How to view the error log of AT firmware?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -224,7 +245,7 @@ What interfaces of {IDF_TARGET_NAME} chips can be used to transmit AT commands?
     :esp32: - {IDF_TARGET_NAME} can transmit AT commands through UART and SDIO.
     :esp32c2: - {IDF_TARGET_NAME} can transmit AT commands through UART.
     :esp32c3: - {IDF_TARGET_NAME} can transmit AT commands through UART and SPI.
-    - The default firmware uses UART for transmission. If you need SDIO or SPI interface to transmit AT commands, you can configure it through ``./build.py menuconfig -> Component config -> AT`` when compiling the ESP-AT project by yourself.
+    - The default firmware uses UART for transmission. If you need SDIO or SPI interface to transmit AT commands, you can configure it through ``./build.py menuconfig`` > ``Component config`` > ``AT`` when compiling the ESP-AT project by yourself.
     - See :project_file:`AT through SDIO <main/interface/sdio/README.md>`, :project_file:`AT through SPI <main/interface/hspi/README.md>`, or :project_file:`AT through socket <main/interface/socket/README.md>` for more details.
 
 .. only:: esp32
@@ -233,18 +254,18 @@ What interfaces of {IDF_TARGET_NAME} chips can be used to transmit AT commands?
   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     The Ethernet function is disable in AT default firmware, if you need to enable the Ethernet function, please refer to :doc:`How to Enable ESP-AT Ethernet <Compile_and_Develop/How_to_enable_ESP_AT_Ethernet>`.
- 
+
+.. only:: esp32
+
 How does ESP-AT conduct BQB certification?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
   Please contact `Espressif <https://www.espressif.com/en/contact-us/sales-questions>`_ for solutions.
 
-.. 
-
 How do I specify the TLS protocol version for {IDF_TARGET_NAME} AT?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  When compiling the esp-at project, you can disable the unwanted versions in the ./build.py menuconfig -> Component config -> mbedTLS.
+  When compiling the esp-at project, you can disable the unwanted versions in the ``./build.py menuconfig`` > ``Component config`` > ``mbedTLS``.
 
 How to modify the number of TCP connections in AT?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -252,5 +273,21 @@ How to modify the number of TCP connections in AT?
   - At present, the maximum number of TCP connections of the AT default firmware is 5.
   - The {IDF_TARGET_NAME} AT supports a maximum of 16 TCP connections, which can be configured in menuconfig as follows:
     
-    - ./build.py menuconfig---> Component config---> AT---> (16)AT socket maximum connection number
-    - ./build.py menuconfig---> LWIP---> (16)Max number of open sockets
+    - ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``(16)AT socket maximum connection number``
+    - ``./build.py menuconfig`` > ``LWIP`` > ``(16)Max number of open sockets``
+
+.. only:: esp32
+
+Does {IDF_TARGET_NAME} AT support PPP?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  - Not supported, please refer to `pppos_client <https://github.com/espressif/esp-idf/tree/v4.4.2/examples/protocols/pppos_client>`_ demos for your own implementation.
+
+How to enable debug log for AT?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  - Enable log level: ``./build.py menuconfig`` > ``Component Config`` > ``Log output`` > ``Default log verbosity`` set to ``Debug``.
+
+    - Enable Wi-Fi debug: ``./build.py menuconfig`` > ``Component config`` > ``Wi-Fi`` > ``Wi-Fi debug log level`` set to ``Debug``.
+    - Enable TCP/IP debug: ``./build.py menuconfig`` > ``Component config`` > ``LWIP`` > ``Enable LWIP Debug`` > Set the log level of the specific part you want to debug to ``Debug``.
+    - Enable Bluetooth LE debug: ``./build.py menuconfig`` > ``Component config`` > ``Bluetooth`` > ``Bluedroid Options`` > ``Disable BT debug logs`` > ``BT DEBUG LOG LEVEL`` > Set the log level of the specific part you want to debug to ``Debug``.

@@ -2102,6 +2102,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 -  ``<len>`` 表示缓存区中套接字数据的总长度。
 -  一旦有 ``+IPD`` 报出，应该运行 :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` 来读取数据。否则，在前一个 ``+IPD`` 被读取之前，下一个 ``+IPD`` 将不会被报告给主机 MCU。
 -  在断开连接的情况下，缓冲的套接字数据仍然存在，MCU 仍然可以读取，直到发送 :ref:`AT+CIPCLOSE <cmd-CLOSE>` （AT 作为客户端）或 :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` （AT 作为服务器）。换句话说，如果 ``+IPD`` 已经被报告，那么在你发送 :ref:`AT+CIPCLOSE <cmd-CLOSE>` 或发送 :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` 或通过 :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` 命令读取所有数据之前，这个连接的 ``CLOSED`` 信息永远不会出现。
+-  预计设备将接收大量网络数据并且 MCU 端来不及处理时，可以参考 :ref:`示例 <using-passive-mode>`，使用被动接收数据模式。
 
 示例
 ^^^^
