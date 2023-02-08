@@ -45,11 +45,11 @@ Please note that in the above picture, four jump wires are used to connect the E
 ESP32 Series
 -------------
 
-ESP32 AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. 
+ESP32 AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses.
 
 All ESP32 modules use GPIO1 and GPIO3 as UART0, but they use different GPIOs as UART1. The following sections illustrate which GPIOs you should connect for each ESP32 series of modules.
 
-For more details of ESP32 modules and boards, please refer to `ESP32 Modules and Boards <https://docs.espressif.com/projects/esp-idf/en/stable/hw-reference/modules-and-boards.html#wroom-solo-wrover-and-pico-modules>`_.
+For more details of ESP32 modules and boards, please refer to `ESP32 modules <https://espressif.com/en/products/modules?id=ESP32>`_ and `ESP32 boards <https://www.espressif.com/en/products/devkits?id=ESP32>`_.
 
 ESP32-WROOM-32 Series
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -303,7 +303,7 @@ If you want to connect your device directly with ESP32­-C3-­MINI-­1 rather th
 ESP8266 Series
 ---------------
 
-ESP8266 AT uses two UART ports: UART0 is used to download firmware and send AT commands and receive AT responses; UART1 is used to log output. 
+ESP8266 AT uses two UART ports: UART0 is used to download firmware and send AT commands and receive AT responses; UART1 is used to log output.
 
 .. list-table:: ESP8266 Series Hardware Connection Pinout
    :header-rows: 1
@@ -328,7 +328,7 @@ ESP8266 AT uses two UART ports: UART0 is used to download firmware and send AT c
          * TX
          * RX
          * RTS
-         * CTS 
+         * CTS
    * - Log output
      - UART1
          * GPIO2 (TX)
