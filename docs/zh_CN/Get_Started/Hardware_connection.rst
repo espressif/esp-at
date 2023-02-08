@@ -56,7 +56,7 @@
 
   所有 {IDF_TARGET_NAME} 模组均连接 GPIO1 和 GPIO3 作为 UART0，但连接不同的 GPIO 作为 UART1，下文将详细介绍如何连接 {IDF_TARGET_NAME} 系列模组。
 
-  更多有关 {IDF_TARGET_NAME} 模组和开发板的信息可参考 `{IDF_TARGET_NAME} 系列模组和开发板 <https://docs.espressif.com/projects/esp-idf/zh_CN/stable/hw-reference/modules-and-boards.html>`_。
+  更多有关 {IDF_TARGET_NAME} 模组和开发板的信息可参考 `{IDF_TARGET_NAME} 系列模组 <https://www.espressif.com/zh-hans/products/modules?id={IDF_TARGET_NAME}>`_ 和 `{IDF_TARGET_NAME} 系列开发板 <https://www.espressif.com/zh-hans/products/devkits?id={IDF_TARGET_NAME}>`_。
 
   ESP32-WROOM-32 系列
   ^^^^^^^^^^^^^^^^^^^^^^
