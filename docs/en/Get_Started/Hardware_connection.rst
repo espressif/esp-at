@@ -49,6 +49,24 @@ Note:
 
 .. only:: esp32
 
+  - If you use an {IDF_TARGET_NAME} module instead of a development board and flash firmware via UART, you need to reserve the UART pins (refer to {IDF_TARGET_DATASHEET_EN_URL} > Section Pin Description for more details) and strapping pins (refer to {IDF_TARGET_DATASHEET_EN_URL} > Section Strapping Pins for more details), and enter the download mode by controlling the strapping pin level.
+
+.. only:: esp32c2
+
+  - If you use an {IDF_TARGET_NAME} module instead of a development board and flash firmware via UART, you need to reserve the UART pins (refer to {IDF_TARGET_DATASHEET_EN_URL} > Section Pin Description for more details) and one of the following conditions needs to be met:
+
+    - Reserve the Strapping pins (refer to {IDF_TARGET_DATASHEET_EN_URL} > Section Strapping Pins for more details), and enter the download mode by controlling the Strapping pin level.
+    - Enter the download mode by sending :ref:`AT+RST=1,1 <cmd-RST>` command.
+
+.. only:: esp32c3
+
+  - If you use an {IDF_TARGET_NAME} module instead of a development board, you need to reserve the UART/USB pins (refer to {IDF_TARGET_DATASHEET_EN_URL} > Section Pin Description for more details) and one of the following conditions needs to be met:
+
+    - Reserve the Strapping pins (refer to {IDF_TARGET_DATASHEET_EN_URL} > Section Strapping Pins for more details), and enter the download mode by controlling the Strapping pin level.
+    - Enter the download mode by sending :ref:`AT+RST=1,1 <cmd-RST>` command.
+
+.. only:: esp32
+
   {IDF_TARGET_NAME} Series
   ------------------------
 

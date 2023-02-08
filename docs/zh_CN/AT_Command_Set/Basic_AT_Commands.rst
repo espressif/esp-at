@@ -71,6 +71,36 @@
 
     OK  
 
+.. only:: esp32c2 or esp32c3
+
+    设置命令
+    ^^^^^^^^
+
+    **命令：**
+
+    ::
+
+        AT+RST=<mode>
+
+    **响应：**
+
+    ::
+
+        OK
+
+    参数
+    ^^^^
+
+    - **<mode>**：
+
+      - 0：重启 {IDF_TARGET_NAME} 并进入正常运行模式
+      - 1：重启 {IDF_TARGET_NAME} 并进入固件下载模式
+
+    说明
+    ^^^^
+
+    - 如果您要实现下载，可以考虑发送此设置命令让 {IDF_TARGET_NAME} 进入下载模式，这样您可以在硬件上节省 Boot 管脚。
+
 .. _cmd-GMR:
 
 :ref:`AT+GMR <Basic-AT>`：查看版本信息
