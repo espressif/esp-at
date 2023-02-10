@@ -126,3 +126,8 @@ add_custom_command(TARGET factory_bin
 )
 add_dependencies(factory_bin gen_project_binary)
 add_dependencies(flash factory_bin)
+
+if (CONFIG_IDF_TARGET_ESP32C2)
+    message("ready to relink..")
+    include(tools/relink/relink.cmake)
+endif()
