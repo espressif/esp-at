@@ -78,6 +78,10 @@ ESP-AT will be downloaded into ``~/esp/esp-at`` on Linux or macOS, or ``%userpro
 Step 3. Install Environment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. note::
+
+    Please install the `python version <https://www.python.org/downloads>`__ between ``python 3.6`` and ``python 3.8`` (inclusive) first, and set it to the current python version.
+
 Run the project tool ``install`` to install the environment. This tool will automatically install Python packages, ESP-IDF repository, and the compiler and tools used by ESP-IDF.
 
 - Linux or macOS
