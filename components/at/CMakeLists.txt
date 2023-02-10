@@ -1,5 +1,5 @@
 
-set(require_components mqtt mdns esp_http_client esp_https_ota json freertos spiffs
+set(require_components nvs_flash mqtt mdns esp_http_client esp_https_ota json freertos spiffs
     bootloader_support app_update wpa_supplicant spi_flash esp_http_server bt fatfs esp_websocket_client)
 
 if ("${IDF_TARGET}" STREQUAL "esp32")

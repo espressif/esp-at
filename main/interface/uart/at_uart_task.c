@@ -67,6 +67,7 @@ static bool at_default_flag = false;
 static at_uart_pins_t s_at_uart_port_pin;
 static QueueHandle_t esp_at_uart_queue = NULL;
 static const uint8_t esp_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PARITY_ODD, UART_PARITY_EVEN};
+extern const char *g_at_mfg_nvs_name;
 
 #if defined(CONFIG_IDF_TARGET_ESP32)
 #define CONFIG_AT_UART_PORT_TX_PIN_DEFAULT          17
@@ -109,6 +110,8 @@ static const uint8_t esp_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PAR
 #define AT_UART_BAUD_RATE_MAX                  2500000
 #define AT_UART_BAUD_RATE_MIN                       80
 #endif
+
+#define AT_UART_BAUD_RATE_DEF                       115200
 
 #define AT_UART_PATTERN_TIMEOUT_MS                  20
 
@@ -289,21 +292,76 @@ static void at_uart_init(void)
     int32_t rx_pin = CONFIG_AT_UART_PORT_RX_PIN_DEFAULT;
     int32_t cts_pin = CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT;
     int32_t rts_pin = CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT;
+    int32_t baud_rate = AT_UART_BAUD_RATE_DEF;
 
-    char* data = NULL;
-    const esp_partition_t * partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
-
-    memset(&uart_nvm_config,0x0,sizeof(uart_nvm_config));
-
-    if (partition) {	
-        data = (char*)malloc(ESP_AT_FACTORY_PARAMETER_SIZE); // Notes
-        assert(data != NULL);
-        if (esp_partition_read(partition, 0, data, ESP_AT_FACTORY_PARAMETER_SIZE) != ESP_OK){
-            free(data);
-            data = NULL;
+    // get baud rate, tx_pin, rx_pin, cts_pin, and rts_pin from flash
+    at_mfg_params_storage_mode_t mode = at_get_mfg_params_storage_mode();
+    if (mode == AT_PARAMS_IN_MFG_NVS) {
+        nvs_handle handle;
+        if (nvs_open_from_partition(g_at_mfg_nvs_name, "factory_param", NVS_READONLY, &handle) != ESP_OK) {
+            printf("open factory_param namespace failed\r\n");
+            return;
         }
+        int8_t value = -1;
+        if (nvs_get_i8(handle, "uart_port", &value) != ESP_OK) {
+            nvs_close(handle);
+            return;
+        } else {
+            esp_at_uart_port = value;
+        }
+        if (nvs_get_i32(handle, "uart_baudrate", &baud_rate) != ESP_OK) {
+            nvs_close(handle);
+            return;
+        }
+        if (nvs_get_i32(handle, "uart_tx_pin", &tx_pin) != ESP_OK) {
+            nvs_close(handle);
+            return;
+        }
+        if (nvs_get_i32(handle, "uart_rx_pin", &rx_pin) != ESP_OK) {
+            nvs_close(handle);
+            return;
+        }
+        if (nvs_get_i32(handle, "uart_cts_pin", &cts_pin) != ESP_OK) {
+            nvs_close(handle);
+            return;
+        }
+        if (nvs_get_i32(handle, "uart_rts_pin", &rts_pin) != ESP_OK) {
+            nvs_close(handle);
+            return;
+        }
+    } else if (mode == AT_PARAMS_IN_PARTITION) {
+        char data[AT_BUFFER_ON_STACK_SIZE] = {0};
+        const esp_partition_t *partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
+        if (partition) {
+            if (esp_partition_read(partition, 0, data, AT_BUFFER_ON_STACK_SIZE) != ESP_OK) {
+                return;
+            }
+            // check magic flag, should be 0xfc 0xfc
+            if ((data[0] == 0xFC) && (data[1] == 0xFC)) {
+                if ((data[12] != 0xFF) || (data[13] != 0xFF) || (data[14] != 0xFF) || (data[15] != 0xFF)) {
+                    baud_rate = *(int32_t *)&data[12];
+                }
+                if ((data[16] != 0xFF) && (data[17] != 0xFF)) {
+                    tx_pin = data[16];
+                    rx_pin = data[17];
+                }
+                if (data[18] != 0xFF) {
+                    cts_pin = data[18];
+                } else {
+                    cts_pin = -1;
+                }
+                if (data[19] != 0xFF) {
+                    rts_pin = data[19];
+                } else {
+                    rts_pin = -1;
+                }
+            }
+        }
+    } else {
+        return;
     }
 
+    memset(&uart_nvm_config, 0x0, sizeof(uart_nvm_config));
     if (at_nvm_uart_config_get(&uart_nvm_config)) {
         if ((uart_nvm_config.baudrate >= AT_UART_BAUD_RATE_MIN) && (uart_nvm_config.baudrate <= AT_UART_BAUD_RATE_MAX)) {
             uart_config.baud_rate = uart_nvm_config.baudrate;
@@ -327,13 +385,7 @@ static void at_uart_init(void)
             uart_config.flow_ctrl = uart_nvm_config.flow_control;
         }
     } else {
-        if (data) {
-            if ((data[0] == 0xFC) && (data[1] == 0xFC)) { // check magic flag, should be 0xfc 0xfc
-                if ((data[12] != 0xFF) || (data[13] != 0xFF) || (data[14] != 0xFF) || (data[15] != 0xFF)) {
-                    uart_config.baud_rate = *(int32_t*)&data[12];
-                }
-            }
-        }
+        uart_config.baud_rate = baud_rate;
         uart_nvm_config.baudrate = uart_config.baud_rate;
         uart_nvm_config.data_bits = uart_config.data_bits;
         uart_nvm_config.flow_control = uart_config.flow_ctrl;
@@ -342,52 +394,12 @@ static void at_uart_init(void)
         at_nvm_uart_config_set(&uart_nvm_config);
     }
 
-    if (data) {
-        if ((data[0] == 0xFC) && (data[1] == 0xFC)) { // check magic flag, should be 0xfc 0xfc
-            if (data[5] != 0xFF) {
-#if defined(CONFIG_IDF_TARGET_ESP32)
-                assert((data[5] == 0) || (data[5] == 1) || (data[5] == 2));
-#elif defined(CONFIG_IDF_TARGET_ESP32C3) || defined(CONFIG_IDF_TARGET_ESP32C2)
-                assert((data[5] == 0) || (data[5] == 1));
-#endif
-                esp_at_uart_port = data[5];
-            }
-            if ((data[16] != 0xFF) && (data[17] != 0xFF)) {
-                tx_pin = data[16];
-                rx_pin = data[17];
-            }
-
-            if (data[18] != 0xFF) {
-                cts_pin = data[18];
-            } else {
-                cts_pin = -1;
-            }
-
-            if (data[19] != 0xFF) {
-                rts_pin = data[19];
-            } else {
-                rts_pin = -1;
-            }
-
-            if (data[20] != 0xFF) {
-                gpio_set_direction(data[20], GPIO_MODE_OUTPUT);
-                gpio_set_level(data[20], 1);
-            }
-
-            if (data[21] != 0xFF) {
-                gpio_set_direction(data[21], GPIO_MODE_OUTPUT);
-                gpio_set_level(data[21], 1);
-            }
-        }
-        free(data);
-        data = NULL;
-    }
-    //Set UART parameters
+    // set uart parameters
     uart_param_config(esp_at_uart_port, &uart_config);
-    //Set UART pins,(-1: default pin, no change.)
+    // set uart pins (-1: default pin)
     uart_set_pin(esp_at_uart_port, tx_pin, rx_pin, rts_pin, cts_pin);
-    //Install UART driver, and get the queue.
-    uart_driver_install(esp_at_uart_port, 2048, 8192, 30,&esp_at_uart_queue,0);
+    // install uart driver
+    uart_driver_install(esp_at_uart_port, 2048, 8192, 30, &esp_at_uart_queue, 0);
     uart_intr_config(esp_at_uart_port, &intr_config);
 
     /**
@@ -403,7 +415,7 @@ static void at_uart_init(void)
     s_at_uart_port_pin.rts = rts_pin;
 
     printf("AT cmd port:uart%d tx:%d rx:%d cts:%d rts:%d baudrate:%d\r\n", esp_at_uart_port, tx_pin, rx_pin, cts_pin, rts_pin, uart_config.baud_rate);
-    xTaskCreate(uart_task, "uTask", 1024, (void*)esp_at_uart_port, 1, NULL);
+    xTaskCreate(uart_task, "uTask", 1024, (void *)esp_at_uart_port, 1, NULL);
 }
 
 static bool at_nvm_uart_config_set (at_nvm_uart_config_struct *uart_config)

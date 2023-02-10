@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #
 # ESPRESSIF MIT License
 #
@@ -41,19 +42,6 @@ def main():
     output_dir = args.output_dir.strip()
     flash_args_file = args.flash_args_file.strip()
 
-    # print('tools_dir={}'.format(tools_dir))
-    # print('output_dir={}'.format(output_dir))
-    # print('flash_args_file={}'.format(flash_args_file))
-
-    # if sys.platform.startswith('win32'):
-    #     tools_dir = tools_dir.replace(r'\/'.replace(os.sep, ''), os.sep)
-    #     output_dir = output_dir.replace(r'\/'.replace(os.sep, ''), os.sep)
-    #     flash_args_file = flash_args_file.replace(r'\/'.replace(os.sep, ''), os.sep)
-
-    # print('tools_dir1={}'.format(tools_dir))
-    # print('output_dir1={}'.format(output_dir))
-    # print('flash_args1_file={}'.format(flash_args_file))
-
     if os.path.exists(output_dir) == False:
         os.mkdir(output_dir)
 
@@ -70,11 +58,7 @@ def main():
                 tool_name = os.path.join(tools_dir, ''.join([partition_name, '.py']))
                 if not os.access(tool_name, os.X_OK):
                     os.chmod(tool_name, stat.S_IRUSR | stat.S_IXUSR)
-
-                # if sys.platform.startswith('win32'):
-                #     tool_name = tool_name.replace(r'\/'.replace(os.sep, ''), os.sep)
                 ret = subprocess.call([sys.executable, tool_name, '--partition_name', partition_name, '--partition_size', file_size, '--outdir', output_dir, '--project_path', project_dir], shell = False)
-
 
 if __name__ == '__main__':
     main()

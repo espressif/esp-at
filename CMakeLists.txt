@@ -120,7 +120,6 @@ add_custom_command(TARGET factory_bin
 		--flash_mode ${CONFIG_ESPTOOLPY_FLASHMODE}
 		--flash_size ${CONFIG_ESPTOOLPY_FLASHSIZE}
 		--flash_speed ${CONFIG_ESPTOOLPY_FLASHFREQ}
-		--parameter_file $ENV{ESP_AT_PROJECT_PATH}/build/factory/factory_parameter.log
         --download_config $ENV{ESP_AT_PROJECT_PATH}/build/flash_project_args
   COMMENT "Create factory bin..."
 )
