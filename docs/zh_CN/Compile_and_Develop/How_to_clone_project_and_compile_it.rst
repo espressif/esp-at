@@ -85,6 +85,10 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 第三步：安装环境
 ^^^^^^^^^^^^^^^^^^^^^^^
 
+.. note::
+
+    请先安装 `python 3.6（包含）到 python 3.8（包含） <https://www.python.org/downloads>`__ 之间的一个版本，并设置为当前 python 版本。
+
 运行项目工具 ``install`` 来安装环境。此安装工具将自动安装依赖的 Python 包、ESP-IDF 仓库以及 ESP-IDF 依赖的编译器、工具等。
 
 - Linux 或 macOS
