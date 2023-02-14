@@ -241,8 +241,6 @@ libfreertos.a,list.c.obj,vListInitialise,CONFIG_FREERTOS_PLACE_FUNCTIONS_INTO_FL
 libfreertos.a,list.c.obj,vListInitialiseItem,CONFIG_FREERTOS_PLACE_FUNCTIONS_INTO_FLASH
 libfreertos.a,list.c.obj,vListInsert,CONFIG_FREERTOS_PLACE_FUNCTIONS_INTO_FLASH
 libfreertos.a,list.c.obj,vListInsertEnd,FALSE
-libfreertos.a,port.c.obj,_prvTaskExitError,
-libfreertos.a,port.c.obj,prvTaskExitError,
 libfreertos.a,port.c.obj,vApplicationStackOverflowHook,FALSE
 libfreertos.a,port.c.obj,vPortYieldOtherCore,FALSE
 libfreertos.a,port.c.obj,vPortYield,
