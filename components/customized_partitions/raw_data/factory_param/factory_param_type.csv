@@ -1,21 +1,19 @@
-param_name,offset,type,size
-description,-1,String,0
-module_id,-1,integer,0
-magic_flag,0,integer,2
-version,2,integer,1
-reserved1,3,integer,1
-tx_max_power,4,integer,1
-uart_port,5,integer,1
-start_channel,6,integer,1
-channel_num,7,integer,1
-country_code,8,String,4
-uart_baudrate,12,integer,4
-uart_tx_pin,16,integer,1
-uart_rx_pin,17,integer,1
-uart_cts_pin,18,integer,1
-uart_rts_pin,19,integer,1
-tx_control_pin,20,integer,1
-rx_control_pin,21,integer,1
-reserved2,22,String,2
-platform,24,String,32
-module_name,56,String,32
+# version information
+version,data,i8
+
+# module information
+module_name,data,string
+
+# Wi-Fi configurations
+max_tx_power,data,i8
+country_code,data,string
+start_channel,data,u8
+channel_num,data,u8
+
+# UART configurations
+uart_port,data,i8
+uart_baudrate,data,i32
+uart_tx_pin,data,i32
+uart_rx_pin,data,i32
+uart_cts_pin,data,i32
+uart_rts_pin,data,i32

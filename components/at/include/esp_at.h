@@ -22,13 +22,18 @@
  *
  */
 
-#ifndef __ESP_AT_H__
-#define __ESP_AT_H__
+#pragma once
 
 #include "esp_at_core.h"
 
 #define ESP_AT_PORT_TX_WAIT_MS_MAX          3000    // 3s
-#define ESP_AT_FACTORY_PARAMETER_SIZE       4096
+#define AT_BUFFER_ON_STACK_SIZE             128     // default maximum buffer size on task stack
+
+typedef enum {
+    AT_PARAMS_NONE = 0,
+    AT_PARAMS_IN_MFG_NVS = 1,
+    AT_PARAMS_IN_PARTITION = 2,
+} at_mfg_params_storage_mode_t;
 
 #ifdef CONFIG_AT_OTA_SUPPORT
 /**
@@ -95,7 +100,6 @@ void at_set_mcu_state_if_sleep(at_sleep_mode_t mode);
  *
  */
 void esp_at_main_preprocess(void);
-#endif
 
 #ifdef CONFIG_AT_RAINMAKER_COMMAND_SUPPORT
 /**
@@ -104,3 +108,15 @@ void esp_at_main_preprocess(void);
  */
 bool esp_at_rainmaker_cmd_regist(void);
 #endif
+
+/**
+ * @brief init storage mode of at parameters
+ */
+void at_nvs_flash_init_partition(void);
+
+/**
+ * @brief get storage mode of mfg parameters
+ *
+ * @return at_mfg_params_storage_mode_t
+ */
+at_mfg_params_storage_mode_t at_get_mfg_params_storage_mode(void);

@@ -74,6 +74,7 @@ void app_main(void)
     esp_at_main_preprocess();
     ESP_ERROR_CHECK(nvs_flash_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());
+    at_nvs_flash_init_partition();
 
     at_netif_init();
 
