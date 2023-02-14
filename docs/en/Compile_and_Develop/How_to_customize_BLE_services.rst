@@ -287,7 +287,6 @@ You can download ble_data.bin in either of the following ways, corresponding to 
   .. only:: esp32c3
 
     - ESP32-C3: 0x1F000
-    - ESP32-C3 QCLOUD: 0x21000
 
 After the download is complete, re-establish the Bluetooth LE connection. Query the server service on the client side as follows:
 

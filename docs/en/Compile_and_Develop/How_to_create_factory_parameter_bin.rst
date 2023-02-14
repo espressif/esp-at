@@ -400,9 +400,6 @@ Download the new ``factory_param_MY_MODULE.bin`` into flash. ESP-AT provides `es
       * - PLATFORM_ESP32C3
         - MINI-1 Bin
         - {IDF_TARGET_AT_PARAMS_ADDR}
-      * - PLATFORM_ESP32C3
-        - QCLOUD Bin
-        - 0x30000
 
 - Replace ``FILEDIRECTORY`` with the relative path of the factory parameter bin.
 

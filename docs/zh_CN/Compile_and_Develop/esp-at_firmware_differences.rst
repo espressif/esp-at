@@ -20,7 +20,6 @@ ESP-AT 固件差异
   - ESP32-SOLO-1_AT_Bin（本节简称为 **SOLO-1 Bin**
   - ESP32-MINI-1_AT_Bin（本节简称为 **MINI-1 Bin**）
   - ESP32-D2WD_AT_Bin（本节简称为 **D2WD Bin**）
-  - ESP32-QLOUD_AT_Bin（本节简称为 **QCLOUD Bin**）
 
 .. only:: esp32c2
 
@@ -30,7 +29,6 @@ ESP-AT 固件差异
 .. only:: esp32c3
 
   - ESP32-C3-MINI-1_AT_Bin（本节简称为 **MINI-1 Bin**）
-  - ESP32-C3-QCLOUD_AT_BIN（本节简称为 **QCLOUD Bin**）
 
 支持的命令集
 ^^^^^^^^^^^^
@@ -49,9 +47,7 @@ ESP-AT 固件差异
       - SOLO-1 Bin
       - MINI-1 Bin
       - D2WD Bin
-      - QCLOUD Bin
     * - base
-      - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
@@ -65,9 +61,7 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-green-check|
     * - wifi
-      - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
@@ -81,9 +75,7 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-green-check|
     * - MDNS
-      - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
@@ -97,9 +89,7 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-green-check|
     * - smartconfig
-      - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
@@ -113,9 +103,7 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-green-check|
     * - MQTT
-      - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
@@ -129,9 +117,7 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-green-check|
     * - ble
-      - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
@@ -145,9 +131,7 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-green-check|
     * - blufi
-      - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
@@ -161,9 +145,7 @@ ESP-AT 固件差异
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-      - |icon-orange-check|
     * - bt a2dp
-      - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
@@ -177,9 +159,7 @@ ESP-AT 固件差异
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-      - |icon-orange-check|
     * - FS
-      - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
@@ -193,9 +173,7 @@ ESP-AT 固件差异
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-      - |icon-orange-check|
     * - WPA2
-      - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
@@ -209,7 +187,6 @@ ESP-AT 固件差异
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-      - |icon-orange-check|
     * - OTA
       - |icon-green-check|
       - |icon-green-check|
@@ -217,15 +194,6 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-green-check|
       - |icon-red-cross|
-      - |icon-green-check|
-    * - qcloud IoT
-      - |icon-orange-check|
-      - |icon-orange-check|
-      - |icon-orange-check|
-      - |icon-orange-check|
-      - |icon-orange-check|
-      - |icon-orange-check|
-      - |icon-green-check|
 
 .. only:: esp32c2
 
@@ -291,54 +259,35 @@ ESP-AT 固件差异
 
     * - 命令集
       - MINI-1 Bin
-      - QCLOUD Bin
     * - base
-      - |icon-green-check|
       - |icon-green-check|
     * - user
       - |icon-green-check|
-      - |icon-green-check|
     * - wifi
-      - |icon-green-check|
       - |icon-green-check|
     * - net
       - |icon-green-check|
-      - |icon-green-check|
     * - MDNS
-      - |icon-green-check|
       - |icon-green-check|
     * - WPS
       - |icon-green-check|
-      - |icon-green-check|
     * - smartconfig
-      - |icon-green-check|
       - |icon-green-check|
     * - ping
       - |icon-green-check|
-      - |icon-green-check|
     * - MQTT
-      - |icon-green-check|
       - |icon-green-check|
     * - http
       - |icon-green-check|
-      - |icon-green-check|
     * - FS
-      - |icon-orange-check|
       - |icon-orange-check|
     * - driver
       - |icon-orange-check|
-      - |icon-orange-check|
     * - WPA2
-      - |icon-orange-check|
       - |icon-orange-check|
     * - WEB
       - |icon-orange-check|
-      - |icon-orange-check|
     * - OTA
-      - |icon-green-check|
-      - |icon-green-check|
-    * - qcloud IoT
-      - |icon-orange-check|
       - |icon-green-check|
 
 硬件差异
@@ -356,7 +305,6 @@ ESP-AT 固件差异
       - SOLO-1 Bin
       - MINI-1 Bin
       - D2WD Bin
-      - QCLOUD Bin
     * - Flash
       - 4 MB
       - 4 MB
@@ -364,11 +312,9 @@ ESP-AT 固件差异
       - 4 MB
       - 4 MB
       - 2 MB
-      - 4 MB
     * - PSRAM
       - |icon-red-cross|
       - 8 MB
-      - |icon-red-cross|
       - |icon-red-cross|
       - |icon-red-cross|
       - |icon-red-cross|
@@ -397,10 +343,6 @@ ESP-AT 固件差异
       - | TX: 22 
         | RX: 19 
         | CTS: 15
-        | RTS: 14
-      - | TX: 17 
-        | RX: 16 
-        | CTS: 15 
         | RTS: 14
 
 .. only:: esp32c2
@@ -434,18 +376,11 @@ ESP-AT 固件差异
 
     * - 硬件
       - MINI-1
-      - QCLOUD
     * - Flash
-      - 4 MB
       - 4 MB
     * - PSRAM
       - |icon-red-cross|
-      - |icon-red-cross|
     * - UART 管脚 [#one]_
-      - | TX: 7
-        | RX: 6
-        | CTS: 5
-        | RTS: 4
       - | TX: 7
         | RX: 6
         | CTS: 5
@@ -470,7 +405,6 @@ ESP-AT 固件差异
       - SOLO-1 Bin
       - MINI-1 Bin
       - D2WD Bin
-      - QCLOUD Bin
     * - ESP32-WROOM-32E
       - |icon-green-check|
       - |icon-red-cross|
@@ -478,7 +412,6 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-red-cross|
       - |icon-red-cross|
-      - |icon-green-check|
     * - ESP32-WROOM-32UE
       - |icon-green-check|
       - |icon-red-cross|
@@ -486,7 +419,6 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-red-cross|
       - |icon-red-cross|
-      - |icon-green-check|
     * - ESP32-WROOM-32D
       - |icon-green-check|
       - |icon-red-cross|
@@ -494,7 +426,6 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-red-cross|
       - |icon-red-cross|
-      - |icon-green-check|
     * - ESP32-WROOM-32U
       - |icon-green-check|
       - |icon-red-cross|
@@ -502,7 +433,6 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-red-cross|
       - |icon-red-cross|
-      - |icon-green-check|
     * - ESP32-WROOM-32
       - |icon-green-check|
       - |icon-red-cross|
@@ -510,9 +440,7 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-red-cross|
       - |icon-red-cross|
-      - |icon-green-check|
     * - ESP32-WROOM-32SE
-      - |icon-red-cross|
       - |icon-red-cross|
       - |icon-red-cross|
       - |icon-red-cross|
@@ -526,7 +454,6 @@ ESP-AT 固件差异
       - |icon-red-cross|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-red-cross|
     * - ESP32-WROVER-IE
       - |icon-red-cross|
       - |icon-green-check|
@@ -534,7 +461,6 @@ ESP-AT 固件差异
       - |icon-red-cross|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-red-cross|
     * - ESP32-WROVER-B
       - |icon-red-cross|
       - |icon-green-check|
@@ -542,7 +468,6 @@ ESP-AT 固件差异
       - |icon-red-cross|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-red-cross|
     * - ESP32-WROVER-IB
       - |icon-red-cross|
       - |icon-green-check|
@@ -550,7 +475,6 @@ ESP-AT 固件差异
       - |icon-red-cross|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-red-cross|
     * - ESP32-WROVER
       - |icon-red-cross|
       - |icon-green-check|
@@ -558,7 +482,6 @@ ESP-AT 固件差异
       - |icon-red-cross|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-red-cross|
     * - ESP32-WROVER-I
       - |icon-red-cross|
       - |icon-green-check|
@@ -566,7 +489,6 @@ ESP-AT 固件差异
       - |icon-red-cross|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-red-cross|
     * - ESP32-SOLO-1
       - |icon-green-check|
       - |icon-red-cross|
@@ -574,7 +496,6 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-red-cross|
       - |icon-red-cross|
-      - |icon-green-check|
     * - ESP32-D2WD
       - |icon-red-cross|
       - |icon-red-cross|
@@ -582,7 +503,6 @@ ESP-AT 固件差异
       - |icon-red-cross|
       - |icon-red-cross|
       - |icon-green-check|
-      - |icon-red-cross|
     * - ESP32-MINI-1
       - |icon-red-cross|
       - |icon-red-cross|
@@ -590,7 +510,6 @@ ESP-AT 固件差异
       - |icon-red-cross|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-red-cross|
     * - ESP32-PICO-D4
       - |icon-red-cross|
       - |icon-red-cross|
@@ -598,7 +517,6 @@ ESP-AT 固件差异
       - |icon-red-cross|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-red-cross|
 
 .. only:: esp32c2
 
@@ -622,10 +540,7 @@ ESP-AT 固件差异
 
     * - 模组/芯片
       - MINI-1 Bin
-      - QCLOUD Bin
     * - ESP32-C3-MINI-1
       - |icon-green-check|
-      - |icon-green-check|
     * - ESP32-C3-WROOM-02
-      - |icon-green-check|
       - |icon-green-check|

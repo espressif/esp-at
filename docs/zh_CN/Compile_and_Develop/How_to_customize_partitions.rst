@@ -46,9 +46,6 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
     * - ESP32
       - ESP32-D2WD
       - :project_file:`module_config/module_esp32-d2wd/at_customize.csv`
-    * - ESP32
-      - ESP32_QCLOUD
-      - :project_file:`module_config/module_esp32_qcloud/at_customize.csv`
 
 .. only:: esp32c2
 
@@ -76,9 +73,6 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
     * - ESP32-C3
       - MINI-1
       - :project_file:`module_config/module_esp32c3_default/at_customize.csv`
-    * - ESP32-C3
-      - ESP32C3_QCLOUD
-      - :project_file:`module_config/module_esp32c3_qcloud/at_customize.csv`
 
 然后，在修改 at_customize.csv 时遵循以下规则。
 
@@ -129,7 +123,6 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
         - SOLO-1
         - MINI-1
         - ESP32-D2WD
-        - ESP32_QCLOUD
       - 0x20000
       - 0xE0000
 
@@ -164,10 +157,6 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
       - MINI-1
       - 0x1E000
       - 0x42000
-    * - ESP32-C3
-      - ESP32C3_QCLOUD
-      - 0x20000
-      - 0xE0000
 
 在某些情况下，必须将 at_customize.bin 下载到 flash 后才能使用一些 AT 命令：
 

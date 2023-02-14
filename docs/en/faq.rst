@@ -107,10 +107,6 @@ Does AT support websocket commands?
 ..  - Aliyun: `AT+MQTT aliyun <https://blog.csdn.net/espressif/article/details/107367189>`_.
 ..  - Tencent Cloud: `AT+MQTT QCloud <https://blog.csdn.net/espressif/article/details/104714464>`_.
 ..
-..
-..
-..
-..
 
 Can AT command set Bluetooth LE transmit power?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

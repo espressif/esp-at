@@ -38,11 +38,6 @@
 #include "esp_bt.h"
 #endif
 
-#ifdef CONFIG_AT_QCLOUD_IOT_COMMAND_SUPPORT
-#include "qcloud_iot_at.h"
-#include "qcloud_iot_export_log.h"
-#endif
-
 #include "esp_at.h"
 #include "at_interface.h"
 
@@ -255,14 +250,6 @@ void app_main(void)
 #ifdef CONFIG_AT_COMMAND_TERMINATOR
     uint8_t cmd_terminator[] = {CONFIG_AT_COMMAND_TERMINATOR, 0};
     esp_at_custom_cmd_line_terminator_set((uint8_t *)&cmd_terminator);
-#endif
-
-#ifdef CONFIG_AT_QCLOUD_IOT_COMMAND_SUPPORT
-    IOT_Log_Set_Level(CONFIG_AT_QCLOUD_IOT_LOG_LEVEL);
-
-    if(esp_at_qcloud_iot_cmd_regist() == false) {
-        printf("qcloud at init fail\r\n");
-    }
 #endif
 
 #ifdef CONFIG_AT_RAINMAKER_COMMAND_SUPPORT
