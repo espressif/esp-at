@@ -397,9 +397,6 @@ factory_param_data.csv 表格保存了 :ref:`factory-param-type-csv` 中定义�
       * - PLATFORM_ESP32C3
         - MINI-1 固件
         - {IDF_TARGET_AT_PARAMS_ADDR}
-      * - PLATFORM_ESP32C3
-        - QCLOUD 固件
-        - 0x30000
 
 - ``FILEDIRECTORY`` 替换为出厂参数二进制文件的相对路径。
 

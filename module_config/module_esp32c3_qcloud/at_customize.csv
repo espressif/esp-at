@@ -1,3 +1,0 @@
-# Name, Type, SubType, Offset, Size
-mfg_nvs, data, nvs, 0x1f000, 140K
-fatfs, data, fat, 0x47000, 100K

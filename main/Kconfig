@@ -333,50 +333,6 @@ config ESP_AT_FW_VERSION
       The maximum length of the string is 128 characters.
       If more than 128 characters, it will be invalid.
 
-menu "Cloud IoT Commands"
-config AT_QCLOUD_IOT_COMMAND_SUPPORT
-
-    bool "AT QCloud IoT command support."
-    default "n"
-    depends on AT_ENABLE
-    depends on (IDF_TARGET_ESP32 || IDF_TARGET_ESP32C3)
-    help
-        Please enable this configure if you want use AT QCloud IoT commands.
-        AT QCloud IoT commands is specially designed for Tencent Cloud.
-
-config AT_QCLOUD_IOT_GENERATE_FACTORY_INFO
-
-    bool "Automatically generate qcloud_modinfo.bin, qcloud_devinfo.bin and qcloud_prdinfo.bin"
-    default "y" 
-    depends on AT_QCLOUD_IOT_COMMAND_SUPPORT
-
-choice AT_QCLOUD_IOT_LOG_LEVEL
-
-    bool "QCLOUD default log verbosity"
-    default AT_QCLOUD_IOT_LOG_LEVEL_ERROR
-    depends on AT_QCLOUD_IOT_COMMAND_SUPPORT
-
-    config AT_QCLOUD_IOT_LOG_LEVEL_NONE
-        bool "No output"
-    config AT_QCLOUD_IOT_LOG_LEVEL_ERROR
-        bool "Error"
-    config AT_QCLOUD_IOT_LOG_LEVEL_WARN
-        bool "Warning"
-    config AT_QCLOUD_IOT_LOG_LEVEL_INFO
-        bool "Info"
-    config AT_QCLOUD_IOT_LOG_LEVEL_DEBUG
-        bool "Debug"
-endchoice
-
-config AT_QCLOUD_IOT_LOG_LEVEL
-    int
-    default 0 if AT_QCLOUD_IOT_LOG_LEVEL_NONE
-    default 1 if AT_QCLOUD_IOT_LOG_LEVEL_ERROR
-    default 2 if AT_QCLOUD_IOT_LOG_LEVEL_WARN
-    default 3 if AT_QCLOUD_IOT_LOG_LEVEL_INFO
-    default 4 if AT_QCLOUD_IOT_LOG_LEVEL_DEBUG
-endmenu
-
 config AT_RAINMAKER_COMMAND_SUPPORT
     bool "AT RAINMAKER command support."
     default n

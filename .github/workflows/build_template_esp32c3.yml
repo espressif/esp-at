@@ -14,8 +14,6 @@ on:
     secrets:
       AT_OTA_TOKEN_ESP32C3_MINI:
         required: true
-      AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD:
-        required: true
 
 jobs:
   build-template-esp32c3:
@@ -46,8 +44,6 @@ jobs:
         echo -e "#pragma once" >> at_ota_token.h
         echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI \"${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI }}\"" >> at_ota_token.h
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI \"${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD \"${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI_QCLOUD \"${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD }}\"" >> at_ota_token.h
         cd -
     - name: Install ESP-IDF environment variables
       run: |

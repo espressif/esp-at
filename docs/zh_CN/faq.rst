@@ -108,10 +108,6 @@ AT 是否支持 websocket 命令？
   - 阿里云应用参考：`AT+MQTT aliyun <https://blog.csdn.net/espressif/article/details/107367189>`_。
   - 腾讯云应用参考：`AT+MQTT QCloud <https://blog.csdn.net/espressif/article/details/104714464>`_。
 
-  .. only:: esp32 or esp32c3
-
-    若使用 :doc:`QCloud AT 固件 <Customized_AT_Commands_and_Firmware/Tencent_Cloud_IoT_AT/tencent_cloud_iot_at_binaries>`，请采用 :doc:`腾讯云 AT 命令 <Customized_AT_Commands_and_Firmware/Tencent_Cloud_IoT_AT/Tencent_Cloud_IoT_AT_Command_Set>` 连接至腾讯云。
-
 AT 命令是否可以设置低功耗蓝牙发射功率？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
