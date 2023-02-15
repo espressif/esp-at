@@ -102,14 +102,21 @@ def main():
     fatfs_param = '--sector_size {} {} --sectors_per_cluster {} --fat_type {}'.format(
             sector_size, long_name_support, sectors_per_cluster, fat_type)
 
-    cmd = '{} {} --partition_size {} \
-            --output_file {} \
-            {}'.format(
-                os.path.join(project_path, 'esp-idf', 'components', 'fatfs', 'wl_fatfsgen.py'),
-                os.path.join(project_path, 'components', 'fs_image'),
-                bin_size,
-                os.path.join(outdir, ''.join([partition_name, '.bin'])),
-                fatfs_param)
+    if sys.platform == 'win32':
+        sys_python_path = sys.executable
+    else:
+        if os.environ.get('IDF_PYTHON_ENV_PATH') is None:
+            sys_python_path = 'python'
+        else:
+            sys_python_path = os.path.join(os.environ.get('IDF_PYTHON_ENV_PATH'), 'bin', 'python')
+
+    cmd = '{} {} {} --partition_size {} --output_file {} {}'.format(
+        sys_python_path,
+        os.path.join(project_path, 'esp-idf', 'components', 'fatfs', 'wl_fatfsgen.py'),
+        os.path.join(project_path, 'components', 'fs_image'),
+        bin_size,
+        os.path.join(outdir, ''.join([partition_name, '.bin'])),
+        fatfs_param)
 
     print('generating {}: {}'.format(''.join([partition_name, '.bin']), cmd))
     subprocess.call(cmd, shell = True)
