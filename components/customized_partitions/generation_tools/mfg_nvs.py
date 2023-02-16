@@ -170,10 +170,13 @@ def create_ble_data_csv(args):
             f.write(item + '\n')
 
 def generate_mfg_bin(args):
-    if os.environ.get('IDF_PYTHON_ENV_PATH') is None:
-        sys_python_path = 'python'
+    if sys.platform == 'win32':
+        sys_python_path = sys.executable
     else:
-        sys_python_path = os.path.join(os.environ.get('IDF_PYTHON_ENV_PATH'), 'bin', 'python')
+        if os.environ.get('IDF_PYTHON_ENV_PATH') is None:
+            sys_python_path = 'python'
+        else:
+            sys_python_path = os.path.join(os.environ.get('IDF_PYTHON_ENV_PATH'), 'bin', 'python')
 
     nvs_tool = os.path.join(args.project_path, 'esp-idf', 'components', 'nvs_flash', 'nvs_partition_generator', 'nvs_partition_gen.py')
     mfg_csv = os.path.join(args.outdir, args.partition_name + '.csv')
