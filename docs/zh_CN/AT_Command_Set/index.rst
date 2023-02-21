@@ -257,6 +257,8 @@ AT 消息
        - 连接 ID 为 <link_id> 的 WebSocket 连接收到数据
      * - +WS_CLOSED:<link_id>
        - 连接 ID 为 <link_id> 的 WebSocket 连接已关闭
+     * - +BLESCANDONE
+       - 扫描结束
 
   .. only:: esp32c3
 

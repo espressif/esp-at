@@ -393,6 +393,7 @@ Bluetooth® Low Energy AT Commands
 
         +BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>
         OK
+        +BLESCANDONE
 
     Parameters
     ^^^^^^^^^^

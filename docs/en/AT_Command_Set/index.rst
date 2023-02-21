@@ -257,6 +257,8 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - The Websocket connection of ID ``<link_id>`` has received the data.
      * - +WS_CLOSED:<link_id>
        - The WebSocket connection of ID ``<link_id>`` is closed.
+     * - +BLESCANDONE
+       - Scan finished
 
   .. only:: esp32c3
 
