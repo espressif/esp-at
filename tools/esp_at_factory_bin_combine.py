@@ -59,7 +59,7 @@ def esp_at_combine_bin(module, flash_mode, flash_size, flash_speed, build_dir, d
         info = json.load(f)
         module_name = info['module']
 
-    factory_bin = os.path.join(build_dir, 'factory_' + module_name + '.bin')
+    factory_bin = os.path.join(build_dir, 'factory', 'factory_' + module_name + '.bin')
     with open(factory_bin, 'wb') as f:
         f.write(bin_data)
         print('Create {} for {} finished'.format(factory_bin, module_name))
