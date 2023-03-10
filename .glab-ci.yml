@@ -1,0 +1,65 @@
+# This configuration file is suitable for GitLab Community Edition 11.8.0, or around it.
+
+stages:
+  - build
+
+# global variables
+variables: &global-variables
+  IDF_PATH: "$CI_PROJECT_DIR/esp-idf"
+  GIT_STRATEGY: clone
+  GIT_SUBMODULE_STRATEGY: recursive
+  ESPCI_TOKEN: $GITLAB_KEY
+
+.esp_at_build_template:
+  stage: build
+  image: $CI_DOCKER_REGISTRY/esp-env-v5.0:2
+  tags:
+    - build
+  variables:
+    <<: *global-variables
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
+    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  artifacts:
+    name: esp-at-artifacts
+    paths:
+      - sdkconfig
+      - build/*.bin
+      - build/*.elf
+      - build/*.map
+      - build/bootloader/*.bin
+      - build/partition_table/*.bin
+      - build/customized_partitions/*.bin
+      - build/flasher_args.json
+      - build/download.config
+      - build/factory/*
+      - build/custom_ota_binaries/*
+    expire_in: 6 mos
+  only:
+    variables:
+      - $MODULE_CFG_DIR
+      - $MODULE_CFG_INFO
+
+customer_at_build:
+  extends: .esp_at_build_template
+  script:
+    - 'echo -e ${MODULE_CFG_INFO} > module_info.json'
+    - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/${MODULE_CFG_DIR}/IDF_VERSION
+    - mkdir build
+    - cp module_info.json build/module_info.json
+    - export HAS_IDF_PREREQUISITES=1
+    - ./build.py install
+    - rm -rf build && mkdir build
+    - mv module_info.json build/module_info.json
+
+    - source esp-idf/tools/ci/utils.sh
+    - source esp-idf/tools/ci/configure_ci_environment.sh
+    - esp-idf/tools/idf_tools.py install
+    - esp-idf/tools/idf_tools.py export
+
+    - export ESP_AT_PROJECT_BRANCH=${CI_COMMIT_REF_NAME}
+    - ./build.py build
