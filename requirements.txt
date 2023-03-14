@@ -7,5 +7,8 @@ setuptools>=21
 #
 
 cryptography>=2.1.4,<35
+
+# ESP-AT requirements
 pyyaml
 xlrd
+configparser
