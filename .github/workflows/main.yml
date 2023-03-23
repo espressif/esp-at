@@ -4,7 +4,13 @@ name: Build ESP-AT Project
 on: push
 
 jobs:
+  setup-secrets:
+    uses: ./.github/workflows/setup_secrets.yml
+    secrets: inherit
+
   build-esp32-wroom-at:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32_wroom == 'true'
     uses: ./.github/workflows/build_template_esp32.yml
     with:
       module_name: WROOM-32
@@ -12,6 +18,8 @@ jobs:
     secrets: inherit
 
   build-esp32-wrover-at:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32_wrover == 'true'
     uses: ./.github/workflows/build_template_esp32.yml
     with:
       module_name: WROVER-32
@@ -19,6 +27,8 @@ jobs:
     secrets: inherit
 
   build-esp32-pico-d4-at:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32_pico_d4 == 'true'
     uses: ./.github/workflows/build_template_esp32.yml
     with:
       module_name: PICO-D4
@@ -26,6 +36,8 @@ jobs:
     secrets: inherit
 
   build-esp32-solo-at:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32_solo_1 == 'true'
     uses: ./.github/workflows/build_template_esp32.yml
     with:
       module_name: SOLO-1
@@ -33,6 +45,8 @@ jobs:
     secrets: inherit
 
   build-esp32-d2wd-at:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32_wroom == 'true'
     uses: ./.github/workflows/build_template_esp32.yml
     with:
       module_name: ESP32-D2WD
@@ -40,6 +54,8 @@ jobs:
     secrets: inherit
 
   build-esp32-mini-1-at:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32_mini_1 == 'true'
     uses: ./.github/workflows/build_template_esp32.yml
     with:
       module_name: MINI-1
@@ -47,6 +63,8 @@ jobs:
     secrets: inherit
 
   build-esp32-sdio-at:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32_wroom == 'true'
     uses: ./.github/workflows/build_template_esp32.yml
     with:
       module_name: ESP32-SDIO
@@ -54,6 +72,8 @@ jobs:
     secrets: inherit
 
   build-esp32-at-all-function-test-without-bt:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32_wroom == 'true'
     uses: ./.github/workflows/build_template_esp32.yml
     with:
       module_name: WROVER-32
@@ -61,6 +81,8 @@ jobs:
     secrets: inherit
 
   build-esp32-at-all-function-test-just-bt:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32_wroom == 'true'
     uses: ./.github/workflows/build_template_esp32.yml
     with:
       module_name: WROVER-32
@@ -68,6 +90,8 @@ jobs:
     secrets: inherit
 
   build-esp32c3-mini-1-at:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32c3_mini == 'true'
     uses: ./.github/workflows/build_template_esp32c3.yml
     with:
       module_name: MINI-1
@@ -75,6 +99,8 @@ jobs:
     secrets: inherit
 
   build-esp32c3-spi-at:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32c3_mini == 'true'
     uses: ./.github/workflows/build_template_esp32c3.yml
     with:
       module_name: ESP32C3-SPI
@@ -82,6 +108,8 @@ jobs:
     secrets: inherit
 
   build-esp32c3-at-full-function-test:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32c3_mini == 'true'
     uses: ./.github/workflows/build_template_esp32c3.yml
     with:
       module_name: MINI-1
@@ -89,6 +117,8 @@ jobs:
     secrets: inherit
 
   build-esp32c3-rainmaker:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32c3_mini == 'true'
     uses: ./.github/workflows/build_template_esp32c3.yml
     with:
       module_name: ESP32C3_RAINMAKER
@@ -96,6 +126,8 @@ jobs:
     secrets: inherit
 
   build-esp32c2-4mb-at:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32c2_4mb == 'true'
     uses: ./.github/workflows/build_template_esp32c2.yml
     with:
       module_name: ESP32C2-4MB
@@ -103,6 +135,8 @@ jobs:
     secrets: inherit
 
   build-esp32c2-2mb-at:
+    needs: [setup-secrets]
+    if: needs.setup-secrets.outputs.ota_token_esp32c2_2mb == 'true'
     uses: ./.github/workflows/build_template_esp32c2.yml
     with:
       module_name: ESP32C2-2MB
