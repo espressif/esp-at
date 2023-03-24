@@ -501,14 +501,22 @@
 
    - 2：Light-sleep 模式
 
+     - 无 Wi-Fi 模式
+
+       - CPU 将自动进入睡眠，射频模块将关闭
+
      - 单 Wi-Fi 模式
 
        - CPU 将自动进入睡眠，射频模块也将根据 :ref:`AT+CWJAP <cmd-JAP>` 命令设置的 ``listen interval`` 参数定期关闭
 
-     - 单 BLE 模式
+     - 单 Bluetooth 模式
 
-       - 在 BLE 广播态下，CPU 将自动进入睡眠，射频模块也将根据广播间隔定期关闭
-       - 在 BLE 连接态下，CPU 将自动进入睡眠，射频模块也将根据连接间隔定期关闭
+       - 在 Bluetooth 广播态下，CPU 将自动进入睡眠，射频模块也将根据广播间隔定期关闭
+       - 在 Bluetooth 连接态下，CPU 将自动进入睡眠，射频模块也将根据连接间隔定期关闭
+
+     - Wi-Fi 和 Bluetooth 共存模式
+
+        - CPU 将自动进入睡眠，射频模块根据电源管理模块定期关闭
 
    - 3：Modem-sleep listen interval 模式
 

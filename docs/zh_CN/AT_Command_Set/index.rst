@@ -2,6 +2,8 @@
 AT 命令集
 **************
 
+{IDF_TARGET_VER: default="undefined", esp32="5.0", esp32c2="5.0", esp32c3="5.0"}
+
 :link_to_translation:`en:[English]`
 
 本章将具体介绍如何使用各类 AT 命令。
@@ -109,7 +111,7 @@ AT 命令分类
 其它一些命令的参数更改是否保存到 flash 可以通过 :ref:`AT+SYSSTORE <cmd-SYSSTORE>` 命令来配置，具体请参见命令的详细说明。
 
 .. note::
-  AT 命令里的参数保存，是通过 `NVS <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v4.3/{IDF_TARGET_PATH_NAME}/api-reference/storage/nvs_flash.html>`_ 库实现的。因此，如果命令配置相同的参数值，则不会写入 flash；如果命令配置不同的参数值，flash 也不会被频繁擦除。
+  AT 命令里的参数保存，是通过 `NVS <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-reference/storage/nvs_flash.html>`_ 库实现的。因此，如果命令配置相同的参数值，则不会写入 flash；如果命令配置不同的参数值，flash 也不会被频繁擦除。
 
 .. _at-messages:
 
@@ -204,7 +206,15 @@ AT 消息
      * - Recv ``<xxx>`` bytes
        - ESP-AT 从命令端口已接收到 ``<xxx>`` 字节
      * - +IPD
-       - ESP-AT 在非透传模式下，已收到来自网络的数据
+       - ESP-AT 在非透传模式下，已收到来自网络的数据。有以下的消息格式：
+
+         - 如果 AT+CIPMUX=0，AT+CIPRECVMODE=1，打印：``+IPD,<length>``
+         - 如果 AT+CIPMUX=1，AT+CIPRECVMODE=1，打印：``+IPD,<link_id>,<length>``
+         - 如果 AT+CIPMUX=0，AT+CIPRECVMODE=0，AT+CIPDINFO=0，打印：``+IPD,<length>:<data>``
+         - 如果 AT+CIPMUX=1，AT+CIPRECVMODE=0，AT+CIPDINFO=0，打印：``+IPD,<link_id>,<length>:<data>``
+         - 如果 AT+CIPMUX=0，AT+CIPRECVMODE=0，AT+CIPDINFO=1，打印：``+IPD,<length>,<"remote_ip">,<remote_port>:<data>``
+         - 如果 AT+CIPMUX=1，AT+CIPRECVMODE=0，AT+CIPDINFO=1，打印：``+IPD,<link_id>,<length>,<"remote_ip">,<remote_port>:<data>``
+
      * - :term:`透传模式` 下的数据
        - ESP-AT 在透传模式下，已收到来自网络或蓝牙的数据
      * - SEND Canceled
@@ -219,6 +229,8 @@ AT 消息
        - 在自定义分区中没有找到有效的私钥
      * - NO CA FOUND
        - 在自定义分区中没有找到有效的 CA 证书
+     * - +TIME_UPDATED
+       - 系统时间已更新。只在发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令后或者掉电重启后，系统从 SNTP 服务器获取到新的时间，才会打印此消息。
      * - +MQTTCONNECTED
        - MQTT 已连接到 broker
      * - +MQTTDISCONNECTED

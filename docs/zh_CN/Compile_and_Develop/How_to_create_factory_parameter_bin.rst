@@ -4,6 +4,7 @@
 {IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="ESP32C2-4MB", esp32c3="MINI-1"}
 {IDF_TARGET_AT_PARAMS_ADDR: default="undefined", esp32="0x30000", esp32c2="0x2B000", esp32c3="0x31000"}
 {IDF_TARGET_INDEX: default="undefined", esp32="1", esp32c2="2", esp32c3="3"}
+{IDF_TARGET_VER: default="undefined", esp32="5.0", esp32c2="5.0", esp32c3="5.0"}
 
 :link_to_translation:`en:[English]`
 
@@ -42,7 +43,7 @@ factory_param_type.csv 表列出了您可以定义的所有参数，以及每个
    * - reserved1
      - 保留。
    * - tx_max_power
-     - {IDF_TARGET_NAME} 的 Wi-Fi 最大发射功率：[40,84]，详情请见 `{IDF_TARGET_NAME} 发射功率 <https://docs.espressif.com/projects/esp-idf/en/release-v4.3/{IDF_TARGET_PATH_NAME}/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t>`_ 设置范围。
+     - {IDF_TARGET_NAME} 的 Wi-Fi 最大发射功率：[40,84]，详情请见 `{IDF_TARGET_NAME} 发射功率 <https://docs.espressif.com/projects/esp-idf/en/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t>`_ 设置范围。
    * - uart_port
      - 用于发送 AT 命令和接收 AT 响应的 UART 端口。
    * - start_channel

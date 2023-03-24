@@ -1168,6 +1168,7 @@ Notes
 ^^^^^
 
 -  The configuration changes will NOT be saved in flash.
+-  After the {IDF_TARGET_NAME} enters the Wi-Fi :term:`Passthrough Receiving Mode`, no Bluetooth function can be used.
 
 Example
 ^^^^^^^^
