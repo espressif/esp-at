@@ -160,7 +160,7 @@ esp32_wroom_at:
     - .esp_at_build_template
   script:
     - export MODULE_CFG_DIR=module_esp32_default
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROOM-32\", \"description\": \"\",\"silence\": 1}" > module_info.json'
     - *execute_script_esp32
 
 esp32_wrover_at:
@@ -176,7 +176,7 @@ esp32_pico_d4_at:
     - .esp_at_build_template
   script:
     - export MODULE_CFG_DIR=module_esp32_default
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"PICO-D4\", \"description\": \"\",\"silence\": 1}" > module_info.json'
     - *execute_script_esp32
 
 esp32_solo_1_at:
@@ -184,7 +184,7 @@ esp32_solo_1_at:
     - .esp_at_build_template
   script:
     - export MODULE_CFG_DIR=module_esp32_default
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"SOLO-1\", \"description\": \"\",\"silence\": 1}" > module_info.json'
     - *execute_script_esp32
 
 esp32-d2wd_at:
@@ -192,7 +192,7 @@ esp32-d2wd_at:
     - .esp_at_build_template
   script:
     - export MODULE_CFG_DIR=module_esp32-d2wd
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-D2WD\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-D2WD\", \"description\": \"\",\"silence\": 1}" > module_info.json'
     - *execute_script_esp32
 
 esp32_mini_1_at:
@@ -200,7 +200,7 @@ esp32_mini_1_at:
     - .esp_at_build_template
   script:
     - export MODULE_CFG_DIR=module_esp32_default
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 1}" > module_info.json'
     - *execute_script_esp32
 
 esp32_sdio_at:
@@ -208,7 +208,7 @@ esp32_sdio_at:
     - .esp_at_build_template
   script:
     - export MODULE_CFG_DIR=module_esp32-sdio
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-SDIO\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"ESP32-SDIO\", \"description\": \"\",\"silence\": 1}" > module_info.json'
     - *execute_script_esp32
 
 esp32_at_all_function_test_without_bt:
@@ -288,7 +288,7 @@ esp32_ethernet_at:
     - sed -i '/ota_0/s/'$old_size_str'/'$new_size_str'/g' module_config/module_wrover-32/partitions_at.csv
 
     - export MODULE_CFG_DIR=module_wrover-32
-    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 1}" > module_info.json'
     - *execute_script_esp32
 
 esp32c3_mini_1_at:
