@@ -34,6 +34,11 @@ def gitee_repo_preprocess():
     print('Redirect IDF url to https://gitee.com/EspressifSystems')
     return 'https://gitee.com/EspressifSystems'
 
+def ESP_LOGI(x):
+    print('\033[32m{}\033[0m'.format(x))
+
+def ESP_LOGE(x):
+    print('\033[31m{}\033[0m'.format(x))
 
 def gitee_repo_postprocess():
     print('IDF is Cloned from https://gitee.com/EspressifSystems')
@@ -147,6 +152,18 @@ def auto_update_idf(platform_name, module_name):
             raise Exception("git submodule update failed")
         print('Update completed')
 
+def at_patch_if_config(platform, module):
+    config_dir = os.path.join(os.getcwd(), 'module_config', 'module_{}'.format(module.lower()))
+    if not os.path.exists(config_dir):
+        config_dir = os.path.join(os.getcwd(), 'module_config',  'module_{}_default'.format(platform.lower()))
+
+    fabspath = os.path.join(config_dir, 'patch.py')
+    if os.path.exists(fabspath):
+        cmd = 'python {}'.format(fabspath)
+        if subprocess.call(cmd, shell = True):
+            raise Exception('apply patch {} failed'.format(fabspath))
+
+    ESP_LOGI('patches check completed for updates.')
 
 def build_project(platform_name, module_name, silence, build_args):
     if platform_name == 'ESP32':
@@ -367,6 +384,9 @@ def main():
     build_args = ' '.join(argv)
 
     auto_update_idf(platform_name, module_name)
+
+    # apply possible patches to source code
+    at_patch_if_config(platform_name, module_name)
 
     build_project(platform_name, module_name, silence, build_args)
 
