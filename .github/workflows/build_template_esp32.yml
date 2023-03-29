@@ -34,11 +34,7 @@ jobs:
     - name: Configure prerequisites
       run: |
         # set module information
-        if ${{ inputs.artifacts_name == 'esp32-wrover-at' }}; then
-          silence_mode=1
-        else
-          silence_mode=0
-        fi
+        silence_mode=1
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"${{ inputs.module_name }}\", \"silence\": ${silence_mode}}" > build/module_info.json
 
