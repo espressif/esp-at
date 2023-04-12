@@ -174,7 +174,12 @@ Index of Abbreviations
       Multicast Domain Name System
       
       多播 DNS
-    
+
+    manufacturing nvs
+      Manufacturing Non-Volatile Storage. ``manufacturing nvs`` stores all certificates, private keys, GATTS data, module information, Wi-Fi configurations, UART configurations, etc. The default values of these configurations are defined in :component:`raw_data <customized_partitions/raw_data>`. These configurations are finally built into the ``mfg_nvs.bin`` file and downloaded to the flash at the address defined in ``at_customize.csv``.
+
+      一个适用于量产的 NVS。manufacturing nvs 中存储了 AT 固件默认所用到的所有证书、私钥、GATTS 数据、模组信息、Wi-Fi 配置、UART 配置等。这些配置信息，默认值在 :component:`raw_data <customized_partitions/raw_data>` 里，最终生成了 ``mfg_nvs.bin``，烧录到 ``at_customize.csv`` 中定义的位置。
+
     MSB
       Most Significant Bit
       

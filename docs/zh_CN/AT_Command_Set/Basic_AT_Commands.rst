@@ -20,6 +20,7 @@
   - :ref:`AT+SYSRAM <cmd-SYSRAM>`：查询当前剩余堆空间和最小堆空间
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`：查询/设置系统提示信息
   - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`：查询或读写 flash 用户分区
+  - :ref:`AT+SYSMFG <cmd-SYSMFG>`：查询或读写 :term:`manufacturing nvs` 用户分区
   - :ref:`AT+FS <cmd-FS>`：文件系统操作
   - :ref:`AT+FSMOUNT <cmd-FSMOUNT>`：挂载/卸载文件系统
   - :ref:`AT+RFPOWER <cmd-RFPOWER>`：查询/设置 RF TX Power
@@ -774,6 +775,221 @@
 
     // 从 "ble_data" 分区偏移地址 4096 处擦除 8192 字节
     AT+SYSFLASH=0,"ble_data",4096,8192
+
+.. _cmd-SYSMFG:
+
+:ref:`AT+SYSMFG <Basic-AT>`：查询或读写 :term:`manufacturing nvs` 用户分区
+--------------------------------------------------------------------------------
+
+查询命令
+^^^^^^^^
+
+**功能：**
+
+查询 manufacturing nvs 用户分区内的命名空间 (namespace)
+
+**命令：**
+
+::
+
+    AT+SYSMFG?
+
+**响应：**
+
+::
+
+    +SYSMFG:<"namespace">
+
+    OK
+
+擦除命名空间或键值对
+^^^^^^^^^^^^^^^^^^^^^^^
+
+设置命令
+"""""""""
+
+**命令：**
+
+::
+
+    AT+SYSMFG=<operation>,<"namespace">[,<"key">]
+
+**响应：**
+
+::
+
+    OK
+
+参数
+"""""
+
+- **<operation>**：
+
+   - 0：擦除操作
+   - 1：读取操作
+   - 2：写入操作
+
+- **<"namespace">**：命名空间。
+- **<"key">**：主键，或称为键。当 ``<"key">`` 缺省时，擦除 ``<"namespace">`` 内所有的键值对；否则只擦除当前指定的 ``<"key">`` 的键值对。
+
+说明
+^^^^
+- 请先阅读 `非易失性存储 (NVS) <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/storage/nvs_flash.html>`_，了解命名空间、键值对的概念。
+
+示例
+"""""
+
+::
+
+    // 擦除 client_cert 命名空间内所有的键值对（即：擦除默认的第 0 套和第 1 套客户端证书）
+    AT+SYSMFG=0,"client_cert"
+
+    // 擦除 client_cert 命名空间内的 client_cert.0 键值对（即：擦除默认的第 0 套客户端证书）
+    AT+SYSMFG=0,"client_cert","client_cert.0"
+
+读取命名空间或键值对
+^^^^^^^^^^^^^^^^^^^^^^^
+
+设置命令
+"""""""""""
+
+**命令：**
+
+::
+
+    AT+SYSMFG=<operation>[,<"namespace">][,<"key">][,<offset>,<length>]
+
+**响应：**
+
+当 ``<"namespace">`` 以及之后参数缺省时，返回：
+
+::
+
+    +SYSMFG:<"namespace">
+
+    OK
+
+当 ``<"key">`` 以及之后参数缺省时，返回：
+
+::
+
+    +SYSMFG:<"namespace">,<"key">,<type>
+
+    OK
+
+其余情况，返回：
+
+::
+
+    +SYSMFG:<"namespace">,<"key">,<type>,<length>,<value>
+
+    OK
+
+参数
+"""""
+
+- **<operation>**：
+
+   - 0：擦除操作
+   - 1：读取操作
+   - 2：写入操作
+
+- **<"namespace">**：命名空间。
+- **<"key">**：主键，或称为键。
+- **<offset>**：键值的偏移。
+- **<length>**：键值的长度。
+- **<type>**：键值的类型。
+
+  - 1：u8
+  - 2：i8
+  - 3：u16
+  - 4：i16
+  - 5：u32
+  - 6：i32
+  - 7：string
+  - 8：binary
+
+- **<value>**：键值的数据。
+
+说明
+^^^^
+- 请先阅读 `非易失性存储 (NVS) <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/storage/nvs_flash.html>`_，了解命名空间、键值对的概念。
+
+示例
+"""""
+
+::
+
+    // 读取当前所有的命名空间
+    AT+SYSMFG=1
+
+    // 读取 client_cert 命名空间内所有的主键
+    AT+SYSMFG=1,"client_cert"
+
+    // 读取 client_cert 命名空间内的 client_cert.0 主键的值
+    AT+SYSMFG=1,"client_cert","client_cert.0"
+
+    // 读取 client_cert 命名空间内的 client_cert.0 主键的值，从偏移 100 的位置读取 200 字节
+    AT+SYSMFG=1,"client_cert","client_cert.0",100,200
+
+向命名空间内写入键值对
+^^^^^^^^^^^^^^^^^^^^^^^
+
+设置命令
+"""""""""
+
+**命令：**
+
+::
+
+    AT+SYSMFG=<operation>,<"namespace">,<"key">,<type>,<value>
+
+**响应：**
+
+::
+
+    OK
+
+参数
+"""""
+
+- **<operation>**：
+
+   - 0：擦除操作
+   - 1：读取操作
+   - 2：写入操作
+
+- **<"namespace">**：命名空间。
+- **<"key">**：主键，或称为键。
+- **<type>**：键值的类型。
+
+  - 1：u8
+  - 2：i8
+  - 3：u16
+  - 4：i16
+  - 5：u32
+  - 6：i32
+  - 7：string
+  - 8：binary
+
+- **<value>**：参数 ``<type>`` 不同，则此参数意义不同：
+
+  - 如果 ``<type>`` 是 1-6，``<value>`` 代表键值的数据。
+  - 如果 ``<type>`` 是 7-8，``<value>`` 代表键值的数据的长度。在您发送完此条命令后，AT 返回 ``>``，表示 AT 已准备好接收串行数据，此时您可以输入数据，当 AT 接收到的数据长度达到 ``<value>`` 后，则立即向命名空间内写入键值对。
+
+说明
+^^^^
+- 请先阅读 `非易失性存储 (NVS) <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/storage/nvs_flash.html>`_，了解命名空间、键值对的概念。
+
+示例
+"""""
+
+::
+
+    // 向 client_cert 命名空间内的 client_cert.0 键写入新的值 (即：更新 client_cert 命名空间内的第 0 套客户端证书)
+    AT+SYSMFG=2,"client_cert","client_cert.0",8,1164
+
+    // 等待串口返回 > 后，写入 1164 字节的证书文件
 
 .. _cmd-FS:
 

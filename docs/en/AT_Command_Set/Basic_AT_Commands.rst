@@ -20,6 +20,7 @@ Basic AT Commands
   - :ref:`AT+SYSRAM <cmd-SYSRAM>`: Query current remaining heap size and minimum heap size.
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`: Query/Set System Prompt Information.
   - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`: Query/Set User Partitions in Flash.
+  - :ref:`AT+SYSMFG <cmd-SYSMFG>`: Query/Set :term:`manufacturing nvs` User Partitions.
   - :ref:`AT+FS <cmd-FS>`: Filesystem Operations.
   - :ref:`AT+FSMOUNT <cmd-FSMOUNT>`: Mount/Unmount Filesystem.
   - :ref:`AT+RFPOWER <cmd-RFPOWER>`: Query/Set RF TX Power.
@@ -774,6 +775,221 @@ Example
 
     // erase 8192 bytes from the "ble_data" partition offset 4096.
     AT+SYSFLASH=0,"ble_data",4096,8192
+
+.. _cmd-SYSMFG:
+
+:ref:`AT+SYSMFG <Basic-AT>`: Query/Set :term:`manufacturing nvs` User Partitions
+--------------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Function:**
+
+Query all namespaces of :term:`manufacturing nvs` user partitions.
+
+**Command:**
+
+::
+
+    AT+SYSMFG?
+
+**Response:**
+
+::
+
+    +SYSMFG:<"namespace">
+
+    OK
+
+Erase a namespace or key-value pair
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Set Command
+"""""""""""
+
+**Command:**
+
+::
+
+    AT+SYSMFG=<operation>,<"namespace">[,<"key">]
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+"""""""""""
+
+- **<operation>**:
+
+   - 0: erase operation
+   - 1: read operation
+   - 2: write operation
+
+- **<"namespace">**: namespace name.
+- **<"key">**: key name. If this parameter is omitted, all key-value pairs of current ``<"namespace">`` will be erased. Otherwise, only the current key-value pair is erased.
+
+Note
+^^^^
+- Please refer to the `Non-Volatile Storage (NVS) <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/nvs_flash.html>`_ documentation to understand the concept of namespace and key-value pairs.
+
+Example
+"""""""
+
+::
+
+    // Erase all key-value pairs of client_cert namespace (That is, erase all client certificates)
+    AT+SYSMFG=0,"client_cert"
+
+    // Erase the client_cert.0 key-value pair of client_cert namespace (That is, erase the first client certificate)
+    AT+SYSMFG=0,"client_cert","client_cert.0"
+
+Read a namespace or key-value pair
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Set Command
+"""""""""""
+
+**Command:**
+
+::
+
+    AT+SYSMFG=<operation>[,<"namespace">][,<"key">][,<offset>,<length>]
+
+**Response:**
+
+When ``<"namespace">`` and subsequent parameters are omitted, it returns:
+
+::
+
+    +SYSMFG:<"namespace">
+
+    OK
+
+When ``<"key">`` and subsequent parameters are omitted, it returns:
+
+::
+
+    +SYSMFG:<"namespace">,<"key">,<type>
+
+    OK
+
+In other cases, it returns:
+
+::
+
+    +SYSMFG:<"namespace">,<"key">,<type>,<length>,<value>
+
+    OK
+
+Parameters
+""""""""""
+
+- **<operation>**:
+
+   - 0: erase operation
+   - 1: read operation
+   - 2: write operation
+
+- **<"namespace">**: namespace name.
+- **<"key">**: key name.
+- **<offset>**: The offset of the value.
+- **<length>**: The length of the value.
+- **<type>**: The type of the value.
+
+  - 1: u8
+  - 2: i8
+  - 3: u16
+  - 4: i16
+  - 5: u32
+  - 6: i32
+  - 7: string
+  - 8: binary
+
+- **<value>**: The data of the value.
+
+Note
+^^^^
+- Please refer to the `Non-Volatile Storage (NVS) <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/nvs_flash.html>`_ documentation to understand the concept of namespace and key-value pairs.
+
+Example
+"""""""
+
+::
+
+    // Read all namespaces
+    AT+SYSMFG=1
+
+    // Read all key-value pairs of client_cert namespace
+    AT+SYSMFG=1,"client_cert"
+
+    // Read the value of client_cert.0 key in client_cert namespace
+    AT+SYSMFG=1,"client_cert","client_cert.0"
+
+    // Read the value of client_cert.0 key in client_cert namespace, from offset: 100 place, read 200 bytes
+    AT+SYSMFG=1,"client_cert","client_cert.0",100,200
+
+Write a key-value pair to a namespace
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Set Command
+"""""""""""
+
+**Command:**
+
+::
+
+    AT+SYSMFG=<operation>,<"namespace">,<"key">,<type>,<value>
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+""""""""""
+
+- **<operation>**:
+
+   - 0: erase operation
+   - 1: read operation
+   - 2: write operation
+
+- **<"namespace">**: namespace name.
+- **<"key">**: key name.
+- **<type>**: The type of the value.
+
+  - 1: u8
+  - 2: i8
+  - 3: u16
+  - 4: i16
+  - 5: u32
+  - 6: i32
+  - 7: string
+  - 8: binary
+
+- **<value>**: It means differently depending on the parameter ``<type>``:
+
+  - If ``<type>`` is between 1-6, ``<value>`` represents the real value.
+  - If ``<type>`` is between 7-8, ``<value>`` represents the length of the value. After you send the command, AT will return ``>``. This symbol indicates that AT is ready for receiving data. You should enter the data of designated length. When the data length reaches the ``<value>`` value, the key-value pair will be written to the namespace immediately.
+
+Note
+^^^^
+- Please refer to the `Non-Volatile Storage (NVS) <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/nvs_flash.html>`_ documentation to understand the concept of namespace and key-value pairs.
+
+Example
+"""""""
+
+::
+
+    // Write a new value for client_cert.0 key into client_cert namespace (That is, update the 0th client certificate)
+    AT+SYSMFG=2,"client_cert","client_cert.0",8,1164
+
+    // Wait until AT command port returns ``>``, and then write 1164 bytes
 
 .. _cmd-FS:
 
