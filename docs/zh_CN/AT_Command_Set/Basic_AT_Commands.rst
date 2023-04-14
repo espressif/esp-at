@@ -20,6 +20,8 @@
   - :ref:`AT+SLEEP <cmd-SLEEP>`：设置 sleep 模式
   - :ref:`AT+SYSRAM <cmd-SYSRAM>`：查询当前剩余堆空间和最小堆空间
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`：查询/设置系统提示信息
+  - :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>`：启用或禁用 :term:`系统消息` 过滤
+  - :ref:`AT+SYSMSGFILTERCFG <cmd-SYSMSGFILTERCFG>`：查询/配置 :term:`系统消息` 的过滤器
   - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`：查询或读写 flash 用户分区
   - :ref:`AT+SYSMFG <cmd-SYSMFG>`：查询或读写 :term:`manufacturing nvs` 用户分区
   - :ref:`AT+FS <cmd-FS>`：文件系统操作
@@ -791,7 +793,7 @@
 
 **功能：**
 
-设置系统提示信息
+设置系统提示信息。如果您需要更加精细的管理 AT 消息，请使用 :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>` 命令。
 
 **命令：**
 
@@ -866,6 +868,301 @@
 
     // 透传模式下，Wi-Fi、socket、Bluetooth LE 或 Bluetooth 状态改变时会打印提示信息 
     AT+SYSMSG=4
+
+.. _cmd-SYSMSGFILTER:
+
+:ref:`AT+SYSMSGFILTER <Basic-AT>`：启用或禁用 :term:`系统消息` 过滤
+--------------------------------------------------------------------
+
+查询命令
+^^^^^^^^
+
+**功能：**
+
+查询当前系统信息过滤的状态
+
+**命令：**
+
+::
+
+    AT+SYSMSGFILTER?
+
+**响应：**
+
+::
+
+    +SYSMSGFILTER:<enable>
+
+    OK
+
+设置命令
+^^^^^^^^
+
+**功能：**
+
+启用或禁用系统消息过滤
+
+**命令：**
+
+::
+
+    AT+SYSMSGFILTER=<enable>
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+- **<enable>**：
+
+    - 0：禁用系统消息过滤。系统默认值。禁用后，系统消息不会被设置的过滤器过滤。
+    - 1：启用系统消息过滤。开启后，系统消息被正则表达式匹配上的数据会被 AT 过滤掉，MCU 不会收到；而未被正则表达式匹配上的数据，会原样发往 MCU。
+
+说明
+^^^^
+
+- 请先使用 :ref:`AT+SYSMSGFILTERCFG <cmd-SYSMSGFILTERCFG>` 命令配置有效的过滤器，再通过本命令启用或禁用系统消息过滤，实现更加精细的系统消息管理。
+- 请谨慎使用 :ref:`AT+SYSMSGFILTER=1 <cmd-SYSMSGFILTER>` 命令，建议您开启系统消息过滤后要及时禁用，防止 AT 的系统消息被过度过滤。
+- 在进入 :term:`透传模式` 前，强烈建议使用 :ref:`AT+SYSMSGFILTER=0 <cmd-SYSMSGFILTER>` 命令，禁用系统消息过滤。
+- 如果您基于 AT 工程二次开发，请使用如下的 APIs 实现 AT 命令口的数据发送。
+
+::
+
+    // 原生的 AT 命令口的数据发送。数据不会被 AT+SYSMSGFILTER 命令过滤，发送数据前也不会唤醒 MCU（AT+USERWKMCUCFG 命令设置的 MCU 唤醒功能）。
+    int32_t esp_at_port_write_data_without_filter(uint8_t data, int32_t len);
+
+    // 具有过滤功能的 AT 命令口的数据发送。数据会被 AT+SYSMSGFILTER 命令过滤（如果启用），发送数据前不会唤醒 MCU（AT+USERWKMCUCFG 命令设置的 MCU 唤醒功能）。
+    int32_t esp_at_port_write_data(uint8_t data, int32_t len);
+
+    // 具有唤醒 MCU 功能的 AT 命令口的数据发送。数据不会被 AT+SYSMSGFILTER 命令过滤，发送数据前会唤醒 MCU（AT+USERWKMCUCFG 命令设置的 MCU 唤醒功能）。
+    int32_t esp_at_port_active_write_data_without_filter(uint8_t data, int32_t len);
+
+    // 同时具有唤醒 MCU 功能和过滤功能的 AT 命令口的数据发送。数据会被 AT+SYSMSGFILTER 命令过滤（如果启用），发送数据前会唤醒 MCU（AT+USERWKMCUCFG 命令设置的 MCU 唤醒功能）。
+    int32_t esp_at_port_active_write_data(uint8_t data, int32_t len);
+
+示例
+""""""
+
+详细示例参考： :ref:`系统消息过滤示例 <example-sysmfgfilter>`。
+
+.. _cmd-SYSMSGFILTERCFG:
+
+:ref:`AT+SYSMSGFILTERCFG <Basic-AT>`：查询/配置 :term:`系统消息` 的过滤器
+-------------------------------------------------------------------------
+
+* :ref:`sysmsgfiltercfg-query`
+* :ref:`sysmsgfiltercfg-clear`
+* :ref:`sysmsgfiltercfg-add`
+* :ref:`sysmsgfiltercfg-delete`
+
+.. _sysmsgfiltercfg-query:
+
+查询过滤器
+^^^^^^^^^^^^^^^^^
+
+查询命令
+""""""""""""""
+
+**命令：**
+
+::
+
+    AT+SYSMSGFILTERCFG?
+
+**响应：**
+
+::
+
+    +SYSMSGFILTERCFG:<index>,"<head_regexp>","<tail_regexp>"
+
+    OK
+
+参数
+""""""""""""""
+
+- **<index>**：过滤器的索引。
+- **<"head_regexp">**：头部正则表达式。
+- **<"tail_regexp">**：尾部正则表达式。
+
+.. _sysmsgfiltercfg-clear:
+
+清除所有过滤器
+^^^^^^^^^^^^^^^^^^^
+
+设置命令
+""""""""""""""
+
+**命令：**
+
+::
+
+    AT+SYSMSGFILTERCFG=<operator>
+
+**响应：**
+
+::
+
+    OK
+
+参数
+""""""""""""""
+
+- **<operator>**：
+
+    - 0：清除所有过滤器。清除后，可以释放一些过滤器所占用的堆空间大小。
+
+示例
+""""""
+
+::
+
+    // 清除所有过滤器
+    AT+SYSMSGFILTERCFG=0
+
+.. _sysmsgfiltercfg-add:
+
+增加一个过滤器
+^^^^^^^^^^^^^^^^^^^
+
+设置命令
+""""""""""""""
+
+**命令：**
+
+::
+
+    AT+SYSMSGFILTERCFG=<operator>,<head_regexp_len>,<tail_regexp_len>
+
+**响应：**
+
+::
+
+    OK
+
+    >
+
+上述响应表示 AT 已准备好接收 AT 命令口的数据，此时您可以输入数据（即：头部正则表达式和尾部正则表达式），当 AT 接收到的数据长度达到 ``<head_regexp_len>`` + ``<tail_regexp_len>`` 后，进行正则表达式完整性校验。
+
+如果正则表达式完整性校验失败或添加过滤器失败，返回：
+
+::
+
+    ERROR
+
+如果正则表达式完整性校验成功且添加过滤器成功，返回：
+
+::
+
+    OK
+
+参数
+""""""""""""""
+
+- **<operator>**：
+
+    - 1：增加一个过滤器。一个过滤器包含头部正则表达式和尾部正则表达式。
+
+- **<head_regexp_len>**：头部正则表达式长度。范围：[0,64]。如果设置为 0，代表忽略头部正则表达式的匹配，同时 ``<tail_regexp_len>`` 不能为 0。
+- **<tail_regexp_len>**：尾部正则表达式长度。范围：[0,64]。如果设置为 0，代表忽略尾部正则表达式的匹配，同时 ``<head_regexp_len>`` 不能为 0。
+
+说明
+""""""
+
+- 请先使用本命令配置有效的过滤器，再通过 :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>` 命令启用或禁用系统消息过滤，实现更加精细的系统消息管理。
+- 头部和尾部正则表达式格式参考 `POSIX 基本正则语法（BRE） <https://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended>`_。
+- 为了避免 :term:`系统消息` (AT 命令口的 TX 数据) 被错误过滤，**强烈建议** 头部正则表达式以 ``^`` 开头，尾部正则表达式以 ``$`` 结束。
+- 只有系统消息 **同时匹配** 上头部正则表达式和尾部正则表达式时，系统消息才会被过滤。过滤后，系统消息被正则表达式匹配上的数据会被 AT 过滤掉，MCU 不会收到；而未被正则表达式匹配上的数据，会原样发往 MCU。
+- 当系统消息匹配到一个过滤器后，不会再继续匹配其它的过滤器。
+- 系统消息匹配过滤器时，系统消息不会缓存，即不会将上一条的系统消息和本条系统消息合在一起，进行匹配。
+- 对于吞吐量较大的设备，强烈建议您设置较少的过滤器，同时及时通过 :ref:`AT+SYSMSGFILTER=0 <cmd-SYSMSGFILTER>` 命令禁用系统消息过滤。
+
+示例
+""""""
+
+::
+
+    // 设置过滤器，过滤掉 "WIFI CONNECTED" 系统消息报告
+    AT+SYSMSGFILTERCFG=1,17,0
+    // 等待命令返回 OK 和 > 后，输入 ^WIFI CONNECTED\r\n（注意 \r\n 占用 2 个字节，对应 ASCII 码中的 0D 0A）
+
+    // 开启系统消息过滤
+    AT+SYSMSGFILTER=1
+
+    // 测试过滤功能
+    AT+CWMODE=1
+    AT+CWJAP="ssid","password"
+    // AT 不再输出 WIFI CONNECTED 系统消息报告
+
+详细示例参考：:ref:`系统消息过滤示例 <example-sysmfgfilter>`。
+
+.. _sysmsgfiltercfg-delete:
+
+删除一个过滤器
+^^^^^^^^^^^^^^^^^^^
+
+设置命令
+""""""""""""""
+
+**命令：**
+
+::
+
+    AT+SYSMSGFILTERCFG=<operator>,<head_regexp_len>,<tail_regexp_len>
+
+**响应：**
+
+::
+
+    OK
+
+    >
+
+上述响应表示 AT 已准备好接收 AT 命令口的数据，此时您可以输入数据（即：头部正则表达式和尾部正则表达式），当 AT 接收到的数据长度达到 ``<head_regexp_len>`` + ``<tail_regexp_len>`` 后，进行正则表达式完整性校验。
+
+如果正则表达式完整性校验失败或删除过滤器失败，返回：
+
+::
+
+    ERROR
+
+如果正则表达式完整性校验成功且删除过滤器成功，返回：
+
+::
+
+    OK
+
+参数
+""""""""""""""
+
+- **<operator>**：
+
+    - 2：删除一个过滤器。
+
+- **<head_regexp_len>**：头部正则表达式长度。范围：[0,64]。如果设置为 0，则 ``<tail_regexp_len>`` 不能为 0。
+- **<tail_regexp_len>**：尾部正则表达式长度。范围：[0,64]。如果设置为 0，则 ``<head_regexp_len>`` 不能为 0。
+
+说明
+""""""
+
+- 待删除的过滤器应在已增加的过滤器中。
+
+示例
+""""""
+
+::
+
+    // 删除上述添加的过滤器
+    AT+SYSMSGFILTERCFG=2,17,0
+    // 等待命令返回 OK 和 > 后，输入 ^WIFI CONNECTED\r\n（注意 \r\n 占用 2 个字节，对应 ASCII 码中的 0D 0A）
+
+    // 测试功能
+    AT+CWMODE=1
+    AT+CWJAP="ssid","password"
+    // AT 会输出 WIFI CONNECTED 系统消息报告
 
 .. _cmd-SYSFLASH:
 

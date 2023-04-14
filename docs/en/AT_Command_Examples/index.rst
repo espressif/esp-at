@@ -7,6 +7,7 @@ AT Command Examples
 .. toctree::
    :maxdepth: 1
 
+   AT Response Message Format Control Examples <at_msg_resp_fmt_ctrl_examples>
    TCP-IP AT Examples <TCP-IP_AT_Examples>
    :esp32 or esp32c3: Bluetooth® Low Engergy AT Examples <bluetooth_le_at_examples>
    MQTT AT Examples <MQTT_AT_Examples>
