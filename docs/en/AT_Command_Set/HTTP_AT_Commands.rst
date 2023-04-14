@@ -11,6 +11,7 @@ HTTP AT Commands
 -  :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>`: Post HTTP data of specified length
 -  :ref:`AT+HTTPCPUT <cmd-HTTPCPUT>`: Put HTTP data of specified length
 -  :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>`: Set/Get long HTTP URL
+-  :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>`: Set/Query HTTP request headers
 -  :ref:`HTTP AT Error Codes <cmd-HTTPErrCode>`
 
 .. _cmd-HTTPCLIENT:
@@ -68,7 +69,7 @@ Notes
 ^^^^^
 -  If the length of the entire command containing the URL exceeds 256 bytes, please use the :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command to preset the URL first, and then set the ``<"url">`` parameter of this command to ``""``.
 -  If the ``url`` parameter is not null, HTTP client will use it and ignore the ``host`` parameter and ``path`` parameter; If the ``url`` parameter is omited or null string, HTTP client will use ``host`` parameter and ``path`` parameter.
--  In some released firmware, HTTP client commands are not supported (see :doc:`../Compile_and_Develop/esp-at_firmware_differences`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support`` and build the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
+-  To set more HTTP request headers, use the :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` command.
 
 Example
 ^^^^^^^^
@@ -119,7 +120,7 @@ Note
 ^^^^^
 
 -  If the length of the entire command containing the URL exceeds 256 bytes, please use the :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command to preset the URL first, and then set the ``<"url">`` parameter of this command to ``""``.
--  In some released firmware, HTTP client commands are not supported (see :doc:`../Compile_and_Develop/esp-at_firmware_differences`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support`` and build the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
+-  To set HTTP request headers, use the :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` command to set them.
 
 Example
 ^^^^^^^^
@@ -160,6 +161,7 @@ Note
 ^^^^^
 
 - If the length of the entire command containing the URL exceeds 256 bytes, please use the :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command to preset the URL first, and then set the ``<"url">`` parameter of this command to ``""``.
+- To set HTTP request headers, use the :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` command to set them.
 
 .. _cmd-HTTPCPOST:
 
@@ -208,6 +210,7 @@ Note
 ^^^^^
 
 - If the length of the entire command containing the URL exceeds 256 bytes, please use the :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command to preset the URL first, and then set the ``<"url">`` parameter of this command to ``""``.
+- To set HTTP request headers, use the :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` command to set them.
 
 .. _cmd-HTTPCPUT:
 
@@ -256,6 +259,7 @@ Note
 ^^^^^
 
 - If the length of the entire command containing the URL exceeds 256 bytes, please use the :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command to preset the URL first, and then set the ``<"url">`` parameter of this command to ``""``.
+- To set HTTP request headers, use the :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` command to set them.
 
 .. _cmd-HTTPURLCFG:
 
@@ -309,6 +313,81 @@ Parameters
   - [8,8192]: set the HTTP URL configuration.
 
 - **<data>**: HTTP URL data.
+
+.. _cmd-HTTPCHEAD:
+
+:ref:`AT+HTTPCHEAD <HTTP-AT>`: Set/Query HTTP Request Headers
+-------------------------------------------------------------
+
+Query command
+^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+HTTPCHEAD?
+
+**Response:**
+
+::
+
+    +HTTPCHEAD:<index>,<"req_header">
+
+    OK
+
+Set command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+HTTPCHEAD=<req_header_len>
+
+**Response:**
+
+::
+
+    OK
+
+    >
+
+The ``>`` symbol indicates that AT is ready to receive AT command data. At this point, you can enter the HTTP request header (in the format of ``key: value``). When the data length reaches the value of parameter ``<req_header_len>``, AT returns:
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+- **<index>**: Index value of HTTP request header.
+- **<"req_header">**: HTTP request header.
+- **<req_header_len>**: HTTP request header length. Unit: byte.
+
+  - 0: Clear all set HTTP request headers.
+  - Other values: Set a new HTTP request header.
+
+Note
+^^^^
+
+- This command can only set one HTTP request header at a time, but it can be set multiple times to support multiple different HTTP request headers.
+- The HTTP request headers configured by this command are global. Once set, all HTTP commands will carry these request headers.
+- If the ``key`` in the HTTP request header set by this command is the same as that of other HTTP commands, the HTTP request header set by this command will be used.
+
+Example
+^^^^^^^
+
+::
+
+    // Set the request header
+    AT+HTTPCHEAD=18
+
+    // After receiving the ">" symbol, enter the Range request header below to download only the first 256 bytes of the resource
+    Range: bytes=0-255
+
+    // Download HTTP resource
+    AT+HTTPCGET="https://docs.espressif.com/projects/esp-at/en/latest/{IDF_TARGET_PATH_NAME}/index.html"
 
 .. _cmd-HTTPErrCode:
 

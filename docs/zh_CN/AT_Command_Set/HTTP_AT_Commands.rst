@@ -11,6 +11,7 @@ HTTP AT 命令集
 -  :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>`：Post 指定长度的 HTTP 数据
 -  :ref:`AT+HTTPCPUT <cmd-HTTPCPUT>`：Put 指定长度的 HTTP 数据
 -  :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>`：设置/获取长的 HTTP URL
+-  :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>`：设置/查询 HTTP 请求头
 -  :ref:`HTTP AT 错误码 <cmd-HTTPErrCode>`
 
 .. _cmd-HTTPCLIENT:
@@ -68,7 +69,7 @@ HTTP AT 命令集
 ^^^^
 -  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
 -  如果 ``url`` 参数不为空，HTTP 客户端将使用它并忽略 ``host`` 参数和 ``path`` 参数；如果 ``url`` 参数被省略或字符串为空，HTTP 客户端将使用 ``host`` 参数和 ``path`` 参数。
--  某些已发布的固件默认不支持 HTTP 客户端命令（详情请见 :doc:`../Compile_and_Develop/esp-at_firmware_differences`），但是可通过以下方式使其支持该命令：``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support``，然后编译项目（详情请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
+-  要设置更多的 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令。
 
 示例
 ^^^^
@@ -119,7 +120,7 @@ HTTP AT 命令集
 ^^^^
 
 -  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
--  某些已发布的固件默认不支持 HTTP 客户端命令（详情请见 :doc:`../Compile_and_Develop/esp-at_firmware_differences`），但是可通过以下方式使其支持该命令：``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support``，然后编译项目（详情请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
+-  如果您想设置 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令设置。
 
 示例
 ^^^^
@@ -160,6 +161,7 @@ HTTP AT 命令集
 ^^^^^
 
 -  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
+-  如果您想设置 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令设置。
 
 .. _cmd-HTTPCPOST:
 
@@ -208,6 +210,7 @@ HTTP AT 命令集
 ^^^^^
 
 -  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
+-  如果您想设置 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令设置。
 
 .. _cmd-HTTPCPUT:
 
@@ -256,6 +259,7 @@ HTTP AT 命令集
 ^^^^^
 
 -  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
+-  如果您想设置 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令设置。
 
 .. _cmd-HTTPURLCFG:
 
@@ -309,6 +313,81 @@ HTTP AT 命令集
   - [8,8192]：设置 HTTP URL 配置。
 
 - **<data>**： HTTP URL 数据。
+
+.. _cmd-HTTPCHEAD:
+
+:ref:`AT+HTTPCHEAD <HTTP-AT>`：设置/查询 HTTP 请求头
+----------------------------------------------------------
+
+查询命令
+^^^^^^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+HTTPCHEAD?
+
+**响应：**
+
+::
+
+    +HTTPCHEAD:<index>,<"req_header">
+
+    OK
+
+设置命令
+^^^^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+HTTPCHEAD=<req_header_len>
+
+**响应：**
+
+::
+
+    OK
+
+    >
+
+符号 ``>`` 表示 AT 准备好接收 AT 命令口数据，此时您可以输入 HTTP 请求头（请求头为 ``key: value`` 形式），当数据长度达到参数 ``<req_header_len>`` 的值时，AT 返回：
+
+::
+
+    OK
+
+参数
+^^^^^^^^^^
+- **<index>**：HTTP 请求头的索引值。
+- **<"req_header">**：HTTP 请求头。
+- **<req_header_len>**：HTTP 请求头长度。单位：字节。
+
+  - 0：清除所有已设置的 HTTP 请求头。
+  - 其他值：设置一个新的 HTTP 请求头。
+
+说明
+^^^^^
+
+- 本命令一次只能设置一个 HTTP 请求头，但可以多次设置，支持多个不同的 HTTP 请求头。
+- 本命令配置的 HTTP 请求头是全局性的，一旦设置，所有 HTTP 的命令都会携带这些请求头。
+- 本命令设置的 HTTP 请求头中的 ``key`` 如果和其它 HTTP 命令的请求头中的 ``key`` 相同，则会使用本命令中设置的 HTTP 请求头。
+
+示例
+^^^^
+
+::
+
+    // 设置请求头
+    AT+HTTPCHEAD=18
+
+    // 在收到 ">" 符号后，输入以下的 Range 请求头，下载资源的前 256 个字节。
+    Range: bytes=0-255
+
+    // 下载 HTTP 资源
+    AT+HTTPCGET="https://docs.espressif.com/projects/esp-at/zh_CN/latest/{IDF_TARGET_PATH_NAME}/index.html"
 
 .. _cmd-HTTPErrCode:
 
