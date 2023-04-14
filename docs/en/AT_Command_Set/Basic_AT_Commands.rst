@@ -19,6 +19,8 @@ Basic AT Commands
   - :ref:`AT+SLEEP <cmd-SLEEP>`: Set the sleep mode.
   - :ref:`AT+SYSRAM <cmd-SYSRAM>`: Query current remaining heap size and minimum heap size.
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`: Query/Set System Prompt Information.
+  - :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>`: Enable or disable the :term:`system message` filter.
+  - :ref:`AT+SYSMSGFILTERCFG <cmd-SYSMSGFILTERCFG>`: Query/Set the :term:`system message` filters.
   - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`: Query/Set User Partitions in Flash.
   - :ref:`AT+FS <cmd-FS>`: Filesystem Operations.
   - :ref:`AT+FSMOUNT <cmd-FSMOUNT>`: Mount/Unmount Filesystem.
@@ -604,7 +606,7 @@ Set Command
 
 **Function:**
 
-Configure system prompt information.
+Configure system prompt information. If you need more fine-grained management of AT messages, please use the :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>` command.
 
 **Command:**
 
@@ -679,6 +681,301 @@ or
 
     // In the transparent transmission mode, a prompt message will be printed when the Wi-Fi, socket, Bluetooth LE or Bluetooth status changes
     AT+SYSMSG=4
+
+.. _cmd-SYSMSGFILTER:
+
+:ref:`AT+SYSMSGFILTER <Basic-AT>`: Enable or Disable the :term:`system message` Filter
+--------------------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Function:**
+
+Query the current :term:`system message` filtering state.
+
+**Command:**
+
+::
+
+    AT+SYSMSGFILTER?
+
+**Response:**
+
+::
+
+    +SYSMSGFILTER:<enable>
+
+    OK
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+Enable or disable the :term:`system message` filter.
+
+**Command:**
+
+::
+
+    AT+SYSMSGFILTER=<enable>
+
+**Response:**
+
+::
+
+    OK
+
+Parameter
+^^^^^^^^^
+
+- **<enable>**:
+
+    - 0: Disable system message filtering. System default value. When disabled, system messages will not be filtered by the set filter.
+    - 1: Enable system message filtering. When it is enabled, the data matching the regular expression will be filtered out by AT, and MCU will not receive it, whereas the unmatched data will be sent to the MCU as it is.
+
+Notes
+^^^^^
+
+- Please use :ref:`AT+SYSMSGFILTERCFG <cmd-SYSMSGFILTERCFG>` to set up system message filters. Then, use this command to enable the system message filtering to achieve more sophisticated system message management.
+- Please use the :ref:`AT+SYSMSGFILTER=1 <cmd-SYSMSGFILTER>` command with caution. It is recommended that you disable the system message filtering promptly after enabling it to prevent the over-filtering of AT system messages.
+- Before entering the :term:`Passthrough Mode`, it is strongly recommended to use the :ref:`AT+SYSMSGFILTER=0 <cmd-SYSMSGFILTER>` command to disable system message filtering.
+- If you are working on secondary development of AT project, please use the following APIs to transmit data via the AT command port.
+
+::
+
+    // Data transmission via native AT command port. Data will not be filtered by AT+SYSMSGFILTER command, and AT will not actively wake up MCU before sending data (MCU wake-up function is set by AT+USERWKMCUCFG).
+    int32_t esp_at_port_write_data_without_filter(uint8_t data, int32_t len);
+
+    // Data transmission via AT command port with a filtering function. Data will be filtered by AT+SYSMSGFILTER command (if enabled), and AT will not actively wake up MCU before sending data (MCU wake-up function is set by AT+USERWKMCUCFG command).
+    int32_t esp_at_port_write_data(uint8_t data, int32_t len);
+
+    // Data transmission via AT command port with wake-up MCU function. Data will not be filtered by AT+SYSMSGFILTER command, and AT will actively wake up MCU before sending data (MCU wake-up function is set by AT+USERWKMCUCFG command).
+    int32_t esp_at_port_active_write_data_without_filter(uint8_t data, int32_t len);
+
+    // Data transmission via AT command port with wake-up MCU function and filtering function. Data will be filtered by AT+SYSMSGFILTER command (if enabled), and AT will actively wake up MCU before sending data (MCU wake-up function is set by AT+USERWKMCUCFG command).
+    int32_t esp_at_port_active_write_data(uint8_t data, int32_t len);
+
+Example
+"""""""
+
+For detailed examples, refer to :ref:`system message filtering example <example-sysmfgfilter>`.
+
+.. _cmd-SYSMSGFILTERCFG:
+
+:ref:`AT+SYSMSGFILTERCFG <Basic-AT>`: Query/Set the :term:`system message` Filters
+----------------------------------------------------------------------------------
+
+* :ref:`sysmsgfiltercfg-query`
+* :ref:`sysmsgfiltercfg-clear`
+* :ref:`sysmsgfiltercfg-add`
+* :ref:`sysmsgfiltercfg-delete`
+
+.. _sysmsgfiltercfg-query:
+
+Query the Filters
+^^^^^^^^^^^^^^^^^
+
+Query Command
+"""""""""""""
+
+**Command:**
+
+::
+
+    AT+SYSMSGFILTERCFG?
+
+**Response:**
+
+::
+
+    +SYSMSGFILTERCFG:<index>,"<head_regexp>","<tail_regexp>"
+
+    OK
+
+Parameters
+""""""""""
+
+- **<index>**: The index of filters.
+- **<"head_regexp">**: The regular expression of header.
+- **<"tail_regexp">**: The regular expression of tail.
+
+.. _sysmsgfiltercfg-clear:
+
+Clear all the Filters
+^^^^^^^^^^^^^^^^^^^^^
+
+Set Command
+"""""""""""
+
+**Command:**
+
+::
+
+    AT+SYSMSGFILTERCFG=<operator>
+
+**Response:**
+
+::
+
+    OK
+
+Parameter
+"""""""""
+
+- **<operator>**:
+
+    - 0: Clear all the filters. After clearing, you can free some heap size occupied by the filters.
+
+Example
+"""""""
+
+::
+
+    // Clear all the filters
+    AT+SYSMSGFILTERCFG=0
+
+.. _sysmsgfiltercfg-add:
+
+Add a Filter
+^^^^^^^^^^^^
+
+Set Command
+"""""""""""
+
+**Command:**
+
+::
+
+    AT+SYSMSGFILTERCFG=<operator>,<head_regexp_len>,<tail_regexp_len>
+
+**Response:**
+
+::
+
+    OK
+
+    >
+
+The symbol ``>`` indicates that AT is ready for receiving regular expressions from AT command port. You should enter the head regular expression and the tail regular expression. When the length reaches the ``<head_regexp_len>`` + ``<tail_regexp_len>`` value, the regular expression integrity check starts.
+
+If the regular expression integrity check fails or the addition of filter fails, AT returns:
+
+::
+
+    ERROR
+
+If the integrity of the regular expression is verified successfully and the filter is added successfully, AT returns:
+
+::
+
+    OK
+
+Parameters
+""""""""""
+
+- **<operator>**:
+
+    - 1: Add a filter. A filter contains a header regular expression and a tail regular expression.
+
+- **<head_regexp_len>**: The length of the header regular expression. Range: [0,64]. If it is set to 0, the matching of the regular expression in the header is ignored, and ``<tail_regexp_len>`` cannot be 0.
+- **<tail_regexp_len>**: The length of the tail regular expression. Range: [0,64]. If it is set to 0, the matching of the regular expression in the tail is ignored, and ``<head_regexp_len>`` cannot be 0.
+
+Notes
+""""""
+
+- Please use this command to set up system message filters. Then, use :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>` to enable the system message filtering to achieve more sophisticated system message management.
+- For more details about header and tail regular expression format, refer to `POSIX Basic Regular Expression (BRE) <https://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended>`_.
+- In order to avoid :term:`system message` (TX data of AT command port) being filtered incorrectly, it is **strongly recommended** that the header regular expression starts with ``^`` and the tail regular expression ends with ``$``.
+- Only when the system message matches both the header regular expression and the tail regular expression **at the same time** is the system message filtered. After filtering, the data matching the regular expression will be filtered out by AT, and MCU will not receive it, whereas the unmatched data will be sent to the MCU as it is.
+- When the system message matches one filter, it will not continue to match other filters.
+- When the system message matches the filter, the system message will not be cached, that is, the previous system message and the current system message will not be combined for matching.
+- For devices with large throughput, it is **strongly recommended** that you limit the number of filters and disable system message filtering using the :ref:`AT+SYSMSGFILTER=0 <cmd-SYSMSGFILTER>` command in time.
+
+Example
+"""""""
+
+::
+
+    // Set the filter to filter out the "WIFI CONNECTED" system message report
+    AT+SYSMSGFILTERCFG=1,17,0
+    // After the command returns OK and >, enter "^WIFI CONNECTED\r\n" (Note: \r\n are 2 bytes, corresponding to 0D 0A in ASCII code)
+
+    // Enable system message filtering
+    AT+SYSMSGFILTER=1
+
+    // Test filtering function
+    AT+CWMODE=1
+    AT+CWJAP="ssid","password"
+    // AT no longer outputs "WIFI CONNECTED" system message report
+
+For more examples of filtering system messages, refer to :ref:`system message filter example <example-sysmfgfilter>`.
+
+.. _sysmsgfiltercfg-delete:
+
+Delete a Filter
+^^^^^^^^^^^^^^^
+
+Set Command
+"""""""""""
+
+**Command:**
+
+::
+
+    AT+SYSMSGFILTERCFG=<operator>,<head_regexp_len>,<tail_regexp_len>
+
+**Response:**
+
+::
+
+    OK
+
+    >
+
+The symbol ``>`` indicates that AT is ready for receiving regular expressions from AT command port. You should enter the head regular expression and the tail regular expression. When the length reaches the ``<head_regexp_len>`` + ``<tail_regexp_len>`` value, the regular expression integrity check starts.
+
+If the regular expression integrity check fails or the addition of filter fails, AT returns:
+
+::
+
+    ERROR
+
+If the integrity of the regular expression is verified successfully and the filter is added successfully, AT returns:
+
+::
+
+    OK
+
+Parameters
+""""""""""
+
+- **<operator>**:
+
+    - 2: Delete a filter.
+
+- **<head_regexp_len>**: The length of the header regular expression. Range: [0,64]. If it is set to 0, the ``<tail_regexp_len>`` cannot be 0.
+- **<tail_regexp_len>**: The length of the header regular expression. Range: [0,64]. If it is set to 0, the ``<head_regexp_len>`` cannot be 0.
+
+Notes
+""""""
+
+- The filter to be deleted should be in the added filters.
+
+Example
+"""""""
+
+::
+
+    // Delete the filter added above
+    AT+SYSMSGFILTERCFG=2,17,0
+    // After the command returns OK and >, enter "^WIFI CONNECTED\r\n" (Note: \r\n are 2 bytes, corresponding to 0D 0A in ASCII code)
+
+    // Test filtering function
+    AT+CWMODE=1
+    AT+CWJAP="ssid","password"
+    // AT will output "WIFI CONNECTED" system message report again
 
 .. _cmd-SYSFLASH:
 

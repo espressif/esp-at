@@ -342,7 +342,13 @@ Index of Abbreviations
       Secure Sockets Layer
       
       SSL 协议，即安全套接字协议
-    
+
+    system message
+      Data sent via AT command port to MCU. Each system message usually ends with ``\r\n``. Detailed system message descriptions are available at :ref:`AT Messages <at-messages>`.
+
+    系统消息
+      AT 命令口发往 MCU 的数据。每条系统消息通常以 ``\r\n`` 结尾。详细的系统消息说明见 :ref:`AT 消息 <at-messages>`。
+
     TLS
       Transport Layer Security
       
