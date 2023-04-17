@@ -13,15 +13,15 @@ on:
     # parameters from upstream inherit
     secrets:
       AT_OTA_TOKEN_WROOM32:
-        required: false
+        required: true
       AT_OTA_TOKEN_WROVER32:
-        required: false
-      AT_OTA_TOKEN_ESP32_MINI_1:
-        required: false
+        required: true
       AT_OTA_TOKEN_ESP32_PICO_D4:
-        required: false
+        required: true
       AT_OTA_TOKEN_ESP32_SOLO_1:
-        required: false
+        required: true
+      AT_OTA_TOKEN_ESP32_MINI_1:
+        required: true
 
 jobs:
   build-template-esp32:

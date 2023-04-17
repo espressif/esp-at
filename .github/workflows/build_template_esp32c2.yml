@@ -13,9 +13,9 @@ on:
     # parameters from upstream inherit
     secrets:
       ESP32C2_4MB_TOKEN:
-        required: false
+        required: true
       ESP32C2_2MB_TOKEN:
-        required: false
+        required: true
 
 jobs:
   build-template-esp32c2:
