@@ -16,11 +16,11 @@ on:
         required: false
       AT_OTA_TOKEN_WROVER32:
         required: false
-      AT_OTA_TOKEN_ESP32_MINI_1:
-        required: false
       AT_OTA_TOKEN_ESP32_PICO_D4:
         required: false
       AT_OTA_TOKEN_ESP32_SOLO_1:
+        required: false
+      AT_OTA_TOKEN_ESP32_MINI_1:
         required: false
 
 jobs:
