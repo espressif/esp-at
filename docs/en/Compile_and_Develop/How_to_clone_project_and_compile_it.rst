@@ -1,5 +1,5 @@
-Compile ESP-AT Project
-=============================
+Compile ESP-AT Project Locally
+==============================
 
 {IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3"}
 {IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="ESP32C2-4MB", esp32c3="MINI-1"}
@@ -10,11 +10,13 @@ Compile ESP-AT Project
 
 .. only:: esp32 or esp32c3
 
-  This document details how to build your own ESP-AT project and flash the generated firmware into your {IDF_TARGET_NAME}. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>`, :doc:`Bluetooth LE services <How_to_customize_BLE_services>`, and :doc:`partitions <How_to_customize_partitions>`, and so on.
+  This document details how to build your own ESP-AT project locally and flash the generated firmware into your {IDF_TARGET_NAME}. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>`, :doc:`Bluetooth LE services <How_to_customize_BLE_services>`, and :doc:`partitions <How_to_customize_partitions>`, and so on.
 
 .. only:: esp32c2
 
-  This document details how to build your own ESP-AT project and flash the generated firmware into your {IDF_TARGET_NAME}. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>` and :doc:`partitions <How_to_customize_partitions>`, and so on.
+  This document details how to build your own ESP-AT project locally and flash the generated firmware into your {IDF_TARGET_NAME}. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>` and :doc:`partitions <How_to_customize_partitions>`, and so on.
+
+If you have difficulties in compiling ESP-AT project locally, or you only need to modify a small amount of code, we recommend that you use :doc:`Compile ESP-AT Project on the GitHub Webpage <How_to_build_project_with_web_page>`.
 
 .. _esp-at-started-steps:
 

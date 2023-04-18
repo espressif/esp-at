@@ -6,8 +6,9 @@ How to Compile and Develop Your Own AT Project
 
 .. toctree::
    :maxdepth: 1
-   
-   How to Compile ESP-AT Project <How_to_clone_project_and_compile_it>
+
+   How to Compile ESP-AT Project Locally <How_to_clone_project_and_compile_it>
+   How to Compile ESP-AT Project on the GitHub Webpage <How_to_build_project_with_web_page>
    How to Set AT Port Pin <How_to_set_AT_port_pin>
    How to Add User-Defined AT Commands <How_to_add_user-defined_AT_commands>
    How to Improve ESP-AT Throughput Performance <How_to_optimize_throughput>
