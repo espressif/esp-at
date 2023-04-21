@@ -46,11 +46,23 @@
 #endif
 
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
-static void at_wifi_init(void)
+esp_err_t at_wifi_init(void)
 {
+    esp_err_t ret;
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-    ESP_ERROR_CHECK(esp_wifi_init(&cfg));
-    ESP_ERROR_CHECK(esp_wifi_start());
+
+    ret = esp_wifi_init(&cfg);
+    if (ret != ESP_OK) {
+        return ret;
+    }
+
+    return esp_wifi_start();
+}
+
+esp_err_t at_wifi_deinit(void)
+{
+    esp_wifi_stop();
+    return esp_wifi_deinit();
 }
 #endif
 
