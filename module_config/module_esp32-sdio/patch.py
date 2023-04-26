@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 #
-# 'build.py' is a top-level config/build command line tool for ESP-AT
-#
 # Copyright 2022 Espressif Systems (Shanghai) PTE LTD
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 # WARNING: we don't check for Python build-time dependencies until
 # check_environment() function below. If possible, avoid importing
 # any external libraries here - put in external script, or import in
@@ -38,8 +35,6 @@ def main():
     cur_abs_dir = os.getcwd()
 
     patch_list = {
-        'rmaker-esp_rainmaker.patch': os.path.join(cur_abs_dir, 'components', 'rainmaker', 'esp-rainmaker', 'components', 'esp_rainmaker'),
-        'rmaker-rmaker_common.patch': os.path.join(cur_abs_dir, 'components', 'rainmaker', 'esp-rainmaker', 'components', 'rmaker_common'),
         'softap_pmk.patch': os.path.join(cur_abs_dir, 'esp-idf')
     }
 

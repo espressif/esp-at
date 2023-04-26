@@ -1,0 +1,13 @@
+diff --git a/components/wpa_supplicant/src/ap/ap_config.c b/components/wpa_supplicant/src/ap/ap_config.c
+index 840334c771..7cb90b234a 100644
+--- a/components/wpa_supplicant/src/ap/ap_config.c
++++ b/components/wpa_supplicant/src/ap/ap_config.c
+@@ -130,7 +130,7 @@ static int hostapd_derive_psk(struct hostapd_ssid *ssid)
+     wpa_hexdump_ascii_key(MSG_DEBUG, "PSK (ASCII passphrase)",
+                   (u8 *) ssid->wpa_passphrase,
+                   strlen(ssid->wpa_passphrase));
+-#ifdef ESP_SUPPLICANT
++#if 0
+     memcpy(ssid->wpa_psk->psk, esp_wifi_ap_get_prof_pmk_internal(), PMK_LEN);
+ #else
+     /* It's too SLOW */
