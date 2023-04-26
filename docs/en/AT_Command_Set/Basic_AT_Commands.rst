@@ -325,7 +325,7 @@ Parameters
    -  0: {IDF_TARGET_NAME} will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
    -  1: {IDF_TARGET_NAME} will enter Wi-Fi :term:`Passthrough Mode` on power-up.
 
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
 -  **<remote port>**: the remote port number.
 -  **<"type">**: string parameter showing the type of transmission: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP".
 -  **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
@@ -380,7 +380,7 @@ Parameters
    -  0: {IDF_TARGET_NAME} will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
    -  1: {IDF_TARGET_NAME} will enter Wi-Fi :term:`Passthrough Mode` on power-up.
 
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
 -  **<remote port>**: the remote port number.
 -  **<"type">**: string parameter showing the type of transmission: "UDP" or "UDPv6". Default: "TCP".
 -  **<local port>**: local port when UDP Wi-Fi passthrough is enabled on power-up.
@@ -1705,6 +1705,7 @@ Parameters
 Note
 ------
 
+- When Wi-Fi is turned off or not initialized, the :ref:`AT+RFPOWER <cmd-RFPOWER>` command cannot set or query the RF TX Power of Wi-Fi. Similarly, when Bluetooth LE is not initialized, the command cannot set or query that of Bluetooth LE, either.
 - Since the RF TX Power is actually divided into several levels, and each level has its own value range, the ``wifi_power`` value queried by the ``esp_wifi_get_max_tx_power`` may differ from the value set by ``esp_wifi_set_max_tx_power`` and is no larger than the set value.
 
 .. _cmd-SYSROLLBACK:

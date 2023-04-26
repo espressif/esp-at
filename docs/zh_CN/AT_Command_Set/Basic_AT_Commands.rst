@@ -325,7 +325,7 @@
    -  0: 关闭 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
    -  1: 开启 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
 
--  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
 -  **<remote port>**：远端端口值
 -  **<"type">**：字符串参数，表示传输类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6"。默认值："TCP"
 -  **<keep_alive>**：配置套接字的 ``SO_KEEPALIVE`` 选项（参考：`SO_KEEPALIVE 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`_），单位：秒。
@@ -380,7 +380,7 @@
    -  0: 关闭 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
    -  1: 开启 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
 
--  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
 -  **<remote port>**：远端端口值
 -  **<"type">**：字符串参数，表示传输类型："UDP" 或 "UDPv6"。默认值："TCP"
 -  **[<local port>]**：开机进入 UDP 传输时，使用的本地端口
@@ -1705,6 +1705,7 @@
 说明
 -----
 
+- 当 Wi-Fi 关闭或未初始化时，``AT+RFPOWER`` 命令无法设置/查询 Wi-Fi 的 RF TX Power。当 Bluetooth LE 未初始化时，``AT+RFPOWER`` 命令无法设置/查询 Bluetooth LE 的 RF TX Power。
 - 由于 RF TX Power 分为不同的等级，而每个等级都有与之对应的取值范围，所以通过 ``esp_wifi_get_max_tx_power`` 查询到的 ``wifi_power`` 的值可能与 ``esp_wifi_set_max_tx_power`` 设定的值存在差异，但不会比该值大。
 
 .. _cmd-SYSROLLBACK:

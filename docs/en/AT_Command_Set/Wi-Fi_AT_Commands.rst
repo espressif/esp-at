@@ -633,7 +633,7 @@ Parameters
    -  3: WPA2_PSK
    -  4: WPA_WPA2_PSK
 
--  **[<max conn>]**: maximum number of stations that {IDF_TARGET_NAME} SoftAP can connect. Range: [1,10].
+-  **[<max conn>]**: maximum number of stations that {IDF_TARGET_NAME} SoftAP can connect. Range: refer to `max_connection description <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#ap-basic-configuration>`_.
 -  **[<ssid hidden>]**:
 
    -  0: broadcasting SSID (default).

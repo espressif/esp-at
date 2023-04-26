@@ -633,7 +633,7 @@ Wi-Fi AT 命令集
    -  3: WPA2_PSK
    -  4: WPA_WPA2_PSK
 
--  **[<max conn>]**：允许连入 {IDF_TARGET_NAME} SoftAP 的最多 station 数目，取值范围：[1,10]
+-  **[<max conn>]**：允许连入 {IDF_TARGET_NAME} SoftAP 的最多 station 数目，取值范围：参考 `max_connection 描述 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id39>`_。
 -  **[<ssid hidden>]**：
 
    -  0: 广播 SSID（默认）
