@@ -36,7 +36,8 @@ def main():
 
     patch_list = {
         'idf-tcp_transport.patch': os.path.join(cur_abs_dir, 'esp-idf'),
-        'blufi-adv.patch': os.path.join(cur_abs_dir, 'esp-idf')
+        'blufi-adv.patch': os.path.join(cur_abs_dir, 'esp-idf'),
+        'wifi_deinit.patch': os.path.join(cur_abs_dir, 'esp-idf')
     }
 
     for name, path in patch_list.items():
