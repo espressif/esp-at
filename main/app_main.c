@@ -48,6 +48,7 @@
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
 esp_err_t at_wifi_init(void)
 {
+    printf("初始化wifi\r\n");
     esp_err_t ret;
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
 
