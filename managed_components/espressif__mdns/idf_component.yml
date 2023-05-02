@@ -1,0 +1,5 @@
+dependencies:
+  idf:
+    version: '>=5.0'
+description: mDNS
+version: 1.0.5

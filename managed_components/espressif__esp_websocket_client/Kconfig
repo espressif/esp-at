@@ -1,0 +1,10 @@
+menu "ESP WebSocket client"
+
+    config ESP_WS_CLIENT_ENABLE_DYNAMIC_BUFFER
+        bool "Enable websocket client dynamic buffer for send and receive data"
+        default n
+        help
+            Enable this option will reallocated buffer when send or receive data and free them when end of use.
+            This can save about 2 KB memory when no websocket data send and receive.
+
+endmenu

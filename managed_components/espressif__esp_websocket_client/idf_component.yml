@@ -1,0 +1,5 @@
+dependencies:
+  idf:
+    version: '>=5.0'
+description: esp websocket client
+version: 0.0.4

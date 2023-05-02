@@ -32,6 +32,11 @@
 #define CONFIG_AT_ETH_PHY_RST_GPIO     5
 #define CONFIG_AT_ETH_PHY_ADDR         1
 
+// #include "esp_at.h"
+// #include "esp_log.h"
+
+// static const char *TAG = "esp_eth.c";
+
 bool esp_at_get_eth_default_config(esp_eth_config_t* config)
 {
     eth_mac_config_t mac_config = ETH_MAC_DEFAULT_CONFIG();
@@ -49,7 +54,14 @@ bool esp_at_get_eth_default_config(esp_eth_config_t* config)
 #elif CONFIG_PHY_RTL8201
     esp_eth_phy_t *phy = esp_eth_phy_new_rtl8201(&phy_config);
 #elif CONFIG_PHY_LAN8720
-    esp_eth_phy_t *phy = esp_eth_phy_new_lan8720(&phy_config);
+    // esp_eth_phy_t *phy = esp_eth_phy_new_lan8720(&phy_config);
+    esp_eth_phy_t *phy = esp_eth_phy_new_lan87xx(&phy_config);
+
+    // ESP_LOGE(TAG, "启动成功111");
+    // uint8_t buffer[64] = {0};
+    // snprintf((char *)buffer, 64, "测试串口1输出111\r\n");
+    // esp_at_port_write_data(buffer, strlen((char *)buffer));
+
 #elif CONFIG_PHY_DP83848
     esp_eth_phy_t *phy = esp_eth_phy_new_dp83848(&phy_config);
 #endif

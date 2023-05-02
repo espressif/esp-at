@@ -1,6 +1,6 @@
 platform,module_name,description,version,max_tx_power,uart_port,start_channel,channel_num,country_code,uart_baudrate,uart_tx_pin,uart_rx_pin,uart_cts_pin,uart_rts_pin
-PLATFORM_ESP32,WROOM-32,,4,78,1,1,13,CN,115200,17,16,15,14
-PLATFORM_ESP32,WROVER-32,,4,78,1,1,13,CN,115200,22,19,15,14
+PLATFORM_ESP32,WROOM-32,,4,78,1,1,13,CN,115200,33,32,-1,-1
+PLATFORM_ESP32,WROVER-32,,4,78,1,1,13,CN,115200,2,4,1,1
 PLATFORM_ESP32,PICO-D4,,4,78,1,1,13,CN,115200,22,19,15,14
 PLATFORM_ESP32,SOLO-1,,4,78,1,1,13,CN,115200,17,16,15,14
 PLATFORM_ESP32,MINI-1,ESP32-U4WDH chip inside,4,78,1,1,13,CN,115200,22,19,15,14

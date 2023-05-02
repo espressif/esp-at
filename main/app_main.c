@@ -48,7 +48,6 @@
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
 esp_err_t at_wifi_init(void)
 {
-    printf("初始化wifi\r\n");
     esp_err_t ret;
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
 
@@ -67,6 +66,10 @@ esp_err_t at_wifi_deinit(void)
 }
 #endif
 
+
+#include "esp_log.h"
+static const char *TAG = "app_main.c";
+
 static void at_netif_init(void)
 {
     ESP_ERROR_CHECK(esp_netif_init());
@@ -79,12 +82,17 @@ static void at_netif_init(void)
 
 void app_main(void)
 {
+    
     esp_at_main_preprocess();
     ESP_ERROR_CHECK(nvs_flash_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());
     at_nvs_flash_init_partition();
 
     at_netif_init();
+    ESP_LOGE(TAG, "启动成功");
+    // uint8_t buffer[64] = {0};
+    // snprintf((char *)buffer, 64, "测试串口1输出\r\n");
+    // esp_at_port_write_data(buffer, strlen((char *)buffer));
 
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
     at_wifi_init();
@@ -272,4 +280,11 @@ void app_main(void)
 #endif
 
     at_custom_init();
+
+    
+    ESP_LOGE(TAG, "启动成功");
+    uint8_t buffer[64] = {0};
+    snprintf((char *)buffer, 64, "测试串口1输出\r\n");
+    esp_at_port_write_data(buffer, strlen((char *)buffer));
+
 }
