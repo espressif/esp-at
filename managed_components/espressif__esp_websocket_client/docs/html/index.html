@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ESP WebSocket Client - ESP32 -  &mdash; ESP-Protocols latest documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
+
+    
+        
+
+    <script type="text/javascript">
+        DOCUMENTATION_OPTIONS.PAGENAME = 'index';
+        DOCUMENTATION_OPTIONS.PROJECT_SLUG = 'esp-idf';
+        DOCUMENTATION_OPTIONS.LATEST_BRANCH_NAME = 'master';
+        DOCUMENTATION_OPTIONS.VERSIONS_URL = 'https://github.com/espressif/esp-protocols/docs/docs_versions.js';
+        DOCUMENTATION_OPTIONS.LANGUAGES = ["en"];
+        DOCUMENTATION_OPTIONS.IDF_TARGET = 'esp32';
+        DOCUMENTATION_OPTIONS.HAS_IDF_TARGETS = ["esp32"]
+        DOCUMENTATION_OPTIONS.RELEASE = 'latest';
+    </script>
+
+    <script type="text/javascript" src="https://github.com/espressif/esp-protocols/docs/docs_versions.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> ESP-Protocols
+            <img src="_static/espressif-logo.svg" class="logo" alt="Logo"/>
+          </a>
+
+          
+            <div class="selectors">
+              <select id="target-select" style="width: 150px;" hidden>
+                <option value="" disabled selected>Choose target...</option>
+              </select>
+            </div>
+          
+
+          <div class="selectors">
+            <select id="version-select" style="width: 150px;" hidden>
+              <option value="" disabled selected>Choose version...</option>
+            </select>
+          </div>
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">ESP WebSocket Client</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li><a class="reference internal" href="#uri">URI</a></li>
+<li><a class="reference internal" href="#tls">TLS</a></li>
+<li><a class="reference internal" href="#subprotocol">Subprotocol</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#events">Events</a></li>
+<li><a class="reference internal" href="#limitations-and-known-issues">Limitations and Known Issues</a></li>
+<li><a class="reference internal" href="#application-example">Application Example</a><ul>
+<li><a class="reference internal" href="#sending-text-data">Sending Text Data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#api-reference">API Reference</a><ul>
+<li><a class="reference internal" href="#header-file">Header File</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#structures">Structures</a></li>
+<li><a class="reference internal" href="#type-definitions">Type Definitions</a></li>
+<li><a class="reference internal" href="#enumerations">Enumerations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">ESP-Protocols</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>ESP WebSocket Client</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/espressif/esp-docs/blob/79c11e9/docs/en/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="esp-websocket-client">
+<h1>ESP WebSocket Client<a class="headerlink" href="#esp-websocket-client" title="Permalink to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p>The ESP WebSocket client is an implementation of <a class="reference external" href="https://tools.ietf.org/html/rfc6455">WebSocket protocol client</a> for ESP32</p>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Supports WebSocket over TCP, TLS with mbedtls</p></li>
+<li><p>Easy to setup with URI</p></li>
+<li><p>Multiple instances (Multiple clients in one application)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h2>
+<section id="uri">
+<h3>URI<a class="headerlink" href="#uri" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Supports <code class="docutils literal notranslate"><span class="pre">ws</span></code>, <code class="docutils literal notranslate"><span class="pre">wss</span></code> schemes</p></li>
+<li><p>WebSocket samples:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ws://echo.websocket.org</span></code>: WebSocket over TCP, default port 80</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wss://echo.websocket.org</span></code>: WebSocket over SSL, default port 443</p></li>
+</ul>
+</li>
+</ul>
+<p>Minimal configurations:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">esp_websocket_client_config_t</span><span class="w"> </span><span class="n">ws_cfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">.</span><span class="n">uri</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ws://echo.websocket.org&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The WebSocket client supports the use of both path and query in the URI. Sample:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">esp_websocket_client_config_t</span><span class="w"> </span><span class="n">ws_cfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">.</span><span class="n">uri</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ws://echo.websocket.org/connectionhandler?id=104&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<p>If there are any options related to the URI in
+<a class="reference internal" href="#_CPPv429esp_websocket_client_config_t" title="esp_websocket_client_config_t"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">esp_websocket_client_config_t</span></code></a>, the option defined by the URI will be
+overridden. Sample:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">esp_websocket_client_config_t</span><span class="w"> </span><span class="n">ws_cfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">.</span><span class="n">uri</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ws://echo.websocket.org:123&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">.</span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4567</span><span class="p">,</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+<span class="c1">//WebSocket client will connect to websocket.org using port 4567</span>
+</pre></div>
+</div>
+</section>
+<section id="tls">
+<h3>TLS<a class="headerlink" href="#tls" title="Permalink to this heading"></a></h3>
+<p>Configuration:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">esp_websocket_client_config_t</span><span class="w"> </span><span class="n">ws_cfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">.</span><span class="n">uri</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wss://echo.websocket.org&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">.</span><span class="n">cert_pem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">websocket_org_pem_start</span><span class="p">,</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to verify the server, then you need to provide a certificate in PEM format, and provide to <code class="docutils literal notranslate"><span class="pre">cert_pem</span></code> in <code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">websocket_client_config_t</span></code>. If no certficate is provided then the TLS connection will default to not requiring verification.</p>
+</div>
+<p>PEM certificate for this example could be extracted from an openssl <cite>s_client</cite> command connecting to websocket.org.
+In case a host operating system has <cite>openssl</cite> and <cite>sed</cite> packages installed, one could execute the following command to download and save the root or intermediate root certificate to a file (Note for Windows users: Both Linux like environment or Windows native packages may be used).
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">echo</span> <span class="pre">&quot;&quot;</span> <span class="pre">|</span> <span class="pre">openssl</span> <span class="pre">s_client</span> <span class="pre">-showcerts</span> <span class="pre">-connect</span> <span class="pre">websocket.org:443</span> <span class="pre">|</span> <span class="pre">sed</span> <span class="pre">-n</span> <span class="pre">&quot;1,/Root/d;</span> <span class="pre">/BEGIN/,/END/p&quot;</span> <span class="pre">|</span> <span class="pre">openssl</span> <span class="pre">x509</span> <span class="pre">-outform</span> <span class="pre">PEM</span> <span class="pre">&gt;websocket_org.pem</span>
+<span class="pre">`</span></code></p>
+<p>This command will extract the second certificate in the chain and save it as a pem-file.</p>
+</section>
+<section id="subprotocol">
+<h3>Subprotocol<a class="headerlink" href="#subprotocol" title="Permalink to this heading"></a></h3>
+<p>The subprotocol field in the config struct can be used to request a subprotocol</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">esp_websocket_client_config_t</span><span class="w"> </span><span class="n">ws_cfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">.</span><span class="n">uri</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ws://websocket.org&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">.</span><span class="n">subprotocol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;soap&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The client is indifferent to the subprotocol field in the server response and will accept the connection no matter what the server replies.</p>
+</div>
+<p>For more options on <a class="reference internal" href="#_CPPv429esp_websocket_client_config_t" title="esp_websocket_client_config_t"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">esp_websocket_client_config_t</span></code></a>, please refer to API reference below</p>
+</section>
+</section>
+<section id="events">
+<h2>Events<a class="headerlink" href="#events" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><cite>WEBSOCKET_EVENT_CONNECTED</cite>: The client has successfully established a connection to the server. The client is now ready to send and receive data. Contains no event data.</p></li>
+<li><p><cite>WEBSOCKET_EVENT_DISCONNECTED</cite>: The client has aborted the connection due to the transport layer failing to read data, e.g. because the server is unavailable. Contains no event data.</p></li>
+<li><p><cite>WEBSOCKET_EVENT_DATA</cite>: The client has successfully received and parsed a WebSocket frame. The event data contains a pointer to the payload data, the length of the payload data as well as the opcode of the received frame. A message may be fragmented into multiple events if the length exceeds the buffer size. This event will also be posted for non-payload frames, e.g. pong or connection close frames.</p></li>
+<li><p><cite>WEBSOCKET_EVENT_ERROR</cite>: Not used in the current implementation of the client.</p></li>
+</ul>
+<p>If the client handle is needed in the event handler it can be accessed through the pointer passed to the event handler:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">esp_websocket_client_handle_t</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">esp_websocket_client_handle_t</span><span class="p">)</span><span class="n">handler_args</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="limitations-and-known-issues">
+<h2>Limitations and Known Issues<a class="headerlink" href="#limitations-and-known-issues" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>The client is able to request the use of a subprotocol from the server during the handshake, but does not do any subprotocol related checks on the response from the server.</p></li>
+</ul>
+</section>
+<section id="application-example">
+<h2>Application Example<a class="headerlink" href="#application-example" title="Permalink to this heading"></a></h2>
+<p>A simple WebSocket example that uses esp_websocket_client to establish a websocket connection and send/receive data with the <a class="reference external" href="https://websocket.org">websocket.org</a> server can be found here: <a class="reference external" href="https://github.com/espressif/esp-protocols/tree/79c11e9/examples/../examples">example </a>.</p>
+<section id="sending-text-data">
+<h3>Sending Text Data<a class="headerlink" href="#sending-text-data" title="Permalink to this heading"></a></h3>
+<p>The WebSocket client supports sending data as a text data frame, which informs the application layer that the payload data is text data encoded as UTF-8. Example:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">esp_websocket_client_send_text</span><span class="p">(</span><span class="n">client</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="n">portMAX_DELAY</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading"></a></h2>
+<section id="header-file">
+<h3>Header File<a class="headerlink" href="#header-file" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/espressif/esp-protocols/blob/79c11e9/include/esp_websocket_client.h">include/esp_websocket_client.h</a></p></li>
+</ul>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425esp_websocket_client_initPK29esp_websocket_client_config_t">
+<span id="_CPPv325esp_websocket_client_initPK29esp_websocket_client_config_t"></span><span id="_CPPv225esp_websocket_client_initPK29esp_websocket_client_config_t"></span><span id="esp_websocket_client_init__esp_websocket_client_config_tCP"></span><span class="target" id="esp__websocket__client_8h_1a243bea9ad290aa71efa02d7fff90d15d"></span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv429esp_websocket_client_config_t" title="esp_websocket_client_config_t"><span class="n"><span class="pre">esp_websocket_client_config_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425esp_websocket_client_initPK29esp_websocket_client_config_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Start a Websocket session This function must be the first function to call, and it returns a esp_websocket_client_handle_t that you must use as input to other functions in the interface. This call MUST have a corresponding call to esp_websocket_client_destroy when the operation is complete. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – <strong>[in]</strong> The configuration</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">esp_websocket_client_handle_t</span></code></p></li>
+<li><p>NULL if any errors </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428esp_websocket_client_set_uri29esp_websocket_client_handle_tPKc">
+<span id="_CPPv328esp_websocket_client_set_uri29esp_websocket_client_handle_tPKc"></span><span id="_CPPv228esp_websocket_client_set_uri29esp_websocket_client_handle_tPKc"></span><span id="esp_websocket_client_set_uri__esp_websocket_client_handle_t.cCP"></span><span class="target" id="esp__websocket__client_8h_1a50474c5aa08888672eb7c325ee5b0ac2"></span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_set_uri</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">uri</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428esp_websocket_client_set_uri29esp_websocket_client_handle_tPKc" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Set URL for client, when performing this behavior, the options in the URL will replace the old ones Must stop the WebSocket client before set URI if the client has been connected. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – <strong>[in]</strong> The client </p></li>
+<li><p><strong>uri</strong> – <strong>[in]</strong> The uri</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>esp_err_t </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426esp_websocket_client_start29esp_websocket_client_handle_t">
+<span id="_CPPv326esp_websocket_client_start29esp_websocket_client_handle_t"></span><span id="_CPPv226esp_websocket_client_start29esp_websocket_client_handle_t"></span><span id="esp_websocket_client_start__esp_websocket_client_handle_t"></span><span class="target" id="esp__websocket__client_8h_1a693a8aef5e81de4c26db82e398788d71"></span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_start</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426esp_websocket_client_start29esp_websocket_client_handle_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Open the WebSocket connection. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>client</strong> – <strong>[in]</strong> The client</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>esp_err_t </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425esp_websocket_client_stop29esp_websocket_client_handle_t">
+<span id="_CPPv325esp_websocket_client_stop29esp_websocket_client_handle_t"></span><span id="_CPPv225esp_websocket_client_stop29esp_websocket_client_handle_t"></span><span id="esp_websocket_client_stop__esp_websocket_client_handle_t"></span><span class="target" id="esp__websocket__client_8h_1a81a30e1ac0431cd4c93b78f58f7511df"></span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_stop</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425esp_websocket_client_stop29esp_websocket_client_handle_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Stops the WebSocket connection without websocket closing handshake. </p>
+<p>This API stops ws client and closes TCP connection directly without sending close frames. It is a good practice to close the connection in a clean way using esp_websocket_client_close().</p>
+<p>Notes:<ul class="simple">
+<li><p>Cannot be called from the websocket event handler</p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>client</strong> – <strong>[in]</strong> The client</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>esp_err_t </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428esp_websocket_client_destroy29esp_websocket_client_handle_t">
+<span id="_CPPv328esp_websocket_client_destroy29esp_websocket_client_handle_t"></span><span id="_CPPv228esp_websocket_client_destroy29esp_websocket_client_handle_t"></span><span id="esp_websocket_client_destroy__esp_websocket_client_handle_t"></span><span class="target" id="esp__websocket__client_8h_1a23060c864a083defeb1e5c549c07e7f4"></span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_destroy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428esp_websocket_client_destroy29esp_websocket_client_handle_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Destroy the WebSocket connection and free all resources. This function must be the last function to call for an session. It is the opposite of the esp_websocket_client_init function and must be called with the same handle as input that a esp_websocket_client_init call returned. This might close all connections this handle has used. </p>
+<p>Notes:<ul class="simple">
+<li><p>Cannot be called from the websocket event handler</p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>client</strong> – <strong>[in]</strong> The client</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>esp_err_t </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv429esp_websocket_client_send_bin29esp_websocket_client_handle_tPKci10TickType_t">
+<span id="_CPPv329esp_websocket_client_send_bin29esp_websocket_client_handle_tPKci10TickType_t"></span><span id="_CPPv229esp_websocket_client_send_bin29esp_websocket_client_handle_tPKci10TickType_t"></span><span id="esp_websocket_client_send_bin__esp_websocket_client_handle_t.cCP.i.TickType_t"></span><span class="target" id="esp__websocket__client_8h_1a7c0f6ba95ed2c5a79aaffdd98c755052"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_send_bin</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="n"><span class="pre">TickType_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv429esp_websocket_client_send_bin29esp_websocket_client_handle_tPKci10TickType_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Write binary data to the WebSocket connection (data send with WS OPCODE=02, i.e. binary) </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – <strong>[in]</strong> The client </p></li>
+<li><p><strong>data</strong> – <strong>[in]</strong> The data </p></li>
+<li><p><strong>len</strong> – <strong>[in]</strong> The length </p></li>
+<li><p><strong>timeout</strong> – <strong>[in]</strong> Write data timeout in RTOS ticks</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>Number of data was sent</p></li>
+<li><p>(-1) if any errors </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv430esp_websocket_client_send_text29esp_websocket_client_handle_tPKci10TickType_t">
+<span id="_CPPv330esp_websocket_client_send_text29esp_websocket_client_handle_tPKci10TickType_t"></span><span id="_CPPv230esp_websocket_client_send_text29esp_websocket_client_handle_tPKci10TickType_t"></span><span id="esp_websocket_client_send_text__esp_websocket_client_handle_t.cCP.i.TickType_t"></span><span class="target" id="esp__websocket__client_8h_1a68629bdee47e1232c5565e4bfb25e4fe"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_send_text</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="n"><span class="pre">TickType_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430esp_websocket_client_send_text29esp_websocket_client_handle_tPKci10TickType_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Write textual data to the WebSocket connection (data send with WS OPCODE=01, i.e. text) </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – <strong>[in]</strong> The client </p></li>
+<li><p><strong>data</strong> – <strong>[in]</strong> The data </p></li>
+<li><p><strong>len</strong> – <strong>[in]</strong> The length </p></li>
+<li><p><strong>timeout</strong> – <strong>[in]</strong> Write data timeout in RTOS ticks</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>Number of data was sent</p></li>
+<li><p>(-1) if any errors </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv437esp_websocket_client_send_with_opcode29esp_websocket_client_handle_t22ws_transport_opcodes_tPK7uint8_ti10TickType_t">
+<span id="_CPPv337esp_websocket_client_send_with_opcode29esp_websocket_client_handle_t22ws_transport_opcodes_tPK7uint8_ti10TickType_t"></span><span id="_CPPv237esp_websocket_client_send_with_opcode29esp_websocket_client_handle_t22ws_transport_opcodes_tPK7uint8_ti10TickType_t"></span><span id="esp_websocket_client_send_with_opcode__esp_websocket_client_handle_t.ws_transport_opcodes_t.uint8_tCP.i.TickType_t"></span><span class="target" id="esp__websocket__client_8h_1a5d2d11b117224eff0381fa60ae513862"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_send_with_opcode</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">client</span></span>, <span class="n"><span class="pre">ws_transport_opcodes_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">opcode</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="n"><span class="pre">TickType_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv437esp_websocket_client_send_with_opcode29esp_websocket_client_handle_t22ws_transport_opcodes_tPK7uint8_ti10TickType_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Write opcode data to the WebSocket connection. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – <strong>[in]</strong> The client </p></li>
+<li><p><strong>opcode</strong> – <strong>[in]</strong> The opcode </p></li>
+<li><p><strong>data</strong> – <strong>[in]</strong> The data </p></li>
+<li><p><strong>len</strong> – <strong>[in]</strong> The length </p></li>
+<li><p><strong>timeout</strong> – <strong>[in]</strong> Write data timeout in RTOS ticks</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>Number of data was sent</p></li>
+<li><p>(-1) if any errors </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426esp_websocket_client_close29esp_websocket_client_handle_t10TickType_t">
+<span id="_CPPv326esp_websocket_client_close29esp_websocket_client_handle_t10TickType_t"></span><span id="_CPPv226esp_websocket_client_close29esp_websocket_client_handle_t10TickType_t"></span><span id="esp_websocket_client_close__esp_websocket_client_handle_t.TickType_t"></span><span class="target" id="esp__websocket__client_8h_1a67f37da59a8da2f5a8fcad77d64924e3"></span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_close</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">client</span></span>, <span class="n"><span class="pre">TickType_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426esp_websocket_client_close29esp_websocket_client_handle_t10TickType_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Close the WebSocket connection in a clean way. </p>
+<p>Sequence of clean close initiated by client:<ul>
+<li><p>Client sends CLOSE frame</p></li>
+<li><p>Client waits until server echos the CLOSE frame</p></li>
+<li><p>Client waits until server closes the connection</p></li>
+<li><p>Client is stopped the same way as by the <code class="docutils literal notranslate"><span class="pre">esp_websocket_client_stop()</span></code></p>
+<p>Notes:<ul class="simple">
+<li><p>Cannot be called from the websocket event handler</p></li>
+</ul>
+</p>
+</li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – <strong>[in]</strong> The client </p></li>
+<li><p><strong>timeout</strong> – <strong>[in]</strong> Timeout in RTOS ticks for waiting</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>esp_err_t </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv436esp_websocket_client_close_with_code29esp_websocket_client_handle_tiPKci10TickType_t">
+<span id="_CPPv336esp_websocket_client_close_with_code29esp_websocket_client_handle_tiPKci10TickType_t"></span><span id="_CPPv236esp_websocket_client_close_with_code29esp_websocket_client_handle_tiPKci10TickType_t"></span><span id="esp_websocket_client_close_with_code__esp_websocket_client_handle_t.i.cCP.i.TickType_t"></span><span class="target" id="esp__websocket__client_8h_1ae98061696a262126c14c4f4e2d6abfaf"></span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_close_with_code</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">client</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">code</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">len</span></span>, <span class="n"><span class="pre">TickType_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeout</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv436esp_websocket_client_close_with_code29esp_websocket_client_handle_tiPKci10TickType_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Close the WebSocket connection in a clean way with custom code/data Closing sequence is the same as for esp_websocket_client_close() </p>
+<p>Notes:<ul class="simple">
+<li><p>Cannot be called from the websocket event handler</p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – <strong>[in]</strong> The client </p></li>
+<li><p><strong>code</strong> – <strong>[in]</strong> Close status code as defined in RFC6455 section-7.4 </p></li>
+<li><p><strong>data</strong> – <strong>[in]</strong> Additional data to closing message </p></li>
+<li><p><strong>len</strong> – <strong>[in]</strong> The length of the additional data </p></li>
+<li><p><strong>timeout</strong> – <strong>[in]</strong> Timeout in RTOS ticks for waiting</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>esp_err_t </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv433esp_websocket_client_is_connected29esp_websocket_client_handle_t">
+<span id="_CPPv333esp_websocket_client_is_connected29esp_websocket_client_handle_t"></span><span id="_CPPv233esp_websocket_client_is_connected29esp_websocket_client_handle_t"></span><span id="esp_websocket_client_is_connected__esp_websocket_client_handle_t"></span><span class="target" id="esp__websocket__client_8h_1ab669d31f755182eac55975558ce499c1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_is_connected</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv433esp_websocket_client_is_connected29esp_websocket_client_handle_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Check the WebSocket client connection state. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>client</strong> – <strong>[in]</strong> The client handle</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>true</p></li>
+<li><p>false </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv442esp_websocket_client_get_ping_interval_sec29esp_websocket_client_handle_t">
+<span id="_CPPv342esp_websocket_client_get_ping_interval_sec29esp_websocket_client_handle_t"></span><span id="_CPPv242esp_websocket_client_get_ping_interval_sec29esp_websocket_client_handle_t"></span><span id="esp_websocket_client_get_ping_interval_sec__esp_websocket_client_handle_t"></span><span class="target" id="esp__websocket__client_8h_1ac8f96276df09f56af4b83675cd1487ff"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_get_ping_interval_sec</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv442esp_websocket_client_get_ping_interval_sec29esp_websocket_client_handle_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Get the ping interval sec for client. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>client</strong> – <strong>[in]</strong> The client</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The ping interval in sec </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv442esp_websocket_client_set_ping_interval_sec29esp_websocket_client_handle_t6size_t">
+<span id="_CPPv342esp_websocket_client_set_ping_interval_sec29esp_websocket_client_handle_t6size_t"></span><span id="_CPPv242esp_websocket_client_set_ping_interval_sec29esp_websocket_client_handle_t6size_t"></span><span id="esp_websocket_client_set_ping_interval_sec__esp_websocket_client_handle_t.s"></span><span class="target" id="esp__websocket__client_8h_1a72e61f91ed9d9424287f376284ffc9b3"></span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_set_ping_interval_sec</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">client</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ping_interval_sec</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv442esp_websocket_client_set_ping_interval_sec29esp_websocket_client_handle_t6size_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Set new ping interval sec for client. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – <strong>[in]</strong> The client </p></li>
+<li><p><strong>ping_interval_sec</strong> – <strong>[in]</strong> The new interval</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>esp_err_t </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv429esp_websocket_register_events29esp_websocket_client_handle_t24esp_websocket_event_id_t19esp_event_handler_tPv">
+<span id="_CPPv329esp_websocket_register_events29esp_websocket_client_handle_t24esp_websocket_event_id_t19esp_event_handler_tPv"></span><span id="_CPPv229esp_websocket_register_events29esp_websocket_client_handle_t24esp_websocket_event_id_t19esp_event_handler_tPv"></span><span id="esp_websocket_register_events__esp_websocket_client_handle_t.esp_websocket_event_id_t.esp_event_handler_t.voidP"></span><span class="target" id="esp__websocket__client_8h_1a8d993808cd78275be7ae4de44e8c11d9"></span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_register_events</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">client</span></span>, <a class="reference internal" href="#_CPPv424esp_websocket_event_id_t" title="esp_websocket_event_id_t"><span class="n"><span class="pre">esp_websocket_event_id_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">event</span></span>, <span class="n"><span class="pre">esp_event_handler_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">event_handler</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">event_handler_arg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv429esp_websocket_register_events29esp_websocket_client_handle_t24esp_websocket_event_id_t19esp_event_handler_tPv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Register the Websocket Events. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – The client handle </p></li>
+<li><p><strong>event</strong> – The event id </p></li>
+<li><p><strong>event_handler</strong> – The callback function </p></li>
+<li><p><strong>event_handler_arg</strong> – User context </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>esp_err_t </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="structures">
+<h3>Structures<a class="headerlink" href="#structures" title="Permalink to this heading"></a></h3>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv426esp_websocket_event_data_t">
+<span id="_CPPv326esp_websocket_event_data_t"></span><span id="_CPPv226esp_websocket_event_data_t"></span><span id="esp_websocket_event_data_t"></span><span class="target" id="structesp__websocket__event__data__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_event_data_t</span></span></span><a class="headerlink" href="#_CPPv426esp_websocket_event_data_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Websocket event data. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N26esp_websocket_event_data_t8data_ptrE">
+<span id="_CPPv3N26esp_websocket_event_data_t8data_ptrE"></span><span id="_CPPv2N26esp_websocket_event_data_t8data_ptrE"></span><span id="esp_websocket_event_data_t::data_ptr__cCP"></span><span class="target" id="structesp__websocket__event__data__t_1affe2518fe3abc0cd5e791b58e4429759"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data_ptr</span></span></span><a class="headerlink" href="#_CPPv4N26esp_websocket_event_data_t8data_ptrE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Data pointer </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N26esp_websocket_event_data_t8data_lenE">
+<span id="_CPPv3N26esp_websocket_event_data_t8data_lenE"></span><span id="_CPPv2N26esp_websocket_event_data_t8data_lenE"></span><span id="esp_websocket_event_data_t::data_len__i"></span><span class="target" id="structesp__websocket__event__data__t_1a92d78bddde51e93a0b73c3707603fc8d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">data_len</span></span></span><a class="headerlink" href="#_CPPv4N26esp_websocket_event_data_t8data_lenE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Data length </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N26esp_websocket_event_data_t3finE">
+<span id="_CPPv3N26esp_websocket_event_data_t3finE"></span><span id="_CPPv2N26esp_websocket_event_data_t3finE"></span><span id="esp_websocket_event_data_t::fin__b"></span><span class="target" id="structesp__websocket__event__data__t_1a34e3831399dbc1d9ed526b63528eac29"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fin</span></span></span><a class="headerlink" href="#_CPPv4N26esp_websocket_event_data_t3finE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Fin flag </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N26esp_websocket_event_data_t7op_codeE">
+<span id="_CPPv3N26esp_websocket_event_data_t7op_codeE"></span><span id="_CPPv2N26esp_websocket_event_data_t7op_codeE"></span><span id="esp_websocket_event_data_t::op_code__uint8_t"></span><span class="target" id="structesp__websocket__event__data__t_1aeba7476e8b18de266426a6d345fa530c"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">op_code</span></span></span><a class="headerlink" href="#_CPPv4N26esp_websocket_event_data_t7op_codeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Received opcode </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N26esp_websocket_event_data_t6clientE">
+<span id="_CPPv3N26esp_websocket_event_data_t6clientE"></span><span id="_CPPv2N26esp_websocket_event_data_t6clientE"></span><span id="esp_websocket_event_data_t::client__esp_websocket_client_handle_t"></span><span class="target" id="structesp__websocket__event__data__t_1a39accb4406300e6e2033148d69700484"></span><a class="reference internal" href="#_CPPv429esp_websocket_client_handle_t" title="esp_websocket_client_handle_t"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">client</span></span></span><a class="headerlink" href="#_CPPv4N26esp_websocket_event_data_t6clientE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>esp_websocket_client_handle_t context </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N26esp_websocket_event_data_t12user_contextE">
+<span id="_CPPv3N26esp_websocket_event_data_t12user_contextE"></span><span id="_CPPv2N26esp_websocket_event_data_t12user_contextE"></span><span id="esp_websocket_event_data_t::user_context__voidP"></span><span class="target" id="structesp__websocket__event__data__t_1afb7e9bc8b0820f1930c01bc533956185"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">user_context</span></span></span><a class="headerlink" href="#_CPPv4N26esp_websocket_event_data_t12user_contextE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>user_data context, from <a class="reference internal" href="#structesp__websocket__client__config__t"><span class="std std-ref">esp_websocket_client_config_t</span></a> user_data </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N26esp_websocket_event_data_t11payload_lenE">
+<span id="_CPPv3N26esp_websocket_event_data_t11payload_lenE"></span><span id="_CPPv2N26esp_websocket_event_data_t11payload_lenE"></span><span id="esp_websocket_event_data_t::payload_len__i"></span><span class="target" id="structesp__websocket__event__data__t_1a650c6104bb2be5656063a6a280c275bc"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">payload_len</span></span></span><a class="headerlink" href="#_CPPv4N26esp_websocket_event_data_t11payload_lenE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Total payload length, payloads exceeding buffer will be posted through multiple events </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N26esp_websocket_event_data_t14payload_offsetE">
+<span id="_CPPv3N26esp_websocket_event_data_t14payload_offsetE"></span><span id="_CPPv2N26esp_websocket_event_data_t14payload_offsetE"></span><span id="esp_websocket_event_data_t::payload_offset__i"></span><span class="target" id="structesp__websocket__event__data__t_1ad389aa8cd73d447415dc66322dc17cdc"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">payload_offset</span></span></span><a class="headerlink" href="#_CPPv4N26esp_websocket_event_data_t14payload_offsetE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Actual offset for the data associated with this event </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv429esp_websocket_client_config_t">
+<span id="_CPPv329esp_websocket_client_config_t"></span><span id="_CPPv229esp_websocket_client_config_t"></span><span id="esp_websocket_client_config_t"></span><span class="target" id="structesp__websocket__client__config__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_config_t</span></span></span><a class="headerlink" href="#_CPPv429esp_websocket_client_config_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Websocket client setup configuration. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t3uriE">
+<span id="_CPPv3N29esp_websocket_client_config_t3uriE"></span><span id="_CPPv2N29esp_websocket_client_config_t3uriE"></span><span id="esp_websocket_client_config_t::uri__cCP"></span><span class="target" id="structesp__websocket__client__config__t_1a68a4aa23ee268e4ada68a48faeae818c"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">uri</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t3uriE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Websocket URI, the information on the URI can be overrides the other fields below, if any </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t4hostE">
+<span id="_CPPv3N29esp_websocket_client_config_t4hostE"></span><span id="_CPPv2N29esp_websocket_client_config_t4hostE"></span><span id="esp_websocket_client_config_t::host__cCP"></span><span class="target" id="structesp__websocket__client__config__t_1a2cce5ac95180a538cf1aa3e859d6efce"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">host</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t4hostE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Domain or IP as string </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t4portE">
+<span id="_CPPv3N29esp_websocket_client_config_t4portE"></span><span id="_CPPv2N29esp_websocket_client_config_t4portE"></span><span id="esp_websocket_client_config_t::port__i"></span><span class="target" id="structesp__websocket__client__config__t_1a581c889096c480cc18d827025e1248b2"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">port</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t4portE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Port to connect, default depend on esp_websocket_transport_t (80 or 443) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t8usernameE">
+<span id="_CPPv3N29esp_websocket_client_config_t8usernameE"></span><span id="_CPPv2N29esp_websocket_client_config_t8usernameE"></span><span id="esp_websocket_client_config_t::username__cCP"></span><span class="target" id="structesp__websocket__client__config__t_1a2b37727b2a79ffe0e4c7c3704ed2ef4e"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">username</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t8usernameE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Using for Http authentication - Not supported for now </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t8passwordE">
+<span id="_CPPv3N29esp_websocket_client_config_t8passwordE"></span><span id="_CPPv2N29esp_websocket_client_config_t8passwordE"></span><span id="esp_websocket_client_config_t::password__cCP"></span><span class="target" id="structesp__websocket__client__config__t_1abf0bc7dc56c85becbeda0445cc29cfd7"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">password</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t8passwordE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Using for Http authentication - Not supported for now </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t4pathE">
+<span id="_CPPv3N29esp_websocket_client_config_t4pathE"></span><span id="_CPPv2N29esp_websocket_client_config_t4pathE"></span><span id="esp_websocket_client_config_t::path__cCP"></span><span class="target" id="structesp__websocket__client__config__t_1a5f884f588890015196464cafb312a5fd"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">path</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t4pathE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>HTTP Path, if not set, default is <code class="docutils literal notranslate"><span class="pre">/</span></code> </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t22disable_auto_reconnectE">
+<span id="_CPPv3N29esp_websocket_client_config_t22disable_auto_reconnectE"></span><span id="_CPPv2N29esp_websocket_client_config_t22disable_auto_reconnectE"></span><span id="esp_websocket_client_config_t::disable_auto_reconnect__b"></span><span class="target" id="structesp__websocket__client__config__t_1a3363f6a6cfb1bfb21b5d2d6ac67979c2"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disable_auto_reconnect</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t22disable_auto_reconnectE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Disable the automatic reconnect function when disconnected </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t12user_contextE">
+<span id="_CPPv3N29esp_websocket_client_config_t12user_contextE"></span><span id="_CPPv2N29esp_websocket_client_config_t12user_contextE"></span><span id="esp_websocket_client_config_t::user_context__voidP"></span><span class="target" id="structesp__websocket__client__config__t_1a2c567522b23235eec225a3a41c55b27d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">user_context</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t12user_contextE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>HTTP user data context </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t9task_prioE">
+<span id="_CPPv3N29esp_websocket_client_config_t9task_prioE"></span><span id="_CPPv2N29esp_websocket_client_config_t9task_prioE"></span><span id="esp_websocket_client_config_t::task_prio__i"></span><span class="target" id="structesp__websocket__client__config__t_1a1aaadb1006a78077d8e4e1641fcfdebb"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">task_prio</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t9task_prioE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Websocket task priority </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t10task_stackE">
+<span id="_CPPv3N29esp_websocket_client_config_t10task_stackE"></span><span id="_CPPv2N29esp_websocket_client_config_t10task_stackE"></span><span id="esp_websocket_client_config_t::task_stack__i"></span><span class="target" id="structesp__websocket__client__config__t_1aaa2eb851ef9ad2f21057c0548df14aa4"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">task_stack</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t10task_stackE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Websocket task stack </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t11buffer_sizeE">
+<span id="_CPPv3N29esp_websocket_client_config_t11buffer_sizeE"></span><span id="_CPPv2N29esp_websocket_client_config_t11buffer_sizeE"></span><span id="esp_websocket_client_config_t::buffer_size__i"></span><span class="target" id="structesp__websocket__client__config__t_1a316b4f48ec9a46c49a59df08149cca80"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">buffer_size</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t11buffer_sizeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Websocket buffer size </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t8cert_pemE">
+<span id="_CPPv3N29esp_websocket_client_config_t8cert_pemE"></span><span id="_CPPv2N29esp_websocket_client_config_t8cert_pemE"></span><span id="esp_websocket_client_config_t::cert_pem__cCP"></span><span class="target" id="structesp__websocket__client__config__t_1a1cb1d87bf1b412d25952f4f6ae7c4294"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">cert_pem</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t8cert_pemE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Pointer to certificate data in PEM or DER format for server verify (with SSL), default is NULL, not required to verify the server. PEM-format must have a terminating NULL-character. DER-format requires the length to be passed in cert_len. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t8cert_lenE">
+<span id="_CPPv3N29esp_websocket_client_config_t8cert_lenE"></span><span id="_CPPv2N29esp_websocket_client_config_t8cert_lenE"></span><span id="esp_websocket_client_config_t::cert_len__s"></span><span class="target" id="structesp__websocket__client__config__t_1a14bb0dfadac26b7d3c18ab0918fada8c"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cert_len</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t8cert_lenE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Length of the buffer pointed to by cert_pem. May be 0 for null-terminated pem </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t11client_certE">
+<span id="_CPPv3N29esp_websocket_client_config_t11client_certE"></span><span id="_CPPv2N29esp_websocket_client_config_t11client_certE"></span><span id="esp_websocket_client_config_t::client_cert__cCP"></span><span class="target" id="structesp__websocket__client__config__t_1a68f0c9265aa02e226876932831003803"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">client_cert</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t11client_certE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Pointer to certificate data in PEM or DER format for SSL mutual authentication, default is NULL, not required if mutual authentication is not needed. If it is not NULL, also <code class="docutils literal notranslate"><span class="pre">client_key</span></code> has to be provided. PEM-format must have a terminating NULL-character. DER-format requires the length to be passed in client_cert_len. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t15client_cert_lenE">
+<span id="_CPPv3N29esp_websocket_client_config_t15client_cert_lenE"></span><span id="_CPPv2N29esp_websocket_client_config_t15client_cert_lenE"></span><span id="esp_websocket_client_config_t::client_cert_len__s"></span><span class="target" id="structesp__websocket__client__config__t_1a0d0f85fb986afc30c497c458d7f88e84"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">client_cert_len</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t15client_cert_lenE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Length of the buffer pointed to by client_cert. May be 0 for null-terminated pem </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t10client_keyE">
+<span id="_CPPv3N29esp_websocket_client_config_t10client_keyE"></span><span id="_CPPv2N29esp_websocket_client_config_t10client_keyE"></span><span id="esp_websocket_client_config_t::client_key__cCP"></span><span class="target" id="structesp__websocket__client__config__t_1aca91a6cc5bab26106fa003acd5b1943b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">client_key</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t10client_keyE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Pointer to private key data in PEM or DER format for SSL mutual authentication, default is NULL, not required if mutual authentication is not needed. If it is not NULL, also <code class="docutils literal notranslate"><span class="pre">client_cert</span></code> has to be provided. PEM-format must have a terminating NULL-character. DER-format requires the length to be passed in client_key_len </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t14client_key_lenE">
+<span id="_CPPv3N29esp_websocket_client_config_t14client_key_lenE"></span><span id="_CPPv2N29esp_websocket_client_config_t14client_key_lenE"></span><span id="esp_websocket_client_config_t::client_key_len__s"></span><span class="target" id="structesp__websocket__client__config__t_1a3bcc7890cc9caaf8af1ce3aa02df43ab"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">client_key_len</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t14client_key_lenE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Length of the buffer pointed to by client_key_pem. May be 0 for null-terminated pem </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t9transportE">
+<span id="_CPPv3N29esp_websocket_client_config_t9transportE"></span><span id="_CPPv2N29esp_websocket_client_config_t9transportE"></span><span id="esp_websocket_client_config_t::transport__esp_websocket_transport_t"></span><span class="target" id="structesp__websocket__client__config__t_1a687429a288d44ff2941bb00b8b14ed55"></span><a class="reference internal" href="#_CPPv425esp_websocket_transport_t" title="esp_websocket_transport_t"><span class="n"><span class="pre">esp_websocket_transport_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transport</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t9transportE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Websocket transport type, see `esp_websocket_transport_t </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t11subprotocolE">
+<span id="_CPPv3N29esp_websocket_client_config_t11subprotocolE"></span><span id="_CPPv2N29esp_websocket_client_config_t11subprotocolE"></span><span id="esp_websocket_client_config_t::subprotocol__cCP"></span><span class="target" id="structesp__websocket__client__config__t_1a40dd329adb08d96493e63fac7812034d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">subprotocol</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t11subprotocolE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Websocket subprotocol </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t10user_agentE">
+<span id="_CPPv3N29esp_websocket_client_config_t10user_agentE"></span><span id="_CPPv2N29esp_websocket_client_config_t10user_agentE"></span><span id="esp_websocket_client_config_t::user_agent__cCP"></span><span class="target" id="structesp__websocket__client__config__t_1a54bb4948a7303100681ee315637933b0"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">user_agent</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t10user_agentE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Websocket user-agent </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t7headersE">
+<span id="_CPPv3N29esp_websocket_client_config_t7headersE"></span><span id="_CPPv2N29esp_websocket_client_config_t7headersE"></span><span id="esp_websocket_client_config_t::headers__cCP"></span><span class="target" id="structesp__websocket__client__config__t_1ad1c6a18d8d634892c01e1ac8f26cc833"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">headers</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t7headersE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Websocket additional headers </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t20pingpong_timeout_secE">
+<span id="_CPPv3N29esp_websocket_client_config_t20pingpong_timeout_secE"></span><span id="_CPPv2N29esp_websocket_client_config_t20pingpong_timeout_secE"></span><span id="esp_websocket_client_config_t::pingpong_timeout_sec__i"></span><span class="target" id="structesp__websocket__client__config__t_1a24733c24624c517da389db13bb7bba24"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pingpong_timeout_sec</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t20pingpong_timeout_secE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Period before connection is aborted due to no PONGs received </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t23disable_pingpong_disconE">
+<span id="_CPPv3N29esp_websocket_client_config_t23disable_pingpong_disconE"></span><span id="_CPPv2N29esp_websocket_client_config_t23disable_pingpong_disconE"></span><span id="esp_websocket_client_config_t::disable_pingpong_discon__b"></span><span class="target" id="structesp__websocket__client__config__t_1ab999fe777e719bb619b10796fb41dde7"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disable_pingpong_discon</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t23disable_pingpong_disconE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Disable auto-disconnect due to no PONG received within pingpong_timeout_sec </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t19use_global_ca_storeE">
+<span id="_CPPv3N29esp_websocket_client_config_t19use_global_ca_storeE"></span><span id="_CPPv2N29esp_websocket_client_config_t19use_global_ca_storeE"></span><span id="esp_websocket_client_config_t::use_global_ca_store__b"></span><span class="target" id="structesp__websocket__client__config__t_1a4b811b30ac0acc5e1dfdd95394620a76"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">use_global_ca_store</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t19use_global_ca_storeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Use a global ca_store for all the connections in which this bool is set. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t17crt_bundle_attachE">
+<span id="_CPPv3N29esp_websocket_client_config_t17crt_bundle_attachE"></span><span id="_CPPv2N29esp_websocket_client_config_t17crt_bundle_attachE"></span><span class="target" id="structesp__websocket__client__config__t_1a736d9d4d9acdf75aca18e377d0b988bc"></span><span class="n"><span class="pre">esp_err_t</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">crt_bundle_attach</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t17crt_bundle_attachE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Function pointer to esp_crt_bundle_attach. Enables the use of certification bundle for server verification, MBEDTLS_CERTIFICATE_BUNDLE must be enabled in menuconfig. Include esp_crt_bundle.h, and use <code class="docutils literal notranslate"><span class="pre">esp_crt_bundle_attach</span></code> here to include bundled CA certificates. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t27skip_cert_common_name_checkE">
+<span id="_CPPv3N29esp_websocket_client_config_t27skip_cert_common_name_checkE"></span><span id="_CPPv2N29esp_websocket_client_config_t27skip_cert_common_name_checkE"></span><span id="esp_websocket_client_config_t::skip_cert_common_name_check__b"></span><span class="target" id="structesp__websocket__client__config__t_1a659d5ff42a91bffb52c6930b98d98084"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">skip_cert_common_name_check</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t27skip_cert_common_name_checkE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Skip any validation of server certificate CN field </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t17keep_alive_enableE">
+<span id="_CPPv3N29esp_websocket_client_config_t17keep_alive_enableE"></span><span id="_CPPv2N29esp_websocket_client_config_t17keep_alive_enableE"></span><span id="esp_websocket_client_config_t::keep_alive_enable__b"></span><span class="target" id="structesp__websocket__client__config__t_1a332985f575f97e78662b9f5ba7b863a2"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keep_alive_enable</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t17keep_alive_enableE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Enable keep-alive timeout </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t15keep_alive_idleE">
+<span id="_CPPv3N29esp_websocket_client_config_t15keep_alive_idleE"></span><span id="_CPPv2N29esp_websocket_client_config_t15keep_alive_idleE"></span><span id="esp_websocket_client_config_t::keep_alive_idle__i"></span><span class="target" id="structesp__websocket__client__config__t_1af74803f5fe69582027dd6d793e4a2650"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keep_alive_idle</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t15keep_alive_idleE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Keep-alive idle time. Default is 5 (second) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t19keep_alive_intervalE">
+<span id="_CPPv3N29esp_websocket_client_config_t19keep_alive_intervalE"></span><span id="_CPPv2N29esp_websocket_client_config_t19keep_alive_intervalE"></span><span id="esp_websocket_client_config_t::keep_alive_interval__i"></span><span class="target" id="structesp__websocket__client__config__t_1a849e11f479ba778bf6d86f5acbf93ee2"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keep_alive_interval</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t19keep_alive_intervalE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Keep-alive interval time. Default is 5 (second) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t16keep_alive_countE">
+<span id="_CPPv3N29esp_websocket_client_config_t16keep_alive_countE"></span><span id="_CPPv2N29esp_websocket_client_config_t16keep_alive_countE"></span><span id="esp_websocket_client_config_t::keep_alive_count__i"></span><span class="target" id="structesp__websocket__client__config__t_1a7c541762557f38ae6162915db4c4f4df"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keep_alive_count</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t16keep_alive_countE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Keep-alive packet retry send count. Default is 3 counts </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t20reconnect_timeout_msE">
+<span id="_CPPv3N29esp_websocket_client_config_t20reconnect_timeout_msE"></span><span id="_CPPv2N29esp_websocket_client_config_t20reconnect_timeout_msE"></span><span id="esp_websocket_client_config_t::reconnect_timeout_ms__i"></span><span class="target" id="structesp__websocket__client__config__t_1a8b140e5beca1aa6dce98336fa04e5c59"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reconnect_timeout_ms</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t20reconnect_timeout_msE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Reconnect after this value in miliseconds if disable_auto_reconnect is not enabled (defaults to 10s) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t18network_timeout_msE">
+<span id="_CPPv3N29esp_websocket_client_config_t18network_timeout_msE"></span><span id="_CPPv2N29esp_websocket_client_config_t18network_timeout_msE"></span><span id="esp_websocket_client_config_t::network_timeout_ms__i"></span><span class="target" id="structesp__websocket__client__config__t_1ab0b2a4367229ea86b6936545a2a7c6c1"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">network_timeout_ms</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t18network_timeout_msE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Abort network operation if it is not completed after this value, in milliseconds (defaults to 10s) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t17ping_interval_secE">
+<span id="_CPPv3N29esp_websocket_client_config_t17ping_interval_secE"></span><span id="_CPPv2N29esp_websocket_client_config_t17ping_interval_secE"></span><span id="esp_websocket_client_config_t::ping_interval_sec__s"></span><span class="target" id="structesp__websocket__client__config__t_1ad751840e34c2b8f2cf17d175f3b64d29"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ping_interval_sec</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t17ping_interval_secE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Websocket ping interval, defaults to 10 seconds if not set </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N29esp_websocket_client_config_t7if_nameE">
+<span id="_CPPv3N29esp_websocket_client_config_t7if_nameE"></span><span id="_CPPv2N29esp_websocket_client_config_t7if_nameE"></span><span id="esp_websocket_client_config_t::if_name__ifreqP"></span><span class="target" id="structesp__websocket__client__config__t_1a095cfc11f5503376946ef8d98f395432"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ifreq</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">if_name</span></span></span><a class="headerlink" href="#_CPPv4N29esp_websocket_client_config_t7if_nameE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>The name of interface for data to go through. Use the default interface without setting </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="type-definitions">
+<h3>Type Definitions<a class="headerlink" href="#type-definitions" title="Permalink to this heading"></a></h3>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv429esp_websocket_client_handle_t">
+<span id="_CPPv329esp_websocket_client_handle_t"></span><span id="_CPPv229esp_websocket_client_handle_t"></span><span id="esp_websocket_client_handle_t"></span><span class="target" id="esp__websocket__client_8h_1a495fdc2516a29dc75c569f7bb96259a1"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">esp_websocket_client</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_client_handle_t</span></span></span><a class="headerlink" href="#_CPPv429esp_websocket_client_handle_t" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</section>
+<section id="enumerations">
+<h3>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this heading"></a></h3>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv424esp_websocket_event_id_t">
+<span id="_CPPv324esp_websocket_event_id_t"></span><span id="_CPPv224esp_websocket_event_id_t"></span><span class="target" id="esp__websocket__client_8h_1a781bbfb5f24162bd806d09cefe317b10"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_event_id_t</span></span></span><a class="headerlink" href="#_CPPv424esp_websocket_event_id_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Websocket Client events id. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N24esp_websocket_event_id_t19WEBSOCKET_EVENT_ANYE">
+<span id="_CPPv3N24esp_websocket_event_id_t19WEBSOCKET_EVENT_ANYE"></span><span id="_CPPv2N24esp_websocket_event_id_t19WEBSOCKET_EVENT_ANYE"></span><span class="target" id="esp__websocket__client_8h_1a781bbfb5f24162bd806d09cefe317b10a0345410f63b26740cd502910fd6775f1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_EVENT_ANY</span></span></span><a class="headerlink" href="#_CPPv4N24esp_websocket_event_id_t19WEBSOCKET_EVENT_ANYE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N24esp_websocket_event_id_t21WEBSOCKET_EVENT_ERRORE">
+<span id="_CPPv3N24esp_websocket_event_id_t21WEBSOCKET_EVENT_ERRORE"></span><span id="_CPPv2N24esp_websocket_event_id_t21WEBSOCKET_EVENT_ERRORE"></span><span class="target" id="esp__websocket__client_8h_1a781bbfb5f24162bd806d09cefe317b10a198ee2b8de3524370d880277122fd296"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_EVENT_ERROR</span></span></span><a class="headerlink" href="#_CPPv4N24esp_websocket_event_id_t21WEBSOCKET_EVENT_ERRORE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>This event occurs when there are any errors during execution </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N24esp_websocket_event_id_t25WEBSOCKET_EVENT_CONNECTEDE">
+<span id="_CPPv3N24esp_websocket_event_id_t25WEBSOCKET_EVENT_CONNECTEDE"></span><span id="_CPPv2N24esp_websocket_event_id_t25WEBSOCKET_EVENT_CONNECTEDE"></span><span class="target" id="esp__websocket__client_8h_1a781bbfb5f24162bd806d09cefe317b10a26e026f8b057d410dcec4cffc3145235"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_EVENT_CONNECTED</span></span></span><a class="headerlink" href="#_CPPv4N24esp_websocket_event_id_t25WEBSOCKET_EVENT_CONNECTEDE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Once the Websocket has been connected to the server, no data exchange has been performed </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N24esp_websocket_event_id_t28WEBSOCKET_EVENT_DISCONNECTEDE">
+<span id="_CPPv3N24esp_websocket_event_id_t28WEBSOCKET_EVENT_DISCONNECTEDE"></span><span id="_CPPv2N24esp_websocket_event_id_t28WEBSOCKET_EVENT_DISCONNECTEDE"></span><span class="target" id="esp__websocket__client_8h_1a781bbfb5f24162bd806d09cefe317b10a6ffcb93198d0d9ebe5e958e61befa1c1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_EVENT_DISCONNECTED</span></span></span><a class="headerlink" href="#_CPPv4N24esp_websocket_event_id_t28WEBSOCKET_EVENT_DISCONNECTEDE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>The connection has been disconnected </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N24esp_websocket_event_id_t20WEBSOCKET_EVENT_DATAE">
+<span id="_CPPv3N24esp_websocket_event_id_t20WEBSOCKET_EVENT_DATAE"></span><span id="_CPPv2N24esp_websocket_event_id_t20WEBSOCKET_EVENT_DATAE"></span><span class="target" id="esp__websocket__client_8h_1a781bbfb5f24162bd806d09cefe317b10a17f330e93c8dbdb887254aff1193614d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_EVENT_DATA</span></span></span><a class="headerlink" href="#_CPPv4N24esp_websocket_event_id_t20WEBSOCKET_EVENT_DATAE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>When receiving data from the server, possibly multiple portions of the packet </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N24esp_websocket_event_id_t22WEBSOCKET_EVENT_CLOSEDE">
+<span id="_CPPv3N24esp_websocket_event_id_t22WEBSOCKET_EVENT_CLOSEDE"></span><span id="_CPPv2N24esp_websocket_event_id_t22WEBSOCKET_EVENT_CLOSEDE"></span><span class="target" id="esp__websocket__client_8h_1a781bbfb5f24162bd806d09cefe317b10a678462f29ce6d0f39690c767280a88e5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_EVENT_CLOSED</span></span></span><a class="headerlink" href="#_CPPv4N24esp_websocket_event_id_t22WEBSOCKET_EVENT_CLOSEDE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>The connection has been closed cleanly </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N24esp_websocket_event_id_t19WEBSOCKET_EVENT_MAXE">
+<span id="_CPPv3N24esp_websocket_event_id_t19WEBSOCKET_EVENT_MAXE"></span><span id="_CPPv2N24esp_websocket_event_id_t19WEBSOCKET_EVENT_MAXE"></span><span class="target" id="esp__websocket__client_8h_1a781bbfb5f24162bd806d09cefe317b10a104fe520c71c532635d64e024e9a02cb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_EVENT_MAX</span></span></span><a class="headerlink" href="#_CPPv4N24esp_websocket_event_id_t19WEBSOCKET_EVENT_MAXE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv425esp_websocket_transport_t">
+<span id="_CPPv325esp_websocket_transport_t"></span><span id="_CPPv225esp_websocket_transport_t"></span><span class="target" id="esp__websocket__client_8h_1aecb53723a9770b3584483ffc2d97ddc1"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">esp_websocket_transport_t</span></span></span><a class="headerlink" href="#_CPPv425esp_websocket_transport_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Websocket Client transport. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N25esp_websocket_transport_t27WEBSOCKET_TRANSPORT_UNKNOWNE">
+<span id="_CPPv3N25esp_websocket_transport_t27WEBSOCKET_TRANSPORT_UNKNOWNE"></span><span id="_CPPv2N25esp_websocket_transport_t27WEBSOCKET_TRANSPORT_UNKNOWNE"></span><span class="target" id="esp__websocket__client_8h_1aecb53723a9770b3584483ffc2d97ddc1a0cab7d9515e6876747d51822097b0616"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_TRANSPORT_UNKNOWN</span></span></span><a class="headerlink" href="#_CPPv4N25esp_websocket_transport_t27WEBSOCKET_TRANSPORT_UNKNOWNE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Transport unknown </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N25esp_websocket_transport_t28WEBSOCKET_TRANSPORT_OVER_TCPE">
+<span id="_CPPv3N25esp_websocket_transport_t28WEBSOCKET_TRANSPORT_OVER_TCPE"></span><span id="_CPPv2N25esp_websocket_transport_t28WEBSOCKET_TRANSPORT_OVER_TCPE"></span><span class="target" id="esp__websocket__client_8h_1aecb53723a9770b3584483ffc2d97ddc1a384db78e23ec0b0e5bc0dd108f3bffb7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_TRANSPORT_OVER_TCP</span></span></span><a class="headerlink" href="#_CPPv4N25esp_websocket_transport_t28WEBSOCKET_TRANSPORT_OVER_TCPE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Transport over tcp </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N25esp_websocket_transport_t28WEBSOCKET_TRANSPORT_OVER_SSLE">
+<span id="_CPPv3N25esp_websocket_transport_t28WEBSOCKET_TRANSPORT_OVER_SSLE"></span><span id="_CPPv2N25esp_websocket_transport_t28WEBSOCKET_TRANSPORT_OVER_SSLE"></span><span class="target" id="esp__websocket__client_8h_1aecb53723a9770b3584483ffc2d97ddc1a75247f6fb3e8c9381c8cd2fd70a84d2c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEBSOCKET_TRANSPORT_OVER_SSL</span></span></span><a class="headerlink" href="#_CPPv4N25esp_websocket_transport_t28WEBSOCKET_TRANSPORT_OVER_SSLE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Transport over ssl </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016 - 2022, Espressif Systems (Shanghai) Co., Ltd.</p>
+  </div>
+
+  <ul class="footer">
+        <li>
+	    
+            
+            Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/espressif/sphinx_idf_theme">theme</a>  based on <a href="https://github.com/readthedocs/sphinx_rtd_theme">Read the Docs Sphinx Theme</a>.
+         </li>
+    <li class="footer-aside">
+        <a href="./esp-idf-en-master-esp32.pdf" class="fa fa-file-pdf-o"> Download PDF</a>
+    </li>
+
+  </ul> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html><script type=text/javascript>
+window.onload =(function() {
+    var myAnchor = document.getElementById('version-select');
+    var mySpan = document.createElement('input');
+    mySpan.setAttribute('type', 'text');
+    mySpan.setAttribute('maxLength', '10');
+    mySpan.value = 'latest';
+    mySpan.setAttribute('disabled', true);
+    myAnchor.parentNode.replaceChild(mySpan, myAnchor);
+
+    var myAnchor = document.getElementById('target-select');
+    var mySpan = document.createElement('input');
+    mySpan.setAttribute('type', 'text');
+    mySpan.setAttribute('maxLength', '10');
+    mySpan.value = 'all targets';
+    mySpan.setAttribute('disabled', true);
+    myAnchor.parentNode.replaceChild(mySpan, myAnchor);
+
+})();
+</script>
