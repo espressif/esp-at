@@ -150,7 +150,7 @@ Bluetooth® Low Energy AT Commands
     -  Before using other Bluetooth LE AT commands, you should run this command first to trigger the initialization process.
     -  After the initialization, the Bluetooth LE role cannot be changed unless you run :ref:`AT+RST <cmd-RST>` to restart the system first and then re-initialize the Bluetooth LE role.
     -  If you use an {IDF_TARGET_NAME} as a Bluetooth LE server, a service bin should be downloaded into flash. To learn how to generate a service bin, please refer to :project_file:`README <tools/README.md>`. The download address of the service bin is the "ble_data" address in :project:`at_customize.csv <module_config>`.
-    -  Before you de-initialize the Bluetooth stack, it is recommended to stop broadcasting, stop scanning, and disconnect all existing connections.
+    -  Before you deinitialize the Bluetooth stack, it is recommended to stop broadcasting, stop scanning, and disconnect all existing connections.
     -  If Bluetooth LE is initialized, :ref:`AT+CIPMODE <cmd-IPMODE>` cannot be set to 1.
 
     Example

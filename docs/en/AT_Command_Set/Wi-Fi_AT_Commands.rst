@@ -5,6 +5,7 @@ Wi-Fi AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
+-  :ref:`AT+CWINIT <cmd-INIT>`: Initialize/Deinitialize Wi-Fi driver.
 -  :ref:`AT+CWMODE <cmd-MODE>`: Set the Wi-Fi mode (Station/SoftAP/Station+SoftAP).
 -  :ref:`AT+CWSTATE <cmd-WSTATE>`: Query the Wi-Fi state and Wi-Fi information.
 -  :ref:`AT+CWJAP <cmd-JAP>`: Connect to an AP.
@@ -31,6 +32,73 @@ Wi-Fi AT Commands
 -  :ref:`AT+CWJEAP <cmd-JEAP>`: Connect to a WPA2 Enterprise AP.
 -  :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`: Query/Set the host name of an {IDF_TARGET_NAME} station.
 -  :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`: Query/Set the Wi-Fi Country Code.
+
+.. _cmd-INIT:
+
+:ref:`AT+CWINIT <WiFi-AT>`: Initialize or Deinitialize Wi-Fi Driver
+--------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Function:**
+
+Query the Wi-Fi initialization status of {IDF_TARGET_NAME} device.
+
+**Command:**
+
+::
+
+    AT+CWINIT?
+
+**Response:**
+
+::
+
+    +CWINIT:<init>
+
+    OK
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+Initialize or deinitialize Wi-Fi driver of {IDF_TARGET_NAME} device.
+
+**Command:**
+
+::
+
+    AT+CWINIT=<init>
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<init>**:
+
+   -  0: Deinitialize Wi-Fi driver of {IDF_TARGET_NAME} device.
+   -  1: Initialize Wi-Fi driver of {IDF_TARGET_NAME} device. (Default value)
+
+Note
+^^^^^
+
+- This setting is not saved to flash and will revert to the default value of 1 after restarting.
+- When you run out of RAM resources and Wi-Fi is not used, you can use this command to clean up the Wi-Fi driver to free up RAM resources.
+
+Example
+^^^^^^^^
+
+::
+
+    // Deinitialize Wi-Fi driver
+    AT+CWINIT=0
 
 .. _cmd-MODE:
 
