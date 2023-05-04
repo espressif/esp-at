@@ -5,6 +5,7 @@ Wi-Fi AT 命令集
 
 :link_to_translation:`en:[English]`
 
+-  :ref:`AT+CWINIT <cmd-INIT>`：初始化/清理 Wi-Fi 驱动程序
 -  :ref:`AT+CWMODE <cmd-MODE>`：查询/设置 Wi-Fi 模式 (Station/SoftAP/Station+SoftAP)
 -  :ref:`AT+CWSTATE <cmd-WSTATE>`：查询 Wi-Fi 状态和 Wi-Fi 信息
 -  :ref:`AT+CWJAP <cmd-JAP>`：连接 AP
@@ -31,6 +32,73 @@ Wi-Fi AT 命令集
 -  :ref:`AT+CWJEAP <cmd-JEAP>`：连接 WPA2 企业版 AP
 -  :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`：查询/设置 {IDF_TARGET_NAME} Station 的主机名称
 -  :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`：查询/设置 Wi-Fi 国家代码
+
+.. _cmd-INIT:
+
+:ref:`AT+CWINIT <WiFi-AT>`：初始化/清理 Wi-Fi 驱动程序
+-------------------------------------------------------------------------------------
+
+查询命令
+^^^^^^^^
+
+**功能：**
+
+查询 {IDF_TARGET_NAME} 设备的 Wi-Fi 初始化状态
+
+**命令：**
+
+::
+
+    AT+CWINIT?
+
+**响应：**
+
+::
+
+    +CWINIT:<init>
+
+    OK
+
+设置命令
+^^^^^^^^
+
+**功能：**
+
+初始化或清理 {IDF_TARGET_NAME} 设备的 Wi-Fi 驱动程序
+
+**命令：**
+
+::
+
+    AT+CWINIT=<init>
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+-  **<init>**：
+
+   -  0: 清理 Wi-Fi 驱动程序
+   -  1: 初始化 Wi-Fi 驱动程序（默认值）
+
+说明
+^^^^
+
+- 本设置不保存到 flash，重启后会恢复为默认值 1。
+- 当您 RAM 资源不足时，在不使用 Wi-Fi 的前提下，可以使用此命令清理 Wi-Fi 驱动程序，以释放 RAM 资源。
+
+示例
+^^^^
+
+::
+
+    // 清理 Wi-Fi 驱动程序
+    AT+CWINIT=0
 
 .. _cmd-MODE:
 
