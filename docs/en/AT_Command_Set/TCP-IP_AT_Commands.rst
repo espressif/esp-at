@@ -289,7 +289,7 @@ Parameters
 
 -  **<link ID>**: ID of network connection (0~4), used for multiple connections. The range of this parameter depends on two configuration items in ``menuconfig``. One is ``AT_SOCKET_MAX_CONN_NUM`` of the ``AT`` component, and its default value is 5. The other is ``LWIP_MAX_SOCKETS`` of the ``LWIP`` component, and its default value is 10. To modify the range of this parameter, you need to set ``AT_SOCKET_MAX_CONN_NUM`` and make sure it is no larger than the value of ``LWIP_MAX_SOCKETS``. (See :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` for details on configuring and build ESP-AT projects.)
 -  **<"type">**: string parameter showing the type of transmission: "TCP", or "TCPv6". Default: "TCP".
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
 -  **<remote port>**: the remote port number.
 -  **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
 
@@ -366,7 +366,7 @@ Parameters
 
 -  **<link ID>**: ID of network connection (0~4), used for multiple connections.
 -  **<"type">**: string parameter showing the type of transmission: "UDP", or "UDPv6". Default: "TCP".
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
 -  **<remote port>**: remote port number.
 -  **<local port>**: UDP port of {IDF_TARGET_NAME}.
 -  **<mode>**: In the UDP Wi-Fi passthrough, the value of this parameter has to be 0.
@@ -447,7 +447,7 @@ Parameters
 
 -  **<link ID>**: ID of network connection (0~4), used for multiple connections.
 -  **<"type">**: string parameter showing the type of transmission: "SSL", or "SSLv6". Default: "TCP".
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
 -  **<remote port>**: the remote port number.
 -  **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
 
@@ -560,7 +560,7 @@ If the connection cannot be established or is disrupted during data transmission
 
     ERROR
 
-If data is transmitted successfully, the system returns:
+If the data has been successfully sent to the protocol stack (It does not mean that the data has been sent to the opposite end), the system returns:
 
 ::
 
@@ -662,7 +662,7 @@ If not all the data has been sent out, the system finally returns:
 
     SEND FAIL
 
-If all the data is transmitted successfully, the system finally returns:
+If the data has been successfully sent to the protocol stack (It does not mean that the data has been sent to the opposite end), the system finally returns:
 
 ::
 
@@ -783,7 +783,7 @@ If the connection cannot be established or gets disconnected during transmission
 
     ERROR
 
-If the data are successfully transmitted, the system returns:
+If the data has been successfully sent to the protocol stack (It does not mean that the data has been sent to the opposite end), the system returns:
 
 ::
 
@@ -1249,7 +1249,7 @@ Notes
 
 -  When a TCP/SSL client does not communicate with the {IDF_TARGET_NAME} server within the ``<time>`` value, the server will terminate this connection.
 -  If you set ``<time>`` to 0, the connection will never timeout. This configuration is not recommended.
--  When the client initiates a communication with the server within the set time, the timer will restart. After the timeout expires, the client is closed. During the set time, if the server initiate a communication with the client, the timer will not restart. After the timeout expires, the client is closed.
+-  When the client initiates a communication with the server or the server initiate a communication with the client within the set time, the timer will restart. After the timeout expires, the client is closed.
 
 Example
 ^^^^^^^^

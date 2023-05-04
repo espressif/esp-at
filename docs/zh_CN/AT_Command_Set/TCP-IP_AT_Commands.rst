@@ -289,7 +289,7 @@ TCP/IP AT 命令
 
 -  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况。该参数范围取决于 ``menuconfig`` 中的两个配置项。一个是 ``AT`` 组件中的配置项 ``AT_SOCKET_MAX_CONN_NUM`` ，默认值为 5。另一个是 ``LWIP`` 组件中的配置项 ``LWIP_MAX_SOCKETS`` ，默认值为 10。要修改该参数的范围，您需要修改配置项 ``AT_SOCKET_MAX_CONN_NUM`` 的值并确保该值不大于 ``LWIP_MAX_SOCKETS`` 的值。（请参考 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>` 获取更多信息。）
 -  **<"type">**：字符串参数，表示网络连接类型，"TCP" 或 "TCPv6"。默认值："TCP"
--  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
 -  **<remote port>**：远端端口值
 -  **<keep_alive>**：配置套接字的 ``SO_KEEPALIVE`` 选项（参考：`SO_KEEPALIVE 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`_），单位：秒。
 
@@ -366,7 +366,7 @@ TCP/IP AT 命令
 
 -  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
 -  **<"type">**：字符串参数，表示网络连接类型，"UDP" 或 "UDPv6"。默认值："TCP"
--  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
 -  **<remote port>**：远端端口值
 -  **<local port>**：{IDF_TARGET_NAME} 设备的 UDP 端口值
 -  **<mode>**：在 UDP Wi-Fi 透传下，本参数的值必须设为 0
@@ -447,7 +447,7 @@ TCP/IP AT 命令
 
 -  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
 -  **<"type">**：字符串参数，表示网络连接类型，"SSL" 或 "SSLv6"。默认值："TCP"
--  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
 -  **<remote port>**：远端端口值
 -  **<keep_alive>**：配置套接字的 ``SO_KEEPALIVE`` 选项（参考：`SO_KEEPALIVE 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`_），单位：秒。
 
@@ -560,7 +560,7 @@ TCP/IP AT 命令
 
     ERROR
 
-如果数据传输成功，返回：
+如果所有数据被成功发往协议栈（不代表数据已经发送到对端），返回：
 
 ::
 
@@ -662,7 +662,7 @@ TCP/IP AT 命令
 
     SEND FAIL
 
-如果所有数据被成功发往协议栈，系统最终返回：
+如果所有数据被成功发往协议栈（不代表数据已经发送到对端），系统最终返回：
 
 ::
 
@@ -783,7 +783,7 @@ TCP/IP AT 命令
 
     ERROR
 
-如果数据传输成功，返回：
+如果所有数据被成功发往协议栈（不代表数据已经发送到对端），返回：
 
 ::
 
@@ -1249,7 +1249,7 @@ TCP/IP AT 命令
 
 -  当 TCP/SSL 客户端在 ``<time>`` 时间内未发生数据通讯时，{IDF_TARGET_NAME} 服务器会断开此连接。
 -  如果设置参数 ``<time>`` 为 0，则连接永远不会超时，不建议这样设置。
--  在设定的时间内，当客户端发起与服务器的通信时，计时器将重新计时。超时后，客户端被关闭。在设定的时间内，如果服务器发起与客户端的通信，计时器将不会重新计时。超时后，客户端被关闭。
+-  在设定的时间内，当客户端发起与服务器的通信或者服务器发起与客户端的通信时，计时器将重新计时。超时后，客户端被关闭。
 
 示例
 ^^^^
