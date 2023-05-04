@@ -73,7 +73,7 @@ This document provides detailed command examples to illustrate how to utilize :d
 
    Use a network tool on the PC to create a TCP server. For example, the TCP server on PC is ``192.168.3.102``, and the port is ``8080``.
 
-#. {IDF_TARGET_NAME} is connected to the TCP server as a client over TCP. The server's IP address is ``192.168.3.102``, and the port is ``8080``.
+#. Connect {IDF_TARGET_NAME} to the TCP server as a client over TCP. The server's IP address is ``192.168.3.102``, and the port is ``8080``.
 
    Command:
 
@@ -1723,4 +1723,138 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a softAP
 
      CLOSED
 
+     OK
+
+{IDF_TARGET_NAME} obtains socket data in passive receiving mode
+-----------------------------------------------------------------------
+
+When a large amount of network data is expected to be received and the MCU cannot process it timely, you can refer to this example and use the passive receive data mode.
+
+.. _using-passive-mode:
+
+#. Set the Wi-Fi mode to station.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWMODE=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Connect to the router.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWJAP="espressif","1234567890"
+
+   Response:
+
+   .. code-block:: none
+
+     WIFI CONNECTED
+     WIFI GOT IP
+
+     OK
+
+   Note:
+
+   - The SSID and password you entered may be different from those in the above command. Please replace the SSID and password with those of your router settings.
+
+#. Query the device's IP address.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSTA?
+
+   Response:
+
+   .. code-block:: none
+
+    +CIPSTA:ip:"192.168.3.112"
+    +CIPSTA:gateway:"192.168.3.1"
+    +CIPSTA:netmask:"255.255.255.0"
+
+    OK
+
+   Note:
+
+   - The query results you obtained may be different from those in the above response.
+
+#. Connect the PC to the same router which {IDF_TARGET_NAME} is connected to.
+
+   Use a network tool on the PC to create a TCP server. For example, the TCP server on PC is ``192.168.3.102``, and the port is ``8080``.
+
+#. Connect {IDF_TARGET_NAME} to the TCP server as a client over TCP. The server's IP address is ``192.168.3.102``, and the port is ``8080``.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSTART="TCP","192.168.3.102",8080
+
+   Response:
+
+   .. code-block:: none
+
+     CONNECT
+
+     OK
+
+#. {IDF_TARGET_NAME} sets the socket receiving mode to passive mode.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPRECVMODE=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. The TCP server sends 4 bytes of data (data is ``test``).
+
+   Note:
+
+   - The device replies with ``+IPD,4``. If it receives server data again later,  please refer to the note section of ref:``AT+CIPRECVMODE<cmd CIPRECVMODE>`` for whether it will reply with ``+IPD,``.
+
+#. {IDF_TARGET_NAME} obtains socket data length in passive receiving mode.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPRECVLEN?
+
+   Response:
+
+   .. code-block:: none
+
+     +CIPRECVLEN:4
+     OK
+
+#. {IDF_TARGET_NAME} obtains socket data in passive receiving mode.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPRECVDATA=4
+
+   Response:
+
+   .. code-block:: none
+
+     +CIPRECVDATA:4,test
      OK

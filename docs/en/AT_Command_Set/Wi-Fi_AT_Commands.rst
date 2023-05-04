@@ -240,6 +240,7 @@ Parameters
 -  **<ssid>**: the SSID of the target AP.
 
    -  Escape character syntax is needed if SSID or password contains special characters, such ``,``, ``"``, or ``\\``.
+   -  Chinese SSID is supported. Chinese SSID of some routers or hotspots is not encoded in UTF-8 encoding format. You can scan SSID first, and then connect using the scanned SSID.
 
 -  **<pwd>**: password, MAX: 63-byte ASCII.
 -  **<bssid>**: the MAC address of the target AP. It cannot be omitted when multiple APs have the same SSID.

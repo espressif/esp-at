@@ -428,6 +428,7 @@ Bluetooth® Low Energy AT 命令集
     ^^^^
 
     -  响应中的 ``OK`` 和 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 在输出顺序上没有严格意义上的先后顺序。``OK`` 可能在 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 之前输出，也有可能在 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 之后输出。 
+    -  如果您想要获得扫描响应数据，需要使用 :ref:`AT+BLESCANPARAM <cmd-BSCANP>` 指令设置扫描方式为 ``active scan (AT+BLESCANPARAM=1,0,0,100,50)``，并且对端设备需要设置 ``scan rsp data``，才能获得扫描响应数据。
 
     示例
     ^^^^
@@ -661,6 +662,7 @@ Bluetooth® Low Energy AT 命令集
 
     -  如果之前已经使用命令 :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power> 设置了广播数据，则会被本命令设置的广播数据覆盖。
     -  如果您想使用本命令修改设备名称，则建议在执行完该命令之后执行 :ref:`AT+BLENAME <cmd-BNAME>` 命令将设备名称设置为同样的名称。
+    -  如果需要设置更长的广播参数，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 指令来设置。
 
     .. only:: esp32c3
 
@@ -1131,7 +1133,7 @@ Bluetooth® Low Energy AT 命令集
     ^^^^
 
     -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<mtu_size>**：MTU 长度。
+    -  **<mtu_size>**：MTU 长度，单位：字节，范围：[23,517]。
 
     说明
     ^^^^
@@ -1443,7 +1445,7 @@ Bluetooth® Low Energy AT 命令集
     -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
     -  **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
     -  **<char_index>**：服务特征的序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
-    -  **<length>**：数据长度。
+    -  **<length>**：数据长度，最大长度： ``（ :ref:`MTU <cmd-BMTU>` - 3）``。
 
     示例
     ^^^^
@@ -1497,7 +1499,7 @@ Bluetooth® Low Energy AT 命令集
     -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
     -  **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
     -  **<char_index>**：服务特征的序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
-    -  **<length>**：数据长度。
+    -  **<length>**：数据长度，最大长度：（:ref:`MTU <cmd-BMTU>` - 3）。
 
     示例
     ^^^^
@@ -1844,7 +1846,7 @@ Bluetooth® Low Energy AT 命令集
     -  若设置，则写目标描述符的值；
     -  若未设置，则写目标特征的值。
 
-    -  **<length>**：数据长度。
+    -  **<length>**：数据长度。该参数的取值范围受 :project_file:`example.csv <components/customized_partitions/raw_data/ble_data/example.csv>` 中 ``val_max_len`` 参数影响。
 
     说明
     ^^^^

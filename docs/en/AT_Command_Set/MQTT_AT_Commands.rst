@@ -432,7 +432,7 @@ Example
     AT+CWJAP="ssid","password"
     AT+MQTTUSERCFG=0,1,"{IDF_TARGET_NAME}","espressif","1234567890",0,0,""
     AT+MQTTCONN=0,"192.168.10.234",1883,0
-    AT+MQTTPUB=0,"topic","\"{\"timestamp\":\"20201121085253\"}\"",0,0
+    AT+MQTTPUB=0,"topic","\"{\"timestamp\":\"20201121085253\"}\"",0,0  // When sending this command, please pay attention to whether special characters need to be escaped.
 
 .. _cmd-MQTTPUBRAW:
 

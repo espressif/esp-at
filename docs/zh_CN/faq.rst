@@ -151,6 +151,27 @@ AT 命令中串口波特率是否可以修改？（默认：115200）
 
     :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令支持 adv 广播参数最大为 31 字节，如果需要设置更长的广播参数，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 命令来设置。
 
+低功耗蓝牙客户端如何使能 notify 和 indicate 功能？
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  - 低功耗蓝牙的特征的属性除了读、写还有 ``notify`` 和 ``indicate``。这两种都是服务端向客户端发送数据的方式，但是要想真的发送成功需要客户端提前注册 ``notification``，也就是写 ``CCCD`` 的值。
+  - 如果要使能 ``notify``，需要写 ``0x01``；如果要使能 ``indicate``，需要写 ``0x02`` （写 ``0x2902`` 这个描述符）；如果是既想使能 ``notify`` 又想使能 ``indicate``，需要写 ``0x03``。
+  - 比如，ESP-AT 的默认的服务中，``0xC305`` 是可 ``notify`` 的，``0xC306`` 是可 ``indicate`` 的。我们分别写这两个特征下面的 ``0x2902`` 描述符：
+
+  .. code-block:: text
+
+    AT+BLEGATTCWR=0,3,6,1,2
+    >
+    // 写 0x01
+    OK
+    // server: +WRITE:0,1,6,1,2,<0x01>,<0x00>
+    AT+BLEGATTCWR=0,3,7,1,2
+    >
+    // 写 0x02
+    OK
+    // server: +WRITE:0,1,6,1,2,<0x02>,<0x00>
+    // 写 ccc 是 server 可以发送 notify 和 indicate 的前提条件
+
 硬件
 ----
 
@@ -168,7 +189,7 @@ AT 命令中串口波特率是否可以修改？（默认：115200）
 
     - 参考 :doc:`Compile_and_Develop/How_to_clone_project_and_compile_it` 搭建好编译环境；
     - 修改 :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 表中对应模组的 UART 管脚，将 uart_tx_pin 修改为 GPIO1，uart_tx_pin 修改为 GPIO3；
-    - 调整配置：./build.py menuconfig > Component config > Common ESP-related > UART for console output(Custom) > Uart peripheral to use for console output(0-1)(UART1) > (1)UART TX on GPIO# (NEW) > (3)UART TX on GPIO# (NEW)。
+    - 调整配置：``./build.py menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output(Custom)`` > ``Uart peripheral to use for console output(0-1)(UART1)`` > ``(1)UART TX on GPIO# (NEW)`` > ``(3)UART TX on GPIO# (NEW)``。
 
 AT 固件如何查看 error log？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -244,7 +265,7 @@ ESP-AT 固件中 TCP 发送窗口大小是否可以修改？
 {IDF_TARGET_NAME} AT 如何指定 TLS 协议版本？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  编译 ESP-AT 工程时，可以在 ./build.py menuconfig -> Component config -> mbedTLS 目录下，可以将不需要的版本关闭使能。
+  编译 ESP-AT 工程时，可以在 ``./build.py menuconfig`` > ``Component config`` > ``mbedTLS`` 目录下，可以将不需要的版本关闭使能。
 
 AT 固件如何修改 TCP 连接数？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -252,5 +273,21 @@ AT 固件如何修改 TCP 连接数？
   - 目前 AT 默认固件的 TCP 最大连接数为 5。
   - {IDF_TARGET_NAME} AT 最大支持 16 个 TCP 连接，可以在 menuconfig 中进行配置，配置方法如下：
     
-    - ./build.py menuconfig---> Component config---> AT--->  (16)AT socket maximum connection number
-    - ./build.py menuconfig---> LWIP---> (16)Max number of open sockets
+    - ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``(16)AT socket maximum connection number``
+    - ``./build.py menuconfig`` > ``LWIP`` > ``(16)Max number of open sockets``
+
+.. only:: esp32
+
+{IDF_TARGET_NAME} AT 支持 PPP 吗?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  - 不支持，可参考 `pppos_client <https://github.com/espressif/esp-idf/tree/v4.4.2/examples/protocols/pppos_client>`_ 示例自行实现。
+
+AT 如何使能调试日志？
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  - 使能 log 等级： ``./build.py menuconfig`` > ``Component Config`` > ``Log output`` > ``Default log verbosity`` 设置到 ``Debug``。
+
+    - 使能 Wi-Fi debug： ``./build.py menuconfig`` > ``Component config`` > ``Wi-Fi`` > ``Wi-Fi debug log level`` 设置到 ``Debug``。
+    - 使能 TCP/IP debug： ``./build.py menuconfig`` > ``Component config`` > ``LWIP`` > ``Enable LWIP Debug`` > 将具体想要调试的部分 log 等级设置到 ``Debug``。
+    - 使能 BLE debug： ``./build.py menuconfig`` > ``Component config`` > ``Bluetooth`` > ``Bluedroid Options`` > ``Disable BT debug logs`` > ``BT DEBUG LOG LEVEL`` > 将具体想要调试的部分 log 等级设置到 ``Debug``。

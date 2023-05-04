@@ -1724,3 +1724,137 @@ TCP-IP AT 示例
      CLOSED
 
      OK
+
+{IDF_TARGET_NAME} 设备获取被动接收模式下的套接字数据
+-----------------------------------------------------------
+
+预计设备将接收大量网络数据并且 MCU 端来不及处理时，可以参考该示例，使用被动接收数据模式。
+
+.. _using-passive-mode:
+
+#. 设置 Wi-Fi 模式为 station。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWMODE=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 连接到路由器。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWJAP="espressif","1234567890"
+
+   响应：
+
+   .. code-block:: none
+
+     WIFI CONNECTED
+     WIFI GOT IP
+
+     OK
+
+   说明：
+
+   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+
+#. 查询 {IDF_TARGET_NAME} 设备 IP 地址。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSTA?
+
+   响应：
+
+   .. code-block:: none
+
+    +CIPSTA:ip:"192.168.3.112"
+    +CIPSTA:gateway:"192.168.3.1"
+    +CIPSTA:netmask:"255.255.255.0"
+
+    OK
+
+   说明：
+
+   - 您的查询结果可能与上述响应中的不同。
+
+#. PC 与 {IDF_TARGET_NAME} 设备连接同一个路由。
+
+   在 PC 上使用网络调试工具，创建一个 TCP 服务器。例如 TCP 服务器的 IP 地址为 ``192.168.3.102``，端口为 ``8080``。
+
+#. {IDF_TARGET_NAME} 设备作为客户端通过 TCP 连接到 TCP 服务器，服务器 IP 地址为 ``192.168.3.102``，端口为 ``8080``。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSTART="TCP","192.168.3.102",8080
+
+   响应：
+
+   .. code-block:: none
+
+     CONNECT
+
+     OK
+
+#. {IDF_TARGET_NAME} 设备设置套接字接收模式为被动模式。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPRECVMODE=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. TCP 服务器发送 4 字节的数据（数据为 ``test``）。
+
+   说明:
+
+   - 此时会回复 ``+IPD,4``，如果后续再接收到服务器数据，是否回复 ``+IPD,``，请阅读 :ref:`AT+CIPRECVMODE <cmd-CIPRECVMODE>` 说明部分。
+
+#. {IDF_TARGET_NAME} 设备查询被动接收模式下套接字数据的长度。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPRECVLEN?
+
+   响应：
+
+   .. code-block:: none
+
+     +CIPRECVLEN:4
+     OK
+
+#. {IDF_TARGET_NAME} 设备获取被动接收模式下的套接字数据。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPRECVDATA=4
+
+   响应：
+
+   .. code-block:: none
+
+     +CIPRECVDATA:4,test
+     OK

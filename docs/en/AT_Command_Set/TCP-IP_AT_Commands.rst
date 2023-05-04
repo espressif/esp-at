@@ -2102,6 +2102,7 @@ Notes
 -  ``<len>`` is the total length of socket data in the buffer.
 -  You should read data by running :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` once there is a ``+IPD`` reported. Otherwise, the next ``+IPD`` will not be reported to the host MCU until the previous ``+IPD`` has been read.
 -  In case of disconnection, the buffered socket data will still be there and can be read by the MCU until you send :ref:`AT+CIPCLOSE <cmd-CLOSE>` (AT as client) or :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` (AT as server). In other words, if ``+IPD`` has been reported, the message ``CLOSED`` of this connection will never come until you send :ref:`AT+CIPCLOSE <cmd-CLOSE>` or :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` or read all data by command :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`.
+-  When a large amount of network data is expected to be received and the MCU cannot process it timely, you can refer to :ref:`example <using-passive-mode>` and use the passive receive data mode.
 
 Example
 ^^^^^^^^
