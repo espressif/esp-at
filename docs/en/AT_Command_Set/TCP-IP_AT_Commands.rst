@@ -592,7 +592,7 @@ or
 
     ERROR
 
-Enter the Wi-Fi :term:`Passthrough Mode`. The {IDF_TARGET_NAME} can receive 8192 bytes and send 2920 bytes at most each time. If the length of the currently received data is greater than the maximum number of bytes that can be sent, AT will send the received data immediately; Otherwise, the received data will be sent out within 20 ms. When a single packet containing :ref:`+++ <cmd-PLUS>` is received, the {IDF_TARGET_NAME} will exit the data sending mode under the Wi-Fi :term:`Passthrough Mode`. Please wait for at least one second before sending the next AT command.
+Enter the Wi-Fi :term:`Passthrough Mode`. The {IDF_TARGET_NAME} can receive 8192 bytes and send 2920 bytes at most each time. If the data received by {IDF_TARGET_NAME} reaches or exceeds 2920 bytes, the data will be immediately sent in chunks of 2920 bytes. Otherwise, it will wait for 20 milliseconds before being sent (You can configure this interval using :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>` command). When a single packet containing :ref:`+++ <cmd-PLUS>` is received, the {IDF_TARGET_NAME} will exit the data sending mode under the Wi-Fi :term:`Passthrough Mode`. Please wait for at least one second before sending the next AT command.
 
 This command can only be used for single connection in the Wi-Fi :term:`Passthrough Mode`. For UDP Wi-Fi passthrough, the ``<mode>`` parameter has to be 0 when using :ref:`AT+CIPSTART <cmd-START>`.
 
@@ -734,7 +734,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<report size>**: report block size for :ref:`AT+CIPSENDL <cmd-SENDL>`. Default: 1024. Range: [100,2 :sup:`20`]. For example, set ``<report size>`` to 100, ``<had sent len>`` report sequence in the response of :ref:`AT+CIPSENDL <cmd-SENDL>` will be (100, 200, 300, 400, ...). The final ``<had sent len>`` report is always equal to the data length that had been sent out.
--  **<transmit size>**: transmit block size of :ref:`AT+CIPSENDL <cmd-SENDL>`. It specifies the size of the data block sent to the underlying protocol stack. Default: 2920. Range: [100,2920]. If the received data length is greater than or equal to ``<transmit size>``, it is pushed to the underlying protocol stack immediately, otherwise, the data waits for 20 ms and then is pushed to the protocol stack.
+-  **<transmit size>**: transmit block size of :ref:`AT+CIPSENDL <cmd-SENDL>`. It specifies the size of the data block sent to the underlying protocol stack. Default: 2920. Range: [100,2920]. If the data received by {IDF_TARGET_NAME} reaches or exceeds ``<transmit size>`` bytes, the data will be immediately sent in chunks of ``<transmit size>`` bytes. Otherwise, it will wait for 20 milliseconds before being sent (You can configure this interval using :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>` command).
 
 Note
 """"""

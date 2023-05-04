@@ -15,6 +15,7 @@
   - :ref:`ATE <cmd-ATE>`：开启或关闭 AT 回显功能
   - :ref:`AT+RESTORE <cmd-RESTORE>`：恢复出厂设置
   - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`：设置开机 :term:`透传模式` 信息
+  - :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>`：设置 :term:`透传模式` 模式下的数据发送间隔
   - :ref:`AT+UART_CUR <cmd-UARTC>`：设置 UART 当前临时配置，不保存到 flash
   - :ref:`AT+UART_DEF <cmd-UARTD>`：设置 UART 默认配置, 保存到 flash
   - :ref:`AT+SLEEP <cmd-SLEEP>`：设置 sleep 模式
@@ -457,6 +458,62 @@
     ::
 
         AT+SAVETRANSLINK=2,2,1,7,1,5,"26:a2:11:22:33:88"
+
+.. _cmd-TRANSINTVL:
+
+:ref:`AT+TRANSINTVL <Basic-AT>`：设置 :term:`透传模式` 模式下的数据发送间隔
+----------------------------------------------------------------------------------
+
+查询命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+TRANSINTVL?
+
+**响应：**
+
+::
+
+    +TRANSINTVL:<interval>
+
+    OK
+
+设置命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+TRANSINTVL=<interval>
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+-  **<interval>**：数据发送间隔。单位：毫秒。默认值：20。范围：[0,1000]。
+
+说明
+^^^^
+
+- 透传模式下，当 {IDF_TARGET_NAME} 从 UART 接收到数据后，如果收到的数据长度大于等于 2920 字节，数据会立即被分为每 2920 字节一组的块进行发送，否则会等待 ``<interval>`` 毫秒或等待收到的数据大于等于 2920 字节再发送数据。
+- 当数据量很小，且数据发送间隔很短时，可以通过设置 ``<interval>`` 来调整数据发送的时机。当 ``<interval>`` 很小时，可以降低向协议栈发送数据的延时，但这会增加协议栈数据向网络发送的次数，一定程度降低了吞吐性能。
+
+示例
+^^^^
+
+::
+
+    // 设置收到数据后立即发送
+    AT+TRANSINTVL=0
 
 .. _cmd-UARTC:
 

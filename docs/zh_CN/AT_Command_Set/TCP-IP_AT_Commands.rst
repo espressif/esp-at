@@ -592,7 +592,7 @@ TCP/IP AT 命令
 
     ERROR
 
-进入 Wi-Fi :term:`透传模式`，{IDF_TARGET_NAME} 设备每次最大接收 8192 字节，最大发送 2920 字节。如果当前接收的数据长度大于最大发送字节数，AT 将立即发送；否则，接收的数据将在 20 ms 内发送。当输入单独一包 :ref:`+++ <cmd-PLUS>` 时，退出 :term:`透传模式` 下的数据发送模式，请至少间隔 1 秒再发下一条 AT 命令。
+进入 Wi-Fi :term:`透传模式`，{IDF_TARGET_NAME} 设备每次最大接收 8192 字节，最大发送 2920 字节。如果收到的数据长度大于等于 2920 字节，数据会立即被分为每 2920 字节一组的块进行发送，否则会等待 20 毫秒或等待收到的数据大于等于 2920 字节再发送数据（您可以通过 :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>` 命令配置此间隔）。当输入单独一包 :ref:`+++ <cmd-PLUS>` 时，退出 :term:`透传模式` 下的数据发送模式，请至少间隔 1 秒再发下一条 AT 命令。
 
 本命令必须在开启 :term:`透传模式` 以及单连接下使用。若为 Wi-Fi UDP 透传，:ref:`AT+CIPSTART <cmd-START>` 命令的参数 ``<mode>`` 必须设置为 0。
 
@@ -734,7 +734,7 @@ TCP/IP AT 命令
 ^^^^^^^^^^
 
 -  **<report size>**: :ref:`AT+CIPSENDL <cmd-SENDL>` 命令中的上报块大小。默认值：1024。范围：[100,2 :sup:`20`]。例如：设置 ``<report size>`` 值为 100，则 :ref:`AT+CIPSENDL <cmd-SENDL>` 命令回复里的 ``<had sent len>`` 上报序列为（100，200，300，400，……）。最后的 ``<had sent len>`` 上报值总是等于实际传输的数据长度。
--  **<transmit size>**: :ref:`AT+CIPSENDL <cmd-SENDL>` 命令中的传输块大小，它指定了数据发往协议栈的数据块大小。默认值：2920。范围：[100,2920]。如果收到的数据长度大于等于 ``<transmit size>``，则数据会被立即发往底层协议栈；否则，数据会等待 20 毫秒后再发往底层协议栈。
+-  **<transmit size>**: :ref:`AT+CIPSENDL <cmd-SENDL>` 命令中的传输块大小，它指定了数据发往协议栈的数据块大小。默认值：2920。范围：[100,2920]。如果收到的数据长度大于等于 ``<transmit size>``，数据会立即被分为每 ``<transmit size>`` 字节一组的块进行发送，否则会等待 20 毫秒或等待收到的数据大于等于 ``<transmit size>`` 字节再发送数据（您可以通过 :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>` 命令配置此间隔）。
 
 说明
 """"""

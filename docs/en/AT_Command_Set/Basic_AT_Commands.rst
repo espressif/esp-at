@@ -15,6 +15,7 @@ Basic AT Commands
   - :ref:`ATE <cmd-ATE>`: Configure AT commands echoing.
   - :ref:`AT+RESTORE <cmd-RESTORE>`: Restore factory default settings of the module.
   - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter :term:`Passthrough Mode` on power-up.
+  - :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>`: Set the data transmission interval in the :term:`Passthrough Mode`.
   - :ref:`AT+UART_CUR <cmd-UARTC>`: Current UART configuration, not saved in flash.
   - :ref:`AT+UART_DEF <cmd-UARTD>`: Default UART configuration, saved in flash.
   - :ref:`AT+SLEEP <cmd-SLEEP>`: Set the sleep mode.
@@ -457,6 +458,62 @@ Example
     ::
 
         AT+SAVETRANSLINK=2,2,1,7,1,5,"26:a2:11:22:33:88"
+
+.. _cmd-TRANSINTVL:
+
+:ref:`AT+TRANSINTVL <Basic-AT>`: Set the Data Transmission Interval in Passthrough Mode
+---------------------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+TRANSINTVL?
+
+**Response:**
+
+::
+
+    +TRANSINTVL:<interval>
+
+    OK
+
+Set Command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+TRANSINTVL=<interval>
+
+**Response:**
+
+::
+
+    OK
+
+Parameter
+^^^^^^^^^^
+
+- **<interval>**: Data transmission interval. Unit: milliseconds. Default value: 20. Range: [0,1000].
+
+Note
+^^^^^
+
+- In passthrough mode, if the data received by {IDF_TARGET_NAME} reaches or exceeds 2920 bytes, the data will be immediately sent in chunks of 2920 bytes. Otherwise, it will wait for ``<interval>`` milliseconds before being sent.
+- To optimize data transmission in cases where the data size is small and the data transmission interval is short, adjusting ``<interval>`` can be useful. A smaller ``<interval>`` reduces the delay in sending data to the protocol stack, but this may increase the number of times the protocol stack sends data to the network, thereby potentially decreasing the throughput performance to some extent.
+
+Example
+^^^^^^^^
+
+::
+
+    // Set to send immediately upon receiving data
+    AT+TRANSINTVL=0
 
 .. _cmd-UARTC:
 
