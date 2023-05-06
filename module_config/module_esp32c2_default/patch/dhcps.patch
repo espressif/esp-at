@@ -1,0 +1,12 @@
+diff --git a/components/lwip/apps/dhcpserver/dhcpserver.c b/components/lwip/apps/dhcpserver/dhcpserver.c
+index b5d1158927..7bb9701279 100644
+--- a/components/lwip/apps/dhcpserver/dhcpserver.c
++++ b/components/lwip/apps/dhcpserver/dhcpserver.c
+@@ -1189,6 +1189,7 @@ static void dhcps_poll_set(dhcps_t *dhcps, u32_t ip)
+             temp_local_ip -= DHCPS_MAX_LEASE;
+         } else {
+             local_ip ++;
++            temp_local_ip++;
+         }
+ 
+         bzero(dhcps_poll, sizeof(*dhcps_poll));
