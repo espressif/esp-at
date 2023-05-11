@@ -132,7 +132,10 @@ def create_factory_param_csv(args):
             if to_find_item[0] == data_item:
                 has_data = 1
                 value = [row[pos] for row in to_read_data_items]
-                to_write_csv_items.append(','.join(to_find_item) + ',' + value[1])
+                if to_find_item[2] == 'string':
+                    to_write_csv_items.append(','.join(to_find_item) + ',' + '"' + value[1] + '"')
+                else:
+                    to_write_csv_items.append(','.join(to_find_item) + ',' + value[1])
             pos = pos + 1
         if has_data == 0:
             raise Exception('No data found for {} in {}'.format(to_find_item, fdata))
