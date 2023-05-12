@@ -338,6 +338,22 @@ esp32c2_4mb_at:
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32C2\", \"module\": \"ESP32C2-4MB\", \"description\": \"\",\"silence\": 0}" > module_info.json'
     - *execute_script_esp32c2
 
+esp32c2_4mb_with_ble_at:
+  extends:
+    - .esp_at_build_template_esp32c2
+  script:
+    # enable ble features
+    - sed -i '/CONFIG_BT_NIMBLE_50_FEATURE_SUPPORT=n/,/CONFIG_BT_NIMBLE_HCI_EVT_LO_BUF_COUNT=3/d' module_config/module_esp32c2_default/sdkconfig.defaults
+    - echo -e "CONFIG_AT_BLE_COMMAND_SUPPORT=y" >> module_config/module_esp32c2_default/sdkconfig.defaults
+    - echo -e "CONFIG_BT_NIMBLE_EXT_ADV=y" >> module_config/module_esp32c2_default/sdkconfig.defaults
+    - echo -e "CONFIG_BT_NIMBLE_MAX_PERIODIC_SYNCS=1" >> module_config/module_esp32c2_default/sdkconfig.defaults
+    - echo -e "CONFIG_BT_NIMBLE_GAP_DEVICE_NAME_MAX_LEN=32" >> module_config/module_esp32c2_default/sdkconfig.defaults
+    - echo -e "CONFIG_BT_NIMBLE_ATT_PREFERRED_MTU=203" >> module_config/module_esp32c2_default/sdkconfig.defaults
+
+    - export MODULE_CFG_DIR=module_esp32c2_default
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C2\", \"module\": \"ESP32C2-4MB\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32c2
+
 esp32c2_4mb_at_xtal_40mhz_test:
   extends:
     - .esp_at_build_template_esp32c2
