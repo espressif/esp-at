@@ -149,6 +149,8 @@ def create_factory_param_csv(args):
 def create_ble_data_csv(args):
     import csv
     fdata = os.path.join(args.project_path, 'components', 'customized_partitions', 'raw_data', 'ble_data', 'gatts_data.csv')
+    if os.path.dirname(fdata) not in get_to_read_config_dir(args.project_path):
+        return
 
     to_read_data_items = []
     with open(fdata) as f:
