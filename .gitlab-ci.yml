@@ -86,7 +86,7 @@ default:
       - build/*.map
       - build/bootloader/*.bin
       - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
+      - build/customized_partitions/*
       - build/flasher_args.json
       - build/download.config
       - build/factory/*
@@ -115,7 +115,7 @@ default:
       - build/*.map
       - build/bootloader/*.bin
       - build/partition_table/*.bin
-      - build/customized_partitions/*.bin
+      - build/customized_partitions/*
       - build/flasher_args.json
       - build/download.config
       - build/factory/*
