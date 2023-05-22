@@ -145,7 +145,8 @@ config AT_WS_COMMAND_SUPPORT
 
 config AT_BLE_COMMAND_SUPPORT
     bool "AT ble command support."
-    default "y"
+    default "y" if !IDF_TARGET_ESP32C2
+    default "n" if IDF_TARGET_ESP32C2
     depends on AT_ENABLE && BT_ENABLED
 
 config AT_BLE_HID_COMMAND_SUPPORT
@@ -156,7 +157,7 @@ config AT_BLE_HID_COMMAND_SUPPORT
 config AT_BLUFI_COMMAND_SUPPORT
     bool "AT blufi command support."
     default "y"
-    depends on AT_ENABLE && BT_ENABLED && (!IDF_TARGET_ESP32C2 || (BT_NIMBLE_ENABLED && BT_NIMBLE_BLUFI_ENABLE))
+    depends on AT_ENABLE && BT_ENABLED && (!IDF_TARGET_ESP32C2 || (BT_NIMBLE_ENABLED && BT_NIMBLE_BLUFI_ENABLE && BT_NIMBLE_EXT_ADV))
 
 config AT_BT_COMMAND_SUPPORT
     bool "AT bt command support."
