@@ -1,0 +1,14 @@
+blank_issues_enabled: true
+contact_links:
+  - name: ESP-AT Programming Guide
+    url: https://docs.espressif.com/projects/esp-at/en/latest/
+    about: Documentation for configuring and using ESP-AT
+  - name: ESP-AT Forum
+    url: https://www.esp32.com/viewforum.php?f=42
+    about: For questions about using ESP-AT and/or ESP series chips. Please submit all questions starting "How do I..." here.
+  - name: ESP-AT Support Policy
+    url: https://github.com/espressif/esp-at#esp-at-support-policy-for-esp-chip-series
+    about: ESP-AT Support Policy for ESP Chip Series
+  - name: Documentation Page
+    url: https://www.espressif.com/en/support/download/documents
+    about: Hardware documentation (datasheets, Technical Reference Manual, etc)
