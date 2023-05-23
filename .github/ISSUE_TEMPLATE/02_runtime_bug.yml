@@ -1,0 +1,149 @@
+name: Runtime bug report
+description: Report runtime bugs
+labels: ['Type: Bug']
+body:
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Answers checklist
+      description: Before submitting a new issue, please follow the checklist and try to find the answer.
+      options:
+        - label: I have read the documentation [ESP-AT Programming Guide](https://docs.espressif.com/projects/esp-at/en/latest/) and the issue is not addressed there.
+          required: true
+        - label: I have used the latest released firmware or have updated my ESP-AT branch (master or release) to the latest version and checked that the issue is present there.
+          required: true
+        - label: I have searched the issue tracker for a similar issue and not found a similar issue.
+          required: true
+  - type: textarea
+    id: at_version
+    attributes:
+      label: AT+GMR
+      description: On which ESP-AT version does this issue occur on? Run `AT+GMR` command to find it.
+      placeholder: |
+          AT+GMR
+          AT version:3.1.0.0-dev(bd890df - ESP32C2 - May 12 2023 08:46:22)
+          SDK version:v5.0-dev-5949-g885e501d99-dirty
+          compile time(1a0b7a19):May 22 2023 11:51:06
+          Bin version:3.0.0(ESP32C2-4MB)
+
+          OK
+    validations:
+      required: true
+  - type: textarea
+    id: at_version_from
+    attributes:
+      label: ESP-AT Firmware Source
+      description: Where does your firmware come from?
+      placeholder: |
+          1. Download from release firmware: https://download.espressif.com/esp_at/firmware/<chip>/<path>/.zip
+          2. Download from GitHub Actions: https://github.com/espressif/esp-at/actions/runs/<workflow>#artifacts
+          3. Compile ESP-AT Project Locally
+          4. Fetch the firmware by <xxx> channel
+          ...
+    validations:
+      required: true
+  - type: textarea
+    id: devkit
+    attributes:
+      label: Hardware Information
+      description: On which chip, module, or development kit does this issue occur on?
+      placeholder: |
+          ex. ESP8684-DevKitM-1
+          ex. ESP32-C3-MINI-1 module
+          ex. ESP32-C2 chip and customized module
+          ...
+    validations:
+      required: true
+  - type: dropdown
+    id: power_supply
+    attributes:
+      label: Power Supply used
+      multiple: false
+      options:
+        - USB
+        - External 5V
+        - External 3.3V
+        - Battery
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What is the expected behavior?
+      description: Please provide a clear and concise description of the expected behavior.
+      placeholder: I expected it to...
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What is the actual behavior?
+      description: Please describe actual behavior.
+      placeholder: Instead it...
+    validations:
+      required: true
+  - type: textarea
+    id: probability
+    attributes:
+      label: Probability of recurrence
+      description: 'How often does the issue occur?'
+      placeholder: |
+        1. Must appear
+        2. Must appear under <xxx> conditions
+        3. Under <xxx> conditions, replicate <y> times within <x> hours
+        ...
+    validations:
+      required: true
+  - type: textarea
+    id: sysram
+    attributes:
+      label: AT+SYSRAM?
+      description: How many available heap size when issue happened. Run `AT+SYSRAM?` to find it.
+      placeholder: |
+        AT+SYSRAM?
+        +SYSRAM:58444,32524
+        OK
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: 'How do you trigger this bug? Please walk us through it step by step. Please attach your code here.'
+      value: |
+        1. Step
+        2. Step
+        3. Step
+        ...
+    validations:
+      required: true
+  - type: textarea
+    id: at_cmd_logs
+    attributes:
+      label: AT command port output
+      description: AT command/response output goes here with timestamp. See https://docs.espressif.com/projects/esp-at/en/latest/esp32/Get_Started/Hardware_connection.html about AT command/response port.
+      placeholder: Your log goes here.
+      render: plain
+    validations:
+      required: true
+  - type: textarea
+    id: at_debug_logs
+    attributes:
+      label: AT log port output
+      description: AT log port output goes here with timestamp. See https://docs.espressif.com/projects/esp-at/en/latest/esp32/Get_Started/Hardware_connection.html about AT log port.
+      placeholder: Your log goes here.
+      render: plain
+    validations:
+      required: true
+  - type: textarea
+    id: more-info
+    attributes:
+      label: More Information.
+      description: Do you have any other information from investigating this?
+      placeholder: |
+        ex. I tried another module/tool/mobile phone/router/PC and the issue still exists.
+        ex. I captured the packets, and placed it on this issue.
+        ex. Router model, mobile phone model
+        ...
+    validations:
+      required: false
