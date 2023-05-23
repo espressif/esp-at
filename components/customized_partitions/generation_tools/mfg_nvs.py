@@ -157,7 +157,7 @@ def create_ble_data_csv(args):
         csv_data = csv.reader(f)
         csv_data = list(csv_data)
         for item in csv_data:
-            if item[0].startswith("#"):
+            if not item or item[0].startswith("#"):
                 continue
             to_read_data_items.append(item)
 
