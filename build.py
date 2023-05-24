@@ -491,6 +491,16 @@ def install_prerequisites():
     if ret:
         raise Exception('install ESP-AT prerequisites failed!')
 
+def get_doc_target():
+    command = ['git', 'rev-parse', '--abbrev-ref', 'HEAD']
+    try:
+        result = subprocess.check_output(command).decode().strip()
+    except Exception as e:
+        raise Exception('cannot fetch the branch name: {}'.format(e))
+    if not result.startswith('release'):
+        return 'latest'
+    return result.replace('/', '-')
+
 """
 TODOs:
   1. optimise ESP-IDF clone and version update workflow
@@ -525,6 +535,9 @@ def main():
     if (len(argv) == 1 and sys.argv[1] == 'install'):
         # install tools and packages only after esp-idf cloned
         install_compilation_env(platform_name.lower())
+        sys.exit(0)
+    elif len(argv) == 0:
+        ESP_LOGE('Incorrect usage, please refer to https://docs.espressif.com/projects/esp-at/en/{}/{}/Compile_and_Develop/How_to_clone_project_and_compile_it.html for more details.'.format(get_doc_target(), platform_name.lower()))
         sys.exit(0)
 
     setup_env_variables()
