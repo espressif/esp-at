@@ -432,6 +432,7 @@ Bluetooth® Low Energy AT 命令集
 
         +BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>
         OK
+        +BLESCANDONE
 
     参数
     ^^^^
