@@ -47,13 +47,6 @@ GATT is actually an attribute transmission protocol, which can be regarded as an
 
 ``GATT server`` and ``GATT client`` roles exist after the Bluetooth LE connection is established. The GATT server stores the data transported over the Attribute Protocol and accepts Attribute Protocol requests, commands and confirmations from the GATT client. In short, the end that provides data is called ``GATT server``, and the end that accesses data is called ``GATT client``.
 
-.. Important::
-
-  * The {IDF_TARGET_NAME} Bluetooth LE server needs to download a ``ble_data.bin`` into flash to provide Bluetooth LE services.
-
-    * To learn how to generate a ``ble_data.bin``, please refer to :doc:`../Compile_and_Develop/customize_bluetooth_le_services_tools`.
-    * The download address of the ``ble_data.bin`` is the address of ``ble_data`` in ``at_customize.csv``, or described in ``build/download.config``.
-
 Bluetooth LE client reads and write services
 ----------------------------------------------
 
@@ -112,33 +105,35 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
 
-#. {IDF_TARGET_NAME} Bluetooth LE server creates services.
+.. only:: esp32 or esp32c3
 
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVCRE
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE server starts services.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVSTART
-
-   Response:
-
-   .. code-block:: none
-
-     OK
+  #. {IDF_TARGET_NAME} Bluetooth LE server creates services.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVCRE
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE server starts services.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVSTART
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE server discovers characteristics.
 
@@ -150,29 +145,48 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTSCHAR:"char",1,1,0xC300,0x02
-     +BLEGATTSCHAR:"desc",1,1,1,0x2901
-     +BLEGATTSCHAR:"char",1,2,0xC301,0x02
-     +BLEGATTSCHAR:"desc",1,2,1,0x2901
-     +BLEGATTSCHAR:"char",1,3,0xC302,0x08
-     +BLEGATTSCHAR:"desc",1,3,1,0x2901
-     +BLEGATTSCHAR:"char",1,4,0xC303,0x04
-     +BLEGATTSCHAR:"desc",1,4,1,0x2901
-     +BLEGATTSCHAR:"char",1,5,0xC304,0x08
-     +BLEGATTSCHAR:"char",1,6,0xC305,0x10
-     +BLEGATTSCHAR:"desc",1,6,1,0x2902
-     +BLEGATTSCHAR:"char",1,7,0xC306,0x20
-     +BLEGATTSCHAR:"desc",1,7,1,0x2902
-     +BLEGATTSCHAR:"char",1,8,0xC307,0x02
-     +BLEGATTSCHAR:"desc",1,8,1,0x2901
-     +BLEGATTSCHAR:"char",2,1,0xC400,0x02
-     +BLEGATTSCHAR:"desc",2,1,1,0x2901
-     +BLEGATTSCHAR:"char",2,2,0xC401,0x02
-     +BLEGATTSCHAR:"desc",2,2,1,0x2901
+     .. code-block:: none
 
-     OK
+       +BLEGATTSCHAR:"char",1,1,0xC300,0x02
+       +BLEGATTSCHAR:"desc",1,1,1,0x2901
+       +BLEGATTSCHAR:"char",1,2,0xC301,0x02
+       +BLEGATTSCHAR:"desc",1,2,1,0x2901
+       +BLEGATTSCHAR:"char",1,3,0xC302,0x08
+       +BLEGATTSCHAR:"desc",1,3,1,0x2901
+       +BLEGATTSCHAR:"char",1,4,0xC303,0x04
+       +BLEGATTSCHAR:"desc",1,4,1,0x2901
+       +BLEGATTSCHAR:"char",1,5,0xC304,0x08
+       +BLEGATTSCHAR:"char",1,6,0xC305,0x10
+       +BLEGATTSCHAR:"desc",1,6,1,0x2902
+       +BLEGATTSCHAR:"char",1,7,0xC306,0x20
+       +BLEGATTSCHAR:"desc",1,7,1,0x2902
+       +BLEGATTSCHAR:"char",1,8,0xC307,0x02
+       +BLEGATTSCHAR:"desc",1,8,1,0x2901
+       +BLEGATTSCHAR:"char",2,1,0xC400,0x02
+       +BLEGATTSCHAR:"desc",2,1,1,0x2901
+       +BLEGATTSCHAR:"char",2,2,0xC401,0x02
+       +BLEGATTSCHAR:"desc",2,2,1,0x2901
+
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTSCHAR:"char",1,1,0xC300
+       +BLEGATTSCHAR:"char",1,2,0xC301
+       +BLEGATTSCHAR:"char",1,3,0xC302
+       +BLEGATTSCHAR:"char",1,4,0xC303
+       +BLEGATTSCHAR:"char",1,5,0xC304
+       +BLEGATTSCHAR:"char",1,6,0xC305
+       +BLEGATTSCHAR:"char",1,7,0xC306
+       +BLEGATTSCHAR:"char",1,8,0xC307
+       +BLEGATTSCHAR:"char",2,1,0xC400
+       +BLEGATTSCHAR:"char",2,2,0xC401
+
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE server starts advertising, then the {IDF_TARGET_NAME} Bluetooth LE client starts scanning and lasts for 3 s. 
 
@@ -245,14 +259,27 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTCPRIMSRV:0,1,0x1801,1
-     +BLEGATTCPRIMSRV:0,2,0x1800,1
-     +BLEGATTCPRIMSRV:0,3,0xA002,1
-     +BLEGATTCPRIMSRV:0,4,0xA003,1
+     .. code-block:: none
 
-    OK
+       +BLEGATTCPRIMSRV:0,1,0x1801,1
+       +BLEGATTCPRIMSRV:0,2,0x1800,1
+       +BLEGATTCPRIMSRV:0,3,0xA002,1
+       +BLEGATTCPRIMSRV:0,4,0xA003,1
+
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTCPRIMSRV:0,1,0x1800,1
+       +BLEGATTCPRIMSRV:0,2,0x1801,1
+       +BLEGATTCPRIMSRV:0,3,0xA002,1
+       +BLEGATTCPRIMSRV:0,4,0xA003,1
+
+       OK
 
    Note:
 
@@ -268,25 +295,44 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
-     +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
-     +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
-     +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
-     +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
-     +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
-     +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
-     +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
-     +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
-     
-     OK
+     .. code-block:: none
+
+       +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+       +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+       +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+       +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+       +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+       +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+       +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+       +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+       +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
+      
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+       +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+       +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+       +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+       +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+       +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+       +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+       +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE client reads a characteristic.
 
@@ -387,456 +433,462 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
    - For the same service, the <srv_index> on the {IDF_TARGET_NAME} Bluetooth LE client side equals the <srv_index> on the {IDF_TARGET_NAME} Bluetooth LE server side + 2.
    - For the permissions of the characteristics in the services, please refer to :doc:`../Compile_and_Develop/How_to_customize_BLE_services`.
 
-Bluetooth LE server read and write services
----------------------------------------------
+.. only:: esp32 or esp32c3
 
-Below is an example of using two {IDF_TARGET_NAME} development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to establish a Bluetooth LE connection, as well as the read and write characteristics of the server and client settings, and notification characteristics.
-
-.. Important::
-  In the step, the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE server`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE server, and the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE client`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE client.
-
-#. Bluetooth LE initialization.
-
-   {IDF_TARGET_NAME} Bluetooth LE server:
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEINIT=2
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-   {IDF_TARGET_NAME} Bluetooth LE client:
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEINIT=1
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE server creates services.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVCRE
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE server starts services.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVSTART
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE server gets its MAC address.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEADDR?
-
-   Response:
-
-   .. code-block:: none
-
-     +BLEADDR:"24:0a:c4:d6:e4:46"
-     OK
-
-   Note:
-
-   - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
-
-#. {IDF_TARGET_NAME} Bluetooth LE server setting advertising parameters.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEADVPARAM=50,50,0,0,7,0,,
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE server setting advertising data.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEADVDATA="0201060A09457370726573736966030302A0"
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE server starts advertising.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEADVSTART
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE client creates services.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVCRE
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE client starts services.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVSTART
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE client gets Bluetooth LE address.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEADDR?
-
-   Response:
-
-   .. code-block:: none
-
-     +BLEADDR:"24:0a:c4:03:a7:4e"
-     OK
-
-   Note:
-
-   - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
-
-#. {IDF_TARGET_NAME} Bluetooth LE client enables a scanning for three seconds.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLESCAN=1,3
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-     +BLESCAN:"5b:3b:6c:51:90:49",-87,02011a020a0c0aff4c001005071c3024dc,,1
-     +BLESCAN:"c4:5b:be:93:ec:66",-84,0201060303111809095647543147572d58020a03,,0
-     +BLESCAN:"24:0a:c4:d6:e4:46",-29,,,0
-
-   Note:
-
-   - The scan results you obtain may be different from those in the above response.
-
-#. Establish the Bluetooth LE connection.
+  Bluetooth LE server read and write services
+  ---------------------------------------------
   
-   {IDF_TARGET_NAME} Bluetooth LE client:
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLECONN=0,"24:0a:c4:d6:e4:46"
-
-   Response:
-
-   .. code-block:: none
-
-     +BLECONN:0,"24:0a:c4:d6:e4:46"
-
-     OK
-
-   Note:
-
-   - When entering the above command, replace the address with your {IDF_TARGET_NAME} Bluetooth LE server address.
-   - If the Bluetooth LE connection is established successfully, message ``+BLECONN:0,"24:0a:c4:d6:e4:46`` will be prompted.
-   - If the Bluetooth LE connection is broken, message ``+BLECONN:0,-1`` will be prompted.
-
-   {IDF_TARGET_NAME} Bluetooth LE server:
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLECONN=0,"24:0a:c4:03:a7:4e"
-
-   Response:
-
-   .. code-block:: none
-
-     +BLECONN:0,"24:0a:c4:03:a7:4e"
-
-     OK
-
-   Note:
-
-   - When entering the above command, replace the address with your {IDF_TARGET_NAME} Bluetooth LE server address.
-   - If the Bluetooth LE connection is established successfully, the message ``OK`` will be prompted and the message ``+BLECONN:0,"24:0a:c4:03:a7:4e`` will not be prompted.
-   - If the Bluetooth LE connection is broken, the message ``ERROR`` will be prompted and the message ``+BLECONN:0,-1`` will not be prompted.
-
-#. {IDF_TARGET_NAME} Bluetooth LE client discovers local services.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRV?
-
-   Response:
-
-   .. code-block:: none
-
-     +BLEGATTSSRV:1,1,0xA002,1
-     +BLEGATTSSRV:2,1,0xA003,1
-     
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE client discovers local characteristics.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSCHAR?
-
-   Response:
-
-   .. code-block:: none
-
-     +BLEGATTSCHAR:"char",1,1,0xC300,0x02
-     +BLEGATTSCHAR:"desc",1,1,1,0x2901
-     +BLEGATTSCHAR:"char",1,2,0xC301,0x02
-     +BLEGATTSCHAR:"desc",1,2,1,0x2901
-     +BLEGATTSCHAR:"char",1,3,0xC302,0x08
-     +BLEGATTSCHAR:"desc",1,3,1,0x2901
-     +BLEGATTSCHAR:"char",1,4,0xC303,0x04
-     +BLEGATTSCHAR:"desc",1,4,1,0x2901
-     +BLEGATTSCHAR:"char",1,5,0xC304,0x08
-     +BLEGATTSCHAR:"char",1,6,0xC305,0x10
-     +BLEGATTSCHAR:"desc",1,6,1,0x2902
-     +BLEGATTSCHAR:"char",1,7,0xC306,0x20
-     +BLEGATTSCHAR:"desc",1,7,1,0x2902
-     +BLEGATTSCHAR:"char",1,8,0xC307,0x02
-     +BLEGATTSCHAR:"desc",1,8,1,0x2901
-     +BLEGATTSCHAR:"char",2,1,0xC400,0x02
-     +BLEGATTSCHAR:"desc",2,1,1,0x2901
-     +BLEGATTSCHAR:"char",2,2,0xC401,0x02
-     +BLEGATTSCHAR:"desc",2,2,1,0x2901
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE server discovers primary services.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTCPRIMSRV=0
-
-   Response:
-
-   .. code-block:: none
-
-     +BLEGATTCPRIMSRV:0,1,0x1801,1
-     +BLEGATTCPRIMSRV:0,2,0x1800,1
-     +BLEGATTCPRIMSRV:0,3,0xA002,1
-     +BLEGATTCPRIMSRV:0,4,0xA003,1
-
-    OK
-
-   Note:
-
-   - When discovering services, the {IDF_TARGET_NAME} Bluetooth LE server will get two more default services (UUID: 0x1800 and 0x1801) than what the {IDF_TARGET_NAME} Bluetooth LE client will get. So, for the same service, the <srv_index> received by the {IDF_TARGET_NAME} Bluetooth LE server equals the <srv_index> received by the {IDF_TARGET_NAME} Bluetooth LE client + 2. For example, for service 0xA002, the <srv_index> queried on the {IDF_TARGET_NAME} Bluetooth LE client is 3, if the {IDF_TARGET_NAME} Bluetooth LE server is queried through the command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`, then <srv_index> is 1.
-
-#. {IDF_TARGET_NAME} Bluetooth LE server discovers  primary characteristics.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTCCHAR=0,3
-
-   Response:
-
-   .. code-block:: none
-
-     +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
-     +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
-     +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
-     +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
-     +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
-     +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
-     +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
-     +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
-     +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
-     
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE client sets characteristics.
-
-   Select the service characteristic that supports the write operation (characteristic) to set the characteristic.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSSETATTR=1,8,,1
-
-   Response:
-
-   .. code-block:: none
-
-     >
-
-   Command:
-
-   .. code-block:: none
-
-     Write 1 byte ``9``
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE server reads characteristics.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTCRD=0,3,8,
-
-   Response:
-
-   .. code-block:: none
-
-     +BLEGATTCRD:0,1,9
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE client write characteristics.
-
-   Select the service characteristic that supports the write operation to write the characteristics.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTCWR=0,3,6,1,2
-
-   Response:
-
-   .. code-block:: none
-
-     >
-
-   Command:
-
-   .. code-block:: none
-
-     Write 2 bytes ``12``
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-   Note:
-
-   - If the Bluetooth LE server successfully writes the service characteristic value, the Bluetooth LE client will prompt ``+WRITE:0,1,6,1,2,12``.
-
-#. {IDF_TARGET_NAME} Bluetooth LE client notify characteristics.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSNTFY=0,1,6,10
-
-   Response:
-
-   .. code-block:: none
-
-     >
-
-   Command:
-
-   .. code-block:: none
-
-     Write 10 bytes ``1234567890``
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-   Note:
-
-   - If the {IDF_TARGET_NAME} Bluetooth LE client's notify characteristic is successfully sent to the server, the Bluetooth LE server ``+NOTIFY:0,3,6,10,1234567890`` will be prompt.
+  Below is an example of using two {IDF_TARGET_NAME} development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to establish a Bluetooth LE connection, as well as the read and write characteristics of the server and client settings, and notification characteristics.
+  
+  .. Important::
+    In the step, the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE server`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE server, and the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE client`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE client.
+  
+  #. Bluetooth LE initialization.
+  
+     {IDF_TARGET_NAME} Bluetooth LE server:
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEINIT=2
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+  
+     {IDF_TARGET_NAME} Bluetooth LE client:
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEINIT=1
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+
+  .. only:: esp32 or esp32c3
+
+    #. {IDF_TARGET_NAME} Bluetooth LE server creates services.
+    
+       Command:
+    
+       .. code-block:: none
+    
+         AT+BLEGATTSSRVCRE
+    
+       Response:
+    
+       .. code-block:: none
+    
+         OK
+    
+    #. {IDF_TARGET_NAME} Bluetooth LE server starts services.
+    
+       Command:
+    
+       .. code-block:: none
+    
+         AT+BLEGATTSSRVSTART
+    
+       Response:
+    
+       .. code-block:: none
+    
+         OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE server gets its MAC address.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEADDR?
+  
+     Response:
+  
+     .. code-block:: none
+  
+       +BLEADDR:"24:0a:c4:d6:e4:46"
+       OK
+  
+     Note:
+  
+     - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE server setting advertising parameters.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEADVPARAM=50,50,0,0,7,0,,
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE server setting advertising data.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEADVDATA="0201060A09457370726573736966030302A0"
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE server starts advertising.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEADVSTART
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+
+  .. only:: esp32 or esp32c3
+
+    #. {IDF_TARGET_NAME} Bluetooth LE client creates services.
+    
+       Command:
+    
+       .. code-block:: none
+    
+         AT+BLEGATTSSRVCRE
+    
+       Response:
+    
+       .. code-block:: none
+    
+         OK
+    
+    #. {IDF_TARGET_NAME} Bluetooth LE client starts services.
+    
+       Command:
+    
+       .. code-block:: none
+    
+         AT+BLEGATTSSRVSTART
+    
+       Response:
+    
+       .. code-block:: none
+    
+         OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE client gets Bluetooth LE address.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEADDR?
+  
+     Response:
+  
+     .. code-block:: none
+  
+       +BLEADDR:"24:0a:c4:03:a7:4e"
+       OK
+  
+     Note:
+  
+     - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE client enables a scanning for three seconds.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLESCAN=1,3
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+       +BLESCAN:"5b:3b:6c:51:90:49",-87,02011a020a0c0aff4c001005071c3024dc,,1
+       +BLESCAN:"c4:5b:be:93:ec:66",-84,0201060303111809095647543147572d58020a03,,0
+       +BLESCAN:"24:0a:c4:d6:e4:46",-29,,,0
+  
+     Note:
+  
+     - The scan results you obtain may be different from those in the above response.
+  
+  #. Establish the Bluetooth LE connection.
+    
+     {IDF_TARGET_NAME} Bluetooth LE client:
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLECONN=0,"24:0a:c4:d6:e4:46"
+  
+     Response:
+  
+     .. code-block:: none
+  
+       +BLECONN:0,"24:0a:c4:d6:e4:46"
+  
+       OK
+  
+     Note:
+  
+     - When entering the above command, replace the address with your {IDF_TARGET_NAME} Bluetooth LE server address.
+     - If the Bluetooth LE connection is established successfully, message ``+BLECONN:0,"24:0a:c4:d6:e4:46`` will be prompted.
+     - If the Bluetooth LE connection is broken, message ``+BLECONN:0,-1`` will be prompted.
+  
+     {IDF_TARGET_NAME} Bluetooth LE server:
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLECONN=0,"24:0a:c4:03:a7:4e"
+  
+     Response:
+  
+     .. code-block:: none
+  
+       +BLECONN:0,"24:0a:c4:03:a7:4e"
+  
+       OK
+  
+     Note:
+  
+     - When entering the above command, replace the address with your {IDF_TARGET_NAME} Bluetooth LE server address.
+     - If the Bluetooth LE connection is established successfully, the message ``OK`` will be prompted and the message ``+BLECONN:0,"24:0a:c4:03:a7:4e`` will not be prompted.
+     - If the Bluetooth LE connection is broken, the message ``ERROR`` will be prompted and the message ``+BLECONN:0,-1`` will not be prompted.
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE client discovers local services.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRV?
+  
+     Response:
+  
+     .. code-block:: none
+  
+       +BLEGATTSSRV:1,1,0xA002,1
+       +BLEGATTSSRV:2,1,0xA003,1
+       
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE client discovers local characteristics.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSCHAR?
+  
+     Response:
+  
+     .. code-block:: none
+  
+       +BLEGATTSCHAR:"char",1,1,0xC300,0x02
+       +BLEGATTSCHAR:"desc",1,1,1,0x2901
+       +BLEGATTSCHAR:"char",1,2,0xC301,0x02
+       +BLEGATTSCHAR:"desc",1,2,1,0x2901
+       +BLEGATTSCHAR:"char",1,3,0xC302,0x08
+       +BLEGATTSCHAR:"desc",1,3,1,0x2901
+       +BLEGATTSCHAR:"char",1,4,0xC303,0x04
+       +BLEGATTSCHAR:"desc",1,4,1,0x2901
+       +BLEGATTSCHAR:"char",1,5,0xC304,0x08
+       +BLEGATTSCHAR:"char",1,6,0xC305,0x10
+       +BLEGATTSCHAR:"desc",1,6,1,0x2902
+       +BLEGATTSCHAR:"char",1,7,0xC306,0x20
+       +BLEGATTSCHAR:"desc",1,7,1,0x2902
+       +BLEGATTSCHAR:"char",1,8,0xC307,0x02
+       +BLEGATTSCHAR:"desc",1,8,1,0x2901
+       +BLEGATTSCHAR:"char",2,1,0xC400,0x02
+       +BLEGATTSCHAR:"desc",2,1,1,0x2901
+       +BLEGATTSCHAR:"char",2,2,0xC401,0x02
+       +BLEGATTSCHAR:"desc",2,2,1,0x2901
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE server discovers primary services.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTCPRIMSRV=0
+  
+     Response:
+  
+     .. code-block:: none
+  
+       +BLEGATTCPRIMSRV:0,1,0x1801,1
+       +BLEGATTCPRIMSRV:0,2,0x1800,1
+       +BLEGATTCPRIMSRV:0,3,0xA002,1
+       +BLEGATTCPRIMSRV:0,4,0xA003,1
+  
+       OK
+  
+     Note:
+  
+     - When discovering services, the {IDF_TARGET_NAME} Bluetooth LE server will get two more default services (UUID: 0x1800 and 0x1801) than what the {IDF_TARGET_NAME} Bluetooth LE client will get. So, for the same service, the <srv_index> received by the {IDF_TARGET_NAME} Bluetooth LE server equals the <srv_index> received by the {IDF_TARGET_NAME} Bluetooth LE client + 2. For example, for service 0xA002, the <srv_index> queried on the {IDF_TARGET_NAME} Bluetooth LE client is 3, if the {IDF_TARGET_NAME} Bluetooth LE server is queried through the command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`, then <srv_index> is 1.
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE server discovers  primary characteristics.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTCCHAR=0,3
+  
+     Response:
+  
+     .. code-block:: none
+  
+       +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+       +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+       +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+       +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+       +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+       +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+       +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+       +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+       +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
+        
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE client sets characteristics.
+  
+     Select the service characteristic that supports the write operation (characteristic) to set the characteristic.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSETATTR=1,8,,1
+  
+     Response:
+  
+     .. code-block:: none
+  
+       >
+  
+     Command:
+  
+     .. code-block:: none
+  
+       Write 1 byte ``9``
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE server reads characteristics.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTCRD=0,3,8,
+  
+     Response:
+  
+     .. code-block:: none
+  
+       +BLEGATTCRD:0,1,9
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE client write characteristics.
+  
+     Select the service characteristic that supports the write operation to write the characteristics.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTCWR=0,3,6,1,2
+  
+     Response:
+  
+     .. code-block:: none
+  
+       >
+  
+     Command:
+  
+     .. code-block:: none
+  
+       Write 2 bytes ``12``
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+  
+     Note:
+  
+     - If the Bluetooth LE server successfully writes the service characteristic value, the Bluetooth LE client will prompt ``+WRITE:0,1,6,1,2,12``.
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE client notify characteristics.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSNTFY=0,1,6,10
+  
+     Response:
+  
+     .. code-block:: none
+  
+       >
+  
+     Command:
+  
+     .. code-block:: none
+  
+       Write 10 bytes ``1234567890``
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+  
+     Note:
+  
+     - If the {IDF_TARGET_NAME} Bluetooth LE client's notify characteristic is successfully sent to the server, the Bluetooth LE server ``+NOTIFY:0,3,6,10,1234567890`` will be prompt.
 
 Encrypt Bluetooth LE connection
 ----------------------------------
@@ -898,33 +950,35 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
 
-#. {IDF_TARGET_NAME} Bluetooth LE server creates services.
+.. only:: esp32 or esp32c3
 
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVCRE
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE server starts services.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVSTART
-
-   Response:
-
-   .. code-block:: none
-
-     OK
+  #. {IDF_TARGET_NAME} Bluetooth LE server creates services.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVCRE
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE server starts services.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVSTART
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE server discovers characteristics.
 
@@ -936,29 +990,48 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTSCHAR:"char",1,1,0xC300,0x02
-     +BLEGATTSCHAR:"desc",1,1,1,0x2901
-     +BLEGATTSCHAR:"char",1,2,0xC301,0x02
-     +BLEGATTSCHAR:"desc",1,2,1,0x2901
-     +BLEGATTSCHAR:"char",1,3,0xC302,0x08
-     +BLEGATTSCHAR:"desc",1,3,1,0x2901
-     +BLEGATTSCHAR:"char",1,4,0xC303,0x04
-     +BLEGATTSCHAR:"desc",1,4,1,0x2901
-     +BLEGATTSCHAR:"char",1,5,0xC304,0x08
-     +BLEGATTSCHAR:"char",1,6,0xC305,0x10
-     +BLEGATTSCHAR:"desc",1,6,1,0x2902
-     +BLEGATTSCHAR:"char",1,7,0xC306,0x20
-     +BLEGATTSCHAR:"desc",1,7,1,0x2902
-     +BLEGATTSCHAR:"char",1,8,0xC307,0x02
-     +BLEGATTSCHAR:"desc",1,8,1,0x2901
-     +BLEGATTSCHAR:"char",2,1,0xC400,0x02
-     +BLEGATTSCHAR:"desc",2,1,1,0x2901
-     +BLEGATTSCHAR:"char",2,2,0xC401,0x02
-     +BLEGATTSCHAR:"desc",2,2,1,0x2901
+     .. code-block:: none
 
-     OK
+       +BLEGATTSCHAR:"char",1,1,0xC300,0x02
+       +BLEGATTSCHAR:"desc",1,1,1,0x2901
+       +BLEGATTSCHAR:"char",1,2,0xC301,0x02
+       +BLEGATTSCHAR:"desc",1,2,1,0x2901
+       +BLEGATTSCHAR:"char",1,3,0xC302,0x08
+       +BLEGATTSCHAR:"desc",1,3,1,0x2901
+       +BLEGATTSCHAR:"char",1,4,0xC303,0x04
+       +BLEGATTSCHAR:"desc",1,4,1,0x2901
+       +BLEGATTSCHAR:"char",1,5,0xC304,0x08
+       +BLEGATTSCHAR:"char",1,6,0xC305,0x10
+       +BLEGATTSCHAR:"desc",1,6,1,0x2902
+       +BLEGATTSCHAR:"char",1,7,0xC306,0x20
+       +BLEGATTSCHAR:"desc",1,7,1,0x2902
+       +BLEGATTSCHAR:"char",1,8,0xC307,0x02
+       +BLEGATTSCHAR:"desc",1,8,1,0x2901
+       +BLEGATTSCHAR:"char",2,1,0xC400,0x02
+       +BLEGATTSCHAR:"desc",2,1,1,0x2901
+       +BLEGATTSCHAR:"char",2,2,0xC401,0x02
+       +BLEGATTSCHAR:"desc",2,2,1,0x2901
+
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTSCHAR:"char",1,1,0xC300
+       +BLEGATTSCHAR:"char",1,2,0xC301
+       +BLEGATTSCHAR:"char",1,3,0xC302
+       +BLEGATTSCHAR:"char",1,4,0xC303
+       +BLEGATTSCHAR:"char",1,5,0xC304
+       +BLEGATTSCHAR:"char",1,6,0xC305
+       +BLEGATTSCHAR:"char",1,7,0xC306
+       +BLEGATTSCHAR:"char",1,8,0xC307
+       +BLEGATTSCHAR:"char",2,1,0xC400
+       +BLEGATTSCHAR:"char",2,2,0xC401
+
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE server starts advertising, then the {IDF_TARGET_NAME} Bluetooth LE client starts scanning and lasts for 3 s. 
 
@@ -1031,14 +1104,27 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTCPRIMSRV:0,1,0x1801,1
-     +BLEGATTCPRIMSRV:0,2,0x1800,1
-     +BLEGATTCPRIMSRV:0,3,0xA002,1
-     +BLEGATTCPRIMSRV:0,4,0xA003,1
+     .. code-block:: none
 
-    OK
+       +BLEGATTCPRIMSRV:0,1,0x1801,1
+       +BLEGATTCPRIMSRV:0,2,0x1800,1
+       +BLEGATTCPRIMSRV:0,3,0xA002,1
+       +BLEGATTCPRIMSRV:0,4,0xA003,1
+
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTCPRIMSRV:0,1,0x1800,1
+       +BLEGATTCPRIMSRV:0,2,0x1801,1
+       +BLEGATTCPRIMSRV:0,3,0xA002,1
+       +BLEGATTCPRIMSRV:0,4,0xA003,1
+
+       OK
 
    Note:
 
@@ -1054,25 +1140,44 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
-     +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
-     +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
-     +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
-     +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
-     +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
-     +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
-     +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
-     +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
+     .. code-block:: none
 
-     OK
+       +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+       +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+       +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+       +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+       +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+       +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+       +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+       +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+       +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
+      
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+       +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+       +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+       +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+       +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+       +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+       +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+       +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+
+       OK
 
 #. Set Bluetooth LE encryption parameters. Set ``auth_req`` to ``SC_MITM_BOND``, server's ``iocap`` to ``KeyboardOnly``, client's ``iocap`` to ``KeyboardDisplay``, ``key_size`` to ``16``, ``init_key`` to ``3``, ``rsp_key`` to ``3``.
 
@@ -1224,33 +1329,35 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
      OK
 
-#. {IDF_TARGET_NAME} Bluetooth LE server creates services.
+.. only:: esp32 or esp32c3
 
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVCRE
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE server starts services.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVSTART
-
-   Response:
-
-   .. code-block:: none
-
-     OK
+  #. {IDF_TARGET_NAME} Bluetooth LE server creates services.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVCRE
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE server starts services.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVSTART
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE server gets Bluetooth LE address.
 
@@ -1385,29 +1492,48 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTSCHAR:"char",1,1,0xC300,0x02
-     +BLEGATTSCHAR:"desc",1,1,1,0x2901
-     +BLEGATTSCHAR:"char",1,2,0xC301,0x02
-     +BLEGATTSCHAR:"desc",1,2,1,0x2901
-     +BLEGATTSCHAR:"char",1,3,0xC302,0x08
-     +BLEGATTSCHAR:"desc",1,3,1,0x2901
-     +BLEGATTSCHAR:"char",1,4,0xC303,0x04
-     +BLEGATTSCHAR:"desc",1,4,1,0x2901
-     +BLEGATTSCHAR:"char",1,5,0xC304,0x08
-     +BLEGATTSCHAR:"char",1,6,0xC305,0x10
-     +BLEGATTSCHAR:"desc",1,6,1,0x2902
-     +BLEGATTSCHAR:"char",1,7,0xC306,0x20
-     +BLEGATTSCHAR:"desc",1,7,1,0x2902
-     +BLEGATTSCHAR:"char",1,8,0xC307,0x02
-     +BLEGATTSCHAR:"desc",1,8,1,0x2901
-     +BLEGATTSCHAR:"char",2,1,0xC400,0x02
-     +BLEGATTSCHAR:"desc",2,1,1,0x2901
-     +BLEGATTSCHAR:"char",2,2,0xC401,0x02
-     +BLEGATTSCHAR:"desc",2,2,1,0x2901
+     .. code-block:: none
 
-     OK
+       +BLEGATTSCHAR:"char",1,1,0xC300,0x02
+       +BLEGATTSCHAR:"desc",1,1,1,0x2901
+       +BLEGATTSCHAR:"char",1,2,0xC301,0x02
+       +BLEGATTSCHAR:"desc",1,2,1,0x2901
+       +BLEGATTSCHAR:"char",1,3,0xC302,0x08
+       +BLEGATTSCHAR:"desc",1,3,1,0x2901
+       +BLEGATTSCHAR:"char",1,4,0xC303,0x04
+       +BLEGATTSCHAR:"desc",1,4,1,0x2901
+       +BLEGATTSCHAR:"char",1,5,0xC304,0x08
+       +BLEGATTSCHAR:"char",1,6,0xC305,0x10
+       +BLEGATTSCHAR:"desc",1,6,1,0x2902
+       +BLEGATTSCHAR:"char",1,7,0xC306,0x20
+       +BLEGATTSCHAR:"desc",1,7,1,0x2902
+       +BLEGATTSCHAR:"char",1,8,0xC307,0x02
+       +BLEGATTSCHAR:"desc",1,8,1,0x2901
+       +BLEGATTSCHAR:"char",2,1,0xC400,0x02
+       +BLEGATTSCHAR:"desc",2,1,1,0x2901
+       +BLEGATTSCHAR:"char",2,2,0xC401,0x02
+       +BLEGATTSCHAR:"desc",2,2,1,0x2901
+
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTSCHAR:"char",1,1,0xC300
+       +BLEGATTSCHAR:"char",1,2,0xC301
+       +BLEGATTSCHAR:"char",1,3,0xC302
+       +BLEGATTSCHAR:"char",1,4,0xC303
+       +BLEGATTSCHAR:"char",1,5,0xC304
+       +BLEGATTSCHAR:"char",1,6,0xC305
+       +BLEGATTSCHAR:"char",1,7,0xC306
+       +BLEGATTSCHAR:"char",1,8,0xC307
+       +BLEGATTSCHAR:"char",2,1,0xC400
+       +BLEGATTSCHAR:"char",2,2,0xC401
+
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE client discovers services.
 
@@ -1419,14 +1545,27 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTCPRIMSRV:0,1,0x1801,1
-     +BLEGATTCPRIMSRV:0,2,0x1800,1
-     +BLEGATTCPRIMSRV:0,3,0xA002,1
-     +BLEGATTCPRIMSRV:0,4,0xA003,1
+     .. code-block:: none
 
-    OK
+       +BLEGATTCPRIMSRV:0,1,0x1801,1
+       +BLEGATTCPRIMSRV:0,2,0x1800,1
+       +BLEGATTCPRIMSRV:0,3,0xA002,1
+       +BLEGATTCPRIMSRV:0,4,0xA003,1
+
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTCPRIMSRV:0,1,0x1800,1
+       +BLEGATTCPRIMSRV:0,2,0x1801,1
+       +BLEGATTCPRIMSRV:0,3,0xA002,1
+       +BLEGATTCPRIMSRV:0,4,0xA003,1
+
+       OK
 
    Note:
 
@@ -1442,25 +1581,44 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
-     +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
-     +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
-     +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
-     +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
-     +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
-     +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
-     +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
-     +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
-     
-     OK
+     .. code-block:: none
+
+       +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+       +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+       +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+       +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+       +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+       +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+       +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+       +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+       +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
+      
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+       +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+       +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+       +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+       +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+       +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+       +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+       +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE client Configures Bluetooth LE SPP.
 
@@ -1566,33 +1724,35 @@ The example shows how to establish SPP connection between an {IDF_TARGET_NAME} d
 
      OK
 
-#. {IDF_TARGET_NAME} Bluetooth LE server creates services.
+.. only:: esp32 or esp32c3
 
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVCRE
-
-   Response:
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE server starts services.
-
-   Command:
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVSTART
-
-   Response:
-
-   .. code-block:: none
-
-     OK
+  #. {IDF_TARGET_NAME} Bluetooth LE server creates services.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVCRE
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE server starts services.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVSTART
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE server gets its MAC address.
 
@@ -1686,29 +1846,48 @@ The example shows how to establish SPP connection between an {IDF_TARGET_NAME} d
 
    Response:
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTSCHAR:"char",1,1,0xC300,0x02
-     +BLEGATTSCHAR:"desc",1,1,1,0x2901
-     +BLEGATTSCHAR:"char",1,2,0xC301,0x02
-     +BLEGATTSCHAR:"desc",1,2,1,0x2901
-     +BLEGATTSCHAR:"char",1,3,0xC302,0x08
-     +BLEGATTSCHAR:"desc",1,3,1,0x2901
-     +BLEGATTSCHAR:"char",1,4,0xC303,0x04
-     +BLEGATTSCHAR:"desc",1,4,1,0x2901
-     +BLEGATTSCHAR:"char",1,5,0xC304,0x08
-     +BLEGATTSCHAR:"char",1,6,0xC305,0x10
-     +BLEGATTSCHAR:"desc",1,6,1,0x2902
-     +BLEGATTSCHAR:"char",1,7,0xC306,0x20
-     +BLEGATTSCHAR:"desc",1,7,1,0x2902
-     +BLEGATTSCHAR:"char",1,8,0xC307,0x02
-     +BLEGATTSCHAR:"desc",1,8,1,0x2901
-     +BLEGATTSCHAR:"char",2,1,0xC400,0x02
-     +BLEGATTSCHAR:"desc",2,1,1,0x2901
-     +BLEGATTSCHAR:"char",2,2,0xC401,0x02
-     +BLEGATTSCHAR:"desc",2,2,1,0x2901
+     .. code-block:: none
 
-     OK
+       +BLEGATTSCHAR:"char",1,1,0xC300,0x02
+       +BLEGATTSCHAR:"desc",1,1,1,0x2901
+       +BLEGATTSCHAR:"char",1,2,0xC301,0x02
+       +BLEGATTSCHAR:"desc",1,2,1,0x2901
+       +BLEGATTSCHAR:"char",1,3,0xC302,0x08
+       +BLEGATTSCHAR:"desc",1,3,1,0x2901
+       +BLEGATTSCHAR:"char",1,4,0xC303,0x04
+       +BLEGATTSCHAR:"desc",1,4,1,0x2901
+       +BLEGATTSCHAR:"char",1,5,0xC304,0x08
+       +BLEGATTSCHAR:"char",1,6,0xC305,0x10
+       +BLEGATTSCHAR:"desc",1,6,1,0x2902
+       +BLEGATTSCHAR:"char",1,7,0xC306,0x20
+       +BLEGATTSCHAR:"desc",1,7,1,0x2902
+       +BLEGATTSCHAR:"char",1,8,0xC307,0x02
+       +BLEGATTSCHAR:"desc",1,8,1,0x2901
+       +BLEGATTSCHAR:"char",2,1,0xC400,0x02
+       +BLEGATTSCHAR:"desc",2,1,1,0x2901
+       +BLEGATTSCHAR:"char",2,2,0xC401,0x02
+       +BLEGATTSCHAR:"desc",2,2,1,0x2901
+
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTSCHAR:"char",1,1,0xC300
+       +BLEGATTSCHAR:"char",1,2,0xC301
+       +BLEGATTSCHAR:"char",1,3,0xC302
+       +BLEGATTSCHAR:"char",1,4,0xC303
+       +BLEGATTSCHAR:"char",1,5,0xC304
+       +BLEGATTSCHAR:"char",1,6,0xC305
+       +BLEGATTSCHAR:"char",1,7,0xC306
+       +BLEGATTSCHAR:"char",1,8,0xC307
+       +BLEGATTSCHAR:"char",2,1,0xC400
+       +BLEGATTSCHAR:"char",2,2,0xC401
+
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE client discovers characteristics.
 

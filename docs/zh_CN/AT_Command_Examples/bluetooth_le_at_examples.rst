@@ -47,13 +47,6 @@ GATT 其实是一种属性传输协议，简单的讲可以认为是一种属性
 
 ``GATT 服务端`` 和 ``GATT 客户端`` 这两种角色存在于 Bluetooth LE 连接建立之后。GATT 服务器存储通过属性协议传输的数据，并接受来自 GATT 客户端的属性协议请求、命令和确认。简而言之，提供数据的一端称为 ``GATT 服务端``，访问数据的一端称为 ``GATT 客户端``。
 
-.. Important::
-
-  - {IDF_TARGET_NAME} Bluetooth LE 服户端需烧录 ``ble_data.bin`` 文件到 flash 中，用以提供 Bluetooth LE 服务。
-
-    - 如何生成 ``ble_data.bin`` 文件，请参考文档 :doc:`../Compile_and_Develop/customize_bluetooth_le_services_tools`。
-    - ``ble_data.bin`` 文件的烧录地址，见 ``at_customize.csv`` 中 ``ble_data`` 对应的地址，或者在文件 ``build/download.config`` 中记录的地址。
-
 Bluetooth LE 客户端读写服务特征值
 ------------------------------------------
 
@@ -112,33 +105,35 @@ Bluetooth LE 客户端读写服务特征值
 
    - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
 
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
+.. only:: esp32 or esp32c3
 
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVCRE
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVSTART
-
-   响应：
-
-   .. code-block:: none
-
-     OK
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVCRE
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVSTART
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端发现服务特征。
 
@@ -150,29 +145,48 @@ Bluetooth LE 客户端读写服务特征值
 
    响应：
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTSCHAR:"char",1,1,0xC300,0x02
-     +BLEGATTSCHAR:"desc",1,1,1,0x2901
-     +BLEGATTSCHAR:"char",1,2,0xC301,0x02
-     +BLEGATTSCHAR:"desc",1,2,1,0x2901
-     +BLEGATTSCHAR:"char",1,3,0xC302,0x08
-     +BLEGATTSCHAR:"desc",1,3,1,0x2901
-     +BLEGATTSCHAR:"char",1,4,0xC303,0x04
-     +BLEGATTSCHAR:"desc",1,4,1,0x2901
-     +BLEGATTSCHAR:"char",1,5,0xC304,0x08
-     +BLEGATTSCHAR:"char",1,6,0xC305,0x10
-     +BLEGATTSCHAR:"desc",1,6,1,0x2902
-     +BLEGATTSCHAR:"char",1,7,0xC306,0x20
-     +BLEGATTSCHAR:"desc",1,7,1,0x2902
-     +BLEGATTSCHAR:"char",1,8,0xC307,0x02
-     +BLEGATTSCHAR:"desc",1,8,1,0x2901
-     +BLEGATTSCHAR:"char",2,1,0xC400,0x02
-     +BLEGATTSCHAR:"desc",2,1,1,0x2901
-     +BLEGATTSCHAR:"char",2,2,0xC401,0x02
-     +BLEGATTSCHAR:"desc",2,2,1,0x2901
+     .. code-block:: none
 
-     OK
+       +BLEGATTSCHAR:"char",1,1,0xC300,0x02
+       +BLEGATTSCHAR:"desc",1,1,1,0x2901
+       +BLEGATTSCHAR:"char",1,2,0xC301,0x02
+       +BLEGATTSCHAR:"desc",1,2,1,0x2901
+       +BLEGATTSCHAR:"char",1,3,0xC302,0x08
+       +BLEGATTSCHAR:"desc",1,3,1,0x2901
+       +BLEGATTSCHAR:"char",1,4,0xC303,0x04
+       +BLEGATTSCHAR:"desc",1,4,1,0x2901
+       +BLEGATTSCHAR:"char",1,5,0xC304,0x08
+       +BLEGATTSCHAR:"char",1,6,0xC305,0x10
+       +BLEGATTSCHAR:"desc",1,6,1,0x2902
+       +BLEGATTSCHAR:"char",1,7,0xC306,0x20
+       +BLEGATTSCHAR:"desc",1,7,1,0x2902
+       +BLEGATTSCHAR:"char",1,8,0xC307,0x02
+       +BLEGATTSCHAR:"desc",1,8,1,0x2901
+       +BLEGATTSCHAR:"char",2,1,0xC400,0x02
+       +BLEGATTSCHAR:"desc",2,1,1,0x2901
+       +BLEGATTSCHAR:"char",2,2,0xC401,0x02
+       +BLEGATTSCHAR:"desc",2,2,1,0x2901
+
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTSCHAR:"char",1,1,0xC300
+       +BLEGATTSCHAR:"char",1,2,0xC301
+       +BLEGATTSCHAR:"char",1,3,0xC302
+       +BLEGATTSCHAR:"char",1,4,0xC303
+       +BLEGATTSCHAR:"char",1,5,0xC304
+       +BLEGATTSCHAR:"char",1,6,0xC305
+       +BLEGATTSCHAR:"char",1,7,0xC306
+       +BLEGATTSCHAR:"char",1,8,0xC307
+       +BLEGATTSCHAR:"char",2,1,0xC400
+       +BLEGATTSCHAR:"char",2,2,0xC401
+
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端开始广播，之后 {IDF_TARGET_NAME} Bluetooth LE 客户端开始扫描并且持续 3 秒钟。
 
@@ -245,14 +259,27 @@ Bluetooth LE 客户端读写服务特征值
 
    响应：
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTCPRIMSRV:0,1,0x1801,1
-     +BLEGATTCPRIMSRV:0,2,0x1800,1
-     +BLEGATTCPRIMSRV:0,3,0xA002,1
-     +BLEGATTCPRIMSRV:0,4,0xA003,1
+     .. code-block:: none
 
-    OK
+       +BLEGATTCPRIMSRV:0,1,0x1801,1
+       +BLEGATTCPRIMSRV:0,2,0x1800,1
+       +BLEGATTCPRIMSRV:0,3,0xA002,1
+       +BLEGATTCPRIMSRV:0,4,0xA003,1
+
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTCPRIMSRV:0,1,0x1800,1
+       +BLEGATTCPRIMSRV:0,2,0x1801,1
+       +BLEGATTCPRIMSRV:0,3,0xA002,1
+       +BLEGATTCPRIMSRV:0,4,0xA003,1
+
+       OK
 
    说明：
 
@@ -268,25 +295,44 @@ Bluetooth LE 客户端读写服务特征值
 
    响应：
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
-     +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
-     +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
-     +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
-     +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
-     +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
-     +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
-     +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
-     +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
-     
-     OK
+     .. code-block:: none
+
+       +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+       +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+       +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+       +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+       +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+       +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+       +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+       +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+       +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
+      
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+       +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+       +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+       +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+       +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+       +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+       +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+       +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 客户端读取一个特征值。
 
@@ -387,457 +433,463 @@ Bluetooth LE 客户端读写服务特征值
    - 对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服户端的 <srv_index> 值 + 2，这是正常现象。
    - 对于服务中特征的权限，您可参考文档 :doc:`../Compile_and_Develop/How_to_customize_BLE_services`。
 
-Bluetooth LE 服务端读写服务特征值
-------------------------------------------
+.. only:: esp32 or esp32c3
 
-以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何建立 Bluetooth LE 连接，以及服务端读写服务特征值和客户端设置，notify 服务特征值。
-
-.. Important::
-  步骤中以 ``{IDF_TARGET_NAME} Bluetooth LE 服务端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 服务端执行即可，以 ``{IDF_TARGET_NAME} Bluetooth LE 客户端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 客户端执行即可。
-
-#. 初始化 Bluetooth LE 功能。
-
-   {IDF_TARGET_NAME} Bluetooth LE 服务端：
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEINIT=2
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-   {IDF_TARGET_NAME} Bluetooth LE 客户端：
+  Bluetooth LE 服务端读写服务特征值
+  ------------------------------------------
   
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEINIT=1
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVCRE
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVSTART
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} 蓝牙 LE 服务器获取其 MAC 地址。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEADDR?
-
-   响应：
-
-   .. code-block:: none
-
-     +BLEADDR:"24:0a:c4:d6:e4:46"
-     OK
-
-   说明：
-
-   - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
-
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播参数。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEADVPARAM=50,50,0,0,7,0,,
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播数据。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEADVDATA="0201060A09457370726573736966030302A0"
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端开始广播。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEADVSTART
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 客户端创建服务。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVCRE
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 客户端开启服务。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVSTART
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 客户端获取 Bluetooth LE 地址。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEADDR?
-
-   响应：
-
-   .. code-block:: none
-
-     +BLEADDR:"24:0a:c4:03:a7:4e"
-     OK
-
-   说明：
-
-   - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
-
-#. {IDF_TARGET_NAME} Bluetooth LE 客户端开始扫描，持续 3 秒。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLESCAN=1,3
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-     +BLESCAN:"24:0a:c4:d6:e4:46",-78,0201060a09457370726573736966030302a0,,0
-     +BLESCAN:"45:03:cb:ac:aa:a0",-62,0201060aff4c001005441c61df7d,,1
-     +BLESCAN:"24:0a:c4:d6:e4:46",-26,0201060a09457370726573736966030302a0,,0
-
-   说明：
-
-   - 您的扫描结果可能与上述响应中的不同。
-
-#. 建立 the Bluetooth LE 连接。
-
-   {IDF_TARGET_NAME} Bluetooth LE 客户端：
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLECONN=0,"24:0a:c4:d6:e4:46"
-
-   响应：
-
-   .. code-block:: none
-
-     +BLECONN:0,"24:0a:c4:d6:e4:46"
-     
-     OK
-
-   说明：
-
-   - 输入上述命令时，请使用您的 {IDF_TARGET_NAME} Bluetooth LE 服务端地址。
-   - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
-   - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
-
-  {IDF_TARGET_NAME} Bluetooth LE 服务端：
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLECONN=0,"24:0a:c4:03:a7:4e"
-
-   响应：
-
-   .. code-block:: none
-     
-     +BLECONN:0,"24:0a:c4:03:a7:4e"
-
-     OK
-
-   说明：
-
-   - 输入上述命令时，请使用您的 {IDF_TARGET_NAME} Bluetooth LE 客户端地址。
-   - 如果 Bluetooth LE 连接成功，则会提示 ``OK``，不会提示 ``+BLECONN:0,"24:0a:c4:03:a7:4e``。
-   - 如果 Bluetooth LE 连接失败，则会提示 ``ERROR``，不会提示 ``+BLECONN:0,-1``。
-
-#. {IDF_TARGET_NAME} Bluetooth LE 客户端查询本地服务。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRV?
-
-   响应：
-
-   .. code-block:: none
-
-     +BLEGATTSSRV:1,1,0xA002,1
-     +BLEGATTSSRV:2,1,0xA003,1
-     
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 客户端发现本地特征。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSCHAR?
-
-   响应：
-
-   .. code-block:: none
-
-     +BLEGATTSCHAR:"char",1,1,0xC300,0x02
-     +BLEGATTSCHAR:"desc",1,1,1,0x2901
-     +BLEGATTSCHAR:"char",1,2,0xC301,0x02
-     +BLEGATTSCHAR:"desc",1,2,1,0x2901
-     +BLEGATTSCHAR:"char",1,3,0xC302,0x08
-     +BLEGATTSCHAR:"desc",1,3,1,0x2901
-     +BLEGATTSCHAR:"char",1,4,0xC303,0x04
-     +BLEGATTSCHAR:"desc",1,4,1,0x2901
-     +BLEGATTSCHAR:"char",1,5,0xC304,0x08
-     +BLEGATTSCHAR:"char",1,6,0xC305,0x10
-     +BLEGATTSCHAR:"desc",1,6,1,0x2902
-     +BLEGATTSCHAR:"char",1,7,0xC306,0x20
-     +BLEGATTSCHAR:"desc",1,7,1,0x2902
-     +BLEGATTSCHAR:"char",1,8,0xC307,0x02
-     +BLEGATTSCHAR:"desc",1,8,1,0x2901
-     +BLEGATTSCHAR:"char",2,1,0xC400,0x02
-     +BLEGATTSCHAR:"desc",2,1,1,0x2901
-     +BLEGATTSCHAR:"char",2,2,0xC401,0x02
-     +BLEGATTSCHAR:"desc",2,2,1,0x2901
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端发现对端服务。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTCPRIMSRV=0
-
-   响应：
-
-   .. code-block:: none
-
-     +BLEGATTCPRIMSRV:0,1,0x1801,1
-     +BLEGATTCPRIMSRV:0,2,0x1800,1
-     +BLEGATTCPRIMSRV:0,3,0xA002,1
-     +BLEGATTCPRIMSRV:0,4,0xA003,1
-
-    OK
-
-   说明：
-
-   - {IDF_TARGET_NAME} Bluetooth LE 服务端查询服务的结果，比 {IDF_TARGET_NAME} Bluetooth LE 客户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801）。正因如此，对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 服务端查询的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 客户端查询的 <srv_index> 值 + 2。例如，上述示例中的服务 0xA002，当前在 {IDF_TARGET_NAME} Bluetooth LE 服务端查询到的 <srv_index> 为 3，如果在 {IDF_TARGET_NAME} Bluetooth LE 服务端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
-
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端发现对端特征。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTCCHAR=0,3
-
-   响应：
-
-   .. code-block:: none
-
-     +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
-     +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
-     +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
-     +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
-     +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
-     +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
-     +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
-     +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
-     +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
-     
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 客户端设置服务特征值。
-
-   选择支持写操作的服务特征（characteristic）去设置服务特征值。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSSETATTR=1,8,,1
-
-   响应：
-
-   .. code-block:: none
-
-     >
-
-   命令：
-
-   .. code-block:: none
-
-     写入一个字节 ``9``
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端读服务特征值。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTCRD=0,3,8,
-
-   响应：
-
-   .. code-block:: none
-
-     +BLEGATTCRD:0,1,9
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端写服务特征值。
-
-   选择支持写操作的服务特性写入特性。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTCWR=0,3,6,1,2
-
-   响应：
-
-   .. code-block:: none
-
-     >
+  以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何建立 Bluetooth LE 连接，以及服务端读写服务特征值和客户端设置，notify 服务特征值。
   
-   命令：
+  .. Important::
+    步骤中以 ``{IDF_TARGET_NAME} Bluetooth LE 服务端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 服务端执行即可，以 ``{IDF_TARGET_NAME} Bluetooth LE 客户端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 客户端执行即可。
+  
+  #. 初始化 Bluetooth LE 功能。
+  
+     {IDF_TARGET_NAME} Bluetooth LE 服务端：
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEINIT=2
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
+  
+     {IDF_TARGET_NAME} Bluetooth LE 客户端：
+    
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEINIT=1
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
 
-   .. code-block:: none
+  .. only:: esp32 or esp32c3
 
-     写入2个字节 ``12``
+    #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
+    
+       命令：
+    
+       .. code-block:: none
+    
+         AT+BLEGATTSSRVCRE
+    
+       响应：
+    
+       .. code-block:: none
+    
+         OK
+    
+    #. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
+    
+       命令：
+    
+       .. code-block:: none
+    
+         AT+BLEGATTSSRVSTART
+    
+       响应：
+    
+       .. code-block:: none
+    
+         OK
+  
+  #. {IDF_TARGET_NAME} 蓝牙 LE 服务器获取其 MAC 地址。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEADDR?
+  
+     响应：
+  
+     .. code-block:: none
+  
+       +BLEADDR:"24:0a:c4:d6:e4:46"
+       OK
+  
+     说明：
+  
+     - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播参数。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEADVPARAM=50,50,0,0,7,0,,
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播数据。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEADVDATA="0201060A09457370726573736966030302A0"
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端开始广播。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEADVSTART
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
 
-   响应：
+  .. only:: esp32 or esp32c3
 
-   .. code-block:: none
-
-     OK
-
-   说明：
-
-   - 如果 Bluetooth LE 服务端写服务特征值成功后，Bluetooth LE 客户端则会提示 ``+WRITE:0,1,6,1,2,12``。
-
-#. {IDF_TARGET_NAME} Bluetooth LE 客户端 notify 服务特征值
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSNTFY=0,1,6,10
-
-   响应：
-
-   .. code-block:: none
-
-     >
-
-   命令：
-
-   .. code-block:: none
-
-     写入 ``1234567890`` 10个字节
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-   说明：
-
-   - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端 notify 服务特征值给服务端成功，Bluetooth LE 服务端则会提示 ``+NOTIFY:0,3,6,10,1234567890``。
-
+    #. {IDF_TARGET_NAME} Bluetooth LE 客户端创建服务。
+    
+       命令：
+    
+       .. code-block:: none
+    
+         AT+BLEGATTSSRVCRE
+    
+       响应：
+    
+       .. code-block:: none
+    
+         OK
+    
+    #. {IDF_TARGET_NAME} Bluetooth LE 客户端开启服务。
+    
+       命令：
+    
+       .. code-block:: none
+    
+         AT+BLEGATTSSRVSTART
+    
+       响应：
+    
+       .. code-block:: none
+    
+         OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 客户端获取 Bluetooth LE 地址。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEADDR?
+  
+     响应：
+  
+     .. code-block:: none
+  
+       +BLEADDR:"24:0a:c4:03:a7:4e"
+       OK
+  
+     说明：
+  
+     - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 客户端开始扫描，持续 3 秒。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLESCAN=1,3
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
+       +BLESCAN:"24:0a:c4:d6:e4:46",-78,0201060a09457370726573736966030302a0,,0
+       +BLESCAN:"45:03:cb:ac:aa:a0",-62,0201060aff4c001005441c61df7d,,1
+       +BLESCAN:"24:0a:c4:d6:e4:46",-26,0201060a09457370726573736966030302a0,,0
+  
+     说明：
+  
+     - 您的扫描结果可能与上述响应中的不同。
+  
+  #. 建立 the Bluetooth LE 连接。
+  
+     {IDF_TARGET_NAME} Bluetooth LE 客户端：
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLECONN=0,"24:0a:c4:d6:e4:46"
+  
+     响应：
+  
+     .. code-block:: none
+  
+       +BLECONN:0,"24:0a:c4:d6:e4:46"
+       
+       OK
+  
+     说明：
+  
+     - 输入上述命令时，请使用您的 {IDF_TARGET_NAME} Bluetooth LE 服务端地址。
+     - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
+     - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
+  
+    {IDF_TARGET_NAME} Bluetooth LE 服务端：
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLECONN=0,"24:0a:c4:03:a7:4e"
+  
+     响应：
+  
+     .. code-block:: none
+       
+       +BLECONN:0,"24:0a:c4:03:a7:4e"
+  
+       OK
+  
+     说明：
+  
+     - 输入上述命令时，请使用您的 {IDF_TARGET_NAME} Bluetooth LE 客户端地址。
+     - 如果 Bluetooth LE 连接成功，则会提示 ``OK``，不会提示 ``+BLECONN:0,"24:0a:c4:03:a7:4e``。
+     - 如果 Bluetooth LE 连接失败，则会提示 ``ERROR``，不会提示 ``+BLECONN:0,-1``。
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 客户端查询本地服务。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRV?
+  
+     响应：
+  
+     .. code-block:: none
+  
+       +BLEGATTSSRV:1,1,0xA002,1
+       +BLEGATTSSRV:2,1,0xA003,1
+       
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 客户端发现本地特征。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSCHAR?
+  
+     响应：
+  
+     .. code-block:: none
+  
+       +BLEGATTSCHAR:"char",1,1,0xC300,0x02
+       +BLEGATTSCHAR:"desc",1,1,1,0x2901
+       +BLEGATTSCHAR:"char",1,2,0xC301,0x02
+       +BLEGATTSCHAR:"desc",1,2,1,0x2901
+       +BLEGATTSCHAR:"char",1,3,0xC302,0x08
+       +BLEGATTSCHAR:"desc",1,3,1,0x2901
+       +BLEGATTSCHAR:"char",1,4,0xC303,0x04
+       +BLEGATTSCHAR:"desc",1,4,1,0x2901
+       +BLEGATTSCHAR:"char",1,5,0xC304,0x08
+       +BLEGATTSCHAR:"char",1,6,0xC305,0x10
+       +BLEGATTSCHAR:"desc",1,6,1,0x2902
+       +BLEGATTSCHAR:"char",1,7,0xC306,0x20
+       +BLEGATTSCHAR:"desc",1,7,1,0x2902
+       +BLEGATTSCHAR:"char",1,8,0xC307,0x02
+       +BLEGATTSCHAR:"desc",1,8,1,0x2901
+       +BLEGATTSCHAR:"char",2,1,0xC400,0x02
+       +BLEGATTSCHAR:"desc",2,1,1,0x2901
+       +BLEGATTSCHAR:"char",2,2,0xC401,0x02
+       +BLEGATTSCHAR:"desc",2,2,1,0x2901
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端发现对端服务。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTCPRIMSRV=0
+  
+     响应：
+  
+     .. code-block:: none
+  
+       +BLEGATTCPRIMSRV:0,1,0x1801,1
+       +BLEGATTCPRIMSRV:0,2,0x1800,1
+       +BLEGATTCPRIMSRV:0,3,0xA002,1
+       +BLEGATTCPRIMSRV:0,4,0xA003,1
+  
+       OK
+  
+     说明：
+  
+     - {IDF_TARGET_NAME} Bluetooth LE 服务端查询服务的结果，比 {IDF_TARGET_NAME} Bluetooth LE 客户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801）。正因如此，对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 服务端查询的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 客户端查询的 <srv_index> 值 + 2。例如，上述示例中的服务 0xA002，当前在 {IDF_TARGET_NAME} Bluetooth LE 服务端查询到的 <srv_index> 为 3，如果在 {IDF_TARGET_NAME} Bluetooth LE 服务端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端发现对端特征。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTCCHAR=0,3
+  
+     响应：
+  
+     .. code-block:: none
+ 
+       +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+       +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+       +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+       +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+       +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+       +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+       +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+       +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+       +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
+       
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 客户端设置服务特征值。
+  
+     选择支持写操作的服务特征（characteristic）去设置服务特征值。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSETATTR=1,8,,1
+  
+     响应：
+  
+     .. code-block:: none
+  
+       >
+  
+     命令：
+  
+     .. code-block:: none
+  
+       写入一个字节 ``9``
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端读服务特征值。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTCRD=0,3,8,
+  
+     响应：
+  
+     .. code-block:: none
+  
+       +BLEGATTCRD:0,1,9
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端写服务特征值。
+  
+     选择支持写操作的服务特性写入特性。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTCWR=0,3,6,1,2
+  
+     响应：
+  
+     .. code-block:: none
+  
+       >
+    
+     命令：
+  
+     .. code-block:: none
+  
+       写入2个字节 ``12``
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
+  
+     说明：
+  
+     - 如果 Bluetooth LE 服务端写服务特征值成功后，Bluetooth LE 客户端则会提示 ``+WRITE:0,1,6,1,2,12``。
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 客户端 notify 服务特征值
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSNTFY=0,1,6,10
+  
+     响应：
+  
+     .. code-block:: none
+  
+       >
+  
+     命令：
+  
+     .. code-block:: none
+  
+       写入 ``1234567890`` 10个字节
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
+  
+     说明：
+  
+     - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端 notify 服务特征值给服务端成功，Bluetooth LE 服务端则会提示 ``+NOTIFY:0,3,6,10,1234567890``。
+  
 Bluetooth LE 连接加密
 ----------------------------------
 
@@ -898,33 +950,35 @@ Bluetooth LE 连接加密
 
    - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
 
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
+.. only:: esp32 or esp32c3
 
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVCRE
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVSTART
-
-   响应：
-
-   .. code-block:: none
-
-     OK
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVCRE
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVSTART
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端发现服务特征。
 
@@ -936,29 +990,48 @@ Bluetooth LE 连接加密
 
    响应：
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTSCHAR:"char",1,1,0xC300,0x02
-     +BLEGATTSCHAR:"desc",1,1,1,0x2901
-     +BLEGATTSCHAR:"char",1,2,0xC301,0x02
-     +BLEGATTSCHAR:"desc",1,2,1,0x2901
-     +BLEGATTSCHAR:"char",1,3,0xC302,0x08
-     +BLEGATTSCHAR:"desc",1,3,1,0x2901
-     +BLEGATTSCHAR:"char",1,4,0xC303,0x04
-     +BLEGATTSCHAR:"desc",1,4,1,0x2901
-     +BLEGATTSCHAR:"char",1,5,0xC304,0x08
-     +BLEGATTSCHAR:"char",1,6,0xC305,0x10
-     +BLEGATTSCHAR:"desc",1,6,1,0x2902
-     +BLEGATTSCHAR:"char",1,7,0xC306,0x20
-     +BLEGATTSCHAR:"desc",1,7,1,0x2902
-     +BLEGATTSCHAR:"char",1,8,0xC307,0x02
-     +BLEGATTSCHAR:"desc",1,8,1,0x2901
-     +BLEGATTSCHAR:"char",2,1,0xC400,0x02
-     +BLEGATTSCHAR:"desc",2,1,1,0x2901
-     +BLEGATTSCHAR:"char",2,2,0xC401,0x02
-     +BLEGATTSCHAR:"desc",2,2,1,0x2901
+     .. code-block:: none
 
-     OK
+       +BLEGATTSCHAR:"char",1,1,0xC300,0x02
+       +BLEGATTSCHAR:"desc",1,1,1,0x2901
+       +BLEGATTSCHAR:"char",1,2,0xC301,0x02
+       +BLEGATTSCHAR:"desc",1,2,1,0x2901
+       +BLEGATTSCHAR:"char",1,3,0xC302,0x08
+       +BLEGATTSCHAR:"desc",1,3,1,0x2901
+       +BLEGATTSCHAR:"char",1,4,0xC303,0x04
+       +BLEGATTSCHAR:"desc",1,4,1,0x2901
+       +BLEGATTSCHAR:"char",1,5,0xC304,0x08
+       +BLEGATTSCHAR:"char",1,6,0xC305,0x10
+       +BLEGATTSCHAR:"desc",1,6,1,0x2902
+       +BLEGATTSCHAR:"char",1,7,0xC306,0x20
+       +BLEGATTSCHAR:"desc",1,7,1,0x2902
+       +BLEGATTSCHAR:"char",1,8,0xC307,0x02
+       +BLEGATTSCHAR:"desc",1,8,1,0x2901
+       +BLEGATTSCHAR:"char",2,1,0xC400,0x02
+       +BLEGATTSCHAR:"desc",2,1,1,0x2901
+       +BLEGATTSCHAR:"char",2,2,0xC401,0x02
+       +BLEGATTSCHAR:"desc",2,2,1,0x2901
+
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTSCHAR:"char",1,1,0xC300
+       +BLEGATTSCHAR:"char",1,2,0xC301
+       +BLEGATTSCHAR:"char",1,3,0xC302
+       +BLEGATTSCHAR:"char",1,4,0xC303
+       +BLEGATTSCHAR:"char",1,5,0xC304
+       +BLEGATTSCHAR:"char",1,6,0xC305
+       +BLEGATTSCHAR:"char",1,7,0xC306
+       +BLEGATTSCHAR:"char",1,8,0xC307
+       +BLEGATTSCHAR:"char",2,1,0xC400
+       +BLEGATTSCHAR:"char",2,2,0xC401
+
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端开始广播，之后 {IDF_TARGET_NAME} Bluetooth LE 客户端开始扫描并且持续 3 秒钟。
 
@@ -1031,14 +1104,27 @@ Bluetooth LE 连接加密
 
    响应：
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTCPRIMSRV:0,1,0x1801,1
-     +BLEGATTCPRIMSRV:0,2,0x1800,1
-     +BLEGATTCPRIMSRV:0,3,0xA002,1
-     +BLEGATTCPRIMSRV:0,4,0xA003,1
+     .. code-block:: none
 
-    OK
+       +BLEGATTCPRIMSRV:0,1,0x1801,1
+       +BLEGATTCPRIMSRV:0,2,0x1800,1
+       +BLEGATTCPRIMSRV:0,3,0xA002,1
+       +BLEGATTCPRIMSRV:0,4,0xA003,1
+
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTCPRIMSRV:0,1,0x1800,1
+       +BLEGATTCPRIMSRV:0,2,0x1801,1
+       +BLEGATTCPRIMSRV:0,3,0xA002,1
+       +BLEGATTCPRIMSRV:0,4,0xA003,1
+
+       OK
 
    说明：
 
@@ -1054,25 +1140,44 @@ Bluetooth LE 连接加密
 
    响应：
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
-     +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
-     +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
-     +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
-     +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
-     +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
-     +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
-     +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
-     +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
-     
-     OK
+     .. code-block:: none
+
+       +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+       +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+       +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+       +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+       +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+       +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+       +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+       +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+       +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
+      
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+       +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+       +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+       +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+       +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+       +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+       +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+       +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+
+       OK
 
 #. 设置加密参数。设置 ``auth_req`` 为 ``SC_MITM_BOND``，服务端的 ``iocap`` 为 ``KeyboardOnly``，客户端的 ``iocap`` 为 ``KeyboardDisplay``，``key_size`` 为 ``16``，``init_key`` 为 ``3``, ``rsp_key`` 为 ``3``。
 
@@ -1224,33 +1329,35 @@ Bluetooth LE 连接加密
 
      OK
 
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
+.. only:: esp32 or esp32c3
 
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVCRE
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVSTART
-
-   响应：
-
-   .. code-block:: none
-
-     OK
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVCRE
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVSTART
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
 
 #. {IDF_TARGET_NAME} 蓝牙 LE 服务器获取其 MAC 地址。
 
@@ -1385,29 +1492,48 @@ Bluetooth LE 连接加密
 
    响应：
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTSCHAR:"char",1,1,0xC300,0x02
-     +BLEGATTSCHAR:"desc",1,1,1,0x2901
-     +BLEGATTSCHAR:"char",1,2,0xC301,0x02
-     +BLEGATTSCHAR:"desc",1,2,1,0x2901
-     +BLEGATTSCHAR:"char",1,3,0xC302,0x08
-     +BLEGATTSCHAR:"desc",1,3,1,0x2901
-     +BLEGATTSCHAR:"char",1,4,0xC303,0x04
-     +BLEGATTSCHAR:"desc",1,4,1,0x2901
-     +BLEGATTSCHAR:"char",1,5,0xC304,0x08
-     +BLEGATTSCHAR:"char",1,6,0xC305,0x10
-     +BLEGATTSCHAR:"desc",1,6,1,0x2902
-     +BLEGATTSCHAR:"char",1,7,0xC306,0x20
-     +BLEGATTSCHAR:"desc",1,7,1,0x2902
-     +BLEGATTSCHAR:"char",1,8,0xC307,0x02
-     +BLEGATTSCHAR:"desc",1,8,1,0x2901
-     +BLEGATTSCHAR:"char",2,1,0xC400,0x02
-     +BLEGATTSCHAR:"desc",2,1,1,0x2901
-     +BLEGATTSCHAR:"char",2,2,0xC401,0x02
-     +BLEGATTSCHAR:"desc",2,2,1,0x2901
+     .. code-block:: none
 
-     OK
+       +BLEGATTSCHAR:"char",1,1,0xC300,0x02
+       +BLEGATTSCHAR:"desc",1,1,1,0x2901
+       +BLEGATTSCHAR:"char",1,2,0xC301,0x02
+       +BLEGATTSCHAR:"desc",1,2,1,0x2901
+       +BLEGATTSCHAR:"char",1,3,0xC302,0x08
+       +BLEGATTSCHAR:"desc",1,3,1,0x2901
+       +BLEGATTSCHAR:"char",1,4,0xC303,0x04
+       +BLEGATTSCHAR:"desc",1,4,1,0x2901
+       +BLEGATTSCHAR:"char",1,5,0xC304,0x08
+       +BLEGATTSCHAR:"char",1,6,0xC305,0x10
+       +BLEGATTSCHAR:"desc",1,6,1,0x2902
+       +BLEGATTSCHAR:"char",1,7,0xC306,0x20
+       +BLEGATTSCHAR:"desc",1,7,1,0x2902
+       +BLEGATTSCHAR:"char",1,8,0xC307,0x02
+       +BLEGATTSCHAR:"desc",1,8,1,0x2901
+       +BLEGATTSCHAR:"char",2,1,0xC400,0x02
+       +BLEGATTSCHAR:"desc",2,1,1,0x2901
+       +BLEGATTSCHAR:"char",2,2,0xC401,0x02
+       +BLEGATTSCHAR:"desc",2,2,1,0x2901
+
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTSCHAR:"char",1,1,0xC300
+       +BLEGATTSCHAR:"char",1,2,0xC301
+       +BLEGATTSCHAR:"char",1,3,0xC302
+       +BLEGATTSCHAR:"char",1,4,0xC303
+       +BLEGATTSCHAR:"char",1,5,0xC304
+       +BLEGATTSCHAR:"char",1,6,0xC305
+       +BLEGATTSCHAR:"char",1,7,0xC306
+       +BLEGATTSCHAR:"char",1,8,0xC307
+       +BLEGATTSCHAR:"char",2,1,0xC400
+       +BLEGATTSCHAR:"char",2,2,0xC401
+
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 客户端发现服务。
 
@@ -1419,14 +1545,27 @@ Bluetooth LE 连接加密
 
    响应：
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTCPRIMSRV:0,1,0x1801,1
-     +BLEGATTCPRIMSRV:0,2,0x1800,1
-     +BLEGATTCPRIMSRV:0,3,0xA002,1
-     +BLEGATTCPRIMSRV:0,4,0xA003,1
+     .. code-block:: none
 
-    OK
+       +BLEGATTCPRIMSRV:0,1,0x1801,1
+       +BLEGATTCPRIMSRV:0,2,0x1800,1
+       +BLEGATTCPRIMSRV:0,3,0xA002,1
+       +BLEGATTCPRIMSRV:0,4,0xA003,1
+
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTCPRIMSRV:0,1,0x1800,1
+       +BLEGATTCPRIMSRV:0,2,0x1801,1
+       +BLEGATTCPRIMSRV:0,3,0xA002,1
+       +BLEGATTCPRIMSRV:0,4,0xA003,1
+
+       OK
 
    说明：
 
@@ -1442,25 +1581,44 @@ Bluetooth LE 连接加密
 
    响应：
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
-     +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
-     +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
-     +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
-     +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
-     +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
-     +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
-     +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
-     +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
-     +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
-     +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
-     
-     OK
+     .. code-block:: none
+
+       +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+       +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+       +BLEGATTCCHAR:"desc",0,3,2,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+       +BLEGATTCCHAR:"desc",0,3,3,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+       +BLEGATTCCHAR:"desc",0,3,4,1,0x2901
+       +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+       +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+       +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+       +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+       +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
+      
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
+       +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
+       +BLEGATTCCHAR:"char",0,3,3,0xC302,0x08
+       +BLEGATTCCHAR:"char",0,3,4,0xC303,0x04
+       +BLEGATTCCHAR:"char",0,3,5,0xC304,0x08
+       +BLEGATTCCHAR:"char",0,3,6,0xC305,0x10
+       +BLEGATTCCHAR:"desc",0,3,6,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,7,0xC306,0x20
+       +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
+       +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
+
+       OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 客户端配置 Bluetooth LE SPP。
 
@@ -1566,33 +1724,35 @@ Bluetooth LE 连接加密
 
      OK
 
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
+.. only:: esp32 or esp32c3
 
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVCRE
-
-   响应：
-
-   .. code-block:: none
-
-     OK
-
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
-
-   命令：
-
-   .. code-block:: none
-
-     AT+BLEGATTSSRVSTART
-
-   响应：
-
-   .. code-block:: none
-
-     OK
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVCRE
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVSTART
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
 
 #. {IDF_TARGET_NAME} 蓝牙 LE 服务器获取其 MAC 地址。
 
@@ -1686,29 +1846,48 @@ Bluetooth LE 连接加密
 
    响应：
 
-   .. code-block:: none
+   .. only:: esp32 or esp32c3
 
-     +BLEGATTSCHAR:"char",1,1,0xC300,0x02
-     +BLEGATTSCHAR:"desc",1,1,1,0x2901
-     +BLEGATTSCHAR:"char",1,2,0xC301,0x02
-     +BLEGATTSCHAR:"desc",1,2,1,0x2901
-     +BLEGATTSCHAR:"char",1,3,0xC302,0x08
-     +BLEGATTSCHAR:"desc",1,3,1,0x2901
-     +BLEGATTSCHAR:"char",1,4,0xC303,0x04
-     +BLEGATTSCHAR:"desc",1,4,1,0x2901
-     +BLEGATTSCHAR:"char",1,5,0xC304,0x08
-     +BLEGATTSCHAR:"char",1,6,0xC305,0x10
-     +BLEGATTSCHAR:"desc",1,6,1,0x2902
-     +BLEGATTSCHAR:"char",1,7,0xC306,0x20
-     +BLEGATTSCHAR:"desc",1,7,1,0x2902
-     +BLEGATTSCHAR:"char",1,8,0xC307,0x02
-     +BLEGATTSCHAR:"desc",1,8,1,0x2901
-     +BLEGATTSCHAR:"char",2,1,0xC400,0x02
-     +BLEGATTSCHAR:"desc",2,1,1,0x2901
-     +BLEGATTSCHAR:"char",2,2,0xC401,0x02
-     +BLEGATTSCHAR:"desc",2,2,1,0x2901
+     .. code-block:: none
 
-     OK
+       +BLEGATTSCHAR:"char",1,1,0xC300,0x02
+       +BLEGATTSCHAR:"desc",1,1,1,0x2901
+       +BLEGATTSCHAR:"char",1,2,0xC301,0x02
+       +BLEGATTSCHAR:"desc",1,2,1,0x2901
+       +BLEGATTSCHAR:"char",1,3,0xC302,0x08
+       +BLEGATTSCHAR:"desc",1,3,1,0x2901
+       +BLEGATTSCHAR:"char",1,4,0xC303,0x04
+       +BLEGATTSCHAR:"desc",1,4,1,0x2901
+       +BLEGATTSCHAR:"char",1,5,0xC304,0x08
+       +BLEGATTSCHAR:"char",1,6,0xC305,0x10
+       +BLEGATTSCHAR:"desc",1,6,1,0x2902
+       +BLEGATTSCHAR:"char",1,7,0xC306,0x20
+       +BLEGATTSCHAR:"desc",1,7,1,0x2902
+       +BLEGATTSCHAR:"char",1,8,0xC307,0x02
+       +BLEGATTSCHAR:"desc",1,8,1,0x2901
+       +BLEGATTSCHAR:"char",2,1,0xC400,0x02
+       +BLEGATTSCHAR:"desc",2,1,1,0x2901
+       +BLEGATTSCHAR:"char",2,2,0xC401,0x02
+       +BLEGATTSCHAR:"desc",2,2,1,0x2901
+
+       OK
+
+   .. only:: esp32c2
+
+     .. code-block:: none
+
+       +BLEGATTSCHAR:"char",1,1,0xC300
+       +BLEGATTSCHAR:"char",1,2,0xC301
+       +BLEGATTSCHAR:"char",1,3,0xC302
+       +BLEGATTSCHAR:"char",1,4,0xC303
+       +BLEGATTSCHAR:"char",1,5,0xC304
+       +BLEGATTSCHAR:"char",1,6,0xC305
+       +BLEGATTSCHAR:"char",1,7,0xC306
+       +BLEGATTSCHAR:"char",1,8,0xC307
+       +BLEGATTSCHAR:"char",2,1,0xC400
+       +BLEGATTSCHAR:"char",2,2,0xC401
+
+       OK
 
 #. Bluetooth LE 客户端发现特征。
 
