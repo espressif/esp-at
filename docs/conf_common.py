@@ -50,6 +50,7 @@ ESP32C3_DOCS = ['AT_Binary_Lists/ESP32-C3_AT_binaries.rst',
 
 ESP32C2_DOCS = ['AT_Binary_Lists/ESP32-C2_AT_binaries.rst',
                 'AT_Command_Set/BLE_AT_Commands.rst',
+                'Compile_and_Develop/How_to_customize_BLE_services.rst',
                 'Compile_and_Develop/How_to_implement_SPI_AT.rst']
 
 # reserved item
