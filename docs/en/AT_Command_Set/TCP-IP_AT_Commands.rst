@@ -607,7 +607,7 @@ Parameters
 Notes
 ^^^^^
 
-- You can use :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command to configure socket options for each TCP connection. For example, setting <so_sndtimeo> to 5000 will enable TCP send to return results within 5 seconds, whether it succeeds or fails. This can save the time that the MCU waits for AT command response.
+- You can use :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command to configure socket options for each TCP connection. For example, setting <so_sndtimeo> to 5000 will enable TCP send operation to return results within 5 seconds, regardless of success or failure. This can save the time that the MCU waits for AT command response.
 
 .. _cmd-SENDL:
 
@@ -683,7 +683,8 @@ Parameters
 Notes
 ^^^^^
 
-- You can use :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command to configure socket options for each TCP connection. For example, setting <so_sndtimeo> to 5000 will enable TCP send to return results within 5 seconds, whether it succeeds or fails. This can save the time that the MCU waits for AT command response.
+- It is recommended to use UART flow control, because if the UART receives data at a faster rate than the network sends, data loss may occur.
+- You can use :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command to configure socket options for each TCP connection. For example, setting <so_sndtimeo> to 5000 will enable TCP send operation to return results within 5 seconds, regardless of success or failure. This can save the time that the MCU waits for AT command response.
 
 .. _cmd-SENDLCFG:
 
@@ -722,7 +723,7 @@ Set the configuration of :ref:`AT+CIPSENDL <cmd-SENDL>`.
 
 ::
 
-    AT+CIPSENDLCFG:<report size>[,<transmit size>]
+    AT+CIPSENDLCFG=<report size>[,<transmit size>]
 
 **Response:**
 
@@ -803,7 +804,7 @@ Notes
 -  When the requirement of data length is met, or when the string ``\0`` (0x5c, 0x30 in ASCII) appears, the transmission of data starts. Go back to the normal command mode and wait for the next AT command.
 -  If the data contains the ``\<any>``, it means that drop backslash symbol and only use ``<any>`` character.
 -  When sending ``\0``, please use a backslash to escape it as ``\\0``.
-- You can use :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command to configure socket options for each TCP connection. For example, setting <so_sndtimeo> to 5000 will enable TCP send to return results within 5 seconds, whether it succeeds or fails. This can save the time that the MCU waits for AT command response.
+- You can use :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command to configure socket options for each TCP connection. For example, setting <so_sndtimeo> to 5000 will enable TCP send operation to return results within 5 seconds, regardless of success or failure. This can save the time that the MCU waits for AT command response.
 
 .. _cmd-CLOSE:
 
@@ -1362,6 +1363,14 @@ Note
 ^^^^^
 
 -  The asctime style time is defined at `asctime man page <https://linux.die.net/man/3/asctime>`_.
+
+.. only:: esp32 or esp32c3
+
+  - The time obtained from SNTP is stored in the RTC area, so it will not be lost after a software reset (chip does not lose power).
+
+.. only:: esp32c2
+
+  - The time obtained from SNTP is currently not supported to be stored in the RTC area, so it will be reset to 1970 after a software reset (chip does not lose power).
 
 Example
 ^^^^^^^^

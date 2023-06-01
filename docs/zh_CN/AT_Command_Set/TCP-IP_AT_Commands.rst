@@ -607,7 +607,7 @@ TCP/IP AT 命令
 说明
 """"""
 
-- 您可以使用 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令来为每个 TCP 连接配置套接字选项。例如：设置 <so_sndtimeo> 为 5000，则 TCP 发送会在 5 秒内返回，无论成功还是失败。这可以节省 MCU 等待 AT 命令回复的时间。
+- 您可以使用 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令来为每个 TCP 连接配置套接字选项。例如：设置 <so_sndtimeo> 为 5000，则 TCP 发送操作会在 5 秒内返回结果，无论成功还是失败。这可以节省 MCU 等待 AT 命令回复的时间。
 
 .. _cmd-SENDL:
 
@@ -683,7 +683,8 @@ TCP/IP AT 命令
 说明
 """"""
 
-- 您可以使用 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令来为每个 TCP 连接配置套接字选项。例如：设置 <so_sndtimeo> 为 5000，则 TCP 发送会在 5 秒内返回，无论成功还是失败。这可以节省 MCU 等待 AT 命令回复的时间。
+- 建议您使用 UART 流控。否则，如果 UART 接收速度大于网络发送速度时，将会导致数据丢失。
+- 您可以使用 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令来为每个 TCP 连接配置套接字选项。例如：设置 <so_sndtimeo> 为 5000，则 TCP 发送操作会在 5 秒内返回结果，无论成功还是失败。这可以节省 MCU 等待 AT 命令回复的时间。
 
 .. _cmd-SENDLCFG:
 
@@ -722,7 +723,7 @@ TCP/IP AT 命令
 
 ::
 
-    AT+CIPSENDLCFG:<report size>[,<transmit size>]
+    AT+CIPSENDLCFG=<report size>[,<transmit size>]
 
 **响应：**
 
@@ -803,7 +804,7 @@ TCP/IP AT 命令
 -  当数据长度满足要求时，或数据中出现 ``\0`` 字符时 (0x5c，0x30 ASCII)，数据传输开始，系统返回普通命令模式，等待下一条 AT 命令
 -  如果数据中包含 ``\<any>``，则会去掉反斜杠，只使用 ``<any>`` 符号
 -  如果需要发送 ``\0``，请转义为 ``\\0``
--  您可以使用 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令来为每个 TCP 连接配置套接字选项。例如：设置 <so_sndtimeo> 为 5000，则 TCP 发送会在 5 秒内返回，无论成功还是失败。这可以节省 MCU 等待 AT 命令回复的时间。
+- 您可以使用 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令来为每个 TCP 连接配置套接字选项。例如：设置 <so_sndtimeo> 为 5000，则 TCP 发送操作会在 5 秒内返回结果，无论成功还是失败。这可以节省 MCU 等待 AT 命令回复的时间。
 
 .. _cmd-CLOSE:
 
@@ -1362,6 +1363,14 @@ TCP/IP AT 命令
 ^^^^
 
 -  有关 asctime 时间的定义请见 `asctime man page <https://linux.die.net/man/3/asctime>`_。
+
+.. only:: esp32 or esp32c3
+
+  - SNTP 获取到的时间存储在 RTC 区域，因此在软重启（芯片不掉电）后，时间不会丢失。
+
+.. only:: esp32c2
+
+  - SNTP 获取到的时间暂不支持存储在 RTC 区域，因此在软重启（芯片不掉电）后，时间会重置到 1970 年。
 
 示例
 ^^^^
