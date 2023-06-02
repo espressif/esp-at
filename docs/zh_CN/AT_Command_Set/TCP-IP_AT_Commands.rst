@@ -5,6 +5,7 @@ TCP/IP AT 命令
 
 :link_to_translation:`en:[English]`
 
+-  :ref:`介绍 <cmd-tcpip-intro>`
 -  :ref:`AT+CIPV6 <cmd-IPV6>`: 启用/禁用 IPv6 网络 (IPv6)
 -  :ref:`AT+CIPSTATE <cmd-IPSTATE>`：查询 TCP/UDP/SSL 连接信息
 -  :ref:`AT+CIPSTATUS (弃用) <cmd-STATUS>`：查询 TCP/UDP/SSL 连接状态和信息
@@ -42,6 +43,18 @@ TCP/IP AT 命令
 -  :ref:`AT+PING <cmd-CIPPING>`：ping 对端主机
 -  :ref:`AT+CIPDNS <cmd-DNS>`：查询/设置 DNS 服务器信息
 -  :ref:`AT+CIPTCPOPT <cmd-TCPOPT>`：查询/设置套接字选项
+
+.. _cmd-tcpip-intro:
+
+介绍
+------
+
+.. important::
+  默认的 AT 固件支持此页面下的所有 AT 命令。如果您需要修改 {IDF_TARGET_NAME} 默认支持的命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+
+  - 禁用 OTA 命令（:ref:`AT+CIUPDATE <cmd-UPDATE>`、:ref:`AT+CIPFWVER <cmd-FWVER>`）：``Component config`` -> ``AT`` -> ``AT OTA command support``
+  - 禁用 PING 命令（:ref:`AT+PING <cmd-CIPPING>`）：``Component config`` -> ``AT`` -> ``AT ping command support``
+  - 禁用 TCP/IP 命令（不推荐。一旦禁用，所有 TCP/IP 功能将无法使用，您需要自行实现这些 AT 命令）： ``Component config`` -> ``AT`` -> ``AT net command support``
 
 .. _cmd-IPV6:
 

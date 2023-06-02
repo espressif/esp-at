@@ -7,9 +7,18 @@
 
 :link_to_translation:`en:[English]`
 
+- :ref:`介绍 <cmd-eth-intro>`
 - :ref:`准备工作 <cmd-ETHPRE>`
 - :ref:`AT+CIPETHMAC <cmd-ETHMAC>`：查询/设置 {IDF_TARGET_NAME} 以太网的 MAC 地址
 - :ref:`AT+CIPETH <cmd-ETHIP>`：查询/设置 {IDF_TARGET_NAME} 以太网的 IP 地址
+
+.. _cmd-eth-intro:
+
+介绍
+------
+
+.. important::
+  默认的 AT 固件不支持此页面下的 AT 命令。如果您需要 {IDF_TARGET_NAME} 支持以太网命令，请参考 :doc:`../Compile_and_Develop/How_to_enable_ESP_AT_Ethernet` 文档自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`。
 
 .. _cmd-ETHPRE:
 

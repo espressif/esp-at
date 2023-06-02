@@ -5,6 +5,7 @@
 
 :link_to_translation:`en:[English]`
 
+- :ref:`介绍 <cmd-driver-intro>`
 -  :ref:`AT+DRVADC <cmd-DRVADC>`：读取 ADC 通道值
 -  :ref:`AT+DRVPWMINIT <cmd-DRVPWMINIT>`：初始化 PWM 驱动器
 -  :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>`：设置 PWM 占空比
@@ -17,6 +18,16 @@
 -  :ref:`AT+DRVSPIINIT <cmd-DRVSPIINIT>`：初始化 SPI 主机驱动
 -  :ref:`AT+DRVSPIRD <cmd-DRVSPIRD>`：读取 SPI 数据
 -  :ref:`AT+DRVSPIWR <cmd-DRVSPIWR>`：写入 SPI 数据
+
+.. _cmd-driver-intro:
+
+介绍
+------
+
+.. important::
+  默认的 AT 固件不支持此页面下的 AT 命令。如果您需要 {IDF_TARGET_NAME} 支持驱动命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+
+  - 启用 ``Component config`` -> ``AT`` -> ``AT driver command support``
 
 .. _cmd-DRVADC:
 

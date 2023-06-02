@@ -5,7 +5,18 @@
 
 :link_to_translation:`en:[English]`
 
+-  :ref:`介绍 <cmd-signal-test-intro>`
 -  :ref:`AT+FACTPLCP <cmd-FACTPLCP>`：发送长 PLCP 或短 PLCP
+
+.. _cmd-signal-test-intro:
+
+介绍
+------
+
+.. important::
+  默认的 AT 固件支持此页面下的所有 AT 命令。如果您不需要 {IDF_TARGET_NAME} 支持信令测试命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+
+  - 禁用 ``Component config`` -> ``AT`` -> ``AT signaling test command support``
 
 .. _cmd-FACTPLCP:
 

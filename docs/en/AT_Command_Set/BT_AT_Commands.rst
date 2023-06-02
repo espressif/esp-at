@@ -5,8 +5,7 @@
 
 :link_to_translation:`zh_CN:[中文]`
 
-{IDF_TARGET_NAME} AT firmware supports `Bluetooth® Core Specification Version 4.2 <https://www.bluetooth.com/specifications/archived-specifications/>`_.
-
+- :ref:`Introduction <cmd-bt-intro>`
 - :ref:`AT+BTINIT <cmd-BTINIT>`: Classic Bluetooth initialization.
 - :ref:`AT+BTNAME <cmd-BTNAME>`: Query/Set Classic Bluetooth device name.
 - :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`: Set Classic Bluetooth scan mode.
@@ -29,6 +28,20 @@
 - :ref:`AT+BTENCCLEAR <cmd-BTENCCLEAR>`: Clear Classic Bluetooth encryption device list.
 - :ref:`AT+BTCOD <cmd-BTCOD>`: Set class of devices.
 - :ref:`AT+BTPOWER <cmd-BTPWR>`: Query/Set power of Classic Bluetooth.
+
+.. _cmd-bt-intro:
+
+Introduction
+------------
+
+{IDF_TARGET_NAME} AT firmware supports `Bluetooth® Core Specification Version 4.2 <https://www.bluetooth.com/specifications/archived-specifications/>`_.
+
+.. important::
+  The default AT firmware does not support the AT commands listed on this page. If you need {IDF_TARGET_NAME} to support Classic Bluetooth commands, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
+
+  - Enable Generic Bluetooth commands: ``Component config`` -> ``AT`` -> ``AT bt command support``
+  - Enable SPP commands: ``Component config`` -> ``AT`` -> ``AT bt command support`` -> ``AT bt spp command support``
+  - Enable A2DP commands:``Component config`` -> ``AT`` -> ``AT bt command support`` -> ``AT bt a2dp command support``
 
 .. _cmd-BTINIT:
 

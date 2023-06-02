@@ -5,6 +5,7 @@ HTTP AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
+-  :ref:`Introduction <cmd-http-intro>`
 -  :ref:`AT+HTTPCLIENT <cmd-HTTPCLIENT>`: Send HTTP Client Request
 -  :ref:`AT+HTTPGETSIZE <cmd-HTTPGETSIZE>`: Get HTTP Resource Size
 -  :ref:`AT+HTTPCGET <cmd-HTTPCGET>`: Get HTTP Resource
@@ -13,6 +14,25 @@ HTTP AT Commands
 -  :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>`: Set/Get long HTTP URL
 -  :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>`: Set/Query HTTP request headers
 -  :ref:`HTTP AT Error Codes <cmd-HTTPErrCode>`
+
+.. _cmd-http-intro:
+
+Introduction
+------------
+
+.. only:: esp32 or esp32c3
+
+  .. important::
+    The default AT firmware supports all the AT commands mentioned on this page. If you don't need {IDF_TARGET_NAME} to support HTTP commands, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
+
+    - Disable ``Component config`` -> ``AT`` -> ``AT http command support``
+
+.. only:: esp32c2
+
+  .. important::
+    **The default {IDF_TARGET_CFG_PREFIX}-4MB AT firmware supports HTTP functionality, while the {IDF_TARGET_CFG_PREFIX}-2MB AT firmware does not.**. If you need {IDF_TARGET_CFG_PREFIX}-2MB to support HTTP commands, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
+
+    - Enable ``Component config`` -> ``AT`` -> ``AT http command support``
 
 .. _cmd-HTTPCLIENT:
 

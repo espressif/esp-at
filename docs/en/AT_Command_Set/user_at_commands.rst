@@ -5,11 +5,22 @@ User AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
+-  :ref:`Introduction <cmd-user-intro>`
 -  :ref:`AT+USERRAM <cmd-USERRAM>`: Operate user's free RAM.
 -  :ref:`AT+USEROTA <cmd-USEROTA>`: Upgrade the firmware according to the specified URL.
 -  :ref:`AT+USERWKMCUCFG <cmd-USERWKMCUCFG>`: Configure how AT wakes up MCU.
 -  :ref:`AT+USERMCUSLEEP <cmd-USERMCUSLEEP>`: MCU indicates its sleep state.
 -  :ref:`AT+USERDOCS <cmd-USERDOCS>`: Query the ESP-AT user guide for current firmware.
+
+.. _cmd-user-intro:
+
+Introduction
+------------
+
+.. important::
+  The default AT firmware supports all the AT commands mentioned on this page. If you don't need {IDF_TARGET_NAME} to support user commands, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
+
+  - Disable ``Component config`` -> ``AT`` -> ``AT user command support``
 
 .. _cmd-USERRAM:
 

@@ -5,26 +5,9 @@ Bluetooth® Low Energy AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
- .. only:: esp32
-
-  Currently, AT firmware for {IDF_TARGET_NAME} series supports `Bluetooth® Core Specification Version 4.2 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_.
- 
- .. only:: esp32c3
-
-  Currently, AT firmware for {IDF_TARGET_NAME} supports `Bluetooth® Core Specification Version 5.0 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_.
-
-.. only:: esp32c2
-
-  Currently, AT firmware for {IDF_TARGET_NAME} supports `Bluetooth® Core Specification Version 5.0 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_.
-
-    .. attention::
-        **{IDF_TARGET_CFG_PREFIX}-4MB AT firmware supports BluFi, but {IDF_TARGET_CFG_PREFIX}-2MB AT firmware does not**. If you need the firmware with BluFi support on {IDF_TARGET_CFG_PREFIX}-2MB, please compile it on your own by following :doc:`Compile ESP-AT Project <../Compile_and_Develop/How_to_clone_project_and_compile_it>` and choosing the following configurations in the Step 5. Configure:
-
-        - ``Component config`` -> ``Bluetooth`` -> ``Bluetooth`` -> ``Host`` -> ``NimBLE`` - ``BLE only``
-        - ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Enable blufi functionality``
-
 .. list::
 
+    :esp32 or esp32c3 or esp32c2: - :ref:`Introduction <cmd-ble-intro>`
     :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEINIT <cmd-BINIT>`: Bluetooth LE initialization.
     :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEADDR <cmd-BADDR>`: Query/Set Bluetooth LE device address.
     :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLENAME <cmd-BNAME>`: Query/Set Bluetooth LE device name.
@@ -79,6 +62,59 @@ Bluetooth® Low Energy AT Commands
     :esp32c3 or esp32c2: - :ref:`AT+BLESYNCSTOP <cmd-BLESYNCSTOP>`: Stop synchronizing with periodic advertising.
     :esp32c3 or esp32c2: - :ref:`AT+BLEREADPHY <cmd-BLERDPHY>`: Query the current transmitter PHY.
     :esp32c3 or esp32c2: - :ref:`AT+BLESETPHY <cmd-BLESETPHY>`: Set the current transmitter PHY.
+
+.. _cmd-ble-intro:
+
+Introduction
+------------
+
+ .. only:: esp32
+
+  Currently, AT firmware for {IDF_TARGET_NAME} series supports `Bluetooth® Core Specification Version 4.2 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_.
+ 
+ .. only:: esp32c2 or esp32c3
+
+  Currently, AT firmware for {IDF_TARGET_NAME} supports `Bluetooth® Core Specification Version 5.0 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_.
+
+.. only:: esp32 or esp32c3
+
+  .. important::
+    The default AT firmware supports all the AT commands mentioned on this page. If you need to modify the commands supported by {IDF_TARGET_NAME} by default, please compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
+
+    - Disable BluFi commands: ``Component config`` -> ``AT`` -> ``AT blufi command support``
+    - Disable Bluetooth LE commands: ``Component config`` -> ``AT`` -> ``AT ble command support``
+    - Disable Bluetooth LE HID commands: ``Component config`` -> ``AT`` -> ``AT ble hid command support``
+
+.. only:: esp32c2
+
+  .. important::
+    The default {IDF_TARGET_CFG_PREFIX}-4MB AT firmware supports BluFi functionality, while the {IDF_TARGET_CFG_PREFIX}-2MB AT firmware does not. If you need BluFi functionality for {IDF_TARGET_CFG_PREFIX}-2MB, please refer to the :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation and follow the steps below in the project configuration (Step 5):
+
+    - Enable ``Component config`` -> ``Bluetooth``
+    - Enable ``Component config`` -> ``Bluetooth`` -> ``Bluetooth`` -> ``Host`` -> ``NimBLE`` - ``BLE only``
+    - Enable ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Enable blufi functionality``
+    - Enable ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Enable BLE 5 feature`` -> ``Enable extended advertising``
+    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Maximum number of concurrent connections`` -> 1
+    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``MSYS_1_Block Count`` -> 10
+    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``MSYS_1_Block Size`` -> 100
+    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``MSYS_2_Block Count`` -> 4
+    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``ACL Buffer Count`` -> 5
+    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``High Priority HCI Event Buffer count`` -> 5
+    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``Low Priority HCI Event Buffer count`` -> 3
+    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``BLE white list size`` -> 1
+    - Set ``Component config`` -> ``Bluetooth`` -> ``Controller Options`` -> ``BLE LL Resolving list size`` -> 1
+    - Set ``Component config`` -> ``Bluetooth`` -> ``Controller Options`` -> ``BLE duplicate scan list count`` -> 1
+
+  .. important::
+    The default {IDF_TARGET_CFG_PREFIX}-4MB AT firmware and {IDF_TARGET_CFG_PREFIX}-2MB AT firmware do not support Bluetooth LE functionality. If you need to enable Bluetooth LE functionality, please refer to the :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation and follow the steps of above BluFi functionality in the project configuration (Step 5), and then follow the steps below:
+
+    - Enable Bluetooth LE commands: ``Component config`` -> ``AT`` -> ``AT ble command support``
+    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Maximum length of BLE device name in octets`` -> 32
+    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Preferred MTU size in octets`` -> 203
+
+    If you encounter an error similar to ``Part 'ota_0' 0/16 @ 0xd0000 size 0x130000 (overflow 0x59a0)``, you need to disable unnecessary features in ``Component config`` -> ``AT`` according to your application requirements to reduce the firmware size.
+
+    Due to limited memory, it is recommended to disable the Wi-Fi protocol stack by sending the command :ref:`AT+CWINIT=0 <cmd-INIT>` before using Bluetooth LE functionality. This will free up memory for Bluetooth operations.
 
 .. only:: esp32 or esp32c3 or esp32c2
 

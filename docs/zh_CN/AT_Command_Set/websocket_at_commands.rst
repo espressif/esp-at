@@ -5,10 +5,21 @@ WebSocket AT 命令集
 
 :link_to_translation:`en:[English]`
 
+- :ref:`介绍 <cmd-ws-intro>`
 - :ref:`AT+WSCFG <cmd-WSCFG>`：配置 WebSocket 参数
 - :ref:`AT+WSOPEN <cmd-WSOPEN>`：查询/打开 WebSocket 连接
 - :ref:`AT+WSSEND <cmd-WSSEND>`：向 WebSocket 连接发送数据
 - :ref:`AT+WSCLOSE <cmd-WSCLOSE>`：关闭 WebSocket 连接
+
+.. _cmd-ws-intro:
+
+介绍
+------
+
+.. important::
+  默认的 AT 固件不支持此页面下的 AT 命令。如果您需要 {IDF_TARGET_NAME} 支持 WebSocket 命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+
+  - 启用 ``Component config`` -> ``AT`` -> ``AT WebSocket command support``
 
 .. _cmd-WSCFG:
 

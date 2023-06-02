@@ -5,6 +5,7 @@ MQTT AT 命令集
 
 :link_to_translation:`en:[English]`
 
+-  :ref:`介绍 <cmd-mqtt-intro>`
 -  :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`：设置 MQTT 用户属性
 -  :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>`：设置 MQTT 客户端 ID
 -  :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>`：设置 MQTT 登陆用户名
@@ -19,6 +20,16 @@ MQTT AT 命令集
 -  :ref:`AT+MQTTCLEAN <cmd-MQTTCLEAN>`：断开 MQTT 连接
 -  :ref:`MQTT AT 错误码 <MQTTErrCod>`
 -  :ref:`MQTT AT 说明 <MQTTNote>`
+
+.. _cmd-mqtt-intro:
+
+介绍
+------
+
+.. important::
+  默认的 AT 固件支持此页面下的所有 AT 命令。如果您不需要 {IDF_TARGET_NAME} 支持 MQTT 命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+
+  - 禁用 ``Component config`` -> ``AT`` -> ``AT MQTT command support``
 
 .. _cmd-MQTTUSERCFG:
 

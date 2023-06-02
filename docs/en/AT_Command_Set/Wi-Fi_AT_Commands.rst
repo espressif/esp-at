@@ -5,6 +5,7 @@ Wi-Fi AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
+-  :ref:`Introduction <cmd-wifi-intro>`
 -  :ref:`AT+CWINIT <cmd-INIT>`: Initialize/Deinitialize Wi-Fi driver.
 -  :ref:`AT+CWMODE <cmd-MODE>`: Set the Wi-Fi mode (Station/SoftAP/Station+SoftAP).
 -  :ref:`AT+CWSTATE <cmd-WSTATE>`: Query the Wi-Fi state and Wi-Fi information.
@@ -32,6 +33,20 @@ Wi-Fi AT Commands
 -  :ref:`AT+CWJEAP <cmd-JEAP>`: Connect to a WPA2 Enterprise AP.
 -  :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`: Query/Set the host name of an {IDF_TARGET_NAME} station.
 -  :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`: Query/Set the Wi-Fi Country Code.
+
+.. _cmd-wifi-intro:
+
+Introduction
+------------
+
+.. important::
+  The default AT firmware supports all the AT commands except :ref:`AT+CWJEAP <cmd-JEAP>` mentioned on this page. If you need to modify the commands supported by {IDF_TARGET_NAME} by default, please compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
+
+  - Enable EAP commands (:ref:`AT+CWJEAP <cmd-JEAP>`): ``Component config`` -> ``AT`` -> ``AT WPA2 Enterprise command support``
+  - Disable WPS commands (:ref:`AT+WPS <cmd-WPS>`): ``Component config`` -> ``AT`` -> ``AT WPS command support``
+  - Disable mDNS commands (:ref:`AT+MDNS <cmd-MDNS>`): ``Component config`` -> ``AT`` -> ``AT MDNS command support``
+  - Disable smartconfig commands (:ref:`AT+CWSTARTSMART <cmd-STARTS>` and :ref:`AT+CWSTOPSMART <cmd-STOPS>`): ``Component config`` -> ``AT`` -> ``AT smartconfig command support``
+  - Disable all Wi-Fi commands (Not recommended. Once disabled, all Wi-Fi and above functions will be unusable, and you will need to implement these AT commands yourself): ``Component config`` -> ``AT`` -> ``AT wifi command support``
 
 .. _cmd-INIT:
 
