@@ -1287,26 +1287,22 @@ Notes
 ^^^^^
 
 -  Please make sure that you have downloaded at_customize.bin before using this command. For more details, please refer to :doc:`../Compile_and_Develop/How_to_customize_partitions`.
--  Before downloading the secondary user partition, please refer :doc:`../Compile_and_Develop/how_to_generate_pki_files` to generate the binary user partition file.
--  When erasing the targeted user partition in its entirety, you can omit the parameters ``<offset>`` and ``<length>``. For example, command ``AT+SYSFLASH=0,"ble_data"`` can erase the entire "ble_data" user partition. But if you want to keep the two parameters, they have to be 4KB-aligned.
+-  When erasing a partition, please erase the target partition in its entirety. This can be done by omitting the parameters ``<offset>`` and ``<length>``. For example, command ``AT+SYSFLASH=0,"mfg_nvs"`` can erase the entire "mfg_nvs" user partition.
 -  The introduction to partitions is in `ESP-IDF Partition Tables <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_.
 -  If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
 -  If the operator is ``write``, please make sure that you have already erased this partition.
--  If the operator is ``write`` on a `PKI bin <https://github.com/espressif/esp-at/blob/master/tools/README.md#2-pki-bin>`_, the ``<length>`` should be 4 bytes aligned.
+-  If you want to modify some data in the "mfg_nvs" partition, please use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command (key-value pairs operation). If you want to modify total "mfg_nvs" partition, please use the :ref:`AT+SYSFLASH <cmd-SYSFLASH>` command (partition operation).
 
 Example
 ^^^^^^^^
 
 ::
 
-    // read 100 bytes from the "ble_data" partition offset 0.
-    AT+SYSFLASH=2,"ble_data",0,100
+    // erase the "mfg_nvs" partition in its entirety.
+    AT+SYSFLASH=0,"mfg_nvs",4096,8192
 
-    // write 10 bytes to the "ble_data" partition offset 100.
-    AT+SYSFLASH=1,"ble_data",100,10
-
-    // erase 8192 bytes from the "ble_data" partition offset 4096.
-    AT+SYSFLASH=0,"ble_data",4096,8192
+    // write a new "mfg_nvs" partition (size: 0x1C000) at offset 0 of the "mfg_nvs" partition.
+    AT+SYSFLASH=1,"mfg_nvs",0,0x1C000
 
 .. _cmd-SYSMFG:
 
@@ -1512,6 +1508,8 @@ Parameters
 Note
 ^^^^
 - Please refer to the `Non-Volatile Storage (NVS) <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/nvs_flash.html>`_ documentation to understand the concept of namespace and key-value pairs.
+- Before writing, you do not need to manually erase namespaces or key-value pairs (NVS will automatically erase key-value pairs as needed).
+- If you want to modify some data in the "mfg_nvs" partition, please use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command (key-value pairs operation). If you want to modify total "mfg_nvs" partition, please use the :ref:`AT+SYSFLASH <cmd-SYSFLASH>` command (partition operation).
 
 Example
 """""""

@@ -57,7 +57,7 @@ Compile and flash the AT firmware
 Compile the ESP-AT project to build the AT firmware, and flash the firmware to your {IDF_TARGET_NAME}. For more information, please refer to :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`.
 
 .. note::
-  If you don't want to compile the ESP-AT project to replace certificates, you can directly use the AT command to replace certificates in the firmware. For more information, please refer to :doc:`../Compile_and_Develop/how_to_generate_pki_files`.
+  If you do not want to compile the ESP-AT project to replace certificates, you can directly use the AT command to replace certificates in the firmware. For more information, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
 
 Use AT commands to connect to AWS IoT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

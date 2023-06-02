@@ -147,11 +147,9 @@ Bluetooth® Low Energy AT Commands
     Notes
     ^^^^^
 
-    -  When using Bluetooth LE function, if you do not need to use SoftAP mode, it is recommended that you can disable the mode through :ref:`AT+CWMODE <cmd-MODE>`.
-    -  The file "at_customize.bin" has to be downloaded, so that the relevant commands can be used. Please refer to :doc:`../Compile_and_Develop/How_to_customize_BLE_services` for more details.
+    -  When using Bluetooth LE function, if you do not need to use SoftAP mode, it is recommended to set Wi-Fi mode to NULL or station mode by using :ref:`AT+CWMODE <cmd-MODE>`.
     -  Before using other Bluetooth LE AT commands, you should run this command first to trigger the initialization process.
     -  After the initialization, the Bluetooth LE role cannot be changed unless you run :ref:`AT+RST <cmd-RST>` to restart the system first and then re-initialize the Bluetooth LE role.
-    -  If you use an {IDF_TARGET_NAME} as a Bluetooth LE server, a service bin should be downloaded into flash. To learn how to generate a service bin, please refer to :project_file:`README <tools/README.md>`. The download address of the service bin is the "ble_data" address in :project:`at_customize.csv <module_config>`.
     -  Before you deinitialize the Bluetooth stack, it is recommended to stop broadcasting, stop scanning, and disconnect all existing connections.
     -  If Bluetooth LE is initialized, :ref:`AT+CIPMODE <cmd-IPMODE>` cannot be set to 1.
 
@@ -1272,21 +1270,17 @@ Bluetooth® Low Energy AT Commands
     Notes
     ^^^^^
 
-    -  If you are using an {IDF_TARGET_NAME} as a Bluetooth LE server, a service bin should be downloaded into flash in order to provide services.
-
-    -  To learn how to generate a service bin, please refer to esp-at/tools/readme.md.
-    -  The download address of the service bin is the "ble_data" address in esp-at/module_config/module_${platform}_default/at_customize.csv.
-
+    -  If you are using an {IDF_TARGET_NAME} as a Bluetooth LE server, the ``mfg_nvs.bin`` with GATTS configuration should be downloaded into flash in order to provide services.
     -  This command should be called immediately to create services, right after the Bluetooth LE server is initialized; If a Bluetooth LE connection is established first, the service creation will fail.
     -  If the Bluetooth LE client is initialized, you can use this command to create local services. Some GATTS commands can also be used, such as those to start and stop services, set attribute values, and send notifications/indications. See the list below for the specific commands.
 
-    -  :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>` (It is recommended to execute this command before the connection is established)
-    -  :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>` (It is recommended to execute this command before the connection is established)
-    -  :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`
-    -  :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`
-    -  :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`
-    -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
-    -  :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`
+        -  :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>` (It is recommended to execute this command before the connection is established)
+        -  :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>` (It is recommended to execute this command before the connection is established)
+        -  :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`
+        -  :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`
+        -  :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`
+        -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
+        -  :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`
 
     Example
     ^^^^^^^^
@@ -1658,7 +1652,7 @@ Bluetooth® Low Energy AT Commands
     Note
     ^^^^^
 
-    -  If the value of ``<length>`` is larger than the maximum length allowed, the setting will fail. The service table is defined in `components/customized_partitions/raw_data/ble_data`.
+    -  If the value of ``<length>`` is larger than the maximum length allowed, the setting will fail. The service table is defined in :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>`.
 
     Example
     ^^^^^^^^
@@ -1942,7 +1936,7 @@ Bluetooth® Low Energy AT Commands
     -  If it is set, the value of the target descriptor will be written.
     -  If it is not set, the value of the target characteristic will be written.
 
-    -  **<length>**: data length. The value range of this parameter is subject to :project_file:`example.csv <components/customized_partitions/raw_data/ble_data/example.csv>` in ``val_max_len`` parameter.
+    -  **<length>**: data length. The value range of this parameter is subject to :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>` in ``val_max_len`` parameter.
 
     Notes
     ^^^^^
@@ -2012,7 +2006,7 @@ Bluetooth® Low Energy AT Commands
 
     -  **<cfg_enable>**:
 
-    -  0: all the SPP parameters will be reset, and the following parameters don't need input.
+    -  0: all the SPP parameters will be reset, and the following parameters do not need input.
     -  1: you should input the following parameters.
 
     -  **<tx_service_index>**: tx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`.

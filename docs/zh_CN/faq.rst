@@ -15,8 +15,8 @@ AT 固件
 
 如果 :doc:`AT_Binary_Lists/index` 章节中没有发布相关固件，您可考虑以下选择：
 
-- 使用相同硬件配置的模组的固件（点击 :doc:`../Compile_and_Develop/esp-at_firmware_differences`。
-- 为你的模组 :doc:`创建出厂参数二进制文件 <Compile_and_Develop/How_to_create_factory_parameter_bin>` 并 :doc:`自行编译固件 <Compile_and_Develop/How_to_clone_project_and_compile_it>`。
+- 使用相同硬件配置的模组的固件（点击 :doc:`../Compile_and_Develop/esp-at_firmware_differences`）。
+- 参考：:ref:`firmware-selection`。
 
 如何获取 AT 固件源码？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

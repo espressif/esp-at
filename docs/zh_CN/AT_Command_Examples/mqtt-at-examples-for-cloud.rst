@@ -57,7 +57,7 @@ MQTT AT 连接云示例
 编译 ESP-AT 项目以构建 AT 固件，并将固件烧录到您的 {IDF_TARGET_NAME} 设备。欲了解更多信息，请参阅 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`。
 
 .. note::
-  若不想编译 ESP-AT 工程替换证书，可直接使用 AT 命令替换固件中的证书，具体请参阅 :doc:`../Compile_and_Develop/how_to_generate_pki_files`。
+  若不想编译 ESP-AT 工程替换证书，可直接使用 AT 命令替换固件中的证书，具体请参阅 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
 
 使用 AT 命令连接到 AWS IoT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

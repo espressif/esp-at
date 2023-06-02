@@ -16,7 +16,7 @@ There is no released firmware for my module. Where can I get the firmware for it
 If there is no released fimware for your module in the :doc:`AT_Binary_Lists/index` chapter, please consider the following options:
 
 - Use the firmware for the module that has the same hardware configuration as yours (see :doc:`Compile_and_Develop/esp-at_firmware_differences` for which module has the same configuration).
-- :doc:`Create a factory parameter bin <Compile_and_Develop/How_to_create_factory_parameter_bin>` and :doc:`compile the firmware <Compile_and_Develop/How_to_clone_project_and_compile_it>` for your module by yourself.
+- Refer to :ref:`firmware-selection`.
 
 How to get the source code of AT firmware?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

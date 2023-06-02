@@ -34,7 +34,12 @@ By default, the {IDF_TARGET_NAME} AT firmware provided by Espressif uses the fol
   - TX: GPIO1
   - RX: GPIO3
 
-.. only:: esp32c3 or esp32c2
+.. only:: esp32c2
+
+  - TX: GPIO20
+  - RX: GPIO19
+
+.. only:: esp32c3
 
   - TX: GPIO21
   - RX: GPIO20
@@ -51,10 +56,10 @@ Modify Command Port Pins
 By default, UART1 is used to send AT commands and receive AT responses, and its pins are defined in Column ``uart_port``, ``uart_tx_pin``, ``uart_rx_pin``, ``uart_cts_pin``, and ``uart_rts_pin`` of the :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`.
 
 You can change them directly in your factory_param_data.csv table:
-  
+
 - Open your local factory_param_data.csv file.
 - Locate the row of your module.
-- Set ``uart_port`` as needed.
-- Set ``uart_tx_pin`` and ``uart_rx_pin`` as needed.
+- Set ``uart_port`` as needed. (If you want to use the AT log port as the AT command port as well, you need to modify this line, and ensure that the ``uart_tx_pin`` and ``uart_rx_pin`` below have the same pins as the AT log port)
+- Set ``uart_tx_pin`` and ``uart_rx_pin`` as needed. (Make sure that the pins you are going to modify are not being used by other functions, including the AT log port)
 - Set ``uart_cts_pin`` and ``uart_rts_pin`` to be -1 if you do not use the hardware flow control function.
 - Save the table.

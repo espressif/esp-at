@@ -160,7 +160,7 @@ OTA Firmware Upgrade Using a Browser
 Introduction
 ^^^^^^^^^^^^^^
 
-After the browser opens the web page of the web server, you can choose to enter the OTA upgrade page to upgrade the firmware in the app partitions or the certificate binaries in other partitions (please refer to :doc:`../Compile_and_Develop/how_to_generate_pki_files` for more about certificate information).
+After the browser opens the web page of the web server, you can choose to enter the OTA upgrade page to upgrade the firmware in the app partitions or the certificate binaries in other partitions (please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config` for more about certificate information).
 
 Introduction to Operation Steps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

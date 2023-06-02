@@ -53,18 +53,20 @@ If you want to add support for an {IDF_TARGET_NAME} module in your ESP-AT projec
 
 The document uses an example to explain how to add support for an {IDF_TARGET_NAME} module in the ESP-AT project. The example module is ESP32-WROOM-32 that uses SDIO instead of the default UART interface.
 
+.. contents::
+   :local:
+   :depth: 1
+
 Add Module to factory_param_data.csv
 ------------------------------------
 
-Open your local :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`, insert a new row at the end, set the parameters as needed. In the example, we set ``platform`` to ``PLATFORM_ESP32``, ``module_name`` to ``WROOM32-SDIO``, as well as other parameters as follows (see :ref:`factory-param-type-csv` for what each parameter represents):
+Open your local :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`, insert a new row at the end, set the parameters as needed. In the example, we set ``platform`` to ``PLATFORM_ESP32``, ``module_name`` to ``WROOM32-SDIO``, as well as other parameters as follows (see :ref:`factory-param-intro` for what each parameter represents):
 
 - platform: PLATFORM_ESP32
 - module_name: WROOM32-SDIO
-- description: 
-- magic_flag: 0xfcfc
-- version: 3
-- reserved1: 0
-- tx_max_power: 78
+- description:
+- version: 4
+- max_tx_power: 78
 - uart_port: 1
 - start_channel: 1
 - channel_num: 13
@@ -74,13 +76,56 @@ Open your local :component_file:`factory_param_data.csv <customized_partitions/r
 - uart_rx_pin: -1
 - uart_cts_pin: -1
 - uart_rts_pin: -1
-- tx_control_pin: -1
-- rx_control_pin: -1
 
 Modify esp_at_module_info Structure
 -----------------------------------
 
-Refer to :ref:`modify-esp-at-module-info-structure` for details.
+Add customized module information in the ``esp_at_module_info`` structure in :component_file:`at/src/at_default_config.c`.
+
+The ``esp_at_module_info`` structure provides ``OTA`` upgrade verification ``token``:
+
+.. code-block:: c
+
+    typedef struct {
+        char* module_name;
+        char* ota_token;
+        char* ota_ssl_token;
+    } esp_at_module_info_t;
+
+If you do not want to use ``OTA`` features, member 2 ``ota_token`` and member 3 ``ota_ssl_token`` should be set to ``NULL``. Member 1 ``module_name`` must correspond to the field ``module_name`` in the factory_param_data.csv file.
+
+The modified ``esp_at_module_info`` structure is as follows:
+
+.. code-block:: c
+
+    static const esp_at_module_info_t esp_at_module_info[] = {
+    #if defined(CONFIG_IDF_TARGET_ESP32)
+      ...
+    #endif
+
+    #if defined(CONFIG_IDF_TARGET_ESP32C3)
+      ...
+    #endif
+
+    #if defined(CONFIG_IDF_TARGET_ESP32C2)
+      ...
+    #endif
+
+    #if defined(CONFIG_IDF_TARGET_{IDF_TARGET_CFG_PREFIX})
+      {"MY_MODULE",       CONFIG_ESP_AT_OTA_TOKEN_MY_MODULE,      CONFIG_ESP_AT_OTA_SSL_TOKEN_MY_MODULE },     // MY_MODULE
+    #endif
+    };
+
+Macro ``CONFIG_ESP_AT_OTA_TOKEN_MY_MODULE`` and macro ``CONFIG_ESP_AT_OTA_SSL_TOKEN_MY_MODULE`` are defined in the header file :component_file:`at/private_include/at_ota_token.h`.
+
+.. code-block:: none
+
+    #if defined(CONFIG_IDF_TARGET_{IDF_TARGET_CFG_PREFIX})
+    ...
+    #define CONFIG_ESP_AT_OTA_TOKEN_MY_MODULE       CONFIG_ESP_AT_OTA_TOKEN_DEFAULT
+
+    ...
+    #define CONFIG_ESP_AT_OTA_SSL_TOKEN_MY_MODULE       CONFIG_ESP_AT_OTA_SSL_TOKEN_DEFAULT
 
 Configure the Module
 ---------------------

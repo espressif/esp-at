@@ -1760,7 +1760,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 -  如果想要本配置立即生效，请在建立 SSL 连接前运行本命令。
 -  配置更改将保存在 NVS 区，如果您使用 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 命令设置开机进入 Wi-Fi SSL :term:`透传模式`，{IDF_TARGET_NAME} 将在下次上电时基于本配置建立 SSL 连接。
--  如果您想使用自己的证书或者使用多套证书，请参考文档：:doc:`../Compile_and_Develop/how_to_generate_pki_files`。
+-  如果您想使用自己的证书或者使用多套证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
 -  如果 ``<auth_mode>`` 配置为 2 或者 3，为了校验服务器的证书有效期，请在发送 :ref:`AT+CIPSTART <cmd-START>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（您可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间。）
 
 .. _cmd-SSLCCN:

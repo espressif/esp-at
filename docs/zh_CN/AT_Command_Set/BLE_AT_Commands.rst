@@ -147,11 +147,9 @@ Bluetooth® Low Energy AT 命令集
     说明
     ^^^^
 
-    -  使用 Bluetooth LE 功能时，如果您无需使用 SoftAP 模式，则建议您可以通过 :ref:`AT+CWMODE <cmd-MODE>` 禁用 SoftAP 模式。
-    -  使用相关命令之前，请先下载 "at_customize.bin" 文件，详情请见 :doc:`../Compile_and_Develop/How_to_customize_BLE_services`。
+    -  使用 Bluetooth LE 功能时，如果您无需使用 SoftAP 模式，则建议您可以通过 :ref:`AT+CWMODE <cmd-MODE>` 设置 Wi-Fi 模式为 Null 或 Station 模式。
     -  使用其它 Bluetooth LE 命令之前，请先调用本命令，初始化 Bluetooth LE 角色。
     -  Bluetooth LE 角色初始化后，不能直接切换。如需切换角色，需要先调用 :ref:`AT+RST <cmd-RST>` 命令重启系统，再重新初始化 Bluetooth LE 角色。
-    -  若使用 {IDF_TARGET_NAME} 作为 Bluetooth LE server，需烧录 service bin 到 flash。对于如何生成 service bin 文件，请参考 :project_file:`README <tools/README.md>`。service bin 文件的烧录地址，请见模组配置下的 :project:`at_customize.csv <module_config>` 文件中 "ble_data" 对应的地址。
     -  建议在注销 Bluetooth LE 之前，停止正在进行的广播、扫描并断开所有的连接。
     -  如果 Bluetooth LE 已初始化，则 :ref:`AT+CIPMODE <cmd-IPMODE>` 无法设置为 1。
 
@@ -1272,21 +1270,17 @@ Bluetooth® Low Energy AT 命令集
     说明
     ^^^^
 
-    -  使用 {IDF_TARGET_NAME} 作为 Bluetooth LE server 创建服务，需烧录 service bin 文件到 flash 中。
-
-    -  如何生成 service bin 文件，请参考 esp-at/tools/readme.md。
-    -  service bin 文件的烧录地址为 esp-at/module_config/module_${platform}_default/at_customize.csv 文件中的 "ble_data" 地址。
-
+    -  使用 {IDF_TARGET_NAME} 作为 Bluetooth LE server 创建服务，需烧录带有 GATTS 配置的 mfg_nvs.bin 文件到 flash 中。
     -  Bluetooth LE server 初始化后，请及时调用本命令创建服务；如果先建立 Bluetooth LE 连接，则无法创建服务。
     -  如果 Bluetooth LE client 已初始化成功，可以使用此命令创建服务；也可以使用其他一些相应的 GATTS 命令，例如启动和停止服务、设置服务特征值和 notification/indication，具体命令如下：
 
-    -  :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>` (建议在 Bluetooth LE 连接建立之前使用)
-    -  :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>` (建议在 Bluetooth LE 连接建立之前使用)
-    -  :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`
-    -  :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`
-    -  :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`
-    -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
-    -  :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`
+        -  :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>` (建议在 Bluetooth LE 连接建立之前使用)
+        -  :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>` (建议在 Bluetooth LE 连接建立之前使用)
+        -  :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`
+        -  :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`
+        -  :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`
+        -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
+        -  :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`
 
     示例
     ^^^^
@@ -1658,7 +1652,7 @@ Bluetooth® Low Energy AT 命令集
     说明
     ^^^^
 
-    -  如果 ``<length>`` 参数值大于支持的最大长度，则设置会失败。关于 service table，请见 `components/customized_partitions/raw_data/ble_data`。
+    -  如果 ``<length>`` 参数值大于支持的最大长度，则设置会失败。关于 service table，请见 :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>`。
 
     示例
     ^^^^
@@ -1942,7 +1936,7 @@ Bluetooth® Low Energy AT 命令集
     -  若设置，则写目标描述符的值；
     -  若未设置，则写目标特征的值。
 
-    -  **<length>**：数据长度。该参数的取值范围受 :project_file:`example.csv <components/customized_partitions/raw_data/ble_data/example.csv>` 中 ``val_max_len`` 参数影响。
+    -  **<length>**：数据长度。该参数的取值范围受 :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>` 中 ``val_max_len`` 参数影响。
 
     说明
     ^^^^

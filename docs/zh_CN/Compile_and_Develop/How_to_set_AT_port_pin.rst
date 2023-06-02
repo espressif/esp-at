@@ -11,7 +11,7 @@
 
 - :doc:`克隆 ESP-AT 工程 <How_to_clone_project_and_compile_it>`。
 - 在 menuconfig 配置工具或 factory_param_data.csv 表格中修改对应管脚。
-- :doc:`编译工程 <How_to_clone_project_and_compile_it>`，在 ``build/customized_partitions/factory_param.bin`` 生成新的 bin 文件。
+- :doc:`编译工程 <How_to_clone_project_and_compile_it>`。
 - :ref:`将新的 bin 文件烧录进设备 <flash-at-firmware-into-your-device>`。
 
 本文档重点介绍如何修改管脚，点击上面的链接了解其它步骤的详细信息。
@@ -34,7 +34,12 @@
   - TX：GPIO1
   - RX：GPIO3
 
-.. only:: esp32c3 or esp32c2
+.. only:: esp32c2
+
+  - TX：GPIO20
+  - RX：GPIO19
+
+.. only:: esp32c3
 
   - TX：GPIO21
   - RX：GPIO20
@@ -51,10 +56,10 @@
 默认情况下，UART1 用于发送 AT 命令和接收 AT 响应，其管脚定义在 :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 表格中的 uart_port、uart_tx_pin、uart_rx_pin、uart_cts_pin 和 uart_rts_pin 列。
 
 您可以直接在 factory_param_data.csv 表中修改端口管脚：
-  
+
 - 打开您本地的 factory_param_data.csv。
 - 找到模组所在的行。
-- 根据需要设置 ``uart_port``。
-- 根据需要设置 ``uart_tx_pin`` 和 ``uart_rx_pin``。
+- 根据需要设置 ``uart_port`` （如果希望 AT 日志口同时用作 AT 命令口，则需要修改此行，同时保证下面的 ``uart_tx_pin`` 和 ``uart_rx_pin`` 和 AT 日志口的管脚一样）。
+- 根据需要设置 ``uart_tx_pin`` 和 ``uart_rx_pin`` （您需要保证将要修改的管脚，未被其它功能使用，包括 AT 日志口的管脚）。
 - 若不需要使用硬件流控功能，请将 ``uart_cts_pin`` 和 ``uart_rts_pin`` 设置为 -1。
 - 保存表格。

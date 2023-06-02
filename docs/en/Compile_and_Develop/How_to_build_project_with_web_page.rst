@@ -8,7 +8,7 @@ This document provides a detailed guide on how to compile the ESP-AT project thr
 .. attention::
   **The AT firmware compiled from webpages needs to be tested and verified for functionality based on your own product.**
 
-  **Please save the firmware and download link**, for possible issue debug in your follow-ups.
+  **Please save the firmware and download link**, for possible issue debugging in the future.
 
 Detailed Steps
 ^^^^^^^^^^^^^^

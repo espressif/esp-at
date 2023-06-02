@@ -160,7 +160,7 @@ Web Server AT 示例
 简介
 ^^^^
 
-浏览器打开 web server 的网页后，可以选择进入 OTA 升级页面，通过网页升级应用分区中的固件或者其它分区中的证书二进制固件（请参考文档 :doc:`../Compile_and_Develop/how_to_generate_pki_files` 了解更多证书信息）。
+浏览器打开 web server 的网页后，可以选择进入 OTA 升级页面，通过网页升级应用分区中的固件或者其它分区中的证书二进制固件（请参考文档 :doc:`../Compile_and_Develop/How_to_update_pki_config` 了解更多证书信息）。
 
 流程
 ^^^^
