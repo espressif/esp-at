@@ -22,7 +22,6 @@ except ImportError:
 ESP32_DOCS = ['AT_Binary_Lists/ESP32_AT_binaries.rst',
               'AT_Command_Examples/Ethernet_AT_Examples.rst',
               'AT_Command_Examples/classic_bluetooth_at_examples.rst',
-              'AT_Command_Examples/bluetooth_le_at_examples.rst',
               'AT_Command_Set/BT_AT_Commands.rst',
               'AT_Command_Set/BLE_AT_Commands.rst',
               'AT_Command_Set/Ethernet_AT_Commands.rst',
@@ -35,7 +34,6 @@ ESP32_DOCS = ['AT_Binary_Lists/ESP32_AT_binaries.rst',
               ]
 
 ESP32C3_DOCS = ['AT_Binary_Lists/ESP32-C3_AT_binaries.rst',
-                'AT_Command_Examples/bluetooth_le_at_examples.rst',
                 'AT_Command_Set/BLE_AT_Commands.rst',
                 'Compile_and_Develop/How_to_customize_BLE_services.rst',
                 'Compile_and_Develop/customize_bluetooth_le_services_tools.rst',
