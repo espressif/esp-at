@@ -5,26 +5,9 @@ Bluetooth® Low Energy AT 命令集
 
 :link_to_translation:`en:[English]`
 
-.. only:: esp32
-
-  当前，{IDF_TARGET_NAME} 系列 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_。
-
-.. only:: esp32c3
-
-  当前， {IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_。
-
-.. only:: esp32c2
-
-  当前， {IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_。
-
-    .. attention::
-        **{IDF_TARGET_CFG_PREFIX}-4MB AT 固件支持 BluFi，而 {IDF_TARGET_CFG_PREFIX}-2MB AT 固件不支持 BluFi**。如果您需要 {IDF_TARGET_CFG_PREFIX}-2MB 支持 BluFi 功能，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
-
-        - ``Component config`` -> ``Bluetooth`` -> ``Bluetooth`` -> ``Host`` -> ``NimBLE`` - ``BLE only``
-        - ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Enable blufi functionality``
-
 .. list::
 
+    :esp32 or esp32c3 or esp32c2: - :ref:`介绍 <cmd-ble-intro>`
     :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEINIT <cmd-BINIT>`：Bluetooth LE 初始化
     :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEADDR <cmd-BADDR>`：设置 Bluetooth LE 设备地址
     :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLENAME <cmd-BNAME>`：查询/设置 Bluetooth LE 设备名称
@@ -79,6 +62,59 @@ Bluetooth® Low Energy AT 命令集
     :esp32c3 or esp32c2: - :ref:`AT+BLESYNCSTOP <cmd-BLESYNCSTOP>`：停止周期性广播同步
     :esp32c3 or esp32c2: - :ref:`AT+BLEREADPHY <cmd-BLERDPHY>`：查询当前连接使用的 PHY
     :esp32c3 or esp32c2: - :ref:`AT+BLESETPHY <cmd-BLESETPHY>`：设置当前连接使用的 PHY
+
+.. _cmd-ble-intro:
+
+介绍
+------
+
+.. only:: esp32
+
+  当前，{IDF_TARGET_NAME} 系列 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_。
+
+.. only:: esp32c2 or esp32c3
+
+  当前， {IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_。
+
+.. only:: esp32 or esp32c3
+
+  .. important::
+    默认的 AT 固件支持此页面下的所有 AT 命令。如果您需要修改 {IDF_TARGET_NAME} 默认支持的命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+
+    - 禁用 BluFi 命令：``Component config`` -> ``AT`` -> ``AT blufi command support``
+    - 禁用 Bluetooth LE 命令：``Component config`` -> ``AT`` -> ``AT ble command support``
+    - 禁用 Bluetooth LE HID 命令： ``Component config`` -> ``AT`` -> ``AT ble hid command support``
+
+.. only:: esp32c2
+
+  .. important::
+    默认的 {IDF_TARGET_CFG_PREFIX}-4MB AT 固件支持 BluFi 功能，而 {IDF_TARGET_CFG_PREFIX}-2MB AT 固件不支持 BluFi 功能。如果您需要 {IDF_TARGET_CFG_PREFIX}-2MB 支持 BluFi 功能，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+
+    - 启用 ``Component config`` -> ``Bluetooth``
+    - 启用 ``Component config`` -> ``Bluetooth`` -> ``Bluetooth`` -> ``Host`` -> ``NimBLE`` - ``BLE only``
+    - 启用 ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Enable blufi functionality``
+    - 启用 ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Enable BLE 5 feature`` -> ``Enable extended advertising``
+    - 设置 ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Maximum number of concurrent connections`` -> 1
+    - 设置 ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``MSYS_1_Block Count`` -> 10
+    - 设置 ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``MSYS_1_Block Size`` -> 100
+    - 设置 ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``MSYS_2_Block Count`` -> 4
+    - 设置 ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``ACL Buffer Count`` -> 5
+    - 设置 ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``High Priority HCI Event Buffer count`` -> 5
+    - 设置 ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``Low Priority HCI Event Buffer count`` -> 3
+    - 设置 ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``BLE white list size`` -> 1
+    - 设置 ``Component config`` -> ``Bluetooth`` -> ``Controller Options`` -> ``BLE LL Resolving list size`` -> 1
+    - 设置 ``Component config`` -> ``Bluetooth`` -> ``Controller Options`` -> ``BLE duplicate scan list count`` -> 1
+
+  .. important::
+    默认的 {IDF_TARGET_CFG_PREFIX}-4MB AT 固件 和 {IDF_TARGET_CFG_PREFIX}-2MB AT 固件均不支持 Bluetooth LE 功能。如果您需要支持 Bluetooth LE 功能，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里除了需要开启上面的 BluFi 功能外，另外选择：
+
+    - 启用 Bluetooth LE 命令：``Component config`` -> ``AT`` -> ``AT ble command support``
+    - 设置 ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Maximum length of BLE device name in octets`` -> 32
+    - 设置 ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Preferred MTU size in octets`` -> 203
+
+    如果编译提示 ``Part 'ota_0' 0/16 @ 0xd0000 size 0x130000 (overflow 0x59a0)`` 类似错误，则您需要根据自己的应用场景，在 ``Component config`` -> ``AT`` 里关闭不需要的功能，以便减小固件大小。
+
+    由于内存受限，请在使用 Bluetooth LE 功能之前，发送 :ref:`AT+CWINIT=0 <cmd-INIT>` 命令禁用 Wi-Fi 协议栈。
 
 .. only:: esp32 or esp32c3 or esp32c2
 

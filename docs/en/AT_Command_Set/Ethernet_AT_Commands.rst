@@ -7,9 +7,18 @@
 
 :link_to_translation:`zh_CN:[中文]`
 
+- :ref:`Introduction <cmd-eth-intro>`
 - :ref:`Prerequisite <cmd-ETHPRE>`
 - :ref:`AT+CIPETHMAC <cmd-ETHMAC>`: Query/Set the MAC address of the {IDF_TARGET_NAME} Ethernet.
 - :ref:`AT+CIPETH <cmd-ETHIP>`: Query/Set the IP address of the {IDF_TARGET_NAME} Ethernet.
+
+.. _cmd-eth-intro:
+
+Introduction
+------------
+
+.. important::
+  The default AT firmware does not support the AT commands listed on this page. If you need {IDF_TARGET_NAME} to support Ethernet commands, please refer to :doc:`../Compile_and_Develop/How_to_enable_ESP_AT_Ethernet` documentation and :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>`.
 
 .. _cmd-ETHPRE:
 

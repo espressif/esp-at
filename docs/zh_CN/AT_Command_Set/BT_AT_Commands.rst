@@ -5,8 +5,7 @@
 
 :link_to_translation:`en:[English]`
 
-{IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/archived-specifications/>`_。
-
+- :ref:`介绍 <cmd-bt-intro>`
 - :ref:`AT+BTINIT <cmd-BTINIT>`：Classic Bluetooth 初始化
 - :ref:`AT+BTNAME <cmd-BTNAME>`：查询/设置 Classic Bluetooth 设备名称
 - :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`：设置 Classic Bluetooth 扫描模式
@@ -29,6 +28,20 @@
 - :ref:`AT+BTENCCLEAR <cmd-BTENCCLEAR>`：清除 Classic Bluetooth 加密设备列表
 - :ref:`AT+BTCOD <cmd-BTCOD>`：设置设备类型
 - :ref:`AT+BTPOWER <cmd-BTPWR>`：查询/设置 Classic Bluetooth 的 TX 功率
+
+.. _cmd-bt-intro:
+
+介绍
+------
+
+{IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/archived-specifications/>`_。
+
+.. important::
+  默认的 AT 固件不支持此页面下的 AT 命令。如果您需要 {IDF_TARGET_NAME} 支持经典蓝牙命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+
+  - 启用通用蓝牙命令：``Component config`` -> ``AT`` -> ``AT bt command support``
+  - 启用 SPP 命令： ``Component config`` -> ``AT`` -> ``AT bt command support`` -> ``AT bt spp command support``
+  - 启用 A2DP 命令：``Component config`` -> ``AT`` -> ``AT bt command support`` -> ``AT bt a2dp command support``
 
 .. _cmd-BTINIT:
 

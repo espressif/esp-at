@@ -5,6 +5,7 @@ Driver AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
+- :ref:`Introduction <cmd-driver-intro>`
 -  :ref:`AT+DRVADC <cmd-DRVADC>`: Read ADC channel value.
 -  :ref:`AT+DRVPWMINIT <cmd-DRVPWMINIT>`: Initialize PWM driver.
 -  :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>`: Set PWM duty.
@@ -17,6 +18,16 @@ Driver AT Commands
 -  :ref:`AT+DRVSPIINIT <cmd-DRVSPIINIT>`: Initialize SPI master driver.
 -  :ref:`AT+DRVSPIRD <cmd-DRVSPIRD>`: Read SPI data.
 -  :ref:`AT+DRVSPIWR <cmd-DRVSPIWR>`: Write SPI data.
+
+.. _cmd-driver-intro:
+
+Introduction
+------------
+
+.. important::
+  The default AT firmware does not support the AT commands listed on this page. If you need {IDF_TARGET_NAME} to support driver commands, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
+
+  - Enable ``Component config`` -> ``AT`` -> ``AT driver command support``
 
 .. _cmd-DRVADC:
 

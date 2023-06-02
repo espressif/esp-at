@@ -18,6 +18,7 @@ AT 命令集
    :esp32: Bluetooth® AT 命令集 <BT_AT_Commands>
    MQTT AT 命令集 <MQTT_AT_Commands>
    HTTP AT 命令集 <HTTP_AT_Commands>
+   文件系统 AT 命令集 <FS_AT_Commands>
    WebSocket AT 命令集 <websocket_at_commands>
    :esp32: 以太网 AT 命令集 <Ethernet_AT_Commands>
    信令测试 AT 命令集 <Signaling_Test_AT_Commands>

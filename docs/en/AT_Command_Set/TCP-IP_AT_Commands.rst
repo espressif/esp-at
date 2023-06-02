@@ -5,6 +5,7 @@ TCP/IP AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
+-  :ref:`Introduction <cmd-tcpip-intro>`
 -  :ref:`AT+CIPV6 <cmd-IPV6>`: Enable/disable the network of Internet Protocol Version 6 (IPv6).
 -  :ref:`AT+CIPSTATE <cmd-IPSTATE>`: Obtain the TCP/UDP/SSL connection information.
 -  :ref:`AT+CIPSTATUS (deprecated) <cmd-STATUS>`: Obtain the TCP/UDP/SSL connection status and information.
@@ -42,6 +43,18 @@ TCP/IP AT Commands
 -  :ref:`AT+PING <cmd-CIPPING>`: Ping the remote host.
 -  :ref:`AT+CIPDNS <cmd-DNS>`: Query/Set DNS server information.
 -  :ref:`AT+CIPTCPOPT <cmd-TCPOPT>`: Query/Set the socket options.
+
+.. _cmd-tcpip-intro:
+
+Introduction
+------------
+
+.. important::
+  The default AT firmware supports all the AT commands mentioned on this page. If you need to modify the commands supported by {IDF_TARGET_NAME} by default, please compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
+
+  - Disable OTA commands (:ref:`AT+CIUPDATE <cmd-UPDATE>` and :ref:`AT+CIPFWVER <cmd-FWVER>`): ``Component config`` -> ``AT`` -> ``AT OTA command support``
+  - Disable PING commands (:ref:`AT+PING <cmd-CIPPING>`): ``Component config`` -> ``AT`` -> ``AT ping command support``
+  - Disable TCP/IP commands (Not recommended. Once disabled, all TCP/IP functions will be unavailable and you will need to implement these AT commands yourself): ``Component config`` -> ``AT`` -> ``AT net command support``
 
 .. _cmd-IPV6:
 

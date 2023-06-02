@@ -18,6 +18,7 @@ Here is a list of AT commands.
    :esp32: Bluetooth® AT Commands <BT_AT_Commands>
    MQTT AT Commands <MQTT_AT_Commands>
    HTTP AT Commands <HTTP_AT_Commands>
+   FileSystem AT Commands <FS_AT_Commands>
    WebSocket AT Commands <websocket_at_commands>
    :esp32: Ethernet AT Commands <Ethernet_AT_Commands>
    Signaling Test AT Commands <Signaling_Test_AT_Commands>

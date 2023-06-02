@@ -5,6 +5,7 @@ HTTP AT 命令集
 
 :link_to_translation:`en:[English]`
 
+-  :ref:`介绍 <cmd-http-intro>`
 -  :ref:`AT+HTTPCLIENT <cmd-HTTPCLIENT>`：发送 HTTP 客户端请求
 -  :ref:`AT+HTTPGETSIZE <cmd-HTTPGETSIZE>`：获取 HTTP 资源大小
 -  :ref:`AT+HTTPCGET <cmd-HTTPCGET>`：获取 HTTP 资源
@@ -13,6 +14,25 @@ HTTP AT 命令集
 -  :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>`：设置/获取长的 HTTP URL
 -  :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>`：设置/查询 HTTP 请求头
 -  :ref:`HTTP AT 错误码 <cmd-HTTPErrCode>`
+
+.. _cmd-http-intro:
+
+介绍
+------
+
+.. only:: esp32 or esp32c3
+
+  .. important::
+    默认的 AT 固件支持此页面下的所有 AT 命令。如果您不需要 {IDF_TARGET_NAME} 支持 HTTP 命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+
+    - 禁用 ``Component config`` -> ``AT`` -> ``AT http command support``
+
+.. only:: esp32c2
+
+  .. important::
+    **默认的 {IDF_TARGET_CFG_PREFIX}-4MB AT 固件支持 HTTP 命令，而 {IDF_TARGET_CFG_PREFIX}-2MB AT 固件不支持**。如果您需要 {IDF_TARGET_CFG_PREFIX}-2MB 支持 HTTP 功能，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+
+    - 启用 ``Component config`` -> ``AT`` -> ``AT http command support``
 
 .. _cmd-HTTPCLIENT:
 
