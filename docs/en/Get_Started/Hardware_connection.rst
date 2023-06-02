@@ -45,7 +45,7 @@ Note:
 
       python build.py menuconfig -> Component config -> Hardware Settings -> Main XTAL Config -> Main XTAL frequency -> 40 MHz
 
-- In the above picture, four jump wires are used to connect the {IDF_TARGET_NAME} board and USB to serial converter. If you don't use hardware flow control, two wires connecting TX/RX and a simpler converter will be enough.
+- In the above picture, four jump wires are used to connect the {IDF_TARGET_NAME} board and USB to serial converter. If you do not use hardware flow control, two wires connecting TX/RX and a simpler converter will be enough.
 
 .. only:: esp32
 

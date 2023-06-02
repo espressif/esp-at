@@ -575,7 +575,7 @@ Parameters
 Note
 ^^^^^
 
--  If you don't use DMA, the maximum ``<data_len>`` you can set is 64 bytes each time.
+-  If you do not use DMA, the maximum ``<data_len>`` you can set is 64 bytes each time.
 
 Example
 ^^^^^^^^
@@ -639,7 +639,7 @@ Parameters
 Note
 ^^^^^
 
--  If you don't use DMA, the maximum ``<data_len>`` you can set is 64 bytes each time.
+-  If you do not use DMA, the maximum ``<data_len>`` you can set is 64 bytes each time.
 
 Example
 ^^^^^^^^

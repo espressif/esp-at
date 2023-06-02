@@ -896,7 +896,10 @@ Below is an example showing how an SSL server is established when {IDF_TARGET_NA
 {IDF_TARGET_NAME} as an SSL client to create a single connection with mutual authentication
 ---------------------------------------------------------------------------------------
 
-The certificate used in the example is the default certificate in esp-at. You can also generate and flash your own the certificate, then you need replace the SSL server certificate path below with your certificate path. To obtain the SSL certificate, please refer to :project_file:`tools/README.md` for how to generate the certificate bin and esp-at/module_config/module_name/at_customize.csv for where to flash it.
+In this example, the certificate used is the default certificate in esp-at. You can also use your own certificate:
+
+  - To use your own SSL client certificate, replace the default certificate according to the :doc:`../Compile_and_Develop/How_to_update_pki_config` document.
+  - To use your own SSL server certificate, replace the SSL server certificate path below with your own certificate path.
 
 #. Set the Wi-Fi mode to station.
 

@@ -483,7 +483,7 @@ The sample code is as follows:
         esp_at_port_write_data(buffer, strlen((char *)buffer));
 
         // sample code
-        // users don't have to create semaphores here
+        // users do not have to create semaphores here
         at_operation_sema = xSemaphoreCreateBinary();
         assert(at_operation_sema != NULL);
 
@@ -547,7 +547,7 @@ Below is the sample to access the input data of ``<param_1>`` length from AT Com
         }
 
         // sample code
-        // users don't have to create semaphores here
+        // users do not have to create semaphores here
         if (!at_sync_sema) {
             at_sync_sema = xSemaphoreCreateBinary();
             assert(at_sync_sema != NULL);
@@ -639,7 +639,7 @@ Assuming that ``ESP-AT`` ends the execution of the command and returns the execu
         }
 
         // sample code
-        // users don't have to create semaphores here
+        // users do not have to create semaphores here
         if (!at_sync_sema) {
             at_sync_sema = xSemaphoreCreateBinary();
             assert(at_sync_sema != NULL);

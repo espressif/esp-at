@@ -12,7 +12,9 @@
    如何修改 AT 管脚 <How_to_set_AT_port_pin>
    如何添加自定义 AT 命令 <How_to_add_user-defined_AT_commands>
    如何提高 ESP-AT 吞吐性能 <How_to_optimize_throughput.rst>
-   如何生成出厂参数二进制文件 <How_to_create_factory_parameter_bin>
+   如何更新 mfg_nvs 分区 <How_to_update_mfg_nvs>
+   如何更新出厂参数 <How_to_update_factory_parameters>
+   如何更新 PKI 配置 <How_to_update_pki_config>
    :esp32 or esp32c3 or esp32c2: 如何自定义低功耗蓝牙服务 <How_to_customize_BLE_services>
    如何自定义分区 <How_to_customize_partitions>
    :esp32: 如何启用 {IDF_TARGET_NAME}-AT 经典蓝牙 <how_to_enable_at_classic_bluetooth>
@@ -24,6 +26,5 @@
    如何更新 ESP-IDF 版本 <How_to_update_IDF>
    ESP-AT 固件差异 <esp-at_firmware_differences>
    如何从 GitHub 下载最新临时版本 AT 固件 <How_to_download_the_latest_temporary_version_of_AT_from_github>
-   :esp32 or esp32c3: 自定义 Bluetooth LE 服务工具 <customize_bluetooth_le_services_tools>
-   如何生成 PKI 文件 <how_to_generate_pki_files>
+   at.py 工具 <tools_at_py>
    ESP-AT API 参考 <AT_API_Reference>

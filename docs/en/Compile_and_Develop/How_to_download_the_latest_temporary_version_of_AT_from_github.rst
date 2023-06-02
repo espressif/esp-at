@@ -8,7 +8,7 @@ As ESP-AT enables CI (Continuous Integration) on GitHub, temporary versions of E
 .. attention::
   **the latest temporary version of AT firmware downloaded from webpages needs to be tested and verified for functionality based on your own product.**
 
-  **Please save the firmware and download link**, for possible issue debug in your follow-ups.
+  **Please save the firmware and download link**, for possible issue debugging in the future.
 
 The following steps guide you on how to download the latest temporary version of AT firmware from GitHub.
 

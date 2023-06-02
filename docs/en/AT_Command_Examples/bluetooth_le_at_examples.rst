@@ -47,13 +47,6 @@ GATT is actually an attribute transmission protocol, which can be regarded as an
 
 ``GATT server`` and ``GATT client`` roles exist after the Bluetooth LE connection is established. The GATT server stores the data transported over the Attribute Protocol and accepts Attribute Protocol requests, commands and confirmations from the GATT client. In short, the end that provides data is called ``GATT server``, and the end that accesses data is called ``GATT client``.
 
-.. Important::
-
-  * The {IDF_TARGET_NAME} Bluetooth LE server needs to download a ``ble_data.bin`` into flash to provide Bluetooth LE services.
-
-    * To learn how to generate a ``ble_data.bin``, please refer to :doc:`../Compile_and_Develop/customize_bluetooth_le_services_tools`.
-    * The download address of the ``ble_data.bin`` is the address of ``ble_data`` in ``at_customize.csv``, or described in ``build/download.config``.
-
 Bluetooth LE client reads and write services
 ----------------------------------------------
 

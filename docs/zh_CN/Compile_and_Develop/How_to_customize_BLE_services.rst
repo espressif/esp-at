@@ -11,10 +11,12 @@
 
 低功耗蓝牙服务被定义为 GATT 结构的多元数组，该数组至少包含一个属性类型 (attribute type) 为 0x2800 的首要服务 (primary service)。每个服务总是由一个服务定义和几个特征组成。每个特征总是由一个值和可选的描述符组成。更多相关信息请参阅 `《蓝牙核心规范》 <https://www.bluetooth.com/specifications/specs/core-specification-4-2>`_ 中的 Generic Attribute Profile (GATT) 一节。
 
-低功耗蓝牙服务源文件
+.. _factory-gatts-intro:
+
+低功耗蓝牙服务源文件介绍
 ---------------------------------
 
-低功耗蓝牙服务源文件是 ESP-AT 工程创建低功耗蓝牙服务所依据的文件，文件位于 :component_file:`customized_partitions/raw_data/ble_data/example.csv`，内容如下表所示。
+低功耗蓝牙服务源文件是 ESP-AT 工程创建低功耗蓝牙服务所依据的文件，文件位于 :component_file:`customized_partitions/raw_data/ble_data/gatts_data.csv`，内容如下表所示。
 
 .. list-table::
    :header-rows: 1
@@ -120,7 +122,7 @@
     :align: center
     :alt: ESP-AT 默认低功耗蓝牙服务
 
-自定义低功耗蓝牙服务
+编译时自定义低功耗蓝牙服务
 -------------------------------
 
 请根据以下步骤自定义低功耗蓝牙服务。
@@ -248,45 +250,17 @@
      - 2
      - 0000
 
-生成 ble_data.bin 文件
+请根据自己的需求修改 GATTS 配置，然后生成 ``mfg_nvs.bin`` 文件。
+
+生成 mfg_nvs.bin 文件
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-可采用以下任意一种方式生成 ble_data.bin 文件。
+请参考 :ref:`mfg-nvs-generate` 文档生成带有低功耗蓝牙的服务配置的 ``mfg_nvs.bin``。
 
-- 重新编译 ESP-AT 工程，生成 ble_data.bin，详情请见 :ref:`esp-at-project-build`。
+下载 mfg_nvs.bin 文件
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- 执行 ``BLEService.py`` 脚本，生成 ble_data.bin 文件。
-
-  ``BLEService.py`` 的路径为 ``tools/BLEService.py``，您可以在 ESP-AT 的根目录执行以下命令生成 ble_data.bin 文件。
-
-  .. code-block:: none
-
-      python ./tools/BLEService.py components/customized_partitions/raw_data/ble_data/example.csv
-
-下载 ble_data.bin 文件
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-可采用以下任意一种方式下载 ble_data.bin 文件，分别对应 `生成 ble_data.bin 文件`_ 这一小节中提到的生成 ble_data.bin 文件的方法。
-
-- 下载重新编译过的 ESP-AT 固件，详情请见 :ref:`esp-at-project-flash`。
-
-- 仅下载 ble_data.bin，这种方法只更新设备中的 ble_data 区域。
-
-  您可以在 ESP-AT 根目录执行以下命令下载 ble_data.bin 文件。
-
-  .. code-block:: none
-
-      esptool.py --chip auto --port PORTNAME --baud 921600 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB ADDRESS ble_data.bin
-
-  将 ``PORTNAME`` 替换为您的串口名称，``ADDRESS`` 替换为下载 ble_data.bin 文件的地址，不同的模组有不同的下载地址。
-
-  .. only:: esp32
-
-    - ESP32: 0x21000
-
-  .. only:: esp32c3
-
-    - ESP32-C3: 0x1F000
+请参考 :ref:`mfg-nvs-download` 文档。
 
 下载完成后，重新建立低功耗蓝牙连接，在客户端查询的服务器服务如下所示。
 

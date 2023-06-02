@@ -490,7 +490,7 @@ Example
 :ref:`AT+CIPSTARTEX <TCPIP-AT>`: Establish TCP connection, UDP transmission, or SSL connection with an Automatically Assigned ID
 --------------------------------------------------------------------------------------------------------------------------------
 
-This command is similar to :ref:`AT+CIPSTART <cmd-START>` except that you don't need to assign an ID by yourself in multiple connections mode (:ref:`AT+CIPMUX=1 <cmd-MUX>`). The system will assign an ID to the new connection automatically.
+This command is similar to :ref:`AT+CIPSTART <cmd-START>` except that you do not need to assign an ID by yourself in multiple connections mode (:ref:`AT+CIPMUX=1 <cmd-MUX>`). The system will assign an ID to the new connection automatically.
 
 .. _cmd-PLUS:
 
@@ -1751,7 +1751,7 @@ Notes
 
 -  If you want this configuration to take effect immediately, run this command before establishing an SSL connection.
 -  The configuration changes will be saved in the NVS area. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL Wi-Fi :term:`Passthrough Mode` on power-up, the {IDF_TARGET_NAME} will establish an SSL connection based on this configuration when powered up next time.
--  If you want to use your own certificate or use multiple sets of certificates, please refer to the documentation: :doc:`../Compile_and_Develop/how_to_generate_pki_files`.
+-  If you want to use your own certificate or use multiple sets of certificates, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
 -  If ``<auth_mode>`` is configured to 2 or 3, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+CIPSTART <cmd-START>` command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNPTIME? <cmd-SNTPT>` command to query the current time.)
 
 .. _cmd-SSLCCN:

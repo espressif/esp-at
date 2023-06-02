@@ -29,8 +29,8 @@ AT 固件简介
 ESP-AT 固件包含了若干个特定功能的二进制文件： 
 
 - ``factory/factory_xxx.bin`` 是这些特定功能的二进制文件的合集。您可以仅烧录 ``factory/factory_xxx.bin`` 到起始地址为 0 的 flash 空间中，或者根据 ``download.config`` 文件中的信息将若干个二进制文件烧录到 flash 中对应起始地址的空间中。
--  ``at_customize.bin`` 提供了用户分区表，该表列出了 ``ble_data.bin`` 分区、SSL 证书分区、MQTT 证书分区以及 ``factory_param_XXX.bin`` 分区和其它一些分区的的起始地址和分区大小。您可以通过 AT 命令 :ref:`AT+FS <cmd-FS>` 和 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 来读和写该文件中罗列的分区里的内容。
--  ``factory_param_XXX.bin`` 指明了不同 {IDF_TARGET_NAME} 模组之间的硬件配置（见下表）。请确保您的模组使用了正确的固件。更多有关该参数文件的信息请参考 :ref:`firmware-modify-paras-not-source-code`
+-  ``at_customize.bin`` 提供了用户分区表，该表列出了 ``mfg_nvs`` 分区、以及可能的 ``fatfs`` 分区的起始地址和分区大小。您可以通过 AT 命令 :ref:`AT+FS <cmd-FS>` 和 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 来读和写该文件中罗列的分区里的内容。
+-  ``mfg_nvs.bin`` 指明了不同 {IDF_TARGET_NAME} 模组之间的硬件配置（见下表）。请确保您的模组使用了正确的固件。更多有关该参数文件的信息请参考 :ref:`firmware-modify-paras-not-source-code`。
 
   .. only:: esp32
 
@@ -95,14 +95,6 @@ ESP-AT 固件包含了若干个特定功能的二进制文件：
             - GPIO4
           - ``factory_param_MINI-1.bin``
 
--   ``ble_data.bin`` 在 {IDF_TARGET_NAME} 工作于 Bluetooth LE 服务端的时候提供蓝牙服务；
--   ``server_cert.bin``、``server_key.bin`` 和 ``server_ca.bin`` 是 SSL 服务端示例证书；
--   ``client_cert.bin``、``client_key.bin`` 和 ``client_ca.bin`` 是 SSL 客户端示例证书；
--   ``mqtt_cert.bin``、``mqtt_key.bin`` 和 ``mqtt_ca.bin`` 是 MQTT SSL 客户端示例证书；
-
-如果某些功能没有使用到，则不需要将相应的二进制文件下载到 flash 中。
-
-
 .. _firmware-selection:
 
 我该选哪种类型的固件？
@@ -140,7 +132,6 @@ ESP-AT 固件有以下几种类型，其中下载或准备固件的工作量自�
     - :doc:`硬件连接 <../Get_Started/Hardware_connection>`
     - :doc:`固件下载及烧录指南 <../Get_Started/Downloading_guide>`
     - 有关 ESP-AT 固件支持/不支持哪些芯片系列，请参考 ESP-AT GitHub 首页 `readme.md <https://github.com/espressif/esp-at>`_
-  
 
 .. _github-temporary-firmware:
 
@@ -157,7 +148,6 @@ GitHub 临时固件
   - 获取固件工作量小。
 
 - 缺点：基于非正式发布的 commit 生成的固件未经过完整的测试，可能会存在一些风险，需要您自己做完整的测试。
-  
 
 .. _firmware-modify-paras-not-source-code:
 
@@ -166,14 +156,13 @@ GitHub 临时固件
 
 **修改参数的固件** 指的是只修改参数区域而并不需要重新编译的固件，适用于固件功能满足项目要求、但只有某些参数不满足的情况下，如出厂波特率、UART IO 管脚的等参数的变更，此种固件可直接基于乐鑫 OTA 服务器升级固件。
   
-- 关于如何修改参数文件，请参考 :doc:`../Compile_and_Develop/How_to_create_factory_parameter_bin`。
+- 关于如何修改参数文件，请参考 :doc:`../Compile_and_Develop/tools_at_py`。
 - 优点：
 
   - 不需要重新编译固件。
   - 固件稳定、可靠。
 
 - 缺点：需要基于发布版的固件修改，更新周期长，覆盖的模组有限。
-
 
 .. _self-compiled-firmware:
 

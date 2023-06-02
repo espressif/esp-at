@@ -53,18 +53,20 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
 
 本文档将说明如何在 ESP-AT 工程中为 ESP-AT 已支持的某款 {IDF_TARGET_NAME} 芯片添加新的模组支持，下文中以添加对 ESP32-WROOM-32 支持为例，该模组使用 SDIO 而不是默认的 UART 接口。
 
+.. contents::
+   :local:
+   :depth: 1
+
 在 factory_param_data.csv 添加模组信息
 --------------------------------------
 
-打开本地的 :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`，在表格最后插入一行，根据实际需要设置相关参数。本例中，我们将 ``platform`` 设置为 ``PLATFORM_ESP32``、``module_name`` 设置为 ``WROOM32-SDIO``，其他参数设置值见下表（参数含义请参考 :ref:`factory-param-type-csv`）。
+打开本地的 :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`，在表格最后插入一行，根据实际需要设置相关参数。本例中，我们将 ``platform`` 设置为 ``PLATFORM_ESP32``、``module_name`` 设置为 ``WROOM32-SDIO``，其他参数设置值见下表（参数含义请参考 :ref:`factory-param-intro`）。
 
 - platform: PLATFORM_ESP32
 - module_name: WROOM32-SDIO
-- description: 
-- magic_flag: 0xfcfc
-- version: 3
-- reserved1: 0
-- tx_max_power: 78
+- description:
+- version: 4
+- max_tx_power: 78
 - uart_port: 1
 - start_channel: 1
 - channel_num: 13
@@ -74,13 +76,56 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
 - uart_rx_pin: -1
 - uart_cts_pin: -1
 - uart_rts_pin: -1
-- tx_control_pin: -1
-- rx_control_pin: -1
 
 修改 esp_at_module_info 结构体
 -----------------------------------
 
-详情请参考 :ref:`modify-esp-at-module-info-structure`。
+在 :component_file:`at/src/at_default_config.c` 中的 ``esp_at_module_info`` 结构体中添加自定义模组的信息。 
+
+``esp_at_module_info`` 结构体提供 ``OTA`` 升级验证 ``token``：
+
+.. code-block:: c
+
+    typedef struct {
+        char* module_name;
+        char* ota_token;
+        char* ota_ssl_token;
+    } esp_at_module_info_t;
+
+若不想使用 ``OTA`` 功能，那么第二个参数 ``ota_token`` 和第三个参数 ``ota_ssl_token`` 应该设置为 ``NULL``，第一个参数 ``module_name`` 必须与 factory_param_data.csv 文件中的 ``module_name`` 一致。
+
+下面是修改后的 ``esp_at_module_info`` 结构体。
+
+.. code-block:: c
+
+    static const esp_at_module_info_t esp_at_module_info[] = {
+    #if defined(CONFIG_IDF_TARGET_ESP32)
+      ...
+    #endif
+
+    #if defined(CONFIG_IDF_TARGET_ESP32C3)
+      ...
+    #endif
+
+    #if defined(CONFIG_IDF_TARGET_ESP32C2)
+      ...
+    #endif
+
+    #if defined(CONFIG_IDF_TARGET_{IDF_TARGET_CFG_PREFIX})
+      {"MY_MODULE",       CONFIG_ESP_AT_OTA_TOKEN_MY_MODULE,      CONFIG_ESP_AT_OTA_SSL_TOKEN_MY_MODULE },     // MY_MODULE
+    #endif
+    };
+
+宏 ``CONFIG_ESP_AT_OTA_TOKEN_MY_MODULE`` 和宏 ``CONFIG_ESP_AT_OTA_SSL_TOKEN_MY_MODULE`` 定义在头文件 :component_file:`at/private_include/at_ota_token.h` 中。
+
+.. code-block:: none
+
+    #if defined(CONFIG_IDF_TARGET_{IDF_TARGET_CFG_PREFIX})
+    ...
+    #define CONFIG_ESP_AT_OTA_TOKEN_MY_MODULE       CONFIG_ESP_AT_OTA_TOKEN_DEFAULT
+
+    ...
+    #define CONFIG_ESP_AT_OTA_SSL_TOKEN_MY_MODULE       CONFIG_ESP_AT_OTA_SSL_TOKEN_DEFAULT
 
 配置模组文件
 ------------

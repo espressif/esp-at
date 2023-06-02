@@ -1287,26 +1287,22 @@
 ^^^^
 
 -  使用本命令需烧录 at_customize.bin，详细信息可参考 :doc:`../Compile_and_Develop/How_to_customize_partitions`。
--  烧录二级用户分区前，请参考 :doc:`../Compile_and_Develop/how_to_generate_pki_files` 生成二进制用户分区文件。
--  擦除分区时，设置指令可省略 ``<offset>`` 和 ``<length>`` 参数，用于完整擦除该目标分区。例如，指令 ``AT+SYSFLASH=0,"ble_data"`` 可擦除整个 "ble_data" 区域。如果擦除分区时不省略 ``<offset>`` 和 ``<length>`` 参数，则这两个参数值要求是 4 KB 的整数倍。
+-  擦除分区时，请完整擦除该目标分区。这可以通过省略 ``<offset>`` 和 ``<length>`` 参数来完成。例如，指令 ``AT+SYSFLASH=0,"mfg_nvs"`` 可擦除整个 "mfg_nvs" 区域。
 -  关于分区的定义可参考 `ESP-IDF 分区表 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_。
 -  当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时您可以输入要写的数据，数据长度应与 ``<length>`` 一致。
 -  写分区前，请先擦除该分区。
--  写 `PKI bin <https://github.com/espressif/esp-at/blob/master/tools/README.md#2-pki-bin>`_ 时，参数 ``<length>`` 应为 4 字节的整数倍。
+-  如果您想修改 mfg_nvs 分区中的某些数据，请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令（NVS 中的键值对操作）。如果您想修改整个 mfg_nvs 分区，请使用 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令（分区操作）。
 
 示例
 ^^^^
 
 ::
 
-    // 从 "ble_data" 分区偏移地址 0 处读取 100 字节
-    AT+SYSFLASH=2,"ble_data",0,100
+    // 擦除整个 "mfg_nvs" 分区
+    AT+SYSFLASH=0,"mfg_nvs"
 
-    // 在 "ble_data" 分区偏移地址 100 处写入 10 字节
-    AT+SYSFLASH=1,"ble_data",100,10
-
-    // 从 "ble_data" 分区偏移地址 4096 处擦除 8192 字节
-    AT+SYSFLASH=0,"ble_data",4096,8192
+    // 在 "mfg_nvs" 分区偏移地址 0 处写入新的 "mfg_nvs" 分区（大小为 0x1C000）
+    AT+SYSFLASH=1,"mfg_nvs",0,0x1C000
 
 .. _cmd-SYSMFG:
 
@@ -1512,6 +1508,8 @@
 说明
 ^^^^
 - 请先阅读 `非易失性存储 (NVS) <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/storage/nvs_flash.html>`_，了解命名空间、键值对的概念。
+- 写入前，您无需主动擦除命名空间或键值对（NVS 会根据需要自动擦除键值对）。
+- 如果您想修改 mfg_nvs 分区中的某些数据，请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令（NVS 中的键值对操作）。如果您想修改整个 mfg_nvs 分区，请使用 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令（分区操作）。
 
 示例
 """""

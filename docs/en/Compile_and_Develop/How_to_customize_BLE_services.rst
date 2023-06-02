@@ -11,10 +11,12 @@ This document describes how to customize Bluetooth LE services on your {IDF_TARG
 
 The Bluetooth LE services are defined as a multivariate array of GATT structures, and the array contains at least one primary service whose attribute type is defined as 0x2800. Each service always consists of a service definition and several characteristics. Each characteristic always consists of a value and optional descriptors. Please refer to Part Generic Attribute Profile (GATT) of `Bluetooth Core Specification <https://www.bluetooth.com/specifications/specs/core-specification-4-2>`_ for more information.
 
-Bluetooth LE Service Source File
----------------------------------
+.. _factory-gatts-intro:
 
-The ESP-AT project creates Bluetooth LE services based on its Bluetooth LE service source file. It is located in :component_file:`customized_partitions/raw_data/ble_data/example.csv`. The table below shows the default source file.
+Bluetooth LE Service Source File
+--------------------------------
+
+The ESP-AT project creates Bluetooth LE services based on its Bluetooth LE service source file. It is located in :component_file:`customized_partitions/raw_data/ble_data/gatts_data.csv`. The table below shows the default source file.
 
 .. list-table::
    :header-rows: 1
@@ -120,8 +122,8 @@ If you use the default source file on your {IDF_TARGET_NAME} without any modific
     :align: center
     :alt: ESP-AT Default Bluetooth LE Service
 
-Customize Bluetooth LE Services
--------------------------------
+Customize Bluetooth LE Services during Compilation
+--------------------------------------------------
 
 If you want to customize the Bluetooth LE services, follow the steps below.
 
@@ -248,45 +250,17 @@ After the above steps, the customized Bluetooth LE service has been defined as f
      - 2
      - 0000
 
-Generate ble_data.bin
+Please modify the GATTS configurations according to your own needs and generate ``mfg_nvs.bin`` file.
+
+Generate mfg_nvs.bin
 ^^^^^^^^^^^^^^^^^^^^^
 
-You can generate ble_data.bin in either of the following ways:
+Please refer to :ref:`mfg-nvs-generate` document to generate the ``mfg_nvs.bin`` file with the Low Energy Bluetooth services.
 
-- Recompile the ESP-AT project to generate ble_data.bin. See :ref:`esp-at-project-build` for more information.
-
-- Execute the ``BLEService.py`` script to generate ble_data.bin
-
-  The path of ``BLEService.py`` is ``tools/BLEService.py``. You can execute the following command in the root directory of ESP-AT to generate ble_data.bin.
-
-  .. code-block:: none
-
-      python ./tools/BLEService.py components/customized_partitions/raw_data/ble_data/example.csv
-
-Download ble_data.bin
+Download mfg_nvs.bin
 ^^^^^^^^^^^^^^^^^^^^^
 
-You can download ble_data.bin in either of the following ways, corresponding to the ways to generate bin files in the `Generate ble_data.bin`_ section.
-
-- Download recompiled ESP-AT firmware. See :ref:`esp-at-project-flash` for more information.
-
-- Download ble_data.bin only. This way only updates the ble_data area in the device.
-
-  You can execute the following command in the root directory of ESP-AT to download ble_data.bin.
-
-  .. code-block:: none
-
-      esptool.py --chip auto --port PORTNAME --baud 921600 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB ADDRESS ble_data.bin
-
-  Replace ``PORTNAME`` with your port name and replace ``ADDRESS`` with download ble_data.bin address. The ble_data.bin has different addresses in different modules.
-
-  .. only:: esp32
-
-    - ESP32: 0x21000
-
-  .. only:: esp32c3
-
-    - ESP32-C3: 0x1F000
+Please refer to :ref:`mfg-nvs-download` document.
 
 After the download is complete, re-establish the Bluetooth LE connection. Query the server service on the client side as follows:
 

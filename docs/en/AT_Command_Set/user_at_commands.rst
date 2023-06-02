@@ -164,7 +164,7 @@ Note
 -  After you upgrade the AT firmware, you are suggested to call the command AT+RESTORE to restore the factory default settings.
 -  ``AT+USEROTA`` supports ``HTTP`` and ``HTTPS``.
 -  After AT outputs the ``>`` character, the special characters in the URL does not need to be escaped through the escape character, and it does not need to end with a new line(CR-LF).
--  When the URL is ``HTTPS``, SSL verification is not recommended. If SSL verification is required, you need to generate your own PKI files and download them into the corresponding partition, and then load the certificates in the code implemented by the ``AT+USEROTA`` command. Please refer to :doc:`../Compile_and_Develop/how_to_generate_pki_files` for PKI files. For ``AT+USEROTA`` command, ESP-AT project provides an example of `USEROTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_user_cmd.c>`_.
+-  When the URL is ``HTTPS``, SSL verification is not recommended. If SSL verification is required, you need to generate your own PKI files and download them into the corresponding partition, and then load the certificates in the code implemented by the ``AT+USEROTA`` command. Please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config` for PKI files. For ``AT+USEROTA`` command, ESP-AT project provides an example of `USEROTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_user_cmd.c>`_.
 -  Please refer to :doc:`../Compile_and_Develop/How_to_implement_OTA_update` for more OTA commands.
 
 Example

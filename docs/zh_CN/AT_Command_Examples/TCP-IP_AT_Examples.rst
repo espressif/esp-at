@@ -896,7 +896,10 @@ TCP-IP AT 示例
 {IDF_TARGET_NAME} 设备作为 SSL 客户端建立双向认证单连接
 ---------------------------------------------------------
 
-本示例中使用的证书是 esp-at 中默认的证书，您也可以自己生成证书，并烧录，然后您需要将下面的 SSL 服务器证书路径替换为您的证书路径。获取 SSL 证书，请参考 esp-at/tools/README.md 了解如何生成证书 bin 和烧录地址请参考 esp-at/module_config/module_name/at_customize.csv。
+本示例中使用的证书是 ESP-AT 中默认的证书，您也可以使用自己的证书：
+
+  * 要使用您自己的 SSL 客户端证书，请根据 :doc:`../Compile_and_Develop/How_to_update_pki_config` 文档替换默认的证书。
+  * 要使用您自己的 SSL 服务器证书，请用您自己的证书路径替换下面的 SSL 服务器证书。
 
 #. 设置 Wi-Fi 模式为 station。
 

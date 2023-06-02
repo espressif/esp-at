@@ -47,13 +47,6 @@ GATT 其实是一种属性传输协议，简单的讲可以认为是一种属性
 
 ``GATT 服务端`` 和 ``GATT 客户端`` 这两种角色存在于 Bluetooth LE 连接建立之后。GATT 服务器存储通过属性协议传输的数据，并接受来自 GATT 客户端的属性协议请求、命令和确认。简而言之，提供数据的一端称为 ``GATT 服务端``，访问数据的一端称为 ``GATT 客户端``。
 
-.. Important::
-
-  - {IDF_TARGET_NAME} Bluetooth LE 服户端需烧录 ``ble_data.bin`` 文件到 flash 中，用以提供 Bluetooth LE 服务。
-
-    - 如何生成 ``ble_data.bin`` 文件，请参考文档 :doc:`../Compile_and_Develop/customize_bluetooth_le_services_tools`。
-    - ``ble_data.bin`` 文件的烧录地址，见 ``at_customize.csv`` 中 ``ble_data`` 对应的地址，或者在文件 ``build/download.config`` 中记录的地址。
-
 Bluetooth LE 客户端读写服务特征值
 ------------------------------------------
 
