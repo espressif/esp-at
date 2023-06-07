@@ -40,10 +40,10 @@ jobs:
 
         if ${{ inputs.artifacts_name == 'esp32-at-all-function-test-without-bt' }}; then
           echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
-          echo -e "CONFIG_AT_ETHERNET_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
           echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
           echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
           echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
+          echo -e "CONFIG_AT_WS_COMMAND_SUPPORT=y" >> module_config/module_wrover-32/sdkconfig.defaults
           echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_wrover-32/sdkconfig.defaults
           # disable BT
           echo -e "CONFIG_AT_BLE_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
