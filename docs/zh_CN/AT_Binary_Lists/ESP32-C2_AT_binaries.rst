@@ -15,11 +15,11 @@
 ESP32-C2 2MB 系列
 ^^^^^^^^^^^^^^^^^^^^^^
 
-- v3.1.0.0 `ESP32-C2-2MB_AT_Bin_V3.1.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32C2/ESP32-C2-2MB_AT_Bin_V3.1.0.0.zip>`__ （推荐）
-- v3.0.0.0 `ESP32-C2-2MB_AT_Bin_V3.0.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32C2/ESP32-C2-2MB_AT_Bin_V3.1.0.0.zip>`__
+- v3.1.0.0 `ESP32-C2-2MB-AT-V3.1.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-2MB-AT-V3.1.0.0.zip>`__ （推荐）
+- v3.0.0.0 `ESP32-C2-2MB-AT-V3.0.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-2MB-AT-V3.0.0.0.zip>`__
 
 ESP32-C2 4MB 系列
 ^^^^^^^^^^^^^^^^^^^^^^
 
-- v3.1.0.0 `ESP32-C2-4MB_AT_Bin_V3.1.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32C2/ESP32-C2-4MB_AT_Bin_V3.1.0.0.zip>`__ （推荐）
-- v3.0.0.0 `ESP32-C2-4MB_AT_Bin_V3.0.0.0.zip <https://download.espressif.com/esp_at/firmware/ESP32C2/ESP32-C2-4MB_AT_Bin_V3.0.0.0.zip>`__
+- v3.1.0.0 `ESP32-C2-4MB-AT-V3.1.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-4MB-AT-V3.1.0.0.zip>`__ （推荐）
+- v3.0.0.0 `ESP32-C2-4MB-AT-V3.0.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-4MB-AT-V3.0.0.0.zip>`__
