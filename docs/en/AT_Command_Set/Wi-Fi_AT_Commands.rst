@@ -521,10 +521,7 @@ Parameters
    -  bit 6: determine whether APs with ``WPA3_PSK`` authmode will be shown.
    -  bit 7: determine whether AP with ``WPA2_WPA3_PSK`` authmode will be shown.
    -  bit 8: determine whether AP with ``WAPI_PSK`` authmode will be shown.
-
-   .. only:: esp32c2
-
-    -  bit 9: determine whether AP with ``OWE`` authmode will be shown.
+   -  bit 9: determine whether AP with ``OWE`` authmode will be shown.
 
 Example
 ^^^^^^^^

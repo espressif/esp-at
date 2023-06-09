@@ -521,10 +521,7 @@ Wi-Fi AT 命令集
    -  bit 6: 是否显示 ``WPA3_PSK`` 认证方式的 AP
    -  bit 7: 是否显示 ``WPA2_WPA3_PSK`` 认证方式的 AP
    -  bit 8: 是否显示 ``WAPI_PSK`` 认证方式的 AP
-
-   .. only:: esp32c2
-
-       -  bit 9: 是否显示 ``OWE`` 认证方式的 AP
+   -  bit 9: 是否显示 ``OWE`` 认证方式的 AP
 
 示例
 ^^^^
