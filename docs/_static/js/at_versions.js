@@ -7,10 +7,10 @@ var DOCUMENTATION_VERSIONS = {
         { name: "latest", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3" ] },
 
         // v3.1.0.0
-        { name: "release-v3.1.0.0", has_targets: true, supported_targets: [ "esp32c2" ]},
+        { name: "release-v3.1.0.0", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3" ] },
 
         // v3.0.0.0
-        { name: "release-v3.0.0.0", has_targets: true, supported_targets: [ "esp32c2" ]},
+        { name: "release-v3.0.0.0", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3" ] },
 
         // v2.4.0.0
         { name: "release-v2.4.0.0", has_targets: true, supported_targets: [ "esp32", "esp32c3" ]},
