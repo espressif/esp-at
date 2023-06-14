@@ -636,6 +636,8 @@ Introduction
         -  5: ADV_TYPE_EXT_NOSCANNABLE_IND
         -  6: ADV_TYPE_EXT_CONNECTABLE_IND
         -  7: ADV_TYPE_EXT_SCANNABLE_IND
+            -  When <adv_type> is set to 0-4, the maximum allowed size for advertising data using the :ref:`AT+BLEADVDATA <cmd-BADVD>` command is 31 bytes. If the advertising data exceeds the maximum limit of this command, use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
+            -  When <adv_type> is set to 5-7, the maximum allowed size for advertising data using the :ref:`AT+BLEADVDATA <cmd-BADVD>` command is 119 bytes.
 
     -  **<own_addr_type>**: own Bluetooth LE address type.
 
@@ -685,14 +687,49 @@ Introduction
 
         -  The ``primary_phy`` and ``secondary_phy`` must be set together, otherwise, the default 1M PHY is used for unconfigured parameter.
 
-    Example
-    ^^^^^^^^
+    .. only:: esp32
 
-    ::
+        Example
+        ^^^^^^^^^^
 
-        AT+BLEINIT=2   // Role: server
-        AT+BLEADVPARAM=50,50,0,0,4,0,1,"12:34:45:78:66:88"
-        AT+BLEADVPARAM=32,32,6,0,7,0,0,"62:34:45:78:66:88",1,3
+        ::
+
+            AT+BLEINIT=2   // Role: server
+            AT+BLEADDR=1,"c2:34:45:78:66:89"
+            AT+BLEADVPARAM=50,50,0,1,4,0,1,"12:34:45:78:66:88"
+            // At this time, the MAC of the ESP device scanned by the BLE client is "c2:34:45:78:66:89".
+
+    .. only:: esp32c2
+
+        Example
+        ^^^^^^^^^^
+
+        ::
+
+            AT+BLEINIT=2   // Role: server
+            AT+BLEADVPARAM=50,50,0,0,4,0,1,"12:34:45:78:66:88"
+            AT+BLEADVPARAM=32,32,6,0,7,0,0,"62:34:45:78:66:88",1,3
+
+    .. only:: esp32c3
+
+        Example 1
+        ^^^^^^^^^^
+
+        ::
+
+            AT+BLEINIT=2   // Role: server
+            AT+BLEADVPARAM=50,50,0,0,4,0,1,"12:34:45:78:66:88"
+            AT+BLEADVPARAM=32,32,6,0,7,0,0,"62:34:45:78:66:88",1,3
+
+        Example 2
+        ^^^^^^^^^^
+
+        ::
+
+            AT+BLEINIT=2   // Role: server
+            AT+BLEADDR=1,"c2:34:45:78:66:89"
+            AT+BLEADVPARAM=50,50,0,1,4,0,1,"12:34:45:78:66:88"
+            // At this time, the MAC of the ESP device scanned by the BLE client is "c2:34:45:78:66:89".
 
     .. _cmd-BADVD:
 
@@ -734,11 +771,16 @@ Introduction
 
     -  If advertising data is preset by command :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power>, it will be overwritten by this command.
     -  If you run this command to modify the device name, it is recommended to also execute the :ref:`AT+BLENAME <cmd-BNAME>` command to set the same device name afterwards.
-    -  If the advertising data exceeds the maximum limit of this command, use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
+
+    .. only:: esp32
+
+        -  If the advertising data exceeds the maximum limit of this command, use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
 
     .. only:: esp32c3 or esp32c2
 
         -  Please set the Bluetooth LE advertising parameters by the :ref:`AT+BLEADVPARAM <cmd-BADVP>` command before you use the :ref:`AT+BLEADVDATA <cmd-BADVD>` command.
+        -  When the <adv_type> is set to 0-4 by the :ref:`AT+BLEADVPARAM <cmd-BADVP>` command, the maximum allowed size for advertising data using the AT+BLEADVDATA command is 31 bytes. If the advertising data exceeds the maximum limit of this command, use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
+        -  When the <adv_type> is set to 5-7 by the :ref:`AT+BLEADVPARAM <cmd-BADVP>` command, the maximum allowed size for advertising data using the AT+BLEADVDATA command is 119 bytes.
 
     Example
     ^^^^^^^^
@@ -808,6 +850,7 @@ Introduction
     ^^^^^
 
     -  If advertising data is preset by command :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data>, it will be overwritten by this command.
+    -  This command automatically changes the adv type previously set using :ref:`AT+BLEADVPARAM <cmd-BADVP>` to 0.
 
     Example
     ^^^^^^^^

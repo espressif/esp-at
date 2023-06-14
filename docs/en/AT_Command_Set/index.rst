@@ -272,6 +272,8 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - The WebSocket connection of ID ``<link_id>`` is closed.
      * - +BLESCANDONE
        - Scan finished
+     * - +BLESECKEYREQ:<conn_index>
+       - The peer has accepted the pairing request, and the ESP device can enter the key.
 
   .. only:: esp32c3
 
