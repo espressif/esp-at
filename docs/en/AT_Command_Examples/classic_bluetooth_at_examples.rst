@@ -11,7 +11,7 @@ This document provides detailed command examples to illustrate how to utilize :d
 
 .. Important::
   
-  The default firmware does not support Classic Bluetooth commands, please refer to :doc:`../Compile_and_Develop/how_to_enable_at_classic_bluetooth` to enable Classic Bluetooth commands.
+  The default firmware does not support Classic Bluetooth commands. For how to enable support for those commands, please refer to :ref:`Introduction to Classic Bluetooth <cmd-bt-intro>`.
 
 Establish SPP connection between phone (or PC) and {IDF_TARGET_NAME} in Normal Transmission mode with IO capability set to NoInputNoOutput
 ------------------------------------------------------------------------------------------------------------------------------------------

@@ -17,7 +17,6 @@
    如何更新 PKI 配置 <How_to_update_pki_config>
    :esp32 or esp32c3 or esp32c2: 如何自定义低功耗蓝牙服务 <How_to_customize_BLE_services>
    如何自定义分区 <How_to_customize_partitions>
-   :esp32: 如何启用 {IDF_TARGET_NAME}-AT 经典蓝牙 <how_to_enable_at_classic_bluetooth>
    :esp32: 如何使能 {IDF_TARGET_NAME}-AT 以太网 <How_to_enable_ESP_AT_Ethernet>
    如何增加一个新的模组支持 <How_to_add_support_for_a_module>
    :esp32: {IDF_TARGET_NAME} SDIO AT 指南 <{IDF_TARGET_PATH_NAME}-sdio-at-guide.rst>

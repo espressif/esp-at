@@ -11,7 +11,7 @@
 
 .. Important::
   
-  固件默认不支持 Classic Bluetooth 命令，请参考文档 :doc:`../Compile_and_Develop/how_to_enable_at_classic_bluetooth` 使能 Classic Bluetooth 命令。
+  固件默认不支持 Classic Bluetooth 命令。有关如何使能对 Classic Bluetooth 的支持，请参考文档 :ref:`Classic Bluetooth AT 命令的介绍 <cmd-bt-intro>`。
 
 以普通传输模式在移动电话或者 PC 和 {IDF_TARGET_NAME} 之间建立 SPP 连接并且设置 IO 能力为 NoInputNoOutput
 ------------------------------------------------------------------------------------------------------------------------------------------
