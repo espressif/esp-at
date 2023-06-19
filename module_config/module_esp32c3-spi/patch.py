@@ -35,7 +35,8 @@ def main():
     cur_abs_dir = os.getcwd()
 
     patch_list = {
-        'softap_pmk.patch': os.path.join(cur_abs_dir, 'esp-idf')
+        'softap_pmk.patch': os.path.join(cur_abs_dir, 'esp-idf'),
+        'dhcps.patch': os.path.join(cur_abs_dir, 'esp-idf')
     }
 
     for name, path in patch_list.items():
