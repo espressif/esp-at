@@ -37,7 +37,6 @@ def main():
     patch_list = {
         'blufi-adv.patch': os.path.join(cur_abs_dir, 'esp-idf'),
         'wifi_deinit.patch': os.path.join(cur_abs_dir, 'esp-idf'),
-        'softap_pmk.patch': os.path.join(cur_abs_dir, 'esp-idf'),
         'dhcps.patch': os.path.join(cur_abs_dir, 'esp-idf')
     }
 
