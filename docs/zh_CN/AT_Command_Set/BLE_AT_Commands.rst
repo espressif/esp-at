@@ -636,6 +636,9 @@ Bluetooth® Low Energy AT 命令集
         -  5: ADV_TYPE_EXT_NOSCANNABLE_IND
         -  6: ADV_TYPE_EXT_CONNECTABLE_IND
         -  7: ADV_TYPE_EXT_SCANNABLE_IND
+            -  当设置广播类型为 0-4，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播参数最多只能设置 31 字节，如果需要设置更长的广播参数，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 指令来设置。
+            -  当设置广播类型为 5-7，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播参数最多只能设置 119 字节。
+        
 
     -  **<own_addr_type>**：Bluetooth LE 地址类型
 
@@ -685,14 +688,49 @@ Bluetooth® Low Energy AT 命令集
 
         -  ``primary_phy`` 和 ``secondary_phy`` 需要一起设置，如果不设置，那么未设置的参数会使用默认 1M PHY。
 
-    示例
-    ^^^^
+    .. only:: esp32
 
-    ::
+        示例
+        ^^^^^^
 
-        AT+BLEINIT=2   // 角色：服务器
-        AT+BLEADVPARAM=50,50,0,0,4,0,1,"12:34:45:78:66:88"
-        AT+BLEADVPARAM=32,32,6,0,7,0,0,"62:34:45:78:66:88",1,3
+        ::
+
+            AT+BLEINIT=2   // 角色：服务器
+            AT+BLEADDR=1,"c2:34:45:78:66:89"
+            AT+BLEADVPARAM=50,50,0,1,4,0,1,"12:34:45:78:66:88"
+            // 此时 Bluetooth LE 客户端扫描到的 ESP 设备的 MAC 地址为 "c2:34:45:78:66:89"
+
+    .. only:: esp32c2
+
+        示例
+        ^^^^^^
+
+        ::
+
+            AT+BLEINIT=2   // 角色：服务器
+            AT+BLEADVPARAM=50,50,0,0,4,0,1,"12:34:45:78:66:88"
+            AT+BLEADVPARAM=32,32,6,0,7,0,0,"62:34:45:78:66:88",1,3
+
+    .. only:: esp32c3
+
+        示例1
+        ^^^^^^
+
+        ::
+
+            AT+BLEINIT=2   // 角色：服务器
+            AT+BLEADVPARAM=50,50,0,0,4,0,1,"12:34:45:78:66:88"
+            AT+BLEADVPARAM=32,32,6,0,7,0,0,"62:34:45:78:66:88",1,3
+
+        示例2
+        ^^^^^^
+
+        ::
+
+            AT+BLEINIT=2   // 角色：服务器
+            AT+BLEADDR=1,"c2:34:45:78:66:89"
+            AT+BLEADVPARAM=50,50,0,1,4,0,1,"12:34:45:78:66:88"
+            // 此时 Bluetooth LE 客户端扫描到的 ESP 设备的 MAC 地址为 "c2:34:45:78:66:89"
 
     .. _cmd-BADVD:
 
@@ -734,11 +772,16 @@ Bluetooth® Low Energy AT 命令集
 
     -  如果之前已经使用命令 :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power> 设置了广播数据，则会被本命令设置的广播数据覆盖。
     -  如果您想使用本命令修改设备名称，则建议在执行完该命令之后执行 :ref:`AT+BLENAME <cmd-BNAME>` 命令将设备名称设置为同样的名称。
-    -  如果需要设置更长的广播参数，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 指令来设置。
+
+    .. only:: esp32
+
+        -  如果需要设置更长的广播数据，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 指令来设置。
 
     .. only:: esp32c3 or esp32c2
 
         -  在使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令之前，必须先通过 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播参数。
+        -  当调用 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播类型为 0-4，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播数据最多只能设置 31 字节，如果需要设置更长的广播数据，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 指令来设置。
+        -  当调用 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播类型为 5-7，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播数据最多只能设置 119 字节。
 
     示例
     ^^^^
@@ -808,6 +851,7 @@ Bluetooth® Low Energy AT 命令集
     ^^^^
 
     -  如果之前已经使用命令 :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data> 设置了广播数据，则会被本命令设置的广播数据覆盖。
+    -  此命令会自动将之前使用 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置的广播类型更改为 0。
 
     示例
     ^^^^

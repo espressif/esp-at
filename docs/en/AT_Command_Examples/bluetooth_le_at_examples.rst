@@ -522,7 +522,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
   
      - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
   
-  #. {IDF_TARGET_NAME} Bluetooth LE server setting advertising parameters.
+  #. {IDF_TARGET_NAME} Bluetooth LE server sets advertising parameters.
   
      Command:
   
@@ -536,7 +536,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
   
        OK
   
-  #. {IDF_TARGET_NAME} Bluetooth LE server setting advertising data.
+  #. {IDF_TARGET_NAME} Bluetooth LE server sets advertising data.
   
      Command:
   
@@ -1378,7 +1378,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
 
-#. {IDF_TARGET_NAME} Bluetooth LE server setting advertising parameters.
+#. {IDF_TARGET_NAME} Bluetooth LE server sets advertising parameters.
 
    Command:
 
@@ -1392,7 +1392,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
      OK
 
-#. {IDF_TARGET_NAME} Bluetooth LE server setting advertising data.
+#. {IDF_TARGET_NAME} Bluetooth LE server sets advertising data.
 
    Command:
 
@@ -1704,7 +1704,7 @@ Establish SPP connection between {IDF_TARGET_NAME} and mobile phone and transmit
 The example shows how to establish SPP connection between an {IDF_TARGET_NAME} development board (only serving as the Bluetooth LE server role) and a mobile phone (only serve as the Bluetooth LE client role) and how to transmit data between them in UART-Bluetooth LE passthrough mode.
 
 .. Important::
-  In the following steps, the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE server`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE server, and those Bluetooth LE client only need to be executed at the Bluetooth debugging assistant of the mobile phone.
+  In the following steps, the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE server`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE server, and those starting with ``{IDF_TARGET_NAME} Bluetooth LE client`` only need to be executed on the Bluetooth debugging assistant of the mobile phone.
 
 #. First, you need to download the Bluetooth LE debugging assistant on the mobile phone, such as LightBlue.
 
@@ -1773,7 +1773,7 @@ The example shows how to establish SPP connection between an {IDF_TARGET_NAME} d
 
    - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
 
-#. {IDF_TARGET_NAME} Bluetooth LE server setting advertising parameters.
+#. {IDF_TARGET_NAME} Bluetooth LE server sets advertising parameters.
 
    Command:
 
@@ -1787,7 +1787,7 @@ The example shows how to establish SPP connection between an {IDF_TARGET_NAME} d
 
      OK
 
-#. {IDF_TARGET_NAME} Bluetooth LE server setting advertising data.
+#. {IDF_TARGET_NAME} Bluetooth LE server sets advertising data.
 
    Command:
 
@@ -1817,7 +1817,7 @@ The example shows how to establish SPP connection between an {IDF_TARGET_NAME} d
 
 #. Establish the Bluetooth LE connection.
 
-   Open the LightBlue APP on your mobile phone, and open SCAN to start scanning. When you find the MAC address of the {IDF_TARGET_NAME} Bluetooth LE server, click ``CONNECT``. Then, {IDF_TARGET_NAME} should print the log similar to ``+BLECONN:0,"60:51:42:fe:98:aa"``, which indicates that Bluetooth LE connection has been established.
+   Open the LightBlue application on your mobile phone, and click ``SCAN`` to start scanning. When you find the MAC address of the {IDF_TARGET_NAME} Bluetooth LE server, click ``CONNECT``. Then, {IDF_TARGET_NAME} should print the log similar to ``+BLECONN:0,"60:51:42:fe:98:aa"``, which indicates that Bluetooth LE connection has been established.
 
 #. {IDF_TARGET_NAME} Bluetooth LE server discovers local services.
 
@@ -1934,3 +1934,182 @@ The example shows how to establish SPP connection between an {IDF_TARGET_NAME} d
 #. {IDF_TARGET_NAME} Bluetooth LE server sends data.
 
    The {IDF_TARGET_NAME} Bluetooth LE server sends ``test``, and then the LightBlue client can receive ``test``.
+
+Establish Bluetooth LE connection and pairing between {IDF_TARGET_NAME} and mobile phone
+-------------------------------------------------------------------------------------------
+
+This example shows how to establish a Bluetooth LE connection between the {IDF_TARGET_NAME} development board (only as a Bluetooth LE server role) and a mobile phone (only as a Bluetooth LE client role) and enter the passkey to complete the pairing.
+
+.. Important::
+  In the following steps, the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE server`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE server, and those starting with ``{IDF_TARGET_NAME} Bluetooth LE client`` only need to be executed on the Bluetooth debugging assistant of the mobile phone.
+
+#. First, you need to download the Bluetooth LE debugging assistant on the mobile phone, such as LightBlue.
+
+#. Bluetooth LE initialization.
+
+   {IDF_TARGET_NAME} Bluetooth LE server:
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEINIT=2
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+.. only:: esp32 or esp32c3
+
+  #. {IDF_TARGET_NAME} Bluetooth LE server creates services.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVCRE
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE server starts services.
+  
+     Command:
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVSTART
+  
+     Response:
+  
+     .. code-block:: none
+  
+       OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE server gets its MAC address.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADDR?
+
+   Response:
+
+   .. code-block:: none
+
+     +BLEADDR:"24:0a:c4:d6:e4:46"
+     OK
+
+   Note:
+
+   - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
+
+#. {IDF_TARGET_NAME} Bluetooth LE server sets advertising parameters.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADVPARAM=50,50,0,0,7,0,,
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE server sets advertising data.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADVDATA="0201060A09457370726573736966030302A0"
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE server sets encryption parameters.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLESECPARAM=13,2,16,3,3
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE server starts advertising.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADVSTART
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Establish the Bluetooth LE connection.
+
+   Open the LightBlue application on your mobile phone, and click ``SCAN`` to start scanning. When you find the MAC address of the {IDF_TARGET_NAME} Bluetooth LE server, click ``CONNECT``. Then, {IDF_TARGET_NAME} should print the log similar to ``+BLECONN:0,"60:51:42:fe:98:aa"``, which indicates that Bluetooth LE connection has been established.
+
+#. {IDF_TARGET_NAME} Bluetooth LE server initiates encryption request.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEENC=0,3
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Bluetooth LE client accepts pairing.
+
+   The pairing information (including the pairing key, for example: 231518) will pop up on the Bluetooth LE connection page that has just been successfully created on the LightBlue, and then click "Pairing". At this time, the {IDF_TARGET_NAME} Bluetooth LE server should print a log similar to ``+BLESECKEYREQ:0``, indicating that the phone has responded to pairing, and the {IDF_TARGET_NAME} Bluetooth LE server can enter the key.
+
+#. {IDF_TARGET_NAME} Bluetooth LE server replies with the pairing key.
+
+   At this time, the key that the Bluetooth LE server should reply with is the key (231518) contained in the pairing information that popped up on LightBlue in the previous step.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEKEYREPLY=0,231518
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+  
+   At this time, the {IDF_TARGET_NAME} Bluetooth LE server will print a log similar to the following, which means that the {IDF_TARGET_NAME} Bluetooth LE server has successfully paired with the phone Bluetooth LE client.
+
+   .. code-block:: none
+
+     +BLESECKEYTYPE:0,16
+     +BLESECKEYTYPE:0,1
+     +BLESECKEYTYPE:0,32
+     +BLESECKEYTYPE:0,2
+     +BLEAUTHCMPL:0,0

@@ -48,7 +48,7 @@ GATT 其实是一种属性传输协议，简单的讲可以认为是一种属性
 ``GATT 服务端`` 和 ``GATT 客户端`` 这两种角色存在于 Bluetooth LE 连接建立之后。GATT 服务器存储通过属性协议传输的数据，并接受来自 GATT 客户端的属性协议请求、命令和确认。简而言之，提供数据的一端称为 ``GATT 服务端``，访问数据的一端称为 ``GATT 客户端``。
 
 Bluetooth LE 客户端读写服务特征值
-------------------------------------------
+---------------------------------------------------------
 
 以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何使用 AT 命令建立 Bluetooth LE 连接，完成数据通信。
 
@@ -86,7 +86,7 @@ Bluetooth LE 客户端读写服务特征值
 
      OK
 
-#. {IDF_TARGET_NAME} 蓝牙 LE 服务器获取其 MAC 地址。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端获取其 MAC 地址。
 
    命令：
 
@@ -436,7 +436,7 @@ Bluetooth LE 客户端读写服务特征值
 .. only:: esp32 or esp32c3
 
   Bluetooth LE 服务端读写服务特征值
-  ------------------------------------------
+  ---------------------------------------------------------
   
   以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何建立 Bluetooth LE 连接，以及服务端读写服务特征值和客户端设置，notify 服务特征值。
   
@@ -503,7 +503,7 @@ Bluetooth LE 客户端读写服务特征值
     
          OK
   
-  #. {IDF_TARGET_NAME} 蓝牙 LE 服务器获取其 MAC 地址。
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端获取其 MAC 地址。
   
      命令：
   
@@ -594,7 +594,7 @@ Bluetooth LE 客户端读写服务特征值
     
          OK
   
-  #. {IDF_TARGET_NAME} Bluetooth LE 客户端获取 Bluetooth LE 地址。
+  #. {IDF_TARGET_NAME} Bluetooth LE 客户端获取其 MAC 地址。
   
      命令：
   
@@ -1359,7 +1359,7 @@ Bluetooth LE 连接加密
   
        OK
 
-#. {IDF_TARGET_NAME} 蓝牙 LE 服务器获取其 MAC 地址。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端获取其 MAC 地址。
 
    命令：
 
@@ -1704,7 +1704,7 @@ Bluetooth LE 连接加密
 该示例展示了如何在 {IDF_TARGET_NAME} 开发板（仅作为低功耗蓝牙服务器角色）和手机（仅作为低功耗蓝牙客户端角色）之间建立 SPP 连接，以及如何在 UART-Bluetooth LE 透传模式下传输数据。
 
 .. Important::
-  步骤中以 ``{IDF_TARGET_NAME} Bluetooth LE 服务端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 服务端执行即可，而以 ``Bluetooth LE 客户端`` 开头的操作只需要在手机的蓝牙调试助手中执行即可。 
+  步骤中以 ``{IDF_TARGET_NAME} Bluetooth LE 服务端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 服务端执行即可，而以 ``Bluetooth LE 客户端`` 开头的操作只需要在手机的蓝牙调试助手中执行即可。
 
 #. 在手机端下载 Bluetooth LE 调试助手，例如 LightBlue。
 
@@ -1754,7 +1754,7 @@ Bluetooth LE 连接加密
   
        OK
 
-#. {IDF_TARGET_NAME} 蓝牙 LE 服务器获取其 MAC 地址。
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端获取其 MAC 地址。
 
    命令：
 
@@ -1817,7 +1817,7 @@ Bluetooth LE 连接加密
 
 #. 创建 Bluetooth LE 连接。
 
-   手机打开 LightBlue APP，并打开 SCAN 开始扫描，找到 {IDF_TARGET_NAME} Bluetooth LE 服务端的 MAC 地址，点击 ``CONNECT`` 进行连接。此时 {IDF_TARGET_NAME} 端应该会打印类似于 ``+BLECONN:0,"60:51:42:fe:98:aa"`` 的 log，这表示已经建立了 Bluetooth LE 连接。
+   手机打开 LightBlue 应用程序，并打开 SCAN 开始扫描，找到 {IDF_TARGET_NAME} Bluetooth LE 服务端的 MAC 地址，点击 ``CONNECT`` 进行连接。此时 {IDF_TARGET_NAME} 端应该会打印类似于 ``+BLECONN:0,"60:51:42:fe:98:aa"`` 的日志，这表示已经建立了 Bluetooth LE 连接。
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端查询服务。
 
@@ -1934,3 +1934,182 @@ Bluetooth LE 连接加密
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端发送数据。
     
    在 {IDF_TARGET_NAME} Bluetooth LE 服务端直接发送 ``test``，此时 LightBlue 客户端可以收到 ``test``。
+
+{IDF_TARGET_NAME} 和手机之间建立 Bluetooth LE 连接并配对
+--------------------------------------------------------------------------------------
+
+该示例展示了如何在 {IDF_TARGET_NAME} 开发板（仅作为低功耗蓝牙服务器角色）和手机（仅作为低功耗蓝牙客户端角色）之间建立 Bluetooth LE 连接并输入密钥完成配对。
+
+.. Important::
+  步骤中以 ``{IDF_TARGET_NAME} Bluetooth LE 服务端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 服务端执行即可，而以 ``Bluetooth LE 客户端`` 开头的操作只需要在手机的蓝牙调试助手中执行即可。 
+
+#. 在手机端下载 Bluetooth LE 调试助手，例如 LightBlue 应用程序。
+
+#. 初始化 Bluetooth LE 功能。
+
+   {IDF_TARGET_NAME} Bluetooth LE 服务端：
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEINIT=2
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+.. only:: esp32 or esp32c3
+
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVCRE
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
+  
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
+  
+     命令：
+  
+     .. code-block:: none
+  
+       AT+BLEGATTSSRVSTART
+  
+     响应：
+  
+     .. code-block:: none
+  
+       OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端获取其 MAC 地址。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADDR?
+
+   响应：
+
+   .. code-block:: none
+
+     +BLEADDR:"24:0a:c4:d6:e4:46"
+     OK
+
+   说明：
+
+   - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
+
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播参数。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADVPARAM=50,50,0,0,7,0,,
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播数据。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADVDATA="0201060A09457370726573736966030302A0"
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端设置加密参数。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLESECPARAM=13,2,16,3,3
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端开始广播。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADVSTART
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. Bluetooth LE 客户端创建连接。
+
+   手机打开 LightBlue 应用程序，并打开 SCAN 开始扫描，找到 {IDF_TARGET_NAME} Bluetooth LE 服务端的 MAC 地址，点击 ``CONNECT`` 进行连接。此时 {IDF_TARGET_NAME} 端应该会打印类似于 ``+BLECONN:0,"60:51:42:fe:98:aa"`` 的日志，这表示已经建立了 Bluetooth LE 连接。
+
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端发起加密请求。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEENC=0,3
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. Bluetooth LE 客户端同意配对。
+
+   手机 LightBlue 应用程序刚刚创建成功的 Bluetooth LE 连接的页面会弹出配对信息（包含配对密钥，例如密钥为：231518），点击 ``配对``。此时 {IDF_TARGET_NAME} 端应该会打印类似于 ``+BLESECKEYREQ:0`` 的日志，这表示手机已经响应配对。
+
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端回复配对密钥。
+
+   此时 Bluetooth LE 服务端回复的密钥即为上一步骤中手机 LightBlue 应用程序 弹出的配对信息中的密钥：231518。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEKEYREPLY=0,231518
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+  
+   此时 {IDF_TARGET_NAME} Bluetooth LE 服务端会打印类似于以下日志，这表示 {IDF_TARGET_NAME} Bluetooth LE 服务端与手机 Bluetooth LE 客户端完成了配对。
+
+   .. code-block:: none
+
+     +BLESECKEYTYPE:0,16
+     +BLESECKEYTYPE:0,1
+     +BLESECKEYTYPE:0,32
+     +BLESECKEYTYPE:0,2
+     +BLEAUTHCMPL:0,0
