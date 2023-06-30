@@ -23,7 +23,7 @@ Sleep AT 示例
 
 默认情况下，{IDF_TARGET_NAME} 会在系统复位后进入 ``Active`` 模式。当 CPU 不需要一直工作时，例如等待外部活动唤醒时，系统可以进入低功耗模式。
 
-{IDF_TARGET_NAME} 的功耗，请参考 `{IDF_TARGET_NAME} 系列芯片技术规格书 <https://www.espressif.com/sites/default/files/documentation/{IDF_TARGET_HYPHEN_LOWERCASE_NAME}_datasheet_cn.pdf>`__。
+{IDF_TARGET_NAME} 的功耗，请参考 `{IDF_TARGET_NAME} 系列芯片技术规格书 <{IDF_TARGET_DATASHEET_CN_URL}>`__。
 
 .. note::
 

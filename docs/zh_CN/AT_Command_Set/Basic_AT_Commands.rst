@@ -144,7 +144,7 @@
 -  **<AT version info>**：AT 核心库的版本信息，它们在 ``esp-at/components/at/lib/`` 目录下。代码是闭源的，无开放计划。
 -  **<SDK version info>**：AT 使用的平台 SDK 版本信息，它们定义在 ``esp-at/module_config/module_{platform}_default/IDF_VERSION`` 文件中。
 -  **<compile time>**：固件生成时间。
--  **<Bin version>**: AT 固件版本信息。版本信息可以在 menuconfig 中修改。
+-  **<Bin version>**: AT 固件版本信息。版本信息可以在 menuconfig 中修改。（``python build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``AT firmware version.``）
 
 说明
 ^^^^

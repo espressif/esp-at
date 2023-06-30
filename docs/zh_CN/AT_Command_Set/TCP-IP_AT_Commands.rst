@@ -50,7 +50,7 @@ TCP/IP AT 命令
 ------
 
 .. important::
-  默认的 AT 固件支持此页面下的所有 AT 命令。如果您需要修改 {IDF_TARGET_NAME} 默认支持的命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+  默认的 AT 固件支持此页面下的所有 AT 命令。如果您需要修改 {IDF_TARGET_NAME} 默认支持的命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择（下面每项是独立的，根据您的需要选择）：
 
   - 禁用 OTA 命令（:ref:`AT+CIUPDATE <cmd-UPDATE>`、:ref:`AT+CIPFWVER <cmd-FWVER>`）：``Component config`` -> ``AT`` -> ``AT OTA command support``
   - 禁用 PING 命令（:ref:`AT+PING <cmd-CIPPING>`）：``Component config`` -> ``AT`` -> ``AT ping command support``
@@ -1332,6 +1332,7 @@ TCP/IP AT 命令
 
 -  设置命令若未填写以上三个 SNTP 服务器参数，则默认使用 "cn.ntp.org.cn"、"ntp.sjtu.edu.cn" 和 "us.pool.ntp.org" 其中之一。
 -  对于查询命令，查询的 ``<timezone>`` 参数可能会和设置的 ``<timezone>`` 参数不一样。因为 ``<timezone>`` 参数支持第二种 UTC 偏移量格式，例如：设置 ``AT+CIPSNTPCFG=1,015``，那么查询时，ESP-AT 会忽略时区参数的前导 0，即设置值是 ``15``。不属于第一种格式，所以按照第二种 UTC 偏移量格式解析，也就是 ``UTC+00:15``，也就是查询出来的是 0 时区。
+-  由于 SNTP 是基于 UDP 协议发送请求和接收回复，当网络丢包时，会导致 {IDF_TARGET_NAME} 的时间无法及时同步。一旦 AT 命令口输出 :ref:`+TIME_UPDATED <at-messages-report>`，代表时间已同步，此时您可以发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间。
 
 示例
 ^^^^
@@ -1376,6 +1377,7 @@ TCP/IP AT 命令
 ^^^^
 
 -  有关 asctime 时间的定义请见 `asctime man page <https://linux.die.net/man/3/asctime>`_。
+-  在 {IDF_TARGET_NAME} 进入 Light-sleep 或 Deep-sleep 后再唤醒，系统时间可能会不准。建议您重新发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令，从 NTP 服务器获取新的时间。
 
 .. only:: esp32 or esp32c3
 

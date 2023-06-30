@@ -50,7 +50,7 @@ Introduction
 ------------
 
 .. important::
-  The default AT firmware supports all the AT commands mentioned on this page. If you need to modify the commands supported by {IDF_TARGET_NAME} by default, please compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
+  The default AT firmware supports all the AT commands mentioned on this page. If you need to modify the commands supported by {IDF_TARGET_NAME} by default, please compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections (Each item below is independent. Choose it according to your needs):
 
   - Disable OTA commands (:ref:`AT+CIUPDATE <cmd-UPDATE>` and :ref:`AT+CIPFWVER <cmd-FWVER>`): ``Component config`` -> ``AT`` -> ``AT OTA command support``
   - Disable PING commands (:ref:`AT+PING <cmd-CIPPING>`): ``Component config`` -> ``AT`` -> ``AT ping command support``
@@ -1332,6 +1332,7 @@ Note
 
 -  If the three SNTP servers are not configured, one of the following default servers will be used: "cn.ntp.org.cn", "ntp.sjtu.edu.cn", and "us.pool.ntp.org".
 -  For the query command, ``<timezone>`` parameter in the response may be different from the ``<timezone>`` parameter in set command. Because the ``<timezone>`` parameter supports the second ``UTC offset`` format, for example, set ``AT+CIPSNTPCFG=1,015``, for query command, ESP-AT ignores the leading zero of the ``<timezone>`` parameter, and the valid value is ``15``. It does not belong to the first format, so it is parsed according to the second ``UTC offset`` format, that is, ``UTC+00:15``, that is, ``timezone`` is 0 in the response.
+-  Since SNTP operates over the UDP protocol for sending requests and receiving replies, if there is packet loss in the network, the time synchronization of {IDF_TARGET_NAME} may be delayed. Once the AT command output shows :ref:`+TIME_UPDATED <at-messages-report>`, it indicates that the time has been synchronized, and you can then send the :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` command to query the current time.
 
 Example
 ^^^^^^^^
@@ -1376,6 +1377,7 @@ Note
 ^^^^^
 
 -  The asctime style time is defined at `asctime man page <https://linux.die.net/man/3/asctime>`_.
+-  When {IDF_TARGET_NAME} enters Light-sleep or Deep-sleep mode and then wakes up, the system time may become inaccurate. It is recommended to resend the :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to obtain the new time from the NTP server.
 
 .. only:: esp32 or esp32c3
 

@@ -216,6 +216,10 @@ AT 消息
          - 如果 AT+CIPMUX=0，AT+CIPRECVMODE=0，AT+CIPDINFO=1，打印：``+IPD,<length>,<"remote_ip">,<remote_port>:<data>``
          - 如果 AT+CIPMUX=1，AT+CIPRECVMODE=0，AT+CIPDINFO=1，打印：``+IPD,<link_id>,<length>,<"remote_ip">,<remote_port>:<data>``
 
+         其中的 ``link_id`` 为连接 ID，``length`` 为数据长度，``remote_ip`` 为远端 IP 地址，``remote_port`` 为远端端口号，``data`` 为数据。
+
+         注意：当这是个 SSL 连接时，在被动接收模式下（AT+CIPRECVMODE=1），AT 命令口回复的 ``length`` 可能和实际可读的 SSL 数据长度不一致。因为 AT 会优先返回 SSL 层可读的数据长度，如果 SSL 层可读的数据长度为 0，AT 会返回套接字层可读的数据长度。
+
      * - :term:`透传模式` 下的数据
        - ESP-AT 在透传模式下，已收到来自网络或蓝牙的数据
      * - SEND Canceled

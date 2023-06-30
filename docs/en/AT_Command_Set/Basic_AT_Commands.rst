@@ -144,7 +144,7 @@ Parameters
 -  **<AT version info>**: information about the esp-at core library version, which is under the directory: ``esp-at/components/at/lib/``. Code is closed source, no plan to open.
 -  **<SDK version info>**: information about the esp-at platform sdk version, which is defined in file: ``esp-at/module_config/module_{platform}_default/IDF_VERSION``
 -  **<compile time>**: the time to compile the firmware.
--  **<Bin version>**: esp-at firmware version. Version information can be modified in menuconfig.
+-  **<Bin version>**: esp-at firmware version. Version information can be modified in menuconfig. (``python build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``AT firmware version.``)
 
 Note
 ^^^^^

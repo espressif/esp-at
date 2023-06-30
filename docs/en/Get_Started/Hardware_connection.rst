@@ -117,6 +117,45 @@ Note:
 
   If you want to connect your device directly with ESP32-WROOM-32 rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-WROOM-32 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.pdf>`_ for more details.
 
+  ESP32-MINI-1 Series
+  ^^^^^^^^^^^^^^^^^^^^^^
+
+  .. list-table:: ESP32-MINI-1 Series Hardware Connection Pinout
+    :header-rows: 1
+
+    * - Function of Connection
+      - {IDF_TARGET_NAME} Board Pins
+      - Other Device Pins
+    * - Download/Log output :sup:`1`
+      - UART0
+          * GPIO3 (RX)
+          * GPIO1 (TX)
+      - PC
+          * TX
+          * RX
+    * - AT command/response :sup:`2`
+      - UART1
+          * GPIO19 (RX)
+          * GPIO22 (TX)
+          * GPIO15 (CTS)
+          * GPIO14 (RTS)
+      - USB to serial converter
+          * TX
+          * RX
+          * RTS
+          * CTS
+
+  **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
+
+  **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
+
+  .. figure:: ../../_static/esp32-mini-hw-connection.jpg
+    :align: center
+    :alt: ESP32-MINI-1 Series Hardware Connection
+    :figclass: align-center
+
+    ESP32-MINI-1 Series Hardware Connection
+
   .. _hw-connection-esp32-wrover-series:
 
   ESP32-WROVER Series
