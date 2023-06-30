@@ -1,10 +1,6 @@
 ## IDF Component Manager Manifest File
 dependencies:
   espressif/mdns:
-    version: "==1.0.5"
-    rules:
-      - if: "idf_version >= 5.0"
+    version: "^1.0.0"
   espressif/esp_websocket_client:
-    version: "==0.0.4"
-    rules:
-      - if: "idf_version >= 5.0"
+    version: "^1.0.0"

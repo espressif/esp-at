@@ -72,6 +72,10 @@ static const esp_at_module_info_t esp_at_module_info[] = {
     {"ESP32C2-2MB",    CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_2MB,         CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_2MB},
     {"ESP32C2-4MB",    CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_4MB,         CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_4MB},
 #endif
+
+#if defined(CONFIG_IDF_TARGET_ESP32C6)
+    {"ESP32C6-4MB",    CONFIG_ESP_AT_OTA_TOKEN_ESP32C6_4MB,         CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C6_4MB},
+#endif
 };
 
 static uint8_t esp_at_module_id = 0x0;

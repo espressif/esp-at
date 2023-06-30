@@ -63,6 +63,16 @@ default:
   - *setup_idf_ci_env
   - export ESP_AT_PROJECT_BRANCH=${CI_COMMIT_REF_NAME}
 
+.before_build_esp32c6_series: &before_build_esp32c6_series
+  - cd components/at/private_include
+  - rm -f at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C6_4MB \"$AT_OTA_TOKEN_ESP32C6_4MB\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C6_4MB \"$AT_OTA_TOKEN_ESP32C6_4MB\"" >> at_ota_token.h
+  - cd -
+
+  - *setup_idf_ci_env
+  - export ESP_AT_PROJECT_BRANCH=${CI_COMMIT_REF_NAME}
+
 .esp_at_build_template:
   stage: build
   image: $CI_DOCKER_REGISTRY/esp-env-v5.0:2
@@ -153,6 +163,17 @@ default:
   - rm -rf build && mkdir build
   - mv module_info.json build/module_info.json
   - *before_build_esp32c2_series
+  - ./build.py build
+
+.execute_script_esp32c6: &execute_script_esp32c6
+  - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/${MODULE_CFG_DIR}/IDF_VERSION
+  - mkdir build
+  - cp module_info.json build/module_info.json
+  - export HAS_IDF_PREREQUISITES=1
+  - ./build.py install
+  - rm -rf build && mkdir build
+  - mv module_info.json build/module_info.json
+  - *before_build_esp32c6_series
   - ./build.py build
 
 esp32_wroom_at:
@@ -387,6 +408,14 @@ esp32c2_at_full_function_test:
     - export MODULE_CFG_DIR=module_esp32c2_default
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32C2\", \"module\": \"ESP32C2-4MB\", \"description\": \"\",\"silence\": 0}" > module_info.json'
     - *execute_script_esp32c2
+
+esp32c6_4mb_at:
+  extends:
+    - .esp_at_build_template
+  script:
+    - export MODULE_CFG_DIR=module_esp32c6_default
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP32C6\", \"module\": \"ESP32C6-4MB\", \"description\": \"\",\"silence\": 0}" > module_info.json'
+    - *execute_script_esp32c6
 
 push_master_to_github:
   stage: deploy

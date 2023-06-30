@@ -46,6 +46,8 @@
 #include "esp32c3/rom/uart.h"
 #elif CONFIG_IDF_TARGET_ESP32C2
 #include "esp32c2/rom/uart.h"
+#elif CONFIG_IDF_TARGET_ESP32C6
+#include "esp32c6/rom/uart.h"
 #endif
 
 typedef struct {
@@ -81,6 +83,17 @@ extern const char *g_at_mfg_nvs_name;
 #define AT_UART_BAUD_RATE_MIN                       80
 
 #elif defined(CONFIG_IDF_TARGET_ESP32C3)
+#define CONFIG_AT_UART_PORT_TX_PIN_DEFAULT          7
+#define CONFIG_AT_UART_PORT_RX_PIN_DEFAULT          6
+#define CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT         5
+#define CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT         4
+#ifndef CONFIG_AT_UART_PORT
+#define CONFIG_AT_UART_PORT                         UART_NUM_1
+#endif
+#define AT_UART_BAUD_RATE_MAX                  5000000
+#define AT_UART_BAUD_RATE_MIN                       80
+
+#elif defined(CONFIG_IDF_TARGET_ESP32C6)
 #define CONFIG_AT_UART_PORT_TX_PIN_DEFAULT          7
 #define CONFIG_AT_UART_PORT_RX_PIN_DEFAULT          6
 #define CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT         5

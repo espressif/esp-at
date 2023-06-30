@@ -39,7 +39,7 @@ else:
     sys_cmd = 'export'
     sys_delimiter = ':'
 
-at_targets = ['esp32', 'esp32c2', 'esp32c3']
+at_targets = ['esp32', 'esp32c2', 'esp32c3', 'esp32c6']
 at_macro_pairs = []
 
 def ESP_LOGI(x):
