@@ -1134,6 +1134,76 @@ err:
     return ESP_FAIL;
 }
 
+static esp_err_t at_get_wifi_info_from_json_str(char *buffer, wifi_sta_connect_config_t *config)
+{
+    char *p = buffer;
+    char ssid[32] = {0}, password[64] = {0};
+    int32_t ssid_len = 0, password_len = 0;
+
+    if (!buffer || !config) {
+        return ESP_FAIL;
+    }
+
+    // get ssid len
+    p = strstr(p, "\"ssid_len\":");
+    if (p) {
+        p += strlen("\"ssid_len\":");
+        ssid_len = atoi(p);
+    } else {
+        return ESP_FAIL;
+    }
+    if (ssid_len > 32 || ssid_len < 0) {
+        return ESP_FAIL;
+    }
+
+    // get ssid
+    p = strstr(p, "\"ssid\":\"");
+    if (p) {
+        p += strlen("\"ssid\":\"");
+        for (int i = 0; i < ssid_len; ++i) {
+            char c = *p, cnext = *(p + 1);
+            if (c == '\\' && (cnext == '\\' || cnext == '\"' || cnext == '/')) {
+                p++;
+            }
+            ssid[i] = *p++;
+        }
+    } else {
+        return ESP_FAIL;
+    }
+
+    // get password len
+    p = strstr(p, "\"password_len\":");
+    if (p) {
+        p += strlen("\"password_len\":");
+        password_len = atoi(p);
+    } else {
+        return ESP_FAIL;
+    }
+    if (password_len > 64 || password_len < 0) {
+        return ESP_FAIL;
+    }
+
+    // get password
+    p = strstr(p, "\"password\":\"");
+    if (p) {
+        p += strlen("\"password\":\"");
+        for (int i = 0; i < password_len; ++i) {
+            char c = *p, cnext = *(p + 1);
+            if (c == '\\' && (cnext == '\\' || cnext == '\"' || cnext == '/')) {
+                p++;
+            }
+            password[i] = *p++;
+        }
+    } else {
+        return ESP_FAIL;
+    }
+
+    memcpy(config->ssid, ssid, ssid_len);
+    memcpy(config->password, password, password_len);
+
+    return ESP_OK;
+}
+
 static esp_err_t config_wifi_post_handler(httpd_req_t *req)
 {
     char *buf = ((web_server_context_t*) (req->user_ctx))->scratch;
@@ -1160,25 +1230,20 @@ static esp_err_t config_wifi_post_handler(httpd_req_t *req)
             goto error_handle;
         }
 
-        str_len = at_web_find_arg(buf, "sta_ssid", (char*)&wifi_config.ssid, sizeof(wifi_config.ssid) - 1);
-        if (str_len == -1) { // we allow ssid can be null.
-            ESP_LOGE(TAG, "sta ssid is abnormal");
+        if (at_get_wifi_info_from_json_str(buf, &wifi_config) != ESP_OK) {
+            ESP_LOGE(TAG, "failed to parse wifi info, json str: %s", buf);
             goto error_handle;
-        } else {
-            if (strlen((char*)&wifi_config.ssid) == 0) { // now, user don't enter ssid in web pages
-                ssid_is_null = true; // it means config wifi phone is target ap
-            }
         }
+        ESP_LOGD(TAG, "ssid(%d):%s password:(%d):%s\r\n",
+            strlen((char *)wifi_config.ssid), wifi_config.ssid, strlen((char *)wifi_config.password), wifi_config.password);
 
-        str_len = at_web_find_arg(buf, "sta_password", (char*)&wifi_config.password, sizeof(wifi_config.password) - 1);
-        if (str_len == -1) {
-            ESP_LOGE(TAG, "sta password is abnormal");
+        // check the validity of ssid and password
+        if (strlen((char *)&wifi_config.ssid) == 0) {
+            ssid_is_null = true;
+        }
+        if ((ssid_is_null == true) && (strlen((char*)&wifi_config.password) == 0)) {
+            ESP_LOGE(TAG, "Error, ssid and password all is null");
             goto error_handle;
-        } else {
-            if ((ssid_is_null == true) && (strlen((char*)&wifi_config.password) == 0)) {
-                ESP_LOGE(TAG, "Error, ssid and password all is null");
-                goto error_handle;
-            }
         }
 
         str_len = at_web_find_arg(buf, "udp_port", (char*)temp_str, sizeof(temp_str));
@@ -1240,8 +1305,31 @@ static esp_err_t config_wifi_get_handler(httpd_req_t *req)
         json_len += sprintf(temp_json_str + json_len, "{\"state\":0,"); // it means http context OK
     }
 
-    json_len += sprintf(temp_json_str + json_len, "\"sta_ssid\":\"%s\",", (char *)connect_config->ssid);
-    json_len += sprintf(temp_json_str + json_len, "\"sta_password\":\"%s\",", (char *)connect_config->password);
+    // add ssid to json str
+    // note: escape special non-control characters in json format, see https://www.json.org/json-en.html for more details
+    json_len += sprintf(temp_json_str + json_len, "\"sta_ssid\":\"");
+    int32_t ssid_len = strlen((char *)(connect_config->ssid));
+    for (int i = 0; i < ssid_len; i++) {
+        uint8_t c = connect_config->ssid[i];
+        if (c == '\\' || c == '\"' || c == '/') {
+            json_len += sprintf(temp_json_str + json_len, "\\");
+        }
+        json_len += sprintf(temp_json_str + json_len, "%c", c);
+    }
+    json_len += sprintf(temp_json_str + json_len, "\",");
+
+    // add password to json str
+    // note: escape special non-control characters in json format, see https://www.json.org/json-en.html for more details
+    json_len += sprintf(temp_json_str + json_len, "\"sta_password\":\"");
+    int32_t password_len = strlen((char *)(connect_config->password));
+    for (int i = 0; i < password_len; i++) {
+        uint8_t c = connect_config->password[i];
+        if (c == '\\' || c == '\"' || c == '/') {
+            json_len += sprintf(temp_json_str + json_len, "\\");
+        }
+        json_len += sprintf(temp_json_str + json_len, "%c", c);
+    }
+    json_len += sprintf(temp_json_str + json_len, "\",");
 
     switch (connection_info->config_status) {
     case ESP_AT_WIFI_STA_NOT_START:
@@ -1265,8 +1353,8 @@ static esp_err_t config_wifi_get_handler(httpd_req_t *req)
     json_len += sprintf(temp_json_str + json_len, "\"message\":\"%s\"}", temp_str);
 
     ESP_LOGD(TAG, "now wifi get json str is %s\n", temp_json_str);
-
     httpd_resp_send(req, temp_json_str, (temp_json_str == NULL) ? 0 : strlen(temp_json_str));
+
     return ESP_OK;
 }
 
@@ -1355,8 +1443,19 @@ static esp_err_t ap_record_get_handler(httpd_req_t *req)
     json_len += sprintf(temp_json_str + json_len, "{\"state\":0,\"message\":\"scan done\",\"aplist\":["); // to get a json array format str
 
     for (loop = 0; loop < ap_number; loop++) {
-        if (strlen((const char*)ap_info[loop].ssid) != 0) { // ingore hidden ssid
-            json_len += sprintf(temp_json_str + json_len, "{\"ssid\":\"%s\",\"auth_mode\":%d},", (char *)ap_info[loop].ssid, ap_info[loop].authmode);
+        int32_t ssid_len = strlen((const char*)ap_info[loop].ssid);
+        if (ssid_len != 0) { // ingore hidden ssid
+            json_len += sprintf(temp_json_str + json_len, "{\"ssid\":\"");
+            for (int i = 0; i < ssid_len; i++) {
+                uint8_t c = ap_info[loop].ssid[i];
+                // escape special non-control characters in json format, see https://www.json.org/json-en.html for more details
+                if (c == '\\' || c == '\"' || c == '/') {
+                    json_len += sprintf(temp_json_str + json_len, "\\");
+                }
+                json_len += sprintf(temp_json_str + json_len, "%c", c);
+            }
+            json_len += sprintf(temp_json_str + json_len, "\",\"auth_mode\":%d},", ap_info[loop].authmode);
+
             valid_ap_count++;
         }
     }
