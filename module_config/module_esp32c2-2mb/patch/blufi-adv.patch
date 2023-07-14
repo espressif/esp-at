@@ -1,25 +1,23 @@
-From c004264c6c3993541dd301dd8855aab16be8429d Mon Sep 17 00:00:00 2001
+From 880c46ed4830a561df3dc6ba72dfee9c39b0559a Mon Sep 17 00:00:00 2001
 From: xiewenxiang <xiewenxiang@espressif.com>
-Date: Thu, 13 Apr 2023 19:25:16 +0800
+Date: Thu, 13 Jul 2023 19:24:50 +0800
 Subject: [PATCH] feat(blufi): Support ext adv
 
 ---
- .../profile/esp/blufi/nimble_host/esp_blufi.c | 99 ++++++++++++++++++-
- 1 file changed, 98 insertions(+), 1 deletion(-)
+ .../profile/esp/blufi/nimble_host/esp_blufi.c | 98 ++++++++++++++++++-
+ 1 file changed, 97 insertions(+), 1 deletion(-)
 
 diff --git a/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c b/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
-index 09e3db61b8..adf6f74465 100644
+index 5a22773c7a..220a29de81 100644
 --- a/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
 +++ b/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
-@@ -32,12 +32,24 @@
+@@ -32,11 +32,22 @@
  
  #if (BLUFI_INCLUDED == TRUE)
  
 +#if !CONFIG_BT_NIMBLE_EXT_ADV
  static uint8_t own_addr_type;
 +#endif
-+
- static uint16_t  conn_handle;
  
  struct gatt_value gatt_values[SERVER_MAX_VALUES];
  const static char *TAG = "BLUFI_EXAMPLE";
@@ -36,7 +34,7 @@ index 09e3db61b8..adf6f74465 100644
  enum {
      GATT_VALUE_TYPE_CHR,
      GATT_VALUE_TYPE_DSC,
-@@ -334,6 +346,79 @@ esp_blufi_gap_event(struct ble_gap_event *event, void *arg)
+@@ -333,6 +344,79 @@ esp_blufi_gap_event(struct ble_gap_event *event, void *arg)
  
  void esp_blufi_adv_start(void)
  {
@@ -116,7 +114,7 @@ index 09e3db61b8..adf6f74465 100644
      int rc;
  
      rc = ble_hs_util_ensure_addr(0);
-@@ -405,6 +490,7 @@ void esp_blufi_adv_start(void)
+@@ -404,6 +488,7 @@ void esp_blufi_adv_start(void)
          ESP_LOGE(TAG, "error enabling advertisement; rc=%d\n", rc);
          return;
      }
@@ -124,8 +122,8 @@ index 09e3db61b8..adf6f74465 100644
  }
  
  uint8_t esp_blufi_init(void)
-@@ -442,7 +528,18 @@ void esp_blufi_disconnect(void)
-     ble_gap_terminate(conn_handle, BLE_ERR_REM_USER_CONN_TERM);
+@@ -447,7 +532,18 @@ void esp_blufi_disconnect(void)
+     ble_gap_terminate(blufi_env.conn_id, BLE_ERR_REM_USER_CONN_TERM);
  }
  
 -void esp_blufi_adv_stop(void) {}
