@@ -22,6 +22,8 @@
 import os
 import sys
 import subprocess
+import shutil
+import filecmp
 
 def ESP_LOGI(x):
     print('\033[32m{}\033[0m'.format(x))
@@ -35,12 +37,16 @@ def main():
     cur_abs_dir = os.getcwd()
 
     patch_list = {
-        'dhcps.patch': os.path.join(cur_abs_dir, 'esp-idf')
+        'dhcps.patch': os.path.join(cur_abs_dir, 'esp-idf'),
+        'libbtdm_app.a': os.path.join(cur_abs_dir, 'esp-idf', 'components', 'bt', 'controller', 'lib_esp32', 'esp32', 'libbtdm_app.a')
     }
 
     for name, path in patch_list.items():
         patch_abs_path = os.path.join(patch_abs_dir, name)
-        if os.path.exists(patch_abs_path):
+        if not os.path.exists(patch_abs_path):
+            raise Exception('{} does not exist'.format(name))
+
+        if name.endswith('.patch'):
             if sys.platform == 'win32':
                 cmd = 'cd {} && git apply --check {} 2> /COM && cd {}'.format(path, patch_abs_path, cur_abs_dir)
             else:
@@ -54,9 +60,14 @@ def main():
                 ret = subprocess.call(cmd, shell = True)
                 if ret:
                     raise Exception('{} apply failed'.format(name))
-
-        else:
-            raise Exception('{} does not exist'.format(name))
+        elif name.endswith('.a'):
+            if not os.path.exists(path):
+                raise Exception('{} does not exist'.format(path))
+            if filecmp.cmp(patch_abs_path, path):
+                ESP_LOGI('{} does not need to be applied'.format(name))
+            else:
+                shutil.copy(patch_abs_path, path)
+                ESP_LOGI('{} applied'.format(name))
 
 if __name__ == '__main__':
     try:
