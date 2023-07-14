@@ -22,7 +22,7 @@
 {IDF_TARGET_NAME} 系列
 ------------------------
 
-{IDF_TARGET_NAME} AT 固件的日志端口和命令端口管脚可以自定义为其它管脚，请参阅 `《{IDF_TARGET_NAME} 技术参考手册》 <https://www.espressif.com/sites/default/files/documentation/{IDF_TARGET_HYPHEN_LOWERCASE_NAME}_technical_reference_manual_cn.pdf>`_ 查看可使用的管脚。
+{IDF_TARGET_NAME} AT 固件的日志端口和命令端口管脚可以自定义为其它管脚，请参阅 `《{IDF_TARGET_NAME} 技术参考手册》 <{IDF_TARGET_TRM_CN_URL}>`_ 查看可使用的管脚。
 
 修改日志端口管脚
 ^^^^^^^^^^^^^^^^^

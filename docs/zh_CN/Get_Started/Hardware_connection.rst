@@ -117,6 +117,45 @@
 
   如果需要直接基于 ESP32-WROOM-32 模组进行连接，请参考 `《ESP32-WROOM-32 技术规格书》 <https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32e_esp32-wroom-32ue_datasheet_cn.pdf>`_。
 
+  ESP32-MINI-1 系列
+  ^^^^^^^^^^^^^^^^^^
+
+  .. list-table:: ESP32-MINI-1 系列硬件连接管脚分配
+    :header-rows: 1
+
+    * - 功能
+      - {IDF_TARGET_NAME} 开发板管脚
+      - 其它设备管脚
+    * - 下载固件/输出日志 :sup:`1`
+      - UART0
+          * GPIO3 (RX)
+          * GPIO1 (TX)
+      - PC
+          * TX
+          * RX
+    * - AT 命令/响应 :sup:`2`
+      - UART1
+          * GPIO19 (RX)
+          * GPIO22 (TX)
+          * GPIO15 (CTS)
+          * GPIO14 (RTS)
+      - USB 转 UART 串口模块
+          * TX
+          * RX
+          * RTS
+          * CTS
+
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+
+  **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
+
+  .. figure:: ../../_static/esp32-mini-hw-connection.jpg
+    :align: center
+    :alt: ESP32-MINI-1 系列硬件连接示意图
+    :figclass: align-center
+
+    ESP32-MINI-1 系列硬件连接示意图
+
   .. _hw-connection-esp32-wrover-series:
 
   ESP32-WROVER 系列

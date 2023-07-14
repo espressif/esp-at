@@ -23,7 +23,7 @@ With the use of advanced power-management technologies, {IDF_TARGET_NAME} series
 
 By default, {IDF_TARGET_NAME} will enter ``Active`` mode after system reset. When the CPU does not need to work all the time, such as waiting for external activities to wake up, the system can enter low-power modes.
 
-For current consumption of {IDF_TARGET_NAME}, please refer to `{IDF_TARGET_NAME} Series Datasheet <https://www.espressif.com/sites/default/files/documentation/{IDF_TARGET_HYPHEN_LOWERCASE_NAME}_datasheet_en.pdf>`__.
+For current consumption of {IDF_TARGET_NAME}, please refer to `{IDF_TARGET_NAME} Series Datasheet <{IDF_TARGET_DATASHEET_EN_URL}>`__.
 
 .. note::
 

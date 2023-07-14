@@ -351,8 +351,8 @@ ESP-AT 固件差异
     :header-rows: 1
 
     * - 硬件
-      - ESP32C2-2MB
-      - ESP32C2-4MB
+      - ESP32C2-2MB Bin
+      - ESP32C2-4MB Bin
     * - Flash
       - 2 MB
       - 4 MB
@@ -375,7 +375,7 @@ ESP-AT 固件差异
     :header-rows: 1
 
     * - 硬件
-      - MINI-1
+      - MINI-1 Bin
     * - Flash
       - 4 MB
     * - PSRAM
@@ -391,12 +391,13 @@ ESP-AT 固件差异
 支持的模组
 ^^^^^^^^^^
 
-下表列出了 {IDF_TARGET_NAME} 系列 AT 固件支持的模组或芯片。
+下表列出了官方发布的 {IDF_TARGET_NAME} 系列 AT 固件默认支持哪些模组或芯片（用 |icon-green-check| 表示）、默认不支持但可以通过 :doc:`../Compile_and_Develop/tools_at_py` 修改后支持的模组（用 |icon-orange-check| 表示），以及完全不支持的模组（用 |icon-red-cross| 表示）。对于完全不支持的模组，您可以 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` 修改您需要的配置后支持。
 
 .. only:: esp32
 
   .. list-table::
     :header-rows: 1
+    :widths: 100 40 40 40 40 40 40
 
     * - 模组/芯片
       - WROOM Bin
@@ -405,97 +406,97 @@ ESP-AT 固件差异
       - SOLO-1 Bin
       - MINI-1 Bin
       - D2WD Bin
-    * - ESP32-WROOM-32E
-      - |icon-green-check|
-      - |icon-red-cross|
-      - |icon-red-cross|
-      - |icon-green-check|
-      - |icon-red-cross|
-      - |icon-red-cross|
-    * - ESP32-WROOM-32UE
-      - |icon-green-check|
-      - |icon-red-cross|
-      - |icon-red-cross|
-      - |icon-green-check|
-      - |icon-red-cross|
-      - |icon-red-cross|
-    * - ESP32-WROOM-32D
-      - |icon-green-check|
-      - |icon-red-cross|
-      - |icon-red-cross|
-      - |icon-green-check|
-      - |icon-red-cross|
-      - |icon-red-cross|
-    * - ESP32-WROOM-32U
-      - |icon-green-check|
-      - |icon-red-cross|
-      - |icon-red-cross|
-      - |icon-green-check|
-      - |icon-red-cross|
-      - |icon-red-cross|
     * - ESP32-WROOM-32
       - |icon-green-check|
       - |icon-red-cross|
-      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROOM-32D
       - |icon-green-check|
       - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROOM-32E
+      - |icon-green-check|
       - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROOM-32U
+      - |icon-green-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROOM-32UE
+      - |icon-green-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROOM-32DA
+      - |icon-green-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
     * - ESP32-WROOM-32SE
+      - |icon-green-check|
       - |icon-red-cross|
-      - |icon-red-cross|
-      - |icon-red-cross|
-      - |icon-red-cross|
-      - |icon-red-cross|
-      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
     * - ESP32-WROVER-E
-      - |icon-red-cross|
+      - |icon-orange-check|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-red-cross|
+      - |icon-orange-check|
       - |icon-green-check|
       - |icon-green-check|
     * - ESP32-WROVER-IE
-      - |icon-red-cross|
+      - |icon-orange-check|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-red-cross|
+      - |icon-orange-check|
       - |icon-green-check|
       - |icon-green-check|
     * - ESP32-WROVER-B
-      - |icon-red-cross|
+      - |icon-orange-check|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-red-cross|
+      - |icon-orange-check|
       - |icon-green-check|
       - |icon-green-check|
     * - ESP32-WROVER-IB
-      - |icon-red-cross|
+      - |icon-orange-check|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-red-cross|
+      - |icon-orange-check|
       - |icon-green-check|
       - |icon-green-check|
     * - ESP32-WROVER
-      - |icon-red-cross|
+      - |icon-orange-check|
       - |icon-green-check|
       - |icon-green-check|
-      - |icon-red-cross|
-      - |icon-green-check|
-      - |icon-green-check|
-    * - ESP32-WROVER-I
-      - |icon-red-cross|
-      - |icon-green-check|
-      - |icon-green-check|
-      - |icon-red-cross|
+      - |icon-orange-check|
       - |icon-green-check|
       - |icon-green-check|
     * - ESP32-SOLO-1
       - |icon-green-check|
       - |icon-red-cross|
-      - |icon-red-cross|
       - |icon-green-check|
-      - |icon-red-cross|
-      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
     * - ESP32-D2WD
       - |icon-red-cross|
       - |icon-red-cross|
@@ -504,43 +505,94 @@ ESP-AT 固件差异
       - |icon-red-cross|
       - |icon-green-check|
     * - ESP32-MINI-1
-      - |icon-red-cross|
+      - |icon-orange-check|
       - |icon-red-cross|
       - |icon-green-check|
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-MINI-1U
+      - |icon-orange-check|
       - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-orange-check|
       - |icon-green-check|
       - |icon-green-check|
     * - ESP32-PICO-D4
-      - |icon-red-cross|
-      - |icon-red-cross|
       - |icon-green-check|
       - |icon-red-cross|
       - |icon-green-check|
       - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-PICO-V3-ZERO
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+    * - ESP32-PICO-MINI-02
+      - |icon-orange-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-orange-check|
+    * - ESP32-PICO-MINI-02U
+      - |icon-orange-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-orange-check|
 
 .. only:: esp32c2
 
   .. list-table::
     :header-rows: 1
+    :widths: 100 60 60
 
     * - 模组/芯片
       - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
-    * - ESP8684 MINI 系列
+    * - ESP8684-MINI-1/1U
       - |icon-green-check|
       - |icon-green-check|
-    * - ESP8684 WROOM 系列
+    * - ESP8684-WROOM-02C/02UC
       - |icon-green-check|
       - |icon-green-check|
+    * - ESP8684-WROOM-03
+      - |icon-red-cross|
+      - |icon-green-check|
+    * - ESP8684-WROOM-05
+      - |icon-red-cross|
+      - |icon-green-check|
+    * - ESP8684-WROOM-07
+      - |icon-red-cross|
+      - |icon-orange-check|
 
 .. only:: esp32c3
 
   .. list-table::
     :header-rows: 1
+    :widths: 100 60
 
     * - 模组/芯片
       - MINI-1 Bin
-    * - ESP32-C3-MINI-1
+    * - ESP32-C3-MINI-1/1U
       - |icon-green-check|
-    * - ESP32-C3-WROOM-02
+    * - ESP32-C3-WROOM-02/02U
       - |icon-green-check|
+    * - ESP8685-WROOM-01
+      - |icon-green-check|
+    * - ESP8685-WROOM-03
+      - |icon-green-check|
+    * - ESP8685-WROOM-04
+      - |icon-green-check|
+    * - ESP8685-WROOM-05
+      - |icon-green-check|
+    * - ESP8685-WROOM-06
+      - |icon-green-check|
+    * - ESP8685-WROOM-07
+      - |icon-orange-check|

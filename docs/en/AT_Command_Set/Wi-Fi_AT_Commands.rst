@@ -40,7 +40,7 @@ Introduction
 ------------
 
 .. important::
-  The default AT firmware supports all the AT commands except :ref:`AT+CWJEAP <cmd-JEAP>` mentioned on this page. If you need to modify the commands supported by {IDF_TARGET_NAME} by default, please compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
+  The default AT firmware supports all the AT commands except :ref:`AT+CWJEAP <cmd-JEAP>` mentioned on this page. If you need to modify the commands supported by {IDF_TARGET_NAME} by default, please compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections (Each item below is independent. Choose it according to your needs):
 
   - Enable EAP commands (:ref:`AT+CWJEAP <cmd-JEAP>`): ``Component config`` -> ``AT`` -> ``AT WPA2 Enterprise command support``
   - Disable WPS commands (:ref:`AT+WPS <cmd-WPS>`): ``Component config`` -> ``AT`` -> ``AT WPS command support``

@@ -22,7 +22,7 @@ This document focuses on modifying the pins. Click the links above for details o
 {IDF_TARGET_NAME} Series
 ------------------------
 
-The log port and command port pins of {IDF_TARGET_NAME} AT firmware can be user-defined to other pins. Refer to `{IDF_TARGET_NAME} Technical Reference Manual <https://www.espressif.com/sites/default/files/documentation/{IDF_TARGET_HYPHEN_LOWERCASE_NAME}_technical_reference_manual_en.pdf>`_ for the pins you can use.
+The log port and command port pins of {IDF_TARGET_NAME} AT firmware can be user-defined to other pins. Refer to `{IDF_TARGET_NAME} Technical Reference Manual <{IDF_TARGET_TRM_EN_URL}>`_ for the pins you can use.
 
 Modify Log Port Pins
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
