@@ -484,7 +484,7 @@ doc_build_html_en:
     - ./check_doc_chars.py
     - pip install -r requirements.txt
     # build html
-    - build-docs -t {esp32,esp32c2,esp32c3} -l en -bs html
+    - build-docs -t {esp32,esp32c2,esp32c3,esp32c6} -l en -bs html
 
 doc_build_html_cn:
   stage: build
@@ -504,7 +504,7 @@ doc_build_html_cn:
     - ./check_doc_chars.py
     - pip install -r requirements.txt
     # build html
-    - build-docs -t {esp32,esp32c2,esp32c3} -l zh_CN -bs html
+    - build-docs -t {esp32,esp32c2,esp32c3,esp32c6} -l zh_CN -bs html
 
 # Separate PDF build and HTML build due to artifacts size limit.
 doc_build_pdf_en:
@@ -525,7 +525,7 @@ doc_build_pdf_en:
     - ./check_doc_chars.py
     - pip install -r requirements.txt
     # build pdf
-    - build-docs -t {esp32,esp32c2,esp32c3} -l en -bs latex
+    - build-docs -t {esp32,esp32c2,esp32c3,esp32c6} -l en -bs latex
 
 doc_build_pdf_cn:
   stage: build
@@ -545,7 +545,7 @@ doc_build_pdf_cn:
     - ./check_doc_chars.py
     - pip install -r requirements.txt
     # build pdf
-    - build-docs -t {esp32,esp32c2,esp32c3} -l zh_CN -bs latex
+    - build-docs -t {esp32,esp32c2,esp32c3,esp32c6} -l zh_CN -bs latex
 
 .deploy_docs_template:
   stage: deploy_docs

@@ -30,6 +30,10 @@ This section describes the differences among AT firmwares of {IDF_TARGET_NAME} s
 
   - ESP32-C3-MINI-1_AT_Bin (referred to as **MINI-1 Bin** in this section);
 
+.. only:: esp32c6
+
+  - ESP32C6-4MB_AT_Bin (referred to as **ESP32C6-4MB Bin** in this section);
+
 Supported Command Set
 ^^^^^^^^^^^^^^^^^^^^^
 
@@ -252,7 +256,7 @@ The table lists which command set is supported by default in the official AT fir
       - |icon-orange-check|
       - |icon-green-check|
 
-.. only:: esp32c3
+.. only:: esp32c3 or esp32c6
 
   .. list-table::
     :header-rows: 1
@@ -369,7 +373,7 @@ Hardware Differences
         | CTS: 5
         | RTS: 4
 
-.. only:: esp32c3
+.. only:: esp32c3 or esp32c6
 
   .. list-table::
     :header-rows: 1
@@ -596,3 +600,15 @@ The table below lists the modules or chips that are default supported by the off
       - |icon-green-check|
     * - ESP8685-WROOM-07
       - |icon-orange-check|
+
+.. only:: esp32c6
+
+  .. list-table::
+    :header-rows: 1
+
+    * - Module/Chip
+      - ESP32C6-4MB Bin
+    * - ESP32-C6-MINI-1
+      - |icon-green-check|
+    * - ESP32-C6-WROOM-01
+      - |icon-green-check|

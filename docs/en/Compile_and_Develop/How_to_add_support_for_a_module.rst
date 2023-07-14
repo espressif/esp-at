@@ -28,17 +28,21 @@ The ESP-AT project supports multiple modules, and provides configuration for the
      - - :project_file:`module_config/module_esp32-d2wd/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32-d2wd/sdkconfig_silence.defaults`
    * - ESP32-C2
-     - ESP32C2-2MB (all ESP32C2 (ESP8684) series with 2 MB flash)
+     - ESP32C2-2MB (all ESP32-C2 (ESP8684) series with 2 MB flash)
      - - :project_file:`module_config/module_esp32c2-2mb/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32c2-2mb/sdkconfig_silence.defaults`
    * - ESP32-C2
-     - ESP32C2-4MB (all ESP32C2 (ESP8684) series with 4 MB flash)
+     - ESP32C2-4MB (all ESP32-C2 (ESP8684) series with 4 MB flash)
      - - :project_file:`module_config/module_esp32c2_default/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32c2_default/sdkconfig_silence.defaults`
    * - ESP32-C3
      - MINI-1
      - - :project_file:`module_config/module_esp32c3_default/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32c3_default/sdkconfig_silence.defaults`
+   * - ESP32-C6
+     - ESP32C6-4MB (all ESP32-C6 series with 4 MB flash)
+     - - :project_file:`module_config/module_esp32c6_default/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32c6_default/sdkconfig_silence.defaults`
 
 .. note::
 
@@ -108,6 +112,10 @@ The modified ``esp_at_module_info`` structure is as follows:
     #endif
 
     #if defined(CONFIG_IDF_TARGET_ESP32C2)
+      ...
+    #endif
+
+    #if defined(CONFIG_IDF_TARGET_ESP32C6)
       ...
     #endif
 

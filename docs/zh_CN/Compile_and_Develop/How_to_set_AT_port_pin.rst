@@ -1,7 +1,7 @@
 如何设置 AT 端口管脚
 ==========================
 
-{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3"}
+{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3", esp32c6="esp32-c6"}
 
 :link_to_translation:`en:[English]`
 
@@ -43,6 +43,11 @@
 
   - TX：GPIO21
   - RX：GPIO20
+
+.. only:: esp32c6
+
+  - TX：GPIO16
+  - RX：GPIO17
 
 在编译 ESP-AT 工程时，可使用 menuconfig 配置工具将其修改为其它管脚：
 

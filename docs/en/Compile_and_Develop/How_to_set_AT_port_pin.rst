@@ -1,7 +1,7 @@
 How to Set AT Port Pins
 ==========================
 
-{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c3="esp32-c3"}
+{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c3="esp32-c3", esp32c6="esp32-c6"}
 
 :link_to_translation:`zh_CN:[中文]`
 
@@ -43,6 +43,11 @@ By default, the {IDF_TARGET_NAME} AT firmware provided by Espressif uses the fol
 
   - TX: GPIO21
   - RX: GPIO20
+
+.. only:: esp32c6
+
+  - TX: GPIO17
+  - RX: GPIO16
 
 When compiling your ESP-AT project, you can modify them to other pins with the menuconfig utitlity:
 

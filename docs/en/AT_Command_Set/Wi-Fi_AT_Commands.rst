@@ -1058,15 +1058,26 @@ Parameters
    -  bit1: 802.11g protocol standard.
    -  bit2: 802.11n protocol standard.
 
-   .. only:: esp32 or esp32c3
+   .. only:: esp32 or esp32c3 or esp32c6
 
      - bit3: `802.11 LR Espressif-patented protocol standard <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#long-range-lr>`_.
+
+   .. only:: esp32c6
+
+     - bit4: 802.11ax protocol standard.
 
 Note
 ^^^^^
 
 -  See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-protocol-mode>`_ for the PHY mode supported by the {IDF_TARGET_NAME} device.
--  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgn mode.
+
+.. only:: esp32 or esp32c3 or esp32c2
+
+  -  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgn mode.
+
+.. only:: esp32c6
+
+  -  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgnax mode.
 
 .. _cmd-STAPROTO:
 
@@ -1113,15 +1124,26 @@ Parameters
    -  bit1: 802.11g protocol standard.
    -  bit2: 802.11n protocol standard.
 
-   .. only:: esp32 or esp32c3
+   .. only:: esp32 or esp32c3 or esp32c6
 
      - bit3: `802.11 LR Espressif-patented protocol standard <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#long-range-lr>`_.
+
+   .. only:: esp32c6
+
+     - bit4: 802.11ax protocol standard.
 
 Note
 ^^^^^
 
 -  See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-protocol-mode>`_ for the PHY mode supported by the {IDF_TARGET_NAME} device.
--  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgn mode.
+
+.. only:: esp32 or esp32c3 or esp32c2
+
+  -  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgn mode.
+
+.. only:: esp32c6
+
+  -  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgnax mode.
 
 .. _cmd-STAMAC:
 
@@ -1179,7 +1201,7 @@ Notes
 
   - The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
   :esp32: - The MAC address of {IDF_TARGET_NAME} Station is different from that of the {IDF_TARGET_NAME} SoftAP and {IDF_TARGET_NAME} Ethernet. Please make sure that you do not set the same MAC address for both of them.
-  :esp32c2 or esp32c3: - The MAC address of {IDF_TARGET_NAME} Station is different from that of the {IDF_TARGET_NAME} SoftAP. Please make sure that you do not set the same MAC address for both of them.
+  :esp32c2 or esp32c3 or esp32c6: - The MAC address of {IDF_TARGET_NAME} Station is different from that of the {IDF_TARGET_NAME} SoftAP. Please make sure that you do not set the same MAC address for both of them.
   - Bit 0 of the {IDF_TARGET_NAME} MAC address CANNOT be 1. For example, a MAC address can be "1a:…" but not "15:…".
   - FF:FF:FF:FF:FF:FF and 00:00:00:00:00:00 are invalid MAC address and cannot be set.
 
@@ -1188,7 +1210,7 @@ Example
 
 ::
 
-    AT+CIPSTAMAC="1a:fe:35:98:d3:7b"    
+    AT+CIPSTAMAC="1a:fe:35:98:d3:7b"
 
 .. _cmd-APMAC:
 
@@ -1245,7 +1267,7 @@ Notes
 
   - The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
   :esp32: - The MAC address of {IDF_TARGET_NAME} SoftAP is different from that of the {IDF_TARGET_NAME} station and {IDF_TARGET_NAME} Ethernet. Please make sure that you do not set the same MAC address for both of them.
-  :esp32c3: - The MAC address of {IDF_TARGET_NAME} SoftAP is different from that of the {IDF_TARGET_NAME} station. Please make sure that you do not set the same MAC address for both of them.
+  :esp32c2 or esp32c3 or esp32c6: - The MAC address of {IDF_TARGET_NAME} SoftAP is different from that of the {IDF_TARGET_NAME} station. Please make sure that you do not set the same MAC address for both of them.
   - Bit 0 of the {IDF_TARGET_NAME} MAC address CANNOT be 1. For example, a MAC address can be "18:…" but not "15:…".
   - FF:FF:FF:FF:FF:FF and 00:00:00:00:00:00 are invalid MAC and cannot be set.
 

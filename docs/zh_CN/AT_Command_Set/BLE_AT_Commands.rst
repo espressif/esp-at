@@ -7,61 +7,61 @@ Bluetooth® Low Energy AT 命令集
 
 .. list::
 
-    :esp32 or esp32c3 or esp32c2: - :ref:`介绍 <cmd-ble-intro>`
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEINIT <cmd-BINIT>`：Bluetooth LE 初始化
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEADDR <cmd-BADDR>`：设置 Bluetooth LE 设备地址
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLENAME <cmd-BNAME>`：查询/设置 Bluetooth LE 设备名称
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`：查询/设置 Bluetooth LE 扫描参数
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLESCAN <cmd-BSCAN>`：使能 Bluetooth LE 扫描
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`：设置 Bluetooth LE 扫描响应
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEADVPARAM <cmd-BADVP>`：查询/设置 Bluetooth LE 广播参数
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEADVDATA <cmd-BADVD>`：设置 Bluetooth LE 广播数据
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`：自动设置 Bluetooth LE 广播数据
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEADVSTART <cmd-BADVSTART>`：开始 Bluetooth LE 广播
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEADVSTOP <cmd-BADVSTOP>`：停止 Bluetooth LE 广播
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLECONN <cmd-BCONN>`：建立 Bluetooth LE 连接
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLECONNPARAM <cmd-BCONNP>`：查询/更新 Bluetooth LE 连接参数
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEDISCONN <cmd-BDISC>`：断开 Bluetooth LE 连接
-    :esp32 or esp32c3: - :ref:`AT+BLEDATALEN <cmd-BDLEN>`：设置 Bluetooth LE 数据包长度
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLECFGMTU <cmd-BMTU>`：设置 Bluetooth LE MTU 长度
-    :esp32 or esp32c3: - :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`：GATTS 创建服务
-    :esp32 or esp32c3: - :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`：GATTS 开启服务
-    :esp32 or esp32c3: - :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`：GATTS 停止服务
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`：GATTS 发现服务
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`：GATTS 发现服务特征
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`：服务器 notify 服务特征值给客户端
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTSIND <cmd-GSIND>`：服务器 indicate 服务特征值给客户端
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`：GATTS 设置服务特征值
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`：GATTC 发现基本服务
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`：GATTC 发现包含的服务
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`：GATTC 发现服务特征
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTCRD <cmd-GCRD>`：GATTC 读取服务特征值
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTCWR <cmd-GCWR>`：GATTC 写服务特征值
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`：查询/设置 Bluetooth LE SPP 参数
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLESPP <cmd-BLESPP>`：进入 Bluetooth LE SPP 模式
-    :esp32 or esp32c3: - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`：设置 Bluetooth LE 开机 :term:`透传模式` 信息
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`：查询/设置 Bluetooth LE 加密参数
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEENC <cmd-BLEENC>`：发起 Bluetooth LE 加密请求
-    :esp32 or esp32c3: - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`：回复对端设备发起的配对请求
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`：给对方设备回复密钥
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`：给对方设备回复确认结果（传统连接阶段）
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`：查询绑定的 Bluetooth LE 加密设备列表
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`：清除 Bluetooth LE 加密设备列表
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLESETKEY <cmd-BLESETKEY>`：设置 Bluetooth LE 静态配对密钥
-    :esp32 or esp32c3: - :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`：Bluetooth LE HID 协议初始化
-    :esp32 or esp32c3: - :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`：发送 Bluetooth LE HID 键盘信息
-    :esp32 or esp32c3: - :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`：发送 Bluetooth LE HID 鼠标信息
-    :esp32 or esp32c3: - :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`：发送 Bluetooth LE HID consumer 信息
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`介绍 <cmd-ble-intro>`
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEINIT <cmd-BINIT>`：Bluetooth LE 初始化
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEADDR <cmd-BADDR>`：设置 Bluetooth LE 设备地址
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLENAME <cmd-BNAME>`：查询/设置 Bluetooth LE 设备名称
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`：查询/设置 Bluetooth LE 扫描参数
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESCAN <cmd-BSCAN>`：使能 Bluetooth LE 扫描
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`：设置 Bluetooth LE 扫描响应
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEADVPARAM <cmd-BADVP>`：查询/设置 Bluetooth LE 广播参数
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEADVDATA <cmd-BADVD>`：设置 Bluetooth LE 广播数据
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`：自动设置 Bluetooth LE 广播数据
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEADVSTART <cmd-BADVSTART>`：开始 Bluetooth LE 广播
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEADVSTOP <cmd-BADVSTOP>`：停止 Bluetooth LE 广播
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLECONN <cmd-BCONN>`：建立 Bluetooth LE 连接
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLECONNPARAM <cmd-BCONNP>`：查询/更新 Bluetooth LE 连接参数
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEDISCONN <cmd-BDISC>`：断开 Bluetooth LE 连接
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEDATALEN <cmd-BDLEN>`：设置 Bluetooth LE 数据包长度
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLECFGMTU <cmd-BMTU>`：设置 Bluetooth LE MTU 长度
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`：GATTS 创建服务
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`：GATTS 开启服务
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`：GATTS 停止服务
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`：GATTS 发现服务
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`：GATTS 发现服务特征
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`：服务器 notify 服务特征值给客户端
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTSIND <cmd-GSIND>`：服务器 indicate 服务特征值给客户端
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`：GATTS 设置服务特征值
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`：GATTC 发现基本服务
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`：GATTC 发现包含的服务
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`：GATTC 发现服务特征
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTCRD <cmd-GCRD>`：GATTC 读取服务特征值
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTCWR <cmd-GCWR>`：GATTC 写服务特征值
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`：查询/设置 Bluetooth LE SPP 参数
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESPP <cmd-BLESPP>`：进入 Bluetooth LE SPP 模式
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`：设置 Bluetooth LE 开机 :term:`透传模式` 信息
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`：查询/设置 Bluetooth LE 加密参数
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEENC <cmd-BLEENC>`：发起 Bluetooth LE 加密请求
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`：回复对端设备发起的配对请求
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`：给对方设备回复密钥
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`：给对方设备回复确认结果（传统连接阶段）
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`：查询绑定的 Bluetooth LE 加密设备列表
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`：清除 Bluetooth LE 加密设备列表
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESETKEY <cmd-BLESETKEY>`：设置 Bluetooth LE 静态配对密钥
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`：Bluetooth LE HID 协议初始化
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`：发送 Bluetooth LE HID 键盘信息
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`：发送 Bluetooth LE HID 鼠标信息
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`：发送 Bluetooth LE HID consumer 信息
     - :ref:`AT+BLUFI <cmd-BLUFI>`：开启或关闭 BluFi
     - :ref:`AT+BLUFINAME <cmd-BLUFINAME>`：查询/设置 BluFi 设备名称
     - :ref:`AT+BLUFISEND <cmd-BLUFISEND>`: 发送 BluFi 用户自定义数据
-    :esp32c3 or esp32c2: - :ref:`AT+BLEPERIODICDATA <cmd-BLEPADATA>`：设置 Bluetooth LE 周期性广播数据
-    :esp32c3 or esp32c2: - :ref:`AT+BLEPERIODICSTART <cmd-BLEPASTART>`：开启 Bluetooth LE 周期性广播
-    :esp32c3 or esp32c2: - :ref:`AT+BLEPERIODICSTOP <cmd-BLEPASTOP>`：停止 Bluetooth LE 周期性广播
-    :esp32c3 or esp32c2: - :ref:`AT+BLESYNCSTART <cmd-BLESYNCSTART>`：开启周期性广播同步
-    :esp32c3 or esp32c2: - :ref:`AT+BLESYNCSTOP <cmd-BLESYNCSTOP>`：停止周期性广播同步
-    :esp32c3 or esp32c2: - :ref:`AT+BLEREADPHY <cmd-BLERDPHY>`：查询当前连接使用的 PHY
-    :esp32c3 or esp32c2: - :ref:`AT+BLESETPHY <cmd-BLESETPHY>`：设置当前连接使用的 PHY
+    :esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEPERIODICDATA <cmd-BLEPADATA>`：设置 Bluetooth LE 周期性广播数据
+    :esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEPERIODICSTART <cmd-BLEPASTART>`：开启 Bluetooth LE 周期性广播
+    :esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEPERIODICSTOP <cmd-BLEPASTOP>`：停止 Bluetooth LE 周期性广播
+    :esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESYNCSTART <cmd-BLESYNCSTART>`：开启周期性广播同步
+    :esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESYNCSTOP <cmd-BLESYNCSTOP>`：停止周期性广播同步
+    :esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEREADPHY <cmd-BLERDPHY>`：查询当前连接使用的 PHY
+    :esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESETPHY <cmd-BLESETPHY>`：设置当前连接使用的 PHY
 
 .. _cmd-ble-intro:
 
@@ -72,11 +72,11 @@ Bluetooth® Low Energy AT 命令集
 
   当前，{IDF_TARGET_NAME} 系列 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_。
 
-.. only:: esp32c2 or esp32c3
+.. only:: esp32c2 or esp32c3 or esp32c6
 
   当前， {IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_。
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
   .. important::
     默认的 AT 固件支持此页面下的所有 AT 命令。如果您需要修改 {IDF_TARGET_NAME} 默认支持的命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择（下面每项是独立的，根据您的需要选择）：
@@ -116,7 +116,7 @@ Bluetooth® Low Energy AT 命令集
 
     由于内存受限，请在使用 Bluetooth LE 功能之前，发送 :ref:`AT+CWINIT=0 <cmd-INIT>` 命令禁用 Wi-Fi 协议栈。
 
-.. only:: esp32 or esp32c3 or esp32c2
+.. only:: esp32 or esp32c3 or esp32c6 or esp32c2
 
     .. _cmd-BINIT:
 
@@ -206,7 +206,7 @@ Bluetooth® Low Energy AT 命令集
 
     **功能：**
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -226,7 +226,7 @@ Bluetooth® Low Energy AT 命令集
 
     **响应：**
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -249,7 +249,7 @@ Bluetooth® Low Energy AT 命令集
 
     **命令：**
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -289,7 +289,7 @@ Bluetooth® Low Energy AT 命令集
     示例
     ^^^^
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -577,7 +577,7 @@ Bluetooth® Low Energy AT 命令集
             +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<peer_addr>
             OK
 
-    .. only:: esp32c3 or esp32c2
+    .. only:: esp32c3 or esp32c6 or esp32c2
 
         ::
 
@@ -599,7 +599,7 @@ Bluetooth® Low Energy AT 命令集
 
             AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>,<peer_addr>]
 
-    .. only:: esp32c3 or esp32c2
+    .. only:: esp32c3 or esp32c6 or esp32c2
 
         ::
 
@@ -626,7 +626,7 @@ Bluetooth® Low Energy AT 命令集
         -  3: ADV_TYPE_NONCONN_IND
         -  4: ADV_TYPE_DIRECT_IND_LOW
 
-    .. only:: esp32c3 or esp32c2
+    .. only:: esp32c3 or esp32c6 or esp32c2
 
         -  0: ADV_TYPE_IND
         -  1: ADV_TYPE_DIRECT_IND_HIGH
@@ -638,7 +638,6 @@ Bluetooth® Low Energy AT 命令集
         -  7: ADV_TYPE_EXT_SCANNABLE_IND
             -  当设置广播类型为 0-4，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播参数最多只能设置 31 字节，如果需要设置更长的广播参数，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 指令来设置。
             -  当设置广播类型为 5-7，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播参数最多只能设置 119 字节。
-        
 
     -  **<own_addr_type>**：Bluetooth LE 地址类型
 
@@ -666,7 +665,7 @@ Bluetooth® Low Energy AT 命令集
 
     -  **[<peer_addr>]**：对方 Bluetooth LE 地址
 
-    .. only:: esp32c3 or esp32c2
+    .. only:: esp32c3 or esp32c6 or esp32c2
 
         -  **[<primary_phy>]**：广播 primary PHY。默认值：1M PHY。
         
@@ -684,7 +683,7 @@ Bluetooth® Low Energy AT 命令集
 
     -  如果从未设置过 ``peer_addr``, 那么查询出来的结果会是全零。
 
-    .. only:: esp32c3 or esp32c2
+    .. only:: esp32c3 or esp32c6 or esp32c2
 
         -  ``primary_phy`` 和 ``secondary_phy`` 需要一起设置，如果不设置，那么未设置的参数会使用默认 1M PHY。
 
@@ -711,7 +710,7 @@ Bluetooth® Low Energy AT 命令集
             AT+BLEADVPARAM=50,50,0,0,4,0,1,"12:34:45:78:66:88"
             AT+BLEADVPARAM=32,32,6,0,7,0,0,"62:34:45:78:66:88",1,3
 
-    .. only:: esp32c3
+    .. only:: esp32c3 or esp32c6
 
         示例1
         ^^^^^^
@@ -759,7 +758,7 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    .. only:: esp32c3 or esp32c2
+    .. only:: esp32c3 or esp32c6 or esp32c2
 
         -  **<adv_data>**：广播数据，为 HEX 字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATA="1122334455"``。最大长度：119 字节。
 
@@ -777,7 +776,7 @@ Bluetooth® Low Energy AT 命令集
 
         -  如果需要设置更长的广播数据，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 指令来设置。
 
-    .. only:: esp32c3 or esp32c2
+    .. only:: esp32c3 or esp32c6 or esp32c2
 
         -  在使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令之前，必须先通过 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播参数。
         -  当调用 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播类型为 0-4，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播数据最多只能设置 31 字节，如果需要设置更长的广播数据，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 指令来设置。
@@ -1006,25 +1005,21 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
-        ::
-
-            -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+        - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
 
     .. only:: esp32c2
 
-        ::
+        - **<conn_index>**：Bluetooth LE 连接号，范围：[0,1]。
 
-            -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,1]。
+    - **<remote_address>**：对方 Bluetooth LE 设备地址。
+    - **[<addr_type>]**：广播设备地址类型：
 
-    -  **<remote_address>**：对方 Bluetooth LE 设备地址。
-    -  **[<addr_type>]**：广播设备地址类型：
+      - 0: 公共地址 (Public Address)
+      - 1: 随机地址 (Random Address)
 
-    -  0: 公共地址 (Public Address)
-    -  1: 随机地址 (Random Address)
-
-    -  **[<timeout>]**：连接超时时间，单位：秒。范围：[3,30]。
+    - **[<timeout>]**：连接超时时间，单位：秒。范围：[3,30]。
 
     说明
     ^^^^
@@ -1168,7 +1163,7 @@ Bluetooth® Low Energy AT 命令集
         AT+BLECONN=0,"24:0a:c4:09:34:23"
         AT+BLEDISCONN=0
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
     .. _cmd-BDLEN:
 
@@ -1214,7 +1209,7 @@ Bluetooth® Low Energy AT 命令集
         AT+BLECONN=0,"24:0a:c4:09:34:23"
         AT+BLEDATALEN=0,30
 
-.. only:: esp32 or esp32c3 or esp32c2
+.. only:: esp32 or esp32c3 or esp32c6 or esp32c2
 
     .. _cmd-BMTU:
 
@@ -1250,7 +1245,7 @@ Bluetooth® Low Energy AT 命令集
 
     **命令：**
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -1271,7 +1266,7 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -1287,7 +1282,7 @@ Bluetooth® Low Energy AT 命令集
     说明
     ^^^^
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -1305,7 +1300,7 @@ Bluetooth® Low Energy AT 命令集
     示例
     ^^^^
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -1321,7 +1316,7 @@ Bluetooth® Low Energy AT 命令集
             AT+BLECONN=0,"24:0a:c4:09:34:23"
             AT+BLECFGMTU=0
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
     .. _cmd-GSSRVCRE:
 
@@ -1473,7 +1468,7 @@ Bluetooth® Low Energy AT 命令集
         AT+BLEGATTSSRVSTART
         AT+BLEGATTSSRVSTOP
 
-.. only:: esp32 or esp32c3 or esp32c2
+.. only:: esp32 or esp32c3 or esp32c6 or esp32c2
 
     .. _cmd-GSSRV:
 
@@ -2308,7 +2303,7 @@ Bluetooth® Low Energy AT 命令集
         // 使用 Bluetooth LE 调试 app 作为 client 与 {IDF_TARGET_NAME} 设备建立 Bluetooth LE 连接
         AT+BLEENC=0,3
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
     .. _cmd-BLEENCRSP:
 
@@ -2365,7 +2360,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLEENCRSP=0,1
 
-.. only:: esp32 or esp32c3 or esp32c2
+.. only:: esp32 or esp32c3 or esp32c6 or esp32c2
 
     .. _cmd-BLEKEYREPLY:
 
@@ -2552,7 +2547,7 @@ Bluetooth® Low Energy AT 命令集
 
     **功能：**
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -2608,7 +2603,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLESETKEY=123456
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
     .. _cmd-BLEHIDINIT:
 
@@ -3019,7 +3014,7 @@ Bluetooth® Low Energy AT 命令集
     AT+BLUFISEND=4
     // 提示 ">" 符号后，输入 4 字节的数据即可，如 "1234"，然后数据会被自动发送给手机
 
-.. only:: esp32c3 or esp32c2
+.. only:: esp32c3 or esp32c6 or esp32c2
 
     .. _cmd-BLEPADATA:
 

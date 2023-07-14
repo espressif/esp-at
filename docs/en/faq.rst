@@ -243,8 +243,7 @@ What interfaces of {IDF_TARGET_NAME} chips can be used to transmit AT commands?
   .. list::
 
     :esp32: - {IDF_TARGET_NAME} can transmit AT commands through UART and SDIO.
-    :esp32c2: - {IDF_TARGET_NAME} can transmit AT commands through UART.
-    :esp32c3: - {IDF_TARGET_NAME} can transmit AT commands through UART and SPI.
+    :esp32c2 or esp32c3 or esp32c6: - {IDF_TARGET_NAME} can transmit AT commands through UART and SPI.
     - The default firmware uses UART for transmission. If you need SDIO or SPI interface to transmit AT commands, you can configure it through ``./build.py menuconfig`` > ``Component config`` > ``AT`` when compiling the ESP-AT project by yourself.
     - See :project_file:`AT through SDIO <main/interface/sdio/README.md>`, :project_file:`AT through SPI <main/interface/hspi/README.md>`, or :project_file:`AT through socket <main/interface/socket/README.md>` for more details.
 

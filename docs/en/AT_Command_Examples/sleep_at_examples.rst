@@ -1,7 +1,7 @@
 Sleep AT Examples
 ==========================
 
-{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3"}
+{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3", esp32c6="esp32-c6"}
 
 :link_to_translation:`zh_CN:[中文]`
 
@@ -31,7 +31,7 @@ For current consumption of {IDF_TARGET_NAME}, please refer to `{IDF_TARGET_NAME}
 
     - Setting {IDF_TARGET_NAME} to sleep modes in Wi-Fi mode and Bluetooth LE mode will be described separately.
     - In single Wi-Fi mode, only ``station`` mode supports ``Modem-sleep`` mode and ``Light-sleep`` mode.
-    :esp32 or esp32c3: - For Light-sleep mode in Bluetooth LE mode, please ensure that there is an external 32 KHz crystal oscillator. If there is no external 32 KHz crystal oscillator, ESP-AT will work as the Modem-sleep mode.
+    - For Light-sleep mode in Bluetooth LE mode, please ensure that there is an external 32 KHz crystal oscillator. If there is no external 32 KHz crystal oscillator, ESP-AT will work as the Modem-sleep mode.
 
 Measurement Method
 ^^^^^^^^^^^^^^^^^^^^
@@ -41,7 +41,6 @@ In order to avoid some unnecessary interference during the power consumption tes
 Refer to the following figure for hardware connection. (Note that the development board below only has the {IDF_TARGET_NAME} module on board, and all other peripheral components have been removed.)
 
 .. figure:: ../../_static/{IDF_TARGET_HYPHEN_LOWERCASE_NAME}-hardware-connection.png
-    :scale: 100 %
     :align: center
     :alt: {IDF_TARGET_NAME} Hardware Connection
 

@@ -30,6 +30,10 @@ ESP-AT 固件差异
 
   - ESP32-C3-MINI-1_AT_Bin（本节简称为 **MINI-1 Bin**）
 
+.. only:: esp32c6
+
+  - ESP32C6-4MB_AT_Bin（本节简称为 **ESP32C6-4MB Bin**）
+
 支持的命令集
 ^^^^^^^^^^^^
 
@@ -252,7 +256,7 @@ ESP-AT 固件差异
       - |icon-orange-check|
       - |icon-green-check|
 
-.. only:: esp32c3
+.. only:: esp32c3 or esp32c6
 
   .. list-table::
     :header-rows: 1
@@ -369,7 +373,7 @@ ESP-AT 固件差异
         | CTS: 5
         | RTS: 4
 
-.. only:: esp32c3
+.. only:: esp32c3 or esp32c6
 
   .. list-table::
     :header-rows: 1
@@ -596,3 +600,15 @@ ESP-AT 固件差异
       - |icon-green-check|
     * - ESP8685-WROOM-07
       - |icon-orange-check|
+
+.. only:: esp32c6
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 模组/芯片
+      - ESP32C6-4MB Bin
+    * - ESP32-C6-MINI-1
+      - |icon-green-check|
+    * - ESP32-C6-WROOM-01
+      - |icon-green-check|
