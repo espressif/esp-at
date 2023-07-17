@@ -105,7 +105,7 @@ Bluetooth LE 客户端读写服务特征值
 
    - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
   
@@ -145,7 +145,7 @@ Bluetooth LE 客户端读写服务特征值
 
    响应：
 
-   .. only:: esp32 or esp32c3
+   .. only:: esp32 or esp32c3 or esp32c6
 
      .. code-block:: none
 
@@ -259,7 +259,7 @@ Bluetooth LE 客户端读写服务特征值
 
    响应：
 
-   .. only:: esp32 or esp32c3
+   .. only:: esp32 or esp32c3 or esp32c6
 
      .. code-block:: none
 
@@ -295,7 +295,7 @@ Bluetooth LE 客户端读写服务特征值
 
    响应：
 
-   .. only:: esp32 or esp32c3
+   .. only:: esp32 or esp32c3 or esp32c6
 
      .. code-block:: none
 
@@ -433,7 +433,7 @@ Bluetooth LE 客户端读写服务特征值
    - 对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服户端的 <srv_index> 值 + 2，这是正常现象。
    - 对于服务中特征的权限，您可参考文档 :doc:`../Compile_and_Develop/How_to_customize_BLE_services`。
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
   Bluetooth LE 服务端读写服务特征值
   ---------------------------------------------------------
@@ -473,7 +473,7 @@ Bluetooth LE 客户端读写服务特征值
   
        OK
 
-  .. only:: esp32 or esp32c3
+  .. only:: esp32 or esp32c3 or esp32c6
 
     #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
     
@@ -564,7 +564,7 @@ Bluetooth LE 客户端读写服务特征值
   
        OK
 
-  .. only:: esp32 or esp32c3
+  .. only:: esp32 or esp32c3 or esp32c6
 
     #. {IDF_TARGET_NAME} Bluetooth LE 客户端创建服务。
     
@@ -950,7 +950,7 @@ Bluetooth LE 连接加密
 
    - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
   
@@ -990,7 +990,7 @@ Bluetooth LE 连接加密
 
    响应：
 
-   .. only:: esp32 or esp32c3
+   .. only:: esp32 or esp32c3 or esp32c6
 
      .. code-block:: none
 
@@ -1104,7 +1104,7 @@ Bluetooth LE 连接加密
 
    响应：
 
-   .. only:: esp32 or esp32c3
+   .. only:: esp32 or esp32c3 or esp32c6
 
      .. code-block:: none
 
@@ -1140,7 +1140,7 @@ Bluetooth LE 连接加密
 
    响应：
 
-   .. only:: esp32 or esp32c3
+   .. only:: esp32 or esp32c3 or esp32c6
 
      .. code-block:: none
 
@@ -1329,7 +1329,7 @@ Bluetooth LE 连接加密
 
      OK
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
   
@@ -1492,7 +1492,7 @@ Bluetooth LE 连接加密
 
    响应：
 
-   .. only:: esp32 or esp32c3
+   .. only:: esp32 or esp32c3 or esp32c6
 
      .. code-block:: none
 
@@ -1545,7 +1545,7 @@ Bluetooth LE 连接加密
 
    响应：
 
-   .. only:: esp32 or esp32c3
+   .. only:: esp32 or esp32c3 or esp32c6
 
      .. code-block:: none
 
@@ -1581,7 +1581,7 @@ Bluetooth LE 连接加密
 
    响应：
 
-   .. only:: esp32 or esp32c3
+   .. only:: esp32 or esp32c3 or esp32c6
 
      .. code-block:: none
 
@@ -1724,7 +1724,7 @@ Bluetooth LE 连接加密
 
      OK
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
   
@@ -1846,7 +1846,7 @@ Bluetooth LE 连接加密
 
    响应：
 
-   .. only:: esp32 or esp32c3
+   .. only:: esp32 or esp32c3 or esp32c6
 
      .. code-block:: none
 
@@ -1961,7 +1961,7 @@ Bluetooth LE 连接加密
 
      OK
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
   

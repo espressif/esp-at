@@ -1,7 +1,7 @@
 Sleep AT 示例
 ==================================
 
-{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3"}
+{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3", esp32c6="esp32-c6"}
 
 :link_to_translation:`en:[English]`
 
@@ -31,7 +31,7 @@ Sleep AT 示例
 
     - 将分别描述在 Wi-Fi 模式和蓝牙模式下将 {IDF_TARGET_NAME} 设置为睡眠模式。
     - 在单 Wi-Fi 模式下，只有 ``station`` 模式支持 ``Modem-sleep`` 模式和 ``Light-sleep`` 模式。
-    :esp32 or esp32c3: - 对于蓝牙模式下的 ``Light-sleep`` 模式，请确保外部存在 32 KHz 晶振。如果外部不存在 32 KHz 晶振，ESP-AT 将工作在 Modem-sleep 模式。
+    - 对于蓝牙模式下的 ``Light-sleep`` 模式，请确保外部存在 32 KHz 晶振。如果外部不存在 32 KHz 晶振，ESP-AT 将工作在 Modem-sleep 模式。
 
 测量方法
 ^^^^^^^^^^^^^^^^^^^^
@@ -41,7 +41,6 @@ Sleep AT 示例
 硬件连接可参考下图。（注意，图中开发板只保留了 {IDF_TARGET_NAME} ，外围元器件均已移除。）
 
 .. figure:: ../../_static/{IDF_TARGET_HYPHEN_LOWERCASE_NAME}-hardware-connection.png
-    :scale: 100 %
     :align: center
     :alt: {IDF_TARGET_NAME} 硬件连接
 

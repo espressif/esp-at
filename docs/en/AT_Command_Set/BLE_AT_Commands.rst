@@ -7,61 +7,61 @@ Bluetooth® Low Energy AT Commands
 
 .. list::
 
-    :esp32 or esp32c3 or esp32c2: - :ref:`Introduction <cmd-ble-intro>`
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEINIT <cmd-BINIT>`: Bluetooth LE initialization.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEADDR <cmd-BADDR>`: Query/Set Bluetooth LE device address.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLENAME <cmd-BNAME>`: Query/Set Bluetooth LE device name.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`: Query/Set parameters of Bluetooth LE scanning.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLESCAN <cmd-BSCAN>`: Enable Bluetooth LE scanning.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`: Set Bluetooth LE scan response.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEADVPARAM <cmd-BADVP>`: Query/Set parameters of Bluetooth LE advertising.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEADVDATA <cmd-BADVD>`: Set Bluetooth LE advertising data.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`: Automatically set Bluetooth LE advertising data.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEADVSTART <cmd-BADVSTART>`: Start Bluetooth LE advertising.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEADVSTOP <cmd-BADVSTOP>`: Stop Bluetooth LE advertising.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLECONN <cmd-BCONN>`: Establish Bluetooth LE connection.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLECONNPARAM <cmd-BCONNP>`: Query/Update parameters of Bluetooth LE connection.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEDISCONN <cmd-BDISC>`: End Bluetooth LE connection.
-    :esp32 or esp32c3: - :ref:`AT+BLEDATALEN <cmd-BDLEN>`: Set Bluetooth LE data packet length.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLECFGMTU <cmd-BMTU>`: Set Bluetooth LE MTU length.
-    :esp32 or esp32c3: - :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`: Generic Attributes Server (GATTS) creates services.
-    :esp32 or esp32c3: - :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`: GATTS starts services.
-    :esp32 or esp32c3: - :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`: GATTS Stops Services.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`: GATTS discovers services.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`: GATTS discovers characteristics.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`: Notify a client of the value of a characteristic value from the server.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTSIND <cmd-GSIND>`: Indicate the characteristic value from the server to a client.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`: GATTS sets characteristics.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`: Generic Attributes Client (GATTC) discovers primary services.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`: GATTC discovers included services.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`: GATTC discovers characteristics.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTCRD <cmd-GCRD>`: GATTC reads characteristics.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEGATTCWR <cmd-GCWR>`: GATTC writes characteristics.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`: Query/Set Bluetooth LE SPP parameters.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLESPP <cmd-BLESPP>`: Enter Bluetooth LE SPP mode.
-    :esp32 or esp32c3: - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Bluetooth LE :term:`Passthrough Mode` on power-up.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`: Query/Set Bluetooth LE encryption parameters.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEENC <cmd-BLEENC>`: Initiate Bluetooth LE encryption request.
-    :esp32 or esp32c3: - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`: Respond to the pairing request from the peer device.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`: Reply the key value to the peer device.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`: Reply the confirm value to the peer device in the legacy connection stage.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`: Query bonded Bluetooth LE encryption device list.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`: Clear Bluetooth LE encryption device list.
-    :esp32 or esp32c3 or esp32c2: - :ref:`AT+BLESETKEY <cmd-BLESETKEY>`: Set Bluetooth LE static pair key.
-    :esp32 or esp32c3: - :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`: Bluetooth LE Human Interface Device (HID) profile initialization.
-    :esp32 or esp32c3: - :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`: Send Bluetooth LE HID keyboard information.
-    :esp32 or esp32c3: - :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`: Send Bluetooth LE HID mouse information.
-    :esp32 or esp32c3: - :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`: Send Bluetooth LE HID consumer information.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`Introduction <cmd-ble-intro>`
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEINIT <cmd-BINIT>`: Bluetooth LE initialization.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEADDR <cmd-BADDR>`: Query/Set Bluetooth LE device address.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLENAME <cmd-BNAME>`: Query/Set Bluetooth LE device name.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`: Query/Set parameters of Bluetooth LE scanning.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESCAN <cmd-BSCAN>`: Enable Bluetooth LE scanning.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`: Set Bluetooth LE scan response.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEADVPARAM <cmd-BADVP>`: Query/Set parameters of Bluetooth LE advertising.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEADVDATA <cmd-BADVD>`: Set Bluetooth LE advertising data.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`: Automatically set Bluetooth LE advertising data.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEADVSTART <cmd-BADVSTART>`: Start Bluetooth LE advertising.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEADVSTOP <cmd-BADVSTOP>`: Stop Bluetooth LE advertising.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLECONN <cmd-BCONN>`: Establish Bluetooth LE connection.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLECONNPARAM <cmd-BCONNP>`: Query/Update parameters of Bluetooth LE connection.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEDISCONN <cmd-BDISC>`: End Bluetooth LE connection.
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEDATALEN <cmd-BDLEN>`: Set Bluetooth LE data packet length.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLECFGMTU <cmd-BMTU>`: Set Bluetooth LE MTU length.
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`: Generic Attributes Server (GATTS) creates services.
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`: GATTS starts services.
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`: GATTS Stops Services.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`: GATTS discovers services.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`: GATTS discovers characteristics.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`: Notify a client of the value of a characteristic value from the server.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTSIND <cmd-GSIND>`: Indicate the characteristic value from the server to a client.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`: GATTS sets characteristics.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`: Generic Attributes Client (GATTC) discovers primary services.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`: GATTC discovers included services.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`: GATTC discovers characteristics.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTCRD <cmd-GCRD>`: GATTC reads characteristics.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTCWR <cmd-GCWR>`: GATTC writes characteristics.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`: Query/Set Bluetooth LE SPP parameters.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESPP <cmd-BLESPP>`: Enter Bluetooth LE SPP mode.
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Bluetooth LE :term:`Passthrough Mode` on power-up.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`: Query/Set Bluetooth LE encryption parameters.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEENC <cmd-BLEENC>`: Initiate Bluetooth LE encryption request.
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`: Respond to the pairing request from the peer device.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`: Reply the key value to the peer device.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`: Reply the confirm value to the peer device in the legacy connection stage.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`: Query bonded Bluetooth LE encryption device list.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`: Clear Bluetooth LE encryption device list.
+    :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESETKEY <cmd-BLESETKEY>`: Set Bluetooth LE static pair key.
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`: Bluetooth LE Human Interface Device (HID) profile initialization.
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`: Send Bluetooth LE HID keyboard information.
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`: Send Bluetooth LE HID mouse information.
+    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`: Send Bluetooth LE HID consumer information.
     - :ref:`AT+BLUFI <cmd-BLUFI>`: Start or Stop BluFi.
     - :ref:`AT+BLUFINAME <cmd-BLUFINAME>`: Query/Set BluFi device name.
     - :ref:`AT+BLUFISEND <cmd-BLUFISEND>`: Send user-customized data over BluFi.
-    :esp32c3 or esp32c2: - :ref:`AT+BLEPERIODICDATA <cmd-BLEPADATA>`: Set Bluetooth LE periodic advertising data.
-    :esp32c3 or esp32c2: - :ref:`AT+BLEPERIODICSTART <cmd-BLEPASTART>`: Start Bluetooth LE periodic advertising.
-    :esp32c3 or esp32c2: - :ref:`AT+BLEPERIODICSTOP <cmd-BLEPASTOP>`: Stop Bluetooth LE periodic advertising.
-    :esp32c3 or esp32c2: - :ref:`AT+BLESYNCSTART <cmd-BLESYNCSTART>`: Start to synchronize with periodic advertising.
-    :esp32c3 or esp32c2: - :ref:`AT+BLESYNCSTOP <cmd-BLESYNCSTOP>`: Stop synchronizing with periodic advertising.
-    :esp32c3 or esp32c2: - :ref:`AT+BLEREADPHY <cmd-BLERDPHY>`: Query the current transmitter PHY.
-    :esp32c3 or esp32c2: - :ref:`AT+BLESETPHY <cmd-BLESETPHY>`: Set the current transmitter PHY.
+    :esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEPERIODICDATA <cmd-BLEPADATA>`: Set Bluetooth LE periodic advertising data.
+    :esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEPERIODICSTART <cmd-BLEPASTART>`: Start Bluetooth LE periodic advertising.
+    :esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEPERIODICSTOP <cmd-BLEPASTOP>`: Stop Bluetooth LE periodic advertising.
+    :esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESYNCSTART <cmd-BLESYNCSTART>`: Start to synchronize with periodic advertising.
+    :esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESYNCSTOP <cmd-BLESYNCSTOP>`: Stop synchronizing with periodic advertising.
+    :esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEREADPHY <cmd-BLERDPHY>`: Query the current transmitter PHY.
+    :esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESETPHY <cmd-BLESETPHY>`: Set the current transmitter PHY.
 
 .. _cmd-ble-intro:
 
@@ -72,11 +72,11 @@ Introduction
 
   Currently, AT firmware for {IDF_TARGET_NAME} series supports `Bluetooth® Core Specification Version 4.2 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_.
  
- .. only:: esp32c2 or esp32c3
+ .. only:: esp32c2 or esp32c3 or esp32c6
 
   Currently, AT firmware for {IDF_TARGET_NAME} supports `Bluetooth® Core Specification Version 5.0 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_.
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
   .. important::
     The default AT firmware supports all the AT commands mentioned on this page. If you need to modify the commands supported by {IDF_TARGET_NAME} by default, please compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections (Each item below is independent. Choose it according to your needs):
@@ -116,7 +116,7 @@ Introduction
 
     Due to limited memory, it is recommended to disable the Wi-Fi protocol stack by sending the command :ref:`AT+CWINIT=0 <cmd-INIT>` before using Bluetooth LE functionality. This will free up memory for Bluetooth operations.
 
-.. only:: esp32 or esp32c3 or esp32c2
+.. only:: esp32 or esp32c3 or esp32c6 or esp32c2
 
     .. _cmd-BINIT:
 
@@ -206,7 +206,7 @@ Introduction
 
     **Function:**
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -226,7 +226,7 @@ Introduction
 
     **Response:**
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -249,7 +249,7 @@ Introduction
 
     **Command:**
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -289,7 +289,7 @@ Introduction
     Example
     ^^^^^^^^
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -577,7 +577,7 @@ Introduction
             +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<peer_addr>
             OK
 
-    .. only:: esp32c3 or esp32c2
+    .. only:: esp32c3 or esp32c6 or esp32c2
 
         ::
 
@@ -599,7 +599,7 @@ Introduction
 
             AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>,<peer_addr>]
 
-    .. only:: esp32c3 or esp32c2
+    .. only:: esp32c3 or esp32c6 or esp32c2
 
         ::
 
@@ -626,7 +626,7 @@ Introduction
         -  3: ADV_TYPE_NONCONN_IND
         -  4: ADV_TYPE_DIRECT_IND_LOW
 
-    .. only:: esp32c3 or esp32c2
+    .. only:: esp32c3 or esp32c6 or esp32c2
 
         -  0: ADV_TYPE_IND
         -  1: ADV_TYPE_DIRECT_IND_HIGH
@@ -665,7 +665,7 @@ Introduction
 
     -  **[<peer_addr>]**: remote Bluetooth LE address.
 
-    .. only:: esp32c3 or esp32c2
+    .. only:: esp32c3 or esp32c6 or esp32c2
 
         -  **[<primary_phy>]**: advertising primary PHY. Default: 1M PHY.
         
@@ -683,7 +683,7 @@ Introduction
 
     -  If ``peer_addr`` is not set, the query result will be all zero.
 
-    .. only:: esp32c3 or esp32c2
+    .. only:: esp32c3 or esp32c6 or esp32c2
 
         -  The ``primary_phy`` and ``secondary_phy`` must be set together, otherwise, the default 1M PHY is used for unconfigured parameter.
 
@@ -758,7 +758,7 @@ Introduction
     Parameter
     ^^^^^^^^^^
 
-    .. only:: esp32c3 or esp32c2
+    .. only:: esp32c3 or esp32c6 or esp32c2
 
         -  **<adv_data>**: advertising data in HEX string. For example, to set the advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATA="1122334455"``. The maximum length is 119 bytes.
 
@@ -776,7 +776,7 @@ Introduction
 
         -  If the advertising data exceeds the maximum limit of this command, use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
 
-    .. only:: esp32c3 or esp32c2
+    .. only:: esp32c3 or esp32c6 or esp32c2
 
         -  Please set the Bluetooth LE advertising parameters by the :ref:`AT+BLEADVPARAM <cmd-BADVP>` command before you use the :ref:`AT+BLEADVDATA <cmd-BADVD>` command.
         -  When the <adv_type> is set to 0-4 by the :ref:`AT+BLEADVPARAM <cmd-BADVP>` command, the maximum allowed size for advertising data using the AT+BLEADVDATA command is 31 bytes. If the advertising data exceeds the maximum limit of this command, use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
@@ -1005,25 +1005,21 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
-        ::
-
-            -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+        - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
 
     .. only:: esp32c2
 
-        ::
+        - **<conn_index>**: index of Bluetooth LE connection. Range: [0,1].
 
-            -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,1].
+    - **<remote_address>**: remote Bluetooth LE address.
+    - **[<addr_type>]**: the address type of broadcasters:
 
-    -  **<remote_address>**: remote Bluetooth LE address.
-    -  **[<addr_type>]**: the address type of broadcasters:
+      - 0: Public Address
+      - 1: Random Address
 
-    -  0: Public Address
-    -  1: Random Address
-
-    -  **[<timeout>]**: the timeout for the connection command. Unit: second. Range: [3,30].
+    - **[<timeout>]**: the timeout for the connection command. Unit: second. Range: [3,30].
 
     Notes
     ^^^^^
@@ -1167,7 +1163,7 @@ Introduction
         AT+BLECONN=0,"24:0a:c4:09:34:23"
         AT+BLEDISCONN=0
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
     .. _cmd-BDLEN:
 
@@ -1213,7 +1209,7 @@ Introduction
         AT+BLECONN=0,"24:0a:c4:09:34:23"
         AT+BLEDATALEN=0,30
 
-.. only:: esp32 or esp32c3 or esp32c2
+.. only:: esp32 or esp32c3 or esp32c6 or esp32c2
 
     .. _cmd-BMTU:
 
@@ -1249,7 +1245,7 @@ Introduction
 
     **Command:**
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -1270,7 +1266,7 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -1286,7 +1282,7 @@ Introduction
     Notes
     ^^^^^
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -1304,7 +1300,7 @@ Introduction
     Example
     ^^^^^^^^
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -1320,7 +1316,7 @@ Introduction
             AT+BLECONN=0,"24:0a:c4:09:34:23"
             AT+BLECFGMTU=0
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
     .. _cmd-GSSRVCRE:
 
@@ -1472,7 +1468,7 @@ Introduction
         AT+BLEGATTSSRVSTART
         AT+BLEGATTSSRVSTOP
 
-.. only:: esp32 or esp32c3 or esp32c2
+.. only:: esp32 or esp32c3 or esp32c6 or esp32c2
 
     .. _cmd-GSSRV:
 
@@ -2307,7 +2303,7 @@ Introduction
         // Use your Bluetooth LE debugging app as a client to establish a Bluetooth LE connection with the {IDF_TARGET_NAME}
         AT+BLEENC=0,3
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
     .. _cmd-BLEENCRSP:
 
@@ -2364,7 +2360,7 @@ Introduction
 
         AT+BLEENCRSP=0,1
 
-.. only:: esp32 or esp32c3 or esp32c2
+.. only:: esp32 or esp32c3 or esp32c6 or esp32c2
 
     .. _cmd-BLEKEYREPLY:
 
@@ -2551,7 +2547,7 @@ Introduction
 
     **Function:**
 
-    .. only:: esp32 or esp32c3
+    .. only:: esp32 or esp32c3 or esp32c6
 
         ::
 
@@ -2607,7 +2603,7 @@ Introduction
 
         AT+BLESETKEY=123456
 
-.. only:: esp32 or esp32c3 
+.. only:: esp32 or esp32c3 or esp32c6 
 
     .. _cmd-BLEHIDINIT:
 
@@ -3018,7 +3014,7 @@ Example
     AT+BLUFISEND=4 
     // After the symbol ">" shows, input 4 bytes of data, such as "1234". Then the data will be transmitted automatically.
 
-.. only:: esp32c3 or esp32c2
+.. only:: esp32c3 or esp32c6 or esp32c2
 
     .. _cmd-BLEPADATA:
 

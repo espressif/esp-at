@@ -39,31 +39,26 @@ ESP-AT 固件包含了若干个特定功能的二进制文件：
 
        * - 模组
          - UART 管脚（TX、RX、CTS、RTS）
-         - Factory Parameter Bin
        * - ESP32-WROOM-32 系列（ESP32 默认模组）
          - - GPIO17
            - GPIO16
            - GPIO15
            - GPIO14
-         - ``factory_param_WROOM-32.bin``
        * - ESP32-WROVER 系列（支持经典蓝牙）
          - - GPIO22
            - GPIO19
            - GPIO15
            - GPIO14
-         - ``factory_param_WROVER-32.bin``
        * - ESP32-PICO 系列
          - - GPIO22
            - GPIO19
            - GPIO15
            - GPIO14
-         - ``factory_param_PICO-D4.bin``
        * - ESP32-SOLO 系列
          - - GPIO17
            - GPIO16
            - GPIO15
            - GPIO14
-         - ``factory_param_SOLO-1.bin``
 
   .. only:: esp32c2
 
@@ -72,13 +67,11 @@ ESP-AT 固件包含了若干个特定功能的二进制文件：
 
         * - 模组
           - UART 管脚（TX、RX、CTS、RTS）
-          - Factory Parameter Bin
         * - ESP32C2-4MB 系列
           - - GPIO7
             - GPIO6
             - GPIO5
             - GPIO4
-          - ``factory_param_ESP32C2-4MB.bin``
 
   .. only:: esp32c3
 
@@ -87,13 +80,24 @@ ESP-AT 固件包含了若干个特定功能的二进制文件：
 
         * - 模组
           - UART 管脚（TX、RX、CTS、RTS）
-          - Factory Parameter Bin
         * - ESP32-C3-MINI-1 系列
           - - GPIO7
             - GPIO6
             - GPIO5
             - GPIO4
-          - ``factory_param_MINI-1.bin``
+
+  .. only:: esp32c6
+
+      .. list-table:: {IDF_TARGET_NAME} 模组的硬件配置
+        :header-rows: 1
+
+        * - 模组
+          - UART 管脚（TX、RX、CTS、RTS）
+        * - ESP32C6-4MB 系列
+          - - GPIO7
+            - GPIO6
+            - GPIO5
+            - GPIO4
 
 .. _firmware-selection:
 

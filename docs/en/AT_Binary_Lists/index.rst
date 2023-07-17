@@ -39,31 +39,26 @@ ESP-AT firmware contains several binaries, and each of them is dedicated to a sp
 
        * - Modules
          - UART Pins (TX, RX, CTS, RTS)
-         - Factory Parameter Bin
        * - ESP32-WROOM-32 Series (ESP32 Default Module)
          - - GPIO17
            - GPIO16
            - GPIO15
            - GPIO14
-         - ``factory_param_WROOM-32.bin``
        * - ESP32-WROVER Series (Supports Classic Bluetooth)
          - - GPIO22
            - GPIO19
            - GPIO15
            - GPIO14
-         - ``factory_param_WROVER-32.bin``
        * - ESP32-PICO Series
          - - GPIO22
            - GPIO19
            - GPIO15
            - GPIO14
-         - ``factory_param_PICO-D4.bin``
        * - ESP32-SOLO Series
          - - GPIO17
            - GPIO16
            - GPIO15
            - GPIO14
-         - ``factory_param_SOLO-1.bin``
 
   .. only:: esp32c2
 
@@ -72,13 +67,11 @@ ESP-AT firmware contains several binaries, and each of them is dedicated to a sp
 
        * - Modules
          - UART Pins (TX, RX, CTS, RTS)
-         - Factory Parameter Bin
        * - ESP32C2-4MB Series
          - - GPIO7
            - GPIO6
            - GPIO5
            - GPIO4
-         - ``factory_param_ESP32C2-4MB.bin``
 
   .. only:: esp32c3
 
@@ -87,13 +80,24 @@ ESP-AT firmware contains several binaries, and each of them is dedicated to a sp
 
        * - Modules
          - UART Pins (TX, RX, CTS, RTS)
-         - Factory Parameter Bin
        * - ESP32-C3-MINI-1 Series
          - - GPIO7
            - GPIO6
            - GPIO5
            - GPIO4
-         - ``factory_param_MINI-1.bin``
+
+  .. only:: esp32c6
+
+    .. list-table:: Hardware Configuration of {IDF_TARGET_NAME} Modules
+       :header-rows: 1
+
+       * - Modules
+         - UART Pins (TX, RX, CTS, RTS)
+       * - ESP32C6-4MB Series
+         - - GPIO7
+           - GPIO6
+           - GPIO5
+           - GPIO4
 
 .. _firmware-selection:
 

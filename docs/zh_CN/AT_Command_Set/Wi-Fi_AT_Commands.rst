@@ -1058,15 +1058,26 @@ Wi-Fi AT 命令集
    -  bit1: 802.11g 协议标准
    -  bit2: 802.11n 协议标准
 
-   .. only:: esp32 or esp32c3
+   .. only:: esp32 or esp32c3 or esp32c6
 
      - bit3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+
+   .. only:: esp32c6
+
+     - bit4: 802.11ax 协议标准
 
 说明
 ^^^^
 
 -  当前，{IDF_TARGET_NAME} 设备支持的 PHY mode 见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id40>`_
--  默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgn 模式
+
+.. only:: esp32 or esp32c3 or esp32c2
+
+  - 默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgn 模式
+
+.. only:: esp32c6
+
+  -  默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgnax 模式
 
 .. _cmd-STAPROTO:
 
@@ -1113,15 +1124,26 @@ Wi-Fi AT 命令集
    -  bit1: 802.11g 协议标准
    -  bit2: 802.11n 协议标准
 
-   .. only:: esp32 or esp32c3
+   .. only:: esp32 or esp32c3 or esp32c6
 
      - bit3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+
+   .. only:: esp32c6
+
+     - bit4: 802.11ax 协议标准
 
 说明
 ^^^^
 
 -  当前，{IDF_TARGET_NAME} 设备支持的 PHY mode 见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id40>`_
--  默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgn 模式
+
+.. only:: esp32 or esp32c3 or esp32c2
+
+  - 默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgn 模式
+
+.. only:: esp32c6
+
+  -  默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgnax 模式
 
 .. _cmd-STAMAC:
 
@@ -1179,7 +1201,7 @@ Wi-Fi AT 命令集
   
   - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
   :esp32: - {IDF_TARGET_NAME} Station 的 MAC 地址与 {IDF_TARGET_NAME} Ethernet 和 {IDF_TARGET_NAME} SoftAP 不同，不要为二者设置同样的 MAC 地址
-  :esp32c2 or esp32c3: - {IDF_TARGET_NAME} Station 的 MAC 地址与 {IDF_TARGET_NAME} SoftAP 不同，不要为二者设置同样的 MAC 地址
+  :esp32c2 or esp32c3 or esp32c6: - {IDF_TARGET_NAME} Station 的 MAC 地址与 {IDF_TARGET_NAME} SoftAP 不同，不要为二者设置同样的 MAC 地址
   - MAC 地址的 Bit 0 不能为 1，例如，MAC 地址可以是 "1a:…"，但不可以是 "15:…"
   - FF:FF:FF:FF:FF:FF 和 00:00:00:00:00:00 是无效地址，不能设置
 
@@ -1188,7 +1210,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CIPSTAMAC="1a:fe:35:98:d3:7b"    
+    AT+CIPSTAMAC="1a:fe:35:98:d3:7b"
 
 .. _cmd-APMAC:
 
@@ -1245,7 +1267,7 @@ Wi-Fi AT 命令集
 
   - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
   :esp32: - {IDF_TARGET_NAME} SoftAP 的 MAC 地址与 {IDF_TARGET_NAME} Station 和 {IDF_TARGET_NAME} Ethernet 不同，不要为二者设置同样的 MAC 地址
-  :esp32c3: - {IDF_TARGET_NAME} SoftAP 的 MAC 地址与 {IDF_TARGET_NAME} Station 不同，不要为二者设置同样的 MAC 地址
+  :esp32c2 or esp32c3 or esp32c6: - {IDF_TARGET_NAME} SoftAP 的 MAC 地址与 {IDF_TARGET_NAME} Station 不同，不要为二者设置同样的 MAC 地址
   - MAC 地址的 Bit 0 不能为 1，例如，MAC 地址可以是 "18:…"，但不可以是 "15:…"
   - FF:FF:FF:FF:FF:FF 和 00:00:00:00:00:00 是无效地址，不能设置
 

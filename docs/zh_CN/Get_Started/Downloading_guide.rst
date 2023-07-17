@@ -1,8 +1,8 @@
 下载指导
 ==========
 
-{IDF_TARGET_MODULE_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c2="ESP8684-MINI-1", esp32c3="ESP32-C3-MINI-1"}
-{IDF_TARGET_FACTORY_BIN: default="undefined", esp32="ESP32-WROOM-32_AT_Bin_V2.2.0.0", esp32c2="ESP32C2-4MB_AT_Bin_V2.5.0.0", esp32c3="ESP32-C3-MINI-1_AT_Bin_V2.3.0.0"}
+{IDF_TARGET_MODULE_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c2="ESP8684-MINI-1", esp32c3="ESP32-C3-MINI-1", esp32c6="ESP32-C6-MINI-1"}
+{IDF_TARGET_FACTORY_BIN: default="undefined", esp32="ESP32-WROOM-32-AT-V2.4.0.0", esp32c2="ESP32C2-4MB-AT-V3.1.0.0", esp32c3="ESP32-C3-MINI-1-AT-V2.4.2.0", esp32c6="ESP32C6-4MB-AT-V4.0.0.0"}
 
 :link_to_translation:`en:[English]`
 
@@ -25,53 +25,28 @@
 
 此处，我们下载了 {IDF_TARGET_MODULE_NAME} 对应的 ``{IDF_TARGET_FACTORY_BIN}`` 固件，该固件的目录结构及其中各个 bin 文件介绍如下，其它 {IDF_TARGET_NAME} 系列模组固件的目录结构及 bin 文件也可参考如下介绍：
 
-.. only:: esp32
 
-   .. code-block:: none
+.. code-block:: none
 
-      .
-      ├── at_customize.bin                 // 二级分区表
-      ├── bootloader                       // bootloader
-      │   └── bootloader.bin
-      ├── customized_partitions            // AT 自定义 bin 文件
-      │   └── mfg_nvs.bin                  // 量产 NVS 分区
-      ├── download.config                  // 烧录固件的参数
-      ├── esp-at.bin                       // AT 应用固件
-      ├── esp-at.elf
-      ├── esp-at.map
-      ├── factory                          // 量产所需打包好的 bin 文件
-      │   ├── factory_WROOM-32.bin
-      │   └── factory_parameter.log
-      ├── flasher_args.json                // 下载参数信息新的格式
-      ├── ota_data_initial.bin             // ota data 区初始值
-      ├── partition_table                  // 一级分区列表
-      │   └── partition-table.bin
-      ├── phy_init_data.bin                // phy 初始值信息
-      └── sdkconfig                        // AT 固件对应的编译配置
-
-.. only:: esp32c3 or esp32c2
-
-   .. code-block:: none
-
-      .
-      ├── at_customize.bin                 // 二级分区表
-      ├── bootloader                       // bootloader
-      │   └── bootloader.bin
-      ├── customized_partitions            // AT 自定义 bin 文件
-      │   └── mfg_nvs.bin                  // 量产 NVS 分区
-      ├── download.config                  // 烧录固件的参数
-      ├── esp-at.bin                       // AT 应用固件
-      ├── esp-at.elf
-      ├── esp-at.map
-      ├── factory                          // 量产所需打包好的 bin 文件
-      │   ├── factory_MINI-1.bin
-      │   └── factory_parameter.log
-      ├── flasher_args.json                // 下载参数信息新的格式
-      ├── ota_data_initial.bin             // ota data 区初始值
-      ├── partition_table                  // 一级分区列表
-      │   └── partition-table.bin
-      ├── phy_init_data.bin                // phy 初始值信息
-      └── sdkconfig                        // AT 固件对应的编译配置
+   .
+   ├── at_customize.bin                 // 二级分区表
+   ├── bootloader                       // bootloader
+   │   └── bootloader.bin
+   ├── customized_partitions            // AT 自定义 bin 文件
+         ├── mfg_nvs.csv                  // 量产 NVS 分区的原始数据
+   │   └── mfg_nvs.bin                  // 量产 NVS 分区 bin 文件
+   ├── download.config                  // 烧录固件的参数
+   ├── esp-at.bin                       // AT 应用固件
+   ├── esp-at.elf
+   ├── esp-at.map
+   ├── factory                          // 量产所需打包好的 bin 文件
+   │   └── factory_XXX.bin
+   ├── flasher_args.json                // 下载参数信息新的格式
+   ├── ota_data_initial.bin             // ota data 区初始值
+   ├── partition_table                  // 一级分区列表
+   │   └── partition-table.bin
+   ├── phy_multiple_init_data.bin       // phy 初始值信息
+   └── sdkconfig                        // AT 固件对应的编译配置
 
 其中，``download.config`` 文件包含烧录固件的参数：
 
@@ -82,7 +57,7 @@
       --flash_mode dio --flash_freq 40m --flash_size 4MB
       0x8000 partition_table/partition-table.bin
       0x10000 ota_data_initial.bin
-      0xf000 phy_init_data.bin
+      0xf000 phy_multiple_init_data.bin
       0x1000 bootloader/bootloader.bin
       0x100000 esp-at.bin
       0x20000 at_customize.bin
@@ -97,9 +72,9 @@
       0x60000 esp-at.bin
       0x8000 partition_table/partition-table.bin
       0xd000 ota_data_initial.bin
-      0xf000 phy_init_data.bin
+      0xf000 phy_multiple_init_data.bin
       0x1e000 at_customize.bin
-      0x1F000 customized_partitions/mfg_nvs.bin
+      0x1f000 customized_partitions/mfg_nvs.bin
 
 .. only:: esp32c3
 
@@ -108,20 +83,34 @@
       --flash_mode dio --flash_freq 40m --flash_size 4MB
       0x8000 partition_table/partition-table.bin
       0xd000 ota_data_initial.bin
-      0xf000 phy_init_data.bin
+      0xf000 phy_multiple_init_data.bin
       0x0 bootloader/bootloader.bin
       0x60000 esp-at.bin
       0x1e000 at_customize.bin
-      0x1F000 customized_partitions/mfg_nvs.bin
+      0x1f000 customized_partitions/mfg_nvs.bin
+
+.. only:: esp32c6
+
+   .. code-block:: none
+
+      --flash_mode dio --flash_freq 80m --flash_size 4MB
+      0x0 bootloader/bootloader.bin
+      0x8000 partition_table/partition-table.bin
+      0xd000 ota_data_initial.bin
+      0xf000 phy_multiple_init_data.bin
+      0x1e000 at_customize.bin
+      0x1f000 customized_partitions/mfg_nvs.bin
+      0x60000 esp-at.bin
 
 .. list::
 
    - ``--flash_mode dio`` 代表此固件采用的 flash dio 模式进行编译；
    :esp32 or esp32c3: - ``--flash_freq 40m`` 代表此固件采用的 flash 通讯频率为 40 MHz；
    :esp32c2: - ``--flash_freq 60m`` 代表此固件采用的 flash 通讯频率为 60 MHz；
+   :esp32c6: - ``--flash_freq 80m`` 代表此固件采用的 flash 通讯频率为 80 MHz；
    - ``--flash_size 4MB`` 代表此固件适用的 flash 最小为 4 MB；
    :esp32: - ``0x10000 ota_data_initial.bin`` 代表在 ``0x10000`` 地址烧录 ``ota_data_initial.bin`` 文件。
-   :esp32c2 or esp32c3: - ``0xd000 ota_data_initial.bin`` 代表在 ``0xd000`` 地址烧录 ``ota_data_initial.bin`` 文件。
+   :esp32c2 or esp32c3 or esp32c6: - ``0xd000 ota_data_initial.bin`` 代表在 ``0xd000`` 地址烧录 ``ota_data_initial.bin`` 文件。
 
 .. _flash-at-firmware-into-your-device:
 
@@ -136,7 +125,7 @@ Windows
 开始烧录之前，请下载 `Flash 下载工具 <https://www.espressif.com/zh-hans/support/download/other-tools>`_。更多有关 Flash 下载工具的介绍，请参考压缩包中 ``doc`` 文件夹。
 
 - 打开 Flash 下载工具；
-- 选择芯片类型；（此处，我们选择 ``{IDF_TARGET_CFG_PREFIX}``。）
+- 选择芯片类型；（此处，我们选择 ``{IDF_TARGET_NAME}``。）
 - 根据您的需求选择一种工作模式；（此处，我们选择 ``develop``。)
 - 根据您的需求选择一种下载接口；（此处，我们选择 ``uart``。)
 
@@ -200,19 +189,25 @@ Linux 或 macOS
 
       .. code-block:: none
 
-         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 60m --flash_size 4MB 0x0 bootloader/bootloader.bin 0x60000 esp-at.bin 0x8000 partition_table/partition-table.bin 0xd000 ota_data_initial.bin 0xf000 phy_init_data.bin 0x1e000 at_customize.bin 0x1F000 customized_partitions/mfg_nvs.bin
+         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 60m --flash_size 4MB 0x0 bootloader/bootloader.bin 0x60000 esp-at.bin 0x8000 partition_table/partition-table.bin 0xd000 ota_data_initial.bin 0xf000 phy_init_data.bin 0x1e000 at_customize.bin 0x1f000 customized_partitions/mfg_nvs.bin
 
    .. only:: esp32c3
 
       .. code-block:: none
 
-         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x8000 partition_table/partition-table.bin 0xd000 ota_data_initial.bin 0xf000 phy_init_data.bin 0x0 bootloader/bootloader.bin 0x60000 esp-at.bin 0x1e000 at_customize.bin 0x1F000 customized_partitions/mfg_nvs.bin
+         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x8000 partition_table/partition-table.bin 0xd000 ota_data_initial.bin 0xf000 phy_init_data.bin 0x0 bootloader/bootloader.bin 0x60000 esp-at.bin 0x1e000 at_customize.bin 0x1f000 customized_partitions/mfg_nvs.bin
+
+   .. only:: esp32c6
+
+      .. code-block:: none
+
+         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 80m --flash_size 4MB 0x8000 partition_table/partition-table.bin 0xd000 ota_data_initial.bin 0xf000 phy_init_data.bin 0x0 bootloader/bootloader.bin 0x60000 esp-at.bin 0x1e000 at_customize.bin 0x1f000 customized_partitions/mfg_nvs.bin
 
 - 直接下载打包好的量产固件至 ``0x0`` 地址：输入以下命令，替换 ``PORTNAME`` 和 ``FILEDIRECTORY`` 参数；
 
   .. code-block:: none
 
-      esptool.py --chip auto --port PORTNAME --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x0 FILEDIRECTORY
+     esptool.py --chip auto --port PORTNAME --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x0 FILEDIRECTORY
 
   将 ``PORTNAME`` 替换成开发板的下载接口名称，若您无法确定该接口名称，请参考 `在 Linux 和 macOS 上查看端口 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/get-started/establish-serial-connection.html#linux-macos>`_。
 
@@ -230,13 +225,19 @@ Linux 或 macOS
 
       .. code-block:: none
 
-         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 60m --flash_size 4MB 0x0 factory/factory_MINI-1.bin
+         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 60m --flash_size 4MB 0x0 factory/factory_ESP32C2-4MB.bin
 
    .. only:: esp32c3
 
       .. code-block:: none
 
          esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x0 factory/factory_MINI-1.bin
+
+   .. only:: esp32c6
+
+      .. code-block:: none
+
+         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 80m --flash_size 4MB 0x0 factory/factory_ESP32C6-4MB.bin
 
 烧录完成后，请 `检查 AT 固件是否烧录成功`_。
 
@@ -426,3 +427,50 @@ Linux 或 macOS
       module_name: MINI-1
       max tx power=78, ret=0
       2.5.0
+
+.. only:: esp32c6
+
+   {IDF_TARGET_NAME} 开机日志:
+
+   .. code-block:: none
+
+      ESP-ROM:esp32c6-20220919
+      Build:Sep 19 2022
+      rst:0xc (SW_CPU),boot:0x6c (SPI_FAST_FLASH_BOOT)
+      Saved PC:0x4001975a
+      SPIWP:0xee
+      mode:DIO, clock div:2
+      load:0x4086c410,len:0xd50
+      load:0x4086e610,len:0x2d74
+      load:0x40875720,len:0x1800
+      entry 0x4086c410
+      I (27) boot: ESP-IDF v5.0-dev-9643-g4bc762621d-dirty 2nd stage bootloader
+      I (27) boot: compile time Jul  5 2023 11:12:16
+      I (29) boot: chip revision: v0.1
+      I (32) boot.esp32c6: SPI Speed      : 40MHz
+      I (37) boot.esp32c6: SPI Mode       : DIO
+      I (41) boot.esp32c6: SPI Flash Size : 4MB
+      I (46) boot: Enabling RNG early entropy source...
+      I (52) boot: Partition Table:
+      I (55) boot: ## Label            Usage          Type ST Offset   Length
+      I (62) boot:  0 otadata          OTA data         01 00 0000d000 00002000
+      I (70) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+      I (77) boot:  2 nvs              WiFi data        01 02 00010000 0000e000
+      I (85) boot:  3 at_customize     unknown          40 00 0001e000 00042000
+      I (92) boot:  4 ota_0            OTA app          00 10 00060000 001d0000
+      I (100) boot:  5 ota_1            OTA app          00 11 00230000 001d0000
+      I (107) boot: End of partition table
+      I (112) esp_image: segment 0: paddr=00060020 vaddr=42140020 size=30628h (198184) map
+      I (198) esp_image: segment 1: paddr=00090650 vaddr=40800000 size=0f9c8h ( 63944) load
+      I (228) esp_image: segment 2: paddr=000a0020 vaddr=42000020 size=13c688h (1296008) map
+      I (740) esp_image: segment 3: paddr=001dc6b0 vaddr=4080f9c8 size=05bf4h ( 23540) load
+      I (752) esp_image: segment 4: paddr=001e22ac vaddr=408155c0 size=03c54h ( 15444) load
+      I (760) esp_image: segment 5: paddr=001e5f08 vaddr=50000000 size=00068h (   104) load
+      I (771) boot: Loaded app from partition at offset 0x60000
+      I (772) boot: Disabling RNG early entropy source...
+      no external 32k oscillator, disable it now.
+      at param mode: 1
+      AT cmd port:uart1 tx:7 rx:6 cts:5 rts:4 baudrate:115200
+      module_name: ESP32C6-4MB
+      max tx power=78, ret=0
+      4.0.0

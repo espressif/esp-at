@@ -28,17 +28,21 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
      - - :project_file:`module_config/module_esp32-d2wd/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32-d2wd/sdkconfig_silence.defaults`
    * - ESP32-C2
-     - ESP32C2-2MB（所有带 2 MB flash 的 ESP32C2（ESP8684） 系列）
+     - ESP32C2-2MB（所有带 2 MB flash 的 ESP32-C2（ESP8684） 系列）
      - - :project_file:`module_config/module_esp32c2-2mb/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32c2-2mb/sdkconfig_silence.defaults`
    * - ESP32-C2
-     - ESP32C2-4MB（所有带 4 MB flash 的 ESP32C2（ESP8684） 系列）
+     - ESP32C2-4MB（所有带 4 MB flash 的 ESP32-C2（ESP8684） 系列）
      - - :project_file:`module_config/module_esp32c2_default/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32c2_default/sdkconfig_silence.defaults`
    * - ESP32-C3
      - MINI-1
      - - :project_file:`module_config/module_esp32c3_default/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32c3_default/sdkconfig_silence.defaults`
+   * - ESP32-C6
+     - ESP32C6-4MB（所有带 4 MB flash 的 ESP32-C6 系列）
+     - - :project_file:`module_config/module_esp32c6_default/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32c6_default/sdkconfig_silence.defaults`
 
 .. 注意::
 
@@ -108,6 +112,10 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
     #endif
 
     #if defined(CONFIG_IDF_TARGET_ESP32C2)
+      ...
+    #endif
+
+    #if defined(CONFIG_IDF_TARGET_ESP32C6)
       ...
     #endif
 
