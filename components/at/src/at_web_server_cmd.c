@@ -38,6 +38,7 @@
 #include "freertos/event_groups.h"
 #include "lwip/err.h"
 #include "lwip/sockets.h"
+#include "cJSON.h"
 
 #include "esp_wifi.h"
 #include "esp_err.h"
@@ -1136,67 +1137,43 @@ err:
 
 static esp_err_t at_get_wifi_info_from_json_str(char *buffer, wifi_sta_connect_config_t *config)
 {
-    char *p = buffer;
-    char ssid[32] = {0}, password[64] = {0};
+    char ssid[33] = {0}, password[65] = {0};
     int32_t ssid_len = 0, password_len = 0;
+    cJSON *root = NULL, *item = NULL, *value_item = NULL;
 
-    if (!buffer || !config) {
+    root = cJSON_Parse(buffer);
+    if (!root) {
+        ESP_LOGE(TAG, "Invalid format: [%s]", cJSON_GetErrorPtr());
         return ESP_FAIL;
     }
 
-    // get ssid len
-    p = strstr(p, "\"ssid_len\":");
-    if (p) {
-        p += strlen("\"ssid_len\":");
-        ssid_len = atoi(p);
-    } else {
-        return ESP_FAIL;
-    }
-    if (ssid_len > 32 || ssid_len < 0) {
-        return ESP_FAIL;
-    }
+    int json_item_num = cJSON_GetArraySize(root);
+    ESP_LOGD(TAG, "Total JSON Items:%d", json_item_num);
 
-    // get ssid
-    p = strstr(p, "\"ssid\":\"");
-    if (p) {
-        p += strlen("\"ssid\":\"");
-        for (int i = 0; i < ssid_len; ++i) {
-            char c = *p, cnext = *(p + 1);
-            if (c == '\\' && (cnext == '\\' || cnext == '\"' || cnext == '/')) {
-                p++;
-            }
-            ssid[i] = *p++;
+    item = cJSON_GetObjectItem(root, "ssid");
+    if (item) {
+        ssid_len = strlen(item->valuestring);
+        ESP_LOGD(TAG, "ssid:%s", item->valuestring);
+        if (ssid_len > 32) {
+            ESP_LOGE(TAG, "ssid is too long");
+            return ESP_FAIL;
+        } else {
+            strncpy(ssid, item->valuestring, ssid_len);
         }
-    } else {
-        return ESP_FAIL;
     }
 
-    // get password len
-    p = strstr(p, "\"password_len\":");
-    if (p) {
-        p += strlen("\"password_len\":");
-        password_len = atoi(p);
-    } else {
-        return ESP_FAIL;
-    }
-    if (password_len > 64 || password_len < 0) {
-        return ESP_FAIL;
-    }
-
-    // get password
-    p = strstr(p, "\"password\":\"");
-    if (p) {
-        p += strlen("\"password\":\"");
-        for (int i = 0; i < password_len; ++i) {
-            char c = *p, cnext = *(p + 1);
-            if (c == '\\' && (cnext == '\\' || cnext == '\"' || cnext == '/')) {
-                p++;
-            }
-            password[i] = *p++;
+    item = cJSON_GetObjectItem(root, "password");
+    if (item) {
+        password_len = strlen(item->valuestring);
+        ESP_LOGD(TAG, "password:%s", item->valuestring);
+        if (password_len > 64) {
+            ESP_LOGE(TAG, "password is too long");
+            return ESP_FAIL;
+        } else {
+            strncpy(password, item->valuestring, password_len);
         }
-    } else {
-        return ESP_FAIL;
     }
+    cJSON_Delete(root);
 
     memcpy(config->ssid, ssid, ssid_len);
     memcpy(config->password, password, password_len);
