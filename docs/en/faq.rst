@@ -21,7 +21,7 @@ If there is no released fimware for your module in the :doc:`AT_Binary_Lists/ind
 How to get the source code of AT firmware?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  ESP-AT firmware is partially open-source. See `esp-at <https://github.com/espressif/esp-at>`_ for the open-source repository.
+  The esp-at project is distributed as a combination of source code and pre-compiled libraries in this repository. The pre-compiled core libraries (under the directory: ``esp-at/components/at/lib/``) are closed-source, and there is no plan for open-sourcing them.
 
 How to download the AT firmware on Espressif's official website?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
