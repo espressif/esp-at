@@ -13,9 +13,9 @@ on:
     # parameters from upstream inherit
     secrets:
       AT_OTA_TOKEN_ESP32C3_MINI:
-        required: true
+        required: false
       AT_OTA_TOKEN_ESP32C3_MINI_QCLOUD:
-        required: true
+        required: false
 
 jobs:
   build-template-esp32c3:

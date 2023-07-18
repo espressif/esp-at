@@ -1,11 +1,7 @@
   
 name: Build ESP-AT Project
 
-on:
-  push:
-    branches:
-      - master
-      - release/*
+on: push
 
 jobs:
   build-esp32-wroom-at:
