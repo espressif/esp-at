@@ -12,7 +12,7 @@ on:
         type: string
     # parameters from upstream inherit
     secrets:
-      AT_OTA_TOKEN_ESP32C6_4MB:
+      ESP32C6_4MB_TOKEN:
         required: false
 
 jobs:

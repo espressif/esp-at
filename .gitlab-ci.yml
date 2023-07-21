@@ -66,8 +66,8 @@ default:
 .before_build_esp32c6_series: &before_build_esp32c6_series
   - cd components/at/private_include
   - rm -f at_ota_token.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C6_4MB \"$AT_OTA_TOKEN_ESP32C6_4MB\"" >> at_ota_token.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C6_4MB \"$AT_OTA_TOKEN_ESP32C6_4MB\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C6_4MB \"$ESP32C6_4MB_TOKEN\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C6_4MB \"$ESP32C6_4MB_TOKEN\"" >> at_ota_token.h
   - cd -
 
   - *setup_idf_ci_env
