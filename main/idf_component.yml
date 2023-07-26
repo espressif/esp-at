@@ -3,4 +3,4 @@ dependencies:
   espressif/mdns:
     version: "^1.0.0"
   espressif/esp_websocket_client:
-    version: "^1.0.0"
+    version: "^1.0.1"
