@@ -2127,6 +2127,13 @@ esp_err_t esp_rmaker_factory_init(void)
         return ESP_OK;
     }
 
+    // manufacturing nvs partition is already initialized, and used for storing default esp-rainmaker configurations
+    at_mfg_params_storage_mode_t mode = at_get_mfg_params_storage_mode();
+    if (mode == AT_PARAMS_IN_MFG_NVS) {
+        esp_rmaker_storage_init_done = true;
+        return ESP_OK;
+    }
+
     const esp_partition_t *partition = esp_at_custom_partition_find(ESP_PARTITION_TYPE_DATA, ESP_PARTITION_SUBTYPE_DATA_NVS, RAINMAKER_PRE_CFG_PARTITION);
     esp_err_t err = nvs_flash_init_partition_ptr(partition);
 
@@ -2146,8 +2153,15 @@ void *esp_rmaker_factory_get(const char *key)
     if ((err = nvs_open(RAINMAKER_PRE_NAMESPACE, NVS_READONLY, &handle)) == ESP_OK) {
         ESP_LOGD(TAG, "NVS open for %s %s success", RAINMAKER_PRE_NAMESPACE, key);
     } else {
-        if ((err = nvs_open_from_partition(RAINMAKER_PRE_CFG_PARTITION, RAINMAKER_PRE_NAMESPACE,
-                                           NVS_READONLY, &handle)) != ESP_OK) {
+        at_mfg_params_storage_mode_t mode = at_get_mfg_params_storage_mode();
+        const char *p_partition_name = NULL;
+        if (mode == AT_PARAMS_IN_MFG_NVS) {
+            extern const char *g_at_mfg_nvs_name;
+            p_partition_name = g_at_mfg_nvs_name;
+        } else {
+            p_partition_name = RAINMAKER_PRE_CFG_PARTITION;
+        }
+        if ((err = nvs_open_from_partition(p_partition_name, RAINMAKER_PRE_NAMESPACE, NVS_READONLY, &handle)) != ESP_OK) {
             ESP_LOGD(TAG, "NVS open for %s %s %s failed with error %d", RAINMAKER_PRE_CFG_PARTITION, RAINMAKER_PRE_NAMESPACE, key, err);
             return NULL;
         }
