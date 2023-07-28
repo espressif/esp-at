@@ -6,6 +6,9 @@ var DOCUMENTATION_VERSIONS = {
         // latest
         { name: "latest", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3", "esp32c6"] },
 
+        // v3.2.0.0
+        { name: "release-v3.2.0.0", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3", "esp32c6" ] },
+
         // v3.1.0.0
         { name: "release-v3.1.0.0", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3" ] },
 
