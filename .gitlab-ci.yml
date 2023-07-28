@@ -962,10 +962,12 @@ build_docs:
     - ./check_lang_folder_sync.sh
     - cd en
     # - make gh-linkcheck
-    - make html
+    # skip to compile the documents due to deprecated python environment
+    # - make html
     - ../check_doc_warnings.sh
     - cd ../zh_CN
     # - make gh-linkcheck
-    - make html
+    # skip to compile the documents due to deprecated python environment
+    # - make html
     - ../check_doc_warnings.sh
     
