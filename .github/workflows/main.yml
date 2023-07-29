@@ -284,6 +284,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
     - name: clone esp-idf
       run: |
         commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
@@ -352,6 +355,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
     - name: clone esp-idf
       run: |
         commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
@@ -420,6 +426,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
     - name: clone esp-idf
       run: |
         commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
@@ -488,6 +497,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
     - name: clone esp-idf
       run: |
         commit_str=$(awk '/commit:/{print $0}' module_config/module_esp32s2_default/IDF_VERSION)
