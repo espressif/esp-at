@@ -5,7 +5,9 @@ Hardware Connection
 
 This document introduces what hardware you need to prepare and how to connect them in order to download AT firmware, send AT commands, and receive AT responses.
 
-For different series of modules, the commands supported by AT firmware are different. Please refer to :doc:`/Compile_and_Develop/esp-at_firmware_differences` for more details.
+The commands supported by each series of AT firmware vary, and its compatibility with modules or chips also differs. For more information, refer to :doc:`/Compile_and_Develop/esp-at_firmware_differences`.
+
+If you don't want to use the default AT pin, you can refer to the :doc:`/Compile_and_Develop/How_to_set_AT_port_pin` document to change the pin.
 
 What You Need
 --------------
@@ -83,7 +85,7 @@ Note:
     :header-rows: 1
 
     * - Function of Connection
-      - {IDF_TARGET_NAME} Board Pins
+      - {IDF_TARGET_NAME} Board or Module Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -124,7 +126,7 @@ Note:
     :header-rows: 1
 
     * - Function of Connection
-      - {IDF_TARGET_NAME} Board Pins
+      - {IDF_TARGET_NAME} Board or Module Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -164,7 +166,7 @@ Note:
     :header-rows: 1
 
     * - Function of Connection
-      - {IDF_TARGET_NAME} Board Pins
+      - {IDF_TARGET_NAME} Board or Module Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -205,7 +207,7 @@ Note:
     :header-rows: 1
 
     * - Function of Connection
-      - {IDF_TARGET_NAME} Board Pins
+      - {IDF_TARGET_NAME} Board or Module Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -246,7 +248,7 @@ Note:
     :header-rows: 1
 
     * - Function of Connection
-      - {IDF_TARGET_NAME} Board Pins
+      - {IDF_TARGET_NAME} Board or Module Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -293,7 +295,7 @@ Note:
     :header-rows: 1
 
     * - Function of Connection
-      - {IDF_TARGET_CFG_PREFIX}-4MB Board Pins
+      - {IDF_TARGET_CFG_PREFIX}-4MB Board or Module Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -338,7 +340,7 @@ Note:
     :header-rows: 1
 
     * - Function of Connection
-      - {IDF_TARGET_CFG_PREFIX}-2MB Board Pins
+      - {IDF_TARGET_CFG_PREFIX}-2MB Board or Module Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -382,13 +384,15 @@ Note:
   {IDF_TARGET_NAME} Series
   ------------------------
 
+  {IDF_TARGET_NAME} series refer to the module or board that has a built-in {IDF_TARGET_NAME} chip, such as {IDF_TARGET_CFG_PREFIX}-MINI series device and {IDF_TARGET_CFG_PREFIX}-WROOM series device.
+
   {IDF_TARGET_NAME} AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default.
 
   .. list-table:: {IDF_TARGET_NAME} Series Hardware Connection Pinout
     :header-rows: 1
 
     * - Function of Connection
-      - {IDF_TARGET_NAME} Board Pins
+      - {IDF_TARGET_NAME} Board or Module Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -435,7 +439,7 @@ Note:
     :header-rows: 1
 
     * - Function of Connection
-      - {IDF_TARGET_CFG_PREFIX}-4MB Board Pins
+      - {IDF_TARGET_CFG_PREFIX}-4MB Board or Module Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0

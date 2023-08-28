@@ -5,7 +5,9 @@
 
 本文档主要介绍下载和烧录 AT 固件、发送 AT 命令和接收 AT 响应所需要的硬件以及硬件之间该如何连接。
 
-对于不同系列的模组，AT 默认固件所支持的命令会有所差异。具体可参考 :doc:`/Compile_and_Develop/esp-at_firmware_differences`。
+不同系列的 AT 固件支持的命令不同，适用的模组或芯片也不尽相同，详情可参考 :doc:`/Compile_and_Develop/esp-at_firmware_differences`。
+
+如果不想要使用 AT 默认管脚，可以参考 :doc:`/Compile_and_Develop/How_to_set_AT_port_pin` 文档更改管脚。
 
 硬件准备
 ------------
@@ -83,7 +85,7 @@
     :header-rows: 1
 
     * - 功能
-      - {IDF_TARGET_NAME} 开发板管脚
+      - {IDF_TARGET_NAME} 开发板/模组管脚
       - 其它设备管脚
     * - 下载固件/输出日志 :sup:`1`
       - UART0
@@ -124,7 +126,7 @@
     :header-rows: 1
 
     * - 功能
-      - {IDF_TARGET_NAME} 开发板管脚
+      - {IDF_TARGET_NAME} 开发板/模组管脚
       - 其它设备管脚
     * - 下载固件/输出日志 :sup:`1`
       - UART0
@@ -164,7 +166,7 @@
     :header-rows: 1
 
     * - 功能
-      - {IDF_TARGET_NAME} 开发板管脚
+      - {IDF_TARGET_NAME} 开发板/模组管脚
       - 其它设备管脚
     * - 下载固件/输出日志 :sup:`1`
       - UART0
@@ -246,7 +248,7 @@
     :header-rows: 1
 
     * - 功能
-      - {IDF_TARGET_NAME} 开发板管脚
+      - {IDF_TARGET_NAME} 开发板/模组管脚
       - 其它设备管脚
     * - 下载固件/输出日志 :sup:`1`
       - UART0
@@ -289,11 +291,11 @@
 
   {IDF_TARGET_CFG_PREFIX}-4MB AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。
 
-  .. list-table:: {IDF_TARGET_CFG_PREFIX}-4MB Series 系列硬件连接管脚分配
+  .. list-table:: {IDF_TARGET_CFG_PREFIX}-4MB 系列硬件连接管脚分配
     :header-rows: 1
 
     * - 功能
-      - {IDF_TARGET_CFG_PREFIX}-4MB 开发板管脚
+      - {IDF_TARGET_CFG_PREFIX}-4MB 开发板/模组管脚
       - 其它设备管脚
     * - 下载固件/输出日志 :sup:`1`
       - UART0
@@ -334,11 +336,11 @@
 
   {IDF_TARGET_CFG_PREFIX}-2MB AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。
 
-  .. list-table:: {IDF_TARGET_CFG_PREFIX}-2MB Series 系列硬件连接管脚分配
+  .. list-table:: {IDF_TARGET_CFG_PREFIX}-2MB 系列硬件连接管脚分配
     :header-rows: 1
 
     * - 功能
-      - {IDF_TARGET_CFG_PREFIX}-2MB 开发板管脚
+      - {IDF_TARGET_CFG_PREFIX}-2MB 开发板/模组管脚
       - 其它设备管脚
     * - 下载固件 :sup:`1`
       - UART0
@@ -382,13 +384,15 @@
   {IDF_TARGET_NAME} 系列
   -----------------------
 
+  {IDF_TARGET_NAME} 系列指的是内置 {IDF_TARGET_NAME} 芯片的模组/开发板，例如：{IDF_TARGET_CFG_PREFIX} MINI 系列设备、{IDF_TARGET_CFG_PREFIX} WROOM 系列设备。
+
   {IDF_TARGET_NAME} AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。
 
-  .. list-table:: {IDF_TARGET_NAME} Series 系列硬件连接管脚分配
+  .. list-table:: {IDF_TARGET_NAME} 系列硬件连接管脚分配
     :header-rows: 1
 
     * - 功能
-      - {IDF_TARGET_NAME} 开发板管脚
+      - {IDF_TARGET_NAME} 开发板/模组管脚
       - 其它设备管脚
     * - 下载固件/输出日志 :sup:`1`
       - UART0
@@ -420,7 +424,7 @@
 
     {IDF_TARGET_NAME} 系列硬件连接示意图
 
-  如果需要直接基于 ESP32-C3-MINI-1 模组进行连接，请参考 `《ESP32-C3-MINI-1 技术规格书》 <https://www.espressif.com/sites/default/files/documentation/esp32-c3-mini-1_datasheet_cn.pdf>`_。
+  如果需要直接基于 {IDF_TARGET_NAME} 模组进行连接，请参考对应模组的 `技术规格书 <https://www.espressif.com/zh-hans/support/documents/technical-documents>`_。
 
 .. only:: esp32c6
 
@@ -431,11 +435,11 @@
 
   {IDF_TARGET_CFG_PREFIX}-4MB AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。
 
-  .. list-table:: {IDF_TARGET_CFG_PREFIX}-4MB Series 系列硬件连接管脚分配
+  .. list-table:: {IDF_TARGET_CFG_PREFIX}-4MB 系列硬件连接管脚分配
     :header-rows: 1
 
     * - 功能
-      - {IDF_TARGET_CFG_PREFIX}-4MB 开发板管脚
+      - {IDF_TARGET_CFG_PREFIX}-4MB 开发板/模组管脚
       - 其它设备管脚
     * - 下载固件/输出日志 :sup:`1`
       - UART0

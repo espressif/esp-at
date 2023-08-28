@@ -425,7 +425,7 @@ MQTT AT 示例
 
 以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 MQTT 发布者（只作为 MQTT 发布者角色），另一块作为 MQTT 订阅者（只作为 MQTT 订阅者角色）。
 
-示例介绍了如何基于 WSS 创建 MQTT 连接。MQTT 代理域名为 ``test.mosquitto.org``，端口为 ``8081`` 。
+示例介绍了如何基于 WSS 创建 MQTT 连接。MQTT 代理域名为 ``mqtt.eclipseprojects.io``，资源路径为 ``mqtt``，端口为 ``443``。
 
 .. Important::
   步骤中以 ``{IDF_TARGET_NAME} MQTT 发布者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 发布者端执行即可，以 ``{IDF_TARGET_NAME} MQTT 订阅者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 订阅者端执行即可。如果操作没有特别指明在哪端操作，则需要在发布者端和订阅者端都执行。
@@ -473,7 +473,7 @@ MQTT AT 示例
 
    .. code-block:: none
 
-     AT+MQTTUSERCFG=0,7,"publisher","espressif","1234567890",0,0,""
+     AT+MQTTUSERCFG=0,7,"publisher","espressif","1234567890",0,0,"mqtt"
 
    响应：
 
@@ -487,7 +487,7 @@ MQTT AT 示例
 
    .. code-block:: none
 
-     AT+MQTTUSERCFG=0,7,"subscriber","espressif","1234567890",0,0,""
+     AT+MQTTUSERCFG=0,7,"subscriber","espressif","1234567890",0,0,"mqtt"
 
    响应：
   
@@ -501,13 +501,13 @@ MQTT AT 示例
 
    .. code-block:: none
 
-     AT+MQTTCONN=0,"test.mosquitto.org",8081,1
+     AT+MQTTCONN=0,"mqtt.eclipseprojects.io",443,1
 
    响应：
   
    .. code-block:: none
 
-     +MQTTCONNECTED:0,7,"test.mosquitto.org","8081","/",1
+     +MQTTCONNECTED:0,7,"mqtt.eclipseprojects.io","443","/mqtt",1
 
      OK
 

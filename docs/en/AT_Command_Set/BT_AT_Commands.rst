@@ -1150,7 +1150,7 @@ Remove all devices from the security database.
 
 ::
 
-    AT+BLEENCCLEAR
+    AT+BTENCCLEAR
 
 **Response:**
 
