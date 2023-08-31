@@ -3,7 +3,7 @@
 
 - [中文版](#esp-at-项目)
 
-esp-at project was started and powered by Espressif Systems (@[espressif](https://github.com/espressif/)) as an official project, for the **ESP32-C2**, **ESP32-C3**, **ESP32-C6**, **ESP32**, **ESP8266**, and **ESP32-S2** Series SoCs provided for Windows, Linux, and macOS.  
+esp-at project was started and powered by Espressif Systems (@[espressif](https://github.com/espressif/)) as an official project, for the **ESP32-C2**, **ESP32-C3**, **ESP32-C6**, **ESP32**, and **ESP8266** Series SoCs provided for Windows, Linux, and macOS.  
 It is now supported and maintained by Espressif esp-at team (@[esp-at](https://github.com/espressif/esp-at)).
 
 # Introduction
@@ -55,19 +55,12 @@ The AT command firmware allows for rapid integration by providing:
   - [v2.2.1.0_esp8266](https://github.com/espressif/esp-at/releases/tag/v2.2.1.0_esp8266) is the last version of ESP-AT for ESP8266, corresponding to branch [release/v2.2.0.0_esp8266](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp8266), corresponding to documentation [https://docs.espressif.com/projects/esp-at/en/release-v2.2.0.0_esp8266](https://docs.espressif.com/projects/esp-at/en/release-v2.2.0.0_esp8266/).
   - ESP-AT will regularly update [release/v2.2.0.0_esp8266](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp8266) branch for ESP8266. Update includes vital bugfix and security repair.
 
-- ESP32-S2 Series
-  - **ESP32-C2 is recommended to use instead**
-  - ESP-AT will not release the major version for ESP32-S2.
-  - ESP-AT no longer adds new features to ESP32-S2.
-  - [v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/releases/tag/v2.1.0.0_esp32s2) is the last version of ESP-AT for ESP32-S2, corresponding to branch [release/v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/tree/release/v2.1.0.0_esp32s2), corresponding to documentation [https://docs.espressif.com/projects/esp-at/en/release-v2.1.0.0_esp32s2](https://docs.espressif.com/projects/esp-at/en/release-v2.1.0.0_esp32s2/).
-  - ESP-AT will regularly update [release/v2.2.0.0_esp32](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp32) branch for ESP32-S2. Update includes vital bugfix and security repair.
-
 - Other Series
   - ESP-AT will support ESP32-C5 series of chips.
   - ESP-AT will not support ESP32-S and ESP32-H series of chips.
 
 # ESP-AT 项目
-esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/)) 发起和提供技术支持的官方项目，适用于 Windows、Linux、macOS 上的 **ESP32-C2**、**ESP32-C3**、**ESP32-C6**、**ESP32**、**ESP8266**、和 **ESP32-S2** 系列芯片。  
+esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/)) 发起和提供技术支持的官方项目，适用于 Windows、Linux、macOS 上的 **ESP32-C2**、**ESP32-C3**、**ESP32-C6**、**ESP32**、和 **ESP8266** 系列芯片。  
 当前该项目由 Espressif esp-at 团队 (@[esp-at](https://github.com/espressif/esp-at)) 负责技术支持和维护。  
 
 # 简介
@@ -116,13 +109,6 @@ esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/))
   - ESP-AT 不再为 ESP8266 发布大版本
   - [v2.2.1.0_esp8266](https://github.com/espressif/esp-at/releases/tag/v2.2.1.0_esp8266) 是 ESP-AT 为 ESP8266 发布的最后一个版本，对应分支为 [release/v2.2.0.0_esp8266](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp8266)，对应文档为 [https://docs.espressif.com/projects/esp-at/zh_CN/release-v2.2.0.0_esp8266](https://docs.espressif.com/projects/esp-at/zh_CN/release-v2.2.0.0_esp8266/)
   - ESP-AT 将定期在 [release/v2.2.0.0_esp8266](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp8266) 分支为 ESP8266 进行重要 bug 修复，安全修补等更新
-
-- ESP32-S2 系列
-  - **推荐使用 ESP32-C2 芯片**
-  - ESP-AT 不再为 ESP32-S2 添加新功能
-  - ESP-AT 不再为 ESP32-S2 发布大版本
-  - [v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/releases/tag/v2.1.0.0_esp32s2) 是 ESP-AT 为 ESP32-S2 发布的最后一个版本，对应分支为 [release/v2.1.0.0_esp32s2](https://github.com/espressif/esp-at/tree/release/v2.1.0.0_esp32s2)，对应文档为 [https://docs.espressif.com/projects/esp-at/zh_CN/release-v2.1.0.0_esp32s2](https://docs.espressif.com/projects/esp-at/zh_CN/release-v2.1.0.0_esp32s2/)
-  - ESP-AT 将定期在 [release/v2.2.0.0_esp32](https://github.com/espressif/esp-at/tree/release/v2.2.0.0_esp32) 分支为 ESP32-S2 进行重要 bug 修复，安全修补等更新
 
 - 其它系列
   - ESP-AT 将计划支持 ESP32-C5 系列芯片
