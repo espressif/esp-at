@@ -43,7 +43,7 @@ The AT command firmware allows for rapid integration by providing:
 
 - ESP32-C6 Series
   - **Preferred recommended chip for using ESP-AT on**
-  - The first version of ESP-AT firmware (v4.0.0.0) is planned to be released in August 2023.
+  - The first version of ESP-AT firmware (v4.0.0.0) is planned to be released in October 2023.
 
 - ESP32 Series
   - Recommended released version: [v3.2.0.0](https://github.com/espressif/esp-at/releases/tag/v3.2.0.0)
@@ -98,7 +98,7 @@ esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/))
 
 - ESP32-C6 系列
   - **ESP-AT 首选推荐芯片**
-  - 计划在 2023 年 8 月发布首版 ESP-AT 固件（v4.0.0.0）
+  - 计划在 2023 年 10 月发布首版 ESP-AT 固件（v4.0.0.0）
 
 - ESP32 系列
   - 推荐使用的发布版本：[v3.2.0.0](https://github.com/espressif/esp-at/releases/tag/v3.2.0.0)
