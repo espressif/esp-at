@@ -1,0 +1,147 @@
+From 880c46ed4830a561df3dc6ba72dfee9c39b0559a Mon Sep 17 00:00:00 2001
+From: xiewenxiang <xiewenxiang@espressif.com>
+Date: Thu, 13 Jul 2023 19:24:50 +0800
+Subject: [PATCH] feat(blufi): Support ext adv
+
+---
+ .../profile/esp/blufi/nimble_host/esp_blufi.c | 98 ++++++++++++++++++-
+ 1 file changed, 97 insertions(+), 1 deletion(-)
+
+diff --git a/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c b/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
+index 5a22773c7a..220a29de81 100644
+--- a/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
++++ b/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
+@@ -32,11 +32,22 @@
+ 
+ #if (BLUFI_INCLUDED == TRUE)
+ 
++#if !CONFIG_BT_NIMBLE_EXT_ADV
+ static uint8_t own_addr_type;
++#endif
+ 
+ struct gatt_value gatt_values[SERVER_MAX_VALUES];
+ const static char *TAG = "BLUFI_EXAMPLE";
+ 
++#if CONFIG_BT_NIMBLE_EXT_ADV
++static uint8_t ext_adv_pattern_1[] = {
++    0x02, 0x01, 0x06,
++    0x03, 0x03, 0xFF, 0xFF,
++    0x0d, 0X09, 'B', 'L', 'U', 'F','I', '_' ,'D','E','V','I','C','E',
++    0x02, 0x0A, 0x09
++};
++#endif
++
+ enum {
+     GATT_VALUE_TYPE_CHR,
+     GATT_VALUE_TYPE_DSC,
+@@ -333,6 +344,79 @@ esp_blufi_gap_event(struct ble_gap_event *event, void *arg)
+ 
+ void esp_blufi_adv_start(void)
+ {
++#if CONFIG_BT_NIMBLE_EXT_ADV   //Extended Adv
++    struct ble_gap_ext_adv_params params;
++    struct os_mbuf *data;
++    uint8_t instance = 0;
++    int rc;
++    const char *name;
++    uint8_t adv_data[31] = {0};
++
++    /* use defaults for non-set params */
++    memset (&params, 0, sizeof(params));
++
++    /* enable connectable advertising */
++    params.connectable = 1;
++    params.scannable = 1;
++    params.legacy_pdu = 1;
++
++    /* advertise using public addr */
++    params.own_addr_type = BLE_OWN_ADDR_PUBLIC;
++
++    params.primary_phy = BLE_HCI_LE_PHY_1M;
++    params.secondary_phy = BLE_HCI_LE_PHY_1M;
++    params.sid = 1;
++
++    params.itvl_min = BLE_GAP_ADV_FAST_INTERVAL1_MIN;
++    params.itvl_max = BLE_GAP_ADV_FAST_INTERVAL1_MIN;
++
++    /* configure instance 0 */
++    rc = ble_gap_ext_adv_configure(instance, &params, NULL,
++                                   esp_blufi_gap_event, NULL);
++    if (rc != 0) {
++        ESP_LOGE(TAG, "Configuration failed with reason : %d \n" , rc);
++        return;
++    }
++
++    name = ble_svc_gap_device_name();
++    adv_data[0] = 0x02;
++    adv_data[1] = 0x01;
++    adv_data[2] = 0x06;
++    adv_data[3] = 1 + strlen(name);
++    adv_data[4] = 0x09;
++    memcpy(adv_data + 5, name, strlen(name));
++
++    /* get mbuf for scan rsp data */
++    data = os_msys_get_pkthdr(strlen(name) + 5, 0);
++
++    if (data == NULL) {
++        ESP_LOGE(TAG, "Failed to get mbuf \n");
++	return;
++    }
++
++    /* fill mbuf with scan rsp data */
++    rc = os_mbuf_append(data, adv_data, strlen(name) + 5);
++
++    if (rc != 0) {
++        ESP_LOGE(TAG, "Failed to fill scan rsp data with reason: %d \n", rc);
++	return;
++    }
++
++    rc = ble_gap_ext_adv_set_data(instance, data);
++
++    if (rc != 0) {
++        ESP_LOGE(TAG, "Failed to set adv data with reason: %d \n", rc);
++        return;
++    }
++
++    /* start advertising */
++    rc = ble_gap_ext_adv_start(instance, 0, 0);
++
++    if (rc != 0) {
++        ESP_LOGE(TAG, "Failed to start ext adv with reason: %d \n", rc);
++	return;
++    }
++#else  // Legacy ADV
+     int rc;
+ 
+     rc = ble_hs_util_ensure_addr(0);
+@@ -404,6 +488,7 @@ void esp_blufi_adv_start(void)
+         ESP_LOGE(TAG, "error enabling advertisement; rc=%d\n", rc);
+         return;
+     }
++#endif
+ }
+ 
+ uint8_t esp_blufi_init(void)
+@@ -447,7 +532,18 @@ void esp_blufi_disconnect(void)
+     ble_gap_terminate(blufi_env.conn_id, BLE_ERR_REM_USER_CONN_TERM);
+ }
+ 
+-void esp_blufi_adv_stop(void) {}
++void esp_blufi_adv_stop(void)
++{
++#if CONFIG_BT_NIMBLE_EXT_ADV
++    int i;
++
++    for (i = 0; i < BLE_ADV_INSTANCES; i++) {
++        ble_gap_ext_adv_stop(i);
++    }
++#else
++   ble_gap_adv_stop();
++#endif
++}
+ 
+ void esp_blufi_send_encap(void *arg)
+ {
+-- 
+2.25.1
+

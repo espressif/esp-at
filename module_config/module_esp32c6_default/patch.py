@@ -35,6 +35,7 @@ def main():
     cur_abs_dir = os.getcwd()
 
     patch_list = {
+        'blufi-adv.patch': os.path.join(cur_abs_dir, 'esp-idf'),
         'dhcps.patch': os.path.join(cur_abs_dir, 'esp-idf')
     }
 
