@@ -37,7 +37,7 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`: Query/Set SSL client Application Layer Protocol Negotiation (ALPN).
 -  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`: Query/Set SSL client Pre-shared Key (PSK).
 -  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`: Query/Set the TCP/UDP/SSL reconnection interval for the Wi-Fi :term:`normal transmission mode`.
--  :ref:`AT+CIPRECVMODE <cmd-CIPRECVMODE>`: Query/Set socket receiving mode.
+-  :ref:`AT+CIPRECVTYPE <cmd-CIPRECVTYPE>`: Query/Set socket receiving mode.
 -  :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`: Obtain socket data in passive receiving mode.
 -  :ref:`AT+CIPRECVLEN <cmd-CIPRECVLEN>`: Obtain socket data length in passive receiving mode.
 -  :ref:`AT+PING <cmd-CIPPING>`: Ping the remote host.
@@ -2065,9 +2065,9 @@ Example
 
     AT+CIPRECONNINTV=10  
 
-.. _cmd-CIPRECVMODE:
+.. _cmd-CIPRECVTYPE:
 
-:ref:`AT+CIPRECVMODE <TCPIP-AT>`: Query/Set Socket Receiving Mode
+:ref:`AT+CIPRECVTYPE <TCPIP-AT>`: Query/Set Socket Receiving Mode
 -----------------------------------------------------------------
 
 Query Command
@@ -2081,13 +2081,14 @@ Query the socket receiving mode.
 
 ::
 
-    AT+CIPRECVMODE?
+    AT+CIPRECVTYPE?
 
 **Response:**
 
 ::
 
-    +CIPRECVMODE:<mode>
+    +CIPRECVTYPE:<link ID>,<mode>
+
     OK
 
 Set Command
@@ -2097,7 +2098,11 @@ Set Command
 
 ::
 
-    AT+CIPRECVMODE=<mode>
+    // Single connection: (AT+CIPMUX=0)
+    AT+CIPRECVTYPE=<mode>
+
+    // Multiple connections: (AT+CIPMUX=1)
+    AT+CIPRECVTYPE=<link ID>,<mode>
 
 **Response:**
 
@@ -2108,6 +2113,7 @@ Set Command
 Parameter
 ^^^^^^^^^^
 
+-  **<link ID>**: ID of the connection (0 ~ max). For a single connection, <link ID> is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
 - **<mode>**: the receive mode of socket data. Default: 0.
    
    - 0: active mode. ESP-AT will send all the received socket data instantly to the host MCU with the header "+IPD". (The socket receive window is 5760 bytes by default. The maximum valid bytes sent to MCU is 2920 bytes each time.)
@@ -2133,7 +2139,11 @@ Example
 
 ::
 
-    AT+CIPRECVMODE=1   
+    // Set passive mode in single connection mode
+    AT+CIPRECVTYPE=1
+
+    // Set all connections to passive mode in multiple connections mode
+    AT+CIPRECVTYPE=5,1
 
 .. _cmd-CIPRECVDATA:
 
@@ -2182,7 +2192,7 @@ Example
 
 ::
 
-    AT+CIPRECVMODE=1
+    AT+CIPRECVTYPE=1
 
     // For example, if host MCU gets a message of receiving 100-byte data in connection with No.0, 
     // the message will be "+IPD,0,100".

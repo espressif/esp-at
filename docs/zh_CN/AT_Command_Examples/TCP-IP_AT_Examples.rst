@@ -1818,7 +1818,7 @@ TCP-IP AT 示例
 
    .. code-block:: none
 
-     AT+CIPRECVMODE=1
+     AT+CIPRECVTYPE=1
 
    响应：
 
@@ -1830,7 +1830,7 @@ TCP-IP AT 示例
 
    说明:
 
-   - 此时会回复 ``+IPD,4``，如果后续再接收到服务器数据，是否回复 ``+IPD,``，请阅读 :ref:`AT+CIPRECVMODE <cmd-CIPRECVMODE>` 说明部分。
+   - 此时会回复 ``+IPD,4``，如果后续再接收到服务器数据，是否回复 ``+IPD,``，请阅读 :ref:`AT+CIPRECVTYPE <cmd-CIPRECVTYPE>` 说明部分。
 
 #. {IDF_TARGET_NAME} 设备查询被动接收模式下套接字数据的长度。
 

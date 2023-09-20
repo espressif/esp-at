@@ -1818,7 +1818,7 @@ When a large amount of network data is expected to be received and the MCU canno
 
    .. code-block:: none
 
-     AT+CIPRECVMODE=1
+     AT+CIPRECVTYPE=1
 
    Response:
 
@@ -1830,7 +1830,7 @@ When a large amount of network data is expected to be received and the MCU canno
 
    Note:
 
-   - The device replies with ``+IPD,4``. If it receives server data again later,  please refer to the note section of ref:``AT+CIPRECVMODE<cmd CIPRECVMODE>`` for whether it will reply with ``+IPD,``.
+   - The device replies with ``+IPD,4``. If it receives server data again later, please refer to the note section of :ref:`AT+CIPRECVTYPE <cmd-CIPRECVTYPE>` for whether it will reply with ``+IPD,``.
 
 #. {IDF_TARGET_NAME} obtains socket data length in passive receiving mode.
 
