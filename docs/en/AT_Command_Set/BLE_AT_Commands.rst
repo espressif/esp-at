@@ -1149,11 +1149,6 @@ Introduction
     -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
     -  **<remote_address>**: remote Bluetooth LE address.
 
-    Note
-    ^^^^^
-
-    -  Only clients can call this command to terminate the connection.
-
     Example
     ^^^^^^^^
 
@@ -2953,7 +2948,7 @@ Notes
 ^^^^^
 
 -  If you need to set BluFi name, please set it before command :ref:`AT+BLUFI=1 <cmd-BLUFI>`. Otherwise, it will use the default name ``BLUFI_DEVICE``.
--  The maximum length of BluFi name is 29 bytes.
+-  The maximum length of BluFi name is 26 bytes.
 
 Example
 ^^^^^^^^

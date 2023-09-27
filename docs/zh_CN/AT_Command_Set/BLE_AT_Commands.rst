@@ -1149,11 +1149,6 @@ Bluetooth® Low Energy AT 命令集
     -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
     -  **<remote_address>**：对方 Bluetooth LE 设备地址。
 
-    说明
-    ^^^^
-
-    -  仅支持客户端运行本命令断开连接。
-
     示例
     ^^^^
 
@@ -2953,7 +2948,7 @@ Bluetooth® Low Energy AT 命令集
 ^^^^
 
 -  如需设置 BluFi 设备名称，请在运行 :ref:`AT+BLUFI=1 <cmd-BLUFI>` 命令前设置，否则将使用默认名称 ``BLUFI_DEVICE``。
--  BluFi 设备名称最大长度为 29 字节。
+-  BluFi 设备名称最大长度为 26 字节。
 
 示例
 ^^^^

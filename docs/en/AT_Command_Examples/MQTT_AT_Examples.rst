@@ -425,7 +425,7 @@ MQTT over WSS
 
 Below is an example of using two {IDF_TARGET_NAME} development boards, one as a MQTT publisher (only as MQTT publisher role), the other one as a MQTT subscriber (only as MQTT subscriber role).
 
-The example shows how to establish MQTT connections over WSS and how to communicate with a MQTT broker. For example, the MQTT broker's domain name is ``test.mosquitto.org``, and the port is ``8081``.
+The example shows how to establish MQTT connections over WSS and how to communicate with a MQTT broker. For example, the MQTT broker's domain name is ``mqtt.eclipseprojects.io``, the path is ``mqtt``, and the port is ``443``.
 
 .. Important::
   In the step, the operations starting with ``{IDF_TARGET_NAME} MQTT publisher`` only need to be executed at {IDF_TARGET_NAME} MQTT publisher, and the operations starting with ``{IDF_TARGET_NAME} MQTT subscriber`` only need to be executed at {IDF_TARGET_NAME} MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
@@ -473,7 +473,7 @@ The example shows how to establish MQTT connections over WSS and how to communic
 
    .. code-block:: none
 
-     AT+MQTTUSERCFG=0,7,"publisher","espressif","1234567890",0,0,""
+     AT+MQTTUSERCFG=0,7,"publisher","espressif","1234567890",0,0,"mqtt"
 
    Response:
 
@@ -487,7 +487,7 @@ The example shows how to establish MQTT connections over WSS and how to communic
 
    .. code-block:: none
 
-     AT+MQTTUSERCFG=0,7,"subscriber","espressif","1234567890",0,0,""
+     AT+MQTTUSERCFG=0,7,"subscriber","espressif","1234567890",0,0,"mqtt"
 
    Response:
   
@@ -501,13 +501,13 @@ The example shows how to establish MQTT connections over WSS and how to communic
 
    .. code-block:: none
 
-     AT+MQTTCONN=0,"test.mosquitto.org",8081,1
+     AT+MQTTCONN=0,"mqtt.eclipseprojects.io",443,1
 
    Response:
   
    .. code-block:: none
 
-     +MQTTCONNECTED:0,7,"test.mosquitto.org","8081","/",1
+     +MQTTCONNECTED:0,7,"mqtt.eclipseprojects.io","443","/mqtt",1
 
      OK
 

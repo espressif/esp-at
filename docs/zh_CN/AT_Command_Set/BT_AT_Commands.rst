@@ -1150,7 +1150,7 @@
 
 ::
 
-    AT+BLEENCCLEAR
+    AT+BTENCCLEAR
 
 **响应：**
 
