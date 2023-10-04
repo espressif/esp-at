@@ -44,6 +44,8 @@
 #include "esp_at_core.h"
 #include "esp_at.h"
 
+#define CONFIG_AT_USER_COMMAND_SUPPORT
+
 #ifdef CONFIG_AT_USER_COMMAND_SUPPORT
 
 #define AT_USERRAM_READ_BUFFER_SIZE     1024
@@ -685,3 +687,32 @@ bool esp_at_user_cmd_regist(void)
 }
 
 #endif
+
+
+
+uint8_t at_query_cmd_test(uint8_t *cmd_name)
+{
+    uint8_t buffer[64] = {0};
+
+    snprintf((char *)buffer, 64, "this cmd is query cmd: %s\r\n", cmd_name);
+
+    esp_at_port_write_data(buffer, strlen((char *)buffer));
+
+    return ESP_AT_RESULT_CODE_OK;
+}
+
+
+uint8_t at_exe_cmd_test(uint8_t *cmd_name)
+{
+    uint8_t buffer[64] = {0};
+
+    snprintf((char *)buffer, 64, "this cmd is execute cmd: %s\r\n", cmd_name);
+
+    esp_at_port_write_data(buffer, strlen((char *)buffer));
+
+    return ESP_AT_RESULT_CODE_OK;
+}
+
+static esp_at_cmd_struct at_custom_cmd[] = {
+    {"+TEST",, at_query_cmd_test,, at_exe_cmd_test},
+};
