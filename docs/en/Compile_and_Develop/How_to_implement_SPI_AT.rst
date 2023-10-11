@@ -33,28 +33,55 @@ The Default Pin Assignment
 
 The following pin assignments are used by default:
 
-.. list-table:: The Default Pins for SPI AT
-   :widths: 10 25
-   :header-rows: 1
+.. only:: esp32c2 or esp32c3
 
-   * - Signal
-     - GPIO Number
-   * - SCLK
-     - 6
-   * - MISO
-     - 2
-   * - MOSI
-     - 7
-   * - CS
-     - 10
-   * - HANDSHAKE
-     - 3
-   * - GND
-     - GND
-   * - QUADWP (qio/qout) :sup:`1`
-     - 8
-   * - QUADHD (qio/qout) :sup:`1`
-     - 9
+  .. list-table:: The Default Pins for SPI AT
+    :widths: 10 25
+    :header-rows: 1
+
+    * - Signal
+      - GPIO Number
+    * - SCLK
+      - 6
+    * - MISO
+      - 2
+    * - MOSI
+      - 7
+    * - CS
+      - 10
+    * - HANDSHAKE
+      - 3
+    * - GND
+      - GND
+    * - QUADWP (qio/qout) :sup:`1`
+      - 8
+    * - QUADHD (qio/qout) :sup:`1`
+      - 9
+
+.. only:: esp32c6
+
+  .. list-table:: The Default Pins for SPI AT
+    :widths: 10 25
+    :header-rows: 1
+
+    * - Signal
+      - GPIO Number
+    * - SCLK
+      - 19
+    * - MISO
+      - 20
+    * - MOSI
+      - 18
+    * - CS
+      - 23
+    * - HANDSHAKE
+      - 21
+    * - GND
+      - GND
+    * - QUADWP (qio/qout) :sup:`1`
+      - 22
+    * - QUADHD (qio/qout) :sup:`1`
+      - 2
 
 **Note** 1: QUADWP and QUADHD signals are only used for 4-bit (qio/qout) transactions.
 

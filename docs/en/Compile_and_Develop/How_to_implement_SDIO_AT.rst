@@ -15,12 +15,23 @@ SDIO can use either 1-bit or 4-bit data transfer mode.
 
 The SDIO slave pins are as below:
 
--  CLK is GPIO14
--  CMD is GPIO15
--  DAT0 is GPIO2
--  DAT1 is GPIO4
--  DAT2 is GPIO12 (for 4-bit mode only)
--  DAT3 is GPIO13 (for 4-bit mode only)
+.. only:: esp32
+
+   -  CLK is GPIO14
+   -  CMD is GPIO15
+   -  DAT0 is GPIO2
+   -  DAT1 is GPIO4
+   -  DAT2 is GPIO12 (for 4-bit mode only)
+   -  DAT3 is GPIO13 (for 4-bit mode only)
+
+.. only:: esp32c6
+
+   -  CLK is GPIO19
+   -  CMD is GPIO18
+   -  DAT0 is GPIO20
+   -  DAT1 is GPIO21
+   -  DAT2 is GPIO22 (for 4-bit mode only)
+   -  DAT3 is GPIO23 (for 4-bit mode only)
 
 Implement SDIO AT
 -----------------

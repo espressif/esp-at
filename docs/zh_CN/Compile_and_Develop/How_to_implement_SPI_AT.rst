@@ -33,28 +33,55 @@ SPI AT 默认管脚
 
 下表给出了不同系列的 {IDF_TARGET_NAME} 设备使用 SPI AT 时默认的硬件管脚：
 
-.. list-table:: SPI AT 默认管脚
-   :widths: 10 25
-   :header-rows: 1
+.. only:: esp32c2 or esp32c3
 
-   * - 信号
-     - GPIO 编号
-   * - SCLK
-     - 6
-   * - MISO
-     - 2
-   * - MOSI
-     - 7
-   * - CS
-     - 10
-   * - HANDSHAKE
-     - 3
-   * - GND
-     - GND
-   * - QUADWP (qio/qout) :sup:`1`
-     - 8
-   * - QUADHD (qio/qout) :sup:`1`
-     - 9
+  .. list-table:: SPI AT 默认管脚
+    :widths: 10 25
+    :header-rows: 1
+
+    * - 信号
+      - GPIO 编号
+    * - SCLK
+      - 6
+    * - MISO
+      - 2
+    * - MOSI
+      - 7
+    * - CS
+      - 10
+    * - HANDSHAKE
+      - 3
+    * - GND
+      - GND
+    * - QUADWP (qio/qout) :sup:`1`
+      - 8
+    * - QUADHD (qio/qout) :sup:`1`
+      - 9
+
+.. only:: esp32c6
+
+  .. list-table:: SPI AT 默认管脚
+    :widths: 10 25
+    :header-rows: 1
+
+    * - 信号
+      - GPIO 编号
+    * - SCLK
+      - 19
+    * - MISO
+      - 20
+    * - MOSI
+      - 18
+    * - CS
+      - 23
+    * - HANDSHAKE
+      - 21
+    * - GND
+      - GND
+    * - QUADWP (qio/qout) :sup:`1`
+      - 22
+    * - QUADHD (qio/qout) :sup:`1`
+      - 2
 
 **说明** 1：QUADWP 引脚和 QUADHD 引脚仅在使用 4 线 SPI 工作时使用。
 

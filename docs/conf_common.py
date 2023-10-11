@@ -24,7 +24,7 @@ ESP32_DOCS = ['AT_Binary_Lists/ESP32_AT_binaries.rst',
               'AT_Command_Examples/classic_bluetooth_at_examples.rst',
               'AT_Command_Set/BT_AT_Commands.rst',
               'AT_Command_Set/Ethernet_AT_Commands.rst',
-              'Compile_and_Develop/esp32-sdio-at-guide.rst',
+              'Compile_and_Develop/How_to_implement_SDIO_AT.rst',
               'Compile_and_Develop/how_to_enable_at_classic_bluetooth.rst',
               'Compile_and_Develop/How_to_enable_ESP_AT_Ethernet.rst',
               'Customized_AT_Commands_and_Firmware/*'
@@ -45,7 +45,8 @@ ESP32C2_DOCS = ['AT_Binary_Lists/ESP32-C2_AT_binaries.rst',
                 ]
 
 ESP32C6_DOCS = ['AT_Binary_Lists/ESP32-C6_AT_binaries.rst',
-                'Compile_and_Develop/How_to_implement_SPI_AT.rst'
+                'Compile_and_Develop/How_to_implement_SPI_AT.rst',
+                'Compile_and_Develop/How_to_implement_SDIO_AT.rst'
                 ]
 
 # format: {tag needed to include: documents to included}, tags are parsed from sdkconfig and peripheral_caps.h headers

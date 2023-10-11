@@ -15,12 +15,23 @@ SDIO 可使用 一线或四线模式。至少需要 4 根线：CMD、CLK、DAT0 
 
 SDIO slave 管脚如下所示：
 
-- CLK：GPIO14
-- CMD：GPIO15
-- DAT0：GPIO2
-- DAT1：GPIO4
-- DAT2：GPIO12（四线）
-- DAT3：GPIO13（四线）
+.. only:: esp32
+
+   -  CLK is GPIO14
+   -  CMD is GPIO15
+   -  DAT0 is GPIO2
+   -  DAT1 is GPIO4
+   -  DAT2 is GPIO12（四线）
+   -  DAT3 is GPIO13（四线）
+
+.. only:: esp32c6
+
+   -  CLK is GPIO19
+   -  CMD is GPIO18
+   -  DAT0 is GPIO20
+   -  DAT1 is GPIO21
+   -  DAT2 is GPIO22（四线）
+   -  DAT3 is GPIO23（四线）
 
 如何使用 SDIO AT
 ----------------
