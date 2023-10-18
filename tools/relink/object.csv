@@ -38,12 +38,13 @@ libesp_system.a,reset_reason.c.obj,esp-idf/esp_system/CMakeFiles/__idf_esp_syste
 libesp_system.a,ubsan.c.obj,esp-idf/esp_system/CMakeFiles/__idf_esp_system.dir/ubsan.c.obj
 libesp_timer.a,esp_timer.c.obj,esp-idf/esp_timer/CMakeFiles/__idf_esp_timer.dir/src/esp_timer.c.obj
 libesp_timer.a,esp_timer_impl_systimer.c.obj,esp-idf/esp_timer/CMakeFiles/__idf_esp_timer.dir/src/esp_timer_impl_systimer.c.obj
+libesp_timer.a,esp_timer_impl_common.c.obj,esp-idf/esp_timer/CMakeFiles/__idf_esp_timer.dir/src/esp_timer_impl_common.c.obj
 libesp_timer.a,ets_timer_legacy.c.obj,esp-idf/esp_timer/CMakeFiles/__idf_esp_timer.dir/src/ets_timer_legacy.c.obj
 libesp_timer.a,system_time.c.obj,esp-idf/esp_timer/CMakeFiles/__idf_esp_timer.dir/src/system_time.c.obj
 libesp_wifi.a,esp_adapter.c.obj,esp-idf/esp_wifi/CMakeFiles/__idf_esp_wifi.dir/esp32c2/esp_adapter.c.obj
 libfreertos.a,list.c.obj,esp-idf/freertos/CMakeFiles/__idf_freertos.dir/FreeRTOS-Kernel/list.c.obj
 libfreertos.a,port.c.obj,esp-idf/freertos/CMakeFiles/__idf_freertos.dir/FreeRTOS-Kernel/portable/riscv/port.c.obj
-libfreertos.a,port_common.c.obj,esp-idf/freertos/CMakeFiles/__idf_freertos.dir/FreeRTOS-Kernel/portable/port_common.c.obj
+libfreertos.a,port_common.c.obj,esp-idf/freertos/CMakeFiles/__idf_freertos.dir/port_common.c.obj
 libfreertos.a,port_systick.c.obj,esp-idf/freertos/CMakeFiles/__idf_freertos.dir/FreeRTOS-Kernel/portable/port_systick.c.obj
 libfreertos.a,queue.c.obj,esp-idf/freertos/CMakeFiles/__idf_freertos.dir/FreeRTOS-Kernel/queue.c.obj
 libfreertos.a,tasks.c.obj,esp-idf/freertos/CMakeFiles/__idf_freertos.dir/FreeRTOS-Kernel/tasks.c.obj
