@@ -1107,7 +1107,7 @@ Introduction
     Note
     ^^^^^
 
-    -  This command only supports the client role when updating its connection parameters. Of course, the connection has to be established first.
+    -  This command supports client or server roles  when updating its connection parameters. Of course, the connection has to be established first.
 
     Example
     ^^^^^^^^
