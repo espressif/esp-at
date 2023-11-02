@@ -9,7 +9,7 @@ choice AT_COMMUNICATION_METHOD
     depends on AT_ENABLE
 
 rsource "interface/uart/Kconfig"
-rsource "interface/hspi/Kconfig"
+rsource "interface/spi/Kconfig"
 rsource "interface/socket/Kconfig"
 rsource "interface/sdio/Kconfig"
 

@@ -17,7 +17,7 @@ To modify the AT port pins of your {IDF_TARGET_NAME}, you should:
 This document focuses on modifying the pins. Click the links above for details of other steps.
 
 .. note::
-  To use other interfaces as the AT command port, please refer to :project_file:`AT through SDIO <main/interface/sdio/README.md>`, :project_file:`AT through SPI <main/interface/hspi/README.md>`, or :project_file:`AT through socket <main/interface/socket/README.md>` for more details.
+  To use other interfaces as the AT command port, please refer to :project_file:`AT through SDIO <main/interface/sdio/README.md>`, :project_file:`AT through SPI <main/interface/spi/README.md>`, or :project_file:`AT through socket <main/interface/socket/README.md>` for more details.
 
 {IDF_TARGET_NAME} Series
 ------------------------

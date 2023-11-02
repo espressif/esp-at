@@ -27,7 +27,7 @@
 
 #include "esp_at.h"
 
-#ifdef CONFIG_AT_BASE_ON_HSPI
+#ifdef CONFIG_AT_BASE_ON_SPI
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/semphr.h"
@@ -39,7 +39,7 @@
 #include "driver/gpio.h"
 #include "driver/spi_slave_hd.h"
 
-static const char* TAG = "HSPI-AT";
+static const char* TAG = "SPI-AT";
 #define SPI_SLAVE_HANDSHARK_GPIO    CONFIG_SPI_HANDSHAKE_PIN
 #define GPIO_MOSI                   CONFIG_SPI_MOSI_PIN
 #define GPIO_MISO                   CONFIG_SPI_MISO_PIN

@@ -22,7 +22,7 @@ How to enable SPI AT?
 
 You can configure and enable SPI AT through the following steps:
 
-1. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT through HSPI`` to enable SPI AT.
+1. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT through SPI`` to enable SPI AT.
 2. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI Data Transmission Mode`` to choose the SPI data transmission mode.
 3. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI GPIO settings`` to change the default pin assignments for SPI AT.
 4. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI driver settings`` to choose the SPI slave mode, and config the buffer size for data transmission.
@@ -85,7 +85,7 @@ The following pin assignments are used by default:
 
 **Note** 1: QUADWP and QUADHD signals are only used for 4-bit (qio/qout) transactions.
 
-You can change the default pin assignments by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT through HSPI`` > ``AT SPI GPIO settings`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
+You can change the default pin assignments by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT through SPI`` > ``AT SPI GPIO settings`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
 
 How to Use SPI AT?
 -----------------------

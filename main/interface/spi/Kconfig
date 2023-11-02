@@ -1,5 +1,5 @@
-config AT_BASE_ON_HSPI
-    bool "AT through HSPI"
+config AT_BASE_ON_SPI
+    bool "AT through SPI"
     depends on (IDF_TARGET_ESP32C2 || IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C6)
     help
         If enable this option, the MCU can send AT command through SPI bus. 
@@ -8,7 +8,7 @@ config AT_BASE_ON_HSPI
 
 choice SPI_TRANSMIT
     prompt "AT SPI Data Transmission Mode"
-    depends on AT_BASE_ON_HSPI
+    depends on AT_BASE_ON_SPI
     default SPI_STANDARD_MODE
 
 config SPI_STANDARD_MODE
@@ -29,7 +29,7 @@ endchoice
 
 
 menu "AT SPI GPIO settings"
-    depends on AT_BASE_ON_HSPI
+    depends on AT_BASE_ON_SPI
     config SPI_SCLK_PIN
         int "SPI sclk pin"
         default 6 if IDF_TARGET_ESP32C3
@@ -76,7 +76,7 @@ menu "AT SPI GPIO settings"
 endmenu
 
 menu "AT SPI driver settings"
-    depends on AT_BASE_ON_HSPI
+    depends on AT_BASE_ON_SPI
     config SPI_NUM
         int "SPI number"
         default 1
