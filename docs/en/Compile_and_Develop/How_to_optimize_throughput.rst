@@ -277,9 +277,9 @@ The data stream of throughput is similar to water flow. In order to improve thro
 
     If the user expects the throughput rate to be greater than or close to 5 Mbps, then SPI, SDIO, Socket or other methods can be considered. Please refer to:
 
-    .. only:: esp32
+    .. only:: esp32 or esp32c6
 
-      - SDIO: :doc:`SDIO AT Guide </Compile_and_Develop/esp32-sdio-at-guide>`
+      - SDIO: :doc:`SDIO AT Guide </Compile_and_Develop/How_to_implement_SDIO_AT>`
       - Socket: :project_file:`Socket AT Guide <main/interface/socket/README.md>`
 
     .. only:: esp32c2 or esp32c3 or esp32c6

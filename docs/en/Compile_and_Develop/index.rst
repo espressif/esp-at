@@ -19,7 +19,7 @@ How to Compile and Develop Your Own AT Project
    How to Customize Partitions <How_to_customize_partitions>
    :esp32: How to Enable {IDF_TARGET_NAME} AT Ethernet <How_to_enable_ESP_AT_Ethernet>
    How to Add Support for a Module <How_to_add_support_for_a_module>
-   :esp32: {IDF_TARGET_NAME} SDIO AT Guide <{IDF_TARGET_PATH_NAME}-sdio-at-guide.rst>
+   :esp32 or esp32c6: How to Implement SDIO AT <How_to_implement_SDIO_AT>
    :esp32c2 or esp32c3 or esp32c6: How to Implement SPI AT <How_to_implement_SPI_AT>
    How to Implement OTA Update <How_to_implement_OTA_update>
    How to Update IDF <How_to_update_IDF>

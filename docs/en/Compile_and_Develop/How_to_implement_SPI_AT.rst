@@ -22,7 +22,7 @@ How to enable SPI AT?
 
 You can configure and enable SPI AT through the following steps:
 
-1. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT through HSPI`` to enable SPI AT.
+1. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT through SPI`` to enable SPI AT.
 2. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI Data Transmission Mode`` to choose the SPI data transmission mode.
 3. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI GPIO settings`` to change the default pin assignments for SPI AT.
 4. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI driver settings`` to choose the SPI slave mode, and config the buffer size for data transmission.
@@ -33,32 +33,59 @@ The Default Pin Assignment
 
 The following pin assignments are used by default:
 
-.. list-table:: The Default Pins for SPI AT
-   :widths: 10 25
-   :header-rows: 1
+.. only:: esp32c2 or esp32c3
 
-   * - Signal
-     - GPIO Number
-   * - SCLK
-     - 6
-   * - MISO
-     - 2
-   * - MOSI
-     - 7
-   * - CS
-     - 10
-   * - HANDSHAKE
-     - 3
-   * - GND
-     - GND
-   * - QUADWP (qio/qout) :sup:`1`
-     - 8
-   * - QUADHD (qio/qout) :sup:`1`
-     - 9
+  .. list-table:: The Default Pins for SPI AT
+    :widths: 10 25
+    :header-rows: 1
+
+    * - Signal
+      - GPIO Number
+    * - SCLK
+      - 6
+    * - MISO
+      - 2
+    * - MOSI
+      - 7
+    * - CS
+      - 10
+    * - HANDSHAKE
+      - 3
+    * - GND
+      - GND
+    * - QUADWP (qio/qout) :sup:`1`
+      - 8
+    * - QUADHD (qio/qout) :sup:`1`
+      - 9
+
+.. only:: esp32c6
+
+  .. list-table:: The Default Pins for SPI AT
+    :widths: 10 25
+    :header-rows: 1
+
+    * - Signal
+      - GPIO Number
+    * - SCLK
+      - 19
+    * - MISO
+      - 20
+    * - MOSI
+      - 18
+    * - CS
+      - 23
+    * - HANDSHAKE
+      - 21
+    * - GND
+      - GND
+    * - QUADWP (qio/qout) :sup:`1`
+      - 22
+    * - QUADHD (qio/qout) :sup:`1`
+      - 2
 
 **Note** 1: QUADWP and QUADHD signals are only used for 4-bit (qio/qout) transactions.
 
-You can change the default pin assignments by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT through HSPI`` > ``AT SPI GPIO settings`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
+You can change the default pin assignments by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT through SPI`` > ``AT SPI GPIO settings`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
 
 How to Use SPI AT?
 -----------------------

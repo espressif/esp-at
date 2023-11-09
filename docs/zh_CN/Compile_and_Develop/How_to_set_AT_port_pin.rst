@@ -17,7 +17,7 @@
 本文档重点介绍如何修改管脚，点击上面的链接了解其它步骤的详细信息。
 
 .. note::
-  使用其它接口作为 AT 命令接口请参考 :project_file:`使用 AT SPI 接口 <main/interface/sdio/README.md>`, :project_file:`AT through SPI <main/interface/hspi/README.md>` 和 :project_file:`使用 AT 套接字接口 <main/interface/socket/README.md>`。
+  使用其它接口作为 AT 命令接口请参考 :project_file:`使用 AT SPI 接口 <main/interface/sdio/README.md>`, :project_file:`AT through SPI <main/interface/spi/README.md>` 和 :project_file:`使用 AT 套接字接口 <main/interface/socket/README.md>`。
 
 {IDF_TARGET_NAME} 系列
 ------------------------

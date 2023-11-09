@@ -277,9 +277,9 @@
 
     如果用户期望吞吐速率大于或接近于 5 Mbps，可以考虑使用 SPI、SDIO、Socket 等方式。具体请参考：
 
-    .. only:: esp32
+    .. only:: esp32 or esp32c6
 
-      - SDIO： :doc:`SDIO AT 指南 </Compile_and_Develop/esp32-sdio-at-guide>`
+      - SDIO： :doc:`SDIO AT 指南 </Compile_and_Develop/How_to_implement_SDIO_AT>`
       - Socket： :project_file:`Socket AT 指南 <main/interface/socket/README.md>`
 
     .. only:: esp32c2 or esp32c3 or esp32c6

@@ -22,7 +22,7 @@ AT 工程默认使用 UART 协议进行数据通信，但是 UART 协议在一�
 
 您可以通过下述步骤配置并启用 SPI AT：
 
-1. 通过 ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT through HSPI`` 使能 SPI AT。
+1. 通过 ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT through SPI`` 使能 SPI AT。
 2. 通过 ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI Data Transmission Mode`` 选择 SPI 数据传输模式。
 3. 通过 ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI GPIO settings`` 配置 SPI 使用的 GPIO 管脚。
 4. 通过 ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI driver settings`` 选择 SPI 从机的工作模式，并配置相关缓存区的大小。
@@ -33,32 +33,59 @@ SPI AT 默认管脚
 
 下表给出了不同系列的 {IDF_TARGET_NAME} 设备使用 SPI AT 时默认的硬件管脚：
 
-.. list-table:: SPI AT 默认管脚
-   :widths: 10 25
-   :header-rows: 1
+.. only:: esp32c2 or esp32c3
 
-   * - 信号
-     - GPIO 编号
-   * - SCLK
-     - 6
-   * - MISO
-     - 2
-   * - MOSI
-     - 7
-   * - CS
-     - 10
-   * - HANDSHAKE
-     - 3
-   * - GND
-     - GND
-   * - QUADWP (qio/qout) :sup:`1`
-     - 8
-   * - QUADHD (qio/qout) :sup:`1`
-     - 9
+  .. list-table:: SPI AT 默认管脚
+    :widths: 10 25
+    :header-rows: 1
+
+    * - 信号
+      - GPIO 编号
+    * - SCLK
+      - 6
+    * - MISO
+      - 2
+    * - MOSI
+      - 7
+    * - CS
+      - 10
+    * - HANDSHAKE
+      - 3
+    * - GND
+      - GND
+    * - QUADWP (qio/qout) :sup:`1`
+      - 8
+    * - QUADHD (qio/qout) :sup:`1`
+      - 9
+
+.. only:: esp32c6
+
+  .. list-table:: SPI AT 默认管脚
+    :widths: 10 25
+    :header-rows: 1
+
+    * - 信号
+      - GPIO 编号
+    * - SCLK
+      - 19
+    * - MISO
+      - 20
+    * - MOSI
+      - 18
+    * - CS
+      - 23
+    * - HANDSHAKE
+      - 21
+    * - GND
+      - GND
+    * - QUADWP (qio/qout) :sup:`1`
+      - 22
+    * - QUADHD (qio/qout) :sup:`1`
+      - 2
 
 **说明** 1：QUADWP 引脚和 QUADHD 引脚仅在使用 4 线 SPI 工作时使用。
 
-您可以通过 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT through HSPI`` > ``AT SPI GPIO settings``，然后编译工程来配置 SPI AT 对应的管脚（参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
+您可以通过 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT through SPI`` > ``AT SPI GPIO settings``，然后编译工程来配置 SPI AT 对应的管脚（参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
 
 使用 SPI AT
 --------------
