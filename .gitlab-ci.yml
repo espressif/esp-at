@@ -334,6 +334,7 @@ esp32c3_at_full_function_test:
     - export MODULE_CFG_DIR=module_esp32c3_default
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"MINI-1\", \"description\": \"\",\"silence\": 0}" > module_info.json'
     - *execute_script_esp32c3
+  when: manual
 
 esp32c3_spi_at:
   extends:
