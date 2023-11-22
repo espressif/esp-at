@@ -80,7 +80,7 @@ static esp_err_t at_compress_image_header_check(at_compress_ota_handle_t *handle
         return ESP_FAIL;
     }
 
-    uint32_t head_len = sizeof(compressed_img_header->header_v2);
+    uint32_t head_len = sizeof(bootloader_custom_ota_header_t);
 
     // check the magic number of compressed image
     if (memcmp(compressed_img_header, AT_COMPRESSED_IMAGE_MAGIC_NUMBER, strlen(AT_COMPRESSED_IMAGE_MAGIC_NUMBER))) {
@@ -90,26 +90,26 @@ static esp_err_t at_compress_image_header_check(at_compress_ota_handle_t *handle
     }
 
     // check the header version compressed image
-    if (compressed_img_header->header.version != 2) {
-        ESP_LOGE(TAG, "Compressed image has invalid header version (expected:2, saw:%d)", compressed_img_header->header.version);
+    if (compressed_img_header->version != 2) {
+        ESP_LOGE(TAG, "Compressed image has invalid header version (expected:2, saw:%d)", compressed_img_header->version);
         return ESP_FAIL;
     }
 
     // check the size of compressed image, make sure the partition can hold on the compressed image
-    if (compressed_img_header->header.length + head_len <= handle->partition->size) {
-        handle->compressed_img_size = compressed_img_header->header.length + head_len;
+    if (compressed_img_header->length + head_len <= handle->partition->size) {
+        handle->compressed_img_size = compressed_img_header->length + head_len;
         handle->image_header_checked = true;
         ESP_LOGD(TAG, "Compressed image header check succeeded, image size: %d", handle->compressed_img_size);
     } else {
         ESP_LOGE(TAG, "Compressed image overlength, image size:%d > psize:%d (0x%x)",
-            compressed_img_header->header.length + head_len, handle->partition->size, handle->partition->size);
+            compressed_img_header->length + head_len, handle->partition->size, handle->partition->size);
         return ESP_FAIL;
     }
 
     // check the crc32 of compressed image header
-    uint32_t header_crc = esp_rom_crc32_le(0, (const uint8_t *)compressed_img_header, offsetof(bootloader_custom_ota_header_t, header_v2.crc32));
-    if (header_crc != compressed_img_header->header_v2.crc32) {
-        ESP_LOGE(TAG, "Unmatched compressed image header crc (expected:0x%x saw:0x%x)", compressed_img_header->header_v2.crc32, header_crc);
+    uint32_t header_crc = esp_rom_crc32_le(0, (const uint8_t *)compressed_img_header, offsetof(bootloader_custom_ota_header_t, crc32));
+    if (header_crc != compressed_img_header->crc32) {
+        ESP_LOGE(TAG, "Unmatched compressed image header crc (expected:0x%x saw:0x%x)", compressed_img_header->crc32, header_crc);
         return ESP_FAIL;
     }
 
@@ -127,8 +127,8 @@ static esp_err_t at_compress_image_body_check(at_compress_ota_handle_t *handle, 
     }
 
     uint32_t had_read_len = 0;
-    uint32_t img_body_len = compressed_img_header->header.length;
-    uint32_t head_len = sizeof(compressed_img_header->header_v2);
+    uint32_t img_body_len = compressed_img_header->length;
+    uint32_t head_len = sizeof(bootloader_custom_ota_header_t);
 
     md5_context_t md5_context;
     esp_rom_md5_init(&md5_context);
@@ -145,7 +145,7 @@ static esp_err_t at_compress_image_body_check(at_compress_ota_handle_t *handle, 
     uint8_t digest[16] = {0};
     esp_rom_md5_final(digest, &md5_context);
 
-    if (!memcmp(compressed_img_header->header.md5, digest, sizeof(digest))) {
+    if (!memcmp(compressed_img_header->md5, digest, sizeof(digest))) {
         ESP_LOGD(TAG, "Compressed image MD5 check succeeded");
         ret = ESP_OK;
     } else {
@@ -169,7 +169,7 @@ esp_err_t at_compress_ota_write(at_compress_ota_handle_t *handle, const void *da
     }
 
     if (!handle->image_header_checked) {
-        uint32_t head_len = sizeof(bootloader_custom_ota_header_v2_t);
+        uint32_t head_len = sizeof(bootloader_custom_ota_header_t);
         if (size >= head_len) {
             if (at_compress_image_header_check(handle, (bootloader_custom_ota_header_t *)data) != ESP_OK) {
                 return ESP_FAIL;

@@ -102,7 +102,7 @@ if (CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
     add_custom_target(ota_image ALL DEPENDS app)
     add_custom_command(TARGET ota_image
     POST_BUILD
-    COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/bootloader_components/tools/custom_ota_gen.py -hv v2 -i esp-at.bin
+    COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/managed_components/espressif__cmake_utilities/scripts/gen_custom_ota.py -hv v2 -i esp-at.bin
     COMMAND ${CMAKE_COMMAND} -E copy_directory custom_ota_binaries compressed_ota_image
     COMMENT "Creating Compressed image..."
     )
