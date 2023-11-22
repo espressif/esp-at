@@ -37,8 +37,6 @@ def main():
     cur_abs_dir = os.getcwd()
 
     patch_list = {
-        'dhcps.patch': os.path.join(cur_abs_dir, 'esp-idf'),
-        'libbtdm_app.a': os.path.join(cur_abs_dir, 'esp-idf', 'components', 'bt', 'controller', 'lib_esp32', 'esp32', 'libbtdm_app.a')
     }
 
     for name, path in patch_list.items():

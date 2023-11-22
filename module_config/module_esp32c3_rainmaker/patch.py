@@ -40,8 +40,6 @@ def main():
     patch_list = {
         'rmaker-esp_rainmaker.patch': os.path.join(cur_abs_dir, 'components', 'rainmaker', 'esp-rainmaker', 'components', 'esp_rainmaker'),
         'rmaker-rmaker_common.patch': os.path.join(cur_abs_dir, 'components', 'rainmaker', 'esp-rainmaker', 'components', 'rmaker_common'),
-        'dhcps.patch': os.path.join(cur_abs_dir, 'esp-idf'),
-        'interrupt_wdt.patch': os.path.join(cur_abs_dir, 'esp-idf')
     }
 
     for name, path in patch_list.items():

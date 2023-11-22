@@ -35,8 +35,6 @@ def main():
     cur_abs_dir = os.getcwd()
 
     patch_list = {
-        'dhcps.patch': os.path.join(cur_abs_dir, 'esp-idf'),
-        'interrupt_wdt.patch': os.path.join(cur_abs_dir, 'esp-idf')
     }
 
     for name, path in patch_list.items():
