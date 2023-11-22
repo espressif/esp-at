@@ -209,16 +209,16 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
      * - +IPD
        - ESP-AT received the data from the network when AT is not in :term:`Passthrough Mode`. The message formats are as follows:
 
-         - ``+IPD,<length>`` will be outputted if AT+CIPMUX=0 and AT+CIPRECVMODE=1.
-         - ``+IPD,<link_id>,<length>`` will be outputted if AT+CIPMUX=1 and AT+CIPRECVMODE=1.
-         - ``+IPD,<length>:<data>`` will be outputted if AT+CIPMUX=0, AT+CIPRECVMODE=0, and AT+CIPDINFO=0.
-         - ``+IPD,<link_id>,<length>:<data>`` will be outputted if AT+CIPMUX=1, AT+CIPRECVMODE=0, and AT+CIPDINFO=0.
-         - ``+IPD,<length>,<"remote_ip">,<remote_port>:<data>`` will be outputted if AT+CIPMUX=0, AT+CIPRECVMODE=0, and AT+CIPDINFO=1.
-         - ``+IPD,<link_id>,<length>,<"remote_ip">,<remote_port>:<data>`` will be outputted if AT+CIPMUX=1, AT+CIPRECVMODE=0, and AT+CIPDINFO=1.
+         - ``+IPD,<length>`` will be outputted if AT+CIPMUX=0 and AT+CIPRECVTYPE=1.
+         - ``+IPD,<link_id>,<length>`` will be outputted if AT+CIPMUX=1 and AT+CIPRECVTYPE=<link_id>,1.
+         - ``+IPD,<length>:<data>`` will be outputted if AT+CIPMUX=0, AT+CIPRECVTYPE=0, and AT+CIPDINFO=0.
+         - ``+IPD,<link_id>,<length>:<data>`` will be outputted if AT+CIPMUX=1, AT+CIPRECVTYPE=<link_id>,0, and AT+CIPDINFO=0.
+         - ``+IPD,<length>,<"remote_ip">,<remote_port>:<data>`` will be outputted if AT+CIPMUX=0, AT+CIPRECVTYPE=0, and AT+CIPDINFO=1.
+         - ``+IPD,<link_id>,<length>,<"remote_ip">,<remote_port>:<data>`` will be outputted if AT+CIPMUX=1, AT+CIPRECVTYPE=<link_id>,0, and AT+CIPDINFO=1.
 
          The ``link_id`` represents the connection ID, ``length`` indicates the data length, ``remote_ip`` refers to the remote IP address, ``remote_port`` represents the remote port number, and ``data`` denotes the actual data.
 
-         Note: In the case of a SSL connection, in passive receive mode (AT+CIPRECVMODE=1), the ``length`` in the AT command response may not match the actual readable SSL data length. This is because AT prioritizes returning the readable data length at the SSL layer. If the SSL layer has no readable data, AT will return the readable data length at the socket layer.
+         Note: In the case of a SSL connection, in passive receive mode (AT+CIPRECVTYPE=1), the ``length`` in the AT command response may not match the actual readable SSL data length. This is because AT prioritizes returning the readable data length at the SSL layer. If the SSL layer has no readable data, AT will return the readable data length at the socket layer.
 
      * - The Data in :term:`Passthrough Mode`
        - ESP-AT received the data from the network or Bluetooth when AT is in :term:`Passthrough Mode`

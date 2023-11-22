@@ -37,7 +37,7 @@ TCP/IP AT 命令
 -  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`：查询/设置 SSL 客户端 ALPN
 -  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`：查询/设置 SSL 客户端的 PSK
 -  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`：查询/设置 Wi-Fi :term:`透传模式` 下的 TCP/UDP/SSL 重连间隔
--  :ref:`AT+CIPRECVMODE <cmd-CIPRECVMODE>`：查询/设置套接字接收模式
+-  :ref:`AT+CIPRECVTYPE <cmd-CIPRECVTYPE>`：查询/设置套接字接收模式
 -  :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`：获取被动接收模式下的套接字数据
 -  :ref:`AT+CIPRECVLEN <cmd-CIPRECVLEN>`：查询被动接收模式下套接字数据的长度
 -  :ref:`AT+PING <cmd-CIPPING>`：ping 对端主机
@@ -2065,9 +2065,9 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
     AT+CIPRECONNINTV=10  
 
-.. _cmd-CIPRECVMODE:
+.. _cmd-CIPRECVTYPE:
 
-:ref:`AT+CIPRECVMODE <TCPIP-AT>`：查询/设置套接字接收模式
+:ref:`AT+CIPRECVTYPE <TCPIP-AT>`：查询/设置套接字接收模式
 -----------------------------------------------------------------
 
 查询命令
@@ -2081,13 +2081,14 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 ::
 
-    AT+CIPRECVMODE?
+    AT+CIPRECVTYPE?
 
 **响应：**
 
 ::
 
-    +CIPRECVMODE:<mode>
+    +CIPRECVTYPE:<link ID>,<mode>
+
     OK
 
 设置命令
@@ -2097,7 +2098,11 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 ::
 
-    AT+CIPRECVMODE=<mode>
+    // 单连接：(AT+CIPMUX=0)
+    AT+CIPRECVTYPE=<mode>
+
+    // 多连接：(AT+CIPMUX=1)
+    AT+CIPRECVTYPE=<link ID>,<mode>
 
 **响应：**
 
@@ -2108,6 +2113,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 参数
 ^^^^
 
+- **<link ID>**：网络连接 ID (0 ~ max)，在单连接的情况下，本参数值为 0；在多连接的情况下，若参数值设为 max，则表示所有连接；本参数默认值为 5。
 - **<mode>**：套接字数据接收模式，默认值：0。
    
    - 0: 主动模式，ESP-AT 将所有接收到的套接字数据立即发送给主机 MCU，头为 "+IPD"（套接字接收窗口为 5760 字节，每次向 MCU 最大发送 2920 字节有效数据）。
@@ -2133,7 +2139,11 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 ::
 
-    AT+CIPRECVMODE=1   
+    // 单连接模式下，设置被动接收模式
+    AT+CIPRECVTYPE=1
+
+    // 多连接模式下，设置所有连接为被动接收模式
+    AT+CIPRECVTYPE=5,1
 
 .. _cmd-CIPRECVDATA:
 
@@ -2182,7 +2192,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 ::
 
-    AT+CIPRECVMODE=1
+    AT+CIPRECVTYPE=1
 
     // 例如，如果主机 MCU 从 0 号连接中收到 100 字节的数据，
     // 则会提示消息 "+IPD,0,100"，
