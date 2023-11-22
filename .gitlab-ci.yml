@@ -258,6 +258,7 @@ esp32_at_all_function_test_without_bt:
     - export MODULE_CFG_DIR=module_wrover-32
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > module_info.json'
     - *execute_script_esp32
+  when: manual
 
 esp32_at_all_function_test_just_bt:
   extends:
@@ -294,6 +295,7 @@ esp32_at_all_function_test_just_bt:
     - export MODULE_CFG_DIR=module_wrover-32
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"WROVER-32\", \"description\": \"\",\"silence\": 0}" > module_info.json'
     - *execute_script_esp32
+  when: manual
 
 esp32_ethernet_at:
   extends:
@@ -386,6 +388,7 @@ esp32c2_4mb_at_xtal_40mhz_test:
     - export MODULE_CFG_DIR=module_esp32c2_default
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32C2\", \"module\": \"ESP32C2-4MB\", \"description\": \"\",\"silence\": 0}" > module_info.json'
     - *execute_script_esp32c2
+  when: manual
 
 esp32c2_2mb_at:
   extends:
@@ -409,6 +412,7 @@ esp32c2_at_full_function_test:
     - export MODULE_CFG_DIR=module_esp32c2_default
     - 'echo -e "{\"platform\": \"PLATFORM_ESP32C2\", \"module\": \"ESP32C2-4MB\", \"description\": \"\",\"silence\": 0}" > module_info.json'
     - *execute_script_esp32c2
+  when: manual
 
 esp32c6_4mb_at:
   extends:
