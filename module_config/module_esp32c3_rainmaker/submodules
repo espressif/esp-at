@@ -3,9 +3,3 @@
     url = https://github.com/espressif/esp-rainmaker.git
     branch = master
     commit = c7c95052c6a89f445967073cf6fce90278554628
-
-[submodule "bootloader_components"]
-    path = bootloader_components
-    url = https://github.com/espressif/esp-bootloader-plus.git
-    branch = master
-    commit = fa4814f526669069d4cb28be0b229ba6952fdc38

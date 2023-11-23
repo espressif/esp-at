@@ -1,6 +1,6 @@
 ## IDF Component Manager Manifest File
 dependencies:
-  espressif/mdns:
-    version: "^1.0.0"
-  espressif/esp_websocket_client:
-    version: "^1.0.1"
+  espressif/cmake_utilities:
+    version: "==0.4.8"
+    rules:
+      - if: "target in esp32c2"

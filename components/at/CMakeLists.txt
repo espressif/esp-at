@@ -39,10 +39,6 @@ endif()
 
 set(includes "include")
 
-if (CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
-    list(APPEND includes "${CMAKE_SOURCE_DIR}/bootloader_components/include")
-endif()
-
 idf_component_register (
     SRCS ${srcs}
     INCLUDE_DIRS ${includes}
