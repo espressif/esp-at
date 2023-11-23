@@ -49,7 +49,7 @@ bool esp_at_get_eth_default_config(esp_eth_config_t* config)
 #elif CONFIG_PHY_RTL8201
     esp_eth_phy_t *phy = esp_eth_phy_new_rtl8201(&phy_config);
 #elif CONFIG_PHY_LAN8720
-    esp_eth_phy_t *phy = esp_eth_phy_new_lan8720(&phy_config);
+    esp_eth_phy_t *phy = esp_eth_phy_new_lan87xx(&phy_config);
 #elif CONFIG_PHY_DP83848
     esp_eth_phy_t *phy = esp_eth_phy_new_dp83848(&phy_config);
 #endif
