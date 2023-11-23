@@ -126,7 +126,11 @@ add_custom_command(TARGET factory_bin
 add_dependencies(factory_bin gen_project_binary)
 add_dependencies(flash factory_bin)
 
-if (CONFIG_IDF_TARGET_ESP32C2)
-    message("ready to relink..")
-    include(tools/relink/relink.cmake)
-endif()
+# If you need more RAM, you can uncomment the section below.
+# However, please note that this may introduce certain potential crash issues.
+# You will need to modify the CSV files in 'tools/relink' based on the product's requirements.
+# (refer to tools/relink/README.md to move certain APIs from flash to IRAM)
+# if (CONFIG_IDF_TARGET_ESP32C2)
+#     message("ready to relink..")
+#     include(tools/relink/relink.cmake)
+# endif()
