@@ -53,13 +53,9 @@ def main():
             raise Exception('{} or {} does not exist'.format(src_patch_path, dst_patch_path))
 
         if patch_name.endswith('.patch'):
-            if sys.platform == 'win32':
-                cmd = 'cd {} && git apply --check {} 2> /COM && cd {}'.format(dst_patch_path, src_patch_path, os.getcwd())
-            else:
-                cmd = 'cd {} && git apply --check {} 2> /dev/null && cd {}'.format(dst_patch_path, src_patch_path, os.getcwd())
-
-            ret = subprocess.call(cmd, shell = True)
-            if ret:
+            cmd = 'cd {} && git apply --check {} && cd {}'.format(dst_patch_path, src_patch_path, os.getcwd())
+            ret = subprocess.run(cmd, capture_output = True, shell = True)
+            if ret.returncode:
                 ESP_LOGI('{} does not need to be applied.'.format(patch_name))
             else:
                 cmd = 'cd {} && git apply {} && cd {}'.format(dst_patch_path, src_patch_path, os.getcwd())
