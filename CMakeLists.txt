@@ -70,6 +70,10 @@ message("esp-at docs version: ${ESP_AT_DOCS_VERSION}")
 set(FALLBACK_DNS_SERVER "8.8.8.8")
 add_compile_options("-DFALLBACK_DNS_SERVER_ADDRESS(p)=ipaddr_aton(\"${FALLBACK_DNS_SERVER}\",(p))")
 
+# optimize sntp startup delay and receive timeout to speed up time synchronization
+add_compile_options("-DSNTP_STARTUP_DELAY_FUNC=0")
+add_compile_options("-DSNTP_RECV_TIMEOUT=3000")
+
 # add cmake flags
 ### (unused typedefs, unused variable, unused function, unused-but-set-variable) should not be treated as warnings and errors
 add_compile_options("-Wno-unused-local-typedefs")
