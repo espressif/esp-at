@@ -12,6 +12,7 @@ MQTT AT 命令集
 -  :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>`：设置 MQTT 登陆密码
 -  :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`：设置 MQTT 连接属性
 -  :ref:`AT+MQTTALPN <cmd-MQTTALPN>`：设置 MQTT 应用层协议协商（ALPN）
+-  :ref:`AT+MQTTSNI <cmd-MQTTSNI>`：设置 MQTT 服务器名称指示（SNI）
 -  :ref:`AT+MQTTCONN <cmd-MQTTCONN>`：连接 MQTT Broker
 -  :ref:`AT+MQTTPUB <cmd-MQTTPUB>`：发布 MQTT 消息（字符串）
 -  :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>`：发布长 MQTT 消息
@@ -128,8 +129,8 @@ MQTT AT 命令集
 
 -  :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令也可以设置 MQTT 客户端 ID，二者之间的差别包括：
 
-   - ``AT+MQTTLONGCLIENTID`` 命令可以用来设置相对较长的客户端 ID，因为 ``AT+MQTTUSERCFG`` 命令的长度受限；
-   - 应在设置 ``AT+MQTTUSERCFG`` 后再使用 ``AT+MQTTLONGCLIENTID``。
+   - :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>` 命令可以用来设置相对较长的客户端 ID，因为 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令的长度受限；
+   - 应在设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 后再使用 :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>`。
 
 .. _cmd-MQTTLONGUSERNAME:
 
@@ -174,8 +175,8 @@ MQTT AT 命令集
 
 -  :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令也可以设置 MQTT 用户名，二者之间的差别包括：
 
-   - ``AT+MQTTLONGUSERNAME`` 命令可以用来设置相对较长的用户名，因为 ``AT+MQTTUSERCFG`` 命令的长度受限。
-   - 应在设置 ``AT+MQTTUSERCFG`` 后再使用 ``AT+MQTTLONGUSERNAME``。
+   - :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>` 命令可以用来设置相对较长的用户名，因为 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令的长度受限。
+   - 应在设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 后再使用 :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>`。
 
 .. _cmd-MQTTLONGPASSWORD:
 
@@ -220,8 +221,8 @@ MQTT AT 命令集
 
 -  :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令也可以设置 MQTT 密码，二者之间的差别包括：
 
-   - ``AT+MQTTLONGPASSWORD`` 可以用来设置相对较长的密码，因为 ``AT+MQTTUSERCFG`` 命令的长度受限；
-   - 应在设置 ``AT+MQTTUSERCFG`` 后再使用 ``AT+MQTTLONGPASSWORD``。
+   - :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>` 可以用来设置相对较长的密码，因为 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令的长度受限；
+   - 应在设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 后再使用 :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>`。
 
 .. _cmd-MQTTCONNCFG:
 
@@ -302,7 +303,7 @@ MQTT AT 命令集
 
 - 整条 AT 命令长度应小于 256 字节。
 - 只有在 MQTT 基于 TLS 或 WSS 时，MQTT ALPN 字段才会生效。
-- 应在设置 ``AT+MQTTUSERCFG`` 后再使用 ``AT+MQTTALPN``。
+- 应在设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 后再使用 :ref:`AT+MQTTALPN <cmd-MQTTALPN>`。
 
 示例
 ^^^^
@@ -315,6 +316,55 @@ MQTT AT 命令集
     AT+MQTTUSERCFG=0,5,"{IDF_TARGET_NAME}","espressif","1234567890",0,0,""
     AT+MQTTALPN=0,2,"mqtt-ca.cn","mqtt-ca.us"
     AT+MQTTCONN=0,"192.168.200.2",8883,1
+
+.. _cmd-MQTTSNI:
+
+:ref:`AT+MQTTSNI <MQTT-AT>`：设置 MQTT 服务器名称指示（SNI）
+-------------------------------------------------------------------------
+
+设置命令
+^^^^^^^^
+
+**功能：**
+
+设置 MQTT 服务器名称指示（SNI）
+
+**命令：**
+
+::
+
+    AT+MQTTSNI=<LinkID>,<"sni">
+
+**响应：**
+
+::
+
+   OK
+
+参数
+^^^^
+
+-  **<LinkID>**：当前仅支持 link ID 0。
+-  **<"sni">**：MQTT 服务器名称指示。您可以在 ClientHello 中将其发送到服务器。
+
+说明
+^^^^
+
+- 整条 AT 命令长度应小于 256 字节。
+- 只有在 MQTT 基于 TLS 或 WSS 时，MQTT SNI 字段才会生效。
+- 应在设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 后再使用 :ref:`AT+MQTTSNI <cmd-MQTTSNI>`。
+
+示例
+^^^^
+
+::
+
+    AT+CWMODE=1
+    AT+CWJAP="ssid","password"
+    AT+CIPSNTPCFG=1,8,"ntp1.aliyun.com","ntp2.aliyun.com"
+    AT+MQTTUSERCFG=0,5,"{IDF_TARGET_NAME}","espressif","1234567890",0,0,""
+    AT+MQTTSNI=0,"my_specific_prefix.iot.my_aws_region.amazonaws.com"
+    AT+MQTTCONN=0,"my_specific_prefix.iot.my_aws_region.amazonaws.com",8883,1
 
 .. _cmd-MQTTCONN:
 
@@ -375,8 +425,8 @@ MQTT AT 命令集
 -  **<state>**：MQTT 状态：
 
    -  0: MQTT 未初始化；
-   -  1: 已设置 ``AT+MQTTUSERCFG``；
-   -  2: 已设置 ``AT+MQTTCONNCFG``；
+   -  1: 已设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`；
+   -  2: 已设置 :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`；
    -  3: 连接已断开；
    -  4: 已建立连接；
    -  5: 已连接，但未订阅 topic；
@@ -561,8 +611,8 @@ MQTT AT 命令集
 -  **<state>**：MQTT 状态：
 
    -  0: MQTT 未初始化；
-   -  1: 已设置 ``AT+MQTTUSERCFG``；
-   -  2: 已设置 ``AT+MQTTCONNCFG``；
+   -  1: 已设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`；
+   -  2: 已设置 :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`；
    -  3: 连接已断开；
    -  4: 已建立连接；
    -  5: 已连接，但未订阅 topic；
@@ -822,7 +872,7 @@ MQTT 错误码以 ``ERR CODE:0x<%08x>`` 形式打印。
 :ref:`MQTT AT 说明 <MQTT-AT>`
 -------------------------------
 
--  一般来说，AT MQTT 命令都会在 10 秒内响应，但 ``AT+MQTTCONN`` 命令除外。例如，如果路由器不能上网，命令 ``AT+MQTTPUB`` 会在 10 秒内响应，但 ``AT+MQTTCONN`` 命令在网络环境不好的情况下，可能需要更多的时间用来重传数据包。
--  如果 ``AT+MQTTCONN`` 是基于 TLS 连接，每个数据包的超时时间为 10 秒，则总超时时间会根据握手数据包的数量而变得更长。
+-  一般来说，AT MQTT 命令都会在 10 秒内响应，但 :ref:`AT+MQTTCONN <cmd-MQTTCONN>` 命令除外。例如，如果路由器不能上网，命令 :ref:`AT+MQTTPUB <cmd-MQTTPUB>` 会在 10 秒内响应，但 :ref:`AT+MQTTCONN <cmd-MQTTCONN>` 命令在网络环境不好的情况下，可能需要更多的时间用来重传数据包。
+-  如果 :ref:`AT+MQTTCONN <cmd-MQTTCONN>` 是基于 TLS 连接，每个数据包的超时时间为 10 秒，则总超时时间会根据握手数据包的数量而变得更长。
 -  当 MQTT 连接断开时，会提示 ``+MQTTDISCONNECTED:<LinkID>`` 消息。
 -  当 MQTT 连接建立时，会提示 ``+MQTTCONNECTED:<LinkID>,<scheme>,<"host">,port,<"path">,<reconnect>`` 消息。

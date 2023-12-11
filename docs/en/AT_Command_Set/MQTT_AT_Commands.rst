@@ -12,6 +12,7 @@ MQTT AT Commands
 -  :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>`: Set MQTT password
 -  :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`: Set configuration of MQTT connection
 -  :ref:`AT+MQTTALPN <cmd-MQTTALPN>`: Set MQTT Application Layer Protocol Negotiation (ALPN)
+-  :ref:`AT+MQTTSNI <cmd-MQTTSNI>`: Set MQTT Server Name Indication (SNI)
 -  :ref:`AT+MQTTCONN <cmd-MQTTCONN>`: Connect to MQTT Brokers
 -  :ref:`AT+MQTTPUB <cmd-MQTTPUB>`: Publish MQTT Messages in string
 -  :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>`: Publish long MQTT messages
@@ -128,8 +129,8 @@ Notes
 
 -  The command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` can also set MQTT client ID. The differences between the two commands include:
 
-   - You can use ``AT+MQTTLONGCLIENTID`` to set a relatively long client ID since there is a limitation on the length of the ``AT+MQTTUSERCFG`` command.
-   - You should set ``AT+MQTTLONGCLIENTID`` after setting the ``AT+MQTTUSERCFG`` command.
+   - You can use :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>` to set a relatively long client ID since there is a limitation on the length of the :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` command.
+   - You should set :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>` after setting the :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` command.
 
 .. _cmd-MQTTLONGUSERNAME:
 
@@ -174,8 +175,8 @@ Notes
 
 -  The command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` can also set MQTT username. The differences between the two commands include:
 
-   - You can use ``AT+MQTTLONGUSERNAME`` to set a relatively long username since there is a limitation on the length of the ``AT+MQTTUSERCFG`` command.
-   - You should set ``AT+MQTTLONGUSERNAME`` after setting the command ``AT+MQTTUSERCFG``.
+   - You can use :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>` to set a relatively long username since there is a limitation on the length of the :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` command.
+   - You should set :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>` after setting the command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
 
 .. _cmd-MQTTLONGPASSWORD:
 
@@ -220,8 +221,8 @@ Notes
 
 -  The command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` can also set MQTT password. The differences between the two commands include:
 
-   - You can use ``AT+MQTTLONGPASSWORD`` to set a relatively long password since there is a limitation on the length of the ``AT+MQTTUSERCFG`` command.
-   - You should set ``AT+MQTTLONGPASSWORD`` after setting the command ``AT+MQTTUSERCFG``.
+   - You can use :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>` to set a relatively long password since there is a limitation on the length of the :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` command.
+   - You should set :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>` after setting the command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
 
 .. _cmd-MQTTCONNCFG:
 
@@ -301,8 +302,8 @@ Notes
 ^^^^^
 
 -  The length of the entire AT command should be less than 256 bytes.
--  MQTT ALPN will only be effective if the MQTT connection is based on TLS or WSS.
--  You should set ``AT+MQTTALPN`` after setting the command ``AT+MQTTUSERCFG``.
+-  MQTT ALPN will be effective only if the MQTT connection is based on TLS or WSS.
+-  You should set :ref:`AT+MQTTALPN <cmd-MQTTALPN>` after setting the command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
 
 Example
 ^^^^^^^^
@@ -315,6 +316,55 @@ Example
     AT+MQTTUSERCFG=0,5,"{IDF_TARGET_NAME}","espressif","1234567890",0,0,""
     AT+MQTTALPN=0,2,"mqtt-ca.cn","mqtt-ca.us"
     AT+MQTTCONN=0,"192.168.200.2",8883,1
+
+.. _cmd-MQTTSNI:
+
+:ref:`AT+MQTTSNI <MQTT-AT>`: Set MQTT Server Name Indication (SNI)
+-------------------------------------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+Set MQTT Server Name Indication (SNI).
+
+**Command:**
+
+::
+
+    AT+MQTTSNI=<LinkID>,<"sni">
+
+**Response:**
+
+::
+
+   OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<LinkID>**: only supports link ID 0 currently.
+-  **<"sni">**: MQTT Server Name Indication. You can send it in ClientHello to the server.
+
+Notes
+^^^^^
+
+-  The length of the entire AT command should be less than 256 bytes.
+-  MQTT SNI will be effective only if the MQTT connection is based on TLS or WSS.
+-  You should set :ref:`AT+MQTTSNI <cmd-MQTTSNI>` after setting the command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
+
+Example
+^^^^^^^^
+
+::
+
+    AT+CWMODE=1
+    AT+CWJAP="ssid","password"
+    AT+CIPSNTPCFG=1,8,"ntp1.aliyun.com","ntp2.aliyun.com"
+    AT+MQTTUSERCFG=0,5,"{IDF_TARGET_NAME}","espressif","1234567890",0,0,""
+    AT+MQTTSNI=0,"my_specific_prefix.iot.my_aws_region.amazonaws.com"
+    AT+MQTTCONN=0,"my_specific_prefix.iot.my_aws_region.amazonaws.com",8883,1
 
 .. _cmd-MQTTCONN:
 
@@ -375,8 +425,8 @@ Parameters
 -  **<state>**: MQTT state.
 
    -  0: MQTT uninitialized.
-   -  1: already set ``AT+MQTTUSERCFG``.
-   -  2: already set ``AT+MQTTCONNCFG``.
+   -  1: already set :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
+   -  2: already set :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`.
    -  3: connection disconnected.
    -  4: connection established.
    -  5: connected, but did not subscribe to any topic.
@@ -561,8 +611,8 @@ Parameters
 -  **<state>**: MQTT state.
 
    -  0: MQTT uninitialized.
-   -  1: already set ``AT+MQTTUSERCFG``.
-   -  2: already set ``AT+MQTTCONNCFG``.
+   -  1: already set :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
+   -  2: already set :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`.
    -  3: connection disconnected.
    -  4: connection established.
    -  5: connected, but subscribe to no topic.
@@ -822,7 +872,7 @@ The MQTT Error code will be prompted as ``ERR CODE:0x<%08x>``.
 :ref:`MQTT AT Notes <MQTT-AT>`
 -------------------------------
 
--  In general, AT MQTT commands responds within 10 s, except the command ``AT+MQTTCONN``. For example, if the router fails to access the Internet, the command ``AT+MQTTPUB`` will respond within 10 s. But the command ``AT+MQTTCONN`` may need more time due to packet retransmission in a bad network environment.
--  If the ``AT+MQTTCONN`` is based on a TLS connection, the timeout of each packet is 10 s, and the total timeout will be much longer depending on the handshake packets count.
+-  In general, AT MQTT commands responds within 10 s, except the command :ref:`AT+MQTTCONN <cmd-MQTTCONN>`. For example, if the router fails to access the Internet, the command :ref:`AT+MQTTPUB <cmd-MQTTPUB>` will respond within 10 s. But the command :ref:`AT+MQTTCONN <cmd-MQTTCONN>` may need more time due to packet retransmission in a bad network environment.
+-  If the :ref:`AT+MQTTCONN <cmd-MQTTCONN>` is based on a TLS connection, the timeout of each packet is 10 s, and the total timeout will be much longer depending on the handshake packets count.
 -  When the MQTT connection ends, it will prompt the message ``+MQTTDISCONNECTED:<LinkID>``.
 -  When the MQTT connection established, it will prompt the message ``+MQTTCONNECTED:<LinkID>,<scheme>,<"host">,port,<"path">,<reconnect>``.
