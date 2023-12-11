@@ -86,7 +86,12 @@ What commands are supported by the default ESP-AT firmware on different modules,
 When the host MCU sends an AT command to the {IDF_TARGET_NAME} device, there is no response. What is the reason?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  A terminator ("AT\r\n") must be added after an AT command when the host MCU sending AT commands to an {IDF_TARGET_NAME} device. Please see :ref:`check-whether-at-works`.
+  A terminator ("AT\\r\\n") must be added after an AT command when the host MCU sending AT commands to an {IDF_TARGET_NAME} device. Please see :ref:`check-whether-at-works`.
+
+Why is Wi-Fi disconnected (``WIFI DISCONNECT`` printed)?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  You can check the Wi-Fi disconnection reason code on the :term:`AT log port`, which usually prints ``wifi disconnected, rc:<reason_code>``. The ``<reason_code>`` here refers to `Wi-Fi Reason Code <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-reason-code>`_.
 
 Do AT commands support ESP-WIFI-MESH?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -141,7 +146,7 @@ Can the serial port baudrate be modified in AT Commands? (Default: 115200)
 After {IDF_TARGET_NAME} enters the passthrough mode using AT commands, can {IDF_TARGET_NAME} give a message if the connected hotspot is disconnected?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  - Yes, you can configure it with :ref:`AT+SYSMSG <cmd-SYSMSG>`, i.e., set AT+SYSMSG=4. In this way, the serial port will report "WIFI DISCONNECT\r\n" when the connected hotspot is disconnected.
+  - Yes, you can configure it with :ref:`AT+SYSMSG <cmd-SYSMSG>`, i.e., set AT+SYSMSG=4. In this way, the serial port will report ``WIFI DISCONNECT\\r\\n`` when the connected hotspot is disconnected.
   - Note that this command is added after AT v2.1.0. It is not available for v2.1.0 and earlier versions.
 
 .. only:: esp32

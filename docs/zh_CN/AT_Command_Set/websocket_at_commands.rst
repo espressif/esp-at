@@ -104,7 +104,7 @@ WebSocket AT 命令集
 
 ::
 
-    AT+WSOPEN=<link_id>,<"uri">[,<"subprotocol">][,<timeout_ms>]
+    AT+WSOPEN=<link_id>,<"uri">[,<"subprotocol">][,<timeout_ms>][,<"auth">]
 
 **响应：**
 
@@ -135,6 +135,7 @@ WebSocket AT 命令集
 - **<"uri">**：WebSocket 服务器的统一资源标识符。
 - **<"subprotocol">**：WebSocket 子协议（参考 `RFC6455 1.9 章节 <https://www.rfc-editor.org/rfc/rfc6455#section-1.9>`_）。
 - **<timeout_ms>**：建立 WebSocket 连接的超时时间。单位：毫秒。范围：[0,180000]。默认值：15000。
+- **<"auth">**：WebSocket 鉴权（参考 `RFC6455 4.1.12 章节 <https://www.rfc-editor.org/rfc/rfc6455#section-4.1>`_）。
 
 示例
 ^^^^

@@ -263,6 +263,12 @@ Example
 :ref:`AT+CIPSTART <TCPIP-AT>`: Establish TCP Connection, UDP Transmission, or SSL Connection
 --------------------------------------------------------------------------------------------
 
+* :ref:`esp-at-cipstart-tcp`
+* :ref:`esp-at-cipstart-udp`
+* :ref:`esp-at-cipstart-ssl`
+
+.. _esp-at-cipstart-tcp:
+
 Establish TCP Connection
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -302,7 +308,7 @@ Parameters
 
 -  **<link ID>**: ID of network connection (0~4), used for multiple connections. The range of this parameter depends on two configuration items in ``menuconfig``. One is ``AT_SOCKET_MAX_CONN_NUM`` of the ``AT`` component, and its default value is 5. The other is ``LWIP_MAX_SOCKETS`` of the ``LWIP`` component, and its default value is 10. To modify the range of this parameter, you need to set ``AT_SOCKET_MAX_CONN_NUM`` and make sure it is no larger than the value of ``LWIP_MAX_SOCKETS``. (See :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` for details on configuring and build ESP-AT projects.)
 -  **<"type">**: string parameter showing the type of transmission: "TCP", or "TCPv6". Default: "TCP".
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes. If you need to use a domain name and the length of the domain name exceeds 64 bytes, use the :ref:`AT+CIPDOMAIN <cmd-DOMAIN>` command to obtain the IP address corresponding to the domain name, and then use the IP address to establish a connection.
 -  **<remote port>**: the remote port number.
 -  **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
 
@@ -339,6 +345,8 @@ Example
 
     // esp-at has obtained an IPv6 global address by AT+CWJAP before
     AT+CIPSTART="TCPv6","2404:6800:4005:80b::2004",80,,"240e:3a1:2070:11c0:32ae:a4ff:fe80:65ac"
+
+.. _esp-at-cipstart-udp:
 
 Establish UDP Transmission
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -379,7 +387,7 @@ Parameters
 
 -  **<link ID>**: ID of network connection (0~4), used for multiple connections.
 -  **<"type">**: string parameter showing the type of transmission: "UDP", or "UDPv6". Default: "TCP".
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes. If you need to use a domain name and the length of the domain name exceeds 64 bytes, use the :ref:`AT+CIPDOMAIN <cmd-DOMAIN>` command to obtain the IP address corresponding to the domain name, and then use the IP address to establish a connection.
 -  **<remote port>**: remote port number.
 -  **<local port>**: UDP port of {IDF_TARGET_NAME}.
 -  **<mode>**: In the UDP Wi-Fi passthrough, the value of this parameter has to be 0.
@@ -421,6 +429,8 @@ Example
     // UDP multicast based on IPv6 network
     AT+CIPSTART="UDPv6","FF02::FC",1000,1002,0
 
+.. _esp-at-cipstart-ssl:
+
 Establish SSL Connection
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -460,7 +470,7 @@ Parameters
 
 -  **<link ID>**: ID of network connection (0~4), used for multiple connections.
 -  **<"type">**: string parameter showing the type of transmission: "SSL", or "SSLv6". Default: "TCP".
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
+-  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes. If you need to use a domain name and the length of the domain name exceeds 64 bytes, use the :ref:`AT+CIPDOMAIN <cmd-DOMAIN>` command to obtain the IP address corresponding to the domain name, and then use the IP address to establish a connection.
 -  **<remote port>**: the remote port number.
 -  **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
 
@@ -1635,7 +1645,7 @@ Notes
 -  After you upgrade the AT firmware, you are suggested to call the command :ref:`AT+RESTORE <cmd-RESTORE>` to restore the factory default settings.
 -  The timeout of OTA process is ``3`` minutes.
 -  The response ``OK`` in non-blocking mode does not necessarily come before the response ``+CIPUPDATE:<state>``. It may be output before ``+CIPUPDATE:<state>`` or after it.
--  Upgraded to an older version is not recommended.
+-  Downgrading to an older version is not recommended due to potential compatibility issues and the risk of operational failure. If you still prefer downgrading to an older version, please test and verify the functionality based on your product.
 -  Please refer to :doc:`../Compile_and_Develop/How_to_implement_OTA_update` for more OTA commands.
 
 Example
@@ -1645,7 +1655,7 @@ Example
 
     AT+CWMODE=1
     AT+CWJAP="1234567890","1234567890"
-    AT+CIUPDATE  
+    AT+CIUPDATE
     AT+CIUPDATE=1
     AT+CIUPDATE=1,"v1.2.0.0"
     AT+CIUPDATE=1,"v2.2.0.0","mqtt_ca"
@@ -2232,7 +2242,7 @@ Parameters
 Note
 ^^^^^
 
--  For SSL connections, ESP-AT will return the length of the encrypted data, so the returned length will be larger than the real data length.
+-  For SSL connections, the data length returned by ESP-AT may be less than the actual data length.
 
 Example
 ^^^^^^^^

@@ -208,7 +208,7 @@ Set Command
 
 ::
 
-    AT+GSLP=<time>  
+    AT+GSLP=<time>
 
 **Response:**
 
@@ -221,10 +221,17 @@ Set Command
 Parameter
 ^^^^^^^^^^
 
--  **<time>**: the duration when the device stays in Deep-sleep. Unit: millisecond. When the time is up, the device automatically wakes up, calls Deep-sleep wake stub, and then proceeds to load the application.
+-  **<time>**: The duration when the device stays in Deep-sleep. Unit: millisecond. When the time is up, the device automatically wakes up, calls Deep-sleep wake stub, and then proceeds to load the application.
 
-    - 0 means restarting right now
-    - the maximum Deep-sleep time is about 28.8 days (2 :sup:`31`-1 milliseconds)
+   .. only:: esp32c3 or esp32c2 or esp32
+
+       - 0 means restarting right now
+
+   .. only:: esp32c6
+
+       - The minimum Deep-sleep time is 5 milliseconds
+
+    - The maximum Deep-sleep time is about 28.8 days (2 :sup:`31`-1 milliseconds)
 
 Notes
 ^^^^^^

@@ -258,7 +258,7 @@ Parameters
    -  1: disable clean session.
 
 -  **<lwt_topic>**: LWT (Last Will and Testament) message topic. Maximum length: 128 bytes.
--  **<lwt_msg>**: LWT message. Maximum length: 64 bytes.
+-  **<lwt_msg>**: LWT message. Maximum length: 128 bytes.
 -  **<lwt_qos>**: LWT QoS, which can be set to 0, 1, or 2. Default: 0.
 -  **<lwt_retain>**: LWT retain, which can be set to 0 or 1. Default: 0.
 
