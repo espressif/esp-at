@@ -86,7 +86,12 @@ AT 固件，上电后发送第一个命令总是会返回下面的信息，为�
 主 MCU 给 {IDF_TARGET_NAME} 设备发 AT 命令无返回，是什么原因？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  当主 MCU 给 {IDF_TARGET_NAME} 设备发送 AT 命令后需要添加结束符号，在程序中的写法为："AT\r\n"。可参见 :ref:`check-whether-at-works`。
+  当主 MCU 给 {IDF_TARGET_NAME} 设备发送 AT 命令后需要添加结束符号，在程序中的写法为："AT\\r\\n"。可参见 :ref:`check-whether-at-works`。
+
+Wi-Fi 断开（打印 WIFI DISCONNECT） 是为什么？
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  您可以在 :term:`AT 日志端口` 查看到 Wi-Fi 断开的原因，通常会打印 "wifi disconnected, rc:<reason_code>"。此处的 <reason_code> 请参考： `Wi-Fi 原因代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id34>`_。
 
 ESP-AT 命令是否支持 ESP-WIFI-MESH？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -141,7 +146,7 @@ AT 命令中串口波特率是否可以修改？（默认：115200）
 {IDF_TARGET_NAME} 使用 AT 指令进入透传模式，如果连接的热点断开，{IDF_TARGET_NAME} 能否给出相应的提示信息？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  - 可以通过命令 :ref:`AT+SYSMSG <cmd-SYSMSG>` 进行配置，可设置 AT+SYSMSG=4，如果连接的热点断开，串口会上报 "WIFI DISCONNECT\r\n"。
+  - 可以通过命令 :ref:`AT+SYSMSG <cmd-SYSMSG>` 进行配置，可设置 AT+SYSMSG=4，如果连接的热点断开，串口会上报 "WIFI DISCONNECT\\r\\n"。
   - 需要注意的是，该命令在 AT v2.1.0 之后添加，v2.1.0 及之前的版本无法使用该命令。
 
 .. only:: esp32

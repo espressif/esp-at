@@ -172,6 +172,7 @@ Note
 
 -  The speed of the upgrade depends on the network status.
 -  If the upgrade fails due to unfavorable network conditions, AT will return ``ERROR``. Please wait for some time before retrying.
+-  Downgrading to an older version is not recommended due to potential compatibility issues and the risk of operational failure. If you still prefer downgrading to an older version, please test and verify the functionality based on your product.
 -  After you upgrade the AT firmware, you are suggested to call the command AT+RESTORE to restore the factory default settings.
 -  ``AT+USEROTA`` supports ``HTTP`` and ``HTTPS``.
 -  After AT outputs the ``>`` character, the special characters in the URL does not need to be escaped through the escape character, and it does not need to end with a new line(CR-LF).

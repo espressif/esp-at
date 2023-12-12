@@ -104,7 +104,7 @@ Set Command
 
 ::
 
-    AT+WSOPEN=<link_id>,<"uri">[,<"subprotocol">][,<timeout_ms>]
+    AT+WSOPEN=<link_id>,<"uri">[,<"subprotocol">][,<timeout_ms>][,<"auth">]
 
 **Response:**
 
@@ -135,6 +135,7 @@ Parameters
 - **<"uri">**: Uniform resource identifier of WebSocket server.
 - **<"subprotocol">**: The subprotocol of WebSocket (refer to `RFC6455 1.9 part <https://www.rfc-editor.org/rfc/rfc6455#section-1.9>`_ for more details).
 - **<timeout_ms>**: Timeout for establishing a WebSocket connection. Unit: millisecond. Range: [0,180000]. Default: 15000.
+- **<"auth">**: The authorization of WebSocket (refer to `RFC6455 4.1.12 part <https://www.rfc-editor.org/rfc/rfc6455#section-4.1>`_ for more details).
 
 Example
 ^^^^^^^

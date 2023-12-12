@@ -263,6 +263,12 @@ TCP/IP AT 命令
 :ref:`AT+CIPSTART <TCPIP-AT>`：建立 TCP 连接、UDP 传输或 SSL 连接
 ------------------------------------------------------------------------------------------------------
 
+* :ref:`esp-at-cipstart-tcp`
+* :ref:`esp-at-cipstart-udp`
+* :ref:`esp-at-cipstart-ssl`
+
+.. _esp-at-cipstart-tcp:
+
 建立 TCP 连接
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -302,7 +308,7 @@ TCP/IP AT 命令
 
 -  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况。该参数范围取决于 ``menuconfig`` 中的两个配置项。一个是 ``AT`` 组件中的配置项 ``AT_SOCKET_MAX_CONN_NUM`` ，默认值为 5。另一个是 ``LWIP`` 组件中的配置项 ``LWIP_MAX_SOCKETS`` ，默认值为 10。要修改该参数的范围，您需要修改配置项 ``AT_SOCKET_MAX_CONN_NUM`` 的值并确保该值不大于 ``LWIP_MAX_SOCKETS`` 的值。（请参考 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>` 获取更多信息。）
 -  **<"type">**：字符串参数，表示网络连接类型，"TCP" 或 "TCPv6"。默认值："TCP"
--  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。如果您需要使用域名且域名长度超过 64 字节，请使用 :ref:`AT+CIPDOMAIN <cmd-DOMAIN>` 命令获取域名对应的 IP 地址，然后使用 IP 地址建立连接。
 -  **<remote port>**：远端端口值
 -  **<keep_alive>**：配置套接字的 ``SO_KEEPALIVE`` 选项（参考：`SO_KEEPALIVE 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`_），单位：秒。
 
@@ -339,6 +345,8 @@ TCP/IP AT 命令
 
     // esp-at 已通过 AT+CWJAP 获取到 IPv6 全局地址
     AT+CIPSTART="TCPv6","2404:6800:4005:80b::2004",80,,"240e:3a1:2070:11c0:32ae:a4ff:fe80:65ac"
+
+.. _esp-at-cipstart-udp:
 
 建立 UDP 传输
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -379,7 +387,7 @@ TCP/IP AT 命令
 
 -  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
 -  **<"type">**：字符串参数，表示网络连接类型，"UDP" 或 "UDPv6"。默认值："TCP"
--  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。如果您需要使用域名且域名长度超过 64 字节，请使用 :ref:`AT+CIPDOMAIN <cmd-DOMAIN>` 命令获取域名对应的 IP 地址，然后使用 IP 地址建立连接。
 -  **<remote port>**：远端端口值
 -  **<local port>**：{IDF_TARGET_NAME} 设备的 UDP 端口值
 -  **<mode>**：在 UDP Wi-Fi 透传下，本参数的值必须设为 0
@@ -421,6 +429,8 @@ TCP/IP AT 命令
     // 基于 IPv6 网络的 UDP 多播
     AT+CIPSTART="UDPv6","FF02::FC",1000,1002,0
 
+.. _esp-at-cipstart-ssl:
+
 建立 SSL 连接
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -460,7 +470,7 @@ TCP/IP AT 命令
 
 -  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
 -  **<"type">**：字符串参数，表示网络连接类型，"SSL" 或 "SSLv6"。默认值："TCP"
--  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
+-  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。如果您需要使用域名且域名长度超过 64 字节，请使用 :ref:`AT+CIPDOMAIN <cmd-DOMAIN>` 命令获取域名对应的 IP 地址，然后使用 IP 地址建立连接。
 -  **<remote port>**：远端端口值
 -  **<keep_alive>**：配置套接字的 ``SO_KEEPALIVE`` 选项（参考：`SO_KEEPALIVE 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`_），单位：秒。
 
@@ -1635,7 +1645,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 -  建议升级 AT 固件后，调用 :ref:`AT+RESTORE <cmd-RESTORE>` 恢复出厂设置。
 -  OTA 过程的超时时间为 ``3`` 分钟。
 -  非阻塞模式响应中的 ``OK`` 和 ``+CIPUPDATE:<state>`` 在输出顺序上没有严格意义上的先后顺序。OK 可能在 ``+CIPUPDATE:<state>`` 之前输出，也有可能在 ``+CIPUPDATE:<state>`` 之后输出。
--  不建议升级到旧版本。
+-  不建议升级到旧版本。降到旧版本会存在一定的兼容性问题，甚至无法运行，如果您坚持要升级到旧版本，请根据自己的产品自行测试验证功能。
 -  请参考 :doc:`../Compile_and_Develop/How_to_implement_OTA_update` 获取更多 OTA 命令。
 
 示例
@@ -1645,7 +1655,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
     AT+CWMODE=1
     AT+CWJAP="1234567890","1234567890"
-    AT+CIUPDATE  
+    AT+CIUPDATE
     AT+CIUPDATE=1
     AT+CIUPDATE=1,"v1.2.0.0"
     AT+CIUPDATE=1,"v2.2.0.0","mqtt_ca"
@@ -2232,7 +2242,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 说明
 ^^^^
 
--  SSL 连接中，ESP-AT 将返回加密数据的长度，所以返回的长度会大于真实数据的长度。
+-  SSL 连接中，ESP-AT 返回的数据长度可能会小于真实数据的长度。
 
 示例
 ^^^^

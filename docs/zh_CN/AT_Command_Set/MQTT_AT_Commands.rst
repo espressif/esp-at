@@ -258,7 +258,7 @@ MQTT AT 命令集
    -  1: 禁用清理会话
 
 -  **<lwt_topic>**：遗嘱 topic，最大长度：128 字节。
--  **<lwt_msg>**：遗嘱 message，最大长度：64 字节。
+-  **<lwt_msg>**：遗嘱 message，最大长度：128 字节。
 -  **<lwt_qos>**：遗嘱 QoS，参数可选 0、1、2，默认值：0。
 -  **<lwt_retain>**：遗嘱 retain，参数可选 0 或 1，默认值：0。
 
