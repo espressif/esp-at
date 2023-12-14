@@ -7,6 +7,7 @@ WebSocket AT Commands
 
 - :ref:`Introduction <cmd-ws-intro>`
 - :ref:`AT+WSCFG <cmd-WSCFG>`: Set the WebSocket configuration.
+- :ref:`AT+WSHEAD <cmd-WSHEAD>`: Set/Query WebSocket request headers
 - :ref:`AT+WSOPEN <cmd-WSOPEN>`: Query/Open a WebSocket connection.
 - :ref:`AT+WSSEND <cmd-WSSEND>`: Send data to a WebSocket connection.
 - :ref:`AT+WSCLOSE <cmd-WSCLOSE>`: Close a WebSocket connection.
@@ -66,6 +67,80 @@ Example
 
     // Set the ping interval to 30 seconds, ping timeout to 60 seconds, and buffer size to 4096 bytes for link_id: 0.
     AT+WSCFG=0,30,60,4096
+
+.. _cmd-WSHEAD:
+
+:ref:`AT+WSHEAD <HTTP-AT>`: Set/Query WebSocket Request Headers
+---------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+WSHEAD?
+
+**Response:**
+
+::
+
+    +WSHEAD:<index>,<"req_header">
+
+    OK
+
+Set Command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+WSHEAD=<req_header_len>
+
+**Response:**
+
+::
+
+    OK
+
+    >
+
+The ``>`` symbol indicates that AT is ready to receive AT command data. At this point, you can enter the WebSocket request header (in the format of ``key: value``). When the data length reaches the value of parameter ``<req_header_len>``, AT returns:
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+- **<index>**: Index value of WebSocket request header.
+- **<"req_header">**: WebSocket request header.
+- **<req_header_len>**: WebSocket request header length. Unit: byte.
+
+  - 0: Clear all set WebSocket request headers.
+  - Other values: Set a new WebSocket request header.
+
+Notes
+^^^^^
+
+- This command can only set one WebSocket request header at a time, but it can be set multiple times to support multiple different WebSocket request headers.
+- The WebSocket request headers configured by this command are global. Once set, all WebSocket commands will carry these request headers.
+
+Example
+^^^^^^^
+
+::
+
+    // Set the request header
+    AT+WSHEAD=49
+
+    // After receiving the ">" symbol, enter the authorization request header below.
+    AUTHORIZATION: Basic QTIzMzIyMDE5OTk6MTIzNDU2Nzg=
+
+    // Open a WebSocket connection
+    AT+WSOPEN=0,"wss://demo.piesocket.com/v3/channel_123?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self"
 
 .. _cmd-WSOPEN:
 

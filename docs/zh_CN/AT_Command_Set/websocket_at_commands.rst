@@ -7,6 +7,7 @@ WebSocket AT 命令集
 
 - :ref:`介绍 <cmd-ws-intro>`
 - :ref:`AT+WSCFG <cmd-WSCFG>`：配置 WebSocket 参数
+- :ref:`AT+WSHEAD <cmd-WSHEAD>`：设置/查询 WebSocket 请求头
 - :ref:`AT+WSOPEN <cmd-WSOPEN>`：查询/打开 WebSocket 连接
 - :ref:`AT+WSSEND <cmd-WSSEND>`：向 WebSocket 连接发送数据
 - :ref:`AT+WSCLOSE <cmd-WSCLOSE>`：关闭 WebSocket 连接
@@ -66,6 +67,80 @@ WebSocket AT 命令集
 
     // 配置 link_id 为 0 的 WebSocket 连接的 Ping 发送间隔为 30 秒，超时 60 秒，缓冲区 4096 字节
     AT+WSCFG=0,30,60,4096
+
+.. _cmd-WSHEAD:
+
+:ref:`AT+WSHEAD <HTTP-AT>`：设置/查询 WebSocket 请求头
+----------------------------------------------------------
+
+查询命令
+^^^^^^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+WSHEAD?
+
+**响应：**
+
+::
+
+    +WSHEAD:<index>,<"req_header">
+
+    OK
+
+设置命令
+^^^^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+WSHEAD=<req_header_len>
+
+**响应：**
+
+::
+
+    OK
+
+    >
+
+符号 ``>`` 表示 AT 准备好接收 AT 命令口数据，此时您可以输入 WebSocket 请求头（请求头为 ``key: value`` 形式），当数据长度达到参数 ``<req_header_len>`` 的值时，AT 返回：
+
+::
+
+    OK
+
+参数
+^^^^^^^^^^
+- **<index>**：WebSocket 请求头的索引值。
+- **<"req_header">**：WebSocket 请求头。
+- **<req_header_len>**：WebSocket 请求头长度。单位：字节。
+
+  - 0：清除所有已设置的 WebSocket 请求头。
+  - 其他值：设置一个新的 WebSocket 请求头。
+
+说明
+^^^^^
+
+- 本命令一次只能设置一个 WebSocket 请求头，但可以多次设置，支持多个不同的 WebSocket 请求头。
+- 本命令配置的 WebSocket 请求头是全局性的，一旦设置，所有 WebSocket 的命令都会携带这些请求头。
+
+示例
+^^^^
+
+::
+
+    // 设置请求头
+    AT+WSHEAD=49
+
+    // 在收到 ">" 符号后，输入以下的 authorization 请求头
+    AUTHORIZATION: Basic QTIzMzIyMDE5OTk6MTIzNDU2Nzg=
+
+    // 打开一个 WebSocket 连接
+    AT+WSOPEN=0,"wss://demo.piesocket.com/v3/channel_123?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self"
 
 .. _cmd-WSOPEN:
 

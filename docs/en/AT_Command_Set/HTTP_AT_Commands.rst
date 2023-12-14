@@ -343,7 +343,7 @@ Parameters
 :ref:`AT+HTTPCHEAD <HTTP-AT>`: Set/Query HTTP Request Headers
 -------------------------------------------------------------
 
-Query command
+Query Command
 ^^^^^^^^^^^^^
 
 **Command:**
@@ -360,7 +360,7 @@ Query command
 
     OK
 
-Set command
+Set Command
 ^^^^^^^^^^^
 
 **Command:**
