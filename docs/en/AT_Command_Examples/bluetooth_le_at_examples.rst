@@ -105,7 +105,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE server creates services.
   
@@ -473,7 +473,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
   
        OK
 
-  .. only:: esp32 or esp32c3 or esp32c6
+  .. only:: esp32 or esp32c3
 
     #. {IDF_TARGET_NAME} Bluetooth LE server creates services.
     
@@ -564,7 +564,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
   
        OK
 
-  .. only:: esp32 or esp32c3 or esp32c6
+  .. only:: esp32 or esp32c3
 
     #. {IDF_TARGET_NAME} Bluetooth LE client creates services.
     
@@ -950,7 +950,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    - The address you obtain may be different from that in the above response. Keep yours handy as you will need it in one of the following steps.
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE server creates services.
   
@@ -1232,24 +1232,26 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    If the {IDF_TARGET_NAME} Bluetooth LE server successfully receives the encryption request, message ``+BLESECREQ:0`` will be prompted on the {IDF_TARGET_NAME} Bluetooth LE server side.
 
-#. {IDF_TARGET_NAME} Bluetooth LE server responds to the pairing request.
+.. only:: esp32 or esp32c3
 
-   Command:
+  #. {IDF_TARGET_NAME} Bluetooth LE server responds to the pairing request.
 
-   .. code-block:: none
+    Command:
 
-     AT+BLEENCRSP=0,1
+    .. code-block:: none
 
-   Response:
+      AT+BLEENCRSP=0,1
 
-   .. code-block:: none
+    Response:
 
-     OK
+    .. code-block:: none
 
-   Note:
+      OK
 
-   - If the {IDF_TARGET_NAME} Bluetooth LE client successfully receives the pairing response, a 6-digit pairing code will generate on the {IDF_TARGET_NAME} Bluetooth LE client side. 
-   - In this example, message ``+BLESECNTFYKEY:0,793718`` will be prompted on the {IDF_TARGET_NAME} Bluetooth LE client side. Pairing code is ``793718``.
+    Note:
+
+    - If the {IDF_TARGET_NAME} Bluetooth LE client successfully receives the pairing response, a 6-digit pairing code will generate on the {IDF_TARGET_NAME} Bluetooth LE client side. 
+    - In this example, message ``+BLESECNTFYKEY:0,793718`` will be prompted on the {IDF_TARGET_NAME} Bluetooth LE client side. Pairing code is ``793718``.
 
 #. {IDF_TARGET_NAME} Bluetooth LE server replies pairing code.
 
@@ -1329,7 +1331,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
      OK
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE server creates services.
   
@@ -1724,7 +1726,7 @@ The example shows how to establish SPP connection between an {IDF_TARGET_NAME} d
 
      OK
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE server creates services.
   
@@ -1961,7 +1963,7 @@ This example shows how to establish a Bluetooth LE connection between the {IDF_T
 
      OK
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE server creates services.
   

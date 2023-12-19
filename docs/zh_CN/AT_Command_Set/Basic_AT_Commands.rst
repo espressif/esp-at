@@ -1546,7 +1546,7 @@
 
 **响应：**
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
   ::
 
@@ -1565,7 +1565,7 @@
 
 **命令：**
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
   ::
 
@@ -1618,7 +1618,7 @@
 
 .. only:: esp32
 
-  -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。
+  -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [0,7]：
 
     -  0: 7 dBm
     -  1: 4 dBm
@@ -1631,26 +1631,45 @@
 
 .. only:: esp32c3
 
-  -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。
+  -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [0,15]：
 
-    -  0: -27 dBm
-    -  1: -24 dBm
-    -  2: -21 dBm
-    -  3: -18 dBm
-    -  4: -15 dBm
-    -  5: -12 dBm
-    -  6: -9 dBm
-    -  7: -6 dBm
-    -  8: -3 dBm
-    -  9: -0 dBm
-    -  10: 3 dBm
-    -  11: 6 dBm
-    -  12: 9 dBm
-    -  13: 12 dBm
-    -  14: 15 dBm
-    -  15: 18 dBm
+    -  0: -24 dBm
+    -  1: -21 dBm
+    -  2: -18 dBm
+    -  3: -15 dBm
+    -  4: -12 dBm
+    -  5: -9 dBm
+    -  6: -6 dBm
+    -  7: -3 dBm
+    -  8: -0 dBm
+    -  9: 3 dBm
+    -  10: 6 dBm
+    -  11: 9 dBm
+    -  12: 12 dBm
+    -  13: 15 dBm
+    -  14: 18 dBm
+    -  15: 21 dBm
 
-.. only:: esp32 or esp32c3
+.. only:: esp32c6
+
+  -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [3,15]：
+
+    -  3: -15 dBm
+    -  4: -12 dBm
+    -  5: -9 dBm
+    -  6: -6 dBm
+    -  7: -3 dBm
+    -  8: -0 dBm
+    -  9: 3 dBm
+    -  10: 6 dBm
+    -  11: 9 dBm
+    -  12: 12 dBm
+    -  13: 15 dBm
+    -  14: 18 dBm
+    -  15: 20 dBm
+
+
+.. only:: esp32 or esp32c3 or esp32c6
 
   -  **<ble_scan_power>**：Bluetooth LE 扫描的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
   -  **<ble_conn_power>**：Bluetooth LE 连接的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
