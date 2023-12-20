@@ -35,7 +35,8 @@ TCP/IP AT 命令
 -  :ref:`AT+CIPSSLCCN <cmd-SSLCCN>`：查询/设置 SSL 客户端的公用名 (common name)
 -  :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>`：查询/设置 SSL 客户端的 SNI
 -  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`：查询/设置 SSL 客户端 ALPN
--  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`：查询/设置 SSL 客户端的 PSK
+-  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`：查询/设置 SSL 客户端的 PSK (字符串格式)
+-  :ref:`AT+CIPSSLCPSKHEX <cmd-SSLCPSKHEX>`：查询/设置 SSL 客户端的 PSK (十六进制格式)
 -  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`：查询/设置 Wi-Fi :term:`透传模式` 下的 TCP/UDP/SSL 重连间隔
 -  :ref:`AT+CIPRECVTYPE <cmd-CIPRECVTYPE>`：查询/设置套接字接收模式
 -  :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`：获取被动接收模式下的套接字数据
@@ -1961,7 +1962,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 .. _cmd-SSLCPSK:
 
-:ref:`AT+CIPSSLCPSK <TCPIP-AT>`：查询/设置 SSL 客户端的 PSK
+:ref:`AT+CIPSSLCPSK <TCPIP-AT>`：查询/设置 SSL 客户端的 PSK (字符串格式)
 ---------------------------------------------------------------------------
 
 查询命令
@@ -2007,12 +2008,32 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 ^^^^
 
 -  **<link ID>**：网络连接 ID (0 ~ max)，在单连接的情况下，本参数值为 0；在多连接的情况下，若参数值设为 max，则表示所有连接；本参数默认值为 5。
--  **<"psk">**：PSK identity，最大长度：32。
+-  **<"psk">**：PSK identity (字符串格式)，最大长度：32。如果您的 ``<"psk">`` 参数包含 ``\0``，请使用 :ref:`AT+CIPSSLCPSKHEX <cmd-SSLCPSKHEX>` 命令。
 -  **<"hint">**：PSK hint，最大长度：32。
 
 说明
 ^^^^
 -  如果想要本配置立即生效，请在建立 SSL 连接前运行本命令。
+
+.. _cmd-SSLCPSKHEX:
+
+:ref:`AT+CIPSSLCPSKHEX <TCPIP-AT>`：查询/设置 SSL 客户端的 PSK (十六进制格式)
+-----------------------------------------------------------------------------------------
+
+说明
+^^^^
+- 类似于 :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>` 命令，该命令也用于设置或查询 SSL 客户端的预共享密钥（PSK），但其 ``<"psk">`` 参数使用十六进制格式而不是字符串格式。因此， ``<"psk">`` 参数中的 ``\0`` 表示为 ``00``。
+
+示例
+^^^^
+
+::
+
+    // 单连接：(AT+CIPMUX=0), PSK identity 为 "psk"，PSK hint 为 "myhint"
+    AT+CIPSSLCPSKHEX="70736b","myhint"
+
+    // 多连接：(AT+CIPMUX=1), PSK identity 为 "psk"，PSK hint 为 "myhint"
+    AT+CIPSSLCPSKHEX=0,"70736b","myhint"
 
 .. _cmd-AUTOCONNINT:
 
@@ -2073,7 +2094,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 ::
 
-    AT+CIPRECONNINTV=10  
+    AT+CIPRECONNINTV=10
 
 .. _cmd-CIPRECVTYPE:
 

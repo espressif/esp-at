@@ -35,7 +35,8 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPSSLCCN <cmd-SSLCCN>`: Query/Set the Common Name of the SSL client.
 -  :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>`: Query/Set SSL client Server Name Indication (SNI).
 -  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`: Query/Set SSL client Application Layer Protocol Negotiation (ALPN).
--  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`: Query/Set SSL client Pre-shared Key (PSK).
+-  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`: Query/Set SSL client Pre-shared Key (PSK) in string format.
+-  :ref:`AT+CIPSSLCPSKHEX <cmd-SSLCPSKHEX>`: Query/Set SSL client Pre-shared Key (PSK) in hexadecimal format.
 -  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`: Query/Set the TCP/UDP/SSL reconnection interval for the Wi-Fi :term:`normal transmission mode`.
 -  :ref:`AT+CIPRECVTYPE <cmd-CIPRECVTYPE>`: Query/Set socket receiving mode.
 -  :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`: Obtain socket data in passive receiving mode.
@@ -1961,8 +1962,8 @@ Note
 
 .. _cmd-SSLCPSK:
 
-:ref:`AT+CIPSSLCPSK <TCPIP-AT>`: Query/Set SSL Client Pre-shared Key (PSK)
---------------------------------------------------------------------------
+:ref:`AT+CIPSSLCPSK <TCPIP-AT>`: Query/Set SSL Client Pre-shared Key (PSK) in String Format
+-------------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -2007,12 +2008,32 @@ Parameters
 ^^^^^^^^^^
 
 -  **<link ID>**: ID of the connection (0 ~ max). For single connection, <link ID> is 0. For multiple connections, if the value is max, it means all connections, max is 5 by default.
--  **<"psk">**: PSK identity. Maximum length: 32.
+-  **<"psk">**: PSK identity in string format. Maximum length: 32. Please use :ref:`AT+CIPSSLCPSKHEX <cmd-SSLCPSKHEX>` command if your ``<"psk">`` parameter contains ``\0`` characters.
 -  **<"hint">**: PSK hint. Maximum length: 32.
 
 Notes
 ^^^^^
 -  If you want this configuration to take effect immediately, run this command before establishing the SSL connection.
+
+.. _cmd-SSLCPSKHEX:
+
+:ref:`AT+CIPSSLCPSKHEX <TCPIP-AT>`: Query/Set SSL Client Pre-shared Key (PSK) in Hexadecimal Format
+---------------------------------------------------------------------------------------------------
+
+Note
+^^^^^
+- Similar to the :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>` command, this command also sets or queries the SSL Client PSK, but its ``<"psk">`` is in hexadecimal format rather than in string format. So, ``\0`` in the ``<"psk">`` parameter means ``00``.
+
+Example
+^^^^^^^^
+
+::
+
+    // Single connection: (AT+CIPMUX=0), PSK identity is "psk", PSK hint is "myhint".
+    AT+CIPSSLCPSKHEX="70736b","myhint"
+
+    // Multiple connections: (AT+CIPMUX=1), PSK identity is "psk", PSK hint is "myhint".
+    AT+CIPSSLCPSKHEX=0,"70736b","myhint"
 
 .. _cmd-AUTOCONNINT:
 
