@@ -157,13 +157,14 @@ def at_patch_if_config(platform, module):
     if not os.path.exists(config_dir):
         config_dir = os.path.join(os.getcwd(), 'module_config',  'module_{}_default'.format(platform.lower()))
 
-    fabspath = os.path.join(config_dir, 'patch.py')
-    if os.path.exists(fabspath):
-        cmd = 'python {}'.format(fabspath)
+    patch_tool = os.path.join(os.getcwd(), 'tools', 'patch.py')
+    if os.path.exists(patch_tool) and os.path.exists(config_dir):
+        cmd = 'python {} {}'.format(patch_tool, config_dir)
         if subprocess.call(cmd, shell = True):
-            raise Exception('apply patch {} failed'.format(fabspath))
-
-    ESP_LOGI('patches check completed for updates.')
+            raise Exception('apply patches failed.')
+        ESP_LOGI('patches check completed for updates.')
+    else:
+        ESP_LOGE('patches update check has failed.')
 
 def build_project(platform_name, module_name, silence, build_args):
     if platform_name == 'ESP32':
