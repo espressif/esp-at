@@ -51,9 +51,9 @@
 
 在编译 ESP-AT 工程时，可使用 menuconfig 配置工具将其修改为其它管脚：
 
-* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART for console output``
-* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART TX on GPIO#``
-* ``./build.py menuconfig`` --> ``Component config`` --> ``Common ESP-related`` --> ``UART RX on GPIO#``
+* ``./build.py menuconfig`` --> ``Component config`` --> ``ESP System Settings`` --> ``Channel for console output`` --> ``Custom UART``
+* ``./build.py menuconfig`` --> ``Component config`` --> ``ESP System Settings`` --> ``UART TX on GPIO#``
+* ``./build.py menuconfig`` --> ``Component config`` --> ``ESP System Settings`` --> ``UART RX on GPIO#``
 
 修改命令端口管脚
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

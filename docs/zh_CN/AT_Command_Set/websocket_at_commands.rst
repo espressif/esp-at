@@ -260,7 +260,7 @@ WebSocket AT 命令集
 ^^^^
 
 - **<link_id>**：WebSocket 连接 ID。范围：[0,2]。
-- **<length>**：发送的数据长度。单位：字节。
+- **<length>**：发送的数据长度。单位：字节。可发送的最大长度由 :ref:`AT+WSCFG <cmd-WSCFG>` 中的 ``<buffer_size>`` 值减去 10 和系统可分配的堆空间大小共同决定（取两个中的小值）。
 - **<opcode>**：发送的 WebSocket 帧中的 opcode。范围：[0,0xF]。默认值：1，即 text 帧。请参考 `RFC6455 5.2 章节 <https://www.rfc-editor.org/rfc/rfc6455#section-5.2>`_ 了解更多的 opcode。
 
    - 0x0：continuation 帧

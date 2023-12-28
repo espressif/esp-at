@@ -260,7 +260,7 @@ Parameters
 ^^^^^^^^^^
 
 - **<link_id>**: ID of the WebSocket connection. Range: [0,2].
-- **<length>**: Length of data to send. Unit: byte.
+- **<length>**: Length of data to send. Unit: byte. The maximum length that can be sent is determined by subtracting the value of ``<buffer_size>`` in `AT+WSCFG <cmd-WSCFG>` by 10 and the size of the heap space that the system can allocate (taking the smaller value of the two).
 - **<opcode>**: The opcode in the WebSocket frame sent. Range: [0,0xF]. Default: 1, which means text frame. For details about opcode, please refer to `RFC6455 5.2 section <https://www.rfc-editor.org/rfc/rfc6455#section-5.2>`_.
 
    - 0x0: continuation frame
