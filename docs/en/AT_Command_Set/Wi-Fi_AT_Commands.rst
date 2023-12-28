@@ -523,6 +523,10 @@ Parameters
    -  bit 8: determine whether AP with ``WAPI_PSK`` authmode will be shown.
    -  bit 9: determine whether AP with ``OWE`` authmode will be shown.
 
+   .. only:: esp32c6
+
+     -  bit 10: determine whether AP with ``WPA3_ENT_SUITE_B_192_BIT`` authmode will be shown.
+
 Example
 ^^^^^^^^
 
@@ -590,6 +594,10 @@ Parameters
    -  7: WPA2_WPA3_PSK
    -  8: WAPI_PSK
    -  9: OWE
+
+   .. only:: esp32c6
+
+     -  10: WPA3_ENT_SUITE_B_192_BIT
 
 -  **<ssid>**: string parameter showing SSID of the AP.
 -  **<rssi>**: signal strength.

@@ -53,6 +53,7 @@ Web 服务器 AT 命令
 ^^^^^
 
 -  有两种方法可以提供 Web 服务器所需的 HTML 文件。一种是使用 FAT 文件系统，此时需要启用 AT FS 命令。另一种是使用嵌入文件来存储 HTML 文件（默认设置）。
+-  默认的 HTML 文件为 :component_file:`index.html <fs_image/index.html>`。如果需要自定义 HTML 文件的显示格式或显示文字，则您直接修改该文件即可；如果需要自定义 HTML 文件的其它内容（例如：增加一个字段），则您需要对应修改源码文件 :component_file:`at_web_server_cmd.c <at/src/at_web_server_cmd.c>`。
 -  请确保开放的 socket 的最大数目不能小于 12，您可以在 menuconfig 中设置此项 ``./build.py menuconfig`` > ``Component config`` > ``LWIP`` > ``Max number of open sockets``，然后重新编译工程（参考文档 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
 -  AT 固件默认不支持 Web 服务器 AT 命令（参考文档 see :doc:`../Compile_and_Develop/esp-at_firmware_differences`），但您可以在 menuconfig 中设置支持 Web 服务器 AT 命令 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT WEB Server command support``，然后重新编译工程（参考文档 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
 -  ESP-AT 在 {IDF_TARGET_NAME} 系列设备中支持强制门户 (captive portal)，可参考 :ref:`示例 <using-captive-portal>`。

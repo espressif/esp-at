@@ -93,6 +93,19 @@ Why is Wi-Fi disconnected (``WIFI DISCONNECT`` printed)?
 
   You can check the Wi-Fi disconnection reason code on the :term:`AT log port`, which usually prints ``wifi disconnected, rc:<reason_code>``. The ``<reason_code>`` here refers to `Wi-Fi Reason Code <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-reason-code>`_.
 
+What are the common Wi-Fi compatibility issues?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  - AMPDU compatibility issue. 
+ 
+    - If the router does not support AMPDU, {IDF_TARGET_NAME} will automatically disable the AMPDU function when interacting with the router. 
+    - If the router supports AMPDU but there is a compatibility issue with AMPDU transmission between the router and {IDF_TARGET_NAME}, it is recommended to disable the function on the router or {IDF_TARGET_NAME}. For information on how to disable it on {IDF_TARGET_NAME}, please refer to :doc:`Compile_and_Develop/How_to_clone_project_and_compile_it` and select the following options in the fifth step of configuring the project:
+
+      - Disable ``Component config`` -> ``Wi-Fi`` -> ``WiFi AMPDU TX``
+      - Disable ``Component config`` -> ``Wi-Fi`` -> ``WiFi AMPDU RX``
+
+  - Phy mode compatibility issue. If there is a compatibility issue with the phy mode between the router and {IDF_TARGET_NAME}, it is recommended to switch it on the router or {IDF_TARGET_NAME}. For how to switch it on {IDF_TARGET_NAME}, please refer to the :ref:`AT+CWSTAPROTO <cmd-STAPROTO>` command.
+
 Do AT commands support ESP-WIFI-MESH?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -184,17 +197,6 @@ How big is the chip flash required for ESP-AT firmware on different modules?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
   - For {IDF_TARGET_NAME} series modules, please refer to :doc:`ESP-AT Firmware Differences <Compile_and_Develop/esp-at_firmware_differences>`.
-
-.. only:: esp32
-
-  How does the {IDF_TARGET_NAME} AT communicate through the UART0 port?
-  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-    The default AT firmware communicates through the UART1 port. If you want to communicate through UART0, please download and compile the ESP-AT project.
-
-    - Refer to :doc:`Compile_and_Develop/How_to_clone_project_and_compile_it` to set up the compiling environment;
-    - Modify the module's UART pins in your :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>`, i.e. change uart_tx_pin to GPIO1, and uart_tx_pin to GPIO3;
-    - Configure your esp-at project: ``./build.py menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output(Custom)`` > ``Uart peripheral to use for console output(0-1)(UART1)`` > ``(1)UART TX on GPIO# (NEW)`` > ``(3)UART TX on GPIO# (NEW)``.
 
 How to view the error log of AT firmware?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

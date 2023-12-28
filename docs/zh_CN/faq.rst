@@ -93,6 +93,19 @@ Wi-Fi 断开（打印 WIFI DISCONNECT） 是为什么？
 
   您可以在 :term:`AT 日志端口` 查看到 Wi-Fi 断开的原因，通常会打印 "wifi disconnected, rc:<reason_code>"。此处的 <reason_code> 请参考： `Wi-Fi 原因代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id34>`_。
 
+Wi-Fi 常见的兼容性问题有哪些？
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  - AMPDU 兼容性问题。
+  
+    - 如果路由器不支持 AMPDU，那么 {IDF_TARGET_NAME} 会在和路由器交互时，自动关闭 AMPDU 功能。
+    - 如果路由器支持 AMPDU，但是路由器和 {IDF_TARGET_NAME} 之间的 AMPDU 传输存在兼容性问题，那么建议关闭路由器的 AMPDU 功能或者 {IDF_TARGET_NAME} 的 AMPDU 功能。如果您要禁用 {IDF_TARGET_NAME} 的 AMPDU 功能，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+
+      - 禁用 ``Component config`` -> ``Wi-Fi`` -> ``WiFi AMPDU TX``
+      - 禁用 ``Component config`` -> ``Wi-Fi`` -> ``WiFi AMPDU RX``
+
+  - phy mode 兼容性问题。如果路由器和 {IDF_TARGET_NAME} 之间的 phy mode 存在兼容性问题，那么建议切换路由器的 phy mode 或者 {IDF_TARGET_NAME} 的 phy mode。如果您要切换 {IDF_TARGET_NAME} 的 phy mode，请参考 :ref:`AT+CWSTAPROTO <cmd-STAPROTO>` 命令。
+
 ESP-AT 命令是否支持 ESP-WIFI-MESH？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -184,17 +197,6 @@ AT 命令中串口波特率是否可以修改？（默认：115200）
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
   - 对于 {IDF_TARGET_NAME} 系列模组，您可以参考 :doc:`ESP-AT 固件差异 <Compile_and_Develop/esp-at_firmware_differences>`。
-
-.. only:: esp32
-
-  {IDF_TARGET_NAME} AT 如何从 UART0 口通信？
-  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-    默认 AT 固件是通过 UART1 口通信的，如果要从 UART0 通信，需要下载并编译 ESP-AT。
-
-    - 参考 :doc:`Compile_and_Develop/How_to_clone_project_and_compile_it` 搭建好编译环境；
-    - 修改 :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 表中对应模组的 UART 管脚，将 uart_tx_pin 修改为 GPIO1，uart_tx_pin 修改为 GPIO3；
-    - 调整配置：``./build.py menuconfig`` > ``Component config`` > ``Common ESP-related`` > ``UART for console output(Custom)`` > ``Uart peripheral to use for console output(0-1)(UART1)`` > ``(1)UART TX on GPIO# (NEW)`` > ``(3)UART TX on GPIO# (NEW)``。
 
 AT 固件如何查看 error log？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
