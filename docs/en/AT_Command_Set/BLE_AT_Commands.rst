@@ -24,9 +24,9 @@ Bluetooth® Low Energy AT Commands
     :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEDISCONN <cmd-BDISC>`: End Bluetooth LE connection.
     :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEDATALEN <cmd-BDLEN>`: Set Bluetooth LE data packet length.
     :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLECFGMTU <cmd-BMTU>`: Set Bluetooth LE MTU length.
-    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`: Generic Attributes Server (GATTS) creates services.
-    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`: GATTS starts services.
-    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`: GATTS Stops Services.
+    :esp32 or esp32c3 : - :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`: Generic Attributes Server (GATTS) creates services.
+    :esp32 or esp32c3 : - :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`: GATTS starts services.
+    :esp32 or esp32c3 : - :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`: GATTS Stops Services.
     :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`: GATTS discovers services.
     :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`: GATTS discovers characteristics.
     :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`: Notify a client of the value of a characteristic value from the server.
@@ -42,16 +42,16 @@ Bluetooth® Low Energy AT Commands
     :esp32 or esp32c3 or esp32c6: - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Bluetooth LE :term:`Passthrough Mode` on power-up.
     :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`: Query/Set Bluetooth LE encryption parameters.
     :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEENC <cmd-BLEENC>`: Initiate Bluetooth LE encryption request.
-    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`: Respond to the pairing request from the peer device.
+    :esp32 or esp32c3 : - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`: Respond to the pairing request from the peer device.
     :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`: Reply the key value to the peer device.
     :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`: Reply the confirm value to the peer device in the legacy connection stage.
     :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`: Query bonded Bluetooth LE encryption device list.
     :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`: Clear Bluetooth LE encryption device list.
     :esp32 or esp32c3 or esp32c6 or esp32c2: - :ref:`AT+BLESETKEY <cmd-BLESETKEY>`: Set Bluetooth LE static pair key.
-    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`: Bluetooth LE Human Interface Device (HID) profile initialization.
-    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`: Send Bluetooth LE HID keyboard information.
-    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`: Send Bluetooth LE HID mouse information.
-    :esp32 or esp32c3 or esp32c6: - :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`: Send Bluetooth LE HID consumer information.
+    :esp32 or esp32c3 : - :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`: Bluetooth LE Human Interface Device (HID) profile initialization.
+    :esp32 or esp32c3 : - :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`: Send Bluetooth LE HID keyboard information.
+    :esp32 or esp32c3 : - :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`: Send Bluetooth LE HID mouse information.
+    :esp32 or esp32c3 : - :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`: Send Bluetooth LE HID consumer information.
     - :ref:`AT+BLUFI <cmd-BLUFI>`: Start or Stop BluFi.
     - :ref:`AT+BLUFINAME <cmd-BLUFINAME>`: Query/Set BluFi device name.
     - :ref:`AT+BLUFISEND <cmd-BLUFISEND>`: Send user-customized data over BluFi.
@@ -206,13 +206,13 @@ Introduction
 
     **Function:**
 
-    .. only:: esp32 or esp32c3 or esp32c6
+    .. only:: esp32 or esp32c3
 
         ::
 
             Query the Bluetooth LE Public Address.
 
-    .. only:: esp32c2
+    .. only:: esp32c2 or esp32c6
 
         ::
 
@@ -226,14 +226,14 @@ Introduction
 
     **Response:**
 
-    .. only:: esp32 or esp32c3 or esp32c6
+    .. only:: esp32 or esp32c3
 
         ::
 
             +BLEADDR:<BLE_public_addr>
             OK
 
-    .. only:: esp32c2
+    .. only:: esp32c2 or esp32c6
 
         ::
 
@@ -249,13 +249,13 @@ Introduction
 
     **Command:**
 
-    .. only:: esp32 or esp32c3 or esp32c6
+    .. only:: esp32 or esp32c3
 
         ::
 
             AT+BLEADDR=<addr_type>[,<random_addr>]
 
-    .. only:: esp32c2
+    .. only:: esp32c2 or esp32c6
 
         ::
 
@@ -289,7 +289,7 @@ Introduction
     Example
     ^^^^^^^^
 
-    .. only:: esp32 or esp32c3 or esp32c6
+    .. only:: esp32 or esp32c3
 
         ::
 
@@ -297,7 +297,7 @@ Introduction
             AT+BLEADDR=1                        // Set Random Device Address, Private Address
             AT+BLEADDR=0                        // Set Public Device Address
 
-    .. only:: esp32c2
+    .. only:: esp32c2 or esp32c6
 
         ::
 
@@ -699,7 +699,7 @@ Introduction
             AT+BLEADVPARAM=50,50,0,1,4,0,1,"12:34:45:78:66:88"
             // At this time, the MAC of the ESP device scanned by the BLE client is "c2:34:45:78:66:89".
 
-    .. only:: esp32c2
+    .. only:: esp32c2 or esp32c6
 
         Example
         ^^^^^^^^^^
@@ -887,7 +887,14 @@ Introduction
     Notes
     ^^^^^
 
-    -  If advertising parameters are NOT set by command :ref:`AT+BLEADVPARAM <cmd-BADVP>`\=<adv_parameter>, the default parameters will be used.
+    .. only:: esp32 or esp32c3
+
+        -  If advertising parameters are NOT set by command :ref:`AT+BLEADVPARAM <cmd-BADVP>`\=<adv_parameter>, the default parameters will be used.
+
+    .. only:: esp32c2 or esp32c6
+
+        -  You must set the advertisement parameters using the :ref:`AT+BLEADVPARAM <cmd-BADVP>`\=<adv_parameter> command before advertisement is started.
+
     -  If advertising data is NOT set by command :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data>, the advertising playload will be empty.
     -  If advertising data is preset by command :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data>, it will be overwritten by :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power> and vice versa.
     -  After the start of Bluetooth LE advertisement, if no connection is established, the advertisement will keep going on; if a connection is established, the advertisement will automatically end.
@@ -895,10 +902,20 @@ Introduction
     Example
     ^^^^^^^^
 
-    ::
+    .. only:: esp32 or esp32c3
 
-        AT+BLEINIT=2   // Role: server
-        AT+BLEADVSTART
+        ::
+
+            AT+BLEINIT=2   // Role: server
+            AT+BLEADVSTART
+
+    .. only:: esp32c2 or esp32c6
+
+        ::
+
+            AT+BLEINIT=2   // Role: server
+            AT+BLEADVPARAM=50,50,0,0,7,0,,
+            AT+BLEADVSTART
 
     .. _cmd-BADVSTOP:
 
@@ -932,11 +949,22 @@ Introduction
     Example
     ^^^^^^^^
 
-    ::
+    .. only:: esp32 or esp32c3
 
-        AT+BLEINIT=2   // Role: server
-        AT+BLEADVSTART
-        AT+BLEADVSTOP
+        ::
+
+            AT+BLEINIT=2   // Role: server
+            AT+BLEADVSTART
+            AT+BLEADVSTOP
+
+    .. only:: esp32c2 or esp32c6
+
+        ::
+
+            AT+BLEINIT=2   // Role: server
+            AT+BLEADVPARAM=50,50,0,0,7,0,,
+            AT+BLEADVSTART
+            AT+BLEADVSTOP
 
     .. _cmd-BCONN:
 
@@ -1240,13 +1268,13 @@ Introduction
 
     **Command:**
 
-    .. only:: esp32 or esp32c3 or esp32c6
+    .. only:: esp32 or esp32c3
 
         ::
 
             AT+BLECFGMTU=<conn_index>,<mtu_size>
 
-    .. only:: esp32c2
+    .. only:: esp32c2 or esp32c6
 
         ::
 
@@ -1261,14 +1289,14 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    .. only:: esp32 or esp32c3 or esp32c6
+    .. only:: esp32 or esp32c3
 
         ::
 
             -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
             -  **<mtu_size>**: MTU length. Unit: byte. Range: [23,517].
 
-    .. only:: esp32c2
+    .. only:: esp32c2 or esp32c6
 
         ::
 
@@ -1277,7 +1305,7 @@ Introduction
     Notes
     ^^^^^
 
-    .. only:: esp32 or esp32c3 or esp32c6
+    .. only:: esp32 or esp32c3
 
         ::
 
@@ -1285,7 +1313,7 @@ Introduction
             -  Only the client can call this command to set the length of MTU.
             -  The actual length of MTU needs to be negotiated. The ``OK`` response only indicates an attempt to negotiate the length. The actual length may not be the value you set. Therefore, it is recommended to run command :ref:`AT+BLECFGMTU? <cmd-BMTU>` to query the actual length.
 
-    .. only:: esp32c2
+    .. only:: esp32c2 or esp32c6
 
         ::
 
@@ -1295,7 +1323,7 @@ Introduction
     Example
     ^^^^^^^^
 
-    .. only:: esp32 or esp32c3 or esp32c6
+    .. only:: esp32 or esp32c3
 
         ::
 
@@ -1303,7 +1331,7 @@ Introduction
             AT+BLECONN=0,"24:0a:c4:09:34:23"
             AT+BLECFGMTU=0,300
 
-    .. only:: esp32c2
+    .. only:: esp32c2 or esp32c6
 
         ::
 
@@ -1311,7 +1339,7 @@ Introduction
             AT+BLECONN=0,"24:0a:c4:09:34:23"
             AT+BLECFGMTU=0
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3
 
     .. _cmd-GSSRVCRE:
 
@@ -1508,11 +1536,20 @@ Introduction
     Example
     ^^^^^^^^
 
-    ::
+    .. only:: esp32 or esp32c3
 
-        AT+BLEINIT=2   // Role: server
-        AT+BLEGATTSSRVCRE
-        AT+BLEGATTSSRV?
+        ::
+
+            AT+BLEINIT=2   // Role: server
+            AT+BLEGATTSSRVCRE
+            AT+BLEGATTSSRV?
+
+    .. only:: esp32c2 or esp32c6
+
+        ::
+
+            AT+BLEINIT=2   // Role: server
+            AT+BLEGATTSSRV?
 
     .. _cmd-GSCHAR:
 
@@ -1560,12 +1597,21 @@ Introduction
     Example
     ^^^^^^^^
 
-    ::
+    .. only:: esp32 or esp32c3
 
-        AT+BLEINIT=2   // Role: server
-        AT+BLEGATTSSRVCRE
-        AT+BLEGATTSSRVSTART
-        AT+BLEGATTSCHAR?
+        ::
+
+            AT+BLEINIT=2   // Role: server
+            AT+BLEGATTSSRVCRE
+            AT+BLEGATTSSRVSTART
+            AT+BLEGATTSCHAR?
+
+    .. only:: esp32c2 or esp32c6
+
+        ::
+
+            AT+BLEINIT=2   // Role: server
+            AT+BLEGATTSCHAR?
 
     .. _cmd-GSNTFY:
 
@@ -1610,16 +1656,30 @@ Introduction
     Example
     ^^^^^^^^
 
-    ::
+    .. only:: esp32 or esp32c3
 
-        AT+BLEINIT=2      // Role: server.
-        AT+BLEGATTSSRVCRE
-        AT+BLEGATTSSRVSTART
-        AT+BLEADVSTART    // Start advertising. After the client is connected, it must be configured to receive notifications.
-        AT+BLEGATTSCHAR?  // Query the characteristics which the client will be notified of.
-        // For example, to notify of 4-byte data using the 6th characteristic in the 3rd service, use the following command:
-        AT+BLEGATTSNTFY=0,3,6,4 
-        // After the symbol ">" shows, enter the 4-byte data, such as "1234". Then the data will be transmitted automatically.
+        ::
+
+            AT+BLEINIT=2      // Role: server.
+            AT+BLEGATTSSRVCRE
+            AT+BLEGATTSSRVSTART
+            AT+BLEADVSTART    // Start advertising. After the client is connected, it must be configured to receive notifications.
+            AT+BLEGATTSCHAR?  // Query the characteristics which the client will be notified of.
+            // For example, to notify of 4-byte data using the 6th characteristic in the 3rd service, use the following command:
+            AT+BLEGATTSNTFY=0,3,6,4 
+            // After the symbol ">" shows, enter the 4-byte data, such as "1234". Then the data will be transmitted automatically.
+
+    .. only:: esp32c2 or esp32c6
+
+        ::
+
+            AT+BLEINIT=2      // Role: server.
+            AT+BLEADVPARAM=50,50,0,0,7,0,,
+            AT+BLEADVSTART    // Start advertising. After the client is connected, it must be configured to receive notifications.
+            AT+BLEGATTSCHAR?  // Query the characteristics which the client will be notified of.
+            // For example, to notify of 4-byte data using the 6th characteristic in the 3rd service, use the following command:
+            AT+BLEGATTSNTFY=0,3,6,4 
+            // After the symbol ">" shows, enter the 4-byte data, such as "1234". Then the data will be transmitted automatically.
 
     .. _cmd-GSIND:
 
@@ -1664,16 +1724,30 @@ Introduction
     Example
     ^^^^^^^^
 
-    ::
+    .. only:: esp32 or esp32c3
 
-        AT+BLEINIT=2      // Role: server
-        AT+BLEGATTSSRVCRE
-        AT+BLEGATTSSRVSTART
-        AT+BLEADVSTART    // Start advertising. After the client is connected, it must be configured to receive indications.
-        AT+BLEGATTSCHAR?  // Query the characteristics which the client can receive indications.
-        // For example, to indicate 4 bytes of data using the 7th characteristic in the 3rd service, use the following command:
-        AT+BLEGATTSIND=0,3,7,4 
-        // After the symbol ">" shows, input 4 bytes of data, such as "1234". Then the data will be transmitted automatically.
+        ::
+
+            AT+BLEINIT=2      // Role: server
+            AT+BLEGATTSSRVCRE
+            AT+BLEGATTSSRVSTART
+            AT+BLEADVSTART    // Start advertising. After the client is connected, it must be configured to receive indications.
+            AT+BLEGATTSCHAR?  // Query the characteristics which the client can receive indications.
+            // For example, to indicate 4 bytes of data using the 7th characteristic in the 3rd service, use the following command:
+            AT+BLEGATTSIND=0,3,7,4 
+            // After the symbol ">" shows, input 4 bytes of data, such as "1234". Then the data will be transmitted automatically.
+
+    .. only:: esp32c2 or esp32c6
+
+        ::
+
+            AT+BLEINIT=2      // Role: server
+            AT+BLEADVPARAM=50,50,0,0,7,0,,
+            AT+BLEADVSTART    // Start advertising. After the client is connected, it must be configured to receive indications.
+            AT+BLEGATTSCHAR?  // Query the characteristics which the client can receive indications.
+            // For example, to indicate 4 bytes of data using the 7th characteristic in the 3rd service, use the following command:
+            AT+BLEGATTSIND=0,3,7,4 
+            // After the symbol ">" shows, input 4 bytes of data, such as "1234". Then the data will be transmitted automatically.
 
     .. _cmd-GSSETA:
 
@@ -1689,9 +1763,17 @@ Introduction
 
     **Command:**
 
-    ::
+    .. only:: esp32 or esp32c3
 
-        AT+BLEGATTSSETATTR=<srv_index>,<char_index>,[<desc_index>],<length>
+        ::
+
+            AT+BLEGATTSSETATTR=<srv_index>,<char_index>,[<desc_index>],<length>
+
+    .. only:: esp32c2 or esp32c6
+
+        ::
+
+            AT+BLEGATTSSETATTR=<srv_index>,<char_index>,<length>
 
     **Response:**
 
@@ -1712,7 +1794,10 @@ Introduction
 
     -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
     -  **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
-    -  **[<desc_index>]**: descriptor's index.
+
+    .. only:: esp32c2 or esp32c6
+
+        -  **[<desc_index>]**: descriptor's index.
 
     -  If it is set, this command is used to set the value of the descriptor. 
     -  Otherwise, this command is used to set the value of the characteristic.
@@ -1724,18 +1809,34 @@ Introduction
 
     -  If the value of ``<length>`` is larger than the maximum length allowed, the setting will fail. The service table is defined in :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>`.
 
+    .. only:: esp32c2 or esp32c6
+
+        -  The characteristic descriptor value cannot be set.
+
     Example
     ^^^^^^^^
 
-    ::
+    .. only:: esp32 or esp32c3
 
-        AT+BLEINIT=2   // Role: server.
-        AT+BLEGATTSSRVCRE
-        AT+BLEGATTSSRVSTART
-        AT+BLEGATTSCHAR? 
-        // For example, to set 1 byte of data of the 1st characteristic in the 1st service, use the following command:
-        AT+BLEGATTSSETATTR=1,1,,1
-        // After the symbol ">" shows, input 1 byte of data, such as "8". Then the setting starts.
+        ::
+
+            AT+BLEINIT=2   // Role: server.
+            AT+BLEGATTSSRVCRE
+            AT+BLEGATTSSRVSTART
+            AT+BLEGATTSCHAR? 
+            // For example, to set 1 byte of data of the 1st characteristic in the 1st service, use the following command:
+            AT+BLEGATTSSETATTR=1,1,,1
+            // After the symbol ">" shows, input 1 byte of data, such as "8". Then the setting starts.
+
+    .. only:: esp32c2 or esp32c6
+
+        ::
+
+            AT+BLEINIT=2   // Role: server.
+            AT+BLEGATTSCHAR? 
+            // For example, to set 1 byte of data of the 1st characteristic in the 1st service, use the following command:
+            AT+BLEGATTSSETATTR=1,1,1
+            // After the symbol ">" shows, input 1 byte of data, such as "8". Then the setting starts.
 
     .. _cmd-GCPRIMSRV:
 
@@ -2285,20 +2386,36 @@ Introduction
     Example
     ^^^^^^^^
 
-    ::
+    .. only:: esp32 or esp32c3
 
-        AT+RESTORE
-        AT+BLEINIT=2
-        AT+BLEGATTSSRVCRE
-        AT+BLEGATTSSRVSTART
-        AT+BLEADDR?
-        AT+BLESECPARAM=1,0,16,3,3
-        AT+BLESETKEY=123456
-        AT+BLEADVSTART
-        // Use your Bluetooth LE debugging app as a client to establish a Bluetooth LE connection with the {IDF_TARGET_NAME}
-        AT+BLEENC=0,3
+        ::
 
-.. only:: esp32 or esp32c3 or esp32c6
+            AT+RESTORE
+            AT+BLEINIT=2
+            AT+BLEGATTSSRVCRE
+            AT+BLEGATTSSRVSTART
+            AT+BLEADDR?
+            AT+BLESECPARAM=1,0,16,3,3
+            AT+BLESETKEY=123456
+            AT+BLEADVSTART
+            // Use your Bluetooth LE debugging app as a client to establish a Bluetooth LE connection with the {IDF_TARGET_NAME}
+            AT+BLEENC=0,3
+
+    .. only:: esp32c2 or esp32c6
+
+        ::
+
+            AT+RESTORE
+            AT+BLEINIT=2
+            AT+BLEADDR?
+            AT+BLESECPARAM=1,0,16,3,3
+            AT+BLESETKEY=123456
+            AT+BLEADVPARAM=50,50,0,0,7,0,,
+            AT+BLEADVSTART
+            // Use your Bluetooth LE debugging app as a client to establish a Bluetooth LE connection with the {IDF_TARGET_NAME}
+            AT+BLEENC=0,3
+
+.. only:: esp32 or esp32c3
 
     .. _cmd-BLEENCRSP:
 
@@ -2598,7 +2715,7 @@ Introduction
 
         AT+BLESETKEY=123456
 
-.. only:: esp32 or esp32c3 or esp32c6 
+.. only:: esp32 or esp32c3 
 
     .. _cmd-BLEHIDINIT:
 
@@ -2949,6 +3066,7 @@ Notes
 
 -  If you need to set BluFi name, please set it before command :ref:`AT+BLUFI=1 <cmd-BLUFI>`. Otherwise, it will use the default name ``BLUFI_DEVICE``.
 -  The maximum length of BluFi name is 26 bytes.
+-  The Blufi APP can be downloaded from the app store.
 
 Example
 ^^^^^^^^

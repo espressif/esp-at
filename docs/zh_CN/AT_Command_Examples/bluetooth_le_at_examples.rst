@@ -105,7 +105,7 @@ Bluetooth LE 客户端读写服务特征值
 
    - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
   
@@ -473,7 +473,7 @@ Bluetooth LE 客户端读写服务特征值
   
        OK
 
-  .. only:: esp32 or esp32c3 or esp32c6
+  .. only:: esp32 or esp32c3
 
     #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
     
@@ -564,7 +564,7 @@ Bluetooth LE 客户端读写服务特征值
   
        OK
 
-  .. only:: esp32 or esp32c3 or esp32c6
+  .. only:: esp32 or esp32c3
 
     #. {IDF_TARGET_NAME} Bluetooth LE 客户端创建服务。
     
@@ -950,7 +950,7 @@ Bluetooth LE 连接加密
 
    - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
   
@@ -1232,24 +1232,26 @@ Bluetooth LE 连接加密
 
    如果 {IDF_TARGET_NAME} Bluetooth LE 服务端成功接收到加密请求，{IDF_TARGET_NAME} Bluetooth LE 服务端则会提示 ``+BLESECREQ:0``。
 
-#. {IDF_TARGET_NAME} Bluetooth LE 服务端响应配对请求。
+.. only:: esp32 or esp32c3
 
-   命令：
+  #. {IDF_TARGET_NAME} Bluetooth LE 服务端响应配对请求。
 
-   .. code-block:: none
+    命令：
 
-     AT+BLEENCRSP=0,1
+    .. code-block:: none
 
-   响应：
+      AT+BLEENCRSP=0,1
 
-   .. code-block:: none
+    响应：
 
-     OK
+    .. code-block:: none
 
-   说明：
+      OK
 
-   - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端成功收到配对响应，则 {IDF_TARGET_NAME} Bluetooth LE 客户端将会产生一个 6 位的配对码。
-   - 在本例中，{IDF_TARGET_NAME} Bluetooth LE 客户端则会提示 ``+BLESECNTFYKEY:0,793718``。配对码为 ``793718``。
+    说明：
+
+    - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端成功收到配对响应，则 {IDF_TARGET_NAME} Bluetooth LE 客户端将会产生一个 6 位的配对码。
+    - 在本例中，{IDF_TARGET_NAME} Bluetooth LE 客户端则会提示 ``+BLESECNTFYKEY:0,793718``。配对码为 ``793718``。
 
 #. {IDF_TARGET_NAME} Bluetooth LE 客户端回复配对码。
 
@@ -1329,7 +1331,7 @@ Bluetooth LE 连接加密
 
      OK
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
   
@@ -1724,7 +1726,7 @@ Bluetooth LE 连接加密
 
      OK
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
   
@@ -1961,7 +1963,7 @@ Bluetooth LE 连接加密
 
      OK
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
   

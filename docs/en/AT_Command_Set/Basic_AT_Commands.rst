@@ -1546,7 +1546,7 @@ Query the RF TX Power.
 
 **Response:**
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
   ::
 
@@ -1565,7 +1565,7 @@ Set Command
 
 **Command:**
 
-.. only:: esp32 or esp32c3
+.. only:: esp32 or esp32c3 or esp32c6
 
   ::
 
@@ -1631,26 +1631,44 @@ Parameters
 
 .. only:: esp32c3
 
-  -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,7].
+  -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,15].
 
-    -  0: -27 dBm
-    -  1: -24 dBm
-    -  2: -21 dBm
-    -  3: -18 dBm
-    -  4: -15 dBm
-    -  5: -12 dBm
-    -  6: -9 dBm
-    -  7: -6 dBm
-    -  8: -3 dBm
-    -  9: -0 dBm
-    -  10: 3 dBm
-    -  11: 6 dBm
-    -  12: 9 dBm
-    -  13: 12 dBm
-    -  14: 15 dBm
-    -  15: 18 dBm
+    -  0: -24 dBm
+    -  1: -21 dBm
+    -  2: -18 dBm
+    -  3: -15 dBm
+    -  4: -12 dBm
+    -  5: -9 dBm
+    -  6: -6 dBm
+    -  7: -3 dBm
+    -  8: -0 dBm
+    -  9: 3 dBm
+    -  10: 6 dBm
+    -  11: 9 dBm
+    -  12: 12 dBm
+    -  13: 15 dBm
+    -  14: 18 dBm
+    -  15: 21 dBm
 
-.. only:: esp32 or esp32c3
+.. only:: esp32c6
+
+  -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [3,15].
+
+    -  3: -15 dBm
+    -  4: -12 dBm
+    -  5: -9 dBm
+    -  6: -6 dBm
+    -  7: -3 dBm
+    -  8: -0 dBm
+    -  9: 3 dBm
+    -  10: 6 dBm
+    -  11: 9 dBm
+    -  12: 12 dBm
+    -  13: 15 dBm
+    -  14: 18 dBm
+    -  15: 20 dBm
+
+.. only:: esp32 or esp32c3 or esp32c6
 
   -  **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. The parameters are the same as ``<ble_adv_power>``.
   -  **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. The same as ``<ble_adv_power>``.
