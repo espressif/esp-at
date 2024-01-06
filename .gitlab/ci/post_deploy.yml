@@ -1,0 +1,16 @@
+check_doc_links:
+  extends:
+    - .build_docs_template
+  stage: post_deploy
+  tags: ["build", "amd64", "internet"]
+  artifacts:
+    when: always
+    paths:
+      - docs/_build/*/*/*.txt
+      - docs/_build/*/*/linkcheck/*.txt
+    expire_in: 1 week
+  allow_failure: true
+  script:
+    - cd docs
+    - pip install -r requirements.txt
+    - build-docs -t $DOCTGT -l $DOCLANG linkcheck

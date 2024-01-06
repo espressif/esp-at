@@ -1,0 +1,55 @@
+##############
+# if anchors #
+##############
+.if-protected: &if-protected
+  if: '($CI_COMMIT_REF_NAME == "master" || $CI_COMMIT_BRANCH =~ /^release\/v/ || $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+(\.\d+)?($|-)/)'
+
+.if-dev-push: &if-dev-push
+  if: '$CI_COMMIT_REF_NAME != "master" && $CI_COMMIT_BRANCH !~ /^release\/v/ && $CI_COMMIT_TAG !~ /^v\d+\.\d+\.\d+(\.\d+)?($|-)/ && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event")'
+
+############
+# Patterns #
+############
+.patterns-docs: &patterns-docs
+  - "docs/**/*"
+
+.patterns-src: &patterns-src
+  - "bootloader_components/**/*"
+  - "components/**/*"
+  - "examples/**/*"
+  - "main/**/*"
+  - "module_config/**/*"
+  - "tools/**/*"
+  - ".gitlab/**/*"
+  - ".gitlab-ci.yml"
+  - "build.py"
+  - "CMakeLists.txt"
+  - "requirements.txt"
+
+#########
+# Rules #
+#########
+.rules:protected:
+  rules:
+    - <<: *if-protected
+
+.rules:build:build_doc:
+  rules:
+    - <<: *if-protected
+    - <<: *if-dev-push
+      changes: *patterns-docs
+
+.rules:build:build_project:
+  rules:
+    - <<: *if-protected
+    - <<: *if-dev-push
+      changes: *patterns-src
+
+.rules:deploy:docs_preview:
+  rules:
+    - <<: *if-dev-push
+      changes: *patterns-docs
+
+.rules:deploy:docs_production:
+  rules:
+    - <<: *if-protected

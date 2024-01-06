@@ -1,0 +1,36 @@
+# Build ESP32-C2 AT Firmwares
+
+esp32c2_2mb_at:
+  extends:
+    - .build_template_esp32c2
+  variables:
+    MODULE_NAME: "ESP32C2-2MB"
+
+esp32c2_4mb_at:
+  extends:
+    - .build_template_esp32c2
+  variables:
+    MODULE_NAME: "ESP32C2-4MB"
+
+esp32c2_4mb_at_xtal_40mhz_test:
+  extends:
+    - .build_template_esp32c2
+    - .before_script_esp32c2_enable_40mhz_xtal
+  variables:
+    MODULE_NAME: "ESP32C2-4MB"
+  when: manual
+
+esp32c2_at_ble_function_test:
+  extends:
+    - .build_template_esp32c2
+    - .before_script_esp32c2_enable_ble_cmds
+  variables:
+    MODULE_NAME: "ESP32C2-4MB"
+
+esp32c2_at_wifi_function_test:
+  extends:
+    - .build_template_esp32c2
+    - .before_script_esp32c2_enable_all_wifi_cmds
+  variables:
+    MODULE_NAME: "ESP32C2-4MB"
+  when: manual
