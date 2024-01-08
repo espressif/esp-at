@@ -1,0 +1,7 @@
+# Build ESP32-C6 AT Firmwares
+
+esp32c6_4mb_at:
+  extends:
+    - .build_template_esp32c6
+  variables:
+    MODULE_NAME: "ESP32C6-4MB"

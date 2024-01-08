@@ -1,0 +1,27 @@
+# Build ESP32-C3 AT Firmwares
+
+esp32c3_mini_1_at:
+  extends:
+    - .build_template_esp32c3
+  variables:
+    MODULE_NAME: "MINI-1"
+
+esp32c3_spi_at:
+  extends:
+    - .build_template_esp32c3
+  variables:
+    MODULE_NAME: "ESP32C3-SPI"
+
+esp32c3_rainmaker:
+  extends:
+    - .build_template_esp32c3
+  variables:
+    MODULE_NAME: "ESP32C3_RAINMAKER"
+
+esp32c3_at_full_function_test:
+  extends:
+    - .build_template_esp32c3
+    - .before_script_esp32c3_enable_all_wifi_cmds
+  variables:
+    MODULE_NAME: "MINI-1"
+  when: manual

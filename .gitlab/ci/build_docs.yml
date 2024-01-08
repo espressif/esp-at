@@ -1,0 +1,37 @@
+.build_docs_template:
+  extends:
+    - .rules:build:build_doc
+  stage: build
+  image: $CI_DOCKER_REGISTRY/esp-idf-doc-env-v5.0:4-4
+  needs: []
+  tags:
+    - build_docs
+  artifacts:
+    when: always
+    paths:
+      - docs/_build/*/*/*.txt
+      - docs/_build/*/*/latex/*
+      - docs/_build/*/*/html/*
+    expire_in: 6 mos
+  script:
+    - cd docs
+    - ./check_lang_folder_sync.sh
+    - ./check_doc_chars.py
+    - pip install -r requirements.txt
+    - build-docs -t $DOCTGT -bs $DOC_BUILDERS -l $DOCLANG build
+  parallel:
+    matrix:
+      - DOCLANG: ["en", "zh_CN"]
+        DOCTGT: ["esp32", "esp32c2", "esp32c3", "esp32c6"]
+
+build_docs_html:
+  extends:
+    - .build_docs_template
+  variables:
+    DOC_BUILDERS: "html"
+
+build_docs_pdf:
+  extends:
+    - .build_docs_template
+  variables:
+    DOC_BUILDERS: "latex"
