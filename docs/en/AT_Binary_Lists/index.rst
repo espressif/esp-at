@@ -7,13 +7,13 @@ AT Binary Lists
   :hidden:
   :maxdepth: 1
 
-  {IDF_TARGET_NAME} AT Released Firmware <{IDF_TARGET_NAME}_AT_binaries>
+  {IDF_TARGET_NAME} AT Released Firmware <esp_at_binaries>
 
 This document covers the following sections:
 
 .. list::
 
-  - :doc:`Download {IDF_TARGET_NAME} AT Released Firmware <{IDF_TARGET_NAME}_AT_binaries>`
+  - :doc:`Download {IDF_TARGET_NAME} AT Released Firmware <esp_at_binaries>`
   - :ref:`brief-intro-firmware`: What binary files the AT firmware contains and their functions
   - :ref:`firmware-selection`: Types of AT firmware, ways to access them, their application scenarios, pros, cons, etc.
   - :ref:`what-next-after-you-get-firmware`
@@ -119,7 +119,7 @@ Officially Released Firmware (Recommended)
 
 .. list::
 
-  - How to obtain firmware: :doc:`{IDF_TARGET_NAME} AT firmware <{IDF_TARGET_NAME}_AT_binaries>`
+  - How to obtain firmware: :doc:`{IDF_TARGET_NAME} AT firmware <esp_at_binaries>`
   - Pros: 
     
     - Stable

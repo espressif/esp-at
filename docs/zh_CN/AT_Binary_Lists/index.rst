@@ -7,13 +7,13 @@ AT 固件
   :hidden:
   :maxdepth: 1
 
-  {IDF_TARGET_NAME} AT 发布版固件 <{IDF_TARGET_NAME}_AT_binaries>
+  {IDF_TARGET_NAME} AT 发布版固件 <esp_at_binaries>
 
 本文档包含以下小节：
 
 .. list::
 
-  - :doc:`下载 {IDF_TARGET_NAME} AT 发布版固件 <{IDF_TARGET_NAME}_AT_binaries>`
+  - :doc:`下载 {IDF_TARGET_NAME} AT 发布版固件 <esp_at_binaries>`
   - :ref:`brief-intro-firmware`：AT 固件包含哪些二进制文件及其作用
   - :ref:`firmware-selection`：不同类型的 AT 固件及其获取方式、适用情况、优缺点等
   - :ref:`what-next-after-you-get-firmware`
@@ -119,7 +119,7 @@ ESP-AT 固件有以下几种类型，其中下载或准备固件的工作量自�
 
 .. list::
 
-  - 获取途径：:doc:`{IDF_TARGET_NAME} AT 固件 <{IDF_TARGET_NAME}_AT_binaries>`
+  - 获取途径：:doc:`{IDF_TARGET_NAME} AT 固件 <esp_at_binaries>`
   - 优点：
   
     - 稳定
