@@ -1,15 +1,8 @@
 #!/usr/bin/env bash
+# -*- coding: utf-8 -*-
 #
-# Check if folders with localized documentation are in sync
-#
-# 1. Traverse each folder with language version and generate a sorted list
-#    of all the files inside
-# 2. Compare the sorted lists of files and flag differences
-#
-# Note:
-# All differences between folders with language versions should be resolved
-# before releasing documentation
-#
+# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-License-Identifier: Apache-2.0
 
 RESULT=0
 STARS='***************************************************'
