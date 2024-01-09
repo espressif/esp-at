@@ -1,11 +1,9 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# English Language RTD & Sphinx config file
-#
-# Uses ../conf_common.py for most non-language-specific settings.
+# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-License-Identifier: Apache-2.0
 
-# Importing conf_common adds all the non-language-specific
-# parts to this conf module
 import sys
 import os
 import datetime

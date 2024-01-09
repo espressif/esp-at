@@ -1,25 +1,20 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #
-# Copyright 2021 Espressif Systems (Shanghai) PTE LTD
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-License-Identifier: Apache-2.0
+
 import sys, os, re
 
 if sys.version_info[0] == 2:
     reload(sys)
     sys.setdefaultencoding('utf-8')
+
+def ESP_LOGI(x):
+    print('\033[32m{}\033[0m'.format(x))
+
+def ESP_LOGE(x):
+    print('\033[31m{}\033[0m'.format(x))
 
 # allowed characters, include some chinese characters, symbol, and punctuation
 at_allowed_chars_list = ['中文', '®', '℃', '…', '✅', '❌', '√', '×', '├', '└', '│', '–', '—']
@@ -61,16 +56,16 @@ def at_data_is_allowed_chars(match_info, data):
     return False
 
 def at_check_doc_chars_validity(doc_name):
-    with open(doc_name, "rb") as fp:
+    with open(doc_name, 'rb') as fp:
         for (lineno, data) in enumerate(fp):
             match_info = re.search(at_not_allowed_chars_list, data)
             if match_info:
                 if not at_data_is_allowed_chars(match_info, data):
-                    print("\033[31mError: illegal character detected at %s:%d\033[0m" %(doc_name, lineno + 1))
-                    print("raw data ----> %s\r\n" %data)
-                    print("Allowed chars:")
+                    ESP_LOGE('Error: illegal character detected at {}:{}'.format(doc_name, lineno + 1))
+                    print('raw data ----> {}\r\n'.format(data))
+                    print('Allowed chars:')
                     for x in at_allowed_chars_list:
-                        print(x, "---->", x.encode())
+                        print(x, '---->', x.encode())
                     return False
             pass
     return True
@@ -79,7 +74,7 @@ def _main():
     if len(sys.argv) == 2:
         dst_path = os.path.abspath(sys.argv[1])
     else:
-        dst_path = os.path.abspath('.') + "/en"
+        dst_path = os.path.abspath('.') + '/en'
     at_en_doc_file_list = at_get_file_list(dst_path, [])
     for current_file in at_en_doc_file_list:
         for file_basename in at_file_white_list:
@@ -88,7 +83,7 @@ def _main():
             else:
                 if at_check_doc_chars_validity(current_file) == False:
                     sys.exit(-1)
-    print("\033[1;32mDocument characters check passed! (%s)\033[0m" %dst_path)
+    ESP_LOGI('Document characters check passed! ({})'.format(dst_path))
 
 if __name__ == '__main__':
     _main()

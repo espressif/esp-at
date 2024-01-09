@@ -1,9 +1,8 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Common (non-language-specific) configuration for Sphinx
-#
-# This file is imported from a language-specific conf.py (ie en/conf.py or
-# zh_CN/conf.py)
+# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-License-Identifier: Apache-2.0
 
 from __future__ import print_function, unicode_literals
 
