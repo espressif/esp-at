@@ -276,5 +276,8 @@ void at_custom_init(void)
     esp_at_sdio_slave_init();
 
     xTaskCreate(at_sdio_recv_task , "at_sdio_recv_task" , 4096 , NULL , 2 , NULL);
+
+    esp_at_custom_cmd_array_regist(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(at_custom_cmd[0])); 
+
 }
 #endif
