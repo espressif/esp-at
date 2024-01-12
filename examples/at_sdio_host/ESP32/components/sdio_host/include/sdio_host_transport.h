@@ -1,5 +1,9 @@
-#ifndef SDIO_HOST_TRANSPORT_H_
-#define SDIO_HOST_TRANSPORT_H_
+/*
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -67,7 +71,7 @@ sdio_err_t sdio_host_clear_intr(uint32_t intr_mask);
  */
 sdio_err_t sdio_host_get_packet(void* out_data, size_t size, size_t *out_length, uint32_t wait_ms);
 
-/** Send a packet to the SDIO slave. 
+/** Send a packet to the SDIO slave.
  *
  * @param start Start address of the packet to send
  * @param length Length of data to send, if the packet is over-size, the it will be divided into blocks and hold into different buffers automatically.
@@ -78,7 +82,7 @@ sdio_err_t sdio_host_get_packet(void* out_data, size_t size, size_t *out_length,
  */
 sdio_err_t sdio_host_send_packet(const void* start, size_t length);
 
-/** Send a interrupt signal to the SDIO slave. 
+/** Send a interrupt signal to the SDIO slave.
  *
  * @param intr_no interrupt number, now only support 0.
  *
@@ -91,5 +95,3 @@ sdio_err_t sdio_host_send_intr(uint8_t intr_no);
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* SDIO_HOST_TRANSPORT_H_ */

@@ -1,7 +1,9 @@
-
-
-#ifndef SDIO_HOST_ERROR_H_
-#define SDIO_HOST_ERROR_H_
+/*
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -9,7 +11,7 @@ extern "C" {
 
 /*! \public
  * @brief SDIO host Error enum
- * 
+ *
  * Values less than -1 are specific error codes
  * Value of -1 is a generic failure response
  * Value of 0 is a generic success response
@@ -27,5 +29,3 @@ typedef enum {
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* SDIO_HOST_ERROR_H_ */

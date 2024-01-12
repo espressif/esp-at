@@ -1,5 +1,9 @@
-#ifndef SDIO_HOST_REG_H_
-#define SDIO_HOST_REG_H_
+/*
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+#pragma once
 
 #include "sdio_config.h"
 
@@ -31,5 +35,3 @@
 
 #define RX_BYTE_MAX                 0x100000
 #define RX_BYTE_MASK                0xFFFFF
-
-#endif /* SDIO_HOST_REG_H_ */

@@ -120,7 +120,7 @@ config AT_MQTT_COMMAND_SUPPORT
 
 menu "AT MQTT authentication method"
     depends on AT_MQTT_COMMAND_SUPPORT
-    
+
 config AT_MQTT_BROKER_AUTH_CLIENT
     bool "Broker authenticates clients, mqtt_ca partition MUST exist in at_customize.csv"
     default y
@@ -205,7 +205,7 @@ config AT_ETHERNET_SUPPORT
     depends on AT_ENABLE && IDF_TARGET_ESP32
     help
         Please pay attention to the usage. You can refer to the ESP32_AT_Ethernet.md and get more details.
-    
+
 choice PHY_MODEL
     prompt "Ethernet PHY"
     default PHY_IP101
@@ -261,7 +261,7 @@ config AT_WEB_SERVER_SUPPORT
     depends on AT_ENABLE
     help
       Please enable this configure if you want use web server.
- 
+
 config AT_WEB_USE_FATFS
     bool "Use fatfs to store html"
     default "n"
@@ -274,8 +274,8 @@ config AT_WEB_CAPTIVE_PORTAL_ENABLE
     default "n"
     depends on AT_WEB_SERVER_SUPPORT
     help
-        If your mobile phone or PC supports captive portal, 
-        it will automatically open a browser for setting Wi-Fi station information when connects to ESP softAP. 
+        If your mobile phone or PC supports captive portal,
+        it will automatically open a browser for setting Wi-Fi station information when connects to ESP softAP.
         For more details, please refer to https://en.wikipedia.org/wiki/Captive_portal.
         Please enlarge LWIP_MAX_SOCKETS to be more than 14 to ensure access to the web smoothly.
 

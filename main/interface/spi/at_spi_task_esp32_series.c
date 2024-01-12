@@ -1,25 +1,7 @@
 /*
- * ESPRESSIF MIT License
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
  *
- * Copyright (c) 2021 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
- *
- * Permission is hereby granted for use on ESPRESSIF SYSTEMS only, in which case,
- * it is free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
+ * SPDX-License-Identifier: Apache-2.0
  */
 #include <stdlib.h>
 #include <stdio.h>
@@ -39,7 +21,7 @@
 #include "driver/gpio.h"
 #include "driver/spi_slave_hd.h"
 
-static const char* TAG = "SPI-AT";
+static const char *TAG = "SPI-AT";
 #define SPI_SLAVE_HANDSHARK_GPIO    CONFIG_SPI_HANDSHAKE_PIN
 #define GPIO_MOSI                   CONFIG_SPI_MOSI_PIN
 #define GPIO_MISO                   CONFIG_SPI_MISO_PIN
@@ -112,7 +94,7 @@ bool cb_master_write_buffer(void* arg, spi_slave_hd_event_t* event, BaseType_t* 
     spi_msg_t spi_msg = {
         .direct = SPI_SLAVE_RD,
     };
-    if (xQueueSendFromISR(msg_queue, (void*)&spi_msg, &mustYield) != pdPASS) {
+    if (xQueueSendFromISR(msg_queue, (void *)&spi_msg, &mustYield) != pdPASS) {
         send_queue_error_flag = true;
     }
     return true;
@@ -173,7 +155,7 @@ static int32_t at_spi_write_data(uint8_t* buf, int32_t len)
         ESP_LOGE(TAG, "Empty write data.");
         return 0;
     }
-    
+
     if (buf == NULL  || len > SPI_WRITE_STREAM_BUFFER || len == 0) {
         ESP_LOGE(TAG, "Write data error, len:%d", len);
         return -1;
@@ -183,7 +165,7 @@ static int32_t at_spi_write_data(uint8_t* buf, int32_t len)
 
     length = xStreamBufferSend(spi_slave_tx_ring_buf, buf, len, portMAX_DELAY);
 
-    if(length != len) {
+    if (length != len) {
         ESP_LOGE(TAG, "Stream buffer send error");
         return -1;
     }
@@ -195,7 +177,7 @@ static int32_t at_spi_write_data(uint8_t* buf, int32_t len)
             .direct = SPI_SLAVE_WR,
         };
 
-        if (xQueueSend(msg_queue, (void*)&spi_msg, 0) != pdPASS) {
+        if (xQueueSend(msg_queue, (void *)&spi_msg, 0) != pdPASS) {
             ESP_LOGE(TAG, "send WR queue for spi_write error");
         }
     }
@@ -236,7 +218,7 @@ static void at_spi_slave_task(void* pvParameters)
         if (trans_msg.direct == SPI_SLAVE_RD) {    // master -> slave
 
             // Tell master transmit mode is master send
-            write_transmit_len(SPI_SLAVE_RD, SPI_DMA_MAX_LEN); 
+            write_transmit_len(SPI_SLAVE_RD, SPI_DMA_MAX_LEN);
 
             memset(&slave_trans, 0x0, sizeof(spi_slave_hd_data_t));
             slave_trans.data = data_buf;
@@ -257,7 +239,7 @@ static void at_spi_slave_task(void* pvParameters)
 
         } else if (trans_msg.direct == SPI_SLAVE_WR) {     // slave -> master
             remain_len = xStreamBufferBytesAvailable(spi_slave_tx_ring_buf);
-            if (remain_len > 0){
+            if (remain_len > 0) {
                 send_len = remain_len > SPI_DMA_MAX_LEN ? SPI_DMA_MAX_LEN : remain_len;
                 write_transmit_len(SPI_SLAVE_WR, send_len);
 
@@ -282,11 +264,11 @@ static void at_spi_slave_task(void* pvParameters)
 
             spi_mutex_lock();
             remain_len = xStreamBufferBytesAvailable(spi_slave_tx_ring_buf);
-            if (remain_len > 0){
+            if (remain_len > 0) {
                 spi_msg_t spi_msg = {
                     .direct = SPI_SLAVE_WR,
                 };
-                if (xQueueSend(msg_queue, (void*)&spi_msg, 0) != pdPASS) {
+                if (xQueueSend(msg_queue, (void *)&spi_msg, 0) != pdPASS) {
                     ESP_LOGE(TAG, "send WR queue error");
                     break;
                 }
@@ -419,6 +401,6 @@ void at_custom_init(void)
         ESP_LOGE(TAG, "Semaphore create error");
         return;
     }
-    xTaskCreate(at_spi_slave_task , "at_spi_task" , 4096 , NULL , 10 , NULL);
+    xTaskCreate(at_spi_slave_task, "at_spi_task", 4096, NULL, 10, NULL);
 }
 #endif

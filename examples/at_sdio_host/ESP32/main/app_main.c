@@ -1,11 +1,8 @@
-/* SDIO host example
-
-   This example code is in the Public Domain (or CC0 licensed, at your option.)
-
-   Unless required by applicable law or agreed to in writing, this
-   software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-   CONDITIONS OF ANY KIND, either express or implied.
-   */
+/*
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
@@ -27,7 +24,7 @@
 #define SLAVE_PWR_GPIO       5          // sdio board ESP32 slave, ESP32 is IO5, ESP8266 is IO18
 
 #define WRITE_BUFFER_LEN    2048
-#define READ_BUFFER_LEN     4096  
+#define READ_BUFFER_LEN     4096
 
 uint8_t send_buffer[WRITE_BUFFER_LEN] = "";
 uint8_t rcv_buffer[READ_BUFFER_LEN] = "";
@@ -122,20 +119,20 @@ void uart_task(void* pvParameters)
 
     for (;;) {
         //Waiting for UART event.
-        if (xQueueReceive(esp_at_uart_queue, (void*) &event, portMAX_DELAY)) {
+        if (xQueueReceive(esp_at_uart_queue, (void *) &event, portMAX_DELAY)) {
             switch (event.type) {
-                    //Event of UART receving data
-                case UART_DATA:
-                    if (event.size) {
-                        // Master want to send data, mark it.
-                        xSemaphoreGive(rdySem);
-                    }
+            //Event of UART receving data
+            case UART_DATA:
+                if (event.size) {
+                    // Master want to send data, mark it.
+                    xSemaphoreGive(rdySem);
+                }
 
-                    break;
+                break;
 
-                case UART_PATTERN_DET:
-                default:
-                    break;
+            case UART_PATTERN_DET:
+            default:
+                break;
             }
         }
     }

@@ -1,25 +1,7 @@
 /*
- * ESPRESSIF MIT License
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
  *
- * Copyright (c) 2018 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
- *
- * Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP32 only, in which case,
- * it is free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
+ * SPDX-License-Identifier: Apache-2.0
  */
 #include <stdlib.h>
 #include <stdio.h>
@@ -72,13 +54,13 @@ static esp_at_sdio_list_t* pHead;
 static esp_at_sdio_list_t* pTail;
 static SemaphoreHandle_t semahandle;
 
-// AT response data , send them to SDIO
+// AT response data, send them to SDIO
 static int32_t at_sdio_write_data(uint8_t* data, int32_t len)
 {
     esp_err_t ret = ESP_OK;
     uint8_t* sendbuf = NULL;
     if (len < 0 || data == NULL) {
-        ESP_LOGE(TAG , "Write data error, len:%d", len);
+        ESP_LOGE(TAG, "Write data error, len:%d", len);
         return -1;
     }
 
@@ -90,7 +72,7 @@ static int32_t at_sdio_write_data(uint8_t* data, int32_t len)
         int len_to_send = len_remain > ESP32_SDIO_DMA_SIZE ? ESP32_SDIO_DMA_SIZE : len_remain;
         sendbuf = heap_caps_malloc(len_to_send, MALLOC_CAP_DMA);
         if (sendbuf == NULL) {
-            ESP_LOGE(TAG , "Malloc send buffer fail!");
+            ESP_LOGE(TAG, "Malloc send buffer fail!");
             xSemaphoreGive(semahandle);
             return 0;
         }
@@ -99,7 +81,7 @@ static int32_t at_sdio_write_data(uint8_t* data, int32_t len)
 
         ret = sdio_slave_transmit(sendbuf, len_to_send);
         if (ret != ESP_OK) {
-            ESP_LOGE(TAG , "sdio slave transmit error");
+            ESP_LOGE(TAG, "sdio slave transmit error");
             free(sendbuf);
             xSemaphoreGive(semahandle);
             return 0;
@@ -118,12 +100,12 @@ static int32_t at_sdio_read_data(uint8_t* data, int32_t len)
 {
     uint32_t copy_len = 0;
     if (data == NULL || len < 0) {
-        ESP_LOGI(TAG , "Cannot get read data address.");
+        ESP_LOGI(TAG, "Cannot get read data address.");
         return -1;
     }
 
     if (len == 0) {
-        ESP_LOGI(TAG , "Empty read data.");
+        ESP_LOGI(TAG, "Empty read data.");
         return 0;
     }
 
@@ -199,7 +181,7 @@ static void at_sdio_recv_task(void* pvParameters)
     size_t length = 0;
     uint8_t* ptr = NULL;
 
-    esp_at_port_active_write_data((uint8_t *) "\r\nready\r\n" , strlen("\r\nready\r\n"));
+    esp_at_port_active_write_data((uint8_t *) "\r\nready\r\n", strlen("\r\nready\r\n"));
 
     for (;;) {
 
@@ -275,6 +257,6 @@ void at_custom_init(void)
     // init slave driver
     esp_at_sdio_slave_init();
 
-    xTaskCreate(at_sdio_recv_task , "at_sdio_recv_task" , 4096 , NULL , 2 , NULL);
+    xTaskCreate(at_sdio_recv_task, "at_sdio_recv_task", 4096, NULL, 2, NULL);
 }
 #endif

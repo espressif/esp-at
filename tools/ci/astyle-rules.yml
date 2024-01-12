@@ -1,0 +1,11 @@
+DEFAULT:
+  # These formatting options will be used by default.
+  # If you are modifying this, update tools/format.sh as well!
+  options: "--style=otbs --attach-namespaces --attach-classes --indent=spaces=4 --convert-tabs --align-reference=name --keep-one-line-statements --pad-header --pad-oper --unpad-paren --max-continuation-indent=120"
+
+docs:
+  # Docs directory contains some .inc files, which are not C include files
+  # and should not be formatted
+  check: false
+  include:
+    - "/docs/**/*.inc"

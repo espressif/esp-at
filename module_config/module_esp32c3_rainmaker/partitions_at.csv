@@ -1,8 +1,7 @@
 # Name, Type, SubType, Offset, Size
-otadata,  data, ota,  0xd000,  0x2000
-phy_init, data, phy,  0xf000,  0x1000
-nvs,      data, nvs,  0x10000, 0xE000
+otadata, data, ota, 0xd000, 0x2000
+phy_init, data, phy, 0xf000, 0x1000
+nvs, data, nvs, 0x10000, 0xE000
 at_customize, 0x40, 0, 0x1E000, 0x42000
-# ota_0 size is 2320 KB, storage size is 1392 KB, storage size ≈ ota_0 size * 60%
-ota_0,    app,  ota_0, 0x60000,  0x244000
+ota_0, app, ota_0, 0x60000, 0x244000
 storage, data, 0x22, 0x2A4000, 0x15C000

@@ -11,7 +11,7 @@ config SPI_SINGLE_MODE
 config SPI_DUAL_MODE
     bool "Dual SPI"
     help
-        The MCU can transmit data through MOSI and MISO line. 
+        The MCU can transmit data through MOSI and MISO line.
 config SPI_QUAD_MODE
     bool "Quad SPI"
     help

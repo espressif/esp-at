@@ -1,11 +1,8 @@
-/* SDIO SPI AT example
-
-   This example code is in the Public Domain (or CC0 licensed, at your option.)
-
-   Unless required by applicable law or agreed to in writing, this
-   software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-   CONDITIONS OF ANY KIND, either express or implied.
-   */
+/*
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #include <stdio.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -76,20 +73,20 @@ void uart_task(void* pvParameters)
 
     for (;;) {
         //Waiting for UART event.
-        if (xQueueReceive(esp_at_uart_queue, (void*) &event, portMAX_DELAY)) {
+        if (xQueueReceive(esp_at_uart_queue, (void *) &event, portMAX_DELAY)) {
             switch (event.type) {
-                    //Event of UART receving data
-                case UART_DATA:
-                    if (event.size) {
-                        // Master want to send data, mark it.
-                        xSemaphoreGive(rdySem);
-                    }
+            //Event of UART receving data
+            case UART_DATA:
+                if (event.size) {
+                    // Master want to send data, mark it.
+                    xSemaphoreGive(rdySem);
+                }
 
-                    break;
+                break;
 
-                case UART_PATTERN_DET:
-                default:
-                    break;
+            case UART_PATTERN_DET:
+            default:
+                break;
             }
         }
     }
@@ -165,7 +162,7 @@ static void sdspi_send_task(void* pvParameters)
         at_uart_len = uart_read_bytes(0, (uint8_t*) esp_at_sendbuf, READ_BUFFER_LEN, 0);
 
         if (at_uart_len < 0) {
-            ESP_AT_LOGE(TAG , "Read error UART length");
+            ESP_AT_LOGE(TAG, "Read error UART length");
             continue;
         }
 

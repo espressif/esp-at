@@ -1,5 +1,9 @@
-#ifndef SDIO_HOST_LOG_H_
-#define SDIO_HOST_LOG_H_
+/*
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,5 +20,3 @@ extern int sdio_debugLevel;
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* SDIO_HOST_LOG_H_ */

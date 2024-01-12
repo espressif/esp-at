@@ -1,25 +1,7 @@
 /*
- * ESPRESSIF MIT License
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
  *
- * Copyright (c) 2022-2025 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
- *
- * Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP32 only, in which case,
- * it is free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
+ * SPDX-License-Identifier: Apache-2.0
  */
 #include <stdio.h>
 #include <stdbool.h>
@@ -85,7 +67,7 @@ static esp_err_t at_compress_image_header_check(at_compress_ota_handle_t *handle
     // check the magic number of compressed image
     if (memcmp(compressed_img_header, AT_COMPRESSED_IMAGE_MAGIC_NUMBER, strlen(AT_COMPRESSED_IMAGE_MAGIC_NUMBER))) {
         ESP_LOGE(TAG, "Compressed image has invalid magic bytes (expected:%s, saw:%.*s)",
-            AT_COMPRESSED_IMAGE_MAGIC_NUMBER, strlen(AT_COMPRESSED_IMAGE_MAGIC_NUMBER), compressed_img_header);
+                 AT_COMPRESSED_IMAGE_MAGIC_NUMBER, strlen(AT_COMPRESSED_IMAGE_MAGIC_NUMBER), compressed_img_header);
         return ESP_FAIL;
     }
 
@@ -102,7 +84,7 @@ static esp_err_t at_compress_image_header_check(at_compress_ota_handle_t *handle
         ESP_LOGD(TAG, "Compressed image header check succeeded, image size: %d", handle->compressed_img_size);
     } else {
         ESP_LOGE(TAG, "Compressed image overlength, image size:%d > psize:%d (0x%x)",
-            compressed_img_header->length + head_len, handle->partition->size, handle->partition->size);
+                 compressed_img_header->length + head_len, handle->partition->size, handle->partition->size);
         return ESP_FAIL;
     }
 

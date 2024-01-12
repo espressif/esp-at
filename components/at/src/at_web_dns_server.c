@@ -1,27 +1,8 @@
 /*
- * ESPRESSIF MIT License
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
  *
- * Copyright (c) 2021 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
- *
- * Permission is hereby granted for use on ESPRESSIF SYSTEMS only, in which case,
- * it is free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
+ * SPDX-License-Identifier: Apache-2.0
  */
-
 #include <esp_log.h>
 #include <esp_system.h>
 #include <sys/param.h>
@@ -58,7 +39,8 @@ static int s_dns_server_localhost_fd = -1;
 static struct sockaddr_in s_dest_addr = { 0 };
 static EventGroupHandle_t s_web_dns_event_group = NULL;
 
-typedef struct __attribute__((__packed__)) {
+typedef struct __attribute__((__packed__))
+{
     uint16_t id; // identification number
     uint16_t flags;
     uint16_t qd_count; // number of question entries
@@ -72,7 +54,8 @@ typedef struct {
     uint16_t class;
 } dns_question_t;
 
-typedef struct __attribute__((__packed__)) {
+typedef struct __attribute__((__packed__))
+{
     uint16_t ptr_offset;
     uint16_t type;
     uint16_t class;
@@ -194,7 +177,7 @@ static int parse_dns_request(char *req, size_t req_len, char *dns_reply, size_t 
     header->an_count  = htons(qd_count);
 
     int reply_len = qd_count * sizeof(dns_answer_t) + req_len;
-    if ( reply_len > dns_reply_max_len) {
+    if (reply_len > dns_reply_max_len) {
         return -1;
     }
 
@@ -307,10 +290,10 @@ void dns_server_task(void *pvParameters)
                         ESP_LOGI(TAG, "Received %d bytes from %s:", len, addr_str);
 #ifdef ESP_OPEN_DNS_REAUEST_DOMAIN_LOG // This is just for test
                         printf("DNS request is:");
-                        for(int i = 0x4; i< len; i++) {
-                            if((rx_buffer[i] >= 'a' && rx_buffer[i] <= 'z') || (rx_buffer[i] >= 'A' && rx_buffer[i] <= 'Z') ||(rx_buffer[i] >= '0' && rx_buffer[i] <= '9'))
-                                printf("%c",rx_buffer[i]);
-                            else {
+                        for (int i = 0x4; i < len; i++) {
+                            if ((rx_buffer[i] >= 'a' && rx_buffer[i] <= 'z') || (rx_buffer[i] >= 'A' && rx_buffer[i] <= 'Z') || (rx_buffer[i] >= '0' && rx_buffer[i] <= '9')) {
+                                printf("%c", rx_buffer[i]);
+                            } else {
                                 printf("_");
                             }
                         }
@@ -320,7 +303,7 @@ void dns_server_task(void *pvParameters)
                         int reply_len = parse_dns_request(rx_buffer, len, reply, AT_WEB_DNS_MAX_LEN);
 
                         ESP_LOGD(TAG, "DNS reply with len: %d", reply_len);
-                        if( reply_len <= 0) {
+                        if (reply_len <= 0) {
                             ESP_LOGD(TAG, "Failed to prepare a DNS reply");
                         } else {
                             int err = sendto(s_dns_server_socket_fd, reply, reply_len, 0, (struct sockaddr *)&source_addr, sizeof(source_addr));
@@ -370,10 +353,10 @@ void at_dns_server_stop(void)
     sendto(s_dns_server_localhost_fd, AT_WEB_TASK_EXIT_STR, strlen(AT_WEB_TASK_EXIT_STR), 0, (struct sockaddr *)&s_dest_addr, sizeof(s_dest_addr));
 
     EventBits_t bits = xEventGroupWaitBits(s_web_dns_event_group,
-                                        AT_WEB_TASK_EXIT_SUCCESS_BIT,
-                                        pdTRUE,
-                                        pdFALSE,
-                                        portMAX_DELAY);
+                                           AT_WEB_TASK_EXIT_SUCCESS_BIT,
+                                           pdTRUE,
+                                           pdFALSE,
+                                           portMAX_DELAY);
 
     printf("dns server stop\r\n");
 }

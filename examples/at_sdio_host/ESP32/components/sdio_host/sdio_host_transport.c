@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
@@ -106,8 +111,8 @@ static sdio_err_t esp_slave_init_io(void)
     }
 
     SDIO_LOGD(TAG, "Function 1 BSL: 0x%02x", func1_bsl);
- 
-    func1_bsh = 2;         // Set block size 512 (0x200)  
+
+    func1_bsh = 2;         // Set block size 512 (0x200)
     err = sdio_driver_write_byte(0, 0x111, func1_bsh, &func1_bsh);
     if (err != SUCCESS) {
         return err;
@@ -169,7 +174,7 @@ static sdio_err_t esp_sdio_slave_get_rx_data_size(uint32_t* rx_size)
     }
     //printf("********** Receive len:%d ****************\r\n", len);
     len &= RX_BYTE_MASK;
-    len = (len + RX_BYTE_MAX - rx_got_bytes)%RX_BYTE_MAX;
+    len = (len + RX_BYTE_MAX - rx_got_bytes) % RX_BYTE_MAX;
     *rx_size = len;
     return SUCCESS;
 }
@@ -344,7 +349,7 @@ sdio_err_t sdio_host_send_packet(const void* start, size_t length)
             } else {
                 SDIO_LOGD(TAG, "buffer is not enough: %lu, %d required. Retry...", num, buffer_used);
             }
-            if(cnt%1000 == 0) {
+            if (cnt % 1000 == 0) {
                 SDIO_LOGI(TAG, "Get buffer too many times, num:%lu, test_count: %lu, tx_sent_buffers: %lu", num, test_count, tx_sent_buffers);
             }
 

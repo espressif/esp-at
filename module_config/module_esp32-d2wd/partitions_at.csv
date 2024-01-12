@@ -1,6 +1,6 @@
-# Name,   Type, SubType, Offset,  Size
-phy_init, data, phy,     0xf000,  0x1000
-otadata,data,ota,  0x10000,        8K
-nvs,data,nvs,   0x12000,        56K
-at_customize,0x40,0,0x20000,0x60000
-factory,app,    factory,   0x80000,0x180000
+# Name, Type, SubType, Offset, Size
+phy_init, data, phy, 0xf000, 0x1000
+otadata, data, ota, 0x10000, 8K
+nvs, data, nvs, 0x12000, 56K
+at_customize, 0x40, 0, 0x20000, 0x60000
+factory, app, factory, 0x80000, 0x180000
