@@ -18,8 +18,7 @@ except ImportError:
     sys.path.insert(0, os.path.abspath(ESP_DOCS_PATH))
     from conf_docs import *  # noqa: F403,F401
 
-ESP32_DOCS = ['AT_Binary_Lists/ESP32_AT_binaries.rst',
-              'AT_Command_Examples/Ethernet_AT_Examples.rst',
+ESP32_DOCS = ['AT_Command_Examples/Ethernet_AT_Examples.rst',
               'AT_Command_Examples/classic_bluetooth_at_examples.rst',
               'AT_Command_Set/BT_AT_Commands.rst',
               'AT_Command_Set/Ethernet_AT_Commands.rst',
@@ -29,8 +28,7 @@ ESP32_DOCS = ['AT_Binary_Lists/ESP32_AT_binaries.rst',
               'Customized_AT_Commands_and_Firmware/*'
               ]
 
-ESP32C3_DOCS = ['AT_Binary_Lists/ESP32-C3_AT_binaries.rst',
-                'Compile_and_Develop/How_to_implement_SPI_AT.rst',
+ESP32C3_DOCS = ['Compile_and_Develop/How_to_implement_SPI_AT.rst',
                 'Customized_AT_Commands_and_Firmware/*',
                 'Customized_AT_Commands_and_Firmware/RainMaker_AT/index_of_abbreviations.rst',
                 'Customized_AT_Commands_and_Firmware/RainMaker_AT/index.rst',
@@ -39,12 +37,10 @@ ESP32C3_DOCS = ['AT_Binary_Lists/ESP32-C3_AT_binaries.rst',
                 'Customized_AT_Commands_and_Firmware/RainMaker_AT/RainMaker_AT_OTA_Guide.rst'
                 ]
 
-ESP32C2_DOCS = ['AT_Binary_Lists/ESP32-C2_AT_binaries.rst',
-                'Compile_and_Develop/How_to_implement_SPI_AT.rst'
+ESP32C2_DOCS = ['Compile_and_Develop/How_to_implement_SPI_AT.rst'
                 ]
 
-ESP32C6_DOCS = ['AT_Binary_Lists/ESP32-C6_AT_binaries.rst',
-                'Compile_and_Develop/How_to_implement_SPI_AT.rst',
+ESP32C6_DOCS = ['Compile_and_Develop/How_to_implement_SPI_AT.rst',
                 'Compile_and_Develop/How_to_implement_SDIO_AT.rst'
                 ]
 
