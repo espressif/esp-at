@@ -52,12 +52,12 @@ jobs:
           echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=n" >> module_config/module_wrover-32/sdkconfig.defaults
 
           # enlarge partition table
+          app0_size=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
+          app1_size=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_1 | awk -F, '{print $5}'`
+          to_set_size=$((app0_size + app1_size))
           sed -i '/ota_1/d' module_config/module_wrover-32/partitions_at.csv
-          old_size_str=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
-          let old_value=$old_size_str
-          new_value=`expr $old_value + $old_value`
-          new_size_str=`printf "0x%x" ${new_value}`
-          sed -i '/ota_0/s/'$old_size_str'/'$new_size_str'/g' module_config/module_wrover-32/partitions_at.csv
+          to_set_hex_size=`printf "0x%x" ${to_set_size}`
+          sed -i '/ota_0/s,'"$app0_size"','"$to_set_hex_size"',g' module_config/module_wrover-32/partitions_at.csv
         fi
 
         if ${{ inputs.artifacts_name == 'esp32-at-all-function-test-just-bt' }}; then
@@ -83,12 +83,12 @@ jobs:
           echo -e "CONFIG_ESP_WIFI_SLP_IRAM_OPT=n" >> module_config/module_wrover-32/sdkconfig.defaults
 
           # enlarge partition table
+          app0_size=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
+          app1_size=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_1 | awk -F, '{print $5}'`
+          to_set_size=$((app0_size + app1_size))
           sed -i '/ota_1/d' module_config/module_wrover-32/partitions_at.csv
-          old_size_str=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
-          let old_value=$old_size_str
-          new_value=`expr $old_value + $old_value`
-          new_size_str=`printf "0x%x" ${new_value}`
-          sed -i '/ota_0/s/'$old_size_str'/'$new_size_str'/g' module_config/module_wrover-32/partitions_at.csv
+          to_set_hex_size=`printf "0x%x" ${to_set_size}`
+          sed -i '/ota_0/s,'"$app0_size"','"$to_set_hex_size"',g' module_config/module_wrover-32/partitions_at.csv
         fi
 
         # update esp32 ota token
