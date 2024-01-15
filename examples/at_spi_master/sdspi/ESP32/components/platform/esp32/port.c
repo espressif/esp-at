@@ -1,28 +1,8 @@
-
 /*
- * ESPRESSIF MIT License
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
  *
- * Copyright (c) 2019 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
+ * SPDX-License-Identifier: Apache-2.0
  */
-
 #include "driver/spi_master.h"
 #include "esp_log.h"
 
@@ -125,9 +105,9 @@ esp_err_t at_spi_slot_init(void)
 
     io_conf = (gpio_config_t) {
         .intr_type = GPIO_INTR_LOW_LEVEL,    // low level
-         .mode = GPIO_MODE_INPUT,
-          .pull_up_en = true,
-           .pin_bit_mask = (1 << AT_SDSPI_INT),
+        .mode = GPIO_MODE_INPUT,
+        .pull_up_en = true,
+        .pin_bit_mask = (1 << AT_SDSPI_INT),
     };
     ret = gpio_config(&io_conf);
 
@@ -172,7 +152,6 @@ void at_do_delay(uint32_t wait_ms)
 {
     vTaskDelay(wait_ms / portTICK_PERIOD_MS);
 }
-
 
 AT_MUTEX_T at_mutex_init(void)
 {

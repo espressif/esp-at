@@ -1,5 +1,9 @@
-#ifndef SDIO_DRIVER_POAT_H_
-#define SDIO_DRIVER_POAT_H_
+/*
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -125,5 +129,3 @@ sdio_err_t sdio_driver_wait_int(uint32_t timeout);
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* SDIO_DRIVER_POAT_H_ */

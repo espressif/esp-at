@@ -1,25 +1,7 @@
 /*
- * ESPRESSIF MIT License
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
  *
- * Copyright (c) 2018 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
- *
- * Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP32 only, in which case,
- * it is free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
+ * SPDX-License-Identifier: Apache-2.0
  */
 #include <stdio.h>
 #include <string.h>
@@ -115,7 +97,7 @@ const char* esp_at_get_ota_token_by_id(uint32_t id, esp_at_ota_mode_type ota_mod
         return ota_token;
     }
 
-    if (id < sizeof(esp_at_module_info)/sizeof(esp_at_module_info[0])) {
+    if (id < sizeof(esp_at_module_info) / sizeof(esp_at_module_info[0])) {
         if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
             ota_token = esp_at_module_info[id].ota_token;
         } else if (ota_mode == ESP_AT_OTA_MODE_SSL) {
@@ -124,7 +106,7 @@ const char* esp_at_get_ota_token_by_id(uint32_t id, esp_at_ota_mode_type ota_mod
     }
 
     return ota_token;
-} 
+}
 #endif
 
 const char* esp_at_get_module_name_by_id(uint32_t id)
@@ -133,7 +115,7 @@ const char* esp_at_get_module_name_by_id(uint32_t id)
         return ESP_AT_UNKNOWN_STR;
     }
 
-    if (id < sizeof(esp_at_module_info)/sizeof(esp_at_module_info[0])) {
+    if (id < sizeof(esp_at_module_info) / sizeof(esp_at_module_info[0])) {
         return esp_at_module_info[id].module_name;
     }
 
@@ -146,7 +128,7 @@ const char* esp_at_get_current_module_name(void)
         return ESP_AT_UNKNOWN_STR;
     }
 
-    if (esp_at_module_id < sizeof(esp_at_module_info)/sizeof(esp_at_module_info[0])) {
+    if (esp_at_module_id < sizeof(esp_at_module_info) / sizeof(esp_at_module_info[0])) {
         return esp_at_module_info[esp_at_module_id].module_name;
     }
 
@@ -178,7 +160,7 @@ static uint32_t esp_at_factory_parameter_init(void)
         }
         printf("module_name: %s\r\n", esp_at_get_current_module_name());
 
-    #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
+#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
         esp_wifi_set_storage(WIFI_STORAGE_RAM);
         // get max tx power and set it
         int8_t tx_power = -1;
@@ -205,11 +187,11 @@ static uint32_t esp_at_factory_parameter_init(void)
         }
         country.policy = WIFI_COUNTRY_POLICY_MANUAL;
         esp_wifi_set_country(&country);
-    #endif
+#endif
         nvs_close(handle);
         return 0;
 
-    nvs_read_error:
+nvs_read_error:
         nvs_close(handle);
         return -1;
     } else if (mode == AT_PARAMS_IN_PARTITION) {
@@ -217,16 +199,16 @@ static uint32_t esp_at_factory_parameter_init(void)
         const esp_partition_t * partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
         char data[AT_BUFFER_ON_STACK_SIZE] = {0};
         uint8_t version = 0;
-    #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
+#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
         wifi_country_t country;
-    #endif
+#endif
 
         if (!partition) {
             printf("factory_parameter partition missed\r\n");
             return -1;
         }
 
-        if(esp_partition_read(partition, 0, data, AT_BUFFER_ON_STACK_SIZE) != ESP_OK){
+        if (esp_partition_read(partition, 0, data, AT_BUFFER_ON_STACK_SIZE) != ESP_OK) {
             return -1;
         }
 
@@ -239,8 +221,8 @@ static uint32_t esp_at_factory_parameter_init(void)
             // get module id
             esp_at_module_id = data[3];
         } else {
-            const char* module_name = data + 56; // for more detail, please refer to 
-            for (uint32_t loop = 0; loop < sizeof(esp_at_module_info)/sizeof(esp_at_module_info[0]); loop++) {
+            const char* module_name = data + 56; // for more detail, please refer to
+            for (uint32_t loop = 0; loop < sizeof(esp_at_module_info) / sizeof(esp_at_module_info[0]); loop++) {
                 if (strcmp(module_name, esp_at_module_info[loop].module_name) == 0) {
                     esp_at_module_id = loop;
                     break;
@@ -249,7 +231,7 @@ static uint32_t esp_at_factory_parameter_init(void)
         }
         printf("module_name: %s\r\n", esp_at_get_current_module_name());
 
-    #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
+#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
         esp_wifi_set_storage(WIFI_STORAGE_RAM);
         // get max tx power
         if (data[4] != 0xFF) {
@@ -272,7 +254,7 @@ static uint32_t esp_at_factory_parameter_init(void)
                 esp_wifi_set_country(&country);
             }
         }
-    #endif
+#endif
         return 0;
     }
 

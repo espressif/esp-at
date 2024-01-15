@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# SPDX-FileCopyrightText: 2020-2023 Espressif Systems (Shanghai) CO LTD
+# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
 
 import argparse
@@ -24,15 +24,15 @@ def _strip_each_item(iterable: Iterable) -> List:
     return res
 
 
-IOT_SOLUTION_PATH = os.getenv('IOT_SOLUTION_PATH', os.getcwd())
-EXECUTABLE_LIST_FN = os.path.join(IOT_SOLUTION_PATH, 'tools/ci/executable-list.txt')
+IDF_PATH = os.getenv('IDF_PATH', os.getcwd())
+EXECUTABLE_LIST_FN = os.path.join(IDF_PATH, 'tools/ci/executable-list.txt')
 known_executables = _strip_each_item(open(EXECUTABLE_LIST_FN).readlines())
 
 
 def check_executable_list() -> int:
     ret = 0
     for index, fn in enumerate(known_executables):
-        if not os.path.exists(os.path.join(IOT_SOLUTION_PATH, fn)):
+        if not os.path.exists(os.path.join(IDF_PATH, fn)):
             print('{}:{} {} not exists. Please remove it manually'.format(EXECUTABLE_LIST_FN, index + 1, fn))
             ret = 1
     return ret
@@ -68,7 +68,6 @@ def check() -> int:
         raise ValueError
 
     return ret
-
 
 if __name__ == '__main__':
     sys.exit(check())

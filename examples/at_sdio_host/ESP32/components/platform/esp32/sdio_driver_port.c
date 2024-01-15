@@ -1,17 +1,8 @@
-// Copyright 2015-2020 Espressif Systems (Shanghai) PTE LTD
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
+/*
+ * SPDX-FileCopyrightText: 2015-2024 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
@@ -26,10 +17,8 @@
 #include "soc/host_reg.h"
 #include "soc/sdmmc_periph.h"
 
-
 #include "sdio_host_log.h"
 #include "sdio_host_error.h"
-
 
 sdmmc_card_t *card = NULL;
 
@@ -73,7 +62,7 @@ sdio_err_t sdio_driver_write_blocks(uint32_t function, uint32_t addr, void* buff
         SDIO_LOGE(TAG, "Write blocks error,ret:%d", err);
         return FAILURE;
     }
-    return SUCCESS;    
+    return SUCCESS;
 }
 
 sdio_err_t sdio_driver_read_blocks(uint32_t function, uint32_t addr, void* buffer, uint32_t len)
@@ -134,7 +123,7 @@ sdio_err_t sdio_driver_write_byte(uint32_t function, uint32_t reg, uint8_t in_by
 sdio_err_t sdio_driver_wait_int(uint32_t timeout)
 {
     esp_err_t err = sdmmc_io_wait_int(card, timeout);
-    if(err == ESP_ERR_TIMEOUT) {
+    if (err == ESP_ERR_TIMEOUT) {
         return ERR_TIMEOUT;
     } else if (err != ESP_OK) {
         SDIO_LOGE(TAG, "Wait interrupt error,ret:%d", err);

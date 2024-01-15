@@ -1,29 +1,9 @@
 /*
- * ESPRESSIF MIT License
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
  *
- * Copyright (c) 2017 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
- *
- * Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP32 only, in which case,
- * it is free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
+ * SPDX-License-Identifier: Apache-2.0
  */
-
-#ifndef __ESP_AT_CORE_H__
-#define __ESP_AT_CORE_H__
+#pragma once
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -52,7 +32,7 @@ typedef struct {
  *
  */
 typedef struct {
-    int32_t (*read_data) (uint8_t *data, int32_t len);              /*!< read data from device */
+    int32_t (*read_data)(uint8_t *data, int32_t len);               /*!< read data from device */
     int32_t (*write_data)(uint8_t *data, int32_t len);              /*!< write data into device */
 
     int32_t (*get_data_length)(void);                               /*!< get the length of data received */
@@ -66,7 +46,7 @@ typedef int32_t (*at_write_data_fn_t)(uint8_t *data, int32_t len);
  * custom socket callback for AT
  */
 typedef struct {
-    int32_t (*recv_data)(uint8_t*data,int32_t len);  /*!< callback when socket received data */
+    int32_t (*recv_data)(uint8_t*data, int32_t len); /*!< callback when socket received data */
     void (*connect_cb)(void);                        /*!< callback when socket connection is built */
     void (*disconnect_cb)(void);                     /*!< callback when socket connection is disconnected */
 } esp_at_custom_net_ops_struct;
@@ -77,7 +57,7 @@ typedef struct {
  *
  */
 typedef struct {
-    int32_t (*recv_data)(uint8_t*data,int32_t len);  /*!< callback when ble received data */
+    int32_t (*recv_data)(uint8_t*data, int32_t len); /*!< callback when ble received data */
     void (*connect_cb)(void);                        /*!< callback when ble connection is built */
     void (*disconnect_cb)(void);                     /*!< callback when ble connection is disconnected */
 } esp_at_custom_ble_ops_struct;
@@ -107,10 +87,10 @@ typedef enum {
  *
  */
 typedef struct {
-    void (*status_callback) (esp_at_status_type status);              /*!< callback when AT status changes */
+    void (*status_callback)(esp_at_status_type status);               /*!< callback when AT status changes */
     void (*pre_sleep_callback)(at_sleep_mode_t mode);                 /*!< callback before enter modem sleep and light sleep */
-    void (*pre_deepsleep_callback) (void);                            /*!< callback before enter deep sleep */
-    void (*pre_restart_callback) (void);                              /*!< callback before restart */
+    void (*pre_deepsleep_callback)(void);                             /*!< callback before enter deep sleep */
+    void (*pre_restart_callback)(void);                               /*!< callback before restart */
     void (*pre_active_write_data_callback)(at_write_data_fn_t);       /*!< callback before write data */
 } esp_at_custom_ops_struct;
 
@@ -118,7 +98,7 @@ typedef struct {
  * @brief AT specific callback type
  *
  */
-typedef void (*esp_at_port_specific_callback_t) (void);
+typedef void (*esp_at_port_specific_callback_t)(void);
 // error number
 /**
  * @brief module number,Now just AT module
@@ -163,7 +143,6 @@ typedef enum {
 #define ESP_AT_CMD_ERROR_CMD_EXEC_FAIL(result)        ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_EXEC_FAIL,result)                          /*!< the command execution failed */
 #define ESP_AT_CMD_ERROR_CMD_PROCESSING               ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_PROCESSING,0x00)                           /*!< processing of previous command is in progress */
 #define ESP_AT_CMD_ERROR_CMD_OP_ERROR                 ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_OP_ERROR,0x00)                             /*!< the command operation type is error */
-
 
 /**
  * @brief the result of AT parse
@@ -299,7 +278,7 @@ void esp_at_device_ops_regist(esp_at_device_ops_struct* ops);
  *
  *  Note: Make sure this API call after esp_at_module_init.
  */
-bool esp_at_custom_net_ops_regist (int32_t link_id,esp_at_custom_net_ops_struct* ops);
+bool esp_at_custom_net_ops_regist(int32_t link_id, esp_at_custom_net_ops_struct* ops);
 
 /*
  *  @brief regist custom callback about ble status,
@@ -366,11 +345,11 @@ int32_t  esp_at_port_active_write_data(uint8_t *data, int32_t len);
  * @param data data buffer
  * @param len data length
  *
- * @return 
+ * @return
  *  - >= 0 : the real length of the data read from device
  *  - others : fail
  */
-int32_t esp_at_port_read_data(uint8_t*data,int32_t len);
+int32_t esp_at_port_read_data(uint8_t*data, int32_t len);
 
 /**
  * @brief wait for transmitting data completely to peer device,
@@ -537,7 +516,7 @@ uint8_t* esp_at_custom_cmd_line_terminator_get(void);
  * @param type: the type of the partition
  * @param subtype: the subtype of the partition
  * @param label: Partition label
- * 
+ *
  * @return pointer to esp_partition_t structure, or NULL if no partition is found.
  *         This pointer is valid for the lifetime of the application
  */
@@ -559,7 +538,7 @@ bool esp_at_eth_cmd_regist(void);
  * {
  *     xSemaphoreGive(sync_sema);
  * }
- * 
+ *
  * void process_task(void* para)
  * {
  *     vSemaphoreCreateBinary(sync_sema);
@@ -590,5 +569,3 @@ void esp_at_port_exit_specific(void);
 const uint8_t* esp_at_get_current_cmd_name(void);
 
 void at_handle_result_code(esp_at_result_code_string_index code, void *pbuf);
-
-#endif

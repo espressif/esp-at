@@ -26,5 +26,4 @@ check_pre_commit:
       echo "MODIFIED_FILES: $MODIFIED_FILES"
 
     - pre-commit install --allow-missing-config -t pre-commit -t commit-msg
-    - export SKIP=check-copyright # copyrights has been checked in separate job
     - pre-commit run --files $MODIFIED_FILES

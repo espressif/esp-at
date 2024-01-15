@@ -1,18 +1,8 @@
-// Copyright 2015-2021 Espressif Systems (Shanghai) PTE LTD
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-
+/*
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #include <stdio.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -142,7 +132,7 @@ static void at_spi_master_send_data(uint8_t* data, uint32_t len)
         .cmd = CMD_HD_WRDMA_REG | (0x2 << 4),    // master -> slave command, donnot change
 #elif defined(CONFIG_SPI_DUAL_MODE)
         .flags = SPI_TRANS_MODE_DIO,
-        .cmd = CMD_HD_WRDMA_REG | (0x1 << 4),  
+        .cmd = CMD_HD_WRDMA_REG | (0x1 << 4),
 #else
         .cmd = CMD_HD_WRDMA_REG,    // master -> slave command, donnot change
 #endif
@@ -160,7 +150,7 @@ static void at_spi_master_recv_data(uint8_t* data, uint32_t len)
         .cmd = CMD_HD_RDDMA_REG | (0x2 << 4),    // master -> slave command, donnot change
 #elif defined(CONFIG_SPI_DUAL_MODE)
         .flags = SPI_TRANS_MODE_DIO,
-        .cmd = CMD_HD_RDDMA_REG | (0x1 << 4),         
+        .cmd = CMD_HD_RDDMA_REG | (0x1 << 4),
 #else
         .cmd = CMD_HD_RDDMA_REG,    // master -> slave command, donnot change
 #endif
@@ -203,7 +193,7 @@ static spi_recv_opt_t query_slave_data_trans_info()
     return recv_opt;
 }
 
-// before spi master write to slave, the master should write WRBUF_REG register to notify slave, 
+// before spi master write to slave, the master should write WRBUF_REG register to notify slave,
 // and then wait for handshark line trigger gpio interrupt to start the data transmission.
 static void spi_master_request_to_write(uint8_t send_seq, uint16_t send_len)
 {
@@ -249,7 +239,7 @@ static int32_t write_data_to_spi_task_tx_ring_buf(const void* data, size_t size)
     return length;
 }
 
-// notify slave to recv data 
+// notify slave to recv data
 static void notify_slave_to_recv(void)
 {
     if (initiative_send_flag == 0) {
@@ -364,27 +354,27 @@ void uart_task(void* pvParameters)
 
     for (;;) {
         //Waiting for UART event.
-        if (xQueueReceive(esp_at_uart_queue, (void*) &event,
+        if (xQueueReceive(esp_at_uart_queue, (void *) &event,
                           (TickType_t) portMAX_DELAY)) {
             switch (event.type) {
-                    //Event of UART receving data
-                case UART_DATA:
-                    if (event.size) {
-                        memset(dtmp, 0x0, 1024);
-                        // read the data which spi master want to send
-                        uart_read_bytes(0, dtmp, event.size, portMAX_DELAY);
-                        // send data to spi task
-                        write_data_to_spi_task_tx_ring_buf(dtmp, event.size);
-                        notify_slave_to_recv();
-                    }
-                    break;
+            //Event of UART receving data
+            case UART_DATA:
+                if (event.size) {
+                    memset(dtmp, 0x0, 1024);
+                    // read the data which spi master want to send
+                    uart_read_bytes(0, dtmp, event.size, portMAX_DELAY);
+                    // send data to spi task
+                    write_data_to_spi_task_tx_ring_buf(dtmp, event.size);
+                    notify_slave_to_recv();
+                }
+                break;
 
-                case UART_PATTERN_DET:
-                    break;
+            case UART_PATTERN_DET:
+                break;
 
-                    //Others
-                default:
-                    break;
+            //Others
+            default:
+                break;
             }
         }
     }
@@ -471,7 +461,7 @@ static void init_master_hd(spi_device_handle_t* spi)
         }
 
         current_recv_seq = recv_opt.seq_num;
-        
+
         at_spi_rddma_done();
     }
     spi_mutex_unlock();

@@ -11,7 +11,7 @@ if (CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_SUPPORT)
     STRING(REGEX REPLACE ".*/(.*)\.csv" "\\1" customize_bin ${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE})
     set(customize_bin_full_name ${customize_bin}.bin)
     execute_process(
-        COMMAND ${PYTHON} ${IDF_PATH}/components/partition_table/gen_esp32part.py 
+        COMMAND ${PYTHON} ${IDF_PATH}/components/partition_table/gen_esp32part.py
             ${project_dir}/${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE} ${build_dir}/${customize_bin_full_name}
     )
     esptool_py_custom_target(${customize_bin} ${customize_bin} "${customize_bin}")

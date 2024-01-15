@@ -1,27 +1,10 @@
 /*
- * ESPRESSIF MIT License
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
  *
- * Copyright (c) 2022-2025 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
- *
- * Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP32 only, in which case,
- * it is free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
+ * SPDX-License-Identifier: Apache-2.0
  */
 #pragma once
+
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -57,8 +40,8 @@ typedef struct {
  * @param[out]   handle On success, returns a handle which should be used for subsequent at_compress_ota_write() and at_compress_ota_end() calls.
  *
  * @return
- *    - ESP_OK: Compress OTA operation commenced successfully. 
- *    - others: Compress OTA operation commenced failed. 
+ *    - ESP_OK: Compress OTA operation commenced successfully.
+ *    - others: Compress OTA operation commenced failed.
  */
 esp_err_t at_compress_ota_begin(at_compress_ota_handle_t *handle);
 
@@ -90,7 +73,7 @@ esp_err_t at_compress_ota_end(at_compress_ota_handle_t *handle);
  * @brief  HTTP/HTTPS Compress OTA upgrade.
  *
  * @param[in] config    Pointer to esp_http_client_config_t structure
- * 
+ *
  * @return
  *    - ESP_OK: Compress OTA upgrade done, next reboot will use specified partition.
  *    - others: Compress OTA upgrade failed.

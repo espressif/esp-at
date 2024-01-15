@@ -1,25 +1,7 @@
 /*
- * ESPRESSIF MIT License
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
  *
- * Copyright (c) 2017 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
- *
- * Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP32 only, in which case,
- * it is free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the Software is furnished
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
+ * SPDX-License-Identifier: Apache-2.0
  */
 #include <stdlib.h>
 #include <stdio.h>
@@ -56,7 +38,7 @@ typedef struct {
     int8_t stop_bits;
     int8_t parity;
     int8_t flow_control;
-} at_nvm_uart_config_struct; 
+} at_nvm_uart_config_struct;
 
 typedef struct {
     int32_t tx;
@@ -130,19 +112,18 @@ extern const char *g_at_mfg_nvs_name;
 
 static uart_port_t esp_at_uart_port = CONFIG_AT_UART_PORT;
 
-static bool at_nvm_uart_config_set (at_nvm_uart_config_struct *uart_config);
-static bool at_nvm_uart_config_get (at_nvm_uart_config_struct *uart_config);
+static bool at_nvm_uart_config_set(at_nvm_uart_config_struct *uart_config);
+static bool at_nvm_uart_config_get(at_nvm_uart_config_struct *uart_config);
 
-
-static int32_t at_port_write_data(uint8_t*data,int32_t len)
+static int32_t at_port_write_data(uint8_t *data, int32_t len)
 {
     uint32_t length = 0;
 
-    length = uart_write_bytes(esp_at_uart_port,(char*)data,len);
+    length = uart_write_bytes(esp_at_uart_port, (char*)data, len);
     return length;
 }
 
-static int32_t at_port_read_data(uint8_t*buf,int32_t len)
+static int32_t at_port_read_data(uint8_t*buf, int32_t len)
 {
     TickType_t ticks_to_wait = portTICK_PERIOD_MS;
     uint8_t *data = NULL;
@@ -154,7 +135,7 @@ static int32_t at_port_read_data(uint8_t*buf,int32_t len)
 
     if (buf == NULL) {
         if (len == -1) {
-            if (ESP_OK != uart_get_buffered_data_len(esp_at_uart_port,&size)) {
+            if (ESP_OK != uart_get_buffered_data_len(esp_at_uart_port, &size)) {
                 return -1;
             }
             len = size;
@@ -166,23 +147,23 @@ static int32_t at_port_read_data(uint8_t*buf,int32_t len)
 
         data = (uint8_t *)malloc(len);
         if (data) {
-            len = uart_read_bytes(esp_at_uart_port,data,len,ticks_to_wait);
+            len = uart_read_bytes(esp_at_uart_port, data, len, ticks_to_wait);
             free(data);
             return len;
         } else {
             return -1;
         }
     } else {
-        return uart_read_bytes(esp_at_uart_port,buf,len,ticks_to_wait);
+        return uart_read_bytes(esp_at_uart_port, buf, len, ticks_to_wait);
     }
 }
 
-static int32_t at_port_get_data_length (void)
+static int32_t at_port_get_data_length(void)
 {
     size_t size = 0;
     int pattern_pos = 0;
 
-    if (ESP_OK == uart_get_buffered_data_len(esp_at_uart_port,&size)) {
+    if (ESP_OK == uart_get_buffered_data_len(esp_at_uart_port, &size)) {
         pattern_pos = uart_pattern_get_pos(esp_at_uart_port);
         if (pattern_pos >= 0) {
             size = pattern_pos;
@@ -193,7 +174,7 @@ static int32_t at_port_get_data_length (void)
     }
 }
 
-static bool at_port_wait_write_complete (int32_t timeout_msec)
+static bool at_port_wait_write_complete(int32_t timeout_msec)
 {
     if (ESP_OK == uart_wait_tx_done(esp_at_uart_port, timeout_msec / portTICK_PERIOD_MS)) {
         return true;
@@ -212,7 +193,7 @@ static void uart_task(void *pvParameters)
 
     for (;;) {
         //Waiting for UART event.
-        if (xQueueReceive(esp_at_uart_queue, (void * )&event, (TickType_t)portMAX_DELAY)) {
+        if (xQueueReceive(esp_at_uart_queue, (void *)&event, (TickType_t)portMAX_DELAY)) {
 retry:
             switch (event.type) {
             //Event of UART receving data
@@ -221,7 +202,7 @@ retry:
                 data_len += event.size;
                 // we can put all data together to process
                 retry_flag = pdFALSE;
-                while (xQueueReceive(esp_at_uart_queue, (void * )&event, (TickType_t)0) == pdTRUE) {
+                while (xQueueReceive(esp_at_uart_queue, (void *)&event, (TickType_t)0) == pdTRUE) {
                     if (event.type == UART_DATA) {
                         data_len += event.size;
                     } else if (event.type == UART_BUFFER_FULL) {
@@ -233,7 +214,7 @@ retry:
                         break;
                     }
                 }
-                esp_at_port_recv_data_notify (data_len, portMAX_DELAY);
+                esp_at_port_recv_data_notify(data_len, portMAX_DELAY);
                 data_len = 0;
 
                 if (retry_flag == pdTRUE) {
@@ -244,7 +225,7 @@ retry:
                 pattern_pos = uart_pattern_pop_pos(esp_at_uart_port);
                 if (pattern_pos >= 0) {
                     data = (uint8_t *)malloc(pattern_pos + 3);
-                    uart_read_bytes(esp_at_uart_port,data,pattern_pos + 3,0);
+                    uart_read_bytes(esp_at_uart_port, data, pattern_pos + 3, 0);
                     free(data);
                     data = NULL;
                 } else {
@@ -294,14 +275,14 @@ static void at_uart_init(void)
 
     uart_intr_config_t intr_config = {
         .intr_enable_mask = UART_RXFIFO_FULL_INT_ENA_M
-            | UART_RXFIFO_TOUT_INT_ENA_M
-            | UART_RXFIFO_OVF_INT_ENA_M,
+        | UART_RXFIFO_TOUT_INT_ENA_M
+        | UART_RXFIFO_OVF_INT_ENA_M,
         .rxfifo_full_thresh = 100,
         .rx_timeout_thresh = 10,
         .txfifo_empty_intr_thresh = 10
     };
 
-    int32_t tx_pin = CONFIG_AT_UART_PORT_TX_PIN_DEFAULT;	
+    int32_t tx_pin = CONFIG_AT_UART_PORT_TX_PIN_DEFAULT;
     int32_t rx_pin = CONFIG_AT_UART_PORT_RX_PIN_DEFAULT;
     int32_t cts_pin = CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT;
     int32_t rts_pin = CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT;
@@ -388,9 +369,9 @@ static void at_uart_init(void)
             uart_config.stop_bits = uart_nvm_config.stop_bits;
         }
 
-        if ((uart_nvm_config.parity == UART_PARITY_DISABLE) 
-            || (uart_nvm_config.parity == UART_PARITY_ODD)
-            || (uart_nvm_config.parity == UART_PARITY_EVEN)) {
+        if ((uart_nvm_config.parity == UART_PARITY_DISABLE)
+                || (uart_nvm_config.parity == UART_PARITY_ODD)
+                || (uart_nvm_config.parity == UART_PARITY_EVEN)) {
             uart_config.parity = uart_nvm_config.parity;
         }
 
@@ -431,7 +412,7 @@ static void at_uart_init(void)
     xTaskCreate(uart_task, "uTask", 1024, (void *)esp_at_uart_port, 1, NULL);
 }
 
-static bool at_nvm_uart_config_set (at_nvm_uart_config_struct *uart_config)
+static bool at_nvm_uart_config_set(at_nvm_uart_config_struct *uart_config)
 {
     nvs_handle handle;
     if (uart_config == NULL) {
@@ -466,7 +447,7 @@ static bool at_nvm_uart_config_set (at_nvm_uart_config_struct *uart_config)
     return true;
 }
 
-static bool at_nvm_uart_config_get (at_nvm_uart_config_struct *uart_config)
+static bool at_nvm_uart_config_get(at_nvm_uart_config_struct *uart_config)
 {
     nvs_handle handle;
     if (uart_config == NULL) {
@@ -509,12 +490,12 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
 
     at_nvm_uart_config_struct uart_config;
 
-    memset(&uart_config,0x0,sizeof(uart_config));
+    memset(&uart_config, 0x0, sizeof(uart_config));
     if (para_num != 5) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
-    if (esp_at_get_para_as_digit (cnt++,&value) != ESP_AT_PARA_PARSE_RESULT_OK) {
+    if (esp_at_get_para_as_digit(cnt++, &value) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
     if ((value < AT_UART_BAUD_RATE_MIN) || (value > AT_UART_BAUD_RATE_MAX)) {
@@ -522,7 +503,7 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     }
     uart_config.baudrate = value;
 
-    if (esp_at_get_para_as_digit (cnt++,&value) != ESP_AT_PARA_PARSE_RESULT_OK) {
+    if (esp_at_get_para_as_digit(cnt++, &value) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
     if ((value < 5) || (value > 8)) {
@@ -530,7 +511,7 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     }
     uart_config.data_bits = value - 5;
 
-    if (esp_at_get_para_as_digit (cnt++,&value) != ESP_AT_PARA_PARSE_RESULT_OK) {
+    if (esp_at_get_para_as_digit(cnt++, &value) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
     if ((value < 1) || (value > 3)) {
@@ -538,7 +519,7 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     }
     uart_config.stop_bits = value;
 
-    if (esp_at_get_para_as_digit (cnt++,&value) != ESP_AT_PARA_PARSE_RESULT_OK) {
+    if (esp_at_get_para_as_digit(cnt++, &value) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
     if ((value >= 0) && (value <= 2)) {
@@ -547,7 +528,7 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
-    if (esp_at_get_para_as_digit (cnt++,&value) != ESP_AT_PARA_PARSE_RESULT_OK) {
+    if (esp_at_get_para_as_digit(cnt++, &value) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
     if ((value < 0) || (value > 3)) {
@@ -562,12 +543,12 @@ static uint8_t at_setupCmdUart(uint8_t para_num)
     }
     esp_at_response_result(ESP_AT_RESULT_CODE_OK);
 
-    uart_wait_tx_done(esp_at_uart_port,portMAX_DELAY);
-    uart_set_baudrate(esp_at_uart_port,uart_config.baudrate);
-    uart_set_word_length(esp_at_uart_port,uart_config.data_bits);
-    uart_set_stop_bits(esp_at_uart_port,uart_config.stop_bits);
-    uart_set_parity(esp_at_uart_port,uart_config.parity);
-    uart_set_hw_flow_ctrl(esp_at_uart_port,uart_config.flow_control,120);
+    uart_wait_tx_done(esp_at_uart_port, portMAX_DELAY);
+    uart_set_baudrate(esp_at_uart_port, uart_config.baudrate);
+    uart_set_word_length(esp_at_uart_port, uart_config.data_bits);
+    uart_set_stop_bits(esp_at_uart_port, uart_config.stop_bits);
+    uart_set_parity(esp_at_uart_port, uart_config.parity);
+    uart_set_hw_flow_ctrl(esp_at_uart_port, uart_config.flow_control, 120);
     return ESP_AT_RESULT_CODE_PROCESS_DONE;
 }
 
@@ -577,11 +558,11 @@ static uint8_t at_setupCmdUartDef(uint8_t para_num)
     at_default_flag = true;
     ret = at_setupCmdUart(para_num);
     at_default_flag = false;
-    
+
     return ret;
 }
 
-static uint8_t at_queryCmdUart (uint8_t *cmd_name)
+static uint8_t at_queryCmdUart(uint8_t *cmd_name)
 {
     uint32_t baudrate = 0;
     uart_word_length_t data_bits = UART_DATA_8_BITS;
@@ -591,11 +572,11 @@ static uint8_t at_queryCmdUart (uint8_t *cmd_name)
 
     uint8_t buffer[64];
 
-    uart_get_baudrate(esp_at_uart_port,&baudrate);
-    uart_get_word_length(esp_at_uart_port,&data_bits);
-    uart_get_stop_bits(esp_at_uart_port,&stop_bits);
-    uart_get_parity(esp_at_uart_port,&parity);
-    uart_get_hw_flow_ctrl(esp_at_uart_port,&flow_control);
+    uart_get_baudrate(esp_at_uart_port, &baudrate);
+    uart_get_word_length(esp_at_uart_port, &data_bits);
+    uart_get_stop_bits(esp_at_uart_port, &stop_bits);
+    uart_get_parity(esp_at_uart_port, &parity);
+    uart_get_hw_flow_ctrl(esp_at_uart_port, &flow_control);
 
     data_bits += 5;
     if (UART_PARITY_DISABLE == parity) {
@@ -608,18 +589,18 @@ static uint8_t at_queryCmdUart (uint8_t *cmd_name)
         parity = 0xff;
     }
 
-    snprintf((char*)buffer,sizeof(buffer) - 1,"%s:%d,%d,%d,%d,%d\r\n",cmd_name,baudrate,data_bits,stop_bits,parity,flow_control);
+    snprintf((char*)buffer, sizeof(buffer) - 1, "%s:%d,%d,%d,%d,%d\r\n", cmd_name, baudrate, data_bits, stop_bits, parity, flow_control);
 
-    esp_at_port_write_data(buffer,strlen((char*)buffer));
+    esp_at_port_write_data(buffer, strlen((char*)buffer));
 
     return ESP_AT_RESULT_CODE_OK;
 }
 
-static uint8_t at_queryCmdUartDef (uint8_t *cmd_name)
+static uint8_t at_queryCmdUartDef(uint8_t *cmd_name)
 {
     at_nvm_uart_config_struct uart_nvm_config;
     uint8_t buffer[64];
-    memset(&uart_nvm_config,0x0,sizeof(uart_nvm_config));
+    memset(&uart_nvm_config, 0x0, sizeof(uart_nvm_config));
     at_nvm_uart_config_get(&uart_nvm_config);
 
     uart_nvm_config.data_bits += 5;
@@ -632,10 +613,10 @@ static uint8_t at_queryCmdUartDef (uint8_t *cmd_name)
     } else {
         uart_nvm_config.parity = 0xff;
     }
-    snprintf((char*)buffer,sizeof(buffer) - 1,"%s:%d,%d,%d,%d,%d\r\n",cmd_name,uart_nvm_config.baudrate,
-        uart_nvm_config.data_bits,uart_nvm_config.stop_bits,uart_nvm_config.parity,uart_nvm_config.flow_control);
+    snprintf((char*)buffer, sizeof(buffer) - 1, "%s:%d,%d,%d,%d,%d\r\n", cmd_name, uart_nvm_config.baudrate,
+             uart_nvm_config.data_bits, uart_nvm_config.stop_bits, uart_nvm_config.parity, uart_nvm_config.flow_control);
 
-    esp_at_port_write_data(buffer,strlen((char*)buffer));
+    esp_at_port_write_data(buffer, strlen((char*)buffer));
     return ESP_AT_RESULT_CODE_OK;
 }
 
@@ -645,7 +626,7 @@ static const esp_at_cmd_struct at_custom_cmd[] = {
     {"+UART_DEF", NULL, at_queryCmdUartDef, at_setupCmdUartDef, NULL},
 };
 
-void at_status_callback (esp_at_status_type status)
+void at_status_callback(esp_at_status_type status)
 {
     switch (status) {
     case ESP_AT_STATUS_NORMAL:
@@ -675,7 +656,7 @@ void at_status_callback (esp_at_status_type status)
         uart_enable_pattern_det_baud_intr(esp_at_uart_port, '+', 3, uart_clocks, uart_clocks, uart_clocks);
 #endif
     }
-        break;
+    break;
     }
 }
 
@@ -686,7 +667,7 @@ void at_pre_sleep_callback(at_sleep_mode_t mode)
 #endif
 }
 
-void at_pre_deepsleep_callback (void)
+void at_pre_deepsleep_callback(void)
 {
     /* Do something before deep sleep
      * Set uart pin for power saving, in case of leakage current
@@ -705,7 +686,7 @@ void at_pre_deepsleep_callback (void)
     }
 }
 
-void at_pre_restart_callback (void)
+void at_pre_restart_callback(void)
 {
     /* Do something before restart
     */
@@ -721,7 +702,7 @@ void at_pre_active_write_data_callback(at_write_data_fn_t fn)
 #endif
 }
 
-void at_interface_init (void)
+void at_interface_init(void)
 {
     esp_at_device_ops_struct esp_at_device_ops = {
         .read_data = at_port_read_data,
@@ -729,7 +710,7 @@ void at_interface_init (void)
         .get_data_length = at_port_get_data_length,
         .wait_write_complete = at_port_wait_write_complete,
     };
-    
+
     esp_at_custom_ops_struct esp_at_custom_ops = {
         .status_callback = at_status_callback,
         .pre_sleep_callback = at_pre_sleep_callback,
@@ -744,10 +725,9 @@ void at_interface_init (void)
     esp_at_custom_ops_regist(&esp_at_custom_ops);
 }
 
-
 void at_custom_init(void)
 {
-    esp_at_custom_cmd_array_regist (at_custom_cmd, sizeof(at_custom_cmd)/sizeof(at_custom_cmd[0]));
-    esp_at_port_active_write_data((uint8_t *)"\r\nready\r\n",strlen("\r\nready\r\n"));
+    esp_at_custom_cmd_array_regist(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(at_custom_cmd[0]));
+    esp_at_port_active_write_data((uint8_t *)"\r\nready\r\n", strlen("\r\nready\r\n"));
 }
 #endif

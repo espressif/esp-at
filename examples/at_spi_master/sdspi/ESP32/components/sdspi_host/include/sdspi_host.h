@@ -1,26 +1,9 @@
 /*
- * ESPRESSIF MIT License
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
  *
- * Copyright (c) 2019 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
+ * SPDX-License-Identifier: Apache-2.0
  */
+#pragma once
 
 #include <stdio.h>
 #include <stdint.h>
@@ -156,14 +139,14 @@ typedef uint32_t spi_cmd_response_t[4];
  * SD/MMC command information
  */
 typedef struct {
-        uint32_t opcode;            /*!< SD or MMC command index */
-        uint32_t arg;               /*!< SD/MMC command argument */
-        spi_cmd_response_t response;  /*!< response buffer */
-        void* data;                 /*!< buffer to send or read into */
-        size_t datalen;             /*!< length of data buffer */
-        size_t blklen;              /*!< block length */
-        int flags;                  /*!< see below */
-/** @cond */
+    uint32_t opcode;            /*!< SD or MMC command index */
+    uint32_t arg;               /*!< SD/MMC command argument */
+    spi_cmd_response_t response;  /*!< response buffer */
+    void* data;                 /*!< buffer to send or read into */
+    size_t datalen;             /*!< length of data buffer */
+    size_t blklen;              /*!< block length */
+    int flags;                  /*!< see below */
+    /** @cond */
 
 #define SCF_CMD(flags)   ((flags) & 0x00f0)
 #define SCF_CMD_AC       0x0000
@@ -176,7 +159,7 @@ typedef struct {
 #define SCF_RSP_CRC      0x0400
 #define SCF_RSP_IDX      0x0800
 #define SCF_RSP_PRESENT  0x1000
-/* response types */
+    /* response types */
 #define SCF_RSP_R0       0 /*!< none */
 #define SCF_RSP_R1       (SCF_RSP_PRESENT|SCF_RSP_CRC|SCF_RSP_IDX)
 //#define SCF_RSP_R1B      (SCF_RSP_PRESENT|SCF_RSP_CRC|SCF_RSP_IDX|SCF_RSP_BSY)
@@ -195,19 +178,19 @@ typedef struct {
 #define SD_IO_CCCR_CTL              0x06
 #define  CCCR_CTL_RES               (1<<3)
 
-/** @endcond */
-        int8_t error;            /*!< error returned from transfer */
-        int timeout_ms;             /*!< response timeout, in milliseconds */
+    /** @endcond */
+    int8_t error;            /*!< error returned from transfer */
+    int timeout_ms;             /*!< response timeout, in milliseconds */
 } sdspi_command_t;
 
 typedef struct {
     uint16_t        buffer_size;
-                        ///< All data that do not fully fill a buffer is still counted as one buffer. E.g. 10 bytes data costs 2 buffers if the size is 8 bytes per buffer.
-                        ///< Buffer size of the slave pre-defined between host and slave before communication.
+    ///< All data that do not fully fill a buffer is still counted as one buffer. E.g. 10 bytes data costs 2 buffers if the size is 8 bytes per buffer.
+    ///< Buffer size of the slave pre-defined between host and slave before communication.
     uint16_t        block_size;
-                        ///< If this is too large, it takes time to send stuff bits; while if too small, intervals between blocks cost much.
-                        ///< Should be set according to length of data, and larger than ``TRANS_LEN_MAX/511``.
-                        ///< Block size of the SDIO function 1. After the initialization this will hold the value the slave really do. Valid value is 1-2048.
+    ///< If this is too large, it takes time to send stuff bits; while if too small, intervals between blocks cost much.
+    ///< Should be set according to length of data, and larger than ``TRANS_LEN_MAX/511``.
+    ///< Block size of the SDIO function 1. After the initialization this will hold the value the slave really do. Valid value is 1-2048.
     size_t          tx_sent_buffers;    ///< Counter hold the amount of buffers already sent to ESP32 slave. Should be set to 0 when initialization.
     size_t          rx_got_bytes;       ///< Counter hold the amount of bytes already received from ESP32 slave. Should be set to 0 when initialization.
 } spi_context_t;

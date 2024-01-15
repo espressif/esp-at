@@ -1,29 +1,12 @@
+#!/usr/bin/env python
 #
-# ESPRESSIF MIT License
-#
-# Copyright (c) 2023 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
-#
-# Permission is hereby granted for use on ESPRESSIF SYSTEMS chips only, in which case,
-# it is free of charge, to any person obtaining a copy of this software and associated
-# documentation files (the "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-# and/or sell copies of the Software, and to permit persons to whom the Software is furnished
-# to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all copies or
-# substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-License-Identifier: Apache-2.0
 
 import os, re, sys, subprocess, argparse
 
 def ESP_LOGE(x):
-    print("\033[31m{}\033[0m".format(x))
+    print('\033[31m{}\033[0m'.format(x))
 
 def at_parse_size(size):
     size = size.strip()
@@ -32,7 +15,7 @@ def at_parse_size(size):
     size = size.upper()
     if not size.endswith('B'):
         size = size + 'B'
-    units = {"B": 1, "KB": 2**10, "MB": 2**20, "GB": 2**30, "TB": 2**40}
+    units = {'B': 1, 'KB': 2**10, 'MB': 2**20, 'GB': 2**30, 'TB': 2**40}
     if not re.match(r' ', size):
         size = re.sub(r'([KMGT]?B)', r' \1', size)
     if not re.search(r'([KMGT]?B)', size):
@@ -61,11 +44,11 @@ def get_to_read_config_dir(at_path):
         for line in f.readlines():
             line = line.strip()
             line = re.sub(' +', ' ', line)
-            if line.startswith("#"):
+            if line.startswith('#'):
                 continue
 
             line = line.split()
-            if (sdkconfig_data.find("".join(["CONFIG_",line[0]])) != -1):
+            if (sdkconfig_data.find(''.join(['CONFIG_',line[0]])) != -1):
                 cfg_dir = os.path.join(at_path, 'components', 'customized_partitions', 'raw_data', line[1])
                 if os.path.exists(cfg_dir):
                     to_read_config_name.append(cfg_dir)
@@ -157,7 +140,7 @@ def create_ble_data_csv(args):
         csv_data = csv.reader(f)
         csv_data = list(csv_data)
         for item in csv_data:
-            if not item or item[0].startswith("#"):
+            if not item or item[0].startswith('#'):
                 continue
             to_read_data_items.append(item)
 
@@ -210,5 +193,5 @@ if __name__ == '__main__':
     try:
         main()
     except Exception as e:
-        ESP_LOGE("Failed to generate mfg_nvs.csv: {}".format(e))
+        ESP_LOGE('Failed to generate mfg_nvs.csv: {}'.format(e))
         sys.exit(1)

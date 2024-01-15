@@ -1,21 +1,9 @@
-# This file is a duplicate of the one:
-#   https://github.com/espressif/esp-iot-solution/blob/master/.pre-commit-config.yaml
-#------------------------------------------------------------------------------------
-
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 
+default_stages: [commit]
+
 repos:
-  - repo: https://github.com/espressif/check-copyright/
-    rev: v1.0.3
-    hooks:
-      - id: check-copyright
-        args: ['--config', 'tools/ci/check_copyright_config.yaml', '--ignore', 'tools/ci/check_copyright_ignore.txt']
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
-    hooks:
-      - id: file-contents-sorter
-        files: 'tools\/ci\/(executable-list\.txt|check_copyright_ignore\.txt)'
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
     hooks:
@@ -24,14 +12,12 @@ repos:
         # items are:
         # 1 - some file extensions
         # 2 - any file matching *test*/*expected* (for host tests, if possible use this naming pattern always)
-        # 3 - any file with known-warnings in the name
-        # 4 - any directory named 'testdata'
-        # 5 - protobuf auto-generated files
+        # 3 - any directory named 'testdata'
+        # 4 - protobuf auto-generated files
         exclude: &whitespace_excludes |
           (?x)^(
             .+\.(md|rst|map|bin)|
             .+test.*\/.*expected.*|
-            .+known-warnings.*|
             .+\/testdata\/.+|
             .*_pb2.py|
             .*.pb-c.h|
@@ -51,12 +37,6 @@ repos:
       - id: no-commit-to-branch
         name: Do not use uppercase letters in the branch name
         args: ['--pattern', '^[^A-Z]*[A-Z]']
-  - repo: https://github.com/espressif/astyle_py.git
-    rev: v1.0.2
-    hooks:
-      - id: astyle_py
-        # If you are modifying astyle version, update tools/format.sh as well
-        args: ['--astyle-version=3.4.7', '--rules=tools/ci/astyle-rules.yml']
   - repo: local
     hooks:
       - id: check-executables
@@ -71,3 +51,19 @@ repos:
         language: python
         pass_filenames: false
         always_run: true
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: file-contents-sorter
+        files: 'tools\/ci\/(executable-list\.txt|check_copyright_ignore\.txt)'
+  - repo: https://github.com/espressif/check-copyright/
+    rev: v1.0.3
+    hooks:
+      - id: check-copyright
+        args: ['--ignore', 'tools/ci/check_copyright_ignore.txt', '--config', 'tools/ci/check_copyright_config.yaml']
+  - repo: https://github.com/espressif/astyle_py.git
+    rev: v1.0.5
+    hooks:
+      - id: astyle_py
+        # If you are modifying astyle version, update tools/format.sh as well
+        args: ['--astyle-version=3.4.7', '--rules=tools/ci/astyle-rules.yml']

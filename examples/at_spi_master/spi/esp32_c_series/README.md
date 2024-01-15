@@ -113,3 +113,4 @@ The ESP chip response data can be divided into the following steps.
 3.2 Master reads the data
 
 ![](res/mcu_read_data.png)
+

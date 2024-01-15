@@ -1,26 +1,7 @@
 #!/usr/bin/env python
 #
-# 'build.py' is a top-level config/build command line tool for ESP-AT
-#
-# Copyright 2020 Espressif Systems (Shanghai) PTE LTD
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
-# WARNING: we don't check for Python build-time dependencies until
-# check_environment() function below. If possible, avoid importing
-# any external libraries here - put in external script, or import in
-# their specific function instead.
+# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-License-Identifier: Apache-2.0
 
 import os
 import sys
@@ -115,7 +96,7 @@ def at_sync_submodule(path, repo, branch, commit, redirect):
         if ret:
             raise Exception('git checkout failed! Please manually run:\r\n{}'.format(cmd))
 
-    if new_clone:        
+    if new_clone:
         # init submoules for cloned repository
         ret = subprocess.call('cd {} && git submodule init'.format(path), shell = True)
         if ret:
@@ -231,7 +212,7 @@ def build_project(platform_name, module_name, silence, build_args):
     ret = subprocess.call(cmd, shell = True)
     if ret:
         raise Exception('idf.py build failed')
-    
+
     with open(os.path.join('build', 'flash_project_args'), 'r') as rd_f:
         with open(os.path.join('build', 'download.config'), 'w') as wr_f:
             data = rd_f.read().splitlines()
@@ -316,7 +297,7 @@ def choose_project_config():
                 sys.exit('"{}" configuration error, please delete and reconfigure it'.format(module_info_file))
             platform_name = info['platform']
             module_name = info['module']
-           
+
             if not platform_name in info_lists:
                 sys.exit('"{}" configuration error, please delete and reconfigure it'.format(module_info_file))
 

@@ -1,25 +1,7 @@
 /*
- * ESPRESSIF MIT License
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
  *
- * Copyright (c) 2019 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
+ * SPDX-License-Identifier: Apache-2.0
  */
 #include <stdio.h>
 #include <stdint.h>
@@ -177,7 +159,7 @@ static esp_err_t poll_busy()
 // The data start token is different, and cannot be determined by the length
 // That's why we need ``multi_block``.
 static esp_err_t start_command_write_blocks(sdspi_hw_cmd_t* cmd,
-        const uint8_t* data, uint32_t tx_length, bool multi_block)
+                                            const uint8_t* data, uint32_t tx_length, bool multi_block)
 {
     esp_err_t ret;
     // Send the minimum length that is sure to get the complete response
@@ -333,7 +315,7 @@ static esp_err_t poll_data_token(uint8_t* extra_ptr, size_t* extra_size)
  * expense of one extra temporary buffer.
  */
 static esp_err_t start_command_read_blocks(sdspi_hw_cmd_t* cmd,
-        uint8_t* data, uint32_t rx_length)
+                                           uint8_t* data, uint32_t rx_length)
 {
     esp_err_t ret;
     static uint8_t rx_data[SDSPI_BLOCK_BUF_SIZE];
@@ -451,7 +433,6 @@ static esp_err_t start_command_read_blocks(sdspi_hw_cmd_t* cmd,
     return ESP_OK;
 }
 
-
 esp_err_t sdspi_host_start_command(sdspi_hw_cmd_t* cmd, void* data,
                                    uint32_t data_size, int flags)
 {
@@ -534,7 +515,7 @@ esp_err_t spi_send_cmd(sdspi_command_t* cmdinfo)
 
     // Send the command and get the response.
     esp_err_t ret = sdspi_host_start_command(&hw_cmd,
-                    cmdinfo->data, cmdinfo->datalen, flags);
+                                             cmdinfo->data, cmdinfo->datalen, flags);
 
     // Extract response bytes and store them into cmdinfo structure
     if (ret == ESP_OK) {
@@ -582,7 +563,6 @@ esp_err_t at_spi_init_io()
         return err;
     }
 
-
     return err;
 }
 
@@ -594,7 +574,6 @@ esp_err_t at_spi_cmd_go_idle_state()
         .opcode =  0,  // MMC_GO_IDLE_STATE,
         .flags = SCF_CMD_BC | SCF_RSP_R0,
     };
-
 
     esp_err_t err = spi_send_cmd(&cmd);
     at_do_delay(20);
@@ -1091,7 +1070,6 @@ static esp_err_t sdspi_cmd_init()
     }
 
     ESP_AT_LOGI(TAG, "IE: 0x%02x", ie);
-
 
     // get bus width register
     uint8_t bus_width;

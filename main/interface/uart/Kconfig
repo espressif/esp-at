@@ -3,20 +3,20 @@ config AT_BASE_ON_UART
 
 if AT_BASE_ON_UART
 menu "AT uart settings"
-    
+
 config AT_UART_DEFAULT_DATABITS
     int "the uart data bits for AT port, the range is [5, 8]"
     default 8
     range 5 8
     depends on AT_BASE_ON_UART
-    
+
 config AT_UART_DEFAULT_STOPBITS
     int "the uart stop bit for AT port, the range is [1, 3]"
     help
         1: 1-bit stop bit; 2: 1.5-bit stop bit; 3: 2-bit stop bit
     default 1
     range 1 3
-    
+
 config AT_UART_DEFAULT_PARITY_BITS
     int "the uart parity bit for AT port, the range is [0, 2]"
     help

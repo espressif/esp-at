@@ -2,8 +2,8 @@ config AT_BASE_ON_SPI
     bool "AT through SPI"
     depends on (IDF_TARGET_ESP32C2 || IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C6)
     help
-        If enable this option, the MCU can send AT command through SPI bus. 
-        But besides the standard SPI pins, the more one pin is required to handshake MCU. 
+        If enable this option, the MCU can send AT command through SPI bus.
+        But besides the standard SPI pins, the more one pin is required to handshake MCU.
         In order to respond in time, MCU should use the interrupt pin as the handshake pin.
 
 choice SPI_TRANSMIT
@@ -19,14 +19,13 @@ config SPI_STANDARD_MODE
 config SPI_DUAL_MODE
     bool "Dual SPI"
     help
-        Enable the two-line data transmission. The MCU can transmit data through MOSI and MISO line. 
-        
+        Enable the two-line data transmission. The MCU can transmit data through MOSI and MISO line.
+
 config SPI_QUAD_MODE
     bool "Quad SPI"
     help
         Enable the four-line data transmission. In this mode, two more I/O lines for sending 4 data bits per clock cycle are needed.
 endchoice
-
 
 menu "AT SPI GPIO settings"
     depends on AT_BASE_ON_SPI
@@ -66,7 +65,7 @@ menu "AT SPI GPIO settings"
         default 8 if IDF_TARGET_ESP32C2
         default 22 if IDF_TARGET_ESP32C6
         depends on SPI_QUAD_MODE
-        
+
     config SPI_HD_PIN
         int "SPI HD pin(quad spi)"
         default 9 if IDF_TARGET_ESP32C3

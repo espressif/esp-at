@@ -1,2 +1,2 @@
-# Name,Type,SubType,Offset,Size
+# Name, Type, SubType, Offset, Size
 mfg_nvs, data, nvs, 0x21000, 112K

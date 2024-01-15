@@ -1,26 +1,7 @@
+#!/usr/bin/env python
 #
-# ESPRESSIF MIT License
-#
-# Copyright (c) 2018 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
-#
-# Permission is hereby granted for use on ESPRESSIF SYSTEMS ESP32 only, in which case,
-# it is free of charge, to any person obtaining a copy of this software and associated
-# documentation files (the "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-# and/or sell copies of the Software, and to permit persons to whom the Software is furnished
-# to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all copies or
-# substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#
-#
+# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-License-Identifier: Apache-2.0
 
 import xlrd
 import csv
@@ -64,7 +45,7 @@ def get_param_type_info(source_file, sheet_name):
                 param_type_dicts[row_data[0]] = dict
 
     else:
-        print("The file type is not supported.")
+        print('The file type is not supported.')
         exit()
 
     return param_type_dicts
@@ -88,7 +69,7 @@ def get_param_data_info(source_file, sheet_name):
             param_data_list = list(csv_data)
 
     else:
-        print("The file type is not supported.")
+        print('The file type is not supported.')
         exit()
 
     return param_data_list
@@ -121,11 +102,11 @@ def generate_factory_param_bin(data_lists, type_dicts, target_name, platform, mo
             break
 
     if platform_index == ncols:
-        print("Not found platform in header.")
+        print('Not found platform in header.')
         exit()
-    
+
     if module_name_index == ncols:
-        print("Not found module name in header.")
+        print('Not found module name in header.')
         exit()
 
     for row in range(1,nrows): # skip header
@@ -144,7 +125,7 @@ def generate_factory_param_bin(data_lists, type_dicts, target_name, platform, mo
             type_dict = type_dicts.get(headers[col])
             if type_dict is None:
                 continue
-            
+
             if int(type_dict.get('size')) <= 0:
                 continue
 
@@ -176,14 +157,14 @@ def generate_factory_param_bin(data_lists, type_dicts, target_name, platform, mo
 
                 value = cell_data.encode('utf-8')
                 c_data = create_string_buffer(value, int(type_dict.get('size')))
-                memmove(byref(factory_param_bin, int(type_dict.get('offset'))), byref(c_data), int(type_dict.get('size')))            
+                memmove(byref(factory_param_bin, int(type_dict.get('offset'))), byref(c_data), int(type_dict.get('size')))
 
         target_bin_name = os.path.splitext(target_name)[0] + '_' + module_name + '.bin'
         with open(target_bin_name, 'wb+') as f:
             f.write(factory_param_bin)
-            print("generate parameter bin: platform %s, module name %s"%(platform_name.upper(),module_name))
+            print('generate parameter bin: platform %s, module name %s'%(platform_name.upper(),module_name))
             with open(log_file, 'a+') as log_f:
-                log_f.write("%s %s %s "%(module_name, os.path.basename(target_name), target_bin_name))
+                log_f.write('%s %s %s '%(module_name, os.path.basename(target_name), target_bin_name))
 
             if module_name == module:
                 with open(target_name, 'wb+') as target_f:
@@ -200,16 +181,16 @@ def generate_factory_param_bin(data_lists, type_dicts, target_name, platform, mo
                     target_f.write(factory_param_bin)
 
         with open(log_file, 'a+') as log_f:
-                log_f.write("%s %s %s "%(module, os.path.basename(target_name), target_bin_name))    
+                log_f.write('%s %s %s '%(module, os.path.basename(target_name), target_bin_name))
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--platform", default="esp32", help="the chip platform")
-    parser.add_argument("--module", default="Wroom32", help="the module name for espressif AT")
-    parser.add_argument("--define_file", default="factory_param_type.csv", help="factory parameter file name")
-    parser.add_argument("--module_file", default="factory_param_data.csv", help="factory parameter file name")
-    parser.add_argument("--bin_name", default="factory_param.bin", help="factory parameter bin file name")
-    parser.add_argument("--log_file", default="./factory_parameter.log", help="the file name stored the module name")
+    parser.add_argument('--platform', default='esp32', help='the chip platform')
+    parser.add_argument('--module', default='Wroom32', help='the module name for espressif AT')
+    parser.add_argument('--define_file', default='factory_param_type.csv', help='factory parameter file name')
+    parser.add_argument('--module_file', default='factory_param_data.csv', help='factory parameter file name')
+    parser.add_argument('--bin_name', default='factory_param.bin', help='factory parameter bin file name')
+    parser.add_argument('--log_file', default='./factory_parameter.log', help='the file name stored the module name')
     args = parser.parse_args()
 
     module_file = args.module_file
@@ -230,4 +211,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -1,5 +1,9 @@
-#ifndef PLATFORM_OS_H_
-#define PLATFORM_OS_H_
+/*
+ * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,5 +22,3 @@ void platform_os_delay(uint32_t milliseconds);
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* PLATFORM_OS_H_ */

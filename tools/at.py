@@ -1,26 +1,8 @@
 #!/usr/bin/env python
 #
-# ESPRESSIF MIT License
-#
-# Copyright (c) 2022 <ESPRESSIF SYSTEMS (SHANGHAI) PTE LTD>
-#
-# Permission is hereby granted for use on ESPRESSIF SYSTEMS only, in which case,
-# it is free of charge, to any person obtaining a copy of this software and associated
-# documentation files (the "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-# and/or sell copies of the Software, and to permit persons to whom the Software is furnished
-# to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all copies or
-# substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#
+# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-License-Identifier: Apache-2.0
+
 from __future__ import division, print_function
 
 import argparse
@@ -40,7 +22,7 @@ import zlib
 from builtins import bytes, int, range
 from io import open
 
-__version__ = "v1.0-dev"
+__version__ = 'v1.0-dev'
 
 # To locate the starting position of the parameter partition
 parameter_pattern = re.compile(b'\xFC\xFC[\x03|\x02|\x01]')
@@ -61,10 +43,10 @@ mfg_csv_filename = 'mfg_nvs.csv'
 mfg_bin_filename = 'mfg_nvs.bin'
 
 def ESP_LOGI(x):
-    print("\033[32m{}\033[0m".format(x))
+    print('\033[32m{}\033[0m'.format(x))
 
 def ESP_LOGE(x):
-    print("\033[31m{}\033[0m".format(x))
+    print('\033[31m{}\033[0m'.format(x))
 
 def arg_auto_int(x):
     r = int(x, 0)
@@ -95,16 +77,16 @@ def modify_bin(esp, args):
     print(args)
 
     if not os.path.exists(args.input):
-        ESP_LOGE("File does not exist: {}".format(args.input))
+        ESP_LOGE('File does not exist: {}'.format(args.input))
         sys.exit(2)
     fsize = os.path.getsize(args.input)
     if (fsize != para_partition_size) and ((fsize % min_firmware_size) or (fsize / min_firmware_size > 16)):
-        ESP_LOGE("Invalid file size: {}".format(fsize))
+        ESP_LOGE('Invalid file size: {}'.format(fsize))
         sys.exit(2)
 
     copyfile(args.input, args.output)
 
-    with open(args.input, "rb") as fp:
+    with open(args.input, 'rb') as fp:
         data = fp.read()
         if re.search(mfg_nvs_pattern, data):
             return modify_param_bin_in_nvs(esp, args)
@@ -390,7 +372,7 @@ def dump_key_value_pairs(nvs_partition: NVS_Partition, fp) -> None:
                         last_ns = now_ns
                         fp.write(now_ns + ',namespace,,\n')
                     if chunk_index == '':
-                        if entry.metadata['type'] == "string":
+                        if entry.metadata['type'] == 'string':
                             fp.write(entry.key + ',data,' + entry.metadata['type'] + ',' + '"' + str(data.decode('utf-8').rstrip('\x00')) + '"' +'\n')
                         else:
                             fp.write(entry.key + ',data,' + entry.metadata['type'] + ',' + str(data) + '\n')
@@ -404,7 +386,7 @@ def dump_key_value_pairs(nvs_partition: NVS_Partition, fp) -> None:
                         else:
                             dup_key = True
                         last_filename = 'v' + str(findex) + '.txt'
-                        with open(os.path.join(mfg_directory, last_filename), "a+") as ftxt:
+                        with open(os.path.join(mfg_directory, last_filename), 'a+') as ftxt:
                             ftxt.write(str(data.decode('utf-8')))
                         if not dup_key:
                             fp.write(entry.key + ',file,binary,' + os.path.abspath(os.path.join(mfg_directory, last_filename)) + '\n')
@@ -1055,7 +1037,7 @@ def at_update_param(key, type, value, data):
     lines = data.split('\n')
     for i in range(len(lines)):
         line = lines[i].strip()
-        if line.startswith(key) and "namespace" not in line:
+        if line.startswith(key) and 'namespace' not in line:
             parts = line.split(NVS_KEY_TYPE[type])
             if type == 'S':
                 parts[-1] = '"' + str(value) + '"'
@@ -1113,23 +1095,23 @@ def modify_param_bin_in_nvs(esp, args):
     if args.parameter_offset:
         param_addr = args.parameter_offset
     else:
-        with open(args.output, "rb") as fp:
+        with open(args.output, 'rb') as fp:
             data = fp.read()
             try:
                 param_addr = re.search(mfg_nvs_pattern, data).span()[0]
             except Exception as e:
-                ESP_LOGE("Can not find valid entry of parameter partition, please check firmware: {}".format(args.input))
+                ESP_LOGE('Can not find valid entry of parameter partition, please check firmware: {}'.format(args.input))
                 sys.exit(2)
 
     # read the offset and size parameter of mfg_nvs.bin by param_addr parameter
-    with open(args.output, "rb") as fp:
+    with open(args.output, 'rb') as fp:
         param_format = '<HBBII'
         fp.seek(param_addr, 0)
         raw_at_parameter = at_read_records(param_format, fp)
         list_at_parameter = list(raw_at_parameter)
         mfg_nvs_addr = list_at_parameter[3]
         mfg_nvs_size = list_at_parameter[4]
-    ESP_LOGI("mfg_nvs.bin address: {} size: {}".format(hex(mfg_nvs_addr), hex(mfg_nvs_size)))
+    ESP_LOGI('mfg_nvs.bin address: {} size: {}'.format(hex(mfg_nvs_addr), hex(mfg_nvs_size)))
 
     # create work directory
     if os.path.exists(mfg_directory):
@@ -1139,17 +1121,17 @@ def modify_param_bin_in_nvs(esp, args):
     mfg_nvs_bin = os.path.abspath(os.path.join(mfg_directory, mfg_bin_filename))
 
     # read the content of mfg_nvs.bin
-    with open(args.output, "rb") as fp:
+    with open(args.output, 'rb') as fp:
         fp.seek(mfg_nvs_addr, 0)
         data = fp.read(mfg_nvs_size)
 
     # dump mfg_nvs.bin to mfg_nvs.csv
     nvs = NVS_Partition(bytearray(data))
-    with open(mfg_nvs_csv, "w+") as fp:
+    with open(mfg_nvs_csv, 'w+') as fp:
         dump_key_value_pairs(nvs, fp)
 
     # update mfg_nvs.csv with new parameters
-    with open(mfg_nvs_csv, "r+") as fp:
+    with open(mfg_nvs_csv, 'r+') as fp:
         data = fp.read()
         data = at_update_mfg_parameters(args, data)
         fp.seek(0)
@@ -1161,11 +1143,11 @@ def modify_param_bin_in_nvs(esp, args):
     generate(mfg_nvs_csv, mfg_nvs_bin, mfg_nvs_size)
 
     # re-combine target.bin with new mfg_nvs.bin
-    with open(args.output, "rb+") as fp, open(mfg_nvs_bin, 'rb') as fbin:
+    with open(args.output, 'rb+') as fp, open(mfg_nvs_bin, 'rb') as fbin:
         mfg_nvs_data = fbin.read()
         fp.seek(mfg_nvs_addr, 0)
         fp.write(mfg_nvs_data)
-    ESP_LOGI("New esp-at firmware successfully generated! ----> {}".format(os.path.abspath(args.output)))
+    ESP_LOGI('New esp-at firmware successfully generated! ----> {}'.format(os.path.abspath(args.output)))
 
     return
 
@@ -1205,26 +1187,26 @@ def modify_param_bin_in_partition(esp, args):
     if args.parameter_offset:
         param_addr = args.parameter_offset
     else:
-        with open(args.output, "rb") as fp:
+        with open(args.output, 'rb') as fp:
             data = fp.read()
             try:
                 param_addr = re.search(parameter_pattern, data).span()[0]
             except Exception as e:
-                ESP_LOGE("Can not find valid entry of parameter partition, please check firmware: {}".format(args.input))
+                ESP_LOGE('Can not find valid entry of parameter partition, please check firmware: {}'.format(args.input))
                 sys.exit(2)
 
     if param_addr % sec_size != 0:
         ESP_LOGE("Found wrong entry of parameter partition: {}, please manually specify \"--parameter_offset\" parameter!".format(hex(param_addr)))
         sys.exit(2)
     else:
-        ESP_LOGI("factory parameter entry address: {}".format(hex(param_addr)))
+        ESP_LOGI('factory parameter entry address: {}'.format(hex(param_addr)))
 
     # modify parameter
-    with open(args.output, "rb+") as fp:
+    with open(args.output, 'rb+') as fp:
         param_format = '<HBBBbBB 4c i bbbbbbH 32c 32c'     # valid 88 bytes and 4008 padding bytes
         fp.seek(param_addr, 0)
         raw_at_parameter = at_read_records(param_format, fp)
-        print("raw parameters: {}\r\n".format(raw_at_parameter))
+        print('raw parameters: {}\r\n'.format(raw_at_parameter))
         list_at_parameter = list(raw_at_parameter)
 
         """
@@ -1252,12 +1234,12 @@ def modify_param_bin_in_partition(esp, args):
 
         fp.seek(param_addr, 0)
         raw_at_parameter = at_read_records(param_format, fp)
-        print("new parameters: {}\r\n".format(raw_at_parameter))
+        print('new parameters: {}\r\n'.format(raw_at_parameter))
 
-        ESP_LOGI("New esp-at firmware successfully generated! ----> {}".format(os.path.abspath(args.output)))
+        ESP_LOGI('New esp-at firmware successfully generated! ----> {}'.format(os.path.abspath(args.output)))
 
 def generate_bin(esp, args):
-    print("TODOs: ESP-AT will add this feature in v2.4.0.0+")
+    print('TODOs: ESP-AT will add this feature in v2.4.0.0+')
 
 def version(esp, args):
     print(__version__)
@@ -1426,7 +1408,7 @@ def main(argv=None, esp=None):
         default='target.bin')
 
     for operation in subparsers.choices.keys():
-        assert operation in globals(), "{} should be a module function".format(operation)
+        assert operation in globals(), '{} should be a module function'.format(operation)
 
     args = parser.parse_args(argv)
 
@@ -1456,17 +1438,17 @@ class FatalError(RuntimeError):
         Return a fatal error object that appends the hex values of
         'result' as a string formatted argument.
         """
-        message += " (result was {})".format(hexify(result))
+        message += ' (result was {})'.format(hexify(result))
         return FatalError(message)
 
 def _main():
     try:
         main()
     except FatalError as e:
-        ESP_LOGE("A fatal error occurred: {}".format(e))
+        ESP_LOGE('A fatal error occurred: {}'.format(e))
         sys.exit(2)
     except Exception as e:
-        ESP_LOGE("A system error occurred: {}".format(e))
+        ESP_LOGE('A system error occurred: {}'.format(e))
 
 if __name__ == '__main__':
     _main()
