@@ -872,6 +872,7 @@ static void listen_sta_connect_status_timer_cb(TimerHandle_t timer)
     } else {
         ESP_LOGW(TAG, "Listen connect %d times and connect fail", connect_count);
         connection_info.config_status = ESP_AT_WIFI_STA_CONNECT_FAIL;
+        at_wifi_reconnect_stop();
         goto connect_finish;
     }
     return;
@@ -880,7 +881,6 @@ connect_finish:
     connect_count = 1;
     at_web_update_sta_got_ip_flag(false);
     at_web_update_sta_connection_info(&connection_info);
-    at_wifi_reconnect_stop();
     xTimerStop(s_wifi_sta_connect_timer_handler, portMAX_DELAY);
     xTimerDelete(s_wifi_sta_connect_timer_handler, portMAX_DELAY);
 }
