@@ -3,42 +3,49 @@
 esp32_wroom_at:
   extends:
     - .build_template_esp32
+    - .rules:build:build_project
   variables:
     MODULE_NAME: "WROOM-32"
 
 esp32_wrover_at:
   extends:
     - .build_template_esp32
+    - .rules:build:build_project
   variables:
     MODULE_NAME: "WROVER-32"
 
 esp32_pico_d4_at:
   extends:
     - .build_template_esp32
+    - .rules:build:build_project
   variables:
     MODULE_NAME: "PICO-D4"
 
 esp32_solo_1_at:
   extends:
     - .build_template_esp32
+    - .rules:build:build_project
   variables:
     MODULE_NAME: "SOLO-1"
 
 esp32-d2wd_at:
   extends:
     - .build_template_esp32
+    - .rules:build:build_project
   variables:
     MODULE_NAME: "ESP32-D2WD"
 
 esp32_mini_1_at:
   extends:
     - .build_template_esp32
+    - .rules:build:build_project
   variables:
     MODULE_NAME: "MINI-1"
 
 esp32_sdio_at:
   extends:
     - .build_template_esp32
+    - .rules:build:build_project
   variables:
     MODULE_NAME: "ESP32-SDIO"
 
@@ -46,24 +53,25 @@ esp32_at_wifi_function_test:
   extends:
     - .build_template_esp32
     - .before_script_esp32_enable_all_wifi_cmds
+    - .rules:build:build_project_on_protected
   variables:
     MODULE_NAME: "WROVER-32"
     SILENCE: "0"
-  when: manual
 
 esp32_at_bt_function_test:
   extends:
     - .build_template_esp32
     - .before_script_esp32_enable_all_bt_cmds
+    - .rules:build:build_project_on_protected
   variables:
     MODULE_NAME: "WROVER-32"
     SILENCE: "0"
-  when: manual
 
 esp32_ethernet_at:
   extends:
     - .build_template_esp32
     - .before_script_esp32_enable_ethernet_cmds
+    - .rules:build:build_project
   variables:
     MODULE_NAME: "WROVER-32"
 
@@ -71,5 +79,6 @@ esp32_examples:
   extends:
     - .build_template_esp32
     - .build_template_examples
+    - .rules:build:build_project
   variables:
     MODULE_NAME: "WROOM-32"

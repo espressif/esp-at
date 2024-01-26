@@ -45,6 +45,10 @@
     - <<: *if-dev-push
       changes: *patterns-src
 
+.rules:build:build_project_on_protected:
+  rules:
+    - <<: *if-protected
+
 .rules:deploy:docs_preview:
   rules:
     - <<: *if-dev-push
