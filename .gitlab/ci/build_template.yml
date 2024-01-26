@@ -276,7 +276,6 @@
   extends:
     - .build_template
     - .before_script_esp32
-    - .rules:build:build_project
   variables:
     PLATFORM: "PLATFORM_ESP32"
     SILENCE: "1"
@@ -285,7 +284,6 @@
   extends:
     - .build_template
     - .before_script_esp32c2
-    - .rules:build:build_project
   variables:
     PLATFORM: "PLATFORM_ESP32C2"
     SILENCE: "0"
@@ -294,7 +292,6 @@
   extends:
     - .build_template
     - .before_script_esp32c3
-    - .rules:build:build_project
   variables:
     PLATFORM: "PLATFORM_ESP32C3"
     SILENCE: "0"
@@ -303,7 +300,6 @@
   extends:
     - .build_template
     - .before_script_esp32c6
-    - .rules:build:build_project
   variables:
     PLATFORM: "PLATFORM_ESP32C6"
     SILENCE: "0"
