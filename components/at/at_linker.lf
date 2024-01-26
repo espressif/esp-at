@@ -1,0 +1,49 @@
+# Linker fragment for AT command set register functions
+#
+# The AT command set register functions should be placed to some special sections,
+# these register functions will be auto-executed by the esp-at project.
+
+# -------------- Linker fragment for AT command set register functions (first init) --------------
+[sections:at_cmd_set_first_init_section]
+entries:
+    .at_cmd_set_first_init_fn+
+
+[scheme:at_cmd_set_first_init_scheme]
+entries:
+    at_cmd_set_first_init_section -> flash_rodata
+
+[mapping:at_cmd_set_first_init_section]
+archive: *
+entries:
+    * (at_cmd_set_first_init_scheme);
+        at_cmd_set_first_init_section -> flash_rodata KEEP() SURROUND(at_cmd_set_first_init_fn_array)
+
+# -------------- Linker fragment for AT command set register functions (then init) --------------
+[sections:at_cmd_set_init_section]
+entries:
+    .at_cmd_set_init_fn+
+
+[scheme:at_cmd_set_init_scheme]
+entries:
+    at_cmd_set_init_section -> flash_rodata
+
+[mapping:at_cmd_set_init_section]
+archive: *
+entries:
+    * (at_cmd_set_init_scheme);
+        at_cmd_set_init_section -> flash_rodata KEEP() SURROUND(at_cmd_set_init_fn_array)
+
+# -------------- Linker fragment for AT command set register functions (last init) --------------
+[sections:at_cmd_set_last_init_section]
+entries:
+    .at_cmd_set_last_init_fn+
+
+[scheme:at_cmd_set_last_init_scheme]
+entries:
+    at_cmd_set_last_init_section -> flash_rodata
+
+[mapping:at_cmd_set_last_init_section]
+archive: *
+entries:
+    * (at_cmd_set_last_init_scheme);
+        at_cmd_set_last_init_section -> flash_rodata KEEP() SURROUND(at_cmd_set_last_init_fn_array)

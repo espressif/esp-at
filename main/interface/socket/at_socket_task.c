@@ -6,77 +6,73 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
+#include "sdkconfig.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
 #include "freertos/ringbuf.h"
 #include "freertos/task.h"
 #include "freertos/event_groups.h"
-
 #include "esp_wifi.h"
 #include "esp_log.h"
 #include "esp_system.h"
-
 #include "esp_netif.h"
-#include "sys/socket.h"
-#include "netdb.h"
-
 #include "nvs_flash.h"
 
-#include "esp_at.h"
+#define AT_SOCKET_RECV_BUFFER_SIZE              256
+#define AT_RING_BUFFER_SIZE                     (8 * 1024)
 
 #ifdef CONFIG_AT_BASE_ON_SOCKET
-#define ESP_AT_BUFFER_SIZE 200
-#define ESP_AT_SOCKET_PORT CONFIG_AT_SOCKET_PORT
-#define ESP_AT_RING_ESP_AT_BUFFER_SIZE 8*1024
+#include "sys/socket.h"
+#include "netdb.h"
+#include "esp_at.h"
+#include "esp_at_interface.h"
 
-static int at_client_fd;
-static bool at_transparent_transmition = false;
-static RingbufHandle_t at_read_ring_buf;
-static const char* TAG = "esp_at";
+// static variables
+static int s_client_fd = -1;
+static bool s_trans_mode = false;
+static RingbufHandle_t s_ring_buffer;
+static const char *TAG = "at-socket";
 
-/* Called when socket recieve a normal AT command, make sure you have added \r\n in your socket data */
-static int32_t at_socket_read_data(uint8_t* data, int32_t len)
+static int32_t at_socket_read_data(uint8_t *data, int32_t len)
 {
     if (data == NULL || len < 0) {
-        ESP_LOGE(TAG, "Cannot get read data address.");
+        ESP_LOGE(TAG, "invalid data:%p or len:%d", data, len);
         return -1;
     }
 
     if (len == 0) {
-        ESP_LOGI(TAG, "Empty read data.");
+        ESP_LOGI(TAG, "read empty data");
         return 0;
     }
 
-    size_t ring_len = len;
-    uint8_t* recv_data = (uint8_t*) xRingbufferReceive(at_read_ring_buf, &ring_len, (TickType_t) 0);
+    size_t data_len = len;
+    uint8_t *recv_data = (uint8_t *)xRingbufferReceive(s_ring_buffer, &data_len, 0);
 
-    if (recv_data == NULL || ring_len < 0 || ring_len > ESP_AT_RING_ESP_AT_BUFFER_SIZE) {
-        ESP_LOGE(TAG, "Cannot recieve socket data from ringbuf.");
+    if (recv_data == NULL || data_len > AT_RING_BUFFER_SIZE) {
+        ESP_LOGE(TAG, "cannot recv data from ringbuf");
         return -1;
     } else {
-        memcpy(data, recv_data, ring_len);
+        memcpy(data, recv_data, data_len);
     }
 
-    return ring_len;
+    return data_len;
 }
 
-/*Result of AT command, auto call when read_data get data*/
-static int32_t at_socket_write_data(uint8_t* buf, int32_t len)
+static int32_t at_socket_write_data(uint8_t *data, int32_t len)
 {
-    if (len < 0 || buf == NULL) {
-        ESP_LOGE(TAG, "Cannot get write data.");
+    if (len < 0 || data == NULL) {
+        ESP_LOGE(TAG, "invalid data:%p or len:%d", data, len);
         return -1;
     }
 
     if (len == 0) {
-        ESP_LOGE(TAG, "Empty write data.");
+        ESP_LOGI(TAG, "write empty data");
         return 0;
     }
 
-    if (at_client_fd >= 0 && len > 0) {
-        if (send(at_client_fd, buf, len, 0) < 0) {
-            ESP_LOGE(TAG, "Cannot send message.");
+    if (s_client_fd >= 0 && len > 0) {
+        if (send(s_client_fd, data, len, 0) < 0) {
+            ESP_LOGE(TAG, "cannot send message");
             return -1;
         }
     }
@@ -84,195 +80,165 @@ static int32_t at_socket_write_data(uint8_t* buf, int32_t len)
     return len;
 }
 
-/*We can ignore it, -1 is a right value*/
-static int32_t at_port_get_data_length(void)
+static void socket_task(void *params)
 {
-    return -1;
-}
+    // new server fd
+    int server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd < 0) {
+        ESP_LOGE(TAG, "cannot create socket");
+        goto exit_task;
+    }
 
-/*In socket mode, we can ignore it*/
-static bool at_port_wait_write_complete(int32_t timeout_msec)
-{
-    return true;
-}
-
-static void socket_task(void* pvParameters)
-{
+    // bind server fd
     struct sockaddr_in server_addr;
-    fd_set server_fd_set;
-    struct sockaddr_in client_address;
-    socklen_t address_len;
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(ESP_AT_SOCKET_PORT);
+    server_addr.sin_port = htons(CONFIG_AT_SOCKET_PORT);
     server_addr.sin_addr.s_addr = 0;
-
-    int server_sock_fd = socket(AF_INET, SOCK_STREAM, 0);
-
-    if (server_sock_fd == -1) {
-        ESP_LOGE(TAG, "Cannot create socket.");
-        goto Exit0;
+    if (bind(server_fd, (struct sockaddr *) &server_addr, sizeof(server_addr)) == -1) {
+        ESP_LOGE(TAG, "cannot bind socket");
+        goto exit_task;
     }
 
-    if (bind(server_sock_fd, (struct sockaddr *) &server_addr, sizeof(server_addr)) == -1) {
-        ESP_LOGE(TAG, "Cannot bind socket");
-        goto Exit0;
+    // listen
+    if (listen(server_fd, 1) == -1) {
+        ESP_LOGE(TAG, "cannot listen socket");
+        goto exit_task;
     }
-
-    if (listen(server_sock_fd, 1) == -1) {
-        ESP_LOGE(TAG, "Cannot listen socket.");
-        goto Exit0;
-    }
+    ESP_LOGD(TAG, "socket listening...");
 
     for (;;) {
-        at_client_fd = accept(server_sock_fd, (struct sockaddr*) &client_address, &address_len);
+        // accept a new client
+        socklen_t len;
+        struct sockaddr_in remote_addr;
+        ESP_LOGD(TAG, "wait for a new client...");
+        s_client_fd = accept(server_fd, (struct sockaddr*) &remote_addr, &len);
+        ESP_LOGD(TAG, "accept a new client: %d", s_client_fd);
 
-        if (at_client_fd == -1) {
-            ESP_LOGE(TAG, "Cannot accept socket.");
+        if (s_client_fd == -1) {
+            ESP_LOGE(TAG, "cannot accept socket");
             break;
         }
 
-        uint8_t* recv_msg = (uint8_t*) malloc(ESP_AT_BUFFER_SIZE * sizeof(uint8_t));
+        // create a buffer to store data from client
+        uint8_t *buffer = (uint8_t *)malloc(AT_SOCKET_RECV_BUFFER_SIZE * sizeof(uint8_t));
 
         for (;;) {
-
-            //Firstly, we do some preparatory work for AT command
+            // set fd_set
+            fd_set server_fd_set;
             FD_ZERO(&server_fd_set);
-            FD_SET(at_client_fd, &server_fd_set);
+            FD_SET(s_client_fd, &server_fd_set);
 
-            if (select(at_client_fd + 1, &server_fd_set, NULL, NULL, NULL) >= 0) {
+            if (select(s_client_fd + 1, &server_fd_set, NULL, NULL, NULL) >= 0) {
+                // receive data from client
+                if (FD_ISSET(s_client_fd, &server_fd_set)) {
+                    int byte_num = recv(s_client_fd, buffer, AT_SOCKET_RECV_BUFFER_SIZE, 0);
 
-                //There are something happened in socket
-                if (FD_ISSET(at_client_fd, &server_fd_set)) {
-                    int byte_num = recv(at_client_fd, recv_msg, ESP_AT_BUFFER_SIZE, 0);
-
-                    /* If using custom commands and want to exit transparent transmition, make sure
-                    the program know first*/
-                    if (at_transparent_transmition && (byte_num == 3) && (memcmp(recv_msg, "+++", 3) == 0)) {
-                        ESP_LOGI(TAG, "Exit transparent transmition mode");
+                    // exit transparent transmition mode
+                    if (s_trans_mode && (byte_num == 3) && (memcmp(buffer, "+++", 3) == 0)) {
+                        ESP_LOGI(TAG, "exit passthrough mode");
                         esp_at_transmit_terminal();
                         continue;
                     }
 
                     if (byte_num > 0) {
-                        if (xRingbufferSend(at_read_ring_buf, recv_msg, byte_num, portMAX_DELAY) == pdFALSE) {        // a buffer is better
-                            ESP_LOGE(TAG, "Cannot send data to ringbuf");
+                        if (xRingbufferSend(s_ring_buffer, buffer, byte_num, portMAX_DELAY) == pdFALSE) {
+                            ESP_LOGE(TAG, "cannot send data to ringbuf");
                             continue;
                         }
-
-                        //Call AT lib to handle commands
                         esp_at_port_recv_data_notify(byte_num, portMAX_DELAY);
-                    } else {  //have not recieve data or error data
-                        at_client_fd = -1;
-                        ESP_LOGE(TAG, "Time out or client exit,try to reconnect");
+                    } else {
+                        s_client_fd = -1;
+                        ESP_LOGE(TAG, "time out or connection error, wait for a new client..");
                         break;
                     }
                 }
             } else {
-                ESP_LOGE(TAG, "Cannot select socket.");
+                ESP_LOGE(TAG, "cannot select socket");
                 continue;
             }
         }
 
-        free(recv_msg);
-        recv_msg = NULL;
+        free(buffer);
+        buffer = NULL;
     }
 
-    //There is something wrong happened when we try to use socket.
-Exit0:
-
-    if (server_sock_fd >= 0) {
-        close(server_sock_fd);
+exit_task:
+    if (server_fd >= 0) {
+        close(server_fd);
     }
 
     vTaskDelete(NULL);
 }
 
-/*This function let you handle some operation when using custom cmd and AT status change*/
-static void at_status_callback(esp_at_status_type status)
+static void at_socket_transmit_mode_switch_cb(esp_at_status_type status)
 {
     switch (status) {
     case ESP_AT_STATUS_NORMAL:
-        at_transparent_transmition = false;
+        s_trans_mode = false;
         break;
 
     case ESP_AT_STATUS_TRANSMIT:
-        at_transparent_transmition = true;
+        s_trans_mode = true;
         break;
     }
 }
 
-void at_pre_active_write_data_callback(at_write_data_fn_t fn)
+static void at_socket_init(void)
 {
-    // Do something before active write data
-#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
-    at_wkmcu_if_config(fn);
-#endif
-}
-
-void at_pre_sleep_callback(at_sleep_mode_t mode)
-{
-#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
-    at_set_mcu_state_if_sleep(mode);
-#endif
-}
-
-void at_interface_init(void)
-{
-    uint8_t* version = (uint8_t*)malloc(192);
-
-    if (version == NULL) {
-        ESP_LOGE(TAG, "malloc version space fail");
+    // create a ring buffer for rx data
+    s_ring_buffer = xRingbufferCreate(AT_RING_BUFFER_SIZE, RINGBUF_TYPE_ALLOWSPLIT);
+    if (!s_ring_buffer) {
+        ESP_LOGE(TAG, "create ringbuf failed");
         return;
     }
 
-    //If you want to use AT lib, make sure obey this function.
-    esp_at_device_ops_struct esp_at_device_ops = {
-        .read_data = at_socket_read_data,
-        .write_data = at_socket_write_data,
-        .get_data_length = at_port_get_data_length,
-        .wait_write_complete = at_port_wait_write_complete,
-    };
-
-    esp_at_custom_ops_struct esp_at_custom_ops = {
-        .status_callback = at_status_callback,
-        .pre_sleep_callback = at_pre_sleep_callback,
-        .pre_deepsleep_callback = NULL,
-        .pre_restart_callback = NULL,
-        .pre_active_write_data_callback = at_pre_active_write_data_callback,
-    };
-
-    esp_at_device_ops_regist(&esp_at_device_ops);
-    esp_at_custom_ops_regist(&esp_at_custom_ops);
-}
-
-void at_custom_init(void)
-{
+    // set wifi mode for socket interface
     wifi_mode_t mode;
-    at_read_ring_buf = xRingbufferCreate(ESP_AT_RING_ESP_AT_BUFFER_SIZE, RINGBUF_TYPE_ALLOWSPLIT);
-
-    if (at_read_ring_buf == NULL) {
-        ESP_LOGE(TAG, "Cannot create ringbuf");
-        return;
-    }
-
-    /*We hope have a init ip to control esp32, so sta mode is unfriendly.
-     you can modify if you need it*/
     ESP_ERROR_CHECK(esp_wifi_get_mode(&mode));
-
     if (mode == WIFI_MODE_STA) {
         ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
     }
 
+    // get softap config
+    wifi_config_t config;
+    ESP_ERROR_CHECK(esp_wifi_get_config(WIFI_IF_AP, &config));
+
+    // get ip address of softap
     esp_netif_ip_info_t ip;
     esp_netif_t * ap_if = esp_netif_get_handle_from_ifkey("WIFI_AP_DEF");
     ESP_ERROR_CHECK(esp_netif_get_ip_info(ap_if, &ip));
-
-    /*This IP is a socket server,you can connect it and use AT command to control esp32*/
-    ESP_LOGI(TAG, "IP address of Soft AP is:"IPSTR, IP2STR(&ip.ip));
+    printf("softap: (%s) started, listen on (" IPSTR ":%d)\r\n", config.ap.ssid, IP2STR(&ip.ip), CONFIG_AT_SOCKET_PORT);
 
     xTaskCreate(&socket_task, "socket_task", 4096, NULL, 5, NULL);
-
-    esp_at_port_active_write_data((uint8_t*) "\r\nready\r\n", strlen("\r\nready\r\n"));
 }
+
+void at_interface_init(void)
+{
+    // init interface driver
+    at_socket_init();
+
+    // init interface operations
+    esp_at_device_ops_struct socket_ops = {
+        .read_data = at_socket_read_data,
+        .write_data = at_socket_write_data,
+        .get_data_length = NULL,
+        .wait_write_complete = NULL,
+    };
+    at_interface_ops_init(&socket_ops);
+
+    // init interface hooks
+    esp_at_custom_ops_struct socket_hooks = {
+        .status_callback = at_socket_transmit_mode_switch_cb,
+        .pre_sleep_callback = NULL,
+        .pre_deepsleep_callback = NULL,
+        .pre_restart_callback = NULL,
+        .pre_active_write_data_callback = NULL,
+    };
+    at_interface_hooks(&socket_hooks);
+
+    // interface ready
+    esp_at_ready();
+}
+
 #endif

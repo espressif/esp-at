@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 #pragma once
+#include "esp_at_core.h"
+#include "esp_at.h"
 
-void at_interface_init(void);
-
-void at_custom_init(void);
+/**
+ * @brief You can include more header files here for your own AT commands.
+ */
