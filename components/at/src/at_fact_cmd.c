@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
+#include "sdkconfig.h"
 #include "esp_at.h"
 
 #ifdef CONFIG_AT_SIGNALING_COMMAND_SUPPORT
@@ -52,4 +53,7 @@ bool esp_at_fact_cmd_regist(void)
 {
     return esp_at_custom_cmd_array_regist(at_fact_cmd, sizeof(at_fact_cmd) / sizeof(at_fact_cmd[0]));
 }
+
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_fact_cmd_regist);
+
 #endif

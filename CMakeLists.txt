@@ -90,6 +90,18 @@ if (DEFINED ENV{AT_RAINMAKER_SUPPORT})
     endif()
 endif()
 
+# add the extra custom components
+if (DEFINED ENV{AT_CUSTOM_COMPONENTS})
+    list(APPEND EXTRA_COMPONENT_DIRS $ENV{AT_CUSTOM_COMPONENTS})
+    message("add extra custom components: $ENV{AT_CUSTOM_COMPONENTS}")
+endif()
+
+if (EXTRA_COMPONENT_DIRS)
+    message("extra component dirs: ${EXTRA_COMPONENT_DIRS}")
+else()
+    message("no extra component dirs")
+endif()
+
 include(${IDF_PATH}/tools/cmake/project.cmake)
 
 project(esp-at)

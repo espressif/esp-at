@@ -168,7 +168,7 @@ static esp_err_t at_partition_verify(const char *name, uint8_t *data, int len)
     return ESP_FAIL;
 }
 
-bool esp_at_upgrade_process(esp_at_ota_mode_type ota_mode, uint8_t *version, const char *partition_name)
+bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char *partition_name)
 {
     bool pkg_body_start = false;
     struct sockaddr_in sock_info;
@@ -649,7 +649,7 @@ static void non_blocking_upgrade_task(void *parameter)
     s_esp_at_ota_started = true;
     ota_param_t *p = (ota_param_t *)parameter;
 
-    if (esp_at_upgrade_process((esp_at_ota_mode_type)(p->ota_mode), strlen(p->version) != 0 ? (uint8_t *)(p->version) : NULL, p->partition_name)) {
+    if (esp_at_upgrade_process((at_ota_mode_t)(p->ota_mode), strlen(p->version) != 0 ? (uint8_t *)(p->version) : NULL, p->partition_name)) {
         esp_at_port_wait_write_complete(ESP_AT_PORT_TX_WAIT_MS_MAX);
     } else {
         esp_at_set_upgrade_state(ESP_AT_OTA_STATE_FAILED);
@@ -865,4 +865,7 @@ bool esp_at_ota_cmd_regist(void)
 {
     return esp_at_custom_cmd_array_regist(at_upgrade_cmd, sizeof(at_upgrade_cmd) / sizeof(at_upgrade_cmd[0]));
 }
+
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ota_cmd_regist);
+
 #endif

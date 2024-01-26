@@ -3,4 +3,6 @@ if (DEFINED ENV{AT_RAINMAKER_SUPPORT})
 
     idf_component_register(SRCS at_rainmaker.c
                         PRIV_REQUIRES ${require_components})
+
+    target_link_libraries(${COMPONENT_LIB} INTERFACE "-u esp_at_rainmaker_cmd_regist")
 endif()

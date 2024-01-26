@@ -2203,3 +2203,5 @@ bool esp_at_rainmaker_cmd_regist(void)
         return false;
     }
 }
+
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_rainmaker_cmd_regist);

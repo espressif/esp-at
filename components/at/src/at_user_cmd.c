@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
+#include "sdkconfig.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -665,5 +666,7 @@ bool esp_at_user_cmd_regist(void)
 #endif
     return esp_at_custom_cmd_array_regist(s_at_user_cmd, sizeof(s_at_user_cmd) / sizeof(s_at_user_cmd[0]));
 }
+
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_user_cmd_regist);
 
 #endif

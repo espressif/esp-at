@@ -2013,4 +2013,7 @@ bool esp_at_web_server_cmd_regist(void)
     esp_event_handler_instance_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &at_web_got_ip_cb, NULL, NULL);
     return esp_at_custom_cmd_array_regist(at_web_cmd, sizeof(at_web_cmd) / sizeof(at_web_cmd[0]));
 }
+
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_web_server_cmd_regist);
+
 #endif
