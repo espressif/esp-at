@@ -249,6 +249,7 @@
     - get_module_cfg_dir
     - *setup_tokens_esp32c3
     - *enable_all_wifi_cmds
+    - *enlarge_app_partition
 
 #####################
 # Build at examples #
