@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include "sdkconfig.h"
 
-#ifdef CONFIG_AT_BASE_ON_UART
+#ifdef CONFIG_AT_UART_COMMAND_SUPPORT
 #include "driver/uart.h"
 #include "hal/uart_types.h"
 #include "freertos/FreeRTOS.h"
