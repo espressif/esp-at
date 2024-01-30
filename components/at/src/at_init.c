@@ -25,6 +25,7 @@
 const char *g_at_mfg_nvs_name = "mfg_nvs";
 
 // static variables
+static const char *s_ready_str = "\r\nready\r\n";
 static at_mfg_params_storage_mode_t s_at_param_mode = AT_PARAMS_NONE;
 static const char *TAG = "at-init";
 
@@ -266,6 +267,11 @@ static void at_nvs_flash_init_partition(void)
     printf("at param mode: %d\r\n", s_at_param_mode);
 }
 
+static void esp_at_ready(void)
+{
+    esp_at_port_active_write_data((uint8_t *)s_ready_str, strlen(s_ready_str));
+}
+
 void esp_at_init(void)
 {
     // initialize the manufacturing nvs partition
@@ -305,5 +311,6 @@ void esp_at_init(void)
     at_cmd_set_terminator(CONFIG_AT_COMMAND_TERMINATOR);
 #endif
 
+    esp_at_ready();
     ESP_LOGD(TAG, "esp_at_init done");
 }

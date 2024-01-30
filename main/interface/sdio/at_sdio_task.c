@@ -212,9 +212,6 @@ void at_interface_init(void)
 
     // init interface hooks
     at_interface_hooks(NULL);
-
-    // esp-at is ready
-    esp_at_ready();
 }
 
 #endif

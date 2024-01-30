@@ -281,9 +281,6 @@ void at_interface_init(void)
         .pre_active_write_data_callback = NULL,
     };
     at_interface_hooks(&uart_hooks);
-
-    // interface ready
-    esp_at_ready();
 }
 
 #endif

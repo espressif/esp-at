@@ -48,8 +48,3 @@ void at_interface_ops_init(esp_at_device_ops_struct *ops);
  *              - not NULL: use the system-hooks and the interface-hooks.
 */
 void at_interface_hooks(esp_at_custom_ops_struct *if_hooks);
-
-/**
- * @brief This function is used to notify MCU that the esp-at is ready.
-*/
-void esp_at_ready(void);

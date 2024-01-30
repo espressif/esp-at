@@ -348,9 +348,6 @@ void at_interface_init(void)
 
     // init interface hooks
     at_interface_hooks(NULL);
-
-    // interface ready
-    esp_at_ready();
 }
 
 #endif
