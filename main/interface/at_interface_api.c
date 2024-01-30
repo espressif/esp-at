@@ -12,7 +12,6 @@
 #include "esp_at_core.h"
 
 // static variables
-static const char *s_ready_str = "\r\nready\r\n";
 static esp_at_device_ops_struct s_interface_ops;
 static esp_at_custom_ops_struct s_interface_hooks;
 static const char *TAG = "at-intf";
@@ -132,10 +131,4 @@ void at_interface_hooks(esp_at_custom_ops_struct *if_hooks)
         .pre_active_write_data_callback = at_port_tx_data_before_cb,
     };
     esp_at_custom_ops_regist(&at_hooks);
-}
-
-void esp_at_ready(void)
-{
-    esp_at_port_active_write_data((uint8_t *)s_ready_str, strlen(s_ready_str));
-    ESP_LOGD(TAG, "AT interface ready");
 }
