@@ -931,7 +931,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    +CWDHCPS=<lease time>,<start IP>,<end IP>
+    +CWDHCPS:<lease time>,<start IP>,<end IP>
     OK
 
 设置命令
@@ -983,8 +983,24 @@ Wi-Fi AT 命令集
 
 .. _cmd-AUTOC:
 
-:ref:`AT+CWAUTOCONN <WiFi-AT>`：上电是否自动连接 AP
+:ref:`AT+CWAUTOCONN <WiFi-AT>`：查询/设置上电是否自动连接 AP
 --------------------------------------------------------------------------------
+
+查询命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+CWAUTOCONN?
+
+**响应：**
+
+::
+
+    +CWAUTOCONN:<enable>
+    OK
 
 设置命令
 ^^^^^^^^
@@ -1039,7 +1055,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    +CWAPPROTO=<protocol>
+    +CWAPPROTO:<protocol>
     OK
 
 设置命令
@@ -1105,7 +1121,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    +CWSTAPROTO=<protocol>
+    +CWSTAPROTO:<protocol>
     OK
 
 设置命令
