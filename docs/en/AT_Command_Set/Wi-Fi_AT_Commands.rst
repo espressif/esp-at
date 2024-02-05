@@ -931,7 +931,7 @@ Query Command
 
 ::
 
-    +CWDHCPS=<lease time>,<start IP>,<end IP>
+    +CWDHCPS:<lease time>,<start IP>,<end IP>
     OK
 
 Set Command
@@ -983,8 +983,24 @@ Example
 
 .. _cmd-AUTOC:
 
-:ref:`AT+CWAUTOCONN <WiFi-AT>`: Automatically Connect to an AP When Powered on
---------------------------------------------------------------------------------
+:ref:`AT+CWAUTOCONN <WiFi-AT>`: Query/Set Automatic Connection to an AP When Powered on
+-----------------------------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+CWAUTOCONN?
+
+**Response:**
+
+::
+
+    +CWAUTOCONN:<enable>
+    OK
 
 Set Command
 ^^^^^^^^^^^
@@ -1039,7 +1055,7 @@ Query Command
 
 ::
 
-    +CWAPPROTO=<protocol>
+    +CWAPPROTO:<protocol>
     OK
 
 Set Command
@@ -1105,7 +1121,7 @@ Query Command
 
 ::
 
-    +CWSTAPROTO=<protocol>
+    +CWSTAPROTO:<protocol>
     OK
 
 Set Command
