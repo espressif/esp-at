@@ -180,8 +180,8 @@ static void at_uart_init(void)
 
     // set uart configuration
     uart_config_t config;
+    at_uart_config_init(&config);
     if (!at_nvs_uart_config_get(&config)) {
-        at_uart_config_init(&config);
         at_nvs_uart_config_set(&config);
     }
     uart_param_config(g_at_cmd_port, &config);
