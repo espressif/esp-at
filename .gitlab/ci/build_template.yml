@@ -142,14 +142,6 @@
   - echo -e "CONFIG_AT_BLUFI_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
   - echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
 
-.enable_ble_cmd_esp32c2: &enable_ble_cmd_esp32c2
-  - sed -i '/CONFIG_BT_NIMBLE_50_FEATURE_SUPPORT=n/,/CONFIG_BT_NIMBLE_HCI_EVT_LO_BUF_COUNT=3/d' module_config/module_esp32c2_default/sdkconfig.defaults
-  - echo -e "CONFIG_AT_BLE_COMMAND_SUPPORT=y" >> module_config/module_esp32c2_default/sdkconfig.defaults
-  - echo -e "CONFIG_BT_NIMBLE_EXT_ADV=y" >> module_config/module_esp32c2_default/sdkconfig.defaults
-  - echo -e "CONFIG_BT_NIMBLE_MAX_PERIODIC_SYNCS=1" >> module_config/module_esp32c2_default/sdkconfig.defaults
-  - echo -e "CONFIG_BT_NIMBLE_GAP_DEVICE_NAME_MAX_LEN=32" >> module_config/module_esp32c2_default/sdkconfig.defaults
-  - echo -e "CONFIG_BT_NIMBLE_ATT_PREFERRED_MTU=203" >> module_config/module_esp32c2_default/sdkconfig.defaults
-
 .enable_40mhz_xtal: &enable_40mhz_xtal
   - echo -e "CONFIG_XTAL_FREQ_40=y" >> module_config/module_esp32c2_default/sdkconfig.defaults
 
@@ -219,13 +211,6 @@
     - *setup_tokens_esp32
     - *enable_ethernet_cmds
     - *enlarge_app_partition
-
-.before_script_esp32c2_enable_ble_cmds:
-  before_script:
-    - source ${CI_PROJECT_DIR}/.gitlab/ci/utils.sh
-    - add_gitlab_ssh_keys
-    - *setup_tokens_esp32c2
-    - *enable_ble_cmd_esp32c2
 
 .before_script_esp32c2_enable_40mhz_xtal:
   before_script:

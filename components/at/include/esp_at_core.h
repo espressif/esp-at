@@ -171,12 +171,11 @@ typedef enum {
 } esp_at_result_code_string_index;
 
 /**
- * @brief This function should be called only once, before any other AT functions are called.
+ * @brief This function should be called only once.
  *
- * @param netconn_max the maximum number of the link in the at module
  * @param custom_version version information by custom
  */
-void esp_at_module_init(uint32_t netconn_max, const uint8_t *custom_version);
+void esp_at_module_init(const uint8_t *custom_version);
 
 /**
  * @brief Parse digit parameter from command string.
