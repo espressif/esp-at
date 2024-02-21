@@ -151,7 +151,7 @@ esp_err_t at_mfg_uart_port_pins_get(at_uart_port_pins_t *config)
     config->rts_pin = CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT;
 
     // get uart port and uart pins from flash
-    int8_t uart_num;
+    int8_t uart_num = g_at_cmd_port;
     int32_t tx_pin, rx_pin, cts_pin, rts_pin;
     at_mfg_params_storage_mode_t mode = at_get_mfg_params_storage_mode();
     if (mode == AT_PARAMS_IN_MFG_NVS) {
@@ -193,7 +193,9 @@ esp_err_t at_mfg_uart_port_pins_get(at_uart_port_pins_t *config)
                 return ESP_FAIL;
             }
             // uart configurations are stored in the 12nd to 19th bytes of the partition
-            uart_num = data[5];
+            if (data[5] != 0xFF) {
+                uart_num = data[5];
+            }
             if (data[16] != 0xFF && data[17] != 0xFF) {
                 tx_pin = data[16];
                 rx_pin = data[17];
