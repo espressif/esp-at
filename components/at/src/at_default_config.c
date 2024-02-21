@@ -45,6 +45,7 @@ static const esp_at_module_info_t esp_at_module_info[] = {
 #if defined(CONFIG_IDF_TARGET_ESP32C2)
     {"ESP32C2-2MB",    CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_2MB,         CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_2MB},
     {"ESP32C2-4MB",    CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_4MB,         CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_4MB},
+    {"ESP32C2-BLE-2MB", NULL, NULL},
 #endif
 
 #if defined(CONFIG_IDF_TARGET_ESP32C6)
@@ -78,6 +79,13 @@ uint32_t esp_at_get_socket_task_stack_size(void)
 {
     return CONFIG_AT_SOCKET_TASK_STACK_SIZE;
 }
+
+#ifdef CONFIG_AT_NET_COMMAND_SUPPORT
+uint32_t esp_at_get_netconn_count(void)
+{
+    return CONFIG_AT_SOCKET_MAX_CONN_NUM;
+}
+#endif
 
 #ifdef CONFIG_AT_OTA_SUPPORT
 const char* esp_at_get_ota_token_by_id(uint32_t id, at_ota_mode_t ota_mode)

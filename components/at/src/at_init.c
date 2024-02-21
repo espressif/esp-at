@@ -73,7 +73,7 @@ static void at_module_init(void)
                    "Bin version:%s(%s)\r\n", CONFIG_ESP_AT_FW_VERSION, esp_at_get_current_module_name());
 #endif
 
-    esp_at_module_init(CONFIG_AT_SOCKET_MAX_CONN_NUM, version);
+    esp_at_module_init(version);
     free(version);
 
     ESP_LOGD(TAG, "at module init done");
