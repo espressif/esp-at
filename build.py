@@ -334,7 +334,7 @@ def choose_project_config():
 
     for i, module in enumerate(info_lists[platform_name]):
         if len(module['description']) > 0:
-            print('{}. {} (description: {})'.format(i + 1, module['module_name'], module['description']))
+            print('{}. {} (Firmware description: {})'.format(i + 1, module['module_name'], module['description']))
         else:
             print('{}. {}'.format(i + 1, module['module_name']))
     try:
