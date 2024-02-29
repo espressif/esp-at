@@ -14,13 +14,13 @@ typedef struct {
 } at_cmd_set_register_t;
 
 // Forces data into an at_cmd_set_first_init_fn section
-#define AT_CMD_SET_FIRST_INIT_ATTR  __attribute__((used)) _SECTION_ATTR_IMPL(".at_cmd_set_first_init_fn", __COUNTER__)
+#define AT_CMD_SET_FIRST_INIT_ATTR(p)  __attribute__((used)) _SECTION_ATTR_IMPL(".at_cmd_set_first_init_fn", p)
 
 // Forces data into an at_cmd_set_init_fn section
-#define AT_CMD_SET_INIT_ATTR  __attribute__((used)) _SECTION_ATTR_IMPL(".at_cmd_set_init_fn", __COUNTER__)
+#define AT_CMD_SET_INIT_ATTR(p)  __attribute__((used)) _SECTION_ATTR_IMPL(".at_cmd_set_init_fn", p)
 
 // Forces data into an at_cmd_set_last_init_fn section
-#define AT_CMD_SET_LAST_INIT_ATTR  __attribute__((used)) _SECTION_ATTR_IMPL(".at_cmd_set_last_init_fn", __COUNTER__)
+#define AT_CMD_SET_LAST_INIT_ATTR(p)  __attribute__((used)) _SECTION_ATTR_IMPL(".at_cmd_set_last_init_fn", p)
 
 /**
  * @brief Define an initialization function for AT command set register function which will be auto-executed in the first one.
@@ -32,6 +32,7 @@ typedef struct {
  *       and you can use ESP_AT_CMD_SET_INIT_FN or ESP_AT_CMD_SET_LAST_INIT_FN instead.
  *
  * @param f: The function name to be register (identifier)
+ * @param p: The priority of the initialization function. Higher values mean that the function will be executed later in the process.
  *
  * The function defined using this macro must return true on success. Any other value will be
  * logged and the register process will be skipped.
@@ -42,9 +43,9 @@ typedef struct {
  * It is, on the other hand, a good practice to make sure the initialization function does get
  * discarded if the related feature is not used.
  */
-#define ESP_AT_CMD_SET_FIRST_INIT_FN(f)        \
-    bool (f)(void);                            \
-    static AT_CMD_SET_FIRST_INIT_ATTR at_cmd_set_register_t s_cmd_set_first_##f = {.fn = (f), .name = #f}
+#define ESP_AT_CMD_SET_FIRST_INIT_FN(f, p)        \
+    bool (f)(void);                               \
+    static AT_CMD_SET_FIRST_INIT_ATTR(p) at_cmd_set_register_t s_cmd_set_first_##f = {.fn = (f), .name = #f}
 
 /**
  * @brief Define an initialization function for AT command set register function which will be auto-executed in the second one.
@@ -52,6 +53,7 @@ typedef struct {
  * @note The AT command set from outside the esp-at project register functions are recommended to be initialized by this macro.
  *
  * @param f: The function name to be register (identifier)
+ * @param p: The priority of the initialization function. Higher values mean that the function will be executed later in the process.
  *
  * The function defined using this macro must return true on success. Any other value will be
  * logged and the register process will be skipped.
@@ -62,14 +64,15 @@ typedef struct {
  * It is, on the other hand, a good practice to make sure the initialization function does get
  * discarded if the related feature is not used.
  */
-#define ESP_AT_CMD_SET_INIT_FN(f)        \
-    bool (f)(void);                      \
-    static AT_CMD_SET_INIT_ATTR at_cmd_set_register_t s_cmd_set_##f = {.fn = (f), .name = #f}
+#define ESP_AT_CMD_SET_INIT_FN(f, p)        \
+    bool (f)(void);                         \
+    static AT_CMD_SET_INIT_ATTR(p) at_cmd_set_register_t s_cmd_set_##f = {.fn = (f), .name = #f}
 
 /**
  * @brief Define an initialization function for AT command set register function which will be auto-executed in the last one.
  *
  * @param f: The function name to be register (identifier)
+ * @param p: The priority of the initialization function. Higher values mean that the function will be executed later in the process.
  *
  * The function defined using this macro must return true on success. Any other value will be
  * logged and the register process will be skipped.
@@ -80,9 +83,9 @@ typedef struct {
  * It is, on the other hand, a good practice to make sure the initialization function does get
  * discarded if the related feature is not used.
  */
-#define ESP_AT_CMD_SET_LAST_INIT_FN(f)        \
-    bool (f)(void);                           \
-    static AT_CMD_SET_LAST_INIT_ATTR at_cmd_set_register_t s_cmd_set_last_##f = {.fn = (f), .name = #f}
+#define ESP_AT_CMD_SET_LAST_INIT_FN(f, p)        \
+    bool (f)(void);                              \
+    static AT_CMD_SET_LAST_INIT_ATTR(p) at_cmd_set_register_t s_cmd_set_last_##f = {.fn = (f), .name = #f}
 
 /********************************************************************************
 **

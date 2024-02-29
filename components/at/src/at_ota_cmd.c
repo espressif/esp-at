@@ -866,6 +866,6 @@ bool esp_at_ota_cmd_regist(void)
     return esp_at_custom_cmd_array_regist(at_upgrade_cmd, sizeof(at_upgrade_cmd) / sizeof(at_upgrade_cmd[0]));
 }
 
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ota_cmd_regist);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ota_cmd_regist, 22);
 
 #endif
