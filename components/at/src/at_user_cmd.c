@@ -667,6 +667,6 @@ bool esp_at_user_cmd_regist(void)
     return esp_at_custom_cmd_array_regist(s_at_user_cmd, sizeof(s_at_user_cmd) / sizeof(s_at_user_cmd[0]));
 }
 
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_user_cmd_regist);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_user_cmd_regist, 24);
 
 #endif

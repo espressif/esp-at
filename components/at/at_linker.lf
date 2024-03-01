@@ -16,7 +16,7 @@ entries:
 archive: *
 entries:
     * (at_cmd_set_first_init_scheme);
-        at_cmd_set_first_init_section -> flash_rodata KEEP() SURROUND(at_cmd_set_first_init_fn_array)
+        at_cmd_set_first_init_section -> flash_rodata KEEP() SORT(init_priority) SURROUND(at_cmd_set_first_init_fn_array)
 
 # -------------- Linker fragment for AT command set register functions (then init) --------------
 [sections:at_cmd_set_init_section]
@@ -31,7 +31,7 @@ entries:
 archive: *
 entries:
     * (at_cmd_set_init_scheme);
-        at_cmd_set_init_section -> flash_rodata KEEP() SURROUND(at_cmd_set_init_fn_array)
+        at_cmd_set_init_section -> flash_rodata KEEP() SORT(init_priority) SURROUND(at_cmd_set_init_fn_array)
 
 # -------------- Linker fragment for AT command set register functions (last init) --------------
 [sections:at_cmd_set_last_init_section]
@@ -46,4 +46,4 @@ entries:
 archive: *
 entries:
     * (at_cmd_set_last_init_scheme);
-        at_cmd_set_last_init_section -> flash_rodata KEEP() SURROUND(at_cmd_set_last_init_fn_array)
+        at_cmd_set_last_init_section -> flash_rodata KEEP() SORT(init_priority) SURROUND(at_cmd_set_last_init_fn_array)
