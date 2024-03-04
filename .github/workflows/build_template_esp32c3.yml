@@ -36,6 +36,14 @@ jobs:
           echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
           echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
           echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+
+          # enlarge partition table
+          app0_size=`cat module_config/module_esp32c3_default/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
+          app1_size=`cat module_config/module_esp32c3_default/partitions_at.csv | grep ota_1 | awk -F, '{print $5}'`
+          to_set_size=$((app0_size + app1_size))
+          sed -i '/ota_1/d' module_config/module_esp32c3_default/partitions_at.csv
+          to_set_hex_size=`printf "0x%x" ${to_set_size}`
+          sed -i '/ota_0/s,'"$app0_size"','"$to_set_hex_size"',g' module_config/module_esp32c3_default/partitions_at.csv
         fi
 
         # update esp32c3 ota token
