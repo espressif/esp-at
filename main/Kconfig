@@ -138,6 +138,20 @@ config AT_HTTP_COMMAND_SUPPORT
         Please enlarge AT_PROCESS_TASK_STACK_SIZE to be more than 4096 if HTTPS link need to establish,
         otherwise, unexpected crash probably occur due to AT process task overflow.
 
+config AT_HTTP_TX_BUFFER_SIZE
+    int "Default HTTP TX buffer size"
+    default 2048
+    depends on AT_HTTP_COMMAND_SUPPORT
+    help
+        This buffer size using for transmit HTTP request
+
+config AT_HTTP_RX_BUFFER_SIZE
+    int "Default HTTP RX buffer size"
+    default 2048
+    depends on AT_HTTP_COMMAND_SUPPORT
+    help
+        This buffer size using for receive HTTP response
+
 config AT_WS_COMMAND_SUPPORT
     bool "AT WebSocket command support."
     default "n"

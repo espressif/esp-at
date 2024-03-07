@@ -87,6 +87,18 @@ uint32_t esp_at_get_netconn_count(void)
 }
 #endif
 
+#ifdef CONFIG_AT_HTTP_COMMAND_SUPPORT
+uint32_t esp_at_get_http_tx_buffer_size(void)
+{
+    return CONFIG_AT_HTTP_TX_BUFFER_SIZE;
+}
+
+uint32_t esp_at_get_http_rx_buffer_size(void)
+{
+    return CONFIG_AT_HTTP_RX_BUFFER_SIZE;
+}
+#endif
+
 #ifdef CONFIG_AT_OTA_SUPPORT
 const char* esp_at_get_ota_token_by_id(uint32_t id, at_ota_mode_t ota_mode)
 {
