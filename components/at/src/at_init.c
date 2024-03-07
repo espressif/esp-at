@@ -50,6 +50,16 @@ esp_err_t at_wifi_deinit(void)
 }
 #endif
 
+#if CONFIG_AT_WIFI_DUMP_STATIS_DEBUG
+static void at_wifi_statistics_task(void *params)
+{
+    while (1) {
+        vTaskDelay(CONFIG_AT_WIFI_DUMP_STATIS_INTV_MS / portTICK_PERIOD_MS);
+        esp_wifi_statis_dump(0xFFFFFFFF);
+    }
+}
+#endif
+
 esp_err_t esp_at_netif_init(void)
 {
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
@@ -73,9 +83,17 @@ static void at_module_init(void)
                    "Bin version:%s(%s)\r\n", CONFIG_ESP_AT_FW_VERSION, esp_at_get_current_module_name());
 #endif
 
+#if CONFIG_AT_DEBUG
+    char *versions = (char *)malloc(AT_TEMP_BUFFER_SIZE);
+    ret = esp_at_get_core_version((char *)versions, AT_TEMP_BUFFER_SIZE);
+    ret += snprintf((char *)versions + ret, AT_TEMP_BUFFER_SIZE - ret, "SDK version:%s\r\n", esp_get_idf_version());
+    ret += snprintf((char *)versions + ret, AT_TEMP_BUFFER_SIZE - ret, "%s", version);
+    printf("%.*s\r\n", ret, versions);
+    free(versions);
+#endif
+
     esp_at_module_init(version);
     free(version);
-
     ESP_LOGD(TAG, "at module init done");
 }
 
@@ -282,6 +300,10 @@ void esp_at_init(void)
     esp_netif_create_default_wifi_sta();
     esp_netif_create_default_wifi_ap();
     at_wifi_init();
+
+#ifdef CONFIG_AT_WIFI_DUMP_STATIS_DEBUG
+    xTaskCreate(at_wifi_statistics_task, "wifi-dbg", 2048, NULL, 1, NULL);
+#endif
 #endif
 
     // initialize the interface for esp-at and mcu communication
