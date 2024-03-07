@@ -21,7 +21,15 @@ static int32_t at_port_read_data(uint8_t *buffer, int32_t len)
     if (!s_interface_ops.read_data) {
         return -1;
     }
-    return s_interface_ops.read_data(buffer, len);
+    int32_t ret = s_interface_ops.read_data(buffer, len);
+
+#if CONFIG_AT_RX_DATA_DEBUG
+    if (ret > 0) {
+        ESP_LOG_BUFFER_HEXDUMP("intf-rx", buffer, at_min(ret, CONFIG_AT_RX_DATA_MAX_LEN), ESP_LOG_INFO);
+    }
+#endif
+
+    return ret;
 }
 
 static int32_t at_port_write_data(uint8_t *data, int32_t len)
@@ -29,6 +37,11 @@ static int32_t at_port_write_data(uint8_t *data, int32_t len)
     if (!s_interface_ops.write_data) {
         return -1;
     }
+
+#if CONFIG_AT_TX_DATA_DEBUG
+    ESP_LOG_BUFFER_HEXDUMP("intf-tx", data, at_min(len, CONFIG_AT_TX_DATA_MAX_LEN), ESP_LOG_INFO);
+#endif
+
     return s_interface_ops.write_data(data, len);
 }
 

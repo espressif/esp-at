@@ -353,4 +353,48 @@ config AT_RAINMAKER_COMMAND_SUPPORT
     default n
     depends on AT_ENABLE
     depends on IDF_TARGET_ESP32C3
+
+menuconfig AT_DEBUG
+    bool "Enable ESP-AT Debug"
+    default n
+    help
+        Enabling this option allows different kinds of ESP-AT debug output, and these debug outputs will be sent to the AT log port.
+        All ESP-AT debug features increase the size of the final binary.
+
+    config AT_TX_DATA_DEBUG
+        bool "Logging the data sent from AT to MCU (AT ----> MCU)"
+        depends on AT_DEBUG && (LOG_DEFAULT_LEVEL_INFO || LOG_DEFAULT_LEVEL_DEBUG || LOG_DEFAULT_LEVEL_VERBOSE)
+        default y
+
+    config AT_TX_DATA_MAX_LEN
+        int "The maximum length of the data sent from AT to MCU to be logged"
+        depends on AT_TX_DATA_DEBUG
+        default 8192
+        help
+            Logging the data with the length of AT_TX_DATA_MAX_LEN.
+            You can speed up the data transfer by setting a smaller value.
+
+    config AT_RX_DATA_DEBUG
+        bool "Logging the data received by AT from MCU (AT <---- MCU)"
+        depends on AT_DEBUG && (LOG_DEFAULT_LEVEL_INFO || LOG_DEFAULT_LEVEL_DEBUG || LOG_DEFAULT_LEVEL_VERBOSE)
+        default y
+
+    config AT_RX_DATA_MAX_LEN
+        int "The maximum length of the data received by AT from MCU to be logged"
+        depends on AT_RX_DATA_DEBUG
+        default 8192
+        help
+            Logging the data with the length of AT_RX_DATA_MAX_LEN.
+            You can speed up the data transfer by setting a smaller value.
+
+    config AT_WIFI_DUMP_STATIS_DEBUG
+        bool "Periodically dump Wi-Fi statistics"
+        depends on AT_DEBUG && (LOG_DEFAULT_LEVEL_INFO || LOG_DEFAULT_LEVEL_DEBUG || LOG_DEFAULT_LEVEL_VERBOSE)
+        default n
+
+    config AT_WIFI_DUMP_STATIS_INTV_MS
+        int "The interval of dumping Wi-Fi statistics (ms)"
+        depends on AT_WIFI_DUMP_STATIS_DEBUG
+        default 3000
+
 endmenu
