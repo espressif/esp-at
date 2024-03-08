@@ -438,4 +438,16 @@ void esp_at_port_exit_specific(void);
  */
 const uint8_t* esp_at_get_current_cmd_name(void);
 
+/**
+ * @brief Get the version of the AT core library
+ *
+ * @param buffer: buffer to store the version string
+ * @param size: size of the buffer
+ *
+ * @return
+ * - > 0 : the real length of the version string
+ * - others : fail
+ */
+int32_t esp_at_get_core_version(char *buffer, uint32_t size);
+
 void at_handle_result_code(esp_at_result_code_string_index code, void *pbuf);
