@@ -397,4 +397,58 @@ menuconfig AT_DEBUG
         depends on AT_WIFI_DUMP_STATIS_DEBUG
         default 3000
 
+    config AT_NET_DEBUG
+        bool "Enable Network Debug"
+        depends on AT_DEBUG && (LOG_DEFAULT_LEVEL_INFO || LOG_DEFAULT_LEVEL_DEBUG || LOG_DEFAULT_LEVEL_VERBOSE)
+        default n
+        help
+            Enabling this option allows different kinds of network debug output, and these debug outputs will be sent to the AT log port.
+            Attention: this network debug feature does not support IP fragment and IPv6 till now.
+
+    config AT_NET_TCP_DEBUG
+        bool "Enable the TCP packet debug messages"
+        depends on AT_NET_DEBUG
+        default y
+        help
+            Enabling this option to monitor the outgoing (TX) and incoming (RX) packets of TCP or protocol based on TCP (SSL/HTTP/MQTT/WebSocket/etc).
+            It will print TCP packets information, which includes ip total len, tcp data len, tcp seq, tcp ack, src port, dest port, and tcp flags. TCP flags is the accumulation of CWR:128, ECN:64, Urgent:32, Ack:16, Push:8, Reset:4, SYN:2, FIN:1.
+
+    config AT_NET_TCP_DEBUG_PORT_LIST
+        string "Specify the list of TCP port numbers to monitor"
+        depends on AT_NET_TCP_DEBUG
+        default "0"
+        help
+            0 means all ports, and the port numbers should be separated by commas if monitor multiple ports.
+
+    config AT_NET_UDP_DEBUG
+        bool "Enable the UDP packet debug messages"
+        depends on AT_NET_DEBUG
+        default y
+        help
+            Enabling this option to monitor the outgoing (TX) and incoming (RX) packets of UDP or protocol based on UDP (DHCP/DNS/SNTP/mDNS/etc).
+            It will print UDP packets information, which includes ip total len, src port, dest port, and udp data len.
+
+    config AT_NET_UDP_DEBUG_TX_PORT_LIST
+        string "Specify the list of outgoing UDP (UDP TX) port numbers to monitor"
+        depends on AT_NET_UDP_DEBUG
+        default "0"
+        help
+            0 means all ports, and the port numbers should be separated by commas if monitor multiple ports.
+
+    config AT_NET_UDP_DEBUG_RX_PORT_LIST
+        string "Specify the list of incoming UDP (UDP RX) port numbers to monitor"
+        depends on AT_NET_UDP_DEBUG
+        default "53, 67, 68, 123"
+        help
+            The port number should be separated by commas if monitor multiple ports.
+            You should not set the port number to 0 to prevent UDP RX flooding.
+
+    config AT_NET_ICMP_DEBUG
+        bool "Enable the ICMP packet debug messages"
+        depends on AT_NET_DEBUG
+        default y
+        help
+            Enabling this option to monitor the outgoing (TX) and incoming (RX) packets of ICMP.
+            It will print ICMP packets information, which includes ip total len, icmp type, id, seq, and icmp data len.
+
 endmenu

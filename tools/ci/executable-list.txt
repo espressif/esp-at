@@ -10,6 +10,7 @@ docs/en/conf.py
 docs/generate_chart.py
 docs/zh_CN/conf.py
 tools/at.py
+tools/at_net_debug.py
 tools/ci/check_executables.py
 tools/ci/idf_ci_utils.py
 tools/esp_at_factory_bin_combine.py

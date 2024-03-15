@@ -126,6 +126,25 @@ if (CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
     add_dependencies(flash ota_image)
 endif()
 
+# Network Debug
+add_custom_target(at_net_debug ALL)
+if (CONFIG_AT_NET_DEBUG)
+    add_custom_command(TARGET at_net_debug
+        POST_BUILD
+        COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/tools/at_net_debug.py --sdkconfig $ENV{ESP_AT_PROJECT_PATH}/sdkconfig
+        DEPENDS $ENV{ESP_AT_PROJECT_PATH}/sdkconfig
+        WORKING_DIRECTORY $ENV{ESP_AT_PROJECT_PATH}/esp-idf
+        COMMENT "Enabling Network Debug...")
+else()
+    add_custom_command(TARGET at_net_debug
+        POST_BUILD
+        COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/tools/at_net_debug.py --restore
+        WORKING_DIRECTORY $ENV{ESP_AT_PROJECT_PATH}/esp-idf
+        COMMENT "Disabling Network Debug...")
+endif()
+add_dependencies(gen_project_binary at_net_debug)
+add_dependencies(flash at_net_debug)
+
 # Create factory bin
 file(MAKE_DIRECTORY $ENV{ESP_AT_PROJECT_PATH}/build/factory)
 add_custom_command(TARGET factory_bin
