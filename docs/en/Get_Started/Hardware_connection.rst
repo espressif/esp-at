@@ -19,7 +19,7 @@ What You Need
      - Function
    * - {IDF_TARGET_NAME} board
      - Slave MCU.
-   * - USB cable ({IDF_TARGET_NAME} borad to PC)
+   * - USB cable ({IDF_TARGET_NAME} board to PC)
      - Download/Log output connection.
    * - PC
      - Act as Host MCU. Download firmware to Slave MCU.
@@ -287,7 +287,7 @@ Note:
   {IDF_TARGET_CFG_PREFIX}-4MB Series
   ----------------------------------
 
-  {IDF_TARGET_CFG_PREFIX}-4MB series refer to the module or board that has a built-in {IDF_TARGET_NAME}/ESP8684 chip with a 4 MB flash, such as {IDF_TARGET_CFG_PREFIX}-MINI series device and {IDF_TARGET_CFG_PREFIX}-WROOM series device.
+  {IDF_TARGET_CFG_PREFIX}-4MB series refer to the module or board that has a built-in {IDF_TARGET_NAME}/ESP8684 chip with a 4 MB flash, such as {IDF_TARGET_NAME} MINI series device and {IDF_TARGET_NAME} WROOM series device.
 
   {IDF_TARGET_CFG_PREFIX}-4MB AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default.
 
