@@ -287,7 +287,7 @@
   {IDF_TARGET_CFG_PREFIX}-4MB 系列
   --------------------------------
 
-  {IDF_TARGET_CFG_PREFIX}-4MB 系列指的是内置 {IDF_TARGET_NAME}/ESP8684 芯片，同时有 4 MB flash 的模组/开发板，例如：{IDF_TARGET_CFG_PREFIX} MINI 系列设备、{IDF_TARGET_CFG_PREFIX} WROOM 系列设备。
+  {IDF_TARGET_CFG_PREFIX}-4MB 系列指的是内置 {IDF_TARGET_NAME}/ESP8684 芯片，同时有 4 MB flash 的模组/开发板，例如：{IDF_TARGET_NAME} MINI 系列设备、{IDF_TARGET_NAME} WROOM 系列设备。
 
   {IDF_TARGET_CFG_PREFIX}-4MB AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。
 

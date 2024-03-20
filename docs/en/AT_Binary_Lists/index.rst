@@ -26,78 +26,22 @@ This document covers the following sections:
 Brief Introduction to AT Firmware
 ----------------------------------
 
-ESP-AT firmware contains several binaries, and each of them is dedicated to a specific function:
+The ESP-AT firmware package contains several binary files for specific functionalities:
 
-- ``factory/factory_xxx.bin`` is the combination of all binaries. So, you can either download the ``factory/factory_xxx.bin`` to address 0, or several binaries to different addresses according to ``download.config``.
--   ``at_customize.bin`` provides a user partition table, which lists the starting address and partition size for the ``mfg_nvs`` and possible ``fatfs``. You can read and write the contents of the partition listed in this file with the command :ref:`AT+FS <cmd-FS>` and :ref:`AT+SYSFLASH <cmd-SYSFLASH>`.
--   ``mfg_nvs.bin`` indicates the hardware configurations for different {IDF_TARGET_NAME} modules (see the table below). Please make sure the correct bin is used for your module. For more information on this parameter file, please refer to :ref:`firmware-modify-paras-not-source-code`.
+.. code-block:: none
 
-  .. only:: esp32
-
-    .. list-table:: Hardware Configuration of {IDF_TARGET_NAME} Modules
-       :header-rows: 1
-
-       * - Modules
-         - UART Pins (TX, RX, CTS, RTS)
-       * - ESP32-WROOM-32 Series (ESP32 Default Module)
-         - - GPIO17
-           - GPIO16
-           - GPIO15
-           - GPIO14
-       * - ESP32-WROVER Series (Supports Classic Bluetooth)
-         - - GPIO22
-           - GPIO19
-           - GPIO15
-           - GPIO14
-       * - ESP32-PICO Series
-         - - GPIO22
-           - GPIO19
-           - GPIO15
-           - GPIO14
-       * - ESP32-SOLO Series
-         - - GPIO17
-           - GPIO16
-           - GPIO15
-           - GPIO14
-
-  .. only:: esp32c2
-
-    .. list-table:: Hardware Configuration of {IDF_TARGET_NAME} Modules
-       :header-rows: 1
-
-       * - Modules
-         - UART Pins (TX, RX, CTS, RTS)
-       * - ESP32C2-4MB Series
-         - - GPIO7
-           - GPIO6
-           - GPIO5
-           - GPIO4
-
-  .. only:: esp32c3
-
-    .. list-table:: Hardware Configuration of {IDF_TARGET_NAME} Modules
-       :header-rows: 1
-
-       * - Modules
-         - UART Pins (TX, RX, CTS, RTS)
-       * - ESP32-C3-MINI-1 Series
-         - - GPIO7
-           - GPIO6
-           - GPIO5
-           - GPIO4
-
-  .. only:: esp32c6
-
-    .. list-table:: Hardware Configuration of {IDF_TARGET_NAME} Modules
-       :header-rows: 1
-
-       * - Modules
-         - UART Pins (TX, RX, CTS, RTS)
-       * - ESP32C6-4MB Series
-         - - GPIO7
-           - GPIO6
-           - GPIO5
-           - GPIO4
+  build
+  ├── at_customize.bin        // Secondary partition table (user partition table, listing the start address and size of the mfg_nvs partition and fatfs partition)
+  ├── bootloader
+  │   └── bootloader.bin      // Bootloader
+  ├── customized_partitions
+  │   └── mfg_nvs.bin         // Factory configuration parameters, parameter values are listed in the mfg_nvs.csv file in the same directory
+  ├── esp-at.bin              // AT application firmware
+  ├── factory
+  │   └── factory_xxx.bin     // Collection of binary files for specific functionalities. You can burn only this file to the flash space with a starting address of 0, or burn several binary files to the flash space corresponding to the starting address according to the information in the download.config file.
+  ├── partition_table
+  │   └── partition-table.bin // Primary partition table (system partition table)
+  └── ota_data_initial.bin    // OTA data initialization file
 
 .. _firmware-selection:
 

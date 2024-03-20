@@ -14,25 +14,26 @@ This section describes the differences among AT firmwares of {IDF_TARGET_NAME} s
 
 .. only:: esp32
 
-  - ESP32-WROOM-32_AT_Bin (referred to as **WROOM Bin** in this section);
-  - ESP32-WROVER-32_AT_Bin (referred to as **WROOM Bin** in this section);
-  - ESP32-PICO-D4_AT_Bin (referred to as **PICO-D4 Bin** in this section);
-  - ESP32-SOLO-1_AT_Bin (referred to as **SOLO-1 Bin** in this section);
-  - ESP32-MINI-1_AT_Bin (referred to as **MINI-1 Bin** in this section);
-  - ESP32-D2WD_AT_Bin (referred to as **D2WD Bin** in this section);
+  - ESP32-WROOM-32-AT-Vx.x.x.x.zip (referred to as **WROOM Bin** in this section);
+  - ESP32-WROVER-32-AT-Vx.x.x.x.zip (referred to as **WROVER Bin** in this section);
+  - ESP32-PICO-D4-AT-Vx.x.x.x.zip (referred to as **PICO-D4 Bin** in this section);
+  - ESP32-SOLO-1-AT-Vx.x.x.x.zip (referred to as **SOLO-1 Bin** in this section);
+  - ESP32-MINI-1-AT-Vx.x.x.x.zip (referred to as **MINI-1 Bin** in this section);
+  - ESP32-D2WD-AT-Vx.x.x.x.zip (referred to as **D2WD Bin** in this section);
 
 .. only:: esp32c2
 
-  - ESP32C2-2MB_AT_Bin (referred to as **ESP32C2-2MB Bin** in this section);
-  - ESP32C2-4MB_AT_Bin (referred to as **ESP32C2-4MB Bin** in this section);
+  - ESP32C2-2MB-AT-Vx.x.x.x.zip (referred to as **ESP32C2-2MB Bin** in this section);
+  - ESP32C2-4MB-AT-Vx.x.x.x.zip (referred to as **ESP32C2-4MB Bin** in this section);
+  - ESP32C2-BLE-2MB Bin (firmware is not released, but you can download the ``esp32c2-ble-2mb-at`` firmware from :doc:`GitHub Actions <How_to_download_the_latest_temporary_version_of_AT_from_github>`, or `Compile ESP-AT Project Locally <How_to_clone_project_and_compile_it>` by yourself);
 
 .. only:: esp32c3
 
-  - ESP32-C3-MINI-1_AT_Bin (referred to as **MINI-1 Bin** in this section);
+  - ESP32-C3-MINI-1-AT-Vx.x.x.x.zip (referred to as **MINI-1 Bin** in this section);
 
 .. only:: esp32c6
 
-  - ESP32C6-4MB_AT_Bin (referred to as **ESP32C6-4MB Bin** in this section);
+  - ESP32C6-4MB-AT-Vx.x.x.x.zip (referred to as **ESP32C6-4MB Bin** in this section);
 
 Supported Command Set
 ^^^^^^^^^^^^^^^^^^^^^
@@ -65,21 +66,21 @@ The table lists which command set is supported by default in the official AT fir
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - wifi
+    * - Wi-Fi
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - net
+    * - TCP-IP
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - MDNS
+    * - mDNS
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
@@ -93,7 +94,7 @@ The table lists which command set is supported by default in the official AT fir
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - smartconfig
+    * - SmartConfig
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
@@ -114,42 +115,42 @@ The table lists which command set is supported by default in the official AT fir
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - http
+    * - HTTP
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - ble
+    * - Bluetooth LE
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - ble hid
+    * - Bluetooth LE HID
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - blufi
+    * - BluFi
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - bt spp
+    * - Bluetooth SPP
       - |icon-orange-check|
       - |icon-green-check|
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-    * - bt a2dp
+    * - Bluetooth A2DP
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
@@ -163,7 +164,7 @@ The table lists which command set is supported by default in the official AT fir
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-    * - FS
+    * - FileSystem
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
@@ -177,14 +178,21 @@ The table lists which command set is supported by default in the official AT fir
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-    * - WPA2
+    * - WPA2 enterprise
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-    * - WEB
+    * - Web server
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+    * - WebSocket
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
@@ -207,56 +215,81 @@ The table lists which command set is supported by default in the official AT fir
     * - Command Set
       - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
+      - ESP32C2-BLE-2MB Bin
     * - base
+      - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
     * - user
       - |icon-green-check|
       - |icon-green-check|
-    * - wifi
+      - |icon-green-check|
+    * - Wi-Fi
       - |icon-green-check|
       - |icon-green-check|
-    * - net
+      - |icon-red-cross|
+    * - TCP-IP
       - |icon-green-check|
       - |icon-green-check|
-    * - MDNS
+      - |icon-red-cross|
+    * - mDNS
       - |icon-green-check|
       - |icon-green-check|
+      - |icon-red-cross|
     * - WPS
       - |icon-green-check|
       - |icon-green-check|
-    * - smartconfig
+      - |icon-red-cross|
+    * - SmartConfig
       - |icon-green-check|
       - |icon-green-check|
+      - |icon-red-cross|
     * - ping
       - |icon-green-check|
       - |icon-green-check|
+      - |icon-red-cross|
     * - MQTT
       - |icon-green-check|
       - |icon-green-check|
-    * - http
+      - |icon-red-cross|
+    * - HTTP
       - |icon-orange-check|
       - |icon-green-check|
-    * - FS
+      - |icon-red-cross|
+    * - Bluetooth LE
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-green-check|
+    * - BluFi
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-red-cross|
+    * - FileSystem
+      - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
     * - driver
       - |icon-orange-check|
       - |icon-orange-check|
-    * - WPA2
+      - |icon-orange-check|
+    * - WPA2 enterprise
       - |icon-orange-check|
       - |icon-orange-check|
-    * - WEB
+      - |icon-red-cross|
+    * - WEB server
       - |icon-orange-check|
       - |icon-orange-check|
+      - |icon-red-cross|
+    * - WebSocket
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-red-cross|
     * - OTA
       - |icon-green-check|
       - |icon-green-check|
-    * - blufi
-      - |icon-orange-check|
-      - |icon-green-check|
+      - |icon-red-cross|
 
-.. only:: esp32c3 or esp32c6
+.. only:: esp32c3
 
   .. list-table::
     :header-rows: 1
@@ -267,29 +300,81 @@ The table lists which command set is supported by default in the official AT fir
       - |icon-green-check|
     * - user
       - |icon-green-check|
-    * - wifi
+    * - Wi-Fi
       - |icon-green-check|
-    * - net
+    * - TCP-IP
       - |icon-green-check|
-    * - MDNS
+    * - mDNS
       - |icon-green-check|
     * - WPS
       - |icon-green-check|
-    * - smartconfig
+    * - SmartConfig
       - |icon-green-check|
     * - ping
       - |icon-green-check|
     * - MQTT
       - |icon-green-check|
-    * - http
+    * - HTTP
       - |icon-green-check|
-    * - FS
+    * - Bluetooth LE
+      - |icon-green-check|
+    * - Bluetooth LE HID
+      - |icon-green-check|
+    * - BluFi
+      - |icon-green-check|
+    * - FileSystem
       - |icon-orange-check|
     * - driver
       - |icon-orange-check|
-    * - WPA2
+    * - WPA2 enterprise
       - |icon-orange-check|
-    * - WEB
+    * - Web server
+      - |icon-orange-check|
+    * - WebSocket
+      - |icon-orange-check|
+    * - OTA
+      - |icon-green-check|
+
+.. only:: esp32c6
+
+  .. list-table::
+    :header-rows: 1
+
+    * - Command Set
+      - ESP32C6-4MB Bin
+    * - base
+      - |icon-green-check|
+    * - user
+      - |icon-green-check|
+    * - Wi-Fi
+      - |icon-green-check|
+    * - TCP-IP
+      - |icon-green-check|
+    * - mDNS
+      - |icon-green-check|
+    * - WPS
+      - |icon-green-check|
+    * - SmartConfig
+      - |icon-green-check|
+    * - ping
+      - |icon-green-check|
+    * - MQTT
+      - |icon-green-check|
+    * - HTTP
+      - |icon-green-check|
+    * - Bluetooth LE
+      - |icon-green-check|
+    * - BluFi
+      - |icon-green-check|
+    * - FileSystem
+      - |icon-orange-check|
+    * - driver
+      - |icon-orange-check|
+    * - WPA2 enterprise
+      - |icon-orange-check|
+    * - Web server
+      - |icon-orange-check|
+    * - WebSocket
       - |icon-orange-check|
     * - OTA
       - |icon-green-check|
@@ -328,24 +413,24 @@ Hardware Differences
         | RX: 16
         | CTS: 15
         | RTS: 14
-      - | TX: 22 
-        | RX: 19 
+      - | TX: 22
+        | RX: 19
         | CTS: 15
         | RTS: 14
-      - | TX: 22 
-        | RX: 19 
+      - | TX: 22
+        | RX: 19
         | CTS: 15
         | RTS: 14
-      - | TX: 17 
-        | RX: 16 
-        | CTS: 15 
-        | RTS: 14
-      - | TX: 22 
-        | RX: 19 
+      - | TX: 17
+        | RX: 16
         | CTS: 15
         | RTS: 14
-      - | TX: 22 
-        | RX: 19 
+      - | TX: 22
+        | RX: 19
+        | CTS: 15
+        | RTS: 14
+      - | TX: 22
+        | RX: 19
         | CTS: 15
         | RTS: 14
 
@@ -357,10 +442,13 @@ Hardware Differences
     * - Hardware
       - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
+      - ESP32C2-BLE-2MB Bin
     * - Flash
       - 2 MB
       - 4 MB
+      - 2 MB
     * - PSRAM
+      - |icon-red-cross|
       - |icon-red-cross|
       - |icon-red-cross|
     * - UART Pins [#one]_
@@ -372,14 +460,35 @@ Hardware Differences
         | RX: 6
         | CTS: 5
         | RTS: 4
+      - | TX: 7
+        | RX: 6
+        | CTS: 5
+        | RTS: 4
 
-.. only:: esp32c3 or esp32c6
+.. only:: esp32c3
 
   .. list-table::
     :header-rows: 1
 
     * - Hardware
       - MINI-1 Bin
+    * - Flash
+      - 4 MB
+    * - PSRAM
+      - |icon-red-cross|
+    * - UART Pins [#one]_
+      - | TX: 7
+        | RX: 6
+        | CTS: 5
+        | RTS: 4
+
+.. only:: esp32c6
+
+  .. list-table::
+    :header-rows: 1
+
+    * - Hardware
+      - ESP32C6-4MB Bin
     * - Flash
       - 4 MB
     * - PSRAM
@@ -555,25 +664,31 @@ The table below lists the modules or chips that are default supported by the off
 
   .. list-table::
     :header-rows: 1
-    :widths: 100 60 60
+    :widths: 100 60 60 60
 
     * - Module/Chip
       - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
+      - ESP32C2-BLE-2MB Bin
     * - ESP8684-MINI-1/1U
+      - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
     * - ESP8684-WROOM-02C/02UC
       - |icon-green-check|
       - |icon-green-check|
+      - |icon-green-check|
     * - ESP8684-WROOM-03
       - |icon-red-cross|
+      - |icon-green-check|
       - |icon-green-check|
     * - ESP8684-WROOM-05
       - |icon-red-cross|
       - |icon-green-check|
+      - |icon-green-check|
     * - ESP8684-WROOM-07
       - |icon-red-cross|
+      - |icon-orange-check|
       - |icon-orange-check|
 
 .. only:: esp32c3

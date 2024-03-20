@@ -3,7 +3,7 @@
 
 :link_to_translation:`en:[English]`
 
-推荐下载最新版本的固件。目前，乐鑫只发布了以下 {IDF_TARGET_NAME} 系列模组的 AT 固件。
+推荐下载最新版本的固件。目前，乐鑫发布了以下 {IDF_TARGET_NAME} 系列模组的 AT 固件。
 
 .. note::
 

@@ -25,7 +25,7 @@ Please follow the detailed steps below to download the ``at.py`` tool, modify th
 Step 1: Install Python
 ----------------------
 
-If you have already installed Python on your local machine, you can skip this step. Otherwise, please download and install Python according to the official `Python documentation <https://www.python.org/downloads/>`_. **It is recommended to use Python 3.7.0 or later versions**.
+If you have already installed Python on your local machine, you can skip this step. Otherwise, please download and install Python according to the official `Python documentation <https://www.python.org/downloads/>`_. **It is recommended to use Python 3.8.0 or later versions**.
 
 After the installation is complete, you can open a command line and enter ``python --version`` to check the Python version.
 

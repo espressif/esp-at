@@ -41,7 +41,7 @@ SDIO slave 管脚如下所示：
 Slave 侧  
 ^^^^^^^^
 
-AT 项目默认使用 UART 作为传输介质，你可以通过 ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT throughSDIO`` 切换为用 SDIO 作为传输介质。之后重新编译 ``esp-at`` 工程，烧录新的固件并运行。
+AT 项目默认使用 UART 作为传输介质，你可以通过 ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT through SDIO`` 切换为用 SDIO 作为传输介质。之后重新编译 ``esp-at`` 工程，烧录新的固件并运行。
 
 Host 侧
 ^^^^^^^

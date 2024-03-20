@@ -14,25 +14,26 @@ ESP-AT 固件差异
 
 .. only:: esp32
 
-  - ESP32-WROOM-32_AT_Bin（本节简称为 **WROOM Bin**）
-  - ESP32-WROVER-32_AT_Bin（本节简称为 **WROVER Bin**）
-  - ESP32-PICO-D4_AT_Bin（本节简称为 **PICO-D4 Bin**）
-  - ESP32-SOLO-1_AT_Bin（本节简称为 **SOLO-1 Bin**
-  - ESP32-MINI-1_AT_Bin（本节简称为 **MINI-1 Bin**）
-  - ESP32-D2WD_AT_Bin（本节简称为 **D2WD Bin**）
+  - ESP32-WROOM-32-AT-Vx.x.x.x.zip（本节简称为 **WROOM Bin**）
+  - ESP32-WROVER-32-AT-Vx.x.x.x.zip（本节简称为 **WROVER Bin**）
+  - ESP32-PICO-D4-AT-Vx.x.x.x.zip（本节简称为 **PICO-D4 Bin**）
+  - ESP32-SOLO-1-AT-Vx.x.x.x.zip（本节简称为 **SOLO-1 Bin**
+  - ESP32-MINI-1-AT-Vx.x.x.x.zip（本节简称为 **MINI-1 Bin**）
+  - ESP32-D2WD-AT-Vx.x.x.x.zip（本节简称为 **D2WD Bin**）
 
 .. only:: esp32c2
 
-  - ESP32C2-2MB_AT_Bin（本节简称为 **ESP32C2-2MB Bin**）
-  - ESP32C2-4MB_AT_Bin（本节简称为 **ESP32C2-4MB Bin**）
+  - ESP32C2-2MB-AT-Vx.x.x.x.zip（本节简称为 **ESP32C2-2MB Bin**）
+  - ESP32C2-4MB-AT-Vx.x.x.x.zip（本节简称为 **ESP32C2-4MB Bin**）
+  - ESP32C2-BLE-2MB Bin（固件未发布，您可以从 :doc:`GitHub Actions 里下载 <How_to_download_the_latest_temporary_version_of_AT_from_github>` ``esp32c2-ble-2mb-at`` 固件，或者 :doc:`本地编译 ESP-AT 工程 <How_to_clone_project_and_compile_it>`）
 
 .. only:: esp32c3
 
-  - ESP32-C3-MINI-1_AT_Bin（本节简称为 **MINI-1 Bin**）
+  - ESP32-C3-MINI-1-AT-Vx.x.x.x.zip（本节简称为 **MINI-1 Bin**）
 
 .. only:: esp32c6
 
-  - ESP32C6-4MB_AT_Bin（本节简称为 **ESP32C6-4MB Bin**）
+  - ESP32C6-4MB-AT-Vx.x.x.x.zip（本节简称为 **ESP32C6-4MB Bin**）
 
 支持的命令集
 ^^^^^^^^^^^^
@@ -65,21 +66,21 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - wifi
+    * - Wi-Fi
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - net
+    * - TCP-IP
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - MDNS
+    * - mDNS
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
@@ -93,7 +94,7 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - smartconfig
+    * - SmartConfig
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
@@ -114,42 +115,42 @@ ESP-AT 固件差异
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - http
+    * - HTTP
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - ble
+    * - Bluetooth LE
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - ble hid
+    * - Bluetooth LE HID
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - blufi
+    * - BluFi
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
-    * - bt spp
+    * - Bluetooth SPP
       - |icon-orange-check|
       - |icon-green-check|
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-    * - bt a2dp
+    * - Bluetooth A2DP
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
@@ -163,7 +164,7 @@ ESP-AT 固件差异
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-    * - FS
+    * - FileSystem
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
@@ -177,14 +178,21 @@ ESP-AT 固件差异
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-    * - WPA2
+    * - WPA2 enterprise
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-    * - WEB
+    * - Web server
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+    * - WebSocket
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
@@ -207,56 +215,81 @@ ESP-AT 固件差异
     * - 命令集
       - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
+      - ESP32C2-BLE-2MB Bin
     * - base
+      - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
     * - user
       - |icon-green-check|
       - |icon-green-check|
-    * - wifi
+      - |icon-green-check|
+    * - Wi-Fi
       - |icon-green-check|
       - |icon-green-check|
-    * - net
+      - |icon-red-cross|
+    * - TCP-IP
       - |icon-green-check|
       - |icon-green-check|
-    * - MDNS
+      - |icon-red-cross|
+    * - mDNS
       - |icon-green-check|
       - |icon-green-check|
+      - |icon-red-cross|
     * - WPS
       - |icon-green-check|
       - |icon-green-check|
-    * - smartconfig
+      - |icon-red-cross|
+    * - SmartConfig
       - |icon-green-check|
       - |icon-green-check|
+      - |icon-red-cross|
     * - ping
       - |icon-green-check|
       - |icon-green-check|
+      - |icon-red-cross|
     * - MQTT
       - |icon-green-check|
       - |icon-green-check|
-    * - http
+      - |icon-red-cross|
+    * - HTTP
       - |icon-orange-check|
       - |icon-green-check|
-    * - FS
+      - |icon-red-cross|
+    * - Bluetooth LE
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-green-check|
+    * - BluFi
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-red-cross|
+    * - FileSystem
+      - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
     * - driver
       - |icon-orange-check|
       - |icon-orange-check|
-    * - WPA2
+      - |icon-orange-check|
+    * - WPA2 enterprise
       - |icon-orange-check|
       - |icon-orange-check|
-    * - WEB
+      - |icon-red-cross|
+    * - WEB server
       - |icon-orange-check|
       - |icon-orange-check|
+      - |icon-red-cross|
+    * - WebSocket
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-red-cross|
     * - OTA
       - |icon-green-check|
       - |icon-green-check|
-    * - blufi
-      - |icon-orange-check|
-      - |icon-green-check|
+      - |icon-red-cross|
 
-.. only:: esp32c3 or esp32c6
+.. only:: esp32c3
 
   .. list-table::
     :header-rows: 1
@@ -267,29 +300,81 @@ ESP-AT 固件差异
       - |icon-green-check|
     * - user
       - |icon-green-check|
-    * - wifi
+    * - Wi-Fi
       - |icon-green-check|
-    * - net
+    * - TCP-IP
       - |icon-green-check|
-    * - MDNS
+    * - mDNS
       - |icon-green-check|
     * - WPS
       - |icon-green-check|
-    * - smartconfig
+    * - SmartConfig
       - |icon-green-check|
     * - ping
       - |icon-green-check|
     * - MQTT
       - |icon-green-check|
-    * - http
+    * - HTTP
       - |icon-green-check|
-    * - FS
+    * - Bluetooth LE
+      - |icon-green-check|
+    * - Bluetooth LE HID
+      - |icon-green-check|
+    * - BluFi
+      - |icon-green-check|
+    * - FileSystem
       - |icon-orange-check|
     * - driver
       - |icon-orange-check|
-    * - WPA2
+    * - WPA2 enterprise
       - |icon-orange-check|
-    * - WEB
+    * - Web server
+      - |icon-orange-check|
+    * - WebSocket
+      - |icon-orange-check|
+    * - OTA
+      - |icon-green-check|
+
+.. only:: esp32c6
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 命令集
+      - ESP32C6-4MB Bin
+    * - base
+      - |icon-green-check|
+    * - user
+      - |icon-green-check|
+    * - Wi-Fi
+      - |icon-green-check|
+    * - TCP-IP
+      - |icon-green-check|
+    * - mDNS
+      - |icon-green-check|
+    * - WPS
+      - |icon-green-check|
+    * - SmartConfig
+      - |icon-green-check|
+    * - ping
+      - |icon-green-check|
+    * - MQTT
+      - |icon-green-check|
+    * - HTTP
+      - |icon-green-check|
+    * - Bluetooth LE
+      - |icon-green-check|
+    * - BluFi
+      - |icon-green-check|
+    * - FileSystem
+      - |icon-orange-check|
+    * - driver
+      - |icon-orange-check|
+    * - WPA2 enterprise
+      - |icon-orange-check|
+    * - Web server
+      - |icon-orange-check|
+    * - WebSocket
       - |icon-orange-check|
     * - OTA
       - |icon-green-check|
@@ -357,10 +442,13 @@ ESP-AT 固件差异
     * - 硬件
       - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
+      - ESP32C2-BLE-2MB Bin
     * - Flash
       - 2 MB
       - 4 MB
+      - 2 MB
     * - PSRAM
+      - |icon-red-cross|
       - |icon-red-cross|
       - |icon-red-cross|
     * - UART 管脚 [#one]_
@@ -372,14 +460,35 @@ ESP-AT 固件差异
         | RX: 6
         | CTS: 5
         | RTS: 4
+      - | TX: 7
+        | RX: 6
+        | CTS: 5
+        | RTS: 4
 
-.. only:: esp32c3 or esp32c6
+.. only:: esp32c3
 
   .. list-table::
     :header-rows: 1
 
     * - 硬件
       - MINI-1 Bin
+    * - Flash
+      - 4 MB
+    * - PSRAM
+      - |icon-red-cross|
+    * - UART 管脚 [#one]_
+      - | TX: 7
+        | RX: 6
+        | CTS: 5
+        | RTS: 4
+
+.. only:: esp32c6
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 硬件
+      - ESP32C6-4MB Bin
     * - Flash
       - 4 MB
     * - PSRAM
@@ -555,25 +664,31 @@ ESP-AT 固件差异
 
   .. list-table::
     :header-rows: 1
-    :widths: 100 60 60
+    :widths: 100 60 60 60
 
     * - 模组/芯片
       - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
+      - ESP32C2-BLE-2MB Bin
     * - ESP8684-MINI-1/1U
+      - |icon-green-check|
       - |icon-green-check|
       - |icon-green-check|
     * - ESP8684-WROOM-02C/02UC
       - |icon-green-check|
       - |icon-green-check|
+      - |icon-green-check|
     * - ESP8684-WROOM-03
       - |icon-red-cross|
+      - |icon-green-check|
       - |icon-green-check|
     * - ESP8684-WROOM-05
       - |icon-red-cross|
       - |icon-green-check|
+      - |icon-green-check|
     * - ESP8684-WROOM-07
       - |icon-red-cross|
+      - |icon-orange-check|
       - |icon-orange-check|
 
 .. only:: esp32c3

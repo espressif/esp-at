@@ -369,6 +369,7 @@ Notes
 -  The parameter ``<reconn_interval>`` of this command is the same as ``<interval_second>`` of the command :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`. Therefore, if you omit ``<reconn_interval>`` when running this command, the interval between Wi-Fi reconnections will use the default value 1.
 -  If the ``<ssid>`` and ``<password>`` parameter are omitted, AT will use the last configuration.
 -  Execute command has the same maximum timeout to setup command. The default value is 15 seconds, but you can change it by setting the parameter ``<jap_timeout>``.
+-  The authentication method via `WAPI <https://en.wikipedia.org/wiki/WLAN_Authentication_and_Privacy_Infrastructure>`_ is not supported for connecting to the router.
 -  To get an IPv6 address, you need to set :ref:`AT+CIPV6=1 <cmd-IPV6>`.
 -  Response ``OK`` means that the IPv4 network is ready, but not the IPv6 network. At present, ESP-AT is mainly based on IPv4 network, supplemented by IPv6 network.
 -  ``WIFI GOT IPv6 LL`` represents that the linklocal IPv6 address has been obtained. This address is calculated locally through EUI-64 and does not require the participation of the AP. Because of the parallel timing, this print may be before or after ``OK``.

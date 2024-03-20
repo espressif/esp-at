@@ -26,78 +26,22 @@ AT 固件
 AT 固件简介
 --------------
 
-ESP-AT 固件包含了若干个特定功能的二进制文件： 
+ESP-AT 固件包含了若干个特定功能的二进制文件：
 
-- ``factory/factory_xxx.bin`` 是这些特定功能的二进制文件的合集。您可以仅烧录 ``factory/factory_xxx.bin`` 到起始地址为 0 的 flash 空间中，或者根据 ``download.config`` 文件中的信息将若干个二进制文件烧录到 flash 中对应起始地址的空间中。
--  ``at_customize.bin`` 提供了用户分区表，该表列出了 ``mfg_nvs`` 分区、以及可能的 ``fatfs`` 分区的起始地址和分区大小。您可以通过 AT 命令 :ref:`AT+FS <cmd-FS>` 和 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 来读和写该文件中罗列的分区里的内容。
--  ``mfg_nvs.bin`` 指明了不同 {IDF_TARGET_NAME} 模组之间的硬件配置（见下表）。请确保您的模组使用了正确的固件。更多有关该参数文件的信息请参考 :ref:`firmware-modify-paras-not-source-code`。
+.. code-block:: none
 
-  .. only:: esp32
-
-    .. list-table:: {IDF_TARGET_NAME} 模组的硬件配置
-       :header-rows: 1
-
-       * - 模组
-         - UART 管脚（TX、RX、CTS、RTS）
-       * - ESP32-WROOM-32 系列（ESP32 默认模组）
-         - - GPIO17
-           - GPIO16
-           - GPIO15
-           - GPIO14
-       * - ESP32-WROVER 系列（支持经典蓝牙）
-         - - GPIO22
-           - GPIO19
-           - GPIO15
-           - GPIO14
-       * - ESP32-PICO 系列
-         - - GPIO22
-           - GPIO19
-           - GPIO15
-           - GPIO14
-       * - ESP32-SOLO 系列
-         - - GPIO17
-           - GPIO16
-           - GPIO15
-           - GPIO14
-
-  .. only:: esp32c2
-
-      .. list-table:: {IDF_TARGET_NAME} 模组的硬件配置
-        :header-rows: 1
-
-        * - 模组
-          - UART 管脚（TX、RX、CTS、RTS）
-        * - ESP32C2-4MB 系列
-          - - GPIO7
-            - GPIO6
-            - GPIO5
-            - GPIO4
-
-  .. only:: esp32c3
-
-      .. list-table:: {IDF_TARGET_NAME} 模组的硬件配置
-        :header-rows: 1
-
-        * - 模组
-          - UART 管脚（TX、RX、CTS、RTS）
-        * - ESP32-C3-MINI-1 系列
-          - - GPIO7
-            - GPIO6
-            - GPIO5
-            - GPIO4
-
-  .. only:: esp32c6
-
-      .. list-table:: {IDF_TARGET_NAME} 模组的硬件配置
-        :header-rows: 1
-
-        * - 模组
-          - UART 管脚（TX、RX、CTS、RTS）
-        * - ESP32C6-4MB 系列
-          - - GPIO7
-            - GPIO6
-            - GPIO5
-            - GPIO4
+  build
+  ├── at_customize.bin        // 二级分区表（用户分区表，列出了 mfg_nvs 分区以及 fatfs 分区的起始地址和分区大小）
+  ├── bootloader
+  │   └── bootloader.bin      // 启动加载器
+  ├── customized_partitions
+  │   └── mfg_nvs.bin         // 出厂配置参数，参数值见同级目录下的 mfg_nvs.csv
+  ├── esp-at.bin              // AT 应用固件
+  ├── factory
+  │   └── factory_xxx.bin     // 特定功能的二进制文件合集，您可以仅烧录本文件到起始地址为 0 的 flash 空间中，或者根据 download.config 文件中的信息将若干个二进制文件烧录到 flash 中对应起始地址的空间中。
+  ├── partition_table
+  │   └── partition-table.bin // 一级分区表（系统分区表）
+  └── ota_data_initial.bin    // OTA 数据初始化文件
 
 .. _firmware-selection:
 

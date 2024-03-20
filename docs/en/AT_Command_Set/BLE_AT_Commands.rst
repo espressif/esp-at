@@ -88,33 +88,12 @@ Introduction
 .. only:: esp32c2
 
   .. important::
-    The default {IDF_TARGET_CFG_PREFIX}-4MB AT firmware supports BluFi functionality, while the {IDF_TARGET_CFG_PREFIX}-2MB AT firmware does not. If you need BluFi functionality for {IDF_TARGET_CFG_PREFIX}-2MB, please refer to the :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation and follow the steps below in the project configuration (Step 5):
-
-    - Enable ``Component config`` -> ``Bluetooth``
-    - Enable ``Component config`` -> ``Bluetooth`` -> ``Bluetooth`` -> ``Host`` -> ``NimBLE`` - ``BLE only``
-    - Enable ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Enable blufi functionality``
-    - Enable ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Enable BLE 5 feature`` -> ``Enable extended advertising``
-    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Maximum number of concurrent connections`` -> 1
-    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``MSYS_1_Block Count`` -> 10
-    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``MSYS_1_Block Size`` -> 100
-    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``MSYS_2_Block Count`` -> 4
-    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``ACL Buffer Count`` -> 5
-    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``High Priority HCI Event Buffer count`` -> 5
-    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Memory Settings`` -> ``Low Priority HCI Event Buffer count`` -> 3
-    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``BLE white list size`` -> 1
-    - Set ``Component config`` -> ``Bluetooth`` -> ``Controller Options`` -> ``BLE LL Resolving list size`` -> 1
-    - Set ``Component config`` -> ``Bluetooth`` -> ``Controller Options`` -> ``BLE duplicate scan list count`` -> 1
+    The default {IDF_TARGET_CFG_PREFIX}-4MB AT firmware supports BluFi functionality, while the {IDF_TARGET_CFG_PREFIX}-2MB AT firmware does not. The lack of BluFi support in the {IDF_TARGET_CFG_PREFIX}-2MB AT firmware is due to the insufficient 2 MB flash size to support Wi-Fi, BluFi, and OTA functionality simultaneously.
 
   .. important::
-    The default {IDF_TARGET_CFG_PREFIX}-4MB AT firmware and {IDF_TARGET_CFG_PREFIX}-2MB AT firmware do not support Bluetooth LE functionality. If you need to enable Bluetooth LE functionality, please refer to the :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation and follow the steps of above BluFi functionality in the project configuration (Step 5), and then follow the steps below:
+    The default {IDF_TARGET_CFG_PREFIX}-4MB AT firmware and {IDF_TARGET_CFG_PREFIX}-2MB AT firmware do not support Bluetooth LE functionality. If you need to support Bluetooth LE functionality, please refer to the :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation and choose ``ESP32C2-BLE-2MB`` during the environment installation in step 3.
 
-    - Enable Bluetooth LE commands: ``Component config`` -> ``AT`` -> ``AT ble command support``
-    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Maximum length of BLE device name in octets`` -> 32
-    - Set ``Component config`` -> ``Bluetooth`` -> ``NimBLE Options`` -> ``Preferred MTU size in octets`` -> 203
-
-    If you encounter an error similar to ``Part 'ota_0' 0/16 @ 0xd0000 size 0x130000 (overflow 0x59a0)``, you need to disable unnecessary features in ``Component config`` -> ``AT`` according to your application requirements to reduce the firmware size.
-
-    Due to limited memory, it is recommended to disable the Wi-Fi protocol stack by sending the command :ref:`AT+CWINIT=0 <cmd-INIT>` before using Bluetooth LE functionality. This will free up memory for Bluetooth operations.
+    Due to the limited memory of {IDF_TARGET_NAME}, Wi-Fi and Bluetooth LE functionalities cannot be supported simultaneously in a single firmware.
 
 .. only:: esp32 or esp32c3 or esp32c6 or esp32c2
 
