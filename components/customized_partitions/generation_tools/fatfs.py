@@ -82,7 +82,7 @@ def main():
                     fat_type = 16
                     continue
 
-    fatfs_param = '--sector_size {} {} --sectors_per_cluster {} --fat_type {}'.format(
+    fatfs_param = '--sector_size {} {} --sectors_per_cluster {} --fat_type {} --wl_mode "safe"'.format(
             sector_size, long_name_support, sectors_per_cluster, fat_type)
 
     if sys.platform == 'win32':
