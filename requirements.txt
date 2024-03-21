@@ -7,7 +7,7 @@ setuptools>=21
 #
 
 cryptography>=2.1.4,<35
-pycryptodome==3.15.0
+pycryptodome==3.19.1
 idf-component-manager==1.4.1
 
 # ESP-AT requirements
