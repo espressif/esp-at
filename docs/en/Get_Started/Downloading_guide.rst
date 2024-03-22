@@ -138,7 +138,7 @@ Before starting to flash, you need to download `Flash Download Tools for Windows
 
 - Flash AT firmware into your device. You can select either of the two ways below.
 
-   - To download one combined factory bin to address 0, select "DoNotChgBin" to use the default configuration of the factory bin.
+   - To download one combined factory bin (namely, ``factory_XXX.bin`` in the ``build/factory`` directory) to address 0, select "DoNotChgBin" to use the default configuration of the factory bin.
 
      .. figure:: ../../_static/download_one_bin_{IDF_TARGET_PATH_NAME}.png
         :align: center

@@ -334,7 +334,7 @@ Note:
 
   {IDF_TARGET_CFG_PREFIX}-2MB series refers to the module or board that has a built-in {IDF_TARGET_NAME}/ESP8684 chip with a 2 MB flash.
 
-  {IDF_TARGET_CFG_PREFIX}-2MB AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default.
+  {IDF_TARGET_CFG_PREFIX}-2MB AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 (GPIO8, used to output log) and UART1 use ``115200`` baud rate for communication by default. The log is outputted at ``74880`` baud rate at the ROM stage, so if you need to view the ROM log, please open UART0 (TX: GPIO20) at ``74880`` baud rate.
 
   .. list-table:: {IDF_TARGET_CFG_PREFIX}-2MB Series Hardware Connection Pinout
     :header-rows: 1
