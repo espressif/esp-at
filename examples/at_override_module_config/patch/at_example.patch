@@ -1,0 +1,20 @@
+diff --git a/main/app_main.c b/main/app_main.c
+index 06939b6a..de98fbab 100644
+--- a/main/app_main.c
++++ b/main/app_main.c
+@@ -3,6 +3,7 @@
+  *
+  * SPDX-License-Identifier: Apache-2.0
+  */
++#include <string.h>
+ #include "nvs_flash.h"
+ #include "esp_event.h"
+ #include "esp_err.h"
+@@ -19,4 +20,7 @@ void app_main(void)
+     ESP_ERROR_CHECK(esp_event_loop_create_default());
+
+     esp_at_init();
++
++    char *prompt = "Welcome to the world of ESP-AT!\r\n";
++    esp_at_port_active_write_data((uint8_t *)prompt, strlen(prompt));
+ }

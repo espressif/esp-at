@@ -15,10 +15,10 @@ string(SUBSTRING "$ENV{ESP_AT_PROJECT_PLATFORM}" 9 31 PLATFORM_NAME) # remove PL
 string(STRIP ${PLATFORM_NAME} PLATFORM_NAME)
 string(TOLOWER ${PLATFORM_NAME} LOWER_NAME)
 
-set(ESP_AT_MODULE_CONFIG_DIR ${CMAKE_SOURCE_DIR}/module_config/module_${LOWER_NAME}_default )
+set(ESP_AT_MODULE_CONFIG_DIR ${CMAKE_SOURCE_DIR}/module_config/module_${LOWER_NAME}_default)
 endif()
 
-SET(ENV{ESP_AT_PROJECT_PATH} ${CMAKE_SOURCE_DIR} )
+SET(ENV{ESP_AT_PROJECT_PATH} ${CMAKE_SOURCE_DIR})
 
 if (NOT DEFINED SILENCE)
 if (DEFINED ENV{SILENCE})
@@ -28,16 +28,32 @@ set(SILENCE 0)
 endif()
 endif()
 
+# set the sdkconfig default file
 if (${SILENCE} EQUAL 1)
-set(SDKCONFIG_DEFAULTS ${ESP_AT_MODULE_CONFIG_DIR}/sdkconfig_silence.defaults)
+    if(DEFINED ENV{AT_EXT_MODULE_CFG} AND EXISTS "$ENV{AT_EXT_MODULE_CFG}/sdkconfig_silence.defaults")
+        set(SDKCONFIG_DEFAULTS $ENV{AT_EXT_MODULE_CFG}/sdkconfig_silence.defaults)
+    else()
+        set(SDKCONFIG_DEFAULTS ${ESP_AT_MODULE_CONFIG_DIR}/sdkconfig_silence.defaults)
+    endif()
 else()
-set(SDKCONFIG_DEFAULTS ${ESP_AT_MODULE_CONFIG_DIR}/sdkconfig.defaults)
+    if(DEFINED ENV{AT_EXT_MODULE_CFG} AND EXISTS "$ENV{AT_EXT_MODULE_CFG}/sdkconfig.defaults")
+        set(SDKCONFIG_DEFAULTS $ENV{AT_EXT_MODULE_CFG}/sdkconfig.defaults)
+    else()
+        set(SDKCONFIG_DEFAULTS ${ESP_AT_MODULE_CONFIG_DIR}/sdkconfig.defaults)
+    endif()
 endif()
+message(STATUS "silence:${SILENCE}, sdkconfig:${SDKCONFIG_DEFAULTS}")
 
-message("silence:${SILENCE} sdkconfig:${SDKCONFIG_DEFAULTS}")
+# set the base directory of partition table
+if(DEFINED ENV{AT_EXT_MODULE_CFG} AND EXISTS "$ENV{AT_EXT_MODULE_CFG}/partitions_at.csv")
+    set(CONFIG_PARTITION_TABLE_BASE_DIR "$ENV{AT_EXT_MODULE_CFG}")
+else()
+    set(CONFIG_PARTITION_TABLE_BASE_DIR "${CMAKE_SOURCE_DIR}")
+endif()
+message(STATUS "partition_table_dir: ${CONFIG_PARTITION_TABLE_BASE_DIR}")
 
 if(NOT DEFINED ENV{IDF_PATH})
-    SET(ENV{IDF_PATH} ${CMAKE_SOURCE_DIR}/esp-idf )
+    SET(ENV{IDF_PATH} ${CMAKE_SOURCE_DIR}/esp-idf)
     message(STATUS $ENV{IDF_PATH})
 endif()
 
