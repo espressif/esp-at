@@ -6,13 +6,21 @@ idf_build_get_property(project_dir PROJECT_DIR)
 set(flash_customized_partition_args ${build_dir}/flash_customized_partition_args)
 set(module_info ${build_dir}/module_info)
 
+# set the path of at_customize.csv
+if(DEFINED ENV{AT_EXT_MODULE_CFG} AND EXISTS "$ENV{AT_EXT_MODULE_CFG}/${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE}")
+    set(AT_CUSTOM_PARTITION_TABLE_PATH "$ENV{AT_EXT_MODULE_CFG}/${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE}")
+else()
+    set(AT_CUSTOM_PARTITION_TABLE_PATH "${project_dir}/${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE}")
+endif()
+message(STATUS "Set custom partition table: ${AT_CUSTOM_PARTITION_TABLE_PATH}")
+
 if (CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_SUPPORT)
     # generate at_customize.bin and add it to flash target
     STRING(REGEX REPLACE ".*/(.*)\.csv" "\\1" customize_bin ${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE})
     set(customize_bin_full_name ${customize_bin}.bin)
     execute_process(
         COMMAND ${PYTHON} ${IDF_PATH}/components/partition_table/gen_esp32part.py
-            ${project_dir}/${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE} ${build_dir}/${customize_bin_full_name}
+            ${AT_CUSTOM_PARTITION_TABLE_PATH} ${build_dir}/${customize_bin_full_name}
     )
     esptool_py_custom_target(${customize_bin} ${customize_bin} "${customize_bin}")
     esptool_py_flash_target_image(flash "${customize_bin}" "${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_OFFSET}" "${build_dir}/${customize_bin_full_name}")
@@ -22,7 +30,7 @@ if (CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_SUPPORT)
         COMMAND ${PYTHON} ${COMPONENT_DIR}/at_customized_target_generate.py
             --sdkconfig_file ${project_dir}/sdkconfig
             --dependency_file ${COMPONENT_DIR}/at_customized_config_dependency.txt
-            --partition_file ${project_dir}/${CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE}
+            --partition_file ${AT_CUSTOM_PARTITION_TABLE_PATH}
             --output_dir ${build_dir}/${COMPONENT_NAME}
             --flash_args_file ${flash_customized_partition_args}
     )

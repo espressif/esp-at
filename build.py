@@ -158,11 +158,18 @@ def at_submodules_update(platform, module):
         config_dir = os.path.join(os.getcwd(), 'module_config',  'module_{}_default'.format(platform.lower()))
 
     pairs = []
-    idf_ver_file = os.path.join(config_dir, 'IDF_VERSION')
+    ext_module_cfg = os.environ.get('AT_EXT_MODULE_CFG')
+    if ext_module_cfg and os.path.exists(os.path.join(ext_module_cfg, 'IDF_VERSION')):
+        idf_ver_file = os.path.join(ext_module_cfg, 'IDF_VERSION')
+    else:
+        idf_ver_file = os.path.join(config_dir, 'IDF_VERSION')
     at_parse_idf_version(idf_ver_file, pairs)
 
     try:
-        submodules_file = os.path.join(config_dir, 'submodules')
+        if ext_module_cfg and os.path.exists(os.path.join(ext_module_cfg, 'submodules')):
+            submodules_file = os.path.join(ext_module_cfg, 'submodules')
+        else:
+            submodules_file = os.path.join(config_dir, 'submodules')
         at_parse_submodules(submodules_file, pairs)
     except Exception as e:
         ESP_LOGE('Failed to parse submodules:"{}" ({})'.format(submodules_file, e))
@@ -174,10 +181,13 @@ def at_submodules_update(platform, module):
     ESP_LOGI('submodules check completed for updates.')
 
 def at_patch_if_config(platform, module):
-    config_dir = os.path.join(os.getcwd(), 'module_config', 'module_{}'.format(module.lower()))
-    if not os.path.exists(config_dir):
-        config_dir = os.path.join(os.getcwd(), 'module_config',  'module_{}_default'.format(platform.lower()))
-
+    ext_module_cfg = os.environ.get('AT_EXT_MODULE_CFG')
+    if ext_module_cfg and os.path.exists(os.path.join(ext_module_cfg, 'patch')):
+        config_dir = ext_module_cfg
+    else:
+        config_dir = os.path.join(os.getcwd(), 'module_config', 'module_{}'.format(module.lower()))
+        if not os.path.exists(config_dir):
+            config_dir = os.path.join(os.getcwd(), 'module_config',  'module_{}_default'.format(platform.lower()))
     patch_tool = os.path.join(os.getcwd(), 'tools', 'patch.py')
     if os.path.exists(patch_tool) and os.path.exists(config_dir):
         cmd = 'python {} {}'.format(patch_tool, config_dir)
