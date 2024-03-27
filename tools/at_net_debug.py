@@ -172,9 +172,9 @@ void at_print_pkt_info(void *buf, bool tx)
         uint16_t id = *(icmp + 4); id <<= 8; id += *(icmp + 5);
         uint16_t seq = *(icmp + 6); seq <<= 8; seq += *(icmp + 7);
         if (tx) {
-            ESP_LOGI("udp-tx", "%s, IPL:%u, ID:0x%x, S:%u PDL:%u", (type == 8) ? "Echo" : "Echo Reply", ip_tlen, id, seq, icmp_dlen);
+            ESP_LOGI("icmp-tx", "%s, IPL:%u, ID:0x%x, S:%u PDL:%u", (type == 8) ? "Echo" : "Echo Reply", ip_tlen, id, seq, icmp_dlen);
         } else {
-            ESP_LOGI("udp-rx", "%s, IPL:%u, ID:0x%x, S:%u PDL:%u", (type == 8) ? "Echo" : "Echo Reply", ip_tlen, id, seq, icmp_dlen);
+            ESP_LOGI("icmp-rx", "%s, IPL:%u, ID:0x%x, S:%u PDL:%u", (type == 8) ? "Echo" : "Echo Reply", ip_tlen, id, seq, icmp_dlen);
         }
     }
         break;
@@ -191,6 +191,14 @@ at_net_tx_pos_pattern_idf = 'if(q->next == NULL) {'
 at_net_tx_pos_pattern_rtos = 'if (!netif_is_up(netif)) {'
 at_net_tx_caller = """
     at_print_pkt_info(p, true);
+"""
+
+# Find the entry of netif tx returns
+at_net_tx_ret_pos_pattern = 'if (ret == ESP_OK) {'
+at_net_tx_ret_caller = """
+    if (ret != ESP_OK) {
+        ESP_LOGE("@@if-tx", "netif tx error, tot_len:%d len:%d ret: %d", q->tot_len, q->len, ret);
+    }
 """
 
 # Find the entry of incoming packets
@@ -211,9 +219,17 @@ def at_update_args_if_sdkconfig(args):
     args.no_udp = True
     args.no_icmp = True
 
-    data = '[saved-args]'
     with args.sdkconfig as f:
-        data = data + f.read()
+        data = f.read()
+
+    # remove the duplicate lines
+    dup_data = data.split('\n')
+    uni_data = []
+    for item in dup_data:
+        if item not in uni_data or item.startswith('#'):
+            uni_data.append(item)
+    data = '\n'.join(uni_data)
+    data = '[saved-args]' + data
 
     import configparser
     config = configparser.ConfigParser()
@@ -294,6 +310,10 @@ def at_patch_net_debug_snippet(args):
             if pos < 0:
                 raise Exception('No TX caller entry found.')
         data = data[:pos] + at_net_tx_caller + '\n    '  + data[pos:]
+
+        pos = data.find(at_net_tx_ret_pos_pattern)
+        if pos > 0:
+            data = data[:pos] + at_net_tx_ret_caller + '\n    '  + data[pos:]
 
         # add rx caller of at_print_pkt_info()
         pos = data.find(at_net_rx_pos_pattern)
