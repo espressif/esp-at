@@ -7,6 +7,14 @@ esp32c3_mini_1_at:
   variables:
     MODULE_NAME: "MINI-1"
 
+esp32c3_mini_1_at_tat_debug:
+  extends:
+    - .build_template_esp32c3
+    - .before_script_enable_at_debugs
+    - .rules:build:build_project_on_protected
+  variables:
+    MODULE_NAME: "MINI-1"
+
 esp32c3_spi_at:
   extends:
     - .build_template_esp32c3

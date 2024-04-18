@@ -21,6 +21,14 @@ esp32c2_ble_2mb_at:
   variables:
     MODULE_NAME: "ESP32C2-BLE-2MB"
 
+esp32c2_4mb_at_tat_debug:
+  extends:
+    - .build_template_esp32c2
+    - .before_script_enable_at_debugs
+    - .rules:build:build_project_on_protected
+  variables:
+    MODULE_NAME: "ESP32C2-4MB"
+
 esp32c2_4mb_at_xtal_40mhz_test:
   extends:
     - .build_template_esp32c2
