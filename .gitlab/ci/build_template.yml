@@ -4,8 +4,8 @@
 # common build template #
 #########################
 .speedup_repo_clone: &speedup_repo_clone
-  - get_module_cfg_dir
-  - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" module_config/${module_cfg_dir}/IDF_VERSION
+  - get_module_configs
+  - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" ${module_cfg_dir}/IDF_VERSION
 
 .setup_env_variables: &setup_env_variables
   - export HAS_IDF_PREREQUISITES=1
@@ -103,58 +103,58 @@
 # Update sdkconfig.defaults #
 #############################
 .enable_all_wifi_cmds: &enable_all_wifi_cmds
-  - echo -e "CONFIG_AT_WS_COMMAND_SUPPORT=y" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/${module_cfg_dir}/sdkconfig.defaults
+  - echo -e "CONFIG_AT_WS_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> ${at_sdkconfig_file}
 
 .disable_all_wifi_cmds: &disable_all_wifi_cmds
-  - echo -e "CONFIG_AT_WS_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_ETHERNET_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_OTA_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_MDNS_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_WPS_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_SMARTCONFIG_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_PING_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_MQTT_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_HTTP_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_SIGNALING_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_ESP_WIFI_SLP_IRAM_OPT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
+  - echo -e "CONFIG_AT_WS_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_ETHERNET_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_OTA_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_MDNS_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_WPS_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_SMARTCONFIG_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_PING_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_MQTT_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_HTTP_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_SIGNALING_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_ESP_WIFI_SLP_IRAM_OPT=n" >> ${at_sdkconfig_file}
 
 .enable_ethernet_cmds: &enable_ethernet_cmds
-  - echo -e "CONFIG_AT_ETHERNET_SUPPORT=y" >> module_config/${module_cfg_dir}/sdkconfig.defaults
+  - echo -e "CONFIG_AT_ETHERNET_SUPPORT=y" >> ${at_sdkconfig_file}
 
 .enable_bt_cmds: &enable_bt_cmds
-  - echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=y" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_BT_SPP_COMMAND_SUPPORT=y" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> module_config/${module_cfg_dir}/sdkconfig.defaults
+  - echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_BT_SPP_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
 
 .disable_ble_cmds: &disable_ble_cmds
-  - echo -e "CONFIG_AT_BLE_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_BLE_HID_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_BLUFI_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
-  - echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=n" >> module_config/${module_cfg_dir}/sdkconfig.defaults
+  - echo -e "CONFIG_AT_BLE_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_BLE_HID_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_BLUFI_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
 
 .enable_40mhz_xtal: &enable_40mhz_xtal
-  - echo -e "CONFIG_XTAL_FREQ_40=y" >> module_config/module_esp32c2_default/sdkconfig.defaults
+  - echo -e "CONFIG_XTAL_FREQ_40=y" >> ${at_sdkconfig_file}
 
 #########################
 # Enlarge app partition #
 #########################
 .enlarge_app_partition: &enlarge_app_partition
-  - app0_size=`cat module_config/${module_cfg_dir}/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
-  - app1_size=`cat module_config/${module_cfg_dir}/partitions_at.csv | grep ota_1 | awk -F, '{print $5}'`
+  - app0_size=`cat ${module_cfg_dir}/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
+  - app1_size=`cat ${module_cfg_dir}/partitions_at.csv | grep ota_1 | awk -F, '{print $5}'`
   - to_set_size=$((app0_size + app1_size))
-  - sed -i '/ota_1/d' module_config/${module_cfg_dir}/partitions_at.csv
+  - sed -i '/ota_1/d' ${module_cfg_dir}/partitions_at.csv
   - to_set_hex_size=`printf "0x%x" ${to_set_size}`
-  - sed -i '/ota_0/s,'"$app0_size"','"$to_set_hex_size"',g' module_config/${module_cfg_dir}/partitions_at.csv
+  - sed -i '/ota_0/s,'"$app0_size"','"$to_set_hex_size"',g' ${module_cfg_dir}/partitions_at.csv
 
 ##################
 # Before scripts #
@@ -187,7 +187,7 @@
   before_script:
     - source ${CI_PROJECT_DIR}/.gitlab/ci/utils.sh
     - add_gitlab_ssh_keys
-    - get_module_cfg_dir
+    - get_module_configs
     - *setup_tokens_esp32
     - *enable_all_wifi_cmds
     - *disable_ble_cmds
@@ -197,7 +197,7 @@
   before_script:
     - source ${CI_PROJECT_DIR}/.gitlab/ci/utils.sh
     - add_gitlab_ssh_keys
-    - get_module_cfg_dir
+    - get_module_configs
     - *setup_tokens_esp32
     - *enable_bt_cmds
     - *disable_all_wifi_cmds
@@ -207,7 +207,7 @@
   before_script:
     - source ${CI_PROJECT_DIR}/.gitlab/ci/utils.sh
     - add_gitlab_ssh_keys
-    - get_module_cfg_dir
+    - get_module_configs
     - *setup_tokens_esp32
     - *enable_ethernet_cmds
     - *enlarge_app_partition
@@ -216,6 +216,7 @@
   before_script:
     - source ${CI_PROJECT_DIR}/.gitlab/ci/utils.sh
     - add_gitlab_ssh_keys
+    - get_module_configs
     - *setup_tokens_esp32c2
     - *enable_40mhz_xtal
 
@@ -223,7 +224,7 @@
   before_script:
     - source ${CI_PROJECT_DIR}/.gitlab/ci/utils.sh
     - add_gitlab_ssh_keys
-    - get_module_cfg_dir
+    - get_module_configs
     - *setup_tokens_esp32c2
     - *enable_all_wifi_cmds
 
@@ -231,7 +232,7 @@
   before_script:
     - source ${CI_PROJECT_DIR}/.gitlab/ci/utils.sh
     - add_gitlab_ssh_keys
-    - get_module_cfg_dir
+    - get_module_configs
     - *setup_tokens_esp32c3
     - *enable_all_wifi_cmds
     - *enlarge_app_partition

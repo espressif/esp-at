@@ -34,17 +34,27 @@ function add_doc_server_ssh_keys() {
   echo -e "Host ${server_url}\n\tStrictHostKeyChecking no\n\tUser ${server_user}\n" >>~/.ssh/config
 }
 
-function get_module_cfg_dir() {
+function get_module_configs() {
   module_name_lower=$(echo "${MODULE_NAME}" | tr '[:upper:]' '[:lower:]')
   module_cfg_dir="${CI_PROJECT_DIR}/module_config/module_${module_name_lower}"
 
+  # module config directory
   if [ ! -d "${module_cfg_dir}" ]; then
       platform_name_str=$(echo "${PLATFORM}" | sed 's/PLATFORM_//')
       module_name_lower=$(echo "${platform_name_str}" | tr '[:upper:]' '[:lower:]')
-      module_cfg_dir="module_${module_name_lower}_default"
+      module_cfg_dir="${CI_PROJECT_DIR}/module_config/module_${module_name_lower}_default"
   else
-      module_cfg_dir="module_${module_name_lower}"
+      module_cfg_dir="${CI_PROJECT_DIR}/module_config/module_${module_name_lower}"
   fi
-
   echo "current configuration dir: ${module_cfg_dir}"
+
+  # sdkconfig file
+  if [ "$SILENCE" = "0" ]; then
+      at_sdkconfig_file="${module_cfg_dir}/sdkconfig.defaults"
+  elif [ "$SILENCE" = "1" ]; then
+      at_sdkconfig_file="${module_cfg_dir}/sdkconfig_silence.defaults"
+  else
+      at_sdkconfig_file="na"
+  fi
+  echo "current sdkconfig file: ${at_sdkconfig_file}"
 }
