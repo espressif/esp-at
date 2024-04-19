@@ -145,6 +145,12 @@
 .enable_40mhz_xtal: &enable_40mhz_xtal
   - echo -e "CONFIG_XTAL_FREQ_40=y" >> ${at_sdkconfig_file}
 
+.enable_at_debugs: &enable_at_debugs
+  - echo -e "CONFIG_LOG_DEFAULT_LEVEL_INFO=y" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_DEBUG=y" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_WIFI_DUMP_STATIS_DEBUG=y" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_AT_NET_DEBUG=y" >> ${at_sdkconfig_file}
+
 #########################
 # Enlarge app partition #
 #########################
@@ -182,6 +188,14 @@
     - source ${CI_PROJECT_DIR}/.gitlab/ci/utils.sh
     - add_gitlab_ssh_keys
     - *setup_tokens_esp32c6
+
+.before_script_enable_at_debugs:
+  before_script:
+    - source ${CI_PROJECT_DIR}/.gitlab/ci/utils.sh
+    - add_gitlab_ssh_keys
+    - get_module_configs
+    - *enable_at_debugs
+    - *enlarge_app_partition
 
 .before_script_esp32_enable_all_wifi_cmds:
   before_script:
