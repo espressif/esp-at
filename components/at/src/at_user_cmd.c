@@ -437,7 +437,9 @@ void at_set_mcu_state_if_sleep(at_sleep_mode_t mode)
     }
 
     if (s_wkmcu_cfg.enable) {
+        gpio_hold_dis(s_wkmcu_cfg.wake_number);
         gpio_set_level(s_wkmcu_cfg.wake_number, !s_wkmcu_cfg.wake_signal);
+        gpio_hold_en(s_wkmcu_cfg.wake_number);
     }
 
     return;
@@ -451,7 +453,9 @@ void at_wkmcu_if_config(at_write_data_fn_t write_data_fn)
 
     switch (s_wkmcu_cfg.wake_mode) {
     case WKMCU_MODE_GPIO:
+        gpio_hold_dis(s_wkmcu_cfg.wake_number);
         gpio_set_level(s_wkmcu_cfg.wake_number, s_wkmcu_cfg.wake_signal);
+        gpio_hold_en(s_wkmcu_cfg.wake_number);
         break;
 
     case WKMCU_MODE_UART:
@@ -473,7 +477,9 @@ void at_wkmcu_if_config(at_write_data_fn_t write_data_fn)
 
     // reverse wake up signal
     if (s_wkmcu_cfg.wake_mode == WKMCU_MODE_GPIO) {
+        gpio_hold_dis(s_wkmcu_cfg.wake_number);
         gpio_set_level(s_wkmcu_cfg.wake_number, !s_wkmcu_cfg.wake_signal);
+        gpio_hold_en(s_wkmcu_cfg.wake_number);
     }
 
     return;
@@ -580,7 +586,9 @@ static uint8_t at_setup_cmd_userwkmcucfg(uint8_t para_num)
             io_conf.pull_down_en = false;
             io_conf.intr_type = GPIO_INTR_DISABLE;
             gpio_config(&io_conf);
+            gpio_hold_dis(wk_number);
             gpio_set_level(wk_number, !wk_signal);
+            gpio_hold_en(wk_number);
         }
     } else {
         if (s_wkmcu_cfg.wake_mode == WKMCU_MODE_GPIO) {
@@ -641,7 +649,9 @@ static uint8_t at_setup_cmd_usermcusleep(uint8_t para_num)
         s_mcu_sleep = mcu_sleep;
 
         if (s_wkmcu_cfg.wake_mode == WKMCU_MODE_GPIO) {
+            gpio_hold_dis(s_wkmcu_cfg.wake_number);
             gpio_set_level(s_wkmcu_cfg.wake_number, !s_wkmcu_cfg.wake_signal);
+            gpio_hold_en(s_wkmcu_cfg.wake_number);
         }
     }
 
