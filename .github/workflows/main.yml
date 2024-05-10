@@ -122,9 +122,9 @@ jobs:
       artifacts_name: esp32c6-4MB-at
     secrets: inherit
 
-  build-esp32s2-4mb-at:
+  build-esp32s2-mini-at:
     uses: ./.github/workflows/build_template_esp32s2.yml
     with:
-      module_name: ESP32S2-4MB
-      artifacts_name: esp32s2-4MB-at
+      module_name: MINI
+      artifacts_name: esp32s2-mini-at
     secrets: inherit

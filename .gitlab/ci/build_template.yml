@@ -102,8 +102,8 @@
 .setup_tokens_esp32s2: &setup_tokens_esp32s2
   - cd components/at/private_include
   - rm -f at_ota_token.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_4MB \"$ESP32S2_4MB_TOKEN\"" >> at_ota_token.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_4MB \"$ESP32S2_4MB_TOKEN\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_ota_token.h
   - cd -
 
 #############################
