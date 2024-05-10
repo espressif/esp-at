@@ -18,6 +18,8 @@
 #include "esp32c2/rom/uart.h"
 #elif CONFIG_IDF_TARGET_ESP32C6
 #include "esp32c6/rom/uart.h"
+#elif CONFIG_IDF_TARGET_ESP32S2
+#include "esp32s2/rom/uart.h"
 #endif
 
 /*******************************************************
@@ -78,6 +80,13 @@
 #define CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT         5
 #define CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT         4
 #endif
+#endif
+
+#if defined(CONFIG_IDF_TARGET_ESP32S2)
+#define CONFIG_AT_UART_PORT_TX_PIN_DEFAULT          17
+#define CONFIG_AT_UART_PORT_RX_PIN_DEFAULT          21
+#define CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT         20
+#define CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT         19
 #endif
 
 /**
