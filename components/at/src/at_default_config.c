@@ -53,7 +53,7 @@ static const esp_at_module_info_t esp_at_module_info[] = {
 #endif
 
 #if defined(CONFIG_IDF_TARGET_ESP32S2)
-    {"ESP32S2-4MB",    CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_4MB,         CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_4MB},
+    {"MINI",           CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI,        CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI},
 #endif
 };
 

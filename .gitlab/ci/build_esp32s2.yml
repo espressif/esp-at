@@ -1,16 +1,16 @@
 # Build ESP32-S2 AT Firmwares
 
-esp32s2_4mb_at:
+esp32s2_mini_at:
   extends:
     - .build_template_esp32s2
     - .rules:build:build_project
   variables:
-    MODULE_NAME: "ESP32S2-4MB"
+    MODULE_NAME: "MINI"
 
-esp32s2_4mb_at_tat_debug:
+esp32s2_mini_at_tat_debug:
   extends:
     - .build_template_esp32s2
     - .before_script_enable_at_debugs
     - .rules:build:build_project_on_protected
   variables:
-    MODULE_NAME: "ESP32S2-4MB"
+    MODULE_NAME: "MINI"
