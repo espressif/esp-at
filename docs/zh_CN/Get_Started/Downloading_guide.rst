@@ -138,7 +138,7 @@ Windows
 
 - 将 AT 固件烧录至设备，以下两种方式任选其一：
 
-   - 直接下载打包好的量产固件至 ``0x0`` 地址：勾选 "DoNotChgBin"，使用量产固件的默认配置；
+   - 直接下载打包好的量产固件（即 ``build/factory`` 目录下的 ``factory_XXX.bin``）至 ``0x0`` 地址：勾选 "DoNotChgBin"，使用量产固件的默认配置；
 
      .. figure:: ../../_static/download_one_bin_{IDF_TARGET_PATH_NAME}.png
         :align: center
