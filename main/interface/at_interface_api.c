@@ -10,6 +10,9 @@
 #include "esp_log.h"
 #include "esp_at.h"
 #include "esp_at_core.h"
+#ifdef CONFIG_AT_SELF_COMMAND_SUPPORT
+#include "esp_at_self_cmd.h"
+#endif
 
 // static variables
 static esp_at_device_ops_struct s_interface_ops;
@@ -21,7 +24,17 @@ static int32_t at_port_read_data(uint8_t *buffer, int32_t len)
     if (!s_interface_ops.read_data) {
         return -1;
     }
-    int32_t ret = s_interface_ops.read_data(buffer, len);
+
+    int32_t ret = 0;
+
+    at_read_data_fn_t read_fn = s_interface_ops.read_data;
+#ifdef CONFIG_AT_SELF_COMMAND_SUPPORT
+    if (unlikely(at_self_cmd_get_mode())) {
+        read_fn = at_self_cmd_read_data;
+    }
+#endif
+
+    ret = read_fn(buffer, len);
 
 #if CONFIG_AT_RX_DATA_DEBUG
     if (ret > 0) {
@@ -42,7 +55,14 @@ static int32_t at_port_write_data(uint8_t *data, int32_t len)
     ESP_LOG_BUFFER_HEXDUMP("intf-tx", data, at_min(len, CONFIG_AT_TX_DATA_MAX_LEN), ESP_LOG_INFO);
 #endif
 
-    return s_interface_ops.write_data(data, len);
+    at_write_data_fn_t write_fn = s_interface_ops.write_data;
+#ifdef CONFIG_AT_SELF_COMMAND_SUPPORT
+    if (unlikely(at_self_cmd_get_mode())) {
+        write_fn = at_self_cmd_write_data;
+    }
+#endif
+
+    return write_fn(data, len);
 }
 
 static int32_t at_port_get_data_len(void)
@@ -50,7 +70,15 @@ static int32_t at_port_get_data_len(void)
     if (!s_interface_ops.get_data_length) {
         return -1;
     }
-    return s_interface_ops.get_data_length();
+
+    at_get_data_len_fn_t get_data_len_fn = s_interface_ops.get_data_length;
+#ifdef CONFIG_AT_SELF_COMMAND_SUPPORT
+    if (unlikely(at_self_cmd_get_mode())) {
+        get_data_len_fn = at_self_cmd_get_data_len;
+    }
+#endif
+
+    return get_data_len_fn();
 }
 
 static bool at_port_wait_tx_done(int32_t ms)
@@ -60,6 +88,11 @@ static bool at_port_wait_tx_done(int32_t ms)
     }
 
     return s_interface_ops.wait_write_complete(ms);
+}
+
+at_write_data_fn_t at_interface_get_write_fn(void)
+{
+    return s_interface_ops.write_data;
 }
 
 void at_interface_ops_init(esp_at_device_ops_struct *ops)
