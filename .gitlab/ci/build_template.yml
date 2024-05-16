@@ -102,6 +102,12 @@
 .setup_tokens_esp32s2: &setup_tokens_esp32s2
   - cd components/at/private_include
   - rm -f at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"$AT_OTA_TOKEN_ESP32S2_WROOM\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"$AT_OTA_TOKEN_ESP32S2_WROVER\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"$AT_OTA_TOKEN_ESP32S2_SOLO\"" >> at_ota_token.h
   - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_ota_token.h
   - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"$AT_OTA_TOKEN_ESP32S2_MINI\"" >> at_ota_token.h
   - cd -
