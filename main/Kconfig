@@ -39,6 +39,11 @@ config AT_COMMAND_TERMINATOR
     help
         Now just support one character, the range is from 0x01 to 0xFF.
 
+config AT_SELF_COMMAND_SUPPORT
+    bool "Support for executing AT commands from esp-at itself instead of external MCU."
+    default n
+    depends on AT_ENABLE
+
 config AT_BASE_COMMAND_SUPPORT
     bool "AT base command support."
     default "y"

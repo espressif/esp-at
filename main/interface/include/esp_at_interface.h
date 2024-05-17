@@ -48,3 +48,11 @@ void at_interface_ops_init(esp_at_device_ops_struct *ops);
  *              - not NULL: use the system-hooks and the interface-hooks.
 */
 void at_interface_hooks(esp_at_custom_ops_struct *if_hooks);
+
+/**
+ * @brief This function is used to get the raw write pointer from interface.
+ *
+ * @return
+ *    at_write_data_fn_t: The pointer of the raw write function.
+*/
+at_write_data_fn_t at_interface_get_write_fn(void);

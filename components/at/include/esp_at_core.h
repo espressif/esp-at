@@ -39,7 +39,9 @@ typedef struct {
     bool (*wait_write_complete)(int32_t timeout_msec);              /*!< wait write finish */
 } esp_at_device_ops_struct;
 
+typedef int32_t (*at_read_data_fn_t)(uint8_t *data, int32_t len);
 typedef int32_t (*at_write_data_fn_t)(uint8_t *data, int32_t len);
+typedef int32_t (*at_get_data_len_fn_t)(void);
 
 /**
  * @brief esp_at_custom_net_ops_struct

@@ -122,6 +122,14 @@ static void at_bt_controller_mem_release(void)
 }
 #endif
 
+__attribute__((weak)) void esp_at_ready_before(void)
+{
+#ifdef CONFIG_AT_SELF_COMMAND_SUPPORT
+    at_exe_cmd("AT+GMR\r\n", "OK", 1000);
+    at_exe_cmd("AT+SYSRAM?\r\n", "OK", 1000);
+#endif
+}
+
 static esp_err_t at_module_config_init(void)
 {
     char buffer[AT_BUFFER_ON_STACK_SIZE] = {0};
@@ -332,6 +340,9 @@ void esp_at_init(void)
     // set the AT command terminator
     at_cmd_set_terminator(CONFIG_AT_COMMAND_TERMINATOR);
 #endif
+
+    // do some special things before AT is ready
+    esp_at_ready_before();
 
     esp_at_ready();
     ESP_LOGD(TAG, "esp_at_init done");

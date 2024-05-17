@@ -75,3 +75,34 @@ void esp_at_main_preprocess(void);
  * @return at_mfg_params_storage_mode_t
  */
 at_mfg_params_storage_mode_t at_get_mfg_params_storage_mode(void);
+
+/**
+ * @brief Do some things before esp-at is ready.
+ *
+ * @note This function can be overridden with custom implementation. For example, you can override this function to:
+ *        a) execute some preset AT commands by calling at_exe_cmd() API.
+ *        b) do some initializations by calling APIs from esp-idf or esp-at.
+ */
+void esp_at_ready_before(void);
+
+#ifdef CONFIG_AT_SELF_COMMAND_SUPPORT
+/**
+ * @brief Execute AT command from self and wait for expected response.
+ *
+ *  AT typically communicates with the host MCU via physical interface (UART/SPI/SDIO) or virtual interface (Socket),
+ *  here, we define a new API that allows users to send AT commands via esp-at self instead of a physical/virtual interface,
+ *  to check the response of the AT commands. This enables users to execute certain preset AT commands before AT ready,
+ *  thereby modifying the default initial configuration or status of the AT firmware.
+ *
+ * @param[in] cmd: AT command string
+ * @param[in] expected_response: expected response string
+ * @param[in] timeout_ms: timeout in milliseconds
+ *
+ * @note Once exprected response is received, the function will return immediately.
+ *
+ * @return
+ *      - ESP_OK: the expected response is received within the timeout
+ *      - others: see esp_err.h
+ */
+esp_err_t at_exe_cmd(const char *cmd, const char *expected_response, uint32_t timeout_ms);
+#endif
