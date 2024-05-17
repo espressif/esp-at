@@ -171,3 +171,10 @@ void esp_at_set_module_id_by_str(const char *buffer)
         }
     }
 }
+
+#ifdef CONFIG_BT_NIMBLE_ENABLED
+uint32_t esp_at_get_nimble_mtu_size(void)
+{
+    return CONFIG_BT_NIMBLE_ATT_PREFERRED_MTU;
+}
+#endif
