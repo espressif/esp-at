@@ -33,6 +33,12 @@ jobs:
         cd components/at/private_include
         rm -f at_ota_token.h
         echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROOM \"${{ secrets.AT_OTA_TOKEN_ESP32S2_WROOM }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROOM \"${{ secrets.AT_OTA_TOKEN_ESP32S2_WROOM }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_WROVER \"${{ secrets.AT_OTA_TOKEN_ESP32S2_WROVER }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_WROVER \"${{ secrets.AT_OTA_TOKEN_ESP32S2_WROVER }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_SOLO \"${{ secrets.AT_OTA_TOKEN_ESP32S2_SOLO }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_SOLO \"${{ secrets.AT_OTA_TOKEN_ESP32S2_SOLO }}\"" >> at_ota_token.h
         echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32S2_MINI \"${{ secrets.AT_OTA_TOKEN_ESP32S2_MINI }}\"" >> at_ota_token.h
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32S2_MINI \"${{ secrets.AT_OTA_TOKEN_ESP32S2_MINI }}\"" >> at_ota_token.h
         cd -
