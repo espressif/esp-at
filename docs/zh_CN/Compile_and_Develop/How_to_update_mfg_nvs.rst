@@ -10,9 +10,11 @@ mfg_nvs 分区介绍
 
 mfg_nvs (:term:`manufacturing nvs`) 分区定义在 ``esp-at/module_config/{module_name}/at_customize.csv`` 文件中。该分区存储了出厂固件的下列配置：
 
-- 出厂参数配置 （Wi-Fi 配置、UART 配置、模组配置）：请参考 :ref:`factory-param-intro`。
-- PKI 配置（各类证书和密钥配置）：请参考 :ref:`factory-pki-intro`。
-- GATTS 配置（低功耗蓝牙服务）：请参考 :ref:`factory-gatts-intro`。
+.. list::
+
+    - 出厂参数配置 （Wi-Fi 配置、UART 配置、模组配置）：请参考 :ref:`factory-param-intro`。
+    - PKI 配置（各类证书和密钥配置）：请参考 :ref:`factory-pki-intro`。
+    :esp32 or esp32c2 or esp32c3 or esp32c6: - GATTS 配置（低功耗蓝牙服务）：请参考 :ref:`factory-gatts-intro`。
 
 当您需要修改出厂参数配置、PKI 配置或者 GATTS 配置时，您可以重新编译 ESP-AT 工程，生成新的 mfg_nvs.bin 文件；或者通过 :doc:`../Compile_and_Develop/tools_at_py` 修改固件，为您的模组生成新的固件。本文介绍前者。
 

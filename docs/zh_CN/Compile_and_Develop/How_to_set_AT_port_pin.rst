@@ -1,8 +1,6 @@
 如何设置 AT 端口管脚
 ==========================
 
-{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3", esp32c6="esp32-c6"}
-
 :link_to_translation:`en:[English]`
 
 本文档介绍了如何修改 {IDF_TARGET_NAME} 系列固件中的 :term:`AT port` 管脚。默认情况下，ESP-AT 使用两个 UART 接口作为 AT 端口：一个用于输出日志（以下称为日志端口），另一个用于发送 AT 命令和接收响应（以下称为命令端口）。
@@ -48,6 +46,11 @@
 
   - TX：GPIO16
   - RX：GPIO17
+
+.. only:: esp32s2
+
+  - TX: GPIO17
+  - RX: GPIO21
 
 在编译 ESP-AT 工程时，可使用 menuconfig 配置工具将其修改为其它管脚：
 

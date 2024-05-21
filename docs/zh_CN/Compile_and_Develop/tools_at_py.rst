@@ -1,7 +1,7 @@
 at.py 工具
 =================
 
-{IDF_TARGET_VER: default="undefined", esp32="5.0", esp32c2="5.0", esp32c3="5.0", esp32c6="5.1"}
+{IDF_TARGET_VER: default="undefined", esp32="5.0", esp32c2="5.0", esp32c3="5.0", esp32c6="5.1", esp32s2="5.0"}
 
 :link_to_translation:`en:[English]`
 
@@ -36,7 +36,7 @@ at.py 工具
 
 访问 :project_file:`at.py <tools/at.py>` 页面，点击 ``Download raw file`` 按钮，将 ``at.py`` 文件下载到本地。
 
-.. figure:: ../../_static/at-py-download.png
+.. figure:: ../../_static/compile_and_develop/at-py-download.png
   :align: center
   :alt: 下载 at.py 文件
   :figclass: align-center
@@ -55,10 +55,12 @@ at.py 工具
 第四步：at.py 修改固件中的配置示例
 ---------------------------------------
 
-* :ref:`at-py-modify-wifi`
-* :ref:`at-py-modify-pki`
-* :ref:`at-py-modify-uart`
-* :ref:`at-py-modify-gatts`
+.. list::
+
+  * :ref:`at-py-modify-wifi`
+  * :ref:`at-py-modify-pki`
+  * :ref:`at-py-modify-uart`
+  :not esp32s2: * :ref:`at-py-modify-gatts`
 
 .. note::
 
@@ -211,100 +213,118 @@ at.py 工具
 
 - **\--input factory_XXX.bin**：输入的固件文件
 
-.. _at-py-modify-gatts:
+.. only:: not esp32s2
 
-修改 GATTS 配置
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  .. _at-py-modify-gatts:
 
-修改前，请先阅读 :doc:`如何自定义低功耗蓝牙服务 <How_to_customize_BLE_services>` 文档，了解 GATTS 的配置文件 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 中的各个字段的含义。
+  修改 GATTS 配置
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-当前可修改的 GATTS 配置如下表所示：
+  修改前，请先阅读 :doc:`如何自定义低功耗蓝牙服务 <How_to_customize_BLE_services>` 文档，了解 GATTS 的配置文件 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 中的各个字段的含义。
 
-.. list-table::
-  :header-rows: 1
-  :widths: 20 60
+  当前可修改的 GATTS 配置如下表所示：
 
-  * - 参数
-    - 功能
-  * - \--gatts_cfg0
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 0 的一行数据
-  * - \--gatts_cfg1
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 1 的一行数据
-  * - \--gatts_cfg2
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 2 的一行数据
-  * - \--gatts_cfg3
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 3 的一行数据
-  * - \--gatts_cfg4
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 4 的一行数据
-  * - \--gatts_cfg5
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 5 的一行数据
-  * - \--gatts_cfg6
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 6 的一行数据
-  * - \--gatts_cfg7
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 7 的一行数据
-  * - \--gatts_cfg8
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 8 的一行数据
-  * - \--gatts_cfg9
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 9 的一行数据
-  * - \--gatts_cfg10
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 10 的一行数据
-  * - \--gatts_cfg11
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 11 的一行数据
-  * - \--gatts_cfg12
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 12 的一行数据
-  * - \--gatts_cfg13
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 13 的一行数据
-  * - \--gatts_cfg14
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 14 的一行数据
-  * - \--gatts_cfg15
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 15 的一行数据
-  * - \--gatts_cfg16
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 16 的一行数据
-  * - \--gatts_cfg17
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 17 的一行数据
-  * - \--gatts_cfg18
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 18 的一行数据
-  * - \--gatts_cfg19
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 19 的一行数据
-  * - \--gatts_cfg20
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 20 的一行数据
-  * - \--gatts_cfg21
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 21 的一行数据
-  * - \--gatts_cfg22
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 22 的一行数据
-  * - \--gatts_cfg23
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 23 的一行数据
-  * - \--gatts_cfg24
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 24 的一行数据
-  * - \--gatts_cfg25
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 25 的一行数据
-  * - \--gatts_cfg26
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 26 的一行数据
-  * - \--gatts_cfg27
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 27 的一行数据
-  * - \--gatts_cfg28
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 28 的一行数据
-  * - \--gatts_cfg29
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 29 的一行数据
-  * - \--gatts_cfg30
-    - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 30 的一行数据
+  .. list-table::
+    :header-rows: 1
+    :widths: 20 60
 
-例如，您可以使用以下命令，修改 index 为 0 行的 perm 权限。
+    * - 参数
+      - 功能
+    * - \--gatts_cfg0
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 0 的一行数据
+    * - \--gatts_cfg1
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 1 的一行数据
+    * - \--gatts_cfg2
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 2 的一行数据
+    * - \--gatts_cfg3
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 3 的一行数据
+    * - \--gatts_cfg4
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 4 的一行数据
+    * - \--gatts_cfg5
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 5 的一行数据
+    * - \--gatts_cfg6
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 6 的一行数据
+    * - \--gatts_cfg7
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 7 的一行数据
+    * - \--gatts_cfg8
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 8 的一行数据
+    * - \--gatts_cfg9
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 9 的一行数据
+    * - \--gatts_cfg10
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 10 的一行数据
+    * - \--gatts_cfg11
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 11 的一行数据
+    * - \--gatts_cfg12
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 12 的一行数据
+    * - \--gatts_cfg13
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 13 的一行数据
+    * - \--gatts_cfg14
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 14 的一行数据
+    * - \--gatts_cfg15
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 15 的一行数据
+    * - \--gatts_cfg16
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 16 的一行数据
+    * - \--gatts_cfg17
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 17 的一行数据
+    * - \--gatts_cfg18
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 18 的一行数据
+    * - \--gatts_cfg19
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 19 的一行数据
+    * - \--gatts_cfg20
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 20 的一行数据
+    * - \--gatts_cfg21
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 21 的一行数据
+    * - \--gatts_cfg22
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 22 的一行数据
+    * - \--gatts_cfg23
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 23 的一行数据
+    * - \--gatts_cfg24
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 24 的一行数据
+    * - \--gatts_cfg25
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 25 的一行数据
+    * - \--gatts_cfg26
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 26 的一行数据
+    * - \--gatts_cfg27
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 27 的一行数据
+    * - \--gatts_cfg28
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 28 的一行数据
+    * - \--gatts_cfg29
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 29 的一行数据
+    * - \--gatts_cfg30
+      - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 30 的一行数据
 
-.. code-block:: none
+  例如，您可以使用以下命令，修改 index 为 0 行的 perm 权限。
 
-  python at.py modify_bin --gatts_cfg0 "0,16,0x2800,0x011,2,2,A002" --input factory_XXX.bin
+  .. code-block:: none
 
-- **\--input factory_XXX.bin**：输入的固件文件
+    python at.py modify_bin --gatts_cfg0 "0,16,0x2800,0x011,2,2,A002" --input factory_XXX.bin
 
-.. _esp-at-firmware-download:
+  - **\--input factory_XXX.bin**：输入的固件文件
 
-第五步：固件烧录
-----------------------------
+  .. // 以下的小节是一个临时的解决方案，而且无法避免。请参考 https://docs.espressif.com/projects/esp-docs/en/latest/writing-documentation/writing-for-multiple-targets.html#target-specific-paragraph 获取更多信息。
 
-.. attention::
-  **修改后的 AT 固件，需要您根据自己的产品自行测试验证功能。**
+  .. _esp-at-firmware-download:
 
-  **请保存好修改前和修改后的固件以及下载链接**，用于后续可能的问题调试。
+  第五步：固件烧录
+  ----------------------------
 
-请根据 :ref:`固件烧录指南 <flash-at-firmware-into-your-device>`，完成固件烧录。
+  .. attention::
+    **修改后的 AT 固件，需要您根据自己的产品自行测试验证功能。**
+
+    **请保存好修改前和修改后的固件以及下载链接**，用于后续可能的问题调试。
+
+  请根据 :ref:`固件烧录指南 <flash-at-firmware-into-your-device>`，完成固件烧录。
+
+.. only:: esp32s2
+
+  .. _esp-at-firmware-download:
+
+  第五步：固件烧录
+  ----------------------------
+
+  .. attention::
+    **修改后的 AT 固件，需要您根据自己的产品自行测试验证功能。**
+
+    **请保存好修改前和修改后的固件以及下载链接**，用于后续可能的问题调试。
+
+  请根据 :ref:`固件烧录指南 <flash-at-firmware-into-your-device>`，完成固件烧录。

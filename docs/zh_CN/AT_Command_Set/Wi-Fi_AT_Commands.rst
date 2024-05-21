@@ -1096,7 +1096,7 @@ Wi-Fi AT 命令集
 
 -  当前，{IDF_TARGET_NAME} 设备支持的 PHY mode 见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id40>`_
 
-.. only:: esp32 or esp32c3 or esp32c2
+.. only:: esp32 or esp32c3 or esp32c2 or esp32s2
 
   - 默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgn 模式
 
@@ -1162,7 +1162,7 @@ Wi-Fi AT 命令集
 
 -  当前，{IDF_TARGET_NAME} 设备支持的 PHY mode 见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id40>`_
 
-.. only:: esp32 or esp32c3 or esp32c2
+.. only:: esp32 or esp32c3 or esp32c2 or esp32s2
 
   - 默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgn 模式
 

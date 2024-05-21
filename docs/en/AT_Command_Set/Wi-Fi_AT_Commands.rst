@@ -1096,7 +1096,7 @@ Note
 
 -  See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-protocol-mode>`_ for the PHY mode supported by the {IDF_TARGET_NAME} device.
 
-.. only:: esp32 or esp32c3 or esp32c2
+.. only:: esp32 or esp32c3 or esp32c2 or esp32s2
 
   -  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgn mode.
 
@@ -1162,7 +1162,7 @@ Note
 
 -  See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-protocol-mode>`_ for the PHY mode supported by the {IDF_TARGET_NAME} device.
 
-.. only:: esp32 or esp32c3 or esp32c2
+.. only:: esp32 or esp32c3 or esp32c2 or esp32s2
 
   -  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgn mode.
 

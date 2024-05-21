@@ -83,7 +83,7 @@ To upgrade the customized bin file with :ref:`AT+CIUPDATE <cmd-UPDATE>` command,
 
 1. Open the website http://iot.espressif.cn or https://iot.espressif.cn.
 
-   .. figure:: ../../_static/OTA-1.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-1.png
     :align: center
     :alt: Open iot.espressif.cn website
     :figclass: align-center
@@ -92,7 +92,7 @@ To upgrade the customized bin file with :ref:`AT+CIUPDATE <cmd-UPDATE>` command,
 
 2. Click "Join" in the upper right corner of the webpage, and enter your name, email address, and password.
 
-   .. figure:: ../../_static/OTA-2.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-2.png
     :align: center
     :alt: Join iot.espressif.cn website
     :figclass: align-center
@@ -105,14 +105,14 @@ To upgrade the customized bin file with :ref:`AT+CIUPDATE <cmd-UPDATE>` command,
 
 3. Click on "Device" in the upper left corner of the webpage, and click on "Create" to create a device.
 
-   .. figure:: ../../_static/OTA-3.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-3.png
     :align: center
     :alt: Click on "Device"
     :figclass: align-center
 
     Click on "Device"
 
-   .. figure:: ../../_static/OTA-4.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-4.png
     :align: center
     :alt: Click on "Create" 
     :figclass: align-center
@@ -121,7 +121,7 @@ To upgrade the customized bin file with :ref:`AT+CIUPDATE <cmd-UPDATE>` command,
 
 4. A key is generated when the device is successfully created, as the figure below shows.
 
-   .. figure:: ../../_static/OTA-5.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-5.png
     :align: center
     :alt: A key has been generated
     :figclass: align-center
@@ -130,14 +130,14 @@ To upgrade the customized bin file with :ref:`AT+CIUPDATE <cmd-UPDATE>` command,
 
 5. Use the key to compile your own OTA bin file. The process of configuring the AT OTA token key is as follows:
 
-   .. figure:: ../../_static/OTA-6.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-6.png
     :align: center
     :alt: Configuring the AT OTA token key - Step 1
     :figclass: align-center
 
     Configuring the AT OTA token key - Step 1
 
-   .. figure:: ../../_static/OTA-7.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-7.png
     :align: center
     :alt: Configuring the AT OTA token key - Step 2 and 3
     :figclass: align-center
@@ -150,7 +150,7 @@ To upgrade the customized bin file with :ref:`AT+CIUPDATE <cmd-UPDATE>` command,
 
 6. Click on "Product" to enter the webpage, as shown below. Click on the device created. Enter version and corename under "ROM Deploy". Rename the bin file in Step 5 as "ota.bin" and save the configuration.
 
-   .. figure:: ../../_static/OTA-8.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-8.png
     :align: center
     :alt: Enter version and corename
     :figclass: align-center
@@ -164,7 +164,7 @@ To upgrade the customized bin file with :ref:`AT+CIUPDATE <cmd-UPDATE>` command,
 
 7. Click on the ota.bin to save it as the current version.
 
-   .. figure:: ../../_static/OTA-9.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-9.png
     :align: center
     :alt: Save the current version of ota.bin
     :figclass: align-center

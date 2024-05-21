@@ -1,8 +1,8 @@
 如何自定义分区
 ===========================
 
-{IDF_TARGET_AT_SECOND_PARTITION_ADDR: default="undefined", esp32="0x20000", esp32c2="0x1E000", esp32c3="0x1E000", esp32c6="0x1E000"}
-{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c2="ESP8684-MINI-1 4MB", esp32c3="ESP32-C3-MINI-1", esp32c6="ESP32-C6-MINI-1"}
+{IDF_TARGET_AT_SECOND_PARTITION_ADDR: default="undefined", esp32="0x20000", esp32c2="0x1E000", esp32c3="0x1E000", esp32c6="0x1E000", esp32s2="0x20000"}
+{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c2="ESP8684-MINI-1 4MB", esp32c3="ESP32-C3-MINI-1", esp32c6="ESP32-C6-MINI-1", esp32s2="ESP32-S2-MINI"}
 
 :link_to_translation:`en:[English]`
 
@@ -85,6 +85,18 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
     * - ESP32-C6
       - ESP32C6-4MB（所有带 4 MB flash 的 ESP32-C6 系列）
       - :project_file:`module_config/module_esp32c6_default/at_customize.csv`
+
+.. only:: esp32s2
+
+  .. list-table:: at_customize.csv 路径
+    :header-rows: 1
+
+    * - 平台
+      - 模组
+      - 路径
+    * - ESP32-S2
+      - MINI
+      - :project_file:`module_config/module_esp32s2_default/at_customize.csv`
 
 然后，在修改 at_customize.csv 时遵循以下规则。
 
@@ -184,6 +196,20 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
       - 0x1E000
       - 0x42000
 
+.. only:: esp32s2
+
+  .. list-table:: 不同模组 at_customize.bin 的下载地址
+    :header-rows: 1
+
+    * - 平台
+      - 模组
+      - 地址
+      - 大小
+    * - ESP32-S2
+      - MINI
+      - 0x20000
+      - 0xE0000
+
 在某些情况下，必须将 at_customize.bin 下载到 flash 后才能使用一些 AT 命令：
 
 - :ref:`cmd-SYSFLASH`
@@ -200,7 +226,7 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
 
 首先找到 {IDF_TARGET_PRODUCT_NAME} 的 at_customize.csv 表，设置新分区的 ``Name``、``Type``、``SubType``、``Offset`` 和 ``Size``。
 
-.. only:: esp32
+.. only:: esp32 or esp32s2
 
   ::
 

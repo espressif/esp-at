@@ -56,7 +56,7 @@ Parameters
 
 -  **<channel>**: ADC1 channel.
 
-  .. only:: esp32
+  .. only:: esp32 or esp32s2
 
     - For {IDF_TARGET_NAME} devices, the range is [0,7].
 
@@ -104,7 +104,7 @@ Parameters
 
 -  **<atten>**: attenuation.
 
-  .. only:: esp32
+  .. only:: esp32 or esp32s2
 
     -  0: 0 dB attenuation, effective measurement range is [100, 950] mV.
     -  1: 2.5 dB attenuation, effective measurement range is [100, 1250] mV.
@@ -130,7 +130,7 @@ Notes
 Example
 ^^^^^^^^
 
-.. only:: esp32
+.. only:: esp32 or esp32s2
 
   ::
 

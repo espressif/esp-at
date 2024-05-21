@@ -1,9 +1,9 @@
 Compile ESP-AT Project Locally
 ==============================
 
-{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="ESP32C2-4MB", esp32c3="MINI-1", esp32c6="ESP32C6-4MB"}
-{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32D", esp32c2="ESP8684-MINI-1 4MB", esp32c3="ESP32-C3-MINI-1", esp32c6="ESP32-C6-MINI-1"}
-{IDF_TARGET_VER: default="undefined", esp32="5.0", esp32c2="5.0", esp32c3="5.0", esp32c6="5.1"}
+{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="ESP32C2-4MB", esp32c3="MINI-1", esp32c6="ESP32C6-4MB", esp32s2="MINI"}
+{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c2="ESP8684-MINI-1 4MB", esp32c3="ESP32-C3-MINI-1", esp32c6="ESP32-C6-MINI-1", esp32s2="ESP32-S2-MINI"}
+{IDF_TARGET_VER: default="undefined", esp32="5.0", esp32c2="5.0", esp32c3="5.0", esp32c6="5.1", esp32s2="5.0"}
 
 :link_to_translation:`zh_CN:[中文]`
 
@@ -11,7 +11,7 @@ Compile ESP-AT Project Locally
 
   This document details how to build your own ESP-AT project locally and flash the generated firmware into your {IDF_TARGET_NAME}. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>`, :doc:`Bluetooth LE services <How_to_customize_BLE_services>`, and :doc:`partitions <How_to_customize_partitions>`, and so on.
 
-.. only:: esp32c2
+.. only:: esp32c2 or esp32s2
 
   This document details how to build your own ESP-AT project locally and flash the generated firmware into your {IDF_TARGET_NAME}. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>` and :doc:`partitions <How_to_customize_partitions>`, and so on.
 

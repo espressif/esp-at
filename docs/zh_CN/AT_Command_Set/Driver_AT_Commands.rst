@@ -56,7 +56,7 @@
 
 -  **<channel>**：ADC1 通道。
 
-  .. only:: esp32
+  .. only:: esp32 or esp32s2
 
     - {IDF_TARGET_NAME} 设备的取值范围为 [0,7]。
 
@@ -104,7 +104,7 @@
 
 -  **<atten>**：衰减值。
 
-  .. only:: esp32
+  .. only:: esp32 or esp32s2
 
     - 0: 0 dB 衰减，有效测量范围为 [100, 950] mV。
     - 1: 2.5 dB 衰减，有效测量范围为 [100, 1250] mV。
@@ -130,7 +130,7 @@
 示例
 ^^^^
 
-.. only:: esp32
+.. only:: esp32 or esp32s2
 
   ::
 

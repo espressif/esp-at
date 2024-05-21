@@ -223,7 +223,7 @@
 
 -  **<time>**：设备进入 Deep-sleep 的时长，单位：毫秒。设定时间到后，设备自动唤醒，调用深度睡眠唤醒桩，然后加载应用程序。
 
-   .. only:: esp32c3 or esp32c2 or esp32
+   .. only:: esp32c3 or esp32c2 or esp32 or esp32s2
 
        - 0 表示立即重启
 
@@ -301,9 +301,11 @@
 :ref:`AT+SAVETRANSLINK <Basic-AT>`：设置开机 Wi-Fi/Bluetooth LE :term:`透传模式` 信息
 -----------------------------------------------------------------------------------------
 
-* :ref:`savetrans-tcpssl`
-* :ref:`savetrans-udp`
-* :ref:`savetrans-ble`
+.. list::
+
+    * :ref:`savetrans-tcpssl`
+    * :ref:`savetrans-udp`
+    :esp32 or esp32c3 or esp32c6 or esp32c2: * :ref:`savetrans-ble`
 
 .. _savetrans-tcpssl:
 
@@ -413,56 +415,58 @@
     AT+SAVETRANSLINK=1,"192.168.6.110",1002,"UDP",1005
     AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8081,"UDPv6",1005
 
-.. _savetrans-ble:
+.. only:: esp32c2 or esp32c3 or esp32c6 or esp32
 
-设置开机进入 BLE :term:`透传模式` 信息
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    .. _savetrans-ble:
 
-设置
-""""
+    设置开机进入 BLE :term:`透传模式` 信息
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**命令：**
+    设置
+    """"
 
-::
+    **命令：**
 
-    AT+SAVETRANSLINK=<mode>,<role>,<tx_srv>,<tx_char>,<rx_srv>,<rx_char>,<peer_addr>
+    ::
 
-**响应：**
+        AT+SAVETRANSLINK=<mode>,<role>,<tx_srv>,<tx_char>,<rx_srv>,<rx_char>,<peer_addr>
 
-::
+    **响应：**
 
-    OK
+    ::
 
-参数
-""""
+        OK
 
--  **<mode>**：
+    参数
+    """"
 
-    -  0: 关闭 {IDF_TARGET_NAME} 上电进入 BLE :term:`透传模式`
-    -  2: 开启 {IDF_TARGET_NAME} 上电进入 BLE :term:`透传模式`
+    -  **<mode>**：
 
--  **<role>**：
+        -  0: 关闭 {IDF_TARGET_NAME} 上电进入 BLE :term:`透传模式`
+        -  2: 开启 {IDF_TARGET_NAME} 上电进入 BLE :term:`透传模式`
 
-    -  1: client 角色
-    -  2: server 角色
+    -  **<role>**：
 
--  **<tx_srv>**：tx 服务序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询。
--  **<tx_char>**：tx 服务特征序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 命令查询。
--  **<rx_srv>**：rx 服务序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询。
--  **<rx_char>**：rx 服务特征序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 命令查询。
--  **<peer_addr>**：对方 Bluetooth LE 地址
+        -  1: client 角色
+        -  2: server 角色
 
-说明
-"""""""
+    -  **<tx_srv>**：tx 服务序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询。
+    -  **<tx_char>**：tx 服务特征序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 命令查询。
+    -  **<rx_srv>**：rx 服务序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询。
+    -  **<rx_char>**：rx 服务特征序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 命令查询。
+    -  **<peer_addr>**：对方 Bluetooth LE 地址
 
-- 本设置将 BLE 开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 2，下次上电自动进入 Bluetooth LE :term:`透传模式`。需重启生效。
+    说明
+    """""""
 
-示例
-"""""""""
+    - 本设置将 BLE 开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 2，下次上电自动进入 Bluetooth LE :term:`透传模式`。需重启生效。
 
-::
+    示例
+    """""""""
 
-    AT+SAVETRANSLINK=2,2,1,7,1,5,"26:a2:11:22:33:88"
+    ::
+
+        AT+SAVETRANSLINK=2,2,1,7,1,5,"26:a2:11:22:33:88"
 
 .. _cmd-TRANSINTVL:
 
@@ -1553,7 +1557,7 @@
     +RFPOWER:<wifi_power>,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>
     OK
 
-.. only:: esp32c2
+.. only:: esp32c2 or esp32s2
 
   ::
 
@@ -1571,7 +1575,7 @@
 
     AT+RFPOWER=<wifi_power>[,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>]
 
-.. only:: esp32c2
+.. only:: esp32c2 or esp32s2
 
   ::
 
@@ -1614,6 +1618,17 @@
       ========= ============ ============ ==========
       [40,80]   <设定值>      <设定值>      <设定值> * 0.25
       [81,84]   <设定值>      80           20
+      ========= ============ ============ ==========
+
+  .. only:: esp32s2
+
+    - {IDF_TARGET_NAME} 设备的取值范围为 [40,84]：
+
+      ========= ============ ============ ==========
+      设定值     读取值        实际值        实际 dBm
+      ========= ============ ============ ==========
+      [40,78]   <设定值>      <设定值>      <设定值> * 0.25
+      [79,84]   <设定值>      78           19.5
       ========= ============ ============ ==========
 
 .. only:: esp32
@@ -1667,7 +1682,6 @@
     -  13: 15 dBm
     -  14: 18 dBm
     -  15: 20 dBm
-
 
 .. only:: esp32 or esp32c3 or esp32c6
 

@@ -117,7 +117,7 @@
 
 如果直接在 {IDF_TARGET_NAME} 设备上使用默认源文件，不做任何修改，并建立低功耗蓝牙连接，那么在客户端查询服务器服务后，会得到如下结果。
 
-.. figure:: ../../_static/ble_default_service.png
+.. figure:: ../../_static/compile_and_develop/ble_default_service.png
     :scale: 100 %
     :align: center
     :alt: ESP-AT 默认低功耗蓝牙服务
@@ -264,7 +264,7 @@
 
 下载完成后，重新建立低功耗蓝牙连接，在客户端查询的服务器服务如下所示。
 
-.. figure:: ../../_static/ble_customize_service.png
+.. figure:: ../../_static/compile_and_develop/ble_customize_service.png
     :scale: 100 %
     :align: center
     :alt: ESP-AT 自定义低功耗蓝牙服务

@@ -166,7 +166,7 @@ Note
 
   - If you use ESP32C2-2MB module config, OTA firmware is ``build/custom_ota_binaries/esp-at.bin.xz.packed``. If you use ESP32C2-4MB module config, OTA firmware is ``build/esp-at.bin``.
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c6 or esp32s2
 
   - OTA firmware is ``build/esp-at.bin``.
 

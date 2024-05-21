@@ -223,7 +223,7 @@ Parameter
 
 -  **<time>**: The duration when the device stays in Deep-sleep. Unit: millisecond. When the time is up, the device automatically wakes up, calls Deep-sleep wake stub, and then proceeds to load the application.
 
-   .. only:: esp32c3 or esp32c2 or esp32
+   .. only:: esp32c3 or esp32c2 or esp32 or esp32s2
 
        - 0 means restarting right now
 
@@ -301,9 +301,11 @@ Notes
 :ref:`AT+SAVETRANSLINK <TCPIP-AT>`: Set Whether to Enter Wi-Fi/Bluetooth LE :term:`Passthrough Mode` on Power-up
 ----------------------------------------------------------------------------------------------------------------
 
-* :ref:`savetrans-tcpssl`
-* :ref:`savetrans-udp`
-* :ref:`savetrans-ble`
+.. list::
+
+    * :ref:`savetrans-tcpssl`
+    * :ref:`savetrans-udp`
+    :esp32 or esp32c3 or esp32c6 or esp32c2: * :ref:`savetrans-ble`
 
 .. _savetrans-tcpssl:
 
@@ -413,56 +415,58 @@ Example
     AT+SAVETRANSLINK=1,"192.168.6.110",1002,"UDP",1005
     AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8081,"UDPv6",1005
 
-.. _savetrans-ble:
+.. only:: esp32c2 or esp32c3 or esp32c6 or esp32
 
-For BLE Connection
-^^^^^^^^^^^^^^^^^^^^
+    .. _savetrans-ble:
 
-Set Command
-""""""""""""""
+    For BLE Connection
+    ^^^^^^^^^^^^^^^^^^^^
 
-**Command:**
+    Set Command
+    """"""""""""""
 
-::
+    **Command:**
 
-    AT+SAVETRANSLINK=<mode>,<role>,<tx_srv>,<tx_char>,<rx_srv>,<rx_char>,<peer_addr>
+    ::
 
-**Response:**
+        AT+SAVETRANSLINK=<mode>,<role>,<tx_srv>,<tx_char>,<rx_srv>,<rx_char>,<peer_addr>
 
-::
+    **Response:**
 
-    OK
+    ::
 
-Parameters
-""""""""""""""
+        OK
 
--  **<mode>**:
+    Parameters
+    """"""""""""""
 
-    -  0: {IDF_TARGET_NAME} will NOT enter BLE :term:`Passthrough Mode` on power-up.
-    -  2: {IDF_TARGET_NAME} will enter BLE :term:`Passthrough Mode` on power-up.
+    -  **<mode>**:
 
--  **<role>**:
+        -  0: {IDF_TARGET_NAME} will NOT enter BLE :term:`Passthrough Mode` on power-up.
+        -  2: {IDF_TARGET_NAME} will enter BLE :term:`Passthrough Mode` on power-up.
 
-    -  1: client role.
-    -  2: server role.
+    -  **<role>**:
 
--  **<tx_srv>**: tx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` if AT works as GATTS role.
--  **<tx_char>**: tx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` if AT works as GATTS role.
--  **<rx_srv>**: rx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` if AT works as GATTS role.
--  **<rx_char>**: rx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` if AT works as GATTS role.
--  **<peer_addr>**: remote Bluetooth LE address.
+        -  1: client role.
+        -  2: server role.
 
-Notes
-"""""""
+    -  **<tx_srv>**: tx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` if AT works as GATTS role.
+    -  **<tx_char>**: tx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` if AT works as GATTS role.
+    -  **<rx_srv>**: rx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` if AT works as GATTS role.
+    -  **<rx_char>**: rx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` if AT works as GATTS role.
+    -  **<peer_addr>**: remote Bluetooth LE address.
 
--  This command will save the BLE :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 2, {IDF_TARGET_NAME} will enter the Bluetooth LE :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+    Notes
+    """""""
 
-Example
-"""""""""
+    -  This command will save the BLE :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 2, {IDF_TARGET_NAME} will enter the Bluetooth LE :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 
-::
+    Example
+    """""""""
 
-    AT+SAVETRANSLINK=2,2,1,7,1,5,"26:a2:11:22:33:88"
+    ::
+
+        AT+SAVETRANSLINK=2,2,1,7,1,5,"26:a2:11:22:33:88"
 
 .. _cmd-TRANSINTVL:
 
@@ -1553,7 +1557,7 @@ Query the RF TX Power.
     +RFPOWER:<wifi_power>,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>
     OK
 
-.. only:: esp32c2
+.. only:: esp32c2 or esp32s2
 
   ::
 
@@ -1571,7 +1575,7 @@ Set Command
 
     AT+RFPOWER=<wifi_power>[,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>]
 
-.. only:: esp32c2
+.. only:: esp32c2 or esp32s2
 
   ::
 
@@ -1614,6 +1618,17 @@ Parameters
       ========= ============ ============ ==========
       [40,80]   <set value>  <set value>  <set value> * 0.25
       [81,84]   <set value>  80           20
+      ========= ============ ============ ==========
+
+  .. only:: esp32s2
+
+    - For {IDF_TARGET_NAME} devices, the range is [40,84]:
+
+      ========= ============ ============ ==========
+      set value   get value  actual value actual dBm
+      ========= ============ ============ ==========
+      [40,78]   <set value>  <set value>  <set value> * 0.25
+      [79,84]   <set value>  78           19.5
       ========= ============ ============ ==========
 
 .. only:: esp32

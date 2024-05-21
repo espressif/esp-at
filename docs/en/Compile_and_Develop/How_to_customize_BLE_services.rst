@@ -117,7 +117,7 @@ For more information about UUID, please refer to `Bluetooth Special Interest Gro
 
 If you use the default source file on your {IDF_TARGET_NAME} without any modification and establish a Bluetooth LE connection, you will get the following result after querying the server service on the client side.
 
-.. figure:: ../../_static/ble_default_service.png
+.. figure:: ../../_static/compile_and_develop/ble_default_service.png
     :scale: 100 %
     :align: center
     :alt: ESP-AT Default Bluetooth LE Service
@@ -264,7 +264,7 @@ Please refer to :ref:`mfg-nvs-download` document.
 
 After the download is complete, re-establish the Bluetooth LE connection. Query the server service on the client side as follows:
 
-.. figure:: ../../_static/ble_customize_service.png
+.. figure:: ../../_static/compile_and_develop/ble_customize_service.png
     :scale: 100 %
     :align: center
     :alt: ESP-AT Customized Bluetooth LE Service
