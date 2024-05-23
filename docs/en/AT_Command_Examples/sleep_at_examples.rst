@@ -1,8 +1,6 @@
 Sleep AT Examples
 ==========================
 
-{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3", esp32c6="esp32-c6"}
-
 :link_to_translation:`zh_CN:[中文]`
 
 This document provides an introduction and detailed command examples to illustrate how to utilize AT commands to set sleep modes on {IDF_TARGET_NAME} series of products.
@@ -40,7 +38,7 @@ In order to avoid some unnecessary interference during the power consumption tes
 
 Refer to the following figure for hardware connection. (Note that the development board below only has the {IDF_TARGET_NAME} module on board, and all other peripheral components have been removed.)
 
-.. figure:: ../../_static/{IDF_TARGET_HYPHEN_LOWERCASE_NAME}-hardware-connection.png
+.. figure:: ../../_static/at_command_examples/esp-power-consumption-hardware-connection.png
     :align: center
     :alt: {IDF_TARGET_NAME} Hardware Connection
 

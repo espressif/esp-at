@@ -1,8 +1,6 @@
 Sleep AT 示例
 ==================================
 
-{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c2="esp32-c2", esp32c3="esp32-c3", esp32c6="esp32-c6"}
-
 :link_to_translation:`en:[English]`
 
 本文档简要介绍并举例说明如何在 {IDF_TARGET_NAME} 系列产品上使用 AT 命令设置睡眠模式。
@@ -40,7 +38,7 @@ Sleep AT 示例
 
 硬件连接可参考下图。（注意，图中开发板只保留了 {IDF_TARGET_NAME} ，外围元器件均已移除。）
 
-.. figure:: ../../_static/{IDF_TARGET_HYPHEN_LOWERCASE_NAME}-hardware-connection.png
+.. figure:: ../../_static/at_command_examples/esp-power-consumption-hardware-connection.png
     :align: center
     :alt: {IDF_TARGET_NAME} 硬件连接
 

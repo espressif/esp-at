@@ -3,7 +3,7 @@ ESP-AT User Guide
 
 :link_to_translation:`zh_CN:[中文]`
 
-This is the documentation for `ESP-AT <https://github.com/espressif/esp-at>`_ Development Framework. ESP-AT project was started and powered by `Espressif Systems <https://www.espressif.com>`_ as an official project, for the `ESP32, ESP32-C2, ESP32-C3, ESP32-C6, and ESP8266 Series SoCs <https://www.espressif.com/en/products/hardware/socs>`_ provided for Windows, Linux, and macOS.
+This is the documentation for `ESP-AT <https://github.com/espressif/esp-at>`_ Development Framework. ESP-AT project was started and powered by `Espressif Systems <https://www.espressif.com>`_ as an official project, for the `ESP32, ESP32-C2, ESP32-C3, ESP32-C6, ESP32-S2, and ESP8266 Series SoCs <https://www.espressif.com/en/products/hardware/socs>`_ provided for Windows, Linux, and macOS.
 
 .. only:: html
 
@@ -49,7 +49,7 @@ This is the documentation for `ESP-AT <https://github.com/espressif/esp-at>`_ De
    AT Command Set <AT_Command_Set/index>
    AT Command Examples <AT_Command_Examples/index>
    Compile and Develop <Compile_and_Develop/index>
-   :esp32 or esp32c3: Customized AT Commands and Firmware <Customized_AT_Commands_and_Firmware/index>
+   Customized AT Commands and Firmware <Customized_AT_Commands_and_Firmware/index>
    FAQ <faq>
    Index of Abbreviations <index_of_abbreviations>
    About <about>

@@ -79,7 +79,7 @@ Users could choose one of the following methods to improve throughput performanc
       CONFIG_ESP32_WIFI_AMPDU_TX_ENABLED=y
       CONFIG_ESP32_WIFI_AMPDU_RX_ENABLED=y
 
-  .. only:: esp32c3
+  .. only:: esp32c3 or esp32s2
 
     ::
 

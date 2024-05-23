@@ -1,7 +1,7 @@
 at.py Tool
 =================
 
-{IDF_TARGET_VER: default="undefined", esp32="5.0", esp32c2="5.0", esp32c3="5.0", esp32c6="5.1"}
+{IDF_TARGET_VER: default="undefined", esp32="5.0", esp32c2="5.0", esp32c3="5.0", esp32c6="5.1", esp32s2="5.0"}
 
 :link_to_translation:`zh_CN:[中文]`
 
@@ -36,7 +36,7 @@ Step 2: Download at.py
 
 Visit the :project_file:`at.py <tools/at.py>` webpage, click the "Download raw file" button to download the at.py file to your local machine.
 
-.. figure:: ../../_static/at-py-download.png
+.. figure:: ../../_static/compile_and_develop/at-py-download.png
   :align: center
   :alt: Download at.py File
   :figclass: align-center
@@ -55,10 +55,12 @@ Currently, ``at.py`` supports modifying parameter configurations in the firmware
 Step 4: Examples: Modify Firmware Configurations with at.py
 -----------------------------------------------------------
 
-* :ref:`at-py-modify-wifi`
-* :ref:`at-py-modify-pki`
-* :ref:`at-py-modify-uart`
-* :ref:`at-py-modify-gatts`
+.. list::
+
+  * :ref:`at-py-modify-wifi`
+  * :ref:`at-py-modify-pki`
+  * :ref:`at-py-modify-uart`
+  :not esp32s2: * :ref:`at-py-modify-gatts`
 
 .. note::
 
@@ -211,100 +213,118 @@ For example, you can use the following command to modify the baud rate to 921600
 
 - **\--input factory_XXX.bin**: The input firmware file.
 
-.. _at-py-modify-gatts:
+.. only:: not esp32s2
 
-Modify GATTS Configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+  .. _at-py-modify-gatts:
 
-Before making modifications, please read the :doc:`How to Customize Bluetooth® LE Services <How_to_customize_BLE_services>` document to understand the meaning of each field in the GATTS configuration file :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>`.
+  Modify GATTS Configuration
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The currently modifiable GATTS configurations are shown in the following table:
+  Before making modifications, please read the :doc:`How to Customize Bluetooth® LE Services <How_to_customize_BLE_services>` document to understand the meaning of each field in the GATTS configuration file :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>`.
 
-.. list-table::
-  :header-rows: 1
-  :widths: 20 60
+  The currently modifiable GATTS configurations are shown in the following table:
 
-  * - Parameter
-    - Function
-  * - \--gatts_cfg0
-    - Update the row with index 0 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg1
-    - Update the row with index 1 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg2
-    - Update the row with index 2 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg3
-    - Update the row with index 3 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg4
-    - Update the row with index 4 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg5
-    - Update the row with index 5 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg6
-    - Update the row with index 6 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg7
-    - Update the row with index 7 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg8
-    - Update the row with index 8 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg9
-    - Update the row with index 9 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg10
-    - Update the row with index 10 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg11
-    - Update the row with index 11 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg12
-    - Update the row with index 12 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg13
-    - Update the row with index 13 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg14
-    - Update the row with index 14 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg15
-    - Update the row with index 15 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg16
-    - Update the row with index 16 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg17
-    - Update the row with index 17 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg18
-    - Update the row with index 18 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg19
-    - Update the row with index 19 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg20
-    - Update the row with index 20 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg21
-    - Update the row with index 21 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg22
-    - Update the row with index 22 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg23
-    - Update the row with index 23 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg24
-    - Update the row with index 24 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg25
-    - Update the row with index 25 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg26
-    - Update the row with index 26 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg27
-    - Update the row with index 27 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg28
-    - Update the row with index 28 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg29
-    - Update the row with index 29 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
-  * - \--gatts_cfg30
-    - Update the row with index 30 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+  .. list-table::
+    :header-rows: 1
+    :widths: 20 60
 
-For example, you can use the following command to modify the "perm" permission of the row with index 0:
+    * - Parameter
+      - Function
+    * - \--gatts_cfg0
+      - Update the row with index 0 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg1
+      - Update the row with index 1 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg2
+      - Update the row with index 2 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg3
+      - Update the row with index 3 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg4
+      - Update the row with index 4 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg5
+      - Update the row with index 5 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg6
+      - Update the row with index 6 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg7
+      - Update the row with index 7 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg8
+      - Update the row with index 8 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg9
+      - Update the row with index 9 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg10
+      - Update the row with index 10 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg11
+      - Update the row with index 11 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg12
+      - Update the row with index 12 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg13
+      - Update the row with index 13 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg14
+      - Update the row with index 14 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg15
+      - Update the row with index 15 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg16
+      - Update the row with index 16 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg17
+      - Update the row with index 17 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg18
+      - Update the row with index 18 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg19
+      - Update the row with index 19 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg20
+      - Update the row with index 20 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg21
+      - Update the row with index 21 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg22
+      - Update the row with index 22 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg23
+      - Update the row with index 23 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg24
+      - Update the row with index 24 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg25
+      - Update the row with index 25 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg26
+      - Update the row with index 26 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg27
+      - Update the row with index 27 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg28
+      - Update the row with index 28 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg29
+      - Update the row with index 29 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
+    * - \--gatts_cfg30
+      - Update the row with index 30 in the :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` file
 
-.. code-block:: none
+  For example, you can use the following command to modify the "perm" permission of the row with index 0:
 
-  python at.py modify_bin --gatts_cfg0 "0,16,0x2800,0x011,2,2,A002" --input factory_XXX.bin
+  .. code-block:: none
 
-- **\--input factory_XXX.bin**: The input firmware file.
+    python at.py modify_bin --gatts_cfg0 "0,16,0x2800,0x011,2,2,A002" --input factory_XXX.bin
 
-.. _esp-at-firmware-download:
+  - **\--input factory_XXX.bin**: The input firmware file.
 
-Step 5: Flash onto the Device
------------------------------
+  .. // The following section is a temporary workaround and it cannot be avoided. Refer to https://docs.espressif.com/projects/esp-docs/en/latest/writing-documentation/writing-for-multiple-targets.html#target-specific-paragraph for more information.
 
-.. attention::
-  **The AT firmware modified by at.py needs to be tested and verified for functionality based on your own product.**
+  .. _esp-at-firmware-download:
 
-  **Please save the firmware before and after modification, and the download link**, for possible issue debugging in the future.
+  Step 5: Flash onto the Device
+  -----------------------------
 
-Please follow the :ref:`Flash firmware <flash-at-firmware-into-your-device>` to complete it.
+  .. attention::
+    **The AT firmware modified by at.py needs to be tested and verified for functionality based on your own product.**
+
+    **Please save the firmware before and after modification, and the download link**, for possible issue debugging in the future.
+
+  Please follow the :ref:`Flash firmware <flash-at-firmware-into-your-device>` to complete it.
+
+.. only:: esp32s2
+
+  .. _esp-at-firmware-download:
+
+  Step 5: Flash onto the Device
+  -----------------------------
+
+  .. attention::
+    **The AT firmware modified by at.py needs to be tested and verified for functionality based on your own product.**
+
+    **Please save the firmware before and after modification, and the download link**, for possible issue debugging in the future.
+
+  Please follow the :ref:`Flash firmware <flash-at-firmware-into-your-device>` to complete it.

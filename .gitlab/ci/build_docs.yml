@@ -22,7 +22,7 @@
   parallel:
     matrix:
       - DOCLANG: ["en", "zh_CN"]
-        DOCTGT: ["esp32", "esp32c2", "esp32c3", "esp32c6"]
+        DOCTGT: ["esp32", "esp32c2", "esp32c3", "esp32c6", "esp32s2"]
 
 build_docs_html:
   extends:

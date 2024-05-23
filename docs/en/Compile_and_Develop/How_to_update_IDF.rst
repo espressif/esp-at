@@ -1,7 +1,7 @@
 How to Update the ESP-IDF Version
 =================================
 
-{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c3="MINI-1", esp32c2="ESP32C2-4MB", esp32c6="ESP32C6-4MB"}
+{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="ESP32C2-4MB", esp32c3="MINI-1", esp32c6="ESP32C6-4MB", esp32s2="MINI"}
 
 :link_to_translation:`zh_CN:[中文]`
 

@@ -166,7 +166,7 @@ AT 输出上述信息之后，升级过程开始。如果升级完成，返回�
 
   - 如果您使用的是 ESP32C2-2MB 模组配置，OTA 固件为 ``build/custom_ota_binaries/esp-at.bin.xz.packed``；如果您使用的是 ESP32C2-4MB 模组配置，OTA 固件为 ``build/esp-at.bin``。
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c6 or esp32s2
 
   - OTA 固件为 ``build/esp-at.bin``。
 

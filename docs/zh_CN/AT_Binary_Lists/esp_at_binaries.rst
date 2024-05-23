@@ -18,7 +18,7 @@
       - :ref:`at-py-modify-uart`
       - :ref:`at-py-modify-wifi`
       - :ref:`at-py-modify-pki`
-      :esp32 or esp32c3 or esp32c6: - :ref:`at-py-modify-gatts`
+      :esp32 or esp32c2 or esp32c3 or esp32c6: - :ref:`at-py-modify-gatts`
 
 .. only:: esp32
 
@@ -109,3 +109,10 @@
   ^^^^^^^^^^^^^^^^^^^^^^
 
   - v4.0.0.0 `ESP32-C6-4MB-AT-V4.0.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c6/ESP32-C6-4MB-AT-V4.0.0.0.zip>`__ （推荐）
+
+.. only:: esp32s2
+
+  ESP32-S2-MINI 系列
+  ^^^^^^^^^^^^^^^^^^^^^^
+
+  - 计划在 2024 年 7 月发布首版 ESP-AT 固件（v3.4.0.0）

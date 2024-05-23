@@ -83,7 +83,7 @@ OTA 命令对比及应用场景
 
 1. 打开网站 http://iot.espressif.cn 或者 https://iot.espressif.cn。
 
-   .. figure:: ../../_static/OTA-1.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-1.png
     :align: center
     :alt: 打开 iot.espressif.cn 网站
     :figclass: align-center
@@ -92,7 +92,7 @@ OTA 命令对比及应用场景
 
 2. 点击网页右上角的 "Join"，输入您的名字，邮箱地址和密码。
 
-   .. figure:: ../../_static/OTA-2.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-2.png
     :align: center
     :alt: 加入 iot.espressif.cn
     :figclass: align-center
@@ -105,14 +105,14 @@ OTA 命令对比及应用场景
 
 3. 点击网页左上角的 "Device"，然后点击 "Create" 来创建一个设备。
 
-   .. figure:: ../../_static/OTA-3.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-3.png
     :align: center
     :alt: 点击 "Device"
     :figclass: align-center
 
     点击 "Device"
 
-   .. figure:: ../../_static/OTA-4.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-4.png
     :align: center
     :alt: 点击 "Create"
     :figclass: align-center
@@ -121,7 +121,7 @@ OTA 命令对比及应用场景
 
 4. 当设备创建成功后会生成一个密钥，如下图所示：
 
-   .. figure:: ../../_static/OTA-5.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-5.png
     :align: center
     :alt: 生成一个密钥
     :figclass: align-center
@@ -130,14 +130,14 @@ OTA 命令对比及应用场景
 
 5. 使用该密钥来编译您的 OTA bin 文件。配置 AT OTA token 密钥的过程如下如所示：
 
-   .. figure:: ../../_static/OTA-6.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-6.png
     :align: center
     :alt: 配置 AT OTA token 密钥 - 步骤 1
     :figclass: align-center
 
     配置 AT OTA token 密钥 - 步骤 1
 
-   .. figure:: ../../_static/OTA-7.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-7.png
     :align: center
     :alt: 配置 AT OTA token 密钥 - 步骤 2 和 3
     :figclass: align-center
@@ -150,7 +150,7 @@ OTA 命令对比及应用场景
 
 6. 点击 "Product" 进入网页，如下如所示。单击创建的设备，在 "ROM Deploy" 下输入版本和 corename。将步骤 5 中的 bin 文件重命令为 "ota.bin" 并保存。
 
-   .. figure:: ../../_static/OTA-8.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-8.png
     :align: center
     :alt: 输入版本和 corename
     :figclass: align-center
@@ -164,7 +164,7 @@ OTA 命令对比及应用场景
 
 7. 单击 ota.bin 将其保存为当前版本。
 
-   .. figure:: ../../_static/OTA-9.png
+   .. figure:: ../../_static/compile_and_develop/ota/OTA-9.png
     :align: center
     :alt: 保存当前版本的 ota.bin
     :figclass: align-center

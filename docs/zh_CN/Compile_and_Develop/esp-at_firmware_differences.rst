@@ -35,6 +35,10 @@ ESP-AT 固件差异
 
   - ESP32C6-4MB-AT-Vx.x.x.x.zip（本节简称为 **ESP32C6-4MB Bin**）
 
+.. only:: esp32s2
+
+  - ESP32-S2-MINI-AT-Vx.x.x.x.zip（本节简称为 **MINI Bin**）
+
 支持的命令集
 ^^^^^^^^^^^^
 
@@ -379,6 +383,46 @@ ESP-AT 固件差异
     * - OTA
       - |icon-green-check|
 
+.. only:: esp32s2
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 命令集
+      - MINI Bin
+    * - base
+      - |icon-green-check|
+    * - user
+      - |icon-green-check|
+    * - Wi-Fi
+      - |icon-green-check|
+    * - TCP-IP
+      - |icon-green-check|
+    * - mDNS
+      - |icon-green-check|
+    * - WPS
+      - |icon-green-check|
+    * - SmartConfig
+      - |icon-green-check|
+    * - ping
+      - |icon-green-check|
+    * - MQTT
+      - |icon-green-check|
+    * - HTTP
+      - |icon-green-check|
+    * - FileSystem
+      - |icon-orange-check|
+    * - driver
+      - |icon-orange-check|
+    * - WPA2 enterprise
+      - |icon-orange-check|
+    * - Web server
+      - |icon-orange-check|
+    * - WebSocket
+      - |icon-orange-check|
+    * - OTA
+      - |icon-green-check|
+
 硬件差异
 ^^^^^^^^
 
@@ -498,6 +542,23 @@ ESP-AT 固件差异
         | RX: 6
         | CTS: 5
         | RTS: 4
+
+.. only:: esp32s2
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 硬件
+      - MINI Bin
+    * - Flash
+      - 4 MB
+    * - PSRAM
+      - |icon-red-cross|
+    * - UART Pins [#one]_
+      - | TX: 17
+        | RX: 21
+        | CTS: 20
+        | RTS: 19
 
 .. [#one] UART 管脚可自定义，详情请参考 :doc:`How_to_set_AT_port_pin`。
 
@@ -726,4 +787,16 @@ ESP-AT 固件差异
     * - ESP32-C6-MINI-1
       - |icon-green-check|
     * - ESP32-C6-WROOM-01
+      - |icon-green-check|
+
+.. only:: esp32s2
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 模组/芯片
+      - MINI Bin
+    * - ESP32-S2-MINI-2/2U
+      - |icon-green-check|
+    * - ESP32-S2-SOLO-2/2U
       - |icon-green-check|

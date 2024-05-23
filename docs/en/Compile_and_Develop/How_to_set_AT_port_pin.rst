@@ -1,8 +1,6 @@
 How to Set AT Port Pins
 ==========================
 
-{IDF_TARGET_HYPHEN_LOWERCASE_NAME: default="undefined", esp32="esp32", esp32c3="esp32-c3", esp32c6="esp32-c6"}
-
 :link_to_translation:`zh_CN:[中文]`
 
 This document introduces how to modify :term:`AT port` pins in the firmware for {IDF_TARGET_NAME} series of products. By default, ESP-AT uses two UART interfaces as AT ports: one is to output logs (named as log port below) and the other to send AT commands and receive responses (named as command port below). 
@@ -48,6 +46,11 @@ By default, the {IDF_TARGET_NAME} AT firmware provided by Espressif uses the fol
 
   - TX: GPIO17
   - RX: GPIO16
+
+.. only:: esp32s2
+
+  - TX: GPIO17
+  - RX: GPIO21
 
 When compiling your ESP-AT project, you can modify them to other pins with the menuconfig utitlity:
 
