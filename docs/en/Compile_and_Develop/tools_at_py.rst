@@ -87,13 +87,13 @@ The currently modifiable Wi-Fi parameter configurations are shown in the followi
     - See `{IDF_TARGET_NAME} Maximum transmission power <https://docs.espressif.com/projects/esp-idf/en/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t>`_ for more details.
   * - \--country_code
     - Wi-Fi country code
-    - See the ``cc`` field of `Wi-Fi Country Code <https://docs.espressif.com/projects/esp-idf/en/release-vv{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-country-code>`_
+    - See the ``cc`` field of `Wi-Fi Country Code <https://docs.espressif.com/projects/esp-idf/en/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-country-code>`_
   * - \--start_channel
     - Wi-Fi starting channel
-    - See the ``schan`` field of `Wi-Fi Country Code <https://docs.espressif.com/projects/esp-idf/en/release-vv{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-country-code>`_
+    - See the ``schan`` field of `Wi-Fi Country Code <https://docs.espressif.com/projects/esp-idf/en/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-country-code>`_
   * - \--channel_number
     - Total number of Wi-Fi channels
-    - See the ``nchan`` field of `Wi-Fi Country Code <https://docs.espressif.com/projects/esp-idf/en/release-vv{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-country-code>`_
+    - See the ``nchan`` field of `Wi-Fi Country Code <https://docs.espressif.com/projects/esp-idf/en/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-country-code>`_
 
 For example, you can use the following command to modify the maximum transmission power of Wi-Fi to 18 dBm, set the country code to US, starting channel to 1, and total channel number to 11:
 
