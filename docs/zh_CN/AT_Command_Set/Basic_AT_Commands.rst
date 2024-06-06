@@ -1296,7 +1296,7 @@
 ^^^^
 
 -  使用本命令需烧录 at_customize.bin，详细信息可参考 :doc:`../Compile_and_Develop/How_to_customize_partitions`。
--  擦除分区时，请完整擦除该目标分区。这可以通过省略 ``<offset>`` 和 ``<length>`` 参数来完成。例如，指令 ``AT+SYSFLASH=0,"mfg_nvs"`` 可擦除整个 "mfg_nvs" 区域。
+-  擦除分区时，请完整擦除该目标分区。这可以通过省略 ``<offset>`` 和 ``<length>`` 参数来完成。例如，命令 ``AT+SYSFLASH=0,"mfg_nvs"`` 可擦除整个 "mfg_nvs" 区域。
 -  关于分区的定义可参考 `ESP-IDF 分区表 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_。
 -  当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时您可以输入要写的数据，数据长度应与 ``<length>`` 一致。
 -  写分区前，请先擦除该分区。

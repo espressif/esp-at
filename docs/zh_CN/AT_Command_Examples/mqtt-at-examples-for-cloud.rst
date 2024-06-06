@@ -3,7 +3,7 @@ MQTT AT 连接云示例
 
 :link_to_translation:`en:[English]`
 
-本文档主要介绍您的设备如何通过 AT 指令对接 AWS IoT。
+本文档主要介绍您的设备如何通过 AT 命令对接 AWS IoT。
 
 .. Important::
     有关如何使用 MQTT AT 命令的详细信息，请参阅 :doc:`../AT_Command_Set/MQTT_AT_Commands`。

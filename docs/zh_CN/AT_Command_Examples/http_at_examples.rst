@@ -272,7 +272,7 @@ HTTP 客户端 POST 请求方法（适用于 POST 少量数据）
 HTTP 客户端 POST 请求方法（推荐方式）
 -------------------------------------------------------------------------------------
 
-如果您 POST 的数据量相对较多，已经超过了单条 AT 指令的长度阈值 ``256``，则建议您可以使用 :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>` 命令。
+如果您 POST 的数据量相对较多，已经超过了单条 AT 命令的长度阈值 ``256``，则建议您可以使用 :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>` 命令。
 
 该示例以 http://httpbin.org 作为 HTTP 服务器，数据类型为 ``application/json``。
 

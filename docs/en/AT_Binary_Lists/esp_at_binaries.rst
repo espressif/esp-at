@@ -116,3 +116,8 @@ It is recommended to use the lastest version of firmware. Currently, Espressif r
   ^^^^^^^^^^^^^^^^^^^^
 
   - The first version of ESP-AT firmware (v3.4.0.0) is planned to be released in July 2024.
+
+Subscribe to AT Releases
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Please refer to the :ref:`sub-at-release` documentation to subscribe to our version release notifications and stay updated on the latest releases.
