@@ -223,7 +223,7 @@ SPI AT 数据交互流程
 ^^^^^^^^^^^^^^^^^^^^^^
 SPI AT 数据交互流程主要分为两个方面：
 
-- SPI master 向 slave 发送 AT 指令 ：
+- SPI master 向 slave 发送 AT 命令 ：
 
 .. code-block:: none
 

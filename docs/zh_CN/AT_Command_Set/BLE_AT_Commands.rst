@@ -479,7 +479,7 @@ Bluetooth® Low Energy AT 命令集
     ^^^^
 
     -  响应中的 ``OK`` 和 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 在输出顺序上没有严格意义上的先后顺序。``OK`` 可能在 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 之前输出，也有可能在 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 之后输出。 
-    -  如果您想要获得扫描响应数据，需要使用 :ref:`AT+BLESCANPARAM <cmd-BSCANP>` 指令设置扫描方式为 ``active scan (AT+BLESCANPARAM=1,0,0,100,50)``，并且对端设备需要设置 ``scan rsp data``，才能获得扫描响应数据。
+    -  如果您想要获得扫描响应数据，需要使用 :ref:`AT+BLESCANPARAM <cmd-BSCANP>` 命令设置扫描方式为 ``active scan (AT+BLESCANPARAM=1,0,0,100,50)``，并且对端设备需要设置 ``scan rsp data``，才能获得扫描响应数据。
 
     示例
     ^^^^
@@ -615,7 +615,7 @@ Bluetooth® Low Energy AT 命令集
         -  5: ADV_TYPE_EXT_NOSCANNABLE_IND
         -  6: ADV_TYPE_EXT_CONNECTABLE_IND
         -  7: ADV_TYPE_EXT_SCANNABLE_IND
-            -  当设置广播类型为 0-4，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播参数最多只能设置 31 字节，如果需要设置更长的广播参数，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 指令来设置。
+            -  当设置广播类型为 0-4，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播参数最多只能设置 31 字节，如果需要设置更长的广播参数，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 命令来设置。
             -  当设置广播类型为 5-7，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播参数最多只能设置 119 字节。
 
     -  **<own_addr_type>**：Bluetooth LE 地址类型
@@ -753,12 +753,12 @@ Bluetooth® Low Energy AT 命令集
 
     .. only:: esp32
 
-        -  如果需要设置更长的广播数据，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 指令来设置。
+        -  如果需要设置更长的广播数据，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 命令来设置。
 
     .. only:: esp32c3 or esp32c6 or esp32c2
 
         -  在使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令之前，必须先通过 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播参数。
-        -  当调用 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播类型为 0-4，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播数据最多只能设置 31 字节，如果需要设置更长的广播数据，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 指令来设置。
+        -  当调用 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播类型为 0-4，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播数据最多只能设置 31 字节，如果需要设置更长的广播数据，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 命令来设置。
         -  当调用 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播类型为 5-7，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播数据最多只能设置 119 字节。
 
     示例

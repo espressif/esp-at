@@ -156,7 +156,7 @@ AT 命令中串口波特率是否可以修改？（默认：115200）
   - 第一种方法，您可以通过串口命令 :ref:`AT+UART_CUR <cmd-UARTC>` 或 :ref:`AT+UART_DEF <cmd-UARTD>`。
   - 第二种方法，您可以重新编译 AT 固件，编译介绍： :doc:`如何编译 AT 工程 <Compile_and_Develop/How_to_clone_project_and_compile_it>` 与 :doc:`修改 UART 波特率配置 <Compile_and_Develop/How_to_set_AT_port_pin>`。
 
-{IDF_TARGET_NAME} 使用 AT 指令进入透传模式，如果连接的热点断开，{IDF_TARGET_NAME} 能否给出相应的提示信息？
+{IDF_TARGET_NAME} 使用 AT 命令进入透传模式，如果连接的热点断开，{IDF_TARGET_NAME} 能否给出相应的提示信息？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
   - 可以通过命令 :ref:`AT+SYSMSG <cmd-SYSMSG>` 进行配置，可设置 AT+SYSMSG=4，如果连接的热点断开，串口会上报 "WIFI DISCONNECT\\r\\n"。

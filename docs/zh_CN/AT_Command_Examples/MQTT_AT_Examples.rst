@@ -133,7 +133,7 @@ MQTT AT 示例
 
 示例介绍了如何基于 TCP 创建 MQTT 连接。首先您需要创建一个本地 MQTT 代理，假设 MQTT 代理的 IP 地址为 ``192.168.3.102``，端口为 ``8883``。
 
-如果您发布消息的数据量相对较多，已经超过了单条 AT 指令的长度阈值 ``256``，则您可以使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
+如果您发布消息的数据量相对较多，已经超过了单条 AT 命令的长度阈值 ``256``，则您可以使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
 
 .. Important::
   步骤中以 ``{IDF_TARGET_NAME} MQTT 发布者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 发布者端执行即可，以 ``{IDF_TARGET_NAME} MQTT 订阅者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 订阅者端执行即可。如果操作没有特别指明在哪端操作，则需要在发布者端和订阅者端都执行。

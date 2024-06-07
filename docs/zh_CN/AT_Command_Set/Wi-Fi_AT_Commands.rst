@@ -732,7 +732,7 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
--  本指令只有当 :ref:`AT+CWMODE=2 <cmd-MODE>` 或者 :ref:`AT+CWMODE=3 <cmd-MODE>` 时才有效
+-  本命令只有当 :ref:`AT+CWMODE=2 <cmd-MODE>` 或者 :ref:`AT+CWMODE=3 <cmd-MODE>` 时才有效
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 分区
 -  默认 SSID 因设备而异，因为它由设备的 MAC 地址组成。 您可以使用 :ref:`AT+CWSAP? <cmd-SAP>` 查询默认的SSID。
 
@@ -774,7 +774,7 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
--  本指令无法查询静态 IP，仅支持在 {IDF_TARGET_NAME} SoftAP 和连入的 station DHCP 均使能的情况下有效
+-  本命令无法查询静态 IP，仅支持在 {IDF_TARGET_NAME} SoftAP 和连入的 station DHCP 均使能的情况下有效
 
 .. _cmd-QIF:
 

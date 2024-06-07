@@ -3,7 +3,7 @@ ESP-AT 是什么
 
 :link_to_translation:`en:[English]`
 
-ESP-AT 是乐鑫开发的可直接用于量产的物联网应用固件，旨在降低客户开发成本，快速形成产品。通过 ESP-AT 指令，您可以快速加入无线网络、连接云平台、实现数据通信以及远程控制等功能，真正的通过无线通讯实现万物互联。
+ESP-AT 是乐鑫开发的可直接用于量产的物联网应用固件，旨在降低客户开发成本，快速形成产品。通过 ESP-AT 命令，您可以快速加入无线网络、连接云平台、实现数据通信以及远程控制等功能，真正的通过无线通讯实现万物互联。
 
 ESP-AT 是基于 ESP-IDF 实现的软件工程。它使 {IDF_TARGET_NAME} 模组作为从机，MCU 作为主机。MCU 发送 AT 命令给 {IDF_TARGET_NAME} 模组，控制 {IDF_TARGET_NAME} 模组执行不同的操作，并接收 {IDF_TARGET_NAME} 模组返回的 AT 响应。ESP-AT 提供了大量功能不同的 AT 命令，如 Wi-Fi 命令、TCP/IP 命令、Bluetooth LE 命令、Bluetooth 命令、MQTT 命令、HTTP 命令、Ethernet 命令等。
 

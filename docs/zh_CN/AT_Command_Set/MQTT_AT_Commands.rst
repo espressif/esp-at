@@ -455,7 +455,7 @@ MQTT AT 命令集
 
 **功能：**
 
-通过 topic 发布 MQTT **字符串** 消息。如果您发布消息的数据量相对较多，已经超过了单条 AT 指令的长度阈值 ``256`` 字节，请使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
+通过 topic 发布 MQTT **字符串** 消息。如果您发布消息的数据量相对较多，已经超过了单条 AT 命令的长度阈值 ``256`` 字节，请使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
 
 **命令：**
 
@@ -505,7 +505,7 @@ MQTT AT 命令集
 
 **功能：**
 
-通过 topic 发布长 MQTT 消息。如果您发布消息的数据量相对较少，不大于单条 AT 指令的长度阈值 ``256`` 字节，也可以使用 :ref:`AT+MQTTPUB <cmd-MQTTPUB>` 命令。
+通过 topic 发布长 MQTT 消息。如果您发布消息的数据量相对较少，不大于单条 AT 命令的长度阈值 ``256`` 字节，也可以使用 :ref:`AT+MQTTPUB <cmd-MQTTPUB>` 命令。
 
 **命令：**
 
