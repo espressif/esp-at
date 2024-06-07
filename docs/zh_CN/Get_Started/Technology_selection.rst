@@ -55,11 +55,11 @@ AT 软件方案是乐鑫针对不同芯片提供的 AT 固件，可以帮助您�
     -
   * - ESP32
     - Wi-Fi 4 + BLE v4.2 (+ **BT**)
-    - `v3.2.0.0 <https://github.com/espressif/esp-at/releases/tag/v3.2.0.0>`_
+    - `v3.4.0.0 <https://github.com/espressif/esp-at/releases/tag/v3.4.0.0>`_
     -
   * - ESP32-S2
     - Wi-Fi 4
-    - 待发布
+    - `v3.4.0.0 <https://github.com/espressif/esp-at/releases/tag/v3.4.0.0>`_
     - 推荐使用性价比更高的 ESP32-C 系列
 
 - ``(或 BLE 5.0)`` 表示 AT 软件方案中支持低功耗蓝牙功能，但发布的固件中未包含此功能。

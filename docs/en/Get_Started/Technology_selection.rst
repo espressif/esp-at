@@ -55,11 +55,11 @@ The table below shows a brief comparison of the AT firmware for different chips.
     -
   * - ESP32
     - Wi-Fi 4 + BLE v4.2 (+ **BT**)
-    - `v3.2.0.0 <https://github.com/espressif/esp-at/releases/tag/v3.2.0.0>`_
+    - `v3.4.0.0 <https://github.com/espressif/esp-at/releases/tag/v3.4.0.0>`_
     -
   * - ESP32-S2
     - Wi-Fi 4
-    - To be released
+    - `v3.4.0.0 <https://github.com/espressif/esp-at/releases/tag/v3.4.0.0>`_
     - It is recommended to use the more cost-effective ESP32-C series.
 
 - ``(or BLE 5.0)`` indicates that Bluetooth LE functionality is supported in the AT software solution, but it is not included in the released firmware.
