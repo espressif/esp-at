@@ -58,6 +58,7 @@ static char *s_at_web_redirect_url = NULL;
         }                                                                              \
     } while (0)
 
+#define ESP_AT_WEB_VERSION                             "1.0"
 #define ESP_AT_WEB_FILE_PATH_MAX                       (ESP_VFS_PATH_MAX + 128)
 #define ESP_AT_WEB_SCRATCH_BUFSIZE                     320
 #define ESP_AT_WEB_WIFI_MAX_RECONNECT_TIMEOUT          60     // 60sec
@@ -1324,6 +1325,18 @@ static esp_err_t config_wifi_get_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
+static esp_err_t at_web_version_get_handler(httpd_req_t *req)
+{
+    httpd_resp_set_type(req, "application/json");
+    char *temp_json_str = ((web_server_context_t*)(req->user_ctx))->scratch;
+    sprintf(temp_json_str, "{\"version\":\"%s\"}", ESP_AT_WEB_VERSION);
+    ESP_LOGD(TAG, "ready to send version: %s\n", temp_json_str);
+
+    httpd_resp_send(req, temp_json_str, (temp_json_str == NULL) ? 0 : strlen(temp_json_str));
+
+    return ESP_OK;
+}
+
 static esp_err_t accept_wifi_result_post_handler(httpd_req_t *req)
 {
     char *buf = ((web_server_context_t*)(req->user_ctx))->scratch;
@@ -1750,6 +1763,7 @@ static esp_err_t start_web_server(const char *base_path, uint16_t server_port)
     ESP_AT_WEB_SERVER_CHECK(httpd_start(&s_server, &config) == ESP_OK, "Start server failed", err_start);
 
     httpd_uri_t httpd_uri_array[] = {
+        {"/getversion", HTTP_GET, at_web_version_get_handler, s_web_context},
         {"/getstainfo", HTTP_GET, config_wifi_get_handler, s_web_context},
         {"/setstainfo", HTTP_POST, config_wifi_post_handler, s_web_context},
         {"/getresult", HTTP_POST, accept_wifi_result_post_handler, s_web_context},
