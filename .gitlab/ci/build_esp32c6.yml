@@ -14,3 +14,11 @@ esp32c6_4mb_at_tat_debug:
     - .rules:build:build_project_on_protected
   variables:
     MODULE_NAME: "ESP32C6-4MB"
+
+esp32c6_at_wifi_function_test:
+  extends:
+    - .build_template_esp32c6
+    - .before_script_enable_all_wifi_cmds
+    - .rules:build:build_project_on_protected
+  variables:
+    MODULE_NAME: "ESP32C6-4MB"

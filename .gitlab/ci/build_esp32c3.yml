@@ -29,10 +29,10 @@ esp32c3_rainmaker:
   variables:
     MODULE_NAME: "ESP32C3_RAINMAKER"
 
-esp32c3_at_full_function_test:
+esp32c3_at_wifi_function_test:
   extends:
     - .build_template_esp32c3
-    - .before_script_esp32c3_enable_all_wifi_cmds
+    - .before_script_enable_all_wifi_cmds
     - .rules:build:build_project_on_protected
   variables:
     MODULE_NAME: "MINI-1"

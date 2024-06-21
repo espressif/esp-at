@@ -14,3 +14,11 @@ esp32s2_mini_at_tat_debug:
     - .rules:build:build_project_on_protected
   variables:
     MODULE_NAME: "MINI"
+
+esp32s2_at_wifi_function_test:
+  extends:
+    - .build_template_esp32s2
+    - .before_script_enable_all_wifi_cmds
+    - .rules:build:build_project_on_protected
+  variables:
+    MODULE_NAME: "MINI"

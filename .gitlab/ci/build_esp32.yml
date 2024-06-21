@@ -60,7 +60,7 @@ esp32_sdio_at:
 esp32_at_wifi_function_test:
   extends:
     - .build_template_esp32
-    - .before_script_esp32_enable_all_wifi_cmds
+    - .before_script_enable_all_wifi_cmds
     - .rules:build:build_project_on_protected
   variables:
     MODULE_NAME: "WROVER-32"
