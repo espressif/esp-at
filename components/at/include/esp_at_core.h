@@ -90,7 +90,8 @@ typedef enum {
  */
 typedef struct {
     void (*status_callback)(esp_at_status_type status);               /*!< callback when AT status changes */
-    void (*pre_sleep_callback)(at_sleep_mode_t mode);                 /*!< callback before enter modem sleep and light sleep */
+    void (*pre_sleep_callback)(at_sleep_mode_t mode);                 /*!< callback before entering light sleep */
+    void (*pre_wakeup_callback)(void);                                /*!< callback before waking up from light sleep */
     void (*pre_deepsleep_callback)(void);                             /*!< callback before enter deep sleep */
     void (*pre_restart_callback)(void);                               /*!< callback before restart */
     void (*pre_active_write_data_callback)(at_write_data_fn_t);       /*!< callback before write data */

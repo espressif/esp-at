@@ -132,6 +132,14 @@ static void at_normal_sleep_before_cb(at_sleep_mode_t mode)
     }
 }
 
+static void at_normal_wakeup_before_cb(void)
+{
+    // do some special things from the interface hook before wakeup
+    if (s_interface_hooks.pre_wakeup_callback) {
+        s_interface_hooks.pre_wakeup_callback();
+    }
+}
+
 static void at_deep_sleep_before_cb(void)
 {
     // do some special things from the interface hook before deep sleep
@@ -164,6 +172,7 @@ void at_interface_hooks(esp_at_custom_ops_struct *if_hooks)
     if (if_hooks) {
         s_interface_hooks.status_callback = if_hooks->status_callback;
         s_interface_hooks.pre_sleep_callback = if_hooks->pre_sleep_callback;
+        s_interface_hooks.pre_wakeup_callback = if_hooks->pre_wakeup_callback;
         s_interface_hooks.pre_deepsleep_callback = if_hooks->pre_deepsleep_callback;
         s_interface_hooks.pre_restart_callback = if_hooks->pre_restart_callback;
         s_interface_hooks.pre_active_write_data_callback = if_hooks->pre_active_write_data_callback;
@@ -172,6 +181,7 @@ void at_interface_hooks(esp_at_custom_ops_struct *if_hooks)
     esp_at_custom_ops_struct at_hooks = {
         .status_callback = at_transmit_mode_switch_cb,
         .pre_sleep_callback = at_normal_sleep_before_cb,
+        .pre_wakeup_callback = at_normal_wakeup_before_cb,
         .pre_deepsleep_callback = at_deep_sleep_before_cb,
         .pre_restart_callback = at_restart_before_cb,
         .pre_active_write_data_callback = at_port_tx_data_before_cb,

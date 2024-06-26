@@ -231,6 +231,7 @@ void at_interface_init(void)
     esp_at_custom_ops_struct socket_hooks = {
         .status_callback = at_socket_transmit_mode_switch_cb,
         .pre_sleep_callback = NULL,
+        .pre_wakeup_callback = NULL,
         .pre_deepsleep_callback = NULL,
         .pre_restart_callback = NULL,
         .pre_active_write_data_callback = NULL,

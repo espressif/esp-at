@@ -276,6 +276,7 @@ void at_interface_init(void)
     esp_at_custom_ops_struct uart_hooks = {
         .status_callback = at_uart_transmit_mode_switch_cb,
         .pre_sleep_callback = NULL,
+        .pre_wakeup_callback = NULL,
         .pre_deepsleep_callback = at_uart_deepsleep_before_cb,
         .pre_restart_callback = at_uart_restart_before_cb,
         .pre_active_write_data_callback = NULL,
