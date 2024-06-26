@@ -74,7 +74,7 @@ Bluetooth® Low Energy AT 命令集
 
 .. only:: esp32c2 or esp32c3 or esp32c6
 
-  当前， {IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/specs/core-specification-5/>`_。
+  当前， {IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/specs/core-specification-5-0/>`_。
 
 .. only:: esp32 or esp32c3 or esp32c6
 
@@ -162,7 +162,7 @@ Bluetooth® Low Energy AT 命令集
     说明
     ^^^^
 
-    -  使用 Bluetooth LE 功能时，如果您无需使用 SoftAP 模式，则建议您可以通过 :ref:`AT+CWMODE <cmd-MODE>` 设置 Wi-Fi 模式为 Null 或 Station 模式。
+    -  为获得更好的性能，建议在使用 Bluetooth LE 功能前，先发送 :ref:`AT+CWMODE=0/1 <cmd-MODE>` 命令禁用 SoftAP。如您想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
     -  使用其它 Bluetooth LE 命令之前，请先调用本命令，初始化 Bluetooth LE 角色。
     -  Bluetooth LE 角色初始化后，不能直接切换。如需切换角色，需要先调用 :ref:`AT+RST <cmd-RST>` 命令重启系统，再重新初始化 Bluetooth LE 角色。
     -  建议在注销 Bluetooth LE 之前，停止正在进行的广播、扫描并断开所有的连接。
@@ -2977,12 +2977,12 @@ Bluetooth® Low Energy AT 命令集
    -  6: WPA3_PSK；
    -  7: WPA2_WPA3_PSK。
 
-.. only:: esp32 or esp3c3
+说明
+^^^^
 
-    说明
-    ^^^^
-
-    - 您只能在 Bluetooth LE 未初始化情况下开启或关闭 BluFi (:ref:`AT+BLEINIT=0 <cmd-BINIT>`)。
+- 您只能在 Bluetooth LE 未初始化情况下开启或关闭 BluFi (:ref:`AT+BLEINIT=0 <cmd-BINIT>`)。
+- 为获得更好的性能，建议在使用 BluFi 功能前，先发送 :ref:`AT+CWMODE=0/1 <cmd-MODE>` 命令禁用 SoftAP。如您想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
+- BluFi 配网后请发送 :ref:`AT+BLUFI=0 <cmd-BLUFI>` 命令关闭 BluFi，以释放资源。
 
 示例
 ^^^^

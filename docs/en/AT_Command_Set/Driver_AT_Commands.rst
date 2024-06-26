@@ -125,7 +125,7 @@ Notes
 
 -  ESP-AT only supports ADC1.
 -  {IDF_TARGET_NAME} support 12-bit width.
--  For details on how to convert the channel value into voltage, please refer to `ADC Conversion <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/adc.html#adc-conversion>`__.
+-  For details on how to convert the channel value into voltage, please refer to `ADC Conversion <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/adc_continuous.html#adc-continuous-read-conversion-result>`__.
 
 Example
 ^^^^^^^^

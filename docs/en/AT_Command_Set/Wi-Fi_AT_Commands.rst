@@ -177,7 +177,22 @@ Parameters
 Note
 ^^^^^
 
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+- The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+
+.. only:: esp32 or esp32c2 or esp32c3 or esp32c6
+
+  - If you have previously used the Bluetooth function, it is recommended to send the following commands to deinitialize the initialized functions before using the SoftAP or SoftAP+Station functions:
+
+    .. only:: esp32
+
+        - :ref:`AT+BTINIT=0 <cmd-BTINIT>` (Deinitialize Classic Bluetooth)
+
+    .. only:: esp32 or esp32c2 or esp32c3 or esp32c6
+
+        - :ref:`AT+BLEINIT=0 <cmd-BINIT>` (Deinitialize Bluetooth LE)
+        - :ref:`AT+BLUFI=0 <cmd-BLUFI>` (Disable BluFi)
+
+    For more details, please refer to the `RF Coexistence <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ documentation.
 
 Example
 ^^^^^^^^
@@ -322,7 +337,7 @@ Parameters
 
 -  **<ssid>**: the SSID of the target AP.
 
-   -  Escape character syntax is needed if SSID or password contains special characters, such ``,``, ``"``, or ``\\``.
+   -  Escape character syntax is needed if SSID or password contains special characters, such as ``,``, ``"``, or ``\``.
    -  Chinese SSID is supported. Chinese SSID of some routers or hotspots is not encoded in UTF-8 encoding format. You can scan SSID first, and then connect using the scanned SSID.
 
 -  **<pwd>**: password, MAX: 63-byte ASCII.

@@ -5,7 +5,7 @@ How to Set AT Port Pins
 
 This document introduces how to modify :term:`AT port` pins in the firmware for {IDF_TARGET_NAME} series of products. By default, ESP-AT uses two UART interfaces as AT ports: one is to output logs (named as log port below) and the other to send AT commands and receive responses (named as command port below). 
 
-To modify the AT port pins of your {IDF_TARGET_NAME}, you should:
+If you already have the {IDF_TARGET_NAME} AT firmware and only need to modify the command port pins, you can directly modify the firmware using the :doc:`tools_at_py` to generate a new firmware for your module. Otherwise, if you need to modify the AT port pins of your {IDF_TARGET_NAME} device, you need to complete the following steps:
 
 - :doc:`clone the ESP-AT project <How_to_clone_project_and_compile_it>`;
 - modify the pins either in the menuconfig utility or the factory_param_data.csv table;

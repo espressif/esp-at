@@ -89,7 +89,7 @@
 第四步：配置编译 ESP-AT 工程所需的密钥
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-如果您有 `Espressif OTA server <http://iot.espressif.cn/#/>`_ 的账户和 OTA token，并且需要使用 :ref:`AT+CIUPDATE <cmd-UPDATE>` 命令升级 AT 固件，那么需要完成此步骤。否则，建议您禁用 CONFIG_AT_OTA_SUPPORT（有关更多详细信息，请参阅 :ref:`at-wc-commit-changes`）或者跳过此步骤。
+如果您有 `Espressif OTA server <http://iot.espressif.cn>`_ 的账户和 OTA token，并且需要使用 :ref:`AT+CIUPDATE <cmd-UPDATE>` 命令升级 AT 固件，那么需要完成此步骤。否则，建议您禁用 CONFIG_AT_OTA_SUPPORT（有关更多详细信息，请参阅 :ref:`at-wc-commit-changes`）或者跳过此步骤。
 
 点击仓库下的 ``Settings`` 进入设置页面。
 

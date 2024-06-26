@@ -125,7 +125,7 @@
 
 -  ESP-AT 只支持 ADC1。
 -  {IDF_TARGET_NAME} 支持 12 位宽度。
--  对于如何将通道值转换为电压，可以参考 `ADC 转换 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/adc.html#adc-conversion>`__。
+-  对于如何将通道值转换为电压，可以参考 `ADC 转换 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/adc_continuous.html#adc-continuous-read-conversion-result>`__。
 
 示例
 ^^^^

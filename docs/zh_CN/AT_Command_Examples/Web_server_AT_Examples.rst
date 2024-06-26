@@ -262,6 +262,9 @@ Web Server AT 示例
 
 微信小程序配网是通过微信小程序连接 {IDF_TARGET_NAME} 设备创建的 AP，并通过微信小程序将需要连接的 AP 信息传输给 {IDF_TARGET_NAME} 设备，{IDF_TARGET_NAME} 设备通过这些信息连接到对应的 AP，并通知微信小程序配网结果的解决方案。
 
+.. important::
+  ESP-AT 微信小程序将于 2024 年 12 月 31 日下架。在此期间，请做好产品功能的过渡。如您此后仍有相关需求，敬请联系 `乐鑫商务 <https://www.espressif.com/zh-hans/contact-us/sales-questions>`_，我们将竭诚为您提供支持和解决方案，感谢您的理解和支持。
+
 流程
 ^^^^
 

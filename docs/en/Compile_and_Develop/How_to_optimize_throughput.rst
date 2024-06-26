@@ -163,6 +163,7 @@ Users could choose one of the following methods to improve throughput performanc
     AT+CWJAP="ssid","password"
     AT+UART_CUR=3000000,8,1,0,3
     AT+CIPSTART="TCP","192.168.105.13",3344
+    AT+CIPMODE=1
     AT+CIPSEND
     // data transmission
 
@@ -267,6 +268,7 @@ The data stream of throughput is similar to water flow. In order to improve thro
     AT+CWJAP="ssid","password"
     AT+UART_CUR=3000000,8,1,0,3
     AT+CIPSTART="TCP","192.168.105.13",3344
+    AT+CIPMODE=1
     AT+CIPSEND
     // data transmission
 

@@ -111,13 +111,6 @@ ESP-AT 命令是否支持 ESP-WIFI-MESH？
 
   ESP-AT 当前不支持 ESP-WIFI-MESH。
 
-AT 是否支持 websocket 命令？
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-  - 默认命令不支持 websocket 命令。
-  - 可通过自定义命令实现，代码参考 `websocket <https://github.com/espressif/esp-idf/tree/master/examples/protocols/websocket>`_，以及 :doc:`Compile_and_Develop/How_to_add_user-defined_AT_commands`。
-
-
 是否有 AT 命令连接阿里云以及腾讯云示例？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

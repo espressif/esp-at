@@ -78,7 +78,7 @@ Generic AT command has four types:
 
       AT+CWSAP="ESP756290","21030826",1,4
 
--  Escape character syntax is needed if a string contains special characters, such as ``,``, ``"``, or ``\``:
+-  Escape character syntax is needed if a string contains special characters. The characters that need to be escaped are ``,``, ``"``, and ``\``:
 
    -  ``\\``: escape the backslash itself
    -  ``\,``: escape comma which is not used to separate each parameter

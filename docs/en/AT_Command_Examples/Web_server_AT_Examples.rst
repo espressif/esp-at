@@ -262,6 +262,9 @@ Introduction
 
 The WeChat applet can automatically connect to the WiFi AP of the {IDF_TARGET_NAME}, and then send the ssid and password required by the {IDF_TARGET_NAME} to connect to the network.
 
+.. important::
+  The ESP-AT WeChat applet will be discontinued on December 31, 2024. During this period, please make arrangements for the transition of its functionalities. If you still have related needs after this date, please contact `Espressif's business <https://www.espressif.com/en/contact-us/sales-questions>`_ team. We will be dedicated to providing you with support and solutions. Thank you for your understanding and support.
+
 Introduction to Operation Steps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
