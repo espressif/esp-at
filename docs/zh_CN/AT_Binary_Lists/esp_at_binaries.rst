@@ -7,9 +7,16 @@
 
 .. note::
 
+  .. only:: esp32c2
+
+    - 发布的 AT 固件仅支持 26 MHz 晶振频率的芯片版本。如果您的模组使用的是 40 MHz 的晶振频率，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+
+      - ``Component config`` -> ``Hardware Settings`` -> ``Main XTAL Config`` -> ``Main XTAL frequency`` -> ``40 MHz``
+
   .. only:: esp32c3
 
-    - 当前的 {IDF_TARGET_NAME} AT 固件支持 {IDF_TARGET_NAME} ECO0 (Rev v0.0) ~ ECO4 (Rev v0.4) 系列芯片（包括 ECO0 和 ECO4），暂不支持 {IDF_TARGET_NAME} 的 ECO6 (Rev v1.0)、ECO7 (Rev v1.1) 以及之后的芯片。
+    - v2.2.0.0 ~ v3.2.0.0 版本的 AT 固件均支持 {IDF_TARGET_NAME} ECO0 (Rev v0.0) ~ ECO4 (Rev v0.4) 系列芯片（包括 ECO0 和 ECO4）。
+    - v3.3.0.0 版本的 AT 固件支持 {IDF_TARGET_NAME} ECO0 (Rev v0.0) ~ ECO4 (Rev v0.4)、ECO6 (Rev v1.0)、ECO7 (Rev v1.1) 系列芯片。
 
   - 如果您的模组没有发布的固件，可以使用相同硬件配置的模组的固件（点击 :doc:`../Compile_and_Develop/esp-at_firmware_differences` 查看与您的模组硬件配置相同的固件），或者如果您需要修改下面的配置，则可以通过 :doc:`../Compile_and_Develop/tools_at_py` 修改发布的固件，为您的模组生成新的固件。
 

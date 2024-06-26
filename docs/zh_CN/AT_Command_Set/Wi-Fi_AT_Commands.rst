@@ -177,7 +177,22 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
--  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，本设置将保存在 NVS 分区
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，本设置将保存在 NVS 分区
+
+.. only:: esp32 or esp32c2 or esp32c3 or esp32c6
+
+  - 如您之前使用过蓝牙功能，为获得更好的性能，建议在使用 SoftAP 或 SoftAP+Station 功能前，先发送以下命令注销已初始化过的功能：
+
+    .. only:: esp32
+
+        - :ref:`AT+BTINIT=0 <cmd-BTINIT>` （注销 Classic Bluetooth）
+
+    .. only:: esp32 or esp32c2 or esp32c3 or esp32c6
+
+        - :ref:`AT+BLEINIT=0 <cmd-BINIT>` （注销 Bluetooth LE）
+        - :ref:`AT+BLUFI=0 <cmd-BLUFI>` （关闭 BluFi）
+
+    如您想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
 
 示例
 ^^^^
@@ -322,7 +337,7 @@ Wi-Fi AT 命令集
 
 -  **<ssid>**：目标 AP 的 SSID
 
-   -  如果 SSID 和密码中有 ``,``、``"``、``\\`` 等特殊字符，需转义
+   -  如果 SSID 和密码中有 ``,``、``"``、``\`` 等特殊字符，需转义
    -  AT 支持连接 SSID 为中文的 AP，但是某些路由器或者热点的中文 SSID 不是 UTF-8 编码格式。您可以先扫描 SSID，然后使用扫描到的 SSID 进行连接。
 
 -  **<pwd>**：密码最长 63 字节 ASCII

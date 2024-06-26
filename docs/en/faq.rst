@@ -111,13 +111,6 @@ Do AT commands support ESP-WIFI-MESH?
 
   Currently, AT commands do not support ESP-WIFI-MESH.
 
-Does AT support websocket commands?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-  - Not supported in the default firmware.
-  - It can be implemented by custom commands. See `websocket <https://github.com/espressif/esp-idf/tree/master/examples/protocols/websocket>`_ and :doc:`Compile_and_Develop/How_to_add_user-defined_AT_commands` for more information.
-
-
 .. Are there any examples of using AT commands to connect to aliyun or Tencent Cloud?
 .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ..

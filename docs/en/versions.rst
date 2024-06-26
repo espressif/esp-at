@@ -113,11 +113,11 @@ Each ESP-IDF major and minor release version has an associated support period. A
 
 - Service Period of Support Period
 
-    Usually, it starts from the release of the AT firmware for the chip and lasts until the planned release of the next AT version for that chip. The release time of the next AT version is usually a few months before the end of the corresponding `ESP-IDF support period <https://github.com/espressif/esp-idf/blob/master/README.md#esp-idf-version-support-period>`_ (the AT release notes provide information about the ESP-IDF version corresponding to the chip).
+    Usually, it starts from the release of the AT firmware for the chip and lasts until the planned release of the next AT version for that chip. The release time of the next AT version is usually a few months before the end of the corresponding `ESP-IDF support period <https://github.com/espressif/esp-idf/blob/master/README.md#esp-idf-release-support-schedule>`_ (the AT release notes provide information about the ESP-IDF version corresponding to the chip).
 
 - Maintenance Period of Support Period
 
-    Usually, it starts after the service period ends and lasts until the end of the corresponding `ESP-IDF support period <https://github.com/espressif/esp-idf/blob/master/README.md#esp-idf-version-support-period>`_ for the chip (the AT release notes provide information about the ESP-IDF version corresponding to the chip). For example, if the support period of ESP-IDF v5.0 is until May 29, 2025, then the maintenance period for ESP-AT v3.0 ~ v3.3 will also be until May 29, 2025.
+    Usually, it starts after the service period ends and lasts until the end of the corresponding `ESP-IDF support period <https://github.com/espressif/esp-idf/blob/master/README.md#esp-idf-release-support-schedule>`_ for the chip (the AT release notes provide information about the ESP-IDF version corresponding to the chip). For example, if the support period of ESP-IDF v5.0 is until May 29, 2025, then the maintenance period for ESP-AT v3.0 ~ v3.3 will also be until May 29, 2025.
 
 In general:
 

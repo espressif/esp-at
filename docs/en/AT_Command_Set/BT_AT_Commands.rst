@@ -34,7 +34,7 @@
 Introduction
 ------------
 
-{IDF_TARGET_NAME} AT firmware supports `Bluetooth® Core Specification Version 4.2 <https://www.bluetooth.com/specifications/archived-specifications/>`_.
+{IDF_TARGET_NAME} AT firmware supports `Bluetooth® Core Specification Version 4.2 <https://www.bluetooth.com/specifications/specs/>`_.
 
 .. important::
   The default AT firmware does not support the AT commands listed on this page. If you need {IDF_TARGET_NAME} to support Classic Bluetooth commands, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections (Each item below is independent. Choose it according to your needs):
@@ -108,6 +108,7 @@ Parameter
 Notes
 ^^^^^
 
+- To achieve better performance, it is recommended to disable SoftAP by sending the :ref:`AT+CWMODE=0/1 <cmd-MODE>` command before using Classic Bluetooth function. For more details, please refer to the `RF Coexistence <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ documentation.
 - If Classic Bluetooth is initialized, :ref:`AT+CIPMODE <cmd-IPMODE>` cannot be set to 1.
 
 Example
@@ -272,7 +273,7 @@ Parameters
    -  0x9: health.
    -  0x1F: uncategorized device.
 
--  **<minor_dev_class>**: please refer to `Minor Device Class field <https://www.bluetooth.com/specifications/assigned-numbers/baseband>`_.
+-  **<minor_dev_class>**: please refer to `Minor Device Class field <https://www.bluetooth.com/specifications/assigned-numbers/>`_.
 
 -  **<major_srv_class>**:
 
@@ -1197,9 +1198,9 @@ Set the Classic Bluetooth class of devices.
 Parameters
 ^^^^^^^^^^
 
--  **<major>**: `major class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Baseband.pdf>`_.
--  **<minor>**: `minor class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Baseband.pdf>`_.
--  **<service>**: `service class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Baseband.pdf>`_.
+-  **<major>**: `major class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_.
+-  **<minor>**: `minor class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_.
+-  **<service>**: `service class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_.
 
 Example
 ^^^^^^^^

@@ -239,7 +239,7 @@ Note:
 
     ESP32-PICO Series Hardware Connection
 
-  If you want to connect your device directly with ESP32-PICO-D4 rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-PICO-D4 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-pico-d4_datasheet_en.pdf>`_ for more details.
+  If you want to connect your device directly with ESP32-PICO-D4 rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `ESP32-PICO-D4 Datasheet <https://www.espressif.com/sites/default/files/documentation/esp32-pico_series_datasheet_en.pdf>`_ for more details.
 
   ESP32-SOLO Series
   ^^^^^^^^^^^^^^^^^^

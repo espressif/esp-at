@@ -34,7 +34,7 @@
 介绍
 ------
 
-{IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/archived-specifications/>`_。
+{IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/specs/>`_。
 
 .. important::
   默认的 AT 固件不支持此页面下的 AT 命令。如果您需要 {IDF_TARGET_NAME} 支持经典蓝牙命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择（下面每项是独立的，根据您的需要选择）：
@@ -108,6 +108,7 @@
 说明
 ^^^^
 
+- 为获得更好的性能，建议在使用 Classic Bluetooth 功能前，先发送 :ref:`AT+CWMODE=0/1 <cmd-MODE>` 命令禁用 SoftAP。如您想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
 - 如果 Classic Bluetooth 已初始化，则 :ref:`AT+CIPMODE <cmd-IPMODE>` 无法设置为 1。
 
 示例
@@ -272,7 +273,7 @@
    -  0x9: 健康；
    -  0x1F: 未分类。
 
--  **<minor_dev_class>**：请参考 `次要设备类型 (Minor Device Class field) <https://www.bluetooth.com/specifications/assigned-numbers/baseband>`_。
+-  **<minor_dev_class>**：请参考 `次要设备类型 (Minor Device Class field) <https://www.bluetooth.com/specifications/assigned-numbers/>`_。
 
 -  **<major_srv_class>**：主要服务类型：
 
@@ -1197,9 +1198,9 @@
 参数
 ^^^^
 
--  **<major>**：`主要设备类型 (major class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Baseband.pdf>`_；
--  **<minor>**：`次要设备类型 (minor class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Baseband.pdf>`_；
--  **<service>**：`服务类型 (service class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Baseband.pdf>`_。
+-  **<major>**：`主要设备类型 (major class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_；
+-  **<minor>**：`次要设备类型 (minor class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_；
+-  **<service>**：`服务类型 (service class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_。
 
 示例
 ^^^^

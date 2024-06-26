@@ -7,9 +7,16 @@ It is recommended to use the lastest version of firmware. Currently, Espressif r
 
 .. note::
 
+  .. only:: esp32c2
+
+    - The released AT firmware only supports chip versions with a crystal oscillator frequency of 26 MHz. If your module uses a crystal oscillator frequency of 40 MHz, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
+
+      - ``Component config`` -> ``Hardware Settings`` -> ``Main XTAL Config`` -> ``Main XTAL frequency`` -> ``40 MHz``
+
   .. only:: esp32c3
 
-    - The current {IDF_TARGET_NAME} AT firmware supports ECO0 (Rev v0.0) to ECO4 (Rev v0.4) chip versions (including ECO0 and ECO4), but does not support {IDF_TARGET_NAME} ECO6 (Rev v1.0), ECO7 (Rev v1.1), and subsequent versions.
+    - The AT firmware versions v2.2.0.0 to v3.2.0.0 support the {IDF_TARGET_NAME} ECO0 (Rev v0.0) to ECO4 (Rev v0.4) series chips (including ECO0 and ECO4).
+    - The AT firmware version v3.3.0.0 supports the {IDF_TARGET_NAME} ECO0 (Rev v0.0) to ECO4 (Rev v0.4), ECO6 (Rev v1.0), and ECO7 (Rev v1.1) series chips.
 
   - If there is no released firmware for your module, you can either use the firmware for the module that has the same hardware configuration as yours (see :doc:`../Compile_and_Develop/esp-at_firmware_differences` for which module has the same configuration), or if you need to modify the following configurations, you can generate a new firmware for your module by modifying the released firmware using the :doc:`../Compile_and_Develop/tools_at_py`.
 

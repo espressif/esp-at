@@ -30,7 +30,7 @@ The following table shows ESP-AT support status of Espressif SoCs.
 |ESP32-S2 | | |  [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.4.0.0) | | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 
 - ![alt text][released]: Released versions, you can click ![alt text][released] to go to the corresponding release page and download the AT firmware.
-- ![alt text][supported]: Rupported versions, you can click ![alt text][supported] to go to the corresponding branch and develop your own AT firmware.
+- ![alt text][supported]: Supported versions, you can click ![alt text][supported] to go to the corresponding branch and develop your own AT firmware.
 - ![alt text][pre-release]: Pre-release versions, expected to release AT firmware for the corresponding chip soon.
 
 Please choose one of the following options based on your needs:

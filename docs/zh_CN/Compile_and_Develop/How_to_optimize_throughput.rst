@@ -163,6 +163,7 @@
     AT+CWJAP="ssid","password"
     AT+UART_CUR=3000000,8,1,0,3
     AT+CIPSTART="TCP","192.168.105.13",3344
+    AT+CIPMODE=1
     AT+CIPSEND
     // 传输数据
 
@@ -267,6 +268,7 @@
     AT+CWJAP="ssid","password"
     AT+UART_CUR=3000000,8,1,0,3
     AT+CIPSTART="TCP","192.168.105.13",3344
+    AT+CIPMODE=1
     AT+CIPSEND
     // 传输数据
 

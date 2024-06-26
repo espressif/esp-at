@@ -33,7 +33,7 @@ Obtain certificates and endpoints from AWS IoT
   The endpoint value has the format of `xxx-ats.iot.us-east-2.amazonaws.com`.
 
 .. note::
-  It is strongly recommended to familiarize yourself with the `AWS IoT Developer Guide <https://docs.aws.amazon.com/iot/latest/developerguide/configure-iot.html>`_. Below are some key points from this Guide that are worth noting.
+  It is strongly recommended to familiarize yourself with the `AWS IoT Developer Guide <https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html>`_. Below are some key points from this Guide that are worth noting.
 
   - All devices must have a device certificate, private key, and root CA certificate installed in order to communicate with AWS IoT.
   - Information on how to activate certificates.

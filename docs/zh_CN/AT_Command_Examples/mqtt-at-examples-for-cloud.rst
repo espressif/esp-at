@@ -33,7 +33,7 @@ MQTT AT 连接云示例
     端点的格式为 “xxx-ats.iot.us-east-2.amazonaws.com”。
 
 .. note::
-  强烈建议您熟悉 `AWS IoT 开发人员指南 <https://docs.aws.amazon.com/zh_cn/iot/latest/developerguide/connect-to-iot.html>`_ 以下是本指南中值得注意的一些要点。
+  强烈建议您熟悉 `AWS IoT 开发人员指南 <https://docs.aws.amazon.com/zh_cn/iot/latest/developerguide/what-is-aws-iot.html>`_ 以下是本指南中值得注意的一些要点。
 
   - AWS IoT 需要所有设备必须有事物证书、事物私钥、和根证书。
   - 有关如何激活证书。
