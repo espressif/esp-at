@@ -289,7 +289,7 @@ Note:
 
   {IDF_TARGET_CFG_PREFIX}-4MB series refer to the module or board that has a built-in {IDF_TARGET_NAME}/ESP8684 chip with a 4 MB flash, such as {IDF_TARGET_NAME} MINI series device and {IDF_TARGET_NAME} WROOM series device.
 
-  {IDF_TARGET_CFG_PREFIX}-4MB AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default.
+  {IDF_TARGET_CFG_PREFIX}-4MB AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default. Because a 26 MHz XTAL is used, the log is outputted at a baud rate of ``74880`` via UART0 (TX: GPIO20) during the ROM stage. If a 40 MHz XTAL is used instead, the log will be outputted at a baud rate of ``115200``.
 
   .. list-table:: {IDF_TARGET_CFG_PREFIX}-4MB Series Hardware Connection Pinout
     :header-rows: 1
@@ -334,7 +334,7 @@ Note:
 
   {IDF_TARGET_CFG_PREFIX}-2MB series refers to the module or board that has a built-in {IDF_TARGET_NAME}/ESP8684 chip with a 2 MB flash.
 
-  {IDF_TARGET_CFG_PREFIX}-2MB AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 (GPIO8, used to output log) and UART1 use ``115200`` baud rate for communication by default. The log is outputted at ``74880`` baud rate at the ROM stage, so if you need to view the ROM log, please open UART0 (TX: GPIO20) at ``74880`` baud rate.
+  {IDF_TARGET_CFG_PREFIX}-2MB AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 (GPIO8, used to output log) and UART1 use ``115200`` baud rate for communication by default. Because a 26 MHz XTAL is used, the log is outputted at a baud rate of ``74880`` via UART0 (TX: GPIO20) during the ROM stage. If a 40 MHz XTAL is used instead, the log will be outputted at a baud rate of ``115200``.
 
   .. list-table:: {IDF_TARGET_CFG_PREFIX}-2MB Series Hardware Connection Pinout
     :header-rows: 1
