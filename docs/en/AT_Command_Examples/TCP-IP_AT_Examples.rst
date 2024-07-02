@@ -1728,6 +1728,8 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a softAP
 
      OK
 
+.. _example-passive_recv:
+
 {IDF_TARGET_NAME} obtains socket data in passive receiving mode
 -----------------------------------------------------------------------
 
