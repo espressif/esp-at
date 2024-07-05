@@ -29,7 +29,6 @@ Wi-Fi AT 命令集
 -  :ref:`AT+CWSTARTSMART <cmd-STARTS>`：开启 SmartConfig
 -  :ref:`AT+CWSTOPSMART <cmd-STOPS>`：停止 SmartConfig
 -  :ref:`AT+WPS <cmd-WPS>`：设置 WPS 功能
--  :ref:`AT+MDNS <cmd-MDNS>`：设置 mDNS 功能
 -  :ref:`AT+CWJEAP <cmd-JEAP>`：连接 WPA2 企业版 AP
 -  :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`：查询/设置 {IDF_TARGET_NAME} Station 的主机名称
 -  :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`：查询/设置 Wi-Fi 国家代码
@@ -44,7 +43,6 @@ Wi-Fi AT 命令集
 
   - 启用 EAP 命令（:ref:`AT+CWJEAP <cmd-JEAP>`）： ``Component config`` -> ``AT`` -> ``AT WPA2 Enterprise command support``
   - 禁用 WPS 命令（:ref:`AT+WPS <cmd-WPS>`）：``Component config`` -> ``AT`` -> ``AT WPS command support``
-  - 禁用 mDNS 命令（:ref:`AT+MDNS <cmd-MDNS>`）：``Component config`` -> ``AT`` -> ``AT MDNS command support``
   - 禁用 smartconfig 命令（:ref:`AT+CWSTARTSMART <cmd-STARTS>`、:ref:`AT+CWSTOPSMART <cmd-STOPS>`）：``Component config`` -> ``AT`` -> ``AT smartconfig command support``
   - 禁用所有 Wi-Fi 命令（不推荐。一旦禁用，所有 Wi-Fi 以及以上的功能将无法使用，您需要自行实现这些 AT 命令）： ``Component config`` -> ``AT`` -> ``AT wifi command support``
 
@@ -1632,48 +1630,6 @@ Wi-Fi AT 命令集
 
     AT+CWMODE=1
     AT+WPS=1
-
-.. _cmd-MDNS:
-
-:ref:`AT+MDNS <WiFi-AT>`：设置 mDNS 功能
-------------------------------------------------------------
-
-设置命令
-^^^^^^^^
-
-**命令：**
-
-::
-
-    AT+MDNS=<enable>[,<hostname>,<service_name>,<port>]
-
-**响应：**
-
-::
-
-    OK 
-
-参数
-^^^^
-
--  **<enable>**：
-
-   -  1: 开启 mDNS 功能，后续参数需要填写
-   -  0: 关闭 mDNS 功能，后续参数无需填写
-
--  **<hostname>**：mDNS 主机名称
--  **<service_name>**：mDNS 服务名称
--  **<port>**：mDNS 端口
-
-示例
-^^^^
-
-::
-
-    AT+CWMODE=1
-    AT+CWJAP="1234567890","1234567890"
-    AT+MDNS=1,"espressif","_iot",8080  
-    AT+MDNS=0
 
 .. _cmd-JEAP:
 
