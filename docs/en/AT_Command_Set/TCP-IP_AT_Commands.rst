@@ -43,6 +43,7 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPRECVLEN <cmd-CIPRECVLEN>`: Obtain socket data length in passive receiving mode.
 -  :ref:`AT+PING <cmd-CIPPING>`: Ping the remote host.
 -  :ref:`AT+CIPDNS <cmd-DNS>`: Query/Set DNS server information.
+-  :ref:`AT+MDNS <cmd-MDNS>`: Configure the mDNS function.
 -  :ref:`AT+CIPTCPOPT <cmd-TCPOPT>`: Query/Set the socket options.
 
 .. _cmd-tcpip-intro:
@@ -55,6 +56,7 @@ Introduction
 
   - Disable OTA commands (:ref:`AT+CIUPDATE <cmd-UPDATE>` and :ref:`AT+CIPFWVER <cmd-FWVER>`): ``Component config`` -> ``AT`` -> ``AT OTA command support``
   - Disable PING commands (:ref:`AT+PING <cmd-CIPPING>`): ``Component config`` -> ``AT`` -> ``AT ping command support``
+  - Disable mDNS commands (:ref:`AT+MDNS <cmd-MDNS>`): ``Component config`` -> ``AT`` -> ``AT MDNS command support``
   - Disable TCP/IP commands (Not recommended. Once disabled, all TCP/IP functions will be unavailable and you will need to implement these AT commands yourself): ``Component config`` -> ``AT`` -> ``AT net command support``
 
 .. _cmd-IPV6:
@@ -2418,6 +2420,57 @@ Example
     // second DNS Server based on IPv6: google-public-dns-a.google.com
     // third DNS Server based on IPv6: main DNS Server based on IPv6 in JiangSu Province, China
     AT+CIPDNS=1,"240c::6666","2001:4860:4860::8888","240e:5a::6666"
+
+.. _cmd-MDNS:
+
+:ref:`AT+MDNS <WiFi-AT>`: Configure the mDNS Function
+------------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+MDNS=<enable>[,<"hostname">,<"service_type">,<port>][,<"instance">][,<"proto">][,<txt_number>][,<"key">,<"value">][...]
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<enable>**:
+
+   -  1: Enable the mDNS function. The following parameters need to be set.
+   -  0: Disable the mDNS function. Please do not set the following parameters.
+
+- **<"hostname">**: mDNS host name.
+- **<"service_type">**: mDNS service type.
+- **<port>**: mDNS service port.
+- **<"instance">**: mDNS instance name. Default: ``<"hostname">``.
+- **<"proto">**: mDNS service protocol. Recommended values: ``_tcp`` or ``_udp``. Default: ``_tcp``.
+- **<txt_number>**: the number of key-value pairs in the TXT record. Range: [1,10].
+- **<"key">**: key of the TXT record.
+- **<"value">**: value of the TXT record.
+- **[...]**: repeat the key-value pairs of TXT record according to the ``<txt_number>``.
+
+Example
+^^^^^^^^
+
+::
+
+    // Enable mDNS function. Set the hostname to "espressif", service type to "_iot", and port to 8080.
+    AT+MDNS=1,"espressif","_iot",8080  
+
+    // Disable mDNS function
+    AT+MDNS=0
+
+Detailed examples can be found in: :ref:`mDNS Example <example-mdns>`.
 
 .. _cmd-TCPOPT:
 

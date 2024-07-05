@@ -1861,3 +1861,155 @@ When a large amount of network data is expected to be received and the MCU canno
 
      +CIPRECVDATA:4,test
      OK
+
+.. _example-mdns:
+
+{IDF_TARGET_NAME} enables mDNS function, PC connects to the device's TCP server using a domain name
+-----------------------------------------------------------------------------------------------------
+
+#. Set the Wi-Fi mode to station.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWMODE=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Connect to the router.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CWJAP="espressif","1234567890"
+
+   Response:
+
+   .. code-block:: none
+
+     WIFI CONNECTED
+     WIFI GOT IP
+
+     OK
+
+   Note:
+
+   - The SSID and password you entered may be different from those in the above command. Please replace the SSID and password with those of your router settings.
+
+#. Connect the PC to the same router which {IDF_TARGET_NAME} is connected to.
+
+   PC can discover the {IDF_TARGET_NAME} device only when they are in the same LAN.
+
+#. Use an mDNS tool on the PC to enable service discovery. For example, use `avahi-browse <https://linux.die.net/man/1/avahi-browse>`_ on linux (use `Bonjour <https://developer.apple.com/bonjour/>`_ on macOS or Windows).
+
+   Command:
+
+   .. code-block:: none
+
+     sudo avahi-browse -a -r
+
+#. {IDF_TARGET_NAME} device enables mDNS function.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+MDNS=1,"espressif","_printer",35,"my_instance","_tcp",2,"product","my_printer","firmware_version","AT-V3.4.1.0"
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+   Note:
+
+   - This command enables mDNS function and specifies the device instance name as ``my_instance``, service type as ``_printer``, port as ``35``, product as ``my_printer``, and firmware version as ``AT-V3.4.1.0``.
+
+#. (Optional) PC discovers the {IDF_TARGET_NAME} device.
+
+   The PC's ``avahi-browse`` tool will display:
+
+   .. code-block:: none
+
+     ...
+     + enx000ec6dd4ebf IPv4 my_instance                                   UNIX Printer         local
+     = enx000ec6dd4ebf IPv4 my_instance                                   UNIX Printer         local
+       hostname = [espressif.local]
+       address = [192.168.200.90]
+       port = [35]
+       txt = ["product=my_printer" "firmware_version=AT-V3.4.1.0"]
+
+   Note:
+
+   - This step is not necessary, it is just to verify the mDNS function of the {IDF_TARGET_NAME} device.
+
+#. {IDF_TARGET_NAME} device enables multiple connections.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPMUX=1
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. {IDF_TARGET_NAME} device runs a TCP server on port ``35``.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+CIPSERVER=1,35
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+#. Use a TCP tool (For example, use `nc <https://netcat.sourceforge.net/>`_ on Linux or macOS, use `ncat <https://nmap.org/ncat/>`_ on Windows) on the PC to connect to {IDF_TARGET_NAME} device's TCP server using the domain name.
+
+   Command:
+
+   .. code-block:: none
+
+     nc espressif.local 35
+
+   {IDF_TARGET_NAME} device responds:
+
+   .. code-block:: none
+
+     0,CONNECT
+
+   Note:
+
+   - After the connection is established, data transmission can immediately take place between PC and {IDF_TARGET_NAME} device.
+
+#. {IDF_TARGET_NAME} device disables mDNS function.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+MDNS=0
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
+   Note:
+
+   - Disabling mDNS function can reduce the device's power consumption to some extent.

@@ -1861,3 +1861,155 @@ TCP-IP AT 示例
 
      +CIPRECVDATA:4,test
      OK
+
+.. _example-mdns:
+
+{IDF_TARGET_NAME} 设备开启 mDNS 功能，PC 通过域名连接到设备的 TCP 服务器
+-----------------------------------------------------------------------------
+
+#. 设置 Wi-Fi 模式为 station。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWMODE=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 连接到路由器。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CWJAP="espressif","1234567890"
+
+   响应：
+
+   .. code-block:: none
+
+     WIFI CONNECTED
+     WIFI GOT IP
+
+     OK
+
+   说明：
+
+   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+
+#. PC 与 {IDF_TARGET_NAME} 设备连接同一个路由。
+
+   只有在同一个局域网中，PC 才能发现 {IDF_TARGET_NAME} 设备。
+
+#. 在 PC 上使用 mDNS 工具开启服务发现。例如 Linux 上使用 `avahi-browse <https://linux.die.net/man/1/avahi-browse>`_ （macOS 或 Windows 上使用 `Bonjour <https://developer.apple.com/bonjour/>`_）。
+
+   命令：
+
+   .. code-block:: none
+
+     sudo avahi-browse -a -r
+
+#. {IDF_TARGET_NAME} 设备开启 mDNS 功能。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+MDNS=1,"espressif","_printer",35,"my_instance","_tcp",2,"product","my_printer","firmware_version","AT-V3.4.1.0"
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+   说明：
+
+   - 此命令开启 mDNS 功能，表明了设备实例名称为 ``my_instance``，服务类型为 ``_printer``，端口为 ``35``，产品为 ``my_printer``，固件版本为 ``AT-V3.4.1.0``。
+
+#. （可选步骤）PC 端发现 {IDF_TARGET_NAME} 设备。
+
+   PC 端的 ``avahi-browse`` 工具会提示：
+
+   .. code-block:: none
+
+     ...
+     + enx000ec6dd4ebf IPv4 my_instance                                   UNIX Printer         local
+     = enx000ec6dd4ebf IPv4 my_instance                                   UNIX Printer         local
+       hostname = [espressif.local]
+       address = [192.168.200.90]
+       port = [35]
+       txt = ["product=my_printer" "firmware_version=AT-V3.4.1.0"]
+
+   说明：
+
+   - 此步骤不是必须的，只是为了验证 {IDF_TARGET_NAME} 设备的 mDNS 功能是否正常。
+
+#. {IDF_TARGET_NAME} 设备使能多连接。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPMUX=1
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. {IDF_TARGET_NAME} 设备作为 TCP 服务器，端口为 ``35``。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+CIPSERVER=1,35
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+#. 在 PC 上使用 TCP 工具（例如，Linux 或 macOS 上使用 `nc <https://netcat.sourceforge.net/>`_，Windows 上使用 `ncat <https://nmap.org/ncat/>`_），通过域名连接到 {IDF_TARGET_NAME} 设备的 TCP 服务器。
+
+   命令：
+
+   .. code-block:: none
+
+     nc espressif.local 35
+
+   {IDF_TARGET_NAME} 设备响应：
+
+   .. code-block:: none
+
+     0,CONNECT
+
+   说明：
+
+   - 连接建立成功后，PC 和 {IDF_TARGET_NAME} 设备之间立即可以进行数据传输。
+
+#. {IDF_TARGET_NAME} 设备关闭 mDNS 功能。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+MDNS=0
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
+   说明：
+
+   - 关闭 mDNS 功能能一定程度上减少设备的功耗。
