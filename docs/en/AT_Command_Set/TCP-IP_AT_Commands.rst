@@ -2220,6 +2220,13 @@ Parameters
 -  **<"remote IP">**: string parameter showing the remote IPv4 address or IPv6 address, enabled by the command :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>`.
 -  **<remote port>**: the remote port number, enabled by the command :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>`.
 
+Note
+^^^^^
+
+- The command needs to be executed in passive receive mode. Otherwise, ERROR is returned. You can verify whether AT is in passive receive mode by using the :ref:`AT+CIPRECVTYPE <cmd-CIPRECVTYPE>` command.
+- When this command is executed without any data available to read, it will directly return ERROR. You can verify if there is readable data at that time by using the :ref:`AT+CIPRECVLEN? <cmd-CIPRECVLEN>` command.
+- When executing the command ``AT+CIPRECVDATA=<len>``, at least ``<len> + 128`` bytes of memory are required. You can use the command :ref:`AT+SYSRAM? <Basic-AT>` to check the current available memory. When insufficient memory leads to a memory allocation failure, this command will also return ERROR. You can review the :doc:`AT log output </Get_Started/Hardware_connection>` for ``alloc fail`` or similar print messages to confirm whether a memory allocation failure has occurred.
+
 Example
 ^^^^^^^^
 

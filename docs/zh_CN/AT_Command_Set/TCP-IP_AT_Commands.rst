@@ -2220,6 +2220,13 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 -  **[<remote IP>]**：字符串参数，表示对端 IP 地址，通过 :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>` 命令使能。
 -  **[<remote port>]**：对端端口，通过 :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>` 命令使能。
 
+说明
+^^^^
+
+- 该命令需要在被动接收模式下执行，否则会直接返回 ERROR，可以通过 :ref:`AT+CIPRECVTYPE? <cmd-CIPRECVTYPE>` 命令确认是否是在被动接收模式。
+- 该命令在没有数据可读的情况下执行时会直接返回 ERROR，可以通过 :ref:`AT+CIPRECVLEN? <cmd-CIPRECVLEN>` 命令确认此时是否有可读数据。
+- 执行 ``AT+CIPRECVDATA=<len>`` 命令时，至少需要 ``<len> + 128`` 字节的内存，您可以使用命令 :ref:`AT+SYSRAM? <Basic-AT>` 查询当前可用内存情况。当内存不足导致内存申请失败时此命令也会返回 ERROR。你可以通过 :doc:`AT 输出日志口 </Get_Started/Hardware_connection>` 查看是否有类似 ``alloc fail`` 的打印信息，以确认是否出现了内存分配失败的情况。
+
 示例
 ^^^^
 
