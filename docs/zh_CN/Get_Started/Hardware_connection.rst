@@ -289,7 +289,7 @@
 
   {IDF_TARGET_CFG_PREFIX}-4MB 系列指的是内置 {IDF_TARGET_NAME}/ESP8684 芯片，同时有 4 MB flash 的模组/开发板，例如：{IDF_TARGET_NAME} MINI 系列设备、{IDF_TARGET_NAME} WROOM 系列设备。
 
-  {IDF_TARGET_CFG_PREFIX}-4MB AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。
+  {IDF_TARGET_CFG_PREFIX}-4MB AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。因为使用 26 MHz 的 XTAL，所以在 ROM 阶段日志是以 ``74880`` 波特率通过 UART0（TX：GPIO20）输出；若更改使用 40 MHz 的 XTAL，则在 ROM 阶段日志是以 ``115200`` 波特率通过 UART0（TX：GPIO20）输出。
 
   .. list-table:: {IDF_TARGET_CFG_PREFIX}-4MB 系列硬件连接管脚分配
     :header-rows: 1
@@ -334,7 +334,7 @@
 
   {IDF_TARGET_CFG_PREFIX}-2MB 系列指的是内置 {IDF_TARGET_NAME}/ESP8684 芯片，同时有 2 MB flash 的模组/开发板。
 
-  {IDF_TARGET_CFG_PREFIX}-2MB AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，用于输出日志的 UART0 (GPIO8) 和 UART1 使用 ``115200`` 波特率进行通信。因为在 ROM 阶段，日志是以 ``74880`` 波特率输出，所以如果需要查看 ROM 的日志，请用 ``74880`` 波特率打开 UART0（TX：GPIO20）。
+  {IDF_TARGET_CFG_PREFIX}-2MB AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，用于输出日志的 UART0 (GPIO8) 和 UART1 使用 ``115200`` 波特率进行通信。因为使用 26 MHz 的 XTAL，所以在 ROM 阶段日志是以 ``74880`` 波特率通过 UART0（TX：GPIO20）输出；若更改使用 40 MHz 的 XTAL，则在 ROM 阶段日志是以 ``115200`` 波特率通过 UART0（TX：GPIO20）输出。
 
   .. list-table:: {IDF_TARGET_CFG_PREFIX}-2MB 系列硬件连接管脚分配
     :header-rows: 1
