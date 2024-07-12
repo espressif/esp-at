@@ -353,8 +353,8 @@ Note:
       - UART1
           * GPIO6 (RX)
           * GPIO7 (TX)
-          * GPIO5 (CTS)
-          * GPIO4 (RTS)
+          * GPIO19 (CTS)
+          * GPIO20 (RTS)
       - USB to serial converter
           * TX
           * RX
