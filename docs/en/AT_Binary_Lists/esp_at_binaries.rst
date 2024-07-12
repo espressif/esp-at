@@ -40,7 +40,7 @@ It is recommended to use the lastest version of firmware. Currently, Espressif r
     - Currently, {IDF_TARGET_NAME} AT released firmware does not support most of :ref:`Bluetooth® Low Energy AT Commands <BLE-AT>` (excluding BluFi commands). If you only need to use :ref:`Basic AT Commands <Basic-AT>` and :ref:`Bluetooth® Low Energy AT Commands <BLE-AT>` on {IDF_TARGET_NAME}, follow the steps described in :doc:`How_to_download_the_latest_temporary_version_of_AT_from_github <../Compile_and_Develop/How_to_build_project_with_web_page>` to directly download the esp32c2-ble-2mb-at firmware, or compile this firmware by yourself following the steps in the :doc:`How_to_clone_project_and_compile_it <../Compile_and_Develop/How_to_clone_project_and_compile_it>` (Note: When setting up the environment in step three of the document, choose ESP32C2-BLE-2MB).
 
         - This firmware currently does not support OTA function.
-        - AT firmware on GitHub will automatically expire after 6 months, so please save the downloaded AT firmware.
+        - AT firmware on GitHub will automatically expire after 90 days, so please save the downloaded AT firmware.
 
 .. only:: esp32
 
