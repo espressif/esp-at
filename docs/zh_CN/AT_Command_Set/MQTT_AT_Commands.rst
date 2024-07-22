@@ -577,7 +577,7 @@ MQTT AT 命令集
 
 **功能：**
 
-订阅指定 MQTT topic 的指定 QoS，支持订阅多个 topic
+订阅指定 MQTT topic 的指定 QoS，支持订阅多个 topic（最多支持订阅 10 个 topic）。
 
 **命令：**
 

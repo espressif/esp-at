@@ -5,7 +5,7 @@ at.py 工具
 
 :link_to_translation:`en:[English]`
 
-``at.py`` 工具用于修改 ESP-AT 官方发布版固件、GitHub 临时固件和 2MB/4MB 固件中的多种参数配置。这些配置包括 Wi-Fi 配置、证书和密钥配置、UART 配置、GATTS 配置等。当默认的固件无法满足您的需求时，您可以使用 ``at.py`` 工具修改固件中的这些参数配置。
+``at.py`` 工具用于修改打包好的 2 MB/4 MB AT 量产固件（即 ``build/factory`` 目录下的 ``factory_XXX.bin``）中的多种参数配置。这些配置包括 Wi-Fi 配置、证书和密钥配置、UART 配置、GATTS 配置等。当默认的固件无法满足您的需求时，您可以使用 ``at.py`` 工具修改固件中的这些参数配置。
 
 .. _esp-at-py-steps:
 
@@ -188,7 +188,7 @@ at.py 工具
     - 说明
   * - \--uart_num
     - AT 命令口的 UART 号
-    - 仅在 AT 日志口同时用作 AT 命令口时，需要修改此参数。同时保证下面的 ``tx_pin`` 和 ``rx_pin`` 和 :term:`AT 日志端口` 的管脚一样。
+    - 仅在 AT 日志口同时用作 AT 命令口时，需要修改此参数。同时需保证下面的 ``tx_pin`` 和 ``rx_pin`` 要配置与 :term:`AT 日志端口` 的 tx 和 rx 管脚一致，如果 :term:`AT 日志端口` 只配置了 rx，则下面 ``tx_pin`` 需要配置与下载固件口（可查看 :doc:`硬件连接 <../Get_Started/Hardware_connection>`）的 UART 的 tx 管脚一致。
   * - \--baud
     - AT 命令口的波特率
     - 原始值：115200

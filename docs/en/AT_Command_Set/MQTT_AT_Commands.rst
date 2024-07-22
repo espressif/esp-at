@@ -577,7 +577,7 @@ Set Command
 
 **Function:**
 
-Subscribe to defined MQTT topics with defined QoS. It supports subscribing to multiple topics.
+Subscribe to defined MQTT topics with defined QoS. Multiple topics are available for subscription (up to 10 topics can be subscribed).
 
 **Command:**
 

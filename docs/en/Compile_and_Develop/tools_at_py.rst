@@ -5,7 +5,7 @@ at.py Tool
 
 :link_to_translation:`zh_CN:[中文]`
 
-The ``at.py`` tool is used to modify various parameter configurations in the official release firmware, GitHub temporary firmware, and 2MB/4MB firmware of ESP-AT. These configurations include Wi-Fi configurations, certificate and key configurations, UART configurations, GATTS configurations, and more. When the default firmware does not meet your requirements, you can use the ``at.py`` tool to modify these parameter configurations in the firmware.
+The ``at.py`` tool is used to modify various parameter configurations in the packaged 2 MB/4 MB AT production firmware (namely, ``factory_XXX.bin`` in the ``build/factory`` directory). These configurations include Wi-Fi configurations, certificate and key configurations, UART configurations, GATTS configurations, and more. When the default firmware does not meet your requirements, you can use the ``at.py`` tool to modify these parameter configurations in the firmware.
 
 .. _esp-at-py-steps:
 
@@ -188,7 +188,7 @@ The modifiable UART configuration includes only the UART configuration for the :
     - Description
   * - \--uart_num
     - UART number for the AT command port
-    - Only needs to be modified if the AT command port is also used as the AT log port. Ensure that the ``tx_pin`` and ``rx_pin`` below have the same pins as the :term:`AT log port`.
+    - Only needs to be modified if the AT command port is also used as the AT log port. Ensure that the ``tx_pin`` and ``rx_pin`` below have the same pins as the :term:`AT log port`. If the :term:`AT log port` is only configured with the ``rx pin``, you need to configure the following ``tx_pin`` to be consistent with the ``tx pin`` of the UART of the Download Firmware Port (please refer to :doc:`Hardware Connection <../Get_Started/Hardware_connection>`).
   * - \--baud
     - Baud rate of the AT command port
     - Original value: 115200
