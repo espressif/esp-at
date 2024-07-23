@@ -247,6 +247,9 @@ Enter a commit message to describe the changes you have made. Click ``Commit & P
 
     Submit Changes (Click to Enlarge)
 
+.. note::
+  If you want to enable or disable the AT firmware's :ref:`silence mode <silence-mode-usage>`, please refer to the :doc:`How to enable or disable silence mode <How_to_configure_silence_mode>` document.
+
 .. _at-wc-action-compile:
 
 Step 6. Compile the AT firmware using GitHub Actions

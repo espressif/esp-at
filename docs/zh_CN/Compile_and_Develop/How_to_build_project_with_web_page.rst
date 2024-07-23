@@ -247,6 +247,9 @@
 
     提交修改（点击放大）
 
+.. note::
+  如果您想要启用或禁用 AT 固件的 :ref:`silence mode <silence-mode-usage>`，请参考 :doc:`如何启用或禁用 silence mode <How_to_configure_silence_mode>` 文档。
+
 .. _at-wc-action-compile:
 
 第六步：GitHub Actions 编译 AT 固件
