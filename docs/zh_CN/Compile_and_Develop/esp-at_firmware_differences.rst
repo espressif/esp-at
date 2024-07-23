@@ -562,6 +562,8 @@ ESP-AT 固件差异
 
 .. [#one] UART 管脚可自定义，详情请参考 :doc:`How_to_set_AT_port_pin`。
 
+.. _support-modules:
+
 支持的模组
 ^^^^^^^^^^
 
