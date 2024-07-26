@@ -50,7 +50,7 @@ ESP-AT 用户指南
    AT 命令示例 <AT_Command_Examples/index>
    AT 版本简介 <versions>
    编译和开发 <Compile_and_Develop/index>
-   第三方定制化 AT 命令和固件 <Customized_AT_Commands_and_Firmware/index>
+   第三方开放云平台定制化 AT <Customized_AT_Commands_and_Firmware/index>
    FAQ <faq>
    缩写词索引 <index_of_abbreviations>
    关于 ESP-AT <about>

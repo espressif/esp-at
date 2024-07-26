@@ -50,7 +50,7 @@ This is the documentation for `ESP-AT <https://github.com/espressif/esp-at>`_ De
    AT Command Examples <AT_Command_Examples/index>
    ESP-AT Versions <versions>
    Compile and Develop <Compile_and_Develop/index>
-   Customized AT Commands and Firmware <Customized_AT_Commands_and_Firmware/index>
+   Customized AT for 3rd-Patry Open Cloud Platforms <Customized_AT_Commands_and_Firmware/index>
    FAQ <faq>
    Index of Abbreviations <index_of_abbreviations>
    About <about>
