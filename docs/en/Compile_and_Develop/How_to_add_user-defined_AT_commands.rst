@@ -1,20 +1,29 @@
-How to add user-defined AT commands
-===================================
+.. _user-defined_at_cmd:
 
-:link_to_translation:`zh_CN:[中文]`
+************************************
+How to Add User-defined AT Commands
+************************************
 
-This document details how to add a user-defined AT command based on the `ESP-AT <https://github.com/espressif/esp-at>`_ project. It uses the ``AT+TEST`` command as an example to show the sample code for each step.
+:link_to_translation:`en:[English]`
 
-Customizing a basic and well-functioned command requires at least the two steps below:
+This document provides a detailed introduction on how to add user-defined AT commands. In fact, the ESP-AT project already provides the `at_custom_cmd example <https://github.com/espressif/esp-at/tree/master/examples/at_custom_cmd>`_, and the following text mainly focuses on this example, using the ``AT+TEST`` command to demonstrate each step with example code.
+
+Before customizing AT commands, please understand:
+
+- :ref:`at-custom_cmd`
+
+To define a basic, functional command, at least the following four steps are required:
 
 - :ref:`define-at-commands`
 - :ref:`register-at-commands`
+- :ref:`update-cmakelist`
+- :ref:`set-component-env-and-compile`
 
-This step checks how the newly defined command works out.
+After completing the above steps, let's look at the operation and response of the new command (AT+TEST):
 
-- :ref:`user-define-at-commands-give-it-a-try`
+- :ref:`user-at-cmd-give-it-a-try`
 
-The remaining steps are for relatively complex AT commands and are optional depending on your needs.
+The following steps are suitable for customizing relatively complex commands and can be selected according to your needs:
 
 - :ref:`define-return-values`
 - :ref:`access-command-parameters`
@@ -22,14 +31,154 @@ The remaining steps are for relatively complex AT commands and are optional depe
 - :ref:`block-command-execution`
 - :ref:`access-input-data-from-at-command-port`
 
-The source code of AT command set is not open-source, and is provided in the form of :component:`library file <at/lib>`. It is also the basis to parse user-defined AT commands.
+The source code for the AT command set is not open source and is presented in the form of :component:`library files <at/lib>`, which is also the basis for parsing custom AT commands.
+
+.. _at-custom_cmd:
+
+:ref:`at_custom_cmd component introduction <user-defined_at_cmd>`
+==================================================================
+
+Introduction to the at_custom_cmd component
+--------------------------------------------
+
+You can first read the `README <https://github.com/espressif/esp-at/tree/master/examples/at_custom_cmd/README.md>`_ of the at_custom_cmd component to get a brief understanding of it.
+
+For concepts and related knowledge about components, refer to the `ESP-IDF Build System documentation <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/build-system.html#id1>`_.
+
+.. _at_custom_cmd_component:
+
+at_custom_cmd Component Directory Structure
+--------------------------------------------
+
+The directory structure of the at_custom_cmd component is as follows:
+
+.. code-block:: none
+
+    - at_custom_cmd/
+                    - custom/ - at_custom_cmd.c
+                    - include/ - at_custom_cmd.h
+                    - CMakeLists.txt
+                    - README.md
+
+This example project "at_custom_cmd" includes the following components:
+
+  - The .c files under the at_custom_cmd/custom/ directory are used to store the source code for :ref:`custom AT commands <define-at-commands>`. Besides the at_custom_cmd.c file, you can create additional .c files in this directory.
+  - The .h files under the at_custom_cmd/include/ directory are used to store the header files for custom AT commands. Besides the at_custom_cmd.h file, you can create additional .h files in this directory.
+  - The CMakeLists.txt file defines variables to control the build process of this component and its integration with the ESP-AT project. For more detailed information, refer to `Component CMakeLists File <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/build-system.html#component-directories>`_.
+  - The README.md file is used to describe this component.
+
+at_custom_cmd Component CMakeLists.txt File
+--------------------------------------------
+
+- Add the path of the `.c` files to the `srcs` variable:
+
+  .. code-block:: none
+
+      file(GLOB_RECURSE srcs *.c)
+
+- Set the include directory for the header file (at_custom_cmd.h file):
+
+  .. code-block:: none
+    
+      set(includes "include")
+
+.. _add-component_dependencies:
+
+- Add component dependencies and add the component to the build system:
+
+  - Add the required component dependencies in the CMakeLists.txt file as needed for the :ref:`custom AT command code <define-at-commands>`. Use idf_component_register to add the component to the build system. For more details, refer to `idf_component_register <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/build-system.html#cmake-component-register>`_.
+
+  .. code-block:: none
+
+      set(require_components at freertos nvs_flash)
+
+      idf_component_register(
+        SRCS ${srcs}
+        INCLUDE_DIRS ${includes}
+        REQUIRES ${require_components})
+
+  .. note::
+    If you use other components in the :ref:`custom AT command code <define-at-commands>`, you need to add these component dependencies in the `esp-at/examples/at_custom_cmd/CMakeLists.txt` file. For example, if you also use the LwIP component, your setting should be as follows:
+
+    .. code-block:: none
+
+        set(require_components at freertos nvs_flash lwip)
+
+.. _add-link_options:
+
+- Link the name of your :ref:`custom registered AT command function <register-at-commands>` as a link option to ${COMPONENT_LIB} to ensure that the program can find this custom registered AT command function correctly at runtime. The following link example uses the `esp_at_custom_cmd_register` registration of AT command function in the at_custom_cmd example:
+
+  .. code-block:: none
+
+      target_link_libraries(${COMPONENT_LIB} INTERFACE "-u esp_at_custom_cmd_register")
+
+  .. note::
+    If the name of your :ref:`custom registered AT command function <register-at-commands>` is ``esp_at_custom_cmd_register_1``, you need to add the following code:
+
+    .. code-block:: none
+
+        target_link_libraries(${COMPONENT_LIB} INTERFACE "-u esp_at_custom_cmd_register_1")
+
+.. _component-usage:
+
+Usage of the at_custom_cmd component
+-------------------------------------
+
+1. Add your custom AT command code to the `at_custom_cmd/custom/**/*.c` and `at_custom_cmd/custom/**/*.h` files (you can also create new source and header files if needed, ensuring that the AT command registration function is handled in the .c files).
+2. If your code uses other components, you may need to add more component dependencies in the `at_custom_cmd/CMakeLists.txt` file.
+
+.. _compinents-3:
+
+3. Set the `at_custom_cmd` component environment variable so that the `ESP-AT` project can find this component during compilation. Choose one of the following two methods:
+
+.. _set-path_1:
+
+- **Method 1:** Set the `AT_CUSTOM_COMPONENTS` environment variable directly in the command line
+
+    .. note::
+        - You need to replace (path_of_at_custom_cmd) with the actual absolute path of the `at_custom_cmd` directory.
+        - You can specify multiple components. For example: `export AT_CUSTOM_COMPONENTS="~/prefix/my_path1 ~/prefix/my_path2"`.
+
+    - Linux or macOS
+
+    .. code-block:: none
+
+        export AT_CUSTOM_COMPONENTS=(path_of_at_custom_cmd)
+     
+    - Windows
+
+    .. code-block:: none
+
+        set AT_CUSTOM_COMPONENTS=(path_of_at_custom_cmd)
+
+.. _set-path_2:
+
+- **Method 2:** Directly add the code to set the AT_CUSTOM_COMPONENTS environment variable in the `esp-at/build.py` file's ``setup_env_variables()`` function. The code example is as follows:
+
+    .. code-block:: none
+
+        # set AT_CUSTOM_COMPONENTS
+        at_custom_cmd_path=os.path.join(os.getcwd(), 'examples/at_custom_cmd')
+        os.environ['AT_CUSTOM_COMPONENTS']=at_custom_cmd_path
+
+.. _compile-at:
+
+4. Choose one of the following two methods to recompile the AT firmware
+
+  - **Method 1:** Recompile the AT firmware according to :doc:`local compilation guide for the ESP-AT project <../Compile_and_Develop/How_to_clone_project_and_compile_it>`.
+  - **Method 2:** Recompile the AT firmware according to :doc:`web compilation guide for the ESP-AT project <../Compile_and_Develop/How_to_build_project_with_web_page>` (if you choose this method to compile the AT firmware, the third step :ref:`component-usage` must use :ref:`Method 2 <set-path_2>`).
+
+.. _step-define_at_command:
+
+:ref:`Custom AT Command Steps <user-defined_at_cmd>`
+====================================================
 
 .. _define-at-commands:
 
-Define AT Commands
-------------------
+:ref:`Custom AT Commands <user-defined_at_cmd>`
+------------------------------------------------
 
-Before defining any AT command, you should first decide on the name and type of the command.
+Before customizing AT commands, please decide on the name and type of the AT command.
 
 **Command naming rules:**
 
@@ -46,12 +195,10 @@ Test Command:
 
 .. code-block:: c
 
-    uint8_t at_test_cmd_test(uint8_t *cmd_name)
+    static uint8_t at_test_cmd_test(uint8_t *cmd_name)
     {
         uint8_t buffer[64] = {0};
-
-        snprintf((char *)buffer, 64, "this cmd is test cmd: %s\r\n", cmd_name);
-
+        snprintf((char *)buffer, 64, "test command: <AT%s=?> is executed\r\n", cmd_name);
         esp_at_port_write_data(buffer, strlen((char *)buffer));
 
         return ESP_AT_RESULT_CODE_OK;
@@ -61,12 +208,10 @@ Query Command:
 
 .. code-block:: c
 
-    uint8_t at_query_cmd_test(uint8_t *cmd_name)
+    static uint8_t at_query_cmd_test(uint8_t *cmd_name)
     {
         uint8_t buffer[64] = {0};
-
-        snprintf((char *)buffer, 64, "this cmd is query cmd: %s\r\n", cmd_name);
-
+        snprintf((char *)buffer, 64, "query command: <AT%s?> is executed\r\n", cmd_name);
         esp_at_port_write_data(buffer, strlen((char *)buffer));
 
         return ESP_AT_RESULT_CODE_OK;
@@ -78,31 +223,33 @@ Set Command:
 
 .. code-block:: c
 
-    uint8_t at_setup_cmd_test(uint8_t para_num)
+    static uint8_t at_setup_cmd_test(uint8_t para_num)
     {
-        int32_t para_int_1 = 0;
-        uint8_t *para_str_2 = NULL;
-        uint8_t num_index = 0;
-        uint8_t buffer[64] = {0};
+        uint8_t index = 0;
 
-        if (esp_at_get_para_as_digit(num_index++, &para_int_1) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        // get first parameter, and parse it into a digit
+        int32_t digit = 0;
+        if (esp_at_get_para_as_digit(index++, &digit) != ESP_AT_PARA_PARSE_RESULT_OK) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
 
-        if (esp_at_get_para_as_str(num_index++, &para_str_2) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        // get second parameter, and parse it into a string
+        uint8_t *str = NULL;
+        if (esp_at_get_para_as_str(index++, &str) != ESP_AT_PARA_PARSE_RESULT_OK) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
 
-        snprintf((char *)buffer, 64, "this cmd is setup cmd and cmd num is: %u\r\n", para_num);
-        esp_at_port_write_data(buffer, strlen((char *)buffer));
+        // allocate a buffer and construct the data, then send the data to mcu via interface (uart/spi/sdio/socket)
+        uint8_t *buffer = (uint8_t *)malloc(512);
+        if (!buffer) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+        int len = snprintf((char *)buffer, 512, "setup command: <AT%s=%d,\"%s\"> is executed\r\n",
+                           esp_at_get_current_cmd_name(), digit, str);
+        esp_at_port_write_data(buffer, len);
 
-        memset(buffer, 0, 64);
-        snprintf((char *)buffer, 64, "first parameter is: %d\r\n", para_int_1);
-        esp_at_port_write_data(buffer, strlen((char *)buffer));
-
-        memset(buffer, 0, 64);
-        snprintf((char *)buffer, 64, "second parameter is: %s\r\n", para_str_2);
-        esp_at_port_write_data(buffer, strlen((char *)buffer));
+        // remember to free the buffer
+        free(buffer);
 
         return ESP_AT_RESULT_CODE_OK;
     }
@@ -111,12 +258,10 @@ Execute Command:
 
 .. code-block:: c
 
-    uint8_t at_exe_cmd_test(uint8_t *cmd_name)
+    static uint8_t at_exe_cmd_test(uint8_t *cmd_name)
     {
         uint8_t buffer[64] = {0};
-
-        snprintf((char *)buffer, 64, "this cmd is execute cmd: %s\r\n", cmd_name);
-
+        snprintf((char *)buffer, 64, "execute command: <AT%s> is executed\r\n", cmd_name);
         esp_at_port_write_data(buffer, strlen((char *)buffer));
 
         return ESP_AT_RESULT_CODE_OK;
@@ -124,37 +269,71 @@ Execute Command:
 
 Finally, call :cpp:type:`esp_at_cmd_struct` to define the name and type(s) that your AT command supports. The sample code below defined the name ``+TEST`` (omitting ``AT``) and all the four types.
 
+.. note::
+  If you do not want to define a particular type, set it to ``NULL``.
+
 .. code-block:: c
 
-    static esp_at_cmd_struct at_custom_cmd[] = {
+    static const esp_at_cmd_struct at_custom_cmd[] = {
         {"+TEST", at_test_cmd_test, at_query_cmd_test, at_setup_cmd_test, at_exe_cmd_test},
+        /**
+         * @brief You can define your own AT commands here.
+         */
     };
-
-If you do not want to define a particular type, set it to ``NULL``.
 
 .. _register-at-commands:
 
-Register AT Commands
---------------------
+:ref:`Registering AT Command Functions and Initialization <user-defined_at_cmd>`
+----------------------------------------------------------------------------------
 
-Call API :cpp:func:`esp_at_custom_cmd_array_regist` to register your AT command. Below is the sample code to register ``AT+TEST``:
+In the at_custom_cmd example, the esp_at_custom_cmd_register function calls the API :cpp:func:`esp_at_custom_cmd_array_regist` to register the AT command. Below is an example code for registering ``AT+TEST``.
 
 .. code-block:: c
   
-  esp_at_custom_cmd_array_regist(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(at_custom_cmd[0]));
+    bool esp_at_custom_cmd_register(void)
+    {
+        return esp_at_custom_cmd_array_regist(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(esp_at_cmd_struct));
+    }
+
+Finally, call the API `ESP_AT_CMD_SET_INIT_FN <https://github.com/espressif/esp-at/blob/113702d9bf0224ed15e873bdc09898e804f4bd28/components/at/include/esp_at_cmd_register.h#L67>`_ to initialize your implemented registration AT command function `esp_at_custom_cmd_register`. Below is an example code for initializing the registration of the `AT+TEST` command.
+
+.. code-block:: c
+
+    ESP_AT_CMD_SET_INIT_FN(esp_at_custom_cmd_register, 1);
 
 .. note::
+  If you choose not to define AT commands in the `at_custom_cmd.c` and `at_custom_cmd.h` files, but instead create new source and header files in the `esp-at/examples/at_custom_cmd/custom` and `esp-at/examples/at_custom_cmd/include` directories to customize AT commands and the custom registration function, you should avoid naming your registration function `esp_at_custom_cmd_register`. This is because there is already a function named esp_at_custom_cmd_register in the at_custom_cmd example, which has been initialized. You can define a function with a different name to register AT commands, and then use ESP_AT_CMD_SET_INIT_FN to initialize your defined registration function.
 
-  ``esp_at_custom_cmd_array_regist`` is recommended to be added to the ``at_custom_init()`` in ``app_main()``.
+.. _update-cmakelist:
 
-.. _user-define-at-commands-give-it-a-try:
+:ref:`Update the CMakeLists.txt File <user-defined_at_cmd>`
+------------------------------------------------------------
 
-Give it a try
--------------
+Now you need to update the `CMakeLists.txt file <https://github.com/espressif/esp-at/tree/master/examples/at_custom_cmd/CMakeLists.txt>`_ based on the :ref:`custom AT command code <register-at-commands>` and :ref:`custom register AT command function and initialization code <register-at-commands>` implemented above. Pay special attention to the following two points:
 
-If you have finished the above two steps, the command should work after you build the ESP-AT project and flash the firmware to your device. Give it a try!
+1. :ref:`Add component dependencies <add-component_dependencies>`
+2. :ref:`Add link options <add-link_options>`
 
-Below is how ``AT+TEST`` works out.
+.. _set-component-env-and-compile:
+
+:ref:`Setting Component Environment Variables and Compiling the AT Project <user-defined_at_cmd>`
+-----------------------------------------------------------------------------------------------------
+
+- Please choose one of the following two methods to recompile the AT firmware.
+
+    - **Method 1:** If you choose to recompile the AT firmware according to the :doc:`ESP-AT Project Compilation Guide <How_to_clone_project_and_compile_it>`, please set the environment variables for the at_custom_cmd component using one of the two methods described in the `Setting Environment Variables Document <compinents-3>`_ before you start compiling the AT project.
+    - **Method 2:** If you choose to recompile the AT firmware according to the :doc:`Web Compilation Guide for the ESP-AT Project <How_to_build_project_with_web_page>`, please set the environment variables for the at_custom_cmd component using the :ref:`second method <set-path_2>` in the `Setting Environment Variables Document <compinents-3>`_ before you start compiling the AT project.
+
+- Please `flash the AT firmware you compiled <../Get_Started/Downloading_guide>`_.
+
+.. _user-at-cmd-give-it-a-try:
+
+:ref:`Give the AT+TEST Command a Try <user-defined_at_cmd>`
+------------------------------------------------------------------------
+
+If you have completed the four steps of :ref:`define-at-commands`, :ref:`register-at-commands`, :ref:`update-cmakelist`, and :ref:`set-component-env-and-compile`, the `AT+TEST` command should run correctly on your device. Give it a try!
+
+If you have followed the steps correctly, below is the execution result of the `AT+TEST` command you defined.
 
 **Test Command:**
 
@@ -167,7 +346,7 @@ Below is how ``AT+TEST`` works out.
 .. code-block:: none
 
     AT+TEST=?
-    this cmd is test cmd: +TEST
+    test command: <AT+TEST=?> is executed
 
     OK
 
@@ -182,7 +361,7 @@ Below is how ``AT+TEST`` works out.
 .. code-block:: none
 
     AT+TEST?
-    this cmd is query cmd: +TEST
+    query command: <AT+TEST?> is executed
 
     OK
 
@@ -197,9 +376,7 @@ Below is how ``AT+TEST`` works out.
 .. code-block:: none
 
     AT+TEST=1,"espressif"
-    this cmd is setup cmd and cmd num is: 2
-    first parameter is: 1
-    second parameter is: espressif
+    setup command: <AT+TEST=1,"espressif"> is executed
 
     OK
 
@@ -214,14 +391,19 @@ Below is how ``AT+TEST`` works out.
 .. code-block:: none
 
     AT+TEST
-    this cmd is execute cmd: +TEST
+    execute command: <AT+TEST> is executed
 
     OK
 
+Custom Complex AT Command Code
+===============================
+
+**If you have completed the above steps, you have successfully created a simple AT+TEST command. Below are some code examples suitable for defining relatively complex commands, which you can choose based on your needs.**
+
 .. _define-return-values:
 
-Define Return Values
----------------------
+:ref:`Define Return Values <user-defined_at_cmd>`
+--------------------------------------------------
 
 ESP-AT has defined return values in :cpp:type:`esp_at_result_code_string_index`. See :ref:`at-messages` for more return values.
 
@@ -261,8 +443,8 @@ How it works out:
 
 .. _access-command-parameters:
 
-Access Command Parameters
--------------------------
+:ref:`Access Command Parameters <user-defined_at_cmd>`
+-------------------------------------------------------
 
 ESP-AT provides two APIs to access command parameters:
 
@@ -273,8 +455,8 @@ See :ref:`Set Command <user-defined-set-command>` for an example.
 
 .. _omit-command-parameters:
 
-Omit Command Parameters
-------------------------
+:ref:`Omit Command Parameters <user-defined_at_cmd>`
+-----------------------------------------------------
 
 This section describes how to provide optional command parameters:
 
@@ -459,8 +641,8 @@ Below is the sample code to achieve it:
 
 .. _block-command-execution:
 
-Block Command Execution
-------------------------
+:ref:`Block Command Execution <user-defined_at_cmd>`
+-----------------------------------------------------
 
 Sometimes you want to block the execution of one command to wait for another execution result, and the system may return different values according to the result.
 
@@ -497,8 +679,8 @@ The sample code is as follows:
 
 .. _access-input-data-from-at-command-port:
 
-Access Input Data from AT Command Port
---------------------------------------
+:ref:`Access Input Data from AT Command Port <user-defined_at_cmd>`
+--------------------------------------------------------------------
 
 ESP-AT supports accessing input data from AT Command port. It provides two APIs for this purpose.
 
