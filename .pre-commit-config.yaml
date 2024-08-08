@@ -22,6 +22,7 @@ repos:
             .*_pb2.py|
             .*.pb-c.h|
             .*.pb-c.c|
+            .*.patch|
             .*.yuv
           )$
       - id: end-of-file-fixer

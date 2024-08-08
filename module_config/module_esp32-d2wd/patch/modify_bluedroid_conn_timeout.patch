@@ -1,12 +1,3 @@
-From 7485572ef7e5b076d90d29f9335dcb726ef3714f Mon Sep 17 00:00:00 2001
-From: xiewenxiang <xiewenxiang@espressif.com>
-Date: Fri, 29 Mar 2024 10:41:25 +0800
-Subject: [PATCH] modify bluedroid conn timeout
-
----
- components/bt/host/bluedroid/stack/l2cap/l2c_ble.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
 diff --git a/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c b/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c
 index 4e6c8534ec..fa7a877491 100644
 --- a/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c
@@ -27,13 +18,11 @@ index 4e6c8534ec..fa7a877491 100644
          uint32_t current_time = (esp_system_get_time()/1000);
 -        link_timeout = (L2CAP_BLE_LINK_CONNECT_TOUT*1000 - (current_time - p_lcb->start_time_s))/1000;
 +        link_timeout = (bluedroid_conn_wait_time*1000 - (current_time - p_lcb->start_time_s))/1000;
-
+ 
 -        if(link_timeout == 0 || link_timeout > L2CAP_BLE_LINK_CONNECT_TOUT) {
 -            link_timeout = L2CAP_BLE_LINK_CONNECT_TOUT;
 +        if(link_timeout == 0 || link_timeout > bluedroid_conn_wait_time) {
 +            link_timeout = bluedroid_conn_wait_time;
          }
      }
-
---
-2.25.1
+ 

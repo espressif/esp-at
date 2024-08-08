@@ -16,12 +16,12 @@ index d2180c76bd..5acdff196b 100644
 +from typing import List
 +from typing import Optional
 +from typing import Tuple
-
+ 
 -from construct import BitsInteger, BitStruct, Int16ul
 +from construct import BitsInteger
 +from construct import BitStruct
 +from construct import Int16ul
-
+ 
  # the regex pattern defines symbols that are allowed by long file names but not by short file names
  INVALID_SFN_CHARS_PATTERN = re.compile(r'[.+,;=\[\]]')
 @@ -206,6 +209,11 @@ def get_args_for_partition_generator(desc: str, wl: bool) -> argparse.Namespace:
@@ -33,7 +33,7 @@ index d2180c76bd..5acdff196b 100644
 +                        type=str,
 +                        choices=['safe', 'perf'],
 +                        help='Wear levelling mode to use. Safe or performance. Only for sector size of 512')
-
+ 
      args = parser.parse_args()
      if args.fat_type == 0:
 @@ -215,6 +223,9 @@ def get_args_for_partition_generator(desc: str, wl: bool) -> argparse.Namespace:
@@ -44,8 +44,8 @@ index d2180c76bd..5acdff196b 100644
 +        if args.sector_size != 512:
 +            raise ValueError('Wear levelling mode can be set only for sector size 512')
      return args
-
-
+ 
+ 
 diff --git a/components/fatfs/wl_fatfsgen.py b/components/fatfs/wl_fatfsgen.py
 index 4a685434a0..a26404650c 100755
 --- a/components/fatfs/wl_fatfsgen.py
@@ -55,7 +55,7 @@ index 4a685434a0..a26404650c 100755
  # SPDX-FileCopyrightText: 2021-2022 Espressif Systems (Shanghai) CO LTD
  # SPDX-License-Identifier: Apache-2.0
 +from typing import Optional
-
+ 
 -from construct import Const, Int32ul, Struct
 +from construct import Const
 +from construct import Int32ul
@@ -70,14 +70,14 @@ index 4a685434a0..a26404650c 100755
 +from fatfs_utils.utils import get_args_for_partition_generator
 +from fatfs_utils.utils import UINT32_MAX
  from fatfsgen import FATFS
-
-
+ 
+ 
 @@ -53,6 +60,7 @@ class WLFATFS:
      WL_STATE_HEADER_SIZE = 64
      WL_STATE_COPY_COUNT = 2  # always 2 copies for power failure safety
      WL_SECTOR_SIZE = 0x1000
 +    WL_SAFE_MODE_DUMP_SECTORS = 2
-
+ 
      WL_STATE_T_DATA = Struct(
          'pos' / Int32ul,
 @@ -97,7 +105,8 @@ class WLFATFS:
@@ -95,11 +95,11 @@ index 4a685434a0..a26404650c 100755
          self.total_sectors = self.partition_size // FATDefaults.WL_SECTOR_SIZE
          self.wl_state_size = WLFATFS.WL_STATE_HEADER_SIZE + WLFATFS.WL_STATE_RECORD_SIZE * self.total_sectors
 +        self.wl_mode = wl_mode
-
+ 
          # determine the number of required sectors (roundup to sector size)
          self.wl_state_sectors = (self.wl_state_size + FATDefaults.WL_SECTOR_SIZE - 1) // FATDefaults.WL_SECTOR_SIZE
 @@ -114,6 +124,9 @@ class WLFATFS:
-
+ 
          wl_sectors = (WLFATFS.WL_DUMMY_SECTORS_COUNT + WLFATFS.WL_CFG_SECTORS_COUNT +
                        self.wl_state_sectors * WLFATFS.WL_STATE_COPY_COUNT)
 +        if self.wl_mode is not None and self.wl_mode == 'safe':
@@ -115,6 +115,6 @@ index 4a685434a0..a26404650c 100755
 -                       use_default_datetime=args.use_default_datetime)
 +                       use_default_datetime=args.use_default_datetime,
 +                       wl_mode=args.wl_mode)
-
+ 
      wl_fatfs.plain_fatfs.generate(args.input_directory)
      wl_fatfs.init_wl()
