@@ -15,6 +15,6 @@ index d0969ba408..89a0f02cbd 100644
          get_filename_component(PARTITION_CSV_PATH "${CONFIG_PARTITION_TABLE_FILENAME}"
 -                                ABSOLUTE BASE_DIR "${project_dir}")
 +                                ABSOLUTE BASE_DIR "${CONFIG_PARTITION_TABLE_BASE_DIR}")
-
+ 
          if(NOT EXISTS "${PARTITION_CSV_PATH}")
              message(WARNING "Partition table CSV file ${PARTITION_CSV_PATH} not found. "
