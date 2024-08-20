@@ -9,7 +9,7 @@ Here are five optional configurations that you may want to override, and you can
 - You must use the same filename and directory name to override.
 
 #### 2.1 Override the system configuration
-The native system configuration file is `esp-at/module_config/<your_module>/sdkconfig.defaults` (disable silence mode) or `esp-at/module_config/<your_module>/sdkconfig_silence.defaults` (enable silence mode). You may want to enable or disable some features, for example, to enable WebSocket functionality and disable mDNS functionality. You can copy the native system configuration file to `at_override_module_config` directory, and add the following lines to `at_override_module_config/sdkconfig.defaults` file:
+The native system configuration file is `esp-at/module_config/<your_module>/sdkconfig.defaults` (disable silence mode) or `esp-at/module_config/<your_module>/sdkconfig_silence.defaults` (enable silence mode). You may want to enable or disable some features, for example, to enable WebSocket functionality and disable mDNS functionality. You can add a new system configuration file to `at_override_module_config` directory, and add the following lines to `at_override_module_config/sdkconfig.defaults` file:
 
 ```
 # Enable WebSocket and disable mDNS
@@ -17,7 +17,7 @@ CONFIG_AT_WS_COMMAND_SUPPORT=y
 CONFIG_AT_MDNS_COMMAND_SUPPORT=n
 ```
 
-The build system will use `at_override_module_config/sdkconfig.defaults` as your system configuration.
+The build system will override `at_override_module_config/sdkconfig.defaults` as your system configuration.
 
 #### 2.2 Override the patch directory
 The native patch directory is `esp-at/module_config/<your_module>/patch`. You may want to add more patches, for example, to output one prompt message after esp-at is ready. You can copy the native patch directory to `at_override_module_config` directory, and add the `at_example.patch` file to `at_override_module_config/patch`, then specify this patch by adding the following lines to `at_override_module_config/patch/patch_list.ini` file:
