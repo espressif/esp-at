@@ -17,6 +17,10 @@
 #include "at_uart.h"
 #include "driver/uart.h"
 
+#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 4, 0)
+#include "soc/uart_reg.h"
+#endif
+
 // static variables
 static const uint8_t g_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PARITY_ODD, UART_PARITY_EVEN};
 
@@ -247,6 +251,7 @@ void at_uart_workaround(void)
 
 void at_uart_config_init(uart_config_t *config)
 {
+    memset(config, 0x0, sizeof(uart_config_t));
     config->baud_rate = at_mfg_uart_baudrate_get();
     config->data_bits = CONFIG_AT_UART_DEFAULT_DATABITS - 5;
     config->parity = at_uart_parity_get(CONFIG_AT_UART_DEFAULT_PARITY_BITS);
