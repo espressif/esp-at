@@ -37,6 +37,7 @@ include:
   - '.gitlab/ci/build_esp32.yml'
   - '.gitlab/ci/build_esp32c2.yml'
   - '.gitlab/ci/build_esp32c3.yml'
+  - '.gitlab/ci/build_esp32c5.yml'
   - '.gitlab/ci/build_esp32c6.yml'
   - '.gitlab/ci/build_esp32s2.yml'
   - '.gitlab/ci/deploy.yml'

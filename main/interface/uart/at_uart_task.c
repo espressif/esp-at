@@ -193,7 +193,9 @@ static void at_uart_init(void)
     at_uart_intr_config();
 
     // do some possible uart workarounds
+#ifndef CONFIG_IDF_TARGET_ESP32C5
     at_uart_workaround();
+#endif
 
     printf("AT cmd port:uart%d tx:%d rx:%d cts:%d rts:%d baudrate:%d\r\n",
            g_at_cmd_port, g_uart_port_pin.tx_pin, g_uart_port_pin.rx_pin,

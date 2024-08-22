@@ -22,6 +22,10 @@
 #include "esp32s2/rom/uart.h"
 #endif
 
+#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 4, 0)
+#include "driver/uart.h"
+#endif
+
 /*******************************************************
  *                Macros
  *******************************************************/
@@ -59,6 +63,13 @@
 #define CONFIG_AT_UART_PORT_RX_PIN_DEFAULT          6
 #define CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT         5
 #define CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT         4
+#endif
+
+#if defined(CONFIG_IDF_TARGET_ESP32C5)
+#define CONFIG_AT_UART_PORT_TX_PIN_DEFAULT          14
+#define CONFIG_AT_UART_PORT_RX_PIN_DEFAULT          13
+#define CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT         9
+#define CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT         8
 #endif
 
 #if defined(CONFIG_IDF_TARGET_ESP32C6)

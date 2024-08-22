@@ -1,0 +1,24 @@
+# Build ESP32-C5 AT Firmwares
+
+esp32c5_4mb_at:
+  extends:
+    - .build_template_esp32c5
+    - .rules:build:build_project
+  variables:
+    MODULE_NAME: "ESP32C5-4MB"
+
+esp32c5_4mb_at_tat_debug:
+  extends:
+    - .build_template_esp32c5
+    - .before_script_enable_at_debugs
+    - .rules:build:build_project_on_protected
+  variables:
+    MODULE_NAME: "ESP32C5-4MB"
+
+esp32c5_at_wifi_function_test:
+  extends:
+    - .build_template_esp32c5
+    - .before_script_enable_all_wifi_cmds
+    - .rules:build:build_project_on_protected
+  variables:
+    MODULE_NAME: "ESP32C5-4MB"

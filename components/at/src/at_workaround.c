@@ -31,7 +31,7 @@ static void at_disable_rtc_wdt(void)
 #include "soc/rtc.h"
 static void at_disable_rtc_clk_32k_if_no_ext_crys(void)
 {
-    if (rtc_clk_slow_freq_get() != RTC_SLOW_FREQ_32K_XTAL) {
+    if (rtc_clk_slow_src_get() != SOC_RTC_SLOW_CLK_SRC_XTAL32K) {
         rtc_clk_32k_enable(false);
         printf("no external 32k oscillator, disable it now.\r\n");
     } else {

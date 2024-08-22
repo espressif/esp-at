@@ -6,6 +6,10 @@ if ("${IDF_TARGET}" STREQUAL "esp32")
     list(APPEND require_components esp_eth)
 endif()
 
+if("${IDF_VERSION_MAJOR}.${IDF_VERSION_MINOR}" VERSION_GREATER_EQUAL "5.4")
+    list(APPEND require_components esp_hw_support)
+endif()
+
 set(srcs "")
 list(APPEND srcs "src/at_default_config.c")
 list(APPEND srcs "src/at_init.c")
