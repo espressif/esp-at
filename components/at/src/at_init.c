@@ -62,7 +62,7 @@ static void at_wifi_statistics_task(void *params)
 
 esp_err_t esp_at_netif_init(void)
 {
-#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
+#if defined(CONFIG_AT_WIFI_COMMAND_SUPPORT) || defined(CONFIG_AT_ETHERNET_SUPPORT)
     return esp_netif_init();
 #else
     return ESP_OK;
