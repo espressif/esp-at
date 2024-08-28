@@ -89,6 +89,7 @@ void app_main(void)
     at_nvs_flash_init_partition();
 
     at_netif_init();
+    ESP_LOGE(TAG, "1111");
     ESP_LOGE(TAG, "启动成功");
     // uint8_t buffer[64] = {0};
     // snprintf((char *)buffer, 64, "测试串口1输出\r\n");
