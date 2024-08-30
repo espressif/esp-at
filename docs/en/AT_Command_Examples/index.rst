@@ -17,6 +17,7 @@ AT Command Examples
    HTTP AT Examples <http_at_examples>
    :esp32: Classic Bluetooth AT Examples <classic_bluetooth_at_examples>
    Sleep AT Examples <sleep_at_examples>
+   AT Network Provisioning Examples <network_provisioning_examples>
 
 .. only:: esp32c3
 
