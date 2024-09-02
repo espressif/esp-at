@@ -173,12 +173,12 @@ AT 命令中串口波特率是否可以修改？（默认：115200）
 
     AT+BLEGATTCWR=0,3,6,1,2
     >
-    // 写 0x01
+    // 写低位 0x01 高位 0x00（如果要使用 hex 格式写的话就是：0100）
     OK
     // server: +WRITE:0,1,6,1,2,<0x01>,<0x00>
     AT+BLEGATTCWR=0,3,7,1,2
     >
-    // 写 0x02
+    // 写低位 0x02 高位 0x00（如果要使用 hex 格式写的话就是：0200）
     OK
     // server: +WRITE:0,1,6,1,2,<0x02>,<0x00>
     // 写 ccc 是 server 可以发送 notify 和 indicate 的前提条件
@@ -233,6 +233,19 @@ ESP-AT 固件中 TCP 发送窗口大小是否可以修改？
   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     办公室开放环境下，串口波特率为 2000000 时，ESP-AT Bluetooth 平均传输速率为 0.56 Mbps，ESP-AT Bluetooth LE 平均传输速率为 0.101 Mbps。
+
+如何修改 {IDF_TARGET_NAME} AT 默认 TCP 数据段最大重传次数？
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  默认情况下，AT 的 TCP 数据段重传最大次数为 6 次。您可以通过以下方式重新配置 TCP 数据段重传最大次数（取值范围为：[3-12]）：
+
+  - 请参考 :doc:`本地编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>` 文档自行编译 AT 固件，在第五步中，请配置 ``Maximum number of retransmissions of data segments``：
+  
+    ::
+
+      python build.py menuconfig > Component config > LWIP > TCP > Maximum number of retransmissions of data segments
+
+  - 请参考 :doc:`网页编译 ESP-AT 工程 <../Compile_and_Develop/How_to_build_project_with_web_page>` 文档自行编译 AT 固件，在第五步的第三小点中，请修改 `CONFIG_LWIP_TCP_MAXRTX <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/kconfig.html#config-lwip-tcp-maxrtx>`_ 的值。
 
 其他
 ----

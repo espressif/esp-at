@@ -173,12 +173,12 @@ How to enable the notify and indicate functions on Bluetooth LE clients?
 
     AT+BLEGATTCWR=0,3,6,1,2
     >
-    // Write 0x01
+    // Write low byte 0x01 high byte 0x00 (if you want to use hex format, it is: 0100)
     OK
     // Server: +WRITE:0,1,6,1,2,<0x01>,<0x00>
     AT+BLEGATTCWR=0,3,7,1,2
     >
-    // Write 0x02
+    // Write low byte 0x02 high byte 0x00 (if you want to use hex format, it is: 0200)
     OK
     // Server: +WRITE:0,1,6,1,2,<0x02>,<0x00>
     // Writing ccc is a prerequisite for the server to be able to send notify and indicate
@@ -230,9 +230,22 @@ How to test and optimize the throughput of {IDF_TARGET_NAME} AT?
 .. only:: esp32
 
   What is the maximum rate of {IDF_TARGET_NAME} AT default firmware Bluetooth LE UART transparent transmission? 
-  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     In an open office environment, when the serial port baud rate is 2000000, the average transmission rate of ESP-AT Bluetooth is 0.56 Mbps, and the average transmission rate of ESP-AT Bluetooth LE is 0.101 Mbps.
+
+How to modify the default maximum number of TCP segment retransmissions for {IDF_TARGET_NAME} AT?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  By default, the maximum number of TCP segment retransmissions for AT is 6. You can reconfigure the maximum number of TCP segment retransmissions (range: [3-12]) as follows:
+
+  - Please refer to the :doc:`compile ESP-AT project locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` document to compile the AT firmware. In step five, configure ``Maximum number of retransmissions of data segments``:
+  
+    ::
+
+      python build.py menuconfig > Component config > LWIP > TCP > Maximum number of retransmissions of data segments
+
+  - Please refer to the :doc:`compile ESP-AT project on the webpage <../Compile_and_Develop/How_to_build_project_with_web_page>` document to compile the AT firmware. In step 5.3, modify the value of `CONFIG_LWIP_TCP_MAXRTX <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/kconfig.html#config-lwip-tcp-maxrtx>`_.
 
 Other
 -----
