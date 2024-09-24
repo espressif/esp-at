@@ -162,6 +162,18 @@ config AT_WS_COMMAND_SUPPORT
     default "n"
     depends on AT_ENABLE
 
+menu "AT WebSocket authentication method"
+    depends on AT_WS_COMMAND_SUPPORT
+
+config AT_WSS_SERVER_AUTH_CLIENT
+    bool "Server authenticates clients"
+    default y
+
+config AT_WSS_CLIENT_AUTH_SERVER
+    bool "Client authenticates server"
+    default y
+endmenu
+
 config AT_BLE_COMMAND_SUPPORT
     bool "AT ble command support."
     default "y" if !IDF_TARGET_ESP32C2
