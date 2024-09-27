@@ -136,12 +136,24 @@ config AT_MQTT_CLIENT_AUTH_BROKER
 endmenu
 
 config AT_HTTP_COMMAND_SUPPORT
-    bool "AT http command support."
+    bool "AT HTTP command support."
     default "n"
     depends on AT_ENABLE
     help
         Please enlarge AT_PROCESS_TASK_STACK_SIZE to be more than 4096 if HTTPS link need to establish,
         otherwise, unexpected crash probably occur due to AT process task overflow.
+
+menu "AT HTTP authentication method"
+    depends on AT_HTTP_COMMAND_SUPPORT
+
+config AT_HTTPS_SERVER_AUTH_CLIENT
+    bool "HTTPS server authenticates clients"
+    default n
+
+config AT_HTTPS_CLIENT_AUTH_SERVER
+    bool "HTTPS client authenticates server"
+    default n
+endmenu
 
 config AT_HTTP_TX_BUFFER_SIZE
     int "Default HTTP TX buffer size"
