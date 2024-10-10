@@ -1037,7 +1037,7 @@ def at_update_param(key, type, value, data):
     lines = data.split('\n')
     for i in range(len(lines)):
         line = lines[i].strip()
-        if line.startswith(key) and 'namespace' not in line:
+        if line.split(',')[0] == key and 'namespace' not in line:
             parts = line.split(NVS_KEY_TYPE[type])
             if type == 'S':
                 parts[-1] = '"' + str(value) + '"'
