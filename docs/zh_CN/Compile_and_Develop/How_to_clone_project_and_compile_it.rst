@@ -104,8 +104,243 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 
   - 选择 ``Platform name``，例如 {IDF_TARGET_NAME} 系列设备选择 ``PLATFORM_{IDF_TARGET_CFG_PREFIX}``。``Platform name`` 由 :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 定义。
   - 选择 ``Module name``，例如 {IDF_TARGET_PRODUCT_NAME} 模组选择 ``{IDF_TARGET_COMPILE_MNAME}``。``Module name`` 由 :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` 定义。
-  - 启用或禁用 ``silence mode``，启用时将删除一些日志并减少固件的大小。一般情况下请禁用。
+
+  .. _esp-at_silence_mode_cfg:
+
+  - 在选择启用或禁用 silence mode 之前，请先阅读 :doc:`文档 <../Compile_and_Develop/How_to_configure_silence_mode>`，了解 silence mode。一般情况下请禁用。
   - 如果 ``build/module_info.json`` 文件存在，上述三个配置选项将不会出现。因此，如果您想重新配置模组信息，请删除该文件。
+
+  .. only:: esp32
+
+    以设置 ``Platform name`` 为 ``ESP32``，``Module name`` 为 ``WROOM-32``，并启用 silence mode 为例：
+
+    .. code-block:: none
+
+        $ ./build.py install
+        Ready to install ESP-IDF prerequisites..
+    
+        ... (more lines of install ESP-IDF prerequisites)
+
+        Ready to install ESP-AT prerequisites..
+
+        ... (more lines of install ESP-IDF prerequisites)
+
+        Platform name:
+        1. PLATFORM_ESP32
+        2. PLATFORM_ESP32C3
+        3. PLATFORM_ESP32C2
+        4. PLATFORM_ESP32C6
+        5. PLATFORM_ESP32S2
+        choose(range[1,5]):1
+
+        Module name:
+        1. WROOM-32 (Firmware description: TX:17 RX:16)
+        2. WROVER-32 (Firmware description: need PSRAM, TX:22 RX:19)
+        3. PICO-D4 (Firmware description: TX:22 RX:19)
+        4. SOLO-1 (Firmware description: not recommended for new design, TX:17 RX:16)
+        5. MINI-1 (Firmware description: TX:17 RX:16, ESP32-U4WDH chip inside)
+        6. ESP32-SDIO (Firmware description: communicate with MCU via SDIO)
+        7. ESP32-D2WD (Firmware description: 2MB flash, No OTA)
+        choose(range[1,7]):1
+
+        Enable silence mode to remove some logs and reduce the firmware size?
+        0. No
+        1. Yes
+        choose(range[0,1]):1
+        Platform name:ESP32 Module name:WROOM-32 Silence:1
+        Cloning into 'esp-idf'...
+
+        ... (more lines of clone esp-idf)
+
+        Ready to set up ESP-IDF tools..
+
+        ... (more lines of set up ESP-IDF tools)
+
+        All done! You can now run:
+
+        ./build.py build
+
+  .. only:: esp32c2
+
+    以设置 ``Platform name`` 为 ``ESP32C2``，``Module name`` 为 ``ESP32C2-4MB``，并禁用 silence mode 为例：
+
+    .. code-block:: none
+
+        $ ./build.py install
+        Ready to install ESP-IDF prerequisites..
+    
+        ... (more lines of install ESP-IDF prerequisites)
+
+        Ready to install ESP-AT prerequisites..
+
+        ... (more lines of install ESP-IDF prerequisites)
+
+        Platform name:
+        1. PLATFORM_ESP32
+        2. PLATFORM_ESP32C3
+        3. PLATFORM_ESP32C2
+        4. PLATFORM_ESP32C6
+        5. PLATFORM_ESP32S2
+        choose(range[1,5]):3
+
+        Module name:
+        1. ESP32C2-2MB (Firmware description: single Wi-Fi, 2MB, TX:7 RX:6)
+        2. ESP32C2-4MB (Firmware description: Wi-Fi + BluFi, 4MB, TX:7 RX:6)
+        3. ESP32C2-BLE-2MB (Firmware description: single BLE, 2MB, TX:7 RX:6)
+        choose(range[1,3]):2
+
+        Enable silence mode to remove some logs and reduce the firmware size?
+        0. No
+        1. Yes
+        choose(range[0,1]):0
+        Platform name:ESP32C2 Module name:ESP32C2-4MB Silence:0
+        Cloning into 'esp-idf'...
+
+        ... (more lines of clone esp-idf)
+
+        Ready to set up ESP-IDF tools..
+
+        ... (more lines of set up ESP-IDF tools)
+
+        All done! You can now run:
+
+        ./build.py build
+
+  .. only:: esp32c3
+
+    以设置 ``Platform name`` 为 ``ESP32C3``，``Module name`` 为 ``MINI-1``，并禁用 silence mode 为例：
+
+    .. code-block:: none
+
+        $ ./build.py install
+        Ready to install ESP-IDF prerequisites..
+    
+        ... (more lines of install ESP-IDF prerequisites)
+
+        Ready to install ESP-AT prerequisites..
+
+        ... (more lines of install ESP-IDF prerequisites)
+
+        Platform name:
+        1. PLATFORM_ESP32
+        2. PLATFORM_ESP32C3
+        3. PLATFORM_ESP32C2
+        4. PLATFORM_ESP32C6
+        5. PLATFORM_ESP32S2
+        choose(range[1,5]):2
+
+        Module name:
+        1. MINI-1 (Firmware description: TX:7 RX:6)
+        2. ESP32C3-SPI (Firmware description: communicate with MCU via SPI)
+        3. ESP32C3_RAINMAKER (Firmware description: support rainmaker cloud, TX:7 RX:6)
+        choose(range[1,3]):1
+
+        Enable silence mode to remove some logs and reduce the firmware size?
+        0. No
+        1. Yes
+        choose(range[0,1]):0
+        Platform name:ESP32C3	Module name:MINI-1 Silence:0
+        Cloning into 'esp-idf'...
+
+        ... (more lines of clone esp-idf)
+
+        Ready to set up ESP-IDF tools..
+
+        ... (more lines of set up ESP-IDF tools)
+
+        All done! You can now run:
+
+        ./build.py build
+
+  .. only:: esp32c6
+
+    以设置 ``Platform name`` 为 ``ESP32C6``，``Module name`` 为 ``ESP32C6-4MB``，并禁用 silence mode 为例：
+
+    .. code-block:: none
+
+        $ ./build.py install
+        Ready to install ESP-IDF prerequisites..
+    
+        ... (more lines of install ESP-IDF prerequisites)
+
+        Ready to install ESP-AT prerequisites..
+
+        ... (more lines of install ESP-IDF prerequisites)
+
+        Platform name:
+        1. PLATFORM_ESP32
+        2. PLATFORM_ESP32C3
+        3. PLATFORM_ESP32C2
+        4. PLATFORM_ESP32C6
+        5. PLATFORM_ESP32S2
+        choose(range[1,5]):4
+
+        Module name:
+        1. ESP32C6-4MB (Firmware description: TX:7 RX:6)
+        choose(range[1,1]):1
+
+        Enable silence mode to remove some logs and reduce the firmware size?
+        0. No
+        1. Yes
+        choose(range[0,1]):0
+        Platform name:ESP32C6	Module name:ESP32C6-4MB Silence:0
+
+        Cloning into 'esp-idf'...
+
+        ... (more lines of clone esp-idf)
+
+        Ready to set up ESP-IDF tools..
+
+        ... (more lines of set up ESP-IDF tools)
+
+        All done! You can now run:
+
+        ./build.py build
+
+  .. only:: esp32s2
+
+    以设置 ``Platform name`` 为 ``ESP32S2``，``Module name`` 为 ``MINI``，并禁用 silence mode 为例：
+
+    .. code-block:: none
+
+        $ ./build.py install
+        Ready to install ESP-IDF prerequisites..
+    
+        ... (more lines of install ESP-IDF prerequisites)
+
+        Ready to install ESP-AT prerequisites..
+
+        ... (more lines of install ESP-IDF prerequisites)
+
+        Platform name:
+        1. PLATFORM_ESP32
+        2. PLATFORM_ESP32C3
+        3. PLATFORM_ESP32C2
+        4. PLATFORM_ESP32C6
+        5. PLATFORM_ESP32S2
+        choose(range[1,5]):5
+
+        Module name:
+        1. MINI (Firmware description: TX:17 RX:21)
+        choose(range[1,1]):1
+
+        Enable silence mode to remove some logs and reduce the firmware size?
+        0. No
+        1. Yes
+        choose(range[0,1]):0
+        Platform name:ESP32S2	Module name:MINI Silence:0
+
+        Cloning into 'esp-idf'...
+
+        ... (more lines of clone esp-idf)
+
+        Ready to set up ESP-IDF tools..
+
+        ... (more lines of set up ESP-IDF tools)
+
+        All done! You can now run:
+
+        ./build.py build
 
 .. _esp-at-hardware-connection:
 

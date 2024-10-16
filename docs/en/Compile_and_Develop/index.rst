@@ -27,3 +27,4 @@ How to Compile and Develop Your Own AT Project
    How to Download the Latest Temporary Version of AT Firmware from GitHub <How_to_download_the_latest_temporary_version_of_AT_from_github>
    at.py tool <tools_at_py>
    AT API Reference <AT_API_Reference>
+   How to Configure Silence Mode <How_to_configure_silence_mode>
