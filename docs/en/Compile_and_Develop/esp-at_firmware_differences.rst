@@ -562,6 +562,8 @@ Hardware Differences
 
 .. [#one] UART pins can be customized. See :doc:`How_to_set_AT_port_pin` for details.
 
+.. _support-modules:
+
 Supported Modules
 ^^^^^^^^^^^^^^^^^
 
