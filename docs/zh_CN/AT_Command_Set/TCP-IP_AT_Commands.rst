@@ -221,7 +221,7 @@ TCP/IP AT 命令
 
 ::
 
-    AT+CIPDOMAIN=<"domain name">[,<ip network>]
+    AT+CIPDOMAIN=<"domain name">[,<ip network>][,<timeout>]
 
 **响应：**
 
@@ -241,7 +241,8 @@ TCP/IP AT 命令
    - 2：只解析为 IPv4 地址
    - 3：只解析为 IPv6 地址
 
--  **<"IP address">**：解析出的 IP 地址
+-  **<"IP address">**：解析后的 IPv4 地址或 IPv6 地址
+-  **<timeout>**：命令超时。单位：毫秒。默认值：0。范围：[0,60000]。设置为 0 时，命令的超时依赖于网络和 lwIP 协议栈；设置为非 0 时，命令会在指定超时内返回，但会多消耗约 5 KB 的堆空间。
 
 示例
 ^^^^
@@ -283,10 +284,10 @@ TCP/IP AT 命令
 ::
 
     // 单连接 (AT+CIPMUX=0):
-    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep_alive>][,<"local IP">]
+    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep_alive>][,<"local IP">][,<timeout>]
 
     // 多连接 (AT+CIPMUX=1):
-    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep_alive>][,<"local IP">]
+    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep_alive>][,<"local IP">][,<timeout>]
 
 **响应：**
 
@@ -322,7 +323,8 @@ TCP/IP AT 命令
 
   -  本命令中的 ``<keep_alive>`` 参数与 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令中的 ``<keep_alive>`` 参数相同，最终值由后设置的命令决定。如果运行本命令时不设置 ``<keep_alive>`` 参数，则默认使用上次配置的值。
 
--  **<"local IP">**：连接绑定的本机 IPv4 地址或 IPv6 地址，该参数在本地多网络接口时和本地多 IP 地址时非常有用。默认为禁用，如果您想使用，需自行设置，空值也为有效值
+-  **<"local IP">**：本地的 IPv4 地址或 IPv6 地址，用于绑定连接。使用多个网络接口或多个 IP 地址时，此参数非常有用。默认为禁用。如需使用请先自行设置。可设置为空。
+-  **<timeout>**：命令超时。单位：毫秒。默认值：0。范围：[0,60000]。设置为 0 时，命令的超时依赖于网络和 lwIP 协议栈；设置为非 0 时，命令会在指定超时内返回，但会多消耗约 5 KB 的堆空间。
 
 说明
 """"""
@@ -343,6 +345,10 @@ TCP/IP AT 命令
     AT+CIPSTART="TCP","192.168.101.110",1000
     AT+CIPSTART="TCP","192.168.101.110",2500,60
     AT+CIPSTART="TCP","192.168.101.110",1000,,"192.168.101.100"
+
+    // 连接 GitHub 的 TCP 服务器，设置 5 秒超时
+    AT+CIPSTART="TCP","www.github.com",80,,,5000
+
     AT+CIPSTART="TCPv6","test-ipv6.com",80
     AT+CIPSTART="TCPv6","fe80::860d:8eff:fe9d:cd90",1000,,"fe80::411c:1fdb:22a6:4d24"
 
@@ -362,10 +368,10 @@ TCP/IP AT 命令
 ::
 
     // 单连接：(AT+CIPMUX=0)
-    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<local port>,<mode>,<"local IP">]
+    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<local port>,<mode>,<"local IP">][,<timeout>]
 
     // 多连接：(AT+CIPMUX=1)
-    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<local port>,<mode>,<"local IP">]
+    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<local port>,<mode>,<"local IP">][,<timeout>]
 
 **响应：**
 
@@ -399,7 +405,8 @@ TCP/IP AT 命令
    -  1: 仅第一次接收到与初始设置不同的对端 UDP 数据时，改变对端 UDP 地址信息为发送数据设备的 IP 地址和端口
    -  2: 每次接收到 UDP 数据时，都改变对端 UDP 地址信息为发送数据的设备的 IP 地址和端口
 
--  **<"local IP">**：连接绑定的本机 IPv4 地址或 IPv6 地址，该参数在本地多网络接口时和本地多 IP 地址时非常有用。默认为禁用，如果您想使用，需自行设置，空值也为有效值
+-  **<"local IP">**：本地的 IPv4 地址或 IPv6 地址，用于绑定连接。使用多个网络接口或多个 IP 地址时，此参数非常有用。默认为禁用。如需使用请先自行设置。可设置为空。
+-  **<timeout>**：命令超时。单位：毫秒。默认值：0。范围：[0,60000]。设置为 0 时，命令的超时依赖于网络和 lwIP 协议栈；设置为非 0 时，命令会在指定超时内返回，但会多消耗约 5 KB 的堆空间。
 
 说明
 """""
@@ -426,6 +433,9 @@ TCP/IP AT 命令
     AT+CIPSTART="UDP","192.168.101.110",1000,1002,2
     AT+CIPSTART="UDP","192.168.101.110",1000,,,"192.168.101.100"
 
+    // 建立和 pool.ntp.org 的 UDP 传输，设置 5 秒超时
+    AT+CIPSTART="UDP","pool.ntp.org",123,,,,5000
+
     // 基于 IPv6 网络的 UDP 单播
     AT+CIPSTART="UDPv6","fe80::32ae:a4ff:fe80:65ac",1000,,,"fe80::5512:f37f:bb03:5d9b"
 
@@ -445,10 +455,10 @@ TCP/IP AT 命令
 ::
 
     // 单连接：(AT+CIPMUX=0)
-    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep_alive>,<"local IP">]
+    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep_alive>,<"local IP">][,<timeout>]
 
     // 多连接：(AT+CIPMUX=1)
-    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep_alive>,<"local IP">]
+    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep_alive>,<"local IP">][,<timeout>]
 
 **响应：**
 
@@ -484,7 +494,8 @@ TCP/IP AT 命令
 
   -  本命令中的 ``<keep_alive>`` 参数与 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令中的 ``<keep_alive>`` 参数相同，最终值由后设置的命令决定。如果运行本命令时不设置 ``<keep_alive>`` 参数，则默认使用上次配置的值。
 
--  **<"local IP">**：连接绑定的本机 IPv4 地址或 IPv6 地址，该参数在本地多网络接口时和本地多 IP 地址时非常有用。默认为禁用，如果您想使用，需自行设置，空值也为有效值
+-  **<"local IP">**：本地的 IPv4 地址或 IPv6 地址，用于绑定连接。使用多个网络接口或多个 IP 地址时，此参数非常有用。默认为禁用。如需使用请先自行设置。可设置为空。
+-  **<timeout>**：命令超时。单位：毫秒。默认值：0。范围：[0,60000]。设置为 0 时，命令的超时依赖于网络和 lwIP 协议栈；设置为非 0 时，命令会在指定超时内返回，但会多消耗约 5 KB 的堆空间。
 
 说明
 """"""
@@ -507,6 +518,9 @@ TCP/IP AT 命令
 
     AT+CIPSTART="SSL","iot.espressif.cn",8443
     AT+CIPSTART="SSL","192.168.101.110",1000,,"192.168.101.100" 
+
+    // 连接微软必应的 SSL 服务器，设置 5 秒超时
+    AT+CIPSTART="SSL","www.bing.com",443,,,5000
 
     // esp-at 已通过 AT+CWJAP 获取到 IPv6 全局地址
     AT+CIPSTART="SSLv6","240e:3a1:2070:11c0:6972:6f96:9147:d66d",1000,,"240e:3a1:2070:11c0:55ce:4e19:9649:b75"

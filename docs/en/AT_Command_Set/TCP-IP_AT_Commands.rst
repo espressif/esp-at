@@ -221,7 +221,7 @@ Set Command
 
 ::
 
-    AT+CIPDOMAIN=<"domain name">[,<ip network>]
+    AT+CIPDOMAIN=<"domain name">[,<ip network>][,<timeout>]
 
 **Response:**
 
@@ -242,6 +242,7 @@ Parameter
    - 3: resolve IPv6 address only
 
 -  **<"IP address">**: the resolved IPv4 address or IPv6 address.
+-  **<timeout>**: Command timeout. Unit: milliseconds. Default value: 0. Range: [0,60000]. When set to 0, the command timeout depends on the network and lwIP protocol stack; when set to a non-zero value, the command will return within the specified timeout, but it will consume about 5 KB more heap space.
 
 Example
 ^^^^^^^^
@@ -283,10 +284,10 @@ Set Command
 ::
 
     // Single connection (AT+CIPMUX=0):
-    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep_alive>][,<"local IP">]
+    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep_alive>][,<"local IP">][,<timeout>]
 
     // Multiple Connections (AT+CIPMUX=1):
-    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep_alive>][,<"local IP">]
+    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep_alive>][,<"local IP">][,<timeout>]
 
 **Response:**
 
@@ -323,6 +324,7 @@ Parameters
    - This parameter of this command is the same as the ``<keep_alive>`` parameter of :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command. It always takes the value set later by either of the two commands. If it is omitted or not set, the last configured value is used by default.
 
 -  **<"local IP">**: the local IPv4 address or IPv6 address that the connection binds. This parameter is useful when you are using multiple network interfaces or multiple IP addresses. By default, it is disabled. If you want to use it, you should specify it first. Null is also valid.
+-  **<timeout>**: Command timeout. Unit: milliseconds. Default value: 0. Range: [0,60000]. When set to 0, the command timeout depends on the network and lwIP protocol stack; when set to a non-zero value, the command will return within the specified timeout, but it will consume about 5 KB more heap space.
 
 Notes
 """"""
@@ -343,6 +345,10 @@ Example
     AT+CIPSTART="TCP","192.168.101.110",1000
     AT+CIPSTART="TCP","192.168.101.110",2500,60
     AT+CIPSTART="TCP","192.168.101.110",1000,,"192.168.101.100"
+
+    // Connect to GitHub's TCP server with a 5-second timeout
+    AT+CIPSTART="TCP","www.github.com",80,,,5000
+
     AT+CIPSTART="TCPv6","test-ipv6.com",80
     AT+CIPSTART="TCPv6","fe80::860d:8eff:fe9d:cd90",1000,,"fe80::411c:1fdb:22a6:4d24"
 
@@ -362,10 +368,10 @@ Set Command
 ::
 
     // Single connection (AT+CIPMUX=0):
-    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<local port>,<mode>,<"local IP">]
+    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<local port>,<mode>,<"local IP">][,<timeout>]
 
     // Multiple connections (AT+CIPMUX=1):
-    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<local port>,<mode>,<"local IP">]
+    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<local port>,<mode>,<"local IP">][,<timeout>]
 
 **Response:**
 
@@ -400,6 +406,7 @@ Parameters
    -  2: Each time UDP data is received, the ``<"remote host">`` and ``<remote port>`` will be changed to the IP address and port of the device that sends the data.
 
 -  **<"local IP">**: the local IPv4 address or IPv6 address that the connection binds. This parameter is useful when you are using multiple network interfaces or multiple IP addresses. By default, it is disabled. If you want to use it, you should specify it first. Null is also valid.
+-  **<timeout>**: Command timeout. Unit: milliseconds. Default value: 0. Range: [0,60000]. When set to 0, the command timeout depends on the network and lwIP protocol stack; when set to a non-zero value, the command will return within the specified timeout, but it will consume about 5 KB more heap space.
 
 Notes
 """"""
@@ -426,6 +433,9 @@ Example
     AT+CIPSTART="UDP","192.168.101.110",1000,1002,2
     AT+CIPSTART="UDP","192.168.101.110",1000,,,"192.168.101.100"
 
+    // Establish UDP transmission with pool.ntp.org, set 5-second timeout
+    AT+CIPSTART="UDP","pool.ntp.org",123,,,,5000
+
     // UDP unicast based on IPv6 network
     AT+CIPSTART="UDPv6","fe80::32ae:a4ff:fe80:65ac",1000,,,"fe80::5512:f37f:bb03:5d9b"
 
@@ -445,10 +455,10 @@ Set Command
 ::
 
     // Single connection (AT+CIPMUX=0):
-    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep_alive>,<"local IP">]
+    AT+CIPSTART=<"type">,<"remote host">,<remote port>[,<keep_alive>,<"local IP">][,<timeout>]
 
     // Multiple connections (AT+CIPMUX=1):
-    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep_alive>,<"local IP">]
+    AT+CIPSTART=<link ID>,<"type">,<"remote host">,<remote port>[,<keep_alive>,<"local IP">][,<timeout>]
 
 **Response:**
 
@@ -485,6 +495,7 @@ Parameters
    - This parameter of this command is the same as the ``<keep_alive>`` parameter of :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command. It always takes the value set later by either of the two commands. If it is omitted or not set, the last configured value is used by default.
 
 -  **<"local IP">**: the local IPv4 address or IPv6 address that the connection binds. This parameter is useful when you are using multiple network interfaces or multiple IP addresses. By default, it is disabled. If you want to use it, you should specify it first. Null is also valid.
+-  **<timeout>**: Command timeout. Unit: milliseconds. Default value: 0. Range: [0,60000]. When set to 0, the command timeout depends on the network and lwIP protocol stack; when set to a non-zero value, the command will return within the specified timeout, but it will consume about 5 KB more heap space.
 
 Notes
 """"""
@@ -507,6 +518,9 @@ Example
 
     AT+CIPSTART="SSL","iot.espressif.cn",8443
     AT+CIPSTART="SSL","192.168.101.110",1000,,"192.168.101.100"
+
+    // Connect to Microsoft Bing's SSL server with a 5-second timeout
+    AT+CIPSTART="SSL","www.bing.com",443,,,5000
 
     // esp-at has obtained an IPv6 global address by AT+CWJAP before
     AT+CIPSTART="SSLv6","240e:3a1:2070:11c0:6972:6f96:9147:d66d",1000,,"240e:3a1:2070:11c0:55ce:4e19:9649:b75"
