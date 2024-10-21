@@ -12,6 +12,7 @@
 ############
 .patterns-docs: &patterns-docs
   - "docs/**/*"
+  - "components/at/include/*"
 
 .patterns-src: &patterns-src
   - "bootloader_components/**/*"
