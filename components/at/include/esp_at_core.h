@@ -453,4 +453,39 @@ const uint8_t* esp_at_get_current_cmd_name(void);
  */
 int32_t esp_at_get_core_version(char *buffer, uint32_t size);
 
+/**
+ * @brief Mount FATFS partition
+ *
+ * @note if you want to use FATFS, you should enable "AT FS command support" in menuconfig first.
+ * @note esp-at uses a fixed partition for the filesystem, which defined in esp-at/module_config/<your_module_config>/at_customize.csv,
+ *       and uses a fixed mount point "/fatfs".
+ * @note when using FATFS, you should call this function to mount the partition first,
+ *       and call at_fatfs_unmount() to unmount the partition when you don't need it.
+ *
+ * @return
+ * - true : succeed
+ * - false : fail
+*/
+bool at_fatfs_mount(void);
+
+/**
+ * @brief Unmount FATFS partition
+ *
+ * @return
+ * - true : succeed
+ * - false : fail
+*/
+bool at_fatfs_unmount(void);
+
+/**
+ * @brief Check if the string is NULL
+ *
+ * @param str: the string to be checked
+ *
+ * @return
+ * - true : the string is NULL
+ * - false : the string is not NULL
+ */
+bool at_str_is_null(uint8_t *str);
+
 void at_handle_result_code(esp_at_result_code_string_index code, void *pbuf);
