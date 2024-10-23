@@ -3,7 +3,7 @@ push_to_github:
     - .rules:protected
   stage: deploy
   tags:
-    - deploy
+    - internet
   when: on_success
   image: $CI_DOCKER_REGISTRY/esp-env-v4.4:1
   variables:
@@ -20,7 +20,7 @@ push_to_github:
   stage: deploy_docs
   image: $CI_DOCKER_REGISTRY/esp-idf-doc-env-v5.0:4-4
   tags:
-    - deploy
+    - internet
   needs:
     - build_docs_html
     - build_docs_pdf
