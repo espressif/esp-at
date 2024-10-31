@@ -6,7 +6,8 @@ TCP/IP AT Commands
 :link_to_translation:`zh_CN:[中文]`
 
 -  :ref:`AT+CIPV6 <cmd-IPV6>`: Enable/disable the network of Internet Protocol Version 6 (IPv6).
--  :ref:`AT+CIPSTATUS <cmd-STATUS>`: Obtain the TCP/UDP/SSL connection status and information.
+-  :ref:`AT+CIPSTATE <cmd-IPSTATE>`: Obtain the TCP/UDP/SSL connection information.
+-  :ref:`AT+CIPSTATUS (deprecated) <cmd-STATUS>`: Obtain the TCP/UDP/SSL connection status and information.
 -  :ref:`AT+CIPDOMAIN <cmd-DOMAIN>`: Resolve a Domain Name.
 -  :ref:`AT+CIPSTART <cmd-START>`: Establish TCP connection, UDP transmission, or SSL connection.
 -  :ref:`AT+CIPSTARTEX <cmd-STARTEX>`: Establish TCP connection, UDP transmission, or SSL connection with an automatically assigned ID.
@@ -96,10 +97,53 @@ Notes
 
 -  You should enable IPv6 network before using IPv6 related upper layer AT commands (TCP/UDP/SSL/PING/DNS based on IPv6 network, also known as TCP6/UDP6/SSL6/PING6/DNS6 or TCPv6/UDPv6/SSLv6/PINGv6/DNSv6).
 
+.. _cmd-IPSTATE:
+
+:ref:`AT+CIPSTATE <TCPIP-AT>`: Obtain the TCP/UDP/SSL Connection Information
+----------------------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+CIPSTATE?
+
+**Response:**
+
+When there is a connection, AT returns:
+
+::
+
+    +CIPSTATE:<link ID>,<"type">,<"remote IP">,<remote port>,<local port>,<tetype>
+
+    OK
+
+When there is no connection, AT returns:
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<link ID>**: ID of the connection (0~4), used for multiple connections.
+-  **<"type">**: string parameter showing the type of transmission: "TCP", "TCPv6", "UDP", "UDPv6", "SSL", or "SSLv6".
+-  **<"remote IP">**: string parameter showing the remote IPv4 address or IPv6 address.
+-  **<remote port>**: the remote port number.
+-  **<local port>**: the local port number.
+-  **<tetype>**:
+
+   -  0: ESP runs as a client.
+   -  1: ESP runs as a server.
+
 .. _cmd-STATUS:
 
-:ref:`AT+CIPSTATUS <TCPIP-AT>`: Obtain the TCP/UDP/SSL Connection Status and Information
-----------------------------------------------------------------------------------------
+:ref:`AT+CIPSTATUS (deprecated) <TCPIP-AT>`: Obtain the TCP/UDP/SSL Connection Status and Information
+-----------------------------------------------------------------------------------------------------
 
 Execute Command
 ^^^^^^^^^^^^^^^

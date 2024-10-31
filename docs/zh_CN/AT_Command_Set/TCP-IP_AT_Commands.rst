@@ -6,7 +6,8 @@ TCP/IP AT 命令
 :link_to_translation:`en:[English]`
 
 -  :ref:`AT+CIPV6 <cmd-IPV6>`: 启用/禁用 IPv6 网络 (IPv6)
--  :ref:`AT+CIPSTATUS <cmd-STATUS>`：查询 TCP/UDP/SSL 连接状态和信息
+-  :ref:`AT+CIPSTATE <cmd-IPSTATE>`：查询 TCP/UDP/SSL 连接信息
+-  :ref:`AT+CIPSTATUS (弃用) <cmd-STATUS>`：查询 TCP/UDP/SSL 连接状态和信息
 -  :ref:`AT+CIPDOMAIN <cmd-DOMAIN>`：域名解析
 -  :ref:`AT+CIPSTART <cmd-START>`：建立 TCP 连接、UDP 传输或 SSL 连接
 -  :ref:`AT+CIPSTARTEX <cmd-STARTEX>`：建立自动分配 ID 的 TCP 连接、UDP 传输或 SSL 连接
@@ -96,9 +97,52 @@ TCP/IP AT 命令
 
 -  在使用基于 IPv6 网络的上层应用前，需要先启用 IPv6 网络。（例如：基于 IPv6 网络使用 TCP/UDP/SSL/PING/DNS，也称为 TCP6/UDP6/SSL6/PING6/DNS6 或 TCPv6/UDPv6/SSLv6/PINGv6/DNSv6）
 
+.. _cmd-IPSTATE:
+
+:ref:`AT+CIPSTATE <TCPIP-AT>`：查询 TCP/UDP/SSL 连接信息
+-----------------------------------------------------------------------------------------
+
+查询命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+CIPSTATE?
+
+**响应：**
+
+当有连接时，AT 返回：
+
+::
+
+    +CIPSTATE:<link ID>,<"type">,<"remote IP">,<remote port>,<local port>,<tetype>
+
+    OK
+
+当没有连接时，AT 返回：
+
+::
+
+    OK
+
+参数
+^^^^
+
+-  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
+-  **<"type">**：字符串参数，表示传输类型："TCP"、"UDP"、"SSL"、"TCPv6"、"UDPv6" 或 "SSLv6"
+-  **<"remote IP">**：字符串参数，表示远端 IPv4 地址或 IPv6 地址
+-  **<remote port>**：远端端口值
+-  **<local port>**：本地端口值
+-  **<tetype>**:
+
+   -  0: ESP 设备作为客户端
+   -  1: ESP 设备作为服务器
+
 .. _cmd-STATUS:
 
-:ref:`AT+CIPSTATUS <TCPIP-AT>`：查询 TCP/UDP/SSL 连接状态和信息
+:ref:`AT+CIPSTATUS (弃用) <TCPIP-AT>`：查询 TCP/UDP/SSL 连接状态和信息
 -----------------------------------------------------------------------------------------
 
 执行命令
