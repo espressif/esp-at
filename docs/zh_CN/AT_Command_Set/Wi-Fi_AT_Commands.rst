@@ -6,6 +6,7 @@ Wi-Fi AT 命令集
 :link_to_translation:`en:[English]`
 
 -  :ref:`AT+CWMODE <cmd-MODE>`：查询/设置 Wi-Fi 模式 (Station/SoftAP/Station+SoftAP)
+-  :ref:`AT+CWSTATE <cmd-WSTATE>`：查询 Wi-Fi 状态和 Wi-Fi 信息
 -  :ref:`AT+CWJAP <cmd-JAP>`：连接 AP
 -  :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`：查询/设置 Wi-Fi 重连配置
 -  :ref:`AT+CWLAPOPT <cmd-LAPOPT>`：设置 :ref:`AT+CWLAP <cmd-LAP>` 命令扫描结果的属性
@@ -101,6 +102,50 @@ Wi-Fi AT 命令集
 ::
 
     AT+CWMODE=3 
+
+.. _cmd-WSTATE:
+
+:ref:`AT+CWSTATE <WiFi-AT>`：查询 Wi-Fi 状态和 Wi-Fi 信息
+-------------------------------------------------------------
+
+查询命令
+^^^^^^^^
+
+**功能：**
+
+查询 ESP 设备的 Wi-Fi 状态和 Wi-Fi 信息
+
+**命令：**
+
+::
+
+    AT+CWSTATE?
+
+**响应：**
+
+::
+
+    +CWSTATE:<state>,<"ssid">
+
+    OK
+
+参数
+^^^^
+
+-  **<state>**：当前 Wi-Fi 状态
+
+   - 0: ESP station 尚未进行任何 Wi-Fi 连接
+   - 1: ESP station 已经连接上 AP，但尚未获取到 IPv4 地址
+   - 2: ESP station 已经连接上 AP，并已经获取到 IPv4 地址
+   - 3: ESP station 正在进行 Wi-Fi 连接或 Wi-Fi 重连
+   - 4: ESP station 处于 Wi-Fi 断开状态
+
+-  **<"ssid">**：目标 AP 的 SSID
+
+说明
+^^^^
+
+- 当 ESP station 没有连接上 AP 时，推荐使用此命令查询 Wi-Fi 信息；当 ESP station 已连接上 AP 后，推荐使用 :ref:`AT+CWJAP <cmd-JAP>` 命令查询 Wi-Fi 信息
 
 .. _cmd-JAP:
 
