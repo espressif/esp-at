@@ -6,7 +6,7 @@
 - [English Version](./README.md)
 
 esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/)) 发起和提供技术支持的官方项目，适用于 Windows、Linux、macOS 上的 **ESP32-C2**、**ESP32-C3**、**ESP32-C6**、**ESP32**、和 **ESP32-S2** 系列芯片。  
-当前该项目由 Espressif esp-at 团队 (@[esp-at](https://github.com/espressif/esp-at)) 负责技术支持和维护。  
+当前该项目由 Espressif esp-at 团队 (@[esp-at](https://github.com/espressif/esp-at)) 负责技术支持和维护。**在使用 ESP-AT 方案前，请仔细阅读 [特别声明](https://docs.espressif.com/projects/esp-at/zh_CN/latest/esp32/disclaimer.html)，并遵循其中的各项条款和注意事项。**
 
 # 简介
 乐鑫 SoC 芯片可以用作附加模块，完美集成在其他现有产品上，提供丰富的无线功能。为降低客户开发成本，乐鑫开发了一套 [AT 命令集](https://docs.espressif.com/projects/esp-at/zh_CN/latest/esp32/AT_Command_Set/index.html)（请在页面左上方的下拉菜单中选择您的目标芯片），方便客户简单快速地使用 AT 命令来控制芯片。

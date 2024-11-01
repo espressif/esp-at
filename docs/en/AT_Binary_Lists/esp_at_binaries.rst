@@ -42,6 +42,11 @@ It is recommended to use the lastest version of firmware. Currently, Espressif r
         - This firmware currently does not support OTA function.
         - AT firmware on GitHub will automatically expire after 90 days, so please save the downloaded AT firmware.
 
+Disclaimer
+^^^^^^^^^^
+
+Before using the AT firmware below, please read the :doc:`../disclaimer` carefully and comply with its terms and precautions.
+
 .. only:: esp32
 
   ESP32-WROOM-32 Series
