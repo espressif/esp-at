@@ -53,6 +53,7 @@ This is the documentation for `ESP-AT <https://github.com/espressif/esp-at>`_ De
    Customized AT for 3rd-Patry Open Cloud Platforms <Customized_AT_Commands_and_Firmware/index>
    FAQ <faq>
    Index of Abbreviations <index_of_abbreviations>
+   Disclaimer <disclaimer>
    About <about>
 
 * :ref:`genindex`

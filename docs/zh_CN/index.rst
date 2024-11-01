@@ -53,6 +53,7 @@ ESP-AT 用户指南
    第三方开放云平台定制化 AT <Customized_AT_Commands_and_Firmware/index>
    FAQ <faq>
    缩写词索引 <index_of_abbreviations>
+   特别声明 <disclaimer>
    关于 ESP-AT <about>
    
 * :ref:`genindex`
