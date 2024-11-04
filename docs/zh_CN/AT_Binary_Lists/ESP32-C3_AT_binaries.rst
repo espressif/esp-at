@@ -13,6 +13,11 @@
   * :ref:`at-py-modify-pki`
   * :ref:`at-py-modify-gatts`
 
+特别声明
+^^^^^^^^
+
+在使用下面的 AT 固件前，请仔细阅读 :doc:`../disclaimer`，并遵循其中的各项条款和注意事项。
+
 ESP32-C3-MINI-1 系列
 ^^^^^^^^^^^^^^^^^^^^^^
 

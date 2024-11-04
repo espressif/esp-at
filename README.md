@@ -4,7 +4,7 @@
 - [中文版](#esp-at-项目)
 
 esp-at project was started and powered by Espressif Systems (@[espressif](https://github.com/espressif/)) as an official project, for the **ESP32-C2**, **ESP32-C3**, **ESP32-C6**, **ESP32**, **ESP8266**, and **ESP32-S2** Series SoCs provided for Windows, Linux, and macOS.  
-It is now supported and maintained by Espressif esp-at team (@[esp-at](https://github.com/espressif/esp-at)).
+It is now supported and maintained by Espressif esp-at team (@[esp-at](https://github.com/espressif/esp-at)). **Before using the ESP-AT solution, please read the [Disclaimer](https://docs.espressif.com/projects/esp-at/en/latest/esp32/disclaimer.html) carefully and comply with its terms and precautions.**
 
 # Introduction
 Espressif Wi-Fi and Bluetooth® chipsets are often used as add-on modules to seamlessly integrate wireless connectivity features into new and existing products.  
@@ -68,7 +68,7 @@ The AT command firmware allows for rapid integration by providing:
 
 # ESP-AT 项目
 esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/)) 发起和提供技术支持的官方项目，适用于 Windows、Linux、macOS 上的 **ESP32-C2**、**ESP32-C3**、**ESP32-C6**、**ESP32**、**ESP8266**、和 **ESP32-S2** 系列芯片。  
-当前该项目由 Espressif esp-at 团队 (@[esp-at](https://github.com/espressif/esp-at)) 负责技术支持和维护。  
+当前该项目由 Espressif esp-at 团队 (@[esp-at](https://github.com/espressif/esp-at)) 负责技术支持和维护。**在使用 ESP-AT 方案前，请仔细阅读 [特别声明](https://docs.espressif.com/projects/esp-at/zh_CN/latest/esp32/disclaimer.html)，并遵循其中的各项条款和注意事项。**
 
 # 简介
 乐鑫 Wi-Fi 和蓝牙芯片可以用作附加模块，完美集成在其他现有产品上，提供无线通讯功能。

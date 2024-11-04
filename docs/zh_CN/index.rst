@@ -52,6 +52,7 @@ ESP-AT 用户指南
    :esp32 or esp32c3: 第三方定制化 AT 命令和固件 <Customized_AT_Commands_and_Firmware/index>
    FAQ <faq>
    缩写词索引 <index_of_abbreviations>
+   特别声明 <disclaimer>
    关于 ESP-AT <about>
    
 * :ref:`genindex`
