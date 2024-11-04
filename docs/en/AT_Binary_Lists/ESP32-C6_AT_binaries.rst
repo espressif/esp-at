@@ -12,6 +12,11 @@ It is recommended to use the lastest version of firmware. Currently, Espressif o
   * :ref:`at-py-modify-wifi`
   * :ref:`at-py-modify-pki`
 
+Disclaimer
+^^^^^^^^^^
+
+Before using the AT firmware below, please read the :doc:`../disclaimer` carefully and comply with its terms and precautions.
+
 ESP32-C6 4MB Series
 ^^^^^^^^^^^^^^^^^^^
 

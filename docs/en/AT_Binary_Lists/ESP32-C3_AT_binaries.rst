@@ -15,6 +15,11 @@ It is recommended to use the lastest version of firmware. Currently, Espressif o
     * :ref:`at-py-modify-pki`
     * :ref:`at-py-modify-gatts`
 
+Disclaimer
+^^^^^^^^^^
+
+Before using the AT firmware below, please read the :doc:`../disclaimer` carefully and comply with its terms and precautions.
+
 ESP32-C3-MINI-1 Series
 ^^^^^^^^^^^^^^^^^^^^^^
 
