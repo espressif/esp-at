@@ -20,6 +20,11 @@ It is recommended to use the lastest version of firmware. Currently, Espressif r
       - :ref:`at-py-modify-pki`
       :esp32 or esp32c3 or esp32c6: - :ref:`at-py-modify-gatts`
 
+Disclaimer
+^^^^^^^^^^
+
+Before using the AT firmware below, please read the :doc:`../disclaimer` carefully and comply with its terms and precautions.
+
 .. only:: esp32
 
   ESP32-WROOM-32 Series
