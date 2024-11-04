@@ -1,5 +1,5 @@
 # Overview
-libat_core.a is AT Command Core, and it is the core of AT command, including the default AT instruction set, the AT command parsing, execution and responding. The lib contains 4 kinds of command, such as `AT+TEST=?`, `AT+TEST?`, `AT+TEST=“abc”` and `AT+TEST`. It supports custom AT commands based on the lib and related APIs, and ones can also define input and output medium, like uart, spi, socket, bt, etc.
+libat_core.a is AT Command Core, and it is the core of AT command, including the default AT instruction set, the AT command parsing, execution and responding. The lib contains 4 kinds of command, such as `AT+TEST=?`, `AT+TEST?`, `AT+TEST=“abc”` and `AT+TEST`. It supports custom AT commands based on the lib and related APIs, and ones can also define input and output medium, like uart, spi, socket, bt, etc. **Before using the ESP-AT solution, please read the [disclaimer](https://docs.espressif.com/projects/esp-at/en/latest/esp32/disclaimer.html) carefully and comply with its terms and precautions.**
 
 The demo is the AT command set based on uart. You can replace the uart driver with other drivers whichever you want to use. But maybe you have to make some changes to run the new driver. In addition, you can add some custom AT commands in `at_custom_cmd` like `AT+CIUPDATE` if necessary.
 
@@ -20,7 +20,7 @@ The demo is the AT command set based on uart. You can replace the uart driver wi
 - https://blog.csdn.net/espressif/article/details/79316992: CSDN espressif official blog in Chinese
 
 # 概述
-libat_core.a 是 AT 命令集的核心部分, 包含默认的 AT 指令集, 具有 AT 命令解析、 执行和回复功能. 在此库中，可以处理 `AT+TEST=?`、 `AT+TEST?`、 `AT+TEST=“abc”` 和 `AT+TEST` 4 种格式的指令集. 可以根据相关 API 自定义命令, 并且还可以定义输入输出介质, 比如 uart, spi, socket, bt 等等.
+libat_core.a 是 AT 命令集的核心部分, 包含默认的 AT 指令集, 具有 AT 命令解析、 执行和回复功能. 在此库中，可以处理 `AT+TEST=?`、 `AT+TEST?`、 `AT+TEST=“abc”` 和 `AT+TEST` 4 种格式的指令集. 可以根据相关 API 自定义命令, 并且还可以定义输入输出介质, 比如 uart, spi, socket, bt 等等. **在使用 ESP-AT 方案前，请仔细阅读 [特别声明](https://docs.espressif.com/projects/esp-at/zh_CN/latest/esp32/disclaimer.html)，并遵循其中的各项条款和注意事项。**
 
 此工程是基于 uart 实现的命令集，如果需要，你可以使用其它驱动程序替换掉 uart 驱动，为了使用新的驱动程序，可能必须做一些必要的代码改动. 另外，如果需要，你可以仿照 `AT+CIUPDATE` 在 `at_custom_cmd` 中添加自定义命令.
 
