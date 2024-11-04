@@ -20,6 +20,11 @@
       - :ref:`at-py-modify-pki`
       :esp32 or esp32c2 or esp32c3 or esp32c6: - :ref:`at-py-modify-gatts`
 
+特别声明
+^^^^^^^^
+
+在使用下面的 AT 固件前，请仔细阅读 :doc:`../disclaimer`，并遵循其中的各项条款和注意事项。
+
 .. only:: esp32
 
   ESP32-WROOM-32 系列
