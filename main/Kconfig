@@ -330,6 +330,15 @@ config ESP_AT_FW_VERSION
       The maximum length of the string is 128 characters.
       If more than 128 characters, it will be invalid.
 
+config AT_PROTECT_FIRST_32KB_FLASH
+    bool "Enable first 32KB flash protection"
+    default n
+    depends on ENABLE_FM25Q16A_PATCH_0
+    help
+        WARNING: If you don't use FM25Q16A, you must not enable this option.
+                 Although you use FM25Q16A, you should ask your flash manufacturer
+                 if your flash need use this patch.
+
 menu "Cloud IoT Commands"
 config AT_QCLOUD_IOT_COMMAND_SUPPORT
 
