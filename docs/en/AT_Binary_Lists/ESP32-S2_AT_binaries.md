@@ -3,6 +3,10 @@ Released Firmware
 
 It is recommended to use the lastest version of firmware.
 
+## Disclaimer
+
+Before using the AT firmware below, please read the [disclaimer](https://docs.espressif.com/projects/esp-at/en/latest/esp32/disclaimer.html) carefully and comply with its terms and precautions.
+
 ## ESP32-S2-WROOM Series
 
 - v2.1.0.0 [ESP32-S2-WROOM_AT_Bin_V2.1.0.0.zip](https://download.espressif.com/esp_at/firmware/ESP32S2/ESP32-S2-WROOM/ESP32-S2-WROOM_AT_Bin_V2.1.0.0.zip) (Recommended)

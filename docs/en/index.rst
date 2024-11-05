@@ -43,5 +43,6 @@ This is the documentation for the ESP-AT.
    Compile and Develop <Compile_and_Develop/index>
    Customized AT Commands and Firmware <Customized_AT_Commands_and_Firmware/index>
    Index of Abbreviations <index_of_abbreviations>
+   Disclaimer <disclaimer>
    
 * :ref:`genindex`
