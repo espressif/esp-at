@@ -92,19 +92,15 @@ ESP-AT 的每个主要版本和次要版本都有相应的支持期限。支持�
      - `v5.0.6 <https://github.com/espressif/esp-idf/releases/tag/v5.0.6>`_
      - 2025.5.29
      - 2024.12.29 - 2025.2.28
-   * - **v3.2.0.0** (2023.7.28)
-     -
-       * ESP32
-       * ESP32-C3
+   * - **v3.2.1.0** (2024.11.4)
+     - ESP32
      - ~v5.0.3 (`24b9d38 <https://github.com/espressif/esp-idf/commit/24b9d38>`_)
      - 2025.5.29
-     -
-       * ESP32 已发布新版本 v3.4.0.0
-       * ESP32-C3 已发布新版本 v3.3.0.0
+     - ESP32 已发布新版本 v3.4.0.0
 
 **ESP-AT 各发布版本支持期限如下：**
 
-.. figure:: ../_static/at-support-periods.png
+.. figure:: https://dl.espressif.com/esp-at/at-support-periods.png
    :align: center
    :alt: ESP-AT 版本支持期限
    :figclass: align-center

@@ -92,19 +92,15 @@ Each ESP-IDF major and minor release version has an associated support period. A
      - `v5.0.6 <https://github.com/espressif/esp-idf/releases/tag/v5.0.6>`_
      - 2025.5.29
      - 2024.12.29 - 2025.2.28
-   * - **v3.2.0.0** (2023.7.28)
-     -
-       * ESP32
-       * ESP32-C3
+   * - **v3.2.1.0** (2024.11.4)
+     - ESP32
      - ~v5.0.3 (`24b9d38 <https://github.com/espressif/esp-idf/commit/24b9d38>`_)
      - 2025.5.29
-     -
-        * New version v3.4.0.0 released for ESP32
-        * New version v3.3.0.0 released for ESP32-C3
+     - New version v3.4.0.0 released for ESP32
 
 **Support periods for each released version of ESP-AT are as follows:**
 
-.. figure:: ../_static/at-support-periods.png
+.. figure:: https://dl.espressif.com/esp-at/at-support-periods.png
    :align: center
    :alt: ESP-AT Version Support Periods
    :figclass: align-center
