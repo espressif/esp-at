@@ -6,7 +6,7 @@
 - [中文版](./README_CN.md)
 
 esp-at project was started and powered by Espressif Systems (@[espressif](https://github.com/espressif/)) as an official project, for the **ESP32-C2**, **ESP32-C3**, **ESP32-C6**, **ESP32**, and **ESP32-S2** Series SoCs provided for Windows, Linux, and macOS.  
-It is now supported and maintained by Espressif esp-at team (@[esp-at](https://github.com/espressif/esp-at)). **Before using the ESP-AT solution, please read the [Disclaimer](https://docs.espressif.com/projects/esp-at/en/latest/esp32/disclaimer.html) carefully and comply with its terms and precautions.**
+It is now supported and maintained by Espressif esp-at team (@[esp-at](https://github.com/espressif/esp-at)). **Before using the ESP-AT solution, please read the [disclaimer](https://docs.espressif.com/projects/esp-at/en/latest/esp32/disclaimer.html) carefully and comply with its terms and precautions.**
 
 # Introduction
 Espressif SoC chipsets are often used as add-on modules to seamlessly integrate wireless connectivity features into new and existing products. In an effort to facilitate this and cut down on engineering costs, Espressif Systems has developed a set of [AT commands](https://docs.espressif.com/projects/esp-at/en/latest/esp32/AT_Command_Set/index.html) (Please select your target chip from the dropdown menu in the top left corner of the page) that can be used to interface with Espressif products.
@@ -21,11 +21,11 @@ The AT solution provided by Espressif allows for rapid integration by providing:
 # ESP-AT Release and SoC Compatibility
 The following table shows ESP-AT support status of Espressif SoCs.
 
-| Chip | v3.2.0.0 | v3.3.0.0 | v3.4.0.0 | v4.0.0.0 | master |
+| Chip | v3.2.1.0 | v3.3.0.0 | v3.4.0.0 | v4.0.0.0 | master |
 |:- |:-:| :-:| :-:| :-:| :-:|
-| ESP32 | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.2.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.3.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-C3 | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.2.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-C2 | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.2.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+| ESP32 | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.2.1.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.3.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+|ESP32-C3 | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.2.1.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+|ESP32-C2 | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.2.1.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 |ESP32-C6 | | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.0.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 |ESP32-S2 | | |  [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.4.0.0) | | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 
@@ -48,7 +48,7 @@ Please choose one of the following options based on your needs:
 
 # Support Periods of ESP-AT
 
-![support periods](docs/_static/at-support-periods.png)
+![support periods](https://dl.espressif.com/esp-at/at-support-periods.png)
 
 - Please refer to [ESP-AT Versions](https://docs.espressif.com/projects/esp-at/en/latest/esp32/versions.html) for more details。
 
