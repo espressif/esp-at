@@ -70,6 +70,95 @@ esp8266_wroom_02_at:
     - *before_build_esp8266_series
     - ./build.py build
 
+esp8266_wroom_02_fm25q16a_at:
+  stage: build
+  image: $CI_DOCKER_REGISTRY/esp8266-ci-env-new
+  tags:
+    - build
+  variables:
+    <<: *global-variables
+  artifacts:
+    paths:
+      - sdkconfig
+      - build/*.bin
+      - build/*.elf
+      - build/*.map
+      - build/bootloader/*.bin
+      - build/partition_table/*.bin
+      - build/customized_partitions/*.bin
+      - build/flasher_args.json
+      - build/download.config
+      - build/factory/*
+    expire_in: 6 mos
+
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
+    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
+  script:
+    # apply FM25Q16A flash patch
+    - echo -e "CONFIG_ENABLE_SPI_FLASH_PATCH=y" >> module_config/module_esp8266_default/sdkconfig.defaults
+    - echo -e "CONFIG_ENABLE_FM25Q16A_PATCH_0=y" >> module_config/module_esp8266_default/sdkconfig.defaults
+    - echo -e "CONFIG_AT_PROTECT_FIRST_32KB_FLASH=y" >> module_config/module_esp8266_default/sdkconfig.defaults
+    # replace submodule esp-idf to internal repository to speedup cloning
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}/sdk"?g' module_config/module_esp8266_default/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02\", \"description\": \"TX:15 RX:13\", \"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure || echo "skip exception"
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02\", \"description\": \"TX:15 RX:13\", \"silence\": 0}" > build/module_info.json'
+    - *before_build_esp8266_series
+    - ./build.py build
+
+esp8266_wroom_02_th25q16hb_at:
+  stage: build
+  image: $CI_DOCKER_REGISTRY/esp8266-ci-env-new
+  tags:
+    - build
+  variables:
+    <<: *global-variables
+  artifacts:
+    paths:
+      - sdkconfig
+      - build/*.bin
+      - build/*.elf
+      - build/*.map
+      - build/bootloader/*.bin
+      - build/partition_table/*.bin
+      - build/customized_partitions/*.bin
+      - build/flasher_args.json
+      - build/download.config
+      - build/factory/*
+    expire_in: 6 mos
+
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo -n $GITLAB_KEY >> ~/.ssh/id_rsa_base64
+    - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host gitlab.espressif.cn\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
+  script:
+    # apply TH25Q16HB flash patch
+    - echo -e "CONFIG_ENABLE_SPI_FLASH_PATCH=y" >> module_config/module_esp8266_default/sdkconfig.defaults
+    - echo -e "CONFIG_ENABLE_TH25Q16HB_PATCH_0=y" >> module_config/module_esp8266_default/sdkconfig.defaults
+    # replace submodule esp-idf to internal repository to speedup cloning
+    - sed -i 's?"https://github.com"?"${GITLAB_SSH_SERVER}/sdk"?g' module_config/module_esp8266_default/IDF_VERSION
+    - mkdir build
+    # create module info
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02\", \"description\": \"TX:15 RX:13\", \"silence\": 0}" > build/module_info.json'
+    - ./build.py reconfigure || echo "skip exception"
+    - rm -rf build && mkdir build
+    - 'echo -e "{\"platform\": \"PLATFORM_ESP8266\", \"module\": \"WROOM-02\", \"description\": \"TX:15 RX:13\", \"silence\": 0}" > build/module_info.json'
+    - *before_build_esp8266_series
+    - ./build.py build
+
 esp8266_1MB_at:
   stage: build
   image: $CI_DOCKER_REGISTRY/esp8266-ci-env-new
