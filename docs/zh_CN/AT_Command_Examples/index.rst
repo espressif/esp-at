@@ -17,6 +17,7 @@ AT 命令示例
    HTTP AT 示例 <http_at_examples>
    :esp32: Classic Bluetooth AT 示例 <classic_bluetooth_at_examples>
    Sleep AT 示例 <sleep_at_examples>
+   AT 配网示例 <network_provisioning_examples>
 
 .. only:: esp32c3
 
