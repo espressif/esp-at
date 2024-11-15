@@ -34,7 +34,7 @@ WebSocket AT 命令集
 
 ::
 
-    AT+WSCFG=<link_id>,<ping_intv_sec>,<ping_timeout_sec>[,<buffer_size>]
+    AT+WSCFG=<link_id>,<ping_intv_sec>,<ping_timeout_sec>[,<buffer_size>][,<auth_mode>,<pki_number>,<ca_number>]
 
 **响应：**
 
@@ -55,10 +55,22 @@ WebSocket AT 命令集
 - **<ping_intv_sec>**：发送 WebSocket Ping 间隔。单位：秒。范围：[1,7200]。默认值：10，即：每隔 10 秒发送一次 WebSocket Ping 包。
 - **<ping_timeout_sec>**：WebSocket Ping 超时。单位：秒。范围：[1,7200]。默认值：120，即：120 秒未收到 WebSocket Pong 包，则关闭连接。
 - **<buffer_size>**：WebSocket 缓冲区大小。单位：字节。范围：[1,8192]。默认值：1024。
+- **<auth_mode>**:
+
+  - 0: 不认证，此时无需填写 ``<pki_number>`` 和 ``<ca_number>`` 参数；
+  - 1: ESP-AT 提供客户端证书供服务器端 CA 证书校验；
+  - 2: ESP-AT 客户端载入 CA 证书来校验服务器端的证书；
+  - 3: 相互认证。
+
+- **<pki_number>**：证书和私钥的索引，如果只有一个证书和私钥，其值应为 0。
+- **<ca_number>**：CA 的索引，如果只有一个 CA，其值应为 0。
 
 说明
 ^^^^
 - 此命令应在 :ref:`AT+WSOPEN <cmd-WSOPEN>` 之前配置，否则不会生效。
+- 如果您想使用自己的证书或者使用多套证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+- 如果 ``<auth_mode>`` 配置为 2 或者 3，为了校验服务器的证书有效期，请在发送 :ref:`AT+WSOPEN <cmd-WSOPEN>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（您可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间。）
+- 相互认证的示例： :ref:`基于 TLS 的 WebSocket 连接（相互鉴权）<example-websocket-tls>`。
 
 示例
 ^^^^
@@ -219,6 +231,8 @@ WebSocket AT 命令集
 
     // uri 参数来自于 https://www.piesocket.com/websocket-tester
     AT+WSOPEN=0,"wss://demo.piesocket.com/v3/channel_123?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self"
+
+详细示例参考： :ref:`WebSocket 示例 <example-websocket>`。
 
 .. _cmd-WSSEND:
 
