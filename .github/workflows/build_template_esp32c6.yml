@@ -33,8 +33,8 @@ jobs:
         cd components/at/private_include
         rm -f at_ota_token.h
         echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C6_4MB \"${{ secrets.AT_OTA_TOKEN_ESP32C6_4MB }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C6_4MB \"${{ secrets.AT_OTA_TOKEN_ESP32C6_4MB }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C6_4MB \"${{ secrets.ESP32C6_4MB_TOKEN }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C6_4MB \"${{ secrets.ESP32C6_4MB_TOKEN }}\"" >> at_ota_token.h
         cd -
     - name: Install ESP-IDF environment variables
       run: |
