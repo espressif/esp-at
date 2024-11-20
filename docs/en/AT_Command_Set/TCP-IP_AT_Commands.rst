@@ -15,7 +15,7 @@ TCP/IP AT Commands
 -  :ref:`[Data Mode Only] +++ <cmd-PLUS>`: Exit from the :term:`data mode`.
 -  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Wi-Fi :term:`Passthrough Mode` on power-up.
 -  :ref:`AT+CIPSEND <cmd-SEND>`: Send data in the :term:`normal transmission mode` or Wi-Fi :term:`normal transmission mode`.
--  :ref:`AT+CIPSENDL <cmd-SENDL>`: Send long data in paraller in the :term:`normal transmission mode`.
+-  :ref:`AT+CIPSENDL <cmd-SENDL>`: Send long data in parallel in the :term:`normal transmission mode`.
 -  :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>`: Set the configuration for the command :ref:`AT+CIPSENDL <cmd-SENDL>`.
 -  :ref:`AT+CIPSENDEX <cmd-SENDEX>`: Send data in the :term:`normal transmission mode` in expanded ways.
 -  :ref:`AT+CIPCLOSE <cmd-CLOSE>`: Close TCP/UDP/SSL connection.
@@ -651,7 +651,7 @@ Notes
 
 .. _cmd-SENDL:
 
-:ref:`AT+CIPSENDL <TCPIP-AT>`: Send Long Data in Paraller in the :term:`Normal Transmission Mode`.
+:ref:`AT+CIPSENDL <TCPIP-AT>`: Send Long Data in Parallel in the :term:`Normal Transmission Mode`.
 --------------------------------------------------------------------------------------------------
 
 Set Command
