@@ -1,6 +1,6 @@
 # The following lines of boilerplate have to be in your project's
 # CMakeLists in this exact order for cmake to work correctly
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16)
 
 # add cmake flags
 ### (unused typedefs, unused variable, unused function, unused-but-set-variable) should not be treated as warnings and errors
