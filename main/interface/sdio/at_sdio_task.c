@@ -136,13 +136,13 @@ static int32_t at_sdio_read_data(uint8_t* data, int32_t len)
             break;
         }
 
-        esp_at_sdio_list_t* p_list = pHead;
-
-        if (len < p_list->left_len) {
-            memcpy(data + copy_len, p_list->pbuf + p_list->pos, len);
-            p_list->pos += len;
-            p_list->left_len -= len;
-            copy_len += len;
+        esp_at_sdio_list_t *p_list = pHead;
+        uint32_t to_read_len = len - copy_len;
+        if (to_read_len < p_list->left_len) {
+            memcpy(data + copy_len, p_list->pbuf + p_list->pos, to_read_len);
+            p_list->pos += to_read_len;
+            p_list->left_len -= to_read_len;
+            copy_len += to_read_len;
         } else {
             memcpy(data + copy_len, p_list->pbuf + p_list->pos, p_list->left_len);
             p_list->pos += p_list->left_len;
