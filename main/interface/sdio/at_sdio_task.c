@@ -146,7 +146,7 @@ static void at_sdio_task(void *params)
             continue;
         }
 
-        esp_at_sdio_list_t *p_list = container_of(addr, esp_at_sdio_list_t, pbuf);
+        esp_at_sdio_list_t *p_list = container_of((uint8_t(*)[CONFIG_AT_SDIO_BLOCK_SIZE])addr, esp_at_sdio_list_t, pbuf);
         p_list->handle = handle;
         p_list->left_len = size;
         p_list->pos = 0;
