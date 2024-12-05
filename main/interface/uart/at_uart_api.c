@@ -258,7 +258,12 @@ void at_uart_config_init(uart_config_t *config)
     config->stop_bits = CONFIG_AT_UART_DEFAULT_STOPBITS;
     config->flow_ctrl = CONFIG_AT_UART_DEFAULT_FLOW_CONTROL;
     config->rx_flow_ctrl_thresh = 122;
-    config->source_clk = UART_SCLK_DEFAULT;
+
+#if SOC_UART_SUPPORT_REF_TICK
+    config->source_clk = UART_SCLK_REF_TICK;
+#elif SOC_UART_SUPPORT_XTAL_CLK
+    config->source_clk = UART_SCLK_XTAL;
+#endif
 }
 
 void at_nvs_uart_config_set(uart_config_t *config)
