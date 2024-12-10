@@ -15,6 +15,7 @@ AT Command Examples
    :esp32: Ethernet AT Examples <Ethernet_AT_Examples>
    Web server AT Examples <Web_server_AT_Examples>
    HTTP AT Examples <http_at_examples>
+   WebSocket AT Examples <websocket_at_examples>
    :esp32: Classic Bluetooth AT Examples <classic_bluetooth_at_examples>
    Sleep AT Examples <sleep_at_examples>
    AT Network Provisioning Examples <network_provisioning_examples>

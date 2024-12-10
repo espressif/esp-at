@@ -7,7 +7,7 @@ WebSocket AT Commands
 
 - :ref:`Introduction <cmd-ws-intro>`
 - :ref:`AT+WSCFG <cmd-WSCFG>`: Set the WebSocket configuration.
-- :ref:`AT+WSHEAD <cmd-WSHEAD>`: Set/Query WebSocket request headers
+- :ref:`AT+WSHEAD <cmd-WSHEAD>`: Set/Query WebSocket request headers.
 - :ref:`AT+WSOPEN <cmd-WSOPEN>`: Query/Open a WebSocket connection.
 - :ref:`AT+WSSEND <cmd-WSSEND>`: Send data to a WebSocket connection.
 - :ref:`AT+WSCLOSE <cmd-WSCLOSE>`: Close a WebSocket connection.
@@ -34,7 +34,7 @@ Set Command
 
 ::
 
-    AT+WSCFG=<link_id>,<ping_intv_sec>,<ping_timeout_sec>[,<buffer_size>]
+    AT+WSCFG=<link_id>,<ping_intv_sec>,<ping_timeout_sec>[,<buffer_size>][,<auth_mode>,<pki_number>,<ca_number>]
 
 **Response:**
 
@@ -55,10 +55,22 @@ Parameters
 - **<ping_intv_sec>**: WebSocket Ping interval. Unit: second. Range: [1,7200]. Default: 10, which means that WebSocket Ping packets are sent every 10 seconds by default.
 - **<ping_timeout_sec>**: WebSocket Ping timeout. Unit: second. Range: [1,7200]. Default: 120, which means that by default, if the WebSocket Pong packet is not received within 120 seconds, the connection will be closed.
 - **<buffer_size>**: WebSocket buffer size. Unit: byte. Range: [1,8192]. Default: 1024.
+- **<auth_mode>**:
+
+  - 0: no authentication. In this case ``<pki_number>`` and ``<ca_number>`` are not required.
+  - 1: the client provides the client certificate for the server to verify.
+  - 2: the client loads CA certificate to verify the server's certificate.
+  - 3: mutual authentication.
+
+- **<pki_number>**: the index of certificate and private key. If there is only one certificate and private key, the value should be 0.
+- **<ca_number>**: the index of CA. If there is only one CA, the value should be 0.
 
 Notes
 ^^^^^
 - This command should be configured before :ref:`AT+WSOPEN <cmd-WSOPEN>` command. Otherwise, it will not take effect.
+- If you want to use your own certificate or use multiple sets of certificates, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
+- If ``<auth_mode>`` is configured to 2 or 3, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+WSOPEN <cmd-WSOPEN>` command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNPTIME? <cmd-SNTPT>` command to query the current time.)
+- Mutual authentication example: :ref:`WebSocket Connection over TLS (Mutual Authentication) <example-websocket-tls>`.
 
 Example
 ^^^^^^^^
@@ -208,9 +220,9 @@ Parameters
    - 4: The WebSocket connection Received close frame from the server side and is sending close frame to the server.
 
 - **<"uri">**: Uniform resource identifier of WebSocket server.
-- **<"subprotocol">**: The subprotocol of WebSocket (refer to `RFC6455 1.9 part <https://www.rfc-editor.org/rfc/rfc6455#section-1.9>`_ for more details).
+- **<"subprotocol">**: The subprotocol of WebSocket (refer to `Section: RFC6455 1.9 <https://www.rfc-editor.org/rfc/rfc6455#section-1.9>`_ for more details).
 - **<timeout_ms>**: Timeout for establishing a WebSocket connection. Unit: millisecond. Range: [0,180000]. Default: 15000.
-- **<"auth">**: The authorization of WebSocket (refer to `RFC6455 4.1.12 part <https://www.rfc-editor.org/rfc/rfc6455#section-4.1>`_ for more details).
+- **<"auth">**: The authorization of WebSocket (refer to `Section: RFC6455 4.1.12 <https://www.rfc-editor.org/rfc/rfc6455#section-4.1>`_ for more details).
 
 Example
 ^^^^^^^
@@ -219,6 +231,8 @@ Example
 
     // uri parameter comes from https://www.piesocket.com/websocket-tester
     AT+WSOPEN=0,"wss://demo.piesocket.com/v3/channel_123?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self"
+
+Detailed examples refer to: :ref:`WebSocket Example <example-websocket>`.
 
 .. _cmd-WSSEND:
 
@@ -261,7 +275,7 @@ Parameters
 
 - **<link_id>**: ID of the WebSocket connection. Range: [0,2].
 - **<length>**: Length of data to send. Unit: byte. The maximum length that can be sent is determined by subtracting the value of ``<buffer_size>`` in `AT+WSCFG <cmd-WSCFG>` by 10 and the size of the heap space that the system can allocate (taking the smaller value of the two).
-- **<opcode>**: The opcode in the WebSocket frame sent. Range: [0,0xF]. Default: 1, which means text frame. For details about opcode, please refer to `RFC6455 5.2 section <https://www.rfc-editor.org/rfc/rfc6455#section-5.2>`_.
+- **<opcode>**: The opcode in the WebSocket frame sent. Range: [0,0xF]. Default: 1, which means text frame. For details about opcode, please refer to `Section: RFC6455 5.2 <https://www.rfc-editor.org/rfc/rfc6455#section-5.2>`_.
 
    - 0x0: continuation frame
    - 0x1: text frame

@@ -15,6 +15,7 @@ AT 命令示例
    :esp32: Ethernet AT 示例 <Ethernet_AT_Examples>
    Web server AT 示例 <Web_server_AT_Examples>
    HTTP AT 示例 <http_at_examples>
+   WebSocket AT 示例 <websocket_at_examples>
    :esp32: Classic Bluetooth AT 示例 <classic_bluetooth_at_examples>
    Sleep AT 示例 <sleep_at_examples>
    AT 配网示例 <network_provisioning_examples>
