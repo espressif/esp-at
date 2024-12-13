@@ -2,4 +2,4 @@
     path = components/rainmaker/esp-rainmaker
     url = https://github.com/espressif/esp-rainmaker.git
     branch = master
-    commit = c7c95052c6a89f445967073cf6fce90278554628
+    commit = 7d506420d320a137bce6aaeb69a2059cc162efac
