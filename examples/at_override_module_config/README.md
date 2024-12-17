@@ -69,8 +69,8 @@ The build system will use `at_override_module_config/at_customize.csv` as your s
 It is strongly recommended to use the default `ESP-IDF` version of the `ESP-AT` project, and **NOT** recommended to update it (because of the potential [application binary interface](https://en.wikipedia.org/wiki/Application_binary_interface) incompatibility between the underlying ESP-IDF versions of `libesp_at_core.a` and the esp-at repository, which may cause incorrect operation of the firmware.), but we still keep the option to update the ESP-IDF for testing purposes. The native esp-idf version file is `esp-at/module_config/<your_module>/IDF_VERSION`. You can copy the native esp-idf version to `at_override_module_config/IDF_VERSION`, and keep it as it is.
 
 ```
-branch:release/v5.0
-commit:bcca689866db3dfda47f77670bf8df2a7ec94721
+branch:release/v5.1
+commit:64849cb7039a93b7b3a4ad8e8da328fa9c09c5e7
 repository:https://github.com/espressif/esp-idf.git
 ```
 

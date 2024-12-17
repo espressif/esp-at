@@ -1,8 +1,17 @@
 diff --git a/src/factory.c b/src/factory.c
-index c8ac7ac..600335b 100644
+index c7a3ba3..cd0bdce 100644
 --- a/src/factory.c
 +++ b/src/factory.c
-@@ -36,7 +36,7 @@ esp_err_t esp_rmaker_factory_init(void)
+@@ -23,7 +23,7 @@ static const char *TAG = "esp_rmaker_fctry";
+ #define RMAKER_FACTORY_NAMESPACE    CONFIG_ESP_RMAKER_FACTORY_NAMESPACE
+ #define RMAKER_FACTORY_PART         CONFIG_ESP_RMAKER_FACTORY_PARTITION_NAME        
+ 
+-esp_err_t esp_rmaker_factory_init(void)
++__attribute__((weak)) esp_err_t esp_rmaker_factory_init(void)
+ {
+     static bool esp_rmaker_storage_init_done;
+     if (esp_rmaker_storage_init_done) {
+@@ -60,7 +60,7 @@ esp_err_t esp_rmaker_factory_init(void)
      return err;
  }
  
@@ -11,8 +20,8 @@ index c8ac7ac..600335b 100644
  {
      nvs_handle handle;
      esp_err_t err;
-@@ -59,7 +59,7 @@ void *esp_rmaker_factory_get(const char *key)
-     return value;
+@@ -100,7 +100,7 @@ size_t esp_rmaker_factory_get_size(const char *key)
+     return required_size;
  }
  
 -esp_err_t esp_rmaker_factory_set(const char *key, void *value, size_t len)
