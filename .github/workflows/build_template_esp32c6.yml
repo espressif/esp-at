@@ -36,8 +36,9 @@ jobs:
         echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C6_4MB \"${{ secrets.ESP32C6_4MB_TOKEN }}\"" >> at_ota_token.h
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C6_4MB \"${{ secrets.ESP32C6_4MB_TOKEN }}\"" >> at_ota_token.h
         cd -
-    - name: Install ESP-IDF environment variables
+    - name: Install environment variables
       run: |
+        echo "ESP_AT_FIRMWARE_FROM=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" >> "$GITHUB_ENV"
         ./build.py install
     - name: Compile
       run: |

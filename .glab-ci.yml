@@ -9,6 +9,7 @@ variables: &global-variables
   GIT_STRATEGY: clone
   GIT_SUBMODULE_STRATEGY: recursive
   ESPCI_TOKEN: $GITLAB_KEY
+  AT_FIRMWARE_FROM: glab
 
 .esp_at_build_template:
   stage: build
@@ -62,4 +63,5 @@ customer_at_build:
     - esp-idf/tools/idf_tools.py export
 
     - export ESP_AT_PROJECT_BRANCH=${CI_COMMIT_REF_NAME}
+    - export ESP_AT_FIRMWARE_FROM=${AT_FIRMWARE_FROM}
     - ./build.py build

@@ -23,6 +23,7 @@ workflow:
 # global variables
 variables:
   GIT_STRATEGY: clone
+  AT_FIRMWARE_FROM: gitlab
 
 default:
   retry:
