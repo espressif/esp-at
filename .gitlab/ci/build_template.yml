@@ -10,6 +10,7 @@
 .setup_env_variables: &setup_env_variables
   - export HAS_IDF_PREREQUISITES=1
   - export ESP_AT_PROJECT_BRANCH=${CI_COMMIT_REF_NAME}
+  - export ESP_AT_FIRMWARE_FROM=${AT_FIRMWARE_FROM}
 
 .clone_repo_and_components: &clone_repo_and_components
   - *speedup_repo_clone

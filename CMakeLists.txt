@@ -61,6 +61,11 @@ execute_process(COMMAND git rev-parse --short HEAD
 
 add_compile_options("-DESP_AT_PROJECT_COMMIT_ID=\"${ESP_AT_PROJECT_COMMIT_ID}\"")
 
+# set the firmware source
+if (DEFINED ENV{ESP_AT_FIRMWARE_FROM})
+set(ESP_AT_FIRMWARE_FROM $ENV{ESP_AT_FIRMWARE_FROM})
+add_compile_options("-DESP_AT_FIRMWARE_FROM=\"${ESP_AT_FIRMWARE_FROM}\"")
+endif()
 
 # get branch name and set docs version
 if(NOT DEFINED ENV{ESP_AT_PROJECT_BRANCH})

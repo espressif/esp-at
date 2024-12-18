@@ -78,7 +78,12 @@ static void at_module_init(void)
                    "compile time(%s):%s %s\r\n", ESP_AT_PROJECT_COMMIT_ID, __DATE__, __TIME__);
 
 #ifdef CONFIG_ESP_AT_FW_VERSION
-    printf("%s\r\n", CONFIG_ESP_AT_FW_VERSION);
+#ifdef ESP_AT_FIRMWARE_FROM
+    printf("%s (%s)\r\n", CONFIG_ESP_AT_FW_VERSION, ESP_AT_FIRMWARE_FROM);
+#else
+    printf("%s (unknown)\r\n", CONFIG_ESP_AT_FW_VERSION);
+#endif
+
     ret = snprintf((char *)version + ret, AT_TEMP_BUFFER_SIZE - ret,
                    "Bin version:%s(%s)\r\n", CONFIG_ESP_AT_FW_VERSION, esp_at_get_current_module_name());
 #endif
