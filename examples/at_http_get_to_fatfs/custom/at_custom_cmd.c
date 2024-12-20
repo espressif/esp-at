@@ -13,6 +13,12 @@
 #include "esp_http_client.h"
 #include "esp_log.h"
 #include "esp_at.h"
+#include "esp_timer.h"
+
+// Add these variables to store time measurements
+int64_t start_download_time, end_download_time;
+int64_t start_write_time, end_write_time;
+
 
 #ifndef CONFIG_AT_FS_COMMAND_SUPPORT
 #error "CONFIG_AT_FS_COMMAND_SUPPORT is undefined, please enable it first: python build.py menuconfig > Component config > AT > AT FS command support"
@@ -100,7 +106,7 @@ at_write_fs_handle_t *at_http_to_fs_begin(char *path)
 esp_err_t at_http_to_fs_write(at_write_fs_handle_t *fs_handle, uint8_t *data, size_t len)
 {
     if (!fs_handle || !fs_handle->fp) {
-        ESP_LOGE(TAG, "invalid argument");
+        //ESP_LOGE(TAG, "invalid argument");
         return ESP_ERR_INVALID_ARG;
     }
 
@@ -111,7 +117,7 @@ esp_err_t at_http_to_fs_write(at_write_fs_handle_t *fs_handle, uint8_t *data, si
 
     size_t wrote_len = fwrite(data, 1, len, fs_handle->fp);
     if (wrote_len != len) {
-        ESP_LOGE(TAG, "fwrite failed, to write len=%d, wrote len=%d", len, wrote_len);
+        //ESP_LOGE(TAG, "fwrite failed, to write len=%d, wrote len=%d", len, wrote_len);
         return ESP_FAIL;
     }
 
@@ -209,11 +215,36 @@ static esp_err_t at_http_event_handler(esp_http_client_event_t *evt)
     return ESP_OK;
 }
 
+void check_heap_memory() {
+    size_t free_heap_size = esp_get_free_heap_size();
+    printf("Free heap size: %d bytes", free_heap_size);
+}
+
+int prepare_file(FILE* file, long desired_size) {
+    // Move file pointer to desired size
+    if (fseek(file, desired_size, SEEK_SET) != 0) {
+        return -1; // Error
+    }
+
+    // Truncate file to this size
+    if (ftruncate(fileno(file), desired_size) != 0) {
+        return -1; // Error
+    }
+
+    // Reset file pointer to start
+    if (fseek(file, 0, SEEK_SET) != 0) {
+        return -1; // Error
+    }
+
+    return 0; // Success
+}
+
 static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
 {
     esp_err_t ret = ESP_OK;
-    int32_t cnt = 0, url_len = 0;
+    int32_t cnt = 0, url_len = 0, http_buffer_size = 0, file_write_buffer_size = 0;
     uint8_t *dst_path = NULL;
+    bool is_write_file = true;
 
     // dst file path
     if (esp_at_get_para_as_str(cnt++, &dst_path) != ESP_AT_PARA_PARSE_RESULT_OK) {
@@ -223,11 +254,31 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
+    if (strcmp((const char *)dst_path, "null") == 0) {
+        is_write_file = false;
+    }
+
     // url len
     if (esp_at_get_para_as_digit(cnt++, &url_len) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
     if (url_len <= 0 || url_len > AT_URL_LEN_MAX) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    // http buffer size
+    if (esp_at_get_para_as_digit(cnt++, &http_buffer_size) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+    if (http_buffer_size <= 0) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
+    // file write buffer size
+    if (esp_at_get_para_as_digit(cnt++, &file_write_buffer_size) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+    if (file_write_buffer_size <= 0) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
@@ -271,12 +322,14 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
     }
     printf("ready to download %s to %s\r\n", sp_http_to_fs->url, sp_http_to_fs->fs_handle->path);
 
+    check_heap_memory();
+
     // init http client
     esp_http_client_config_t config = {
-        .url = (const char*)sp_http_to_fs->url,
-        .event_handler = at_http_event_handler,
-        .timeout_ms = AT_NETWORK_TIMEOUT_MS,
-        .buffer_size_tx = 4096,
+            .url = (const char*)sp_http_to_fs->url,
+            .event_handler = at_http_event_handler,
+            .timeout_ms = AT_NETWORK_TIMEOUT_MS,
+            .buffer_size = http_buffer_size,
     };
     sp_http_to_fs->is_chunked = true;
     sp_http_to_fs->client = esp_http_client_init(&config);
@@ -304,17 +357,31 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
         goto cmd_exit;
     }
 
+    prepare_file(sp_http_to_fs->fs_handle->fp, sp_http_to_fs->total_size);
+
+    // Start download time measurement
+    start_download_time = esp_timer_get_time();
+
     // download data to file
     int data_len = 0;
-    uint8_t *data = (uint8_t *)malloc(AT_HEAP_BUFFER_SIZE);
+    uint8_t *data = (uint8_t *)malloc(file_write_buffer_size);
     if (!data) {
         ret = ESP_ERR_NO_MEM;
         goto cmd_exit;
     }
     do {
-        data_len = esp_http_client_read(sp_http_to_fs->client, (char *)data, AT_HEAP_BUFFER_SIZE);
+        data_len = esp_http_client_read(sp_http_to_fs->client, (char *)data, file_write_buffer_size);
         if (data_len > 0) {
-            ret = at_http_to_fs_write(sp_http_to_fs->fs_handle, data, data_len);
+            // Start write time measurement
+            start_write_time = esp_timer_get_time();
+
+            if (is_write_file) {
+                ret = at_http_to_fs_write(sp_http_to_fs->fs_handle, data, data_len);
+            }
+            // End write time measurement
+            end_write_time = esp_timer_get_time();
+            printf("Time to write %d bytes: %ld ms\r\n", data_len, (int32_t )((end_write_time - start_write_time)/1000));
+
             if (ret != ESP_OK) {
                 break;
             }
@@ -329,6 +396,11 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
     } while (ret == ESP_OK && data_len > 0);
     free(data);
 
+    // End download time measurement
+    end_download_time = esp_timer_get_time();
+    int64_t total_download_time = end_download_time - start_download_time;
+    printf("Total download time: %ld ms\r\n", (int32_t )(total_download_time/1000));
+
     if (sp_http_to_fs->is_chunked) {
         printf("total received len:%d, total wrote size:%d\r\n", sp_http_to_fs->recv_size, sp_http_to_fs->fs_handle->wrote_size);
     } else {
@@ -340,7 +412,11 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
         }
     }
 
-cmd_exit:
+    // Calculate and print download speed
+    double download_speed = (sp_http_to_fs->recv_size * 1.0) / (total_download_time / 1000000.0); // bytes per second
+    printf("Download speed: %.2f bytes/second\r\n", download_speed);
+
+    cmd_exit:
     // clean resources
     at_http_to_fs_clean();
     if (ret != ESP_OK) {
@@ -350,6 +426,17 @@ cmd_exit:
 
     return ESP_AT_RESULT_CODE_OK;
 }
+
+#if 0
+static uint8_t at_cmd_httpget_to_fs_test_cmd(uint8_t *cmd_name)
+{
+    uint8_t buffer[128] = {0};
+    snprintf((char *)buffer, sizeof(buffer),
+             "AT+HTTPGET_TO_FS=<\"dst_path\">,<url_len>,<http_buffer_size>,<file_write_buffer_size>\r\n");
+    esp_at_port_write_data(buffer, strlen((char *)buffer));
+    return ESP_AT_RESULT_CODE_OK;
+}
+#endif
 
 static const esp_at_cmd_struct at_custom_cmd[] = {
     {"+HTTPGET_TO_FS", NULL, NULL, at_setup_cmd_httpget_to_fs, NULL},

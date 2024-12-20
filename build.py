@@ -504,6 +504,10 @@ def main():
         init(autoreset=True)
     argv = sys.argv[1:]
 
+    # set AT_CUSTOM_COMPONENTS
+    at_custom_cmd_path=os.path.join(os.getcwd(), 'examples/at_http_get_to_fatfs')
+    os.environ['AT_CUSTOM_COMPONENTS']=at_custom_cmd_path
+
     # unset IDF_PATH
     if os.environ.get('IDF_PATH'):
         os.environ['IDF_PATH']=''
