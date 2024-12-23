@@ -24,15 +24,15 @@ def _strip_each_item(iterable: Iterable) -> List:
     return res
 
 
-IDF_PATH = os.getenv('IDF_PATH', os.getcwd())
-EXECUTABLE_LIST_FN = os.path.join(IDF_PATH, 'tools/ci/executable-list.txt')
+repo_dir = os.getcwd()
+EXECUTABLE_LIST_FN = os.path.join(repo_dir, 'tools/ci/executable-list.txt')
 known_executables = _strip_each_item(open(EXECUTABLE_LIST_FN).readlines())
 
 
 def check_executable_list() -> int:
     ret = 0
     for index, fn in enumerate(known_executables):
-        if not os.path.exists(os.path.join(IDF_PATH, fn)):
+        if not os.path.exists(os.path.join(repo_dir, fn)):
             print('{}:{} {} not exists. Please remove it manually'.format(EXECUTABLE_LIST_FN, index + 1, fn))
             ret = 1
     return ret
