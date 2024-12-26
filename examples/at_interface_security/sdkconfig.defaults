@@ -1,0 +1,2 @@
+# Enable AT Interface Security
+CONFIG_AT_INTF_SECURITY_SUPPORT=y

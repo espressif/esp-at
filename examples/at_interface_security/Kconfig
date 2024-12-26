@@ -1,0 +1,5 @@
+menu "AT Interface Security Configuration"
+    config AT_INTF_SECURITY_SUPPORT
+        bool "Enable AT Interface Security"
+        default y
+endmenu
