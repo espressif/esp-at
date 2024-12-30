@@ -10,6 +10,7 @@
 #include "esp_log.h"
 #include "esp_at.h"
 #include "esp_at_core.h"
+#include "esp_at_interface.h"
 #ifdef CONFIG_AT_SELF_COMMAND_SUPPORT
 #include "esp_at_self_cmd.h"
 #endif
@@ -17,6 +18,11 @@
 // static variables
 static esp_at_device_ops_struct s_interface_ops;
 static esp_at_custom_ops_struct s_interface_hooks;
+
+#ifdef CONFIG_AT_INTF_SECURITY_SUPPORT
+static at_intf_security_ops_t s_intf_security_ops;
+#endif
+
 static const char *TAG = "at-intf";
 
 static int32_t at_port_read_data(uint8_t *buffer, int32_t len)
@@ -28,6 +34,13 @@ static int32_t at_port_read_data(uint8_t *buffer, int32_t len)
     int32_t ret = 0;
 
     at_read_data_fn_t read_fn = s_interface_ops.read_data;
+
+#ifdef CONFIG_AT_INTF_SECURITY_SUPPORT
+    if (s_intf_security_ops.read) {
+        read_fn = s_intf_security_ops.read;
+    }
+#endif
+
 #ifdef CONFIG_AT_SELF_COMMAND_SUPPORT
     if (unlikely(at_self_cmd_get_mode())) {
         read_fn = at_self_cmd_read_data;
@@ -56,6 +69,13 @@ static int32_t at_port_write_data(uint8_t *data, int32_t len)
 #endif
 
     at_write_data_fn_t write_fn = s_interface_ops.write_data;
+
+#ifdef CONFIG_AT_INTF_SECURITY_SUPPORT
+    if (s_intf_security_ops.write) {
+        write_fn = s_intf_security_ops.write;
+    }
+#endif
+
 #ifdef CONFIG_AT_SELF_COMMAND_SUPPORT
     if (unlikely(at_self_cmd_get_mode())) {
         write_fn = at_self_cmd_write_data;
@@ -95,6 +115,11 @@ at_write_data_fn_t at_interface_get_write_fn(void)
     return s_interface_ops.write_data;
 }
 
+at_read_data_fn_t at_interface_get_read_fn(void)
+{
+    return s_interface_ops.read_data;
+}
+
 void at_interface_ops_init(esp_at_device_ops_struct *ops)
 {
     s_interface_ops.read_data = ops->read_data;
@@ -110,6 +135,36 @@ void at_interface_ops_init(esp_at_device_ops_struct *ops)
     };
     esp_at_device_ops_regist(&at_port_ops);
 }
+
+#ifdef CONFIG_AT_INTF_SECURITY_SUPPORT
+int at_interface_security_set(at_intf_security_ops_t *ops)
+{
+    // close the previous security channel
+    if (s_intf_security_ops.close) {
+        s_intf_security_ops.close();
+    }
+
+    // set the new security operations
+    if (ops) {
+        s_intf_security_ops.open = ops->open;
+        s_intf_security_ops.read = ops->read;
+        s_intf_security_ops.write = ops->write;
+        s_intf_security_ops.close = ops->close;
+    } else {
+        memset(&s_intf_security_ops, 0, sizeof(at_intf_security_ops_t));
+    }
+
+    // open the new security channel
+    if (s_intf_security_ops.open) {
+        if (s_intf_security_ops.open()) {
+            ESP_LOGE(TAG, "interface security open failed");
+            return -1;
+        }
+    }
+
+    return 0;
+}
+#endif
 
 static void at_transmit_mode_switch_cb(esp_at_status_type state)
 {
