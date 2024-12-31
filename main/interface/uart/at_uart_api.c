@@ -243,6 +243,9 @@ void at_uart_workaround(void)
     // a workaround for uart1 outputs uninterrupted data during light-sleep
     PIN_SLP_INPUT_ENABLE(GPIO_PIN_MUX_REG[g_uart_port_pin.rx_pin]);
     gpio_sleep_set_pull_mode(g_uart_port_pin.rx_pin, GPIO_PULLUP_ONLY);
+
+    // a workaround for uart1 tx voltage fluctuation issue during light-sleep
+    gpio_sleep_sel_dis(g_uart_port_pin.tx_pin);
 }
 
 void at_uart_config_init(uart_config_t *config)
