@@ -421,6 +421,9 @@ static void at_uart_init(void)
     PIN_SLP_INPUT_ENABLE(GPIO_PIN_MUX_REG[rx_pin]);
     gpio_sleep_set_pull_mode(rx_pin, GPIO_PULLUP_ONLY);
 
+    // a workaround for uart1 tx voltage fluctuation issue during light-sleep
+    gpio_sleep_sel_dis(tx_pin);
+
     // set actual uart pins
     s_at_uart_port_pin.tx = tx_pin;
     s_at_uart_port_pin.rx = rx_pin;
