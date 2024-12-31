@@ -84,8 +84,8 @@
   - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_2MB \"$ESP32C2_2MB_TOKEN\"" >> at_ota_token.h
   - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_4MB \"$ESP32C2_4MB_TOKEN\"" >> at_ota_token.h
   - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_4MB \"$ESP32C2_4MB_TOKEN\"" >> at_ota_token.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_ECO4_4MB \"$ESP32C2_ECO4_4MB_TOKEN\"" >> at_ota_token.h
-  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_ECO4_4MB \"$ESP32C2_ECO4_4MB_TOKEN\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_4MB_G2 \"$ESP32C2_4MB_G2_TOKEN\"" >> at_ota_token.h
+  - echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_4MB_G2 \"$ESP32C2_4MB_G2_TOKEN\"" >> at_ota_token.h
   - cd -
 
 .setup_tokens_esp32c3: &setup_tokens_esp32c3

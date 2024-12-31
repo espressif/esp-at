@@ -15,9 +15,9 @@ CONFIG_BOOTLOADER_APP_ANTI_ROLLBACK=n
 
 # Partition Table
 CONFIG_PARTITION_TABLE_CUSTOM=y
-CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="module_config/module_esp32c2-eco4-4mb/partitions_at.csv"
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="module_config/module_esp32c2-4mb-g2/partitions_at.csv"
 CONFIG_PARTITION_TABLE_OFFSET=0x8000
-CONFIG_PARTITION_TABLE_FILENAME="module_config/module_esp32c2-eco4-4mb/partitions_at.csv"
+CONFIG_PARTITION_TABLE_FILENAME="module_config/module_esp32c2-4mb-g2/partitions_at.csv"
 CONFIG_PARTITION_TABLE_MD5=n
 
 # PHY
@@ -127,7 +127,7 @@ CONFIG_ESP_TLS_INSECURE=y
 CONFIG_ESP_TLS_SKIP_SERVER_CERT_VERIFY=y
 
 # AT Customized Partitions
-CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE="module_config/module_esp32c2-eco4-4mb/at_customize.csv"
+CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE="module_config/module_esp32c2-4mb-g2/at_customize.csv"
 CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_OFFSET=0x1e000
 
 # AT
