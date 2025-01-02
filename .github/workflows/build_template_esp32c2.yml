@@ -14,7 +14,7 @@ on:
     secrets:
       ESP32C2_4MB_TOKEN:
         required: false
-      ESP32C2_ECO4_4MB_TOKEN:
+      ESP32C2_4MB_G2_TOKEN:
         required: false
       ESP32C2_2MB_TOKEN:
         required: false
@@ -41,8 +41,8 @@ jobs:
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_2MB \"${{ secrets.ESP32C2_2MB_TOKEN }}\"" >> at_ota_token.h
         echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_4MB \"${{ secrets.ESP32C2_4MB_TOKEN }}\"" >> at_ota_token.h
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_4MB \"${{ secrets.ESP32C2_4MB_TOKEN }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_ECO4_4MB \"${{ secrets.ESP32C2_ECO4_4MB_TOKEN }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_ECO4_4MB \"${{ secrets.ESP32C2_ECO4_4MB_TOKEN }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_4MB_G2 \"${{ secrets.ESP32C2_4MB_G2_TOKEN }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_4MB_G2 \"${{ secrets.ESP32C2_4MB_G2_TOKEN }}\"" >> at_ota_token.h
         cd -
     - name: Install environment variables
       run: |

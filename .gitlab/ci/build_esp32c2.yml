@@ -14,12 +14,12 @@ esp32c2_4mb_at:
   variables:
     MODULE_NAME: "ESP32C2-4MB"
 
-esp32c2_eco4_4mb_at:
+esp32c2_4mb_g2_at:
   extends:
     - .build_template_esp32c2
     - .rules:build:build_project
   variables:
-    MODULE_NAME: "ESP32C2-ECO4-4MB"
+    MODULE_NAME: "ESP32C2-4MB-G2"
 
 esp32c2_ble_2mb_at:
   extends:
