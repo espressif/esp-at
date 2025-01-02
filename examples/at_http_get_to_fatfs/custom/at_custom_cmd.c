@@ -358,9 +358,9 @@ static const esp_at_cmd_struct at_custom_cmd[] = {
      */
 };
 
-bool esp_at_custom_cmd_register(void)
+bool esp_at_httpget_to_fs_cmd_register(void)
 {
     return esp_at_custom_cmd_array_regist(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(esp_at_cmd_struct));
 }
 
-ESP_AT_CMD_SET_INIT_FN(esp_at_custom_cmd_register, 1);
+ESP_AT_CMD_SET_INIT_FN(esp_at_httpget_to_fs_cmd_register, 1);
