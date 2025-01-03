@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -262,10 +262,10 @@ void at_uart_config_init(uart_config_t *config)
     config->flow_ctrl = CONFIG_AT_UART_DEFAULT_FLOW_CONTROL;
     config->rx_flow_ctrl_thresh = 122;
 
-#if SOC_UART_SUPPORT_REF_TICK
-    config->source_clk = UART_SCLK_REF_TICK;
-#elif SOC_UART_SUPPORT_XTAL_CLK
+#if SOC_UART_SUPPORT_XTAL_CLK
     config->source_clk = UART_SCLK_XTAL;
+#else
+    config->source_clk = UART_SCLK_DEFAULT;
 #endif
 }
 
