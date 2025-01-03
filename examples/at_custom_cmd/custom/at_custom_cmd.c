@@ -186,7 +186,7 @@ static void at_http_to_fs_clean(void)
     }
 }
 
-static void at_custom_wait_data_cb(void)
+static void at_sp_http_to_fs_wait_data_cb(void)
 {
     xSemaphoreGive(sp_http_to_fs->sync_sema);
 }
@@ -280,7 +280,7 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
 
     // receive url from AT port
     int32_t had_recv_len = 0;
-    esp_at_port_enter_specific(at_custom_wait_data_cb);
+    esp_at_port_enter_specific(at_sp_http_to_fs_wait_data_cb);
     esp_at_response_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT);
     while (xSemaphoreTake(sp_http_to_fs->sync_sema, portMAX_DELAY)) {
         had_recv_len += esp_at_port_read_data((uint8_t *)(sp_http_to_fs->url) + had_recv_len, url_len - had_recv_len);
