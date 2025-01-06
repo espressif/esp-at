@@ -26,15 +26,15 @@ typedef struct {
     bool fs_mounted;                /*!< File system mounted */
     char *path;                     /*!< File path */
     FILE *fp;                       /*!< File pointer */
-    uint32_t available_size;        /*!< The available size of the file system */
-    uint32_t total_size;            /*!< The total size of the file system */
+    //uint32_t available_size;        /*!< The available size of the file system */
+    uint32_t total_size;            //*!< Total size of the file */
     uint32_t read_size;             /*!< The file size that has been read from flash */
 } at_read_fs_handle_t;
 
 
 typedef struct {
     char *url;                      /*!< URL */
-    int32_t total_size;             /*!< Total size of the file */
+    //int32_t total_size;             /*!< Total size of the file */
     int32_t sent_size;              /*!< Sent size of the file */
     bool is_chunked;                /*!< Chunked flag */
     SemaphoreHandle_t sync_sema;    /*!< Semaphore for synchronization */
@@ -396,7 +396,7 @@ at_read_fs_handle_t *at_httppost_from_fs_begin(char *path)
     }
     fs_handle->fs_mounted = true;
 
-
+#if 0
     // get available size
     uint64_t fs_total_size = 0, fs_free_size = 0;
     if (esp_vfs_fat_info(AT_FATFS_MOUNT_POINT, &fs_total_size, &fs_free_size)!= ESP_OK) {
@@ -405,9 +405,8 @@ at_read_fs_handle_t *at_httppost_from_fs_begin(char *path)
         ESP_LOGE(TAG_POST, "esp_vfs_fat_info failed");
         return NULL;
     }
-    fs_handle->total_size = fs_total_size;
-    fs_handle->available_size = fs_free_size;
-    printf("fatfs available size:%u, total size:%u\r\n", fs_handle->available_size, fs_handle->total_size);
+#endif    
+    //printf("fatfs available size:%u, total size:%u\r\n", fs_handle->available_size, fs_handle->total_size);
 
 
     // init path
@@ -453,7 +452,7 @@ esp_err_t at_httppost_from_fs_read(at_read_fs_handle_t *fs_handle, uint8_t *data
     fs_handle->read_size += read_len;
 
 
-    return (read_len == len)? ESP_OK : ESP_FAIL;
+    return read_len;
 }
 
 
@@ -520,11 +519,11 @@ static esp_err_t at_httppost_from_fs_event_handler(esp_http_client_event_t *evt)
         printf("http(https) header sent\r\n");
         break;
     case HTTP_EVENT_ON_HEADER:
-        printf("http(https) headed key=%s, value=%s\r\n", evt->header_key, evt->header_value);
+        printf("http(https) headed key=%s, value=%s\r\n", evt->header_key, evt->header_value);  
         break;
     case HTTP_EVENT_ON_DATA:
         sp_httppost_from_fs->sent_size += evt->data_len;
-        printf("sent total len=%d, %0.1f%%!\r\n", sp_httppost_from_fs->sent_size, (sp_httppost_from_fs->sent_size * 1.0) / sp_httppost_from_fs->total_size * 100);
+        printf("sent total len=%d, %0.1f%%!\r\n", sp_httppost_from_fs->sent_size, (sp_httppost_from_fs->sent_size * 1.0) / sp_httppost_from_fs->fs_handle->total_size * 100);
         break;
     case HTTP_EVENT_ON_FINISH:
         printf("http(https) finished\r\n");
@@ -633,7 +632,14 @@ static uint8_t at_setup_cmd_httppost_from_fs(uint8_t para_num)
         goto cmd_exit;
     }
 
-
+    // 获取HTTP状态码
+    int status_code = esp_http_client_get_status_code(sp_httppost_from_fs->client);
+    if (status_code >= HttpStatus_BadRequest) {
+        ESP_LOGE(TAG_POST, "recv http status code: %d", status_code);
+        ret = ESP_FAIL;
+        goto cmd_exit;
+    }
+    
     // send file data
     uint8_t *data = (uint8_t *)malloc(AT_HEAP_BUFFER_SIZE);
     if (!data) {
@@ -641,25 +647,29 @@ static uint8_t at_setup_cmd_httppost_from_fs(uint8_t para_num)
         goto cmd_exit;
     }
 
-
+    size_t read_len = 0;
     do {
-        ret = at_httppost_from_fs_read(sp_httppost_from_fs->fs_handle, data, AT_HEAP_BUFFER_SIZE);
-        if (ret == ESP_OK) {
-            esp_http_client_write(sp_httppost_from_fs->client, (char *)data, AT_HEAP_BUFFER_SIZE);
+        read_len = 0;
+        read_len = at_httppost_from_fs_read(sp_httppost_from_fs->fs_handle, data, AT_HEAP_BUFFER_SIZE);
+        if (read_len > 0) {
+            esp_http_client_write(sp_httppost_from_fs->client, (char *)data, read_len);
         } else {
             break;
         }
-    } while (ret == ESP_OK);
+    } while (read_len > 0);
 
 
     free(data);
 
-
-    if (sp_httppost_from_fs->total_size!= sp_httppost_from_fs->sent_size) {
-        ESP_LOGE(TAG_POST, "total expected len:%d, but total sent size:%d", sp_httppost_from_fs->total_size, sp_httppost_from_fs->sent_size);
-        ret = ESP_FAIL;
+    if (sp_httppost_from_fs->is_chunked) {
+        printf("total sent len:%d, total wrote size:%d\r\n", sp_httppost_from_fs->sent_size, sp_httppost_from_fs->fs_handle->total_size);
     } else {
-        printf("total sent size matches expected size:%d\r\n", sp_httppost_from_fs->sent_size);
+        if (sp_httppost_from_fs->sent_size!= sp_httppost_from_fs->fs_handle->total_size) {
+            ESP_LOGE(TAG_POST, "total expected len:%d, but total wrote size:%d", sp_httppost_from_fs->fs_handle->total_size, sp_httppost_from_fs->sent_size);
+            ret = ESP_FAIL;
+        } else {
+            printf("total wrote size matches expected size:%d\r\n", sp_httppost_from_fs->fs_handle->total_size);
+        }
     }
 
 
