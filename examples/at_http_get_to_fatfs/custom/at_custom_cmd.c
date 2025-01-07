@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -88,6 +88,7 @@ at_write_fs_handle_t *at_http_to_fs_begin(char *path)
     remove(fs_handle->path);
     fs_handle->fp = fopen(fs_handle->path, "wb");
     if (!fs_handle->fp) {
+        free(fs_handle->path);
         free(fs_handle);
         at_fatfs_unmount();
         ESP_LOGE(TAG, "fopen failed");
@@ -167,18 +168,9 @@ static void at_custom_wait_data_cb(void)
 
 static esp_err_t at_http_event_handler(esp_http_client_event_t *evt)
 {
+    ESP_LOGI(TAG, "http event id=%d", evt->event_id);
     switch (evt->event_id) {
-    case HTTP_EVENT_ERROR:
-        printf("http(https) error\r\n");
-        break;
-    case HTTP_EVENT_ON_CONNECTED:
-        printf("http(https) connected\r\n");
-        break;
-    case HTTP_EVENT_HEADER_SENT:
-        printf("http(https) header sent\r\n");
-        break;
     case HTTP_EVENT_ON_HEADER:
-        printf("http(https) headed key=%s, value=%s\r\n", evt->header_key, evt->header_value);
         if (strcmp(evt->header_key, "Content-Length") == 0) {
             sp_http_to_fs->total_size = atoi(evt->header_value);
             printf("total_size=%d\r\n", sp_http_to_fs->total_size);
@@ -187,7 +179,6 @@ static esp_err_t at_http_event_handler(esp_http_client_event_t *evt)
         break;
     case HTTP_EVENT_ON_DATA:
         sp_http_to_fs->recv_size += evt->data_len;
-
         // chunked check
         if (sp_http_to_fs->is_chunked) {
             printf("received total len=%d\r\n", sp_http_to_fs->recv_size);
@@ -195,12 +186,6 @@ static esp_err_t at_http_event_handler(esp_http_client_event_t *evt)
             printf("total_len=%d(%d), %0.1f%%!\r\n", sp_http_to_fs->total_size,
                    sp_http_to_fs->recv_size, (sp_http_to_fs->recv_size * 1.0) * 100 / sp_http_to_fs->total_size);
         }
-        break;
-    case HTTP_EVENT_ON_FINISH:
-        printf("http(https) finished\r\n");
-        break;
-    case HTTP_EVENT_DISCONNECTED:
-        printf("http(https) disconnected\r\n");
         break;
     default:
         break;
@@ -322,7 +307,6 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
             ESP_LOGE(TAG, "Connection aborted!");
             break;
         } else {
-            printf("Connection closed\r\n");
             ret = ESP_OK;
             break;
         }
