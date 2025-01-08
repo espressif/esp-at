@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <sys/stat.h>
 #include "sdkconfig.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
@@ -15,10 +16,10 @@
 #include "esp_log.h"
 #include "esp_at.h"
 
-
-#define AT_NETWORK_TIMEOUT_MS       (5000)
+#define AT_NETWORK_TIMEOUT_MS       (10000)
 #define AT_URL_LEN_MAX              (8 * 1024)
 #define AT_HEAP_BUFFER_SIZE         4096
+#define AT_RESP_PREFIX_LEN_MAX      64
 #define AT_FATFS_MOUNT_POINT        "/fatfs"
 
 
@@ -26,22 +27,17 @@ typedef struct {
     bool fs_mounted;                /*!< File system mounted */
     char *path;                     /*!< File path */
     FILE *fp;                       /*!< File pointer */
-    //uint32_t available_size;        /*!< The available size of the file system */
-    uint32_t total_size;            //*!< Total size of the file */
-    uint32_t read_size;             /*!< The file size that has been read from flash */
+    uint32_t total_size;            /*!< The total size of the file system */
+    uint32_t had_read_size;         /*!< The file size that has been written to flash */
 } at_read_fs_handle_t;
-
 
 typedef struct {
     char *url;                      /*!< URL */
-    //int32_t total_size;             /*!< Total size of the file */
-    int32_t sent_size;              /*!< Sent size of the file */
-    bool is_chunked;                /*!< Chunked flag */
+    int32_t post_size;              /*!< Total size of the file to post */
     SemaphoreHandle_t sync_sema;    /*!< Semaphore for synchronization */
     esp_http_client_handle_t client;    /*!< HTTP client handle */
-    at_read_fs_handle_t *fs_handle;    /*!< File system handle */
-} at_httppost_from_fs_t;
-
+    at_read_fs_handle_t *fs_handle;     /*!< File system handle */
+} at_fs_to_http_server_t;
 
 
 typedef struct {
@@ -68,10 +64,9 @@ static at_httpget_to_fs_t *sp_http_to_fs;
 static const char *TAG = "at_http_to_fs";
 
 // static variables
-static at_httppost_from_fs_t *sp_httppost_from_fs;
-static const char *TAG_POST = "at_httppost_from_fs";
-
-
+static at_fs_to_http_server_t *sp_fs_to_http;
+static const char *TAG_POST = "at_fs_to_http";
+/***************************************************************************************************************************************/
 at_write_fs_handle_t *at_http_to_fs_begin(char *path)
 {
     at_write_fs_handle_t *fs_handle = (at_write_fs_handle_t *)calloc(1, sizeof(at_write_fs_handle_t));
@@ -379,35 +374,21 @@ cmd_exit:
 
 /* ****************************************************************************************************************************** */
 
-at_read_fs_handle_t *at_httppost_from_fs_begin(char *path)
+static at_read_fs_handle_t *at_fs_to_http_begin(char *path)
 {
+    // mount file system
+    if (!at_fatfs_mount()) {
+        ESP_LOGE(TAG_POST, "at_fatfs_mount failed");
+        return NULL;
+    }
+
+    // init handle
     at_read_fs_handle_t *fs_handle = (at_read_fs_handle_t *)calloc(1, sizeof(at_read_fs_handle_t));
     if (!fs_handle) {
         ESP_LOGE(TAG_POST, "calloc failed");
         return NULL;
     }
-
-
-    // mount file system
-    if (!at_fatfs_mount()) {
-        free(fs_handle);
-        ESP_LOGE(TAG_POST, "at_fatfs_mount failed");
-        return NULL;
-    }
     fs_handle->fs_mounted = true;
-
-#if 0
-    // get available size
-    uint64_t fs_total_size = 0, fs_free_size = 0;
-    if (esp_vfs_fat_info(AT_FATFS_MOUNT_POINT, &fs_total_size, &fs_free_size)!= ESP_OK) {
-        free(fs_handle);
-        at_fatfs_unmount();
-        ESP_LOGE(TAG_POST, "esp_vfs_fat_info failed");
-        return NULL;
-    }
-#endif    
-    //printf("fatfs available size:%u, total size:%u\r\n", fs_handle->available_size, fs_handle->total_size);
-
 
     // init path
     fs_handle->path = (char *)calloc(1, strlen(AT_FATFS_MOUNT_POINT) + strlen(path) + 2);
@@ -419,187 +400,172 @@ at_read_fs_handle_t *at_httppost_from_fs_begin(char *path)
     }
     sprintf(fs_handle->path, "%s/%s", AT_FATFS_MOUNT_POINT, path);
 
+    // get file size
+    struct stat st;
+    memset(&st, 0, sizeof(st));
+    if (stat(fs_handle->path, &st) == -1) {
+        ESP_LOGE(TAG_POST, "stat(%s) failed\n", fs_handle->path);
+        free(fs_handle->path);
+        free(fs_handle);
+        at_fatfs_unmount();
+        return NULL;
+    }
+    fs_handle->total_size = st.st_size;
 
     // open file
     fs_handle->fp = fopen(fs_handle->path, "rb");
     if (!fs_handle->fp) {
+        ESP_LOGE(TAG_POST, "fopen(%s) failed", fs_handle->path);
+        free(fs_handle->path);
         free(fs_handle);
         at_fatfs_unmount();
-        ESP_LOGE(TAG_POST, "fopen failed");
         return NULL;
     }
-
-
-    // get file size
-    fseek(fs_handle->fp, 0, SEEK_END);
-    fs_handle->total_size = ftell(fs_handle->fp);
-    fseek(fs_handle->fp, 0, SEEK_SET);
-
 
     return fs_handle;
 }
 
-
-esp_err_t at_httppost_from_fs_read(at_read_fs_handle_t *fs_handle, uint8_t *data, size_t len)
+static int at_fs_read(at_read_fs_handle_t *fs_handle, uint8_t *data, size_t len)
 {
-    if (!fs_handle ||!fs_handle->fp) {
+    if (!fs_handle || !fs_handle->fp || !data) {
         ESP_LOGE(TAG_POST, "invalid argument");
-        return ESP_ERR_INVALID_ARG;
+        return -ESP_ERR_INVALID_ARG;
     }
 
+    if (fseek(fs_handle->fp, fs_handle->had_read_size, SEEK_SET) != 0) {
+        ESP_LOGE(TAG_POST, "fseek failed");
+        return ESP_FAIL;
+    }
 
-    size_t read_len = fread(data, 1, len, fs_handle->fp);
-    fs_handle->read_size += read_len;
-
-
-    return read_len;
+    size_t had_read_size = fread(data, 1, len, fs_handle->fp);
+    fs_handle->had_read_size += had_read_size;
+    return had_read_size;
 }
 
-
-static void at_httppost_from_fs_clean(void)
+static void at_fs_to_http_clean(void)
 {
-    if (sp_httppost_from_fs) {
+    if (sp_fs_to_http) {
         // http client
-        if (sp_httppost_from_fs->sync_sema) {
-            vSemaphoreDelete(sp_httppost_from_fs->sync_sema);
-            sp_httppost_from_fs->sync_sema = NULL;
+        if (sp_fs_to_http->sync_sema) {
+            vSemaphoreDelete(sp_fs_to_http->sync_sema);
+            sp_fs_to_http->sync_sema = NULL;
         }
-        if (sp_httppost_from_fs->url) {
-            free(sp_httppost_from_fs->url);
-            sp_httppost_from_fs->url = NULL;
+        if (sp_fs_to_http->url) {
+            free(sp_fs_to_http->url);
+            sp_fs_to_http->url = NULL;
         }
-        if (sp_httppost_from_fs->client) {
-            esp_http_client_cleanup(sp_httppost_from_fs->client);
-            sp_httppost_from_fs->client = NULL;
+        if (sp_fs_to_http->client) {
+            esp_http_client_cleanup(sp_fs_to_http->client);
+            sp_fs_to_http->client = NULL;
         }
-
 
         // file system
-        if (sp_httppost_from_fs->fs_handle) {
-            if (sp_httppost_from_fs->fs_handle->fp) {
-                fclose(sp_httppost_from_fs->fs_handle->fp);
-                sp_httppost_from_fs->fs_handle->fp = NULL;
+        if (sp_fs_to_http->fs_handle) {
+            if (sp_fs_to_http->fs_handle->fp) {
+                fclose(sp_fs_to_http->fs_handle->fp);
+                sp_fs_to_http->fs_handle->fp = NULL;
             }
-            if (sp_httppost_from_fs->fs_handle->path) {
-                free(sp_httppost_from_fs->fs_handle->path);
-                sp_httppost_from_fs->fs_handle->path = NULL;
+            if (sp_fs_to_http->fs_handle->path) {
+                free(sp_fs_to_http->fs_handle->path);
+                sp_fs_to_http->fs_handle->path = NULL;
             }
-            if (sp_httppost_from_fs->fs_handle->fs_mounted) {
+            if (sp_fs_to_http->fs_handle->fs_mounted) {
                 at_fatfs_unmount();
-                sp_httppost_from_fs->fs_handle->fs_mounted = false;
+                sp_fs_to_http->fs_handle->fs_mounted = false;
             }
-            free(sp_httppost_from_fs->fs_handle);
-            sp_httppost_from_fs->fs_handle = NULL;
+            free(sp_fs_to_http->fs_handle);
+            sp_fs_to_http->fs_handle = NULL;
         }
 
-
         // itself
-        free(sp_httppost_from_fs);
-        sp_httppost_from_fs = NULL;
+        free(sp_fs_to_http);
+        sp_fs_to_http = NULL;
     }
 }
-
 
 static void at_custom_wait_data_cb(void)
 {
-    xSemaphoreGive(sp_httppost_from_fs->sync_sema);
+    xSemaphoreGive(sp_fs_to_http->sync_sema);
 }
 
-
-static esp_err_t at_httppost_from_fs_event_handler(esp_http_client_event_t *evt)
+static esp_err_t at_http_event_handler(esp_http_client_event_t *evt)
 {
+    int header_len = 0;
+    uint8_t *data = NULL;
+    ESP_LOGI(TAG_POST, "http event id=%d", evt->event_id);
+
     switch (evt->event_id) {
-    case HTTP_EVENT_ERROR:
-        printf("http(https) error\r\n");
-        break;
-    case HTTP_EVENT_ON_CONNECTED:
-        printf("http(https) connected\r\n");
-        break;
-    case HTTP_EVENT_HEADER_SENT:
-        printf("http(https) header sent\r\n");
-        break;
-    case HTTP_EVENT_ON_HEADER:
-        printf("http(https) headed key=%s, value=%s\r\n", evt->header_key, evt->header_value);  
-        break;
     case HTTP_EVENT_ON_DATA:
-        sp_httppost_from_fs->sent_size += evt->data_len;
-        printf("sent total len=%d, %0.1f%%!\r\n", sp_httppost_from_fs->sent_size, (sp_httppost_from_fs->sent_size * 1.0) / sp_httppost_from_fs->fs_handle->total_size * 100);
-        break;
-    case HTTP_EVENT_ON_FINISH:
-        printf("http(https) finished\r\n");
-        break;
-    case HTTP_EVENT_DISCONNECTED:
-        printf("http(https) disconnected\r\n");
+        data = malloc(evt->data_len + AT_RESP_PREFIX_LEN_MAX);
+        if (!data) {
+            ESP_LOGE(TAG_POST, "malloc failed");
+            return ESP_ERR_NO_MEM;
+        }
+        header_len = snprintf((char *)data, AT_RESP_PREFIX_LEN_MAX, "%s:%d,", esp_at_get_current_cmd_name(), evt->data_len);
+        memcpy(data + header_len, evt->data, evt->data_len);
+        memcpy(data + header_len + evt->data_len, "\r\n", 2);
+        esp_at_port_write_data(data, header_len + evt->data_len + 2);
+        free(data);
         break;
     default:
         break;
     }
 
-
     return ESP_OK;
 }
 
-
-static uint8_t at_setup_cmd_httppost_from_fs(uint8_t para_num)
+static uint8_t at_setup_cmd_fs_to_http_server(uint8_t para_num)
 {
     esp_err_t ret = ESP_OK;
     int32_t cnt = 0, url_len = 0;
-    uint8_t *src_path = NULL;
+    uint8_t *dst_path = NULL, *data = NULL;
 
-
-    // src file path
-    if (esp_at_get_para_as_str(cnt++, &src_path)!= ESP_AT_PARA_PARSE_RESULT_OK) {
+    // dst file path
+    if (esp_at_get_para_as_str(cnt++, &dst_path) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
-    if (at_str_is_null(src_path)) {
+    if (at_str_is_null(dst_path)) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
-
 
     // url len
-    if (esp_at_get_para_as_digit(cnt++, &url_len)!= ESP_AT_PARA_PARSE_RESULT_OK) {
+    if (esp_at_get_para_as_digit(cnt++, &url_len) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
     if (url_len <= 0 || url_len > AT_URL_LEN_MAX) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
-
     // parameters are ready
-    if (cnt!= para_num) {
+    if (cnt != para_num) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
-
-    sp_httppost_from_fs = (at_httppost_from_fs_t *)calloc(1, sizeof(at_httppost_from_fs_t));
-    if (!sp_httppost_from_fs) {
+    sp_fs_to_http = (at_fs_to_http_server_t *)calloc(1, sizeof(at_fs_to_http_server_t));
+    if (!sp_fs_to_http) {
         ret = ESP_ERR_NO_MEM;
         goto cmd_exit;
     }
-
 
     // init resources
-    sp_httppost_from_fs->fs_handle = at_httppost_from_fs_begin((char *)src_path);
-    sp_httppost_from_fs->url = (char *)calloc(1, url_len + 1);
-    sp_httppost_from_fs->sync_sema = xSemaphoreCreateBinary();
+    sp_fs_to_http->fs_handle = at_fs_to_http_begin((char *)dst_path);
+    sp_fs_to_http->url = (char *)calloc(1, url_len + 1);
+    sp_fs_to_http->sync_sema = xSemaphoreCreateBinary();
 
-
-    if (!sp_httppost_from_fs->fs_handle ||!sp_httppost_from_fs->url ||!sp_httppost_from_fs->sync_sema) {
+    if (!sp_fs_to_http->fs_handle || !sp_fs_to_http->url || !sp_fs_to_http->sync_sema) {
         ret = ESP_ERR_NO_MEM;
         goto cmd_exit;
     }
-
 
     // receive url from AT port
     int32_t had_recv_len = 0;
     esp_at_port_enter_specific(at_custom_wait_data_cb);
     esp_at_response_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT);
-    while (xSemaphoreTake(sp_httppost_from_fs->sync_sema, portMAX_DELAY)) {
-        had_recv_len += esp_at_port_read_data((uint8_t *)(sp_httppost_from_fs->url) + had_recv_len, url_len - had_recv_len);
+    while (xSemaphoreTake(sp_fs_to_http->sync_sema, portMAX_DELAY)) {
+        had_recv_len += esp_at_port_read_data((uint8_t *)(sp_fs_to_http->url) + had_recv_len, url_len - had_recv_len);
         if (had_recv_len == url_len) {
             printf("Recv %d bytes\r\n", had_recv_len);
             esp_at_port_exit_specific();
-
 
             int32_t remain_len = esp_at_port_get_data_length();
             if (remain_len > 0) {
@@ -608,79 +574,98 @@ static uint8_t at_setup_cmd_httppost_from_fs(uint8_t para_num)
             break;
         }
     }
-    printf("ready to upload %s from %s\r\n", sp_httppost_from_fs->url, sp_httppost_from_fs->fs_handle->path);
-
+    printf("ready to post %s (size:%d) to %s\r\n", sp_fs_to_http->fs_handle->path, sp_fs_to_http->fs_handle->total_size, sp_fs_to_http->url);
 
     // init http client
     esp_http_client_config_t config = {
-       .url = (const char*)sp_httppost_from_fs->url,
-       .event_handler = at_httppost_from_fs_event_handler,
-       .timeout_ms = AT_NETWORK_TIMEOUT_MS,
-       .buffer_size_tx = 4096,
+        .url = (const char*)sp_fs_to_http->url,
+        .event_handler = at_http_event_handler,
+        .timeout_ms = AT_NETWORK_TIMEOUT_MS,
+        .buffer_size_tx = 4096,
     };
-    sp_httppost_from_fs->client = esp_http_client_init(&config);
-    if (!sp_httppost_from_fs->client) {
+    sp_fs_to_http->client = esp_http_client_init(&config);
+    if (!sp_fs_to_http->client) {
         ret = ESP_FAIL;
         goto cmd_exit;
     }
-    esp_http_client_set_method(sp_httppost_from_fs->client, HTTP_METHOD_POST);
-
+    esp_http_client_set_method(sp_fs_to_http->client, HTTP_METHOD_POST);
+    esp_http_client_set_header(sp_fs_to_http->client, "Content-Type", "binary/octet-stream");
 
     // establish http connection
-    ret = esp_http_client_open(sp_httppost_from_fs->client, 0);
-    if (ret!= ESP_OK) {
+    ret = esp_http_client_open(sp_fs_to_http->client, sp_fs_to_http->fs_handle->total_size);
+    if (ret != ESP_OK) {
         goto cmd_exit;
     }
 
-    // 获取HTTP状态码
-    int status_code = esp_http_client_get_status_code(sp_httppost_from_fs->client);
-    if (status_code >= HttpStatus_BadRequest) {
-        ESP_LOGE(TAG_POST, "recv http status code: %d", status_code);
-        ret = ESP_FAIL;
-        goto cmd_exit;
-    }
-    
-    // send file data
-    uint8_t *data = (uint8_t *)malloc(AT_HEAP_BUFFER_SIZE);
+    // post file to remote server
+    data = (uint8_t *)malloc(AT_HEAP_BUFFER_SIZE);
     if (!data) {
         ret = ESP_ERR_NO_MEM;
         goto cmd_exit;
     }
-
-    size_t read_len = 0;
     do {
-        read_len = 0;
-        read_len = at_httppost_from_fs_read(sp_httppost_from_fs->fs_handle, data, AT_HEAP_BUFFER_SIZE);
-        if (read_len > 0) {
-            esp_http_client_write(sp_httppost_from_fs->client, (char *)data, read_len);
-        } else {
+        int unposted_len = sp_fs_to_http->fs_handle->total_size - sp_fs_to_http->fs_handle->had_read_size;
+        int to_post_len = AT_HEAP_BUFFER_SIZE < unposted_len ? AT_HEAP_BUFFER_SIZE : unposted_len;
+        to_post_len = at_fs_read(sp_fs_to_http->fs_handle, data, to_post_len);
+        if (to_post_len <= 0) {
+            ret = ESP_FAIL;
             break;
         }
-    } while (read_len > 0);
-
-
-    free(data);
-
-    if (sp_httppost_from_fs->is_chunked) {
-        printf("total sent len:%d, total wrote size:%d\r\n", sp_httppost_from_fs->sent_size, sp_httppost_from_fs->fs_handle->total_size);
-    } else {
-        if (sp_httppost_from_fs->sent_size!= sp_httppost_from_fs->fs_handle->total_size) {
-            ESP_LOGE(TAG_POST, "total expected len:%d, but total wrote size:%d", sp_httppost_from_fs->fs_handle->total_size, sp_httppost_from_fs->sent_size);
+        int wlen = esp_http_client_write(sp_fs_to_http->client, (char *)data, to_post_len);
+        if (wlen > 0) {
+            sp_fs_to_http->post_size += wlen;
+            if (sp_fs_to_http->post_size == sp_fs_to_http->fs_handle->total_size) {
+                ret = ESP_OK;
+                break;
+            }
+        } else if (wlen < 0) {
             ret = ESP_FAIL;
+            ESP_LOGE(TAG_POST, "Connection aborted!");
+            break;
         } else {
-            printf("total wrote size matches expected size:%d\r\n", sp_httppost_from_fs->fs_handle->total_size);
+            ret = ESP_FAIL;
+            ESP_LOGE(TAG_POST, "esp_http_client_write() timeout!");
+            break;
         }
+    } while (1);
+
+    // post over
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG_POST, "total expected len:%d, but total post size:%d", sp_fs_to_http->fs_handle->total_size, sp_fs_to_http->post_size);
+        goto cmd_exit;
+    }
+    ESP_LOGI(TAG_POST, "total post size matches expected size:%d", sp_fs_to_http->fs_handle->total_size);
+
+    // fetch response header
+    int header_ret = esp_http_client_fetch_headers(sp_fs_to_http->client);
+    if (header_ret < 0) {
+        ret = header_ret;
+        goto cmd_exit;
+    }
+    // status code
+    int status_code = esp_http_client_get_status_code(sp_fs_to_http->client);
+    if (status_code != HttpStatus_Ok) {
+        ESP_LOGE(TAG_POST, "recv http status code: %d", status_code);
+        ret = -status_code;
+        goto cmd_exit;
+    }
+    // process the server response
+    ret = esp_http_client_perform(sp_fs_to_http->client);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG_POST, "esp_http_client_perform failed: 0x%x", ret);
+        goto cmd_exit;
     }
 
-
 cmd_exit:
+    if (data) {
+        free(data);
+    }
     // clean resources
-    at_httppost_from_fs_clean();
-    if (ret!= ESP_OK) {
+    at_fs_to_http_clean();
+    if (ret != ESP_OK) {
         ESP_LOGE(TAG_POST, "command ret: 0x%x", ret);
         return ESP_AT_RESULT_CODE_ERROR;
     }
-
 
     return ESP_AT_RESULT_CODE_OK;
 }
@@ -749,7 +734,7 @@ static uint8_t at_exe_cmd_test(uint8_t *cmd_name)
 
 static const esp_at_cmd_struct at_custom_cmd[] = {
     {"+HTTPGET_TO_FS", NULL, NULL, at_setup_cmd_httpget_to_fs, NULL},
-    {"+HTTPPOST_FROM_FS", NULL, NULL, at_setup_cmd_httppost_from_fs, NULL},
+    {"+FS_TO_HTTP_SERVER", NULL, NULL, at_setup_cmd_fs_to_http_server, NULL},
     {"+TEST", at_test_cmd_test, at_query_cmd_test, at_setup_cmd_test, at_exe_cmd_test},
 
 };
