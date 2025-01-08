@@ -186,7 +186,7 @@ static void at_sp_http_to_fs_wait_data_cb(void)
     xSemaphoreGive(sp_http_to_fs->sync_sema);
 }
 
-static esp_err_t at_http_event_handler(esp_http_client_event_t *evt)
+static esp_err_t at_http_get_event_handler(esp_http_client_event_t *evt)
 {
     switch (evt->event_id) {
     case HTTP_EVENT_ERROR:
@@ -295,7 +295,7 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
     // init http client
     esp_http_client_config_t config = {
         .url = (const char*)sp_http_to_fs->url,
-        .event_handler = at_http_event_handler,
+        .event_handler = at_http_get_event_handler,
         .timeout_ms = AT_NETWORK_TIMEOUT_MS,
         .buffer_size_tx = 4096,
     };
