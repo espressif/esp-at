@@ -140,6 +140,7 @@ static void at_http_to_fs_clean(void)
         // file system
         if (sp_http_to_fs->fs_handle) {
             if (sp_http_to_fs->fs_handle->fp) {
+                fflush(sp_http_to_fs->fs_handle->fp);
                 fclose(sp_http_to_fs->fs_handle->fp);
                 sp_http_to_fs->fs_handle->fp = NULL;
             }
