@@ -589,7 +589,7 @@ static uint8_t at_setup_cmd_fs_to_http_server(uint8_t para_num)
         goto cmd_exit;
     }
     esp_http_client_set_method(sp_fs_to_http->client, HTTP_METHOD_POST);
-    esp_http_client_set_header(sp_fs_to_http->client, "Content-Type", "binary/octet-stream");
+    esp_http_client_set_header(sp_fs_to_http->client, "Content-Type", "multipart/form-data");
 
     // establish http connection
     ret = esp_http_client_open(sp_fs_to_http->client, sp_fs_to_http->fs_handle->total_size);
