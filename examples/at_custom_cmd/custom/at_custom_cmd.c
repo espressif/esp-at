@@ -506,6 +506,7 @@ static esp_err_t at_http_event_handler(esp_http_client_event_t *evt)
         memcpy(data + header_len + evt->data_len, "\r\n", 2);
         esp_at_port_write_data(data, header_len + evt->data_len + 2);
         free(data);
+        printf("\r\n%.*s\r\n", evt->data_len, (char *)evt->data);
         break;
     default:
         break;
@@ -519,6 +520,7 @@ static uint8_t at_setup_cmd_fs_to_http_server(uint8_t para_num)
     esp_err_t ret = ESP_OK;
     int32_t cnt = 0, url_len = 0;
     uint8_t *dst_path = NULL, *data = NULL;
+    char *body_start = NULL, *body_end = NULL;
 
     // dst file path
     if (esp_at_get_para_as_str(cnt++, &dst_path) != ESP_AT_PARA_PARSE_RESULT_OK) {
@@ -589,11 +591,37 @@ static uint8_t at_setup_cmd_fs_to_http_server(uint8_t para_num)
         goto cmd_exit;
     }
     esp_http_client_set_method(sp_fs_to_http->client, HTTP_METHOD_POST);
-    esp_http_client_set_header(sp_fs_to_http->client, "Content-Type", "multipart/form-data;--ESP32Boundary123456");
+    // esp_http_client_set_header(sp_fs_to_http->client, "Content-Type", "multipart/form-data");
+
+    // set new header
+    char *boundary = "--myboundary";
+    char value[128];
+    snprintf(value, 128, "multipart/form-data; boundary=--%s", boundary);
+    esp_http_client_set_header(sp_fs_to_http->client, "Content-Type", value);
+
+    // construct http body start and end
+    int rlen = 0;
+    body_start = calloc(1, 512);
+    body_end = calloc(1, 64);
+    if (!body_start || !body_end) {
+        ret = ESP_ERR_NO_MEM;
+        goto cmd_exit;
+    }
+    int start_len = snprintf(body_start, 512,
+        "----%s\r\nContent-Disposition: form-data; name=\"username\"\r\n\r\nAlice\r\n----%s\r\nContent-Disposition: form-data; name=\"file\"; filename=\"%s\"\r\nContent-Type: application/octet-stream\r\n\r\n",
+         boundary, boundary, sp_fs_to_http->fs_handle->path);
+    int end_len = snprintf(body_end, 512, "\r\n----%s--\r\n", boundary);
 
     // establish http connection
-    ret = esp_http_client_open(sp_fs_to_http->client, sp_fs_to_http->fs_handle->total_size);
+    ret = esp_http_client_open(sp_fs_to_http->client, sp_fs_to_http->fs_handle->total_size + start_len + end_len);
     if (ret != ESP_OK) {
+        goto cmd_exit;
+    }
+
+    rlen = esp_http_client_write(sp_fs_to_http->client, body_start, start_len);
+    if (rlen != start_len) {
+        ESP_LOGE(TAG_POST, "esp_http_client_write() failed");
+        ret = ESP_FAIL;
         goto cmd_exit;
     }
 
@@ -629,6 +657,13 @@ static uint8_t at_setup_cmd_fs_to_http_server(uint8_t para_num)
         }
     } while (1);
 
+    rlen = esp_http_client_write(sp_fs_to_http->client, body_end, end_len);
+    if (rlen != end_len) {
+        ESP_LOGE(TAG_POST, "esp_http_client_write() failed");
+        ret = ESP_FAIL;
+        goto cmd_exit;
+    }
+
     // post over
     if (ret != ESP_OK) {
         ESP_LOGE(TAG_POST, "total expected len:%d, but total post size:%d", sp_fs_to_http->fs_handle->total_size, sp_fs_to_http->post_size);
@@ -660,6 +695,12 @@ cmd_exit:
     if (data) {
         free(data);
     }
+    if (body_start) {
+        free(body_start);
+    }
+    if (body_end) {
+        free(body_end);
+    }
     // clean resources
     at_fs_to_http_clean();
     if (ret != ESP_OK) {
@@ -668,7 +709,7 @@ cmd_exit:
     }
 
     return ESP_AT_RESULT_CODE_OK;
-}
+}    
 
 /****************************************************************************************************************************************/
 
