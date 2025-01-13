@@ -81,5 +81,7 @@ set_property(TARGET ${LIBS} PROPERTY IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DI
 target_link_libraries(${COMPONENT_LIB} INTERFACE ${LIBS})
 set_property(TARGET ${LIBS} APPEND PROPERTY INTERFACE_LINK_LIBRARIES ${COMPONENT_LIB})
 
+target_link_options(${COMPONENT_LIB} INTERFACE "-Wl,--wrap=esp_partition_find_first")
+
 # force the referencing of some symbols
 include (force_symbol_ref.cmake)
