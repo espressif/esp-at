@@ -33,7 +33,7 @@
 
 .build_template:
   stage: build
-  image: $CI_DOCKER_REGISTRY/esp-env-v5.0:2
+  image: $CI_DOCKER_REGISTRY/esp-env-v5.4:1
   needs: []
   tags:
     - build

@@ -868,7 +868,7 @@ static esp_err_t rmaker_ota_report_status(const char *ota_job, ota_status_t stat
     json_gen_str_t jstr;
     json_gen_str_start(&jstr, publish_payload, RAINMAKER_OTA_MES_PAYLOAD_LEN, NULL, NULL);
     json_gen_start_object(&jstr);
-    json_gen_obj_set_string(&jstr, "ota_job_id", ota_job);
+    json_gen_obj_set_string(&jstr, "ota_job_id", (char *)ota_job);
     json_gen_obj_set_string(&jstr, "status", esp_rmaker_ota_status_to_string(status));
     json_gen_obj_set_string(&jstr, "additional_info", additional_info);
     json_gen_end_object(&jstr);

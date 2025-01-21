@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -191,7 +191,7 @@ static esp_err_t start_command_write_blocks(sdspi_hw_cmd_t* cmd,
         size_t will_send = MIN(tx_length, SDSPI_MAX_DATA_LEN);
 
         // Write data
-        ret = at_spi_transmit(data, NULL, will_send);
+        ret = at_spi_transmit((void *)data, NULL, will_send);
 
         if (ret != ESP_OK) {
             return ret;
@@ -233,7 +233,7 @@ static esp_err_t poll_data_token(uint8_t* extra_ptr, size_t* extra_size)
 {
     uint8_t t_rx[8];
     esp_err_t ret;
-    uint8_t count_time = 0;
+    uint32_t count_time = 0;
 
     do {
         memset(t_rx, SDSPI_MOSI_IDLE_VAL, sizeof(t_rx));
@@ -746,7 +746,7 @@ esp_err_t spi_io_write_bytes(uint32_t function,
     ESP_AT_LOGD(TAG, "%s, will transfer size: %d\n", __func__, size);
     esp_err_t err = spi_io_rw_extended(function, addr,
                                        SD_ARG_CMD53_WRITE | SD_ARG_CMD53_INCREMENT,
-                                       src, size);
+                                       (void *)src, size);
 
     if (err != ESP_OK) {
         ESP_AT_LOGE(TAG, "Write bytes spi_io_rw_extended return %d", err);

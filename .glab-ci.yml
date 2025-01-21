@@ -13,7 +13,7 @@ variables: &global-variables
 
 .esp_at_build_template:
   stage: build
-  image: $CI_DOCKER_REGISTRY/esp-env-v5.0:2
+  image: $CI_DOCKER_REGISTRY/esp-env-v5.4:1
   tags:
     - build
   variables:

@@ -22,8 +22,8 @@ bool esp_at_get_eth_default_config(esp_eth_config_t* config)
     phy_config.phy_addr = CONFIG_AT_ETH_PHY_ADDR;
     phy_config.reset_gpio_num = CONFIG_AT_ETH_PHY_RST_GPIO;
     eth_esp32_emac_config_t esp32_emac_config = ETH_ESP32_EMAC_DEFAULT_CONFIG();
-    esp32_emac_config.smi_mdc_gpio_num = CONFIG_AT_ETH_MDC_GPIO;
-    esp32_emac_config.smi_mdio_gpio_num = CONFIG_AT_ETH_MDIO_GPIO;
+    esp32_emac_config.smi_gpio.mdc_num = CONFIG_AT_ETH_MDC_GPIO;
+    esp32_emac_config.smi_gpio.mdio_num = CONFIG_AT_ETH_MDIO_GPIO;
     esp_eth_mac_t *mac = esp_eth_mac_new_esp32(&esp32_emac_config, &mac_config);
 
 #if CONFIG_PHY_IP101
