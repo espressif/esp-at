@@ -5,7 +5,7 @@ push_to_github:
   tags:
     - internet
   when: on_success
-  image: $CI_DOCKER_REGISTRY/esp-env-v4.4:1
+  image: $CI_DOCKER_REGISTRY/esp-env-v5.4:1
   variables:
     GIT_STRATEGY: clone
     GITHUB_PUSH_REFS: refs/remotes/origin/release refs/remotes/origin/master
@@ -18,7 +18,7 @@ push_to_github:
 
 .deploy_docs_template:
   stage: deploy_docs
-  image: $CI_DOCKER_REGISTRY/esp-idf-doc-env-v5.0:4-4
+  image: $CI_DOCKER_REGISTRY/esp-idf-doc-env-v5.4:1-1
   tags:
     - internet
   needs:

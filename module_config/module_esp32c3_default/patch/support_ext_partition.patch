@@ -1,20 +1,17 @@
 diff --git a/components/partition_table/project_include.cmake b/components/partition_table/project_include.cmake
-index d0969ba408..cbd14f2796 100644
+index ddd6230db3..7f18189310 100644
 --- a/components/partition_table/project_include.cmake
 +++ b/components/partition_table/project_include.cmake
-@@ -9,10 +9,14 @@ if(NOT BOOTLOADER_BUILD)
-     # Set PARTITION_CSV_PATH to the configured partition CSV file
-     # absolute path
-     if(CONFIG_PARTITION_TABLE_CUSTOM)
-+        if(NOT CONFIG_PARTITION_TABLE_BASE_DIR)
-+            set(CONFIG_PARTITION_TABLE_BASE_DIR "${project_dir}")
-+        endif()
-+
-         idf_build_get_property(project_dir PROJECT_DIR)
-         # Custom filename expands any path relative to the project
-         get_filename_component(PARTITION_CSV_PATH "${CONFIG_PARTITION_TABLE_FILENAME}"
--                                ABSOLUTE BASE_DIR "${project_dir}")
-+                                ABSOLUTE BASE_DIR "${CONFIG_PARTITION_TABLE_BASE_DIR}")
+@@ -16,8 +16,11 @@ if(NOT non_os_build)
+         else()
+             idf_build_get_property(project_dir PROJECT_DIR)
+             # Custom filename expands any path relative to the project
++            if(NOT CONFIG_PARTITION_TABLE_BASE_DIR)
++                set(CONFIG_PARTITION_TABLE_BASE_DIR "${project_dir}")
++            endif()
+             get_filename_component(PARTITION_CSV_PATH "${CONFIG_PARTITION_TABLE_FILENAME}"
+-                                    ABSOLUTE BASE_DIR "${project_dir}")
++                                    ABSOLUTE BASE_DIR "${CONFIG_PARTITION_TABLE_BASE_DIR}")
+         endif()
  
          if(NOT EXISTS "${PARTITION_CSV_PATH}")
-             message(WARNING "Partition table CSV file ${PARTITION_CSV_PATH} not found. "

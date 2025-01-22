@@ -90,7 +90,6 @@ set(FALLBACK_DNS_SERVER "8.8.8.8")
 add_compile_options("-DFALLBACK_DNS_SERVER_ADDRESS(p)=ipaddr_aton(\"${FALLBACK_DNS_SERVER}\",(p))")
 
 # optimize sntp startup delay and receive timeout to speed up time synchronization
-add_compile_options("-DSNTP_STARTUP_DELAY_FUNC=0")
 add_compile_options("-DSNTP_RECV_TIMEOUT=3000")
 
 # add cmake flags

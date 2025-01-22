@@ -1,6 +1,6 @@
-From f59ad54c5e2de90423fb8c2db344e829d05f6db4 Mon Sep 17 00:00:00 2001
+From 8105839079aac943e114a7539a556ac3897a7372 Mon Sep 17 00:00:00 2001
 From: xiewenxiang <xiewenxiang@espressif.com>
-Date: Thu, 14 Nov 2024 16:34:27 +0800
+Date: Fri, 17 Jan 2025 11:10:05 +0800
 Subject: [PATCH] feat(blufi): Support ext adv
 
 ---

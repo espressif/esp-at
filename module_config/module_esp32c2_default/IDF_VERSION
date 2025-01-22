@@ -1,3 +1,3 @@
-branch:release/v5.1
-commit:64849cb7039a93b7b3a4ad8e8da328fa9c09c5e7
+branch:release/v5.4
+commit:67c1de1eebe095d554d281952fde63c16ee2dca0
 repository:https://github.com/espressif/esp-idf.git

@@ -128,8 +128,6 @@ typedef struct {
 
 #define SDSPI_BLOCK_BUF_SIZE    (512 + 4)
 
-#define ESP_ERR_NOT_FINISHED    0x201
-
 /**
  * SD/MMC command response buffer
  */

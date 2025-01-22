@@ -1,6 +1,6 @@
-From 880c46ed4830a561df3dc6ba72dfee9c39b0559a Mon Sep 17 00:00:00 2001
+From 8105839079aac943e114a7539a556ac3897a7372 Mon Sep 17 00:00:00 2001
 From: xiewenxiang <xiewenxiang@espressif.com>
-Date: Thu, 13 Jul 2023 19:24:50 +0800
+Date: Fri, 17 Jan 2025 11:10:05 +0800
 Subject: [PATCH] feat(blufi): Support ext adv
 
 ---
@@ -8,7 +8,7 @@ Subject: [PATCH] feat(blufi): Support ext adv
  1 file changed, 97 insertions(+), 1 deletion(-)
 
 diff --git a/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c b/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
-index 5a22773c7a..220a29de81 100644
+index bd24eb8ba9..0515c25adc 100644
 --- a/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
 +++ b/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
 @@ -32,11 +32,22 @@
@@ -34,7 +34,7 @@ index 5a22773c7a..220a29de81 100644
  enum {
      GATT_VALUE_TYPE_CHR,
      GATT_VALUE_TYPE_DSC,
-@@ -333,6 +344,79 @@ esp_blufi_gap_event(struct ble_gap_event *event, void *arg)
+@@ -357,6 +368,79 @@ esp_blufi_gap_event(struct ble_gap_event *event, void *arg)
  
  void esp_blufi_adv_start(void)
  {
@@ -114,15 +114,15 @@ index 5a22773c7a..220a29de81 100644
      int rc;
  
      rc = ble_hs_util_ensure_addr(0);
-@@ -404,6 +488,7 @@ void esp_blufi_adv_start(void)
-         ESP_LOGE(TAG, "error enabling advertisement; rc=%d\n", rc);
+@@ -428,6 +512,7 @@ void esp_blufi_adv_start(void)
+         ESP_LOGE(TAG, "error enabling advertisement; rc=%d", rc);
          return;
      }
 +#endif
  }
  
  uint8_t esp_blufi_init(void)
-@@ -447,7 +532,18 @@ void esp_blufi_disconnect(void)
+@@ -473,7 +558,18 @@ void esp_blufi_disconnect(void)
      ble_gap_terminate(blufi_env.conn_id, BLE_ERR_REM_USER_CONN_TERM);
  }
  
