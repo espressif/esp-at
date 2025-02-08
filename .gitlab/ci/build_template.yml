@@ -174,6 +174,10 @@
   - echo -e "CONFIG_AT_WIFI_DUMP_STATIS_DEBUG=y" >> ${at_sdkconfig_file}
   - echo -e "CONFIG_AT_NET_DEBUG=y" >> ${at_sdkconfig_file}
 
+.disable_wifi_iram_opt: &disable_wifi_iram_opt
+  - echo -e "CONFIG_ESP_WIFI_IRAM_OPT=n" >> ${at_sdkconfig_file}
+  - echo -e "CONFIG_ESP_WIFI_RX_IRAM_OPT=n" >> ${at_sdkconfig_file}
+
 #########################
 # Enlarge app partition #
 #########################
@@ -230,6 +234,7 @@
     - add_gitlab_ssh_keys
     - get_module_configs
     - *enable_at_debugs
+    - *disable_wifi_iram_opt
     - *enlarge_app_partition
 
 .before_script_enable_all_wifi_cmds:
