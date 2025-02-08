@@ -1,7 +1,7 @@
 How to Add User-defined AT Commands
 ====================================
 
-{IDF_TARGET_VER: default="undefined", esp32="5.0", esp32c2="5.0", esp32c3="5.0", esp32c6="5.1", esp32s2="5.0"}
+{IDF_TARGET_VER: default="5.4"}
 
 :link_to_translation:`zh_CN:[中文]`
 
