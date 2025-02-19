@@ -2148,14 +2148,14 @@ void *esp_rmaker_factory_get(const char *key)
     }
 
     size_t required_size = 0;
-    if ((err = nvs_get_blob(handle, key, NULL, &required_size)) != ESP_OK) {
+    if ((err = esp_at_nvs_get_blob(handle, key, NULL, &required_size)) != ESP_OK) {
         ESP_LOGD(TAG, "Failed to read key %s with error %d size %d", key, err, required_size);
         nvs_close(handle);
         return NULL;
     }
     void *value = calloc(required_size + 1, 1); /* + 1 for NULL termination */
     if (value) {
-        nvs_get_blob(handle, key, value, &required_size);
+        esp_at_nvs_get_blob(handle, key, value, &required_size);
     }
     nvs_close(handle);
     return value;
@@ -2169,7 +2169,7 @@ esp_err_t esp_rmaker_factory_set(const char *key, void *value, size_t len)
         ESP_LOGE(TAG, "NVS open failed with error %d", err);
         return ESP_FAIL;
     }
-    if ((err = nvs_set_blob(handle, key, value, len)) != ESP_OK) {
+    if ((err = esp_at_nvs_set_blob(handle, key, value, len)) != ESP_OK) {
         ESP_LOGE(TAG, "Failed to write key %s with error %d size %d", key, err, len);
         nvs_close(handle);
         return ESP_FAIL;

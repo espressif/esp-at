@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -25,6 +25,7 @@
 
 // static variables
 static QueueHandle_t s_at_uart_queue = NULL;
+static const char *TAG = "at-uart";
 
 // global variables
 uint8_t g_at_cmd_port = UART_NUM_1;
@@ -197,9 +198,9 @@ static void at_uart_init(void)
     at_uart_workaround();
 #endif
 
-    printf("AT cmd port:uart%d tx:%d rx:%d cts:%d rts:%d baudrate:%d\r\n",
-           g_at_cmd_port, g_uart_port_pin.tx_pin, g_uart_port_pin.rx_pin,
-           g_uart_port_pin.cts_pin, g_uart_port_pin.rts_pin, config.baud_rate);
+    ESP_AT_LOGI(TAG, "AT cmd port:uart%d tx:%d rx:%d cts:%d rts:%d baudrate:%d",
+                g_at_cmd_port, g_uart_port_pin.tx_pin, g_uart_port_pin.rx_pin,
+                g_uart_port_pin.cts_pin, g_uart_port_pin.rts_pin, config.baud_rate);
 
     xTaskCreate(at_uart_task, "uTask", 1024, NULL, 1, NULL);
 }

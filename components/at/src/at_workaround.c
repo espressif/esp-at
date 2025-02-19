@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -7,6 +7,7 @@
 #include <string.h>
 #include "sdkconfig.h"
 #include "esp_log.h"
+#include "esp_at.h"
 
 static const char *TAG = "at-workaround";
 
@@ -33,9 +34,9 @@ static void at_disable_rtc_clk_32k_if_no_ext_crys(void)
 {
     if (rtc_clk_slow_src_get() != SOC_RTC_SLOW_CLK_SRC_XTAL32K) {
         rtc_clk_32k_enable(false);
-        printf("no external 32k oscillator, disable it now.\r\n");
+        ESP_AT_LOGI(TAG, "no external 32k oscillator, disable it now.");
     } else {
-        printf("external 32k oscillator already started.\r\n");
+        ESP_AT_LOGI(TAG, "external 32k oscillator already started.");
     }
 }
 #endif

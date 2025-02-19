@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -91,6 +91,7 @@ static int32_t s_user_ota_total_size = 0;
 static int32_t s_user_ota_recv_size = 0;
 static bool s_user_ota_is_chunked = true;
 static SemaphoreHandle_t s_at_user_sync_sema;
+static const char *TAG = "at-user";
 
 static void at_user_wait_data_cb(void)
 {
@@ -183,7 +184,7 @@ static uint8_t at_setup_cmd_userram(uint8_t para_num)
         while (xSemaphoreTake(s_at_user_sync_sema, portMAX_DELAY)) {
             had_written_len += esp_at_port_read_data(sp_user_ram + offset + had_written_len, length - had_written_len);
             if (had_written_len == length) {
-                printf("Recv %d bytes\r\n", had_written_len);
+                ESP_AT_LOGI(TAG, "recv %d bytes", had_written_len);
                 esp_at_port_exit_specific();
                 esp_at_port_write_data((uint8_t *)"\r\nWRITE OK\r\n", strlen("\r\nWRITE OK\r\n"));
                 had_written_len = esp_at_port_get_data_length();
@@ -209,10 +210,9 @@ static uint8_t at_setup_cmd_userram(uint8_t para_num)
         }
         uint8_t *pbuffer = calloc(1, at_min(AT_USERRAM_READ_BUFFER_SIZE, length) + HEAD_BUFFER_SIZE);
         if (pbuffer == NULL) {
-            printf("no mem %d\r\n", at_min(AT_USERRAM_READ_BUFFER_SIZE, length) + HEAD_BUFFER_SIZE);
             return ESP_AT_RESULT_CODE_ERROR;
         }
-        printf("to read %d bytes\r\n", length);
+        ESP_AT_LOGI(TAG, "to read %d bytes", length);
 
         uint32_t head_len = 0, had_read_len = 0, to_read_len = 0;
         do {
@@ -255,16 +255,16 @@ static esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 {
     switch (evt->event_id) {
     case HTTP_EVENT_ERROR:
-        printf("http(https) error\r\n");
+        ESP_AT_LOGE(TAG, "http error");
         break;
     case HTTP_EVENT_ON_CONNECTED:
-        printf("http(https) connected\r\n");
+        ESP_AT_LOGI(TAG, "http connected");
         break;
     case HTTP_EVENT_HEADER_SENT:
-        printf("http(https) header sent\r\n");
+        ESP_AT_LOGI(TAG, "http header sent");
         break;
     case HTTP_EVENT_ON_HEADER:
-        printf("http(https) headed key=%s, value=%s\r\n", evt->header_key, evt->header_value);
+        ESP_AT_LOGI(TAG, "http header, key=%s, value=%s", evt->header_key, evt->header_value);
 
         // get OTA image size
         if (strcmp(evt->header_key, "Content-Length") == 0) {
@@ -278,17 +278,17 @@ static esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 
         // chunked check
         if (s_user_ota_is_chunked) {
-            printf("receive len=%d, receive total len=%d\r\n", evt->data_len, s_user_ota_recv_size);
+            ESP_AT_LOGI(TAG, "receive len=%d, receive total len=%d", evt->data_len, s_user_ota_recv_size);
         } else {
-            printf("total_len=%d(%d), %0.1f%%!\r\n", s_user_ota_total_size, s_user_ota_recv_size, (s_user_ota_recv_size * 1.0) * 100 / s_user_ota_total_size);
+            ESP_AT_LOGI(TAG, "total_len=%d(%d), %0.1f%%!", s_user_ota_total_size, s_user_ota_recv_size, (s_user_ota_recv_size * 1.0) * 100 / s_user_ota_total_size);
         }
 
         break;
     case HTTP_EVENT_ON_FINISH:
-        printf("http(https) finished\r\n");
+        ESP_AT_LOGI(TAG, "http finished");
         break;
     case HTTP_EVENT_DISCONNECTED:
-        printf("http(https) disconnected\r\n");
+        ESP_AT_LOGW(TAG, "http disconnected");
         break;
     default:
         break;
@@ -319,7 +319,6 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
 
     uint8_t *url = (uint8_t *)calloc(1, length + 1);
     if (url == NULL) {
-        printf("no mem %d\r\n", length);
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
@@ -354,7 +353,7 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
         }
     }
 
-    printf("url is: %s\r\n", url);
+    ESP_AT_LOGI(TAG, "url: %s", url);
     vSemaphoreDelete(s_at_user_sync_sema);
     s_at_user_sync_sema = NULL;
 
@@ -466,7 +465,7 @@ void at_wkmcu_if_config(at_write_data_fn_t write_data_fn)
         break;
     }
 
-    printf("wait %ums or wake-up signal\r\n", s_wkmcu_cfg.delay_ms);
+    ESP_AT_LOGI(TAG, "wait %ums or wake-up signal", s_wkmcu_cfg.delay_ms);
     EventBits_t uxBits = xEventGroupWaitBits(s_wkmcu_evt_group, s_wkmcu_cfg.check_mcu_awake, pdFALSE, pdFALSE, s_wkmcu_cfg.delay_ms / portTICK_PERIOD_MS);
 
     if (!(uxBits & s_wkmcu_cfg.check_mcu_awake)) {

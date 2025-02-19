@@ -23,6 +23,7 @@
 
 // static variables
 static const uint8_t g_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PARITY_ODD, UART_PARITY_EVEN};
+static const char *TAG = "at-uart";
 
 // global variables
 extern uint8_t g_at_cmd_port;
@@ -161,7 +162,7 @@ esp_err_t at_mfg_uart_port_pins_get(at_uart_port_pins_t *config)
     if (mode == AT_PARAMS_IN_MFG_NVS) {
         nvs_handle handle;
         if (nvs_open_from_partition(g_at_mfg_nvs_name, "factory_param", NVS_READONLY, &handle) != ESP_OK) {
-            printf("open factory_param namespace failed\r\n");
+            ESP_AT_LOGE(TAG, "open factory_param failed");
             return ESP_FAIL;
         }
         if (nvs_get_i8(handle, "uart_port", &uart_num) != ESP_OK) {
