@@ -1,13 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
 #pragma once
 
 #include "sdkconfig.h"
+#include "esp_log.h"
 #include "esp_at_core.h"
 #include "esp_at_cmd_register.h"
+#include "nvs.h"
 
 #define ESP_AT_PORT_TX_WAIT_MS_MAX          3000    // 3s
 #define AT_BUFFER_ON_STACK_SIZE             128     // default maximum buffer size on task stack
@@ -106,3 +108,43 @@ void esp_at_ready_before(void);
  */
 esp_err_t at_exe_cmd(const char *cmd, const char *expected_response, uint32_t timeout_ms);
 #endif
+
+#ifndef CONFIG_AT_LOG_DEFAULT_LEVEL
+#define CONFIG_AT_LOG_DEFAULT_LEVEL         ESP_LOG_VERBOSE
+#endif
+/**
+ * @brief Write message into the log
+ *
+ * This function is not intended to be used directly. Instead, use one of
+ * ESP_AT_LOGE, ESP_AT_LOGW, ESP_AT_LOGI, ESP_AT_LOGD, ESP_AT_LOGV macros.
+ *
+ * This function or these macros should not be used from an interrupt.
+ */
+void esp_at_log_write(esp_log_level_t level, const char *tag, const char *format, ...) __attribute__((format(printf, 3, 4)));
+
+/** runtime macro to output logs at a specified level.
+ *
+ * @param tag tag of the log, which can be used to change the log level by ``esp_log_level_set`` at runtime.
+ * @param format format of the output log. See ``printf``
+ * @param ... variables to be replaced into the log. See ``printf``
+ *
+ * @see ``printf``
+ */
+#define ESP_AT_LOGE( tag, format, ... )   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_ERROR) esp_at_log_write(ESP_LOG_ERROR, tag, format, ##__VA_ARGS__); }
+#define ESP_AT_LOGW( tag, format, ... )   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_WARN) esp_at_log_write(ESP_LOG_WARN, tag, format, ##__VA_ARGS__); }
+#define ESP_AT_LOGI( tag, format, ... )   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_INFO) esp_at_log_write(ESP_LOG_INFO, tag, format, ##__VA_ARGS__); }
+#define ESP_AT_LOGD( tag, format, ... )   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_DEBUG) esp_at_log_write(ESP_LOG_DEBUG, tag, format, ##__VA_ARGS__); }
+#define ESP_AT_LOGV( tag, format, ... )   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_VERBOSE) esp_at_log_write(ESP_LOG_VERBOSE, tag, format, ##__VA_ARGS__); }
+
+/**
+ * @brief NVS operations for string and blob
+ *
+ * @note These functions can be overridden with custom implementations. For example:
+ *       you can override these functions to encrypt the data before writing to NVS (decrypt the data after reading from NVS).
+ *
+ * @see ``nvs_set_str``,``nvs_get_str``,``nvs_set_blob``,``nvs_get_blob``
+ */
+esp_err_t esp_at_nvs_set_str(nvs_handle_t handle, const char *key, const char *value);
+esp_err_t esp_at_nvs_get_str(nvs_handle_t handle, const char *key, char *out_value, size_t *length);
+esp_err_t esp_at_nvs_set_blob(nvs_handle_t handle, const char *key, const void *value, size_t length);
+esp_err_t esp_at_nvs_get_blob(nvs_handle_t handle, const char *key, void *out_value, size_t *length);

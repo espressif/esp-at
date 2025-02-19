@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -33,7 +33,7 @@
 
 #define AT_WEB_TASK_EXIT_SUCCESS_BIT                   BIT0
 
-static const char *TAG = "dns_redirect_server";
+static const char *TAG = "at-dnsserver";
 static int s_dns_server_socket_fd = -1;
 static int s_dns_server_localhost_fd = -1;
 static struct sockaddr_in s_dest_addr = { 0 };
@@ -289,15 +289,8 @@ void dns_server_task(void *pvParameters)
                         rx_buffer[len] = 0; // Null-terminate whatever we received and treat like a string...
                         ESP_LOGI(TAG, "Received %d bytes from %s:", len, addr_str);
 #ifdef ESP_OPEN_DNS_REAUEST_DOMAIN_LOG // This is just for test
-                        printf("DNS request is:");
-                        for (int i = 0x4; i < len; i++) {
-                            if ((rx_buffer[i] >= 'a' && rx_buffer[i] <= 'z') || (rx_buffer[i] >= 'A' && rx_buffer[i] <= 'Z') || (rx_buffer[i] >= '0' && rx_buffer[i] <= '9')) {
-                                printf("%c", rx_buffer[i]);
-                            } else {
-                                printf("_");
-                            }
-                        }
-                        printf("\r\n");
+                        ESP_LOGI(TAG, "dns request is:");
+                        ESP_LOG_BUFFER_HEXDUMP(TAG, rx_buffer, len, ESP_LOG_INFO);
 #endif
                         char reply[AT_WEB_DNS_MAX_LEN];
                         int reply_len = parse_dns_request(rx_buffer, len, reply, AT_WEB_DNS_MAX_LEN);
@@ -345,7 +338,7 @@ void at_dns_server_start(void)
 
     xTaskCreate(dns_server_task, "dns", 3072, NULL, CAPTIVE_PORTAL_DNS_SERVER_TASK_PRIORITY, NULL);
 
-    printf("dns server start\r\n");
+    ESP_LOGI(TAG, "dns server started");
 }
 
 void at_dns_server_stop(void)
@@ -358,6 +351,6 @@ void at_dns_server_stop(void)
                                            pdFALSE,
                                            portMAX_DELAY);
 
-    printf("dns server stop\r\n");
+    ESP_LOGI(TAG, "dns server stopped");
 }
 #endif

@@ -50,14 +50,13 @@ at_write_fs_handle_t *at_http_to_fs_begin(char *path)
 {
     at_write_fs_handle_t *fs_handle = (at_write_fs_handle_t *)calloc(1, sizeof(at_write_fs_handle_t));
     if (!fs_handle) {
-        ESP_LOGE(TAG, "calloc failed");
         return NULL;
     }
 
     // mount file system
     if (!at_fatfs_mount()) {
         free(fs_handle);
-        ESP_LOGE(TAG, "at_fatfs_mount failed");
+        ESP_AT_LOGE(TAG, "at_fatfs_mount failed");
         return NULL;
     }
     fs_handle->fs_mounted = true;
@@ -67,19 +66,18 @@ at_write_fs_handle_t *at_http_to_fs_begin(char *path)
     if (esp_vfs_fat_info(AT_FATFS_MOUNT_POINT, &fs_total_size, &fs_free_size) != ESP_OK) {
         free(fs_handle);
         at_fatfs_unmount();
-        ESP_LOGE(TAG, "esp_vfs_fat_info failed");
+        ESP_AT_LOGE(TAG, "esp_vfs_fat_info failed");
         return NULL;
     }
     fs_handle->total_size = fs_total_size;
     fs_handle->available_size = fs_free_size;
-    printf("fatfs available size:%u, total size:%u\r\n", fs_handle->available_size, fs_handle->total_size);
+    ESP_AT_LOGI(TAG, "fatfs available size:%u, total size:%u", fs_handle->available_size, fs_handle->total_size);
 
     // init path
     fs_handle->path = (char *)calloc(1, strlen(AT_FATFS_MOUNT_POINT) + strlen(path) + 2);
     if (!fs_handle->path) {
         free(fs_handle);
         at_fatfs_unmount();
-        ESP_LOGE(TAG, "calloc failed");
         return NULL;
     }
     sprintf(fs_handle->path, "%s/%s", AT_FATFS_MOUNT_POINT, path);
@@ -91,7 +89,7 @@ at_write_fs_handle_t *at_http_to_fs_begin(char *path)
         free(fs_handle->path);
         free(fs_handle);
         at_fatfs_unmount();
-        ESP_LOGE(TAG, "fopen failed");
+        ESP_AT_LOGE(TAG, "fopen failed");
         return NULL;
     }
 
@@ -101,18 +99,18 @@ at_write_fs_handle_t *at_http_to_fs_begin(char *path)
 esp_err_t at_http_to_fs_write(at_write_fs_handle_t *fs_handle, uint8_t *data, size_t len)
 {
     if (!fs_handle || !fs_handle->fp) {
-        ESP_LOGE(TAG, "invalid argument");
+        ESP_AT_LOGE(TAG, "invalid argument");
         return ESP_ERR_INVALID_ARG;
     }
 
     if (fseek(fs_handle->fp, fs_handle->wrote_size, SEEK_SET) != 0) {
-        ESP_LOGE(TAG, "fseek failed");
+        ESP_AT_LOGE(TAG, "fseek failed");
         return ESP_FAIL;
     }
 
     size_t wrote_len = fwrite(data, 1, len, fs_handle->fp);
     if (wrote_len != len) {
-        ESP_LOGE(TAG, "fwrite failed, to write len=%d, wrote len=%d", len, wrote_len);
+        ESP_AT_LOGE(TAG, "fwrite failed, to write len=%d, wrote len=%d", len, wrote_len);
         return ESP_FAIL;
     }
 
@@ -169,12 +167,12 @@ static void at_custom_wait_data_cb(void)
 
 static esp_err_t at_http_event_handler(esp_http_client_event_t *evt)
 {
-    ESP_LOGI(TAG, "http event id=%d", evt->event_id);
+    ESP_AT_LOGI(TAG, "http event id=%d", evt->event_id);
     switch (evt->event_id) {
     case HTTP_EVENT_ON_HEADER:
         if (strcmp(evt->header_key, "Content-Length") == 0) {
             sp_http_to_fs->total_size = atoi(evt->header_value);
-            printf("total_size=%d\r\n", sp_http_to_fs->total_size);
+            ESP_AT_LOGI(TAG, "total_size=%d", sp_http_to_fs->total_size);
             sp_http_to_fs->is_chunked = false;
         }
         break;
@@ -182,10 +180,10 @@ static esp_err_t at_http_event_handler(esp_http_client_event_t *evt)
         sp_http_to_fs->recv_size += evt->data_len;
         // chunked check
         if (sp_http_to_fs->is_chunked) {
-            printf("received total len=%d\r\n", sp_http_to_fs->recv_size);
+            ESP_AT_LOGI(TAG, "received total len=%d", sp_http_to_fs->recv_size);
         } else {
-            printf("total_len=%d(%d), %0.1f%%!\r\n", sp_http_to_fs->total_size,
-                   sp_http_to_fs->recv_size, (sp_http_to_fs->recv_size * 1.0) * 100 / sp_http_to_fs->total_size);
+            ESP_AT_LOGI(TAG, "total_len=%d(%d), %0.1f%%!", sp_http_to_fs->total_size,
+                        sp_http_to_fs->recv_size, (sp_http_to_fs->recv_size * 1.0) * 100 / sp_http_to_fs->total_size);
         }
         break;
     default:
@@ -245,7 +243,7 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
     while (xSemaphoreTake(sp_http_to_fs->sync_sema, portMAX_DELAY)) {
         had_recv_len += esp_at_port_read_data((uint8_t *)(sp_http_to_fs->url) + had_recv_len, url_len - had_recv_len);
         if (had_recv_len == url_len) {
-            printf("Recv %d bytes\r\n", had_recv_len);
+            ESP_AT_LOGI(TAG, "recv %d bytes", had_recv_len);
             esp_at_port_exit_specific();
 
             int32_t remain_len = esp_at_port_get_data_length();
@@ -255,7 +253,7 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
             break;
         }
     }
-    printf("ready to download %s to %s\r\n", sp_http_to_fs->url, sp_http_to_fs->fs_handle->path);
+    ESP_AT_LOGI(TAG, "ready to download %s to %s", sp_http_to_fs->url, sp_http_to_fs->fs_handle->path);
 
     // init http client
     esp_http_client_config_t config = {
@@ -280,12 +278,12 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
     esp_http_client_fetch_headers(sp_http_to_fs->client);
     int status_code = esp_http_client_get_status_code(sp_http_to_fs->client);
     if (status_code >= HttpStatus_BadRequest) {
-        ESP_LOGE(TAG, "recv http status code: %d", status_code);
+        ESP_AT_LOGE(TAG, "recv http status code: %d", status_code);
         ret = ESP_FAIL;
         goto cmd_exit;
     }
     if (sp_http_to_fs->fs_handle->available_size < sp_http_to_fs->total_size) {
-        ESP_LOGE(TAG, "fatfs available size:%u, but res total size:%d", sp_http_to_fs->fs_handle->available_size, sp_http_to_fs->total_size);
+        ESP_AT_LOGE(TAG, "fatfs available size:%u, but res total size:%d", sp_http_to_fs->fs_handle->available_size, sp_http_to_fs->total_size);
         ret = ESP_FAIL;
         goto cmd_exit;
     }
@@ -305,7 +303,7 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
                 break;
             }
         } else if (data_len < 0) {
-            ESP_LOGE(TAG, "Connection aborted!");
+            ESP_AT_LOGE(TAG, "Connection aborted!");
             break;
         } else {
             ret = ESP_OK;
@@ -315,13 +313,13 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
     free(data);
 
     if (sp_http_to_fs->is_chunked) {
-        printf("total received len:%d, total wrote size:%d\r\n", sp_http_to_fs->recv_size, sp_http_to_fs->fs_handle->wrote_size);
+        ESP_AT_LOGI(TAG, "total received len:%d, total wrote size:%d", sp_http_to_fs->recv_size, sp_http_to_fs->fs_handle->wrote_size);
     } else {
         if (sp_http_to_fs->total_size != sp_http_to_fs->fs_handle->wrote_size) {
-            ESP_LOGE(TAG, "total expected len:%d, but total wrote size:%d", sp_http_to_fs->total_size, sp_http_to_fs->fs_handle->wrote_size);
+            ESP_AT_LOGE(TAG, "total expected len:%d, but total wrote size:%d", sp_http_to_fs->total_size, sp_http_to_fs->fs_handle->wrote_size);
             ret = ESP_FAIL;
         } else {
-            printf("total wrote size matches expected size:%d\r\n", sp_http_to_fs->fs_handle->wrote_size);
+            ESP_AT_LOGI(TAG, "total wrote size matches expected size:%d", sp_http_to_fs->fs_handle->wrote_size);
         }
     }
 
@@ -329,7 +327,7 @@ cmd_exit:
     // clean resources
     at_http_to_fs_clean();
     if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "command ret: 0x%x", ret);
+        ESP_AT_LOGE(TAG, "command ret: 0x%x", ret);
         return ESP_AT_RESULT_CODE_ERROR;
     }
 

@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -148,7 +148,7 @@ static const char *s_ota_start_response = "+WEBSERVERRSP:3\r\n";
 static const char *s_ota_receive_success_response = "+WEBSERVERRSP:4\r\n";
 static const char *s_ota_receive_fail_response = "+WEBSERVERRSP:5\r\n";
 static SLIST_HEAD(router_fail_list_head_, router_obj) s_router_fail_list = SLIST_HEAD_INITIALIZER(s_router_fail_list);
-static const char *TAG = "at web";
+static const char *TAG = "at-web";
 
 // AT web can use fatfs to storge html or use embeded file to storge html.
 // If use fatfs,we should enable AT FS Command support.
@@ -234,7 +234,7 @@ static esp_err_t at_web_try_connect(uint8_t *ssid, uint8_t *password, uint8_t *b
             ret = ESP_ERR_INVALID_STATE;
         }
     } else { // don't need to wait wifi connect result
-        printf("connect config finish\r\n");
+        ESP_LOGI(TAG, "connect config finish");
     }
     return ret;
 }
@@ -1184,7 +1184,7 @@ static esp_err_t config_wifi_post_handler(httpd_req_t *req)
     memset(buf, '\0', ESP_AT_WEB_SCRATCH_BUFSIZE * sizeof(char));
     esp_wifi_get_mode(&current_wifi_mode);
     if (current_wifi_mode != WIFI_MODE_APSTA) {
-        printf("Error, wifi mode is not correct\r\n");
+        ESP_LOGE(TAG, "invalid wifi mode");
         goto error_handle;
     }
     // only wifi config not start or have success apply one connection,allow to apply new connect
@@ -1888,11 +1888,11 @@ static esp_err_t at_web_fatfs_spiflash_init(void)
     esp_err_t err = at_web_fatfs_spiflash_mount(ESP_AT_WEB_MOUNT_POINT, "fatfs", &mount_config, &s_wl_handle);
 
     if (err != ESP_OK) {
-        printf("Failed to mount FATFS (0x%x)", err);
+        ESP_LOGE(TAG, "failed to mount fatfs, errno:0x%x", err);
         return ESP_FAIL;
     }
 
-    printf("Mount FATFS success\n");
+    ESP_LOGI(TAG ("mount fatfs success");
     return ESP_OK;
 }
 
@@ -1975,11 +1975,11 @@ static uint8_t at_setupCmdWebConf(uint8_t para_num)
     }
 
     if ((para_num == cnt) && (enable == 0)) {
-        printf("Delete Web Server\r\n");
+        ESP_LOGI(TAG, "delete web server");
         if ((ret = at_web_destory()) == ESP_OK) {
             return ESP_AT_RESULT_CODE_OK;
         } else {
-            printf("at web destroy fail, err = %d\r\n", ret);
+            ESP_LOGE(TAG, "at_web_destory failed, err = %d", ret);
             return ESP_AT_RESULT_CODE_FAIL;
         }
     }
@@ -2005,10 +2005,10 @@ static uint8_t at_setupCmdWebConf(uint8_t para_num)
 
     if ((ret = at_web_start(port)) == ESP_OK) {
         at_web_update_sta_reconnect_timeout(reconnect_timeout);
-        printf("start web server\r\n");
+        ESP_LOGI(TAG, "web server started");
         return ESP_AT_RESULT_CODE_OK;
     } else {
-        printf("at web start fail, err = %d\r\n", ret);
+        ESP_LOGE(TAG, "at web start failed, err = %d", ret);
         return ESP_AT_RESULT_CODE_FAIL;
     }
 }

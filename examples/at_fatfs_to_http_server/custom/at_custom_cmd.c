@@ -235,7 +235,7 @@ static uint8_t at_setup_cmd_fs_to_http_server(uint8_t para_num)
     while (xSemaphoreTake(sp_fs_to_http->sync_sema, portMAX_DELAY)) {
         had_recv_len += esp_at_port_read_data((uint8_t *)(sp_fs_to_http->url) + had_recv_len, url_len - had_recv_len);
         if (had_recv_len == url_len) {
-            printf("Recv %d bytes\r\n", had_recv_len);
+            ESP_AT_LOGI(TAG, "recv %d bytes", had_recv_len);
             esp_at_port_exit_specific();
 
             int32_t remain_len = esp_at_port_get_data_length();
@@ -245,7 +245,7 @@ static uint8_t at_setup_cmd_fs_to_http_server(uint8_t para_num)
             break;
         }
     }
-    printf("ready to post %s (size:%d) to %s\r\n", sp_fs_to_http->fs_handle->path, sp_fs_to_http->fs_handle->total_size, sp_fs_to_http->url);
+    ESP_AT_LOGI(TAG, "ready to post %s (size:%d) to %s", sp_fs_to_http->fs_handle->path, sp_fs_to_http->fs_handle->total_size, sp_fs_to_http->url);
 
     // init http client
     esp_http_client_config_t config = {

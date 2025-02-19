@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -98,8 +98,6 @@ static const at_partition_sig_t s_at_partition_sig[] = {
     {"factory_param", 2, 0, {0xFC, 0xFC}},
 };
 
-#define ESP_AT_OTA_DEBUG  printf
-
 #define ESP_AT_VERSION_LEN_MAX                64
 #define ESP_AT_PARTITION_NAME_LEN_MAX         64
 #define NB_OTA_TASK_STACK_SIZE              5120  // for non-blocking ota
@@ -116,6 +114,7 @@ static bool s_esp_at_ota_started = false;
 
 static uint8_t *s_http_buffer = NULL;
 static int s_http_buffer_offset = 0;
+static const char *TAG = "at-ota";
 
 static void esp_at_set_upgrade_state(esp_at_ota_state_t status)
 {
@@ -129,7 +128,7 @@ static esp_at_ota_state_t esp_at_get_upgrade_state(void)
 
 static void esp_at_ota_timeout_callback(TimerHandle_t xTimer)
 {
-    ESP_AT_OTA_DEBUG("ota timeout!\r\n");
+    ESP_AT_LOGE(TAG, "ota timeout");
     esp_at_ota_timeout_flag = true;
     if (esp_at_ota_socket_id >= 0) {
         close(esp_at_ota_socket_id);
@@ -156,8 +155,8 @@ static esp_err_t at_partition_verify(const char *name, uint8_t *data, int len)
         for (int loop = 0; loop < s_at_partition_sig[i].len; ++loop) {
             int offset = s_at_partition_sig[i].offset + loop;
             if (s_at_partition_sig[i].magic[loop] != data[offset]) {
-                ESP_AT_OTA_DEBUG("%s partition has an invalid magic byte (index:%d expected 0x%02x, saw 0x%02x)\r\n",
-                                 name, loop, s_at_partition_sig[i].magic[loop], data[offset]);
+                ESP_AT_LOGE(TAG, "%s partition has an invalid magic byte (index:%d expected 0x%02x, saw 0x%02x)",
+                            name, loop, s_at_partition_sig[i].magic[loop], data[offset]);
                 return ESP_FAIL;
             }
         }
@@ -207,7 +206,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
         upgrade_type = AT_UPGRADE_CUSTOM_PARTITION;
     }
 
-    ESP_AT_OTA_DEBUG("ota_mode:%d\r\n", ota_mode);
+    ESP_AT_LOGI(TAG, "ota_mode: %d", ota_mode);
     if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
         server_ip = CONFIG_AT_OTA_SERVER_IP;
         server_port = CONFIG_AT_OTA_SERVER_PORT;
@@ -239,7 +238,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
 
     if ((ip_address.u_addr.ip4.addr == IPADDR_NONE) && (strcmp(server_ip, "255.255.255.255") != 0)) {
         if ((hptr = gethostbyname(server_ip)) == NULL) {
-            ESP_AT_OTA_DEBUG("gethostbyname fail\r\n");
+            ESP_AT_LOGE(TAG, "gethostbyname failed");
             goto OTA_ERROR;
         }
         ip_address = *(ip_addr_t*)hptr->h_addr_list[0];
@@ -272,7 +271,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
             setsockopt(esp_at_ota_socket_id, SOL_SOCKET, SO_REUSEADDR, &sockopt, sizeof(sockopt));
             // connect to http server
             if (connect(esp_at_ota_socket_id, (struct sockaddr *)&sock_info, sizeof(sock_info)) < 0) {
-                ESP_AT_OTA_DEBUG("connect to server failed!\r\n");
+                ESP_AT_LOGE(TAG, "connect to ota server failed");
                 goto OTA_ERROR;
             }
         }
@@ -286,7 +285,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
             }
 
             if (esp_tls_conn_new_sync(server_ip, strlen(server_ip), server_port, tls_cfg, tls) < 0) {
-                ESP_AT_OTA_DEBUG("Failed to open a new connection\r\n");
+                ESP_AT_LOGE(TAG, "connect to ota server failed");
                 goto OTA_ERROR;
             }
         }
@@ -297,7 +296,6 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
         snprintf((char*)http_request, TEXT_BUFFSIZE, "GET /v1/device/rom/?is_format_simple=true HTTP/1.0\r\nHost: %s:%d\r\n"pheadbuffer"",
                  server_ip, server_port, ota_key);
 
-        printf("http request length %d bytes\r\n", strlen((char*)http_request));
         /*send GET request to http server*/
         result = -1;
         if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
@@ -310,7 +308,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
 #endif
 
         if (result != strlen((char *)http_request)) {
-            ESP_AT_OTA_DEBUG("send GET request to server failed\r\n");
+            ESP_AT_LOGE(TAG, "send http request failed");
             goto OTA_ERROR;
         }
 
@@ -342,7 +340,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
         } while (result > 0);
 
         if (result < 0) {
-            ESP_AT_OTA_DEBUG("recv data from server failed!\r\n");
+            ESP_AT_LOGE(TAG, "recv data failed");
             goto OTA_ERROR;
         } else {
 #ifdef CONFIG_AT_OTA_SSL_SUPPORT
@@ -357,7 +355,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
 
         pStr = (uint8_t*)strstr((char*)data_buffer, "rom_version\": ");
         if (pStr == NULL) {
-            ESP_AT_OTA_DEBUG("rom_version error!\r\n");
+            ESP_AT_LOGE(TAG, "rom_version error");
             goto OTA_ERROR;
         }
         pStr += strlen("rom_version\": \"");
@@ -365,14 +363,14 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
 
         pStr = (uint8_t*)strstr((char*)version, "\",");
         if (pStr == NULL) {
-            ESP_AT_OTA_DEBUG("rom_version tail error!\r\n");
+            ESP_AT_LOGE(TAG, "rom_version tail error");
             goto OTA_ERROR;
         }
         *pStr = '\0';
         esp_at_set_upgrade_state(ESP_AT_OTA_STATE_GOT_VERSION);
         esp_at_port_write_data((uint8_t*)"+CIPUPDATE:3\r\n", strlen("+CIPUPDATE:3\r\n"));
     }
-    printf("version:%s\r\n", version);
+    ESP_AT_LOGI(TAG, "version: %s\r\n", version);
     snprintf((char*)http_request, TEXT_BUFFSIZE,
              "GET /v1/device/rom/?action=download_rom&version=%s&filename=%s.bin HTTP/1.1\r\nHost: %s:%d\r\n"pheadbuffer"",
              (char*)version, partition_name, server_ip, server_port, ota_key);
@@ -386,11 +384,11 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
 #else
         partition_ptr = (esp_partition_t*)esp_ota_get_boot_partition();
         if (partition_ptr == NULL) {
-            ESP_AT_OTA_DEBUG("boot partition NULL!\r\n");
+            ESP_AT_LOGE(TAG, "no boot partition");
             goto OTA_ERROR;
         }
         if (partition_ptr->type != ESP_PARTITION_TYPE_APP) {
-            ESP_AT_OTA_DEBUG("esp_current_partition->type != ESP_PARTITION_TYPE_APP\r\n");
+            ESP_AT_LOGE(TAG, "invalid partition type");
             goto OTA_ERROR;
         }
 
@@ -410,28 +408,28 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
 
         partition_ptr = (esp_partition_t*)esp_partition_find_first(partition.type, partition.subtype, NULL);
         if (partition_ptr == NULL) {
-            ESP_AT_OTA_DEBUG("partition NULL!\r\n");
+            ESP_AT_LOGE(TAG, "no ota partition");
             goto OTA_ERROR;
         }
 
         memcpy(&partition, partition_ptr, sizeof(esp_partition_t));
         if (esp_ota_begin(&partition, OTA_SIZE_UNKNOWN, &out_handle) != ESP_OK) {
-            ESP_AT_OTA_DEBUG("esp_ota_begin failed!\r\n");
+            ESP_AT_LOGE(TAG, "esp_ota_begin failed");
             goto OTA_ERROR;
         }
-        ESP_AT_OTA_DEBUG("ready to upgrade system firmware.\r\n");
+        ESP_AT_LOGI(TAG, "ready to upgrade system firmware...");
 #endif
     } else {    // custom partition
         at_custom_partition = esp_at_custom_partition_find(0x0, 0x0, partition_name);
         if (at_custom_partition == NULL) {
-            ESP_AT_OTA_DEBUG("no custom partition: %s\r\n", partition_name);
+            ESP_AT_LOGE(TAG, "no custom partition: %s", partition_name);
             goto OTA_ERROR;
         }
-        ESP_AT_OTA_DEBUG("ready to upgrade partition: \"%s\" type:0x%x subtype:0x%x addr:0x%x size:0x%x encrypt:%d\r\n",
-                         at_custom_partition->label, at_custom_partition->type, at_custom_partition->subtype,
-                         at_custom_partition->address, at_custom_partition->size, at_custom_partition->encrypted);
+        ESP_AT_LOGI(TAG, "ready to upgrade partition: \"%s\" type:0x%x subtype:0x%x addr:0x%x size:0x%x encrypt:%d",
+                    at_custom_partition->label, at_custom_partition->type, at_custom_partition->subtype,
+                    at_custom_partition->address, at_custom_partition->size, at_custom_partition->encrypted);
         if (esp_partition_erase_range(at_custom_partition, 0, at_custom_partition->size) != ESP_OK) {
-            ESP_AT_OTA_DEBUG("esp_partition_erase_range failed!\r\n");
+            ESP_AT_LOGE(TAG, "esp_partition_erase_range failed");
             goto OTA_ERROR;
         }
     }
@@ -443,7 +441,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
         }
         setsockopt(esp_at_ota_socket_id, SOL_SOCKET, SO_REUSEADDR, &sockopt, sizeof(sockopt));
         if (connect(esp_at_ota_socket_id, (struct sockaddr *)&sock_info, sizeof(sock_info)) < 0) {
-            ESP_AT_OTA_DEBUG("connect to server2 failed!\r\n");
+            ESP_AT_LOGE(TAG, "connect to ota server failed");
             goto OTA_ERROR;
         }
     }
@@ -463,7 +461,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
         }
 
         if (esp_tls_conn_new_sync(server_ip, strlen(server_ip), server_port, tls_cfg, tls) < 0) {
-            ESP_AT_OTA_DEBUG("Failed to open a new connection\r\n");
+            ESP_AT_LOGE(TAG, "connect to ota server failed");
             goto OTA_ERROR;
         }
     }
@@ -479,7 +477,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
 #endif
 
     if (result != strlen((char *)http_request)) {
-        ESP_AT_OTA_DEBUG("send GET bin to server failed\r\n");
+        ESP_AT_LOGE(TAG, "send http request failed");
         goto OTA_ERROR;
     }
     /*deal with all receive packet*/
@@ -496,7 +494,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
         }
 #endif
         if (buff_len < 0) {
-            ESP_AT_OTA_DEBUG("receive data error!\r\n");
+            ESP_AT_LOGE(TAG, "recv data failed");
             goto OTA_ERROR;
         } else if (buff_len > 0 && !pkg_body_start) {
             // search "\r\n\r\n"
@@ -506,7 +504,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
             }
             pStr += strlen("Content-Length: ");
             total_len = atoi((char*)pStr);
-            ESP_AT_OTA_DEBUG("total_len=%d!\r\n", total_len);
+            ESP_AT_LOGI(TAG, "total_len=%d!\r\n", total_len);
             pStr = (uint8_t*)strstr((char*)data_buffer, "\r\n\r\n");
             if (pStr) {
                 pkg_body_start = true;
@@ -524,13 +522,13 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
                     }
 #else
                     if (esp_ota_write(out_handle, (const void *)pStr, buff_len) != ESP_OK) {
-                        ESP_AT_OTA_DEBUG("esp_ota_write failed!\r\n");
+                        ESP_AT_LOGE(TAG, "esp_ota_write failed");
                         goto OTA_ERROR;
                     }
 #endif
                 } else {
                     if (esp_partition_write(at_custom_partition, recv_len, pStr, buff_len) != ESP_OK) {
-                        ESP_AT_OTA_DEBUG("esp_partition_write failed!\r\n");
+                        ESP_AT_LOGE(TAG, "esp_partition_write failed");
                         goto OTA_ERROR;
                     }
                 }
@@ -545,27 +543,27 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
                 }
 #else
                 if (esp_ota_write(out_handle, (const void *)data_buffer, buff_len) != ESP_OK) {
-                    ESP_AT_OTA_DEBUG("esp_ota_write failed!\r\n");
+                    ESP_AT_LOGE(TAG, "esp_ota_write failed");
                     goto OTA_ERROR;
                 }
 #endif
             } else {
                 if (esp_partition_write(at_custom_partition, recv_len, data_buffer, buff_len) != ESP_OK) {
-                    ESP_AT_OTA_DEBUG("esp_partition_write failed!\r\n");
+                    ESP_AT_LOGE(TAG, "esp_partition_write failed");
                     goto OTA_ERROR;
                 }
             }
 
             recv_len += buff_len;
         } else if (buff_len == 0) {
-            ESP_AT_OTA_DEBUG("receive all packet over!\r\n");
+            ESP_AT_LOGI(TAG, "receive all packet over");
             if (recv_len != total_len) {
                 goto OTA_ERROR;
             }
         } else {
-            ESP_AT_OTA_DEBUG("Warning: uncontolled event!\r\n");
+            ESP_AT_LOGW(TAG, "unhandled event");
         }
-        ESP_AT_OTA_DEBUG("total_len=%d(%d), %0.1f%%!\r\n", total_len, recv_len, (recv_len * 1.0) * 100 / total_len);
+        ESP_AT_LOGI(TAG, "total_len=%d(%d), %0.1f%%!", total_len, recv_len, (recv_len * 1.0) * 100 / total_len);
         if (recv_len == total_len) {
             break;
         }
@@ -578,12 +576,12 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
         }
 #else
         if (esp_ota_end(out_handle) != ESP_OK) {
-            ESP_AT_OTA_DEBUG("esp_ota_end failed!\r\n");
+            ESP_AT_LOGE(TAG, "esp_ota_end failed");
             goto OTA_ERROR;
         }
 
         if (esp_ota_set_boot_partition(&partition) != ESP_OK) {
-            ESP_AT_OTA_DEBUG("esp_ota_set_boot_partition failed!\r\n");
+            ESP_AT_LOGE(TAG, "esp_ota_set_boot_partition failed");;
             goto OTA_ERROR;
         }
 #endif
@@ -628,7 +626,7 @@ OTA_ERROR:
 static uint8_t at_exeCmdCipupgrade(uint8_t *cmd_name)
 {
     if (s_esp_at_ota_started) {
-        printf("ALREADY IN OTA\r\n");
+        ESP_AT_LOGW(TAG, "ALREADY IN OTA");
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
@@ -717,7 +715,7 @@ static uint8_t at_setupCmdCipupgrade(uint8_t para_num)
     }
 
     if (s_esp_at_ota_started) {
-        printf("ALREADY IN OTA\r\n");
+        ESP_AT_LOGW(TAG, "ALREADY IN OTA");
         return ESP_AT_RESULT_CODE_ERROR;
     }
 

@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -79,9 +79,9 @@ static void at_module_init(void)
 
 #ifdef CONFIG_ESP_AT_FW_VERSION
 #ifdef ESP_AT_FIRMWARE_FROM
-    printf("%s (%s)\r\n", CONFIG_ESP_AT_FW_VERSION, ESP_AT_FIRMWARE_FROM);
+    ESP_AT_LOGI(TAG, "%s (%s)", CONFIG_ESP_AT_FW_VERSION, ESP_AT_FIRMWARE_FROM);
 #else
-    printf("%s (unknown)\r\n", CONFIG_ESP_AT_FW_VERSION);
+    ESP_AT_LOGI(TAG, "%s (unknown)", CONFIG_ESP_AT_FW_VERSION);
 #endif
 
     ret = snprintf((char *)version + ret, AT_TEMP_BUFFER_SIZE - ret,
@@ -93,7 +93,7 @@ static void at_module_init(void)
     ret = esp_at_get_core_version((char *)versions, AT_TEMP_BUFFER_SIZE);
     ret += snprintf((char *)versions + ret, AT_TEMP_BUFFER_SIZE - ret, "SDK version:%s\r\n", esp_get_idf_version());
     ret += snprintf((char *)versions + ret, AT_TEMP_BUFFER_SIZE - ret, "%s", version);
-    printf("%.*s\r\n", ret, versions);
+    ESP_AT_LOGI(TAG, "%.*s", ret, versions);
     free(versions);
 #endif
 
@@ -143,12 +143,12 @@ static esp_err_t at_module_config_init(void)
     if (mode == AT_PARAMS_IN_MFG_NVS) {
         nvs_handle handle;
         if (nvs_open_from_partition(g_at_mfg_nvs_name, "factory_param", NVS_READONLY, &handle) != ESP_OK) {
-            printf("open factory_param namespace failed\r\n");
+            ESP_AT_LOGE(TAG, "open factory_param failed");
             return ESP_FAIL;
         }
         // read module name from manufacturing nvs
         size_t len = AT_BUFFER_ON_STACK_SIZE;
-        if (nvs_get_str(handle, "module_name", buffer, &len) != ESP_OK) {
+        if (esp_at_nvs_get_str(handle, "module_name", buffer, &len) != ESP_OK) {
             nvs_close(handle);
             return ESP_FAIL;
         }
@@ -158,7 +158,7 @@ static esp_err_t at_module_config_init(void)
         // deprecated way
         const esp_partition_t *partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
         if (!partition) {
-            printf("factory_param partition missed\r\n");
+            ESP_AT_LOGE(TAG, "factory_param partition missed");
             return ESP_FAIL;
         }
         if (esp_partition_read(partition, 0, buffer, AT_BUFFER_ON_STACK_SIZE) != ESP_OK) {
@@ -178,7 +178,7 @@ static esp_err_t at_module_config_init(void)
     } else {
         return ESP_FAIL;
     }
-    printf("module_name: %s\r\n", esp_at_get_current_module_name());
+    ESP_AT_LOGI(TAG, "module_name: %s", esp_at_get_current_module_name());
 
     return ESP_OK;
 }
@@ -192,7 +192,7 @@ static esp_err_t at_wifi_config_init(void)
     if (mode == AT_PARAMS_IN_MFG_NVS) {
         nvs_handle handle;
         if (nvs_open_from_partition(g_at_mfg_nvs_name, "factory_param", NVS_READONLY, &handle) != ESP_OK) {
-            printf("open factory_param namespace failed\r\n");
+            ESP_AT_LOGE(TAG, "open factory_param failed");
             return ESP_FAIL;
 
         }
@@ -205,7 +205,7 @@ static esp_err_t at_wifi_config_init(void)
             return ESP_FAIL;
         }
         esp_err_t ret = esp_wifi_set_max_tx_power(tx_power);
-        printf("max tx power=%d, ret=%d\r\n", tx_power, ret);
+        ESP_AT_LOGI(TAG, "max tx power=%d, ret=%d", tx_power, ret);
 
         // country code
         wifi_country_t country;
@@ -219,7 +219,7 @@ static esp_err_t at_wifi_config_init(void)
             return ESP_FAIL;
         }
         size_t len = AT_BUFFER_ON_STACK_SIZE;
-        if (nvs_get_str(handle, "country_code", buffer, &len) != ESP_OK) {
+        if (esp_at_nvs_get_str(handle, "country_code", buffer, &len) != ESP_OK) {
             nvs_close(handle);
             return ESP_FAIL;
         }
@@ -231,7 +231,7 @@ static esp_err_t at_wifi_config_init(void)
         // deprecated way
         const esp_partition_t *partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
         if (!partition) {
-            printf("factory_param partition missed\r\n");
+            ESP_AT_LOGE(TAG, "factory_param partition missed");
             return ESP_FAIL;
         }
         if (esp_partition_read(partition, 0, buffer, AT_BUFFER_ON_STACK_SIZE) != ESP_OK) {
@@ -248,7 +248,7 @@ static esp_err_t at_wifi_config_init(void)
         if (buffer[4] != 0xFF) {
             if ((version != 1) || ((version == 1) && (buffer[4] >= 10))) {
                 esp_err_t ret = esp_wifi_set_max_tx_power((int8_t)buffer[4]);
-                printf("max tx power=%d,ret=%d\r\n", buffer[4], ret);
+                ESP_AT_LOGI(TAG, "max tx power=%d, ret=%d", buffer[4], ret);
             }
         }
 
@@ -257,7 +257,7 @@ static esp_err_t at_wifi_config_init(void)
         memset(&country, 0x0, sizeof(country));
         if ((buffer[6] != 0xFF) && (buffer[7] != 0xFF) && (buffer[8] != 0xFF)) {
             if ((buffer[6] < 1) || (buffer[7] > 14) || (buffer[7] < buffer[6])) {
-                printf("invalid country code, s:%d n:%d\r\n", buffer[6], buffer[7]);
+                ESP_AT_LOGE(TAG, "invalid country code, s:%d n:%d", buffer[6], buffer[7]);
                 return ESP_FAIL;
             }
             country.schan = buffer[6];
@@ -285,7 +285,7 @@ static void at_nvs_flash_init_partition(void)
     const esp_partition_t *partition = esp_at_custom_partition_find(ESP_PARTITION_TYPE_DATA, ESP_PARTITION_SUBTYPE_DATA_NVS, g_at_mfg_nvs_name);
     if (partition) {
         if (nvs_flash_init_partition_ptr(partition) != ESP_OK) {
-            printf("init partition ptr failed\r\n");
+            ESP_AT_LOGE(TAG, "init partition ptr failed");
         } else {
             s_at_param_mode = AT_PARAMS_IN_MFG_NVS;
         }
@@ -295,7 +295,7 @@ static void at_nvs_flash_init_partition(void)
         s_at_param_mode = AT_PARAMS_NONE;
     }
 
-    printf("at param mode: %d\r\n", s_at_param_mode);
+    ESP_AT_LOGI(TAG, "at param mode: %d", s_at_param_mode);
 }
 
 static void esp_at_ready(void)
@@ -303,8 +303,19 @@ static void esp_at_ready(void)
     esp_at_port_active_write_data((uint8_t *)s_ready_str, strlen(s_ready_str));
 }
 
+static IRAM_ATTR void at_alloc_failed_cb(size_t requested_size, uint32_t caps, const char *function_name)
+{
+    esp_rom_printf(DRAM_STR(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_RED) "alloc failed, size:%u, caps:0x%x" LOG_ANSI_COLOR_RESET "\n"), requested_size, caps);
+}
+
 void esp_at_init(void)
 {
+    // set log level to max
+    esp_log_level_set("*", ESP_LOG_MAX);
+
+    // register the callback function to be invoked if a memory allocation operation fails
+    heap_caps_register_failed_alloc_callback(at_alloc_failed_cb);
+
     // initialize the manufacturing nvs partition
     at_nvs_flash_init_partition();
 

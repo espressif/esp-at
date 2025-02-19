@@ -383,6 +383,46 @@ config AT_RAINMAKER_COMMAND_SUPPORT
     depends on AT_ENABLE
     depends on IDF_TARGET_ESP32C3
 
+menu "AT Log Level"
+
+    choice AT_LOG_DEFAULT_LEVEL
+        bool "Default AT log verbosity"
+        default AT_LOG_DEFAULT_LEVEL_VERBOSE
+        help
+            Specify how much output to see in AT logs by default.
+
+            By default, this setting limits which log statements
+            are compiled into the program. For example, selecting
+            "Warning" would mean that changing log level to "Debug"
+            at runtime will not be possible. To allow increasing log
+            level above the default at runtime, see the next option.
+
+        config AT_LOG_DEFAULT_LEVEL_NONE
+            bool "No output"
+        config AT_LOG_DEFAULT_LEVEL_ERROR
+            bool "Error"
+        config AT_LOG_DEFAULT_LEVEL_WARN
+            bool "Warning"
+        config AT_LOG_DEFAULT_LEVEL_INFO
+            bool "Info"
+        config AT_LOG_DEFAULT_LEVEL_DEBUG
+            bool "Debug"
+        config AT_LOG_DEFAULT_LEVEL_VERBOSE
+            bool "Verbose"
+    endchoice
+
+    config AT_LOG_DEFAULT_LEVEL
+        int
+        default 0 if AT_LOG_DEFAULT_LEVEL_NONE
+        default 1 if AT_LOG_DEFAULT_LEVEL_ERROR
+        default 2 if AT_LOG_DEFAULT_LEVEL_WARN
+        default 3 if AT_LOG_DEFAULT_LEVEL_INFO
+        default 4 if AT_LOG_DEFAULT_LEVEL_DEBUG
+        default 5 if AT_LOG_DEFAULT_LEVEL_VERBOSE
+
+endmenu
+
+
 menuconfig AT_DEBUG
     bool "Enable ESP-AT Debug"
     default n
