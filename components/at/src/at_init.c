@@ -77,15 +77,15 @@ static void at_module_init(void)
     ret = snprintf((char *)version, AT_TEMP_BUFFER_SIZE,
                    "compile time(%s):%s %s\r\n", ESP_AT_PROJECT_COMMIT_ID, __DATE__, __TIME__);
 
-#ifdef CONFIG_ESP_AT_FW_VERSION
+#ifdef CONFIG_APP_PROJECT_VER
 #ifdef ESP_AT_FIRMWARE_FROM
-    ESP_AT_LOGI(TAG, "%s (%s)", CONFIG_ESP_AT_FW_VERSION, ESP_AT_FIRMWARE_FROM);
+    ESP_AT_LOGI(TAG, "%s (%s)", CONFIG_APP_PROJECT_VER, ESP_AT_FIRMWARE_FROM);
 #else
-    ESP_AT_LOGI(TAG, "%s (unknown)", CONFIG_ESP_AT_FW_VERSION);
+    ESP_AT_LOGI(TAG, "%s (unknown)", CONFIG_APP_PROJECT_VER);
 #endif
 
     ret = snprintf((char *)version + ret, AT_TEMP_BUFFER_SIZE - ret,
-                   "Bin version:%s(%s)\r\n", CONFIG_ESP_AT_FW_VERSION, esp_at_get_current_module_name());
+                   "Bin version:%s(%s)\r\n", CONFIG_APP_PROJECT_VER, esp_at_get_current_module_name());
 #endif
 
 #if CONFIG_AT_DEBUG

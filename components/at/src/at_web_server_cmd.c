@@ -1650,7 +1650,7 @@ static esp_err_t ota_info_get_handler(httpd_req_t *req)
 
     // OTA information
     json_len += sprintf(temp_json_str + json_len, "\"state\":0,"); // it means http context OK
-    json_len += sprintf(temp_json_str + json_len, "\"fw_version\":\"%s\",", CONFIG_ESP_AT_FW_VERSION); // it means http context OK
+    json_len += sprintf(temp_json_str + json_len, "\"fw_version\":\"%s\",", CONFIG_APP_PROJECT_VER); // it means http context OK
     json_len += sprintf(temp_json_str + json_len, "\"at_core_version\":\"%d.%d.%d.%d\",", version[3], version[2], version[1], version[0]);
 
     // partition information array start
