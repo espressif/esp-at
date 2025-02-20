@@ -959,7 +959,7 @@ static uint8_t at_exe_cmd_rmnodeinit(uint8_t *cmd_name)
     // format like "2.4.0(esp32c3_MINI-1_4b42408):Sep 20 2022 11:58:48"
     char *version = (char *)calloc(1, 256);
     sprintf(version, "%s(%s_%s_%s):%s %s",
-            CONFIG_ESP_AT_FW_VERSION, CONFIG_IDF_TARGET,
+            CONFIG_APP_PROJECT_VER, CONFIG_IDF_TARGET,
             esp_at_get_current_module_name(),
             ESP_AT_PROJECT_COMMIT_ID,
             __DATE__,
