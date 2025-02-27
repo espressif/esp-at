@@ -5,6 +5,6 @@ dependencies:
   espressif/esp_websocket_client:
     version: "~1.2.0"
   espressif/bootloader_support_plus:
-    version: "==0.2.2"
+    version: "~0.2.7"
     rules:
       - if: "target in [esp32c2, esp32c3]"
