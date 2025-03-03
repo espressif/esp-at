@@ -44,3 +44,49 @@ esp32c2_at_wifi_function_test:
     - .rules:build:build_project_on_protected
   variables:
     MODULE_NAME: "ESP32C2-4MB"
+
+# For esp32c2 eco4
+esp32c2_2mb_g2_at:
+  extends:
+    - .build_template_esp32c2
+    - .rules:build:build_project
+  variables:
+    MODULE_NAME: "ESP32C2-2MB-G2"
+
+esp32c2_4mb_g2_at:
+  extends:
+    - .build_template_esp32c2
+    - .rules:build:build_project
+  variables:
+    MODULE_NAME: "ESP32C2-4MB-G2"
+
+esp32c2_ble_2mb_g2_at:
+  extends:
+    - .build_template_esp32c2
+    - .rules:build:build_project
+  variables:
+    MODULE_NAME: "ESP32C2-BLE-2MB-G2"
+
+esp32c2_4mb_g2_at_tat_debug:
+  extends:
+    - .build_template_esp32c2
+    - .before_script_enable_at_debugs
+    - .rules:build:build_project_on_protected
+  variables:
+    MODULE_NAME: "ESP32C2-4MB-G2"
+
+esp32c2_4mb_g2_at_xtal_40mhz_test:
+  extends:
+    - .build_template_esp32c2
+    - .before_script_esp32c2_enable_40mhz_xtal
+    - .rules:build:build_project_on_protected
+  variables:
+    MODULE_NAME: "ESP32C2-4MB-G2"
+
+esp32c2_g2_at_wifi_function_test:
+  extends:
+    - .build_template_esp32c2
+    - .before_script_esp32c2_enable_all_wifi_cmds
+    - .rules:build:build_project_on_protected
+  variables:
+    MODULE_NAME: "ESP32C2-4MB-G2"

@@ -1,0 +1,2 @@
+# Name, Type, SubType, Offset, Size
+mfg_nvs, data, nvs, 0x1b000, 60K
