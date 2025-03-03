@@ -52,6 +52,7 @@ This is the documentation for `ESP-AT <https://github.com/espressif/esp-at>`_ De
    :esp32 or esp32c3: Customized AT Commands and Firmware <Customized_AT_Commands_and_Firmware/index>
    FAQ <faq>
    Index of Abbreviations <index_of_abbreviations>
+   Disclaimer <disclaimer>
    About <about>
 
 * :ref:`genindex`

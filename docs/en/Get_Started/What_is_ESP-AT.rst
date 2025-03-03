@@ -3,6 +3,9 @@ What is ESP-AT
 
 :link_to_translation:`zh_CN:[中文]`
 
+.. important::
+  Before using the ESP-AT, please read the :doc:`../disclaimer` carefully and comply with its terms and precautions.
+
 ESP-AT is a solution developed by Espressif to integrate connectivity into customers' products, which can be quickly moved to mass production. It aims to reduce software development costs and quickly form products. With ESP-AT commands, you can quickly join the wireless network, connect to the cloud platform, realize data transmission and remote control functions, and realize the interconnection of everything through wireless communication easily.
 
 ESP-AT is a project based on ESP-IDF. It makes an {IDF_TARGET_NAME} board work as a slave, and an MCU as a host. The host MCU sends AT commands to the {IDF_TARGET_NAME} chip and receives AT responses back. ESP-AT provides a wide range of AT commands with different functions, such as Wi-Fi commands, TCP/IP commands, Bluetooth LE commands, Bluetooth commands, MQTT commands, HTTP commands, and Ethernet commands.
