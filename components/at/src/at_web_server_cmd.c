@@ -1515,6 +1515,17 @@ static esp_err_t ota_upgrade(httpd_req_t *req)
     ESP_LOGI(TAG, "bin size is %d", total_len);
     memset(buf, 0x0, ESP_AT_WEB_SCRATCH_BUFSIZE * sizeof(char));
 
+#if defined(CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE) && !defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
+    // indicate that the running app is working well for app rollback
+    const esp_partition_t *running = esp_ota_get_running_partition();
+    esp_ota_img_states_t ota_state;
+    if (esp_ota_get_state_partition(running, &ota_state) == ESP_OK) {
+        if (ota_state == ESP_OTA_IMG_PENDING_VERIFY) {
+            esp_ota_mark_app_valid_cancel_rollback();
+        }
+    }
+#endif
+
     // start ota
     err = esp_ota_begin(update_partition, OTA_SIZE_UNKNOWN, &update_handle);
     if (err != ESP_OK) {
