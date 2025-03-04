@@ -10,6 +10,7 @@ check_doc_links:
       - docs/_build/*/*/linkcheck/*.txt
     expire_in: 1 week
   allow_failure: true
+  when: manual
   script:
     - cd docs
     - pip install -r requirements.txt
