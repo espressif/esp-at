@@ -1,0 +1,17 @@
+diff --git a/components/partition_table/project_include.cmake b/components/partition_table/project_include.cmake
+index ddd6230db3..7f18189310 100644
+--- a/components/partition_table/project_include.cmake
++++ b/components/partition_table/project_include.cmake
+@@ -16,8 +16,11 @@ if(NOT non_os_build)
+         else()
+             idf_build_get_property(project_dir PROJECT_DIR)
+             # Custom filename expands any path relative to the project
++            if(NOT CONFIG_PARTITION_TABLE_BASE_DIR)
++                set(CONFIG_PARTITION_TABLE_BASE_DIR "${project_dir}")
++            endif()
+             get_filename_component(PARTITION_CSV_PATH "${CONFIG_PARTITION_TABLE_FILENAME}"
+-                                    ABSOLUTE BASE_DIR "${project_dir}")
++                                    ABSOLUTE BASE_DIR "${CONFIG_PARTITION_TABLE_BASE_DIR}")
+         endif()
+ 
+         if(NOT EXISTS "${PARTITION_CSV_PATH}")
