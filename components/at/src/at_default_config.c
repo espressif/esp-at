@@ -145,7 +145,7 @@ __attribute__((weak)) void esp_at_log_write(esp_log_level_t level, const char *t
         va_start(list, format);
         size_t new_format_length = strlen(tag) + strlen(format) + 30;
         char new_format[new_format_length];
-        snprintf(new_format, new_format_length, "%c (%"PRIu32") %s: %s " "\n", level_str[level], esp_log_timestamp(), tag, format);
+        snprintf(new_format, new_format_length, "%c (%"PRIu32") %s: %s\n", level_str[level], esp_log_timestamp(), tag, format);
         esp_log_writev(level, tag, new_format, list);
         va_end(list);
     }
