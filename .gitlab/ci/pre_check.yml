@@ -10,16 +10,13 @@ check_pre_commit:
   before_script:
     - pip install pre-commit
   script:
+    # MODIFIED_FILES is newline separated list of modified files in the MR only.
+    # For non MR pipeline, it is an empty list.
     - |
-      # merged results pipelines, by default
-      if [[ -n $CI_MERGE_REQUEST_SOURCE_BRANCH_SHA ]]; then
-        MODIFIED_FILES=$(git diff --name-only $CI_MERGE_REQUEST_DIFF_BASE_SHA $CI_MERGE_REQUEST_SOURCE_BRANCH_SHA)
-      # merge request pipelines, when the mr got conflicts
-      elif [[ -n $CI_MERGE_REQUEST_DIFF_BASE_SHA ]]; then
-        MODIFIED_FILES=$(git diff --name-only $CI_MERGE_REQUEST_DIFF_BASE_SHA $CI_COMMIT_SHA)
-      # other pipelines, like the protected branches pipelines
+      if [ $IS_MR_PIPELINE == "0" ]; then
+        MODIFIED_FILES=""
       else
-        MODIFIED_FILES=$(git diff --name-only $CI_COMMIT_BEFORE_SHA $CI_COMMIT_SHA)
+        MODIFIED_FILES=$(git diff --name-only $CI_MERGE_REQUEST_DIFF_BASE_SHA $CI_COMMIT_SHA)
       fi
 
       # print the MODIFIED_FILES
