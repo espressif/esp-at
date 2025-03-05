@@ -16,6 +16,10 @@
 #include "esp_bt.h"
 #endif
 
+#if defined(CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE) && !defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
+#include "esp_ota_ops.h"
+#endif
+
 #include "esp_at_core.h"
 #include "esp_at.h"
 #include "esp_at_init.h"
@@ -308,6 +312,19 @@ static IRAM_ATTR void at_alloc_failed_cb(size_t requested_size, uint32_t caps, c
     esp_rom_printf(DRAM_STR(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_RED) "alloc failed, size:%u, caps:0x%x" LOG_ANSI_COLOR_RESET "\n"), requested_size, caps);
 }
 
+#if defined(CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE) && !defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
+static void at_ota_mark_app_valid_cancel_rollback(void)
+{
+    const esp_partition_t *running = esp_ota_get_running_partition();
+    esp_ota_img_states_t ota_state;
+    if (esp_ota_get_state_partition(running, &ota_state) == ESP_OK) {
+        if (ota_state == ESP_OTA_IMG_PENDING_VERIFY) {
+            esp_ota_mark_app_valid_cancel_rollback();
+        }
+    }
+}
+#endif
+
 void esp_at_init(void)
 {
     // set log level to max
@@ -359,6 +376,11 @@ void esp_at_init(void)
 
     // do some special things before AT is ready
     esp_at_ready_before();
+
+#if defined(CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE) && !defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
+    // indicate that the running app is working well for app rollback
+    at_ota_mark_app_valid_cancel_rollback();
+#endif
 
     esp_at_ready();
     ESP_LOGD(TAG, "esp_at_init done");
