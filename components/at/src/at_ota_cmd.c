@@ -382,16 +382,6 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
             goto OTA_ERROR;
         }
 #else
-#if defined(CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE)
-        // indicate that the running app is working well for app rollback
-        const esp_partition_t *running = esp_ota_get_running_partition();
-        esp_ota_img_states_t ota_state;
-        if (esp_ota_get_state_partition(running, &ota_state) == ESP_OK) {
-            if (ota_state == ESP_OTA_IMG_PENDING_VERIFY) {
-                esp_ota_mark_app_valid_cancel_rollback();
-            }
-        }
-#endif
         partition_ptr = (esp_partition_t*)esp_ota_get_boot_partition();
         if (partition_ptr == NULL) {
             ESP_AT_LOGE(TAG, "no boot partition");
