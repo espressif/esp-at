@@ -117,7 +117,7 @@ static int32_t at_port_security_read(uint8_t *data, int32_t size)
         return buffered_len;
     }
 
-    ESP_LOG_BUFFER_HEXDUMP("intf-sec-rx", data, buffered_len, ESP_LOG_INFO);
+    ESP_AT_LOG_BUFFER_HEXDUMP("intf-sec-rx", data, buffered_len, ESP_LOG_INFO);
 
     for (int idx = 0; idx < buffered_len; idx = idx + buffered_len) {
         mbedtls_aes_crypt_ctr(&s_ctx[1].ctx, buffered_len - idx, &s_ctx[1].offset, s_ctx[1].iv, s_ctx[1].stream_block, s_ctx[1].buffer + idx, data + idx);
@@ -141,7 +141,7 @@ static int32_t at_port_security_write(uint8_t *data, int32_t size)
         mbedtls_aes_crypt_ctr(&s_ctx[0].ctx, size - idx, &s_ctx[0].offset, s_ctx[0].iv, s_ctx[0].stream_block, data + idx, s_ctx[0].buffer + idx);
     }
 
-    ESP_LOG_BUFFER_HEXDUMP("intf-sec-tx", s_ctx[0].buffer, size, ESP_LOG_INFO);
+    ESP_AT_LOG_BUFFER_HEXDUMP("intf-sec-tx", s_ctx[0].buffer, size, ESP_LOG_INFO);
 
     at_write_data_fn_t write_fn = at_interface_get_write_fn();
     return write_fn(s_ctx[0].buffer, size);
