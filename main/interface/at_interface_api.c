@@ -50,7 +50,7 @@ static int32_t at_port_read_data(uint8_t *buffer, int32_t len)
     ret = read_fn(buffer, len);
 
 #if CONFIG_AT_RX_DATA_DEBUG
-    if (ret > 0) {
+    if (ret > 0 && buffer) {
         ESP_LOG_BUFFER_HEXDUMP("intf-rx", buffer, at_min(ret, CONFIG_AT_RX_DATA_MAX_LEN), ESP_LOG_INFO);
     }
 #endif
