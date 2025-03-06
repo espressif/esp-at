@@ -2,6 +2,9 @@
 # if anchors #
 ##############
 .if-protected: &if-protected
+  if: '($CI_COMMIT_REF_NAME == "master" || $CI_COMMIT_BRANCH =~ /^release\/v/ || $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+(\.\d+)?($|-)/)'
+
+.if-protected-or-web-trigger: &if-protected-or-web-trigger
   if: '($CI_COMMIT_REF_NAME == "master" || $CI_COMMIT_BRANCH =~ /^release\/v/ || $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+(\.\d+)?($|-)/ || $CI_PIPELINE_SOURCE == "web")'
 
 .if-dev-push: &if-dev-push
@@ -41,13 +44,13 @@
 
 .rules:build:build_project:
   rules:
-    - <<: *if-protected
+    - <<: *if-protected-or-web-trigger
     - <<: *if-dev-push
       changes: *patterns-src
 
 .rules:build:build_project_on_protected:
   rules:
-    - <<: *if-protected
+    - <<: *if-protected-or-web-trigger
 
 .rules:deploy:docs_preview:
   rules:
