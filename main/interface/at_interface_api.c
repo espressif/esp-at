@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -38,7 +38,7 @@ static int32_t at_port_read_data(uint8_t *buffer, int32_t len)
 
 #if CONFIG_AT_RX_DATA_DEBUG
     if (ret > 0) {
-        ESP_LOG_BUFFER_HEXDUMP("intf-rx", buffer, at_min(ret, CONFIG_AT_RX_DATA_MAX_LEN), ESP_LOG_INFO);
+        ESP_AT_LOG_BUFFER_HEXDUMP("intf-rx", buffer, at_min(ret, CONFIG_AT_RX_DATA_MAX_LEN), ESP_LOG_INFO);
     }
 #endif
 
@@ -52,7 +52,7 @@ static int32_t at_port_write_data(uint8_t *data, int32_t len)
     }
 
 #if CONFIG_AT_TX_DATA_DEBUG
-    ESP_LOG_BUFFER_HEXDUMP("intf-tx", data, at_min(len, CONFIG_AT_TX_DATA_MAX_LEN), ESP_LOG_INFO);
+    ESP_AT_LOG_BUFFER_HEXDUMP("intf-tx", data, at_min(len, CONFIG_AT_TX_DATA_MAX_LEN), ESP_LOG_INFO);
 #endif
 
     at_write_data_fn_t write_fn = s_interface_ops.write_data;
