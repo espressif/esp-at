@@ -1,16 +1,27 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
 #pragma once
 
 #include "sdkconfig.h"
+#include "esp_log.h"
 #include "esp_at_core.h"
 #include "esp_at_cmd_register.h"
 
 #define ESP_AT_PORT_TX_WAIT_MS_MAX          3000    // 3s
 #define AT_BUFFER_ON_STACK_SIZE             128     // default maximum buffer size on task stack
+
+/**
+ * @brief Same to ESP_LOG_BUFFER_HEXDUMP, but only output when buffer is not NULL
+*/
+#define ESP_AT_LOG_BUFFER_HEXDUMP(tag, buffer, buff_len, level) \
+    do { \
+        if (buffer) { \
+            ESP_LOG_BUFFER_HEXDUMP(tag, buffer, buff_len, level); \
+        } \
+    } while(0)
 
 typedef enum {
     AT_PARAMS_NONE = 0,
