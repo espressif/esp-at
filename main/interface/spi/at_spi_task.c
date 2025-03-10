@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -47,6 +47,7 @@ static uint8_t s_spi_slave_tx_seq_num = 0;
 static uint8_t s_spi_slave_rx_seq_num = 0;
 static StreamBufferHandle_t s_spi_slave_rx_ring_buf = NULL;
 static StreamBufferHandle_t s_spi_slave_tx_ring_buf = NULL;
+static TaskHandle_t s_task_handle = NULL;
 
 static const char *TAG = "at-spi";
 
@@ -165,6 +166,9 @@ static void at_spi_task(void *params)
         ESP_LOGE(TAG, "malloc failed");
         return;
     }
+
+    // wait for AT ready
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
     spi_slave_hd_data_t *ret_trans;
     while (1) {
@@ -329,7 +333,7 @@ static void at_spi_init(void)
     init_slave_hd();
 
     // init spi slave task
-    xTaskCreate(at_spi_task, "at_spi_task", 4096, NULL, 10, NULL);
+    xTaskCreate(at_spi_task, "at_spi_task", 4096, NULL, 10, &s_task_handle);
 }
 
 static void at_spi_sleep_before_cb(at_sleep_mode_t mode)
@@ -366,6 +370,11 @@ void at_interface_init(void)
         .pre_active_write_data_callback = NULL,
     };
     at_interface_hooks(&spi_hooks);
+}
+
+void at_interface_start(void)
+{
+    xTaskNotifyGive(s_task_handle);
 }
 
 #endif

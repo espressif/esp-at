@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -31,6 +31,7 @@
 static int s_client_fd = -1;
 static bool s_trans_mode = false;
 static RingbufHandle_t s_ring_buffer;
+static TaskHandle_t s_task_handle = NULL;
 static const char *TAG = "at-socket";
 
 static int32_t at_socket_read_data(uint8_t *data, int32_t len)
@@ -106,6 +107,9 @@ static void socket_task(void *params)
         goto exit_task;
     }
     ESP_LOGD(TAG, "socket listening...");
+
+    // wait for AT ready
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
     for (;;) {
         // accept a new client
@@ -210,7 +214,7 @@ static void at_socket_init(void)
     ESP_ERROR_CHECK(esp_netif_get_ip_info(ap_if, &ip));
     ESP_AT_LOGI(TAG, "softap: (%s) started, listen on (" IPSTR ":%d)", config.ap.ssid, IP2STR(&ip.ip), CONFIG_AT_SOCKET_PORT);
 
-    xTaskCreate(&socket_task, "socket_task", 4096, NULL, 5, NULL);
+    xTaskCreate(&socket_task, "socket_task", 4096, NULL, 5, &s_task_handle);
 }
 
 void at_interface_init(void)
@@ -237,6 +241,11 @@ void at_interface_init(void)
         .pre_active_write_data_callback = NULL,
     };
     at_interface_hooks(&socket_hooks);
+}
+
+void at_interface_start(void)
+{
+    xTaskNotifyGive(s_task_handle);
 }
 
 #endif

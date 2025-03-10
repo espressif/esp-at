@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -44,6 +44,7 @@ static esp_at_sdio_list_t *sp_head;
 static esp_at_sdio_list_t *sp_tail;
 static SemaphoreHandle_t s_sdio_rw_sema;
 static esp_at_sdio_list_t WORD_ALIGNED_ATTR s_sdio_buffer_list[CONFIG_AT_SDIO_BUFFER_NUM];
+static TaskHandle_t s_task_handle = NULL;
 static const char *TAG = "at-sdio";
 
 static int32_t at_sdio_write_data(uint8_t *data, int32_t len)
@@ -136,6 +137,9 @@ static void at_sdio_task(void *params)
 {
     size_t size = 0;
 
+    // wait for AT ready
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+
     for (;;) {
         // receive data from sdio host
         uint8_t *addr = NULL;
@@ -194,7 +198,7 @@ static void at_sdio_init(void)
     // start sdio slave
     sdio_slave_start();
 
-    xTaskCreate(at_sdio_task, "at_sdio_task", 4096, NULL, 2, NULL);
+    xTaskCreate(at_sdio_task, "at_sdio_task", 4096, NULL, 2, &s_task_handle);
 }
 
 void at_interface_init(void)
@@ -213,6 +217,11 @@ void at_interface_init(void)
 
     // init interface hooks
     at_interface_hooks(NULL);
+}
+
+void at_interface_start(void)
+{
+    xTaskNotifyGive(s_task_handle);
 }
 
 #endif
