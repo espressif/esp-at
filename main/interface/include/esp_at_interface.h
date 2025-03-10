@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -17,6 +17,13 @@
  * @note The available interfaces might be multiple, but only one interface can be used at a time.
 */
 void at_interface_init(void);
+
+/**
+ * @brief This function is used to start the interface.
+ *
+ * @note Once the interface is started, the AT command can be received and processed.
+*/
+void at_interface_start(void);
 
 /**
  * @brief This function is used to intialize the interface operations for communication port.

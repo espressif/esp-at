@@ -382,6 +382,9 @@ void esp_at_init(void)
     at_ota_mark_app_valid_cancel_rollback();
 #endif
 
+    // once the interface is started, the AT command can be received and processed
+    at_interface_start();
+
     esp_at_ready();
     ESP_LOGD(TAG, "esp_at_init done");
 }

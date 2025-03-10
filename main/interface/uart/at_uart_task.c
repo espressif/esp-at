@@ -25,6 +25,7 @@
 
 // static variables
 static QueueHandle_t s_at_uart_queue = NULL;
+static TaskHandle_t s_task_handle = NULL;
 static const char *TAG = "at-uart";
 
 // global variables
@@ -101,6 +102,9 @@ static void at_uart_task(void *params)
     BaseType_t retry_flag = pdFALSE;
     uint8_t *data = NULL;
     uint32_t data_len = 0;
+
+    // wait for AT ready
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
     for (;;) {
         if (xQueueReceive(s_at_uart_queue, (void *)&event, portMAX_DELAY)) {
@@ -202,7 +206,7 @@ static void at_uart_init(void)
                 g_at_cmd_port, g_uart_port_pin.tx_pin, g_uart_port_pin.rx_pin,
                 g_uart_port_pin.cts_pin, g_uart_port_pin.rts_pin, config.baud_rate);
 
-    xTaskCreate(at_uart_task, "uTask", 1024, NULL, 1, NULL);
+    xTaskCreate(at_uart_task, "uTask", 1024, NULL, 1, &s_task_handle);
 }
 
 void at_uart_transmit_mode_switch_cb(esp_at_status_type status)
@@ -285,6 +289,11 @@ void at_interface_init(void)
         .pre_active_write_data_callback = NULL,
     };
     at_interface_hooks(&uart_hooks);
+}
+
+void at_interface_start(void)
+{
+    xTaskNotifyGive(s_task_handle);
 }
 
 #endif
