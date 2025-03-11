@@ -1,0 +1,54 @@
+diff --git a/components/wpa_supplicant/esp_supplicant/src/esp_wps.c b/components/wpa_supplicant/esp_supplicant/src/esp_wps.c
+index fd019627ff..a279bbc677 100644
+--- a/components/wpa_supplicant/esp_supplicant/src/esp_wps.c
++++ b/components/wpa_supplicant/esp_supplicant/src/esp_wps.c
+@@ -1,5 +1,5 @@
+ /*
+- * SPDX-FileCopyrightText: 2019-2024 Espressif Systems (Shanghai) CO LTD
++ * SPDX-FileCopyrightText: 2019-2025 Espressif Systems (Shanghai) CO LTD
+  *
+  * SPDX-License-Identifier: Apache-2.0
+  */
+@@ -870,9 +870,11 @@ int wps_finish(void)
+     return ret;
+ }
+
++/* This will get executed in the wifi task's context */
+ static void wps_sm_notify_deauth(void)
+ {
+-    if (gWpsSm && gWpsSm->wps->state != WPS_FINISHED) {
++    if (gWpsSm && gWpsSm->wps->state != WPS_FINISHED &&
++            !gWpsSm->intermediate_disconnect) {
+         wps_stop_process(WPS_FAIL_REASON_RECV_DEAUTH);
+     }
+ }
+@@ -1599,6 +1601,7 @@ wifi_station_wps_deinit(void)
+         sm->wps = NULL;
+     }
+     if (s_wps_sm_cb) {
++        s_wps_sm_cb->wps_sm_notify_deauth = NULL;
+         os_free(s_wps_sm_cb);
+         s_wps_sm_cb = NULL;
+     }
+@@ -1649,7 +1652,9 @@ wifi_wps_scan_done(void *arg, STATUS status)
+     sm->discover_ssid_cnt = 0;
+
+     if (wps_get_status() == WPS_STATUS_PENDING) {
++        sm->intermediate_disconnect = true;
+         esp_wifi_disconnect();
++        sm->intermediate_disconnect = false;
+
+         os_memcpy(wifi_config.sta.bssid, sm->bssid, ETH_ALEN);
+         os_memcpy(wifi_config.sta.ssid, (char *)sm->creds[0].ssid, sm->creds[0].ssid_len);
+diff --git a/components/wpa_supplicant/esp_supplicant/src/esp_wps_i.h b/components/wpa_supplicant/esp_supplicant/src/esp_wps_i.h
+index 1b413a128b..52772729d0 100644
+--- a/components/wpa_supplicant/esp_supplicant/src/esp_wps_i.h
++++ b/components/wpa_supplicant/esp_supplicant/src/esp_wps_i.h
+@@ -83,6 +83,7 @@ struct wps_sm {
+     bool ignore_sel_reg;
+     struct discard_ap_list_t dis_ap_list[WPS_MAX_DIS_AP_NUM];
+     u8 discard_ap_cnt;
++    bool intermediate_disconnect;
+ };
+
+ #define API_MUTEX_TAKE() do {\
