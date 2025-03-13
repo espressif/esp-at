@@ -204,7 +204,7 @@ config AT_BLUFI_COMMAND_SUPPORT
 
 config AT_BT_COMMAND_SUPPORT
     bool "AT bt command support."
-    default "n"
+    default "y"
     select BT_CLASSIC_ENABLED
     select BT_ALLOCATION_FROM_SPIRAM_FIRST
     depends on AT_ENABLE && BT_ENABLED && IDF_TARGET_ESP32
