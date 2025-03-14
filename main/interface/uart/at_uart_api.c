@@ -249,8 +249,20 @@ void at_uart_workaround(void)
     PIN_SLP_INPUT_ENABLE(GPIO_PIN_MUX_REG[g_uart_port_pin.rx_pin]);
     gpio_sleep_set_pull_mode(g_uart_port_pin.rx_pin, GPIO_PULLUP_ONLY);
 
-    // a workaround for uart1 tx voltage fluctuation issue during light-sleep
+    // a workaround for uart1 voltage fluctuation issue during light-sleep
     gpio_sleep_sel_dis(g_uart_port_pin.tx_pin);
+    gpio_sleep_sel_dis(g_uart_port_pin.rx_pin);
+    if (g_uart_port_pin.cts_pin != -1) {
+        gpio_sleep_sel_dis(g_uart_port_pin.cts_pin);
+    }
+    if (g_uart_port_pin.rts_pin != -1) {
+        gpio_sleep_sel_dis(g_uart_port_pin.rts_pin);
+    }
+
+#if CONFIG_ESP_CONSOLE_UART_CUSTOM
+    // a workaround for uart0 voltage fluctuation issue during deep-sleep
+    gpio_sleep_sel_dis(CONFIG_ESP_CONSOLE_UART_TX_GPIO);
+#endif
 }
 
 void at_uart_config_init(uart_config_t *config)
