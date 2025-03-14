@@ -1892,7 +1892,7 @@ static esp_err_t at_web_fatfs_spiflash_init(void)
         return ESP_FAIL;
     }
 
-    ESP_LOGI(TAG ("mount fatfs success");
+    ESP_LOGI(TAG, "mount fatfs success");
     return ESP_OK;
 }
 
