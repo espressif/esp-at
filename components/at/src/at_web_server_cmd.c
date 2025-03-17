@@ -291,12 +291,13 @@ static bool check_fail_list(uint8_t *bssid)
 
 static esp_err_t stop_scan_filter(void)
 {
-    if (!SLIST_EMPTY(&s_router_fail_list)) {
-        for (router_obj_t *fail_item = SLIST_FIRST(&s_router_fail_list); fail_item != NULL; fail_item = SLIST_NEXT(fail_item, next)) {
-            SLIST_REMOVE(&s_router_fail_list, fail_item, router_obj, next);
-            free(fail_item);
-        }
+    router_obj_t *item;
+    while (!SLIST_EMPTY(&s_router_fail_list)) {
+        item = SLIST_FIRST(&s_router_fail_list);
+        SLIST_REMOVE(&s_router_fail_list, item, router_obj, next);
+        free(item);
     }
+    SLIST_INIT(&s_router_fail_list);
     return ESP_OK;
 }
 
@@ -576,11 +577,13 @@ static esp_err_t at_web_start_scan_filter(uint8_t *phone_mac, uint8_t *password,
         }
 #endif
         // delete scan list
-        for (item = SLIST_FIRST(&s_router_all_list); item != NULL; item = SLIST_NEXT(item, next)) {
-            ESP_LOGD(TAG, "Delete SSID:%s", item->ssid);
+        while (!SLIST_EMPTY(&s_router_all_list)) {
+            ESP_LOGD(TAG, "Delete SSID: %.*s", sizeof(item->ssid), item->ssid);
+            item = SLIST_FIRST(&s_router_all_list);
             SLIST_REMOVE(&s_router_all_list, item, router_obj, next);
             free(item);
         }
+        SLIST_INIT(&s_router_all_list);
 
         if (s_connect_success_flag) {
             s_connect_success_flag = 0;
