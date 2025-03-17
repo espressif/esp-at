@@ -37,7 +37,6 @@ static const char *TAG = "at-socket";
 static int32_t at_socket_read_data(uint8_t *data, int32_t len)
 {
     if (data == NULL || len < 0) {
-        ESP_LOGE(TAG, "invalid data:%p or len:%d", data, len);
         return -1;
     }
 
@@ -46,14 +45,14 @@ static int32_t at_socket_read_data(uint8_t *data, int32_t len)
         return 0;
     }
 
-    size_t data_len = len;
-    uint8_t *recv_data = (uint8_t *)xRingbufferReceive(s_ring_buffer, &data_len, 0);
+    size_t data_len;
+    uint8_t *recv_data = (uint8_t *)xRingbufferReceiveUpTo(s_ring_buffer, &data_len, 0, len);
 
-    if (recv_data == NULL || data_len > AT_RING_BUFFER_SIZE) {
-        ESP_LOGE(TAG, "cannot recv data from ringbuf");
-        return -1;
+    if (recv_data == NULL || data_len == 0) {
+        return 0;
     } else {
         memcpy(data, recv_data, data_len);
+        vRingbufferReturnItem(s_ring_buffer, recv_data);
     }
 
     return data_len;
@@ -152,8 +151,9 @@ static void socket_task(void *params)
                         }
                         esp_at_port_recv_data_notify(byte_num, portMAX_DELAY);
                     } else {
+                        close(s_client_fd);
                         s_client_fd = -1;
-                        ESP_LOGE(TAG, "time out or connection error, wait for a new client..");
+                        ESP_LOGD(TAG, "connection closed");
                         break;
                     }
                 }
@@ -191,7 +191,7 @@ static void at_socket_transmit_mode_switch_cb(esp_at_status_type status)
 static void at_socket_init(void)
 {
     // create a ring buffer for rx data
-    s_ring_buffer = xRingbufferCreate(AT_RING_BUFFER_SIZE, RINGBUF_TYPE_ALLOWSPLIT);
+    s_ring_buffer = xRingbufferCreate(AT_RING_BUFFER_SIZE, RINGBUF_TYPE_BYTEBUF);
     if (!s_ring_buffer) {
         ESP_LOGE(TAG, "create ringbuf failed");
         return;
