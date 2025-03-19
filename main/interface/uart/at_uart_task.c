@@ -243,9 +243,8 @@ void at_uart_transmit_mode_switch_cb(esp_at_status_type status)
     }
 }
 
-void at_uart_deepsleep_before_cb(void)
+static void at_disable_uart_pins(void)
 {
-    // disable uart pins for power saving, in case of leakage current
     if (g_uart_port_pin.tx_pin >= 0) {
         gpio_set_direction(g_uart_port_pin.tx_pin, GPIO_MODE_DISABLE);
     }
@@ -260,9 +259,17 @@ void at_uart_deepsleep_before_cb(void)
     }
 }
 
-void at_uart_restart_before_cb(void)
+static void at_uart_deepsleep_before_cb(void)
+{
+    // disable uart pins for power saving, in case of leakage current
+    at_disable_uart_pins();
+}
+
+static void at_uart_restart_before_cb(void)
 {
     uart_disable_rx_intr(g_at_cmd_port);
+    // disable uart pins to prevent gpio fluctuations (for example, uart may tx a few bytes during restart)
+    at_disable_uart_pins();
 }
 
 void at_interface_init(void)
