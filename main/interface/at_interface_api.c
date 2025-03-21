@@ -189,6 +189,11 @@ static void at_normal_sleep_before_cb(at_sleep_mode_t mode)
 
 static void at_normal_wakeup_before_cb(void)
 {
+    // do some common things before wakeup
+#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
+    at_set_mcu_state_if_sleep(AT_DISABLE_SLEEP);
+#endif
+
     // do some special things from the interface hook before wakeup
     if (s_interface_hooks.pre_wakeup_callback) {
         s_interface_hooks.pre_wakeup_callback();
