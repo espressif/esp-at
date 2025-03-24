@@ -81,15 +81,33 @@ Before using the AT firmware below, please read the :doc:`../disclaimer` careful
 
 .. only:: esp32c2
 
-  ESP32-C2 2MB Series
+  ESP32-C2-2MB-G2 Series
+  ^^^^^^^^^^^^^^^^^^^^^^
+
+  The firmware below is only applicable to the {IDF_TARGET_NAME} ECO4 (Rev v2.0) series chips.
+
+  - v3.3.1.0 `ESP32-C2-2MB-G2-AT-V3.3.1.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-2MB-G2-AT-V3.3.1.0.zip>`__ (Recommended)
+
+  ESP32-C2-4MB-G2 Series
+  ^^^^^^^^^^^^^^^^^^^^^^
+
+  The firmware below is only applicable to the {IDF_TARGET_NAME} ECO4 (Rev v2.0) series chips.
+
+  - v3.3.1.0 `ESP32-C2-4MB-G2-AT-V3.3.1.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-4MB-G2-AT-V3.3.1.0.zip>`__ (Recommended)
+
+  ESP32-C2-2MB Series
   ^^^^^^^^^^^^^^^^^^^
+
+  The firmwares below are applicable to the {IDF_TARGET_NAME} ECO1 (Rev v1.0) and ECO2 (Rev v1.1) series chips.
 
   - v3.3.0.0 `ESP32-C2-2MB-AT-V3.3.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-2MB-AT-V3.3.0.0.zip>`__ (Recommended)
   - v3.1.0.0 `ESP32-C2-2MB-AT-V3.1.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-2MB-AT-V3.1.0.0.zip>`__
   - v3.0.0.0 `ESP32-C2-2MB-AT-V3.0.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-2MB-AT-V3.0.0.0.zip>`__
 
-  ESP32-C2 4MB Series
+  ESP32-C2-4MB Series
   ^^^^^^^^^^^^^^^^^^^
+
+  The firmwares below are applicable to the {IDF_TARGET_NAME} ECO1 (Rev v1.0) and ECO2 (Rev v1.1) series chips.
 
   - v3.3.0.0 `ESP32-C2-4MB-AT-V3.3.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-4MB-AT-V3.3.0.0.zip>`__ (Recommended)
   - v3.1.0.0 `ESP32-C2-4MB-AT-V3.1.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-4MB-AT-V3.1.0.0.zip>`__
@@ -110,7 +128,7 @@ Before using the AT firmware below, please read the :doc:`../disclaimer` careful
 
 .. only:: esp32c6
 
-  ESP32-C6 4MB Series
+  ESP32-C6-4MB Series
   ^^^^^^^^^^^^^^^^^^^
 
   - v4.0.0.0 `ESP32-C6-4MB-AT-V4.0.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c6/ESP32-C6-4MB-AT-V4.0.0.0.zip>`__ (Recommended)
