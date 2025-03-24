@@ -81,15 +81,33 @@
 
 .. only:: esp32c2
 
-  ESP32-C2 2MB 系列
+  ESP32-C2-2MB-G2 系列
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  下面固件仅适用于 {IDF_TARGET_NAME} ECO4 (Rev v2.0) 系列芯片。
+
+  - v3.3.1.0 `ESP32-C2-2MB-G2-AT-V3.3.1.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-2MB-G2-AT-V3.3.1.0.zip>`__ （推荐）
+
+  ESP32-C2-4MB-G2 系列
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  下面固件仅适用于 {IDF_TARGET_NAME} ECO4 (Rev v2.0) 系列芯片。
+
+  - v3.3.1.0 `ESP32-C2-4MB-G2-AT-V3.3.1.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-4MB-G2-AT-V3.3.1.0.zip>`__ （推荐）
+
+  ESP32-C2-2MB 系列
   ^^^^^^^^^^^^^^^^^^^^^^
+
+  下面固件适用于 {IDF_TARGET_NAME} ECO1 (Rev v1.0) 和 ECO2 (Rev v1.1) 系列芯片。
 
   - v3.3.0.0 `ESP32-C2-2MB-AT-V3.3.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-2MB-AT-V3.3.0.0.zip>`__ （推荐）
   - v3.1.0.0 `ESP32-C2-2MB-AT-V3.1.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-2MB-AT-V3.1.0.0.zip>`__
   - v3.0.0.0 `ESP32-C2-2MB-AT-V3.0.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-2MB-AT-V3.0.0.0.zip>`__
 
-  ESP32-C2 4MB 系列
+  ESP32-C2-4MB 系列
   ^^^^^^^^^^^^^^^^^^^^^^
+
+  下面固件适用于 {IDF_TARGET_NAME} ECO1 (Rev v1.0) 和 ECO2 (Rev v1.1) 系列芯片。
 
   - v3.3.0.0 `ESP32-C2-4MB-AT-V3.3.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-4MB-AT-V3.3.0.0.zip>`__ （推荐）
   - v3.1.0.0 `ESP32-C2-4MB-AT-V3.1.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-4MB-AT-V3.1.0.0.zip>`__
@@ -110,7 +128,7 @@
 
 .. only:: esp32c6
 
-  ESP32-C6 4MB 系列
+  ESP32-C6-4MB 系列
   ^^^^^^^^^^^^^^^^^^^^^^
 
   - v4.0.0.0 `ESP32-C6-4MB-AT-V4.0.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c6/ESP32-C6-4MB-AT-V4.0.0.0.zip>`__ （推荐）

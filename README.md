@@ -35,7 +35,8 @@ The AT command firmware allows for rapid integration by providing:
 
 - ESP32-C2 Series
   - **Preferred recommended chip for using ESP-AT on**
-  - Recommended released version: [v3.3.0.0](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0)
+  - Recommended released version: [v3.3.1.0](https://github.com/espressif/esp-at/releases/tag/v3.3.1.0). It is applicable to the ESP32-C2 ECO4 (Rev v2.0) series chips.
+  - Recommended released version: [v3.3.0.0](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0). It is applicable to the ESP32-C2 ECO1 (Rev v1.0) and ECO2 (Rev v1.1) series chips.
 
 - ESP32-C3 Series
   - **Preferred recommended chip for using ESP-AT on**
@@ -90,7 +91,8 @@ esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/))
 
 - ESP32-C2 系列
   - **ESP-AT 首选推荐芯片**
-  - 推荐使用的发布版本：[v3.3.0.0](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0)
+  - 推荐使用的发布版本：[v3.3.1.0](https://github.com/espressif/esp-at/releases/tag/v3.3.1.0)。适用于 ECO4 (Rev v2.0) 系列芯片。
+  - 推荐使用的发布版本：[v3.3.0.0](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0)。适用于 ECO1 (Rev v1.0) 和 ECO2 (Rev v1.1) 系列芯片。
 
 - ESP32-C3 系列
   - **ESP-AT 首选推荐芯片**
