@@ -16,6 +16,10 @@
 #include "esp_bt.h"
 #endif
 
+#ifdef CONFIG_AT_DEBUG
+#include "esp_task_wdt.h"
+#endif
+
 #if defined(CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE) && !defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
 #include "esp_ota_ops.h"
 #endif
@@ -312,6 +316,25 @@ static IRAM_ATTR void at_alloc_failed_cb(size_t requested_size, uint32_t caps, c
     esp_rom_printf(DRAM_STR(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_RED) "alloc failed, size:%u, caps:0x%x" LOG_ANSI_COLOR_RESET "\n"), requested_size, caps);
 }
 
+#ifdef CONFIG_AT_DEBUG
+
+static void at_reconfigure_twdt(void)
+{
+    esp_task_wdt_config_t twdt_config = {
+        .timeout_ms = CONFIG_ESP_TASK_WDT_TIMEOUT_S * 1000,
+        .idle_core_mask = 0,
+        .trigger_panic = false,
+    };
+#if CONFIG_ESP_TASK_WDT_CHECK_IDLE_TASK_CPU0
+    twdt_config.idle_core_mask |= (1 << 0);
+#endif
+#if CONFIG_ESP_TASK_WDT_CHECK_IDLE_TASK_CPU1
+    twdt_config.idle_core_mask |= (1 << 1);
+#endif
+    ESP_ERROR_CHECK(esp_task_wdt_reconfigure(&twdt_config));
+}
+#endif
+
 #if defined(CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE) && !defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
 static void at_ota_mark_app_valid_cancel_rollback(void)
 {
@@ -332,6 +355,11 @@ void esp_at_init(void)
 
     // register the callback function to be invoked if a memory allocation operation fails
     heap_caps_register_failed_alloc_callback(at_alloc_failed_cb);
+
+#ifdef CONFIG_AT_DEBUG
+    // reconfigure task watchdog timer to cancel the panic trigger when AT_DEBUG is enabled
+    at_reconfigure_twdt();
+#endif
 
     // initialize the manufacturing nvs partition
     at_nvs_flash_init_partition();
