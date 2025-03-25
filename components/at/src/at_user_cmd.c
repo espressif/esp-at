@@ -418,6 +418,10 @@ static uint8_t at_query_cmd_userdocs(uint8_t *cmd_name)
 #ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
 void at_set_mcu_state_if_sleep(at_sleep_mode_t mode)
 {
+    if (!(s_wkmcu_cfg.check_mcu_awake & AT_MCU_AWAKE_ON_AT_SLEEP)) {
+        return;
+    }
+
     switch (mode) {
     case AT_DISABLE_SLEEP:
         xEventGroupSetBits(s_wkmcu_evt_group, AT_MCU_AWAKE_ON_AT_SLEEP);
@@ -433,12 +437,6 @@ void at_set_mcu_state_if_sleep(at_sleep_mode_t mode)
 
     default:
         break;
-    }
-
-    if (s_wkmcu_cfg.enable) {
-        gpio_hold_dis(s_wkmcu_cfg.wake_number);
-        gpio_set_level(s_wkmcu_cfg.wake_number, !s_wkmcu_cfg.wake_signal);
-        gpio_hold_en(s_wkmcu_cfg.wake_number);
     }
 
     return;
@@ -470,8 +468,13 @@ void at_wkmcu_if_config(at_write_data_fn_t write_data_fn)
 
     if (!(uxBits & s_wkmcu_cfg.check_mcu_awake)) {
         // timeout
-        xEventGroupSetBits(s_wkmcu_evt_group, AT_MCU_AWAKE_ON_TIMEO);
-        s_mcu_sleep = true;
+        if (s_wkmcu_cfg.check_mcu_awake & AT_MCU_AWAKE_ON_TIMEO) {
+            xEventGroupSetBits(s_wkmcu_evt_group, AT_MCU_AWAKE_ON_TIMEO);
+            s_mcu_sleep = false;
+        } else {
+            xEventGroupClearBits(s_wkmcu_evt_group, AT_MCU_AWAKE_BIT);
+            s_mcu_sleep = true;
+        }
     }
 
     // reverse wake up signal
