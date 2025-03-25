@@ -10,6 +10,10 @@ sdkconfig
 
 *.pyc
 
+# IDF Component Manager
+dependencies.lock
+managed_components/
+
 # Doc build artifacts
 docs/_build/
 docs/*/_build/
