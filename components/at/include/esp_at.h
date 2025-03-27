@@ -111,6 +111,12 @@ void esp_at_ready_before(void);
  * @param[in] timeout_ms: timeout in milliseconds
  *
  * @note Once exprected response is received, the function will return immediately.
+ * @note You should not call this function directly from an AT command handler.
+ *       The AT command handler typically refers to the test command, query command, set command, and execute command
+ *       corresponding to the AT commands registered via esp_at_custom_cmd_array_regist().
+ * @note If you want to execute an AT command in the AT command handler, The correct approach is to initialize a new queue and a new task.
+ *       In the AT command handler, save the required parameters and send them to the new queue for processing, then return.
+ *       The new task will fetch item from that queue, retrieve the parameters and invoke at_exe_cmd() to execute the specific AT command.
  *
  * @return
  *      - ESP_OK: the expected response is received within the timeout
