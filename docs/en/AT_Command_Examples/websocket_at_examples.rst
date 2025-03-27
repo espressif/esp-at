@@ -216,6 +216,7 @@ WebSocket Connection over TLS (Mutual Authentication)
    Note:
 
    - You can verify if the SNTP server is functioning correctly by checking whether the SNTP-synchronized time matches the actual current time.
+   - The purpose of setting the time is to verify the validity period of the certificates during TLS authentication.
 
 #. Connect the PC to the same router which {IDF_TARGET_NAME} is connected to.
 
@@ -223,7 +224,7 @@ WebSocket Connection over TLS (Mutual Authentication)
 
    You can use the ``openssl`` tool to generate the CA, certificate, and private key. If you encounter any difficulties, consider using the following configuration for testing:
 
-   ``server_ca.crt``
+   ``wss_ca.crt``
 
    .. code-block:: none
 
@@ -248,7 +249,7 @@ WebSocket Connection over TLS (Mutual Authentication)
       HPnBCb4tK/pS9w==
       -----END CERTIFICATE-----
 
-   ``server.crt``
+   ``wss_server.crt``
 
    .. code-block:: none
 
@@ -273,7 +274,7 @@ WebSocket Connection over TLS (Mutual Authentication)
       ee4Vz2BFXhpZdGeD3bVAop+/YEbTa0iDxXSLWkPLQfCyIkdTPXmKQPQ=
       -----END CERTIFICATE-----
 
-   ``server.key``
+   ``wss_server.key``
 
    .. code-block:: none
 
@@ -318,18 +319,18 @@ WebSocket Connection over TLS (Mutual Authentication)
 
       host = '192.168.200.249'
       port = 8766
-      server_ca = '/your_path/server_ca.crt'
-      server_cert = '/your_path/server.crt'
-      server_key = '/your_path/server.key'
+      wss_ca = '/your_path/wss_ca.crt'
+      wss_cert = '/your_path/wss_server.crt'
+      wss_key = '/your_path/wss_server.key'
 
       async def echo(websocket, path):
           async for message in websocket:
               await websocket.send(message)
 
       ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-      ssl_context.load_cert_chain(certfile=server_cert, keyfile=server_key)
+      ssl_context.load_cert_chain(certfile=wss_cert, keyfile=wss_key)
       ssl_context.verify_mode = ssl.CERT_REQUIRED
-      ssl_context.load_verify_locations(server_ca)
+      ssl_context.load_verify_locations(wss_ca)
 
       start_server = websockets.serve(echo, host, port, ssl=ssl_context)
 
@@ -338,7 +339,7 @@ WebSocket Connection over TLS (Mutual Authentication)
 
       asyncio.get_event_loop().run_forever()
 
-   Please modify the code above by replacing the ``host`` with the IP address of your PC, and the ``server_ca``, ``server_cert``, and ``server_key`` with the paths to the CA, certificate, and private key of the server. Save the modified code as ``wss-server.py`` and run the program.
+   Please modify the code above by replacing the ``host`` with the IP address of your PC, and the ``wss_ca``, ``wss_cert``, and ``wss_key`` with the paths to the CA, certificate, and private key of the server. Save the modified code as ``wss-server.py`` and run the program.
 
    .. code-block:: python
 

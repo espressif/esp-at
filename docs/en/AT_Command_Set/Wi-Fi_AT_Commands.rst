@@ -265,7 +265,7 @@ Query the AP to which the {IDF_TARGET_NAME} Station is already connected.
 
 ::
 
-    +CWJAP:<ssid>,<bssid>,<channel>,<rssi>,<pci_en>,<reconn_interval>,<listen_interval>,<scan_mode>,<pmf>
+    +CWJAP:<"ssid">,<"bssid">,<channel>,<rssi>,<pci_en>,<reconn_interval>,<listen_interval>,<scan_mode>,<pmf>
     OK
 
 Set Command
@@ -279,7 +279,7 @@ Connect an {IDF_TARGET_NAME} station to a targeted AP.
 
 ::
 
-    AT+CWJAP=[<ssid>],[<pwd>][,<bssid>][,<pci_en>][,<reconn_interval>][,<listen_interval>][,<scan_mode>][,<jap_timeout>][,<pmf>]
+    AT+CWJAP=[<"ssid">],[<"pwd">][,<"bssid">][,<pci_en>][,<reconn_interval>][,<listen_interval>][,<scan_mode>][,<jap_timeout>][,<pmf>]
 
 **Response:**
 
@@ -333,13 +333,13 @@ or
 Parameters
 ^^^^^^^^^^
 
--  **<ssid>**: the SSID of the target AP.
+-  **<"ssid">**: the SSID of the target AP.
 
    -  Escape character syntax is needed if SSID or password contains special characters, such as ``,``, ``"``, or ``\``.
    -  Chinese SSID is supported. Chinese SSID of some routers or hotspots is not encoded in UTF-8 encoding format. You can scan SSID first, and then connect using the scanned SSID.
 
--  **<pwd>**: password, MAX: 63-byte ASCII.
--  **<bssid>**: the MAC address of the target AP. It cannot be omitted when multiple APs have the same SSID.
+-  **<"pwd">**: password, MAX: 63-byte ASCII.
+-  **<"bssid">**: the MAC address of the target AP. It cannot be omitted when multiple APs have the same SSID.
 -  **<channel>**: channel.
 -  **<rssi>**: signal strength.
 -  **<pci_en>**: PCI Authentication.
@@ -380,7 +380,7 @@ Notes
 -  This command requires Station mode to be enabled.
 - After {IDF_TARGET_NAME} station is connected to an AP, it is recommended to use this command to query Wi-Fi information; when {IDF_TARGET_NAME} station is not connected to an AP, it is recommended to use :ref:`AT+CWSTATE <cmd-WSTATE>` to query Wi-Fi information.
 -  The parameter ``<reconn_interval>`` of this command is the same as ``<interval_second>`` of the command :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`. Therefore, if you omit ``<reconn_interval>`` when running this command, the interval between Wi-Fi reconnections will use the default value 1.
--  If the ``<ssid>`` and ``<password>`` parameter are omitted, AT will use the last configuration.
+-  If the ``<"ssid">`` and ``<"password">`` parameter are omitted, AT will use the last configuration.
 -  Execute command has the same maximum timeout to setup command. The default value is 15 seconds, but you can change it by setting the parameter ``<jap_timeout>``.
 -  The authentication method via `WAPI <https://en.wikipedia.org/wiki/WLAN_Authentication_and_Privacy_Infrastructure>`_ is not supported for connecting to the router.
 -  To get an IPv6 address, you need to set :ref:`AT+CIPV6=1 <cmd-IPV6>`.
@@ -512,9 +512,9 @@ Parameters
 -  **<print mask>**: determine whether the following parameters are shown in the result of :ref:`AT+CWLAP <cmd-LAP>`. Default: 0x7FF. If you set them to 1, it means showing the corresponding parameters; if you set them as 0, it means NOT showing the corresponding parameters.  
 
    -  bit 0: determine whether <ecn> will be shown.
-   -  bit 1: determine whether <ssid> will be shown.
+   -  bit 1: determine whether <"ssid"> will be shown.
    -  bit 2: determine whether <rssi> will be shown.
-   -  bit 3: determine whether <mac> will be shown.
+   -  bit 3: determine whether <"mac"> will be shown.
    -  bit 4: determine whether <channel> will be shown.
    -  bit 5: determine whether <freq_offset> will be shown.
    -  bit 6: determine whether <freqcal_val> will be shown.
@@ -536,23 +536,25 @@ Parameters
    -  bit 7: determine whether AP with ``WPA2_WPA3_PSK`` authmode will be shown.
    -  bit 8: determine whether AP with ``WAPI_PSK`` authmode will be shown.
    -  bit 9: determine whether AP with ``OWE`` authmode will be shown.
-
-   .. only:: esp32c6
-
-     -  bit 10: determine whether AP with ``WPA3_ENT_SUITE_B_192_BIT`` authmode will be shown.
+   -  bit 10: determine whether AP with ``WPA3_ENT_192`` authmode will be shown.
+   -  bit 11: determine whether AP with ``WPA3_EXT_PSK`` authmode will be shown.
+   -  bit 12: determine whether AP with ``WPA3_EXT_PSK_MIXED_MODE`` authmode will be shown.
+   -  bit 13: determine whether AP with ``DPP`` authmode will be shown.
+   -  bit 14: determine whether AP with ``WPA3_ENTERPRISE`` authmode will be shown.
+   -  bit 15: determine whether AP with ``WPA2_WPA3_ENTERPRISE`` authmode will be shown.
 
 Example
 ^^^^^^^^
 
 ::
 
-    // The first parameter is 1, meaning that the result of the command AT+CWLAP will be ordered according to RSSI;
+    // The first parameter is reserved;
     // The second parameter is 31, namely 0x1F, meaning that the corresponding bits of <print mask> are set to 1. All parameters will be shown in the result of AT+CWLAP.
-    AT+CWLAPOPT=1,31
+    AT+CWLAPOPT=,31
     AT+CWLAP
 
     // Just show the AP which authmode is OPEN
-    AT+CWLAPOPT=1,31,-100,1
+    AT+CWLAPOPT=,31,-100,1
     AT+CWLAP
 
 .. _cmd-LAP:
@@ -571,7 +573,7 @@ Query the APs with specified parameters, such as the SSID, MAC address, or chann
 
 ::
 
-    AT+CWLAP=[<ssid>,<mac>,<channel>,<scan_type>,<scan_time_min>,<scan_time_max>]
+    AT+CWLAP=[<"ssid">][,<"mac">][,<channel>][,<scan_type>][,<scan_time_min>][,<scan_time_max>][,<ext_channel_bitmap>]
 
 Execute Command
 ^^^^^^^^^^^^^^^
@@ -590,7 +592,7 @@ List all available APs.
 
 ::
 
-    +CWLAP:(<ecn>,<ssid>,<rssi>,<mac>,<channel>,<freq_offset>,<freqcal_val>,<pairwise_cipher>,<group_cipher>,<bgn>,<wps>)
+    +CWLAP:(<ecn>,<"ssid">,<rssi>,<"mac">,<channel>,<freq_offset>,<freqcal_val>,<pairwise_cipher>,<group_cipher>,<bgn>,<wps>)
     OK
 
 Parameters
@@ -608,14 +610,20 @@ Parameters
    -  7: WPA2_WPA3_PSK
    -  8: WAPI_PSK
    -  9: OWE
+   -  10: WPA3_ENT_192
+   -  11: WPA3_EXT_PSK
+   -  12: WPA3_EXT_PSK_MIXED_MODE
+   -  13: DPP
+   -  14: WPA3_ENTERPRISE
+   -  15: WPA2_WPA3_ENTERPRISE
 
    .. only:: esp32c6
 
      -  10: WPA3_ENT_SUITE_B_192_BIT
 
--  **<ssid>**: string parameter showing SSID of the AP.
+-  **<"ssid">**: string parameter showing SSID of the AP.
 -  **<rssi>**: signal strength.
--  **<mac>**: string parameter showing MAC address of the AP.
+-  **<"mac">**: string parameter showing MAC address of the AP.
 -  **<channel>**: channel.
 -  **<scan_type>**: Wi-Fi scan type. Default: 0.
 
@@ -624,6 +632,10 @@ Parameters
 
 -  **<scan_time_min>**: the minimum active scan time per channel. Unit: millisecond. Range [0,1500]. If the scan type is passive, this parameter is invalid.
 -  **<scan_time_max>**: the maximum active scan time per channel. Unit: millisecond. Range [0,1500]. If this parameter is 0, the firmware will use the default time: 120 ms for active scan; 360 ms for passive scan.
+-  **<ext_channel_bitmap>**: the extended channel.
+
+   -  bit1 ~ bit14: 2.4 GHz channel. multiple bits can be set to 1, which means scanning multiple channels.
+
 -  **<freq_offset>**: frequency offset (reserved item).
 -  **<freqcal_val>**: frequency calibration value (reserved item).
 -  **<pairwise_cipher>**: pairwise cipher type.
@@ -701,7 +713,7 @@ Query the configuration parameters of an {IDF_TARGET_NAME} SoftAP.
 
 ::
 
-    +CWSAP:<ssid>,<pwd>,<channel>,<ecn>,<max conn>,<ssid hidden>
+    +CWSAP:<"ssid">,<"pwd">,<channel>,<ecn>,<max conn>,<ssid hidden>
     OK
 
 Set Command
@@ -715,7 +727,7 @@ Set the configuration of an {IDF_TARGET_NAME} SoftAP.
 
 ::
 
-    AT+CWSAP=<ssid>,<pwd>,<chl>,<ecn>[,<max conn>][,<ssid hidden>]
+    AT+CWSAP=<"ssid">,<"pwd">,<chl>,<ecn>[,<max conn>][,<ssid hidden>]
 
 **Response:**
 
@@ -726,8 +738,8 @@ Set the configuration of an {IDF_TARGET_NAME} SoftAP.
 Parameters
 ^^^^^^^^^^
 
--  **<ssid>**: string parameter showing SSID of the AP.
--  **<pwd>**: string parameter showing the password. Length: 8 ~ 63 bytes ASCII.
+-  **<"ssid">**: string parameter showing SSID of the AP.
+-  **<"pwd">**: string parameter showing the password. Length: 8 ~ 63 bytes ASCII.
 -  **<channel>**: channel ID.
 -  **<ecn>**: encryption method; WEP is not supported.
 
@@ -824,7 +836,7 @@ Disconnect a specific station from the {IDF_TARGET_NAME} SoftAP.
 
 ::
 
-    AT+CWQIF=<mac>
+    AT+CWQIF=<"mac">
 
 **Response:**
 
@@ -835,7 +847,7 @@ Disconnect a specific station from the {IDF_TARGET_NAME} SoftAP.
 Parameter
 ^^^^^^^^^^
 
--  **<mac>**: MAC address of the station to disconnect.
+-  **<"mac">**: MAC address of the station to disconnect.
 
 .. _cmd-DHCP:
 
@@ -959,7 +971,7 @@ Set the IPv4 address range of the {IDF_TARGET_NAME} SoftAP DHCP server.
 
 ::
 
-    AT+CWDHCPS=<enable>,<lease time>,<start IP>,<end IP>
+    AT+CWDHCPS=<enable>,<lease time>,<"start IP">,<"end IP">
 
 **Response:**
 
@@ -976,8 +988,8 @@ Parameters
    -  0: Disable DHCP server settings and use the default IPv4 address range.
 
 -  **<lease time>**: lease time. Unit: minute. Range [1,2880].
--  **<start IP>**: start IPv4 address of the IPv4 address range that can be obtained from {IDF_TARGET_NAME} SoftAP DHCP server.
--  **<end IP>**: end IPv4 address of the IPv4 address range that can be obtained from {IDF_TARGET_NAME} SoftAP DHCP server.
+-  **<"start IP">**: start IPv4 address of the IPv4 address range that can be obtained from {IDF_TARGET_NAME} SoftAP DHCP server.
+-  **<"end IP">**: end IPv4 address of the IPv4 address range that can be obtained from {IDF_TARGET_NAME} SoftAP DHCP server.
 
 Notes
 ^^^^^
@@ -1205,7 +1217,7 @@ Query the MAC address of the {IDF_TARGET_NAME} Station.
 
 ::
 
-    +CIPSTAMAC:<mac>
+    +CIPSTAMAC:<"mac">
     OK
 
 Set Command
@@ -1219,7 +1231,7 @@ Set the MAC address of an {IDF_TARGET_NAME} station.
 
 ::
 
-    AT+CIPSTAMAC=<mac>
+    AT+CIPSTAMAC=<"mac">
 
 **Response:**
 
@@ -1230,7 +1242,7 @@ Set the MAC address of an {IDF_TARGET_NAME} station.
 Parameters
 ^^^^^^^^^^
 
--  **<mac>**: string parameter showing MAC address of an {IDF_TARGET_NAME} station.
+-  **<"mac">**: string parameter showing MAC address of an {IDF_TARGET_NAME} station.
 
 Notes
 ^^^^^
@@ -1271,7 +1283,7 @@ Query the MAC address of the {IDF_TARGET_NAME} SoftAP.
 
 ::
 
-    +CIPAPMAC:<mac>
+    +CIPAPMAC:<"mac">
     OK
 
 Set Command
@@ -1285,7 +1297,7 @@ Set the MAC address of the {IDF_TARGET_NAME} SoftAP.
 
 ::
 
-    AT+CIPAPMAC=<mac>
+    AT+CIPAPMAC=<"mac">
 
 **Response:**
 
@@ -1296,7 +1308,7 @@ Set the MAC address of the {IDF_TARGET_NAME} SoftAP.
 Parameters
 ^^^^^^^^^^
 
--  **<mac>**: string parameter showing MAC address of the {IDF_TARGET_NAME} SoftAP.
+-  **<"mac">**: string parameter showing MAC address of the {IDF_TARGET_NAME} SoftAP.
 
 Notes
 ^^^^^
@@ -1522,6 +1534,14 @@ Parameters
    -  5: WPA2_ENTERPRISE
    -  6: WPA3_PSK
    -  7: WPA2_WPA3_PSK
+   -  8: WAPI_PSK
+   -  9: OWE
+   -  10: WPA3_ENT_192
+   -  11: WPA3_EXT_PSK
+   -  12: WPA3_EXT_PSK_MIXED_MODE
+   -  13: DPP
+   -  14: WPA3_ENTERPRISE
+   -  15: WPA2_WPA3_ENTERPRISE
 
 - **<"esptouch v2 key">**: ESP-TOUCH v2 decrypt key. It is used to decrypt Wi-Fi password and reserved data. Length: 16 bytes.
 
@@ -1616,6 +1636,14 @@ Parameters
    -  5: WPA2_ENTERPRISE
    -  6: WPA3_PSK
    -  7: WPA2_WPA3_PSK
+   -  8: WAPI_PSK
+   -  9: OWE
+   -  10: WPA3_ENT_192
+   -  11: WPA3_EXT_PSK
+   -  12: WPA3_EXT_PSK_MIXED_MODE
+   -  13: DPP
+   -  14: WPA3_ENTERPRISE
+   -  15: WPA2_WPA3_ENTERPRISE
 
 Notes
 ^^^^^
@@ -1653,7 +1681,7 @@ Query the configuration information of the Enterprise AP to which the {IDF_TARGE
 
 ::
 
-    +CWJEAP:<ssid>,<method>,<identity>,<username>,<password>,<security>
+    +CWJEAP:<"ssid">,<method>,<"identity">,<"username">,<"password">,<security>
     OK
 
 Set Command
@@ -1667,7 +1695,7 @@ Connect to the targeted Enterprise AP.
 
 ::
 
-    AT+CWJEAP=<ssid>,<method>,<identity>,<username>,<password>,<security>[,<jeap_timeout>]
+    AT+CWJEAP=<"ssid">,<method>,<"identity">,<"username">,<"password">,<security>[,<jeap_timeout>]
 
 **Response:**
 
@@ -1685,7 +1713,7 @@ or
 Parameters
 ^^^^^^^^^^
 
--  **<ssid>**: the SSID of the Enterprise AP.
+-  **<"ssid">**: the SSID of the Enterprise AP.
 
    -  Escape character syntax is needed if SSID or password contains any special characters, such as ``,``, ``"``, or ``\\``.
 
@@ -1695,9 +1723,9 @@ Parameters
    -  1: EAP-PEAP.
    -  2: EAP-TTLS.
 
--  **<identity>**: identity for phase 1. String limited to 1 ~ 32.
--  **<username>**: username for phase 2. Range: 1 ~ 32 bytes. For the EAP-PEAP and EAP-TTLS method, you must set this parameter. For the EAP-TLS method, you do not need to.
--  **<password>**: password for phase 2. Range: 1 ~ 32 bytes. For the EAP-PEAP and EAP-TTLS method, you must set this parameter. For the EAP-TLS method, you do not need to.
+-  **<"identity">**: identity for phase 1. String limited to 1 ~ 32.
+-  **<"username">**: username for phase 2. Range: 1 ~ 32 bytes. For the EAP-PEAP and EAP-TTLS method, you must set this parameter. For the EAP-TLS method, you do not need to.
+-  **<"password">**: password for phase 2. Range: 1 ~ 32 bytes. For the EAP-PEAP and EAP-TTLS method, you must set this parameter. For the EAP-TLS method, you do not need to.
 -  **<security>**:
 
    -  Bit0: Client certificate.
@@ -1841,7 +1869,7 @@ Set the host name of {IDF_TARGET_NAME} Station.
 
 ::
 
-    AT+CWHOSTNAME=<hostname>
+    AT+CWHOSTNAME=<"hostname">
 
 **Response:**
 
@@ -1858,7 +1886,7 @@ If the Station mode is not enabled, the command will return:
 Parameters
 ^^^^^^^^^^
 
--  **<hostname>**: the host name of the {IDF_TARGET_NAME} Station. Maximum length: 32 bytes.
+-  **<"hostname">**: the host name of the {IDF_TARGET_NAME} Station. Maximum length: 32 bytes.
 
 Note
 ^^^^^
@@ -1895,7 +1923,7 @@ Query Wi-Fi country code information.
 
 ::
 
-    +CWCOUNTRY:<country_policy>,<country_code>,<start_channel>,<total_channel_count>
+    +CWCOUNTRY:<country_policy>,<"country_code">,<start_channel>,<total_channel_count>
 
     OK
 
@@ -1910,7 +1938,7 @@ Set the Wi-Fi country code information.
 
 ::
 
-    AT+ CWCOUNTRY=<country_policy>,<country_code>,<start_channel>,<total_channel_count>
+    AT+ CWCOUNTRY=<country_policy>,<"country_code">,<start_channel>,<total_channel_count>
 
 **Response:**
 
@@ -1926,7 +1954,7 @@ Parameters
    -  0: will change the county code to be the same as the AP that the {IDF_TARGET_NAME} is connected to.
    -  1: the country code will not change, always be the one set by command.
 
--  **<country_code>**: country code. Maximum length: 3 characters. Refer to `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ for country codes.
+-  **<"country_code">**: country code. Maximum length: 3 characters. Refer to `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ for country codes.
 -  **<start_channel>**: the channel number to start. Range: [1,14].
 -  **<total_channel_count>**: total number of channels.
 

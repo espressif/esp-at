@@ -73,12 +73,12 @@ MQTT AT 命令集
    -  9: MQTT over WebSocket Secure（基于 TLS，提供 client 证书）；
    -  10: MQTT over WebSocket Secure（基于 TLS，校验 server 证书并且提供 client 证书）。
 
--  **<client_id>**：MQTT 客户端 ID，最大长度：256 字节。
--  **<username>**：用户名，用于登陆 MQTT broker，最大长度：64 字节。
--  **<password>**：密码，用于登陆 MQTT broker，最大长度：64 字节。
+-  **<"client_id">**：MQTT 客户端 ID，最大长度：256 字节。
+-  **<"username">**：用户名，用于登陆 MQTT broker，最大长度：64 字节。
+-  **<"password">**：密码，用于登陆 MQTT broker，最大长度：64 字节。
 -  **<cert_key_ID>**：证书 ID，目前 ESP-AT 仅支持一套 cert 证书，参数为 0。
 -  **<CA_ID>**：CA ID，目前 ESP-AT 仅支持一套 CA 证书，参数为 0。
--  **<path>**：资源路径，最大长度：32 字节。
+-  **<"path">**：资源路径，最大长度：32 字节。
 
 说明
 ^^^^
@@ -258,8 +258,8 @@ MQTT AT 命令集
    -  0: 使能清理会话
    -  1: 禁用清理会话
 
--  **<lwt_topic>**：遗嘱 topic，最大长度：128 字节。
--  **<lwt_msg>**：遗嘱 message，最大长度：128 字节。
+-  **<"lwt_topic">**：遗嘱 topic，最大长度：128 字节。
+-  **<"lwt_msg">**：遗嘱 message，最大长度：128 字节。
 -  **<lwt_qos>**：遗嘱 QoS，参数可选 0、1、2，默认值：0。
 -  **<lwt_retain>**：遗嘱 retain，参数可选 0 或 1，默认值：0。
 
@@ -388,7 +388,7 @@ MQTT AT 命令集
 
 ::
 
-    +MQTTCONN:<LinkID>,<state>,<scheme><"host">,<port>,<"path">,<reconnect>
+    +MQTTCONN:<LinkID>,<state>,<scheme>,<"host">,<port>,<"path">,<reconnect>
     OK
 
 设置命令
@@ -414,9 +414,9 @@ MQTT AT 命令集
 ^^^^
 
 -  **<LinkID>**：当前仅支持 link ID 0。
--  **<host>**：MQTT broker 域名，最大长度：128 字节。
+-  **<"host">**：MQTT broker 域名，最大长度：128 字节。
 -  **<port>**：MQTT broker 端口，最大端口：65535。
--  **<path>**：资源路径，最大长度：32 字节。
+-  **<"path">**：资源路径，最大长度：32 字节。
 -  **<reconnect>**：
 
    -  0: MQTT 不自动重连。如果 MQTT 建立连接后又断开，则无法再次使用本命令重新建立连接，您需要先发送 :ref:`AT+MQTTCLEAN=0 <cmd-MQTTCLEAN>` 命令清理信息，重新配置参数，再建立新的连接。
@@ -473,7 +473,7 @@ MQTT AT 命令集
 ^^^^
 
 -  **<LinkID>**：当前仅支持 link ID 0。
--  **<topic>**：MQTT topic，最大长度：128 字节。
+-  **<"topic">**：MQTT topic，最大长度：128 字节。
 -  **<data>**：MQTT 字符串消息。
 -  **<qos>**：发布消息的 QoS，参数可选 0、1、或 2，默认值：0。
 -  **<retain>**：发布 retain。
@@ -538,7 +538,7 @@ MQTT AT 命令集
 ^^^^
 
 -  **<LinkID>**：当前仅支持 link ID 0。
--  **<topic>**：MQTT topic，最大长度：128 字节。
+-  **<"topic">**：MQTT topic，最大长度：128 字节。
 -  **<length>**：MQTT 消息长度，不同 {IDF_TARGET_NAME} 设备的最大长度受到可利用内存的限制。
 -  **<qos>**：发布消息的 QoS，参数可选 0、1、或 2，默认值：0。
 -  **<retain>**：发布 retain。
@@ -618,7 +618,7 @@ MQTT AT 命令集
    -  5: 已连接，但未订阅 topic；
    -  6: 已连接，已订阅过 MQTT topic。
 
--  **<topic>**：订阅的 topic。
+-  **<"topic">**：订阅的 topic。
 -  **<qos>**：订阅的 QoS。
 
 .. _cmd-MQTTUNSUB:
@@ -658,7 +658,7 @@ MQTT AT 命令集
 ^^^^
 
 -  **<LinkID>**：当前仅支持 link ID 0。
--  **<topic>**：MQTT topic，最大长度：128 字节。
+-  **<"topic">**：MQTT topic，最大长度：128 字节。
 
 .. _cmd-MQTTCLEAN:
 

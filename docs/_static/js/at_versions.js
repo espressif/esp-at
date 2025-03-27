@@ -12,6 +12,9 @@ var DOCUMENTATION_VERSIONS = {
         // v3.4.0.0
         { name: "release-v3.4.0.0", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3", "esp32c6", "esp32s2" ] },
 
+        // v3.3.1.0
+        { name: "release-v3.3.1.0", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3", "esp32c6" ] },
+
         // v3.3.0.0
         { name: "release-v3.3.0.0", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3", "esp32c6" ] },
 
