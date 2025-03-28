@@ -25,7 +25,7 @@ This section describes the differences among AT firmwares of {IDF_TARGET_NAME} s
 
   - ESP32C2-2MB-AT-Vx.x.x.x.zip (referred to as **ESP32C2-2MB Bin** in this section);
   - ESP32C2-4MB-AT-Vx.x.x.x.zip (referred to as **ESP32C2-4MB Bin** in this section);
-  - ESP32C2-BLE-2MB Bin (firmware is not released, but you can download the ``esp32c2-ble-2mb-at`` firmware from :doc:`GitHub Actions <How_to_download_the_latest_temporary_version_of_AT_from_github>`, or :doc:`Compile ESP-AT Project Locally <How_to_clone_project_and_compile_it>` by yourself);
+  - ESP32C2-2MB-BLE Bin (firmware is not released, but you can download the ``esp32c2-2mb-ble-at`` firmware from :doc:`GitHub Actions <How_to_download_the_latest_temporary_version_of_AT_from_github>`, or :doc:`Compile ESP-AT Project Locally <How_to_clone_project_and_compile_it>` by yourself);
 
 .. only:: esp32c3
 
@@ -219,7 +219,7 @@ The table lists which command set is supported by default in the official AT fir
     * - Command Set
       - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
-      - ESP32C2-BLE-2MB Bin
+      - ESP32C2-2MB-BLE Bin
     * - base
       - |icon-green-check|
       - |icon-green-check|
@@ -486,7 +486,7 @@ Hardware Differences
     * - Hardware
       - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
-      - ESP32C2-BLE-2MB Bin
+      - ESP32C2-2MB-BLE Bin
     * - Flash
       - 2 MB
       - 4 MB
@@ -732,7 +732,7 @@ The table below lists the modules or chips that are default supported by the off
     * - Module/Chip
       - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
-      - ESP32C2-BLE-2MB Bin
+      - ESP32C2-2MB-BLE Bin
     * - ESP8684-MINI-1/1U
       - |icon-green-check|
       - |icon-green-check|

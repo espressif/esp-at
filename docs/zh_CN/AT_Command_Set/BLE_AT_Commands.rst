@@ -91,7 +91,7 @@ Bluetooth® Low Energy AT 命令集
     默认的 {IDF_TARGET_CFG_PREFIX}-4MB AT 固件支持 BluFi 功能，而 {IDF_TARGET_CFG_PREFIX}-2MB AT 固件不支持 BluFi 功能。{IDF_TARGET_CFG_PREFIX}-2MB AT 固件不支持 BluFi 功能，是因为 2 MB flash 大小不足以同时支持 Wi-Fi、BluFi 和 OTA 功能。
 
   .. important::
-    默认的 {IDF_TARGET_CFG_PREFIX}-4MB AT 固件 和 {IDF_TARGET_CFG_PREFIX}-2MB AT 固件均不支持 Bluetooth LE 功能。如果您需要支持 Bluetooth LE 功能，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第三步安装环境时，选择 ``ESP32C2-BLE-2MB``。
+    默认的 {IDF_TARGET_CFG_PREFIX}-4MB AT 固件 和 {IDF_TARGET_CFG_PREFIX}-2MB AT 固件均不支持 Bluetooth LE 功能。如果您需要支持 Bluetooth LE 功能，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第三步安装环境时，选择 ``ESP32C2-2MB-BLE``。
 
     由于 {IDF_TARGET_NAME} 内存受限，您无法在一个固件里同时支持 Wi-Fi 和 Bluetooth LE 功能。
 

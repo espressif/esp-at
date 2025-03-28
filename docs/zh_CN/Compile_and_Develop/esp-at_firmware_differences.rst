@@ -25,7 +25,7 @@ ESP-AT 固件差异
 
   - ESP32C2-2MB-AT-Vx.x.x.x.zip（本节简称为 **ESP32C2-2MB Bin**）
   - ESP32C2-4MB-AT-Vx.x.x.x.zip（本节简称为 **ESP32C2-4MB Bin**）
-  - ESP32C2-BLE-2MB Bin（固件未发布，您可以从 :doc:`GitHub Actions 里下载 <How_to_download_the_latest_temporary_version_of_AT_from_github>` ``esp32c2-ble-2mb-at`` 固件，或者 :doc:`本地编译 ESP-AT 工程 <How_to_clone_project_and_compile_it>`）
+  - ESP32C2-2MB-BLE Bin（固件未发布，您可以从 :doc:`GitHub Actions 里下载 <How_to_download_the_latest_temporary_version_of_AT_from_github>` ``esp32c2-2mb-ble-at`` 固件，或者 :doc:`本地编译 ESP-AT 工程 <How_to_clone_project_and_compile_it>`）
 
 .. only:: esp32c3
 
@@ -219,7 +219,7 @@ ESP-AT 固件差异
     * - 命令集
       - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
-      - ESP32C2-BLE-2MB Bin
+      - ESP32C2-2MB-BLE Bin
     * - base
       - |icon-green-check|
       - |icon-green-check|
@@ -486,7 +486,7 @@ ESP-AT 固件差异
     * - 硬件
       - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
-      - ESP32C2-BLE-2MB Bin
+      - ESP32C2-2MB-BLE Bin
     * - Flash
       - 2 MB
       - 4 MB
@@ -732,7 +732,7 @@ ESP-AT 固件差异
     * - 模组/芯片
       - ESP32C2-2MB Bin
       - ESP32C2-4MB Bin
-      - ESP32C2-BLE-2MB Bin
+      - ESP32C2-2MB-BLE Bin
     * - ESP8684-MINI-1/1U
       - |icon-green-check|
       - |icon-green-check|
