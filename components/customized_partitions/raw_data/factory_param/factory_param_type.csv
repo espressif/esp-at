@@ -17,3 +17,6 @@ uart_tx_pin,data,i32
 uart_rx_pin,data,i32
 uart_cts_pin,data,i32
 uart_rts_pin,data,i32
+
+# configure the default system store mode for AT+SYSSTORE command
+sys_store,data,u8
