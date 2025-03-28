@@ -317,7 +317,6 @@ static IRAM_ATTR void at_alloc_failed_cb(size_t requested_size, uint32_t caps, c
 }
 
 #ifdef CONFIG_AT_DEBUG
-
 static void at_reconfigure_twdt(void)
 {
     esp_task_wdt_config_t twdt_config = {
