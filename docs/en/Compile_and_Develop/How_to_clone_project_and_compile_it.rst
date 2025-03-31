@@ -186,7 +186,7 @@ Select the following configuration options for your {IDF_TARGET_NAME} if it is y
         Module name:
         1. ESP32C2-2MB (Firmware description: single Wi-Fi, 2MB, TX:7 RX:6)
         2. ESP32C2-4MB (Firmware description: Wi-Fi + BluFi, 4MB, TX:7 RX:6)
-        3. ESP32C2-BLE-2MB (Firmware description: single BLE, 2MB, TX:7 RX:6)
+        3. ESP32C2-2MB-BLE (Firmware description: single BLE, 2MB, TX:7 RX:6)
         choose(range[1,3]):2
 
         Enable silence mode to remove some logs and reduce the firmware size?

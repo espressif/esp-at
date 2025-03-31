@@ -14,12 +14,12 @@ esp32c2_4mb_at:
   variables:
     MODULE_NAME: "ESP32C2-4MB"
 
-esp32c2_ble_2mb_at:
+esp32c2_2mb_ble_at:
   extends:
     - .build_template_esp32c2
     - .rules:build:build_project
   variables:
-    MODULE_NAME: "ESP32C2-BLE-2MB"
+    MODULE_NAME: "ESP32C2-2MB-BLE"
 
 esp32c2_4mb_at_tat_debug:
   extends:
@@ -60,12 +60,19 @@ esp32c2_4mb_g2_at:
   variables:
     MODULE_NAME: "ESP32C2-4MB-G2"
 
-esp32c2_ble_2mb_g2_at:
+esp32c2_2mb_ble_g2_at:
   extends:
     - .build_template_esp32c2
     - .rules:build:build_project
   variables:
-    MODULE_NAME: "ESP32C2-BLE-2MB-G2"
+    MODULE_NAME: "ESP32C2-2MB-BLE-G2"
+
+esp32c2_2mb_no_ota_g2_at:
+  extends:
+    - .build_template_esp32c2
+    - .rules:build:build_project
+  variables:
+    MODULE_NAME: "ESP32C2-2MB-NO-OTA-G2"
 
 esp32c2_4mb_g2_at_tat_debug:
   extends:

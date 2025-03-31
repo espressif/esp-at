@@ -91,7 +91,7 @@ Introduction
     The default {IDF_TARGET_CFG_PREFIX}-4MB AT firmware supports BluFi functionality, while the {IDF_TARGET_CFG_PREFIX}-2MB AT firmware does not. The lack of BluFi support in the {IDF_TARGET_CFG_PREFIX}-2MB AT firmware is due to the insufficient 2 MB flash size to support Wi-Fi, BluFi, and OTA functionality simultaneously.
 
   .. important::
-    The default {IDF_TARGET_CFG_PREFIX}-4MB AT firmware and {IDF_TARGET_CFG_PREFIX}-2MB AT firmware do not support Bluetooth LE functionality. If you need to support Bluetooth LE functionality, please refer to the :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation and choose ``ESP32C2-BLE-2MB`` during the environment installation in step 3.
+    The default {IDF_TARGET_CFG_PREFIX}-4MB AT firmware and {IDF_TARGET_CFG_PREFIX}-2MB AT firmware do not support Bluetooth LE functionality. If you need to support Bluetooth LE functionality, please refer to the :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation and choose ``ESP32C2-2MB-BLE`` during the environment installation in step 3.
 
     Due to the limited memory of {IDF_TARGET_NAME}, Wi-Fi and Bluetooth LE functionalities cannot be supported simultaneously in a single firmware.
 

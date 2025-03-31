@@ -140,9 +140,9 @@ The ESP-AT project supports multiple platforms, each of which supports multiple 
      - - :project_file:`module_config/module_esp32c2-2mb/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32c2-2mb/sdkconfig_silence.defaults`
    * - ESP32-C2
-     - ESP32C2-BLE-2MB
-     - - :project_file:`module_config/module_esp32c2-ble-2mb/sdkconfig.defaults`
-       - :project_file:`module_config/module_esp32c2-ble-2mb/sdkconfig_silence.defaults`
+     - ESP32C2-2MB-BLE
+     - - :project_file:`module_config/module_esp32c2-2mb-ble/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32c2-2mb-ble/sdkconfig_silence.defaults`
    * - ESP32-C2
      - ESP32C2-4MB
      - - :project_file:`module_config/module_esp32c2_default/sdkconfig.defaults`

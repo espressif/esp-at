@@ -140,9 +140,9 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
      - - :project_file:`module_config/module_esp32c2-2mb/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32c2-2mb/sdkconfig_silence.defaults`
    * - ESP32-C2
-     - ESP32C2-BLE-2MB
-     - - :project_file:`module_config/module_esp32c2-ble-2mb/sdkconfig.defaults`
-       - :project_file:`module_config/module_esp32c2-ble-2mb/sdkconfig_silence.defaults`
+     - ESP32C2-2MB-BLE
+     - - :project_file:`module_config/module_esp32c2-2mb-ble/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32c2-2mb-ble/sdkconfig_silence.defaults`
    * - ESP32-C2
      - ESP32C2-4MB
      - - :project_file:`module_config/module_esp32c2_default/sdkconfig.defaults`
