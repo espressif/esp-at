@@ -281,7 +281,7 @@ endchoice
 config AT_FS_COMMAND_SUPPORT
     bool "AT FS command support."
     default "n"
-    depends on AT_ENABLE && !(IDF_TARGET_ESP32C2 && ESPTOOLPY_FLASHSIZE_2MB)
+    depends on AT_ENABLE
 
 config AT_DRIVER_COMMAND_SUPPORT
     bool "AT driver command support."

@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 #
-# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
 
 import os
 import argparse
 import re
+import sys
 
 to_read_config_name = {}
 to_write_partition = {}
@@ -52,6 +53,11 @@ def main():
 
     if os.path.exists(output_dir) == False:
         os.mkdir(output_dir)
+
+    # check fatfs dependency
+    if 'fatfs' in to_read_config_name and 'fatfs' not in to_write_partition:
+        print('FatFS is required in sdkconfig but not found in parition table. Please check the at_customize.csv')
+        sys.exit(1)
 
     with open(flash_args_file, 'w+') as args_file:
         for partition in to_write_partition:
