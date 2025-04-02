@@ -33,7 +33,12 @@ if (CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_SUPPORT)
             --partition_file ${AT_CUSTOM_PARTITION_TABLE_PATH}
             --output_dir ${build_dir}/${COMPONENT_NAME}
             --flash_args_file ${flash_customized_partition_args}
+            RESULT_VARIABLE result
+            OUTPUT_VARIABLE output
     )
+    if(NOT result EQUAL 0)
+        message(FATAL_ERROR "Failed to generate customized target. ${output}")
+    endif()
     file(STRINGS ${flash_customized_partition_args} customized_partition_args)
     foreach(partition_args ${customized_partition_args})
         string(STRIP ${partition_args} args_value)
