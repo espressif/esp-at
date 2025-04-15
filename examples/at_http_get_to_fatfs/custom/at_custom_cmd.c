@@ -427,6 +427,152 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
     return ESP_AT_RESULT_CODE_OK;
 }
 
+#define HUGE_SCAN_SIMULATION
+
+#ifdef HUGE_SCAN_SIMULATION
+char *huge_scan_simulation_data[] = {
+        "AT+CWLAP=,,,,0,0\r\n",
+        "+CWLAP:(\"Skunks\",-30,\"30:57:8e:28:2f:06\",1)\r\n",
+        "+CWLAP:(\"\",-31,\"30:57:8e:28:2f:09\",1)\r\n",
+        "+CWLAP:(\"\",-31,\"30:57:8e:28:2f:03\",1)\r\n",
+        "+CWLAP:(\"TMOBILE-D4A1\",-38,\"46:05:3f:54:d4:a6\",6)\r\n",  // Skip:ssid&LOCALLY_ADMINISTERED_MAC_ADDRESS
+        "+CWLAP:(\"it’s something weird\",-55,\"d8:47:32:fc:7c:e9\",10)\r\n",
+        "+CWLAP:(\"\",-55,\"de:47:32:fc:7c:e9\",10)\r\n",  // Skip:ssid&LOCALLY_ADMINISTERED_MAC_ADDRESS
+        "+CWLAP:(\"Skunks_24\",-58,\"00:14:d1:df:b3:88\",1)\r\n",
+        "+CWLAP:(\"TB Proprietary Channel. Vl\",-59,\"00:04:32:25:6b:d9\",11)\r\n",
+        "+CWLAP:(\"The Wifi\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi10\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi11\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi12\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi13\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi14\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi15\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi16\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi17\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi18\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi19\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi20\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi21\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi22\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi23\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi24\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi25\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi26\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi27\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi28\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi29\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi30\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi31\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi32\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi33\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi34\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi35\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi36\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi37\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi38\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi39\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi40\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi41\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi42\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi43\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi44\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi45\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi46\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi47\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi48\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi49\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi50\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi51\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi52\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi53\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi54\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi55\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi56\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi57\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi58\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi59\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi60\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi61\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi62\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi63\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi64\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi65\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi66\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi67\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi68\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi69\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi70\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi71\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi72\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi73\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi74\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi75\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi76\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi77\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi78\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi79\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi80\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi81\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi82\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi83\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi84\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi85\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi86\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi87\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi88\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi89\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi90\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi91\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi92\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi93\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi94\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi95\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi96\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi97\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi98\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi99\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi100\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi101\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi102\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi103\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi104\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi105\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi106\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi107\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi108\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi109\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi110\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi111\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi112\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi113\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi114\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi115\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi116\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi117\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi118\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi119\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi120\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "+CWLAP:(\"Wifi121\",-60,\"bc:9b:68:be:63:1f\",1)\r\n",
+        "OK\r\n"};
+
+static uint8_t at_setup_cmd_huge_scan()
+{
+    printf("at_setup_cmd_huge_scan sending %lu bytes %lu lines\n", sizeof(huge_scan_simulation_data), sizeof(huge_scan_simulation_data) / sizeof(char *));
+
+    for (int line = 0; line < sizeof(huge_scan_simulation_data) / sizeof(char *); line++) {
+        int32_t length = esp_at_port_write_data((uint8_t *)huge_scan_simulation_data[line], strlen(huge_scan_simulation_data[line]));
+        if (length == 0) {
+            printf("esp_at_port_write_data failed\r\n");
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+
+        sys_msleep(10);
+    }
+
+    return ESP_AT_RESULT_CODE_OK;
+}
+#endif
+
 #if 0
 static uint8_t at_cmd_httpget_to_fs_test_cmd(uint8_t *cmd_name)
 {
@@ -440,7 +586,10 @@ static uint8_t at_cmd_httpget_to_fs_test_cmd(uint8_t *cmd_name)
 
 static const esp_at_cmd_struct at_custom_cmd[] = {
     {"+HTTPGET_TO_FS", NULL, NULL, at_setup_cmd_httpget_to_fs, NULL},
-    /**
+#ifdef HUGE_SCAN_SIMULATION
+    {"+HUGE_SCAN", NULL, NULL, NULL, at_setup_cmd_huge_scan},
+#endif
+/**
      * @brief You can define your own AT commands here.
      */
 };
