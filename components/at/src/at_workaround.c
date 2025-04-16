@@ -8,6 +8,8 @@
 #include "sdkconfig.h"
 #include "esp_log.h"
 
+#include "esp_tls.h"
+
 static const char *TAG = "at-workaround";
 
 #ifdef CONFIG_IDF_TARGET_ESP32
@@ -82,4 +84,14 @@ void esp_at_main_preprocess(void)
 #endif
 
     ESP_LOGD(TAG, "at main pre-process done");
+}
+
+ssize_t esp_at_tls_conn_write(esp_tls_t *tls, const void *data, size_t datalen)
+{
+    return esp_tls_conn_write(tls, data, datalen);
+}
+
+ssize_t esp_at_tls_conn_read(esp_tls_t *tls, void  *data, size_t datalen)
+{
+    return esp_tls_conn_read(tls, data, datalen);
 }
