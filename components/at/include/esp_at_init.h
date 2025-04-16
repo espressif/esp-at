@@ -5,6 +5,7 @@
  */
 #pragma once
 #include "esp_err.h"
+#include "esp_at_check_config.h"
 
 /**
  * @brief Main AT initialization function, called in app_main()
