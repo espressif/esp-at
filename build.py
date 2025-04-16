@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
 
 import os
@@ -180,35 +180,23 @@ def at_submodules_update(platform, module):
 
     ESP_LOGI('submodules check completed for updates.')
 
-def at_patch_if_config(platform, module):
+def get_python():
+    if sys.platform in ['win32', 'linux2']:
+        return sys.executable
+    return os.path.join(os.environ.get('IDF_PYTHON_ENV_PATH'), 'bin', 'python') if os.environ.get('IDF_PYTHON_ENV_PATH') else 'python'
+
+def at_patch_external_if_config(chip):
     ext_module_cfg = os.environ.get('AT_EXT_MODULE_CFG')
-    if ext_module_cfg and os.path.exists(os.path.join(ext_module_cfg, 'patch')):
-        config_dir = ext_module_cfg
-    else:
-        config_dir = os.path.join(os.getcwd(), 'module_config', 'module_{}'.format(module.lower()))
-        if not os.path.exists(config_dir):
-            config_dir = os.path.join(os.getcwd(), 'module_config',  'module_{}_default'.format(platform.lower()))
+    patch_dir = os.path.join(ext_module_cfg, 'patch') if ext_module_cfg and os.path.exists(os.path.join(ext_module_cfg, 'patch')) else None
     patch_tool = os.path.join(os.getcwd(), 'tools', 'patch.py')
-    if os.path.exists(patch_tool) and os.path.exists(config_dir):
-        cmd = 'python {} {}'.format(patch_tool, config_dir)
+    if patch_dir is not None and os.path.exists(patch_tool):
+        cmd = f'{get_python()} {patch_tool} {patch_dir} {chip} before_sdkconfig'
         if subprocess.call(cmd, shell = True):
-            raise Exception('apply patches failed.')
-        ESP_LOGI('patches check completed for updates.')
-    else:
-        ESP_LOGE('patches update check has failed.')
+            raise Exception('apply external patches failed.')
+        ESP_LOGI('external patches check completed for updates.')
 
 def build_project(platform_name, module_name, silence, build_args):
     tool = os.path.join('esp-idf', 'tools', 'idf.py')
-    if sys.platform == 'win32':
-        sys_python_path = sys.executable
-    elif sys.platform == 'linux2':
-        sys_python_path = sys.executable
-    else:
-        if os.environ.get('IDF_PYTHON_ENV_PATH') is None:
-            sys_python_path = 'python'
-        else:
-            sys_python_path = os.path.join(os.environ.get('IDF_PYTHON_ENV_PATH'), 'bin', 'python')
-
     exp_macro_cmd = ''
     for item in at_macro_pairs:
         exp_macro_cmd += '{} {}={} &&'.format(sys_cmd, item, item)
@@ -217,7 +205,7 @@ def build_project(platform_name, module_name, silence, build_args):
     exp_macro_cmd += '{} ESP_AT_PROJECT_PATH={} &&'.format(sys_cmd, os.getcwd())
     exp_macro_cmd += '{} SILENCE={}'.format(sys_cmd, silence)
 
-    compile_cmd = '{} {} -DIDF_TARGET={} {}'.format(sys_python_path, tool, platform_name.lower(), build_args)
+    compile_cmd = '{} {} -DIDF_TARGET={} {}'.format(get_python(), tool, platform_name.lower(), build_args)
     cmd = exp_macro_cmd + '&&' + compile_cmd
     ret = subprocess.call(cmd, shell = True)
     if ret:
@@ -521,9 +509,6 @@ def main():
 
     at_submodules_update(platform_name, module_name)
 
-    # apply possible patches to source code
-    at_patch_if_config(platform_name, module_name)
-
     if (len(argv) == 1 and sys.argv[1] == 'install'):
         # install tools and packages only after esp-idf cloned
         install_compilation_env(platform_name.lower())
@@ -533,6 +518,9 @@ def main():
         sys.exit(0)
 
     setup_env_variables()
+
+    # apply possible external patches to source code
+    at_patch_external_if_config(platform_name.lower())
 
     build_args = ' '.join(argv)
     build_project(platform_name, module_name, silence, build_args)
