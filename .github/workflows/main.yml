@@ -11,7 +11,7 @@ jobs:
   build-esp8266-wroom02-at:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3.1.0
+    - uses: actions/checkout@v4.2.0
     - name: clone esp-idf
       env:
         AT_OTA_TOKEN_WROOM_02_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_02_1024_1024 }}
@@ -65,7 +65,7 @@ jobs:
         cp build/factory/* $upload_dir/factory
       shell: bash
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.1
+      uses: actions/upload-artifact@v4.4.3
       with:
         name: esp8266-wroom02-at
         path: esp8266-wroom02-at
@@ -73,7 +73,7 @@ jobs:
   build-esp8266_wroom_5V2L_at:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3.1.0
+    - uses: actions/checkout@v4.2.0
     - name: clone esp-idf
       env:
         AT_OTA_TOKEN_WROOM_02_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_02_1024_1024 }}
@@ -127,7 +127,7 @@ jobs:
         cp build/factory/* $upload_dir/factory
       shell: bash
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.1
+      uses: actions/upload-artifact@v4.4.3
       with:
         name: esp8266-wroom-5V2L-at
         path: esp8266-wroom-5V2L-at
@@ -135,7 +135,7 @@ jobs:
   build-esp8285-1MB-at:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3.1.0
+    - uses: actions/checkout@v4.2.0
     - name: clone esp-idf
       env:
         AT_OTA_TOKEN_WROOM_02_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_02_1024_1024 }}
@@ -189,7 +189,7 @@ jobs:
         cp build/factory/* $upload_dir/factory
       shell: bash
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.1
+      uses: actions/upload-artifact@v4.4.3
       with:
         name: esp8285-1MB-at
         path: esp8285-1MB-at
@@ -197,7 +197,7 @@ jobs:
   build-esp8266-wroom02-n-at:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3.1.0
+    - uses: actions/checkout@v4.2.0
     - name: clone esp-idf
       env:
         AT_OTA_TOKEN_WROOM_02_1024_1024: ${{ secrets.AT_OTA_TOKEN_WROOM_02_1024_1024 }}
@@ -251,7 +251,7 @@ jobs:
         cp build/factory/* $upload_dir/factory
       shell: bash
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.1
+      uses: actions/upload-artifact@v4.4.3
       with:
         name: esp8266-wroom02-n-at
         path: esp8266-wroom02-n-at
