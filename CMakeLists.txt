@@ -129,13 +129,6 @@ include(${IDF_PATH}/tools/cmake/project.cmake)
 
 project(esp-at)
 
-if (CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_SUPPORT)
-    add_custom_target(factory_bin ALL DEPENDS app)
-else()
-    # TODO: combine defaults bins into a factory bin
-    add_custom_target(factory_bin)
-endif()
-
 # Create Compressed image bin
 if (CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
     add_custom_target(ota_image ALL DEPENDS app)
@@ -170,19 +163,15 @@ add_dependencies(flash at_net_debug)
 
 # Create factory bin
 file(MAKE_DIRECTORY $ENV{ESP_AT_PROJECT_PATH}/build/factory)
-add_custom_command(TARGET factory_bin
-  POST_BUILD
-  COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/tools/esp_at_factory_bin_combine.py
-		--module_name ${ESP_AT_MODULE_NAME}
- 		--bin_directory $ENV{ESP_AT_PROJECT_PATH}/build
-		--flash_mode ${CONFIG_ESPTOOLPY_FLASHMODE}
-		--flash_size ${CONFIG_ESPTOOLPY_FLASHSIZE}
-		--flash_speed ${CONFIG_ESPTOOLPY_FLASHFREQ}
-        --download_config $ENV{ESP_AT_PROJECT_PATH}/build/flash_project_args
-  COMMENT "Create factory bin..."
+add_custom_target(esp_at_factory_bin ALL DEPENDS app bootloader gen_project_binary)
+add_custom_command(TARGET esp_at_factory_bin
+    POST_BUILD
+    COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/esp-idf/components/esptool_py/esptool/esptool.py
+        --chip ${IDF_TARGET} merge_bin --output factory/factory_${ESP_AT_MODULE_NAME}.bin --fill-flash-size ${CONFIG_ESPTOOLPY_FLASHSIZE} "@flash_project_args"
+        WORKING_DIRECTORY $ENV{ESP_AT_PROJECT_PATH}/build
+    COMMENT "Creating factory bin..."
 )
-add_dependencies(factory_bin gen_project_binary)
-add_dependencies(flash factory_bin)
+add_dependencies(flash esp_at_factory_bin)
 
 # If you need more RAM, you can uncomment the section below.
 # However, please note that this may introduce certain potential crash issues.
