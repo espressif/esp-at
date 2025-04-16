@@ -28,6 +28,7 @@
   - "module_config/**/*"
   - "tools/**/*"
   - ".gitlab/**/*"
+  - "patches/**/*"
   - ".gitlab-ci.yml"
   - "build.py"
   - "CMakeLists.txt"

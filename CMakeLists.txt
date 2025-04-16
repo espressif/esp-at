@@ -125,9 +125,35 @@ else()
     message("no extra component dirs")
 endif()
 
+# Apply possible patches before generating sdkconfig
+execute_process(
+    COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/tools/patch.py $ENV{ESP_AT_PROJECT_PATH}/patches ${IDF_TARGET} before_sdkconfig
+    RESULT_VARIABLE result
+    OUTPUT_VARIABLE output
+    ERROR_VARIABLE error
+)
+if(NOT result EQUAL 0)
+    message(FATAL_ERROR "Failed to apply the patch before generating sdkconfig. ${error}")
+else()
+    message(STATUS "Successfully applied the patch before generating sdkconfig. ${output}")
+endif()
+
 include(${IDF_PATH}/tools/cmake/project.cmake)
 
 project(esp-at)
+
+# Apply possible patches after generating sdkconfig
+execute_process(
+    COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/tools/patch.py $ENV{ESP_AT_PROJECT_PATH}/patches ${IDF_TARGET} after_sdkconfig
+    RESULT_VARIABLE result
+    OUTPUT_VARIABLE output
+    ERROR_VARIABLE error
+)
+if(NOT result EQUAL 0)
+    message(FATAL_ERROR "Failed to apply the patch after generating sdkconfig. ${error}")
+else()
+    message(STATUS "Successfully applied the patch after generating sdkconfig. ${output}")
+endif()
 
 # Create Compressed image bin
 if (CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
