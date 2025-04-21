@@ -83,6 +83,7 @@ google_analytics_id = 'G-R6EJ3YJP4G'
 project_homepage = 'https://github.com/espressif/esp-at'
 
 html_static_path = ['../_static']
+html_css_files = ['js/chatbot_widget.css']
 
 # Extra options required by sphinx_idf_theme
 project_slug = 'esp-at'
