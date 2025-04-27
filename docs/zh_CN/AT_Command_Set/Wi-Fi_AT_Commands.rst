@@ -265,7 +265,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    +CWJAP:<ssid>,<bssid>,<channel>,<rssi>,<pci_en>,<reconn_interval>,<listen_interval>,<scan_mode>,<pmf>
+    +CWJAP:<"ssid">,<"bssid">,<channel>,<rssi>,<pci_en>,<reconn_interval>,<listen_interval>,<scan_mode>,<pmf>
     OK
 
 设置命令
@@ -279,7 +279,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CWJAP=[<ssid>],[<pwd>][,<bssid>][,<pci_en>][,<reconn_interval>][,<listen_interval>][,<scan_mode>][,<jap_timeout>][,<pmf>]
+    AT+CWJAP=[<"ssid">],[<"pwd">][,<"bssid">][,<pci_en>][,<reconn_interval>][,<listen_interval>][,<scan_mode>][,<jap_timeout>][,<pmf>]
 
 **响应：**
 
@@ -333,13 +333,13 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<ssid>**：目标 AP 的 SSID
+-  **<"ssid">**：目标 AP 的 SSID
 
    -  如果 SSID 和密码中有 ``,``、``"``、``\`` 等特殊字符，需转义
    -  AT 支持连接 SSID 为中文的 AP，但是某些路由器或者热点的中文 SSID 不是 UTF-8 编码格式。您可以先扫描 SSID，然后使用扫描到的 SSID 进行连接。
 
--  **<pwd>**：密码最长 63 字节 ASCII
--  **<bssid>**：目标 AP 的 MAC 地址，当多个 AP 有相同的 SSID 时，该参数不可省略
+-  **<"pwd">**：密码最长 63 字节 ASCII
+-  **<"bssid">**：目标 AP 的 MAC 地址，当多个 AP 有相同的 SSID 时，该参数不可省略
 -  **<channel>**：信道号
 -  **<rssi>**：信号强度
 -  **<pci_en>**：PCI 认证
@@ -380,7 +380,7 @@ Wi-Fi AT 命令集
 -  使用本命令需要开启 station 模式
 - 当 {IDF_TARGET_NAME} station 已连接上 AP 后，推荐使用此命令查询 Wi-Fi 信息；当 {IDF_TARGET_NAME} station 没有连接上 AP 时，推荐使用 :ref:`AT+CWSTATE <cmd-WSTATE>` 命令查询 Wi-Fi 信息
 -  本命令中的 ``<reconn_interval>`` 参数与 :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>` 命令中的 ``<interval_second>`` 参数相同。如果运行本命令时不设置 ``<reconn_interval>`` 参数，Wi-Fi 重连间隔时间将采用默认值 1
--  如果同时省略 ``<ssid>`` 和 ``<password>`` 参数，将使用上一次设置的值
+-  如果同时省略 ``<"ssid">`` 和 ``<"password">`` 参数，将使用上一次设置的值
 -  执行命令与设置命令的超时时间相同，默认为 15 秒，可通过参数 ``<jap_timeout>`` 设置
 -  不支持通过 `WAPI <https://zh.wikipedia.org/wiki/%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E9%89%B4%E5%88%AB%E4%B8%8E%E4%BF%9D%E5%AF%86%E5%9F%BA%E7%A1%80%E7%BB%93%E6%9E%84>`_ 鉴权方式连接路由器。
 -  想要获取 IPv6 地址，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`
@@ -512,9 +512,9 @@ Wi-Fi AT 命令集
 -  **<print mask>**：:ref:`AT+CWLAP <cmd-LAP>` 的扫描结果是否显示以下参数，默认值：0x7FF，若 bit 设为 1，则显示对应参数，若设为 0，则不显示对应参数
 
    -  bit 0: 是否显示 <ecn>
-   -  bit 1: 是否显示 <ssid>
+   -  bit 1: 是否显示 <"ssid">
    -  bit 2: 是否显示 <rssi>
-   -  bit 3: 是否显示 <mac>
+   -  bit 3: 是否显示 <"mac">
    -  bit 4: 是否显示 <channel>
    -  bit 5: 是否显示 <freq_offset>
    -  bit 6: 是否显示 <freqcal_val>
@@ -536,23 +536,25 @@ Wi-Fi AT 命令集
    -  bit 7: 是否显示 ``WPA2_WPA3_PSK`` 认证方式的 AP
    -  bit 8: 是否显示 ``WAPI_PSK`` 认证方式的 AP
    -  bit 9: 是否显示 ``OWE`` 认证方式的 AP
-
-   .. only:: esp32c6
-
-     -  bit 10: 是否显示 ``WPA3_ENT_SUITE_B_192_BIT`` 认证方式的 AP
+   -  bit 10: 是否显示 ``WPA3_ENT_192`` 认证方式的 AP
+   -  bit 11: 是否显示 ``WPA3_EXT_PSK`` 认证方式的 AP
+   -  bit 12: 是否显示 ``WPA3_EXT_PSK_MIXED_MODE`` 认证方式的 AP
+   -  bit 13: 是否显示 ``DPP`` 认证方式的 AP
+   -  bit 14: 是否显示 ``WPA3_ENTERPRISE`` 认证方式的 AP
+   -  bit 15: 是否显示 ``WPA2_WPA3_ENTERPRISE`` 认证方式的 AP
 
 示例
 ^^^^
 
 ::
 
-    // 第一个参数为 1，表示 AT+CWLAP 命令扫描结果按照信号强度 RSSI 值排序
+    // 第一个参数缺省
     // 第二个参数为 31，即 0x1F，表示所有值为 1 的 bit 对应的参数都会显示出来
-    AT+CWLAPOPT=1,31
+    AT+CWLAPOPT=,31
     AT+CWLAP
 
     // 只显示认证方式为 OPEN 的 AP
-    AT+CWLAPOPT=1,31,-100,1
+    AT+CWLAPOPT=,31,-100,1
     AT+CWLAP
 
 .. _cmd-LAP:
@@ -571,7 +573,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CWLAP=[<ssid>,<mac>,<channel>,<scan_type>,<scan_time_min>,<scan_time_max>]
+    AT+CWLAP=[<"ssid">][,<"mac">][,<channel>][,<scan_type>][,<scan_time_min>][,<scan_time_max>][,<ext_channel_bitmap>]
 
 执行命令
 ^^^^^^^^
@@ -590,7 +592,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    +CWLAP:(<ecn>,<ssid>,<rssi>,<mac>,<channel>,<freq_offset>,<freqcal_val>,<pairwise_cipher>,<group_cipher>,<bgn>,<wps>)
+    +CWLAP:(<ecn>,<"ssid">,<rssi>,<"mac">,<channel>,<freq_offset>,<freqcal_val>,<pairwise_cipher>,<group_cipher>,<bgn>,<wps>)
     OK
 
 参数
@@ -608,14 +610,16 @@ Wi-Fi AT 命令集
    -  7: WPA2_WPA3_PSK
    -  8: WAPI_PSK
    -  9: OWE
+   -  10: WPA3_ENT_192
+   -  11: WPA3_EXT_PSK
+   -  12: WPA3_EXT_PSK_MIXED_MODE
+   -  13: DPP
+   -  14: WPA3_ENTERPRISE
+   -  15: WPA2_WPA3_ENTERPRISE
 
-   .. only:: esp32c6
-
-     - 10: WPA3_ENT_SUITE_B_192_BIT
-
--  **<ssid>**：字符串参数，AP 的 SSID
+-  **<"ssid">**：字符串参数，AP 的 SSID
 -  **<rssi>**：信号强度
--  **<mac>**：字符串参数，AP 的 MAC 地址
+-  **<"mac">**：字符串参数，AP 的 MAC 地址
 -  **<channel>**：信道号
 -  **<scan_type>**：Wi-Fi 扫描类型，默认值为：0
 
@@ -624,6 +628,10 @@ Wi-Fi AT 命令集
 
 -  **<scan_time_min>**：每个信道最短扫描时间，单位：毫秒，范围：[0,1500]，如果扫描类型为被动扫描，本参数无效
 -  **<scan_time_max>**：每个信道最长扫描时间，单位：毫秒，范围：[0,1500]，如果设为 0，固件采用参数默认值，主动扫描为 120 ms，被动扫描为 360 ms
+- **<ext_channel_bitmap>**：扩展信道
+
+   -  bit1 ~ bit14: 2.4 GHz 信道。多个 bit 可以同时设为 1，表示扫描多个信道。
+
 -  **<freq_offset>**：频偏（保留项目）
 -  **<freqcal_val>**：频率校准值（保留项目）
 -  **<pairwise_cipher>**：成对加密类型
@@ -701,7 +709,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    +CWSAP:<ssid>,<pwd>,<channel>,<ecn>,<max conn>,<ssid hidden>
+    +CWSAP:<"ssid">,<"pwd">,<channel>,<ecn>,<max conn>,<ssid hidden>
     OK
 
 设置命令
@@ -715,7 +723,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CWSAP=<ssid>,<pwd>,<chl>,<ecn>[,<max conn>][,<ssid hidden>]
+    AT+CWSAP=<"ssid">,<"pwd">,<chl>,<ecn>[,<max conn>][,<ssid hidden>]
 
 **响应：**
 
@@ -726,8 +734,8 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<ssid>**：字符串参数，接入点名称
--  **<pwd>**：字符串参数，密码，范围：8 ~ 63 字节 ASCII
+-  **<"ssid">**：字符串参数，接入点名称
+-  **<"pwd">**：字符串参数，密码，范围：8 ~ 63 字节 ASCII
 -  **<channel>**：信道号
 -  **<ecn>**：加密方式，不支持 WEP
 
@@ -824,7 +832,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CWQIF=<mac>
+    AT+CWQIF=<"mac">
 
 **响应：**
 
@@ -835,7 +843,7 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<mac>**：需断开连接的 station 的 MAC 地址
+-  **<"mac">**：需断开连接的 station 的 MAC 地址
 
 .. _cmd-DHCP:
 
@@ -959,7 +967,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CWDHCPS=<enable>,<lease time>,<start IP>,<end IP>
+    AT+CWDHCPS=<enable>,<lease time>,<"start IP">,<"end IP">
 
 **响应：**
 
@@ -976,8 +984,8 @@ Wi-Fi AT 命令集
    -  0: 清除 DHCP server 信息，恢复默认值，后续参数无需填写
 
 -  **<lease time>**：租约时间，单位：分钟，取值范围：[1,2880]
--  **<start IP>**：{IDF_TARGET_NAME} SoftAP DHCP 服务器 IPv4 地址池的起始 IP
--  **<end IP>**：{IDF_TARGET_NAME} SoftAP DHCP 服务器 IPv4 地址池的结束 IP
+-  **<"start IP">**：{IDF_TARGET_NAME} SoftAP DHCP 服务器 IPv4 地址池的起始 IP
+-  **<"end IP">**：{IDF_TARGET_NAME} SoftAP DHCP 服务器 IPv4 地址池的结束 IP
 
 说明
 ^^^^
@@ -1205,7 +1213,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    +CIPSTAMAC:<mac>
+    +CIPSTAMAC:<"mac">
     OK
 
 设置命令
@@ -1219,7 +1227,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CIPSTAMAC=<mac>
+    AT+CIPSTAMAC=<"mac">
 
 **响应：**
 
@@ -1230,7 +1238,7 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<mac>**：字符串参数，表示 {IDF_TARGET_NAME} Station 的 MAC 地址
+-  **<"mac">**：字符串参数，表示 {IDF_TARGET_NAME} Station 的 MAC 地址
 
 说明
 ^^^^
@@ -1271,7 +1279,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    +CIPAPMAC:<mac>
+    +CIPAPMAC:<"mac">
     OK
 
 设置命令
@@ -1285,7 +1293,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CIPAPMAC=<mac>
+    AT+CIPAPMAC=<"mac">
 
 **响应：**
 
@@ -1296,7 +1304,7 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<mac>**：字符串参数，表示 {IDF_TARGET_NAME} SoftAP 的 MAC 地址
+-  **<"mac">**：字符串参数，表示 {IDF_TARGET_NAME} SoftAP 的 MAC 地址
 
 说明
 ^^^^
@@ -1522,6 +1530,14 @@ Wi-Fi AT 命令集
    -  5: WPA2_ENTERPRISE
    -  6: WPA3_PSK
    -  7: WPA2_WPA3_PSK
+   -  8: WAPI_PSK
+   -  9: OWE
+   -  10: WPA3_ENT_192
+   -  11: WPA3_EXT_PSK
+   -  12: WPA3_EXT_PSK_MIXED_MODE
+   -  13: DPP
+   -  14: WPA3_ENTERPRISE
+   -  15: WPA2_WPA3_ENTERPRISE
 
 - **<"esptouch v2 key">**：ESP-TOUCH v2 的解密秘钥，用于解密 Wi-Fi 密码和自定义数据。长度应为 16 字节。
 
@@ -1616,6 +1632,14 @@ Wi-Fi AT 命令集
    -  5: WPA2_ENTERPRISE
    -  6: WPA3_PSK
    -  7: WPA2_WPA3_PSK
+   -  8: WAPI_PSK
+   -  9: OWE
+   -  10: WPA3_ENT_192
+   -  11: WPA3_EXT_PSK
+   -  12: WPA3_EXT_PSK_MIXED_MODE
+   -  13: DPP
+   -  14: WPA3_ENTERPRISE
+   -  15: WPA2_WPA3_ENTERPRISE
 
 说明
 ^^^^
@@ -1653,7 +1677,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    +CWJEAP:<ssid>,<method>,<identity>,<username>,<password>,<security>
+    +CWJEAP:<"ssid">,<method>,<"identity">,<"username">,<"password">,<security>
     OK
 
 设置命令
@@ -1667,7 +1691,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CWJEAP=<ssid>,<method>,<identity>,<username>,<password>,<security>[,<jeap_timeout>]
+    AT+CWJEAP=<"ssid">,<method>,<"identity">,<"username">,<"password">,<security>[,<jeap_timeout>]
 
 **响应：**
 
@@ -1685,7 +1709,7 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<ssid>**：企业版 AP 的 SSID
+-  **<"ssid">**：企业版 AP 的 SSID
 
    -  如果 SSID 或密码中包含 ``,``、``"``、``\\`` 等特殊字符，需转义
 
@@ -1695,9 +1719,9 @@ Wi-Fi AT 命令集
    -  1: EAP-PEAP
    -  2: EAP-TTLS
 
--  **<identity>**：阶段 1 的身份，字符串限制为 1 ~ 32
--  **<username>**：阶段 2 的用户名，范围：1 ~ 32 字节，EAP-PEAP、EAP-TTLS 两种认证方式需设置本参数，EAP-TLS 方式无需设置本参数
--  **<password>**：阶段 2 的密码，范围：1 ~ 32 字节，EAP-PEAP、EAP-TTLS 两种认证方式需设置本参数，EAP-TLS 方式无需设置本参数
+-  **<"identity">**：阶段 1 的身份，字符串限制为 1 ~ 32
+-  **<"username">**：阶段 2 的用户名，范围：1 ~ 32 字节，EAP-PEAP、EAP-TTLS 两种认证方式需设置本参数，EAP-TLS 方式无需设置本参数
+-  **<"password">**：阶段 2 的密码，范围：1 ~ 32 字节，EAP-PEAP、EAP-TTLS 两种认证方式需设置本参数，EAP-TLS 方式无需设置本参数
 -  **<security>**：
 
    -  Bit0: 客户端证书
@@ -1841,7 +1865,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 
 ::
 
-    AT+CWHOSTNAME=<hostname>
+    AT+CWHOSTNAME=<"hostname">
 
 **响应：**
 
@@ -1858,7 +1882,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 参数
 ^^^^
 
--  **<hostname>**：{IDF_TARGET_NAME} Station 的主机名称，最大长度：32 字节
+-  **<"hostname">**：{IDF_TARGET_NAME} Station 的主机名称，最大长度：32 字节
 
 说明
 ^^^^
@@ -1895,7 +1919,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 
 ::
 
-    +CWCOUNTRY:<country_policy>,<country_code>,<start_channel>,<total_channel_count>
+    +CWCOUNTRY:<country_policy>,<"country_code">,<start_channel>,<total_channel_count>
 
     OK
 
@@ -1910,7 +1934,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 
 ::
 
-    AT+CWCOUNTRY=<country_policy>,<country_code>,<start_channel>,<total_channel_count>
+    AT+CWCOUNTRY=<country_policy>,<"country_code">,<start_channel>,<total_channel_count>
 
 **响应：**
 
@@ -1926,7 +1950,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
    -  0: 将国家代码改为 {IDF_TARGET_NAME} 设备连入的 AP 的国家代码
    -  1: 不改变国家代码，始终保持本命令设置的国家代码
 
--  **<country_code>**：国家代码，最大长度：3 个字符，各国国家代码请参考 `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ 标准。
+-  **<"country_code">**：国家代码，最大长度：3 个字符，各国国家代码请参考 `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ 标准。
 -  **<start_channel>**：起始信号道，范围：[1,14]
 -  **<total_channel_count>**：信道总个数
 

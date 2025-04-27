@@ -73,12 +73,12 @@ Parameters
    -  9: MQTT over WebSocket Secure (based on TLS, provide client certificate).
    -  10: MQTT over WebSocket Secure (based on TLS, verify server certificate and provide client certificate).
 
--  **<client_id>**: MQTT client ID. Maximum length: 256 bytes.
--  **<username>**: the username to login to the MQTT broker. Maximum length: 64 bytes.
--  **<password>**: the password to login to the MQTT broker. Maximum length: 64 bytes.
+-  **<"client_id">**: MQTT client ID. Maximum length: 256 bytes.
+-  **<"username">**: the username to login to the MQTT broker. Maximum length: 64 bytes.
+-  **<"password">**: the password to login to the MQTT broker. Maximum length: 64 bytes.
 -  **<cert_key_ID>**: certificate ID. Currently, ESP-AT only supports one certificate for ID 0.
 -  **<CA_ID>**: CA ID. Currently, ESP-AT only supports one CA for ID 0.
--  **<path>**: the path of the resource. Maximum length: 32 bytes.
+-  **<"path">**: the path of the resource. Maximum length: 32 bytes.
 
 Note
 ^^^^^
@@ -258,8 +258,8 @@ Parameters
    -  0: enable clean session.
    -  1: disable clean session.
 
--  **<lwt_topic>**: LWT (Last Will and Testament) message topic. Maximum length: 128 bytes.
--  **<lwt_msg>**: LWT message. Maximum length: 128 bytes.
+-  **<"lwt_topic">**: LWT (Last Will and Testament) message topic. Maximum length: 128 bytes.
+-  **<"lwt_msg">**: LWT message. Maximum length: 128 bytes.
 -  **<lwt_qos>**: LWT QoS, which can be set to 0, 1, or 2. Default: 0.
 -  **<lwt_retain>**: LWT retain, which can be set to 0 or 1. Default: 0.
 
@@ -388,7 +388,7 @@ Query the MQTT broker that {IDF_TARGET_NAME} are connected to.
 
 ::
 
-    +MQTTCONN:<LinkID>,<state>,<scheme><"host">,<port>,<"path">,<reconnect>
+    +MQTTCONN:<LinkID>,<state>,<scheme>,<"host">,<port>,<"path">,<reconnect>
     OK
 
 Set Command
@@ -414,9 +414,9 @@ Parameters
 ^^^^^^^^^^
 
 -  **<LinkID>**: only supports link ID 0 currently.
--  **<host>**: MQTT broker domain. Maximum length: 128 bytes.
+-  **<"host">**: MQTT broker domain. Maximum length: 128 bytes.
 -  **<port>**: MQTT broker port. Maximum: port 65535.
--  **<path>**: path. Maximum length: 32 bytes.
+-  **<"path">**: path. Maximum length: 32 bytes.
 -  **<reconnect>**:
 
    -  0: MQTT will not reconnect automatically. If MQTT connection established and then disconnected, you cannot use this command to reestablish MQTT connection. Please send :ref:`AT+MQTTCLEAN=0 <cmd-MQTTCLEAN>` command to clean MQTT connection first, reconfigure the connection parameters, and then establish a new MQTT connection.
@@ -473,7 +473,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<LinkID>**: only supports link ID 0 currently.
--  **<topic>**: MQTT topic. Maximum length: 128 bytes.
+-  **<"topic">**: MQTT topic. Maximum length: 128 bytes.
 -  **<data>**: MQTT message in string.
 -  **<qos>**: QoS of message, which can be set to 0, 1, or 2. Default: 0.
 -  **<retain>**: retain flag.
@@ -538,7 +538,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<LinkID>**: only supports link ID 0 currently.
--  **<topic>**: MQTT topic. Maximum length: 128 bytes.
+-  **<"topic">**: MQTT topic. Maximum length: 128 bytes.
 -  **<length>**: length of MQTT message. The maximum length is limited by available memory.
 -  **<qos>**: QoS of the published message, which can be set to 0, 1, or 2. Default is 0.
 -  **<retain>**: retain flag.
@@ -618,7 +618,7 @@ Parameters
    -  5: connected, but subscribe to no topic.
    -  6: connected, and subscribed to MQTT topics.
 
--  **<topic>**: the topic that is subscribed to.
+-  **<"topic">**: the topic that is subscribed to.
 -  **<qos>**: the QoS that is subscribed to.
 
 .. _cmd-MQTTUNSUB:
@@ -658,7 +658,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<LinkID>**: only supports link ID 0 currently.
--  **<topic>**: MQTT topic. Maximum length: 128 bytes.
+-  **<"topic">**: MQTT topic. Maximum length: 128 bytes.
 
 .. _cmd-MQTTCLEAN:
 

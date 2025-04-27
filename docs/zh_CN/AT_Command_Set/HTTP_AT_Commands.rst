@@ -74,7 +74,7 @@ HTTP AT 命令集
    -  2：``multipart/form-data``
    -  3：``text/xml``
 
--  **<"url">**：HTTP URL，当后面的 ``<host>`` 和 ``<path>`` 参数为空时，本参数会自动覆盖这两个参数。
+-  **<"url">**：HTTP URL，当后面的 ``<"host">`` 和 ``<"path">`` 参数为空时，本参数会自动覆盖这两个参数。
 -  **<"host">**：域名或 IP 地址。
 -  **<"path">**：HTTP 路径。
 -  **<transport_type>**：HTTP 客户端传输类型，默认值为 1：
@@ -198,7 +198,7 @@ HTTP AT 命令集
 
 ::
 
-    AT+HTTPCPOST=<"url">,<length>[,<http_req_header_cnt>][,<http_req_header>..<http_req_header>]
+    AT+HTTPCPOST=<"url">,<length>[,<http_req_header_cnt>][,<"http_req_header">..<"http_req_header">]
 
 **响应：**
 
@@ -226,8 +226,8 @@ HTTP AT 命令集
 ^^^^
 - **<"url">**：HTTP URL。
 - **<length>**：需 POST 的 HTTP 数据长度。最大长度等于系统可分配的堆空间大小。
-- **<http_req_header_cnt>**：``<http_req_header>`` 参数的数量。
-- **[<http_req_header>]**：HTTP 请求头。可发送多个请求头给服务器。
+- **<http_req_header_cnt>**：``<"http_req_header">`` 参数的数量。
+- **[<"http_req_header">]**：HTTP 请求头。可发送多个请求头给服务器。
 
 说明
 ^^^^^
@@ -248,7 +248,7 @@ HTTP AT 命令集
 
 ::
 
-    AT+HTTPCPUT=<"url">,<length>[,<http_req_header_cnt>][,<http_req_header>..<http_req_header>]
+    AT+HTTPCPUT=<"url">,<length>[,<http_req_header_cnt>][,<"http_req_header">..<"http_req_header">]
 
 **响应：**
 
@@ -276,8 +276,8 @@ HTTP AT 命令集
 ^^^^
 - **<"url">**：HTTP URL。
 - **<length>**：需 Put 的 HTTP 数据长度。最大长度等于系统可分配的堆空间大小。
-- **<http_req_header_cnt>**：``<http_req_header>`` 参数的数量。
-- **[<http_req_header>]**：HTTP 请求头。可发送多个请求头给服务器。
+- **<http_req_header_cnt>**：``<"http_req_header">`` 参数的数量。
+- **[<"http_req_header">]**：HTTP 请求头。可发送多个请求头给服务器。
 
 说明
 ^^^^^

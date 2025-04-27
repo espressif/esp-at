@@ -82,7 +82,7 @@ MQTT AT 连接云示例
 
    .. code-block:: none
 
-     AT+CWJAP=<ssid>,<password>
+     AT+CWJAP=<"ssid">,<"password">
 
    响应：
   

@@ -51,7 +51,7 @@ Please choose one of the following options based on your needs:
 
 ![support periods](https://dl.espressif.com/esp-at/at-support-periods.png)
 
-- Please refer to [ESP-AT Versions](https://docs.espressif.com/projects/esp-at/en/latest/esp32/versions.html) for more details。
+- Please refer to [ESP-AT Versions](https://docs.espressif.com/projects/esp-at/en/latest/esp32/versions.html) for more details.
 
 # Resources
 - There are several guides for esp-at developers and users. These guides can be rendered in a number of formats, like HTML and PDF.  

@@ -553,14 +553,14 @@ Bluetooth® Low Energy AT 命令集
 
         ::
 
-            +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<peer_addr>
+            +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<"peer_addr">
             OK
 
     .. only:: esp32c3 or esp32c6 or esp32c2
 
         ::
 
-            +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<peer_addr>,<primary_PHY>,<secondary_PHY>
+            +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<"peer_addr">,<primary_PHY>,<secondary_PHY>
             OK
 
     设置命令
@@ -576,13 +576,13 @@ Bluetooth® Low Energy AT 命令集
 
         ::
 
-            AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>,<peer_addr>]
+            AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>,<"peer_addr">]
 
     .. only:: esp32c3 or esp32c6 or esp32c2
 
         ::
 
-            AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>,<peer_addr>][,<primary_PHY>,<secondary_PHY>]
+            AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>,<"peer_addr">][,<primary_PHY>,<secondary_PHY>]
 
     **响应：**
 
@@ -642,7 +642,7 @@ Bluetooth® Low Energy AT 命令集
     -  0: PUBLIC
     -  1: RANDOM
 
-    -  **[<peer_addr>]**：对方 Bluetooth LE 地址
+    -  **[<"peer_addr">]**：对方 Bluetooth LE 地址
 
     .. only:: esp32c3 or esp32c6 or esp32c2
 
@@ -2968,14 +2968,22 @@ Bluetooth® Low Energy AT 命令集
 
 -  **<auth floor>**：Wi-Fi 认证模式阈值，ESP-AT 不会连接到认证模式低于此阈值的 AP：
 
-   -  0: OPEN（默认）；
-   -  1: WEP；
-   -  2: WPA_PSK；
-   -  3: WPA2_PSK；
-   -  4: WPA_WPA2_PSK；
-   -  5: WPA2_ENTERPRISE；
-   -  6: WPA3_PSK；
-   -  7: WPA2_WPA3_PSK。
+   -  0: OPEN（默认）
+   -  1: WEP
+   -  2: WPA_PSK
+   -  3: WPA2_PSK
+   -  4: WPA_WPA2_PSK
+   -  5: WPA2_ENTERPRISE
+   -  6: WPA3_PSK
+   -  7: WPA2_WPA3_PSK
+   -  8: WAPI_PSK
+   -  9: OWE
+   -  10: WPA3_ENT_192
+   -  11: WPA3_EXT_PSK
+   -  12: WPA3_EXT_PSK_MIXED_MODE
+   -  13: DPP
+   -  14: WPA3_ENTERPRISE
+   -  15: WPA2_WPA3_ENTERPRISE
 
 说明
 ^^^^

@@ -25,7 +25,7 @@ at.py 工具
 第一步：Python 安装
 ----------------------------
 
-如果您本地已经安装过 Python，则可以跳过此步骤。否则，请根据 `Python 官方文档 <https://www.python.org/downloads/>`_，完成 Python 的下载和安装。**推荐您使用 Python 3.8.0 或更高版本**。
+如果您本地已经安装过 Python，则可以跳过此步骤。否则，请根据 `Python 官方文档 <https://www.python.org/downloads/>`_，完成 Python 的下载和安装。**推荐您使用 Python 3.10.0 或更高版本**。
 
 安装完成后，您可以在命令行中输入 ``python --version``，查看 Python 版本。
 

@@ -553,14 +553,14 @@ Introduction
 
         ::
 
-            +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<peer_addr>
+            +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<"peer_addr">
             OK
 
     .. only:: esp32c3 or esp32c6 or esp32c2
 
         ::
 
-            +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<peer_addr>,<primary_phy>,<secondary_phy>
+            +BLEADVPARAM:<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>,<adv_filter_policy>,<peer_addr_type>,<"peer_addr">,<primary_phy>,<secondary_phy>
             OK
 
     Set Command
@@ -576,13 +576,13 @@ Introduction
 
         ::
 
-            AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>,<peer_addr>]
+            AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>,<"peer_addr">]
 
     .. only:: esp32c3 or esp32c6 or esp32c2
 
         ::
 
-            AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>,<peer_addr>][,<primary_phy>,<secondary_phy>]
+            AT+BLEADVPARAM=<adv_int_min>,<adv_int_max>,<adv_type>,<own_addr_type>,<channel_map>[,<adv_filter_policy>][,<peer_addr_type>,<"peer_addr">][,<primary_phy>,<secondary_phy>]
 
     **Response:**
 
@@ -642,7 +642,7 @@ Introduction
     -  0: PUBLIC
     -  1: RANDOM
 
-    -  **[<peer_addr>]**: remote Bluetooth LE address.
+    -  **[<"peer_addr">]**: remote Bluetooth LE address.
 
     .. only:: esp32c3 or esp32c6 or esp32c2
 
@@ -2976,6 +2976,14 @@ Parameter
    -  5: WPA2_ENTERPRISE
    -  6: WPA3_PSK
    -  7: WPA2_WPA3_PSK
+   -  8: WAPI_PSK
+   -  9: OWE
+   -  10: WPA3_ENT_192
+   -  11: WPA3_EXT_PSK
+   -  12: WPA3_EXT_PSK_MIXED_MODE
+   -  13: DPP
+   -  14: WPA3_ENTERPRISE
+   -  15: WPA2_WPA3_ENTERPRISE
 
 Note
 ^^^^

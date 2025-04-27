@@ -216,6 +216,7 @@ WebSocket AT 示例
    说明：
 
    - 您可以查询 SNTP 时间与实时时间是否相符来判断您设置的 SNTP 服务器是否生效。
+   - 设置时间是为了在 TLS 认证时校验证书的有效期。
 
 #. PC 与 {IDF_TARGET_NAME} 设备连接同一个路由。
 
@@ -223,7 +224,7 @@ WebSocket AT 示例
 
    您可以使用 ``openssl`` 工具生成 CA、证书、和私钥。如果遇到困难，请使用以下配置进行测试：
 
-   ``server_ca.crt``
+   ``wss_ca.crt``
 
    .. code-block:: none
 
@@ -248,7 +249,7 @@ WebSocket AT 示例
       HPnBCb4tK/pS9w==
       -----END CERTIFICATE-----
 
-   ``server.crt``
+   ``wss_server.crt``
 
    .. code-block:: none
 
@@ -273,7 +274,7 @@ WebSocket AT 示例
       ee4Vz2BFXhpZdGeD3bVAop+/YEbTa0iDxXSLWkPLQfCyIkdTPXmKQPQ=
       -----END CERTIFICATE-----
 
-   ``server.key``
+   ``wss_server.key``
 
    .. code-block:: none
 
@@ -318,18 +319,18 @@ WebSocket AT 示例
 
       host = '192.168.200.249'
       port = 8766
-      server_ca = '/your_path/server_ca.crt'
-      server_cert = '/your_path/server.crt'
-      server_key = '/your_path/server.key'
+      wss_ca = '/your_path/wss_ca.crt'
+      wss_cert = '/your_path/wss_server.crt'
+      wss_key = '/your_path/wss_server.key'
 
       async def echo(websocket, path):
           async for message in websocket:
               await websocket.send(message)
 
       ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-      ssl_context.load_cert_chain(certfile=server_cert, keyfile=server_key)
+      ssl_context.load_cert_chain(certfile=wss_cert, keyfile=wss_key)
       ssl_context.verify_mode = ssl.CERT_REQUIRED
-      ssl_context.load_verify_locations(server_ca)
+      ssl_context.load_verify_locations(wss_ca)
 
       start_server = websockets.serve(echo, host, port, ssl=ssl_context)
 
@@ -338,7 +339,7 @@ WebSocket AT 示例
 
       asyncio.get_event_loop().run_forever()
 
-   请修改上述代码中的 ``host`` 为 PC 的 IP 地址， ``server_ca``、 ``server_cert``、 ``server_key`` 为服务器端的 CA、证书、和私钥路径，并保存为 ``wss-server.py`` 文件，同时运行该程序。
+   请修改上述代码中的 ``host`` 为 PC 的 IP 地址， ``wss_ca``、 ``wss_cert``、 ``wss_key`` 为服务器端的 CA、证书、和私钥路径，并保存为 ``wss-server.py`` 文件，同时运行该程序。
 
    .. code-block:: python
 

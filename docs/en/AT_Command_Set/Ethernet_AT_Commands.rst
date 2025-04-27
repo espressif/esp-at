@@ -129,9 +129,9 @@ Query the IP address of the {IDF_TARGET_NAME} Ethernet.
 
 ::
 
-    +CIPETH:ip:<ip>
-    +CIPETH:gateway:<gateway>
-    +CIPETH:netmask:<netmask>
+    +CIPETH:ip:<"ip">
+    +CIPETH:gateway:<"gateway">
+    +CIPETH:netmask:<"netmask">
     OK
 
 Set Command
@@ -145,7 +145,7 @@ Set the IP address of the {IDF_TARGET_NAME} Ethernet.
 
 ::
 
-    AT+CIPETH=<ip>[,<gateway>,<netmask>]
+    AT+CIPETH=<"ip">[,<"gateway">,<"netmask">]
 
 **Response:**
 
@@ -156,9 +156,9 @@ Set the IP address of the {IDF_TARGET_NAME} Ethernet.
 Parameters
 ^^^^^^^^^^
 
--  **<ip>**: string parameter showing the IP address of the {IDF_TARGET_NAME} Ethernet.
--  **[<gateway>]**: gateway.
--  **[<netmask>]**: netmask.
+-  **<"ip">**: string parameter showing the IP address of the {IDF_TARGET_NAME} Ethernet.
+-  **[<"gateway">]**: gateway.
+-  **[<"netmask">]**: netmask.
 
 Notes
 ^^^^^

@@ -8,7 +8,6 @@ TCP/IP AT 命令
 -  :ref:`介绍 <cmd-tcpip-intro>`
 -  :ref:`AT+CIPV6 <cmd-IPV6>`: 启用/禁用 IPv6 网络 (IPv6)
 -  :ref:`AT+CIPSTATE <cmd-IPSTATE>`：查询 TCP/UDP/SSL 连接信息
--  :ref:`AT+CIPSTATUS (弃用) <cmd-STATUS>`：查询 TCP/UDP/SSL 连接状态和信息
 -  :ref:`AT+CIPDOMAIN <cmd-DOMAIN>`：域名解析
 -  :ref:`AT+CIPSTART <cmd-START>`：建立 TCP 连接、UDP 传输或 SSL 连接
 -  :ref:`AT+CIPSTARTEX <cmd-STARTEX>`：建立自动分配 ID 的 TCP 连接、UDP 传输或 SSL 连接
@@ -159,55 +158,6 @@ TCP/IP AT 命令
 
    -  0: {IDF_TARGET_NAME} 设备作为客户端
    -  1: {IDF_TARGET_NAME} 设备作为服务器
-
-.. _cmd-STATUS:
-
-:ref:`AT+CIPSTATUS (弃用) <TCPIP-AT>`：查询 TCP/UDP/SSL 连接状态和信息
------------------------------------------------------------------------------------------
-
-执行命令
-^^^^^^^^
-
-**命令：**
-
-::
-
-    AT+CIPSTATUS
-
-**响应：**
-
-::
-
-    STATUS:<stat>
-    +CIPSTATUS:<link ID>,<"type">,<"remote IP">,<remote port>,<local port>,<tetype>
-    OK
-
-参数
-^^^^
-
--  **<stat>**：{IDF_TARGET_NAME} station 接⼝的状态
-
-   -  0: {IDF_TARGET_NAME} station 为未初始化状态
-   -  1: {IDF_TARGET_NAME} station 为已初始化状态，但还未开始 Wi-Fi 连接
-   -  2: {IDF_TARGET_NAME} station 已连接 AP，获得 IP 地址
-   -  3: {IDF_TARGET_NAME} station 已建立 TCP、UDP 或 SSL 传输
-   -  4: {IDF_TARGET_NAME} 设备所有的 TCP、UDP 和 SSL 均断开
-   -  5: {IDF_TARGET_NAME} station 开始过 Wi-Fi 连接，但尚未连接上 AP 或从 AP 断开
-
--  **<link ID>**：网络连接 ID (0 ~ 4)，用于多连接的情况
--  **<"type">**：字符串参数，表示传输类型："TCP"、"UDP"、"SSL"、"TCPv6"、"UDPv6" 或 "SSLv6"
--  **<"remote IP">**：字符串参数，表示远端 IPv4 地址或 IPv6 地址
--  **<remote port>**：远端端口值
--  **<local port>**：{IDF_TARGET_NAME} 本地端口值
--  **<tetype>**:
-
-   -  0: {IDF_TARGET_NAME} 设备作为客户端
-   -  1: {IDF_TARGET_NAME} 设备作为服务器
-
-说明
-^^^^
-
-- 建议您使用 :ref:`AT+CWSTATE <cmd-WSTATE>` 命令查询 Wi-Fi 状态，使用 :ref:`AT+CIPSTATE <cmd-IPSTATE>` 命令查询 TCP/UDP/SSL 状态。
 
 .. _cmd-DOMAIN:
 
@@ -1319,7 +1269,7 @@ TCP/IP AT 命令
 
 ::
 
-    +CIPSNTPCFG:<enable>,<timezone>,<SNTP server1>[,<SNTP server2>,<SNTP server3>]
+    +CIPSNTPCFG:<enable>,<timezone>[,<"SNTP server1">][,<"SNTP server2">][,<"SNTP server3">]
     OK
 
 设置命令
@@ -1329,7 +1279,7 @@ TCP/IP AT 命令
 
 ::
 
-    AT+CIPSNTPCFG=<enable>,<timezone>[,<SNTP server1>,<SNTP server2>,<SNTP server3>]
+    AT+CIPSNTPCFG=<enable>[,<timezone>][,<"SNTP server1">][,<"SNTP server2">][,<"SNTP server3">]
 
 **响应：**
 
@@ -1350,9 +1300,9 @@ TCP/IP AT 命令
    -  第一种格式的范围：[-12,14]，它以小时为单位，通过与协调世界时 (UTC) 的偏移来标记大多数时区（`UTC−12:00 <https://en.wikipedia.org/wiki/UTC%E2%88%9212:00>`_ 至 `UTC+14:00 <https://en.wikipedia.org/wiki/UTC%2B14:00>`_）；
    -  第二种格式为 ``UTC 偏移量``， ``UTC 偏移量`` 指定了你需要加多少时间到 UTC 时间上才能得到本地时间，通常显示为 ``[+|-][hh]mm``。如果当地时区在本初子午线以西，则为负数，如果在东边，则为正数。小时 (hh) 必须在 -12 到 14 之间，分钟 (mm) 必须在 0 到 59 之间。例如，如果您想把时区设置为新西兰查塔姆群岛，即 ``UTC+12:45``，您应该把 ``<timezone>`` 参数设置为 ``1245``，更多信息请参考 `UTC 偏移量 <https://en.wikipedia.org/wiki/Time_zone#List_of_UTC_offsets>`_。
 
--  **[<SNTP server1>]**：第一个 SNTP 服务器。
--  **[<SNTP server2>]**：第二个 SNTP 服务器。
--  **[<SNTP server3>]**：第三个 SNTP 服务器。
+-  **[<"SNTP server1">]**：第一个 SNTP 服务器。
+-  **[<"SNTP server2">]**：第二个 SNTP 服务器。
+-  **[<"SNTP server3">]**：第三个 SNTP 服务器。
 
 说明
 ^^^^
@@ -1589,7 +1539,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 ::
 
-    AT+CIUPDATE=<ota mode>[,<version>][,<firmware name>][,<nonblocking>]
+    AT+CIUPDATE=<ota mode>[,<"version">][,<"firmware name">][,<nonblocking>]
 
 **响应：**
 
@@ -1638,11 +1588,11 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
     - 1: 通过 HTTPS OTA，如果无效，请检查 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``OTA based upon ssl`` 是否使能，更多信息请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`。
 
 - **<version>**：AT 版本，如 ``v1.2.0.0``、``v1.1.3.0`` 或 ``v1.1.2.0``。
-- **<firmware name>**：升级的固件，如 ``ota``、``mqtt_ca``、``client_ca`` 或其它 ``at_customize.csv`` 中自定义的分区。
+- **<"firmware name">**：升级的固件，如 ``ota``、``mqtt_ca``、``client_ca`` 或其它 ``at_customize.csv`` 中自定义的分区。
 - **<nonblocking>**:
 
-    - 0: 阻塞模式的 OTA（此模式下，直到 OTA 升级成功或失败后才可以发送 AT 命令）；
-    - 1: 非阻塞模式的 OTA（此模式下，升级完成后 (+CIPUPDATE:4) 需手动重启)。
+    - 0: 阻塞模式的 OTA。此模式下，直到 OTA 升级成功或失败后才可以发送 AT 命令。
+    - 1: 非阻塞模式的 OTA。此模式下，升级完成后 (+CIPUPDATE:4) 需手动重启。
 
 - **<state>**:
 
@@ -2221,7 +2171,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 ::
 
-    +CIPRECVDATA:<actual_len>,<remote IP>,<remote port>,<data>
+    +CIPRECVDATA:<actual_len>,<"remote IP">,<remote port>,<data>
     OK
 
 参数
@@ -2231,7 +2181,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 -  **<len>**：最大值为：0x7fffffff，如果实际收到的数据长度比本参数值小，则返回实际长度的数据。
 -  **<actual_len>**：实际获取的数据长度。
 -  **<data>**：获取的数据。
--  **[<remote IP>]**：字符串参数，表示对端 IP 地址，通过 :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>` 命令使能。
+-  **[<"remote IP">]**：字符串参数，表示对端 IP 地址，通过 :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>` 命令使能。
 -  **[<remote port>]**：对端端口，通过 :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>` 命令使能。
 
 说明
@@ -2415,12 +2365,12 @@ ping 对端主机
 
 -  **<enable>**：设置 DNS 服务器
 
-   -  0: 启用自动获取 DNS 服务器设置，DNS 服务器将会恢复为 ``208.67.222.222`` 和 ``8.8.8.8``，只有当 {IDF_TARGET_NAME} station 完成了 DHCP 过程，DNS 服务器才有可能会更新。
-   -  1: 启用手动设置 DNS 服务器信息，如果不设置参数 ``<DNS IPx>`` 的值，则使用默认值 ``208.67.222.222`` 和 ``8.8.8.8``。
+   -  0: 启用自动获取 DNS 服务器设置，DNS 服务器将会恢复为 ``208.67.222.222``、 ``114.114.114.114`` 和 ``8.8.8.8``，只有当 {IDF_TARGET_NAME} station 完成了 DHCP 过程，DNS 服务器才有可能会更新。
+   -  1: 启用手动设置 DNS 服务器信息，如果不设置参数 ``<DNS IPx>`` 的值，则使用默认值 ``208.67.222.222``、 ``114.114.114.114`` 和 ``8.8.8.8``。
 
--  **<DNS IP1>**：第一个 DNS 服务器 IP 地址，对于设置命令，只有当 <enable> 参数为 1 时，也就是启用手动 DNS 设置，本参数才有效；如果设置 <enable> 为 1，并为本参数设置一个值，当您运行查询命令时，ESP-AT 将把该参数作为当前的 DNS 设置返回。
--  **<DNS IP2>**：第二个 DNS 服务器 IP 地址，对于设置命令，只有当 <enable> 参数为 1 时，也就是启用手动 DNS 设置，本参数才有效；如果设置 <enable> 为 1，并为本参数设置一个值，当您运行查询命令时，ESP-AT 将把该参数作为当前的 DNS 设置返回。
--  **<DNS IP3>**：第三个 DNS 服务器 IP 地址，对于设置命令，只有当 <enable> 参数为 1 时，也就是启用手动 DNS 设置，本参数才有效；如果设置 <enable> 为 1，并为本参数设置一个值，当您运行查询命令时，ESP-AT 将把该参数作为当前的 DNS 设置返回。
+-  **<"DNS IP1">**：第一个 DNS 服务器 IP 地址，对于设置命令，只有当 <enable> 参数为 1 时，也就是启用手动 DNS 设置，本参数才有效；如果设置 <enable> 为 1，并为本参数设置一个值，当您运行查询命令时，ESP-AT 将把该参数作为当前的 DNS 设置返回。
+-  **<"DNS IP2">**：第二个 DNS 服务器 IP 地址，对于设置命令，只有当 <enable> 参数为 1 时，也就是启用手动 DNS 设置，本参数才有效；如果设置 <enable> 为 1，并为本参数设置一个值，当您运行查询命令时，ESP-AT 将把该参数作为当前的 DNS 设置返回。
+-  **<"DNS IP3">**：第三个 DNS 服务器 IP 地址，对于设置命令，只有当 <enable> 参数为 1 时，也就是启用手动 DNS 设置，本参数才有效；如果设置 <enable> 为 1，并为本参数设置一个值，当您运行查询命令时，ESP-AT 将把该参数作为当前的 DNS 设置返回。
 
 说明
 ^^^^
@@ -2491,7 +2441,7 @@ ping 对端主机
     // 关闭 mDNS 功能
     AT+MDNS=0
 
-详细示例参考： :ref:`mDNS 示例 <example-mdns>`。
+详细示例参考 :ref:`mDNS 示例 <example-mdns>`。
 
 .. _cmd-TCPOPT:
 

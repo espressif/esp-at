@@ -3,6 +3,8 @@
 Basic AT Commands
 =================
 
+{IDF_TARGET_SOC_UART_BITRATE_MAX: default="5000000", esp32c2="2500000"}
+
 :link_to_translation:`zh_CN:[中文]`
 
 .. list::
@@ -20,7 +22,7 @@ Basic AT Commands
   - :ref:`AT+UART_CUR <cmd-UARTC>`: Current UART configuration, not saved in flash.
   - :ref:`AT+UART_DEF <cmd-UARTD>`: Default UART configuration, saved in flash.
   - :ref:`AT+SLEEP <cmd-SLEEP>`: Set the sleep mode.
-  - :ref:`AT+SYSRAM <cmd-SYSRAM>`: Query current remaining heap size and minimum heap size.
+  - :ref:`AT+SYSRAM <cmd-SYSRAM>`: Query the heap memory status.
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`: Query/Set System Prompt Information.
   - :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>`: Enable or disable the :term:`system message` filter.
   - :ref:`AT+SYSMSGFILTERCFG <cmd-SYSMSGFILTERCFG>`: Query/Set the :term:`system message` filters.
@@ -134,7 +136,7 @@ Execute Command
     <AT version info>
     <SDK version info>
     <compile time>
-    <Bin version>
+    Bin version:<Bin version>(<module_name>)
 
     OK
 
@@ -144,7 +146,8 @@ Parameters
 -  **<AT version info>**: information about the esp-at core library version, which is under the directory: ``esp-at/components/at/lib/``. Code is closed source, no plan to open.
 -  **<SDK version info>**: information about the esp-at platform sdk version, which is defined in file: ``esp-at/module_config/module_{platform}_default/IDF_VERSION``
 -  **<compile time>**: the time to compile the firmware.
--  **<Bin version>**: esp-at firmware version. Version information can be modified in menuconfig. (``python build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``AT firmware version.``)
+-  **<Bin version>**: esp-at firmware version. Version information can be modified in menuconfig. ``python build.py menuconfig`` > ``Application manager`` > ``Project version``. Maximum length: 32 bytes.
+- **<module_name>**: the module name, which is defined in file: ``esp-at/components/customized_partitions/raw_data/factory_param/factory_param_data.csv``.
 
 Note
 ^^^^^
@@ -182,7 +185,7 @@ Query Command
 
 ::
 
-    +CMD:<index>,<AT command name>,<support test command>,<support query command>,<support set command>,<support execute command>
+    +CMD:<index>,<"AT command name">,<support test command>,<support query command>,<support set command>,<support execute command>
 
     OK
 
@@ -190,7 +193,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<index>**: AT command sequence number.
--  **<AT command name>**: AT command name.
+-  **<"AT command name">**: AT command name.
 -  **<support test command>**: 0 means not supported, 1 means supported.
 -  **<support query command>**: 0 means not supported, 1 means supported.
 -  **<support set command>**: 0 means not supported, 1 means supported.
@@ -309,8 +312,8 @@ Notes
 
 .. _savetrans-tcpssl:
 
-For TCP/SSL Single Connection
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Set Whether to Enter TCP/SSL :term:`Passthrough Mode` on Power-up
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Set Command
 """"""""""""""
@@ -364,8 +367,8 @@ Example
 
 .. _savetrans-udp:
 
-For UDP Transmission
-^^^^^^^^^^^^^^^^^^^^
+Set Whether to Enter UDP :term:`Passthrough Mode` on Power-up
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Set Command
 """"""""""""""
@@ -419,8 +422,8 @@ Example
 
     .. _savetrans-ble:
 
-    For BLE Connection
-    ^^^^^^^^^^^^^^^^^^^^
+    Set Whether to Enter Bluetooth LE :term:`Passthrough Mode` on Power-up
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     Set Command
     """"""""""""""
@@ -429,7 +432,7 @@ Example
 
     ::
 
-        AT+SAVETRANSLINK=<mode>,<role>,<tx_srv>,<tx_char>,<rx_srv>,<rx_char>,<peer_addr>
+        AT+SAVETRANSLINK=<mode>,<role>,<tx_srv>,<tx_char>,<rx_srv>,<rx_char>,<"peer_addr">
 
     **Response:**
 
@@ -454,7 +457,7 @@ Example
     -  **<tx_char>**: tx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` if AT works as GATTS role.
     -  **<rx_srv>**: rx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` if AT works as GATTS role.
     -  **<rx_char>**: rx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` if AT works as GATTS role.
-    -  **<peer_addr>**: remote Bluetooth LE address.
+    -  **<"peer_addr">**: remote Bluetooth LE address.
 
     Notes
     """""""
@@ -566,7 +569,7 @@ Parameters
 
 -  **<baudrate>**: UART baud rate
 
-   - For {IDF_TARGET_NAME} devices, the supported range is 80 ~ 5000000.
+   - For {IDF_TARGET_NAME} devices, the supported range is 80 ~ {IDF_TARGET_SOC_UART_BITRATE_MAX}.
 
 -  **<databits>**: data bits
 
@@ -650,7 +653,7 @@ Parameters
 
 -  **<baudrate>**: UART baud rate
 
-   - For {IDF_TARGET_NAME} devices, the supported range is 80 ~ 5000000.
+   - For {IDF_TARGET_NAME} devices, the supported range is 80 ~ {IDF_TARGET_SOC_UART_BITRATE_MAX}.
 
 -  **<databits>**: data bits
 
@@ -795,8 +798,8 @@ Example
 
 .. _cmd-SYSRAM:
 
-:ref:`AT+SYSRAM <Basic-AT>`: Query Current Remaining Heap Size and Minimum Heap Size
------------------------------------------------------------------------------------------
+:ref:`AT+SYSRAM <Basic-AT>`: Query the Heap Memory Status
+---------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -828,6 +831,40 @@ Example
     AT+SYSRAM?
     +SYSRAM:148408,84044
     OK
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+Query the memory usage under given capabilities.
+
+**Command:**
+
+::
+
+    AT+SYSRAM=<caps>
+
+**Response:**
+
+::
+
+    +SYSRAM:<caps_largest_free_block_size>,<caps_free_size>,<caps_minimum_free_size>,<caps_total_size>
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<caps>**: Capability value. See `Different capability definitions <https://github.com/espressif/esp-idf/blob/release/v5.4/components/heap/include/esp_heap_caps.h#L29-L49>`_ for details. Multiple values can be combined, e.g., ``AT+SYSRAM=0x1800`` represents ``MALLOC_CAP_INTERNAL | MALLOC_CAP_DEFAULT``.
+-  **<caps_largest_free_block_size>**: The maximum size of a free block that can be allocated under the given caps. Unit: byte.
+-  **<caps_free_size>**: The total size of all free blocks under the given caps. Unit: byte.
+-  **<caps_minimum_free_size>**: The minimum total size of all free blocks under the given caps since power-on. Unit: byte.
+-  **<caps_total_size>**: The total memory size under the given caps. Unit: byte.
+
+Note
+^^^^
+
+-  During system operation, if there is insufficient memory, the :term:`AT log port` will output ``alloc failed, size:<requested_size>, caps:<requested_caps>``. You can send ``AT+SYSRAM=<requested_caps>`` to check the memory usage under the current caps. The ``<caps_largest_free_block_size>`` determines whether a memory block of size ``<requested_size>`` can be allocated.
 
 .. _cmd-SYSMSG:
 
@@ -1043,7 +1080,7 @@ Query Command
 
 ::
 
-    +SYSMSGFILTERCFG:<index>,"<head_regexp>","<tail_regexp>"
+    +SYSMSGFILTERCFG:<index>,<"head_regexp">,<"tail_regexp">
 
     OK
 
@@ -1700,6 +1737,26 @@ Note
 :ref:`AT+SYSROLLBACK <Basic-AT>`: Roll Back to the Previous Firmware
 ------------------------------------------------------------------------
 
+Query Command
+^^^^^^^^^^^^^
+
+**Function:**
+
+Query the address and version of the current running firmware and the rollback firmware.
+
+**Command:**
+
+::
+
+    AT+SYSROLLBACK?
+
+**Response:**
+
+::
+
+    +SYSROLLBACK:<running_app_addr>,<"running_app_version">,<rollback_app_addr>,<"rollback_app_version">
+    OK
+
 Execute Command
 ^^^^^^^^^^^^^^^
 
@@ -1714,6 +1771,14 @@ Execute Command
 ::
 
     OK
+
+Parameters
+^^^^^^^^^^
+
+- **<running_app_addr>**: the address of the current running firmware.
+- **<"running_app_version">**: the version of the current running firmware.
+- **<rollback_app_addr>**: the address of the rollback firmware.
+- **<"rollback_app_version">**: the version of the rollback firmware.
 
 Note
 ^^^^^
@@ -1955,8 +2020,8 @@ Parameters
 
 -  **<param1>**:
 
-   -  If the wakeup source is a timer, it means the time before wakeup. Unit: millisecond.
    -  If the wakeup source is GPIO, it means the GPIO number.
+   -  Reserved, not supported now.
 
 -  **<param2>**:
 
@@ -1972,6 +2037,11 @@ Example
 
     // GPIO12 wakeup, low level
     AT+SLEEPWKCFG=2,12,0
+
+Note
+^^^^
+
+- The wake-up pin must be driven to a valid logic level and should not be left floating. It must be either high or low.
 
 .. _cmd-SYSSTORE:
 

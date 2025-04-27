@@ -129,9 +129,9 @@
 
 ::
 
-    +CIPETH:ip:<ip>
-    +CIPETH:gateway:<gateway>
-    +CIPETH:netmask:<netmask>
+    +CIPETH:ip:<"ip">
+    +CIPETH:gateway:<"gateway">
+    +CIPETH:netmask:<"netmask">
     OK
 
 设置命令
@@ -145,7 +145,7 @@
 
 ::
 
-    AT+CIPETH=<ip>[,<gateway>,<netmask>]
+    AT+CIPETH=<"ip">[,<"gateway">,<"netmask">]
 
 **响应：**
 
@@ -156,9 +156,9 @@
 参数
 ^^^^
 
--  **<ip>**：字符串参数，表示 {IDF_TARGET_NAME} 以太网的 IP 地址。
--  **[<gateway>]**：网关。
--  **[<netmask>]**：网络掩码。
+-  **<"ip">**：字符串参数，表示 {IDF_TARGET_NAME} 以太网的 IP 地址。
+-  **[<"gateway">]**：网关。
+-  **[<"netmask">]**：网络掩码。
 
 说明
 ^^^^

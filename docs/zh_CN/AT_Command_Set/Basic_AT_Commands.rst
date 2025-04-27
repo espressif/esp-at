@@ -5,6 +5,8 @@
 
 :link_to_translation:`en:[English]`
 
+{IDF_TARGET_SOC_UART_BITRATE_MAX: default="5000000", esp32c2="2500000"}
+
 .. list::
 
   - :ref:`介绍 <cmd-basic-intro>`
@@ -20,7 +22,7 @@
   - :ref:`AT+UART_CUR <cmd-UARTC>`：设置 UART 当前临时配置，不保存到 flash
   - :ref:`AT+UART_DEF <cmd-UARTD>`：设置 UART 默认配置, 保存到 flash
   - :ref:`AT+SLEEP <cmd-SLEEP>`：设置 sleep 模式
-  - :ref:`AT+SYSRAM <cmd-SYSRAM>`：查询当前剩余堆空间和最小堆空间
+  - :ref:`AT+SYSRAM <cmd-SYSRAM>`：查询堆空间使用情况
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`：查询/设置系统提示信息
   - :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>`：启用或禁用 :term:`系统消息` 过滤
   - :ref:`AT+SYSMSGFILTERCFG <cmd-SYSMSGFILTERCFG>`：查询/配置 :term:`系统消息` 的过滤器
@@ -134,7 +136,7 @@
     <AT version info>
     <SDK version info>
     <compile time>
-    <Bin version>
+    Bin version:<Bin version>(<module_name>)
 
     OK
 
@@ -144,7 +146,8 @@
 -  **<AT version info>**：AT 核心库的版本信息，它们在 ``esp-at/components/at/lib/`` 目录下。代码是闭源的，无开放计划。
 -  **<SDK version info>**：AT 使用的平台 SDK 版本信息，它们定义在 ``esp-at/module_config/module_{platform}_default/IDF_VERSION`` 文件中。
 -  **<compile time>**：固件生成时间。
--  **<Bin version>**: AT 固件版本信息。版本信息可以在 menuconfig 中修改。（``python build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``AT firmware version.``）
+-  **<Bin version>**: AT 固件版本信息。版本信息可以在 menuconfig 中修改，``python build.py menuconfig`` > ``Application manager`` > ``Project version``。最大长度： 32 字节。
+-  **<module_name>**：模块名称，在 ``esp-at/components/customized_partitions/raw_data/factory_param/factory_param_data.csv`` 里定义。
 
 说明
 ^^^^
@@ -182,7 +185,7 @@
 
 ::
 
-    +CMD:<index>,<AT command name>,<support test command>,<support query command>,<support set command>,<support execute command>
+    +CMD:<index>,<"AT command name">,<support test command>,<support query command>,<support set command>,<support execute command>
 
     OK
 
@@ -190,7 +193,7 @@
 ^^^^
 
 -  **<index>**：AT 命令序号
--  **<AT command name>**：AT 命令名称
+-  **<"AT command name">**：AT 命令名称
 -  **<support test command>**：0 表示不支持，1 表示支持
 -  **<support query command>**：0 表示不支持，1 表示支持
 -  **<support set command>**：0 表示不支持，1 表示支持
@@ -429,7 +432,7 @@
 
     ::
 
-        AT+SAVETRANSLINK=<mode>,<role>,<tx_srv>,<tx_char>,<rx_srv>,<rx_char>,<peer_addr>
+        AT+SAVETRANSLINK=<mode>,<role>,<tx_srv>,<tx_char>,<rx_srv>,<rx_char>,<"peer_addr">
 
     **响应：**
 
@@ -454,7 +457,7 @@
     -  **<tx_char>**：tx 服务特征序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 命令查询。
     -  **<rx_srv>**：rx 服务序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询。
     -  **<rx_char>**：rx 服务特征序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 命令查询。
-    -  **<peer_addr>**：对方 Bluetooth LE 地址
+    -  **<"peer_addr">**：对方 Bluetooth LE 地址。
 
     说明
     """""""
@@ -566,7 +569,7 @@
 
 -  **<baudrate>**：UART 波特率
 
-   - {IDF_TARGET_NAME} 设备：支持范围为 80 ~ 5000000
+   - {IDF_TARGET_NAME} 设备：支持范围为 80 ~ {IDF_TARGET_SOC_UART_BITRATE_MAX}
 
 -  **<databits>**：数据位
 
@@ -650,7 +653,7 @@
 
 -  **<baudrate>**：UART 波特率
 
-   - {IDF_TARGET_NAME} 设备：支持范围为 80 ~ 5000000
+   - {IDF_TARGET_NAME} 设备：支持范围为 80 ~ {IDF_TARGET_SOC_UART_BITRATE_MAX}
 
 -  **<databits>**：数据位
 
@@ -795,7 +798,7 @@
 
 .. _cmd-SYSRAM:
 
-:ref:`AT+SYSRAM <Basic-AT>`：查询当前剩余堆空间和最小堆空间
+:ref:`AT+SYSRAM <Basic-AT>`：查询堆空间使用情况
 ------------------------------------------------------------
 
 查询命令
@@ -828,6 +831,40 @@
     AT+SYSRAM?
     +SYSRAM:148408,84044
     OK
+
+设置命令
+^^^^^^^^
+
+**功能：**
+
+查询在给定能力下的系统内存使用情况。
+
+**命令：**
+
+::
+
+    AT+SYSRAM=<caps>
+
+**响应：**
+
+::
+
+    +SYSRAM:<caps_largest_free_block_size>,<caps_free_size>,<caps_minimum_free_size>,<caps_total_size>
+    OK
+
+参数
+^^^^
+
+-  **<caps>**：能力值。详见 `不同 capabilities 定义 <https://github.com/espressif/esp-idf/blob/release/v5.4/components/heap/include/esp_heap_caps.h#L29-L49>`_。可以组合使用，如 ``AT+SYSRAM=0x1800``，表示 ``MALLOC_CAP_INTERNAL | MALLOC_CAP_DEFAULT``。
+-  **<caps_largest_free_block_size>**：当前 caps 下能够分配的最大空闲块，单位：byte。
+-  **<caps_free_size>**：当前 caps 下所有的空闲块大小总和，单位：byte。
+-  **<caps_minimum_free_size>**：芯片上电后，caps 下所有的空闲块大小总和的最小值，单位：byte。
+-  **<caps_total_size>**：当前 caps 下总内存大小，单位：byte。
+
+说明
+^^^^
+
+-  系统运行过程中，一旦内存不足，:term:`AT 日志端口` 会输出 ``alloc failed, size:<requested_size>, caps:<requested_caps>``。您可以发送  ``AT+SYSRAM=<requested_caps>`` 查看当前 caps 的内存使用情况。其中 ``<caps_largest_free_block_size>`` 决定了能否分配 ``<requested_size>`` 大小的内存块。
 
 .. _cmd-SYSMSG:
 
@@ -1043,7 +1080,7 @@
 
 ::
 
-    +SYSMSGFILTERCFG:<index>,"<head_regexp>","<tail_regexp>"
+    +SYSMSGFILTERCFG:<index>,<"head_regexp">,<"tail_regexp">
 
     OK
 
@@ -1700,6 +1737,26 @@
 :ref:`AT+SYSROLLBACK <Basic-AT>`：回滚到以前的固件
 ----------------------------------------------------
 
+查询命令
+^^^^^^^^
+
+**功能：**
+
+查询当前运行固件和回滚固件的地址和版本。
+
+**命令：**
+
+::
+
+    AT+SYSROLLBACK?
+
+**响应：**
+
+::
+
+    +SYSROLLBACK:<running_app_addr>,<"running_app_version">,<rollback_app_addr>,<"rollback_app_version">
+    OK
+
 执行命令
 ^^^^^^^^
 
@@ -1714,6 +1771,14 @@
 ::
 
     OK
+
+参数
+^^^^
+
+- **<running_app_addr>**：当前运行固件的地址。
+- **<"running_app_version">**：当前运行固件的版本。
+- **<rollback_app_addr>**：回滚固件的地址。
+- **<"rollback_app_version">**：回滚固件的版本。
 
 说明
 ^^^^
@@ -1955,8 +2020,8 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
 
 -  **<param1>**:
 
-   -  当唤醒源为定时器时，该参数表示睡眠时间，单位：毫秒
    -  当唤醒源为 GPIO 时，该参数表示 GPIO 管脚
+   -  保留配置，暂不支持
 
 -  **<param2>**:
 
@@ -1972,6 +2037,11 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
 
     // GPIO12 置为低电平时唤醒
     AT+SLEEPWKCFG=2,12,0
+
+说明
+^^^^
+
+- 唤醒管脚的电平应为有效电平，不能处于浮空状态，必须保持高电平或低电平。
 
 .. _cmd-SYSSTORE:
 

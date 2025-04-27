@@ -8,7 +8,6 @@ TCP/IP AT Commands
 -  :ref:`Introduction <cmd-tcpip-intro>`
 -  :ref:`AT+CIPV6 <cmd-IPV6>`: Enable/disable the network of Internet Protocol Version 6 (IPv6).
 -  :ref:`AT+CIPSTATE <cmd-IPSTATE>`: Obtain the TCP/UDP/SSL connection information.
--  :ref:`AT+CIPSTATUS (deprecated) <cmd-STATUS>`: Obtain the TCP/UDP/SSL connection status and information.
 -  :ref:`AT+CIPDOMAIN <cmd-DOMAIN>`: Resolve a Domain Name.
 -  :ref:`AT+CIPSTART <cmd-START>`: Establish TCP connection, UDP transmission, or SSL connection.
 -  :ref:`AT+CIPSTARTEX <cmd-STARTEX>`: Establish TCP connection, UDP transmission, or SSL connection with an automatically assigned ID.
@@ -159,55 +158,6 @@ Parameters
 
    -  0: {IDF_TARGET_NAME} runs as a client.
    -  1: {IDF_TARGET_NAME} runs as a server.
-
-.. _cmd-STATUS:
-
-:ref:`AT+CIPSTATUS (deprecated) <TCPIP-AT>`: Obtain the TCP/UDP/SSL Connection Status and Information
-------------------------------------------------------------------------------------------------------------
-
-Execute Command
-^^^^^^^^^^^^^^^
-
-**Command:**
-
-::
-
-    AT+CIPSTATUS
-
-**Response:**
-
-::
-
-    STATUS:<stat>
-    +CIPSTATUS:<link ID>,<"type">,<"remote IP">,<remote port>,<local port>,<tetype>
-    OK
-
-Parameters
-^^^^^^^^^^
-
--  **<stat>**: status of the {IDF_TARGET_NAME} station interface.
-
-   -  0: The {IDF_TARGET_NAME} station is not initialized.
-   -  1: The {IDF_TARGET_NAME} station is initialized, but not started a Wi-Fi connection yet.
-   -  2: The {IDF_TARGET_NAME} station is connected to an AP and its IP address is obtained.
-   -  3: The {IDF_TARGET_NAME} station has created a TCP/SSL transmission.
-   -  4: All of the TCP/UDP/SSL connections of the {IDF_TARGET_NAME} station are disconnected.
-   -  5: The {IDF_TARGET_NAME} station started a Wi-Fi connection, but was not connected to an AP or disconnected from an AP.
-
--  **<link ID>**: ID of the connection (0~4), used for multiple connections.
--  **<"type">**: string parameter showing the type of transmission: "TCP", "TCPv6", "UDP", "UDPv6", "SSL", or "SSLv6".
--  **<"remote IP">**: string parameter showing the remote IPv4 address or IPv6 address.
--  **<remote port>**: the remote port number.
--  **<local port>**: the local port number.
--  **<tetype>**:
-
-   -  0: {IDF_TARGET_NAME} runs as a client.
-   -  1: {IDF_TARGET_NAME} runs as a server.
-
-Notes
-""""""
-
-- It is recommended to use :ref:`AT+CWSTATE <cmd-WSTATE>` command to query Wi-Fi state and :ref:`AT+CIPSTATE <cmd-IPSTATE>` command to query TCP/UDP/SSL state.
 
 .. _cmd-DOMAIN:
 
@@ -1319,7 +1269,7 @@ Query Command
 
 ::
 
-    +CIPSNTPCFG:<enable>,<timezone>,<SNTP server1>[,<SNTP server2>,<SNTP server3>]
+    +CIPSNTPCFG:<enable>,<timezone>[,<"SNTP server1">][,<"SNTP server2">][,<"SNTP server3">]
     OK
 
 Set Command
@@ -1329,7 +1279,7 @@ Set Command
 
 ::
 
-    AT+CIPSNTPCFG=<enable>,<timezone>[,<SNTP server1>,<SNTP server2>,<SNTP server3>]
+    AT+CIPSNTPCFG=<enable>[,<timezone>][,<"SNTP server1">][,<"SNTP server2">][,<"SNTP server3">]
 
 **Response:**
 
@@ -1350,9 +1300,9 @@ Parameters
    -  The first format range is [-12,14]. It marks most of the time zones by offset from Coordinated Universal Time (UTC) in **whole hours** (`UTC–12:00 <https://en.wikipedia.org/wiki/UTC%E2%88%9212:00>`__ to `UTC+14:00 <https://en.wikipedia.org/wiki/UTC%2B14:00>`_).
    -  The second format is ``UTC offset``. The ``UTC offset`` specifies the time value you must add to the UTC time to get a local time value. It has syntax like ``[+|-][hh]mm``. This is negative if the local time zone is on the west of the Prime Meridian and positive if it is on the east. The hour(hh) must be between -12 and 14, and the minute(mm) between 0 and 59. For example, if you want to set the timezone to New Zealand (Chatham Islands) which is in ``UTC+12:45``, you should set the parameter ``<timezone>`` to ``1245``. Please refer to `UTC offset wiki <https://en.wikipedia.org/wiki/Time_zone#List_of_UTC_offsets>`_ for more information.
 
--  **[<SNTP server1>]**: the first SNTP server.
--  **[<SNTP server2>]**: the second SNTP server.
--  **[<SNTP server3>]**: the third SNTP server.
+-  **[<"SNTP server1">]**: the first SNTP server.
+-  **[<"SNTP server2">]**: the second SNTP server.
+-  **[<"SNTP server3">]**: the third SNTP server.
 
 Note
 ^^^^^
@@ -1589,7 +1539,7 @@ Upgrade the specified version of firmware from the server.
 
 ::
 
-    AT+CIUPDATE=<ota mode>[,<version>][,<firmware name>][,<nonblocking>]
+    AT+CIUPDATE=<ota mode>[,<"version">][,<"firmware name">][,<nonblocking>]
 
 **Response:**
 
@@ -1638,11 +1588,11 @@ Parameters
     - 1: OTA via HTTPS. If it does not work, please check whether ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``OTA based upon ssl`` is enabled. For more information, please refer to :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`.
 
 - **<version>**: AT version, such as, ``v1.2.0.0``, ``v1.1.3.0``, ``v1.1.2.0``.
-- **<firmware name>**: firmware to upgrade, such as, ``ota``, ``mqtt_ca``, ``client_ca`` or other custom partition in ``at_customize.csv``.
+- **<"firmware name">**: firmware to upgrade, such as, ``ota``, ``mqtt_ca``, ``client_ca`` or other custom partition in ``at_customize.csv``.
 - **<nonblocking>**:
 
-    - 0: OTA by blocking mode (In this mode, you can not send AT command until OTA completes successfully or fails.)
-    - 1: OTA by non-blocking mode (You need to manually restart after upgrade done (+CIPUPDATE:4).)
+    - 0: OTA by blocking mode. In this mode, you can not send AT command until OTA completes successfully or fails.
+    - 1: OTA by non-blocking mode. You need to manually restart after upgrade done (+CIPUPDATE:4).
 
 - **<state>**:
 
@@ -2415,8 +2365,8 @@ Parameters
 
 -  **<enable>**: configure DNS server settings
 
-   -  0: Enable automatic DNS server settings from DHCP. The DNS will be restored to ``208.67.222.222`` and ``8.8.8.8``. Only when the {IDF_TARGET_NAME} station completes the DHCP process, the DNS server of the {IDF_TARGET_NAME} station could be updated.
-   -  1: Enable manual DNS server settings. If you do not set a value for ``<DNS IPx>``, it will use ``208.67.222.222`` and ``8.8.8.8`` by default.
+   -  0: Enable automatic DNS server settings from DHCP. The DNS will be restored to ``208.67.222.222``, ``114.114.114.114`` and ``8.8.8.8``. Only when the {IDF_TARGET_NAME} station completes the DHCP process, the DNS server of the {IDF_TARGET_NAME} station could be updated.
+   -  1: Enable manual DNS server settings. If you do not set a value for ``<DNS IPx>``, it will use ``208.67.222.222``, ``114.114.114.114`` and ``8.8.8.8`` by default.
 
 -  **<"DNS IP1">**: the first DNS server IP address. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
 -  **<"DNS IP2">**: the second DNS server IP address. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
@@ -2427,7 +2377,7 @@ Notes
 
 -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The three parameters cannot be set to the same server.
--  When ``<enable>`` is set to 1, the DNS server may change according to the configuration of the router which the {IDF_TARGET_NAME} is connected to.
+-  When ``<enable>`` is set to 0, the DNS server may change according to the configuration of the router which the {IDF_TARGET_NAME} is connected to.
 
 Example
 ^^^^^^^^

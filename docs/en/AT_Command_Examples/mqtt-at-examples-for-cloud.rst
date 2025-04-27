@@ -82,7 +82,7 @@ Use AT commands to connect to AWS IoT
 
    .. code-block:: none
 
-     AT+CWJAP=<ssid>,<password>
+     AT+CWJAP=<"ssid">,<"password">
 
    Response:
   

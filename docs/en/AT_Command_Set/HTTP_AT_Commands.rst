@@ -74,7 +74,7 @@ Parameters
    -  2: ``multipart/form-data``
    -  3: ``text/xml``
 
--  **<"url">**: HTTP URL. The parameter can override the ``<host>`` and ``<path>`` parameters if they are null.
+-  **<"url">**: HTTP URL. The parameter can override the ``<"host">`` and ``<"path">`` parameters if they are null.
 -  **<"host">**: domain name or IP address.
 -  **<"path">**: HTTP Path.
 -  **<transport_type>**: HTTP Client transport type. Default: 1.
@@ -83,7 +83,7 @@ Parameters
    -  2: ``HTTP_TRANSPORT_OVER_SSL``
 
 -  **<"data">**: If ``<opt>`` is a POST request, this parameter holds the data you send to the HTTP server. If not, this parameter does not exist, which means there is no need to input a comma to indicate this parameter.
--  **<http_req_header>**: you can send more than one request header to the server.
+-  **<"http_req_header">**: you can send more than one request header to the server.
 
 Notes
 ^^^^^
@@ -198,7 +198,7 @@ Set Command
 
 ::
 
-    AT+HTTPCPOST=<"url">,<length>[,<http_req_header_cnt>][,<http_req_header>..<http_req_header>]
+    AT+HTTPCPOST=<"url">,<length>[,<http_req_header_cnt>][,<"http_req_header">..<"http_req_header">]
 
 **Response:**
 
@@ -226,8 +226,8 @@ Parameters
 ^^^^^^^^^^
 - **<"url">**: HTTP URL. It is a string parameter and should be enclosed with quotes.
 - **<length>**: HTTP data length to POST. The maximum length is equal to the system allocable heap size.
-- **<http_req_header_cnt>**: the number of <http_req_header> parameters.
-- **[<http_req_header>]**: HTTP request header. You can send more than one request header to the server.
+- **<http_req_header_cnt>**: the number of <"http_req_header"> parameters.
+- **[<"http_req_header">]**: HTTP request header. You can send more than one request header to the server.
 
 Note
 ^^^^^
@@ -248,7 +248,7 @@ Set Command
 
 ::
 
-    AT+HTTPCPUT=<"url">,<length>[,<http_req_header_cnt>][,<http_req_header>..<http_req_header>]
+    AT+HTTPCPUT=<"url">,<length>[,<http_req_header_cnt>][,<"http_req_header">..<"http_req_header">]
 
 **Response:**
 
@@ -276,8 +276,8 @@ Parameters
 ^^^^^^^^^^
 - **<"url">**: HTTP URL. It is a string parameter and should be enclosed with quotes.
 - **<length>**: HTTP data length to PUT. The maximum length is equal to the system allocable heap size.
-- **<http_req_header_cnt>**: the number of <http_req_header> parameters.
-- **[<http_req_header>]**: HTTP request header. You can send more than one request header to the server.
+- **<http_req_header_cnt>**: the number of <"http_req_header"> parameters.
+- **[<"http_req_header">]**: HTTP request header. You can send more than one request header to the server.
 
 Note
 ^^^^^
