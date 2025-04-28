@@ -6,13 +6,15 @@
 
 .. note::
 
-    抱歉，无法找到您想访问的页面。
+        您正在切换的芯片不支持该功能，页面将跳转到上一级目录。
 
-请使用左侧菜单，浏览其他文档内容。您也可以使用菜单上方的搜索框，搜索您想查看的内容。
+    .. only:: html
+
+        .. raw:: html
+            :file: ../_static/document_referrer.html
+
 
 .. figure:: ../_static/404-page__cn.svg
     :align: center
     :alt: 抱歉，无法找到您想访问的页面。
     :figclass: align-center
-   
-* :ref:`genindex`
