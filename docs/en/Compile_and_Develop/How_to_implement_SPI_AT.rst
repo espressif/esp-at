@@ -1,6 +1,8 @@
 SPI AT Guide
 ===============
 
+:link_to_translation:`zh_CN:[中文]`
+
 This document mainly introduces the implementation and use of SPI AT, mainly involving the following aspects:
 
 .. contents::

@@ -126,10 +126,10 @@
 
 请根据您的操作系统选择对应的烧录方法。
 
-Windows 
+Windows
 ^^^^^^^^
 
-开始烧录之前，请下载 `Flash 下载工具 <https://www.espressif.com/zh-hans/support/download/other-tools>`_。更多有关 Flash 下载工具的介绍，请参考压缩包中 ``doc`` 文件夹。
+开始烧录之前，请下载 `Flash 下载工具 <https://docs.espressif.com/projects/esp-test-tools/zh_CN/latest/esp32/production_stage/tools/flash_download_tool.html>`_。更多有关 Flash 下载工具的介绍，请参考压缩包中 ``doc`` 文件夹。
 
 - 打开 Flash 下载工具；
 - 选择芯片类型；（此处，我们选择 ``{IDF_TARGET_NAME}``。）
