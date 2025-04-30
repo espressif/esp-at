@@ -1,3 +1,3 @@
 branch:release/v3.4
-commit:e4b814b6767259aec06ef3b4a00ac57be3535898
+commit:816d45e0910c2b14e128a0f90b4fe871c053a012
 repository:ssh://git@gitlab.espressif.cn:27227/sdk/ESP8266_RTOS_SDK.git
