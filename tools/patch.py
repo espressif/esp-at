@@ -14,7 +14,7 @@ def ESP_LOGI(x):
     print(f'\033[32m{x}\033[0m')
 
 def ESP_LOGE(x):
-    sys.stderr.write(f'\033[31m{x}\033[0m')
+    sys.stderr.write(f'\033[31m{x}\n\033[0m')
 
 at_patch_defaults = {
     'path': 'esp-idf',
@@ -103,6 +103,14 @@ def main():
 
         if not os.path.exists(src_patch_path) or not os.path.exists(dst_patch_path):
             raise Exception(f'{src_patch_path} or {dst_patch_path} does not exist')
+
+        # avoid applying the same patch multiple times
+        dst_patch_file = os.path.join(repo_dir, path_option, patch_name)
+        if os.path.exists(dst_patch_file):
+            ESP_LOGI(f'{patch_name} already exists, skipping.')
+            continue
+        else:
+            shutil.copy(src_patch_path, dst_patch_path)
 
         # *.patch
         cur_dir = os.getcwd()
