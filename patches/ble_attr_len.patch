@@ -1,0 +1,39 @@
+From c98b0cfb1fe34f49162d7d66ccd80b5e5f0efd54 Mon Sep 17 00:00:00 2001
+From: xiewenxiang <xiewenxiang@espressif.com>
+Date: Wed, 30 Apr 2025 14:30:15 +0800
+Subject: [PATCH] Fixed ble attribute length issue
+
+---
+ components/bt/host/bluedroid/api/include/api/esp_gatt_defs.h | 2 +-
+ components/bt/host/bluedroid/stack/include/stack/gatt_api.h  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/components/bt/host/bluedroid/api/include/api/esp_gatt_defs.h b/components/bt/host/bluedroid/api/include/api/esp_gatt_defs.h
+index f6beb5eaae..31c869382f 100644
+--- a/components/bt/host/bluedroid/api/include/api/esp_gatt_defs.h
++++ b/components/bt/host/bluedroid/api/include/api/esp_gatt_defs.h
+@@ -478,7 +478,7 @@ typedef uint8_t esp_gatt_char_prop_t;
+  *
+  * This definition specifies the maximum number of bytes that a GATT attribute can hold.
+  */
+-#define ESP_GATT_MAX_ATTR_LEN   512 /*!< As same as GATT_MAX_ATTR_LEN. */
++#define ESP_GATT_MAX_ATTR_LEN   600 /*!< As same as GATT_MAX_ATTR_LEN. */
+ 
+ /**
+  * @brief Enumerates the possible sources of a GATT service discovery.
+diff --git a/components/bt/host/bluedroid/stack/include/stack/gatt_api.h b/components/bt/host/bluedroid/stack/include/stack/gatt_api.h
+index fed2ea9a4e..3db3e7a87e 100644
+--- a/components/bt/host/bluedroid/stack/include/stack/gatt_api.h
++++ b/components/bt/host/bluedroid/stack/include/stack/gatt_api.h
+@@ -139,7 +139,7 @@ typedef UINT16 tGATT_DISCONN_REASON;
+ /* max length of an attribute value
+ */
+ #ifndef GATT_MAX_ATTR_LEN
+-#define GATT_MAX_ATTR_LEN                   512
++#define GATT_MAX_ATTR_LEN                   600
+ #endif
+ 
+ /* default GATT MTU size over LE link
+-- 
+2.25.1
+
