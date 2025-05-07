@@ -1,6 +1,8 @@
 SPI AT 指南
 =============
 
+:link_to_translation:`en:[English]`
+
 本文档主要介绍 SPI AT 的实现与使用，主要涉及以下几个方面：
 
 .. contents::

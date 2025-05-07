@@ -2,6 +2,8 @@
 RainMaker AT 命令和固件
 ******************************************
 
+:link_to_translation:`en:[English]`
+
 .. toctree::
    :maxdepth: 1
    

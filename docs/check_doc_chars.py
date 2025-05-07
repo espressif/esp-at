@@ -28,6 +28,9 @@ at_fullwidth_digits = r'[０-９]'
 at_fullwidth_punctuations = r'[＠＃＄％＾＆＊－＋＝〈〉「」『』【】＼｜＇＂＜．＞／]'
 at_fullwidth_file_white_list = ['index_of_abbreviations.rst']
 
+# translation link whitelist
+at_translation_file_white_list = ['index_of_abbreviations.rst', 'AT_API_Reference.rst']
+
 def at_get_rst_list(path):
     rst_files = []
     for root, _, files in os.walk(path):
@@ -115,11 +118,44 @@ def at_check_cn_format():
             if at_check_fullwidth_chars(current_file) == False:
                 return False
 
+def at_check_translation_link(file_path, expected_link):
+    basename = os.path.basename(file_path)
+    if basename in at_translation_file_white_list:
+        return True
+    with open(file_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+        if expected_link not in content:
+            ESP_LOGE(f'Missing translation link in: {file_path}')
+            return False
+    return True
+
+def at_check_translation_links():
+    en_path = os.path.abspath('.') + '/en'
+    zh_path = os.path.abspath('.') + '/zh_CN'
+
+    en_rst_files = at_get_rst_list(en_path)
+    zh_rst_files = at_get_rst_list(zh_path)
+
+    all_passed = True
+
+    for file in en_rst_files:
+        if not at_check_translation_link(file, ':link_to_translation:`zh_CN:[中文]`'):
+            all_passed = False
+
+    for file in zh_rst_files:
+        if not at_check_translation_link(file, ':link_to_translation:`en:[English]`'):
+            all_passed = False
+
+    return all_passed
+
 def _main():
     if at_check_en_format() == False:
         sys.exit(-1)
 
     if at_check_cn_format() == False:
+        sys.exit(-1)
+
+    if at_check_translation_links() == False:
         sys.exit(-1)
 
     ESP_LOGI('Document characters check passed!')

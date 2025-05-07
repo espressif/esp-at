@@ -1,7 +1,7 @@
 WebSocket AT Examples
 ==========================
 
-:link_to_translation:`en:[English]`
+:link_to_translation:`zh_CN:[中文]`
 
 This document shows how to use :doc:`../AT_Command_Set/websocket_at_commands` on {IDF_TARGET_NAME} with detailed examples.
 
