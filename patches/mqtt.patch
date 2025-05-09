@@ -1,0 +1,54 @@
+diff --git a/mqtt_client.c b/mqtt_client.c
+index bcd1a74..f30a319 100644
+--- a/mqtt_client.c
++++ b/mqtt_client.c
+@@ -1521,6 +1521,32 @@ static esp_err_t mqtt_resend_queued(esp_mqtt_client_handle_t client, outbox_item
+     return ESP_OK;
+ }
+ 
++static esp_err_t mqtt_resend_pubrel(esp_mqtt_client_handle_t client, outbox_item_handle_t item)
++{
++    client->mqtt_state.connection.outbound_message.data = outbox_item_get_data(item, &client->mqtt_state.connection.outbound_message.length, &client->mqtt_state.pending_msg_id,
++            &client->mqtt_state.pending_msg_type, &client->mqtt_state.pending_publish_qos);
++        if (client->mqtt_state.connection.information.protocol_ver == MQTT_PROTOCOL_V_5) {
++#ifdef MQTT_PROTOCOL_5
++            ESP_LOGI(TAG, "MQTT_MSG_TYPE_PUBREC return code is %d", mqtt5_msg_get_reason_code(client->mqtt_state.in_buffer, client->mqtt_state.in_buffer_read_len));
++            mqtt5_msg_pubrel(&client->mqtt_state.connection, client->mqtt_state.pending_msg_id);
++#endif
++        } else {
++            mqtt_msg_pubrel(&client->mqtt_state.connection, client->mqtt_state.pending_msg_id);
++        }
++        if (client->mqtt_state.connection.outbound_message.length == 0) {
++            ESP_LOGE(TAG, "Publish response message PUBREL cannot be created");
++            return ESP_FAIL;
++        }
++
++    if (esp_mqtt_write(client) != ESP_OK) {
++        ESP_LOGE(TAG, "Error to resend data ");
++        esp_mqtt_abort_connection(client);
++        return ESP_FAIL;
++    }
++
++    return ESP_OK;
++}
++
+ static void mqtt_delete_expired_messages(esp_mqtt_client_handle_t client)
+ {
+     // Delete message after OUTBOX_EXPIRED_TIMEOUT_MS milliseconds
+@@ -1690,6 +1716,16 @@ static void esp_mqtt_task(void *pv)
+                         if (client->mqtt_state.connection.information.protocol_ver == MQTT_PROTOCOL_V_5) {
+                             esp_mqtt5_increment_packet_counter(client);
+                         }
++#endif
++                    }
++                }
++                item = outbox_dequeue(client->outbox, ACKNOWLEDGED, &msg_tick);
++                if (item && (last_retransmit - msg_tick > client->config->message_retransmit_timeout))  {
++                    if (mqtt_resend_pubrel(client, item) == ESP_OK) {
++#ifdef MQTT_PROTOCOL_5
++                        if (client->mqtt_state.connection.information.protocol_ver == MQTT_PROTOCOL_V_5) {
++                            esp_mqtt5_increment_packet_counter(client);
++                        }
+ #endif
+                     }
+                 }
