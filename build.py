@@ -380,15 +380,13 @@ def choose_project_config():
 
 def setup_env_variables():
     ESP_LOGI('Ready to set up environment variables..')
+    print('sys.platform is {}'.format(sys.platform))
+
     # set IDF_PATH
     idf_path=os.path.join(os.getcwd(), 'esp-idf')
     os.environ['IDF_PATH']=idf_path
 
-    # get ESP-IDF toolchain path and virtual python path
-    print('PATH is {}'.format(os.environ.get('PATH')))
-    print('IDF_PYTHON_ENV_PATH is {}'.format(os.environ.get('IDF_PYTHON_ENV_PATH')))
-    print('sys.platform is {}'.format(sys.platform))
-
+    # get ESP-IDF environment variables
     export_str = ''
     if sys.platform != 'linux2':
         cmd = '{} {} export --format=key-value'.format(sys.executable, os.path.join('esp-idf', 'tools', 'idf_tools.py'))
@@ -398,21 +396,13 @@ def setup_env_variables():
             print('Not found the environment installed by "install" command, and using the default system environment')
 
     if export_str:
-        # extract toolchain PATH and IDF_PYTHON_ENV_PATH
-        idf_tc_env_path = ''
-        idf_python_env_path = os.environ.get('IDF_PYTHON_ENV_PATH')
+        # extract each idf env variables and set them to system env variables
         for line in export_str.splitlines():
-            if line.startswith('PATH='):
-                idf_tc_env_path = line.split('PATH=')[1]
-            if line.startswith('IDF_PYTHON_ENV_PATH='):
-                idf_python_env_path = line.split('IDF_PYTHON_ENV_PATH=')[1]
-        # set PATH and IDF_PYTHON_ENV_PATH and print
-        at_env_path = idf_tc_env_path + sys_delimiter + os.environ.get('PATH')
-        os.environ['PATH'] = at_env_path
-        if idf_python_env_path:
-            os.environ['IDF_PYTHON_ENV_PATH'] = idf_python_env_path
+            key, value = line.split('=', 1)
+            if key == 'PATH':
+                value = value + sys_delimiter + os.environ.get('PATH')
+            os.environ[key] = value
 
-    print('export str is {}'.format(export_str))
     print('PATH is {}'.format(os.environ.get('PATH')))
     print('IDF_PYTHON_ENV_PATH is {}'.format(os.environ.get('IDF_PYTHON_ENV_PATH')))
 
