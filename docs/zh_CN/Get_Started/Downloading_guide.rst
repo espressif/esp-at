@@ -129,7 +129,7 @@
 Windows
 ^^^^^^^^
 
-开始烧录之前，请下载 `Flash 下载工具 <https://docs.espressif.com/projects/esp-test-tools/zh_CN/latest/esp32/production_stage/tools/flash_download_tool.html>`_。更多有关 Flash 下载工具的介绍，请参考压缩包中 ``doc`` 文件夹。
+开始烧录之前，请下载 Windows `Flash 下载工具 <https://dl.espressif.com/public/flash_download_tool.zip>`_，详细指导可参阅 `Flash 下载工具用户指南 <https://docs.espressif.com/projects/esp-test-tools/zh_CN/latest/{IDF_TARGET_PATH_NAME}/production_stage/tools/flash_download_tool.html>`_。
 
 - 打开 Flash 下载工具；
 - 选择芯片类型；（此处，我们选择 ``{IDF_TARGET_NAME}``。）

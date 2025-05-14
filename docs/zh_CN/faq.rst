@@ -26,13 +26,13 @@ AT 固件
 官网上放置的 AT 固件如何下载？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  - 烧录工具请下载 `Flash 下载工具 <https://www.espressif.com/zh-hans/support/download/other-tools>`_。
+  - 烧录 Windows `Flash 下载工具 <https://dl.espressif.com/public/flash_download_tool.zip>`_，详细指导可参阅 `Flash 下载工具用户指南 <https://docs.espressif.com/projects/esp-test-tools/zh_CN/latest/{IDF_TARGET_PATH_NAME}/production_stage/tools/flash_download_tool.html>`_。
   - 烧录地址请参考 :doc:`AT 下载指南 <Get_Started/Downloading_guide>`。
 
 如何整合 ESP-AT 编译出来的所有 bin 文件？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  可以使用 `Flash 下载工具 <https://www.espressif.com/zh-hans/support/download/other-tools>`_ 的 combine 按钮进行整合。
+  无需手动整合。现在发布的固件以及编译生成的固件中，均已自带合成好的 2MB/4MB 大小的 bin 文件，位于 ``build/factory`` 目录下。
 
 .. only:: esp32
 

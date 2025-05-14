@@ -37,7 +37,7 @@ mfg_nvs (:term:`manufacturing nvs`) 分区定义在 ``esp-at/module_config/{modu
 
   - Windows
 
-      请下载 Windows `Flash 下载工具 <https://www.espressif.com/en/support/download/other-tools>`_。参考 zip 文件夹中 ``readme.pdf`` 或者 ``doc`` 目录下说明，下载 ``build/customized_partitions/mfg_nvs.bin`` 文件到 {IDF_TARGET_NAME}。您可以通过 :ref:`AT+SYSFLASH? <cmd-SYSFLASH>` 命令查询 mfg_nvs.bin 的下载地址。
+      请下载 Windows `Flash 下载工具 <https://dl.espressif.com/public/flash_download_tool.zip>`_。详细指导可参阅 `Flash 下载工具用户指南 <https://docs.espressif.com/projects/esp-test-tools/zh_CN/latest/{IDF_TARGET_PATH_NAME}/production_stage/tools/flash_download_tool.html>`_。下载 ``build/customized_partitions/mfg_nvs.bin`` 文件到 {IDF_TARGET_NAME}。您可以通过 :ref:`AT+SYSFLASH? <cmd-SYSFLASH>` 命令查询 mfg_nvs.bin 的下载地址。
 
   - Linux or macOS
 
