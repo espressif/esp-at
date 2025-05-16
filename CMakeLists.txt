@@ -196,6 +196,9 @@ add_custom_command(TARGET esp_at_factory_bin
     COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/esp-idf/components/esptool_py/esptool/esptool.py
         --chip ${IDF_TARGET} merge_bin --output factory/factory_${ESP_AT_MODULE_NAME}.bin --fill-flash-size ${CONFIG_ESPTOOLPY_FLASHSIZE} "@flash_project_args"
         WORKING_DIRECTORY $ENV{ESP_AT_PROJECT_PATH}/build
+    COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/esp-idf/components/esptool_py/esptool/esptool.py
+        --chip ${IDF_TARGET} merge_bin --output factory/factory_${ESP_AT_MODULE_NAME}_unfilled.bin "@flash_project_args"
+        WORKING_DIRECTORY $ENV{ESP_AT_PROJECT_PATH}/build
     COMMENT "Creating factory bin..."
 )
 add_dependencies(flash esp_at_factory_bin)
