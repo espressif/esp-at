@@ -26,13 +26,13 @@ How to get the source code of AT firmware?
 How to download the AT firmware on Espressif's official website?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  - Download the flash tool: `Flash Download Tools <https://www.espressif.com/en/support/download/other-tools>`_.
+  - Download the `Flash Download Tool <https://dl.espressif.com/public/flash_download_tool.zip>`_. You can refer to the `Flash Download Tool User Guide <https://docs.espressif.com/projects/esp-test-tools/en/latest/{IDF_TARGET_PATH_NAME}/production_stage/tools/flash_download_tool.html>`_ for instructions.
   - See :doc:`AT Downloading Guide <Get_Started/Downloading_guide>` for the download address.
 
 How to combine all the bin files compiled by ESP-AT?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  You can use the **combine** button of the `Flash Download Tools <https://www.espressif.com/en/support/download/other-tools>`_.
+  No manual combination is required. The released and compiled firmware already includes pre-combined 2MB/4MB bin files, located in the ``build/factory`` directory.
 
 .. only:: esp32
 

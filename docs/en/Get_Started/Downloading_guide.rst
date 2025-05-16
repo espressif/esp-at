@@ -129,7 +129,7 @@ Follow the instructions below for your operating system.
 Windows
 ^^^^^^^^
 
-Before starting to flash, you need to download `Flash Download Tools for Windows <https://docs.espressif.com/projects/esp-test-tools/en/latest/esp32/production_stage/tools/flash_download_tool.html>`_. For more details about the tools, please see the  ``doc`` folder in the zip folder.
+Before starting to flash, you need to download `Flash Download Tool <https://dl.espressif.com/public/flash_download_tool.zip>`_ for Windows. You can refer to the `Flash Download Tool User Guide <https://docs.espressif.com/projects/esp-test-tools/en/latest/{IDF_TARGET_PATH_NAME}/production_stage/tools/flash_download_tool.html>`_ for instructions.
 
 - Open the {IDF_TARGET_NAME} Flash Download Tool.
 - Select chipType. (Here, we select ``{IDF_TARGET_NAME}``.)

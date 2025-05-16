@@ -37,7 +37,7 @@ You can download the mfg_nvs.bin in one of the following ways.
 
   - Windows
 
-    Please download the Windows `Flash Download Tool <https://www.espressif.com/en/support/download/other-tools>`_. Refer to the ``readme.pdf`` or the documentation in the ``doc`` directory for instructions. Download the ``build/customized_partitions/mfg_nvs.bin`` file to {IDF_TARGET_NAME}. You can use the :ref:`AT+SYSFLASH? <cmd-SYSFLASH>` command to query the download address of mfg_nvs.bin.
+    Please download the Windows `Flash Download Tool <https://dl.espressif.com/public/flash_download_tool.zip>`_. You can refer to the `Flash Download Tool User Guide <https://docs.espressif.com/projects/esp-test-tools/en/latest/{IDF_TARGET_PATH_NAME}/production_stage/tools/flash_download_tool.html>`_ for instructions. Download the ``build/customized_partitions/mfg_nvs.bin`` file to {IDF_TARGET_NAME}. You can use the :ref:`AT+SYSFLASH? <cmd-SYSFLASH>` command to query the download address of mfg_nvs.bin.
 
   - Linux or macOS
 
