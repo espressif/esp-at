@@ -6,7 +6,7 @@
 #include "nvs_flash.h"
 #include "esp_event.h"
 #include "esp_err.h"
-
+#include <stdio.h>  // 补充在文件头部
 #include "driver/adc.h"
 #include "esp_mqtt_client.h"
 #include "nvs.h"
@@ -21,7 +21,7 @@ static esp_mqtt_client_handle_t mqtt_client = NULL;
 // 初始化MQTT客户端
 static void mqtt_init() {
     esp_mqtt_client_config_t mqtt_cfg = {
-        .uri = 192.168.1.100,
+        .uri = "mqtt://192.168.1.100",
         .port = 1883,
         .client_id = "esp32c3-adc",
         .username = "zhanghuohuo",
@@ -45,8 +45,7 @@ static void adc_publish_task(TimerHandle_t xTimer) {
 
 void app_main(void)
 {
-        // 初始化NVS
-    nvs_flash_init();
+
     // 初始化MQTT（自动连接）
     mqtt_init();
     // 创建ADC定时任务（立即启动，每5秒5000执行一次）
