@@ -18,29 +18,29 @@ static TimerHandle_t adc_timer = NULL;
 static esp_mqtt_client_handle_t mqtt_client = NULL;
 
 
-// 初始化MQTT客户端
-static void mqtt_init() {
-    esp_mqtt_client_config_t mqtt_cfg = {
-        .uri = "mqtt://192.168.1.100",
-        .port = 1883,
-        .client_id = "esp32c3-adc",
-        .username = "zhanghuohuo",
-        .password = "zhang1432"
-    };
-    mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
-    esp_mqtt_client_start(mqtt_client);
-}
+// // 初始化MQTT客户端
+// static void mqtt_init() {
+//     esp_mqtt_client_config_t mqtt_cfg = {
+//         .uri = "mqtt://192.168.1.100",
+//         .port = 1883,
+//         .client_id = "esp32c3-adc",
+//         .username = "zhanghuohuo",
+//         .password = "zhang1432"
+//     };
+//     mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
+//     esp_mqtt_client_start(mqtt_client);
+// }
 
-// ADC定时读取并发送
-static void adc_publish_task(TimerHandle_t xTimer) {
-    adc1_config_width(ADC_WIDTH_BIT_12);
-    adc1_config_channel_atten(ADC1_CHANNEL_0, ADC_ATTEN_DB_11);
-    int adc_val = adc1_get_raw(ADC1_CHANNEL_0);
+// // ADC定时读取并发送
+// static void adc_publish_task(TimerHandle_t xTimer) {
+//     adc1_config_width(ADC_WIDTH_BIT_12);
+//     adc1_config_channel_atten(ADC1_CHANNEL_0, ADC_ATTEN_DB_11);
+//     int adc_val = adc1_get_raw(ADC1_CHANNEL_0);
     
-    char payload[16];
-    snprintf(payload, sizeof(payload), "%d", adc_val);
-    esp_mqtt_client_publish(mqtt_client, "sensor/adc", payload, 0, 1, 0);
-}
+//     char payload[16];
+//     snprintf(payload, sizeof(payload), "%d", adc_val);
+//     esp_mqtt_client_publish(mqtt_client, "sensor/adc", payload, 0, 1, 0);
+// }
 
 
 void app_main(void)
