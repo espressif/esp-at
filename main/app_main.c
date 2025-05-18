@@ -46,15 +46,15 @@ static void adc_publish_task(TimerHandle_t xTimer) {
 void app_main(void)
 {
 
-    // 初始化MQTT（自动连接）
-    mqtt_init();
-    // 创建ADC定时任务（立即启动，每5秒5000执行一次）
-    adc_timer = xTimerCreate("ADC_Publish", 
-                            pdMS_TO_TICKS(50), 
-                            pdTRUE, 
-                            NULL, 
-                            adc_publish_task);
-    xTimerStart(adc_timer, 0);
+    // // 初始化MQTT（自动连接）
+    // mqtt_init();
+    // // 创建ADC定时任务（立即启动，每5秒5000执行一次）
+    // adc_timer = xTimerCreate("ADC_Publish", 
+    //                         pdMS_TO_TICKS(50), 
+    //                         pdTRUE, 
+    //                         NULL, 
+    //                         adc_publish_task);
+    // xTimerStart(adc_timer, 0);
 
 
 
