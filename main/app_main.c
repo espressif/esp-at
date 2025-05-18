@@ -17,22 +17,9 @@
 static TimerHandle_t adc_timer = NULL;
 static esp_mqtt_client_handle_t mqtt_client = NULL;
 
-// 从NVS读取MQTT配置
-static void load_mqtt_config_from_nvs(char *broker, int *port) {
-    nvs_handle_t nvs_handle;
-    nvs_open("mqtt_config", NVS_READONLY, &nvs_handle);
-    size_t len = 64;
-    nvs_get_str(nvs_handle, "broker", broker, &len);
-    nvs_get_i32(nvs_handle, "port", port);
-    nvs_close(nvs_handle);
-}
 
 // 初始化MQTT客户端
 static void mqtt_init() {
-    char broker[64] = {0};
-    int port = 1883;
-    //load_mqtt_config_from_nvs(broker, &port);
-
     esp_mqtt_client_config_t mqtt_cfg = {
         .uri = 192.168.1.100,
         .port = 1883,
@@ -56,9 +43,6 @@ static void adc_publish_task(TimerHandle_t xTimer) {
 }
 
 
-
-//
-
 void app_main(void)
 {
         // 初始化NVS
@@ -76,7 +60,6 @@ void app_main(void)
 
 
     // 其他AT命令初始化...
-    esp_at_device_register();
     esp_at_main_preprocess();
 
     ESP_ERROR_CHECK(nvs_flash_init());
