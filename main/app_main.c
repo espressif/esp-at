@@ -6,7 +6,7 @@
 #include "nvs_flash.h"
 #include "esp_event.h"
 #include "esp_err.h"
-#include <stdio.h>  // 补充在文件头部
+//#include <stdio.h>  // 补充在文件头部
 //#include "driver/adc.h"
 #include "esp_adc/adc_oneshot.h"  // 单次采样模式
 #include "esp_mqtt_client.h"
@@ -15,10 +15,10 @@
 #include "esp_at.h"
 #include "esp_at_init.h"
 
-static TimerHandle_t adc_timer = NULL;
-static esp_mqtt_client_handle_t mqtt_client = NULL;
-// 全局定义ADC句柄
-static adc_oneshot_unit_handle_t adc_handle = NULL;
+// static TimerHandle_t adc_timer = NULL;
+// static esp_mqtt_client_handle_t mqtt_client = NULL;
+// // 全局定义ADC句柄
+// static adc_oneshot_unit_handle_t adc_handle = NULL;
 
 // // 初始化MQTT客户端
 // static void mqtt_init() {
