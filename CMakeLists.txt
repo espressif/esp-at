@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 set(IDF_PATH ${CMAKE_SOURCE_DIR}/esp-idf)
-find_require_component("esp-mqtt")
+
 string(TOLOWER $ENV{ESP_AT_MODULE_NAME} LOWER_NAME)
 string(STRIP $ENV{ESP_AT_MODULE_NAME} ESP_AT_MODULE_NAME)
 

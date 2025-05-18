@@ -6,14 +6,18 @@
 #include "nvs_flash.h"
 #include "esp_event.h"
 #include "esp_err.h"
-//#include <stdio.h>  // 补充在文件头部
-//#include "driver/adc.h"
-#include "esp_adc/adc_oneshot.h"  // 单次采样模式
-#include "esp_mqtt_client.h"
-#include "nvs.h"
-
 #include "esp_at.h"
 #include "esp_at_init.h"
+
+//#include <stdio.h>  // 补充在文件头部
+//#include "driver/adc.h"
+#include "esp_adc/adc_oneshot.h" 
+#include "esp_mqtt_client.h"
+//#include "nvs.h"
+
+
+
+
 
 // static TimerHandle_t adc_timer = NULL;
 // static esp_mqtt_client_handle_t mqtt_client = NULL;
