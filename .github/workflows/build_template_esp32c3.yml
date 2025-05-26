@@ -27,7 +27,7 @@ jobs:
       run: |
         # set module information
         mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"${{ inputs.module_name }}\", \"silence\": 0}" > build/module_info.json
+        echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"${{ inputs.module_name }}\", \"silence\": 1}" > build/module_info.json
 
         # enable full function for test job
         if ${{ inputs.artifacts_name == 'esp32c3-at-full-function-test' }}; then
