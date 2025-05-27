@@ -181,8 +181,8 @@ static void at_uart_init(void)
     g_at_cmd_port = g_uart_port_pin.number;
 
     // install uart driver
-    uart_driver_install(g_at_cmd_port, AT_UART_RX_BUFFER_SIZE, AT_UART_TX_BUFFER_SIZE, AT_UART_QUEUE_SIZE, &s_at_uart_queue, 0);
-
+    //uart_driver_install(g_at_cmd_port, AT_UART_RX_BUFFER_SIZE, AT_UART_TX_BUFFER_SIZE, AT_UART_QUEUE_SIZE, &s_at_uart_queue, 0);
+    uart_driver_install(g_at_cmd_port, 1024 * 16, 1024 * 16, 100, &s_at_uart_queue, 0);//提高 UART 缓冲区大小
     // set uart configuration
     uart_config_t config;
     at_uart_config_init(&config);
