@@ -52,6 +52,12 @@ repos:
         language: python
         pass_filenames: false
         always_run: true
+      - id: check-module-config
+        name: Check Module Configurations
+        entry: tools/ci/check_module_config.py
+        language: python
+        pass_filenames: false
+        always_run: true
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
     hooks:

@@ -13,6 +13,7 @@ examples/at_interface_security/at_intf_security_host.py
 tools/at.py
 tools/at_net_debug.py
 tools/ci/check_executables.py
+tools/ci/check_module_config.py
 tools/ci/idf_ci_utils.py
 tools/factory_param_generate.py
 tools/patch.py
