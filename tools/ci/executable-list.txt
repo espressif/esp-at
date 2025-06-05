@@ -12,6 +12,7 @@ docs/zh_CN/conf.py
 examples/at_interface_security/at_intf_security_host.py
 tools/at.py
 tools/at_net_debug.py
+tools/at_sanity_checker.py
 tools/ci/check_executables.py
 tools/ci/check_module_config.py
 tools/ci/idf_ci_utils.py
