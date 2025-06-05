@@ -12,7 +12,7 @@
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 
-#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
 #include "esp_rom_crc.h"
 #include "esp_rom_md5.h"
 #include "esp_http_client.h"

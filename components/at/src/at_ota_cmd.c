@@ -25,7 +25,7 @@
 #include "at_ota.h"
 #include "esp_http_client.h"
 
-#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
 #include "at_compress_ota.h"
 #endif
 
@@ -77,7 +77,7 @@ typedef struct at_partition_sig {
 } at_partition_sig_t;
 
 static const at_partition_sig_t s_at_partition_sig[] = {
-#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
     {"ota", 3, 0, {0x45, 0x53, 0x50}},
 #else
     {"ota", 1, 0, {0xE9}},
@@ -192,7 +192,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
     uint32_t module_id = esp_at_get_module_id();
     at_upgrade_type_t upgrade_type = 0;
     const esp_partition_t *at_custom_partition = NULL;
-#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
     at_compress_ota_handle_t handle;
 #endif
 #ifdef CONFIG_AT_OTA_SSL_SUPPORT
@@ -377,7 +377,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
 
     // search partition
     if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {  // search ota partition
-#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
         if (at_compress_ota_begin(&handle) != ESP_OK) {
             goto OTA_ERROR;
         }
@@ -516,7 +516,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
                 }
 
                 if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {
-#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
                     if (at_compress_ota_write(&handle, pStr, buff_len) != ESP_OK) {
                         goto OTA_ERROR;
                     }
@@ -537,7 +537,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
             }
         } else if (buff_len > 0 && pkg_body_start) {
             if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {
-#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
                 if (at_compress_ota_write(&handle, data_buffer, buff_len) != ESP_OK) {
                     goto OTA_ERROR;
                 }
@@ -570,7 +570,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
     }
 
     if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {
-#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
         if (at_compress_ota_end(&handle) != ESP_OK) {
             goto OTA_ERROR;
         }

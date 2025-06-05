@@ -18,7 +18,7 @@
 #include "driver/gpio.h"
 #endif
 
-#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
 #include "at_compress_ota.h"
 #endif
 
@@ -369,7 +369,7 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
         .buffer_size = 2048,
     };
 
-#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
     esp_err_t ret = at_compress_https_ota(&config);
 #else
     esp_https_ota_config_t ota_config = {
