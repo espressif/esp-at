@@ -9,7 +9,7 @@ RainMaker AT Command Set
   The default AT firmware does not support the AT commands listed on this page. If you need {IDF_TARGET_NAME} to support RainMaker commands, you have two options:
 
   - Refer to the :doc:`How to Download the Latest Temporary Version of AT Firmware from GitHub <../../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` documentation to download the esp32c3-rainmaker-at firmware.
-  - Compile the ESP-AT project yourself by following the steps in :doc:`Compiling the ESP-AT Project </Compile_and_Develop/How_to_clone_project_and_compile_it>`. During the third step (Install Environment), choose "PLATFORM_ESP32C3" for the "Platform name" and choose "ESP32C3_RAINMAKER" for the "Module name".
+  - Compile the ESP-AT project yourself by following the steps in :doc:`Compiling the ESP-AT Project </Compile_and_Develop/How_to_clone_project_and_compile_it>`. During the third step (Install Environment), choose ``PLATFORM_ESP32C3`` for the ``Platform name`` and choose ``ESP32C3_RAINMAKER`` for the ``Module name``.
 
 -  :ref:`AT+RMNODEINIT <cmd-RMNODEINIT>`: Initialize the node.
 -  :ref:`AT+RMNODEATTR <cmd-RMNODEATTR>`: Attributes operations.

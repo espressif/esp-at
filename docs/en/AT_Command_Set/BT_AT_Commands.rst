@@ -170,7 +170,7 @@ Parameter
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+-  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The default Classic Bluetooth device name is "{IDF_TARGET_NAME}_AT".
 
 Example

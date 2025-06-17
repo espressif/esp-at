@@ -68,7 +68,7 @@ Parameters
 Notes
 ^^^^^
 - This command should be configured before :ref:`AT+WSOPEN <cmd-WSOPEN>` command. Otherwise, it will not take effect.
-- If you want to use your own certificate or use multiple sets of certificates, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
+- If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the WebSocket certificate. If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
 - If ``<auth_mode>`` is configured to 2 or 3, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+WSOPEN <cmd-WSOPEN>` command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNPTIME? <cmd-SNTPT>` command to query the current time.)
 - Mutual authentication example: :ref:`WebSocket Connection over TLS (Mutual Authentication) <example-websocket-tls>`.
 

@@ -95,7 +95,7 @@ Notes
 ^^^^^
 
 -  The default firmware does not support Ethernet AT commands (see :doc:`../Compile_and_Develop/esp-at_firmware_differences`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT ethernet support`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+-  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  Please make sure the MAC address of Ethernet interface you set is different from those of other interfaces.
 -  Bit0 of the {IDF_TARGET_NAME} MAC address CANNOT be 1. For example, a MAC address can be "1a:…" but not "15:…".
 -  ``FF:FF:FF:FF:FF:FF`` and ``00:00:00:00:00:00`` are invalid MAC addresses and cannot be set.
@@ -164,7 +164,7 @@ Notes
 ^^^^^
 
 -  The default firmware does not support Ethernet AT commands (see :doc:`../Compile_and_Develop/esp-at_firmware_differences`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT ethernet support`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
-- The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+- The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 - This Set Command correlates with DHCP commands, such as :ref:`AT+CWDHCP <cmd-DHCP>`:
 
    -  If static IP is enabled, DHCP will be disabled.

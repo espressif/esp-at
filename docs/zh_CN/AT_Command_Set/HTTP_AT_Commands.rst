@@ -13,6 +13,7 @@ HTTP AT 命令集
 -  :ref:`AT+HTTPCPUT <cmd-HTTPCPUT>`：Put 指定长度的 HTTP 数据
 -  :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>`：设置/获取长的 HTTP URL
 -  :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>`：设置/查询 HTTP 请求头
+-  :ref:`AT+HTTPCFG <cmd-HTTPCFG>`：设置 HTTP 客户端配置
 -  :ref:`HTTP AT 错误码 <cmd-HTTPErrCode>`
 
 .. _cmd-http-intro:
@@ -398,6 +399,48 @@ HTTP AT 命令集
 - 本命令一次只能设置一个 HTTP 请求头，但可以多次设置，支持多个不同的 HTTP 请求头。
 - 本命令配置的 HTTP 请求头是全局性的，一旦设置，所有 HTTP 的命令都会携带这些请求头。
 - 本命令设置的 HTTP 请求头中的 ``key`` 如果和其它 HTTP 命令的请求头中的 ``key`` 相同，则会使用本命令中设置的 HTTP 请求头。
+
+.. _cmd-HTTPCFG:
+
+:ref:`AT+HTTPCFG <HTTP-AT>`：设置 HTTP 客户端配置
+-------------------------------------------------------------------------------
+
+设置命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+HTTPCFG=<auth_mode>[,<pki_number>][,<ca_number>]
+
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+- **<auth_mode>**:
+
+  - 0: 不认证，此时无需填写 ``<pki_number>`` 和 ``<ca_number>`` 参数；
+  - 1: ESP-AT 提供 HTTP 客户端证书供 HTTP 服务器端 CA 证书校验；
+  - 2: ESP-AT HTTP 客户端载入 CA 证书来校验 HTTP 服务器端的证书；
+  - 3: 相互认证。
+
+- **<pki_number>**：证书和私钥的索引，如果只有一个证书和私钥，其值应为 0。
+- **<ca_number>**：CA 的索引，如果只有一个 CA，其值应为 0。
+
+说明
+^^^^
+
+- 默认 AT 固件不支持 HTTP 证书配置，您可以启用 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support`` > ``AT HTTP authentication method`` 下选型来使其支持。
+- 本命令配置的参数是全局性的，一旦设置，所有 HTTP 命令都会共用该配置。
+- 如果您想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 HTTP 证书。如果您想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+- 如果 ``<auth_mode>`` 配置为 2 或者 3，为了校验服务器的证书有效期，请在发送其它 HTTP 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（您可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间。）
 
 .. _cmd-HTTPCHEAD_example:
 

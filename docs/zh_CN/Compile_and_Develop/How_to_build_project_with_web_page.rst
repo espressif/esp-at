@@ -255,4 +255,4 @@
 第六步：GitHub Actions 编译 AT 固件
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-上述步骤完成之后，会自动触发 GitHub Actions 编译您的 ESP-AT 固件。请参考 :doc:`如何从 GitHub 下载最新临时版本 AT 固件 <How_to_download_the_latest_temporary_version_of_AT_from_github>` 文档，下载您所需要的 AT 固件（注意：文档里的步骤都是基于您自己账号下的 esp-at 仓库进行的，而不是 https://github.com/espressif/esp-at 仓库）。
+上述步骤完成之后，会自动触发 GitHub Actions 编译您的 ESP-AT 固件。请参考 :doc:`如何从 GitHub 下载最新临时版本 AT 固件 <How_to_download_the_latest_temporary_version_of_AT_from_github>` 文档，下载您所需要的 AT 固件（注意：文档里的步骤都是基于您自己账号下的 esp-at 仓库进行的，而不是 https://github.com/espressif/esp-at 仓库）。GitHub 上的 AT 固件会在到达 90天有效期后自动失效，请自行保存下载的 AT 固件。

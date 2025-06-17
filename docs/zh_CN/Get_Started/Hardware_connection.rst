@@ -284,18 +284,20 @@
 
 .. only:: esp32c2
 
-  {IDF_TARGET_CFG_PREFIX}-4MB 系列
-  --------------------------------
+  .. _hw-connection-esp32c2-4mb:
 
-  {IDF_TARGET_CFG_PREFIX}-4MB 系列指的是内置 {IDF_TARGET_NAME}/ESP8684 芯片，同时有 4 MB flash 的模组/开发板，例如：{IDF_TARGET_NAME} MINI 系列设备、{IDF_TARGET_NAME} WROOM 系列设备。
+  {IDF_TARGET_NAME}-4MB/{IDF_TARGET_NAME}-4MB-G2 系列
+  ----------------------------------------------------
 
-  {IDF_TARGET_CFG_PREFIX}-4MB AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。因为使用 26 MHz 的 XTAL，所以在 ROM 阶段日志是以 ``74880`` 波特率通过 UART0（TX：GPIO20）输出；若更改使用 40 MHz 的 XTAL，则在 ROM 阶段日志是以 ``115200`` 波特率通过 UART0（TX：GPIO20）输出。
+  {IDF_TARGET_NAME}-4MB/{IDF_TARGET_NAME}-4MB-G2 系列指的是内置 {IDF_TARGET_NAME}/ESP8684 芯片，同时有 4 MB flash 的模组/开发板，例如：{IDF_TARGET_NAME} MINI 系列设备、{IDF_TARGET_NAME} WROOM 系列设备。
 
-  .. list-table:: {IDF_TARGET_CFG_PREFIX}-4MB 系列硬件连接管脚分配
+  {IDF_TARGET_NAME}-4MB/{IDF_TARGET_NAME}-4MB-G2 AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，UART0 和 UART1 均使用 ``115200`` 波特率进行通信。因为使用 26 MHz 的 XTAL，所以在 ROM 阶段日志是以 ``74880`` 波特率通过 UART0（TX：GPIO20）输出；若更改使用 40 MHz 的 XTAL，则在 ROM 阶段日志是以 ``115200`` 波特率通过 UART0（TX：GPIO20）输出。
+
+  .. list-table:: {IDF_TARGET_NAME}-4MB/{IDF_TARGET_NAME}-4MB-G2 系列硬件连接管脚分配
     :header-rows: 1
 
     * - 功能
-      - {IDF_TARGET_CFG_PREFIX}-4MB 开发板/模组管脚
+      - {IDF_TARGET_NAME} 开发板/模组管脚
       - 其它设备管脚
     * - 下载固件/输出日志 :sup:`1`
       - UART0
@@ -316,31 +318,33 @@
           * RTS
           * CTS
 
-  **说明** 1：{IDF_TARGET_CFG_PREFIX}-4MB 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_CFG_PREFIX}-4MB 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
   .. figure:: ../../_static/get_started/hw_connection/esp32-c2-4mb-hw-connection.png
     :align: center
-    :alt: {IDF_TARGET_CFG_PREFIX}-4MB 系列硬件连接示意图
+    :alt: {IDF_TARGET_NAME}-4MB/{IDF_TARGET_NAME}-4MB-G2 系列硬件连接示意图
     :figclass: align-center
 
-    {IDF_TARGET_CFG_PREFIX}-4MB 系列硬件连接示意图
+    {IDF_TARGET_NAME}-4MB/{IDF_TARGET_NAME}-4MB-G2 系列硬件连接示意图
 
-  如果需要直接基于 {IDF_TARGET_CFG_PREFIX}-4MB 模组进行连接，请参考对应模组的 `技术规格书 <https://www.espressif.com/zh-hans/support/documents/technical-documents>`_。
+  如果需要直接基于 {IDF_TARGET_NAME} 模组进行连接，请参考对应模组的 `技术规格书 <https://www.espressif.com/zh-hans/support/documents/technical-documents>`_。
 
-  {IDF_TARGET_CFG_PREFIX}-2MB 系列
-  --------------------------------
+  .. _hw-connection-esp32c2-2mb:
 
-  {IDF_TARGET_CFG_PREFIX}-2MB 系列指的是内置 {IDF_TARGET_NAME}/ESP8684 芯片，同时有 2 MB flash 的模组/开发板。
+  {IDF_TARGET_NAME}-2MB/{IDF_TARGET_NAME}-2MB-G2 系列
+  --------------------------------------------------------
 
-  {IDF_TARGET_CFG_PREFIX}-2MB AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，用于输出日志的 UART0 (GPIO8) 和 UART1 使用 ``115200`` 波特率进行通信。因为使用 26 MHz 的 XTAL，所以在 ROM 阶段日志是以 ``74880`` 波特率通过 UART0（TX：GPIO20）输出；若更改使用 40 MHz 的 XTAL，则在 ROM 阶段日志是以 ``115200`` 波特率通过 UART0（TX：GPIO20）输出。
+  {IDF_TARGET_NAME}-2MB/{IDF_TARGET_NAME}-2MB-G2 系列指的是内置 {IDF_TARGET_NAME}/ESP8684 芯片，同时有 2 MB flash 的模组/开发板。
 
-  .. list-table:: {IDF_TARGET_CFG_PREFIX}-2MB 系列硬件连接管脚分配
+  {IDF_TARGET_NAME}-2MB/{IDF_TARGET_NAME}-2MB-G2 AT 采用两个 UART 接口：UART0 用于下载固件和输出日志，UART1 用于发送 AT 命令和接收 AT 响应。默认情况下，用于输出日志的 UART0 (GPIO8) 和 UART1 使用 ``115200`` 波特率进行通信。因为使用 26 MHz 的 XTAL，所以在 ROM 阶段日志是以 ``74880`` 波特率通过 UART0（TX：GPIO20）输出；若更改使用 40 MHz 的 XTAL，则在 ROM 阶段日志是以 ``115200`` 波特率通过 UART0（TX：GPIO20）输出。
+
+  .. list-table:: {IDF_TARGET_NAME}-2MB/{IDF_TARGET_NAME}-2MB-G2 系列硬件连接管脚分配
     :header-rows: 1
 
     * - 功能
-      - {IDF_TARGET_CFG_PREFIX}-2MB 开发板/模组管脚
+      - {IDF_TARGET_NAME} 开发板/模组管脚
       - 其它设备管脚
     * - 下载固件 :sup:`1`
       - UART0
@@ -366,18 +370,38 @@
       - USB 转 UART 串口模块
           * RX
 
-  **说明** 1：{IDF_TARGET_CFG_PREFIX}-2MB 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_CFG_PREFIX}-2MB 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
   .. figure:: ../../_static/get_started/hw_connection/esp32-c2-2mb-hw-connection.png
     :align: center
-    :alt: {IDF_TARGET_CFG_PREFIX}-2MB 系列硬件连接示意图
+    :alt: {IDF_TARGET_NAME}-2MB/{IDF_TARGET_NAME}-2MB-G2 系列硬件连接示意图
     :figclass: align-center
 
-    {IDF_TARGET_CFG_PREFIX}-2MB 系列硬件连接示意图
+    {IDF_TARGET_NAME}-2MB/{IDF_TARGET_NAME}-2MB-G2 系列硬件连接示意图
 
-  如果需要直接基于 {IDF_TARGET_CFG_PREFIX}-2MB 模组进行连接，请参考对应模组的 `技术规格书 <https://www.espressif.com/zh-hans/support/documents/technical-documents>`_。
+  如果需要直接基于 {IDF_TARGET_NAME} 模组进行连接，请参考对应模组的 `技术规格书 <https://www.espressif.com/zh-hans/support/documents/technical-documents>`_。
+
+  {IDF_TARGET_NAME}-2MB-BLE/{IDF_TARGET_NAME}-2MB-BLE-G2 系列
+  ----------------------------------------------------------
+
+  {IDF_TARGET_NAME}-2MB-BLE/{IDF_TARGET_NAME}-2MB-BLE-G2 系列硬件连接与 :ref:`ESP32-C2-4MB/ESP32-C2-4MB-G2 <hw-connection-esp32c2-4mb>` 系列完全相同，区别仅在于软件支持的功能不同。
+
+  该系列 AT 固件未发布，您可以任选下面一种方式获取该系列的 AT 固件：
+
+  - 参考 :doc:`如何从 GitHub 下载最新临时版本 AT 固件 <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` 文档，下载 ``esp32c2-2mb-ble-at``/``esp32c2-2mb-ble-g2-at`` 固件。
+  - 自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第三步安装环境里 ``Platform name`` 选择 ``PLATFORM_ESP32C2``，``Module name`` 选择 ``ESP32-C2-2MB-BLE``/``ESP32-C2-2MB-BLE-G2``。
+
+  {IDF_TARGET_NAME}-2MB-NO-OTA-G2 系列
+  ----------------------------------------------
+
+  {IDF_TARGET_NAME}-2MB-NO-OTA-G2 系列硬件连接与 :ref:`ESP32-C2-4MB/ESP32-C2-4MB-G2 <hw-connection-esp32c2-4mb>` 系列完全相同，区别仅在于软件支持的功能不同。
+
+  该系列 AT 固件未发布，您可以任选下面一种方式获取该系列的 AT 固件：
+
+  - 参考 :doc:`如何从 GitHub 下载最新临时版本 AT 固件 <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` 文档，下载 ``esp32c2-2mb-no-ota-g2-at`` 固件。
+  - 自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第三步安装环境里 ``Platform name`` 选择 ``PLATFORM_ESP32C2``，``Module name`` 选择 ``ESP32C2-2MB-NO-OTA-G2``。
 
 .. only:: esp32c3
 

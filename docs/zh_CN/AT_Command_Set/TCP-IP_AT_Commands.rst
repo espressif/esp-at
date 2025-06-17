@@ -31,6 +31,7 @@ TCP/IP AT 命令
 -  :ref:`AT+CIUPDATE <cmd-UPDATE>`：通过 Wi-Fi 升级固件
 -  :ref:`AT+CIPDINFO <cmd-IPDINFO>`：设置 +IPD 消息详情
 -  :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`：查询/设置 SSL 客户端配置
+-  :ref:`AT+CIPSSLCCIPHER <cmd-SSLCCIPHER>`：查询/设置 SSL 客户端的密码套件 (cipher suite)
 -  :ref:`AT+CIPSSLCCN <cmd-SSLCCN>`：查询/设置 SSL 客户端的公用名 (common name)
 -  :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>`：查询/设置 SSL 客户端的 SNI
 -  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`：查询/设置 SSL 客户端 ALPN
@@ -114,6 +115,7 @@ TCP/IP AT 命令
 说明
 ^^^^
 
+-  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
 -  在使用基于 IPv6 网络的上层应用前，需要先启用 IPv6 网络。（例如：基于 IPv6 网络使用 TCP/UDP/SSL/PING/DNS，也称为 TCP6/UDP6/SSL6/PING6/DNS6 或 TCPv6/UDPv6/SSLv6/PINGv6/DNSv6）
 
 .. _cmd-IPSTATE:
@@ -453,6 +455,7 @@ TCP/IP AT 命令
 - SSL 连接数量取决于可用内存和最大连接数量
 - SSL 连接需占用大量内存，内存不足会导致系统重启
 - 如果 ``AT+CIPSTART`` 命令是基于 SSL 连接，且每个数据包的超时时间为 10 秒，则总超时时间会变得更长，具体取决于握手数据包的个数
+- 有一些 SSL 服务器需要 SSL 客户端在连接时要求拓展字段支持 SNI，请在 SSL 连接前先使用 :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>` 命令配置 SNI。通常情况下，SNI 的值为服务器的域名。
 
 - 如果您想基于 IPv6 网络建立一个 SSL 连接，请执行以下操作：
 
@@ -956,8 +959,9 @@ TCP/IP AT 命令
 ^^^^
 
 -  只有当所有连接都断开时才可更改连接模式
--  只有 :term:`普通传输模式` (:ref:`AT+CIPMODE=0 <cmd-IPMODE>`)，才能设置为多连接 
+-  只有 :term:`普通传输模式` (:ref:`AT+CIPMODE=0 <cmd-IPMODE>`)，才能设置为多连接
 -  如果建立了 TCP/SSL 服务器，想切换为单连接，必须关闭服务器 (:ref:`AT+CIPSERVER=0 <cmd-SERVER>`)
+-  多连接并行传输大量数据时，可能会出现内存峰值不足的情况，请您根据产品的实际情况进行测试，并实现 MCU 对内存不足的处理
 
 示例
 ^^^^
@@ -988,7 +992,7 @@ TCP/IP AT 命令
 
 ::
 
-    +CIPSERVER:<mode>[,<port>,<"type">][,<CA enable>]
+    +CIPSERVER:<mode>[,<port>,<"type">,<CA enable>,<netif>]
 
     OK
 
@@ -999,7 +1003,7 @@ TCP/IP AT 命令
 
 ::
 
-    AT+CIPSERVER=<mode>[,<param2>][,<"type">][,<CA enable>]
+    AT+CIPSERVER=<mode>[,<param2>][,<"type">][,<CA enable>][,<netif>]
 
 **响应：**
 
@@ -1029,6 +1033,15 @@ TCP/IP AT 命令
    -  0：不使用 CA 认证
    -  1：使用 CA 认证
 
+- **<netif>**：指定服务器监听的网络接口，默认值：0。
+
+  .. list::
+
+    - 0：所有网络接口
+    - 1：Wi-Fi station 接口
+    - 2：Wi-Fi SoftAP 接口
+    :esp32: - 3：以太网接口
+
 说明
 ^^^^
 
@@ -1036,7 +1049,7 @@ TCP/IP AT 命令
 - 创建服务器后，自动建立服务器监听，最多只允许创建一个服务器。
 - 当有客户端接入，会自动占用一个连接 ID。
 - 如果您想基于 IPv6 网络创建一个 TCP/SSL 服务器，请首先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，并获取一个IPv6地址。
-- 关闭服务器时参数 ``<"type">`` 和 ``<CA enable>`` 必须省略。
+- 关闭服务器时参数 ``<"type">`` 以及之后的参数必须省略。
 
 示例
 ^^^^
@@ -1752,8 +1765,81 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 -  如果想要本配置立即生效，请在建立 SSL 连接前运行本命令。
 -  配置更改将保存在 NVS 区，如果您使用 :ref:`AT+SAVETRANSLINK <cmd-SAVET>` 命令设置开机进入 Wi-Fi SSL :term:`透传模式`，{IDF_TARGET_NAME} 将在下次上电时基于本配置建立 SSL 连接。
--  如果您想使用自己的证书或者使用多套证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+-  如果您想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 SSL 证书。如果您想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
 -  如果 ``<auth_mode>`` 配置为 2 或者 3，为了校验服务器的证书有效期，请在发送 :ref:`AT+CIPSTART <cmd-START>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（您可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间。）
+
+.. _cmd-SSLCCIPHER:
+
+:ref:`AT+CIPSSLCCIPHER <TCPIP-AT>`：查询/设置 SSL 客户端的密码套件 (Cipher Suite)
+------------------------------------------------------------------------------------------
+
+查询命令
+^^^^^^^^
+
+**功能：**
+
+查询 {IDF_TARGET_NAME} 作为 SSL 客户端时支持的密码套件
+
+**命令：**
+
+::
+
+    AT+CIPSSLCCIPHER?
+
+**响应：**
+
+::
+
+    +CIPSSLCCIPHER:<idx>,<cipher_suite>
+
+    OK
+
+设置命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    // 单连接：(AT+CIPMUX=0)
+    AT+CIPSSLCCIPHER=<counts>[,<cipher_suite>][...][,<cipher_suite>]
+
+    // 多连接：(AT+CIPMUX=1)
+    AT+CIPSSLCCIPHER=<link ID>,<counts>[,<cipher_suite>][...][,<cipher_suite>]
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+- **<idx>**：密码套件的索引号，从 0 开始。
+- **<link ID>**：网络连接 ID (0 ~ max)，在多连接的情况下，若参数值设为 max，则表示所有连接，本参数默认值为 5。
+- **<counts>**：密码套件的数量。最大值受限于命令的最大长度 256 字节。
+
+  - 0: 清除已配置的密码套件。
+  - 其它: 设置密码套件的个数。
+
+- **<cipher_suite>**：表示 ClientHello 中的密码套件。对应的值定义在 `ssl_ciphersuites.h <https://github.com/espressif/mbedtls/blob/master/include/mbedtls/ssl_ciphersuites.h>`_ 中。
+
+说明
+^^^^
+
+- 如果想要本配置立即生效，请在建立 SSL 连接前运行本命令。
+
+示例
+^^^^
+
+::
+
+    // 单连接：(AT+CIPMUX=0)，密码套件为 TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 和 TLS_ECDHE_ECDSA_WITH_AES_256_CCM
+    AT+CIPSSLCCIPHER=2,0xC023,0xC0AD
+
+    // 多连接：(AT+CIPMUX=1)，密码套件为 TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 和 TLS_ECDHE_ECDSA_WITH_AES_256_CCM
+    AT+CIPSSLCCIPHER=0,2,0xC023,0xC0AD
 
 .. _cmd-SSLCCN:
 
@@ -2225,7 +2311,8 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 
 ::
 
-    +CIPRECVLEN:<data length of link0>,<data length of link1>,<data length of link2>,<data length of link3>,<data length of link4>
+    +CIPRECVLEN:<data length of link>[...][,<data length of link>]
+
     OK
 
 参数
@@ -2522,6 +2609,7 @@ ping 对端主机
 说明
 ^^^^
 
+-  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区。
 -  在配置套接字选项前，**请充分了解该选项功能，以及配置后可能的影响**。
 -  SO_LINGER 选项不建议配置较大的值。例如配置 SO_LINGER 值为 60，则 :ref:`AT+CIPCLOSE <cmd-CLOSE>` 命令在收不到对端 TCP FIN 包情况下，会导致 AT 阻塞 60 秒，从而无法响应其它命令。因此，SO_LINGER 建议保持默认值。
 -  TCP_NODELAY 选项适用于吞吐量小但对实时性要求高的场景。开启后，:term:`LwIP` 会加快 TCP 的发送，但如果网络环境较差，会由于重传而导致吞吐降低。因此，TCP_NODELAY 建议保持默认值。
