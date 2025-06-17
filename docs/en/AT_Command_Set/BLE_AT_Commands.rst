@@ -263,7 +263,7 @@ Introduction
     -  At least one bit of the random part of the address should be 0.
     -  At least one bit of the random part of the address should be 1.
 
-    -  The configuration changes will be saved in the NVS area. 
+    -  The configuration changes will be saved in the NVS partition. 
 
     Example
     ^^^^^^^^
@@ -334,7 +334,7 @@ Introduction
     Note
     ^^^^^
 
-    -  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`. 
+    -  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`. 
     -  After setting the device name with this command, it is recommended that you execute the :ref:`AT+BLEADVDATA <cmd-BADVD>` command to add the device name into the advertising data.
 
     Example

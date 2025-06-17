@@ -1,5 +1,5 @@
 # ESP-AT
-[![alt text][doc-latest]](https://docs.espressif.com/projects/esp-at/en/latest/)
+[![alt text][doc-latest]](https://docs.espressif.com/projects/esp-at/zh_CN/latest/)
 
 [doc-latest]: https://img.shields.io/badge/docs-latest-blue
 

@@ -84,6 +84,7 @@ Note
 ^^^^^
 
 -  The length of the entire AT command should be less than 256 bytes.
+-  If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the MQTT certificate. If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
 -  If ``<scheme>`` is configured to 3, 5, 8, or 10, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+MQTTCONN <cmd-MQTTCONN>` command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNPTIME? <cmd-SNTPT>` command to query the current time.)
 
 .. _cmd-MQTTLONGCLIENTID:
@@ -262,6 +263,11 @@ Parameters
 -  **<"lwt_msg">**: LWT message. Maximum length: 128 bytes.
 -  **<lwt_qos>**: LWT QoS, which can be set to 0, 1, or 2. Default: 0.
 -  **<lwt_retain>**: LWT retain, which can be set to 0 or 1. Default: 0.
+
+Note
+^^^^
+
+- Before setting this command, you should set :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
 
 .. _cmd-MQTTALPN:
 
@@ -620,6 +626,15 @@ Parameters
 
 -  **<"topic">**: the topic that is subscribed to.
 -  **<qos>**: the QoS that is subscribed to.
+
+Note
+^^^^
+
+- Due to MTU limitations or traffic policy management on each WAN routing node, a single message sent by the MQTT broker may eventually be split into multiple messages received by the {IDF_TARGET_NAME} device. Therefore, {IDF_TARGET_NAME} may receive multiple ``+MQTTSUBRECV`` messages.
+- If the {IDF_TARGET_NAME} device receives an MQTT message whose length exceeds 1024 bytes (including the MQTT header and MQTT payload), it will also be split into multiple ``+MQTTSUBRECV`` messages. In this case, you can increase the MQTT buffer size as follows to avoid this situation.
+
+  - ``./build.py menuconfig`` > ``Component config`` > ``ESP-MQTT Configurations`` > ``MQTT Using custom configurations``
+  - ``./build.py menuconfig`` > ``Component config`` > ``ESP-MQTT Configurations`` > ``MQTT Using custom configurations`` > ``Default MQTT Buffer Size`` > ``1460``
 
 .. _cmd-MQTTUNSUB:
 

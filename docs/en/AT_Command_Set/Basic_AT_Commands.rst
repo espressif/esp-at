@@ -29,6 +29,7 @@ Basic AT Commands
   - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`: Query/Set User Partitions in Flash.
   - :ref:`AT+SYSMFG <cmd-SYSMFG>`: Query/Set :term:`manufacturing nvs` User Partitions.
   - :ref:`AT+RFPOWER <cmd-RFPOWER>`: Query/Set RF TX Power.
+  - :ref:`AT+RFCAL <cmd-RFCAL>`: RF full calibration.
   - :ref:`AT+SYSROLLBACK <cmd-SYSROLLBACK>`: Roll back to the previous firmware.
   - :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`: Query/Set local time stamp.
   - :ref:`AT+SYSLOG <cmd-SYSLOG>`: Enable or disable the AT error code prompt.
@@ -353,7 +354,7 @@ Parameters
 Notes
 """""""
 
--  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+-  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 
 Example
 """"""""
@@ -401,7 +402,7 @@ Parameters
 Notes
 """""""
 
--  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+-  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 
 -  To establish an UDP transmission based on an IPv6 network, do as follows:
 
@@ -462,7 +463,7 @@ Example
     Notes
     """""""
 
-    -  This command will save the BLE :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 2, {IDF_TARGET_NAME} will enter the Bluetooth LE :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+    -  This command will save the BLE :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 2, {IDF_TARGET_NAME} will enter the Bluetooth LE :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 
     Example
     """""""""
@@ -684,7 +685,7 @@ Parameters
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS area, and will still be valid when the chip is powered on again.
+-  The configuration changes will be saved in the NVS partition, and will still be valid when the chip is powered on again.
 -  To use hardware flow control, you need to connect CTS/RTS pins of your {IDF_TARGET_NAME}. For more details, please refer to :doc:`../Get_Started/Hardware_connection` or ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``.
 
 Example
@@ -951,7 +952,7 @@ Parameter
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS area if ``AT+SYSSTORE=1``.
+-  The configuration changes will be saved in the NVS partition if ``AT+SYSSTORE=1``.
 -  If you set Bit0 to 1, it will prompt "+QUITT" when you quit Wi-Fi :term:`Passthrough Mode`.
 -  If you set Bit1 to 1, it will impact the information of command :ref:`AT+CIPSTART <cmd-START>` and :ref:`AT+CIPSERVER <cmd-SERVER>`. It will supply "+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port" instead of "XX,CONNECT".
 
@@ -1338,6 +1339,7 @@ Notes
 -  If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
 -  If the operator is ``write``, please make sure that you have already erased this partition.
 -  If you want to modify some data in the "mfg_nvs" partition, please use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command (key-value pairs operation). If you want to modify total "mfg_nvs" partition, please use the :ref:`AT+SYSFLASH <cmd-SYSFLASH>` command (partition operation).
+-  When writing to a partition, the MCU should write data in multiple chunks to avoid memory exhaustion caused by writing too much data at once. For example, write 4 KB of data each time until the write is complete.
 
 Example
 ^^^^^^^^
@@ -1732,6 +1734,32 @@ Note
 - Since the RF TX Power is actually divided into several levels, and each level has its own value range, the ``wifi_power`` value queried by the ``esp_wifi_get_max_tx_power`` may differ from the value set by ``esp_wifi_set_max_tx_power`` and is no larger than the set value.
 - It is recommended to set the two parameters <ble_scan_power> and <ble_conn_power> to the same value as the <ble_adv_power> parameter. Otherwise, they will be automatically adjusted to the value of <ble_adv_power>.
 
+.. _cmd-RFCAL:
+
+:ref:`AT <Basic-AT>`: RF Full Calibration
+-----------------------------------------
+
+Execute Command
+^^^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+RFCAL
+
+**Response:**
+
+::
+
+     OK
+
+Note
+-----
+
+- {IDF_TARGET_NAME} will automatically perform RF full calibration on the first startup, and partial calibration on subsequent startups. For more details, please refer to `RF Calibration <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/RF_calibration.html>`_.
+- It is recommended to perform RF full calibration after firmware upgrade, changes to the device environment, or prolonged periods of device inactivity.
+
 .. _cmd-SYSROLLBACK:
 
 :ref:`AT+SYSROLLBACK <Basic-AT>`: Roll Back to the Previous Firmware
@@ -2103,6 +2131,7 @@ Note
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`
   - :ref:`AT+CWMODE <cmd-MODE>`
   - :ref:`AT+CIPV6 <cmd-IPV6>`
+  - :ref:`AT+CWCONFIG <cmd-CWCONFIG>`
   - :ref:`AT+CWJAP <cmd-JAP>`
   - :ref:`AT+CWSAP <cmd-SAP>`
   - :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`

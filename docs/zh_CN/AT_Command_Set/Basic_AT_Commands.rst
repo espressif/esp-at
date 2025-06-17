@@ -29,6 +29,7 @@
   - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`：查询或读写 flash 用户分区
   - :ref:`AT+SYSMFG <cmd-SYSMFG>`：查询或读写 :term:`manufacturing nvs` 用户分区
   - :ref:`AT+RFPOWER <cmd-RFPOWER>`：查询/设置 RF TX Power
+  - :ref:`AT+RFCAL <cmd-RFCAL>`：RF 全面校准
   - :ref:`AT+SYSROLLBACK <cmd-SYSROLLBACK>`：回滚到以前的固件
   - :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`：查询/设置本地时间戳
   - :ref:`AT+SYSLOG <cmd-SYSLOG>`：启用或禁用 AT 错误代码提示
@@ -1338,6 +1339,7 @@
 -  当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时您可以输入要写的数据，数据长度应与 ``<length>`` 一致。
 -  写分区前，请先擦除该分区。
 -  如果您想修改 mfg_nvs 分区中的某些数据，请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令（NVS 中的键值对操作）。如果您想修改整个 mfg_nvs 分区，请使用 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令（分区操作）。
+-  写分区时，MCU 应该分次写入数据，避免一次性写入过多数据导致内存不足。例如每次写入 4 KB 字节数据，直到写入完成。
 
 示例
 ^^^^
@@ -1732,6 +1734,32 @@
 - 由于 RF TX Power 分为不同的等级，而每个等级都有与之对应的取值范围，所以通过 ``esp_wifi_get_max_tx_power`` 查询到的 ``wifi_power`` 的值可能与 ``esp_wifi_set_max_tx_power`` 设定的值存在差异，但不会比该值大。
 - 建议将 <ble_scan_power> 和 <ble_conn_power> 两个参数值设置为与 <ble_adv_power> 参数相同的值，否则，这两个参数将会被自动设置为与 <ble_adv_power> 相同的值。
 
+.. _cmd-RFCAL:
+
+:ref:`AT <Basic-AT>`：RF 全面校准
+------------------------------------------
+
+执行命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+  AT+RFCAL
+
+**响应：**
+
+::
+
+   OK
+
+说明
+-----
+
+- {IDF_TARGET_NAME} 首次启动时会自动执行 RF 全面校准，之后启动时会自动执行 RF 部分校准。请参考 `RF 校准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/RF_calibration.html>`_ 了解更多细节。
+- 通常在固件升级、设备环境改变，设备长期未使用等情况后，建议执行 RF 全面校准。
+
 .. _cmd-SYSROLLBACK:
 
 :ref:`AT+SYSROLLBACK <Basic-AT>`：回滚到以前的固件
@@ -2103,6 +2131,7 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`
   - :ref:`AT+CWMODE <cmd-MODE>`
   - :ref:`AT+CIPV6 <cmd-IPV6>`
+  - :ref:`AT+CWCONFIG <cmd-CWCONFIG>`
   - :ref:`AT+CWJAP <cmd-JAP>`
   - :ref:`AT+CWSAP <cmd-SAP>`
   - :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`

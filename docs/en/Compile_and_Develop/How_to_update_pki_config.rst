@@ -53,6 +53,34 @@ The source file for the current default PKI configuration is located in the :com
           * :component_file:`mqtt_client.key <customized_partitions/raw_data/mqtt_key/mqtt_client.key>`
         - :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`
 
+      * - WebSocket client
+        - Set 0 client configuration
+
+          * :component_file:`wss_ca_00.crt <customized_partitions/raw_data/wss_ca/wss_ca_00.crt>`
+          * :component_file:`wss_client_00.crt <customized_partitions/raw_data/wss_cert/wss_client_00.crt>`
+          * :component_file:`wss_client_00.key <customized_partitions/raw_data/wss_key/wss_client_00.key>`
+
+          Set 1 client configuration
+
+          * :component_file:`wss_ca_01.crt <customized_partitions/raw_data/wss_ca/wss_ca_01.crt>`
+          * :component_file:`wss_client_01.crt <customized_partitions/raw_data/wss_cert/wss_client_01.crt>`
+          * :component_file:`wss_client_01.key <customized_partitions/raw_data/wss_key/wss_client_01.key>`
+        - :ref:`AT+WSCFG <cmd-WSCFG>`
+
+      * - HTTP client
+        - Set 0 client configuration
+
+          * :component_file:`https_ca_00.crt <customized_partitions/raw_data/https_ca/https_ca_00.crt>`
+          * :component_file:`https_client_00.crt <customized_partitions/raw_data/https_cert/https_client_00.crt>`
+          * :component_file:`https_client_00.key <customized_partitions/raw_data/https_key/https_client_00.key>`
+
+          Set 1 client configuration
+
+          * :component_file:`https_ca_01.crt <customized_partitions/raw_data/https_ca/https_ca_01.crt>`
+          * :component_file:`https_client_01.crt <customized_partitions/raw_data/https_cert/https_client_01.crt>`
+          * :component_file:`https_client_01.key <customized_partitions/raw_data/https_key/https_client_01.key>`
+        - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
+
       * - WPA2 Enterprise client
         -
           * :component_file:`wpa2_ca.pem <customized_partitions/raw_data/wpa2_ca/wpa2_ca.pem>`

@@ -9,7 +9,7 @@ RainMaker AT 命令集
   默认的 AT 固件不支持此页面下的 AT 命令。如果您需要 {IDF_TARGET_NAME} 支持 RainMaker 命令，请任选下面一种方式：
 
   - 参考 :doc:`如何从 GitHub 下载最新临时版本 AT 固件 <../../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` 文档，下载 esp32c3-rainmaker-at 固件
-  - 自行 :doc:`编译 ESP-AT 工程 <../../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第三步安装环境里 ``Platform name`` 选择 PLATFORM_ESP32C3，``Module name`` 选择 ESP32C3_RAINMAKER。
+  - 自行 :doc:`编译 ESP-AT 工程 <../../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第三步安装环境里 ``Platform name`` 选择 ``PLATFORM_ESP32C3``，``Module name`` 选择 ESP32C3_RAINMAKER。
 
 -  :ref:`AT+RMNODEINIT <cmd-RMNODEINIT>`：初始化节点
 -  :ref:`AT+RMNODEATTR <cmd-RMNODEATTR>`：属性信息操作

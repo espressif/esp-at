@@ -284,18 +284,20 @@ Note:
 
 .. only:: esp32c2
 
-  {IDF_TARGET_CFG_PREFIX}-4MB Series
-  ----------------------------------
+  .. _hw-connection-esp32c2-4mb:
 
-  {IDF_TARGET_CFG_PREFIX}-4MB series refer to the module or board that has a built-in {IDF_TARGET_NAME}/ESP8684 chip with a 4 MB flash, such as {IDF_TARGET_NAME} MINI series device and {IDF_TARGET_NAME} WROOM series device.
+  {IDF_TARGET_NAME}-4MB/{IDF_TARGET_NAME}-4MB-G2 Series
+  -----------------------------------------------------
 
-  {IDF_TARGET_CFG_PREFIX}-4MB AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default. Because a 26 MHz XTAL is used, the log is outputted at a baud rate of ``74880`` via UART0 (TX: GPIO20) during the ROM stage. If a 40 MHz XTAL is used instead, the log will be outputted at a baud rate of ``115200``.
+  {IDF_TARGET_NAME}-4MB/{IDF_TARGET_NAME}-4MB-G2 series refer to the module or board that has a built-in {IDF_TARGET_NAME}/ESP8684 chip with a 4 MB flash, such as {IDF_TARGET_NAME} MINI series device and {IDF_TARGET_NAME} WROOM series device.
 
-  .. list-table:: {IDF_TARGET_CFG_PREFIX}-4MB Series Hardware Connection Pinout
+  {IDF_TARGET_NAME}-4MB/{IDF_TARGET_NAME}-4MB-G2 AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default. When a 26 MHz crystal oscillator (XTAL) is used, the ROM-stage log is output via UART0 (TX: GPIO20) at ``74880`` baud. If the XTAL is changed to 40 MHz, the log output switches to ``115200`` baud.
+
+  .. list-table:: {IDF_TARGET_NAME}-4MB/{IDF_TARGET_NAME}-4MB-G2 Series Hardware Connection Pinout
     :header-rows: 1
 
     * - Function of Connection
-      - {IDF_TARGET_CFG_PREFIX}-4MB Board or Module Pins
+      - {IDF_TARGET_NAME} Board or Module Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -316,31 +318,33 @@ Note:
           * RTS
           * CTS
 
-  **Note** 1: Connection between individual pins of the {IDF_TARGET_CFG_PREFIX}-4MB board and the PC is already established internally on the {IDF_TARGET_CFG_PREFIX}-4MB board. You only need to provide USB cable between the board and PC.
+  **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
   **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
 
   .. figure:: ../../_static/get_started/hw_connection/esp32-c2-4mb-hw-connection.png
     :align: center
-    :alt: {IDF_TARGET_CFG_PREFIX}-4MB Series Hardware Connection
+    :alt: {IDF_TARGET_NAME}-4MB/{IDF_TARGET_NAME}-4MB-G2 Series Hardware Connection
     :figclass: align-center
 
-    {IDF_TARGET_CFG_PREFIX}-4MB Series Hardware Connection
+    {IDF_TARGET_NAME}-4MB/{IDF_TARGET_NAME}-4MB-G2 Series Hardware Connection
 
-  If you want to connect your device directly with {IDF_TARGET_CFG_PREFIX}-4MB module rather than the {IDF_TARGET_CFG_PREFIX}-4MB board that integrates it, please refer to the corresponding module `datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for more details.
+  If you want to connect your device directly with {IDF_TARGET_NAME} module rather than the {IDF_TARGET_NAME} board that integrates it, please refer to the corresponding module `datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for more details.
 
-  {IDF_TARGET_CFG_PREFIX}-2MB Series
-  ----------------------------------
+  .. _hw-connection-esp32c2-2mb:
 
-  {IDF_TARGET_CFG_PREFIX}-2MB series refers to the module or board that has a built-in {IDF_TARGET_NAME}/ESP8684 chip with a 2 MB flash.
+  {IDF_TARGET_NAME}-2MB/{IDF_TARGET_NAME}-2MB-G2 Series
+  -----------------------------------------------------
 
-  {IDF_TARGET_CFG_PREFIX}-2MB AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 (GPIO8, used to output log) and UART1 use ``115200`` baud rate for communication by default. Because a 26 MHz XTAL is used, the log is outputted at a baud rate of ``74880`` via UART0 (TX: GPIO20) during the ROM stage. If a 40 MHz XTAL is used instead, the log will be outputted at a baud rate of ``115200``.
+  {IDF_TARGET_NAME}-2MB/{IDF_TARGET_NAME}-2MB-G2 series refers to the module or board that has a built-in {IDF_TARGET_NAME}/ESP8684 chip with a 2 MB flash.
 
-  .. list-table:: {IDF_TARGET_CFG_PREFIX}-2MB Series Hardware Connection Pinout
+  {IDF_TARGET_NAME}-2MB/{IDF_TARGET_NAME}-2MB-G2 AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 (GPIO8, used to output log) and UART1 use ``115200`` baud rate for communication by default. When a 26 MHz crystal oscillator (XTAL) is used, the ROM-stage log is output via UART0 (TX: GPIO20) at ``74880`` baud. If the XTAL is changed to 40 MHz, the log output switches to ``115200`` baud.
+
+  .. list-table:: {IDF_TARGET_NAME}-2MB/{IDF_TARGET_NAME}-2MB-G2 Series Hardware Connection Pinout
     :header-rows: 1
 
     * - Function of Connection
-      - {IDF_TARGET_CFG_PREFIX}-2MB Board or Module Pins
+      - {IDF_TARGET_NAME} Board or Module Pins
       - Other Device Pins
     * - Download/Log output :sup:`1`
       - UART0
@@ -366,18 +370,38 @@ Note:
       - USB to serial converter
           * RX
 
-  **Note** 1: Connection between individual pins of the {IDF_TARGET_CFG_PREFIX}-2MB board and the PC is already established internally on the {IDF_TARGET_CFG_PREFIX}-2MB board. You only need to provide USB cable between the board and PC.
+  **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
   **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
 
   .. figure:: ../../_static/get_started/hw_connection/esp32-c2-2mb-hw-connection.png
     :align: center
-    :alt: {IDF_TARGET_CFG_PREFIX}-2MB Series Hardware Connection
+    :alt: {IDF_TARGET_NAME}-2MB/{IDF_TARGET_NAME}-2MB-G2 Series Hardware Connection
     :figclass: align-center
 
-    {IDF_TARGET_CFG_PREFIX}-2MB Series Hardware Connection
+    {IDF_TARGET_NAME}-2MB/{IDF_TARGET_NAME}-2MB-G2 Series Hardware Connection
 
-  If you want to connect your device directly with {IDF_TARGET_CFG_PREFIX}-2MB module rather than the {IDF_TARGET_CFG_PREFIX}-2MB board that integrates it, please refer to the corresponding module `datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for more details.
+  If you want to connect your device directly with {IDF_TARGET_NAME} module rather than the {IDF_TARGET_NAME} board that integrates it, please refer to the corresponding module `datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for more details.
+
+  {IDF_TARGET_NAME}-2MB-BLE/{IDF_TARGET_NAME}-2MB-BLE-G2 Series
+  -------------------------------------------------------------
+
+  {IDF_TARGET_NAME}-2MB-BLE/{IDF_TARGET_NAME}-2MB-BLE-G2 series has the same hardware connection as the :ref:`ESP32-C2-4MB/ESP32-C2-4MB-G2 <hw-connection-esp32c2-4mb>` series, with the only difference being the supported software features.
+
+  The AT firmware for this series is not released. You can choose one of the following ways to obtain the AT firmware for this series:
+
+  - Refer to the documentation :doc:`How to Download the Latest Temporary Version of AT Firmware from GitHub <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>`, and download the ``esp32c2-2mb-ble-at``/``esp32c2-2mb-ble-g2-at`` firmware.
+  - :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>`, and in the third step of the environment installation, select ``Platform name`` as ``PLATFORM_ESP32C2`` and ``Module name`` as ``ESP32-C2-2MB-BLE``/``ESP32-C2-2MB-BLE-G2``.
+
+  {IDF_TARGET_NAME}-2MB-NO-OTA-G2 Series
+  --------------------------------------
+
+  {IDF_TARGET_NAME}-2MB-NO-OTA-G2 series has the same hardware connection as the :ref:`ESP32-C2-4MB/ESP32-C2-4MB-G2 <hw-connection-esp32c2-4mb>` series, with the only difference being the supported software features.
+
+  The AT firmware for this series is not released. You can choose one of the following ways to obtain the AT firmware for this series:
+
+  - Refer to the documentation :doc:`How to Download the Latest Temporary Version of AT Firmware from GitHub <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>`, and download the ``esp32c2-2mb-no-ota-g2-at`` firmware.
+  - :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>`, and in the third step of the environment installation, select ``Platform name`` as ``PLATFORM_ESP32C2`` and ``Module name`` as ``ESP32C2-2MB-NO-OTA-G2``.
 
 .. only:: esp32c3
 
