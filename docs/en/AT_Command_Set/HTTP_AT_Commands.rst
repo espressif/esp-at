@@ -400,6 +400,22 @@ Note
 - The HTTP request headers configured by this command are global. Once set, all HTTP commands will carry these request headers.
 - If the ``key`` in the HTTP request header set by this command is the same as that of other HTTP commands, the HTTP request header set by this command will be used.
 
+.. _cmd-HTTPCHEAD_example:
+
+Example
+^^^^^^^
+
+::
+
+    // Set the request header
+    AT+HTTPCHEAD=18
+
+    // After receiving the ">" symbol, enter the Range request header below to download only the first 256 bytes of the resource
+    Range: bytes=0-255
+
+    // Download HTTP resource
+    AT+HTTPCGET="https://docs.espressif.com/projects/esp-at/en/latest/{IDF_TARGET_PATH_NAME}/index.html"
+
 .. _cmd-HTTPCFG:
 
 :ref:`AT+HTTPCFG <HTTP-AT>`: Set HTTP Client Configuration
@@ -441,22 +457,6 @@ Notes
 - The parameters configured by this command are global. Once set, all HTTP commands will share this configuration.
 - If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the WebSocket certificate. If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
 - If ``<auth_mode>`` is set to 2 or 3, to verify the validity period of the server certificate, please ensure that {IDF_TARGET_NAME} has obtained the current time before sending other HTTP commands. (You can configure SNTP and obtain the current time by sending the :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command, and query the current time by sending the :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` command.)
-
-.. _cmd-HTTPCHEAD_example:
-
-Example
-^^^^^^^
-
-::
-
-    // Set the request header
-    AT+HTTPCHEAD=18
-
-    // After receiving the ">" symbol, enter the Range request header below to download only the first 256 bytes of the resource
-    Range: bytes=0-255
-
-    // Download HTTP resource
-    AT+HTTPCGET="https://docs.espressif.com/projects/esp-at/en/latest/{IDF_TARGET_PATH_NAME}/index.html"
 
 .. _cmd-HTTPErrCode:
 
