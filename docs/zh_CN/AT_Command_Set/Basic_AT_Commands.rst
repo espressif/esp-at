@@ -1683,7 +1683,7 @@
     -  6: -11 dBm
     -  7: -14 dBm
 
-.. only:: esp32c3
+.. only:: esp32c3 or esp32c2
 
   -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [0,15]：
 
@@ -1702,7 +1702,7 @@
     -  12: 12 dBm
     -  13: 15 dBm
     -  14: 18 dBm
-    -  15: 21 dBm
+    -  15: 20 dBm
 
 .. only:: esp32c6
 
