@@ -400,6 +400,22 @@ HTTP AT 命令集
 - 本命令配置的 HTTP 请求头是全局性的，一旦设置，所有 HTTP 的命令都会携带这些请求头。
 - 本命令设置的 HTTP 请求头中的 ``key`` 如果和其它 HTTP 命令的请求头中的 ``key`` 相同，则会使用本命令中设置的 HTTP 请求头。
 
+.. _cmd-HTTPCHEAD_example:
+
+示例
+^^^^
+
+::
+
+    // 设置请求头
+    AT+HTTPCHEAD=18
+
+    // 在收到 ">" 符号后，输入以下的 Range 请求头，下载资源的前 256 个字节。
+    Range: bytes=0-255
+
+    // 下载 HTTP 资源
+    AT+HTTPCGET="https://docs.espressif.com/projects/esp-at/zh_CN/latest/{IDF_TARGET_PATH_NAME}/index.html"
+
 .. _cmd-HTTPCFG:
 
 :ref:`AT+HTTPCFG <HTTP-AT>`：设置 HTTP 客户端配置
@@ -441,22 +457,6 @@ HTTP AT 命令集
 - 本命令配置的参数是全局性的，一旦设置，所有 HTTP 命令都会共用该配置。
 - 如果您想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 HTTP 证书。如果您想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
 - 如果 ``<auth_mode>`` 配置为 2 或者 3，为了校验服务器的证书有效期，请在发送其它 HTTP 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（您可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间。）
-
-.. _cmd-HTTPCHEAD_example:
-
-示例
-^^^^
-
-::
-
-    // 设置请求头
-    AT+HTTPCHEAD=18
-
-    // 在收到 ">" 符号后，输入以下的 Range 请求头，下载资源的前 256 个字节。
-    Range: bytes=0-255
-
-    // 下载 HTTP 资源
-    AT+HTTPCGET="https://docs.espressif.com/projects/esp-at/zh_CN/latest/{IDF_TARGET_PATH_NAME}/index.html"
 
 .. _cmd-HTTPErrCode:
 
