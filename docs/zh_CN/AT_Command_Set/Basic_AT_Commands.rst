@@ -309,7 +309,7 @@
 
     * :ref:`savetrans-tcpssl`
     * :ref:`savetrans-udp`
-    :esp32 or esp32c3 or esp32c6 or esp32c2: * :ref:`savetrans-ble`
+    :not esp32s2: * :ref:`savetrans-ble`
 
 .. _savetrans-tcpssl:
 
@@ -419,7 +419,7 @@
     AT+SAVETRANSLINK=1,"192.168.6.110",1002,"UDP",1005
     AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8081,"UDPv6",1005
 
-.. only:: esp32c2 or esp32c3 or esp32c6 or esp32
+.. only:: not esp32s2
 
     .. _savetrans-ble:
 
@@ -472,7 +472,11 @@
 
         AT+SAVETRANSLINK=2,2,1,7,1,5,"26:a2:11:22:33:88"
 
-.. _cmd-TRANSINTVL:
+    .. _cmd-TRANSINTVL:
+
+.. only:: esp32s2
+
+    .. _cmd-TRANSINTVL:
 
 :ref:`AT+TRANSINTVL <Basic-AT>`：设置 :term:`透传模式` 模式下的数据发送间隔
 ----------------------------------------------------------------------------------
