@@ -161,6 +161,9 @@
   - echo -e "CONFIG_AT_BT_SPP_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
   - echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
 
+.enable_ble_cmds: &enable_ble_cmds
+  - echo -e "CONFIG_AT_BLE_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
+
 .disable_ble_cmds: &disable_ble_cmds
   - echo -e "CONFIG_AT_BLE_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
   - echo -e "CONFIG_AT_BLE_HID_COMMAND_SUPPORT=n" >> ${at_sdkconfig_file}
@@ -247,6 +250,13 @@
     - *enable_all_wifi_cmds
     - *disable_ble_cmds
     - *enlarge_app_partition
+
+.before_script_enable_ble_cmds:
+  before_script:
+    - source ${CI_PROJECT_DIR}/.gitlab/ci/utils.sh
+    - add_gitlab_ssh_keys
+    - get_module_configs
+    - *enable_ble_cmds
 
 .before_script_esp32_enable_all_bt_cmds:
   before_script:

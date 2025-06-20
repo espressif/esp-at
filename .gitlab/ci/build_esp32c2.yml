@@ -60,6 +60,14 @@ esp32c2_4mb_g2_at:
   variables:
     MODULE_NAME: "ESP32C2-4MB-G2"
 
+esp32c2_4mb_ble_g2_at:
+  extends:
+    - .build_template_esp32c2
+    - .before_script_enable_ble_cmds
+    - .rules:build:build_project
+  variables:
+    MODULE_NAME: "ESP32C2-4MB-G2"
+
 esp32c2_2mb_ble_g2_at:
   extends:
     - .build_template_esp32c2

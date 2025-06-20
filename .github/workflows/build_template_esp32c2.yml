@@ -35,6 +35,11 @@ jobs:
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32C2\", \"module\": \"${{ inputs.module_name }}\", \"silence\": 0}" > build/module_info.json
 
+        # enable ble commands for esp32c2-4MB-ble-g2-at
+        if ${{ inputs.artifacts_name == 'esp32c2-4MB-ble-g2-at' }}; then
+          echo -e "CONFIG_AT_BLE_COMMAND_SUPPORT=y" >> module_config/module_esp32c2-4mb-g2/sdkconfig.defaults
+        fi
+
         # update esp32c2 ota token
         cd components/at/private_include
         rm -f at_ota_token.h
