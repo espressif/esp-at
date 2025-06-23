@@ -739,18 +739,9 @@ Parameter
 
    - 0: Disable the sleep mode.
 
-   - 1: Modem-sleep mode.
+   - 1: Wi-Fi Modem-sleep mode. The RF module will be periodically closed according to the AP's ``DTIM``. This setting only takes effect when Wi-Fi mode is Station; in the Null Wi-Fi mode, the setting is allowed but will not take effect (for compatibility with older AT firmware); in other cases, it cannot be set.
 
-     - Only Wi-Fi mode.
-
-       - RF will be periodically closed according to AP ``DTIM``.
-
-     - Only BLE mode.
-
-       - When Bluetooth LE is advertising, RF will be periodically closed according to advertising interval.
-       - When Bluetooth LE is connected, RF will be periodically closed according to connection interval.
-
-   - 2: Light-sleep mode.
+   - 2: Light-sleep mode. This parameter cannot be set when the Wi-Fi mode is SoftAP or Station+SoftAP.
 
      - Null Wi-Fi mode.
 
@@ -758,37 +749,31 @@ Parameter
 
      - Only Wi-Fi mode.
 
-       - CPU will automatically sleep and RF will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>`.
+       - CPU will automatically sleep and RF will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>` or :ref:`AT+CWCONFIG <cmd-CWCONFIG>`.
 
-     - Only Bluetooth mode.
+    .. only:: not esp32s2
 
-       - When Bluetooth LE is advertising, CPU will automatically sleep and RF will be periodically closed according to advertising interval of Bluetooth.
-       - When Bluetooth LE is connected, CPU will automatically sleep and RF will be periodically closed according to connection interval of Bluetooth.
+        - Only Bluetooth mode.
 
-    - Wi-Fi and Bluetooth coexistence mode.
+            - When Bluetooth LE is advertising, CPU will automatically sleep and RF will be periodically closed according to advertising interval of Bluetooth.
+            - When Bluetooth LE is connected, CPU will automatically sleep and RF will be periodically closed according to connection interval of Bluetooth.
 
-        - CPU will automatically sleep and RF will be periodically closed according to power management module.
+        - Wi-Fi and Bluetooth coexistence mode.
 
-   - 3: Modem-sleep listen interval mode.
+            - CPU will automatically sleep and RF will be periodically closed according to power management module.
 
-     - Only Wi-Fi mode.
-
-       - RF will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>`.
-
-     - Only BLE mode.
-
-       - When Bluetooth LE is advertising, RF will be periodically closed according to advertising interval.
-       - When Bluetooth LE is connected, RF will be periodically closed according to connection interval.
+   - 3: Wi-Fi Modem-sleep listen interval mode. The RF module will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>` or :ref:`AT+CWCONFIG <cmd-CWCONFIG>`. This setting only takes effect when Wi-Fi mode is Station; in the Null Wi-Fi mode, the setting is allowed but will not take effect (for compatibility with older AT firmware); in other cases, it cannot be set.
 
 Note
 ^^^^^
 
--  When sleep mode is disabled, you cannot initialize Bluetooth LE. When Bluetooth LE is initialized, you cannot disable sleep mode.
--  Modem-sleep mode and Light-sleep mode can be set under Wi-Fi mode or BLE mode, but in Wi-Fi mode, these two modes can only be set in ``station`` mode.
--  Before setting the Light-sleep mode, it is recommended to set the wakeup source in advance through the command :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`, otherwise {IDF_TARGET_NAME} can't wake up and will always be in sleep mode.
--  After setting the Light-sleep mode, if the Light-sleep wakeup condition is not met, {IDF_TARGET_NAME} will automatically enter the sleep mode. When the Light-sleep wakeup condition is met, {IDF_TARGET_NAME} will automatically wake up from sleep mode.
--  For Light-sleep mode in BLE mode, users must ensure external 32KHz crystal oscillator, otherwise the Light-sleep mode will work in Modem-sleep mode.
--  For more examples, please refer to :doc:`../AT_Command_Examples/sleep_at_examples`.
+.. list::
+
+    - Before setting the Light-sleep mode, it is recommended to set the wakeup source in advance through the command :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`, otherwise {IDF_TARGET_NAME} can't wake up and will always be in sleep mode.
+    - After setting the Light-sleep mode, if the Light-sleep wakeup condition is not met, {IDF_TARGET_NAME} will automatically enter the sleep mode. When the Light-sleep wakeup condition is met, {IDF_TARGET_NAME} will automatically wake up from sleep mode.
+    :not esp32s2: - In only BLE mode, only BLE Light-sleep and BLE Modem-sleep modes are available. Use the ``AT+SLEEP=2`` command to enable BLE Light-sleep, and use the ``AT+SLEEP=0`` command to enable BLE Modem-sleep.
+    :not esp32s2: - For Light-sleep mode in BLE mode, users must ensure external 32KHz crystal oscillator, otherwise the Light-sleep mode will work in Modem-sleep mode.
+    - For more examples, please refer to :doc:`../AT_Command_Examples/sleep_at_examples`.
 
 Example
 ^^^^^^^^

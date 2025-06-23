@@ -21,7 +21,7 @@
   - :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>`：设置 :term:`透传模式` 模式下的数据发送间隔
   - :ref:`AT+UART_CUR <cmd-UARTC>`：设置 UART 当前临时配置，不保存到 flash
   - :ref:`AT+UART_DEF <cmd-UARTD>`：设置 UART 默认配置, 保存到 flash
-  - :ref:`AT+SLEEP <cmd-SLEEP>`：设置 sleep 模式
+  - :ref:`AT+SLEEP <cmd-SLEEP>`：设置睡眠模式
   - :ref:`AT+SYSRAM <cmd-SYSRAM>`：查询堆空间使用情况
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`：查询/设置系统提示信息
   - :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>`：启用或禁用 :term:`系统消息` 过滤
@@ -737,58 +737,43 @@
 
 -  **<sleep mode>**：
 
-   - 0：禁用睡眠模式
+   - 0：禁用睡眠模式。
 
-   - 1：Modem-sleep 模式
+   - 1：Wi-Fi Modem-sleep 模式。射频模块将根据 AP 的 ``DTIM`` 定期关闭。仅在 Wi-Fi 模式为 Station 时设置生效；在无 Wi-Fi 模式下，允许设置，但不会生效（为了兼容旧版 AT 固件）；其他情况下不可设置。
 
-     - 单 Wi-Fi 模式
-
-       - 射频模块将根据 AP 的 ``DTIM`` 定期关闭
-
-     - 单 BLE 模式
-
-       - 在 BLE 广播态下，射频模块将根据广播间隔定期关闭
-       - 在 BLE 连接态下，射频模块将根据连接间隔定期关闭
-
-   - 2：Light-sleep 模式
+   - 2：Light-sleep 模式。在 Wi-Fi 模式为 SoftAP 或 Station+SoftAP 时不可设置。
 
      - 无 Wi-Fi 模式
 
-       - CPU 将自动进入睡眠，射频模块将关闭
+       - CPU 将自动进入睡眠，射频模块将关闭。
 
      - 单 Wi-Fi 模式
 
-       - CPU 将自动进入睡眠，射频模块也将根据 :ref:`AT+CWJAP <cmd-JAP>` 命令设置的 ``listen interval`` 参数定期关闭
+       - CPU 将自动进入睡眠，射频模块也将根据 :ref:`AT+CWJAP <cmd-JAP>` 或 :ref:`AT+CWCONFIG <cmd-CWCONFIG>` 命令设置的 ``listen interval`` 参数定期关闭。
 
-     - 单 Bluetooth 模式
+     .. only:: not esp32s2
 
-       - 在 Bluetooth 广播态下，CPU 将自动进入睡眠，射频模块也将根据广播间隔定期关闭
-       - 在 Bluetooth 连接态下，CPU 将自动进入睡眠，射频模块也将根据连接间隔定期关闭
+        - 单 Bluetooth 模式
 
-     - Wi-Fi 和 Bluetooth 共存模式
+            - 在 Bluetooth 广播态下，CPU 将自动进入睡眠，射频模块也将根据广播间隔定期关闭。
+            - 在 Bluetooth 连接态下，CPU 将自动进入睡眠，射频模块也将根据连接间隔定期关闭。
 
-        - CPU 将自动进入睡眠，射频模块根据电源管理模块定期关闭
+        - Wi-Fi 和 Bluetooth 共存模式
 
-   - 3：Modem-sleep listen interval 模式
+            - CPU 将自动进入睡眠，射频模块根据电源管理模块定期关闭。
 
-     - 单 Wi-Fi 模式
-
-       - 射频模块将根据 :ref:`AT+CWJAP <cmd-JAP>` 命令设置的 ``listen interval`` 参数定期关闭
-
-     - 单 BLE 模式
-
-       - 在 BLE 广播态下，射频模块将根据广播间隔定期关闭
-       - 在 BLE 连接态下，射频模块将根据连接间隔定期关闭
+   - 3：Wi-Fi Modem-sleep listen interval 模式。射频模块将根据 :ref:`AT+CWJAP <cmd-JAP>` 命令设置的 ``listen interval`` 参数定期关闭。仅在 Wi-Fi 模式为 Station 时设置生效；在无 Wi-Fi 模式下，允许设置，但不会生效（为了兼容旧版 AT 固件）；其他情况下不可设置。
 
 说明
 ^^^^
 
--  当禁用睡眠模式后，Bluetooth LE 不可以被初始化。当 Bluetooth LE 初始化后，不可以禁用睡眠模式。
--  Modem-sleep 模式和 Light-sleep 模式均可以在 Wi-Fi 模式或者 BLE 模式下设置，但在 Wi-Fi 模式下，这两种模式只能在 ``station`` 模式下设置
--  设置 Light-sleep 模式前，建议提前通过 :ref:`AT+SLEEPWKCFG <cmd-WKCFG>` 命令设置好唤醒源，否则没法唤醒，设备将一直处于睡眠状态
--  设置 Light-sleep 模式后，如果 Light-sleep 唤醒条件不满足时，设备将自动进入睡眠模式，当 Light-sleep 唤醒条件满足时，设备将自动从睡眠模式中唤醒
--  对于 BLE 模式下的 Light-sleep 模式，用户必须确保外接 32KHz 晶振，否则，Light-sleep 模式会以 Modem-sleep 模式工作。
--  AT+SLEEP 更多示例请参考文档 :doc:`../AT_Command_Examples/sleep_at_examples`。
+.. list::
+
+    - 设置 Light-sleep 模式前，建议提前通过 :ref:`AT+SLEEPWKCFG <cmd-WKCFG>` 命令设置好唤醒源，否则没法唤醒，设备将一直处于睡眠状态。
+    - 设置 Light-sleep 模式后，如果 Light-sleep 唤醒条件不满足时，设备将自动进入睡眠模式，当 Light-sleep 唤醒条件满足时，设备将自动从睡眠模式中唤醒。
+    :not esp32s2: - 单 BLE 模式下，只有 BLE Light-sleep 和 BLE Modem-sleep 两种睡眠模式。通过 ``AT+SLEEP=2`` 命令启用 BLE Light-sleep， 通过 ``AT+SLEEP=0`` 命令启用 BLE Modem-sleep。
+    :not esp32s2: - 对于 BLE 模式下的 Light-sleep 模式，用户必须确保外接 32KHz 晶振，否则，Light-sleep 模式会以 Modem-sleep 模式工作。
+    - AT+SLEEP 更多示例请参考文档 :doc:`../AT_Command_Examples/sleep_at_examples`。
 
 示例
 ^^^^
