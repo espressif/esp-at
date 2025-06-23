@@ -129,6 +129,13 @@ jobs:
       artifacts_name: esp32c2-4MB-g2-at
     secrets: inherit
 
+  build-esp32c2-4mb-ble-g2-at:
+    uses: ./.github/workflows/build_template_esp32c2.yml
+    with:
+      module_name: ESP32C2-4MB-G2
+      artifacts_name: esp32c2-4MB-ble-g2-at
+    secrets: inherit
+
   build-esp32c2-2mb-g2-at:
     uses: ./.github/workflows/build_template_esp32c2.yml
     with:
