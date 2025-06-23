@@ -10,6 +10,9 @@ on:
       artifacts_name:
         required: true
         type: string
+      enable_all_wifi_features:
+        required: false
+        type: boolean
     # parameters from upstream inherit
     secrets:
       AT_OTA_TOKEN_ESP32C3_MINI:
@@ -23,30 +26,30 @@ jobs:
     - uses: actions/setup-python@v5.3.0
       with:
         python-version: '3.10'
-    - name: Configure prerequisites
+    - name: Set module information
       run: |
-        # set module information
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"${{ inputs.module_name }}\", \"silence\": 0}" > build/module_info.json
-
-        # enable full function for test job
-        if ${{ inputs.artifacts_name == 'esp32c3-at-full-function-test' }}; then
-          echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-          echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-          echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-          echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-          echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-
-          # enlarge partition table
-          app0_size=`cat module_config/module_esp32c3_default/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
-          app1_size=`cat module_config/module_esp32c3_default/partitions_at.csv | grep ota_1 | awk -F, '{print $5}'`
-          to_set_size=$((app0_size + app1_size))
-          sed -i '/ota_1/d' module_config/module_esp32c3_default/partitions_at.csv
-          to_set_hex_size=`printf "0x%x" ${to_set_size}`
-          sed -i '/ota_0/s,'"$app0_size"','"$to_set_hex_size"',g' module_config/module_esp32c3_default/partitions_at.csv
-        fi
-
-        # update esp32c3 ota token
+    - name: Enable all Wi-Fi features
+      if: ${{ inputs.enable_all_wifi_features == true }}
+      run: |
+        echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+        echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+        echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+        echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+        echo -e "CONFIG_AT_WS_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+        echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
+    - name: Enlarge app partition size
+      if: ${{ inputs.enable_all_wifi_features == true }}
+      run: |
+        app0_size=`cat module_config/module_esp32c3_default/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
+        app1_size=`cat module_config/module_esp32c3_default/partitions_at.csv | grep ota_1 | awk -F, '{print $5}'`
+        to_set_size=$((app0_size + app1_size))
+        sed -i '/ota_1/d' module_config/module_esp32c3_default/partitions_at.csv
+        to_set_hex_size=`printf "0x%x" ${to_set_size}`
+        sed -i '/ota_0/s,'"$app0_size"','"$to_set_hex_size"',g' module_config/module_esp32c3_default/partitions_at.csv
+    - name: Set up OTA tokens
+      run: |
         cd components/at/private_include
         rm -f at_ota_token.h
         echo -e "#pragma once" >> at_ota_token.h
