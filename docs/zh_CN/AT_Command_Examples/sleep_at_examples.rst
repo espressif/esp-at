@@ -5,9 +5,16 @@ Sleep AT 示例
 
 本文档简要介绍并举例说明如何在 {IDF_TARGET_NAME} 系列产品上使用 AT 命令设置睡眠模式。
 
-.. contents::
-   :local:
-   :depth: 1
+.. list::
+
+  - :ref:`at-slp-example-intro`
+  - :ref:`at-slp-example-wifi-modem-sleep`
+  - :ref:`at-slp-example-wifi-light-sleep`
+  :not esp32s2: - :ref:`at-slp-example-ble-adv-light-sleep`
+  :not esp32s2: - :ref:`at-slp-example-ble-conn-light-sleep`
+  - :ref:`at-slp-example-deep-sleep`
+
+.. _at-slp-example-intro:
 
 简介
 ----
@@ -43,6 +50,8 @@ Sleep AT 示例
     :alt: {IDF_TARGET_NAME} 硬件连接
 
     {IDF_TARGET_NAME} 硬件连接
+
+.. _at-slp-example-wifi-modem-sleep:
 
 在 Wi-Fi 模式下设置为 Modem-sleep 模式
 -----------------------------------------
@@ -98,7 +107,9 @@ Sleep AT 示例
 
 .. note::
 
-  * RF 将根据 AP 的 DTIM 定期关闭（路由器一般设置 DTIM 为 1）。
+  RF 将根据 AP 的 DTIM 定期关闭（路由器一般设置 DTIM 为 1）。
+
+.. _at-slp-example-wifi-light-sleep:
 
 在 Wi-Fi 模式下设置为 Light-sleep 模式
 -----------------------------------------
@@ -154,187 +165,16 @@ Sleep AT 示例
 
 .. note::
 
-  * CPU 将会自动休眠，RF 则会根据 :ref:`AT+CWJAP <cmd-JAP>` 设置的监听间隔定期关闭。
+  CPU 将会自动休眠，RF 则会根据 :ref:`AT+CWJAP <cmd-JAP>` 设置的监听间隔定期关闭。
 
-.. only:: esp32 or esp32c3
+.. only:: not esp32s2
 
-  在蓝牙广播态下设置为 Modem-sleep 模式
-  ------------------------------------------------------
-
-  #. 初始化为角色为蓝牙服务端。
-
-    命令：
-
-    .. code-block:: none
-
-      AT+BLEINIT=2
-
-    响应：
-
-    .. code-block:: none
-
-      OK
-
-  #. 设置蓝牙广播参数。设置蓝牙广播间隔为 1 s。
-
-    命令：
-
-    .. code-block:: none
-
-      AT+BLEADVPARAM=1600,1600,0,0,7,0,0,"00:00:00:00:00:00"
-
-    响应：
-
-    .. code-block:: none
-
-      OK
-
-  #. 开始广播
-
-    命令：
-
-    .. code-block:: none
-
-      AT+BLEADVSTART
-
-    响应：
-
-    .. code-block:: none
-
-      OK
-
-  #. 禁用 Wi-Fi。
-
-    命令：
-
-    .. code-block:: none
-
-      AT+CWMODE=0
-
-    响应：
-
-    .. code-block:: none
-
-      OK
-
-  #. 设置休眠模式为 Modem-sleep 模式。
-
-    命令：
-
-    .. code-block:: none
-
-      AT+SLEEP=1
-
-    响应：
-
-    .. code-block:: none
-
-      OK
-
-  在蓝牙连接态下设置为 Modem-sleep 模式
-  ------------------------------------------------------
-
-  #. 初始化为角色为蓝牙服务端。
-
-    命令：
-
-    .. code-block:: none
-
-      AT+BLEINIT=2
-
-    响应：
-
-    .. code-block:: none
-
-      OK
-
-  #. 开启蓝牙广播。
-
-    命令：
-
-    .. code-block:: none
-
-      AT+BLEADVSTART
-
-    响应：
-
-    .. code-block:: none
-
-      OK
-
-  #. 等待连接。
-
-    如果连接建立成功，则 AT 将会提示：
-
-    .. code-block:: none
-
-      +BLECONN:0,"47:3f:86:dc:e4:7d"
-      +BLECONNPARAM:0,0,0,6,0,500
-      +BLECONNPARAM:0,0,0,24,0,500
-
-      OK
-
-    说明：
-
-    - 在这个示例中，蓝牙客户端的地址为 47:3f:86:dc:e4:7d。
-    - 对于提示信息（+BLECONN and +BLECONNPARAM），请参考 :ref:`AT+BLECONN <cmd-BCONN>` 和 :ref:`AT+BLECONNPARAM <cmd-BCONNP>` 获取更多信息。
-
-  #. 更新蓝牙连接参数。设置蓝牙连接间隔为 1 s。
-
-    命令：
-
-    .. code-block:: none
-
-      AT+BLECONNPARAM=0,800,800,0,500
-
-    响应：
-
-    .. code-block:: none
-
-      OK
-
-    如果连接参数更新成功，则 AT 将会提示：
-
-    .. code-block:: none
-
-        +BLECONNPARAM:0,800,800,800,0,500
-
-    说明：
-
-    - 对于提示信息（+BLECONNPARAM），请参考 :ref:`AT+BLECONNPARAM <cmd-BCONNP>` 获取更多信息。
-
-  #. 禁用 Wi-Fi。
-
-    命令：
-
-    .. code-block:: none
-
-      AT+CWMODE=0
-
-    响应：
-
-    .. code-block:: none
-
-      OK
-
-  #. 设置休眠模式为 Modem-sleep 模式。
-
-    命令：
-
-    .. code-block:: none
-
-      AT+SLEEP=1
-
-    响应：
-
-    .. code-block:: none
-
-      OK
+  .. _at-slp-example-ble-adv-light-sleep:
 
   在蓝牙广播态下设置为 Light-sleep 模式
   -------------------------------------------------------
 
-  #. 初始化为角色为蓝牙服务端。
+  1. 初始化为角色为蓝牙服务端。
 
     命令：
 
@@ -348,7 +188,7 @@ Sleep AT 示例
 
       OK
 
-  #. 设置蓝牙广播参数。设置蓝牙广播间隔为 1 s。
+  2. 设置蓝牙广播参数。设置蓝牙广播间隔为 1 s。
 
     命令：
 
@@ -362,7 +202,7 @@ Sleep AT 示例
 
       OK
 
-  #. 开始广播。
+  3. 开始广播。
 
     命令：
 
@@ -376,13 +216,13 @@ Sleep AT 示例
 
       OK
 
-  #. 禁用 Wi-Fi。
+  4. 禁用 Wi-Fi。
 
     命令：
 
     .. code-block:: none
 
-      AT+CWMODE=0
+      AT+CWINIT=0
 
     响应：
 
@@ -390,7 +230,7 @@ Sleep AT 示例
 
       OK
 
-  #. 设置休眠模式为 Light-sleep 模式。
+  5. 设置休眠模式为 Light-sleep 模式。
 
     命令：
 
@@ -404,10 +244,12 @@ Sleep AT 示例
 
       OK
 
+  .. _at-slp-example-ble-conn-light-sleep:
+
   在蓝牙连接态下设置为 Light-sleep 模式
   -----------------------------------------------------
 
-  #. 初始化为角色为蓝牙服务端。
+  1. 初始化为角色为蓝牙服务端。
 
     命令：
 
@@ -421,7 +263,7 @@ Sleep AT 示例
 
       OK
 
-  #. 开始广播。
+  2. 开始广播。
 
     命令：
 
@@ -435,7 +277,7 @@ Sleep AT 示例
 
       OK
 
-  #. 等待连接。
+  3. 等待连接。
 
     如果连接建立成功，则 AT 将会提示：
 
@@ -452,7 +294,7 @@ Sleep AT 示例
     - 在这个示例中，蓝牙客户端的地址为 47:3f:86:dc:e4:7d。
     - 对于提示信息（+BLECONN and +BLECONNPARAM），请参考 :ref:`AT+BLECONN <cmd-BCONN>` 和 :ref:`AT+BLECONNPARAM <cmd-BCONNP>` 获取更多信息。
 
-  #. 更新蓝牙连接参数。设置蓝牙连接间隔为 1 s。
+  4. 更新蓝牙连接参数。设置蓝牙连接间隔为 1 s。
 
     命令：
 
@@ -476,13 +318,13 @@ Sleep AT 示例
 
     - 对于提示信息（+BLECONNPARAM），请参考 :ref:`AT+BLECONNPARAM <cmd-BCONNP>` 获取更多信息。
 
-  #. 禁用 Wi-Fi。
+  5. 禁用 Wi-Fi。
 
     命令：
 
     .. code-block:: none
 
-      AT+CWMODE=0
+      AT+CWINIT=0
 
     响应：
 
@@ -490,7 +332,7 @@ Sleep AT 示例
 
       OK
 
-  #. 设置休眠模式为 Light-sleep 模式。
+  6. 设置休眠模式为 Light-sleep 模式。
 
     命令：
 
@@ -504,10 +346,16 @@ Sleep AT 示例
 
       OK
 
+  .. _at-slp-example-deep-sleep:
+
+.. only:: esp32s2
+
+  .. _at-slp-example-deep-sleep:
+
 设置为 Deep-sleep 模式
 -----------------------
 
-#. 设置休眠模式为 Deep-sleep 模式。设置 deep-sleep 时间为 3600000 ms。
+设置休眠模式为 Deep-sleep 模式。设置 deep-sleep 时间为 3600000 ms。
 
    命令：
 
