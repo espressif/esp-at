@@ -28,3 +28,4 @@ How to Compile and Develop Your Own AT Project
    at.py tool <tools_at_py>
    AT API Reference <AT_API_Reference>
    How to Configure Silence Mode <How_to_configure_silence_mode>
+   How to Enable More AT Debug Logs <How_to_enable_more_AT_debug_logs>

@@ -28,3 +28,4 @@
    at.py 工具 <tools_at_py>
    ESP-AT API 参考 <AT_API_Reference>
    如何配置 silence mode <How_to_configure_silence_mode>
+   如何启用更多 AT 调试日志 <How_to_enable_more_AT_debug_logs>
