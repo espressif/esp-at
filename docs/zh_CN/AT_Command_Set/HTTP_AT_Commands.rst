@@ -463,73 +463,66 @@ HTTP AT 命令集
 :ref:`HTTP AT 错误码 <HTTP-AT>`
 -------------------------------------
 
--  HTTP 客户端：
+启用 :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` 后，HTTP 客户端请求失败时，AT 会返回错误码。错误码的格式为：
 
-   .. list-table::          
-      :header-rows: 1         
-          
-      * - HTTP 客户端错误码
-        - 说明     
-      * - 0x7000
-        - 建立连接失败
-      * - 0x7190
-        - Bad Request  
-      * - 0x7191
-        - Unauthorized  
-      * - 0x7192
-        - Payment Required 
-      * - 0x7193
-        - Forbidden 
-      * - 0x7194
-        - Not Found  
-      * - 0x7195
-        - Method Not Allowed  
-      * - 0x7196
-        - Not Acceptable 
-      * - 0x7197
-        - Proxy Authentication Required
-      * - 0x7198
-        - Request Timeout
-      * - 0x7199
-        - Conflict
-      * - 0x719a
-        - Gone
-      * - 0x719b
-        - Length Required
-      * - 0x719c
-        - Precondition Failed
-      * - 0x719d
-        - Request Entity Too Large
-      * - 0x719e
-        - Request-URI Too Long
-      * - 0x719f
-        - Unsupported Media Type
-      * - 0x71a0
-        - Requested Range Not Satisfiable
-      * - 0x71a1
-        - Expectation Failed
+::
 
--  HTTP 服务器：
+  ERR CODE:0x010a7xxx
 
-   .. list-table::          
-      :header-rows: 1 
+其中 ``01`` 是模块标识符， ``0a`` 是模块执行 AT 命令的响应结果， ``7xxx`` 表示 HTTP 错误码。如果 ``xxx`` 在 HTTP 标准状态码范围内，则表示标准 HTTP 状态码；否则表示 AT HTTP 内部的错误码。下表列出了部分 HTTP 状态码信息，更多详情请参考 `RFC 2616 <https://datatracker.ietf.org/doc/html/rfc2616#section-6.1.1>`_）。
 
-      * - HTTP 服务器错误码
-        - 说明
-      * - 0x71f4
-        - Internal Server Error
-      * - 0x71f5
-        - Not Implemented
-      * - 0x71f6
-        - Bad Gateway
-      * - 0x71f7
-        - Service Unavailable
-      * - 0x71f8
-        - Gateway Timeout
-      * - 0x71f9
-        - HTTP Version Not Supported
+.. list-table::
+  :header-rows: 1
 
--  HTTP AT：
-   
-   - ``AT+HTTPCLIENT`` 命令的错误码为 ``0x7000+Standard HTTP Error Code`` （更多有关 Standard HTTP/1.1 Error Code 的信息，请参考 `RFC 2616 <https://datatracker.ietf.org/doc/html/rfc2616>`_）。
-   - 例如，若 AT 在调用 ``AT+HTTPCLIENT`` 命令时收到 HTTP error 404，则会返回 ``0x7194`` 错误码 (``hex(0x7000+404)=0x7194``)。
+  * - HTTP 错误码（HTTP 状态码）
+    - 说明
+  * - 0x7000
+    - 建立连接失败
+  * - 0x7190 (400)
+    - Bad Request
+  * - 0x7191 (401)
+    - Unauthorized
+  * - 0x7192 (402)
+    - Payment Required
+  * - 0x7193 (403)
+    - Forbidden
+  * - 0x7194 (404)
+    - Not Found
+  * - 0x7195 (405)
+    - Method Not Allowed
+  * - 0x7196 (406)
+    - Not Acceptable
+  * - 0x7197 (407)
+    - Proxy Authentication Required
+  * - 0x7198 (408)
+    - Request Timeout
+  * - 0x7199 (409)
+    - Conflict
+  * - 0x719a (410)
+    - Gone
+  * - 0x719b (411)
+    - Length Required
+  * - 0x719c (412)
+    - Precondition Failed
+  * - 0x719d (413)
+    - Request Entity Too Large
+  * - 0x719e (414)
+    - Request-URI Too Long
+  * - 0x719f (415)
+    - Unsupported Media Type
+  * - 0x71a0 (416)
+    - Requested Range Not Satisfiable
+  * - 0x71a1 (417)
+    - Expectation Failed
+  * - 0x71f4 (500)
+    - Internal Server Error
+  * - 0x71f5 (501)
+    - Not Implemented
+  * - 0x71f6 (502)
+    - Bad Gateway
+  * - 0x71f7 (503)
+    - Service Unavailable
+  * - 0x71f8 (504)
+    - Gateway Timeout
+  * - 0x71f9 (505)
+    - HTTP Version Not Supported

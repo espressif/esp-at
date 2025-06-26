@@ -463,73 +463,66 @@ Notes
 :ref:`HTTP AT Error Codes <HTTP-AT>`
 ------------------------------------
 
--  HTTP Client:
+When :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` is enabled, if an HTTP client request fails, AT will return an error code. The error code format is:
 
-   .. list-table::          
-      :header-rows: 1         
-          
-      * - HTTP Client Error Code
-        - Description      
-      * - 0x7000
-        - Failed to Establish Connection
-      * - 0x7190
-        - Bad Request  
-      * - 0x7191
-        - Unauthorized  
-      * - 0x7192
-        - Payment Required 
-      * - 0x7193
-        - Forbidden 
-      * - 0x7194
-        - Not Found  
-      * - 0x7195
-        - Method Not Allowed  
-      * - 0x7196
-        - Not Acceptable 
-      * - 0x7197
-        - Proxy Authentication Required
-      * - 0x7198
-        - Request Timeout
-      * - 0x7199
-        - Conflict
-      * - 0x719a
-        - Gone
-      * - 0x719b
-        - Length Required
-      * - 0x719c
-        - Precondition Failed
-      * - 0x719d
-        - Request Entity Too Large
-      * - 0x719e
-        - Request-URI Too Long
-      * - 0x719f
-        - Unsupported Media Type
-      * - 0x71a0
-        - Requested Range Not Satisfiable
-      * - 0x71a1
-        - Expectation Failed
+::
 
--  HTTP Server:
+  ERR CODE:0x010a7xxx
 
-   .. list-table::          
-      :header-rows: 1 
+Where ``01`` is the module identifier, ``0a`` is the module's response result to the executed AT command, and ``7xxx`` represents an HTTP error code. If ``xxx`` falls within the range of standard HTTP status codes, it indicates a standard HTTP status code; otherwise, it indicates an internal error code specific to AT HTTP. The following table lists some common HTTP status codes. For more details, please refer to `RFC 2616 <https://datatracker.ietf.org/doc/html/rfc2616#section-6.1.1>`_.
 
-      * - HTTP Server Error Code
-        - Description 
-      * - 0x71f4
-        - Internal Server Error
-      * - 0x71f5
-        - Not Implemented
-      * - 0x71f6
-        - Bad Gateway
-      * - 0x71f7
-        - Service Unavailable
-      * - 0x71f8
-        - Gateway Timeout
-      * - 0x71f9
-        - HTTP Version Not Supported
+.. list-table::
+  :header-rows: 1
 
--  HTTP AT:
-   
-   - The error code of command ``AT+HTTPCLIENT`` will be ``0x7000+Standard HTTP Error Code`` (For more details about Standard HTTP/1.1 Error Code, see `RFC 2616 <https://datatracker.ietf.org/doc/html/rfc2616>`_).
-   - For example, if AT gets the HTTP error 404 when calling command ``AT+HTTPCLIENT``, it will respond with error code of ``0x7194`` (``hex(0x7000+404)=0x7194``).
+  * - HTTP Error Code (HTTP Status Code)
+    - Description
+  * - 0x7000
+    - Connection Failed
+  * - 0x7190 (400)
+    - Bad Request
+  * - 0x7191 (401)
+    - Unauthorized
+  * - 0x7192 (402)
+    - Payment Required
+  * - 0x7193 (403)
+    - Forbidden
+  * - 0x7194 (404)
+    - Not Found
+  * - 0x7195 (405)
+    - Method Not Allowed
+  * - 0x7196 (406)
+    - Not Acceptable
+  * - 0x7197 (407)
+    - Proxy Authentication Required
+  * - 0x7198 (408)
+    - Request Timeout
+  * - 0x7199 (409)
+    - Conflict
+  * - 0x719a (410)
+    - Gone
+  * - 0x719b (411)
+    - Length Required
+  * - 0x719c (412)
+    - Precondition Failed
+  * - 0x719d (413)
+    - Request Entity Too Large
+  * - 0x719e (414)
+    - Request-URI Too Long
+  * - 0x719f (415)
+    - Unsupported Media Type
+  * - 0x71a0 (416)
+    - Requested Range Not Satisfiable
+  * - 0x71a1 (417)
+    - Expectation Failed
+  * - 0x71f4 (500)
+    - Internal Server Error
+  * - 0x71f5 (501)
+    - Not Implemented
+  * - 0x71f6 (502)
+    - Bad Gateway
+  * - 0x71f7 (503)
+    - Service Unavailable
+  * - 0x71f8 (504)
+    - Gateway Timeout
+  * - 0x71f9 (505)
+    - HTTP Version Not Supported
