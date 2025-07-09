@@ -27,3 +27,13 @@ The AT firmware allows for rapid integration by providing:
    :figclass: align-center
 
    ESP-AT Commands
+
+Other Espressif Connectivity Solutions
+---------------------------------------
+
+In addition to ESP-AT, Espressif also provides other solutions to meet different integration needs:
+
+- **ESP-Hosted** is a software solution that enables Espressif series chips to act as wireless communication co-processors for external host systems. It allows host devices (Linux-based systems or microcontrollers, MCUs) to add Wi-Fi and Bluetooth/BLE capabilities via standard interfaces like SPI, SDIO, or UART. You can refer to `ESP-Hosted GitHub <https://github.com/espressif/esp-hosted>`_ for details.
+- **ESP-IoT-Bridge Solution** focuses on connectivity and communication between various network interfaces in IoT application scenarios, such as SPI, SDIO, USB, Wi-Fi, Ethernet and other network interfaces. In this solution, the bridge device can not only provide net access for other devices, but also be a separate equipment to connect the remote server. You can refer to `ESP-IoT-Bridge GitHub <https://github.com/espressif/esp-iot-bridge>`_ for details.
+
+These solutions target different system architectures and requirements. For users who are considering alternatives to the AT firmware for integrating wireless connectivity, these options may provide a better fit depending on host platform capabilities and design goals.
