@@ -8,6 +8,7 @@ Wi-Fi AT Commands
 -  :ref:`Introduction <cmd-wifi-intro>`
 -  :ref:`AT+CWINIT <cmd-INIT>`: Initialize/Deinitialize Wi-Fi driver.
 -  :ref:`AT+CWMODE <cmd-MODE>`: Set the Wi-Fi mode (Station/SoftAP/Station+SoftAP).
+-  :ref:`AT+CWBANDWIDTH <cmd-CWBANDWIDTH>`: Query/Set Wi-Fi bandwidth.
 -  :ref:`AT+CWSTATE <cmd-WSTATE>`: Query the Wi-Fi state and Wi-Fi information.
 -  :ref:`AT+CWCONFIG <cmd-CWCONFIG>`: Query/Set Wi-Fi inactive time and listen interval time.
 -  :ref:`AT+CWJAP <cmd-JAP>`: Connect to an AP.
@@ -199,6 +200,73 @@ Example
 ::
 
     AT+CWMODE=3 
+
+.. _cmd-CWBANDWIDTH:
+
+:ref:`AT+CWBANDWIDTH <WiFi-AT>`: Query/Set Wi-Fi Bandwidth
+----------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+CWBANDWIDTH?
+
+**Response:**
+
+::
+
+    +CWBANDWIDTH:<netif>,<bandwidth_2ghz>,<bandwidth_5ghz>
+
+    OK
+
+Set Command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+CWBANDWIDTH=<netif>,<bandwidth_2ghz>[,<bandwidth_5ghz>]
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+- **<netif>**:
+
+  - 0: Station interface
+  - 1: SoftAP interface
+
+- **<bandwidth_2ghz>**: 2.4 GHz bandwidth
+
+  - 0: Not supported, only valid in query command
+  - 1: 20 MHz
+  - 2: 40 MHz
+
+.. only:: esp32c5
+
+  - **<bandwidth_5ghz>**: 5 GHz bandwidth
+
+    - 0: Not supported, only valid in query command
+    - 1: 20 MHz
+    - 2: 40 MHz
+    - 3: 80 MHz
+    - 4: 160 MHz
+    - 5: 80+80 MHz
+
+Note
+^^^^
+
+- If :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`, this setting will be saved in the NVS partition.
 
 .. _cmd-WSTATE:
 

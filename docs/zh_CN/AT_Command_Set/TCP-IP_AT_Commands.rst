@@ -2484,14 +2484,24 @@ ping 对端主机
 :ref:`AT+MDNS <WiFi-AT>`：设置 mDNS 功能
 ------------------------------------------------------------
 
+.. list::
+
+  * :ref:`cmd-mdns-service`
+  * :ref:`cmd-mdns-query`
+
+.. _cmd-mdns-service:
+
+设备开启一个 mDNS 服务
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
 设置命令
-^^^^^^^^
+""""""""
 
 **命令：**
 
 ::
 
-    AT+MDNS=<enable>[,<"hostname">,<"service_type">,<port>][,<"instance">][,<"proto">][,<txt_number>][,<"key">,<"value">][...]
+    AT+MDNS=<mode>[,<"hostname">,<"service_type">,<port>][,<"instance">][,<"proto">][,<txt_number>][,<"key">,<"value">][...]
 
 **响应：**
 
@@ -2502,9 +2512,9 @@ ping 对端主机
 参数
 ^^^^
 
-- **<enable>**：
+- **<mode>**：
 
-   - 1：开启 mDNS 功能，后续参数需要填写
+   - 1：开启 mDNS 服务，后续参数需要填写
    - 0：关闭 mDNS 功能，后续参数无需填写
 
 - **<"hostname">**：mDNS 主机名称。
@@ -2522,13 +2532,128 @@ ping 对端主机
 
 ::
 
-    // 开启 mDNS 功能，主机名为 "espressif"，服务类型为 "_iot"，端口为 8080
+    // 开启 mDNS 服务，主机名为 "espressif"，服务类型为 "_iot"，端口为 8080
     AT+MDNS=1,"espressif","_iot",8080
 
     // 关闭 mDNS 功能
     AT+MDNS=0
 
-详细示例参考 :ref:`mDNS 示例 <example-mdns>`。
+详细示例参考 :ref:`mDNS 服务示例 <example-mdns-service>`。
+
+.. _cmd-mdns-query:
+
+查询局域网里的 mDNS 服务
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+设置命令
+""""""""
+
+**命令：**
+
+::
+
+    // 查询局域网里的 PTR 记录
+    AT+MDNS=<mode>,<type>,<"service">,<"proto">[,<timeout>][,<max_results>]
+
+    // 查询局域网里的 TXT、 SRV、 TXT + SRV 记录
+    AT+MDNS=<mode>,<type>,<"instance">,<"service">,<"proto">[,<timeout>][,<max_results>]
+
+    // 查询局域网里的 A、AAAA、A + AAAA 记录
+    AT+MDNS=<mode>,<type>,<"hostname">[,<timeout>][,<max_results>]
+
+**响应：**
+
+::
+
+    +MDNS:<data_len>,
+    IF=<netif>
+    IP=<ip_type>
+    PTR=<instance>
+    SRV=<hostname>:<port>
+    TXT=<key>=<value>
+    A=<ip4>
+    AAAA=<ip6>
+
+    OK
+
+命令参数
+""""""""
+
+- **<mode>**：
+
+  - 2：查询局域网里的 mDNS 服务，后续参数需要填写
+  - 0：关闭 mDNS 功能，后续参数无需填写
+
+- **<type>**：查询类型。
+
+  - 0：PTR 记录
+  - 1：TXT 记录
+  - 2：SRV 记录
+  - 3：TXT + SRV 记录
+  - 4：A 记录
+  - 5：AAAA 记录
+  - 6：A + AAAA 记录
+
+- **<"instance">**：mDNS 实例名称。最大长度：64 字节，超过会自动截断。
+- **<"hostname">**：主机名称。最大长度：64 字节，超过会自动截断。
+- **<"service">**：mDNS 服务类型。最大长度：64 字节，超过会自动截断。
+- **<"proto">**：mDNS 服务协议。最大长度：64 字节，超过会自动截断。建议值：``_tcp`` 或 ``_udp``。
+- **<timeout>**：查询超时时间，单位：毫秒，默认值：5000。范围：[1000,180000]。如果查询的个数未达到 ``<max_results>``，则在超时后返回查询结果。
+- **<max_results>**：查询结果的最大数量，默认值：1。范围：[1,255]。如果查询的个数未达到 ``<max_results>``，则在超时后返回查询结果。否则，立即返回查询结果。
+
+命令响应参数
+""""""""""""
+
+- **<data_len>**：查询结果的长度。
+- **<netif>**：网络接口，表示 mDNS 服务所在的网络接口。
+
+  - 1：Wi-Fi Station 接口
+  - 2：Wi-Fi SoftAP 接口
+
+  .. only:: esp32
+
+    - 3：Ethernet 接口
+
+- **<ip_type>**：网络接口的 IP 地址类型。
+
+  - 0：IPv4 地址
+  - 1：IPv6 地址
+
+- **<instance>**：mDNS 实例名称。
+- **<hostname>**：主机名称。
+- **<port>**：mDNS 服务端口。
+- **<key>**：TXT 记录的键。
+- **<value>**：TXT 记录的值。
+- **<ip4>**：mDNS 服务所在的 IPv4 地址。
+- **<ip6>**：mDNS 服务所在的 IPv6 地址。
+
+示例
+""""
+
+::
+
+    // PC 上通过 avahi-publish 发布 mDNS 服务
+    avahi-publish -s my_instance _my_printer._tcp 35 "version=v4.1.0.0"
+
+    // 通过 AT 命令查询局域网里的 PTR 记录
+    AT+MDNS=2,0,"_my_printer","_tcp"
+
+    // 响应结果
+    +MDNS:234,
+    IF=1
+    IP=0
+    PTR=my_instance
+    SRV=espressif-1.local:35
+    TXT=version=v4.1.0.0
+    A=192.168.200.249
+    AAAA=240e:1234:204c:bd02:d80f:8c45:3576:2574
+    AAAA=240e:1234:204c:bd02:f043:47f0:7c39:0002
+    AAAA=240e:1234:204c:bd02:2971:f412:14c6:fa00
+
+    OK
+
+    // 关闭 mDNS 功能
+    AT+MDNS=0
 
 .. _cmd-TCPOPT:
 
