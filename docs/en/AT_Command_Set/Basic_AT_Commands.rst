@@ -302,7 +302,7 @@ Notes
 
 .. _cmd-SAVET:
 
-:ref:`AT+SAVETRANSLINK <TCPIP-AT>`: Set Whether to Enter Wi-Fi/Bluetooth LE :term:`Passthrough Mode` on Power-up
+:ref:`AT+SAVETRANSLINK <Basic-AT>`: Set Whether to Enter Wi-Fi/Bluetooth LE :term:`Passthrough Mode` on Power-up
 ----------------------------------------------------------------------------------------------------------------
 
 .. list::
