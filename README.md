@@ -21,18 +21,19 @@ The AT solution provided by Espressif allows for rapid integration by providing:
 # ESP-AT Release and SoC Compatibility
 The following table shows ESP-AT support status of Espressif SoCs.
 
-| Chip | v3.2.1.0 | v3.3.0.0 | v3.4.0.0 | v4.0.0.0 | v4.1.0.0 | master |
+| Chip | v3.3.0.0 | v3.4.0.0 | v4.0.0.0 | v4.1.0.0 | v5.0.0.0 | master |
 |:- |:-:| :-:| :-:| :-:| :-:| :-:|
-| ESP32 | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.2.1.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.3.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | ![alt text][pre-release] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-C3 | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.2.1.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | ![alt text][pre-release] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-C2 | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.2.1.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | ![alt text][pre-release] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-C6 | | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.0.0.0) | ![alt text][pre-release] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-S2 | | |  [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.4.0.0) | | | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-C5 | | | | | | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+| ESP32 | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.3.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/tree/release/v4.1.0.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+|ESP32-C3 | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/tree/release/v4.1.0.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+|ESP32-C2 | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/tree/release/v4.1.0.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+|ESP32-C6 | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.0.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/tree/release/v4.1.0.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+|ESP32-S2 | |  [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.4.0.0) | | | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+|ESP32-C5 | | | | | ![alt text][pre-release] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 
 - ![alt text][released]: Released versions. You can click ![alt text][released] to go to the corresponding release page and download the AT firmware.
 - ![alt text][supported]: Supported versions. You can click ![alt text][supported] to go to the corresponding branch and develop your own AT firmware.
 - ![alt text][pre-release]: Pre-release versions, expected to release AT firmware for the corresponding chip soon.
+- ![alt text][no-plan]: No plan to release AT firmware for the corresponding chip.
 
 Please choose one of the following options based on your needs:
 - **The default AT firmware meets your requirements**: It is recommended to use the latest released version of the firmware corresponding to the chip.
@@ -42,6 +43,7 @@ Please choose one of the following options based on your needs:
 [released]: https://img.shields.io/badge/-released-4CBB17
 [supported]: https://img.shields.io/badge/-supported-1F51FF
 [pre-release]: https://img.shields.io/badge/-pre--release-FFC000
+[no-plan]: https://img.shields.io/badge/-no--plan-808080
 
 **Other series of chips:**
 - ESP-AT will support ESP32-C5 series of chips.
