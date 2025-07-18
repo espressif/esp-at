@@ -291,3 +291,56 @@ AT 消息
         - 说明
       * - RainMaker AT 消息
         - 请参考 :ref:`ESP-AT RainMaker 消息报告（主动） <rm-at-messages>`
+
+.. _at-log-messages:
+
+AT 日志
+===========
+
+通过 :doc:`../Get_Started/Hardware_connection` 中 ``输出日志`` 功能对应的管脚，ESP-AT 会输出丰富的日志信息，帮助用户了解 ESP-AT 的运行状态。您也可以 :doc:`启用不同的日志配置 <../Compile_and_Develop/How_to_enable_more_AT_debug_logs>`，以查看更多详细的日志信息。下面列出了部分常见的日志信息和对应说明：
+
+
+.. list-table:: ESP-AT 日志
+    :header-rows: 1
+
+    * - AT 日志
+      - 说明
+    * - at-common: write dlen:0
+      - AT 命令口的 RX 收到非预期的数据，通常这些数据里含有多个 ``\0`` 字符。如果使用 UART 和 MCU 通信，请检查：
+
+        - {IDF_TARGET_NAME} 的 UART RX 引脚是否正确连接到 MCU 的 TX 引脚
+        - MCU 是否发送了非 AT 命令格式的数据
+        - MCU 是否正确配置了 UART 波特率、数据位、停止位、奇偶校验位、流控
+        - MCU 的 GND 是否正确连接到 {IDF_TARGET_NAME} 的 GND 引脚
+
+    * - at-init: at param mode: ``<mode>``
+      - AT 初始化时的参数模式
+
+        - 0：无参数
+        - 1：使用 mfg_nvs 分区里的参数
+        - 2：使用 factory_param 分区里的参数
+
+    * - at-init: ``v4.1.0.0`` (``<src>``)
+      - AT 固件的版本号和对应固件生成的来源
+    * - at-wifi: negotiated phy mode: ``<phy_mode>``
+      - Wi-Fi Station 连接到 AP 时协商的 PHY 模式
+
+        - 0：Low Rate
+        - 1：11b
+        - 2：11g
+        - 3：11a
+        - 4：HT20
+        - 5：HT40
+        - 6：HE20
+        - 7：VHT20
+
+    * - at-wifi: wifi disconnected, rc:``<reason_code>``
+      - Wi-Fi station 断开连接的 `原因代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id34>`_
+    * - at-wifi: wifi reconnect..(``<index>``/``<total_count>``)
+      - Wi-Fi station 正在重连到 AP
+    * - at-net: unknown host: ``<hostname>``
+      - 无法解析主机名 ``<hostname>``，请检查 DNS 设置和网络连接
+    * - at-net: send failed, s:``<send_len>`` r:``<ret_len>``
+      - 发送数据失败，发送长度为 ``<send_len>``，实际返回长度为 ``<ret_len>``。请检查网络连接。
+    * - at-net: link is changed
+      - AT 作为服务器时，在数据发送过程中，客户端连接断开后，新的客户端连接到服务器。
