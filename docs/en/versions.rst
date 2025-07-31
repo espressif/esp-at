@@ -73,6 +73,16 @@ Each ESP-IDF major and minor release version has an associated support period. A
      - IDF Version
      - IDF EOL Date
      - AT New Version Plan
+   * - **v4.1.1.0** (2025.7.31)
+     -
+       * ESP32
+       * ESP32-C2
+       * ESP32-C3
+       * ESP32-C6
+       * ESP32-S2
+     - ~v5.4.2 (`8ad0d3d8 <https://github.com/espressif/esp-idf/commit/8ad0d3d8>`_)
+     - 2027.7.5
+     - 2027.2.5 - 2027.4.5
    * - **v4.1.0.0** (2025.7.18)
      -
        * ESP32
@@ -81,28 +91,26 @@ Each ESP-IDF major and minor release version has an associated support period. A
        * ESP32-C6
      - ~v5.4.2 (`8ad0d3d8 <https://github.com/espressif/esp-idf/commit/8ad0d3d8>`_)
      - 2027.7.5
-     - 2027.2.5 - 2027.4.5
+     - New version v4.1.1.0 released
    * - **v4.0.0.0** (2023.12.29)
      - ESP32-C6
      - `v5.1.2 <https://github.com/espressif/esp-idf/releases/tag/v5.1.2>`_
      - 2025.12.30
-     - New version v4.1.0.0 released
+     - New version v4.1.1.0 released
    * - **v3.4.0.0** (2024.6.7)
      -
        * ESP32
        * ESP32-S2
      - `v5.0.6 <https://github.com/espressif/esp-idf/releases/tag/v5.0.6>`_
      - 2025.5.29
-     -
-       * ESP32: New version v4.1.0.0 released
-       * ESP32-S2: No new version plan currently
+     - New version v4.1.1.0 released
    * - **v3.3.0.0** (2024.5.9)
      -
        * ESP32-C2
        * ESP32-C3
      - `v5.0.6 <https://github.com/espressif/esp-idf/releases/tag/v5.0.6>`_
      - 2025.5.29
-     - New version v4.1.0.0 released
+     - New version v4.1.1.0 released
 
 **Support periods for each released version of ESP-AT are as follows:**
 
