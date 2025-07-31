@@ -43,23 +43,23 @@ AT 软件方案是乐鑫针对不同芯片提供的 AT 固件，可以帮助您�
     - 说明
   * - ESP32-C6
     - **Wi-Fi 6** + BLE 5.0
-    - `v4.1.0.0 <https://github.com/espressif/esp-at/releases/tag/v4.1.0.0>`_
+    - `v4.1.1.0 <https://github.com/espressif/esp-at/releases/tag/v4.1.1.0>`_
     -
   * - ESP32-C3
     - Wi-Fi 4 + BLE 5.0
-    - `v4.1.0.0 <https://github.com/espressif/esp-at/releases/tag/v4.1.0.0>`_
+    - `v4.1.1.0 <https://github.com/espressif/esp-at/releases/tag/v4.1.1.0>`_
     -
   * - ESP32-C2
     - Wi-Fi 4 (或 BLE 5.0)
-    - `v4.1.0.0 <https://github.com/espressif/esp-at/releases/tag/v4.1.0.0>`_
+    - `v4.1.1.0 <https://github.com/espressif/esp-at/releases/tag/v4.1.1.0>`_
     -
   * - ESP32
     - Wi-Fi 4 + BLE v4.2 (+ **BT**)
-    - `v4.1.0.0 <https://github.com/espressif/esp-at/releases/tag/v4.1.0.0>`_
+    - `v4.1.1.0 <https://github.com/espressif/esp-at/releases/tag/v4.1.1.0>`_
     -
   * - ESP32-S2
     - Wi-Fi 4
-    - `v3.4.0.0 <https://github.com/espressif/esp-at/releases/tag/v3.4.0.0>`_
+    - `v4.1.1.0 <https://github.com/espressif/esp-at/releases/tag/v4.1.1.0>`_
     - 推荐使用性价比更高的 ESP32-C 系列
 
 - ``(或 BLE 5.0)`` 表示 AT 软件方案中支持低功耗蓝牙功能，但发布的固件中未包含此功能。
