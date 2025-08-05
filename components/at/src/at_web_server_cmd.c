@@ -154,7 +154,6 @@ static const char *TAG = "at-web";
 // If use fatfs,we should enable AT FS Command support.
 #ifdef CONFIG_AT_WEB_USE_FATFS
 static wl_handle_t s_wl_handle = WL_INVALID_HANDLE; // Handle of the wear levelling library instance
-static BYTE pdrv = 0xFF;
 #endif
 
 static uint8_t at_web_get_mac_match_len(uint8_t *mac1, uint8_t *mac2, uint8_t mac_length)
@@ -1821,62 +1820,6 @@ err:
 }
 
 #ifdef CONFIG_AT_WEB_USE_FATFS
-static esp_err_t at_web_fatfs_spiflash_mount(const char *base_path,
-    const char *partition_label,
-    const esp_vfs_fat_mount_config_t *mount_config,
-    wl_handle_t *wl_handle)
-{
-    esp_err_t result = ESP_OK;
-
-    const esp_partition_t *data_partition = (esp_partition_t*) esp_at_custom_partition_find(ESP_PARTITION_TYPE_DATA, ESP_PARTITION_SUBTYPE_DATA_FAT, partition_label);
-    if (data_partition == NULL) {
-        ESP_LOGE(TAG, "Failed to find FATFS partition (type='data'(%d), subtype='fat'(%d), partition_label='%s'). Check the partition table.",
-            ESP_PARTITION_TYPE_DATA, ESP_PARTITION_SUBTYPE_DATA_FAT, partition_label);
-        return ESP_ERR_NOT_FOUND;
-    }
-
-    result = wl_mount(data_partition, wl_handle);
-    if (result != ESP_OK) {
-        ESP_LOGE(TAG, "failed to mount wear levelling layer. result = %i", result);
-        return result;
-    }
-    // connect driver to FATFS
-    pdrv = 0xFF;
-    if (ff_diskio_get_drive(&pdrv) != ESP_OK) {
-        ESP_LOGD(TAG, "the maximum count of volumes is already mounted");
-        return ESP_ERR_NO_MEM;
-    }
-    ESP_LOGD(TAG, "using pdrv=%i", pdrv);
-    char drv[3] = { (char) ('0' + pdrv), ':', 0 };
-
-    result = ff_diskio_register_wl_partition(pdrv, *wl_handle);
-    if (result != ESP_OK) {
-        ESP_LOGE(TAG, "ff_diskio_register_wl_partition failed pdrv=%i, error - 0x(%x)", pdrv, result);
-        goto fail;
-    }
-    FATFS *fs;
-    result = esp_vfs_fat_register(base_path, drv, mount_config->max_files, &fs);
-    if (result == ESP_ERR_INVALID_STATE) {
-        // it's okay, already registered with VFS
-    } else if (result != ESP_OK) {
-        ESP_LOGD(TAG, "esp_vfs_fat_register failed 0x(%x)", result);
-        goto fail;
-    }
-
-    // Try to mount partition
-    FRESULT fresult = f_mount(fs, drv, 1);
-    if (fresult != FR_OK) {
-        ESP_LOGW(TAG, "f_mount failed (%d)", fresult);
-        result = ESP_FAIL;
-        goto fail;
-    }
-    return ESP_OK;
-
-fail:
-    esp_vfs_fat_unregister_path(base_path);
-    ff_diskio_unregister(pdrv);
-    return result;
-}
 
 /*
 *  Init file system, assert we can mount the fs.
@@ -1885,11 +1828,11 @@ static esp_err_t at_web_fatfs_spiflash_init(void)
 {
     const esp_vfs_fat_mount_config_t mount_config = {
         .max_files = 5,
-        .format_if_mount_failed = false // If cannot mount fs, no need to go down
+        .format_if_mount_failed = false,
+        .allocation_unit_size = CONFIG_WL_SECTOR_SIZE,
     };
 
-    esp_err_t err = at_web_fatfs_spiflash_mount(ESP_AT_WEB_MOUNT_POINT, "fatfs", &mount_config, &s_wl_handle);
-
+    esp_err_t err = esp_vfs_fat_spiflash_mount_rw_wl(ESP_AT_WEB_MOUNT_POINT, "fatfs", &mount_config, &s_wl_handle);
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "failed to mount fatfs, errno:0x%x", err);
         return ESP_FAIL;
@@ -1901,13 +1844,7 @@ static esp_err_t at_web_fatfs_spiflash_init(void)
 
 static esp_err_t at_web_fatfs_spiflash_deinit(void)
 {
-    esp_err_t ret;
-    ff_diskio_unregister(pdrv);
-    ff_diskio_clear_pdrv_wl(s_wl_handle);
-    wl_unmount(s_wl_handle);
-    ret = esp_vfs_fat_unregister_path(ESP_AT_WEB_MOUNT_POINT);
-
-    return ret;
+    return esp_vfs_fat_spiflash_unmount_rw_wl(ESP_AT_WEB_MOUNT_POINT, s_wl_handle);
 }
 #endif
 
