@@ -25,6 +25,4 @@ pdf_file_prefix = 'esp-at'
 # for a list of supported languages.
 language = 'zh_CN'
 
-html_zip = f'esp-idf-{language}-{release}'  # noqa: F405
-
 html_js_files = ['js/chatbot_widget_cn.js']
