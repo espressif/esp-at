@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
 
 from __future__ import print_function, unicode_literals
@@ -89,5 +89,14 @@ project_slug = 'esp-at'
 
 versions_url = './_static/js/at_versions.js'
 
-# Final PDF filename will contains target and version
-pdf_file_prefix = u'esp-at'
+# Final PDF filename format should be: <pdf_file_prefix>-<language>-<version>-<target>.pdf
+# set <pdf_file_prefix>
+pdf_file_prefix = 'esp-at'
+
+# set <version>
+branch_name = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip().decode('utf-8')
+branch_name = os.getenv('CI_COMMIT_REF_NAME', branch_name)
+if branch_name == 'master':
+    version = 'latest'
+else:
+    version = branch_name.replace('/', '-')
