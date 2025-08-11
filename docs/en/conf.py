@@ -25,6 +25,4 @@ pdf_file_prefix = 'esp-at'
 # for a list of supported languages.
 language = 'en'
 
-html_zip = f'esp-at-{language}-{release}'
-
 html_js_files = ['js/chatbot_widget_en.js']
