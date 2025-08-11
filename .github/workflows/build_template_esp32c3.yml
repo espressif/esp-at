@@ -29,7 +29,7 @@ jobs:
     - name: Set module information
       run: |
         mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"${{ inputs.module_name }}\", \"silence\": 0}" > build/module_info.json
+        echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"${{ inputs.module_name }}\", \"silence\": 1}" > build/module_info.json
     - name: Enable all Wi-Fi features
       if: ${{ inputs.enable_all_wifi_features == true }}
       run: |
