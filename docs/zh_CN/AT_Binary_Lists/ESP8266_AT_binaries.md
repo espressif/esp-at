@@ -12,7 +12,8 @@
 
 ## ESP-WROOM-02 Series
 
-- v2.2.2.0 [ESP-WROOM-02-AT-V2.2.2.0.zip](https://dl.espressif.com/esp-at/firmwares/esp8266/ESP-WROOM-02-AT-V2.2.2.0.zip)（推荐）
+- v2.3.0.0 [ESP-WROOM-02-AT-V2.3.0.0.zip](https://dl.espressif.com/esp-at/firmwares/esp8266/ESP-WROOM-02-AT-V2.3.0.0.zip)（推荐）
+- v2.2.2.0 [ESP-WROOM-02-AT-V2.2.2.0.zip](https://dl.espressif.com/esp-at/firmwares/esp8266/ESP-WROOM-02-AT-V2.2.2.0.zip)
 - v2.2.1.0 [ESP-WROOM-02-AT-V2.2.1.0.zip](https://dl.espressif.com/esp-at/firmwares/esp8266/ESP-WROOM-02-AT-V2.2.1.0.zip)
 - v2.2.0.0 [ESP-WROOM-02-AT-V2.2.0.0.zip](https://dl.espressif.com/esp-at/firmwares/esp8266/ESP-WROOM-02-AT-V2.2.0.0.zip)
 - v2.1.0.0 [ESP-WROOM-02-AT-V2.1.0.0.zip](https://dl.espressif.com/esp-at/firmwares/esp8266/ESP-WROOM-02-AT-V2.1.0.0.zip)
