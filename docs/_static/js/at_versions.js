@@ -35,6 +35,7 @@ var DOCUMENTATION_VERSIONS = {
 
         // v2.3.0.0
         { name: "release-v2.3.0.0_esp32c3", has_targets: false, supported_targets: [ "esp32c3" ]},
+        { name: "release-v2.3.0.0_esp8266", has_targets: false, supported_targets: [ "esp8266" ]},
 
         // v2.2.0.0
         { name: "release-v2.2.0.0_esp32c3", has_targets: false, supported_targets: [ "esp32c3" ]},
