@@ -335,7 +335,7 @@
   extends:
     - .build_template
     - .before_script_esp32c5
-  image: $CI_DOCKER_REGISTRY/esp-env-v5.4:1
+  image: $CI_DOCKER_REGISTRY/esp-env-v5.5:2
   variables:
     PLATFORM: "PLATFORM_ESP32C5"
     SILENCE: "0"
