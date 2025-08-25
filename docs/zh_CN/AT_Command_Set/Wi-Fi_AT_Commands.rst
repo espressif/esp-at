@@ -8,7 +8,9 @@ Wi-Fi AT 命令集
 -  :ref:`介绍 <cmd-wifi-intro>`
 -  :ref:`AT+CWINIT <cmd-INIT>`：初始化/清理 Wi-Fi 驱动程序
 -  :ref:`AT+CWMODE <cmd-MODE>`：查询/设置 Wi-Fi 模式 (Station/SoftAP/Station+SoftAP)
+-  :ref:`AT+CWBANDWIDTH <cmd-CWBANDWIDTH>`：查询/设置 Wi-Fi 带宽
 -  :ref:`AT+CWSTATE <cmd-WSTATE>`：查询 Wi-Fi 状态和 Wi-Fi 信息
+-  :ref:`AT+CWCONFIG <cmd-CWCONFIG>`：查询/设置 Wi-Fi 非活动时间和监听间隔时间
 -  :ref:`AT+CWJAP <cmd-JAP>`：连接 AP
 -  :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`：查询/设置 Wi-Fi 重连配置
 -  :ref:`AT+CWLAPOPT <cmd-LAPOPT>`：设置 :ref:`AT+CWLAP <cmd-LAP>` 命令扫描结果的属性
@@ -199,6 +201,73 @@ Wi-Fi AT 命令集
 
     AT+CWMODE=3 
 
+.. _cmd-CWBANDWIDTH:
+
+:ref:`AT+CWBANDWIDTH <WiFi-AT>`：查询/设置 Wi-Fi 带宽
+-----------------------------------------------------------------
+
+查询命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+CWBANDWIDTH?
+
+**响应：**
+
+::
+
+    +CWBANDWIDTH:<netif>,<bandwidth_2ghz>,<bandwidth_5ghz>
+
+    OK
+
+设置命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+CWBANDWIDTH=<netif>,<bandwidth_2ghz>[,<bandwidth_5ghz>]
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+- **<netif>**：
+
+  - 0: Station 接口
+  - 1: SoftAP 接口
+
+- **<bandwidth_2ghz>**：2.4 GHz 带宽
+
+  - 0: 不支持，仅在查询命令中有效
+  - 1: 20 MHz
+  - 2: 40 MHz
+
+.. only:: esp32c5
+
+  - **<bandwidth_5ghz>**：5 GHz 带宽
+
+    - 0: 不支持，仅在查询命令中有效
+    - 1: 20 MHz
+    - 2: 40 MHz
+    - 3: 80 MHz
+    - 4: 160 MHz
+    - 5: 80+80 MHz
+
+说明
+^^^^
+
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，本设置将保存在 NVS 分区
+
 .. _cmd-WSTATE:
 
 :ref:`AT+CWSTATE <WiFi-AT>`：查询 Wi-Fi 状态和 Wi-Fi 信息
@@ -242,6 +311,55 @@ Wi-Fi AT 命令集
 ^^^^
 
 - 当 {IDF_TARGET_NAME} station 没有连接上 AP 时，推荐使用此命令查询 Wi-Fi 信息；当 {IDF_TARGET_NAME} station 已连接上 AP 后，推荐使用 :ref:`AT+CWJAP <cmd-JAP>` 命令查询 Wi-Fi 信息
+
+.. _cmd-CWCONFIG:
+
+:ref:`AT+CWCONFIG <WiFi-AT>`：查询/设置 Wi-Fi 非活动时间和监听间隔时间
+-------------------------------------------------------------------------------------
+
+查询命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+CWCONFIG?
+
+**响应：**
+
+::
+
+    +CWCONFIG:<ap_inactive_time>,<sta_inactive_time>,<listen_interval>
+
+    OK
+
+设置命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+CWCONFIG=[<ap_inactive_time>][,<sta_inactive_time>][,<listen_interval>]
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+- **<ap_inactive_time>**：SoftAP 模式下的非活动时间。单位：秒，默认值：300，范围：[10,3600]。如果 SoftAP 在非活动时间内没有接收到某个已连接的 Station 的任何数据，SoftAP 将强制断开该 Station 的 Wi-Fi 连接。
+- **<sta_inactive_time>**：Station 模式下的非活动时间。单位：秒，默认值：6，范围：[3,600]。如果 Station 在非活动时间内没有接收到已连接的 SoftAP 的任何信标帧，将强制断开 {IDF_TARGET_NAME} 的 Wi-Fi 连接。
+- **<listen_interval>**：监听 AP beacon 的间隔，单位为 AP beacon 间隔，默认值：3，范围：[1,100]。和 :ref:`AT+CWJAP <cmd-JAP>` 中的 **<listen_interval>**  参数相同，但此配置是全局性的。
+
+说明
+^^^^
+
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，本设置将保存在 NVS 分区
 
 .. _cmd-JAP:
 
@@ -476,6 +594,7 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
+-  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 分区
 -  本命令中的 ``<interval_second>`` 参数与 :ref:`AT+CWJAP <cmd-JAP>` 中的 ``[<reconn_interval>]`` 参数相同
 -  该命令适用于被动断开 AP、Wi-Fi 模式切换和开机后 Wi-Fi 自动连接
 
@@ -593,6 +712,7 @@ Wi-Fi AT 命令集
 ::
 
     +CWLAP:(<ecn>,<"ssid">,<rssi>,<"mac">,<channel>,<freq_offset>,<freqcal_val>,<pairwise_cipher>,<group_cipher>,<bgn>,<wps>)
+
     OK
 
 参数
@@ -1103,10 +1223,7 @@ Wi-Fi AT 命令集
    -  bit0: 802.11b 协议标准
    -  bit1: 802.11g 协议标准
    -  bit2: 802.11n 协议标准
-
-   .. only:: esp32 or esp32c3 or esp32c6
-
-     - bit3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+   -  bit3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
 
    .. only:: esp32c6
 
@@ -1115,6 +1232,7 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
+-  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
 -  当前，{IDF_TARGET_NAME} 设备支持的 PHY mode 见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id40>`_
 
 .. only:: esp32 or esp32c3 or esp32c2 or esp32s2
@@ -1169,10 +1287,7 @@ Wi-Fi AT 命令集
    -  bit0: 802.11b 协议标准
    -  bit1: 802.11g 协议标准
    -  bit2: 802.11n 协议标准
-
-   .. only:: esp32 or esp32c3 or esp32c6
-
-     - bit3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+   -  bit3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
 
    .. only:: esp32c6
 
@@ -1181,6 +1296,7 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
+-  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
 -  当前，{IDF_TARGET_NAME} 设备支持的 PHY mode 见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id40>`_
 
 .. only:: esp32 or esp32c3 or esp32c2 or esp32s2
@@ -1724,8 +1840,8 @@ Wi-Fi AT 命令集
 -  **<"password">**：阶段 2 的密码，范围：1 ~ 32 字节，EAP-PEAP、EAP-TTLS 两种认证方式需设置本参数，EAP-TLS 方式无需设置本参数
 -  **<security>**：
 
-   -  Bit0: 客户端证书
-   -  Bit1: 服务器证书
+   -  Bit0: 提供证书供 WPA2 Enterprise 服务器端 CA 证书校验；
+   -  Bit1: 客户端载入 CA 证书来校验 WPA2 Enterprise 服务器端的证书；
 
 -  **[<jeap_timeout>]**：:ref:`AT+CWJEAP <cmd-JEAP>` 命令的最大超时时间，单位：秒，默认值：15，范围：[3,600]
 
@@ -1827,6 +1943,8 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
 -  使用本命令需开启 Station 模式
 -  使用 TLS 认证方式需使能客户端证书
+-  如果您想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 WPA2 Enterprise 客户端证书。如果您想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+-  如果 ``<security>`` 配置为 2，为了校验服务器的证书有效期，请在发送 :ref:`AT+CWJEAP <cmd-JEAP>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（您可以发送 :ref:`AT+SYSTIMESTAMP=\<unix_timestamp\> <cmd-SETTIME>` 命令来配置当前时间，发送 :ref:`AT+SYSTIMESTAMP? <cmd-SETTIME>` 命令查询当前时间。）
 
 .. _cmd-HOSTNAME:
 

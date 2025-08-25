@@ -29,23 +29,6 @@ def ESP_LOGI(x):
 def ESP_LOGE(x):
     print('\033[31m{}\033[0m'.format(x))
 
-def gitee_repo_preprocess():
-    print('Redirect repository to https://gitee.com/EspressifSystems')
-    return 'https://gitee.com/EspressifSystems'
-
-def gitee_repo_postprocess(path, redirect_repo):
-    submodule_lists = subprocess.check_output(['git', 'config', '-f', os.path.join(path, '.gitmodules'), '--list']).decode(encoding='utf-8')
-
-    if redirect_repo is None:
-        redirect_repo = 'https://gitee.com/esp-submodules'
-
-    for line in submodule_lists.split():
-        if line.find('.url=') > 0:
-            submodule = line.split('=')
-            submodule_name = os.path.basename(submodule[1])
-            print('Redirect {} to {}'.format(submodule[0], '/'.join([redirect_repo, submodule_name])))
-            subprocess.call('cd {} && git config {} {}'.format(path, submodule[0], '/'.join([redirect_repo, submodule_name])), shell = True)
-
 def jihulab_repo_preprocess():
     print('Redirect repository to https://jihulab.com/esp-mirror/espressif')
     return 'https://jihulab.com/esp-mirror/espressif'
@@ -54,9 +37,6 @@ def jihulab_repo_postprocess(path, redirect_repo):
     pass
 
 preset_origins = {
-    'https://gitee.com/EspressifSystems/esp-at': {'preprocess': gitee_repo_preprocess, 'postprocess': gitee_repo_postprocess},
-    'https://gitee.com/EspressifSystems/esp-at.git': {'preprocess': gitee_repo_preprocess, 'postprocess': gitee_repo_postprocess},
-    'git@gitee.com:EspressifSystems/esp-at.git': {'preprocess': gitee_repo_preprocess, 'postprocess': gitee_repo_postprocess},
     'https://jihulab.com/esp-mirror/espressif/esp-at':{'preprocess': jihulab_repo_preprocess, 'postprocess': jihulab_repo_postprocess},
     'https://jihulab.com/esp-mirror/espressif/esp-at.git':{'preprocess': jihulab_repo_preprocess, 'postprocess': jihulab_repo_postprocess},
     'git@jihulab.com:esp-mirror/espressif/esp-at.git':{'preprocess': jihulab_repo_preprocess, 'postprocess': jihulab_repo_postprocess},

@@ -29,6 +29,7 @@ Basic AT Commands
   - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`: Query/Set User Partitions in Flash.
   - :ref:`AT+SYSMFG <cmd-SYSMFG>`: Query/Set :term:`manufacturing nvs` User Partitions.
   - :ref:`AT+RFPOWER <cmd-RFPOWER>`: Query/Set RF TX Power.
+  - :ref:`AT+RFCAL <cmd-RFCAL>`: RF full calibration.
   - :ref:`AT+SYSROLLBACK <cmd-SYSROLLBACK>`: Roll back to the previous firmware.
   - :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`: Query/Set local time stamp.
   - :ref:`AT+SYSLOG <cmd-SYSLOG>`: Enable or disable the AT error code prompt.
@@ -301,14 +302,14 @@ Notes
 
 .. _cmd-SAVET:
 
-:ref:`AT+SAVETRANSLINK <TCPIP-AT>`: Set Whether to Enter Wi-Fi/Bluetooth LE :term:`Passthrough Mode` on Power-up
+:ref:`AT+SAVETRANSLINK <Basic-AT>`: Set Whether to Enter Wi-Fi/Bluetooth LE :term:`Passthrough Mode` on Power-up
 ----------------------------------------------------------------------------------------------------------------
 
 .. list::
 
     * :ref:`savetrans-tcpssl`
     * :ref:`savetrans-udp`
-    :esp32 or esp32c3 or esp32c6 or esp32c2: * :ref:`savetrans-ble`
+    :not esp32s2: * :ref:`savetrans-ble`
 
 .. _savetrans-tcpssl:
 
@@ -353,7 +354,7 @@ Parameters
 Notes
 """""""
 
--  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+-  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 
 Example
 """"""""
@@ -401,7 +402,7 @@ Parameters
 Notes
 """""""
 
--  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+-  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 
 -  To establish an UDP transmission based on an IPv6 network, do as follows:
 
@@ -418,7 +419,7 @@ Example
     AT+SAVETRANSLINK=1,"192.168.6.110",1002,"UDP",1005
     AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8081,"UDPv6",1005
 
-.. only:: esp32c2 or esp32c3 or esp32c6 or esp32
+.. only:: not esp32s2
 
     .. _savetrans-ble:
 
@@ -462,7 +463,7 @@ Example
     Notes
     """""""
 
-    -  This command will save the BLE :term:`Passthrough Mode` configuration in the NVS area. If ``<mode>`` is set to 2, {IDF_TARGET_NAME} will enter the Bluetooth LE :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+    -  This command will save the BLE :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 2, {IDF_TARGET_NAME} will enter the Bluetooth LE :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 
     Example
     """""""""
@@ -471,7 +472,11 @@ Example
 
         AT+SAVETRANSLINK=2,2,1,7,1,5,"26:a2:11:22:33:88"
 
-.. _cmd-TRANSINTVL:
+    .. _cmd-TRANSINTVL:
+
+.. only:: esp32s2
+
+    .. _cmd-TRANSINTVL:
 
 :ref:`AT+TRANSINTVL <Basic-AT>`: Set the Data Transmission Interval in Passthrough Mode
 ---------------------------------------------------------------------------------------
@@ -684,7 +689,7 @@ Parameters
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS area, and will still be valid when the chip is powered on again.
+-  The configuration changes will be saved in the NVS partition, and will still be valid when the chip is powered on again.
 -  To use hardware flow control, you need to connect CTS/RTS pins of your {IDF_TARGET_NAME}. For more details, please refer to :doc:`../Get_Started/Hardware_connection` or ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``.
 
 Example
@@ -738,18 +743,9 @@ Parameter
 
    - 0: Disable the sleep mode.
 
-   - 1: Modem-sleep mode.
+   - 1: Wi-Fi Modem-sleep mode. The RF module will be periodically closed according to the AP's ``DTIM``. This setting only takes effect when Wi-Fi mode is Station; in the Null Wi-Fi mode, the setting is allowed but will not take effect (for compatibility with older AT firmware); in other cases, it cannot be set.
 
-     - Only Wi-Fi mode.
-
-       - RF will be periodically closed according to AP ``DTIM``.
-
-     - Only BLE mode.
-
-       - When Bluetooth LE is advertising, RF will be periodically closed according to advertising interval.
-       - When Bluetooth LE is connected, RF will be periodically closed according to connection interval.
-
-   - 2: Light-sleep mode.
+   - 2: Light-sleep mode. This parameter cannot be set when the Wi-Fi mode is SoftAP or Station+SoftAP.
 
      - Null Wi-Fi mode.
 
@@ -757,37 +753,31 @@ Parameter
 
      - Only Wi-Fi mode.
 
-       - CPU will automatically sleep and RF will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>`.
+       - CPU will automatically sleep and RF will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>` or :ref:`AT+CWCONFIG <cmd-CWCONFIG>`.
 
-     - Only Bluetooth mode.
+    .. only:: not esp32s2
 
-       - When Bluetooth LE is advertising, CPU will automatically sleep and RF will be periodically closed according to advertising interval of Bluetooth.
-       - When Bluetooth LE is connected, CPU will automatically sleep and RF will be periodically closed according to connection interval of Bluetooth.
+        - Only Bluetooth mode.
 
-    - Wi-Fi and Bluetooth coexistence mode.
+            - When Bluetooth LE is advertising, CPU will automatically sleep and RF will be periodically closed according to advertising interval of Bluetooth.
+            - When Bluetooth LE is connected, CPU will automatically sleep and RF will be periodically closed according to connection interval of Bluetooth.
 
-        - CPU will automatically sleep and RF will be periodically closed according to power management module.
+        - Wi-Fi and Bluetooth coexistence mode.
 
-   - 3: Modem-sleep listen interval mode.
+            - CPU will automatically sleep and RF will be periodically closed according to power management module.
 
-     - Only Wi-Fi mode.
-
-       - RF will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>`.
-
-     - Only BLE mode.
-
-       - When Bluetooth LE is advertising, RF will be periodically closed according to advertising interval.
-       - When Bluetooth LE is connected, RF will be periodically closed according to connection interval.
+   - 3: Wi-Fi Modem-sleep listen interval mode. The RF module will be periodically closed according to ``listen interval`` set by :ref:`AT+CWJAP <cmd-JAP>` or :ref:`AT+CWCONFIG <cmd-CWCONFIG>`. This setting only takes effect when Wi-Fi mode is Station; in the Null Wi-Fi mode, the setting is allowed but will not take effect (for compatibility with older AT firmware); in other cases, it cannot be set.
 
 Note
 ^^^^^
 
--  When sleep mode is disabled, you cannot initialize Bluetooth LE. When Bluetooth LE is initialized, you cannot disable sleep mode.
--  Modem-sleep mode and Light-sleep mode can be set under Wi-Fi mode or BLE mode, but in Wi-Fi mode, these two modes can only be set in ``station`` mode.
--  Before setting the Light-sleep mode, it is recommended to set the wakeup source in advance through the command :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`, otherwise {IDF_TARGET_NAME} can't wake up and will always be in sleep mode.
--  After setting the Light-sleep mode, if the Light-sleep wakeup condition is not met, {IDF_TARGET_NAME} will automatically enter the sleep mode. When the Light-sleep wakeup condition is met, {IDF_TARGET_NAME} will automatically wake up from sleep mode.
--  For Light-sleep mode in BLE mode, users must ensure external 32KHz crystal oscillator, otherwise the Light-sleep mode will work in Modem-sleep mode.
--  For more examples, please refer to :doc:`../AT_Command_Examples/sleep_at_examples`.
+.. list::
+
+    - Before setting the Light-sleep mode, it is recommended to set the wakeup source in advance through the command :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`, otherwise {IDF_TARGET_NAME} can't wake up and will always be in sleep mode.
+    - After setting the Light-sleep mode, if the Light-sleep wakeup condition is not met, {IDF_TARGET_NAME} will automatically enter the sleep mode. When the Light-sleep wakeup condition is met, {IDF_TARGET_NAME} will automatically wake up from sleep mode.
+    :not esp32s2: - In only BLE mode, only BLE Light-sleep and BLE Modem-sleep modes are available. Use the ``AT+SLEEP=2`` command to enable BLE Light-sleep, and use the ``AT+SLEEP=0`` command to enable BLE Modem-sleep.
+    :not esp32s2: - For Light-sleep mode in BLE mode, users must ensure external 32KHz crystal oscillator, otherwise the Light-sleep mode will work in Modem-sleep mode.
+    - For more examples, please refer to :doc:`../AT_Command_Examples/sleep_at_examples`.
 
 Example
 ^^^^^^^^
@@ -951,7 +941,7 @@ Parameter
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS area if ``AT+SYSSTORE=1``.
+-  The configuration changes will be saved in the NVS partition if ``AT+SYSSTORE=1``.
 -  If you set Bit0 to 1, it will prompt "+QUITT" when you quit Wi-Fi :term:`Passthrough Mode`.
 -  If you set Bit1 to 1, it will impact the information of command :ref:`AT+CIPSTART <cmd-START>` and :ref:`AT+CIPSERVER <cmd-SERVER>`. It will supply "+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port" instead of "XX,CONNECT".
 
@@ -1338,6 +1328,7 @@ Notes
 -  If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
 -  If the operator is ``write``, please make sure that you have already erased this partition.
 -  If you want to modify some data in the "mfg_nvs" partition, please use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command (key-value pairs operation). If you want to modify total "mfg_nvs" partition, please use the :ref:`AT+SYSFLASH <cmd-SYSFLASH>` command (partition operation).
+-  When writing to a partition, the MCU should write data in multiple chunks to avoid memory exhaustion caused by writing too much data at once. For example, write 4 KB of data each time until the write is complete.
 
 Example
 ^^^^^^^^
@@ -1681,7 +1672,7 @@ Parameters
     -  6: -11 dBm
     -  7: -14 dBm
 
-.. only:: esp32c3
+.. only:: esp32c3 or esp32c2
 
   -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,15].
 
@@ -1700,7 +1691,7 @@ Parameters
     -  12: 12 dBm
     -  13: 15 dBm
     -  14: 18 dBm
-    -  15: 21 dBm
+    -  15: 20 dBm
 
 .. only:: esp32c6
 
@@ -1731,6 +1722,32 @@ Note
 - When Wi-Fi is turned off or not initialized, the :ref:`AT+RFPOWER <cmd-RFPOWER>` command cannot set or query the RF TX Power of Wi-Fi. Similarly, when Bluetooth LE is not initialized, the command cannot set or query that of Bluetooth LE, either.
 - Since the RF TX Power is actually divided into several levels, and each level has its own value range, the ``wifi_power`` value queried by the ``esp_wifi_get_max_tx_power`` may differ from the value set by ``esp_wifi_set_max_tx_power`` and is no larger than the set value.
 - It is recommended to set the two parameters <ble_scan_power> and <ble_conn_power> to the same value as the <ble_adv_power> parameter. Otherwise, they will be automatically adjusted to the value of <ble_adv_power>.
+
+.. _cmd-RFCAL:
+
+:ref:`AT <Basic-AT>`: RF Full Calibration
+-----------------------------------------
+
+Execute Command
+^^^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+RFCAL
+
+**Response:**
+
+::
+
+     OK
+
+Note
+-----
+
+- {IDF_TARGET_NAME} will automatically perform RF full calibration on the first startup, and partial calibration on subsequent startups. For more details, please refer to `RF Calibration <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/RF_calibration.html>`_.
+- It is recommended to perform RF full calibration after firmware upgrade, changes to the device environment, or prolonged periods of device inactivity.
 
 .. _cmd-SYSROLLBACK:
 
@@ -2103,6 +2120,7 @@ Note
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`
   - :ref:`AT+CWMODE <cmd-MODE>`
   - :ref:`AT+CIPV6 <cmd-IPV6>`
+  - :ref:`AT+CWCONFIG <cmd-CWCONFIG>`
   - :ref:`AT+CWJAP <cmd-JAP>`
   - :ref:`AT+CWSAP <cmd-SAP>`
   - :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`

@@ -13,6 +13,7 @@ HTTP AT 命令集
 -  :ref:`AT+HTTPCPUT <cmd-HTTPCPUT>`：Put 指定长度的 HTTP 数据
 -  :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>`：设置/获取长的 HTTP URL
 -  :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>`：设置/查询 HTTP 请求头
+-  :ref:`AT+HTTPCFG <cmd-HTTPCFG>`：设置 HTTP 客户端配置
 -  :ref:`HTTP AT 错误码 <cmd-HTTPErrCode>`
 
 .. _cmd-http-intro:
@@ -415,78 +416,113 @@ HTTP AT 命令集
     // 下载 HTTP 资源
     AT+HTTPCGET="https://docs.espressif.com/projects/esp-at/zh_CN/latest/{IDF_TARGET_PATH_NAME}/index.html"
 
+.. _cmd-HTTPCFG:
+
+:ref:`AT+HTTPCFG <HTTP-AT>`：设置 HTTP 客户端配置
+-------------------------------------------------------------------------------
+
+设置命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+HTTPCFG=<auth_mode>[,<pki_number>][,<ca_number>]
+
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+- **<auth_mode>**:
+
+  - 0: 不认证，此时无需填写 ``<pki_number>`` 和 ``<ca_number>`` 参数；
+  - 1: ESP-AT 提供 HTTP 客户端证书供 HTTP 服务器端 CA 证书校验；
+  - 2: ESP-AT HTTP 客户端载入 CA 证书来校验 HTTP 服务器端的证书；
+  - 3: 相互认证。
+
+- **<pki_number>**：证书和私钥的索引，如果只有一个证书和私钥，其值应为 0。
+- **<ca_number>**：CA 的索引，如果只有一个 CA，其值应为 0。
+
+说明
+^^^^
+
+- 默认 AT 固件不支持 HTTP 证书配置，您可以启用 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support`` > ``AT HTTP authentication method`` 下选型来使其支持。
+- 本命令配置的参数是全局性的，一旦设置，所有 HTTP 命令都会共用该配置。
+- 如果您想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 HTTP 证书。如果您想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+- 如果 ``<auth_mode>`` 配置为 2 或者 3，为了校验服务器的证书有效期，请在发送其它 HTTP 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（您可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间。）
+
 .. _cmd-HTTPErrCode:
 
 :ref:`HTTP AT 错误码 <HTTP-AT>`
 -------------------------------------
 
--  HTTP 客户端：
+启用 :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` 后，HTTP 客户端请求失败时，AT 会返回错误码。错误码的格式为：
 
-   .. list-table::          
-      :header-rows: 1         
-          
-      * - HTTP 客户端错误码
-        - 说明     
-      * - 0x7000
-        - 建立连接失败
-      * - 0x7190
-        - Bad Request  
-      * - 0x7191
-        - Unauthorized  
-      * - 0x7192
-        - Payment Required 
-      * - 0x7193
-        - Forbidden 
-      * - 0x7194
-        - Not Found  
-      * - 0x7195
-        - Method Not Allowed  
-      * - 0x7196
-        - Not Acceptable 
-      * - 0x7197
-        - Proxy Authentication Required
-      * - 0x7198
-        - Request Timeout
-      * - 0x7199
-        - Conflict
-      * - 0x719a
-        - Gone
-      * - 0x719b
-        - Length Required
-      * - 0x719c
-        - Precondition Failed
-      * - 0x719d
-        - Request Entity Too Large
-      * - 0x719e
-        - Request-URI Too Long
-      * - 0x719f
-        - Unsupported Media Type
-      * - 0x71a0
-        - Requested Range Not Satisfiable
-      * - 0x71a1
-        - Expectation Failed
+::
 
--  HTTP 服务器：
+  ERR CODE:0x010a7xxx
 
-   .. list-table::          
-      :header-rows: 1 
+其中 ``01`` 是模块标识符， ``0a`` 是模块执行 AT 命令的响应结果， ``7xxx`` 表示 HTTP 错误码。如果 ``xxx`` 在 HTTP 标准状态码范围内，则表示标准 HTTP 状态码；否则表示 AT HTTP 内部的错误码。下表列出了部分 HTTP 状态码信息，更多详情请参考 `RFC 2616 <https://datatracker.ietf.org/doc/html/rfc2616#section-6.1.1>`_）。
 
-      * - HTTP 服务器错误码
-        - 说明
-      * - 0x71f4
-        - Internal Server Error
-      * - 0x71f5
-        - Not Implemented
-      * - 0x71f6
-        - Bad Gateway
-      * - 0x71f7
-        - Service Unavailable
-      * - 0x71f8
-        - Gateway Timeout
-      * - 0x71f9
-        - HTTP Version Not Supported
+.. list-table::
+  :header-rows: 1
 
--  HTTP AT：
-   
-   - ``AT+HTTPCLIENT`` 命令的错误码为 ``0x7000+Standard HTTP Error Code`` （更多有关 Standard HTTP/1.1 Error Code 的信息，请参考 `RFC 2616 <https://datatracker.ietf.org/doc/html/rfc2616>`_）。
-   - 例如，若 AT 在调用 ``AT+HTTPCLIENT`` 命令时收到 HTTP error 404，则会返回 ``0x7194`` 错误码 (``hex(0x7000+404)=0x7194``)。
+  * - HTTP 错误码（HTTP 状态码）
+    - 说明
+  * - 0x7000
+    - 建立连接失败
+  * - 0x7190 (400)
+    - Bad Request
+  * - 0x7191 (401)
+    - Unauthorized
+  * - 0x7192 (402)
+    - Payment Required
+  * - 0x7193 (403)
+    - Forbidden
+  * - 0x7194 (404)
+    - Not Found
+  * - 0x7195 (405)
+    - Method Not Allowed
+  * - 0x7196 (406)
+    - Not Acceptable
+  * - 0x7197 (407)
+    - Proxy Authentication Required
+  * - 0x7198 (408)
+    - Request Timeout
+  * - 0x7199 (409)
+    - Conflict
+  * - 0x719a (410)
+    - Gone
+  * - 0x719b (411)
+    - Length Required
+  * - 0x719c (412)
+    - Precondition Failed
+  * - 0x719d (413)
+    - Request Entity Too Large
+  * - 0x719e (414)
+    - Request-URI Too Long
+  * - 0x719f (415)
+    - Unsupported Media Type
+  * - 0x71a0 (416)
+    - Requested Range Not Satisfiable
+  * - 0x71a1 (417)
+    - Expectation Failed
+  * - 0x71f4 (500)
+    - Internal Server Error
+  * - 0x71f5 (501)
+    - Not Implemented
+  * - 0x71f6 (502)
+    - Bad Gateway
+  * - 0x71f7 (503)
+    - Service Unavailable
+  * - 0x71f8 (504)
+    - Gateway Timeout
+  * - 0x71f9 (505)
+    - HTTP Version Not Supported

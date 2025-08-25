@@ -6,6 +6,9 @@ var DOCUMENTATION_VERSIONS = {
         // latest
         { name: "latest", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3", "esp32c6", "esp32s2"] },
 
+        // v4.1.0.0
+        { name: "release-v4.1.0.0", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3", "esp32c6", "esp32s2" ] },
+
         // v4.0.0.0
         { name: "release-v4.0.0.0", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3", "esp32c6" ] },
 
@@ -32,6 +35,7 @@ var DOCUMENTATION_VERSIONS = {
 
         // v2.3.0.0
         { name: "release-v2.3.0.0_esp32c3", has_targets: false, supported_targets: [ "esp32c3" ]},
+        { name: "release-v2.3.0.0_esp8266", has_targets: false, supported_targets: [ "esp8266" ]},
 
         // v2.2.0.0
         { name: "release-v2.2.0.0_esp32c3", has_targets: false, supported_targets: [ "esp32c3" ]},

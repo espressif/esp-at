@@ -251,7 +251,6 @@ void at_uart_workaround(void)
 
     // a workaround for uart1 voltage fluctuation issue during light-sleep
     gpio_sleep_sel_dis(g_uart_port_pin.tx_pin);
-    gpio_sleep_sel_dis(g_uart_port_pin.rx_pin);
     if (g_uart_port_pin.cts_pin != -1) {
         gpio_sleep_sel_dis(g_uart_port_pin.cts_pin);
     }

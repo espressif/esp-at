@@ -10,6 +10,12 @@ on:
       artifacts_name:
         required: true
         type: string
+      enable_all_wifi_features_no_bt:
+        required: false
+        type: boolean
+      enable_all_bt_features_no_wifi:
+        required: false
+        type: boolean
     # parameters from upstream inherit
     secrets:
       AT_OTA_TOKEN_WROOM32:
@@ -31,68 +37,58 @@ jobs:
     - uses: actions/setup-python@v5.3.0
       with:
         python-version: '3.10'
-    - name: Configure prerequisites
+    - name: Set module information
       run: |
-        # set module information
-        silence_mode=1
-        silence_sdkconfig=module_config/module_wrover-32/sdkconfig_silence.defaults
         mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"${{ inputs.module_name }}\", \"silence\": ${silence_mode}}" > build/module_info.json
-
-        if ${{ inputs.artifacts_name == 'esp32-at-all-function-test-without-bt' }}; then
-          echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_WS_COMMAND_SUPPORT=y" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> ${silence_sdkconfig}
-          # disable BT
-          echo -e "CONFIG_AT_BLE_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_BLE_HID_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_BLUFI_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
-
-          # enlarge partition table
-          app0_size=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
-          app1_size=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_1 | awk -F, '{print $5}'`
-          to_set_size=$((app0_size + app1_size))
-          sed -i '/ota_1/d' module_config/module_wrover-32/partitions_at.csv
-          to_set_hex_size=`printf "0x%x" ${to_set_size}`
-          sed -i '/ota_0/s,'"$app0_size"','"$to_set_hex_size"',g' module_config/module_wrover-32/partitions_at.csv
-        fi
-
-        if ${{ inputs.artifacts_name == 'esp32-at-all-function-test-just-bt' }}; then
-          # enable BT
-          echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=y" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_BT_SPP_COMMAND_SUPPORT=y" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> ${silence_sdkconfig}
-          # disable non BT
-          echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_ETHERNET_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_OTA_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_MDNS_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_WPS_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_SMARTCONFIG_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_PING_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_MQTT_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_HTTP_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_AT_SIGNALING_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
-          echo -e "CONFIG_ESP_WIFI_SLP_IRAM_OPT=n" >> ${silence_sdkconfig}
-
-          # enlarge partition table
-          app0_size=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
-          app1_size=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_1 | awk -F, '{print $5}'`
-          to_set_size=$((app0_size + app1_size))
-          sed -i '/ota_1/d' module_config/module_wrover-32/partitions_at.csv
-          to_set_hex_size=`printf "0x%x" ${to_set_size}`
-          sed -i '/ota_0/s,'"$app0_size"','"$to_set_hex_size"',g' module_config/module_wrover-32/partitions_at.csv
-        fi
-
-        # update esp32 ota token
+        echo -e "{\"platform\": \"PLATFORM_ESP32\", \"module\": \"${{ inputs.module_name }}\", \"silence\": 1}" > build/module_info.json
+        echo "silence_sdkconfig=module_config/module_wrover-32/sdkconfig_silence.defaults" >> $GITHUB_ENV
+    - name: Enable all Wi-Fi features without BLE
+      if: ${{ inputs.enable_all_wifi_features_no_bt == true }}
+      run: |
+        echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_WS_COMMAND_SUPPORT=y" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> ${silence_sdkconfig}
+        # disable BT
+        echo -e "CONFIG_AT_BLE_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_BLE_HID_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_BLUFI_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
+    - name: Enable all BT features without Wi-Fi
+      if: ${{ inputs.enable_all_bt_features_no_wifi == true }}
+      run: |
+        echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=y" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_BT_SPP_COMMAND_SUPPORT=y" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> ${silence_sdkconfig}
+        # disable non BT
+        echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_ETHERNET_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_OTA_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_MDNS_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_WPS_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_SMARTCONFIG_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_PING_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_MQTT_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_HTTP_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_AT_SIGNALING_COMMAND_SUPPORT=n" >> ${silence_sdkconfig}
+        echo -e "CONFIG_ESP_WIFI_SLP_IRAM_OPT=n" >> ${silence_sdkconfig}
+    - name: Enlarge app partition size
+      if: ${{ inputs.enable_all_wifi_features_no_bt == true || inputs.enable_all_bt_features_no_wifi == true }}
+      run: |
+        app0_size=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
+        app1_size=`cat module_config/module_wrover-32/partitions_at.csv | grep ota_1 | awk -F, '{print $5}'`
+        to_set_size=$((app0_size + app1_size))
+        sed -i '/ota_1/d' module_config/module_wrover-32/partitions_at.csv
+        to_set_hex_size=`printf "0x%x" ${to_set_size}`
+        sed -i '/ota_0/s,'"$app0_size"','"$to_set_hex_size"',g' module_config/module_wrover-32/partitions_at.csv
+    - name: Set up OTA tokens
+      run: |
         cd components/at/private_include
         rm -f at_ota_token.h
         echo -e "#pragma once" >> at_ota_token.h

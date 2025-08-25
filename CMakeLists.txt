@@ -143,6 +143,19 @@ include(${IDF_PATH}/tools/cmake/project.cmake)
 
 project(esp-at)
 
+# Sanity checker for the configurations
+execute_process(
+    COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/tools/at_sanity_checker.py ${CONFIG_PARTITION_TABLE_BASE_DIR}
+    RESULT_VARIABLE result
+    OUTPUT_VARIABLE output
+    ERROR_VARIABLE error
+)
+if(NOT result EQUAL 0)
+    message(FATAL_ERROR "ESP-AT sanity check failed. ${error}")
+else()
+    message(STATUS "ESP-AT sanity check passed. ${output}")
+endif()
+
 # Apply possible patches after generating sdkconfig
 execute_process(
     COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/tools/patch.py $ENV{ESP_AT_PROJECT_PATH}/patches ${IDF_TARGET} after_sdkconfig
@@ -158,10 +171,17 @@ endif()
 
 # Create Compressed image bin
 if (CONFIG_BOOTLOADER_COMPRESSED_ENABLED)
+    if (CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
+        set(COMPRESSED_FIRMWARE_VERSION "v2")
+        set(COMPRESSED_FIRMWARE_ADD_APP_HEADER "")
+    else()
+        set(COMPRESSED_FIRMWARE_VERSION "v3")
+        set(COMPRESSED_FIRMWARE_ADD_APP_HEADER "--add_app_header")
+    endif()
     add_custom_target(ota_image ALL DEPENDS app)
     add_custom_command(TARGET ota_image
     POST_BUILD
-    COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/managed_components/espressif__cmake_utilities/scripts/gen_custom_ota.py -hv v2 -i esp-at.bin
+    COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/managed_components/espressif__cmake_utilities/scripts/gen_custom_ota.py -hv ${COMPRESSED_FIRMWARE_VERSION} -i esp-at.bin ${COMPRESSED_FIRMWARE_ADD_APP_HEADER}
     COMMAND ${CMAKE_COMMAND} -E copy_directory custom_ota_binaries compressed_ota_image
     COMMENT "Creating Compressed image..."
     )

@@ -1864,9 +1864,9 @@ When a large amount of network data is expected to be received and the MCU canno
      +CIPRECVDATA:4,test
      OK
 
-.. _example-mdns:
+.. _example-mdns-service:
 
-{IDF_TARGET_NAME} enables mDNS function, PC connects to the device's TCP server using a domain name
+{IDF_TARGET_NAME} enables mDNS service, PC connects to the device's TCP server using a domain name
 -----------------------------------------------------------------------------------------------------
 
 #. Set the Wi-Fi mode to station.
@@ -1916,7 +1916,7 @@ When a large amount of network data is expected to be received and the MCU canno
 
      sudo avahi-browse -a -r
 
-#. {IDF_TARGET_NAME} device enables mDNS function.
+#. {IDF_TARGET_NAME} device enables mDNS service.
 
    Command:
 
@@ -1932,7 +1932,7 @@ When a large amount of network data is expected to be received and the MCU canno
 
    Note:
 
-   - This command enables mDNS function and specifies the device instance name as ``my_instance``, service type as ``_printer``, port as ``35``, product as ``my_printer``, and firmware version as ``AT-V3.4.1.0``.
+   - This command enables mDNS service and specifies the device instance name as ``my_instance``, service type as ``_printer``, port as ``35``, product as ``my_printer``, and firmware version as ``AT-V3.4.1.0``.
 
 #. (Optional) PC discovers the {IDF_TARGET_NAME} device.
 

@@ -53,6 +53,34 @@ PKI 配置介绍
           * :component_file:`mqtt_client.key <customized_partitions/raw_data/mqtt_key/mqtt_client.key>`
         - :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`
 
+      * - WebSocket 客户端
+        - 第 0 套客户端配置
+
+          * :component_file:`wss_ca_00.crt <customized_partitions/raw_data/wss_ca/wss_ca_00.crt>`
+          * :component_file:`wss_client_00.crt <customized_partitions/raw_data/wss_cert/wss_client_00.crt>`
+          * :component_file:`wss_client_00.key <customized_partitions/raw_data/wss_key/wss_client_00.key>`
+
+          第 1 套客户端配置
+
+          * :component_file:`wss_ca_01.crt <customized_partitions/raw_data/wss_ca/wss_ca_01.crt>`
+          * :component_file:`wss_client_01.crt <customized_partitions/raw_data/wss_cert/wss_client_01.crt>`
+          * :component_file:`wss_client_01.key <customized_partitions/raw_data/wss_key/wss_client_01.key>`
+        - :ref:`AT+WSCFG <cmd-WSCFG>`
+
+      * - HTTP 客户端
+        - 第 0 套客户端配置
+
+          * :component_file:`https_ca_00.crt <customized_partitions/raw_data/https_ca/https_ca_00.crt>`
+          * :component_file:`https_client_00.crt <customized_partitions/raw_data/https_cert/https_client_00.crt>`
+          * :component_file:`https_client_00.key <customized_partitions/raw_data/https_key/https_client_00.key>`
+
+          第 1 套客户端配置
+
+          * :component_file:`https_ca_01.crt <customized_partitions/raw_data/https_ca/https_ca_01.crt>`
+          * :component_file:`https_client_01.crt <customized_partitions/raw_data/https_cert/https_client_01.crt>`
+          * :component_file:`https_client_01.key <customized_partitions/raw_data/https_key/https_client_01.key>`
+        - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
+
       * - WPA2 Enterprise 客户端
         -
           * :component_file:`wpa2_ca.pem <customized_partitions/raw_data/wpa2_ca/wpa2_ca.pem>`

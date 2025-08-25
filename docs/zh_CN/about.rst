@@ -27,3 +27,13 @@
    :figclass: align-center
 
    ESP-AT 命令
+
+其他 Espressif 连接方案
+---------------------------
+
+除了 ESP-AT 之外，乐鑫还提供了其他连接方案，以满足不同的集成需求：
+
+- **ESP-Hosted 方案** 可使乐鑫系列芯片作为外部主机系统的无线通信协处理器。允许主机设备（如基于 Linux 的系统或微控制器 MCU）通过标准接口（如 SPI、SDIO 或 UART）添加 Wi-Fi 和 Bluetooth/BLE 功能。详情请见 `ESP-Hosted GitHub <https://github.com/espressif/esp-hosted>`_。
+- **ESP-IoT-Bridge 方案** 主要针对 IoT 应用场景下的各种网络接口之间的连接与通信，如 SPI、SDIO、USB、Wi-Fi、以太网等网络接口。在该解决方案中，Bridge 设备既可以为其它设备提供上网功能，又可以作为连接远程服务器的独立设备。详情请见 `ESP-IoT-Bridge GitHub <https://github.com/espressif/esp-iot-bridge>`_。
+
+上述方案面向不同的系统架构和应用需求。对于希望在集成无线连接时寻找 AT 固件以外替代方案的用户，可以根据主机平台能力和系统设计目标选择更合适的解决方案。

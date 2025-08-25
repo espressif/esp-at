@@ -10,6 +10,9 @@ on:
       artifacts_name:
         required: true
         type: string
+      enable_ble_cmds:
+        required: false
+        type: boolean
     # parameters from upstream inherit
     secrets:
       ESP32C2_4MB_TOKEN:
@@ -29,13 +32,16 @@ jobs:
     - uses: actions/setup-python@v5.3.0
       with:
         python-version: '3.10'
-    - name: Configure prerequisites
+    - name: Set module information
       run: |
-        # set module information
         mkdir build
         echo -e "{\"platform\": \"PLATFORM_ESP32C2\", \"module\": \"${{ inputs.module_name }}\", \"silence\": 0}" > build/module_info.json
-
-        # update esp32c2 ota token
+    - name: Enable BLE commands
+      if: ${{ inputs.enable_ble_cmds == true }}
+      run: |
+        echo -e "CONFIG_AT_BLE_COMMAND_SUPPORT=y" >> module_config/module_esp32c2-4mb-g2/sdkconfig.defaults
+    - name: Set up OTA tokens
+      run: |
         cd components/at/private_include
         rm -f at_ota_token.h
         echo -e "#pragma once" >> at_ota_token.h

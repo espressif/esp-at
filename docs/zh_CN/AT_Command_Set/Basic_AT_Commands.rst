@@ -21,7 +21,7 @@
   - :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>`：设置 :term:`透传模式` 模式下的数据发送间隔
   - :ref:`AT+UART_CUR <cmd-UARTC>`：设置 UART 当前临时配置，不保存到 flash
   - :ref:`AT+UART_DEF <cmd-UARTD>`：设置 UART 默认配置, 保存到 flash
-  - :ref:`AT+SLEEP <cmd-SLEEP>`：设置 sleep 模式
+  - :ref:`AT+SLEEP <cmd-SLEEP>`：设置睡眠模式
   - :ref:`AT+SYSRAM <cmd-SYSRAM>`：查询堆空间使用情况
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`：查询/设置系统提示信息
   - :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>`：启用或禁用 :term:`系统消息` 过滤
@@ -29,6 +29,7 @@
   - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`：查询或读写 flash 用户分区
   - :ref:`AT+SYSMFG <cmd-SYSMFG>`：查询或读写 :term:`manufacturing nvs` 用户分区
   - :ref:`AT+RFPOWER <cmd-RFPOWER>`：查询/设置 RF TX Power
+  - :ref:`AT+RFCAL <cmd-RFCAL>`：RF 全面校准
   - :ref:`AT+SYSROLLBACK <cmd-SYSROLLBACK>`：回滚到以前的固件
   - :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`：查询/设置本地时间戳
   - :ref:`AT+SYSLOG <cmd-SYSLOG>`：启用或禁用 AT 错误代码提示
@@ -308,7 +309,7 @@
 
     * :ref:`savetrans-tcpssl`
     * :ref:`savetrans-udp`
-    :esp32 or esp32c3 or esp32c6 or esp32c2: * :ref:`savetrans-ble`
+    :not esp32s2: * :ref:`savetrans-ble`
 
 .. _savetrans-tcpssl:
 
@@ -418,7 +419,7 @@
     AT+SAVETRANSLINK=1,"192.168.6.110",1002,"UDP",1005
     AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8081,"UDPv6",1005
 
-.. only:: esp32c2 or esp32c3 or esp32c6 or esp32
+.. only:: not esp32s2
 
     .. _savetrans-ble:
 
@@ -471,7 +472,11 @@
 
         AT+SAVETRANSLINK=2,2,1,7,1,5,"26:a2:11:22:33:88"
 
-.. _cmd-TRANSINTVL:
+    .. _cmd-TRANSINTVL:
+
+.. only:: esp32s2
+
+    .. _cmd-TRANSINTVL:
 
 :ref:`AT+TRANSINTVL <Basic-AT>`：设置 :term:`透传模式` 模式下的数据发送间隔
 ----------------------------------------------------------------------------------
@@ -736,58 +741,43 @@
 
 -  **<sleep mode>**：
 
-   - 0：禁用睡眠模式
+   - 0：禁用睡眠模式。
 
-   - 1：Modem-sleep 模式
+   - 1：Wi-Fi Modem-sleep 模式。射频模块将根据 AP 的 ``DTIM`` 定期关闭。仅在 Wi-Fi 模式为 Station 时设置生效；在无 Wi-Fi 模式下，允许设置，但不会生效（为了兼容旧版 AT 固件）；其他情况下不可设置。
 
-     - 单 Wi-Fi 模式
-
-       - 射频模块将根据 AP 的 ``DTIM`` 定期关闭
-
-     - 单 BLE 模式
-
-       - 在 BLE 广播态下，射频模块将根据广播间隔定期关闭
-       - 在 BLE 连接态下，射频模块将根据连接间隔定期关闭
-
-   - 2：Light-sleep 模式
+   - 2：Light-sleep 模式。在 Wi-Fi 模式为 SoftAP 或 Station+SoftAP 时不可设置。
 
      - 无 Wi-Fi 模式
 
-       - CPU 将自动进入睡眠，射频模块将关闭
+       - CPU 将自动进入睡眠，射频模块将关闭。
 
      - 单 Wi-Fi 模式
 
-       - CPU 将自动进入睡眠，射频模块也将根据 :ref:`AT+CWJAP <cmd-JAP>` 命令设置的 ``listen interval`` 参数定期关闭
+       - CPU 将自动进入睡眠，射频模块也将根据 :ref:`AT+CWJAP <cmd-JAP>` 或 :ref:`AT+CWCONFIG <cmd-CWCONFIG>` 命令设置的 ``listen interval`` 参数定期关闭。
 
-     - 单 Bluetooth 模式
+     .. only:: not esp32s2
 
-       - 在 Bluetooth 广播态下，CPU 将自动进入睡眠，射频模块也将根据广播间隔定期关闭
-       - 在 Bluetooth 连接态下，CPU 将自动进入睡眠，射频模块也将根据连接间隔定期关闭
+        - 单 Bluetooth 模式
 
-     - Wi-Fi 和 Bluetooth 共存模式
+            - 在 Bluetooth 广播态下，CPU 将自动进入睡眠，射频模块也将根据广播间隔定期关闭。
+            - 在 Bluetooth 连接态下，CPU 将自动进入睡眠，射频模块也将根据连接间隔定期关闭。
 
-        - CPU 将自动进入睡眠，射频模块根据电源管理模块定期关闭
+        - Wi-Fi 和 Bluetooth 共存模式
 
-   - 3：Modem-sleep listen interval 模式
+            - CPU 将自动进入睡眠，射频模块根据电源管理模块定期关闭。
 
-     - 单 Wi-Fi 模式
-
-       - 射频模块将根据 :ref:`AT+CWJAP <cmd-JAP>` 命令设置的 ``listen interval`` 参数定期关闭
-
-     - 单 BLE 模式
-
-       - 在 BLE 广播态下，射频模块将根据广播间隔定期关闭
-       - 在 BLE 连接态下，射频模块将根据连接间隔定期关闭
+   - 3：Wi-Fi Modem-sleep listen interval 模式。射频模块将根据 :ref:`AT+CWJAP <cmd-JAP>` 命令设置的 ``listen interval`` 参数定期关闭。仅在 Wi-Fi 模式为 Station 时设置生效；在无 Wi-Fi 模式下，允许设置，但不会生效（为了兼容旧版 AT 固件）；其他情况下不可设置。
 
 说明
 ^^^^
 
--  当禁用睡眠模式后，Bluetooth LE 不可以被初始化。当 Bluetooth LE 初始化后，不可以禁用睡眠模式。
--  Modem-sleep 模式和 Light-sleep 模式均可以在 Wi-Fi 模式或者 BLE 模式下设置，但在 Wi-Fi 模式下，这两种模式只能在 ``station`` 模式下设置
--  设置 Light-sleep 模式前，建议提前通过 :ref:`AT+SLEEPWKCFG <cmd-WKCFG>` 命令设置好唤醒源，否则没法唤醒，设备将一直处于睡眠状态
--  设置 Light-sleep 模式后，如果 Light-sleep 唤醒条件不满足时，设备将自动进入睡眠模式，当 Light-sleep 唤醒条件满足时，设备将自动从睡眠模式中唤醒
--  对于 BLE 模式下的 Light-sleep 模式，用户必须确保外接 32KHz 晶振，否则，Light-sleep 模式会以 Modem-sleep 模式工作。
--  AT+SLEEP 更多示例请参考文档 :doc:`../AT_Command_Examples/sleep_at_examples`。
+.. list::
+
+    - 设置 Light-sleep 模式前，建议提前通过 :ref:`AT+SLEEPWKCFG <cmd-WKCFG>` 命令设置好唤醒源，否则没法唤醒，设备将一直处于睡眠状态。
+    - 设置 Light-sleep 模式后，如果 Light-sleep 唤醒条件不满足时，设备将自动进入睡眠模式，当 Light-sleep 唤醒条件满足时，设备将自动从睡眠模式中唤醒。
+    :not esp32s2: - 单 BLE 模式下，只有 BLE Light-sleep 和 BLE Modem-sleep 两种睡眠模式。通过 ``AT+SLEEP=2`` 命令启用 BLE Light-sleep， 通过 ``AT+SLEEP=0`` 命令启用 BLE Modem-sleep。
+    :not esp32s2: - 对于 BLE 模式下的 Light-sleep 模式，用户必须确保外接 32KHz 晶振，否则，Light-sleep 模式会以 Modem-sleep 模式工作。
+    - AT+SLEEP 更多示例请参考文档 :doc:`../AT_Command_Examples/sleep_at_examples`。
 
 示例
 ^^^^
@@ -1338,6 +1328,7 @@
 -  当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时您可以输入要写的数据，数据长度应与 ``<length>`` 一致。
 -  写分区前，请先擦除该分区。
 -  如果您想修改 mfg_nvs 分区中的某些数据，请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令（NVS 中的键值对操作）。如果您想修改整个 mfg_nvs 分区，请使用 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令（分区操作）。
+-  写分区时，MCU 应该分次写入数据，避免一次性写入过多数据导致内存不足。例如每次写入 4 KB 字节数据，直到写入完成。
 
 示例
 ^^^^
@@ -1681,7 +1672,7 @@
     -  6: -11 dBm
     -  7: -14 dBm
 
-.. only:: esp32c3
+.. only:: esp32c3 or esp32c2
 
   -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [0,15]：
 
@@ -1700,7 +1691,7 @@
     -  12: 12 dBm
     -  13: 15 dBm
     -  14: 18 dBm
-    -  15: 21 dBm
+    -  15: 20 dBm
 
 .. only:: esp32c6
 
@@ -1731,6 +1722,32 @@
 - 当 Wi-Fi 关闭或未初始化时，``AT+RFPOWER`` 命令无法设置/查询 Wi-Fi 的 RF TX Power。当 Bluetooth LE 未初始化时，``AT+RFPOWER`` 命令无法设置/查询 Bluetooth LE 的 RF TX Power。
 - 由于 RF TX Power 分为不同的等级，而每个等级都有与之对应的取值范围，所以通过 ``esp_wifi_get_max_tx_power`` 查询到的 ``wifi_power`` 的值可能与 ``esp_wifi_set_max_tx_power`` 设定的值存在差异，但不会比该值大。
 - 建议将 <ble_scan_power> 和 <ble_conn_power> 两个参数值设置为与 <ble_adv_power> 参数相同的值，否则，这两个参数将会被自动设置为与 <ble_adv_power> 相同的值。
+
+.. _cmd-RFCAL:
+
+:ref:`AT <Basic-AT>`：RF 全面校准
+------------------------------------------
+
+执行命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+  AT+RFCAL
+
+**响应：**
+
+::
+
+   OK
+
+说明
+-----
+
+- {IDF_TARGET_NAME} 首次启动时会自动执行 RF 全面校准，之后启动时会自动执行 RF 部分校准。请参考 `RF 校准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/RF_calibration.html>`_ 了解更多细节。
+- 通常在固件升级、设备环境改变，设备长期未使用等情况后，建议执行 RF 全面校准。
 
 .. _cmd-SYSROLLBACK:
 
@@ -2103,6 +2120,7 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`
   - :ref:`AT+CWMODE <cmd-MODE>`
   - :ref:`AT+CIPV6 <cmd-IPV6>`
+  - :ref:`AT+CWCONFIG <cmd-CWCONFIG>`
   - :ref:`AT+CWJAP <cmd-JAP>`
   - :ref:`AT+CWSAP <cmd-SAP>`
   - :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`

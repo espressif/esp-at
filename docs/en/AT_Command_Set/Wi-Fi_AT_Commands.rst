@@ -8,7 +8,9 @@ Wi-Fi AT Commands
 -  :ref:`Introduction <cmd-wifi-intro>`
 -  :ref:`AT+CWINIT <cmd-INIT>`: Initialize/Deinitialize Wi-Fi driver.
 -  :ref:`AT+CWMODE <cmd-MODE>`: Set the Wi-Fi mode (Station/SoftAP/Station+SoftAP).
+-  :ref:`AT+CWBANDWIDTH <cmd-CWBANDWIDTH>`: Query/Set Wi-Fi bandwidth.
 -  :ref:`AT+CWSTATE <cmd-WSTATE>`: Query the Wi-Fi state and Wi-Fi information.
+-  :ref:`AT+CWCONFIG <cmd-CWCONFIG>`: Query/Set Wi-Fi inactive time and listen interval time.
 -  :ref:`AT+CWJAP <cmd-JAP>`: Connect to an AP.
 -  :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`: Query/Set the Wi-Fi reconnecting configuration.
 -  :ref:`AT+CWLAPOPT <cmd-LAPOPT>`: Set the configuration for the command :ref:`AT+CWLAP <cmd-LAP>`.
@@ -175,7 +177,7 @@ Parameters
 Note
 ^^^^^
 
-- The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+- The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 
 .. only:: esp32 or esp32c2 or esp32c3 or esp32c6
 
@@ -198,6 +200,73 @@ Example
 ::
 
     AT+CWMODE=3 
+
+.. _cmd-CWBANDWIDTH:
+
+:ref:`AT+CWBANDWIDTH <WiFi-AT>`: Query/Set Wi-Fi Bandwidth
+----------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+CWBANDWIDTH?
+
+**Response:**
+
+::
+
+    +CWBANDWIDTH:<netif>,<bandwidth_2ghz>,<bandwidth_5ghz>
+
+    OK
+
+Set Command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+CWBANDWIDTH=<netif>,<bandwidth_2ghz>[,<bandwidth_5ghz>]
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+- **<netif>**:
+
+  - 0: Station interface
+  - 1: SoftAP interface
+
+- **<bandwidth_2ghz>**: 2.4 GHz bandwidth
+
+  - 0: Not supported, only valid in query command
+  - 1: 20 MHz
+  - 2: 40 MHz
+
+.. only:: esp32c5
+
+  - **<bandwidth_5ghz>**: 5 GHz bandwidth
+
+    - 0: Not supported, only valid in query command
+    - 1: 20 MHz
+    - 2: 40 MHz
+    - 3: 80 MHz
+    - 4: 160 MHz
+    - 5: 80+80 MHz
+
+Note
+^^^^
+
+- If :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`, this setting will be saved in the NVS partition.
 
 .. _cmd-WSTATE:
 
@@ -242,6 +311,55 @@ Note
 ^^^^^
 
 - When {IDF_TARGET_NAME} station is not connected to an AP, it is recommended to use this command to query Wi-Fi information; after {IDF_TARGET_NAME} station is connected to an AP, it is recommended to use :ref:`AT+CWJAP <cmd-JAP>` to query Wi-Fi information.
+
+.. _cmd-CWCONFIG:
+
+:ref:`AT+CWCONFIG <WiFi-AT>`: Query/Set Wi-Fi Inactive Time and Listen Interval Time
+------------------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+CWCONFIG?
+
+**Response:**
+
+::
+
+    +CWCONFIG:<ap_inactive_time>,<sta_inactive_time>,<listen_interval>
+
+    OK
+
+Set Command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    AT+CWCONFIG=[<ap_inactive_time>][,<sta_inactive_time>][,<listen_interval>]
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+- **<ap_inactive_time>**: Inactive time in SoftAP mode. Unit: seconds. Default: 300. Range: [10,3600]. If the SoftAP does not receive any data from a connected station within the inactive time, the SoftAP will forcibly disconnect that Station's Wi-Fi connection.
+- **<sta_inactive_time>**: Inactive time in Station mode. Unit: seconds. Default: 6. Range: [3,600]. If the Station does not receive any beacon frames from the connected SoftAP within the inactive time, the Wi-Fi connection of {IDF_TARGET_NAME} will be forcibly disconnected.
+- **<listen_interval>**: Interval for listening to AP beacons, in units of AP beacon intervals. Default: 3. Range: [1,100]. This parameter is the same as **<listen_interval>** in :ref:`AT+CWJAP <cmd-JAP>`, but this configuration is global.
+
+Note
+^^^^
+
+- The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 
 .. _cmd-JAP:
 
@@ -376,7 +494,7 @@ Parameters
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+-  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  This command requires Station mode to be enabled.
 - After {IDF_TARGET_NAME} station is connected to an AP, it is recommended to use this command to query Wi-Fi information; when {IDF_TARGET_NAME} station is not connected to an AP, it is recommended to use :ref:`AT+CWSTATE <cmd-WSTATE>` to query Wi-Fi information.
 -  The parameter ``<reconn_interval>`` of this command is the same as ``<interval_second>`` of the command :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`. Therefore, if you omit ``<reconn_interval>`` when running this command, the interval between Wi-Fi reconnections will use the default value 1.
@@ -476,6 +594,7 @@ Example
 Notes
 ^^^^^
 
+-  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The parameter ``<interval_second>`` of this command is the same as the parameter ``[<reconn_interval>]`` of the command :ref:`AT+CWJAP <cmd-JAP>`.
 -  This command works for passive disconnection from APs, Wi-Fi mode switch, and Wi-Fi auto connect after power on.
 
@@ -593,6 +712,7 @@ List all available APs.
 ::
 
     +CWLAP:(<ecn>,<"ssid">,<rssi>,<"mac">,<channel>,<freq_offset>,<freqcal_val>,<pairwise_cipher>,<group_cipher>,<bgn>,<wps>)
+
     OK
 
 Parameters
@@ -616,10 +736,6 @@ Parameters
    -  13: DPP
    -  14: WPA3_ENTERPRISE
    -  15: WPA2_WPA3_ENTERPRISE
-
-   .. only:: esp32c6
-
-     -  10: WPA3_ENT_SUITE_B_192_BIT
 
 -  **<"ssid">**: string parameter showing SSID of the AP.
 -  **<rssi>**: signal strength.
@@ -758,7 +874,7 @@ Notes
 ^^^^^
 
 -  This command works only when :ref:`AT+CWMODE=2 <cmd-MODE>` or :ref:`AT+CWMODE=3 <cmd-MODE>`.
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+-  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The default SSID varies from devices to device as it consists of the MAC address of the device. You can use :ref:`AT+CWSAP? <cmd-SAP>` to query the default SSID.
 
 Example
@@ -921,7 +1037,7 @@ Parameters
 
 Notes
 ^^^^^
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+-  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  This Set Command correlates with the commands that set static IP, such as :ref:`AT+CIPSTA <cmd-IPSTA>` and :ref:`AT+CIPAP <cmd-IPAP>`:
 
    -  If DHCP is enabled, static IPv4 address will be disabled;
@@ -994,7 +1110,7 @@ Parameters
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+-  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  This AT command works only when both SoftAP and DHCP server are enabled for {IDF_TARGET_NAME}.
 -  The IPv4 address should be in the same network segment as the IPv4 address of {IDF_TARGET_NAME} SoftAP.
 
@@ -1054,7 +1170,7 @@ Parameters
 Note
 ^^^^^
 
--  The configuration changes will be saved in the NVS area.
+-  The configuration changes will be saved in the NVS partition.
 
 Example
 ^^^^^^^^
@@ -1107,10 +1223,7 @@ Parameters
    -  bit0: 802.11b protocol standard.
    -  bit1: 802.11g protocol standard.
    -  bit2: 802.11n protocol standard.
-
-   .. only:: esp32 or esp32c3 or esp32c6
-
-     - bit3: `802.11 LR Espressif-patented protocol standard <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#long-range-lr>`_.
+   -  bit3: `802.11 LR Espressif-patented protocol standard <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#long-range-lr>`_.
 
    .. only:: esp32c6
 
@@ -1119,6 +1232,7 @@ Parameters
 Note
 ^^^^^
 
+-  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-protocol-mode>`_ for the PHY mode supported by the {IDF_TARGET_NAME} device.
 
 .. only:: esp32 or esp32c3 or esp32c2 or esp32s2
@@ -1173,10 +1287,7 @@ Parameters
    -  bit0: 802.11b protocol standard.
    -  bit1: 802.11g protocol standard.
    -  bit2: 802.11n protocol standard.
-
-   .. only:: esp32 or esp32c3 or esp32c6
-
-     - bit3: `802.11 LR Espressif-patented protocol standard <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#long-range-lr>`_.
+   -  bit3: `802.11 LR Espressif-patented protocol standard <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#long-range-lr>`_.
 
    .. only:: esp32c6
 
@@ -1185,6 +1296,7 @@ Parameters
 Note
 ^^^^^
 
+-  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-protocol-mode>`_ for the PHY mode supported by the {IDF_TARGET_NAME} device.
 
 .. only:: esp32 or esp32c3 or esp32c2 or esp32s2
@@ -1249,7 +1361,7 @@ Notes
 
 .. list::
 
-  - The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+  - The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
   :esp32: - The MAC address of {IDF_TARGET_NAME} Station is different from that of the {IDF_TARGET_NAME} SoftAP and {IDF_TARGET_NAME} Ethernet. Please make sure that you do not set the same MAC address for both of them.
   :esp32c2 or esp32c3 or esp32c6: - The MAC address of {IDF_TARGET_NAME} Station is different from that of the {IDF_TARGET_NAME} SoftAP. Please make sure that you do not set the same MAC address for both of them.
   - Bit 0 of the {IDF_TARGET_NAME} MAC address CANNOT be 1. For example, a MAC address can be "1a:…" but not "15:…".
@@ -1315,7 +1427,7 @@ Notes
 
 .. list::
 
-  - The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+  - The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
   :esp32: - The MAC address of {IDF_TARGET_NAME} SoftAP is different from that of the {IDF_TARGET_NAME} station and {IDF_TARGET_NAME} Ethernet. Please make sure that you do not set the same MAC address for both of them.
   :esp32c2 or esp32c3 or esp32c6: - The MAC address of {IDF_TARGET_NAME} SoftAP is different from that of the {IDF_TARGET_NAME} station. Please make sure that you do not set the same MAC address for both of them.
   - Bit 0 of the {IDF_TARGET_NAME} MAC address CANNOT be 1. For example, a MAC address can be "18:…" but not "15:…".
@@ -1389,7 +1501,7 @@ Notes
 ^^^^^
 
 -  For the query command, only when the {IDF_TARGET_NAME} station is connected to an AP or the static IP address is configured can its IP address be queried.
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+-  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The Set Command correlates with the commands that set DHCP, such as :ref:`AT+CWDHCP <cmd-DHCP>`.
 
    -  If static IPv4 address is enabled, DHCP will be disabled;
@@ -1463,7 +1575,7 @@ Notes
 ^^^^^
 
 -  The set command is just applied to the IPv4 network, but not the IPv6 network.
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+-  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The set command correlates with the commands that set DHCP, such as :ref:`AT+CWDHCP <cmd-DHCP>`.
 
    -  If static IPv4 address is enabled, DHCP will be disabled;
@@ -1728,8 +1840,8 @@ Parameters
 -  **<"password">**: password for phase 2. Range: 1 ~ 32 bytes. For the EAP-PEAP and EAP-TTLS method, you must set this parameter. For the EAP-TLS method, you do not need to.
 -  **<security>**:
 
-   -  Bit0: Client certificate.
-   -  Bit1: Server certificate.
+   -  Bit0: provide the certificate for the server to verify.
+   -  Bit1: load the CA certificate to verify the server's certificate.
 
 -  **[<jeap_timeout>]**: maximum timeout for :ref:`AT+CWJEAP <cmd-JEAP>` command. Unit: second. Default: 15. Range: [3,600].
 
@@ -1828,9 +1940,11 @@ The WPA2 Enterprise error code will be prompt as ``ERR CODE:0x<%08x>``.
 Note
 ^^^^^
 
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+-  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  This command requires Station mode to be active.
 -  TLS mode will use client certificate. Please make sure it is enabled.
+-  If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the WPA2 Enterprise certificate. If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
+-  If ``<security>`` is configured to 2, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+CWJEAP <cmd-JEAP>` command. (You can send :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>` command to configure the current time, and send :ref:`AT+SYSTIMESTAMP? <cmd-SETTIME>` command to query the current time.)
 
 .. _cmd-HOSTNAME:
 
@@ -1938,7 +2052,7 @@ Set the Wi-Fi country code information.
 
 ::
 
-    AT+ CWCOUNTRY=<country_policy>,<"country_code">,<start_channel>,<total_channel_count>
+    AT+CWCOUNTRY=<country_policy>,<"country_code">,<start_channel>,<total_channel_count>
 
 **Response:**
 

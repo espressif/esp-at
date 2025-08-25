@@ -291,3 +291,56 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
         - Description
       * - RainMaker AT Messages
         - Please refer to :ref:`ESP-AT RainMaker Message Reports (active) <rm-at-messages>`
+
+.. _at-log-messages:
+
+AT Logs
+===========
+
+Through the ``Log Output`` pin described in :doc:`../Get_Started/Hardware_connection`, ESP-AT outputs rich log information to help you understand its runtime status. You can also :doc:`enable different log configurations <../Compile_and_Develop/How_to_enable_more_AT_debug_logs>` to view more detailed log information. The following table lists some common log messages and their explanations:
+
+
+.. list-table:: ESP-AT Logs
+    :header-rows: 1
+
+    * - AT Log
+      - Description
+    * - at-common: write dlen:0
+      - The RX of the AT command port received unexpected data, usually containing multiple ``\0`` characters. If you are communicating with the MCU via UART, please check the following:
+
+        - Whether the UART RX pin of {IDF_TARGET_NAME} is correctly connected to the TX pin of the MCU
+        - Whether the MCU is sending data not in AT command format
+        - Whether the MCU is correctly configured for UART baud rate, data bits, stop bits, parity, and flow control
+        - Whether the GND of the MCU is correctly connected to the GND pin of {IDF_TARGET_NAME}
+
+    * - at-init: at param mode: ``<mode>``
+      - Parameter mode during AT initialization
+
+        - 0: No parameters
+        - 1: Use parameters in the mfg_nvs partition
+        - 2: Use parameters in the factory_param partition
+
+    * - at-init: ``v4.1.0.0`` (``<src>``)
+      - AT firmware version number and the source of the corresponding firmware build
+    * - at-wifi: negotiated phy mode: ``<phy_mode>``
+      - PHY mode negotiated when Wi-Fi Station connects to AP
+
+        - 0: Low Rate
+        - 1: 11b
+        - 2: 11g
+        - 3: 11a
+        - 4: HT20
+        - 5: HT40
+        - 6: HE20
+        - 7: VHT20
+
+    * - at-wifi: wifi disconnected, rc:``<reason_code>``
+      - Wi-Fi station disconnection `reason code <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-reason-code>`_
+    * - at-wifi: wifi reconnect..(``<index>``/``<total_count>``)
+      - Wi-Fi station is reconnecting to AP
+    * - at-net: unknown host: ``<hostname>``
+      - Unable to resolve hostname ``<hostname>``, please check DNS settings and network connection
+    * - at-net: send failed, s:``<send_len>`` r:``<ret_len>``
+      - Failed to send data: expected to send ``<send_len>`` bytes, but only ``<ret_len>`` bytes were sent. Please check network connection.
+    * - at-net: link is changed
+      - When AT is acting as a server, the client connection was interrupted during data transmission, and a new client has connected to the server.

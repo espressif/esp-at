@@ -180,7 +180,7 @@ uint32_t esp_at_get_socket_task_stack_size(void)
     return CONFIG_AT_SOCKET_TASK_STACK_SIZE;
 }
 
-uint32_t esp_at_get_netconn_count(void)
+uint32_t esp_at_get_netconn_max_count(void)
 {
     return CONFIG_AT_SOCKET_MAX_CONN_NUM;
 }

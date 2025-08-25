@@ -84,6 +84,7 @@ MQTT AT 命令集
 ^^^^
 
 -  每条 AT 命令的总长度不能超过 256 字节。
+-  如果您想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 MQTT 证书。如果您想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
 -  如果 ``<scheme>`` 配置为 3、5、8、10，为了校验服务器的证书有效期，请在发送 :ref:`AT+MQTTCONN <cmd-MQTTCONN>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（您可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间。）
 
 .. _cmd-MQTTLONGCLIENTID:
@@ -262,6 +263,11 @@ MQTT AT 命令集
 -  **<"lwt_msg">**：遗嘱 message，最大长度：128 字节。
 -  **<lwt_qos>**：遗嘱 QoS，参数可选 0、1、2，默认值：0。
 -  **<lwt_retain>**：遗嘱 retain，参数可选 0 或 1，默认值：0。
+
+说明
+^^^^
+
+- 设置此命令前，应先设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`。
 
 .. _cmd-MQTTALPN:
 
@@ -620,6 +626,15 @@ MQTT AT 命令集
 
 -  **<"topic">**：订阅的 topic。
 -  **<qos>**：订阅的 QoS。
+
+说明
+^^^^
+
+- 由于广域网每个路由节点的 MTU 限制或流量策略管理等，MQTT broker 发送的一条消息，最终可能会被分为多个消息发给 {IDF_TARGET_NAME} 设备，因此 {IDF_TARGET_NAME} 可能会收到多条 ``+MQTTSUBRECV`` 消息。
+- 若 {IDF_TARGET_NAME} 设备收到一条 MQTT 消息，且消息长度超过 1024 字节（包括 MQTT 报头和 MQTT 有效载荷），也会被分为多条 ``+MQTTSUBRECV`` 消息。此时，您可以通过下面方式增加 MQTT 缓冲区来避免此情况。
+
+  - ``./build.py menuconfig`` > ``Component config`` > ``ESP-MQTT Configurations`` > ``MQTT Using custom configurations``
+  - ``./build.py menuconfig`` > ``Component config`` > ``ESP-MQTT Configurations`` > ``MQTT Using custom configurations`` > ``Default MQTT Buffer Size`` > ``1460``
 
 .. _cmd-MQTTUNSUB:
 

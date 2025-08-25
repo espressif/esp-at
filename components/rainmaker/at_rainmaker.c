@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -25,7 +25,7 @@
 #include "esp_bt.h"
 #include "esp_ota_ops.h"
 
-#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
 #include "bootloader_custom_ota.h"
 #include "at_compress_ota.h"
 #endif
@@ -338,7 +338,7 @@ static void rmaker_response_result(at_rainmaker_mess_t message)
     return;
 }
 
-#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
 static inline esp_err_t esp_rmaker_ota_post_event(esp_rmaker_event_t event_id, void* data, size_t data_size)
 {
     return esp_event_post(RMAKER_OTA_EVENT, event_id, data, data_size, portMAX_DELAY);
@@ -567,7 +567,7 @@ esp_err_t rmaker_ota_handle(esp_rmaker_ota_handle_t ota_handle, esp_rmaker_ota_d
     }
 
     /* WiFi MCU OTA */
-#ifdef CONFIG_BOOTLOADER_COMPRESSED_ENABLED
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
     return rmaker_wifi_mcu_ota(ota_handle, ota_data);
 #else
     return esp_rmaker_ota_default_cb(ota_handle, ota_data);

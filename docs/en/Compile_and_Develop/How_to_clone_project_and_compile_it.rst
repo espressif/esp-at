@@ -73,7 +73,7 @@ To get ESP-AT, navigate to your installation directory and clone the repository 
     cd %userprofile%\esp
     git clone --recursive https://github.com/espressif/esp-at.git
 
-If you are located in China or have difficulties to access GitHub, you can also use ``git clone https://jihulab.com/esp-mirror/espressif/esp-at.git`` or ``git clone https://gitee.com/EspressifSystems/esp-at.git`` to get ESP-AT, which may be faster.
+If you are in China or regions with restricted GitHub access, ESP-AT may be cloned faster from the following mirror: ``git clone https://jihulab.com/esp-mirror/espressif/esp-at.git``.
 
 ESP-AT will be downloaded into ``~/esp/esp-at`` on Linux or macOS, or ``%userprofile%\esp\esp-at`` on Windows.
 

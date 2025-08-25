@@ -31,6 +31,7 @@ TCP/IP AT Commands
 -  :ref:`AT+CIUPDATE <cmd-UPDATE>`: Upgrade the firmware through Wi-Fi.
 -  :ref:`AT+CIPDINFO <cmd-IPDINFO>`: Set "+IPD" message mode.
 -  :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`: Query/Set SSL clients.
+-  :ref:`AT+CIPSSLCCIPHER <cmd-SSLCCIPHER>`: Query/Set the cipher suite of the SSL client.
 -  :ref:`AT+CIPSSLCCN <cmd-SSLCCN>`: Query/Set the Common Name of the SSL client.
 -  :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>`: Query/Set SSL client Server Name Indication (SNI).
 -  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`: Query/Set SSL client Application Layer Protocol Negotiation (ALPN).
@@ -114,6 +115,7 @@ Parameters
 Notes
 ^^^^^
 
+-  The configuration changes will be saved in the NVS partition if ``AT+SYSSTORE=1``.
 -  You should enable IPv6 network before using IPv6 related upper layer AT commands (TCP/UDP/SSL/PING/DNS based on IPv6 network, also known as TCP6/UDP6/SSL6/PING6/DNS6 or TCPv6/UDPv6/SSLv6/PINGv6/DNSv6).
 
 .. _cmd-IPSTATE:
@@ -453,6 +455,7 @@ Notes
 -  The number of SSL connections depends on available memory and the maximum number of connections.
 -  SSL connection needs a large amount of memory. Insufficient memory may cause the system reboot.
 -  If the ``AT+CIPSTART`` is based on an SSL connection and the timeout of each packet is 10 s, the total timeout will be much longer depending on the number of handshake packets.
+-  Some SSL servers require the SSL client to support the SNI extension field during connection. Please configure SNI using the :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>` command before establishing an SSL connection. Typically, the value of SNI is the domain name of the server.
 
 - To establish a SSL connection based on an IPv6 network, do as follows:
 
@@ -956,8 +959,9 @@ Notes
 ^^^^^
 
 -  This mode can only be changed after all connections are disconnected.
--  If you want to set the multiple connections mode, {IDF_TARGET_NAME} should be in the :term:`Normal Transmission Mode` (:ref:`AT+CIPMODE=0 <cmd-IPMODE>`).  
+-  If you want to set the multiple connections mode, {IDF_TARGET_NAME} should be in the :term:`Normal Transmission Mode` (:ref:`AT+CIPMODE=0 <cmd-IPMODE>`).
 -  If you want to set the single connection mode when the TCP/SSL server is running, you should delete the server first. (:ref:`AT+CIPSERVER=0 <cmd-SERVER>`).
+-  When transmitting large amounts of data in parallel over multiple connections, memory peaks may be insufficient. Please test according to your product's actual situation and implement MCU handling for insufficient memory.
 
 Example
 ^^^^^^^^
@@ -988,7 +992,7 @@ Query the TCP/SSL server status.
 
 ::
 
-    +CIPSERVER:<mode>[,<port>,<"type">][,<CA enable>]
+    +CIPSERVER:<mode>[,<port>,<"type">,<CA enable>,<netif>]
 
     OK
 
@@ -999,7 +1003,7 @@ Set Command
 
 ::
 
-    AT+CIPSERVER=<mode>[,<param2>][,<"type">][,<CA enable>]
+    AT+CIPSERVER=<mode>[,<param2>][,<"type">][,<CA enable>][,<netif>]
 
 **Response:**
 
@@ -1028,6 +1032,15 @@ Parameters
 
    -  0: disable CA.
    -  1: enable CA.
+
+- **<netif>**: Specify the network interface for the server to listen on. Default: 0.
+
+  .. list::
+
+    - 0: all network interfaces
+    - 1: Wi-Fi station interface
+    - 2: Wi-Fi SoftAP interface
+    :esp32: - 3: Ethernet interface
 
 Notes
 ^^^^^
@@ -1751,9 +1764,82 @@ Notes
 ^^^^^
 
 -  If you want this configuration to take effect immediately, run this command before establishing an SSL connection.
--  The configuration changes will be saved in the NVS area. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL Wi-Fi :term:`Passthrough Mode` on power-up, the {IDF_TARGET_NAME} will establish an SSL connection based on this configuration when powered up next time.
--  If you want to use your own certificate or use multiple sets of certificates, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
+-  The configuration changes will be saved in the NVS partition. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL Wi-Fi :term:`Passthrough Mode` on power-up, the {IDF_TARGET_NAME} will establish an SSL connection based on this configuration when powered up next time.
+-  If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the SSL certificate. If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
 -  If ``<auth_mode>`` is configured to 2 or 3, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+CIPSTART <cmd-START>` command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNPTIME? <cmd-SNTPT>` command to query the current time.)
+
+.. _cmd-SSLCCIPHER:
+
+:ref:`AT+CIPSSLCCIPHER <TCPIP-AT>`: Query/Set the Cipher Suite of the SSL Client
+--------------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Function:**
+
+Query the cipher suites supported by {IDF_TARGET_NAME} as an SSL client.
+
+**Command:**
+
+::
+
+    AT+CIPSSLCCIPHER?
+
+**Response:**
+
+::
+
+    +CIPSSLCCIPHER:<idx>,<cipher_suite>
+
+    OK
+
+Set Command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+    // Single connection: (AT+CIPMUX=0)
+    AT+CIPSSLCCIPHER=<counts>[,<cipher_suite>][...][,<cipher_suite>]
+
+    // Multiple connections: (AT+CIPMUX=1)
+    AT+CIPSSLCCIPHER=<link ID>,<counts>[,<cipher_suite>][...][,<cipher_suite>]
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+- **<idx>**: the index number of the cipher suite, starting from 0.
+- **<link ID>**: network connection ID (0 ~ max). For multiple connections, if the value is max, it means all connections. The default value is 5.
+- **<counts>**: number of cipher suites. The maximum value is limited by the maximum command length of 256 bytes.
+
+  - 0: Clear the configured cipher suites.
+  - Others: Set the number of cipher suites.
+
+- **<cipher_suite>**: the cipher suite in ClientHello. The corresponding values are defined in `ssl_ciphersuites.h <https://github.com/espressif/mbedtls/blob/master/include/mbedtls/ssl_ciphersuites.h>`_.
+
+Notes
+^^^^^
+
+- If you want this configuration to take effect immediately, run this command before establishing the SSL connection.
+
+Example
+^^^^^^^
+
+::
+
+    // Single connection: (AT+CIPMUX=0), cipher suites are TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 and TLS_ECDHE_ECDSA_WITH_AES_256_CCM
+    AT+CIPSSLCCIPHER=2,0xC023,0xC0AD
+
+    // Multiple connections: (AT+CIPMUX=1), cipher suites are TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 and TLS_ECDHE_ECDSA_WITH_AES_256_CCM
+    AT+CIPSSLCCIPHER=0,2,0xC023,0xC0AD
 
 .. _cmd-SSLCCN:
 
@@ -2053,7 +2139,7 @@ Parameter
 Note
 ^^^^^
 
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+-  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 
 Example
 ^^^^^^^^
@@ -2225,7 +2311,8 @@ Query the length of the entire data buffered for the connection.
 
 ::
 
-    +CIPRECVLEN:<data length of link0>,<data length of link1>,<data length of link2>,<data length of link3>,<data length of link4>
+    +CIPRECVLEN:<data length of link>[...][,<data length of link>]
+
     OK
 
 Parameters
@@ -2375,7 +2462,7 @@ Parameters
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS area if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+-  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The three parameters cannot be set to the same server.
 -  When ``<enable>`` is set to 0, the DNS server may change according to the configuration of the router which the {IDF_TARGET_NAME} is connected to.
 
@@ -2397,14 +2484,24 @@ Example
 :ref:`AT+MDNS <WiFi-AT>`: Configure the mDNS Function
 ------------------------------------------------------------
 
+.. list::
+
+  * :ref:`cmd-mdns-service`
+  * :ref:`cmd-mdns-query`
+
+.. _cmd-mdns-service:
+
+Device Starts an mDNS Service
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Set Command
-^^^^^^^^^^^
+"""""""""""
 
 **Command:**
 
 ::
 
-    AT+MDNS=<enable>[,<"hostname">,<"service_type">,<port>][,<"instance">][,<"proto">][,<txt_number>][,<"key">,<"value">][...]
+    AT+MDNS=<mode>[,<"hostname">,<"service_type">,<port>][,<"instance">][,<"proto">][,<txt_number>][,<"key">,<"value">][...]
 
 **Response:**
 
@@ -2415,9 +2512,9 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<enable>**:
+-  **<mode>**:
 
-   -  1: Enable the mDNS function. The following parameters need to be set.
+   -  1: Start an mDNS service. The following parameters need to be set.
    -  0: Disable the mDNS function. Please do not set the following parameters.
 
 - **<"hostname">**: mDNS host name.
@@ -2435,13 +2532,128 @@ Example
 
 ::
 
-    // Enable mDNS function. Set the hostname to "espressif", service type to "_iot", and port to 8080.
+    // Start an mDNS service. Set the hostname to "espressif", service type to "_iot", and port to 8080.
     AT+MDNS=1,"espressif","_iot",8080  
 
     // Disable mDNS function
     AT+MDNS=0
 
-Detailed examples can be found in: :ref:`mDNS Example <example-mdns>`.
+Detailed examples can be found in: :ref:`mDNS Example <example-mdns-service>`.
+
+.. _cmd-mdns-query:
+
+Query mDNS Services in the Local Network
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Set Command
+"""""""""""
+
+**Command:**
+
+::
+
+    // Query PTR records in the local network
+    AT+MDNS=<mode>,<type>,<"service">,<"proto">[,<timeout>][,<max_results>]
+
+    // Query TXT, SRV, or TXT + SRV records in the local network
+    AT+MDNS=<mode>,<type>,<"instance">,<"service">,<"proto">[,<timeout>][,<max_results>]
+
+    // Query A, AAAA, or A + AAAA records in the local network
+    AT+MDNS=<mode>,<type>,<"hostname">[,<timeout>][,<max_results>]
+
+**Response:**
+
+::
+
+    +MDNS:<data_len>,
+    IF=<netif>
+    IP=<ip_type>
+    PTR=<instance>
+    SRV=<hostname>:<port>
+    TXT=<key>=<value>
+    A=<ip4>
+    AAAA=<ip6>
+
+    OK
+
+Command Parameters
+""""""""""""""""""
+
+- **<mode>**:
+
+  - 2: Query mDNS services in the local network, subsequent parameters are required
+  - 0: Disable mDNS function, subsequent parameters are not required
+
+- **<type>**: Query type.
+
+  - 0: PTR record
+  - 1: TXT record
+  - 2: SRV record
+  - 3: TXT + SRV record
+  - 4: A record
+  - 5: AAAA record
+  - 6: A + AAAA record
+
+- **<"instance">**: mDNS instance name. Maximum length: 64 bytes, any length exceeding this will be automatically truncated.
+- **<"hostname">**: Host name. Maximum length: 64 bytes, any length exceeding this will be automatically truncated.
+- **<"service">**: mDNS service type. Maximum length: 64 bytes, any length exceeding this will be automatically truncated.
+- **<"proto">**: mDNS service protocol. Maximum length: 64 bytes, any length exceeding this will be automatically truncated. Recommended values: ``_tcp`` or ``_udp``.
+- **<timeout>**: Query timeout in milliseconds. Default: 5000. Range: [1000,180000]. If the number of results does not reach ``<max_results>``, the query results will be returned after the timeout.
+- **<max_results>**: Maximum number of query results. Default: 1. Range: [1,255]. If the number of results does not reach ``<max_results>``, the query results will be returned after the timeout. Otherwise, the results will be returned immediately.
+
+Response Parameters
+"""""""""""""""""""
+
+- **<data_len>**: Length of the query result.
+- **<netif>**: Network interface where the mDNS service is located.
+
+  - 1: Wi-Fi Station interface
+  - 2: Wi-Fi SoftAP interface
+
+  .. only:: esp32
+
+    - 3: Ethernet interface
+
+- **<ip_type>**: IP address type of the network interface.
+
+  - 0: IPv4 address
+  - 1: IPv6 address
+
+- **<instance>**: mDNS instance name.
+- **<hostname>**: Host name.
+- **<port>**: mDNS service port.
+- **<key>**: Key of the TXT record.
+- **<value>**: Value of the TXT record.
+- **<ip4>**: IPv4 address where the mDNS service is located.
+- **<ip6>**: IPv6 address where the mDNS service is located.
+
+Example
+"""""""
+
+::
+
+    // Publish mDNS service on PC using avahi-publish
+    avahi-publish -s my_instance _my_printer._tcp 35 "version=v4.1.0.0"
+
+    // Query PTR records in the local network via AT command
+    AT+MDNS=2,0,"_my_printer","_tcp"
+
+    // Response result
+    +MDNS:234,
+    IF=1
+    IP=0
+    PTR=my_instance
+    SRV=espressif-1.local:35
+    TXT=version=v4.1.0.0
+    A=192.168.200.249
+    AAAA=240e:1234:204c:bd02:d80f:8c45:3576:2574
+    AAAA=240e:1234:204c:bd02:f043:47f0:7c39:0002
+    AAAA=240e:1234:204c:bd02:2971:f412:14c6:fa00
+
+    OK
+
+    // Disable mDNS function
+    AT+MDNS=0
 
 .. _cmd-TCPOPT:
 
@@ -2522,8 +2734,9 @@ Parameters
 Notes
 ^^^^^
 
+-  The configuration changes will be saved in the NVS partition if ``AT+SYSSTORE=1``.
 -  Before configuring these socket options, **please make sure you fully understand the function of them and the possible impact after configuration**.
--  The SO_LINGER option is not recommended to be set to a large value. For example, if you set SO_LINGER value to 60, then :ref:`AT+CIPCLOSE <cmd-CLOSE>` command will block for 60 seconds if {IDF_TARGET_NAME} cannot receive TCP FIN packet from the remote TCP peer due to network issues, so {IDF_TARGET_NAME} is unable to respond to any other AT commands. Therefore, it is recommended to keep the default value of the SO_LINGER option.
--  The TCP_NODELAY option is used for situations with small throughput but high real-time requirements. If this option is enabled, :term:`LwIP` will speed up TCP transmission, but in a poor network environment, the throughput will be reduced due to retransmission. Therefore, it is recommended to keep the default value of the TCP_NODELAY option.
+-  It is not recommended to set a large value for the SO_LINGER option. For example, if SO_LINGER is set to 60, the :ref:`AT+CIPCLOSE <cmd-CLOSE>` command may block for up to 60 seconds if {IDF_TARGET_NAME} does not receive a TCP FIN packet from the remote TCP peer due to network issues. During this period, {IDF_TARGET_NAME} will be unable to respond to any other AT commands. Therefore, it is recommended to keep the SO_LINGER option at its default value.
+-  The TCP_NODELAY option is used for situations with low throughput but high real-time requirements. When enabled, :term:`LwIP` will speed up TCP transmission. However, in poor network conditions, this may lead to increased retransmissions and reduced throughput. Therefore, it is recommended to keep the TCP_NODELAY option at its default value.
 -  The SO_SNDTIMEO option is used for situations where the keepalive parameter is not configured in :ref:`AT+CIPSTART <cmd-START>` command. After this option is configured, :ref:`AT+CIPSEND <cmd-SEND>`, :ref:`AT+CIPSENDL <cmd-SENDL>`, and :ref:`AT+CIPSENDEX <cmd-SENDEX>` commands will exit within this timeout, regardless of whether data are sent successfully or not. Here, SO_SNDTIMEO is recommended to be set to 5 ~ 10 seconds.
 -  The SO_KEEPALIVE option is used for actively and regularly detecting whether the connection is disconnected. It is generally recommended to configure this option when AT is used as a TCP server. After this option is configured, additional network bandwidth will be cost. Recommended value of SO_KEEPALIVE should be not less than 60 seconds.

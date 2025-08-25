@@ -73,7 +73,7 @@
     cd %userprofile%\esp
     git clone --recursive https://github.com/espressif/esp-at.git
 
-如果您位于中国或访问 GitHub 有困难，也可以使用 ``git clone https://jihulab.com/esp-mirror/espressif/esp-at.git`` 或者 ``git clone https://gitee.com/EspressifSystems/esp-at.git`` 来获取 ESP-AT，可能会更快。
+如果您在中国或无法访问 GitHub 的地区，可以通过以下镜像更快地克隆 ESP-AT：``git clone https://jihulab.com/esp-mirror/espressif/esp-at.git``。
 
 ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userprofile%\esp\esp-at``。
 

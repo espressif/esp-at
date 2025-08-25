@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
 
 import sys, os, argparse
@@ -194,10 +194,11 @@ at_net_tx_caller = """
 """
 
 # Find the entry of netif tx returns
-at_net_tx_ret_pos_pattern = 'if (ret == ESP_OK) {'
+at_net_tx_ret_pos_pattern_v54_before = 'if (ret == ESP_OK) {'   # < v5.4
+at_net_tx_ret_pos_pattern_v54_after = 'return ret;'             # >= v5.4
 at_net_tx_ret_caller = """
     if (ret != ESP_OK) {
-        ESP_LOGE("@@if-tx", "netif tx error, tot_len:%d len:%d ret: %d", q->tot_len, q->len, ret);
+        ESP_LOGE("@@if-tx", "netif tx error, tot_len:%d len:%d ret: %d", p->tot_len, p->len, ret);
     }
 """
 
@@ -311,7 +312,13 @@ def at_patch_net_debug_snippet(args):
                 raise Exception('No TX caller entry found.')
         data = data[:pos] + at_net_tx_caller + '\n    '  + data[pos:]
 
-        pos = data.find(at_net_tx_ret_pos_pattern)
+        # add tx caller of netif tx returns for esp-idf version < v5.4
+        pos = data.find(at_net_tx_ret_pos_pattern_v54_before)
+        if pos > 0:
+            data = data[:pos] + at_net_tx_ret_caller + '\n    '  + data[pos:]
+
+        # add tx caller of netif tx returns for esp-idf version >= v5.4
+        pos = data.find(at_net_tx_ret_pos_pattern_v54_after)
         if pos > 0:
             data = data[:pos] + at_net_tx_ret_caller + '\n    '  + data[pos:]
 

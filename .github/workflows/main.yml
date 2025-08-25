@@ -52,18 +52,20 @@ jobs:
       artifacts_name: esp32-sdio-at
     secrets: inherit
 
-  build-esp32-at-all-function-test-without-bt:
+  build-esp32-at-all-wifi-features-no-bt:
     uses: ./.github/workflows/build_template_esp32.yml
     with:
       module_name: WROVER-32
-      artifacts_name: esp32-at-all-function-test-without-bt
+      artifacts_name: esp32-at-all-wifi-features-no-bt
+      enable_all_wifi_features_no_bt: true
     secrets: inherit
 
-  build-esp32-at-all-function-test-just-bt:
+  build-esp32-at-all-bt-features-no-wifi:
     uses: ./.github/workflows/build_template_esp32.yml
     with:
       module_name: WROVER-32
-      artifacts_name: esp32-at-all-function-test-just-bt
+      artifacts_name: esp32-at-all-bt-features-no-wifi
+      enable_all_bt_features_no_wifi: true
     secrets: inherit
 
   build-esp32c3-mini-1-at:
@@ -80,11 +82,12 @@ jobs:
       artifacts_name: esp32c3-spi-at
     secrets: inherit
 
-  build-esp32c3-at-full-function-test:
+  build-esp32c3-at-all-wifi-features:
     uses: ./.github/workflows/build_template_esp32c3.yml
     with:
       module_name: MINI-1
-      artifacts_name: esp32c3-at-full-function-test
+      artifacts_name: esp32c3-at-all-wifi-features
+      enable_all_wifi_features: true
     secrets: inherit
 
   build-esp32c3-rainmaker:
@@ -127,6 +130,14 @@ jobs:
     with:
       module_name: ESP32C2-4MB-G2
       artifacts_name: esp32c2-4MB-g2-at
+    secrets: inherit
+
+  build-esp32c2-4mb-ble-g2-at:
+    uses: ./.github/workflows/build_template_esp32c2.yml
+    with:
+      module_name: ESP32C2-4MB-G2
+      artifacts_name: esp32c2-4MB-ble-g2-at
+      enable_ble_cmds: true
     secrets: inherit
 
   build-esp32c2-2mb-g2-at:

@@ -73,30 +73,44 @@ ESP-AT 的每个主要版本和次要版本都有相应的支持期限。支持�
      - IDF 版本
      - IDF 支持期限截止
      - AT 新版本迭代计划
+   * - **v4.1.1.0** (2025.7.31)
+     -
+       * ESP32
+       * ESP32-C2
+       * ESP32-C3
+       * ESP32-C6
+       * ESP32-S2
+     - ~v5.4.2 (`8ad0d3d8 <https://github.com/espressif/esp-idf/commit/8ad0d3d8>`_)
+     - 2027.7.5
+     - 2027.2.5 - 2027.4.5
+   * - **v4.1.0.0** (2025.7.18)
+     -
+       * ESP32
+       * ESP32-C2
+       * ESP32-C3
+       * ESP32-C6
+     - ~v5.4.2 (`8ad0d3d8 <https://github.com/espressif/esp-idf/commit/8ad0d3d8>`_)
+     - 2027.7.5
+     - 已发布新版本 v4.1.1.0
    * - **v4.0.0.0** (2023.12.29)
      - ESP32-C6
      - `v5.1.2 <https://github.com/espressif/esp-idf/releases/tag/v5.1.2>`_
      - 2025.12.30
-     - 2025.7.30 - 2025.9.30
+     - 已发布新版本 v4.1.1.0
    * - **v3.4.0.0** (2024.6.7)
      -
        * ESP32
        * ESP32-S2
      - `v5.0.6 <https://github.com/espressif/esp-idf/releases/tag/v5.0.6>`_
      - 2025.5.29
-     - 2024.12.29 - 2025.2.28
+     - 已发布新版本 v4.1.1.0
    * - **v3.3.0.0** (2024.5.9)
      -
        * ESP32-C2
        * ESP32-C3
      - `v5.0.6 <https://github.com/espressif/esp-idf/releases/tag/v5.0.6>`_
      - 2025.5.29
-     - 2024.12.29 - 2025.2.28
-   * - **v3.2.1.0** (2024.11.4)
-     - ESP32
-     - ~v5.0.3 (`24b9d38 <https://github.com/espressif/esp-idf/commit/24b9d38>`_)
-     - 2025.5.29
-     - ESP32 已发布新版本 v3.4.0.0
+     - 已发布新版本 v4.1.1.0
 
 **ESP-AT 各发布版本支持期限如下：**
 

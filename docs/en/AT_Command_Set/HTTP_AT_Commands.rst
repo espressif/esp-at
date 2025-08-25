@@ -13,6 +13,7 @@ HTTP AT Commands
 -  :ref:`AT+HTTPCPUT <cmd-HTTPCPUT>`: Put HTTP data of specified length
 -  :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>`: Set/Get long HTTP URL
 -  :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>`: Set/Query HTTP request headers
+-  :ref:`AT+HTTPCFG <cmd-HTTPCFG>`: Set HTTP Client Configuration
 -  :ref:`HTTP AT Error Codes <cmd-HTTPErrCode>`
 
 .. _cmd-http-intro:
@@ -415,78 +416,113 @@ Example
     // Download HTTP resource
     AT+HTTPCGET="https://docs.espressif.com/projects/esp-at/en/latest/{IDF_TARGET_PATH_NAME}/index.html"
 
+.. _cmd-HTTPCFG:
+
+:ref:`AT+HTTPCFG <HTTP-AT>`: Set HTTP Client Configuration
+----------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Command:**
+
+::
+
+  AT+HTTPCFG=<auth_mode>[,<pki_number>][,<ca_number>]
+
+
+**Response:**
+
+::
+
+  OK
+
+Parameters
+^^^^^^^^^^
+
+- **<auth_mode>**:
+
+  - 0: No authentication, in this case, ``<pki_number>`` and ``<ca_number>`` parameters are not required;
+  - 1: ESP-AT provides HTTP client certificate for HTTP server CA certificate verification;
+  - 2: ESP-AT HTTP client loads CA certificate to verify the server's certificate;
+  - 3: Mutual authentication.
+
+- **<pki_number>**: Index of certificate and private key. If there is only one certificate and private key, the value should be 0.
+- **<ca_number>**: Index of CA. If there is only one CA, the value should be 0.
+
+Notes
+^^^^^
+
+- By default, AT firmware does not support HTTP certificate configuration. You can enable it via ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support`` > ``AT HTTP authentication method``.
+- The parameters configured by this command are global. Once set, all HTTP commands will share this configuration.
+- If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the WebSocket certificate. If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
+- If ``<auth_mode>`` is set to 2 or 3, to verify the validity period of the server certificate, please ensure that {IDF_TARGET_NAME} has obtained the current time before sending other HTTP commands. (You can configure SNTP and obtain the current time by sending the :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command, and query the current time by sending the :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` command.)
+
 .. _cmd-HTTPErrCode:
 
 :ref:`HTTP AT Error Codes <HTTP-AT>`
 ------------------------------------
 
--  HTTP Client:
+When :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` is enabled, if an HTTP client request fails, AT will return an error code. The error code format is:
 
-   .. list-table::          
-      :header-rows: 1         
-          
-      * - HTTP Client Error Code
-        - Description      
-      * - 0x7000
-        - Failed to Establish Connection
-      * - 0x7190
-        - Bad Request  
-      * - 0x7191
-        - Unauthorized  
-      * - 0x7192
-        - Payment Required 
-      * - 0x7193
-        - Forbidden 
-      * - 0x7194
-        - Not Found  
-      * - 0x7195
-        - Method Not Allowed  
-      * - 0x7196
-        - Not Acceptable 
-      * - 0x7197
-        - Proxy Authentication Required
-      * - 0x7198
-        - Request Timeout
-      * - 0x7199
-        - Conflict
-      * - 0x719a
-        - Gone
-      * - 0x719b
-        - Length Required
-      * - 0x719c
-        - Precondition Failed
-      * - 0x719d
-        - Request Entity Too Large
-      * - 0x719e
-        - Request-URI Too Long
-      * - 0x719f
-        - Unsupported Media Type
-      * - 0x71a0
-        - Requested Range Not Satisfiable
-      * - 0x71a1
-        - Expectation Failed
+::
 
--  HTTP Server:
+  ERR CODE:0x010a7xxx
 
-   .. list-table::          
-      :header-rows: 1 
+Where ``01`` is the module identifier, ``0a`` is the module's response result to the executed AT command, and ``7xxx`` represents an HTTP error code. If ``xxx`` falls within the range of standard HTTP status codes, it indicates a standard HTTP status code; otherwise, it indicates an internal error code specific to AT HTTP. The following table lists some common HTTP status codes. For more details, please refer to `RFC 2616 <https://datatracker.ietf.org/doc/html/rfc2616#section-6.1.1>`_.
 
-      * - HTTP Server Error Code
-        - Description 
-      * - 0x71f4
-        - Internal Server Error
-      * - 0x71f5
-        - Not Implemented
-      * - 0x71f6
-        - Bad Gateway
-      * - 0x71f7
-        - Service Unavailable
-      * - 0x71f8
-        - Gateway Timeout
-      * - 0x71f9
-        - HTTP Version Not Supported
+.. list-table::
+  :header-rows: 1
 
--  HTTP AT:
-   
-   - The error code of command ``AT+HTTPCLIENT`` will be ``0x7000+Standard HTTP Error Code`` (For more details about Standard HTTP/1.1 Error Code, see `RFC 2616 <https://datatracker.ietf.org/doc/html/rfc2616>`_).
-   - For example, if AT gets the HTTP error 404 when calling command ``AT+HTTPCLIENT``, it will respond with error code of ``0x7194`` (``hex(0x7000+404)=0x7194``).
+  * - HTTP Error Code (HTTP Status Code)
+    - Description
+  * - 0x7000
+    - Connection Failed
+  * - 0x7190 (400)
+    - Bad Request
+  * - 0x7191 (401)
+    - Unauthorized
+  * - 0x7192 (402)
+    - Payment Required
+  * - 0x7193 (403)
+    - Forbidden
+  * - 0x7194 (404)
+    - Not Found
+  * - 0x7195 (405)
+    - Method Not Allowed
+  * - 0x7196 (406)
+    - Not Acceptable
+  * - 0x7197 (407)
+    - Proxy Authentication Required
+  * - 0x7198 (408)
+    - Request Timeout
+  * - 0x7199 (409)
+    - Conflict
+  * - 0x719a (410)
+    - Gone
+  * - 0x719b (411)
+    - Length Required
+  * - 0x719c (412)
+    - Precondition Failed
+  * - 0x719d (413)
+    - Request Entity Too Large
+  * - 0x719e (414)
+    - Request-URI Too Long
+  * - 0x719f (415)
+    - Unsupported Media Type
+  * - 0x71a0 (416)
+    - Requested Range Not Satisfiable
+  * - 0x71a1 (417)
+    - Expectation Failed
+  * - 0x71f4 (500)
+    - Internal Server Error
+  * - 0x71f5 (501)
+    - Not Implemented
+  * - 0x71f6 (502)
+    - Bad Gateway
+  * - 0x71f7 (503)
+    - Service Unavailable
+  * - 0x71f8 (504)
+    - Gateway Timeout
+  * - 0x71f9 (505)
+    - HTTP Version Not Supported

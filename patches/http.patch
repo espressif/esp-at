@@ -1,0 +1,124 @@
+diff --git a/components/esp_common/src/esp_err_to_name.c b/components/esp_common/src/esp_err_to_name.c
+index 3fe660c9294..116a51c7ecb 100644
+--- a/components/esp_common/src/esp_err_to_name.c
++++ b/components/esp_common/src/esp_err_to_name.c
+@@ -657,7 +657,14 @@ static const esp_err_msg_t esp_err_msg_table[] = {
+ #   ifdef      ESP_ERR_HTTP_CONNECTION_CLOSED
+     ERR_TBL_IT(ESP_ERR_HTTP_CONNECTION_CLOSED),                 /* 28680 0x7008 Read FIN from peer and the connection closed */
+ #   endif
+-    // components/esp-tls/esp_tls_errors.h
++#   ifdef      ESP_ERR_HTTP_READ_TIMEOUT
++    ERR_TBL_IT(ESP_ERR_HTTP_READ_TIMEOUT),                      /* 28683 0x700b HTTP data read timeout */
++#   endif
++#   ifdef      ESP_ERR_HTTP_INCOMPLETE_DATA
++    ERR_TBL_IT(ESP_ERR_HTTP_INCOMPLETE_DATA),                   /* 28684 0x700c Incomplete data received, less than
++                                                                                Content-Length or last chunk */
++#   endif
++// components/esp-tls/esp_tls_errors.h
+ #   ifdef      ESP_ERR_ESP_TLS_BASE
+     ERR_TBL_IT(ESP_ERR_ESP_TLS_BASE),                           /* 32768 0x8000 Starting number of ESP-TLS error codes */
+ #   endif
+diff --git a/components/esp_http_client/esp_http_client.c b/components/esp_http_client/esp_http_client.c
+index 96fb635fccf..c85dad298ae 100644
+--- a/components/esp_http_client/esp_http_client.c
++++ b/components/esp_http_client/esp_http_client.c
+@@ -1314,7 +1314,7 @@ int esp_http_client_read(esp_http_client_handle_t client, char *buffer, int len)
+ 
+ esp_err_t esp_http_client_perform(esp_http_client_handle_t client)
+ {
+-    esp_err_t err;
++    esp_err_t err = ESP_FAIL;
+     do {
+         if (client->process_again) {
+             esp_http_client_prepare(client);
+@@ -1389,23 +1389,53 @@ esp_err_t esp_http_client_perform(esp_http_client_handle_t client)
+                     return err;
+                 }
+                 while (client->response->is_chunked && !client->is_chunk_complete) {
+-                    if (esp_http_client_get_data(client) <= 0) {
++                    int ret = esp_http_client_get_data(client);
++                    if (ret <= 0) {
+                         if (client->is_async && errno == EAGAIN) {
+                             return ESP_ERR_HTTP_EAGAIN;
+                         }
++                        if (client->connection_info.method != HTTP_METHOD_HEAD && !client->is_chunk_complete) {
++                            ESP_LOGE(TAG, "Incomplete chunked data received %d", ret);
++
++                            if (ret == ESP_ERR_TCP_TRANSPORT_CONNECTION_TIMEOUT) {
++                                err = ESP_ERR_HTTP_READ_TIMEOUT;
++                            } else if (ret == ESP_ERR_TCP_TRANSPORT_CONNECTION_CLOSED_BY_FIN) {
++                                err = ESP_ERR_HTTP_CONNECTION_CLOSED;
++                            } else {
++                                err = ESP_ERR_HTTP_INCOMPLETE_DATA;
++                            }
++                        }
+                         ESP_LOGD(TAG, "Read finish or server requests close");
+                         break;
+                     }
+                 }
+                 while (client->response->data_process < client->response->content_length) {
+-                    if (esp_http_client_get_data(client) <= 0) {
++                    int ret = esp_http_client_get_data(client);
++                    if (ret <= 0) {
+                         if (client->is_async && errno == EAGAIN) {
+                             return ESP_ERR_HTTP_EAGAIN;
+                         }
++                        if (client->connection_info.method != HTTP_METHOD_HEAD && client->response->data_process < client->response->content_length) {
++                            ESP_LOGE(TAG, "Incomlete data received, ret=%d, %"PRId64"/%"PRId64" bytes", ret, client->response->data_process, client->response->content_length);
++
++                            if (ret == ESP_ERR_TCP_TRANSPORT_CONNECTION_TIMEOUT) {
++                                err = ESP_ERR_HTTP_READ_TIMEOUT;
++                            } else if (ret == ESP_ERR_TCP_TRANSPORT_CONNECTION_CLOSED_BY_FIN) {
++                                err = ESP_ERR_HTTP_CONNECTION_CLOSED;
++                            } else {
++                                err = ESP_ERR_HTTP_INCOMPLETE_DATA;
++                            }
++                        }
+                         ESP_LOGD(TAG, "Read finish or server requests close");
+                         break;
+                     }
+                 }
++
++                if (err != ESP_OK) {
++                    http_dispatch_event(client, HTTP_EVENT_ERROR, esp_transport_get_error_handle(client->transport), 0);
++                    http_dispatch_event_to_event_loop(HTTP_EVENT_ERROR, &client, sizeof(esp_http_client_handle_t));
++                }
++
+                 http_dispatch_event(client, HTTP_EVENT_ON_FINISH, NULL, 0);
+                 http_dispatch_event_to_event_loop(HTTP_EVENT_ON_FINISH, &client, sizeof(esp_http_client_handle_t));
+ 
+@@ -1423,8 +1453,9 @@ esp_err_t esp_http_client_perform(esp_http_client_handle_t client)
+                 default:
+                 break;
+         }
+-    } while (client->process_again);
+-    return ESP_OK;
++    } while (client->process_again && err == ESP_OK);
++
++    return err;
+ }
+ 
+ int64_t esp_http_client_fetch_headers(esp_http_client_handle_t client)
+diff --git a/components/esp_http_client/include/esp_http_client.h b/components/esp_http_client/include/esp_http_client.h
+index 93c4db97834..8ae8947fa3e 100644
+--- a/components/esp_http_client/include/esp_http_client.h
++++ b/components/esp_http_client/include/esp_http_client.h
+@@ -236,6 +236,8 @@ typedef enum {
+ #define ESP_ERR_HTTP_CONNECTING         (ESP_ERR_HTTP_BASE + 6)     /*!< HTTP connection hasn't been established yet */
+ #define ESP_ERR_HTTP_EAGAIN             (ESP_ERR_HTTP_BASE + 7)     /*!< Mapping of errno EAGAIN to esp_err_t */
+ #define ESP_ERR_HTTP_CONNECTION_CLOSED  (ESP_ERR_HTTP_BASE + 8)     /*!< Read FIN from peer and the connection closed */
++#define ESP_ERR_HTTP_READ_TIMEOUT       (ESP_ERR_HTTP_BASE + 11)    /*!< HTTP data read timeout */
++#define ESP_ERR_HTTP_INCOMPLETE_DATA    (ESP_ERR_HTTP_BASE + 12)    /*!< Incomplete data received, less than Content-Length or last chunk */
+ 
+ /**
+  * @brief      Start a HTTP session
+@@ -273,6 +275,9 @@ esp_http_client_handle_t esp_http_client_init(const esp_http_client_config_t *co
+  * @return
+  *  - ESP_OK on successful
+  *  - ESP_FAIL on error
++ *  - ESP_ERR_HTTP_READ_TIMEOUT if read operation times out
++ *  - ESP_ERR_HTTP_INCOMPLETE_DATA if read operation returns less data than expected
++ *  - ESP_ERR_HTTP_CONNECTION_CLOSED if server closes the connection
+  */
+ esp_err_t esp_http_client_perform(esp_http_client_handle_t client);
+ 
