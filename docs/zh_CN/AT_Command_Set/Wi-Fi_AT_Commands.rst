@@ -8,6 +8,7 @@ Wi-Fi AT 命令集
 -  :ref:`介绍 <cmd-wifi-intro>`
 -  :ref:`AT+CWINIT <cmd-INIT>`：初始化/清理 Wi-Fi 驱动程序
 -  :ref:`AT+CWMODE <cmd-MODE>`：查询/设置 Wi-Fi 模式 (Station/SoftAP/Station+SoftAP)
+-  :ref:`AT+CWBANDWIDTH <cmd-CWBANDWIDTH>`：查询/设置 Wi-Fi 带宽
 -  :ref:`AT+CWSTATE <cmd-WSTATE>`：查询 Wi-Fi 状态和 Wi-Fi 信息
 -  :ref:`AT+CWCONFIG <cmd-CWCONFIG>`：查询/设置 Wi-Fi 非活动时间和监听间隔时间
 -  :ref:`AT+CWJAP <cmd-JAP>`：连接 AP
@@ -199,6 +200,73 @@ Wi-Fi AT 命令集
 ::
 
     AT+CWMODE=3 
+
+.. _cmd-CWBANDWIDTH:
+
+:ref:`AT+CWBANDWIDTH <WiFi-AT>`：查询/设置 Wi-Fi 带宽
+-----------------------------------------------------------------
+
+查询命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+CWBANDWIDTH?
+
+**响应：**
+
+::
+
+    +CWBANDWIDTH:<netif>,<bandwidth_2ghz>,<bandwidth_5ghz>
+
+    OK
+
+设置命令
+^^^^^^^^
+
+**命令：**
+
+::
+
+    AT+CWBANDWIDTH=<netif>,<bandwidth_2ghz>[,<bandwidth_5ghz>]
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+- **<netif>**：
+
+  - 0: Station 接口
+  - 1: SoftAP 接口
+
+- **<bandwidth_2ghz>**：2.4 GHz 带宽
+
+  - 0: 不支持，仅在查询命令中有效
+  - 1: 20 MHz
+  - 2: 40 MHz
+
+.. only:: esp32c5
+
+  - **<bandwidth_5ghz>**：5 GHz 带宽
+
+    - 0: 不支持，仅在查询命令中有效
+    - 1: 20 MHz
+    - 2: 40 MHz
+    - 3: 80 MHz
+    - 4: 160 MHz
+    - 5: 80+80 MHz
+
+说明
+^^^^
+
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，本设置将保存在 NVS 分区
 
 .. _cmd-WSTATE:
 

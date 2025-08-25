@@ -1864,9 +1864,9 @@ TCP-IP AT 示例
      +CIPRECVDATA:4,test
      OK
 
-.. _example-mdns:
+.. _example-mdns-service:
 
-{IDF_TARGET_NAME} 设备开启 mDNS 功能，PC 通过域名连接到设备的 TCP 服务器
+{IDF_TARGET_NAME} 设备开启 mDNS 服务，PC 通过域名连接到设备的 TCP 服务器
 -----------------------------------------------------------------------------
 
 #. 设置 Wi-Fi 模式为 station。
@@ -1916,7 +1916,7 @@ TCP-IP AT 示例
 
      sudo avahi-browse -a -r
 
-#. {IDF_TARGET_NAME} 设备开启 mDNS 功能。
+#. {IDF_TARGET_NAME} 设备开启 mDNS 服务。
 
    命令：
 
@@ -1932,7 +1932,7 @@ TCP-IP AT 示例
 
    说明：
 
-   - 此命令开启 mDNS 功能，表明了设备实例名称为 ``my_instance``，服务类型为 ``_printer``，端口为 ``35``，产品为 ``my_printer``，固件版本为 ``AT-V3.4.1.0``。
+   - 此命令开启 mDNS 服务，表明了设备实例名称为 ``my_instance``，服务类型为 ``_printer``，端口为 ``35``，产品为 ``my_printer``，固件版本为 ``AT-V3.4.1.0``。
 
 #. （可选步骤）PC 端发现 {IDF_TARGET_NAME} 设备。
 

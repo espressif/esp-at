@@ -2484,14 +2484,24 @@ Example
 :ref:`AT+MDNS <WiFi-AT>`: Configure the mDNS Function
 ------------------------------------------------------------
 
+.. list::
+
+  * :ref:`cmd-mdns-service`
+  * :ref:`cmd-mdns-query`
+
+.. _cmd-mdns-service:
+
+Device Starts an mDNS Service
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Set Command
-^^^^^^^^^^^
+"""""""""""
 
 **Command:**
 
 ::
 
-    AT+MDNS=<enable>[,<"hostname">,<"service_type">,<port>][,<"instance">][,<"proto">][,<txt_number>][,<"key">,<"value">][...]
+    AT+MDNS=<mode>[,<"hostname">,<"service_type">,<port>][,<"instance">][,<"proto">][,<txt_number>][,<"key">,<"value">][...]
 
 **Response:**
 
@@ -2502,9 +2512,9 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<enable>**:
+-  **<mode>**:
 
-   -  1: Enable the mDNS function. The following parameters need to be set.
+   -  1: Start an mDNS service. The following parameters need to be set.
    -  0: Disable the mDNS function. Please do not set the following parameters.
 
 - **<"hostname">**: mDNS host name.
@@ -2522,13 +2532,128 @@ Example
 
 ::
 
-    // Enable mDNS function. Set the hostname to "espressif", service type to "_iot", and port to 8080.
+    // Start an mDNS service. Set the hostname to "espressif", service type to "_iot", and port to 8080.
     AT+MDNS=1,"espressif","_iot",8080  
 
     // Disable mDNS function
     AT+MDNS=0
 
-Detailed examples can be found in: :ref:`mDNS Example <example-mdns>`.
+Detailed examples can be found in: :ref:`mDNS Example <example-mdns-service>`.
+
+.. _cmd-mdns-query:
+
+Query mDNS Services in the Local Network
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Set Command
+"""""""""""
+
+**Command:**
+
+::
+
+    // Query PTR records in the local network
+    AT+MDNS=<mode>,<type>,<"service">,<"proto">[,<timeout>][,<max_results>]
+
+    // Query TXT, SRV, or TXT + SRV records in the local network
+    AT+MDNS=<mode>,<type>,<"instance">,<"service">,<"proto">[,<timeout>][,<max_results>]
+
+    // Query A, AAAA, or A + AAAA records in the local network
+    AT+MDNS=<mode>,<type>,<"hostname">[,<timeout>][,<max_results>]
+
+**Response:**
+
+::
+
+    +MDNS:<data_len>,
+    IF=<netif>
+    IP=<ip_type>
+    PTR=<instance>
+    SRV=<hostname>:<port>
+    TXT=<key>=<value>
+    A=<ip4>
+    AAAA=<ip6>
+
+    OK
+
+Command Parameters
+""""""""""""""""""
+
+- **<mode>**:
+
+  - 2: Query mDNS services in the local network, subsequent parameters are required
+  - 0: Disable mDNS function, subsequent parameters are not required
+
+- **<type>**: Query type.
+
+  - 0: PTR record
+  - 1: TXT record
+  - 2: SRV record
+  - 3: TXT + SRV record
+  - 4: A record
+  - 5: AAAA record
+  - 6: A + AAAA record
+
+- **<"instance">**: mDNS instance name. Maximum length: 64 bytes, any length exceeding this will be automatically truncated.
+- **<"hostname">**: Host name. Maximum length: 64 bytes, any length exceeding this will be automatically truncated.
+- **<"service">**: mDNS service type. Maximum length: 64 bytes, any length exceeding this will be automatically truncated.
+- **<"proto">**: mDNS service protocol. Maximum length: 64 bytes, any length exceeding this will be automatically truncated. Recommended values: ``_tcp`` or ``_udp``.
+- **<timeout>**: Query timeout in milliseconds. Default: 5000. Range: [1000,180000]. If the number of results does not reach ``<max_results>``, the query results will be returned after the timeout.
+- **<max_results>**: Maximum number of query results. Default: 1. Range: [1,255]. If the number of results does not reach ``<max_results>``, the query results will be returned after the timeout. Otherwise, the results will be returned immediately.
+
+Response Parameters
+"""""""""""""""""""
+
+- **<data_len>**: Length of the query result.
+- **<netif>**: Network interface where the mDNS service is located.
+
+  - 1: Wi-Fi Station interface
+  - 2: Wi-Fi SoftAP interface
+
+  .. only:: esp32
+
+    - 3: Ethernet interface
+
+- **<ip_type>**: IP address type of the network interface.
+
+  - 0: IPv4 address
+  - 1: IPv6 address
+
+- **<instance>**: mDNS instance name.
+- **<hostname>**: Host name.
+- **<port>**: mDNS service port.
+- **<key>**: Key of the TXT record.
+- **<value>**: Value of the TXT record.
+- **<ip4>**: IPv4 address where the mDNS service is located.
+- **<ip6>**: IPv6 address where the mDNS service is located.
+
+Example
+"""""""
+
+::
+
+    // Publish mDNS service on PC using avahi-publish
+    avahi-publish -s my_instance _my_printer._tcp 35 "version=v4.1.0.0"
+
+    // Query PTR records in the local network via AT command
+    AT+MDNS=2,0,"_my_printer","_tcp"
+
+    // Response result
+    +MDNS:234,
+    IF=1
+    IP=0
+    PTR=my_instance
+    SRV=espressif-1.local:35
+    TXT=version=v4.1.0.0
+    A=192.168.200.249
+    AAAA=240e:1234:204c:bd02:d80f:8c45:3576:2574
+    AAAA=240e:1234:204c:bd02:f043:47f0:7c39:0002
+    AAAA=240e:1234:204c:bd02:2971:f412:14c6:fa00
+
+    OK
+
+    // Disable mDNS function
+    AT+MDNS=0
 
 .. _cmd-TCPOPT:
 
