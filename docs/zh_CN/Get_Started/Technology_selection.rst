@@ -36,6 +36,7 @@ AT 软件方案是乐鑫针对不同芯片提供的 AT 固件，可以帮助您�
 
 .. list-table::
   :header-rows: 1
+  :widths: 20 40 20 40
 
   * - 芯片
     - 无线功能
@@ -44,6 +45,10 @@ AT 软件方案是乐鑫针对不同芯片提供的 AT 固件，可以帮助您�
   * - ESP32-C6
     - **Wi-Fi 6** + BLE 5.0
     - `v4.1.1.0 <https://github.com/espressif/esp-at/releases/tag/v4.1.1.0>`_
+    -
+  * - ESP32-C5
+    - **5G Wi-Fi** + **Wi-Fi 6** + BLE 5.0
+    - 待发布
     -
   * - ESP32-C3
     - Wi-Fi 4 + BLE 5.0

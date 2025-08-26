@@ -1,13 +1,13 @@
 本地编译 ESP-AT 工程
 =============================
 
-{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="ESP32C2-4MB", esp32c3="MINI-1", esp32c6="ESP32C6-4MB", esp32s2="MINI"}
-{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32D", esp32c2="ESP8684-MINI-1 4MB", esp32c3="ESP32-C3-MINI-1", esp32c6="ESP32-C6-MINI-1", esp32s2="ESP32-S2-MINI"}
-{IDF_TARGET_VER: default="5.4"}
+{IDF_TARGET_COMPILE_MNAME: default="undefined", esp32="WROOM-32", esp32c2="ESP32C2-4MB", esp32c3="MINI-1", esp32c5="ESP32C5-4MB", esp32c6="ESP32C6-4MB", esp32s2="MINI"}
+{IDF_TARGET_PRODUCT_NAME: default="undefined", esp32="ESP32-WROOM-32D", esp32c2="ESP8684-MINI-1 4MB", esp32c3="ESP32-C3-MINI-1", esp32c5="ESP32-C5-WROOM-1", esp32c6="ESP32-C6-MINI-1", esp32s2="ESP32-S2-MINI"}
+{IDF_TARGET_VER: default="5.4", esp32c5="5.5"}
 
 :link_to_translation:`en:[English]`
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
   本文档详细介绍了如何本地编译 ESP-AT 工程，并将生成的固件烧录到 {IDF_TARGET_NAME} 设备中。当默认的 :doc:`官方发布的固件 <../AT_Binary_Lists/index>` 无法满足需求时，如您需要自定义 :doc:`AT 端口管脚 <How_to_set_AT_port_pin>`、:doc:`低功耗蓝牙服务 <How_to_customize_BLE_services>` 以及 :doc:`分区 <How_to_customize_partitions>` 等，那么就需要编译 ESP-AT 工程。
 
@@ -240,6 +240,49 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
         1. Yes
         choose(range[0,1]):0
         Platform name:ESP32C3	Module name:MINI-1 Silence:0
+        Cloning into 'esp-idf'...
+
+        ... (more lines of clone esp-idf)
+
+        Ready to set up ESP-IDF tools..
+
+        ... (more lines of set up ESP-IDF tools)
+
+        All done! You can now run:
+
+        ./build.py build
+
+  .. only:: esp32c5
+
+    以设置 ``Platform name`` 为 ``ESP32C5``，``Module name`` 为 ``ESP32C5-4MB``，并禁用 silence mode 为例：
+
+    .. code-block:: none
+
+        $ ./build.py install
+        Ready to install ESP-IDF prerequisites..
+    
+        ... (more lines of install ESP-IDF prerequisites)
+
+        Ready to install ESP-AT prerequisites..
+
+        ... (more lines of install ESP-IDF prerequisites)
+
+        Platform name:
+        ...
+        4. PLATFORM_ESP32C5
+        ...
+        choose(range[1,5]):4
+
+        Module name:
+        1. ESP32C5-4MB (Firmware description: 4MB, Wi-Fi + BLE, OTA, TX:23 RX:24)
+        choose(range[1,1]):1
+
+        Enable silence mode to remove some logs and reduce the firmware size?
+        0. No
+        1. Yes
+        choose(range[0,1]):0
+        Platform name:ESP32C5 Module name:ESP32C5-4MB Silence:0
+
         Cloning into 'esp-idf'...
 
         ... (more lines of clone esp-idf)

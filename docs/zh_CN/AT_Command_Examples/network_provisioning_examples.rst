@@ -14,7 +14,7 @@ AT 配网示例
   * :ref:`SoftAP 配网（WEB 配网） <example-at_softap>`
   * :ref:`WPS 配网 <example-at_wps>`
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
   .. list-table:: 配网方式关键参数总结
      :header-rows: 1

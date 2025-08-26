@@ -36,14 +36,14 @@ AT Wi-Fi Function Debugging
 
 - You can enable the following configurations to turn on debugging logs for the Wi-Fi interaction process:
 
-  .. only:: not esp32c6
+  .. only:: esp32 or esp32c2 or esp32c3 or esp32s2
 
     ::
 
       Component config > Log > Log Level > Default log verbosity > Debug
       Component config > Supplicant > Print debug messages from WPA Supplicant
 
-  .. only:: esp32c6
+  .. only:: esp32c5 or esp32c6
 
     ::
 
@@ -162,7 +162,7 @@ lwIP Network Debugging
 
     If the above configurations do not meet your debugging needs, you can enable other required debugging configurations under ``Component config`` > ``Bluetooth`` > ``Bluedroid Options`` > ``BT DEBUG LOG LEVEL``.
 
-  .. only:: esp32c2 or esp32c6
+  .. only:: esp32c2 or esp32c5 or esp32c6
 
     - You can enable the following configurations to turn on BLE function debugging logs:
 

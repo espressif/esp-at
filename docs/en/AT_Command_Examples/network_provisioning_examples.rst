@@ -14,7 +14,7 @@ This document mainly introduces the following network provisioning methods suppo
   * :ref:`SoftAP Provisioning (WEB Provisioning) <example-at_softap>`
   * :ref:`WPS Provisioning <example-at_wps>`
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
   .. list-table:: Summary of Key Parameters for Provisioning Methods
      :header-rows: 1

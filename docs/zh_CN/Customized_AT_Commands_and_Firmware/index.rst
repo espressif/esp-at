@@ -4,7 +4,7 @@
 
 :link_to_translation:`en:[English]`
 
-.. only:: esp32 or esp32c2 or esp32c6 or esp32s2
+.. only:: esp32 or esp32c2 or esp32c5 or esp32c6 or esp32s2
 
   **待开发。**
 

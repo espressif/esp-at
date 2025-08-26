@@ -145,7 +145,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. only:: esp32 or esp32c3 or esp32c6
+   .. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
      .. code-block:: none
 
@@ -259,7 +259,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. only:: esp32 or esp32c3 or esp32c6
+   .. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
      .. code-block:: none
 
@@ -295,7 +295,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. only:: esp32 or esp32c3 or esp32c6
+   .. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
      .. code-block:: none
 
@@ -433,7 +433,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
    - For the same service, the <srv_index> on the {IDF_TARGET_NAME} Bluetooth LE client side equals the <srv_index> on the {IDF_TARGET_NAME} Bluetooth LE server side + 2.
    - For the permissions of the characteristics in the services, please refer to :doc:`../Compile_and_Develop/How_to_customize_BLE_services`.
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
   Bluetooth LE server read and write services
   ---------------------------------------------
@@ -990,7 +990,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. only:: esp32 or esp32c3 or esp32c6
+   .. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
      .. code-block:: none
 
@@ -1104,7 +1104,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. only:: esp32 or esp32c3 or esp32c6
+   .. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
      .. code-block:: none
 
@@ -1140,7 +1140,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. only:: esp32 or esp32c3 or esp32c6
+   .. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
      .. code-block:: none
 
@@ -1494,7 +1494,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. only:: esp32 or esp32c3 or esp32c6
+   .. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
      .. code-block:: none
 
@@ -1547,7 +1547,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. only:: esp32 or esp32c3 or esp32c6
+   .. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
      .. code-block:: none
 
@@ -1583,7 +1583,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
    Response:
 
-   .. only:: esp32 or esp32c3 or esp32c6
+   .. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
      .. code-block:: none
 
@@ -1848,7 +1848,7 @@ The example shows how to establish SPP connection between an {IDF_TARGET_NAME} d
 
    Response:
 
-   .. only:: esp32 or esp32c3 or esp32c6
+   .. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
      .. code-block:: none
 

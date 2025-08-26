@@ -15,12 +15,12 @@
    如何更新 mfg_nvs 分区 <How_to_update_mfg_nvs>
    如何更新出厂参数 <How_to_update_factory_parameters>
    如何更新 PKI 配置 <How_to_update_pki_config>
-   :esp32 or esp32c2 or esp32c3 or esp32c6: 如何自定义低功耗蓝牙服务 <How_to_customize_BLE_services>
+   :esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6: 如何自定义低功耗蓝牙服务 <How_to_customize_BLE_services>
    如何自定义分区 <How_to_customize_partitions>
    :esp32: 如何使能 {IDF_TARGET_NAME}-AT 以太网 <How_to_enable_ESP_AT_Ethernet>
    如何增加一个新的模组支持 <How_to_add_support_for_a_module>
-   :esp32 or esp32c6: 如何实现 SDIO AT <How_to_implement_SDIO_AT>
-   :esp32c2 or esp32c3 or esp32c6: 如何实现 SPI AT <How_to_implement_SPI_AT>
+   :esp32 or esp32c5 or esp32c6: 如何实现 SDIO AT <How_to_implement_SDIO_AT>
+   :esp32c2 or esp32c3 or esp32c5 or esp32c6: 如何实现 SPI AT <How_to_implement_SPI_AT>
    如何基于乐鑫服务器实现自己的 OTA 管理 <How_to_implement_OTA_update>
    如何更新 ESP-IDF 版本 <How_to_update_IDF>
    ESP-AT 固件差异 <esp-at_firmware_differences>

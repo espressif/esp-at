@@ -227,7 +227,7 @@ Parameter
 
 -  **<time>**: The duration when the device stays in Deep-sleep. Unit: millisecond. When the time is up, the device automatically wakes up, calls Deep-sleep wake stub, and then proceeds to load the application.
 
-   .. only:: esp32c3 or esp32c2 or esp32 or esp32s2
+   .. only:: esp32c3 or esp32c2 or esp32c5 or esp32 or esp32s2
 
        - 0 means restarting right now
 
@@ -1578,7 +1578,7 @@ Query the RF TX Power.
 
 **Response:**
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
   ::
 
@@ -1597,7 +1597,7 @@ Set Command
 
 **Command:**
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
   ::
 
@@ -1637,7 +1637,7 @@ Parameters
       [78,84]   78           78           19.5
       ========= ============ ============ ==========
 
-  .. only:: esp32c3 or esp32c6 or esp32c2
+  .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c2
 
     - For {IDF_TARGET_NAME} devices, the range is [40,84]:
 
@@ -1693,7 +1693,7 @@ Parameters
     -  14: 18 dBm
     -  15: 20 dBm
 
-.. only:: esp32c6
+.. only:: esp32c6 or esp32c5
 
   -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [3,15].
 
@@ -1711,7 +1711,7 @@ Parameters
     -  14: 18 dBm
     -  15: 20 dBm
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
   -  **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. The parameters are the same as ``<ble_adv_power>``.
   -  **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. The same as ``<ble_adv_power>``.

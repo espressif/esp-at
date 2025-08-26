@@ -2,7 +2,7 @@
 AT Command Set
 **************
 
-{IDF_TARGET_VER: default="5.4"}
+{IDF_TARGET_VER: default="5.4", esp32c5="5.5"}
 
 :link_to_translation:`zh_CN:[中文]`
 
@@ -14,7 +14,7 @@ Here is a list of AT commands.
    Basic AT Commands <Basic_AT_Commands>
    Wi-Fi AT Commands <Wi-Fi_AT_Commands>
    TCP-IP AT Commands <TCP-IP_AT_Commands>
-   :esp32 or esp32c2 or esp32c3 or esp32c6: Bluetooth® Low Energy AT Commands <BLE_AT_Commands>
+   :esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6: Bluetooth® Low Energy AT Commands <BLE_AT_Commands>
    :esp32: Bluetooth® AT Commands <BT_AT_Commands>
    MQTT AT Commands <MQTT_AT_Commands>
    HTTP AT Commands <HTTP_AT_Commands>

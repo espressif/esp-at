@@ -17,7 +17,7 @@
 
     - 如果您不确定自己的模组应该使用哪个 AT 固件，请先阅读 :doc:`../Compile_and_Develop/esp-at_firmware_differences` 文档，该文档比较了不同 {IDF_TARGET_NAME} AT 固件在支持的命令集、硬件配置和模组方面的差异，帮助您确认是否有适合您模组硬件配置的固件。
 
-  .. only:: esp32c3 or esp32c6 or esp32s2
+  .. only:: esp32c3 or esp32c5 or esp32c6 or esp32s2
 
     - 如果您不确定自己的模组是否可以使用 AT 默认固件，请先阅读 :doc:`../Compile_and_Develop/esp-at_firmware_differences` 文档，该文档比较了不同 {IDF_TARGET_NAME} AT 固件在支持的命令集、硬件配置和模组方面的差异，帮助您确认您的模组硬件配置是否适合使用 AT 默认固件。
 
@@ -28,7 +28,7 @@
       - :ref:`at-py-modify-uart`
       - :ref:`at-py-modify-wifi`
       - :ref:`at-py-modify-pki`
-      :esp32 or esp32c2 or esp32c3 or esp32c6: - :ref:`at-py-modify-gatts`
+      :esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6: - :ref:`at-py-modify-gatts`
 
 特别声明
 ^^^^^^^^
@@ -178,6 +178,13 @@
   - v2.4.0.0 `ESP32-C3-MINI-1-AT-V2.4.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c3/ESP32-C3-MINI-1-AT-V2.4.0.0.zip>`__
   - v2.3.0.0 `ESP32-C3-MINI-1-AT-V2.3.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c3/ESP32-C3-MINI-1-AT-V2.3.0.0.zip>`__
   - v2.2.0.0 `ESP32-C3-MINI-1-AT-V2.2.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c3/ESP32-C3-MINI-1-AT-V2.2.0.0.zip>`__
+
+.. only:: esp32c5
+
+  ESP32-C5-4MB 系列
+  ^^^^^^^^^^^^^^^^^^^^^^
+
+  计划在 2025 年 10 月发布首版 ESP-AT 固件。
 
 .. only:: esp32c6
 

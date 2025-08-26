@@ -9,7 +9,7 @@ The ESP-AT project supports multiple modules, and provides configuration for the
 
 - Modules that the ESP-AT project supports, but you want to modify the default configuration.
 
-.. only:: esp32c2 or esp32c3 or esp32c6
+.. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6
 
   The document uses an example to explain how to add support for an {IDF_TARGET_NAME} module in the ESP-AT project. The example module is {IDF_TARGET_NAME}-MINI-1 that uses SPI instead of the default UART interface.
 
@@ -44,9 +44,9 @@ Open your local :component_file:`factory_param_data.csv <customized_partitions/r
 Step 2: Configure OTA for the Newly Added Module
 ----------------------------------------------------
 
-Add customized module information in the ``esp_at_module_info`` structure in :component_file:`at/src/at_default_config.c`.
+Add customized module information in the ``s_module_info`` structure in :component_file:`at/src/at_default_config.c`.
 
-The ``esp_at_module_info`` structure provides ``OTA`` upgrade verification ``token``:
+The ``s_module_info`` structure provides ``OTA`` upgrade verification ``token``:
 
 .. code-block:: c
 
@@ -54,15 +54,15 @@ The ``esp_at_module_info`` structure provides ``OTA`` upgrade verification ``tok
         char* module_name;
         char* ota_token;
         char* ota_ssl_token;
-    } esp_at_module_info_t;
+    } at_module_info_t;
 
 If you do not want to use ``OTA`` features, member 2 ``ota_token`` and member 3 ``ota_ssl_token`` should be set to ``NULL``. Member 1 ``module_name`` must correspond to the field ``module_name`` in the factory_param_data.csv file.
 
-The modified ``esp_at_module_info`` structure is as follows:
+The modified ``s_module_info`` structure is as follows:
 
 .. code-block:: c
 
-    static const esp_at_module_info_t esp_at_module_info[] = {
+    static const at_module_info_t s_module_info[] = {
     #if defined(CONFIG_IDF_TARGET_ESP32)
       ...
     #endif
@@ -72,6 +72,10 @@ The modified ``esp_at_module_info`` structure is as follows:
     #endif
 
     #if defined(CONFIG_IDF_TARGET_ESP32C2)
+      ...
+    #endif
+
+    #if defined(CONFIG_IDF_TARGET_ESP32C5)
       ...
     #endif
 
@@ -159,6 +163,10 @@ The ESP-AT project supports multiple platforms, each of which supports multiple 
      - ESP32C3_RAINMAKER
      - - :project_file:`module_config/module_esp32c3_rainmaker/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32c3_rainmaker/sdkconfig_silence.defaults`
+   * - ESP32-C5
+     - ESP32C5-4MB
+     - - :project_file:`module_config/module_esp32c5_default/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32c5_default/sdkconfig_silence.defaults`
    * - ESP32-C6
      - ESP32C6-4MB
      - - :project_file:`module_config/module_esp32c6_default/sdkconfig.defaults`
@@ -181,7 +189,7 @@ In this example, we copy the ``module_{IDF_TARGET_PATH_NAME}_default`` folder as
     CONFIG_PARTITION_TABLE_FILENAME="module_config/module_{IDF_TARGET_PATH_NAME}-user-defined/partitions_at.csv"
     CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE="module_config/module_{IDF_TARGET_PATH_NAME}-user-defined/at_customize.csv"
 
-.. only:: esp32c2 or esp32c3 or esp32c6
+.. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6
 
   - Modify the two files to use the SPI configuration and remove the UART configuration as follows:
   

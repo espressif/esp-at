@@ -3,7 +3,7 @@ ESP-AT 用户指南
 
 :link_to_translation:`en:[English]`
 
-这里是乐鑫 `ESP-AT <https://github.com/espressif/esp-at>`_ 开发框架的文档中心。ESP-AT 作为由 `Espressif Systems <https://www.espressif.com/zh-hans/home>`_ 发起和提供技术支持的官方项目，适用于 Windows、Linux、macOS 上的 `ESP32、ESP32-C2、ESP32-C3、ESP32-C6、和 ESP32-S2 <https://www.espressif.com/zh-hans/products/socs>`_ 系列芯片。
+这里是乐鑫 `ESP-AT <https://github.com/espressif/esp-at>`_ 开发框架的文档中心。ESP-AT 作为由 `Espressif Systems <https://www.espressif.com/zh-hans/home>`_ 发起和提供技术支持的官方项目，适用于 Windows、Linux、macOS 上的 `ESP32、ESP32-C2、ESP32-C3、ESP32-C5、ESP32-C6、和 ESP32-S2 <https://www.espressif.com/zh-hans/products/socs>`_ 系列芯片。
 
 .. only:: html
 

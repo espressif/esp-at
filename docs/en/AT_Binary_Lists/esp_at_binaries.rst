@@ -17,7 +17,7 @@ It is recommended to use the lastest version of firmware. Currently, Espressif r
 
     - If you are unsure which AT firmware your module should use, please read the :doc:`../Compile_and_Develop/esp-at_firmware_differences` document first. This document compares the differences among different {IDF_TARGET_NAME} AT firmwares in terms of supported command sets, hardware configurations, and module compatibility, helping you determine if there is a suitable firmware for your module's hardware configuration.
 
-  .. only:: esp32c3 or esp32c6 or esp32s2
+  .. only:: esp32c3 or esp32c5 or esp32c6 or esp32s2
 
     - If you are unsure whether your module can use the default AT firmware, please read the :doc:`../Compile_and_Develop/esp-at_firmware_differences` document first. This document compares the differences among different {IDF_TARGET_NAME} AT firmwares in terms of supported command sets, hardware configurations, and module compatibility, helping you confirm if your module's hardware configuration is suitable for using the default AT firmware.
 
@@ -28,7 +28,7 @@ It is recommended to use the lastest version of firmware. Currently, Espressif r
       - :ref:`at-py-modify-uart`
       - :ref:`at-py-modify-wifi`
       - :ref:`at-py-modify-pki`
-      :esp32 or esp32c2 or esp32c3 or esp32c6: - :ref:`at-py-modify-gatts`
+      :esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6: - :ref:`at-py-modify-gatts`
 
 Disclaimer
 ^^^^^^^^^^
@@ -178,6 +178,13 @@ Before using the AT firmware below, please read the :doc:`../disclaimer` careful
   - v2.4.0.0 `ESP32-C3-MINI-1-AT-V2.4.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c3/ESP32-C3-MINI-1-AT-V2.4.0.0.zip>`__
   - v2.3.0.0 `ESP32-C3-MINI-1-AT-V2.3.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c3/ESP32-C3-MINI-1-AT-V2.3.0.0.zip>`__
   - v2.2.0.0 `ESP32-C3-MINI-1-AT-V2.2.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c3/ESP32-C3-MINI-1-AT-V2.2.0.0.zip>`__
+
+.. only:: esp32c5
+
+  ESP32-C5-4MB Series
+  ^^^^^^^^^^^^^^^^^^^
+
+  The first version of ESP-AT firmware is planned to be released in October 2025.
 
 .. only:: esp32c6
 

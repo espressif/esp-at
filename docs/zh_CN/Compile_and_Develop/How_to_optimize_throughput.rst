@@ -11,11 +11,11 @@
 
 用户可以选择下面其中一种方法，提高吞吐性能：
 
-- `[简单] 快速配置`_
-- `[推荐] 熟悉数据流、针对性地配置`_
+- `（简单）快速配置`_
+- `（推荐）熟悉数据流、针对性地配置`_
 
-[简单] 快速配置
----------------
+（简单）快速配置
+-----------------
 
 **1. 配置系统、LWIP、Wi-Fi 适用于高吞吐的参数**
 
@@ -108,6 +108,35 @@
       CONFIG_ESP32_WIFI_AMPDU_TX_ENABLED=y
       CONFIG_ESP32_WIFI_AMPDU_RX_ENABLED=y
 
+  .. only:: esp32c5
+
+    ::
+
+      # System
+      CONFIG_ESP_SYSTEM_EVENT_TASK_STACK_SIZE=4096
+      CONFIG_FREERTOS_UNICORE=n
+      CONFIG_FREERTOS_HZ=1000
+      CONFIG_ESP_DEFAULT_CPU_FREQ_240=y
+      CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ=240
+      CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
+      CONFIG_ESPTOOLPY_FLASHFREQ_80M=y
+
+      # LWIP
+      CONFIG_LWIP_TCP_SND_BUF_DEFAULT=65534
+      CONFIG_LWIP_TCP_WND_DEFAULT=65534
+      CONFIG_LWIP_TCP_RECVMBOX_SIZE=12
+      CONFIG_LWIP_UDP_RECVMBOX_SIZE=12
+      CONFIG_LWIP_TCPIP_RECVMBOX_SIZE=64
+
+      # Wi-Fi
+      CONFIG_ESP_WIFI_STATIC_RX_BUFFER_NUM=16
+      CONFIG_ESP_WIFI_DYNAMIC_RX_BUFFER_NUM=64
+      CONFIG_ESP_WIFI_DYNAMIC_TX_BUFFER_NUM=64
+      CONFIG_ESP_WIFI_TX_BA_WIN=32
+      CONFIG_ESP_WIFI_RX_BA_WIN=32
+      CONFIG_ESP_WIFI_AMPDU_TX_ENABLED=y
+      CONFIG_ESP_WIFI_AMPDU_RX_ENABLED=y
+
   .. only:: esp32c6
 
     ::
@@ -169,7 +198,7 @@
 
 此快速配置的方法在一定程度上可以提高吞吐，但有时可能不能达到用户的预期。另外有些配置可能不是吞吐的瓶颈，配置较高可能会牺牲内存资源或功耗等。因此，用户也可以熟悉下面推荐的方法，进行有针对性地配置。
 
-[推荐] 熟悉数据流、针对性地配置
+（推荐）熟悉数据流、针对性地配置
 ------------------------------------------------------
 
 影响 ESP-AT 吞吐的因素大体描述如下图：
@@ -219,6 +248,18 @@
       CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ=120
       CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
       CONFIG_ESPTOOLPY_FLASHFREQ_60M=y
+
+  .. only:: esp32c5
+
+    ::
+      
+      CONFIG_ESP_SYSTEM_EVENT_TASK_STACK_SIZE=4096
+      CONFIG_FREERTOS_UNICORE=n
+      CONFIG_FREERTOS_HZ=1000
+      CONFIG_ESP_DEFAULT_CPU_FREQ_240=y
+      CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ=240
+      CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
+      CONFIG_ESPTOOLPY_FLASHFREQ_80M=y
 
   .. only:: esp32c3 or esp32c6
 
@@ -279,15 +320,11 @@
 
     如果用户期望吞吐速率大于或接近于 5 Mbps，可以考虑使用 SPI、SDIO、Socket 等方式。具体请参考：
 
-    .. only:: esp32 or esp32c6
+    .. list::
 
-      - SDIO： :doc:`SDIO AT 指南 </Compile_and_Develop/How_to_implement_SDIO_AT>`
-      - Socket： :project_file:`Socket AT 指南 <main/interface/socket/README.md>`
-
-    .. only:: esp32c2 or esp32c3 or esp32c6
-
-      - SPI： :doc:`SPI AT 指南 </Compile_and_Develop/How_to_implement_SPI_AT>`
-      - Socket： :project_file:`Socket AT 指南 <main/interface/socket/README.md>`
+      :esp32 or esp32c5 or esp32c6: - SDIO：:doc:`SDIO AT 指南 </Compile_and_Develop/How_to_implement_SDIO_AT>`
+      :esp32c2 or esp32c3 or esp32c5 or esp32c6: - SPI：:doc:`SPI AT 指南 </Compile_and_Develop/How_to_implement_SPI_AT>`
+      - Socket：:project_file:`Socket AT 指南 <main/interface/socket/README.md>`
 
 **3. S2、R2、R3、S3 吞吐优化**
 

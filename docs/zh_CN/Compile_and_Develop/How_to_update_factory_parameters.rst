@@ -1,7 +1,7 @@
 如何更新出厂参数
 ======================================
 
-{IDF_TARGET_VER: default="5.4"}
+{IDF_TARGET_VER: default="5.4", esp32c5="5.5"}
 
 :link_to_translation:`en:[English]`
 

@@ -36,14 +36,14 @@ AT Wi-Fi 功能调试
 
 - 您可以启用以下配置以开启 Wi-Fi 交互过程的调试日志：
 
-  .. only:: not esp32c6
+  .. only:: esp32 or esp32c2 or esp32c3 or esp32s2
 
     ::
 
       Component config > Log > Log Level > Default log verbosity > Debug
       Component config > Supplicant > Print debug messages from WPA Supplicant
 
-  .. only:: esp32c6
+  .. only:: esp32c5 or esp32c6
 
     ::
 
@@ -162,7 +162,7 @@ lwIP 网络调试
 
     如果以上配置无法满足您的调试需求，您可以在路径 ``Component config`` > ``Bluetooth`` > ``Bluedroid Options`` > ``BT DEBUG LOG LEVEL`` 下启用其他所需的调试配置。
 
-  .. only:: esp32c2 or esp32c6
+  .. only:: esp32c2 or esp32c5 or esp32c6
 
     - 您可以启用以下配置以开启 BLE 功能的调试日志：
 

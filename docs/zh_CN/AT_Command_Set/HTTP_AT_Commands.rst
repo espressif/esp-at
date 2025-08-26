@@ -21,19 +21,10 @@ HTTP AT 命令集
 介绍
 ------
 
-.. only:: esp32 or esp32c3 or esp32c6 or esp32s2
+.. important::
+  默认的 AT 固件支持此页面下的所有 AT 命令。如果您不需要 {IDF_TARGET_NAME} 支持 HTTP 命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
 
-  .. important::
-    默认的 AT 固件支持此页面下的所有 AT 命令。如果您不需要 {IDF_TARGET_NAME} 支持 HTTP 命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
-
-    - 禁用 ``Component config`` -> ``AT`` -> ``AT http command support``
-
-.. only:: esp32c2
-
-  .. important::
-    **默认的 {IDF_TARGET_CFG_PREFIX}-4MB AT 固件支持 HTTP 命令，而 {IDF_TARGET_CFG_PREFIX}-2MB AT 固件不支持**。如果您需要 {IDF_TARGET_CFG_PREFIX}-2MB 支持 HTTP 功能，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
-
-    - 启用 ``Component config`` -> ``AT`` -> ``AT http command support``
+  - 禁用 ``Component config`` -> ``AT`` -> ``AT http command support``
 
 .. _cmd-HTTPCLIENT:
 
