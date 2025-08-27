@@ -48,6 +48,11 @@
 static char *s_at_web_redirect_url = NULL;
 #endif
 
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
+#include "bootloader_custom_ota.h"
+#include "at_compress_ota.h"
+#endif
+
 #define ESP_AT_WEB_SERVER_CHECK(a, str, goto_tag, ...)                                              \
     do                                                                                 \
     {                                                                                  \
@@ -1469,13 +1474,17 @@ const esp_partition_t *at_web_get_ota_update_partition(void)
     ESP_LOGI(TAG, "Running partition type %d subtype %d (offset 0x%08x)",
              running->type, running->subtype, running->address);
 
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
+    update_partition = esp_partition_find_first(ESP_PARTITION_TYPE_DATA, BOOTLOADER_CUSTOM_OTA_PARTITION_SUBTYPE, NULL);
+#else
     update_partition = esp_ota_get_next_update_partition(running);
-    ESP_LOGI(TAG, "Writing to partition subtype %d at offset 0x%x",
-             update_partition->subtype, update_partition->address);
-
-    if (update_partition->address == running->address) {
-        ESP_LOGE(TAG, "The partition to be updated is the current running partition");
-        update_partition = NULL;
+#endif
+    if (update_partition) {
+        ESP_LOGI(TAG, "Next partition found, subtype %d at offset 0x%x", update_partition->subtype, update_partition->address);
+        if (update_partition->address == running->address) {
+            ESP_LOGE(TAG, "The partition to be updated is the current running partition");
+            update_partition = NULL;
+        }
     }
 
     return update_partition;
@@ -1507,7 +1516,11 @@ static esp_err_t ota_upgrade(httpd_req_t *req)
     int remaining_len = req->content_len;
     int received_len = 0;
     esp_err_t err = ESP_FAIL;
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
+    at_compress_ota_handle_t handle;
+#else
     esp_ota_handle_t update_handle = 0;
+#endif
     const esp_partition_t *update_partition = at_web_get_ota_update_partition();
     // check post data size
     if (update_partition->size < total_len) {
@@ -1518,7 +1531,11 @@ static esp_err_t ota_upgrade(httpd_req_t *req)
     memset(buf, 0x0, ESP_AT_WEB_SCRATCH_BUFSIZE * sizeof(char));
 
     // start ota
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
+    err = at_compress_ota_begin(&handle);
+#else
     err = esp_ota_begin(update_partition, OTA_SIZE_UNKNOWN, &update_handle);
+#endif
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "ota begin failed (%s)", esp_err_to_name(err));
         goto err_handler;
@@ -1532,19 +1549,35 @@ static esp_err_t ota_upgrade(httpd_req_t *req)
                 continue;
             }
             ESP_LOGE(TAG, "Failed to receive post ota data, err = %d", received_len);
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
+            at_compress_ota_end(&handle);
+#else
             esp_ota_end(update_handle);
+#endif
             goto err_handler;
         } else { // received successfully
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
+            err = at_compress_ota_write(&handle, buf, received_len);
+#else
             err = esp_ota_write(update_handle, buf, received_len);
+#endif
             if (err != ESP_OK) {
                 ESP_LOGE(TAG, "ota write failed (%s)", esp_err_to_name(err));
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
+                at_compress_ota_end(&handle);
+#else
                 esp_ota_end(update_handle);
+#endif
                 goto err_handler;
             }
             remaining_len -= received_len;
         }
     }
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
+    err = at_compress_ota_end(&handle);
+#else
     err = at_web_ota_end(update_handle, update_partition);
+#endif
     if (err != ESP_OK) {
         goto err_handler;
     }
