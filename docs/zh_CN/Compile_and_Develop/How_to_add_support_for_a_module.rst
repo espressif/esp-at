@@ -9,7 +9,7 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
 
 - ESP-AT 工程已适配支持的模组，但用户需要对其修改默认配置的。
 
-.. only:: esp32c2 or esp32c3 or esp32c6
+.. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6
 
   本文档将说明如何在 ESP-AT 工程中为 ESP-AT 已支持的某款 {IDF_TARGET_NAME} 芯片添加新的模组支持，下文中以添加对 {IDF_TARGET_NAME}-MINI-1 支持为例，该模组使用 SPI 而不是默认的 UART 接口。
 
@@ -44,9 +44,9 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
 第二步：配置新增模组的 OTA
 -----------------------------------
 
-在 :component_file:`at/src/at_default_config.c` 中的 ``esp_at_module_info`` 结构体中添加自定义模组的信息。 
+在 :component_file:`at/src/at_default_config.c` 中的 ``s_module_info`` 结构体中添加自定义模组的信息。 
 
-``esp_at_module_info`` 结构体提供 ``OTA`` 升级验证 ``token``：
+``s_module_info`` 结构体提供 ``OTA`` 升级验证 ``token``：
 
 .. code-block:: c
 
@@ -54,15 +54,15 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
         char* module_name;
         char* ota_token;
         char* ota_ssl_token;
-    } esp_at_module_info_t;
+    } at_module_info_t;
 
 若不想使用 ``OTA`` 功能，那么第二个参数 ``ota_token`` 和第三个参数 ``ota_ssl_token`` 应该设置为 ``NULL``，第一个参数 ``module_name`` 必须与 factory_param_data.csv 文件中的 ``module_name`` 一致。
 
-下面是修改后的 ``esp_at_module_info`` 结构体。
+下面是修改后的 ``s_module_info`` 结构体。
 
 .. code-block:: c
 
-    static const esp_at_module_info_t esp_at_module_info[] = {
+    static const at_module_info_t s_module_info[] = {
     #if defined(CONFIG_IDF_TARGET_ESP32)
       ...
     #endif
@@ -72,6 +72,10 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
     #endif
 
     #if defined(CONFIG_IDF_TARGET_ESP32C2)
+      ...
+    #endif
+
+    #if defined(CONFIG_IDF_TARGET_ESP32C5)
       ...
     #endif
 
@@ -159,6 +163,10 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
      - ESP32C3_RAINMAKER
      - - :project_file:`module_config/module_esp32c3_rainmaker/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32c3_rainmaker/sdkconfig_silence.defaults`
+   * - ESP32-C5
+     - ESP32C5-4MB
+     - - :project_file:`module_config/module_esp32c5_default/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32c5_default/sdkconfig_silence.defaults`
    * - ESP32-C6
      - ESP32C6-4MB
      - - :project_file:`module_config/module_esp32c6_default/sdkconfig.defaults`
@@ -181,7 +189,7 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
     CONFIG_PARTITION_TABLE_FILENAME="module_config/module_{IDF_TARGET_PATH_NAME}-user-defined/partitions_at.csv"
     CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE="module_config/module_{IDF_TARGET_PATH_NAME}-user-defined/at_customize.csv"
 
-.. only:: esp32c2 or esp32c3 or esp32c6
+.. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6
 
   - 使用 SPI 配置，移除 UART 配置
   

@@ -1,8 +1,8 @@
 Downloading Guide
 =================
 
-{IDF_TARGET_MODULE_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c2="ESP8684-MINI-1", esp32c3="ESP32-C3-MINI-1", esp32c6="ESP32-C6-MINI-1", esp32s2="ESP32-S2-MINI"}
-{IDF_TARGET_FACTORY_BIN: default="undefined", esp32="ESP32-WROOM-32-AT-V3.2.0.0", esp32c2="ESP32C2-4MB-AT-V3.3.0.0", esp32c3="ESP32-C3-MINI-1-AT-V3.3.0.0", esp32c6="ESP32C6-4MB-AT-V4.0.0.0", esp32s2="ESP32-S2-MINI-AT-V3.4.0.0"}
+{IDF_TARGET_MODULE_NAME: default="undefined", esp32="ESP32-WROOM-32", esp32c2="ESP8684-MINI-1", esp32c3="ESP32-C3-MINI-1", esp32c5="ESP32-C5-WROOM-1",  esp32c6="ESP32-C6-MINI-1", esp32s2="ESP32-S2-MINI"}
+{IDF_TARGET_FACTORY_BIN: default="undefined", esp32="ESP32-WROOM-32-AT-V3.2.0.0", esp32c2="ESP32C2-4MB-AT-V3.3.0.0", esp32c3="ESP32-C3-MINI-1-AT-V3.3.0.0", esp32c5="ESP32C5-4MB-AT-V5.0.0.0", esp32c6="ESP32C6-4MB-AT-V4.0.0.0", esp32s2="ESP32-S2-MINI-AT-V3.4.0.0"}
 
 :link_to_translation:`zh_CN:[中文]`
 
@@ -85,6 +85,18 @@ The file ``download.config`` contains the configuration to flash the firmware in
       0x1f000 customized_partitions/mfg_nvs.bin
       0x60000 esp-at.bin
 
+.. only:: esp32c5
+
+   .. code-block:: none
+
+      --flash_mode dio --flash_freq 80m --flash_size 4MB
+      0x2000 bootloader/bootloader.bin
+      0x8000 partition_table/partition-table.bin
+      0xd000 ota_data_initial.bin
+      0x1e000 at_customize.bin
+      0x1f000 customized_partitions/mfg_nvs.bin
+      0x60000 esp-at.bin
+
 .. only:: esp32c6
 
    .. code-block:: none
@@ -114,10 +126,10 @@ The file ``download.config`` contains the configuration to flash the firmware in
    - ``--flash_mode dio`` means the firmware is compiled with flash DIO mode.
    :esp32 or esp32c3: - ``--flash_freq 40m`` means the firmware's flash frequency is 40 MHz.
    :esp32c2: - ``--flash_freq 60m`` means the firmware's flash frequency is 60 MHz.
-   :esp32c6 or esp32s2: - ``--flash_freq 80m`` means the firmware's flash frequency is 80 MHz.
+   :esp32c5 or esp32c6 or esp32s2: - ``--flash_freq 80m`` means the firmware's flash frequency is 80 MHz.
    - ``--flash_size 4MB`` means the firmware is using flash size 4 MB.
    :esp32 or esp32s2: - ``0x10000 ota_data_initial.bin`` means downloading ``ota_data_initial.bin`` into the address ``0x10000``.
-   :esp32c2 or esp32c3 or esp32c6: - ``0xd000 ota_data_initial.bin`` means downloading ``ota_data_initial.bin`` into the address ``0xd000``.
+   :esp32c2 or esp32c3 or esp32c5 or esp32c6: - ``0xd000 ota_data_initial.bin`` means downloading ``ota_data_initial.bin`` into the address ``0xd000``.
 
 .. _flash-at-firmware-into-your-device:
 
@@ -204,6 +216,12 @@ You can select either of the two ways below to flash AT firmware into your devic
 
          esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x8000 partition_table/partition-table.bin 0xd000 ota_data_initial.bin 0x0 bootloader/bootloader.bin 0x60000 esp-at.bin 0x1e000 at_customize.bin 0x1f000 customized_partitions/mfg_nvs.bin
 
+   .. only:: esp32c5
+
+      .. code-block:: none
+
+         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 80m --flash_size 4MB 0x8000 partition_table/partition-table.bin 0xd000 ota_data_initial.bin 0x2000 bootloader/bootloader.bin 0x60000 esp-at.bin 0x1e000 at_customize.bin 0x1f000 customized_partitions/mfg_nvs.bin
+
    .. only:: esp32c6
 
       .. code-block:: none
@@ -245,6 +263,12 @@ You can select either of the two ways below to flash AT firmware into your devic
       .. code-block:: none
 
          esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x0 factory/factory_MINI-1.bin
+
+   .. only:: esp32c5
+
+      .. code-block:: none
+
+         esptool.py --chip auto --port /dev/tty.usbserial-0001 --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 80m --flash_size 4MB 0x0 factory/factory_ESP32C5-4MB.bin
 
    .. only:: esp32c6
 
@@ -299,6 +323,18 @@ If the response is OK as shown below, AT works.
       SDK version:v5.0.6-dirty
       compile time(be332568):May  8 2024 08:51:33
       Bin version:v3.3.0.0(MINI-1)
+
+      OK
+
+.. only:: esp32c5
+
+   .. code-block:: none
+
+      AT+GMR
+      AT version:5.0.0.0(b0fe7e5 - ESP32C5 - Aug 22 2025 09:44:01)
+      SDK version:v5.5-beta1-695-ga3ca8669f24
+      compile time(7917c1fb):Aug 25 2025 15:10:23
+      Bin version:v5.0.0.0(ESP32C5-4MB)
 
       OK
 
@@ -499,6 +535,53 @@ Otherwise, you need to check your {IDF_TARGET_NAME} startup log in one of the fo
       module_name: MINI-1
       max tx power=78, ret=0
       2.5.0
+
+
+.. only:: esp32c5
+
+   {IDF_TARGET_NAME} startup log:
+
+   .. code-block:: none
+
+      ESP-ROM:esp32c5-eco2-20250121
+      Build:Jan 21 2025
+      rst:0x1 (POWERON),boot:0x58 (SPI_FAST_FLASH_BOOT)
+      SPI mode:DIO, clock div:1
+      load:0x408556b0,len:0x1710
+      load:0x4084bba0,len:0xd7c
+      load:0x4084e5a0,len:0x31bc
+      entry 0x4084bbaa
+      I (23) boot: ESP-IDF v5.5-beta1-695-ga3ca8669f24-dir 2nd stage bootloader
+      I (24) boot: compile time Aug 25 2025 15:10:14
+      I (24) boot: chip revision: v1.0
+      I (26) boot: efuse block revision: v0.2
+      I (29) boot.esp32c5: SPI Speed      : 80MHz
+      I (33) boot.esp32c5: SPI Mode       : DIO
+      I (37) boot.esp32c5: SPI Flash Size : 4MB
+      I (41) boot: Enabling RNG early entropy source...
+      I (45) boot: Partition Table:
+      I (48) boot: ## Label            Usage          Type ST Offset   Length
+      I (54) boot:  0 otadata          OTA data         01 00 0000d000 00002000
+      I (60) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+      I (67) boot:  2 nvs              WiFi data        01 02 00010000 0000e000
+      I (73) boot:  3 at_customize     unknown          40 00 0001e000 00042000
+      I (80) boot:  4 ota_0            OTA app          00 10 00060000 001d0000
+      I (86) boot:  5 ota_1            OTA app          00 11 00230000 001d0000
+      I (93) boot: End of partition table
+      I (97) esp_image: segment 0: paddr=00060020 vaddr=42170020 size=2c954h (182612) map
+      I (136) esp_image: segment 1: paddr=0008c97c vaddr=40800000 size=0369ch ( 13980) load
+      I (139) esp_image: segment 2: paddr=00090020 vaddr=42000020 size=16d640h (1496640) map
+      I (396) esp_image: segment 3: paddr=001fd668 vaddr=4080369c size=196d0h (104144) load
+      I (417) esp_image: segment 4: paddr=00216d40 vaddr=4081cd80 size=04998h ( 18840) load
+      I (421) esp_image: segment 5: paddr=0021b6e0 vaddr=50000000 size=000a4h (   164) load
+      I (428) boot: Loaded app from partition at offset 0x60000
+      I (429) boot: Disabling RNG early entropy source...
+      I (927) at-init: at param mode: 1
+      I (1554) at-uart: AT cmd port:uart1 tx:23 rx:24 cts:25 rts:26 baudrate:115200
+      I (1555) at-init: module_name: ESP32C5-4MB
+      I (1557) at-init: max tx power=78, ret=0
+      I (1560) at-init: v5.0.0.0 (gitlab)
+      I (2752) at-wifi: negotiated phy mode: 4
 
 .. only:: esp32c6
 

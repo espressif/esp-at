@@ -4,7 +4,7 @@ Customized AT Commands and Firmware For Third-party Open Cloud Platforms
 
 :link_to_translation:`zh_CN:[中文]`
 
-.. only:: esp32 or esp32c2 or esp32c6 or esp32s2
+.. only:: esp32 or esp32c2 or esp32c5 or esp32c6 or esp32s2
 
   **To be developed.**
 

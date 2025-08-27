@@ -42,6 +42,11 @@
   - TX：GPIO21
   - RX：GPIO20
 
+.. only:: esp32c5
+
+  - TX：GPIO11
+  - RX：GPIO12
+
 .. only:: esp32c6
 
   - TX：GPIO16
@@ -49,8 +54,8 @@
 
 .. only:: esp32s2
 
-  - TX: GPIO17
-  - RX: GPIO21
+  - TX: GPIO43
+  - RX: GPIO44
 
 在编译 ESP-AT 工程时，可使用 menuconfig 配置工具将其修改为其它管脚：
 

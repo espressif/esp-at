@@ -255,8 +255,8 @@ ESP-AT 固件中 TCP 发送窗口大小是否可以修改？
 
   .. list::
 
-    :esp32: - {IDF_TARGET_NAME} 支持 UART、SDIO 接口通信。
-    :esp32c2 or esp32c3 or esp32c6: - {IDF_TARGET_NAME} 支持 UART、SPI 接口通信。
+    :esp32 or esp32c5: - {IDF_TARGET_NAME} 支持 UART、SDIO 接口通信。
+    :esp32c2 or esp32c3 or esp32c5 or esp32c6: - {IDF_TARGET_NAME} 支持 UART、SPI 接口通信。
     - AT 默认固件是使用 UART 接口来传输。用户如果需要使用 SDIO 或者 SPI 接口进行通信，可以基于 ESP-AT 配置编译，详情请见 :doc:`编译和开发 <Compile_and_Develop/index>`。
     - 更多资料请参考 :project_file:`使用 AT SDIO 接口 <main/interface/sdio/README.md>`，:project_file:`使用 AT SPI 接口 <main/interface/spi/README.md>`，或 :project_file:`使用 AT 套接字接口 <main/interface/socket/README.md>`。
 

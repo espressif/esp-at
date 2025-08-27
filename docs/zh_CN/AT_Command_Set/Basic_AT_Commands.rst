@@ -227,7 +227,7 @@
 
 -  **<time>**：设备进入 Deep-sleep 的时长，单位：毫秒。设定时间到后，设备自动唤醒，调用深度睡眠唤醒桩，然后加载应用程序。
 
-   .. only:: esp32c3 or esp32c2 or esp32 or esp32s2
+   .. only:: esp32c3 or esp32c2 or esp32c5 or esp32 or esp32s2
 
        - 0 表示立即重启
 
@@ -1578,7 +1578,7 @@
 
 **响应：**
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
   ::
 
@@ -1597,7 +1597,7 @@
 
 **命令：**
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6
 
   ::
 
@@ -1637,7 +1637,7 @@
       [78,84]   78           78           19.5
       ========= ============ ============ ==========
 
-  .. only:: esp32c3 or esp32c2 or esp32c6
+  .. only:: esp32c3 or esp32c2 or esp32c5 or esp32c6
 
     - {IDF_TARGET_NAME} 设备的取值范围为 [40,84]：
 
@@ -1693,7 +1693,7 @@
     -  14: 18 dBm
     -  15: 20 dBm
 
-.. only:: esp32c6
+.. only:: esp32c6 or esp32c5
 
   -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [3,15]：
 
@@ -1711,7 +1711,7 @@
     -  14: 18 dBm
     -  15: 20 dBm
 
-.. only:: esp32 or esp32c3 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c6 or esp32c5
 
   -  **<ble_scan_power>**：Bluetooth LE 扫描的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
   -  **<ble_conn_power>**：Bluetooth LE 连接的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。

@@ -11,10 +11,10 @@ By default, UART is used for communication between ESP-AT and the host MCU, so t
 
 Users could choose one of the following methods to improve throughput performance:
 
-- `[Simple] Quick Configuration`_
-- `[Recommended] Understand Data Stream and Make the Precise Configuration`_
+- `(Simple) Quick Configuration`_
+- `(Recommended) Understand Data Stream and Make the Precise Configuration`_
 
-[Simple] Quick Configuration
+(Simple) Quick Configuration
 ----------------------------
 
 **1. Configure system, LWIP, Wi-Fi parameters**
@@ -108,6 +108,35 @@ Users could choose one of the following methods to improve throughput performanc
       CONFIG_ESP32_WIFI_AMPDU_TX_ENABLED=y
       CONFIG_ESP32_WIFI_AMPDU_RX_ENABLED=y
 
+  .. only:: esp32c5
+
+    ::
+
+      # System
+      CONFIG_ESP_SYSTEM_EVENT_TASK_STACK_SIZE=4096
+      CONFIG_FREERTOS_UNICORE=n
+      CONFIG_FREERTOS_HZ=1000
+      CONFIG_ESP_DEFAULT_CPU_FREQ_240=y
+      CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ=240
+      CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
+      CONFIG_ESPTOOLPY_FLASHFREQ_80M=y
+
+      # LWIP
+      CONFIG_LWIP_TCP_SND_BUF_DEFAULT=65534
+      CONFIG_LWIP_TCP_WND_DEFAULT=65534
+      CONFIG_LWIP_TCP_RECVMBOX_SIZE=12
+      CONFIG_LWIP_UDP_RECVMBOX_SIZE=12
+      CONFIG_LWIP_TCPIP_RECVMBOX_SIZE=64
+
+      # Wi-Fi
+      CONFIG_ESP_WIFI_STATIC_RX_BUFFER_NUM=16
+      CONFIG_ESP_WIFI_DYNAMIC_RX_BUFFER_NUM=64
+      CONFIG_ESP_WIFI_DYNAMIC_TX_BUFFER_NUM=64
+      CONFIG_ESP_WIFI_TX_BA_WIN=32
+      CONFIG_ESP_WIFI_RX_BA_WIN=32
+      CONFIG_ESP_WIFI_AMPDU_TX_ENABLED=y
+      CONFIG_ESP_WIFI_AMPDU_RX_ENABLED=y
+
   .. only:: esp32c6
 
     ::
@@ -169,7 +198,7 @@ Users could choose one of the following methods to improve throughput performanc
 
 This simple and quick configuration method can improve the throughput to a certain extent, but sometimes it might not meet the expectations of users. In addition, some configurations may not hit the bottleneck of throughput. Higher configurations may sacrifice memory resources or power consumption. Therefore, users could also familiarize themselves with the following recommended method and make the precise configuration.
 
-[Recommended] Understand Data Stream and Make the Precise Configuration
+(Recommended) Understand Data Stream and Make the Precise Configuration
 -----------------------------------------------------------------------
 
 The factors that generally affect ESP-AT throughput are illustrated in the following figure:
@@ -219,6 +248,18 @@ The data stream of throughput is similar to water flow. In order to improve thro
       CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ=120
       CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
       CONFIG_ESPTOOLPY_FLASHFREQ_60M=y
+
+  .. only:: esp32c5
+
+    ::
+      
+      CONFIG_ESP_SYSTEM_EVENT_TASK_STACK_SIZE=4096
+      CONFIG_FREERTOS_UNICORE=n
+      CONFIG_FREERTOS_HZ=1000
+      CONFIG_ESP_DEFAULT_CPU_FREQ_240=y
+      CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ=240
+      CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
+      CONFIG_ESPTOOLPY_FLASHFREQ_80M=y
 
   .. only:: esp32c3 or esp32c6
 
@@ -279,14 +320,10 @@ The data stream of throughput is similar to water flow. In order to improve thro
 
     If the user expects the throughput rate to be greater than or close to 5 Mbps, then SPI, SDIO, Socket or other methods can be considered. Please refer to:
 
-    .. only:: esp32 or esp32c6
+    .. list::
 
-      - SDIO: :doc:`SDIO AT Guide </Compile_and_Develop/How_to_implement_SDIO_AT>`
-      - Socket: :project_file:`Socket AT Guide <main/interface/socket/README.md>`
-
-    .. only:: esp32c2 or esp32c3 or esp32c6
-
-      - SPI: :doc:`SPI AT Guide </Compile_and_Develop/How_to_implement_SPI_AT>`
+      :esp32 or esp32c5 or esp32c6: - SDIO: :doc:`SDIO AT Guide </Compile_and_Develop/How_to_implement_SDIO_AT>`
+      :esp32c2 or esp32c3 or esp32c5 or esp32c6: - SPI: :doc:`SPI AT Guide </Compile_and_Develop/How_to_implement_SPI_AT>`
       - Socket: :project_file:`Socket AT Guide <main/interface/socket/README.md>`
 
 **3. S2, R2, R3, S3 throughput optimization**

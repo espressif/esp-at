@@ -1369,7 +1369,7 @@ Note
 -  The asctime style time is defined at `asctime man page <https://linux.die.net/man/3/asctime>`_.
 -  When {IDF_TARGET_NAME} enters Light-sleep or Deep-sleep mode and then wakes up, the system time may become inaccurate. It is recommended to resend the :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to obtain the new time from the NTP server.
 
-.. only:: esp32 or esp32c3 or esp32c6 or esp32s2
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32s2
 
   - The time obtained from SNTP is stored in the RTC area, so it will not be lost after a software reset (chip does not lose power).
 

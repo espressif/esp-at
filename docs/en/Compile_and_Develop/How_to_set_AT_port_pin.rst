@@ -42,15 +42,20 @@ By default, the {IDF_TARGET_NAME} AT firmware provided by Espressif uses the fol
   - TX: GPIO21
   - RX: GPIO20
 
+.. only:: esp32c5
+
+  - TX: GPIO11
+  - RX: GPIO12
+
 .. only:: esp32c6
 
-  - TX: GPIO17
-  - RX: GPIO16
+  - TX: GPIO16
+  - RX: GPIO17
 
 .. only:: esp32s2
 
-  - TX: GPIO17
-  - RX: GPIO21
+  - TX: GPIO43
+  - RX: GPIO44
 
 When compiling your ESP-AT project, you can modify them to other pins with the menuconfig utitlity:
 

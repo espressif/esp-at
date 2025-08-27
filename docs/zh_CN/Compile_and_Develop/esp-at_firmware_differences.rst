@@ -31,9 +31,9 @@ ESP-AT 固件差异
 
   - ESP32-C3-MINI-1-AT-Vx.x.x.x.zip（本节简称为 **MINI-1 Bin**）
 
-.. only:: esp32c6
+.. only:: esp32c5 or esp32c6
 
-  - ESP32C6-4MB-AT-Vx.x.x.x.zip（本节简称为 **ESP32C6-4MB Bin**）
+  - {IDF_TARGET_NAME}-4MB-AT-Vx.x.x.x.zip（本节简称为 **{IDF_TARGET_NAME}-4MB Bin**）
 
 .. only:: esp32s2
 
@@ -339,13 +339,13 @@ ESP-AT 固件差异
     * - OTA
       - |icon-green-check|
 
-.. only:: esp32c6
+.. only:: esp32c5 or esp32c6
 
   .. list-table::
     :header-rows: 1
 
     * - 命令集
-      - ESP32C6-4MB Bin
+      - {IDF_TARGET_NAME}-4MB Bin
     * - base
       - |icon-green-check|
     * - user
@@ -526,13 +526,30 @@ ESP-AT 固件差异
         | CTS: 5
         | RTS: 4
 
+.. only:: esp32c5
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 硬件
+      - {IDF_TARGET_NAME}-4MB Bin
+    * - Flash
+      - 4 MB
+    * - PSRAM
+      - |icon-red-cross|
+    * - UART 管脚 [#one]_
+      - | TX: 23
+        | RX: 24
+        | CTS: 25
+        | RTS: 26
+
 .. only:: esp32c6
 
   .. list-table::
     :header-rows: 1
 
     * - 硬件
-      - ESP32C6-4MB Bin
+      - {IDF_TARGET_NAME}-4MB Bin
     * - Flash
       - 4 MB
     * - PSRAM
@@ -779,16 +796,28 @@ ESP-AT 固件差异
     * - ESP8685-WROOM-07
       - |icon-orange-check|
 
+.. only:: esp32c5
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 模组/芯片
+      - {IDF_TARGET_NAME}-4MB Bin
+    * - {IDF_TARGET_NAME}-MINI-1
+      - |icon-green-check|
+    * - {IDF_TARGET_NAME}-WROOM-01
+      - |icon-green-check|
+
 .. only:: esp32c6
 
   .. list-table::
     :header-rows: 1
 
     * - 模组/芯片
-      - ESP32C6-4MB Bin
-    * - ESP32-C6-MINI-1
+      - {IDF_TARGET_NAME}-4MB Bin
+    * - {IDF_TARGET_NAME}-MINI-1
       - |icon-green-check|
-    * - ESP32-C6-WROOM-01
+    * - {IDF_TARGET_NAME}-WROOM-01
       - |icon-green-check|
 
 .. only:: esp32s2

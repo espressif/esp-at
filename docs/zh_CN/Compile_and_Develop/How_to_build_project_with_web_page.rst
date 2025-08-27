@@ -139,6 +139,7 @@
       AT_OTA_TOKEN_ESP32C3_MINI
       ESP32C2_2MB_TOKEN
       ESP32C2_4MB_TOKEN
+      ESP32C5_4MB_TOKEN
       ESP32C6_4MB_TOKEN
 
 如果需要更多的模组支持 AT 固件升级，请重复上面步骤，再次添加不同的密钥，所有密钥创建完成的页面如下。

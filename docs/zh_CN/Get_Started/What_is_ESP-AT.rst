@@ -3,7 +3,7 @@ ESP-AT 是什么
 
 :link_to_translation:`en:[English]`
 
-{IDF_TARGET_AT_COMMANDS: default="Wi-Fi 命令、TCP/IP 命令、MQTT 命令、HTTP 命令", esp32="Wi-Fi 命令、TCP/IP 命令、Bluetooth LE 命令、Bluetooth 命令、MQTT 命令、HTTP 命令、Ethernet 命令", esp32c2="Wi-Fi 命令、TCP/IP 命令、Bluetooth LE 命令、MQTT 命令、HTTP 命令", esp32c3="Wi-Fi 命令、TCP/IP 命令、Bluetooth LE 命令、MQTT 命令、HTTP 命令", esp32c6="Wi-Fi 命令、TCP/IP 命令、Bluetooth LE 命令、MQTT 命令、HTTP 命令"}
+{IDF_TARGET_AT_COMMANDS: default="Wi-Fi 命令、TCP/IP 命令、MQTT 命令、HTTP 命令", esp32="Wi-Fi 命令、TCP/IP 命令、Bluetooth LE 命令、Bluetooth 命令、MQTT 命令、HTTP 命令、Ethernet 命令", esp32c2="Wi-Fi 命令、TCP/IP 命令、Bluetooth LE 命令、MQTT 命令、HTTP 命令", esp32c3="Wi-Fi 命令、TCP/IP 命令、Bluetooth LE 命令、MQTT 命令、HTTP 命令",esp32c5="Wi-Fi 命令、TCP/IP 命令、Bluetooth LE 命令、MQTT 命令、HTTP 命令", esp32c6="Wi-Fi 命令、TCP/IP 命令、Bluetooth LE 命令、MQTT 命令、HTTP 命令"}
 
 .. important::
   在使用 ESP-AT 前，请仔细阅读 :doc:`../disclaimer`，并遵循其中的各项条款和注意事项。

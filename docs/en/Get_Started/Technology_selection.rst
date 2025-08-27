@@ -36,6 +36,7 @@ The table below shows a brief comparison of the AT firmware for different chips.
 
 .. list-table::
   :header-rows: 1
+  :widths: 20 40 20 40
 
   * - Chip
     - Wireless
@@ -44,6 +45,10 @@ The table below shows a brief comparison of the AT firmware for different chips.
   * - ESP32-C6
     - **Wi-Fi 6** + BLE 5.0
     - `v4.1.1.0 <https://github.com/espressif/esp-at/releases/tag/v4.1.1.0>`_
+    -
+  * - ESP32-C5
+    - **5G Wi-Fi** + **Wi-Fi 6** + BLE 5.0
+    - To be released
     -
   * - ESP32-C3
     - Wi-Fi 4 + BLE 5.0

@@ -82,7 +82,7 @@
         * - 7
           - GPIO35
 
-  .. only:: esp32c3 or esp32c2 or esp32c6
+  .. only:: esp32c3 or esp32c2 or esp32c5 or esp32c6
 
     - {IDF_TARGET_NAME} 设备的取值范围为 [0,4]。
 
@@ -111,7 +111,7 @@
     - 2: 6 dB 衰减，有效测量范围为 [150, 1750] mV。
     - 3: 11 dB 衰减，有效测量范围为 [150, 2450] mV。
 
-  .. only:: esp32c3 or esp32c2 or esp32c6
+  .. only:: esp32c3 or esp32c2 or esp32c5 or esp32c6
 
     - 0: 0 dB 衰减，有效测量范围为 [0, 750] mV。
     - 1: 2.5 dB 衰减，有效测量范围为 [0, 1050] mV。
@@ -141,7 +141,7 @@
 
     OK
 
-.. only:: esp32c3 or esp32c2 or esp32c6
+.. only:: esp32c3 or esp32c2 or esp32c5 or esp32c6
 
   ::
 
