@@ -176,7 +176,6 @@
 .enable_at_debugs: &enable_at_debugs
   - echo -e "CONFIG_LOG_DEFAULT_LEVEL_INFO=y" >> ${at_sdkconfig_file}
   - echo -e "CONFIG_AT_DEBUG=y" >> ${at_sdkconfig_file}
-  - echo -e "CONFIG_AT_WIFI_DUMP_STATIS_DEBUG=y" >> ${at_sdkconfig_file}
   - echo -e "CONFIG_AT_NET_DEBUG=y" >> ${at_sdkconfig_file}
 
 .disable_wifi_iram_opt: &disable_wifi_iram_opt
