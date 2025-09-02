@@ -80,7 +80,7 @@ def modify_bin(esp, args):
         ESP_LOGE('File does not exist: {}'.format(args.input))
         sys.exit(2)
     fsize = os.path.getsize(args.input)
-    if (fsize != para_partition_size) and ((fsize % min_firmware_size) or (fsize / min_firmware_size > 16)):
+    if (fsize != para_partition_size) and ((fsize < min_firmware_size) or (fsize / min_firmware_size > 16)):
         ESP_LOGE('Invalid file size: {}'.format(fsize))
         sys.exit(2)
 
