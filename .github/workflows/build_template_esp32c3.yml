@@ -13,6 +13,9 @@ on:
       enable_all_wifi_features:
         required: false
         type: boolean
+      enable_at_debug:
+        required: false
+        type: boolean
     # parameters from upstream inherit
     secrets:
       AT_OTA_TOKEN_ESP32C3_MINI:
@@ -21,33 +24,30 @@ on:
 jobs:
   build-template-esp32c3:
     runs-on: ubuntu-latest
+    env:
+      PLATFORM: PLATFORM_ESP32C3
+      MODULE_NAME: ${{ inputs.module_name }}
+      SILENCE: 0
     steps:
     - uses: actions/checkout@v4.2.0
     - uses: actions/setup-python@v5.3.0
       with:
         python-version: '3.10'
-    - name: Set module information
+    - name: Set up environment variables
       run: |
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32C3\", \"module\": \"${{ inputs.module_name }}\", \"silence\": 0}" > build/module_info.json
+        source .github/workflows/utils.sh && setup_env_variables
     - name: Enable all Wi-Fi features
       if: ${{ inputs.enable_all_wifi_features == true }}
       run: |
-        echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-        echo -e "CONFIG_AT_DRIVER_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-        echo -e "CONFIG_AT_EAP_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-        echo -e "CONFIG_AT_WEB_SERVER_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-        echo -e "CONFIG_AT_WS_COMMAND_SUPPORT=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-        echo -e "CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE=y" >> module_config/module_esp32c3_default/sdkconfig.defaults
-    - name: Enlarge app partition size
-      if: ${{ inputs.enable_all_wifi_features == true }}
+        source .github/workflows/utils.sh && enable_all_wifi_cmds
+    - name: Enable AT debug log
+      if: ${{ inputs.enable_at_debug == true }}
       run: |
-        app0_size=`cat module_config/module_esp32c3_default/partitions_at.csv | grep ota_0 | awk -F, '{print $5}'`
-        app1_size=`cat module_config/module_esp32c3_default/partitions_at.csv | grep ota_1 | awk -F, '{print $5}'`
-        to_set_size=$((app0_size + app1_size))
-        sed -i '/ota_1/d' module_config/module_esp32c3_default/partitions_at.csv
-        to_set_hex_size=`printf "0x%x" ${to_set_size}`
-        sed -i '/ota_0/s,'"$app0_size"','"$to_set_hex_size"',g' module_config/module_esp32c3_default/partitions_at.csv
+        source .github/workflows/utils.sh && enable_at_debug
+    - name: Enlarge app partition size
+      if: ${{ inputs.enable_all_wifi_features == true || inputs.enable_at_debug == true }}
+      run: |
+        source .github/workflows/utils.sh && enlarge_app_partition
     - name: Set up OTA tokens
       run: |
         cd components/at/private_include
@@ -56,9 +56,8 @@ jobs:
         echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C3_MINI \"${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI }}\"" >> at_ota_token.h
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C3_MINI \"${{ secrets.AT_OTA_TOKEN_ESP32C3_MINI }}\"" >> at_ota_token.h
         cd -
-    - name: Install environment variables
+    - name: Install compilation environment
       run: |
-        echo "ESP_AT_FIRMWARE_FROM=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" >> "$GITHUB_ENV"
         ./build.py install
     - name: Compile
       run: |

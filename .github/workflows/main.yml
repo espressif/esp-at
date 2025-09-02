@@ -68,6 +68,14 @@ jobs:
       enable_all_bt_features_no_wifi: true
     secrets: inherit
 
+  build-esp32-wroom-debug-at:
+    uses: ./.github/workflows/build_template_esp32.yml
+    with:
+      module_name: WROOM-32
+      artifacts_name: esp32-wroom-debug-at
+      enable_at_debug: true
+    secrets: inherit
+
   build-esp32c3-mini-1-at:
     uses: ./.github/workflows/build_template_esp32c3.yml
     with:
@@ -88,6 +96,14 @@ jobs:
       module_name: MINI-1
       artifacts_name: esp32c3-at-all-wifi-features
       enable_all_wifi_features: true
+    secrets: inherit
+
+  build-esp32c3-mini-1-debug-at:
+    uses: ./.github/workflows/build_template_esp32c3.yml
+    with:
+      module_name: MINI-1
+      artifacts_name: esp32c3-mini-1-debug-at
+      enable_at_debug: true
     secrets: inherit
 
   build-esp32c3-rainmaker:
@@ -125,11 +141,27 @@ jobs:
       artifacts_name: esp32c5-4MB-at
     secrets: inherit
 
+  build-esp32c5-4mb-debug-at:
+    uses: ./.github/workflows/build_template_esp32c5.yml
+    with:
+      module_name: ESP32C5-4MB
+      artifacts_name: esp32c5-4MB-debug-at
+      enable_at_debug: true
+    secrets: inherit
+
   build-esp32c2-4mb-g2-at:
     uses: ./.github/workflows/build_template_esp32c2.yml
     with:
       module_name: ESP32C2-4MB-G2
       artifacts_name: esp32c2-4MB-g2-at
+    secrets: inherit
+
+  build-esp32c2-4mb-g2-debug-at:
+    uses: ./.github/workflows/build_template_esp32c2.yml
+    with:
+      module_name: ESP32C2-4MB-G2
+      artifacts_name: esp32c2-4MB-g2-debug-at
+      enable_at_debug: true
     secrets: inherit
 
   build-esp32c2-4mb-ble-g2-at:
@@ -168,9 +200,25 @@ jobs:
       artifacts_name: esp32c6-4MB-at
     secrets: inherit
 
+  build-esp32c6-4mb-debug-at:
+    uses: ./.github/workflows/build_template_esp32c6.yml
+    with:
+      module_name: ESP32C6-4MB
+      artifacts_name: esp32c6-4MB-debug-at
+      enable_at_debug: true
+    secrets: inherit
+
   build-esp32s2-mini-at:
     uses: ./.github/workflows/build_template_esp32s2.yml
     with:
       module_name: MINI
       artifacts_name: esp32s2-mini-at
+    secrets: inherit
+
+  build-esp32s2-mini-debug-at:
+    uses: ./.github/workflows/build_template_esp32s2.yml
+    with:
+      module_name: MINI
+      artifacts_name: esp32s2-mini-debug-at
+      enable_at_debug: true
     secrets: inherit
