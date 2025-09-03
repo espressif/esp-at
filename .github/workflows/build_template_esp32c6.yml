@@ -68,5 +68,6 @@ jobs:
           build/partition_table/*.bin
           build/customized_partitions/*
           build/flasher_args.json
+          build/project_description.json
           build/download.config
           build/factory/*
