@@ -10,6 +10,9 @@ on:
       artifacts_name:
         required: true
         type: string
+      enable_at_debug:
+        required: false
+        type: boolean
     # parameters from upstream inherit
     secrets:
       AT_OTA_TOKEN_ESP32C5_4MB:
@@ -18,15 +21,26 @@ on:
 jobs:
   build-template-esp32c5:
     runs-on: ubuntu-latest
+    env:
+      PLATFORM: PLATFORM_ESP32C5
+      MODULE_NAME: ${{ inputs.module_name }}
+      SILENCE: 0
     steps:
     - uses: actions/checkout@v4.2.0
     - uses: actions/setup-python@v5.3.0
       with:
         python-version: '3.10'
-    - name: Set module information
+    - name: Set up environment variables
       run: |
-        mkdir build
-        echo -e "{\"platform\": \"PLATFORM_ESP32C5\", \"module\": \"${{ inputs.module_name }}\", \"silence\": 0}" > build/module_info.json
+        source .github/workflows/utils.sh && setup_env_variables
+    - name: Enable AT debug log
+      if: ${{ inputs.enable_at_debug == true }}
+      run: |
+        source .github/workflows/utils.sh && enable_at_debug
+    - name: Enlarge app partition size
+      if: ${{ inputs.enable_at_debug == true }}
+      run: |
+        source .github/workflows/utils.sh && enlarge_app_partition
     - name: Set up OTA tokens
       run: |
         cd components/at/private_include
@@ -35,9 +49,8 @@ jobs:
         echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C5_4MB \"${{ secrets.AT_OTA_TOKEN_ESP32C5_4MB }}\"" >> at_ota_token.h
         echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C5_4MB \"${{ secrets.AT_OTA_TOKEN_ESP32C5_4MB }}\"" >> at_ota_token.h
         cd -
-    - name: Install environment variables
+    - name: Install compilation environment
       run: |
-        echo "ESP_AT_FIRMWARE_FROM=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" >> "$GITHUB_ENV"
         ./build.py install
     - name: Compile
       run: |
