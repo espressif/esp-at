@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     script.setAttribute("data-bot-protection-mechanism", "hcaptcha");
     script.setAttribute("data-website-id", "779bd7f1-4c9c-4a8d-8e61-13c84214c96f");
     script.setAttribute("data-modal-title", "ESP-AT 用户指南文档 AI 助手");
+    script.setAttribute("data-project-name", "ESP-AT");
     script.setAttribute("data-project-color", "#C62817");
     script.setAttribute("data-project-logo", "https://dl.espressif.com/public/logo.png");
     script.setAttribute("data-button-image", "https://dl.espressif.com/chatbot/Chatbot.png");
@@ -23,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     script.setAttribute("data-button-box-shadow", "0px 6px 12px 1px rgba(0,0,0,0.16)");
     script.setAttribute("data-modal-override-open-class", "test-ai");
     script.setAttribute("data-user-analytics-fingerprint-enabled", "true");
+    script.setAttribute("data-language", "zh");
     script.setAttribute("data-modal-example-questions-title", "问题示例");
     script.setAttribute("data-modal-disclaimer", "欢迎使用乐鑫文档智能问答助手！本助手基于乐鑫的公开文档，旨在为您提供产品和服务的技术支持与解答。如有任何意见或建议，欢迎留下反馈！\n\n**注意**：本回答由 AI 生成，可能存在不准确之处，请核实重要信息。");
     script.setAttribute("data-modal-example-questions", "ESP-AT 是什么？,最新发布的 AT 固件从哪里下载？");
