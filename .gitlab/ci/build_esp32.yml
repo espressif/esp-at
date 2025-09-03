@@ -86,7 +86,7 @@ esp32_ethernet_at:
 esp32_examples:
   extends:
     - .build_template_esp32
-    - .build_template_examples
-    - .rules:build:build_project
+    - .build_example_template_esp32
+    - .rules:build:build_examples
   variables:
     MODULE_NAME: "WROOM-32"

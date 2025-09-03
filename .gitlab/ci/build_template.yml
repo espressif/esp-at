@@ -28,7 +28,7 @@
 
 .build_project: &build_project
   - rm -rf build && mkdir build
-  - mv module_info.json build/module_info.json
+  - cp module_info.json build/module_info.json
   - ./build.py build
 
 .build_template:
@@ -155,6 +155,12 @@
 
 .enable_ethernet_cmds: &enable_ethernet_cmds
   - echo -e "CONFIG_AT_ETHERNET_SUPPORT=y" >> ${at_sdkconfig_file}
+
+.enable_fs_cmds: &enable_fs_cmds
+  - echo -e "CONFIG_AT_FS_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
+
+.enable_intf_security: &enable_intf_security
+  - echo -e "CONFIG_AT_INTF_SECURITY_SUPPORT=y" >> ${at_sdkconfig_file}
 
 .enable_bt_cmds: &enable_bt_cmds
   - echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
@@ -287,7 +293,7 @@
 #####################
 # Build at examples #
 #####################
-.build_at_examples: &build_at_examples
+.build_esp32_examples: &build_esp32_examples
   - cd examples/at_sdio_host/ESP32
   - idf.py build
   - cd -
@@ -296,15 +302,28 @@
   - idf.py build
   - cd -
 
+.build_common_examples: &build_common_examples
+  - *enable_fs_cmds
+  - *enable_intf_security
+  - export AT_CUSTOM_COMPONENTS="
+      $CI_PROJECT_DIR/examples/at_custom_cmd
+      $CI_PROJECT_DIR/examples/at_fatfs_to_http_server
+      $CI_PROJECT_DIR/examples/at_http_get_to_fatfs
+      $CI_PROJECT_DIR/examples/at_interface_security
+      "
+  - *build_project
+
 ##################
 # Build template #
 ##################
-.build_template_examples:
+.build_example_template_esp32:
   script:
     - *setup_env_variables
     - *clone_repo_and_components
     - *install_compilation_env
-    - *build_at_examples
+    - *build_esp32_examples
+    - *build_common_examples
+  artifacts: {}
 
 .build_template_esp32:
   extends:
