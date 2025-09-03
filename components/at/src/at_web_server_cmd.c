@@ -208,6 +208,11 @@ static esp_err_t at_web_try_connect(uint8_t *ssid, uint8_t *password, uint8_t *b
     // stop reconnect if reconnect is in process(if has connected, then keep the connection)
     at_wifi_reconnect_stop();
 
+    // set the floor authmode if has valid password
+    if (sta.password[0]) {
+        sta.threshold.authmode = WIFI_AUTH_WEP;
+    }
+
     ret = esp_wifi_set_config(ESP_IF_WIFI_STA, (wifi_config_t*) &sta);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "wifi set config fail");
