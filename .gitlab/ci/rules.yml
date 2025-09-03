@@ -23,7 +23,6 @@
 .patterns-src: &patterns-src
   - "bootloader_components/**/*"
   - "components/**/*"
-  - "examples/**/*"
   - "main/**/*"
   - "module_config/**/*"
   - "tools/**/*"
@@ -33,6 +32,10 @@
   - "build.py"
   - "CMakeLists.txt"
   - "requirements.txt"
+
+.patterns-examples: &patterns-examples
+  - "examples/**/*"
+  - "module_config/**/IDF_VERSION"
 
 #########
 # Rules #
@@ -52,6 +55,12 @@
     - <<: *if-protected-or-web-trigger
     - <<: *if-dev-push
       changes: *patterns-src
+
+.rules:build:build_examples:
+  rules:
+    - <<: *if-protected-or-web-trigger
+    - <<: *if-dev-push
+      changes: *patterns-examples
 
 .rules:build:build_project_on_protected:
   rules:
