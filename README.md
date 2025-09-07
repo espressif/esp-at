@@ -46,6 +46,7 @@ Please choose one of the following options based on your needs:
 [no-plan]: https://img.shields.io/badge/-no--plan-808080
 
 **Other series of chips:**
+- **ESP-AT supports ESP8266 series of chips.** The firmware is released separately from esp32, and indexed with 8266 tag. 8266 has their own branch.  
 - ESP-AT will support ESP32-C5 series of chips.
 - ESP-AT will not support ESP32-S3 and ESP32-H series of chips.
 
