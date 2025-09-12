@@ -113,6 +113,7 @@ static int32_t at_mfg_uart_baudrate_get(void)
             return baud_rate;
         }
 
+#ifdef ESP_AT_LEGACY_SUPPORT
     } else if (mode == AT_PARAMS_IN_PARTITION) {
         char data[AT_BUFFER_ON_STACK_SIZE] = {0};
         const esp_partition_t *partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
@@ -129,6 +130,7 @@ static int32_t at_mfg_uart_baudrate_get(void)
                 baud_rate = *(int32_t *)&data[12];
             }
         }
+#endif
     } else {
         return baud_rate;
     }
@@ -186,6 +188,7 @@ esp_err_t at_mfg_uart_port_pins_get(at_uart_port_pins_t *config)
             return ESP_FAIL;
         }
 
+#ifdef ESP_AT_LEGACY_SUPPORT
     } else if (mode == AT_PARAMS_IN_PARTITION) {
         char data[AT_BUFFER_ON_STACK_SIZE] = {0};
         const esp_partition_t *partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
@@ -216,6 +219,7 @@ esp_err_t at_mfg_uart_port_pins_get(at_uart_port_pins_t *config)
                 rts_pin = -1;
             }
         }
+#endif
     } else {
         return ESP_FAIL;
     }
