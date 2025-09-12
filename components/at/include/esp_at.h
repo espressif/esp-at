@@ -14,6 +14,10 @@
 #define ESP_AT_PORT_TX_WAIT_MS_MAX          3000    // 3s
 #define AT_BUFFER_ON_STACK_SIZE             128     // default maximum buffer size on task stack
 
+#if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2) || defined(CONFIG_IDF_TARGET_ESP32C2) || defined(CONFIG_IDF_TARGET_ESP32C3) || defined(CONFIG_IDF_TARGET_ESP32C6)
+#define ESP_AT_LEGACY_SUPPORT
+#endif
+
 /**
  * @brief Same to ESP_LOG_BUFFER_HEXDUMP, but only output when buffer is not NULL
 */

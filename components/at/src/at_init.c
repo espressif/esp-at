@@ -162,6 +162,8 @@ static esp_err_t at_module_config_init(void)
         }
         esp_at_set_module_id_by_str(buffer);
         nvs_close(handle);
+
+#ifdef ESP_AT_LEGACY_SUPPORT
     } else if (mode == AT_PARAMS_IN_PARTITION) {
         // deprecated way
         const esp_partition_t *partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
@@ -183,6 +185,7 @@ static esp_err_t at_module_config_init(void)
             const char *module_name = buffer + 56;
             esp_at_set_module_id_by_str(module_name);
         }
+#endif
     } else {
         return ESP_FAIL;
     }
@@ -235,6 +238,8 @@ static esp_err_t at_wifi_config_init(void)
         country.policy = WIFI_COUNTRY_POLICY_MANUAL;
         esp_wifi_set_country(&country);
         nvs_close(handle);
+
+#ifdef ESP_AT_LEGACY_SUPPORT
     } else if (mode == AT_PARAMS_IN_PARTITION) {
         // deprecated way
         const esp_partition_t *partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
@@ -274,6 +279,7 @@ static esp_err_t at_wifi_config_init(void)
             country.policy = WIFI_COUNTRY_POLICY_MANUAL;
             esp_wifi_set_country(&country);
         }
+#endif
     } else {
         return ESP_FAIL;
     }
