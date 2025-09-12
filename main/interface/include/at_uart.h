@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -77,6 +77,13 @@
 #define CONFIG_AT_UART_PORT_RX_PIN_DEFAULT          6
 #define CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT         5
 #define CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT         4
+#endif
+
+#if defined(CONFIG_IDF_TARGET_ESP32C61)
+#define CONFIG_AT_UART_PORT_TX_PIN_DEFAULT          6
+#define CONFIG_AT_UART_PORT_RX_PIN_DEFAULT          5
+#define CONFIG_AT_UART_PORT_CTS_PIN_DEFAULT         4
+#define CONFIG_AT_UART_PORT_RTS_PIN_DEFAULT         3
 #endif
 
 #if defined(CONFIG_IDF_TARGET_ESP32C2)

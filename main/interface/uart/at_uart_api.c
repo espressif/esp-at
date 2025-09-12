@@ -247,6 +247,7 @@ void at_uart_intr_config(void)
     uart_intr_config(g_at_cmd_port, &intr_config);
 }
 
+#if !defined(CONFIG_IDF_TARGET_ESP32C5) && !defined(CONFIG_IDF_TARGET_ESP32C61)
 void at_uart_workaround(void)
 {
     // a workaround for uart1 outputs uninterrupted data during light-sleep
@@ -267,6 +268,7 @@ void at_uart_workaround(void)
     gpio_sleep_sel_dis(CONFIG_ESP_CONSOLE_UART_TX_GPIO);
 #endif
 }
+#endif
 
 void at_uart_config_init(uart_config_t *config)
 {

@@ -198,7 +198,7 @@ static void at_uart_init(void)
     at_uart_intr_config();
 
     // do some possible uart workarounds
-#ifndef CONFIG_IDF_TARGET_ESP32C5
+#if !defined(CONFIG_IDF_TARGET_ESP32C5) && !defined(CONFIG_IDF_TARGET_ESP32C61)
     at_uart_workaround();
 #endif
 

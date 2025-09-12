@@ -215,6 +215,21 @@ jobs:
       enable_at_debug: true
     secrets: inherit
 
+  build-esp32c61-4mb-at:
+    uses: ./.github/workflows/build_template_esp32c61.yml
+    with:
+      module_name: ESP32C61-4MB
+      artifacts_name: esp32c61-4MB-at
+    secrets: inherit
+
+  build-esp32c61-4mb-debug-at:
+    uses: ./.github/workflows/build_template_esp32c61.yml
+    with:
+      module_name: ESP32C61-4MB
+      artifacts_name: esp32c61-4MB-debug-at
+      enable_at_debug: true
+    secrets: inherit
+
   build-esp32s2-mini-at:
     uses: ./.github/workflows/build_template_esp32s2.yml
     with:

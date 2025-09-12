@@ -195,7 +195,7 @@ config AT_BLE_COMMAND_SUPPORT
 config AT_BLE_HID_COMMAND_SUPPORT
     bool "AT ble hid command support."
     default "y"
-    depends on AT_ENABLE && BT_ENABLED && !IDF_TARGET_ESP32C2 && !IDF_TARGET_ESP32C6
+    depends on AT_ENABLE && BT_ENABLED && BT_BLUEDROID_ENABLED
 
 config AT_BLUFI_COMMAND_SUPPORT
     bool "AT blufi command support."

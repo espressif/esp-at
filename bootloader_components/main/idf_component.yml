@@ -2,4 +2,4 @@ dependencies:
   espressif/bootloader_support_plus:
     version: "~0.4.0"
     rules:
-      - if: "target in [esp32c2, esp32c3, esp32c5]"
+      - if: "target in [esp32c2, esp32c3, esp32c5, esp32c61]"
