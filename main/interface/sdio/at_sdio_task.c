@@ -19,9 +19,6 @@
 
 #ifdef CONFIG_AT_BASE_ON_SDIO
 #include "driver/sdio_slave.h"
-#include "soc/slc_struct.h"
-#include "soc/slc_reg.h"
-#include "soc/host_struct.h"
 #include "soc/soc.h"
 #include "esp_at.h"
 #include "esp_at_interface.h"

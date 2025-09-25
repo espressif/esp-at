@@ -33,6 +33,15 @@ SDIO slave 管脚如下所示：
    -  DAT2 is GPIO22（四线）
    -  DAT3 is GPIO23（四线）
 
+.. only:: esp32c5
+
+   -  CLK is GPIO9
+   -  CMD is GPIO10
+   -  DAT0 is GPIO8
+   -  DAT1 is GPIO7
+   -  DAT2 is GPIO14（四线）
+   -  DAT3 is GPIO13（四线）
+
 如何使用 SDIO AT
 ----------------
 
@@ -95,3 +104,22 @@ SDIO slave 的处理与 SDIO host 类似，slave 在接收到 SDIO host 发送�
 3. 接收数据
 
    - 为了优化接收 SDIO 数据传输给 AT core 的速率，在调用 ``sdio_slave_recv`` 接收 SDIO 数据后，使用了循环链表将接收到的数据传输到 AT core。
+
+.. only:: esp32c5
+   
+  测试结果
+  --------
+
+  下表显示了我们在屏蔽箱中得到的通信速率结果：
+
+  .. list-table:: SDIO AT Wi-Fi TCP 通信速率
+     :header-rows: 1
+
+     * - 传输模式
+       - TCP 发送 (Mbps)
+       - TCP 接收 (Mbps)
+     * - 1 线
+       - 17.4
+       - 15.2
+
+  注：测试使用的 SDIO HOST 硬件为 ESP32，SDIO 工作在 1 线 40MHz，Wi-Fi 工作在 802.11ac 模式下。

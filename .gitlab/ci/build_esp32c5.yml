@@ -22,3 +22,10 @@ esp32c5_at_wifi_function_test:
     - .rules:build:build_project_on_protected
   variables:
     MODULE_NAME: "ESP32C5-4MB"
+
+esp32c5_sdio_at:
+  extends:
+    - .build_template_esp32c5
+    - .rules:build:build_project
+  variables:
+    MODULE_NAME: "ESP32C5-SDIO"
