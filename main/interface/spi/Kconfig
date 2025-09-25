@@ -1,6 +1,6 @@
 config AT_BASE_ON_SPI
     bool "AT through SPI"
-    depends on (IDF_TARGET_ESP32C2 || IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C6)
+    depends on (IDF_TARGET_ESP32C2 || IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C6 || IDF_TARGET_ESP32C5)
     help
         If enable this option, the MCU can send AT command through SPI bus.
         But besides the standard SPI pins, the more one pin is required to handshake MCU.
@@ -31,38 +31,34 @@ menu "AT SPI GPIO settings"
     depends on AT_BASE_ON_SPI
     config SPI_SCLK_PIN
         int "SPI sclk pin"
-        default 6 if IDF_TARGET_ESP32C3
-        default 6 if IDF_TARGET_ESP32C2
+        default 6 if (IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2 || IDF_TARGET_ESP32C5)
         default 19 if IDF_TARGET_ESP32C6
 
     config SPI_MOSI_PIN
         int "SPI mosi pin"
-        default 7 if IDF_TARGET_ESP32C3
-        default 7 if IDF_TARGET_ESP32C2
+        default 7 if (IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2 || IDF_TARGET_ESP32C5)
         default 18 if IDF_TARGET_ESP32C6
 
     config SPI_MISO_PIN
         int "SPI miso pin"
-        default 2 if IDF_TARGET_ESP32C3
-        default 2 if IDF_TARGET_ESP32C2
+        default 2 if (IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2 || IDF_TARGET_ESP32C5)
         default 20 if IDF_TARGET_ESP32C6
 
     config SPI_CS_PIN
         int "SPI cs pin"
-        default 10 if IDF_TARGET_ESP32C3
-        default 10 if IDF_TARGET_ESP32C2
+        default 10 if (IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2 || IDF_TARGET_ESP32C5)
         default 23 if IDF_TARGET_ESP32C6
 
     config SPI_HANDSHAKE_PIN
         int "SPI handshake pin for slave send"
-        default 3 if IDF_TARGET_ESP32C3
-        default 3 if IDF_TARGET_ESP32C2
+        default 3 if (IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2 || IDF_TARGET_ESP32C5)
         default 21 if IDF_TARGET_ESP32C6
 
     config SPI_WP_PIN
         int "SPI WP pin(quad spi)"
         default 8 if IDF_TARGET_ESP32C3
         default 8 if IDF_TARGET_ESP32C2
+        default 5 if IDF_TARGET_ESP32C5
         default 22 if IDF_TARGET_ESP32C6
         depends on SPI_QUAD_MODE
 
@@ -70,6 +66,7 @@ menu "AT SPI GPIO settings"
         int "SPI HD pin(quad spi)"
         default 9 if IDF_TARGET_ESP32C3
         default 9 if IDF_TARGET_ESP32C2
+        default 4 if IDF_TARGET_ESP32C5
         default 2 if IDF_TARGET_ESP32C6
         depends on SPI_QUAD_MODE
 endmenu

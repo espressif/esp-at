@@ -85,6 +85,31 @@ The following pin assignments are used by default:
     * - QUADHD (qio/qout) :sup:`1`
       - 2
 
+.. only:: esp32c5
+
+  .. list-table:: The Default Pins for SPI AT
+    :widths: 10 25
+    :header-rows: 1
+
+    * - Signal
+      - GPIO Number
+    * - SCLK
+      - 6
+    * - MISO
+      - 2
+    * - MOSI
+      - 7
+    * - CS
+      - 10
+    * - HANDSHAKE
+      - 3
+    * - GND
+      - GND
+    * - QUADWP (qio/qout) :sup:`1`
+      - 5
+    * - QUADHD (qio/qout) :sup:`1`
+      - 4
+
 **Note** 1: QUADWP and QUADHD signals are only used for 4-bit (qio/qout) transactions.
 
 You can change the default pin assignments by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT through SPI`` > ``AT SPI GPIO settings`` and compile the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
@@ -302,51 +327,72 @@ Reference Results
 
 The table below shows the throughput results we got in a shield box.
 
-.. list-table:: SPI AT Wi-Fi TCP Throughput
-   :header-rows: 1
-   :widths: 15 20 25 25
+.. only:: esp32c6 or esp32c3
 
-   * - Clock
-     - SPI mode
-     - master->slave
-     - slave->master
-   * - 10 M
-     - Standard
-     - 0.95 MByte/s
-     - 1.00 MByte/s
-   * - 10 M
-     - Dual
-     - 1.37 MByte/s
-     - 1.29 MByte/s
-   * - 10 M
-     - Quad
-     - 1.43 MByte/s
-     - 1.31 MByte/s
-   * - 20 M
-     - Standard
-     - 1.41 MByte/s
-     - 1.30 MByte/s
-   * - 20 M
-     - Dual
-     - 1.39 MByte/s
-     - 1.30 MByte/s
-   * - 20 M
-     - Quad
-     - 1.39 MByte/s
-     - 1.30 MByte/s
-   * - 40 M
-     - Standard
-     - 1.37 MByte/s
-     - 1.30 MByte/s
-   * - 40 M
-     - Dual
-     - 1.40 MByte/s
-     - 1.31 MByte/s
-   * - 40 M
-     - Quad
-     - 1.48 MByte/s
-     - 1.31 MByte/s
+  .. list-table:: SPI AT Wi-Fi TCP Throughput
+    :header-rows: 1
+    :widths: 15 20 25 25
 
-**Note** 1: When SPI clock frequency is high, due to the limitation of upper network components, the communication rate of Dual or Quad mode is not significantly improved compared with Standard mode.
+    * - Clock
+      - SPI mode
+      - master->slave
+      - slave->master
+    * - 10 M
+      - Standard
+      - 0.95 MByte/s
+      - 1.00 MByte/s
+    * - 10 M
+      - Dual
+      - 1.37 MByte/s
+      - 1.29 MByte/s
+    * - 10 M
+      - Quad
+      - 1.43 MByte/s
+      - 1.31 MByte/s
+    * - 20 M
+      - Standard
+      - 1.41 MByte/s
+      - 1.30 MByte/s
+    * - 20 M
+      - Dual
+      - 1.39 MByte/s
+      - 1.30 MByte/s
+    * - 20 M
+      - Quad
+      - 1.39 MByte/s
+      - 1.30 MByte/s
+    * - 40 M
+      - Standard
+      - 1.37 MByte/s
+      - 1.30 MByte/s
+    * - 40 M
+      - Dual
+      - 1.40 MByte/s
+      - 1.31 MByte/s
+    * - 40 M
+      - Quad
+      - 1.48 MByte/s
+      - 1.31 MByte/s
 
-**Note** 2: For more information about SPI communication, please refer to the `Technical Reference Manuals <https://www.espressif.com/en/support/documents/technical-documents>`_.
+  **Note** : When SPI clock frequency is high, due to the limitation of upper network components, the communication rate of Dual or Quad mode is not significantly improved compared with Standard mode.
+
+.. only:: esp32c5
+
+  .. list-table:: SPI AT Wi-Fi 5G TCP Throughput
+    :header-rows: 1
+    :widths: 15 20 25 25
+
+    * - Clock
+      - SPI mode
+      - master->slave
+      - slave->master
+    * - 26 M
+      - Standard
+      - 2.15 MByte/s
+      - 2.25 MByte/s
+    * - 26 M
+      - Dual
+      - 2.97 MByte/s
+      - 2.59 MByte/s
+
+**Note** : For more information about SPI communication, please refer to the `Technical Reference Manuals <https://www.espressif.com/en/support/documents/technical-documents>`_.

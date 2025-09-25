@@ -85,6 +85,31 @@ SPI AT 默认管脚
     * - QUADHD (qio/qout) :sup:`1`
       - 2
 
+.. only:: esp32c5
+
+  .. list-table:: SPI AT 默认管脚
+    :widths: 10 25
+    :header-rows: 1
+
+    * - 信号
+      - GPIO 编号
+    * - SCLK
+      - 6
+    * - MISO
+      - 2
+    * - MOSI
+      - 7
+    * - CS
+      - 10
+    * - HANDSHAKE
+      - 3
+    * - GND
+      - GND
+    * - QUADWP (qio/qout) :sup:`1`
+      - 5
+    * - QUADHD (qio/qout) :sup:`1`
+      - 4
+
 **说明** 1：QUADWP 引脚和 QUADHD 引脚仅在使用 4 线 SPI 工作时使用。
 
 您可以通过 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT through SPI`` > ``AT SPI GPIO settings``，然后编译工程来配置 SPI AT 对应的管脚（参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
@@ -302,51 +327,73 @@ SPI AT 速率
 
 下表显示了我们在屏蔽箱中得到的通信速率结果：
 
-.. list-table:: SPI AT Wi-Fi TCP 通信速率
-   :header-rows: 1
-   :widths: 15 20 25 25
+.. only:: esp32c6 or esp32c3
 
-   * - Clock
-     - SPI mode
-     - master->slave
-     - slave->master
-   * - 10 M
-     - Standard
-     - 0.95 MByte/s
-     - 1.00 MByte/s
-   * - 10 M
-     - Dual
-     - 1.37 MByte/s
-     - 1.29 MByte/s
-   * - 10 M
-     - Quad
-     - 1.43 MByte/s
-     - 1.31 MByte/s
-   * - 20 M
-     - Standard
-     - 1.41 MByte/s
-     - 1.30 MByte/s
-   * - 20 M
-     - Dual
-     - 1.39 MByte/s
-     - 1.30 MByte/s
-   * - 20 M
-     - Quad
-     - 1.39 MByte/s
-     - 1.30 MByte/s
-   * - 40 M
-     - Standard
-     - 1.37 MByte/s
-     - 1.30 MByte/s
-   * - 40 M
-     - Dual
-     - 1.40 MByte/s
-     - 1.31 MByte/s
-   * - 40 M
-     - Quad
-     - 1.48 MByte/s
-     - 1.31 MByte/s
+  .. list-table:: SPI AT Wi-Fi TCP 通信速率
+    :header-rows: 1
+    :widths: 15 20 25 25
 
-**说明** 1：当 SPI 的时钟频率较高时，受限于上层网络组件的限制，使用 Dual 或者 Quad 工作模式的通信速率想比较于 Standard 模式并未显著改善。
+    * - Clock
+      - SPI mode
+      - master->slave
+      - slave->master
+    * - 10 M
+      - Standard
+      - 0.95 MByte/s
+      - 1.00 MByte/s
+    * - 10 M
+      - Dual
+      - 1.37 MByte/s
+      - 1.29 MByte/s
+    * - 10 M
+      - Quad
+      - 1.43 MByte/s
+      - 1.31 MByte/s
+    * - 20 M
+      - Standard
+      - 1.41 MByte/s
+      - 1.30 MByte/s
+    * - 20 M
+      - Dual
+      - 1.39 MByte/s
+      - 1.30 MByte/s
+    * - 20 M
+      - Quad
+      - 1.39 MByte/s
+      - 1.30 MByte/s
+    * - 40 M
+      - Standard
+      - 1.37 MByte/s
+      - 1.30 MByte/s
+    * - 40 M
+      - Dual
+      - 1.40 MByte/s
+      - 1.31 MByte/s
+    * - 40 M
+      - Quad
+      - 1.48 MByte/s
+      - 1.31 MByte/s
 
-**说明** 2：更多关于 SPI 通信的介绍请参考对应模组的 `技术参考手册 <https://www.espressif.com/zh-hans/support/documents/technical-documents>`_。
+  **说明** ：当 SPI 的时钟频率较高时，受限于上层网络组件的限制，使用 Dual 或者 Quad 工作模式的通信速率想比较于 Standard 模式并未显著改善。
+
+.. only:: esp32c5
+
+  .. list-table:: SPI AT Wi-Fi 5G TCP 通信速率
+    :header-rows: 1
+    :widths: 15 20 25 25
+
+    * - Clock
+      - SPI mode
+      - master->slave
+      - slave->master
+    * - 26 M
+      - Standard
+      - 2.15 MByte/s
+      - 2.25 MByte/s
+    * - 26 M
+      - Dual
+      - 2.97 MByte/s
+      - 2.59 MByte/s
+
+
+**说明** ：更多关于 SPI 通信的介绍请参考对应模组的 `技术参考手册 <https://www.espressif.com/zh-hans/support/documents/technical-documents>`_。
