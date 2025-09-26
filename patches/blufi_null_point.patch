@@ -1,0 +1,28 @@
+From 4497ca71947051eefbdb2fc180d045bc2f194276 Mon Sep 17 00:00:00 2001
+From: xiewenxiang <xiewenxiang@espressif.com>
+Date: Thu, 25 Sep 2025 17:52:47 +0800
+Subject: [PATCH] bugfix(espat-2437): Fix the issue that crashes when deinit
+ blufi
+
+---
+ .../bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c   | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c b/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
+index bf0c2b7ab0a..d92a2d3e31f 100644
+--- a/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
++++ b/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
+@@ -366,7 +366,9 @@ esp_blufi_gap_event(struct ble_gap_event *event, void *arg)
+     case BLE_GAP_EVENT_ADV_COMPLETE:
+         ESP_LOGI(TAG, "advertise complete; reason=%d",
+                  event->adv_complete.reason);
+-        ((void(*)(void))arg)();
++        if (arg) {
++            ((void(*)(void))arg)();
++        }
+         return 0;
+ 
+     case BLE_GAP_EVENT_SUBSCRIBE:
+-- 
+2.39.5 (Apple Git-154)
+
