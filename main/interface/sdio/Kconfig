@@ -1,7 +1,7 @@
 
 config AT_BASE_ON_SDIO
     bool "AT through SDIO"
-	depends on IDF_TARGET_ESP32 || IDF_TARGET_ESP32C6
+	depends on IDF_TARGET_ESP32 || IDF_TARGET_ESP32C6 || IDF_TARGET_ESP32C5
     help
         This demo is AT through SDIO. The MCU can send AT command through SDIO bus.
 

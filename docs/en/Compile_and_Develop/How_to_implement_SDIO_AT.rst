@@ -33,6 +33,15 @@ The SDIO slave pins are as below:
    -  DAT2 is GPIO22 (for 4-bit mode only)
    -  DAT3 is GPIO23 (for 4-bit mode only)
 
+.. only:: esp32c5
+
+   -  CLK is GPIO9
+   -  CMD is GPIO10
+   -  DAT0 is GPIO8
+   -  DAT1 is GPIO7
+   -  DAT2 is GPIO14 (for 4-bit mode only)
+   -  DAT3 is GPIO13 (for 4-bit mode only)
+
 Implement SDIO AT
 -----------------
 
@@ -95,3 +104,22 @@ When the SDIO slave receives data from the SDIO host, it will inform the AT core
 3. Receive data
 
    -  To speed up the data transmission, after receiving data by ``sdio_slave_recv``, a circular linked list is used to transmit the received data to the AT core.
+
+.. only:: esp32c5
+
+  Test Results
+  ------------
+
+  The table below shows the communication speed results we obtained in the shielded box:
+
+  .. list-table:: SDIO AT Wi-Fi TCP Communication Speed
+     :header-rows: 1
+
+     * - Transfer Mode
+       - TCP Send (Mbps)
+       - TCP Receive (Mbps)
+     * - 1-bit
+       - 17.4
+       - 15.2
+
+  Note: The SDIO HOST hardware used for testing is ESP32. SDIO operates in 1-bit 40MHz mode, and Wi-Fi operates in 802.11ac mode.
