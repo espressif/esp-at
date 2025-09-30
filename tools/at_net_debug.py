@@ -17,6 +17,10 @@ at_net_debug_snippet = """
 #include "esp_log.h"
 #include "sdkconfig.h"
 
+#define IPSTR_TX " (%d.%d.%d.%d > %d.%d.%d.%d)"
+#define IPSTR_RX " (%d.%d.%d.%d < %d.%d.%d.%d)"
+#define IP2STR_VAL(local,remote) (local)[0], (local)[1], (local)[2], (local)[3], (remote)[0], (remote)[1], (remote)[2], (remote)[3]
+
 /* IPv4+ protocol check */
 typedef enum {
     IP4_PROTO_ICMP = 1,
@@ -103,6 +107,9 @@ void at_print_pkt_info(void *buf, bool tx)
     uint16_t ip_hlen = (*ip4 & 0x0F) * 4;
     uint16_t ip_dlen = ip_tlen - ip_hlen;
 
+    uint8_t *src_ip = (ip4 + 12);
+    uint8_t *dst_ip = (ip4 + 16);
+
     switch (ip_proto) {
 
 #if CONFIG_AT_NET_TCP_DEBUG
@@ -124,9 +131,9 @@ void at_print_pkt_info(void *buf, bool tx)
         }
 
         if (tx) {
-            ESP_LOGI("@@tcp-tx", "IPL:%u, S:%u, A:%u, SP:%u, DP:%u, F:0x%x, TDL:%u", ip_tlen, seq, ack, src_port, dst_port, flags, tcp_dlen);
+            ESP_LOGI("@@tcp-tx", "IPL:%u, S:%u, A:%u, SP:%u, DP:%u, F:0x%x, TDL:%u" IPSTR_TX, ip_tlen, seq, ack, src_port, dst_port, flags, tcp_dlen, IP2STR_VAL(src_ip,dst_ip));
         } else {
-            ESP_LOGI("@@tcp-rx", "IPL:%u, S:%u, A:%u, SP:%u, DP:%u, F:0x%x, TDL:%u", ip_tlen, seq, ack, src_port, dst_port, flags, tcp_dlen);
+            ESP_LOGI("@@tcp-rx", "IPL:%u, S:%u, A:%u, SP:%u, DP:%u, F:0x%x, TDL:%u" IPSTR_RX, ip_tlen, seq, ack, src_port, dst_port, flags, tcp_dlen, IP2STR_VAL(dst_ip,src_ip));
         }
     }
         break;
@@ -147,9 +154,9 @@ void at_print_pkt_info(void *buf, bool tx)
         }
 
         if (tx) {
-            ESP_LOGI("udp-tx", "IPL:%u, SP:%u, DP:%u, UDL:%u", ip_tlen, src_port, dst_port, udp_dlen);
+            ESP_LOGI("udp-tx", "IPL:%u, SP:%u, DP:%u, UDL:%u" IPSTR_TX, ip_tlen, src_port, dst_port, udp_dlen, IP2STR_VAL(src_ip,dst_ip));
         } else {
-            ESP_LOGI("udp-rx", "IPL:%u, SP:%u, DP:%u, UDL:%u", ip_tlen, src_port, dst_port, udp_dlen);
+            ESP_LOGI("udp-rx", "IPL:%u, SP:%u, DP:%u, UDL:%u" IPSTR_RX, ip_tlen, src_port, dst_port, udp_dlen, IP2STR_VAL(dst_ip,src_ip));
         }
     }
         break;
@@ -172,9 +179,9 @@ void at_print_pkt_info(void *buf, bool tx)
         uint16_t id = *(icmp + 4); id <<= 8; id += *(icmp + 5);
         uint16_t seq = *(icmp + 6); seq <<= 8; seq += *(icmp + 7);
         if (tx) {
-            ESP_LOGI("icmp-tx", "%s, IPL:%u, ID:0x%x, S:%u PDL:%u", (type == 8) ? "Echo" : "Echo Reply", ip_tlen, id, seq, icmp_dlen);
+            ESP_LOGI("icmp-tx", "%s, IPL:%u, ID:0x%x, S:%u PDL:%u" IPSTR_TX, (type == 8) ? "Echo" : "Echo Reply", ip_tlen, id, seq, icmp_dlen, IP2STR_VAL(src_ip,dst_ip));
         } else {
-            ESP_LOGI("icmp-rx", "%s, IPL:%u, ID:0x%x, S:%u PDL:%u", (type == 8) ? "Echo" : "Echo Reply", ip_tlen, id, seq, icmp_dlen);
+            ESP_LOGI("icmp-rx", "%s, IPL:%u, ID:0x%x, S:%u PDL:%u" IPSTR_RX, (type == 8) ? "Echo" : "Echo Reply", ip_tlen, id, seq, icmp_dlen, IP2STR_VAL(dst_ip,src_ip));
         }
     }
         break;
