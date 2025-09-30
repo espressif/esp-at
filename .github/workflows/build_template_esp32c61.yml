@@ -1,0 +1,73 @@
+name: Reusable esp32c61-at workflow template
+
+on:
+  workflow_call:
+    # parameters from upstream workflow
+    inputs:
+      module_name:
+        required: true
+        type: string
+      artifacts_name:
+        required: true
+        type: string
+      enable_at_debug:
+        required: false
+        type: boolean
+    # parameters from upstream inherit
+    secrets:
+      ESP32C61_4MB_TOKEN:
+        required: false
+
+jobs:
+  build-template-esp32c61:
+    runs-on: ubuntu-latest
+    env:
+      PLATFORM: PLATFORM_ESP32C61
+      MODULE_NAME: ${{ inputs.module_name }}
+      SILENCE: 0
+    steps:
+    - uses: actions/checkout@v4.2.0
+    - uses: actions/setup-python@v5.3.0
+      with:
+        python-version: '3.10'
+    - name: Set up environment variables
+      run: |
+        source .github/workflows/utils.sh && setup_env_variables
+    - name: Enable AT debug log
+      if: ${{ inputs.enable_at_debug == true }}
+      run: |
+        source .github/workflows/utils.sh && enable_at_debug
+    - name: Enlarge app partition size
+      if: ${{ inputs.enable_at_debug == true }}
+      run: |
+        source .github/workflows/utils.sh && enlarge_app_partition
+    - name: Set up OTA tokens
+      run: |
+        cd components/at/private_include
+        rm -f at_ota_token.h
+        echo -e "#pragma once" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C61_4MB \"${{ secrets.ESP32C61_4MB_TOKEN }}\"" >> at_ota_token.h
+        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C61_4MB \"${{ secrets.ESP32C61_4MB_TOKEN }}\"" >> at_ota_token.h
+        cd -
+    - name: Install compilation environment
+      run: |
+        ./build.py install
+    - name: Compile
+      run: |
+        ./build.py build
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4.4.3
+      with:
+        name: ${{ inputs.artifacts_name }}
+        path: |
+          sdkconfig
+          build/*.bin
+          build/*.elf
+          build/*.map
+          build/bootloader/*.bin
+          build/partition_table/*.bin
+          build/customized_partitions/*
+          build/flasher_args.json
+          build/project_description.json
+          build/download.config
+          build/factory/*

@@ -3,4 +3,4 @@ dependencies:
   espressif/cmake_utilities:
     version: "==0.4.8"
     rules:
-      - if: "target in [esp32c2, esp32c5]"
+      - if: "target in [esp32c2, esp32c5, esp32c61]"
