@@ -1672,7 +1672,7 @@ Parameters
     -  6: -11 dBm
     -  7: -14 dBm
 
-.. only:: esp32c3 or esp32c2
+.. only:: esp32c3 or esp32c2 or esp32c5
 
   -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,15].
 
@@ -1693,7 +1693,7 @@ Parameters
     -  14: 18 dBm
     -  15: 20 dBm
 
-.. only:: esp32c6 or esp32c5
+.. only:: esp32c6
 
   -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [3,15].
 
