@@ -71,3 +71,4 @@ jobs:
           build/project_description.json
           build/download.config
           build/factory/*
+          build/custom_ota_binaries/*
