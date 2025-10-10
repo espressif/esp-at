@@ -505,6 +505,20 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
             pStr += strlen("Content-Length: ");
             total_len = atoi((char*)pStr);
             ESP_AT_LOGI(TAG, "total_len=%d!\r\n", total_len);
+            uint32_t partition_size = 0;
+            if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {
+#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
+                partition_size = handle.partition->size;
+#else
+                partition_size = partition.size;
+#endif
+            } else {
+                partition_size = at_custom_partition->size;
+            }
+            if (total_len > partition_size) {
+                ESP_AT_LOGE(TAG, "ota bin oversize, %d > %d", total_len, partition_size);
+                goto OTA_ERROR;
+            }
             pStr = (uint8_t*)strstr((char*)data_buffer, "\r\n\r\n");
             if (pStr) {
                 pkg_body_start = true;
