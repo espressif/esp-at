@@ -147,7 +147,7 @@
 -  **<AT version info>**：AT 核心库的版本信息，它们在 ``esp-at/components/at/lib/`` 目录下。代码是闭源的，无开放计划。
 -  **<SDK version info>**：AT 使用的平台 SDK 版本信息，它们定义在 ``esp-at/module_config/module_{platform}_default/IDF_VERSION`` 文件中。
 -  **<compile time>**：固件生成时间。
--  **<Bin version>**: AT 固件版本信息。版本信息可以在 menuconfig 中修改，``python build.py menuconfig`` > ``Application manager`` > ``Project version``。最大长度： 32 字节。
+-  **<Bin version>**：AT 固件版本信息。版本信息可以在 menuconfig 中修改，``python build.py menuconfig`` > ``Application manager`` > ``Project version``。最大长度：32 字节。
 -  **<module_name>**：模块名称，在 ``esp-at/components/customized_partitions/raw_data/factory_param/factory_param_data.csv`` 里定义。
 
 说明
@@ -225,17 +225,13 @@
 参数
 ^^^^
 
--  **<time>**：设备进入 Deep-sleep 的时长，单位：毫秒。设定时间到后，设备自动唤醒，调用深度睡眠唤醒桩，然后加载应用程序。
+- **<time>**：设备进入 Deep-sleep 的时长，单位：毫秒。设定时间到后，设备自动唤醒，调用深度睡眠唤醒桩，然后加载应用程序。
 
-   .. only:: esp32c3 or esp32c2 or esp32c5 or esp32 or esp32s2
+  .. list::
 
-       - 0 表示立即重启
-
-   .. only:: esp32c6
-
-       - 最小 Deep-sleep 时长为 5 毫秒。
-
-   - 最大 Deep-sleep 时长约为 28.8 天（2 :sup:`31`-1 毫秒）。
+    :not esp32c6: - 0 表示立即重启
+    :esp32c6: - 最小 Deep-sleep 时长为 5 毫秒。
+    - 最大 Deep-sleep 时长约为 28.8 天（2 :sup:`31`-1 毫秒）。
 
 说明
 ^^^^
@@ -766,7 +762,7 @@
 
             - CPU 将自动进入睡眠，射频模块根据电源管理模块定期关闭。
 
-   - 3：Wi-Fi Modem-sleep listen interval 模式。射频模块将根据 :ref:`AT+CWJAP <cmd-JAP>` 命令设置的 ``listen interval`` 参数定期关闭。仅在 Wi-Fi 模式为 Station 时设置生效；在无 Wi-Fi 模式下，允许设置，但不会生效（为了兼容旧版 AT 固件）；其他情况下不可设置。
+   - 3：Wi-Fi Modem-sleep listen interval 模式。射频模块将根据 :ref:`AT+CWJAP <cmd-JAP>` 或 :ref:`AT+CWCONFIG <cmd-CWCONFIG>` 命令设置的 ``listen interval`` 参数定期关闭。仅在 Wi-Fi 模式为 Station 时设置生效；在无 Wi-Fi 模式下，允许设置，但不会生效（为了兼容旧版 AT 固件）；其他情况下不可设置。
 
 说明
 ^^^^
@@ -1578,7 +1574,7 @@
 
 **响应：**
 
-.. only:: esp32 or esp32c3 or esp32c5 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
   ::
 
@@ -1597,7 +1593,7 @@
 
 **命令：**
 
-.. only:: esp32 or esp32c3 or esp32c5 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
   ::
 
@@ -1637,7 +1633,7 @@
       [78,84]   78           78           19.5
       ========= ============ ============ ==========
 
-  .. only:: esp32c3 or esp32c2 or esp32c5 or esp32c6
+  .. only:: esp32c3 or esp32c2 or esp32c5 or esp32c6 or esp32c61
 
     - {IDF_TARGET_NAME} 设备的取值范围为 [40,84]：
 
@@ -1684,7 +1680,7 @@
     -  5: -9 dBm
     -  6: -6 dBm
     -  7: -3 dBm
-    -  8: -0 dBm
+    -  8: 0 dBm
     -  9: 3 dBm
     -  10: 6 dBm
     -  11: 9 dBm
@@ -1693,7 +1689,7 @@
     -  14: 18 dBm
     -  15: 20 dBm
 
-.. only:: esp32c6
+.. only:: esp32c6 or esp32c61
 
   -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [3,15]：
 
@@ -1702,7 +1698,7 @@
     -  5: -9 dBm
     -  6: -6 dBm
     -  7: -3 dBm
-    -  8: -0 dBm
+    -  8: 0 dBm
     -  9: 3 dBm
     -  10: 6 dBm
     -  11: 9 dBm
@@ -1711,7 +1707,7 @@
     -  14: 18 dBm
     -  15: 20 dBm
 
-.. only:: esp32 or esp32c3 or esp32c6 or esp32c5
+.. only:: esp32 or esp32c3 or esp32c6 or esp32c61 or esp32c5
 
   -  **<ble_scan_power>**：Bluetooth LE 扫描的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
   -  **<ble_conn_power>**：Bluetooth LE 连接的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。

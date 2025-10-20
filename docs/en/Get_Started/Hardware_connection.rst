@@ -49,7 +49,7 @@ Note:
 
 - In the above picture, four jump wires are used to connect the {IDF_TARGET_NAME} board and USB to serial converter. If you do not use hardware flow control, two wires connecting TX/RX and a simpler converter will be enough.
 
-.. only:: esp32 or esp32c5 or esp32c6 or esp32s2
+.. only:: esp32 or esp32c5 or esp32c6 or esp32c61 or esp32s2
 
   - If you use an {IDF_TARGET_NAME} module instead of a development board and flash firmware via UART, you need to reserve the UART pins (refer to {IDF_TARGET_DATASHEET_EN_URL} > Section Pin Description for more details) and strapping pins (refer to {IDF_TARGET_DATASHEET_EN_URL} > Section Strapping Pins for more details), and enter the download mode by controlling the strapping pin level.
 
@@ -543,6 +543,53 @@ Note:
     {IDF_TARGET_NAME}-4MB Series Hardware Connection
 
   If you want to connect your device directly with {IDF_TARGET_NAME}-4MB module rather than the {IDF_TARGET_NAME}-4MB board that integrates it, please refer to the corresponding module `datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for more details.
+
+.. only:: esp32c61
+
+  {IDF_TARGET_NAME}-4MB Series
+  --------------------------------
+
+  {IDF_TARGET_NAME}-4MB series refer to the module or board that has a built-in {IDF_TARGET_NAME} chip with a 4 MB flash, such as {IDF_TARGET_NAME} WROOM series device.
+
+  {IDF_TARGET_NAME}-4MB AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default.
+
+  .. list-table:: {IDF_TARGET_NAME}-4MB Series Hardware Connection Pinout
+    :header-rows: 1
+
+    * - Function of Connection
+      - {IDF_TARGET_NAME}-4MB Board or Module Pins
+      - Other Device Pins
+    * - Download/Log output :sup:`1`
+      - UART0
+          * GPIO10 (RX)
+          * GPIO11 (TX)
+      - PC
+          * TX
+          * RX
+    * - AT command/response :sup:`2`
+      - UART1
+          * GPIO5 (RX)
+          * GPIO6 (TX)
+          * GPIO4 (CTS)
+          * GPIO3 (RTS)
+      - USB to UART converter
+          * TX
+          * RX
+          * RTS
+          * CTS
+
+  **Note** 1: Connection between {IDF_TARGET_NAME}-4MB board and PC is already established on {IDF_TARGET_NAME}-4MB board. You only need to provide a USB cable.
+
+  **Note** 2: CTS/RTS pins only need to be connected if you want to enable hardware flow control.
+
+  .. figure:: ../../_static/get_started/hw_connection/esp-hw-connection.png
+    :align: center
+    :alt: {IDF_TARGET_NAME}-4MB Series Hardware Connection
+    :figclass: align-center
+
+    {IDF_TARGET_NAME}-4MB Series Hardware Connection
+
+  If you want to connect your device directly with {IDF_TARGET_NAME}-4MB module rather than the {IDF_TARGET_NAME} board that integrates it, please refer to the corresponding module's `technical documents <https://www.espressif.com/en/support/documents/technical-documents>`_ for more details.
 
 .. only:: esp32s2
 

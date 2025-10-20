@@ -5,7 +5,7 @@
 
 - [中文版](./README_CN.md)
 
-esp-at project was started and powered by Espressif Systems (@[espressif](https://github.com/espressif/)) as an official project, for the **ESP32-C2**, **ESP32-C3**, **ESP32-C5**, **ESP32-C6**, **ESP32**, and **ESP32-S2** Series SoCs provided for Windows, Linux, and macOS.  
+esp-at project was started and powered by Espressif Systems (@[espressif](https://github.com/espressif/)) as an official project, for the **ESP32-C2**, **ESP32-C3**, **ESP32-C5**, **ESP32-C6**, **ESP32-C61**, **ESP32**, and **ESP32-S2** Series SoCs provided for Windows, Linux, and macOS.  
 It is now supported and maintained by Espressif esp-at team (@[esp-at](https://github.com/espressif/esp-at)). **Before using the ESP-AT solution, please read the [disclaimer](https://docs.espressif.com/projects/esp-at/en/latest/esp32/disclaimer.html) carefully and comply with its terms and precautions.**
 
 # Introduction
@@ -29,6 +29,7 @@ The following table shows ESP-AT support status of Espressif SoCs.
 |ESP32-C6 | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.0.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 |ESP32-S2 | |  [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.4.0.0) | | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 |ESP32-C5 | | | | | ![alt text][pre-release] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+|ESP32-C61 | | | | | ![alt text][pre-release] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 
 - ![alt text][released]: Released versions. You can click ![alt text][released] to go to the corresponding release page and download the AT firmware.
 - ![alt text][supported]: Supported versions. You can click ![alt text][supported] to go to the corresponding branch and develop your own AT firmware.
@@ -46,8 +47,7 @@ Please choose one of the following options based on your needs:
 [no-plan]: https://img.shields.io/badge/-no--plan-808080
 
 **Other series of chips:**
-- ESP-AT will support ESP32-C5 series of chips.
-- ESP-AT will not support ESP32-S3 and ESP32-H series of chips.
+- ESP-AT will not support ESP32-S3 and ESP32-H2 series of chips.
 
 # Support Periods of ESP-AT
 

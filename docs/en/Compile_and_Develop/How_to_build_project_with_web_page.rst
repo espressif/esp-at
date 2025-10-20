@@ -141,6 +141,7 @@ Enter ``Name`` and ``Secrets``, and click ``Add secret`` to create a new secret.
       ESP32C2_4MB_TOKEN
       ESP32C5_4MB_TOKEN
       ESP32C6_4MB_TOKEN
+      ESP32C61_4MB_TOKEN
 
 If you need to support AT firmware upgrades for more modules, please repeat the above steps and add different keys again. After creating all the secrets, you will have the following page.
 

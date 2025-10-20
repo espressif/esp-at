@@ -108,7 +108,7 @@
       CONFIG_ESP32_WIFI_AMPDU_TX_ENABLED=y
       CONFIG_ESP32_WIFI_AMPDU_RX_ENABLED=y
 
-  .. only:: esp32c5
+  .. only:: esp32c5 or esp32c61
 
     ::
 
@@ -261,7 +261,7 @@
       CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
       CONFIG_ESPTOOLPY_FLASHFREQ_80M=y
 
-  .. only:: esp32c3 or esp32c6
+  .. only:: esp32c3 or esp32c6 or esp32c61
 
     ::
       
@@ -322,8 +322,8 @@
 
     .. list::
 
-      :esp32 or esp32c5 or esp32c6: - SDIO：:doc:`SDIO AT 指南 </Compile_and_Develop/How_to_implement_SDIO_AT>`
-      :esp32c2 or esp32c3 or esp32c5 or esp32c6: - SPI：:doc:`SPI AT 指南 </Compile_and_Develop/How_to_implement_SPI_AT>`
+      :esp32 or esp32c5 or esp32c6 or esp32c61: - SDIO：:doc:`SDIO AT 指南 </Compile_and_Develop/How_to_implement_SDIO_AT>`
+      :esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61: - SPI：:doc:`SPI AT 指南 </Compile_and_Develop/How_to_implement_SPI_AT>`
       - Socket：:project_file:`Socket AT 指南 <main/interface/socket/README.md>`
 
 **3. S2、R2、R3、S3 吞吐优化**

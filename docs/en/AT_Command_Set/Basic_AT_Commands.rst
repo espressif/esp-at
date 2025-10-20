@@ -225,16 +225,12 @@ Set Command
 Parameter
 ^^^^^^^^^^
 
--  **<time>**: The duration when the device stays in Deep-sleep. Unit: millisecond. When the time is up, the device automatically wakes up, calls Deep-sleep wake stub, and then proceeds to load the application.
+- **<time>**: The duration when the device stays in Deep-sleep. Unit: millisecond. When the time is up, the device automatically wakes up, calls Deep-sleep wake stub, and then proceeds to load the application.
 
-   .. only:: esp32c3 or esp32c2 or esp32c5 or esp32 or esp32s2
+  .. list::
 
-       - 0 means restarting right now
-
-   .. only:: esp32c6
-
-       - The minimum Deep-sleep time is 5 milliseconds
-
+    :not esp32c6: - 0 means restarting right now
+    :esp32c6: - The minimum Deep-sleep time is 5 milliseconds
     - The maximum Deep-sleep time is about 28.8 days (2 :sup:`31`-1 milliseconds)
 
 Notes
@@ -1287,7 +1283,7 @@ Set Command
 
 **Function:**
 
-Read/write the user partitions in flash. 
+Read, write, and erase the user partitions in flash.
 
 **Command:**
 
@@ -1578,7 +1574,7 @@ Query the RF TX Power.
 
 **Response:**
 
-.. only:: esp32 or esp32c3 or esp32c5 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
   ::
 
@@ -1597,7 +1593,7 @@ Set Command
 
 **Command:**
 
-.. only:: esp32 or esp32c3 or esp32c5 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
   ::
 
@@ -1637,7 +1633,7 @@ Parameters
       [78,84]   78           78           19.5
       ========= ============ ============ ==========
 
-  .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c2
+  .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
     - For {IDF_TARGET_NAME} devices, the range is [40,84]:
 
@@ -1684,7 +1680,7 @@ Parameters
     -  5: -9 dBm
     -  6: -6 dBm
     -  7: -3 dBm
-    -  8: -0 dBm
+    -  8: 0 dBm
     -  9: 3 dBm
     -  10: 6 dBm
     -  11: 9 dBm
@@ -1693,7 +1689,7 @@ Parameters
     -  14: 18 dBm
     -  15: 20 dBm
 
-.. only:: esp32c6
+.. only:: esp32c6 or esp32c61
 
   -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [3,15].
 
@@ -1702,7 +1698,7 @@ Parameters
     -  5: -9 dBm
     -  6: -6 dBm
     -  7: -3 dBm
-    -  8: -0 dBm
+    -  8: 0 dBm
     -  9: 3 dBm
     -  10: 6 dBm
     -  11: 9 dBm
@@ -1711,7 +1707,7 @@ Parameters
     -  14: 18 dBm
     -  15: 20 dBm
 
-.. only:: esp32 or esp32c3 or esp32c5 or esp32c6
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
   -  **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. The parameters are the same as ``<ble_adv_power>``.
   -  **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. The same as ``<ble_adv_power>``.

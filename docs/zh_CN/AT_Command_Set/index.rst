@@ -2,7 +2,7 @@
 AT 命令集
 **************
 
-{IDF_TARGET_VER: default="5.4", esp32c5="5.5"}
+{IDF_TARGET_VER: default="5.4", esp32c5="5.5", esp32c61="5.5"}
 
 :link_to_translation:`en:[English]`
 
@@ -14,7 +14,7 @@ AT 命令集
    基础 AT 命令集 <Basic_AT_Commands>
    Wi-Fi AT 命令集 <Wi-Fi_AT_Commands>
    TCP-IP AT 命令集 <TCP-IP_AT_Commands>
-   :esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6: Bluetooth® Low Energy 命令集 <BLE_AT_Commands>
+   :esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61: Bluetooth® Low Energy 命令集 <BLE_AT_Commands>
    :esp32: Bluetooth® AT 命令集 <BT_AT_Commands>
    MQTT AT 命令集 <MQTT_AT_Commands>
    HTTP AT 命令集 <HTTP_AT_Commands>
@@ -170,7 +170,7 @@ AT 消息
        - Smartconfig 类型
      * - Smart get wifi info
        - Smartconfig 已获取 SSID 和 PASSWORD
-     * - +SCRD:``<length>``,``<reserved data>``
+     * - +SCRD:<length>,<reserved data>
        - ESP-Touch v2 已获取自定义数据
      * - smartconfig connected wifi
        - Smartconfig 完成，ESP-AT 已连接到 Wi-Fi
@@ -267,13 +267,13 @@ AT 消息
      * - +BLUFIDATA:<len>,<data>
        - ESP 设备收到从手机端发送的 BluFi 用户自定义数据
      * - +WS_DISCONNECTED:<link_id>
-       - 连接 ID 为 <link_id> 的 WebSocket 连接已断开
+       - 连接 ID 为 ``<link_id>`` 的 WebSocket 连接已断开
      * - +WS_CONNECTED:<link_id>
-       - 连接 ID 为 <link_id> 的 WebSocket 连接已建立
+       - 连接 ID 为 ``<link_id>`` 的 WebSocket 连接已建立
      * - +WS_DATA:<link_id>,<data_len>,<data>
-       - 连接 ID 为 <link_id> 的 WebSocket 连接收到数据
+       - 连接 ID 为 ``<link_id>`` 的 WebSocket 连接收到数据
      * - +WS_CLOSED:<link_id>
-       - 连接 ID 为 <link_id> 的 WebSocket 连接已关闭
+       - 连接 ID 为 ``<link_id>`` 的 WebSocket 连接已关闭
      * - +BLESCANDONE
        - 扫描结束
      * - +BLESECKEYREQ:<conn_index>

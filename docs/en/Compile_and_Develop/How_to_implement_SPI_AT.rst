@@ -60,7 +60,7 @@ The following pin assignments are used by default:
     * - QUADHD (qio/qout) :sup:`1`
       - 9
 
-.. only:: esp32c6
+.. only:: esp32c6 or esp32c61
 
   .. list-table:: The Default Pins for SPI AT
     :widths: 10 25

@@ -51,6 +51,8 @@ ESP32C5_DOCS = SPI_DOCS + SDIO_DOCS + BLE_DOCS
 
 ESP32C6_DOCS = SPI_DOCS + SDIO_DOCS + BLE_DOCS
 
+ESP32C61_DOCS = SPI_DOCS + SDIO_DOCS + BLE_DOCS
+
 ESP32S2_DOCS = []
 
 # format: {tag needed to include: documents to included}, tags are parsed from sdkconfig and peripheral_caps.h headers
@@ -60,6 +62,7 @@ conditional_include_dict = {
                             'esp32c3':ESP32C3_DOCS,
                             'esp32c5':ESP32C5_DOCS,
                             'esp32c6':ESP32C6_DOCS,
+                            'esp32c61':ESP32C61_DOCS,
                             'esp32s2':ESP32S2_DOCS
                             }
 
@@ -78,7 +81,7 @@ github_repo = 'espressif/esp-at'
 html_context['github_user'] = 'espressif'
 html_context['github_repo'] = 'esp-at'
 
-idf_targets = ['esp32', 'esp32c2', 'esp32c3', 'esp32c5', 'esp32c6', 'esp32s2']
+idf_targets = ['esp32', 'esp32c2', 'esp32c3', 'esp32c5', 'esp32c6', 'esp32c61', 'esp32s2']
 languages = ['en', 'zh_CN']
 
 google_analytics_id = 'G-R6EJ3YJP4G'

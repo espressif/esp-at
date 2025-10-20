@@ -31,7 +31,7 @@ This section describes the differences among AT firmwares of {IDF_TARGET_NAME} s
 
   - ESP32-C3-MINI-1-AT-Vx.x.x.x.zip (referred to as **MINI-1 Bin** in this section);
 
-.. only:: esp32c5 or esp32c6
+.. only:: esp32c5 or esp32c6 or esp32c61
 
   - {IDF_TARGET_NAME}-4MB-AT-Vx.x.x.x.zip (referred to as **{IDF_TARGET_NAME}-4MB Bin** in this section);
 
@@ -339,7 +339,7 @@ The table lists which command set is supported by default in the official AT fir
     * - OTA
       - |icon-green-check|
 
-.. only:: esp32c5 or esp32c6
+.. only:: esp32c5 or esp32c6 or esp32c61
 
   .. list-table::
     :header-rows: 1
@@ -559,6 +559,23 @@ Hardware Differences
         | RX: 6
         | CTS: 5
         | RTS: 4
+
+.. only:: esp32c61
+
+  .. list-table::
+    :header-rows: 1
+
+    * - Hardware
+      - {IDF_TARGET_NAME}-4MB Bin
+    * - Flash
+      - 4 MB
+    * - PSRAM
+      - |icon-red-cross|
+    * - UART Pins [#one]_
+      - | TX: 6
+        | RX: 5
+        | CTS: 4
+        | RTS: 3
 
 .. only:: esp32s2
 
@@ -817,6 +834,16 @@ The table below lists the modules or chips that are default supported by the off
       - {IDF_TARGET_NAME}-4MB Bin
     * - {IDF_TARGET_NAME}-MINI-1
       - |icon-green-check|
+    * - {IDF_TARGET_NAME}-WROOM-01
+      - |icon-green-check|
+
+.. only:: esp32c61
+
+  .. list-table::
+    :header-rows: 1
+
+    * - Module/Chip
+      - {IDF_TARGET_NAME}-4MB Bin
     * - {IDF_TARGET_NAME}-WROOM-01
       - |icon-green-check|
 

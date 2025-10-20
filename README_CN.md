@@ -5,7 +5,7 @@
 
 - [English Version](./README.md)
 
-esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/)) 发起和提供技术支持的官方项目，适用于 Windows、Linux、macOS 上的 **ESP32-C2**、**ESP32-C3**、**ESP32-C5**、**ESP32-C6**、**ESP32** 和 **ESP32-S2** 系列芯片。  
+esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/)) 发起和提供技术支持的官方项目，适用于 Windows、Linux、macOS 上的 **ESP32-C2**、**ESP32-C3**、**ESP32-C5**、**ESP32-C6**、**ESP32-C61**、**ESP32** 和 **ESP32-S2** 系列芯片。  
 当前该项目由 Espressif esp-at 团队 (@[esp-at](https://github.com/espressif/esp-at)) 负责技术支持和维护。**在使用 ESP-AT 方案前，请仔细阅读 [特别声明](https://docs.espressif.com/projects/esp-at/zh_CN/latest/esp32/disclaimer.html)，并遵循其中的各项条款和注意事项。**
 
 # 简介
@@ -29,6 +29,7 @@ esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/))
 |ESP32-C6 | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.0.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 |ESP32-S2 | |  [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.4.0.0) | | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 |ESP32-C5 | | | | | ![alt text][pre-release] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+|ESP32-C61 | | | | | ![alt text][pre-release] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 
 - ![alt text][released]：已发布的版本，您可以点击 ![alt text][released] 前往对应的发布页下载 AT 固件。
 - ![alt text][supported]：已支持的版本，您可以点击 ![alt text][supported] 前往对应的分支开发您自己的 AT 固件。
@@ -46,8 +47,7 @@ esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/))
 [no-plan]: https://img.shields.io/badge/-无计划-808080
 
 **其它系列芯片：**
-- ESP-AT 将计划支持 ESP32-C5 芯片。
-- ESP-AT 无计划支持 ESP32-S3、ESP32-H 系列芯片。
+- ESP-AT 无计划支持 ESP32-S3、ESP32-H2 系列芯片。
 
 # ESP-AT 版本支持期限
 
