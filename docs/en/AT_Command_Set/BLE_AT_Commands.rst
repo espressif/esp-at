@@ -1560,7 +1560,7 @@ Introduction
 
     ::
 
-        +BLEGATTSCHAR:"desc",<srv_index>,<char_index>,<desc_index> 
+        +BLEGATTSCHAR:"desc",<srv_index>,<char_index>,<desc_index>,<desc_uuid> 
         OK
 
     Parameters
