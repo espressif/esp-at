@@ -1369,7 +1369,7 @@ TCP/IP AT 命令
 -  有关 asctime 时间的定义请见 `asctime man page <https://linux.die.net/man/3/asctime>`_。
 -  在 {IDF_TARGET_NAME} 进入 Light-sleep 或 Deep-sleep 后再唤醒，系统时间可能会不准。建议您重新发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令，从 NTP 服务器获取新的时间。
 
-.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32s2
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32s2
 
   - SNTP 获取到的时间存储在 RTC 区域，因此在软重启（芯片不掉电）后，时间不会丢失。
 

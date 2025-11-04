@@ -52,6 +52,11 @@ By default, the {IDF_TARGET_NAME} AT firmware provided by Espressif uses the fol
   - TX: GPIO16
   - RX: GPIO17
 
+.. only:: esp32c61
+
+  - TX: GPIO11
+  - RX: GPIO10
+
 .. only:: esp32s2
 
   - TX: GPIO43

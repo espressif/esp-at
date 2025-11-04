@@ -31,7 +31,7 @@ ESP-AT 固件差异
 
   - ESP32-C3-MINI-1-AT-Vx.x.x.x.zip（本节简称为 **MINI-1 Bin**）
 
-.. only:: esp32c5 or esp32c6
+.. only:: esp32c5 or esp32c6 or esp32c61
 
   - {IDF_TARGET_NAME}-4MB-AT-Vx.x.x.x.zip（本节简称为 **{IDF_TARGET_NAME}-4MB Bin**）
 
@@ -339,7 +339,7 @@ ESP-AT 固件差异
     * - OTA
       - |icon-green-check|
 
-.. only:: esp32c5 or esp32c6
+.. only:: esp32c5 or esp32c6 or esp32c61
 
   .. list-table::
     :header-rows: 1
@@ -559,6 +559,23 @@ ESP-AT 固件差异
         | RX: 6
         | CTS: 5
         | RTS: 4
+
+.. only:: esp32c61
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 硬件
+      - {IDF_TARGET_NAME}-4MB Bin
+    * - Flash
+      - 4 MB
+    * - PSRAM
+      - |icon-red-cross|
+    * - UART 管脚 [#one]_
+      - | TX: 6
+        | RX: 5
+        | CTS: 4
+        | RTS: 3
 
 .. only:: esp32s2
 
@@ -817,6 +834,16 @@ ESP-AT 固件差异
       - {IDF_TARGET_NAME}-4MB Bin
     * - {IDF_TARGET_NAME}-MINI-1
       - |icon-green-check|
+    * - {IDF_TARGET_NAME}-WROOM-01
+      - |icon-green-check|
+
+.. only:: esp32c61
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 模组/芯片
+      - {IDF_TARGET_NAME}-4MB Bin
     * - {IDF_TARGET_NAME}-WROOM-01
       - |icon-green-check|
 

@@ -2,7 +2,7 @@
 AT Command Set
 **************
 
-{IDF_TARGET_VER: default="5.4", esp32c5="5.5"}
+{IDF_TARGET_VER: default="5.4", esp32c5="5.5", esp32c61="5.5"}
 
 :link_to_translation:`zh_CN:[中文]`
 
@@ -14,7 +14,7 @@ Here is a list of AT commands.
    Basic AT Commands <Basic_AT_Commands>
    Wi-Fi AT Commands <Wi-Fi_AT_Commands>
    TCP-IP AT Commands <TCP-IP_AT_Commands>
-   :esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6: Bluetooth® Low Energy AT Commands <BLE_AT_Commands>
+   :esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61: Bluetooth® Low Energy AT Commands <BLE_AT_Commands>
    :esp32: Bluetooth® AT Commands <BT_AT_Commands>
    MQTT AT Commands <MQTT_AT_Commands>
    HTTP AT Commands <HTTP_AT_Commands>
@@ -170,7 +170,7 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - Smartconfig type
      * - Smart get wifi info
        - Smartconfig has got the SSID and PASSWORD information
-     * - +SCRD:``<length>``,``<reserved data>``
+     * - +SCRD:<length>,<reserved data>
        - ESP-Touch v2 has got the reserved information
      * - smartconfig connected wifi
        - Smartconfig done. ESP-AT has connected to the Wi-Fi
@@ -261,13 +261,13 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
      * - +BLESECNTFYKEY
        - Bluetooth LE SMP key
      * - +BLESECREQ:<conn_index>
-       - Received encryption request which index is <conn_index>
+       - Received an encrypted pairing request from a Bluetooth LE connection.
      * - +BLEAUTHCMPL:<conn_index>,<enc_result>
        - Bluetooth LE SMP pairing completed
      * - +BLUFIDATA:<len>,<data>
-       - The ESP device received customized data from the phone over BluFi
+       - The ESP device received customized data from the phone over BluFi.
      * - +WS_DISCONNECTED:<link_id>
-       - The WebSocket connection of ID <link_id> is disconnected.
+       - The WebSocket connection of ID ``<link_id>`` is disconnected.
      * - +WS_CONNECTED:<link_id>
        - The WebSocket connection of ID ``<link_id>`` is established.
      * - +WS_DATA:<link_id>,<data_len>,<data>

@@ -3,8 +3,7 @@ What is ESP-AT
 
 :link_to_translation:`zh_CN:[中文]`
 
-{IDF_TARGET_AT_COMMANDS: default="Wi-Fi commands, TCP/IP commands, MQTT commands, HTTP commands", esp32="Wi-Fi commands, TCP/IP commands, Bluetooth LE commands, Bluetooth commands, MQTT commands, HTTP commands, Ethernet commands", esp32c2="Wi-Fi commands, TCP/IP commands, Bluetooth LE commands, MQTT commands, HTTP commands", esp32c3="Wi-Fi commands, TCP/IP commands, Bluetooth LE commands, MQTT commands, HTTP commands",esp32c5="Wi-Fi commands, TCP/IP commands, Bluetooth LE commands, MQTT commands, HTTP commands", esp32c6="Wi-Fi commands, TCP/IP commands, Bluetooth LE commands, MQTT commands, HTTP commands"}
-
+{IDF_TARGET_AT_COMMANDS: default="Wi-Fi commands, TCP/IP commands, MQTT commands, HTTP commands", esp32="Wi-Fi commands, TCP/IP commands, Bluetooth LE commands, Bluetooth commands, MQTT commands, HTTP commands, Ethernet commands", esp32c2="Wi-Fi commands, TCP/IP commands, Bluetooth LE commands, MQTT commands, HTTP commands", esp32c3="Wi-Fi commands, TCP/IP commands, Bluetooth LE commands, MQTT commands, HTTP commands", esp32c5="Wi-Fi commands, TCP/IP commands, Bluetooth LE commands, MQTT commands, HTTP commands", esp32c6="Wi-Fi commands, TCP/IP commands, Bluetooth LE commands, MQTT commands, HTTP commands", esp32c61="Wi-Fi commands, TCP/IP commands, Bluetooth LE commands, MQTT commands, HTTP commands"}
 
 .. important::
   Before using the ESP-AT, please read the :doc:`../disclaimer` carefully and comply with its terms and precautions.

@@ -9,7 +9,7 @@ The ESP-AT project supports multiple modules, and provides configuration for the
 
 - Modules that the ESP-AT project supports, but you want to modify the default configuration.
 
-.. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6
+.. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
   The document uses an example to explain how to add support for an {IDF_TARGET_NAME} module in the ESP-AT project. The example module is {IDF_TARGET_NAME}-MINI-1 that uses SPI instead of the default UART interface.
 
@@ -171,6 +171,10 @@ The ESP-AT project supports multiple platforms, each of which supports multiple 
      - ESP32C6-4MB
      - - :project_file:`module_config/module_esp32c6_default/sdkconfig.defaults`
        - :project_file:`module_config/module_esp32c6_default/sdkconfig_silence.defaults`
+   * - ESP32-C61
+     - ESP32C61-4MB
+     - - :project_file:`module_config/module_esp32c61_default/sdkconfig.defaults`
+       - :project_file:`module_config/module_esp32c61_default/sdkconfig_silence.defaults`
 
 .. note::
 
@@ -189,7 +193,7 @@ In this example, we copy the ``module_{IDF_TARGET_PATH_NAME}_default`` folder as
     CONFIG_PARTITION_TABLE_FILENAME="module_config/module_{IDF_TARGET_PATH_NAME}-user-defined/partitions_at.csv"
     CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE="module_config/module_{IDF_TARGET_PATH_NAME}-user-defined/at_customize.csv"
 
-.. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6
+.. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
   - Modify the two files to use the SPI configuration and remove the UART configuration as follows:
   

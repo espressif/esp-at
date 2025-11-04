@@ -60,7 +60,7 @@ SPI AT 默认管脚
     * - QUADHD (qio/qout) :sup:`1`
       - 9
 
-.. only:: esp32c6
+.. only:: esp32c6 or esp32c61
 
   .. list-table:: SPI AT 默认管脚
     :widths: 10 25
