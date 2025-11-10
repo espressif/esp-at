@@ -172,7 +172,7 @@ Users could choose one of the following methods to improve throughput performanc
 
   ::
 
-    uart_driver_install(esp_at_uart_port, 1024 * 16, 1024 * 16, 100, &esp_at_uart_queue, 0);
+    uart_driver_install(g_at_cmd_port, 1024 * 16, 1024 * 16, 100, &s_at_uart_queue, 0);
 
 **3. Delete, Build, Flash, Run**
 
@@ -285,19 +285,19 @@ The data stream of throughput is similar to water flow. In order to improve thro
 
     ::
 
-      uart_driver_install(esp_at_uart_port, 1024 * 16, 8192, 100, &esp_at_uart_queue, 0);
+      uart_driver_install(g_at_cmd_port, 1024 * 16, 8192, 100, &s_at_uart_queue, 0);
 
   - Improve UART RX throughput
 
     ::
 
-        uart_driver_install(esp_at_uart_port, 2048, 1024 * 16, 100, &esp_at_uart_queue, 0);
+        uart_driver_install(g_at_cmd_port, 2048, 1024 * 16, 100, &s_at_uart_queue, 0);
 
   - Improve UART TX and RX throughput
 
     ::
 
-      uart_driver_install(esp_at_uart_port, 1024 * 16, 1024 * 16, 100, &esp_at_uart_queue, 0);
+      uart_driver_install(g_at_cmd_port, 1024 * 16, 1024 * 16, 100, &s_at_uart_queue, 0);
 
 2.2 Increase UART baud rate before entering passthrough mode
 

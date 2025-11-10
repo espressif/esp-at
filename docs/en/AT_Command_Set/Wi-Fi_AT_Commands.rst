@@ -5,35 +5,38 @@ Wi-Fi AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
--  :ref:`Introduction <cmd-wifi-intro>`
--  :ref:`AT+CWINIT <cmd-INIT>`: Initialize/Deinitialize Wi-Fi driver.
--  :ref:`AT+CWMODE <cmd-MODE>`: Set the Wi-Fi mode (Station/SoftAP/Station+SoftAP).
--  :ref:`AT+CWBANDWIDTH <cmd-CWBANDWIDTH>`: Query/Set Wi-Fi bandwidth.
--  :ref:`AT+CWSTATE <cmd-WSTATE>`: Query the Wi-Fi state and Wi-Fi information.
--  :ref:`AT+CWCONFIG <cmd-CWCONFIG>`: Query/Set Wi-Fi inactive time and listen interval time.
--  :ref:`AT+CWJAP <cmd-JAP>`: Connect to an AP.
--  :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`: Query/Set the Wi-Fi reconnecting configuration.
--  :ref:`AT+CWLAPOPT <cmd-LAPOPT>`: Set the configuration for the command :ref:`AT+CWLAP <cmd-LAP>`.
--  :ref:`AT+CWLAP <cmd-LAP>`: List available APs.
--  :ref:`AT+CWQAP <cmd-QAP>`: Disconnect from an AP.
--  :ref:`AT+CWSAP <cmd-SAP>`: Query/Set the configuration of an {IDF_TARGET_NAME} SoftAP.
--  :ref:`AT+CWLIF <cmd-LIF>`: Obtain IP address of the station that connects to an {IDF_TARGET_NAME} SoftAP.
--  :ref:`AT+CWQIF <cmd-QIF>`: Disconnect stations from an {IDF_TARGET_NAME} SoftAP.
--  :ref:`AT+CWDHCP <cmd-DHCP>`: Enable/disable DHCP.
--  :ref:`AT+CWDHCPS <cmd-DHCPS>`: Query/Set the IPv4 addresses allocated by an {IDF_TARGET_NAME} SoftAP DHCP server.
--  :ref:`AT+CWAUTOCONN <cmd-AUTOC>`: Connect to an AP automatically when powered on.
--  :ref:`AT+CWAPPROTO <cmd-APPROTO>`: Query/Set the 802.11 b/g/n protocol standard of SoftAP mode.
--  :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`: Query/Set the 802.11 b/g/n protocol standard of station mode.
--  :ref:`AT+CIPSTAMAC <cmd-STAMAC>`: Query/Set the MAC address of an {IDF_TARGET_NAME} station.
--  :ref:`AT+CIPAPMAC <cmd-APMAC>`: Query/Set the MAC address of an {IDF_TARGET_NAME} SoftAP.
--  :ref:`AT+CIPSTA <cmd-IPSTA>`: Query/Set the IP address of an {IDF_TARGET_NAME} station.
--  :ref:`AT+CIPAP <cmd-IPAP>`: Query/Set the IP address of an {IDF_TARGET_NAME} SoftAP.
--  :ref:`AT+CWSTARTSMART <cmd-STARTS>`: Start SmartConfig.
--  :ref:`AT+CWSTOPSMART <cmd-STOPS>`: Stop SmartConfig.
--  :ref:`AT+WPS <cmd-WPS>`: Enable the WPS function.
--  :ref:`AT+CWJEAP <cmd-JEAP>`: Connect to a WPA2 Enterprise AP.
--  :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`: Query/Set the host name of an {IDF_TARGET_NAME} station.
--  :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`: Query/Set the Wi-Fi Country Code.
+.. list::
+
+  - :ref:`Introduction <cmd-wifi-intro>`
+  - :ref:`AT+CWINIT <cmd-INIT>`: Initialize/Deinitialize Wi-Fi driver.
+  - :ref:`AT+CWMODE <cmd-MODE>`: Set the Wi-Fi mode (Station/SoftAP/Station+SoftAP).
+  :esp32c5: - :ref:`AT+CWBANDMODE <cmd-CWBANDMODE>`: Query/Set Wi-Fi band mode.
+  - :ref:`AT+CWBANDWIDTH <cmd-CWBANDWIDTH>`: Query/Set Wi-Fi bandwidth.
+  - :ref:`AT+CWSTATE <cmd-WSTATE>`: Query the Wi-Fi state and Wi-Fi information.
+  - :ref:`AT+CWCONFIG <cmd-CWCONFIG>`: Query/Set Wi-Fi inactive time and listen interval time.
+  - :ref:`AT+CWJAP <cmd-JAP>`: Connect to an AP.
+  - :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`: Query/Set the Wi-Fi reconnecting configuration.
+  - :ref:`AT+CWLAPOPT <cmd-LAPOPT>`: Set the configuration for the command :ref:`AT+CWLAP <cmd-LAP>`.
+  - :ref:`AT+CWLAP <cmd-LAP>`: List available APs.
+  - :ref:`AT+CWQAP <cmd-QAP>`: Disconnect from an AP.
+  - :ref:`AT+CWSAP <cmd-SAP>`: Query/Set the configuration of an {IDF_TARGET_NAME} SoftAP.
+  - :ref:`AT+CWLIF <cmd-LIF>`: Obtain IP address of the station that connects to an {IDF_TARGET_NAME} SoftAP.
+  - :ref:`AT+CWQIF <cmd-QIF>`: Disconnect stations from an {IDF_TARGET_NAME} SoftAP.
+  - :ref:`AT+CWDHCP <cmd-DHCP>`: Enable/disable DHCP.
+  - :ref:`AT+CWDHCPS <cmd-DHCPS>`: Query/Set the IPv4 addresses allocated by an {IDF_TARGET_NAME} SoftAP DHCP server.
+  - :ref:`AT+CWAUTOCONN <cmd-AUTOC>`: Connect to an AP automatically when powered on.
+  - :ref:`AT+CWAPPROTO <cmd-APPROTO>`: Query/Set the Wi-Fi protocol standard of SoftAP mode.
+  - :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`: Query/Set the Wi-Fi protocol standard of station mode.
+  - :ref:`AT+CIPSTAMAC <cmd-STAMAC>`: Query/Set the MAC address of an {IDF_TARGET_NAME} station.
+  - :ref:`AT+CIPAPMAC <cmd-APMAC>`: Query/Set the MAC address of an {IDF_TARGET_NAME} SoftAP.
+  - :ref:`AT+CIPSTA <cmd-IPSTA>`: Query/Set the IP address of an {IDF_TARGET_NAME} station.
+  - :ref:`AT+CIPAP <cmd-IPAP>`: Query/Set the IP address of an {IDF_TARGET_NAME} SoftAP.
+  - :ref:`AT+CWSTARTSMART <cmd-STARTS>`: Start SmartConfig.
+  - :ref:`AT+CWSTOPSMART <cmd-STOPS>`: Stop SmartConfig.
+  - :ref:`AT+WPS <cmd-WPS>`: Enable the WPS function.
+  - :ref:`AT+CWJEAP <cmd-JEAP>`: Connect to a WPA2 Enterprise AP.
+  - :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`: Query/Set the host name of an {IDF_TARGET_NAME} station.
+  - :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`: Query/Set the Wi-Fi Country Code.
 
 .. _cmd-wifi-intro:
 
@@ -201,7 +204,64 @@ Example
 
     AT+CWMODE=3 
 
-.. _cmd-CWBANDWIDTH:
+.. only:: esp32c5
+
+    .. _cmd-CWBANDMODE:
+
+    :ref:`AT+CWBANDMODE <WiFi-AT>`: Query/Set Wi-Fi Band Mode
+    -----------------------------------------------------------------
+
+    Query Command
+    ^^^^^^^^^^^^^
+
+    **Command:**
+
+    ::
+
+        AT+CWBANDMODE?
+
+    **Response:**
+
+    ::
+
+        +CWBANDMODE:<bandmode>
+
+        OK
+
+    Set Command
+    ^^^^^^^^^^^
+
+    **Command:**
+
+    ::
+
+        AT+CWBANDMODE=<bandmode>
+
+    **Response:**
+
+    ::
+
+        OK
+
+    Parameters
+    ^^^^^^^^^^
+
+    - **<bandmode>**:
+
+    - 1: 2.4 GHz band
+    - 2: 5 GHz band
+    - 3: 2.4 GHz and 5 GHz dual-band (default)
+
+    Notes
+    ^^^^^
+
+    - If :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`, the configuration will be saved in the NVS partition
+
+    .. _cmd-CWBANDWIDTH:
+
+.. only:: not esp32c5
+
+    .. _cmd-CWBANDWIDTH:
 
 :ref:`AT+CWBANDWIDTH <WiFi-AT>`: Query/Set Wi-Fi Bandwidth
 ----------------------------------------------------------
@@ -248,9 +308,11 @@ Parameters
 
 - **<bandwidth_2ghz>**: 2.4 GHz bandwidth
 
-  - 0: Not supported, only valid in query command
-  - 1: 20 MHz
-  - 2: 40 MHz
+  .. list::
+
+    - 0: Not supported, only valid in query command
+    - 1: 20 MHz
+    :not esp32c2: - 2: 40 MHz
 
 .. only:: esp32c5
 
@@ -259,14 +321,17 @@ Parameters
     - 0: Not supported, only valid in query command
     - 1: 20 MHz
     - 2: 40 MHz
-    - 3: 80 MHz
-    - 4: 160 MHz
-    - 5: 80+80 MHz
 
-Note
-^^^^
+Notes
+^^^^^
 
-- If :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`, this setting will be saved in the NVS partition.
+.. list::
+
+  - If :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`, this setting will be saved in the NVS partition.
+  :esp32c2: - By default, the Wi-Fi bandwidth of {IDF_TARGET_NAME} devices is 20 MHz.
+  :esp32c3 or esp32 or esp32s2: - By default, the Wi-Fi bandwidth of {IDF_TARGET_NAME} devices is 40 MHz.
+  :esp32c5 or esp32c6 or esp32c61: - By default, the Wi-Fi bandwidth of {IDF_TARGET_NAME} devices in Station mode is 20 MHz, and in SoftAP mode is 40 MHz.
+  - Note: Wi-Fi bandwidth settings are limited by hardware capabilities and Wi-Fi protocol standards.
 
 .. _cmd-WSTATE:
 
@@ -594,9 +659,10 @@ Example
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  The parameter ``<interval_second>`` of this command is the same as the parameter ``[<reconn_interval>]`` of the command :ref:`AT+CWJAP <cmd-JAP>`.
--  This command works for passive disconnection from APs, Wi-Fi mode switch, and Wi-Fi auto connect after power on.
+- The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+- The parameter ``<interval_second>`` of this command is the same as the parameter ``[<reconn_interval>]`` of the command :ref:`AT+CWJAP <cmd-JAP>`.
+- This command works for passive disconnection from APs, Wi-Fi mode switch, and Wi-Fi auto connect after power on.
+- It is recommended to execute this command after a successful Wi-Fi connection.
 
 .. _cmd-LAPOPT:
 
@@ -690,9 +756,17 @@ Query the APs with specified parameters, such as the SSID, MAC address, or chann
 
 **Command:**
 
-::
+.. only:: esp32c5
 
-    AT+CWLAP=[<"ssid">][,<"mac">][,<channel>][,<scan_type>][,<scan_time_min>][,<scan_time_max>][,<ext_channel_bitmap>]
+  ::
+
+    AT+CWLAP=[<"ssid">][,<"mac">][,<channel>][,<scan_type>][,<scan_time_min>][,<scan_time_max>][,<2ghz_channel_bitmap>][,<5ghz_channel_bitmap>]
+
+.. only:: not esp32c5
+
+  ::
+
+    AT+CWLAP=[<"ssid">][,<"mac">][,<channel>][,<scan_type>][,<scan_time_min>][,<scan_time_max>][,<2ghz_channel_bitmap>]
 
 Execute Command
 ^^^^^^^^^^^^^^^
@@ -711,7 +785,7 @@ List all available APs.
 
 ::
 
-    +CWLAP:(<ecn>,<"ssid">,<rssi>,<"mac">,<channel>,<freq_offset>,<freqcal_val>,<pairwise_cipher>,<group_cipher>,<bgn>,<wps>)
+    +CWLAP:(<ecn>,<"ssid">,<rssi>,<"mac">,<channel>,<freq_offset>,<freqcal_val>,<pairwise_cipher>,<group_cipher>,<wifi_protocol>,<wps>)
 
     OK
 
@@ -740,7 +814,7 @@ Parameters
 -  **<"ssid">**: string parameter showing SSID of the AP.
 -  **<rssi>**: signal strength.
 -  **<"mac">**: string parameter showing MAC address of the AP.
--  **<channel>**: channel.
+-  **<channel>**: channel number. When specified, only scan this channel.
 -  **<scan_type>**: Wi-Fi scan type. Default: 0.
 
    -  0: active scan
@@ -748,9 +822,11 @@ Parameters
 
 -  **<scan_time_min>**: the minimum active scan time per channel. Unit: millisecond. Range [0,1500]. If the scan type is passive, this parameter is invalid.
 -  **<scan_time_max>**: the maximum active scan time per channel. Unit: millisecond. Range [0,1500]. If this parameter is 0, the firmware will use the default time: 120 ms for active scan; 360 ms for passive scan.
--  **<ext_channel_bitmap>**: the extended channel.
+-  **<2ghz_channel_bitmap>**: Bitmap for 2.4 GHz band channels. Effective when ``<channel>`` is omitted or set to 0. Each bit corresponds to a channel; 1 means scan this channel, 0 means do not scan. For supported 2.4 GHz channels, see: `2.4G Channels <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L415-L428>`_. For example, if bit1 and bit2 are set to 1, it means scanning channels 1 and 2.
 
-   -  bit1 ~ bit14: 2.4 GHz channel. multiple bits can be set to 1, which means scanning multiple channels.
+.. only:: esp32c5
+
+  -  **<5ghz_channel_bitmap>**: Bitmap for 5 GHz band channels. Effective when ``<channel>`` is omitted or set to 0. Each bit corresponds to a channel; 1 means scan this channel, 0 means do not scan. For supported 5 GHz channels, see: `5G Channels <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L433-L460>`_. For example, if bit1 and bit2 are set to 1, it means scanning channels 36 and 40.
 
 -  **<freq_offset>**: frequency offset (reserved item).
 -  **<freqcal_val>**: frequency calibration value (reserved item).
@@ -766,11 +842,15 @@ Parameters
    -  7: Unknown
 
 -  **<group_cipher>**: group cipher type, same enumerated value to ``<pairwise_cipher>``.
--  **<bgn>**: 802.11 b/g/n. If the corresponding bit is 1, the corresponding mode is enabled; if the corresponding bit is 0, the corresponding mode is disabled.
+-  **<wifi_protocol>**: Wi-Fi protocol standard. If the corresponding bit is 1, the corresponding mode is enabled; if the corresponding bit is 0, the corresponding mode is disabled.
 
-   -  bit 0: bit to identify if 802.11b mode is enabled or not
-   -  bit 1: bit to identify if 802.11g mode is enabled or not
-   -  bit 2: bit to identify if 802.11n mode is enabled or not
+   - bit 0: bit to identify if 802.11b mode is enabled or not
+   - bit 1: bit to identify if 802.11g mode is enabled or not
+   - bit 2: bit to identify if 802.11n mode is enabled or not
+   - bit 3: `802.11 LR Espressif Proprietary protocol <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+   - bit 4: 802.11ax protocol standard
+   - bit 5: 802.11a protocol standard
+   - bit 6: 802.11ac protocol standard
 
 -  **<wps>**: wps flag.
 
@@ -1170,7 +1250,8 @@ Parameters
 Note
 ^^^^^
 
--  The configuration changes will be saved in the NVS partition.
+- The configuration changes will be saved in the NVS partition.
+- For power-sensitive scenarios, it is recommended to disable automatic connection to AP on power-on, or set a smaller ``<repeat_count>`` value in :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>` to avoid additional power consumption from continuous reconnection attempts after power-on.
 
 Example
 ^^^^^^^^
@@ -1181,8 +1262,8 @@ Example
 
 .. _cmd-APPROTO:
 
-:ref:`AT+CWAPPROTO <WiFi-AT>`: Query/Set the 802.11 b/g/n Protocol Standard of SoftAP Mode
--------------------------------------------------------------------------------------------
+:ref:`AT+CWAPPROTO <WiFi-AT>`: Query/Set the Wi-Fi Protocol Standard of SoftAP Mode
+-----------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1195,9 +1276,18 @@ Query Command
 
 **Response:**
 
-::
+.. only:: esp32c5
 
-    +CWAPPROTO:<protocol>
+  ::
+
+    +CWAPPROTO:<protocol_2g>,<protocol_5g>
+    OK
+
+.. only:: not esp32c5
+
+  ::
+
+    +CWAPPROTO:<protocol_2g>
     OK
 
 Set Command
@@ -1205,9 +1295,17 @@ Set Command
 
 **Command:**
 
-::
+.. only:: esp32c5
 
-    AT+CWAPPROTO=<protocol>
+  ::
+
+    AT+CWAPPROTO=[<protocol_2g>][,<protocol_5g>]
+
+.. only:: not esp32c5
+
+  ::
+
+    AT+CWAPPROTO=<protocol_2g>
 
 **Response:**
 
@@ -1218,35 +1316,43 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<protocol>**:
+- **<protocol_2g>**: Wi-Fi protocol standard for 2.4 GHz band
 
-   -  bit0: 802.11b protocol standard.
-   -  bit1: 802.11g protocol standard.
-   -  bit2: 802.11n protocol standard.
-   -  bit3: `802.11 LR Espressif-patented protocol standard <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#long-range-lr>`_.
+  .. list::
 
-   .. only:: esp32c5 or esp32c6 or esp32c61
+    - bit0: 802.11b protocol standard.
+    - bit1: 802.11g protocol standard.
+    - bit2: 802.11n protocol standard.
+    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit3: `802.11 LR Espressif Proprietary protocol <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_.
+    :esp32c5 or esp32c6 or esp32c61: - bit4: 802.11ax protocol standard.
 
-     - bit4: 802.11ax protocol standard.
+.. only:: esp32c5
 
-Note
+  - **<protocol_5g>**: Wi-Fi protocol standard for 5 GHz band
+
+    .. list::
+
+      - bit2: 802.11n protocol standard.
+      - bit4: 802.11ax protocol standard.
+      - bit5: 802.11a protocol standard.
+      - bit6: 802.11ac protocol standard.
+
+Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-protocol-mode>`_ for the PHY mode supported by the {IDF_TARGET_NAME} device.
+.. list::
 
-.. only:: esp32 or esp32c3 or esp32c2 or esp32s2
-
-  -  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgn mode.
-
-.. only:: esp32c5 or esp32c6 or esp32c61
-
-  -  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgnax mode.
+  - The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+  - See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-protocol-mode>`_ for the Wi-Fi protocol supported by the {IDF_TARGET_NAME} device.
+  :not esp32c5: - By default, the SoftAP protocol standard of {IDF_TARGET_NAME} is 802.11bgn.
+  :esp32c5: - By default, the SoftAP protocol standard for 2.4 GHz band of {IDF_TARGET_NAME} is 802.11bgn, and for 5 GHz band is 802.11an.
+  :esp32c3 or esp32c6 or esp32c61 or esp32 or esp32s2: - Note: Wi-Fi protocol standards are limited by hardware capabilities and Wi-Fi bandwidth settings. For example: in 40 MHz bandwidth mode, only 802.11n (2.4 GHz) can be configured.
+  :esp32c5: - Note: Wi-Fi protocol standards are limited by hardware capabilities and Wi-Fi bandwidth settings. For example: in 40 MHz bandwidth mode, only 802.11n (2.4 GHz) or 802.11an (5 GHz) protocol can be configured.
 
 .. _cmd-STAPROTO:
 
-:ref:`AT+CWSTAPROTO <WiFi-AT>`: Query/Set the 802.11 b/g/n Protocol Standard of Station Mode
---------------------------------------------------------------------------------------------
+:ref:`AT+CWSTAPROTO <WiFi-AT>`: Query/Set the Wi-Fi Protocol Standard of Station Mode
+-------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1259,9 +1365,18 @@ Query Command
 
 **Response:**
 
-::
+.. only:: esp32c5
 
-    +CWSTAPROTO:<protocol>
+  ::
+
+    +CWSTAPROTO:<protocol_2g>,<protocol_5g>
+    OK
+
+.. only:: not esp32c5
+
+  ::
+
+    +CWSTAPROTO:<protocol_2g>
     OK
 
 Set Command
@@ -1269,9 +1384,17 @@ Set Command
 
 **Command:**
 
-::
+.. only:: esp32c5
 
-    AT+CWSTAPROTO=<protocol>
+  ::
+
+    AT+CWSTAPROTO=[<protocol_2g>][,<protocol_5g>]
+
+.. only:: not esp32c5
+
+  ::
+
+    AT+CWSTAPROTO=<protocol_2g>
 
 **Response:**
 
@@ -1282,30 +1405,39 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<protocol>**:
+- **<protocol_2g>**: Wi-Fi protocol standard for 2.4 GHz band
 
-   -  bit0: 802.11b protocol standard.
-   -  bit1: 802.11g protocol standard.
-   -  bit2: 802.11n protocol standard.
-   -  bit3: `802.11 LR Espressif-patented protocol standard <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#long-range-lr>`_.
+  .. list::
 
-   .. only:: esp32c5 or esp32c6 or esp32c61
+    - bit0: 802.11b protocol standard.
+    - bit1: 802.11g protocol standard.
+    - bit2: 802.11n protocol standard.
+    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit3: `802.11 LR Espressif Proprietary protocol <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_.
+    :esp32c5 or esp32c6 or esp32c61: - bit4: 802.11ax protocol standard.
 
-     - bit4: 802.11ax protocol standard.
+.. only:: esp32c5
 
-Note
+  - **<protocol_5g>**: Wi-Fi protocol standard for 5 GHz band
+
+    .. list::
+
+      - bit2: 802.11n protocol standard.
+      - bit4: 802.11ax protocol standard.
+      - bit5: 802.11a protocol standard.
+      - bit6: 802.11ac protocol standard.
+
+Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-protocol-mode>`_ for the PHY mode supported by the {IDF_TARGET_NAME} device.
+.. list::
 
-.. only:: esp32 or esp32c3 or esp32c2 or esp32s2
-
-  -  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgn mode.
-
-.. only:: esp32c5 or esp32c6 or esp32c61
-
-  -  By default, PHY mode of {IDF_TARGET_NAME} is 802.11bgnax mode.
+  - The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+  - See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-protocol-mode>`_ for the Wi-Fi protocol supported by the {IDF_TARGET_NAME} device.
+  :esp32c2 or esp32c3 or esp32 or esp32s2: - By default, the Station protocol standard of {IDF_TARGET_NAME} is 802.11bgn.
+  :esp32c6 or esp32c61: - By default, the Station protocol standard of {IDF_TARGET_NAME} is 802.11bgnax.
+  :esp32c5: - By default, the Station protocol standard for 2.4 GHz band of {IDF_TARGET_NAME} is 802.11bgnax, and for 5 GHz band is 802.11anacax.
+  :esp32c3 or esp32c6 or esp32c61 or esp32 or esp32s2: - Note: Wi-Fi protocol standards are limited by hardware capabilities and Wi-Fi bandwidth settings. For example: in 40 MHz bandwidth mode, only 802.11n (2.4 GHz) can be configured.
+  :esp32c5: - Note: Wi-Fi protocol standards are limited by hardware capabilities and Wi-Fi bandwidth settings. For example: in 40 MHz bandwidth mode, only 802.11n (2.4 GHz) or 802.11an (5 GHz) protocol can be configured.
 
 .. _cmd-STAMAC:
 
@@ -2035,9 +2167,19 @@ Query Wi-Fi country code information.
 
 **Response:**
 
-::
+.. only:: not esp32c5
+
+  ::
 
     +CWCOUNTRY:<country_policy>,<"country_code">,<start_channel>,<total_channel_count>
+
+    OK
+
+.. only:: esp32c5
+
+  ::
+
+    +CWCOUNTRY:<country_policy>,<"country_code">,<start_channel>,<total_channel_count>,<5g_channel_bitmap>
 
     OK
 
@@ -2050,9 +2192,17 @@ Set the Wi-Fi country code information.
 
 **Command:**
 
-::
+.. only:: not esp32c5
+
+  ::
 
     AT+CWCOUNTRY=<country_policy>,<"country_code">,<start_channel>,<total_channel_count>
+
+.. only:: esp32c5
+
+  ::
+
+    AT+CWCOUNTRY=<country_policy>,<"country_code">,<start_channel>,<total_channel_count>[,<5g_channel_bitmap>]
 
 **Response:**
 
@@ -2063,14 +2213,17 @@ Set the Wi-Fi country code information.
 Parameters
 ^^^^^^^^^^
 
--  **<country_policy>**:
+.. list::
 
-   -  0: will change the county code to be the same as the AP that the {IDF_TARGET_NAME} is connected to.
-   -  1: the country code will not change, always be the one set by command.
+  - **<country_policy>**:
 
--  **<"country_code">**: country code. Maximum length: 3 characters. Refer to `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ for country codes.
--  **<start_channel>**: the channel number to start. Range: [1,14].
--  **<total_channel_count>**: total number of channels.
+    - 0: will change the county code to be the same as the AP that the {IDF_TARGET_NAME} is connected to.
+    - 1: the country code will not change, always be the one set by command.
+
+  - **<"country_code">**: country code. Maximum length: 3 characters. Refer to `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ for country codes.
+  - **<start_channel>**: the channel number to start. Range: [1,14].
+  - **<total_channel_count>**: total number of channels.
+  :esp32c5: - **<5g_channel_bitmap>**: Bitmap representing 5GHz band channels. Each bit corresponds to a channel; 1 means enable this channel, 0 means disable this channel. For supported 5GHz channels, see: `5G Channels <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L433-L460>`_.
 
 Note
 ^^^^^

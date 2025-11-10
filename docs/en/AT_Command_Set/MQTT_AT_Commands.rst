@@ -28,9 +28,12 @@ Introduction
 ------------
 
 .. important::
-  The default AT firmware supports all the AT commands mentioned on this page. If you don't need {IDF_TARGET_NAME} to support MQTT commands, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
+  - The default AT firmware supports all the AT commands mentioned on this page. If you don't need {IDF_TARGET_NAME} to support MQTT commands, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
 
-  - Disable ``Component config`` -> ``AT`` -> ``AT MQTT command support``
+    - Disable ``Component config`` -> ``AT`` -> ``AT MQTT command support``
+
+  - For MQTT connection to local Broker examples, see :doc:`MQTT AT Examples <../AT_Command_Examples/MQTT_AT_Examples>`.
+  - For MQTT connection to AWS IoT examples, see :doc:`MQTT Cloud Connection AT Examples <../AT_Command_Examples/mqtt-at-examples-for-cloud>`.
 
 .. _cmd-MQTTUSERCFG:
 
@@ -408,7 +411,7 @@ Connect to an MQTT broker.
 
 ::
 
-    AT+MQTTCONN=<LinkID>,<"host">,<port>,<reconnect>
+    AT+MQTTCONN=<LinkID>,<"host">,<port>,<reconnect>[,<timeout_ms>]
 
 **Response:**
 
@@ -428,6 +431,7 @@ Parameters
    -  0: MQTT will not reconnect automatically. If MQTT connection established and then disconnected, you cannot use this command to reestablish MQTT connection. Please send :ref:`AT+MQTTCLEAN=0 <cmd-MQTTCLEAN>` command to clean MQTT connection first, reconfigure the connection parameters, and then establish a new MQTT connection.
    -  1: MQTT will reconnect automatically. It takes more resources.
 
+-  **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
 -  **<state>**: MQTT state.
 
    -  0: MQTT uninitialized.
@@ -467,7 +471,7 @@ Publish MQTT messages in string to a defined topic. If the amount of data you pu
 
 ::
 
-    AT+MQTTPUB=<LinkID>,<"topic">,<"data">,<qos>,<retain>
+    AT+MQTTPUB=<LinkID>,<"topic">,<"data">,<qos>,<retain>[,<timeout_ms>]
 
 **Response:**
 
@@ -483,6 +487,7 @@ Parameters
 -  **<data>**: MQTT message in string.
 -  **<qos>**: QoS of message, which can be set to 0, 1, or 2. Default: 0.
 -  **<retain>**: retain flag.
+-  **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
 
 Notes
 ^^^^^
@@ -517,7 +522,7 @@ Publish long MQTT messages to a defined topic. If the amount of data you publish
 
 ::
 
-    AT+MQTTPUBRAW=<LinkID>,<"topic">,<length>,<qos>,<retain>
+    AT+MQTTPUBRAW=<LinkID>,<"topic">,<length>,<qos>,<retain>[,<timeout_ms>]
 
 **Response:**
 
@@ -548,6 +553,7 @@ Parameters
 -  **<length>**: length of MQTT message. The maximum length is limited by available memory.
 -  **<qos>**: QoS of the published message, which can be set to 0, 1, or 2. Default is 0.
 -  **<retain>**: retain flag.
+-  **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
 
 .. _cmd-MQTTSUB:
 
@@ -565,7 +571,7 @@ List all MQTT topics that have been already subscribed.
 
 ::
 
-    AT+MQTTSUB?    
+    AT+MQTTSUB?
 
 
 **Response:**
@@ -589,7 +595,7 @@ Subscribe to defined MQTT topics with defined QoS. Multiple topics are available
 
 ::
 
-    AT+MQTTSUB=<LinkID>,<"topic">,<qos>
+    AT+MQTTSUB=<LinkID>,<"topic">,<qos>[,<timeout_ms>]
 
 
 **Response:**
@@ -626,6 +632,7 @@ Parameters
 
 -  **<"topic">**: the topic that is subscribed to.
 -  **<qos>**: the QoS that is subscribed to.
+-  **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
 
 Note
 ^^^^
@@ -652,7 +659,7 @@ Unsubscribe the client from defined topics. This command can be called multiple 
 
 ::
 
-    AT+MQTTUNSUB=<LinkID>,<"topic">   
+    AT+MQTTUNSUB=<LinkID>,<"topic">[,<timeout_ms>]   
 
 
 **Response:**
@@ -674,6 +681,7 @@ Parameters
 
 -  **<LinkID>**: only supports link ID 0 currently.
 -  **<"topic">**: MQTT topic. Maximum length: 128 bytes.
+-  **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
 
 .. _cmd-MQTTCLEAN:
 
@@ -691,7 +699,7 @@ Close the MQTT connection and release the resource.
 
 ::
 
-    AT+MQTTCLEAN=<LinkID>  
+    AT+MQTTCLEAN=<LinkID>
 
 **Response:**
 
@@ -887,7 +895,5 @@ The MQTT Error code will be prompted as ``ERR CODE:0x<%08x>``.
 :ref:`MQTT AT Notes <MQTT-AT>`
 -------------------------------
 
--  In general, AT MQTT commands responds within 10 s, except the command :ref:`AT+MQTTCONN <cmd-MQTTCONN>`. For example, if the router fails to access the Internet, the command :ref:`AT+MQTTPUB <cmd-MQTTPUB>` will respond within 10 s. But the command :ref:`AT+MQTTCONN <cmd-MQTTCONN>` may need more time due to packet retransmission in a bad network environment.
--  If the :ref:`AT+MQTTCONN <cmd-MQTTCONN>` is based on a TLS connection, the timeout of each packet is 10 s, and the total timeout will be much longer depending on the handshake packets count.
 -  When the MQTT connection ends, it will prompt the message ``+MQTTDISCONNECTED:<LinkID>``.
 -  When the MQTT connection established, it will prompt the message ``+MQTTCONNECTED:<LinkID>,<scheme>,<"host">,port,<"path">,<reconnect>``.

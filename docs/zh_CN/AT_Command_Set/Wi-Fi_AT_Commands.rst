@@ -5,35 +5,38 @@ Wi-Fi AT 命令集
 
 :link_to_translation:`en:[English]`
 
--  :ref:`介绍 <cmd-wifi-intro>`
--  :ref:`AT+CWINIT <cmd-INIT>`：初始化/清理 Wi-Fi 驱动程序
--  :ref:`AT+CWMODE <cmd-MODE>`：查询/设置 Wi-Fi 模式 (Station/SoftAP/Station+SoftAP)
--  :ref:`AT+CWBANDWIDTH <cmd-CWBANDWIDTH>`：查询/设置 Wi-Fi 带宽
--  :ref:`AT+CWSTATE <cmd-WSTATE>`：查询 Wi-Fi 状态和 Wi-Fi 信息
--  :ref:`AT+CWCONFIG <cmd-CWCONFIG>`：查询/设置 Wi-Fi 非活动时间和监听间隔时间
--  :ref:`AT+CWJAP <cmd-JAP>`：连接 AP
--  :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`：查询/设置 Wi-Fi 重连配置
--  :ref:`AT+CWLAPOPT <cmd-LAPOPT>`：设置 :ref:`AT+CWLAP <cmd-LAP>` 命令扫描结果的属性
--  :ref:`AT+CWLAP <cmd-LAP>`：扫描当前可用的 AP
--  :ref:`AT+CWQAP <cmd-QAP>`：断开与 AP 的连接
--  :ref:`AT+CWSAP <cmd-SAP>`：配置 {IDF_TARGET_NAME} SoftAP 参数
--  :ref:`AT+CWLIF <cmd-LIF>`：查询连接到 {IDF_TARGET_NAME} SoftAP 的 station 信息
--  :ref:`AT+CWQIF <cmd-QIF>`：断开 station 与 {IDF_TARGET_NAME} SoftAP 的连接
--  :ref:`AT+CWDHCP <cmd-DHCP>`：启用/禁用 DHCP
--  :ref:`AT+CWDHCPS <cmd-DHCPS>`：查询/设置 {IDF_TARGET_NAME} SoftAP DHCP 分配的 IPv4 地址范围
--  :ref:`AT+CWAUTOCONN <cmd-AUTOC>`：上电是否自动连接 AP
--  :ref:`AT+CWAPPROTO <cmd-APPROTO>`：查询/设置 SoftAP 模式下 802.11 b/g/n 协议标准
--  :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`：设置 Station 模式下 802.11 b/g/n 协议标准
--  :ref:`AT+CIPSTAMAC <cmd-STAMAC>`：查询/设置 {IDF_TARGET_NAME} Station 的 MAC 地址
--  :ref:`AT+CIPAPMAC <cmd-APMAC>`：查询/设置 {IDF_TARGET_NAME} SoftAP 的 MAC 地址
--  :ref:`AT+CIPSTA <cmd-IPSTA>`：查询/设置 {IDF_TARGET_NAME} Station 的 IP 地址
--  :ref:`AT+CIPAP <cmd-IPAP>`：查询/设置 {IDF_TARGET_NAME} SoftAP 的 IP 地址
--  :ref:`AT+CWSTARTSMART <cmd-STARTS>`：开启 SmartConfig
--  :ref:`AT+CWSTOPSMART <cmd-STOPS>`：停止 SmartConfig
--  :ref:`AT+WPS <cmd-WPS>`：设置 WPS 功能
--  :ref:`AT+CWJEAP <cmd-JEAP>`：连接 WPA2 企业版 AP
--  :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`：查询/设置 {IDF_TARGET_NAME} Station 的主机名称
--  :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`：查询/设置 Wi-Fi 国家代码
+.. list::
+
+  - :ref:`介绍 <cmd-wifi-intro>`
+  - :ref:`AT+CWINIT <cmd-INIT>`：初始化/清理 Wi-Fi 驱动程序
+  - :ref:`AT+CWMODE <cmd-MODE>`：查询/设置 Wi-Fi 模式 (Station/SoftAP/Station+SoftAP)
+  :esp32c5: - :ref:`AT+CWBANDMODE <cmd-CWBANDMODE>`：查询/设置 Wi-Fi 频段模式
+  - :ref:`AT+CWBANDWIDTH <cmd-CWBANDWIDTH>`：查询/设置 Wi-Fi 带宽
+  - :ref:`AT+CWSTATE <cmd-WSTATE>`：查询 Wi-Fi 状态和 Wi-Fi 信息
+  - :ref:`AT+CWCONFIG <cmd-CWCONFIG>`：查询/设置 Wi-Fi 非活动时间和监听间隔时间
+  - :ref:`AT+CWJAP <cmd-JAP>`：连接 AP
+  - :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`：查询/设置 Wi-Fi 重连配置
+  - :ref:`AT+CWLAPOPT <cmd-LAPOPT>`：设置 :ref:`AT+CWLAP <cmd-LAP>` 命令扫描结果的属性
+  - :ref:`AT+CWLAP <cmd-LAP>`：扫描当前可用的 AP
+  - :ref:`AT+CWQAP <cmd-QAP>`：断开与 AP 的连接
+  - :ref:`AT+CWSAP <cmd-SAP>`：配置 {IDF_TARGET_NAME} SoftAP 参数
+  - :ref:`AT+CWLIF <cmd-LIF>`：查询连接到 {IDF_TARGET_NAME} SoftAP 的 station 信息
+  - :ref:`AT+CWQIF <cmd-QIF>`：断开 station 与 {IDF_TARGET_NAME} SoftAP 的连接
+  - :ref:`AT+CWDHCP <cmd-DHCP>`：启用/禁用 DHCP
+  - :ref:`AT+CWDHCPS <cmd-DHCPS>`：查询/设置 {IDF_TARGET_NAME} SoftAP DHCP 分配的 IPv4 地址范围
+  - :ref:`AT+CWAUTOCONN <cmd-AUTOC>`：上电是否自动连接 AP
+  - :ref:`AT+CWAPPROTO <cmd-APPROTO>`：查询/设置 SoftAP 模式下 Wi-Fi 协议标准
+  - :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`：设置 Station 模式下 Wi-Fi 协议标准
+  - :ref:`AT+CIPSTAMAC <cmd-STAMAC>`：查询/设置 {IDF_TARGET_NAME} Station 的 MAC 地址
+  - :ref:`AT+CIPAPMAC <cmd-APMAC>`：查询/设置 {IDF_TARGET_NAME} SoftAP 的 MAC 地址
+  - :ref:`AT+CIPSTA <cmd-IPSTA>`：查询/设置 {IDF_TARGET_NAME} Station 的 IP 地址
+  - :ref:`AT+CIPAP <cmd-IPAP>`：查询/设置 {IDF_TARGET_NAME} SoftAP 的 IP 地址
+  - :ref:`AT+CWSTARTSMART <cmd-STARTS>`：开启 SmartConfig
+  - :ref:`AT+CWSTOPSMART <cmd-STOPS>`：停止 SmartConfig
+  - :ref:`AT+WPS <cmd-WPS>`：设置 WPS 功能
+  - :ref:`AT+CWJEAP <cmd-JEAP>`：连接 WPA2 企业版 AP
+  - :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`：查询/设置 {IDF_TARGET_NAME} Station 的主机名称
+  - :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`：查询/设置 Wi-Fi 国家代码
 
 .. _cmd-wifi-intro:
 
@@ -199,9 +202,66 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CWMODE=3 
+    AT+CWMODE=3
 
-.. _cmd-CWBANDWIDTH:
+.. only:: esp32c5
+
+    .. _cmd-CWBANDMODE:
+
+    :ref:`AT+CWBANDMODE <WiFi-AT>`：查询/设置 Wi-Fi 频段模式
+    -----------------------------------------------------------------
+
+    查询命令
+    ^^^^^^^^
+
+    **命令：**
+
+    ::
+
+        AT+CWBANDMODE?
+
+    **响应：**
+
+    ::
+
+        +CWBANDMODE:<bandmode>
+
+        OK
+
+    设置命令
+    ^^^^^^^^
+
+    **命令：**
+
+    ::
+
+        AT+CWBANDMODE=<bandmode>
+
+    **响应：**
+
+    ::
+
+        OK
+
+    参数
+    ^^^^
+
+    - **<bandmode>**：
+
+    - 1: 2.4 GHz 频段
+    - 2: 5 GHz 频段
+    - 3: 2.4 GHz 和 5 GHz 双频段（默认值）
+
+    说明
+    ^^^^
+
+    - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，本设置将保存在 NVS 分区
+
+    .. _cmd-CWBANDWIDTH:
+
+.. only:: not esp32c5
+
+    .. _cmd-CWBANDWIDTH:
 
 :ref:`AT+CWBANDWIDTH <WiFi-AT>`：查询/设置 Wi-Fi 带宽
 -----------------------------------------------------------------
@@ -248,9 +308,11 @@ Wi-Fi AT 命令集
 
 - **<bandwidth_2ghz>**：2.4 GHz 带宽
 
-  - 0: 不支持，仅在查询命令中有效
-  - 1: 20 MHz
-  - 2: 40 MHz
+  .. list::
+
+    - 0: 不支持，仅在查询命令中有效
+    - 1: 20 MHz
+    :not esp32c2: - 2: 40 MHz
 
 .. only:: esp32c5
 
@@ -259,14 +321,17 @@ Wi-Fi AT 命令集
     - 0: 不支持，仅在查询命令中有效
     - 1: 20 MHz
     - 2: 40 MHz
-    - 3: 80 MHz
-    - 4: 160 MHz
-    - 5: 80+80 MHz
 
 说明
 ^^^^
 
-- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，本设置将保存在 NVS 分区
+.. list::
+
+  - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，本设置将保存在 NVS 分区
+  :esp32c2: - 默认情况下，{IDF_TARGET_NAME} 设备的 Wi-Fi 带宽是 20 MHz
+  :esp32c3 or esp32 or esp32s2: - 默认情况下，{IDF_TARGET_NAME} 设备的 Wi-Fi 带宽是 40 MHz
+  :esp32c5 or esp32c6 or esp32c61: - 默认情况下，{IDF_TARGET_NAME} 设备的 Station 模式下 Wi-Fi 带宽是 20 MHz，SoftAP 模式下 Wi-Fi 带宽是 40 MHz
+  - 注意：Wi-Fi 带宽设置受限于硬件能力和 Wi-Fi 协议标准
 
 .. _cmd-WSTATE:
 
@@ -594,9 +659,10 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
--  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 分区
--  本命令中的 ``<interval_second>`` 参数与 :ref:`AT+CWJAP <cmd-JAP>` 中的 ``[<reconn_interval>]`` 参数相同
--  该命令适用于被动断开 AP、Wi-Fi 模式切换和开机后 Wi-Fi 自动连接
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 分区
+- 本命令中的 ``<interval_second>`` 参数与 :ref:`AT+CWJAP <cmd-JAP>` 中的 ``[<reconn_interval>]`` 参数相同
+- 该命令适用于被动断开 AP、Wi-Fi 模式切换和开机后 Wi-Fi 自动连接
+- 建议在 Wi-Fi 连接成功后再执行此命令
 
 .. _cmd-LAPOPT:
 
@@ -690,9 +756,17 @@ Wi-Fi AT 命令集
 
 **命令：**
 
-::
+.. only:: esp32c5
 
-    AT+CWLAP=[<"ssid">][,<"mac">][,<channel>][,<scan_type>][,<scan_time_min>][,<scan_time_max>][,<ext_channel_bitmap>]
+  ::
+
+    AT+CWLAP=[<"ssid">][,<"mac">][,<channel>][,<scan_type>][,<scan_time_min>][,<scan_time_max>][,<2ghz_channel_bitmap>][,<5ghz_channel_bitmap>]
+
+.. only:: not esp32c5
+
+  ::
+
+    AT+CWLAP=[<"ssid">][,<"mac">][,<channel>][,<scan_type>][,<scan_time_min>][,<scan_time_max>][,<2ghz_channel_bitmap>]
 
 执行命令
 ^^^^^^^^
@@ -711,7 +785,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    +CWLAP:(<ecn>,<"ssid">,<rssi>,<"mac">,<channel>,<freq_offset>,<freqcal_val>,<pairwise_cipher>,<group_cipher>,<bgn>,<wps>)
+    +CWLAP:(<ecn>,<"ssid">,<rssi>,<"mac">,<channel>,<freq_offset>,<freqcal_val>,<pairwise_cipher>,<group_cipher>,<wifi_protocol>,<wps>)
 
     OK
 
@@ -740,7 +814,7 @@ Wi-Fi AT 命令集
 -  **<"ssid">**：字符串参数，AP 的 SSID
 -  **<rssi>**：信号强度
 -  **<"mac">**：字符串参数，AP 的 MAC 地址
--  **<channel>**：信道号
+-  **<channel>**：信道号，指定后仅扫描该信道。
 -  **<scan_type>**：Wi-Fi 扫描类型，默认值为：0
 
    -  0: 主动扫描
@@ -748,9 +822,11 @@ Wi-Fi AT 命令集
 
 -  **<scan_time_min>**：每个信道最短扫描时间，单位：毫秒，范围：[0,1500]，如果扫描类型为被动扫描，本参数无效
 -  **<scan_time_max>**：每个信道最长扫描时间，单位：毫秒，范围：[0,1500]，如果设为 0，固件采用参数默认值，主动扫描为 120 ms，被动扫描为 360 ms
-- **<ext_channel_bitmap>**：扩展信道
+- **<2ghz_channel_bitmap>**：2.4 GHz 频段信道的位图。在 ``<channel>`` 缺省时或为 0 时生效。每一位对应一个信道，1 表示扫描该信道，0 表示不扫描该信道。2.4 GHz 频段支持的信道见：`2.4G 信道 <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L415-L428>`_。例如，若 bit1 和 bit2 设为 1，则表示扫描信道 1 和信道 2。
 
-   -  bit1 ~ bit14: 2.4 GHz 信道。多个 bit 可以同时设为 1，表示扫描多个信道。
+.. only:: esp32c5
+
+  - **<5ghz_channel_bitmap>**：5 GHz 频段信道的位图。在 ``<channel>`` 缺省时或为 0 时生效。每一位对应一个信道，1 表示扫描该信道，0 表示不扫描该信道。5 GHz 频段支持的信道见：`5G 信道 <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L433-L460>`_。例如，若 bit1 和 bit2 设为 1，则表示扫描信道 36 和信道 40。
 
 -  **<freq_offset>**：频偏（保留项目）
 -  **<freqcal_val>**：频率校准值（保留项目）
@@ -766,11 +842,15 @@ Wi-Fi AT 命令集
    -  7: 未知
 
 -  **<group_cipher>**：组加密类型，与 ``<pairwise_cipher>`` 参数的枚举值相同
--  **<bgn>**：802.11 b/g/n，若 bit 设为 1，则表示使能对应模式，若设为 0，则表示禁用对应模式
+-  **<wifi_protocol>**：Wi-Fi 协议标准，若 bit 设为 1，则表示使能对应模式，若设为 0，则表示禁用对应模式
 
-   -  bit 0: 是否使能 802.11b 模式
-   -  bit 1: 是否使能 802.11g 模式
-   -  bit 2: 是否使能 802.11n 模式
+   - bit 0: 是否使能 802.11b 模式
+   - bit 1: 是否使能 802.11g 模式
+   - bit 2: 是否使能 802.11n 模式
+   - bit 3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+   - bit 4: 802.11ax 协议标准
+   - bit 5: 802.11a 协议标准
+   - bit 6: 802.11ac 协议标准
 
 -  **<wps>**：wps flag
 
@@ -1170,7 +1250,8 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
--  本设置保存到 NVS 区域
+- 本设置保存到 NVS 区域。
+- 对功耗敏感的场景，建议关闭上电自动连接 AP，或在 :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>` 中将 ``<repeat_count>`` 设置为较小值，以避免上电后持续重连导致的额外耗电。
 
 示例
 ^^^^
@@ -1181,7 +1262,7 @@ Wi-Fi AT 命令集
 
 .. _cmd-APPROTO:
 
-:ref:`AT+CWAPPROTO <WiFi-AT>`：查询/设置 SoftAP 模式下 802.11 b/g/n 协议标准
+:ref:`AT+CWAPPROTO <WiFi-AT>`：查询/设置 SoftAP 模式下 Wi-Fi 协议标准
 ------------------------------------------------------------------------------------------
 
 查询命令
@@ -1195,9 +1276,18 @@ Wi-Fi AT 命令集
 
 **响应：**
 
-::
+.. only:: esp32c5
 
-    +CWAPPROTO:<protocol>
+  ::
+
+    +CWAPPROTO:<protocol_2g>,<protocol_5g>
+    OK
+
+.. only:: not esp32c5
+
+  ::
+
+    +CWAPPROTO:<protocol_2g>
     OK
 
 设置命令
@@ -1205,9 +1295,17 @@ Wi-Fi AT 命令集
 
 **命令：**
 
-::
+.. only:: esp32c5
 
-    AT+CWAPPROTO=<protocol>
+  ::
+
+    AT+CWAPPROTO=[<protocol_2g>][,<protocol_5g>]
+
+.. only:: not esp32c5
+
+  ::
+
+    AT+CWAPPROTO=<protocol_2g>
 
 **响应：**
 
@@ -1218,34 +1316,42 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<protocol>**：
+- **<protocol_2g>**：2.4 GHz 频段下的 Wi-Fi 协议标准
 
-   -  bit0: 802.11b 协议标准
-   -  bit1: 802.11g 协议标准
-   -  bit2: 802.11n 协议标准
-   -  bit3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+  .. list::
 
-   .. only:: esp32c5 or esp32c6 or esp32c61
+    - bit0: 802.11b 协议标准
+    - bit1: 802.11g 协议标准
+    - bit2: 802.11n 协议标准
+    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+    :esp32c5 or esp32c6 or esp32c61: - bit4: 802.11ax 协议标准
 
-     - bit4: 802.11ax 协议标准
+.. only:: esp32c5
+
+  - **<protocol_5g>**：5 GHz 频段下的 Wi-Fi 协议标准
+
+    .. list::
+
+      - bit2: 802.11n 协议标准
+      - bit4: 802.11ax 协议标准
+      - bit5: 802.11a 协议标准
+      - bit6: 802.11ac 协议标准
 
 说明
 ^^^^
 
--  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
--  当前，{IDF_TARGET_NAME} 设备支持的 PHY mode 见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id40>`_
+.. list::
 
-.. only:: esp32 or esp32c3 or esp32c2 or esp32s2
-
-  - 默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgn 模式
-
-.. only:: esp32c5 or esp32c6 or esp32c61
-
-  -  默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgnax 模式
+  - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
+  - 当前，{IDF_TARGET_NAME} 设备支持的 Wi-Fi 协议标准见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id40>`_
+  :not esp32c5: - 默认情况下，{IDF_TARGET_NAME} 设备的 SoftAP 协议标准是 802.11bgn 协议
+  :esp32c5: - 默认情况下，{IDF_TARGET_NAME} 设备的 SoftAP 2.4 GHz 频段下的协议标准是 802.11bgn 协议，5 GHz 频段下的协议标准是 802.11an 协议
+  :esp32c3 or esp32c6 or esp32c61 or esp32 or esp32s2: - 注意：Wi-Fi 协议标准受限于硬件能力和 Wi-Fi 带宽设置。例如：40 MHz 带宽模式下，仅可配置 802.11n（2.4 GHz）
+  :esp32c5: - 注意：Wi-Fi 协议标准受限于硬件能力和 Wi-Fi 带宽设置。例如：40 MHz 带宽模式下，仅可配置 802.11n（2.4 GHz）或 802.11an（5 GHz）协议
 
 .. _cmd-STAPROTO:
 
-:ref:`AT+CWSTAPROTO <WiFi-AT>`：设置 Station 模式下 802.11 b/g/n 协议标准
+:ref:`AT+CWSTAPROTO <WiFi-AT>`：设置 Station 模式下 Wi-Fi 协议标准
 --------------------------------------------------------------------------------------------
 
 查询命令
@@ -1259,9 +1365,18 @@ Wi-Fi AT 命令集
 
 **响应：**
 
-::
+.. only:: esp32c5
 
-    +CWSTAPROTO:<protocol>
+  ::
+
+    +CWSTAPROTO:<protocol_2g>,<protocol_5g>
+    OK
+
+.. only:: not esp32c5
+
+  ::
+
+    +CWSTAPROTO:<protocol_2g>
     OK
 
 设置命令
@@ -1269,9 +1384,17 @@ Wi-Fi AT 命令集
 
 **命令：**
 
-::
+.. only:: esp32c5
 
-    AT+CWSTAPROTO=<protocol>
+  ::
+
+    AT+CWSTAPROTO=[<protocol_2g>][,<protocol_5g>]
+
+.. only:: not esp32c5
+
+  ::
+
+    AT+CWSTAPROTO=<protocol_2g>
 
 **响应：**
 
@@ -1282,30 +1405,39 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<protocol>**：
+- **<protocol_2g>**：2.4 GHz 频段下的 Wi-Fi 协议标准
 
-   -  bit0: 802.11b 协议标准
-   -  bit1: 802.11g 协议标准
-   -  bit2: 802.11n 协议标准
-   -  bit3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+  .. list::
 
-   .. only:: esp32c5 or esp32c6 or esp32c61
+    - bit0: 802.11b 协议标准
+    - bit1: 802.11g 协议标准
+    - bit2: 802.11n 协议标准
+    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+    :esp32c5 or esp32c6 or esp32c61: - bit4: 802.11ax 协议标准
 
-     - bit4: 802.11ax 协议标准
+.. only:: esp32c5
+
+  - **<protocol_5g>**：5 GHz 频段下的 Wi-Fi 协议标准
+
+    .. list::
+
+      - bit2: 802.11n 协议标准
+      - bit4: 802.11ax 协议标准
+      - bit5: 802.11a 协议标准
+      - bit6: 802.11ac 协议标准
 
 说明
 ^^^^
 
--  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
--  当前，{IDF_TARGET_NAME} 设备支持的 PHY mode 见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id40>`_
+.. list::
 
-.. only:: esp32 or esp32c3 or esp32c2 or esp32s2
-
-  - 默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgn 模式
-
-.. only:: esp32c5 or esp32c6 or esp32c61
-
-  -  默认情况下，{IDF_TARGET_NAME} 设备的 PHY mode 是 802.11bgnax 模式
+  - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
+  - 当前，{IDF_TARGET_NAME} 设备支持的 Wi-Fi 协议标准见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id40>`_
+  :esp32c2 or esp32c3 or esp32 or esp32s2: - 默认情况下，{IDF_TARGET_NAME} 设备的 Station 协议标准是 802.11bgn 协议
+  :esp32c6 or esp32c61: - 默认情况下，{IDF_TARGET_NAME} 设备的 Station 协议标准是 802.11bgnax 协议
+  :esp32c5: - 默认情况下，{IDF_TARGET_NAME} 设备的 Station 2.4 GHz 频段下的协议标准是 802.11bgnax 协议，5 GHz 频段下的协议标准是 802.11anacax 协议
+  :esp32c3 or esp32c6 or esp32c61 or esp32 or esp32s2: - 注意：Wi-Fi 协议标准受限于硬件能力和 Wi-Fi 带宽设置。例如：40 MHz 带宽模式下，仅可配置 802.11n（2.4 GHz）
+  :esp32c5: - 注意：Wi-Fi 协议标准受限于硬件能力和 Wi-Fi 带宽设置。例如：40 MHz 带宽模式下，仅可配置 802.11n（2.4 GHz）或 802.11an（5 GHz）协议
 
 .. _cmd-STAMAC:
 
@@ -2035,9 +2167,19 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 
 **响应：**
 
-::
+.. only:: not esp32c5
+
+  ::
 
     +CWCOUNTRY:<country_policy>,<"country_code">,<start_channel>,<total_channel_count>
+
+    OK
+
+.. only:: esp32c5
+
+  ::
+
+    +CWCOUNTRY:<country_policy>,<"country_code">,<start_channel>,<total_channel_count>,<5g_channel_bitmap>
 
     OK
 
@@ -2050,9 +2192,17 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 
 **命令：**
 
-::
+.. only:: not esp32c5
+
+  ::
 
     AT+CWCOUNTRY=<country_policy>,<"country_code">,<start_channel>,<total_channel_count>
+
+.. only:: esp32c5
+
+  ::
+
+    AT+CWCOUNTRY=<country_policy>,<"country_code">,<start_channel>,<total_channel_count>[,<5g_channel_bitmap>]
 
 **响应：**
 
@@ -2063,14 +2213,17 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 参数
 ^^^^
 
--  **<country_policy>**：
+.. list::
 
-   -  0: 将国家代码改为 {IDF_TARGET_NAME} 设备连入的 AP 的国家代码
-   -  1: 不改变国家代码，始终保持本命令设置的国家代码
+  - **<country_policy>**：
 
--  **<"country_code">**：国家代码，最大长度：3 个字符，各国国家代码请参考 `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ 标准。
--  **<start_channel>**：起始信号道，范围：[1,14]
--  **<total_channel_count>**：信道总个数
+    - 0: 将国家代码改为 {IDF_TARGET_NAME} 设备连入的 AP 的国家代码
+    - 1: 不改变国家代码，始终保持本命令设置的国家代码
+
+  - **<"country_code">**：国家代码，最大长度：3 个字符，各国国家代码请参考 `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ 标准。
+  - **<start_channel>**：起始信号道，范围：[1,14]
+  - **<total_channel_count>**：信道总个数
+  :esp32c5: - **<5g_channel_bitmap>**：表示 5GHz 频段信道的位图，每一位对应一个信道，1 表示启用该信道，0 表示禁用该信道。支持的信道见：`5G 信道 <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L433-L460>`_。
 
 说明
 ^^^^

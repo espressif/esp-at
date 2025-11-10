@@ -172,7 +172,7 @@
 
   ::
 
-    uart_driver_install(esp_at_uart_port, 1024 * 16, 1024 * 16, 100, &esp_at_uart_queue, 0);
+    uart_driver_install(g_at_cmd_port, 1024 * 16, 1024 * 16, 100, &s_at_uart_queue, 0);
 
 **3. 删除默认配置、重新编译固件、烧录运行**
 
@@ -285,19 +285,19 @@
 
     ::
 
-      uart_driver_install(esp_at_uart_port, 1024 * 16, 8192, 100, &esp_at_uart_queue, 0);
+      uart_driver_install(g_at_cmd_port, 1024 * 16, 8192, 100, &s_at_uart_queue, 0);
 
   - 提高 UART RX 吞吐
 
     ::
 
-      uart_driver_install(esp_at_uart_port, 2048, 1024 * 16, 100, &esp_at_uart_queue, 0);
+      uart_driver_install(g_at_cmd_port, 2048, 1024 * 16, 100, &s_at_uart_queue, 0);
 
   - 提高 UART TX 和 RX 吞吐
 
     ::
 
-      uart_driver_install(esp_at_uart_port, 1024 * 16, 1024 * 16, 100, &esp_at_uart_queue, 0);
+      uart_driver_install(g_at_cmd_port, 1024 * 16, 1024 * 16, 100, &s_at_uart_queue, 0);
 
 2.2 透传前提高 UART 波特率
 
