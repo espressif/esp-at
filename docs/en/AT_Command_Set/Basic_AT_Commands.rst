@@ -17,7 +17,7 @@ Basic AT Commands
   - :ref:`AT+GSLP <cmd-GSLP>`: Enter Deep-sleep mode.
   - :ref:`ATE <cmd-ATE>`: Configure AT commands echoing.
   - :ref:`AT+RESTORE <cmd-RESTORE>`: Restore factory default settings of the module.
-  - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter :term:`Passthrough Mode` on power-up.
+  - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter  Network/Bluetooth :term:`Passthrough Mode` on power-up.
   - :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>`: Set the data transmission interval in the :term:`Passthrough Mode`.
   - :ref:`AT+UART_CUR <cmd-UARTC>`: Current UART configuration, not saved in flash.
   - :ref:`AT+UART_DEF <cmd-UARTD>`: Default UART configuration, saved in flash.
@@ -298,19 +298,20 @@ Notes
 
 .. _cmd-SAVET:
 
-:ref:`AT+SAVETRANSLINK <Basic-AT>`: Set Whether to Enter Wi-Fi/Bluetooth LE :term:`Passthrough Mode` on Power-up
-----------------------------------------------------------------------------------------------------------------
+:ref:`AT+SAVETRANSLINK <Basic-AT>`: Set Whether to Enter Network/Bluetooth LE :term:`Passthrough Mode` on Power-up
+------------------------------------------------------------------------------------------------------------------
 
 .. list::
 
-    * :ref:`savetrans-tcpssl`
+    * :ref:`savetrans-tcpssl-client`
+    * :ref:`savetrans-tcpssl-server`
     * :ref:`savetrans-udp`
     :not esp32s2: * :ref:`savetrans-ble`
 
-.. _savetrans-tcpssl:
+.. _savetrans-tcpssl-client:
 
-Set Whether to Enter TCP/SSL :term:`Passthrough Mode` on Power-up
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Set Whether to Enter TCP/SSL Client :term:`Passthrough Mode` on Power-up
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Set Command
 """"""""""""""
@@ -332,8 +333,8 @@ Parameters
 
 -  **<mode>**:
 
-   -  0: {IDF_TARGET_NAME} will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
-   -  1: {IDF_TARGET_NAME} will enter Wi-Fi :term:`Passthrough Mode` on power-up.
+   -  0: {IDF_TARGET_NAME} will NOT enter TCP/SSL client :term:`Passthrough Mode` on power-up.
+   -  1: {IDF_TARGET_NAME} will enter TCP/SSL client :term:`Passthrough Mode` on power-up.
 
 -  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
 -  **<remote port>**: the remote port number.
@@ -350,7 +351,7 @@ Parameters
 Notes
 """""""
 
--  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+-  This command will save the :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 
 Example
 """"""""
@@ -361,6 +362,75 @@ Example
     AT+SAVETRANSLINK=1,"www.baidu.com",443,"SSL"
     AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"TCPv6"
     AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"SSLv6"
+
+.. _savetrans-tcpssl-server:
+
+Set Whether to Enter TCP/SSL Server :term:`Passthrough Mode` on Power-up
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Set Command
+""""""""""""""
+
+**Command:**
+
+::
+
+    AT+SAVETRANSLINK=<mode>[,<port>][,<"type">][,<CA enable>][,<netif>]
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+""""""""""""""
+
+-  **<mode>**:
+
+   -  0: {IDF_TARGET_NAME} will NOT enter TCP/SSL server :term:`Passthrough Mode` on power-up.
+   -  3: {IDF_TARGET_NAME} will enter TCP/SSL server :term:`Passthrough Mode` on power-up.
+
+-  **[<port>]**: The port that the server listens to. Default: 333.
+-  **<"type">**: Server type: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP".
+-  **<CA enable>**: This parameter is only valid when ``<type>`` is "SSL" or "SSLv6".
+
+   -  0: Do not use CA certificate.
+   -  1: Use CA certificate.
+
+- **<netif>**: Specifies the network interface for the server to listen on. Default: 0.
+
+  .. list::
+
+    - 0: All network interfaces
+    - 1: Wi-Fi Station interface
+    - 2: Wi-Fi SoftAP interface
+    :esp32: - 3: Ethernet interface
+
+Notes
+"""""""
+
+- This command will save the :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+- When {IDF_TARGET_NAME} works as a Wi-Fi Station, please configure the Wi-Fi connection information in advance and enable the reconnection mechanism; when it works as a SoftAP, please configure the SoftAP parameters in advance to ensure it can work normally after power-on.
+- In the TCP/SSL server passthrough mode, only a single passthrough connection is supported: once a client establishes a passthrough connection, the server will enter passthrough mode and reject subsequent passthrough connection requests.
+- When the underlying network interface (netif) is stopped or disconnected, existing connections will be closed, and the server will return to listening state, ready to accept new normal connections.
+- After exiting passthrough mode, the TCP/SSL server will continue running, but in normal (non-passthrough) mode with a maximum of 1 concurrent connection.
+
+Example
+"""""""""
+
+::
+
+    // Set Wi-Fi SoftAP information, SSID is esp-ap-001, no password, channel 11, open encryption, maximum 3 connections
+    AT+CWSAP="esp-ap-001","",11,0,3
+
+    // Set to enter TCP server passthrough mode on power-up, listening on port 1002
+    AT+SAVETRANSLINK=3,1002,"TCP",2
+
+    // PC connects to esp-ap-001 and uses a TCP client tool to connect to {IDF_TARGET_NAME}'s port 1002
+    nc 192.168.4.1 1002
+
+    // Transmit data in passthrough mode
 
 .. _savetrans-udp:
 
@@ -387,18 +457,18 @@ Parameters
 
 -  **<mode>**:
 
-   -  0: {IDF_TARGET_NAME} will NOT enter Wi-Fi :term:`Passthrough Mode` on power-up.
-   -  1: {IDF_TARGET_NAME} will enter Wi-Fi :term:`Passthrough Mode` on power-up.
+   -  0: {IDF_TARGET_NAME} will NOT enter UDP :term:`Passthrough Mode` on power-up.
+   -  1: {IDF_TARGET_NAME} will enter UDP :term:`Passthrough Mode` on power-up.
 
 -  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
 -  **<remote port>**: the remote port number.
 -  **<"type">**: string parameter showing the type of transmission: "UDP" or "UDPv6". Default: "TCP".
--  **<local port>**: local port when UDP Wi-Fi passthrough is enabled on power-up.
+-  **<local port>**: local port when UDP passthrough is enabled on power-up.
 
 Notes
 """""""
 
--  This command will save the Wi-Fi :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the Wi-Fi :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+-  This command will save the :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 
 -  To establish an UDP transmission based on an IPv6 network, do as follows:
 
@@ -2115,6 +2185,8 @@ Note
 
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`
   - :ref:`AT+CWMODE <cmd-MODE>`
+  :esp32c5: - :ref:`AT+CWBANDMODE <cmd-CWBANDMODE>`
+  - :ref:`AT+CWBANDWIDTH <cmd-CWBANDWIDTH>`
   - :ref:`AT+CIPV6 <cmd-IPV6>`
   - :ref:`AT+CWCONFIG <cmd-CWCONFIG>`
   - :ref:`AT+CWJAP <cmd-JAP>`

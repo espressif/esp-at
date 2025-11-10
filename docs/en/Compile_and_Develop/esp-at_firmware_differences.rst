@@ -257,7 +257,7 @@ The table lists which command set is supported by default in the official AT fir
       - |icon-green-check|
       - |icon-red-cross|
     * - HTTP
-      - |icon-orange-check|
+      - |icon-green-check|
       - |icon-green-check|
       - |icon-red-cross|
     * - Bluetooth LE

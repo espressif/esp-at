@@ -28,9 +28,12 @@ MQTT AT 命令集
 ------
 
 .. important::
-  默认的 AT 固件支持此页面下的所有 AT 命令。如果您不需要 {IDF_TARGET_NAME} 支持 MQTT 命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+  - 默认的 AT 固件支持此页面下的所有 AT 命令。如果您不需要 {IDF_TARGET_NAME} 支持 MQTT 命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
 
-  - 禁用 ``Component config`` -> ``AT`` -> ``AT MQTT command support``
+    - 禁用 ``Component config`` -> ``AT`` -> ``AT MQTT command support``
+
+  - MQTT 连接本地 Broker 示例见 :doc:`MQTT AT 示例 <../AT_Command_Examples/MQTT_AT_Examples>`
+  - MQTT 连接 AWS IoT 示例见 :doc:`MQTT 云连接 AT 示例 <../AT_Command_Examples/mqtt-at-examples-for-cloud>`
 
 .. _cmd-MQTTUSERCFG:
 
@@ -408,7 +411,7 @@ MQTT AT 命令集
 
 ::
 
-    AT+MQTTCONN=<LinkID>,<"host">,<port>,<reconnect>
+    AT+MQTTCONN=<LinkID>,<"host">,<port>,<reconnect>[,<timeout_ms>]
 
 **响应：**
 
@@ -428,6 +431,7 @@ MQTT AT 命令集
    -  0: MQTT 不自动重连。如果 MQTT 建立连接后又断开，则无法再次使用本命令重新建立连接，您需要先发送 :ref:`AT+MQTTCLEAN=0 <cmd-MQTTCLEAN>` 命令清理信息，重新配置参数，再建立新的连接。
    -  1: MQTT 自动重连，会消耗较多的内存资源。
 
+-  **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
 -  **<state>**：MQTT 状态：
 
    -  0: MQTT 未初始化；
@@ -467,7 +471,7 @@ MQTT AT 命令集
 
 ::
 
-    AT+MQTTPUB=<LinkID>,<"topic">,<"data">,<qos>,<retain>
+    AT+MQTTPUB=<LinkID>,<"topic">,<"data">,<qos>,<retain>[,<timeout_ms>]
 
 **响应：**
 
@@ -483,6 +487,7 @@ MQTT AT 命令集
 -  **<data>**：MQTT 字符串消息。
 -  **<qos>**：发布消息的 QoS，参数可选 0、1、或 2，默认值：0。
 -  **<retain>**：发布 retain。
+-  **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
 
 说明
 ^^^^
@@ -517,7 +522,7 @@ MQTT AT 命令集
 
 ::
 
-    AT+MQTTPUBRAW=<LinkID>,<"topic">,<length>,<qos>,<retain>
+    AT+MQTTPUBRAW=<LinkID>,<"topic">,<length>,<qos>,<retain>[,<timeout_ms>]
 
 **响应：**
 
@@ -548,6 +553,7 @@ MQTT AT 命令集
 -  **<length>**：MQTT 消息长度，不同 {IDF_TARGET_NAME} 设备的最大长度受到可利用内存的限制。
 -  **<qos>**：发布消息的 QoS，参数可选 0、1、或 2，默认值：0。
 -  **<retain>**：发布 retain。
+-  **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
 
 .. _cmd-MQTTSUB:
 
@@ -565,7 +571,7 @@ MQTT AT 命令集
 
 ::
 
-    AT+MQTTSUB?    
+    AT+MQTTSUB?
 
 
 **响应：**
@@ -589,7 +595,7 @@ MQTT AT 命令集
 
 ::
 
-    AT+MQTTSUB=<LinkID>,<"topic">,<qos>
+    AT+MQTTSUB=<LinkID>,<"topic">,<qos>[,<timeout_ms>]
 
 
 **响应：**
@@ -626,6 +632,7 @@ MQTT AT 命令集
 
 -  **<"topic">**：订阅的 topic。
 -  **<qos>**：订阅的 QoS。
+-  **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
 
 说明
 ^^^^
@@ -652,7 +659,7 @@ MQTT AT 命令集
 
 ::
 
-    AT+MQTTUNSUB=<LinkID>,<"topic">
+    AT+MQTTUNSUB=<LinkID>,<"topic">[,<timeout_ms>]
 
 
 **响应：**
@@ -674,6 +681,7 @@ MQTT AT 命令集
 
 -  **<LinkID>**：当前仅支持 link ID 0。
 -  **<"topic">**：MQTT topic，最大长度：128 字节。
+-  **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
 
 .. _cmd-MQTTCLEAN:
 
@@ -691,7 +699,7 @@ MQTT AT 命令集
 
 ::
 
-    AT+MQTTCLEAN=<LinkID>  
+    AT+MQTTCLEAN=<LinkID>
 
 **响应：**
 
@@ -887,7 +895,5 @@ MQTT 错误码以 ``ERR CODE:0x<%08x>`` 形式打印。
 :ref:`MQTT AT 说明 <MQTT-AT>`
 -------------------------------
 
--  一般来说，AT MQTT 命令都会在 10 秒内响应，但 :ref:`AT+MQTTCONN <cmd-MQTTCONN>` 命令除外。例如，如果路由器不能上网，命令 :ref:`AT+MQTTPUB <cmd-MQTTPUB>` 会在 10 秒内响应，但 :ref:`AT+MQTTCONN <cmd-MQTTCONN>` 命令在网络环境不好的情况下，可能需要更多的时间用来重传数据包。
--  如果 :ref:`AT+MQTTCONN <cmd-MQTTCONN>` 是基于 TLS 连接，每个数据包的超时时间为 10 秒，则总超时时间会根据握手数据包的数量而变得更长。
 -  当 MQTT 连接断开时，会提示 ``+MQTTDISCONNECTED:<LinkID>`` 消息。
 -  当 MQTT 连接建立时，会提示 ``+MQTTCONNECTED:<LinkID>,<scheme>,<"host">,port,<"path">,<reconnect>`` 消息。

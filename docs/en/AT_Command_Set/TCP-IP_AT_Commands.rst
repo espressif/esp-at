@@ -18,6 +18,7 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>`: Set the configuration for the command :ref:`AT+CIPSENDL <cmd-SENDL>`.
 -  :ref:`AT+CIPSENDEX <cmd-SENDEX>`: Send data in the :term:`normal transmission mode` in expanded ways.
 -  :ref:`AT+CIPCLOSE <cmd-CLOSE>`: Close TCP/UDP/SSL connection.
+-  :ref:`AT+CIPCONNPERSIST <cmd-CONNPERSIST>`: Query/Set TCP/SSL connection persistence.
 -  :ref:`AT+CIFSR <cmd-IFSR>`: Obtain the local IP address and MAC address.
 -  :ref:`AT+CIPMUX <cmd-MUX>`: Enable/disable the multiple connections mode.
 -  :ref:`AT+CIPSERVER <cmd-SERVER>`: Delete/create a TCP/SSL server.
@@ -196,6 +197,18 @@ Parameter
 -  **<"IP address">**: the resolved IPv4 address or IPv6 address.
 -  **<timeout>**: Command timeout. Unit: milliseconds. Default value: 0. Range: [0,60000]. When set to 0, the command timeout depends on the network and lwIP protocol stack; when set to a non-zero value, the command will return within the specified timeout, but it will consume about 5 KB more heap space.
 
+Notes
+^^^^^
+- If you want to resolve a domain name to multiple IP addresses, please increase the value of ``python build.py menuconfig`` > ``Component config`` > ``LWIP`` > ``DNS`` > ``Maximum number of IP addresses per host``, then recompile the ESP-AT project. The final returned format will be as follows:
+
+  ::
+
+    +CIPDOMAIN:<"IP address">
+    +CIPDOMAIN:<"IP address">
+    ...
+
+    OK
+
 Example
 ^^^^^^^^
 
@@ -288,6 +301,8 @@ Notes
   -  Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
   - (Optional) Check whether {IDF_TARGET_NAME} has obtained an IPv6 address using the :ref:`AT+CIPSTA? <cmd-IPSTA>` command
 
+- To view the reason for TCP connection establishment failure, please first run :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` to enable logging, then retry this command. Upon failure, AT will return a more detailed error code ``+ERRNO:<error_code>`` to help locate the problem.
+
 Example
 """""""""
 
@@ -375,6 +390,7 @@ Notes
   - (Optional) Check whether {IDF_TARGET_NAME} has obtained an IPv6 address using the :ref:`AT+CIPSTA? <cmd-IPSTA>` command
 
 - If you want to receive a UDP packet longer than 1460 bytes, please compile the firmware on your own by following :doc:`Compile ESP-AT Project <../Compile_and_Develop/How_to_clone_project_and_compile_it>` and choosing the following configurations in the Step 5. Configure: ``Component config`` -> ``LWIP`` -> ``Enable reassembly incoming fragmented IP4 packets``.
+- To view the reason for UDP transmission establishment failure, please first run :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` to enable logging, then retry this command. Upon failure, AT will return a more detailed error code ``+ERRNO:<error_code>`` to help locate the problem.
 
 Example
 """""""""
@@ -463,6 +479,8 @@ Notes
   -  Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
   -  Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
   - (Optional) Check whether {IDF_TARGET_NAME} has obtained an IPv6 address using the :ref:`AT+CIPSTA? <cmd-IPSTA>` command
+
+- To view the reason for SSL connection establishment failure, please first run :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` to enable logging, then retry this command. Upon failure, AT will return a more detailed error code ``+ERRNO:<error_code>`` to help locate the problem.
 
 Example
 """"""""
@@ -849,6 +867,64 @@ Parameter
 
 -  **<link ID>**: ID of the connection that you want to close. If you set it to 5, all connections will be closed.
 
+.. _cmd-CONNPERSIST:
+
+:ref:`AT+CIPCONNPERSIST <TCPIP-AT>`: Query/Set TCP/SSL Connection Persistence
+-----------------------------------------------------------------------------
+
+Query Command
+^^^^^^^^^^^^^
+
+**Function:**
+
+Query the persistence attributes of TCP/SSL connections.
+
+**Command:**
+
+::
+
+    AT+CIPCONNPERSIST?
+
+**Response:**
+
+::
+
+    +CIPCONNPERSIST:<persist_link>[...][,<persist_link>]
+
+    OK
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+Set the persistence attributes of TCP/SSL connections.
+
+**Command:**
+
+::
+
+    // Single connection: (AT+CIPMUX=0)
+    AT+CIPCONNPERSIST=<persist_link>
+
+    // Multiple connections: (AT+CIPMUX=1)
+    AT+CIPCONNPERSIST=<link ID>,<persist_link>
+
+**Response:**
+
+::
+
+    OK
+
+Parameters
+^^^^^^^^^^
+
+-  **<link ID>**: ID of the network connection to configure.
+-  **<persist_link>**: Whether to enable connection persistence. When disabled (default), {IDF_TARGET_NAME} will actively close TCP/SSL connections on this netif immediately after the netif stops, disconnects, or loses its IP address; when enabled, AT will not actively close the connection, letting the protocol stack handle the connection state itself.
+
+  - 0: Disable connection persistence (default).
+  - 1: Enable connection persistence.
+
 .. _cmd-IFSR:
 
 :ref:`AT+CIFSR <TCPIP-AT>`: Obtain the Local IP Address and MAC Address
@@ -1050,6 +1126,7 @@ Notes
 -  When a client is connected to the server, it will take up one connection and be assigned an ID.
 -  If you want to create a TCP/SSL server based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and obtain an IPv6 address.
 -  Parameters ``<"type">`` and ``<CA enable>`` must be omitted when delete a server.
+-  To view the reason for server creation failure, please first run :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` to enable logging, then retry this command. Upon failure, AT will return a more detailed error code ``+ERRNO:<error_code>`` to help locate the problem.
 
 Example
 ^^^^^^^^
@@ -1889,7 +1966,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
--  **<"common name">**: this parameter is used to verify the Common Name in the certificate sent by the server. The maximum length of ``common name`` is 64 bytes.
+-  **<"common name">**: this parameter is used to verify the Common Name in the certificate sent by the server.
 
 Note
 ^^^^^
@@ -1944,7 +2021,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
--  **<"sni">**: the Server Name Indication in ClientHello. The maximum length of ``sni`` is 64 bytes.
+-  **<"sni">**: the Server Name Indication in ClientHello.
 
 Notes
 ^^^^^
@@ -2522,7 +2599,7 @@ Parameters
 - **<port>**: mDNS service port.
 - **<"instance">**: mDNS instance name. Default: ``<"hostname">``.
 - **<"proto">**: mDNS service protocol. Recommended values: ``_tcp`` or ``_udp``. Default: ``_tcp``.
-- **<txt_number>**: the number of key-value pairs in the TXT record. Range: [1,10].
+- **<txt_number>**: the number of key-value pairs in the TXT record. Range: [1,20].
 - **<"key">**: key of the TXT record.
 - **<"value">**: value of the TXT record.
 - **[...]**: repeat the key-value pairs of TXT record according to the ``<txt_number>``.

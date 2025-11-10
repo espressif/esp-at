@@ -17,7 +17,7 @@
   - :ref:`AT+GSLP <cmd-GSLP>`：进⼊ Deep-sleep 模式
   - :ref:`ATE <cmd-ATE>`：开启或关闭 AT 回显功能
   - :ref:`AT+RESTORE <cmd-RESTORE>`：恢复出厂设置
-  - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`：设置开机 :term:`透传模式` 信息
+  - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`：设置开机 Network/Bluetooth LE :term:`透传模式` 信息
   - :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>`：设置 :term:`透传模式` 模式下的数据发送间隔
   - :ref:`AT+UART_CUR <cmd-UARTC>`：设置 UART 当前临时配置，不保存到 flash
   - :ref:`AT+UART_DEF <cmd-UARTD>`：设置 UART 默认配置, 保存到 flash
@@ -298,18 +298,19 @@
 
 .. _cmd-SAVET:
 
-:ref:`AT+SAVETRANSLINK <Basic-AT>`：设置开机 Wi-Fi/Bluetooth LE :term:`透传模式` 信息
+:ref:`AT+SAVETRANSLINK <Basic-AT>`：设置开机 Network/Bluetooth LE :term:`透传模式` 信息
 -----------------------------------------------------------------------------------------
 
 .. list::
 
-    * :ref:`savetrans-tcpssl`
+    * :ref:`savetrans-tcpssl-client`
+    * :ref:`savetrans-tcpssl-server`
     * :ref:`savetrans-udp`
     :not esp32s2: * :ref:`savetrans-ble`
 
-.. _savetrans-tcpssl:
+.. _savetrans-tcpssl-client:
 
-设置开机进入 TCP/SSL :term:`透传模式` 信息
+设置开机进入 TCP/SSL 客户端 :term:`透传模式` 信息
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 设置命令
@@ -332,8 +333,8 @@
 
 -  **<mode>**:
 
-   -  0: 关闭 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
-   -  1: 开启 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
+   -  0: 关闭 {IDF_TARGET_NAME} 上电进入 TCP/SSL 客户端 :term:`透传模式`
+   -  1: 开启 {IDF_TARGET_NAME} 上电进入 TCP/SSL 客户端 :term:`透传模式`
 
 -  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
 -  **<remote port>**：远端端口值
@@ -350,7 +351,7 @@
 说明
 """""""
 
-- 本设置将 Wi-Fi 开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入 :term:`透传模式`。需重启生效。
+- 本设置将开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入 :term:`透传模式`。需重启生效。
 
 示例
 """"""""
@@ -361,6 +362,75 @@
     AT+SAVETRANSLINK=1,"www.baidu.com",443,"SSL"
     AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"TCPv6"
     AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"SSLv6
+
+.. _savetrans-tcpssl-server:
+
+设置开机进入 TCP/SSL 服务器 :term:`透传模式` 信息
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+设置
+""""
+
+**命令：**
+
+::
+
+    AT+SAVETRANSLINK=<mode>[,<port>][,<"type">][,<CA enable>][,<netif>]
+
+**响应：**
+
+::
+
+    OK
+
+参数
+""""
+
+-  **<mode>**:
+
+   -  0: 关闭 {IDF_TARGET_NAME} 上电进入 TCP/SSL 服务器 :term:`透传模式`
+   -  3: 开启 {IDF_TARGET_NAME} 上电进入 TCP/SSL 服务器 :term:`透传模式`
+
+-  **[<port>]**：服务器监听的端口，默认值：333。
+-  **<"type">**：服务器类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6". 默认值："TCP"
+-  **<CA enable>**：仅在 ``<type>`` 为 "SSL" 或 "SSLv6" 时才有此参数。
+
+   -  0：不使用 CA 认证
+   -  1：使用 CA 认证
+
+- **<netif>**：指定服务器监听的网络接口，默认值：0。
+
+  .. list::
+
+    - 0：所有网络接口
+    - 1：Wi-Fi station 接口
+    - 2：Wi-Fi SoftAP 接口
+    :esp32: - 3：以太网接口
+
+说明
+"""""""
+
+- 本设置将开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入 :term:`透传模式`。需重启生效。
+- {IDF_TARGET_NAME} 作为 Wi‑Fi Station 时，请提前配置好 Wi‑Fi 连接信息并启用重连机制；作为 SoftAP 时，请提前配置好 SoftAP 参数，保证上电后能正常工作。
+- 在 TCP/SSL 服务器的透传模式下，仅支持单一透传连接：一旦有客户端建立透传连接，服务器将进入透传模式并拒绝后续的透传连接请求。
+- 当底层网络接口 (netif) 停止或断开时，已有连接会被关闭，服务器会恢复为监听状态，准备接受新的普通连接。
+- 退出透传模式后，TCP/SSL 服务器仍然保持运行，但以普通（非透传）模式提供服务，最大并发连接数为 1。
+
+示例
+"""""""""
+
+::
+
+    // 设置 Wi-Fi SoftAP 信息，名称为 esp-ap-001，密码为空，信道 11，加密方式为开放，最大连接数 3
+    AT+CWSAP="esp-ap-001","",11,0,3
+
+    // 设置开机进入 TCP 服务器透传模式，监听端口 1002
+    AT+SAVETRANSLINK=3,1002,"TCP",2
+
+    // PC 连接到 esp-ap-001，并通过 TCP 客户端工具连接到 {IDF_TARGET_NAME} 的 1002 端口
+    nc 192.168.4.1 1002
+
+    // 透传数据
 
 .. _savetrans-udp:
 
@@ -387,18 +457,18 @@
 
 -  **<mode>**:
 
-   -  0: 关闭 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
-   -  1: 开启 {IDF_TARGET_NAME} 上电进入 Wi-Fi :term:`透传模式`
+   -  0: 关闭 {IDF_TARGET_NAME} 上电进入 UDP :term:`透传模式`
+   -  1: 开启 {IDF_TARGET_NAME} 上电进入 UDP :term:`透传模式`
 
 -  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
 -  **<remote port>**：远端端口值
 -  **<"type">**：字符串参数，表示传输类型："UDP" 或 "UDPv6"。默认值："TCP"
--  **[<local port>]**：开机进入 UDP 传输时，使用的本地端口
+-  **<local port>**：开机进入 UDP 传输时，使用的本地端口。
 
 说明
 """""""
 
-- 本设置将 Wi-Fi 开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入 :term:`透传模式`。需重启生效。
+- 本设置将 UDP 开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入 UDP :term:`透传模式`。需重启生效。
 
 - 如果您想基于 IPv6 网络建立一个 UDP 传输，请执行以下操作：
 
@@ -2115,6 +2185,8 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
 
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`
   - :ref:`AT+CWMODE <cmd-MODE>`
+  :esp32c5: - :ref:`AT+CWBANDMODE <cmd-CWBANDMODE>`
+  - :ref:`AT+CWBANDWIDTH <cmd-CWBANDWIDTH>`
   - :ref:`AT+CIPV6 <cmd-IPV6>`
   - :ref:`AT+CWCONFIG <cmd-CWCONFIG>`
   - :ref:`AT+CWJAP <cmd-JAP>`

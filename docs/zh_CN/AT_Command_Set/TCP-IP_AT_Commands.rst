@@ -18,6 +18,7 @@ TCP/IP AT 命令
 -  :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>`：设置 :ref:`AT+CIPSENDL <cmd-SENDL>` 命令的属性
 -  :ref:`AT+CIPSENDEX <cmd-SENDEX>`：在 :term:`普通传输模式` 下采用扩展的方式发送数据
 -  :ref:`AT+CIPCLOSE <cmd-CLOSE>`：关闭 TCP/UDP/SSL 连接
+-  :ref:`AT+CIPCONNPERSIST <cmd-CONNPERSIST>`：查询、设置 TCP/SSL 连接持久化参数
 -  :ref:`AT+CIFSR <cmd-IFSR>`：查询本地 IP 地址和 MAC 地址
 -  :ref:`AT+CIPMUX <cmd-MUX>`：启用/禁用多连接模式
 -  :ref:`AT+CIPSERVER <cmd-SERVER>`：建立/关闭 TCP 或 SSL 服务器
@@ -196,6 +197,18 @@ TCP/IP AT 命令
 -  **<"IP address">**：解析后的 IPv4 地址或 IPv6 地址
 -  **<timeout>**：命令超时。单位：毫秒。默认值：0。范围：[0,60000]。设置为 0 时，命令的超时依赖于网络和 lwIP 协议栈；设置为非 0 时，命令会在指定超时内返回，但会多消耗约 5 KB 的堆空间。
 
+说明
+^^^^
+- 如果您想解析域名为多个 IP 地址，请增加 ``python build.py menuconfig`` > ``Component config`` > ``LWIP`` > ``DNS`` > ``Maximum number of IP addresses per host`` 的值，然后重新编译 ESP-AT 工程。最终返回的格式如下：
+
+  ::
+
+    +CIPDOMAIN:<"IP address">
+    +CIPDOMAIN:<"IP address">
+    ...
+
+    OK
+
 示例
 ^^^^
 
@@ -288,6 +301,8 @@ TCP/IP AT 命令
   - 通过 :ref:`AT+CWJAP <cmd-JAP>` 命令获取到一个 IPv6 地址
   - （可选）通过 :ref:`AT+CIPSTA? <cmd-IPSTA>` 命令检查 {IDF_TARGET_NAME} 是否获取到 IPv6 地址
 
+- 若需查看建立 TCP 连接失败原因，请先运行 :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` 启用日志后重试本命令。失败时，AT 会返回更详细的错误码 ``+ERRNO:<error_code>``，以便定位问题。
+
 示例
 """"
 
@@ -375,6 +390,7 @@ TCP/IP AT 命令
   - （可选）通过 :ref:`AT+CIPSTA? <cmd-IPSTA>` 命令检查 {IDF_TARGET_NAME} 是否获取到 IPv6 地址
 
 - 如果想接收长度大于 1460 字节的 UDP 包，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：``Component config`` -> ``LWIP`` -> ``Enable reassembly incoming fragmented IP4 packets``
+- 若需查看建立 UDP 传输失败原因，请先运行 :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` 启用日志后重试本命令。失败时，AT 会返回更详细的错误码 ``+ERRNO:<error_code>``，以便定位问题。
 
 示例
 """""""""
@@ -463,6 +479,8 @@ TCP/IP AT 命令
   - 设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`
   - 通过 :ref:`AT+CWJAP <cmd-JAP>` 命令获取到一个 IPv6 地址
   - （可选）通过 :ref:`AT+CIPSTA? <cmd-IPSTA>` 命令检查 {IDF_TARGET_NAME} 是否获取到 IPv6 地址
+
+- 若需查看建立 SSL 连接失败原因，请先运行 :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` 启用日志后重试本命令。失败时，AT 会返回更详细的错误码 ``+ERRNO:<error_code>``，以便定位问题。
 
 示例
 """"""""
@@ -849,6 +867,64 @@ TCP/IP AT 命令
 
 -  **<link ID>**：需关闭的网络连接 ID，如果设为 5，则表示关闭所有连接
 
+.. _cmd-CONNPERSIST:
+
+:ref:`AT+CIPCONNPERSIST <TCPIP-AT>`：查询、设置 TCP/SSL 连接持久化参数
+----------------------------------------------------------------------------
+
+查询命令
+^^^^^^^^^^
+
+**功能：**
+
+查询 TCP/SSL 连接的持久化属性
+
+**命令：**
+
+::
+
+    AT+CIPCONNPERSIST?
+
+**响应：**
+
+::
+
+    +CIPCONNPERSIST:<persist_link>[...][,<persist_link>]
+
+    OK
+
+设置命令
+^^^^^^^^
+
+**功能：**
+
+设置 TCP/SSL 连接的持久化属性
+
+**命令：**
+
+::
+
+    // 单连接：(AT+CIPMUX=0)
+    AT+CIPCONNPERSIST=<persist_link>
+
+    // 多连接：(AT+CIPMUX=1)
+    AT+CIPCONNPERSIST=<link ID>,<persist_link>
+
+**响应：**
+
+::
+
+    OK
+
+参数
+^^^^
+
+-  **<link ID>**：需设置的网络连接 ID
+-  **<persist_link>**：是否启用连接保持。关闭（默认）时，{IDF_TARGET_NAME} 在 netif 停止、断开或丢失 IP 后会立即主动关闭该 netif 上的 TCP/SSL 连接；启用时，AT 不会主动断开，由协议栈自行处理连接状态。
+
+  - 0: 禁用连接保持（默认）。
+  - 1: 启用连接保持。
+
 .. _cmd-IFSR:
 
 :ref:`AT+CIFSR <TCPIP-AT>`：查询本地 IP 地址和 MAC 地址
@@ -1049,7 +1125,8 @@ TCP/IP AT 命令
 - 创建服务器后，自动建立服务器监听，最多只允许创建一个服务器。
 - 当有客户端接入，会自动占用一个连接 ID。
 - 如果您想基于 IPv6 网络创建一个 TCP/SSL 服务器，请首先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，并获取一个IPv6地址。
-- 关闭服务器时参数 ``<"type">`` 以及之后的参数必须省略。
+- 关闭服务器时，参数 ``<"type">``、 ``<CA enable>`` 和 ``<netiif>`` 必须省略。
+- 若需查看建立服务器失败原因，请先运行 :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` 启用日志后重试本命令。失败时，AT 会返回更详细的错误码 ``+ERRNO:<error_code>``，以便定位问题。
 
 示例
 ^^^^
@@ -1889,7 +1966,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 ^^^^
 
 -  **<link ID>**：网络连接 ID (0 ~ max)，在单连接的情况下，本参数值为 0；在多连接的情况下，若参数值设为 max，则表示所有连接；本参数默认值为 5。
--  **<"common name">**：本参数用来认证服务器发送的证书中的公用名。公用名最大长度为 64 字节。
+-  **<"common name">**：本参数用来认证服务器发送的证书中的公用名。
 
 说明
 ^^^^
@@ -1944,7 +2021,7 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 ^^^^
 
 -  **<link ID>**：网络连接 ID (0 ~ max)，在单连接的情况下，本参数值为 0；在多连接的情况下，若参数值设为 max，则表示所有连接；本参数默认值为 5。
--  **<"sni">**：ClientHello 里的 SNI。SNI 最大长度为 64 字节。
+-  **<"sni">**：ClientHello 里的 SNI。
 
 说明
 ^^^^
@@ -2267,8 +2344,8 @@ ESP-AT 在运行时，通过 Wi-Fi 从指定的服务器上下载新固件到某
 -  **<len>**：最大值为：0x7fffffff，如果实际收到的数据长度比本参数值小，则返回实际长度的数据。
 -  **<actual_len>**：实际获取的数据长度。
 -  **<data>**：获取的数据。
--  **[<"remote IP">]**：字符串参数，表示对端 IP 地址，通过 :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>` 命令使能。
--  **[<remote port>]**：对端端口，通过 :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>` 命令使能。
+-  **<"remote IP">**：字符串参数，表示对端 IP 地址，通过 :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>` 命令使能。
+-  **<remote port>**：对端端口，通过 :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>` 命令使能。
 
 说明
 ^^^^
@@ -2522,7 +2599,7 @@ ping 对端主机
 - **<port>**：mDNS 服务端口。
 - **<"instance">**：mDNS 实例名称。默认值：``<"hostname">``。
 - **<"proto">**：mDNS 服务协议。建议值：``_tcp`` 或 ``_udp``，默认值：``_tcp``。
-- **<txt_number>**：mDNS TXT 记录的数量。范围：[1,10]。
+- **<txt_number>**：mDNS TXT 记录的数量。范围：[1,20]。
 - **<"key">**：TXT 记录的键。
 - **<"value">**：TXT 记录的值。
 - **[...]**：根据 ``<txt_number>`` 继续填写 TXT 记录的键值对。

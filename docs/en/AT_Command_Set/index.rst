@@ -194,6 +194,12 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - A network connection of which ID is ``<conn_id>`` is established (ID=0 by default)
      * - [<conn_id>,]CLOSED
        - A network connection of which ID is ``<conn_id>`` ends (ID=0 by default)
+     * - +ERRNO:``<error_code>``
+       - Error code when command execution fails.
+
+         - When TCP connection, UDP transmission, or SSL server fails, the error code is returned in priority order: first, the socket's SO_ERROR; if SO_ERROR is 0, then LwIP's errno; if errno is 0, then the error code defined by ESP-AT.
+         - When SSL connection establishment fails, the error code is returned in priority order: first, certificate-related error code; if certificate-related error code is 0, then mbedTLS error code; if mbedTLS error code is 0, then esp-tls error code; if esp-tls error code is 0, then the error code defined by ESP-AT.
+
      * - +LINK_CONN
        - Detailed connection information of TCP/UDP/SSL
      * - +STA_CONNECTED: <sta_mac>
@@ -344,3 +350,9 @@ Through the ``Log Output`` pin described in :doc:`../Get_Started/Hardware_connec
       - Failed to send data: expected to send ``<send_len>`` bytes, but only ``<ret_len>`` bytes were sent. Please check network connection.
     * - at-net: link is changed
       - When AT is acting as a server, the client connection was interrupted during data transmission, and a new client has connected to the server.
+    * - at-net: link:<link_id> is on netif:<netif_id>
+      - Connection <link_id> was successfully established on network interface <netif_id>.
+
+        - 1: Wi-Fi station interface
+        - 2: Wi-Fi softAP interface
+        - 3: Ethernet interface

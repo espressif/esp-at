@@ -194,6 +194,12 @@ AT 消息
        - ID 为 ``<conn_id>`` 的网络连接已建立（默认情况下，ID 为 0）
      * - [<conn_id>,]CLOSED
        - ID 为 ``<conn_id>`` 的网络连接已断开（默认情况下，ID 为 0）
+     * - +ERRNO:``<error_code>``
+       - 命令执行失败时的错误码。
+
+         - 建立 TCP 连接、UDP 传输、SSL 服务器失败时，错误码按优先级返回：首先为套接字的 SO_ERROR；若 SO_ERROR 为 0，则返回 LwIP 的 errno；若 errno 为 0，则返回 ESP-AT 定义的错误码。
+         - 建立 SSL 连接失败时，错误码按优先级返回：首先为证书相关错误码；若证书相关错误码为 0，则返回 mbedTLS 的错误码；若 mbedTLS 的错误码为 0，则返回 esp-tls 的错误码；若 esp-tls 的错误码为 0，则返回 ESP-AT 定义的错误码。
+
      * - +LINK_CONN
        - TCP/UDP/SSL 连接的详细信息
      * - +STA_CONNECTED: <sta_mac>
@@ -344,3 +350,9 @@ AT 日志
       - 发送数据失败，发送长度为 ``<send_len>``，实际返回长度为 ``<ret_len>``。请检查网络连接。
     * - at-net: link is changed
       - AT 作为服务器时，在数据发送过程中，客户端连接断开后，新的客户端连接到服务器。
+    * - at-net: link:<link_id> is on netif:<netif_id>
+      - 连接 <link_id> 在网络接口 <netif_id> 上建立成功了。
+
+        - 1：Wi-Fi station 接口
+        - 2：Wi-Fi softAP 接口
+        - 3：以太网接口
