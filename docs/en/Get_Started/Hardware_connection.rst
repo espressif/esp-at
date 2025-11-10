@@ -568,10 +568,10 @@ Note:
           * RX
     * - AT command/response :sup:`2`
       - UART1
-          * GPIO5 (RX)
-          * GPIO6 (TX)
-          * GPIO4 (CTS)
-          * GPIO3 (RTS)
+          * GPIO6 (RX)
+          * GPIO7 (TX)
+          * GPIO5 (CTS)
+          * GPIO4 (RTS)
       - USB to UART converter
           * TX
           * RX

@@ -572,10 +572,10 @@ Hardware Differences
     * - PSRAM
       - |icon-red-cross|
     * - UART Pins [#one]_
-      - | TX: 6
-        | RX: 5
-        | CTS: 4
-        | RTS: 3
+      - | TX: 7
+        | RX: 6
+        | CTS: 5
+        | RTS: 4
 
 .. only:: esp32s2
 
