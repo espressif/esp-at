@@ -1160,7 +1160,7 @@ static esp_err_t at_get_wifi_info_from_json_str(char *buffer, wifi_sta_connect_c
             ESP_LOGE(TAG, "ssid is too long");
             return ESP_FAIL;
         } else {
-            strncpy(ssid, item->valuestring, ssid_len);
+            strncpy(ssid, item->valuestring, sizeof(ssid) - 1);
         }
     }
 
@@ -1172,7 +1172,7 @@ static esp_err_t at_get_wifi_info_from_json_str(char *buffer, wifi_sta_connect_c
             ESP_LOGE(TAG, "password is too long");
             return ESP_FAIL;
         } else {
-            strncpy(password, item->valuestring, password_len);
+            strncpy(password, item->valuestring, sizeof(password) - 1);
         }
     }
     cJSON_Delete(root);
