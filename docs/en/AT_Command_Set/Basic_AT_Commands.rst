@@ -1016,7 +1016,7 @@ Example
 
 ::
 
-    // print no promt info when quitting Wi-Fi passthrough mode
+    // print no prompt info when quitting Wi-Fi passthrough mode
     // print detailed connection prompt info
     // print no prompt info when the connection status is changed
     AT+SYSMSG=2
