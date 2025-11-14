@@ -60,6 +60,7 @@ static const at_module_info_t s_module_info[] = {
 #if defined(CONFIG_IDF_TARGET_ESP32C5)
     {"ESP32C5-4MB",    CONFIG_ESP_AT_OTA_TOKEN_ESP32C5_4MB,         CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C5_4MB},
     {"ESP32C5-SDIO",   NULL,  NULL},
+    {"ESP32C5-SPI",    NULL,  NULL },   // ESP32C5-SPI
 #endif
 
 #if defined(CONFIG_IDF_TARGET_ESP32C6)

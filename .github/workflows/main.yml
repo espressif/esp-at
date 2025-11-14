@@ -156,6 +156,13 @@ jobs:
       artifacts_name: esp32c5-sdio-at
     secrets: inherit
 
+  build-esp32c5-spi-at:
+    uses: ./.github/workflows/build_template_esp32c5.yml
+    with:
+      module_name: ESP32C5-SPI
+      artifacts_name: esp32c5-spi-at
+    secrets: inherit
+
   build-esp32c2-4mb-g2-at:
     uses: ./.github/workflows/build_template_esp32c2.yml
     with:
