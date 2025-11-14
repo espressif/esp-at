@@ -74,3 +74,10 @@ repos:
       - id: astyle_py
         # If you are modifying astyle version, update tools/format.sh as well
         args: ['--astyle-version=3.4.7', '--rules=tools/ci/astyle-rules.yml']
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.1
+    hooks:
+      - id: codespell
+        # This hook will automatically fix typos as "write-changes" is set to "true" in the .codespellrc configuration file. You can check the modified file and add the changes before committing.
+        # If you find false positives, you can add the specific terms that should not be flagged to "ignore-words-list" in the .codespellrc
+        args: [--config=.codespellrc]
