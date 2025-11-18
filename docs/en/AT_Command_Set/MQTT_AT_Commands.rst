@@ -30,7 +30,7 @@ Introduction
 .. important::
   - The default AT firmware supports all the AT commands mentioned on this page. If you don't need {IDF_TARGET_NAME} to support MQTT commands, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
 
-    - Disable ``Component config`` -> ``AT`` -> ``AT MQTT command support``
+    - Disable ``Component config`` > ``AT`` > ``AT MQTT command support``
 
   - For MQTT connection to local Broker examples, see :doc:`MQTT AT Examples <../AT_Command_Examples/MQTT_AT_Examples>`.
   - For MQTT connection to AWS IoT examples, see :doc:`MQTT Cloud Connection AT Examples <../AT_Command_Examples/mqtt-at-examples-for-cloud>`.

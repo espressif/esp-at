@@ -81,9 +81,9 @@ Introduction
   .. important::
     The default AT firmware supports all the AT commands mentioned on this page. If you need to modify the commands supported by {IDF_TARGET_NAME} by default, please compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections (Each item below is independent. Choose it according to your needs):
 
-    - Disable BluFi commands: ``Component config`` -> ``AT`` -> ``AT blufi command support``
-    - Disable Bluetooth LE commands: ``Component config`` -> ``AT`` -> ``AT ble command support``
-    - Disable Bluetooth LE HID commands: ``Component config`` -> ``AT`` -> ``AT ble hid command support``
+    - Disable BluFi commands: ``Component config`` > ``AT`` > ``AT blufi command support``
+    - Disable Bluetooth LE commands: ``Component config`` > ``AT`` > ``AT ble command support``
+    - Disable Bluetooth LE HID commands: ``Component config`` > ``AT`` > ``AT ble hid command support``
 
 .. only:: esp32c2
 

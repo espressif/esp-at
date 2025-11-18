@@ -11,7 +11,7 @@
 
     - 发布的 AT 固件仅支持 26 MHz 晶振频率的芯片版本。如果您的模组使用的是 40 MHz 的晶振频率，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
 
-      - ``Component config`` -> ``Hardware Settings`` -> ``Main XTAL Config`` -> ``Main XTAL frequency`` -> ``40 MHz``
+      - ``Component config`` > ``Hardware Settings`` > ``Main XTAL Config`` > ``Main XTAL frequency`` > ``40 MHz``
 
   .. only:: esp32 or esp32c2
 

@@ -55,10 +55,10 @@ Introduction
 .. important::
   The default AT firmware supports all the AT commands mentioned on this page. If you need to modify the commands supported by {IDF_TARGET_NAME} by default, please compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections (Each item below is independent. Choose it according to your needs):
 
-  - Disable OTA commands (:ref:`AT+CIUPDATE <cmd-UPDATE>` and :ref:`AT+CIPFWVER <cmd-FWVER>`): ``Component config`` -> ``AT`` -> ``AT OTA command support``
-  - Disable PING commands (:ref:`AT+PING <cmd-CIPPING>`): ``Component config`` -> ``AT`` -> ``AT ping command support``
-  - Disable mDNS commands (:ref:`AT+MDNS <cmd-MDNS>`): ``Component config`` -> ``AT`` -> ``AT MDNS command support``
-  - Disable TCP/IP commands (Not recommended. Once disabled, all TCP/IP functions will be unavailable and you will need to implement these AT commands yourself): ``Component config`` -> ``AT`` -> ``AT net command support``
+  - Disable OTA commands (:ref:`AT+CIUPDATE <cmd-UPDATE>` and :ref:`AT+CIPFWVER <cmd-FWVER>`): ``Component config`` > ``AT`` > ``AT OTA command support``
+  - Disable PING commands (:ref:`AT+PING <cmd-CIPPING>`): ``Component config`` > ``AT`` > ``AT ping command support``
+  - Disable mDNS commands (:ref:`AT+MDNS <cmd-MDNS>`): ``Component config`` > ``AT`` > ``AT MDNS command support``
+  - Disable TCP/IP commands (Not recommended. Once disabled, all TCP/IP functions will be unavailable and you will need to implement these AT commands yourself): ``Component config`` > ``AT`` > ``AT net command support``
 
 .. _cmd-IPV6:
 
@@ -389,7 +389,7 @@ Notes
   -  Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
   - (Optional) Check whether {IDF_TARGET_NAME} has obtained an IPv6 address using the :ref:`AT+CIPSTA? <cmd-IPSTA>` command
 
-- If you want to receive a UDP packet longer than 1460 bytes, please compile the firmware on your own by following :doc:`Compile ESP-AT Project <../Compile_and_Develop/How_to_clone_project_and_compile_it>` and choosing the following configurations in the Step 5. Configure: ``Component config`` -> ``LWIP`` -> ``Enable reassembly incoming fragmented IP4 packets``.
+- If you want to receive a UDP packet longer than 1460 bytes, please compile the firmware on your own by following :doc:`Compile ESP-AT Project <../Compile_and_Develop/How_to_clone_project_and_compile_it>` and choosing the following configurations in the Step 5. Configure: ``Component config`` > ``LWIP`` > ``Enable reassembly incoming fragmented IP4 packets``.
 - To view the reason for UDP transmission establishment failure, please first run :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` to enable logging, then retry this command. Upon failure, AT will return a more detailed error code ``+ERRNO:<error_code>`` to help locate the problem.
 
 Example

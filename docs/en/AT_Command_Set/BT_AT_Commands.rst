@@ -39,9 +39,9 @@ Introduction
 .. important::
   The default AT firmware does not support the AT commands listed on this page. If you need {IDF_TARGET_NAME} to support Classic Bluetooth commands, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections (Each item below is independent. Choose it according to your needs):
 
-  - Enable Generic Bluetooth commands: ``Component config`` -> ``AT`` -> ``AT bt command support``
-  - Enable SPP commands: ``Component config`` -> ``AT`` -> ``AT bt command support`` -> ``AT bt spp command support``
-  - Enable A2DP commands:``Component config`` -> ``AT`` -> ``AT bt command support`` -> ``AT bt a2dp command support``
+  - Enable Generic Bluetooth commands: ``Component config`` > ``AT`` > ``AT bt command support``
+  - Enable SPP commands: ``Component config`` > ``AT`` > ``AT bt command support`` > ``AT bt spp command support``
+  - Enable A2DP commands:``Component config`` > ``AT`` > ``AT bt command support`` > ``AT bt a2dp command support``
 
 .. _cmd-BTINIT:
 

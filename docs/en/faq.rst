@@ -101,8 +101,8 @@ What are the common Wi-Fi compatibility issues?
     - If the router does not support AMPDU, {IDF_TARGET_NAME} will automatically disable the AMPDU function when interacting with the router. 
     - If the router supports AMPDU but there is a compatibility issue with AMPDU transmission between the router and {IDF_TARGET_NAME}, it is recommended to disable the function on the router or {IDF_TARGET_NAME}. For information on how to disable it on {IDF_TARGET_NAME}, please refer to :doc:`Compile_and_Develop/How_to_clone_project_and_compile_it` and select the following options in the fifth step of configuring the project:
 
-      - Disable ``Component config`` -> ``Wi-Fi`` -> ``WiFi AMPDU TX``
-      - Disable ``Component config`` -> ``Wi-Fi`` -> ``WiFi AMPDU RX``
+      - Disable ``Component config`` > ``Wi-Fi`` > ``WiFi AMPDU TX``
+      - Disable ``Component config`` > ``Wi-Fi`` > ``WiFi AMPDU RX``
 
   - Phy mode compatibility issue. If there is a compatibility issue with the phy mode between the router and {IDF_TARGET_NAME}, it is recommended to switch it on the router or {IDF_TARGET_NAME}. For how to switch it on {IDF_TARGET_NAME}, please refer to the :ref:`AT+CWSTAPROTO <cmd-STAPROTO>` command.
 

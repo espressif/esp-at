@@ -100,7 +100,7 @@ Under the repository, click ``Setting`` to enter the settings page.
 
     Click on Settings
 
-Click on ``Settings`` -> ``Secrets and variables`` -> ``Actions`` to access the Action configuration page.
+Click on ``Settings`` > ``Secrets and variables`` > ``Actions`` to access the Action configuration page.
 
   .. figure:: ../../_static/web_compile/cfg-ota-token-s2.png
     :align: center
