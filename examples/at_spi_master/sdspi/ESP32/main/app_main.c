@@ -75,7 +75,7 @@ void uart_task(void* pvParameters)
         //Waiting for UART event.
         if (xQueueReceive(esp_at_uart_queue, (void *) &event, portMAX_DELAY)) {
             switch (event.type) {
-            //Event of UART receving data
+            //Event of UART receiving data
             case UART_DATA:
                 if (event.size) {
                     // Master want to send data, mark it.
@@ -180,7 +180,7 @@ static void sdspi_send_task(void* pvParameters)
 void app_main()
 {
     esp_err_t err;
-    // SDIO TEST board need to enable slave, other develop borad ignore
+    // SDIO TEST board need to enable slave, other develop board ignore
     //slave_power_on();
     ESP_AT_LOGI(TAG, "host ready, start initializing slave...");
     err = at_sdspi_init();

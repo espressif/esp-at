@@ -21,7 +21,7 @@ extern "C" {
  *
  *  An OTA method for saving flash space. Typical workflow:
  *  Compress the firmware to be upgraded by compression algorithm, and pack into compressed image,
- *  which inludes compressed image header (indicates the compressed image info and verify info) and compressed image body (compressed firmware).
+ *  which includes compressed image header (indicates the compressed image info and verify info) and compressed image body (compressed firmware).
  *  Compress OTA will download the compressed image into special partition slot (type:0x01 subtype:0x22).
  *  After reboot the module, esp-bootloader-plus (https://github.com/espressif/esp-bootloader-plus) will check if firmware needs to be upgraded.
  *  If yes, esp-bootloader-plus will verify the integrity of compressed image, and then decompress it into the bootable partition slot.

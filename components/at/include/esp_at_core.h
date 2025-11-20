@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -71,7 +71,7 @@ typedef struct {
  */
 typedef enum {
     ESP_AT_STATUS_NORMAL = 0x0,                /*!< Normal mode.Now mcu can send AT command */
-    ESP_AT_STATUS_TRANSMIT,                    /*!< Transparent Transmition mode */
+    ESP_AT_STATUS_TRANSMIT,                    /*!< Transparent Transmission mode */
 
 } esp_at_status_type;
 
@@ -256,7 +256,7 @@ void esp_at_transmit_terminal_from_isr(void);
 void esp_at_transmit_terminal(void);
 
 /**
- * @brief regist at command set, which defined by custom,
+ * @brief register at command set, which defined by custom,
  *
  * @param custom_at_cmd_array at command set
  * @param cmd_num command number
@@ -265,7 +265,7 @@ void esp_at_transmit_terminal(void);
 bool esp_at_custom_cmd_array_regist(const esp_at_cmd_struct *custom_at_cmd_array, uint32_t cmd_num);
 
 /**
- * @brief regist device operate functions set,
+ * @brief register device operate functions set,
  *
  * @param ops device operate functions set
  *
@@ -273,7 +273,7 @@ bool esp_at_custom_cmd_array_regist(const esp_at_cmd_struct *custom_at_cmd_array
 void esp_at_device_ops_regist(esp_at_device_ops_struct* ops);
 
 /*
- *  @brief regist custom callback about socket status,
+ *  @brief register custom callback about socket status,
  *
  *  @param link_id the link id
  *  @param ops custom operate functions set
@@ -283,7 +283,7 @@ void esp_at_device_ops_regist(esp_at_device_ops_struct* ops);
 bool esp_at_custom_net_ops_regist(int32_t link_id, esp_at_custom_net_ops_struct* ops);
 
 /*
- *  @brief regist custom callback about ble status,
+ *  @brief register custom callback about ble status,
  *
  *  @param ops custom operate functions set
  *
@@ -292,7 +292,7 @@ bool esp_at_custom_net_ops_regist(int32_t link_id, esp_at_custom_net_ops_struct*
 bool esp_at_custom_ble_ops_regist(int32_t conn_index, esp_at_custom_ble_ops_struct* ops);
 
 /**
- * @brief regist custom operate functions set interacting with AT,
+ * @brief register custom operate functions set interacting with AT,
  *
  * @param ops custom operate functions set
  *

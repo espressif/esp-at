@@ -3,7 +3,7 @@ Released Firmware
 
 :link_to_translation:`zh_CN:[中文]`
 
-It is recommended to use the lastest version of firmware. Currently, Espressif releases AT firmware for the following {IDF_TARGET_NAME} series of modules.
+It is recommended to use the latest version of firmware. Currently, Espressif releases AT firmware for the following {IDF_TARGET_NAME} series of modules.
 
 .. note::
 

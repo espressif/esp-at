@@ -3,6 +3,13 @@
 
 default_stages: [commit]
 
+# Exclude some directories or files from all hooks
+exclude: &global_excludes |
+  (?x)^(
+    .+\/STM32\/.+|
+    .*.crt
+  )$
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1

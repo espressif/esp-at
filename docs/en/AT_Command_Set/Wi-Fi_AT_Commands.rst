@@ -545,8 +545,8 @@ Parameters
 -  **<pmf>**: Protected Management Frames. Default: 1.
 
     - 0 means disable PMF.
-    - bit 0: PMF capable, advertizes support for protected management frame. Device will prefer to connect in PMF mode if other device also advertizes PMF capability.
-    - bit 1: PMF required, advertizes that protected management frame is required. Device will not associate to non-PMF capable devices.
+    - bit 0: PMF capable, advertises support for protected management frame. Device will prefer to connect in PMF mode if other device also advertises PMF capability.
+    - bit 1: PMF required, advertises that protected management frame is required. Device will not associate to non-PMF capable devices.
 
 -  **<error code>**: (for reference only)
 

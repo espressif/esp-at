@@ -137,7 +137,7 @@ static void socket_task(void *params)
                 if (FD_ISSET(s_client_fd, &server_fd_set)) {
                     int byte_num = recv(s_client_fd, buffer, AT_SOCKET_RECV_BUFFER_SIZE, 0);
 
-                    // exit transparent transmition mode
+                    // exit transparent transmission mode
                     if (s_trans_mode && (byte_num == 3) && (memcmp(buffer, "+++", 3) == 0)) {
                         ESP_LOGI(TAG, "exit passthrough mode");
                         esp_at_transmit_terminal();

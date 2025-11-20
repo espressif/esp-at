@@ -9,11 +9,11 @@ Compile ESP-AT Project Locally
 
 .. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
-  This document details how to build your own ESP-AT project locally and flash the generated firmware into your {IDF_TARGET_NAME}. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>`, :doc:`Bluetooth LE services <How_to_customize_BLE_services>`, and :doc:`partitions <How_to_customize_partitions>`, and so on.
+  This document details how to build your own ESP-AT project locally and flash the generated firmware into your {IDF_TARGET_NAME}. It comes in handy when the :doc:`official released firmware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>`, :doc:`Bluetooth LE services <How_to_customize_BLE_services>`, and :doc:`partitions <How_to_customize_partitions>`, and so on.
 
 .. only:: esp32c2 or esp32s2
 
-  This document details how to build your own ESP-AT project locally and flash the generated firmware into your {IDF_TARGET_NAME}. It comes in handy when the :doc:`official released fimware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>` and :doc:`partitions <How_to_customize_partitions>`, and so on.
+  This document details how to build your own ESP-AT project locally and flash the generated firmware into your {IDF_TARGET_NAME}. It comes in handy when the :doc:`official released firmware <../AT_Binary_Lists/index>` cannot meet your needs, for example, to customize the :doc:`AT port pins <How_to_set_AT_port_pin>` and :doc:`partitions <How_to_customize_partitions>`, and so on.
 
 If you have difficulties in compiling ESP-AT project locally, or you only need to modify a small amount of code, we recommend that you use :doc:`Compile ESP-AT Project on the GitHub Webpage <How_to_build_project_with_web_page>`.
 

@@ -381,7 +381,7 @@ esp_err_t rmaker_wifi_mcu_ota(esp_rmaker_ota_handle_t ota_handle, esp_rmaker_ota
 
     int buffer_size_tx = RAINMAKER_OTA_DEF_HTTP_TX_BUFFER_SIZE;
     /* In case received url is longer, we will increase the tx buffer size
-     * to accomodate the longer url and other headers.
+     * to accommodate the longer url and other headers.
      */
     if (strlen(ota_data->url) > buffer_size_tx) {
         buffer_size_tx = strlen(ota_data->url) + 128;
@@ -906,7 +906,7 @@ static uint8_t at_exe_cmd_rmnodeinit(uint8_t *cmd_name)
         s_rm_event_group = xEventGroupCreate();
         if (!s_rm_event_group) {
             ESP_LOGE(TAG, "Couldn't create rm event group.");
-            //TODO: err code, unkown error
+            //TODO: err code, unknown error
             return ESP_AT_RESULT_CODE_ERROR;
         }
     }

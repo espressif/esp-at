@@ -2082,7 +2082,7 @@ Parameters
   - 0: clean the ALPN configuration.
   - [1,5]: set the ALPN configuration.
 
--  **<"alpn">**: a string paramemter showing the ALPN in ClientHello. The maximum length of alpn is limited by the command length.
+-  **<"alpn">**: a string parameter showing the ALPN in ClientHello. The maximum length of alpn is limited by the command length.
 
 Note
 ^^^^^

@@ -421,7 +421,7 @@ Otherwise, you need to check your {IDF_TARGET_NAME} startup log in one of the fo
 - Set Parity to None;
 - Set Stop Bits to 1;
 - Set Flow Type to None;
-- Press the RST key of the board directly. If it is like the log below, it means that ESP-AT firmware have been initalized correctly.
+- Press the RST key of the board directly. If it is like the log below, it means that ESP-AT firmware have been initialized correctly.
 
 **Method 2:**
 

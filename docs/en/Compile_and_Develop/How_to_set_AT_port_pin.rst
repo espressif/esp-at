@@ -62,7 +62,7 @@ By default, the {IDF_TARGET_NAME} AT firmware provided by Espressif uses the fol
   - TX: GPIO43
   - RX: GPIO44
 
-When compiling your ESP-AT project, you can modify them to other pins with the menuconfig utitlity:
+When compiling your ESP-AT project, you can modify them to other pins with the menuconfig utility:
 
 * ``./build.py menuconfig`` --> ``Component config`` --> ``ESP System Settings`` --> ``Channel for console output`` --> ``Custom UART``
 * ``./build.py menuconfig`` --> ``Component config`` --> ``ESP System Settings`` --> ``UART TX on GPIO#``

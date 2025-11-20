@@ -9,7 +9,7 @@ AT Response Message Format Control Examples
 
 .. _example-sysmfgfilter:
 
-Enable the :term:`system message` filter to download files in HTTP passthough mode
+Enable the :term:`system message` filter to download files in HTTP passthrough mode
 --------------------------------------------------------------------------------------
 
 This example describes how to download an image file in PNG format. The image link is https://www.espressif.com/sites/default/files/home/hardware.png.

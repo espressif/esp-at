@@ -56,7 +56,7 @@ def main():
 
     # check fatfs dependency
     if 'fatfs' in to_read_config_name and 'fatfs' not in to_write_partition:
-        print('FatFS is required in sdkconfig but not found in parition table. Please check the at_customize.csv')
+        print('FatFS is required in sdkconfig but not found in partition table. Please check the at_customize.csv')
         sys.exit(1)
 
     with open(flash_args_file, 'w+') as args_file:

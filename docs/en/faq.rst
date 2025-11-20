@@ -13,7 +13,7 @@ AT Firmware
 There is no released firmware for my module. Where can I get the firmware for it?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If there is no released fimware for your module in the :doc:`AT_Binary_Lists/index` chapter, please consider the following options:
+If there is no released firmware for your module in the :doc:`AT_Binary_Lists/index` chapter, please consider the following options:
 
 - Use the firmware for the module that has the same hardware configuration as yours (see :doc:`Compile_and_Develop/esp-at_firmware_differences` for which module has the same configuration).
 - Refer to :ref:`firmware-selection`.

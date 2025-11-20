@@ -69,10 +69,10 @@ class object_c:
                     return m[4].replace('.text.', '')
         raise RuntimeError('%s failed to find section'%(func))
 
-    def __init__(self, name, path, libray):
+    def __init__(self, name, path, library):
         self.name = name
         self.path = path
-        self.libray = libray
+        self.library = library
         self.dump = self.read_dump_info(self.path)
         self.funcs = dict()
 

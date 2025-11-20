@@ -121,7 +121,7 @@ void uart_task(void* pvParameters)
         //Waiting for UART event.
         if (xQueueReceive(esp_at_uart_queue, (void *) &event, portMAX_DELAY)) {
             switch (event.type) {
-            //Event of UART receving data
+            //Event of UART receiving data
             case UART_DATA:
                 if (event.size) {
                     // Master want to send data, mark it.

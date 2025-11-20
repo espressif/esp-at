@@ -648,7 +648,7 @@ esp_err_t spi_io_rw_extended(int func,
         }
 
         if (datalen == max_byte_transfer_size) {
-            count = 0;  // See 5.3.1 SDIO simplifed spec
+            count = 0;  // See 5.3.1 SDIO simplified spec
         } else {
             count = datalen;
         }
@@ -920,7 +920,7 @@ esp_err_t at_sdspi_get_packet(spi_context_t* context, void* out_data, size_t siz
             len_to_send = len_remain;
             /* though the driver supports to split packet of unaligned size into length
              * of 4x and 1~3, we still get aligned size of data to get higher
-             * effeciency. The length is determined by the SDIO address, and the
+             * efficiency. The length is determined by the SDIO address, and the
              * remainning will be ignored by the slave hardware.
              */
             err = spi_io_read_bytes(1, ESP_SLAVE_CMD53_END_ADDR - len_remain, start, (len_to_send + 3) & (~3));
@@ -993,7 +993,7 @@ esp_err_t at_sdspi_send_packet(spi_context_t* context, const void* start, size_t
         const int block_size = 512;
         /* Though the driver supports to split packet of unaligned size into
          * length of 4x and 1~3, we still send aligned size of data to get
-         * higher effeciency. The length is determined by the SDIO address, and
+         * higher efficiency. The length is determined by the SDIO address, and
          * the remainning will be discard by the slave hardware.
          */
         int len_to_send;

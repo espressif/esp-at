@@ -57,7 +57,7 @@ In building customized partition bin stage:
 2. try to find generation tool from `generation_tool` folder
     * if tool is not found, then skip generating this partition bin
 3. run generation tool, generate customized bin
-    * the generation tool can specify its raw data folder. by default the raw data will be put into `raw_data/partition_name` of component customzied partitions
+    * the generation tool can specify its raw data folder. by default the raw data will be put into `raw_data/partition_name` of component customized partitions
     * if generation tools did not exit 0, it will report error and stop build
 4. copy bin to `build/customized_partitions` folder and update to flash args
 

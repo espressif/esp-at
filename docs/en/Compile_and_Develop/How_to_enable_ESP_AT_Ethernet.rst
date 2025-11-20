@@ -21,7 +21,7 @@ PHY Configuration
 Use ``./build.py menuconfig`` to set the PHY model. These configuration items will vary depending on the hardware configuration you are using.
 
 The default configuration is correct for Espressif's Ethernet board with TP101 PHY. {IDF_TARGET_NAME} AT supports up to four Ethernet PHY: ``LAN8720``, ``IP101``, ``DP83848`` and ``RTL8201``.
-``TLK110`` PHY is no longer supported because TI stoped production.
+``TLK110`` PHY is no longer supported because TI stopped production.
 If you want to use other PHY, follow the `{IDF_TARGET_NAME}-Ethernet-Kit V1.2 Getting Started Guide <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/hw-reference/{IDF_TARGET_PATH_NAME}/get-started-ethernet-kit.html>`__ to design.
 
 Step 2. Connect the Board and Test

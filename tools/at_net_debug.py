@@ -340,7 +340,7 @@ def at_patch_net_debug_snippet(args):
     print('The network debug has been successfully enabled!')
 
 def main():
-    parser = argparse.ArgumentParser(description='Enter ESP-IDF directory and run this script. This script helps debuging TCP/UDP/ICMP and above protocol. (Attention: this script does not support IP fragment and IPv6 till now.)')
+    parser = argparse.ArgumentParser(description='Enter ESP-IDF directory and run this script. This script helps debugging TCP/UDP/ICMP and above protocol. (Attention: this script does not support IP fragment and IPv6 till now.)')
     parser.add_argument('--no-tcp', action='store_true', help='Default: False. It will print the outgoing (TCP TX) and incoming (TCP RX) packets information by default, which includes ip total len, tcp data len, tcp seq, tcp ack, src port, dest port, and tcp flags. TCP flags is the accumulation of CWR:128, ECN:64, Urgent:32, Ack:16, Push:8, Reset:4, SYN:2, FIN:1.')
     parser.add_argument('--tcp-port', type=str, default='0', help='Default: "0". Specify the list of TCP port numbers to monitor. 0 means all ports, and the port numbers should be separated by commas if monitor multiple ports.')
     parser.add_argument('--no-udp', action='store_true', help='Default: False. It will print the outgoing (UDP TX) and incoming (UDP RX) packets information by default, which includes ip total len, src port, dest port, and udp data len.')

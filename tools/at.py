@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
 
 from __future__ import division, print_function
@@ -68,9 +68,9 @@ def at_parameter_assign_int(arg, fixed_len, l, lidx):
 
 def at_parameter_assign_str(arg, fixed_len, l, lidx):
     if arg != None:
-        larg = list(arg)
-        larg = larg + ['\x00'] * (fixed_len - len(larg))
-        arg_tmp = [x.encode() for x in larg]
+        l_arg = list(arg)
+        l_arg = l_arg + ['\x00'] * (fixed_len - len(l_arg))
+        arg_tmp = [x.encode() for x in l_arg]
         l[lidx : (lidx+fixed_len)] = arg_tmp[0 : fixed_len]
 
 def modify_bin(esp, args):
@@ -874,7 +874,7 @@ class InputError(RuntimeError):
 class InsufficientSizeError(RuntimeError):
     """
     Represents error when NVS Partition size given is insufficient
-    to accomodate the data in the given csv file
+    to accommodate the data in the given csv file
     """
     def __init__(self, e):
         super(InsufficientSizeError, self).__init__(e)
@@ -1183,7 +1183,7 @@ def modify_param_bin_in_partition(esp, args):
 
     print('Modify the binary firmware where the parameters are stored in partitions...')
     # find out the parameter start address
-    # prefer to use input configuation
+    # prefer to use input configuration
     if args.parameter_offset:
         param_addr = args.parameter_offset
     else:
