@@ -284,6 +284,10 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - Scan finished
      * - +BLESECKEYREQ:<conn_index>
        - The peer has accepted the pairing request, and the ESP device can enter the key.
+     * - +BLE_TT_MODE
+       - Entered BLE passthrough mode.
+     * - +WRITE:<conn_index>
+       - In passthrough mode, when enabling notify or indicate, the message prefixed with "+WRITE:" will be printed.
 
   .. only:: esp32c3
 

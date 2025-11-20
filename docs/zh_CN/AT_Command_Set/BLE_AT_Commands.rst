@@ -158,6 +158,7 @@ Bluetooth® Low Energy AT 命令集
     -  0: 注销 Bluetooth LE
     -  1: client 角色
     -  2: server 角色
+    -  3: 双角色（client 和 server）
 
     说明
     ^^^^
@@ -167,6 +168,12 @@ Bluetooth® Low Energy AT 命令集
     -  Bluetooth LE 角色初始化后，不能直接切换。如需切换角色，需要先调用 :ref:`AT+RST <cmd-RST>` 命令重启系统，再重新初始化 Bluetooth LE 角色。
     -  建议在注销 Bluetooth LE 之前，停止正在进行的广播、扫描并断开所有的连接。
     -  如果 Bluetooth LE 已初始化，则 :ref:`AT+CIPMODE <cmd-IPMODE>` 无法设置为 1。
+    -  如果设置为双角色，则既可以使用服务器角色相关的命令，也可以使用客户端角色相关的命令。
+    -  在双角色模式下，BLE 透传相关命令和 BLE 自动透传开机功能不支持。
+    -  在双角色模式下，可以设置广播参数、查询广播参数并开始或停止广播。
+    -  在双角色模式下，可以设置扫描参数、查询扫描参数并开始或停止扫描。
+    -  在双角色模式下，可以发起所有连接相关参数更新并查询连接参数。
+    -  在双角色模式下，连接和广播的总数限制为 3。
 
     示例
     ^^^^
@@ -527,7 +534,8 @@ Bluetooth® Low Energy AT 命令集
     ::
 
         AT+BLEINIT=2   // 角色：服务器
-        AT+BLESCANRSPDATA="1122334455"
+        AT+BLEADVPARAM=32,32,0,0,7,0,,   // 设置广播参数
+        AT+BLESCANRSPDATA="1122334455"   // 设置扫描响应数据
 
     .. _cmd-BADVP:
 
@@ -767,7 +775,8 @@ Bluetooth® Low Energy AT 命令集
     ::
 
         AT+BLEINIT=2   // 角色：服务器
-        AT+BLEADVDATA="1122334455"
+        AT+BLEADVPARAM=32,32,0,0,7,0,,   // 设置广播参数
+        AT+BLEADVDATA="1122334455"       // 设置广播数据
 
     .. _cmd-BADVDEX:
 
@@ -830,6 +839,7 @@ Bluetooth® Low Energy AT 命令集
 
     -  如果之前已经使用命令 :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data> 设置了广播数据，则会被本命令设置的广播数据覆盖。
     -  此命令会自动将之前使用 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置的广播类型更改为 0。
+    -  AT 会根据用户输入的参数依次自动组包，但数据总长度最大为 31 字节，若超出该长度，将被截断。
 
     示例
     ^^^^
@@ -1268,36 +1278,20 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    .. only:: esp32 or esp32c3
+    .. list::
 
-        ::
-
-        -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-        -  **<mtu_size>**：MTU 长度，单位：字节，范围：[23,517]。
-
-    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
-
-        ::
-
-        -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,1]。
+        :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61: -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+        :esp32c2: -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,1]。
+        :esp32 or esp32c3: -  **<mtu_size>**：MTU 长度，单位：字节，范围：[23,517]。
 
     说明
     ^^^^
 
-    .. only:: esp32 or esp32c3
+    .. list::
 
-        ::
-
-            -  本命令要求先建立 Bluetooth LE 连接。
-            -  仅支持客户端运行本命令设置 MTU 的长度。
-            -  MTU 的实际长度需要协商，响应 ``OK`` 只表示尝试协商 MTU 长度，因此设置长度不一定生效，建议调用 :ref:`AT+BLECFGMTU? <cmd-BMTU>` 查询实际 MTU 长度。
-
-    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
-
-        ::
-
-            -  本命令要求先建立 Bluetooth LE 连接。
-            -  仅支持客户端运行本命令设置 MTU 的长度。
+        - 本命令要求先建立 Bluetooth LE 连接。
+        - 仅支持客户端运行本命令设置 MTU 的长度。
+        :esp32 or esp32c3: - MTU 的实际长度需要协商，响应 ``OK`` 只表示尝试协商 MTU 长度，因此设置长度不一定生效，建议调用 :ref:`AT+BLECFGMTU? <cmd-BMTU>` 查询实际 MTU 长度
 
     示例
     ^^^^
@@ -1560,7 +1554,7 @@ Bluetooth® Low Energy AT 命令集
 
     ::
 
-        +BLEGATTSCHAR:"desc",<srv_index>,<char_index>,<desc_index> 
+        +BLEGATTSCHAR:"desc",<srv_index>,<char_index>,<desc_index>,<desc_uuid> 
         OK
 
     参数

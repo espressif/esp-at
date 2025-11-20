@@ -1003,6 +1003,8 @@ Parameter
            - the message prefixed with "+DIST_STA_IP:"
            - the message prefixed with "+BLECONN:"
            - the message prefixed with "+BLEDISCONN:"
+           - "+BLE_TT_MODE\r\n"
+           - in passthrough mode, when enabling notify or indicate, the message prefixed with "+WRITE:" will be printed
 
 Notes
 ^^^^^

@@ -158,6 +158,7 @@ Introduction
     -  0: deinit Bluetooth LE
     -  1: client role
     -  2: server role
+    -  3: dual role (client and server)
 
     Notes
     ^^^^^
@@ -167,6 +168,12 @@ Introduction
     -  After the initialization, the Bluetooth LE role cannot be changed unless you run :ref:`AT+RST <cmd-RST>` to restart the system first and then re-initialize the Bluetooth LE role.
     -  Before you deinitialize the Bluetooth stack, it is recommended to stop broadcasting, stop scanning, and disconnect all existing connections.
     -  If Bluetooth LE is initialized, :ref:`AT+CIPMODE <cmd-IPMODE>` cannot be set to 1.
+    -  In dual mode, both server-specific and client-specific commands are available.
+    -  In dual-mode, BLE passthrough-related commands and BLE auto-passthrough at startup are not supported.
+    -  In dual mode, it is possible to set advertising parameters, query advertising parameters, and start or stop advertising.
+    -  In dual mode, it is possible to set scanning parameters, query scanning parameters, and start or stop scanning.
+    -  In dual mode, it is possible to initiate all connection-related parameter updates and query connection parameters.
+    -  In dual mode, the total number of connections and advertisements combined is limited to 3.
 
     Example
     ^^^^^^^^
@@ -527,7 +534,8 @@ Introduction
     ::
 
         AT+BLEINIT=2   // Role: server
-        AT+BLESCANRSPDATA="1122334455"
+        AT+BLEADVPARAM=32,32,0,0,7,0,,   // set advertising parameters
+        AT+BLESCANRSPDATA="1122334455"   // set scan response data
 
     .. _cmd-BADVP:
 
@@ -767,7 +775,8 @@ Introduction
     ::
 
         AT+BLEINIT=2   // Role: server
-        AT+BLEADVDATA="1122334455"
+        AT+BLEADVPARAM=32,32,0,0,7,0,,   // set advertising parameters
+        AT+BLEADVDATA="1122334455"       // set advertising data
 
     .. _cmd-BADVDEX:
 
@@ -830,6 +839,7 @@ Introduction
 
     -  If advertising data is preset by command :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data>, it will be overwritten by this command.
     -  This command automatically changes the adv type previously set using :ref:`AT+BLEADVPARAM <cmd-BADVP>` to 0.
+    -  The AT module automatically assembles packets in sequence based on the parameters provided by the user. However, the total data length is limited to 31 bytes. Any data exceeding this limit will be truncated.
 
     Example
     ^^^^^^^^
@@ -1268,36 +1278,20 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    .. only:: esp32 or esp32c3
+    .. list::
 
-        ::
-
-            -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-            -  **<mtu_size>**: MTU length. Unit: byte. Range: [23,517].
-
-    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
-
-        ::
-
-            -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,1].
+        :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61: -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+        :esp32c2: -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,1].
+        :esp32 or esp32c3: -  **<mtu_size>**: MTU length. Unit: byte. Range: [23,517].
 
     Notes
     ^^^^^
 
-    .. only:: esp32 or esp32c3
+    .. list::
 
-        ::
-
-            -  Bluetooth LE connection has to be established first.
-            -  Only the client can call this command to set the length of MTU.
-            -  The actual length of MTU needs to be negotiated. The ``OK`` response only indicates an attempt to negotiate the length. The actual length may not be the value you set. Therefore, it is recommended to run command :ref:`AT+BLECFGMTU? <cmd-BMTU>` to query the actual length.
-
-    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
-
-        ::
-
-            -  Bluetooth LE connection has to be established first.
-            -  Only the client can call this command to set the length of MTU.
+        - Bluetooth LE connection has to be established first.
+        - Only the client can call this command to set the length of MTU.
+        :esp32 or esp32c3: - The actual length of MTU needs to be negotiated. The ``OK`` response only indicates an attempt to negotiate the length. The actual length may not be the value you set. Therefore, it is recommended to run command :ref:`AT+BLECFGMTU? <cmd-BMTU>` to query the actual length.
 
     Example
     ^^^^^^^^
@@ -1560,7 +1554,7 @@ Introduction
 
     ::
 
-        +BLEGATTSCHAR:"desc",<srv_index>,<char_index>,<desc_index> 
+        +BLEGATTSCHAR:"desc",<srv_index>,<char_index>,<desc_index>,<desc_uuid>
         OK
 
     Parameters

@@ -284,6 +284,10 @@ AT 消息
        - 扫描结束
      * - +BLESECKEYREQ:<conn_index>
        - 对端已经接受配对请求，ESP 设备可以输入密钥了
+     * - +BLE_TT_MODE
+       - 进入 BLE 透传模式
+     * - +WRITE:<conn_index>
+       - 在透传模式下，使能 notify 或者 indicate 时，打印以 "+WRITE:" 开头的提示消息
 
   .. only:: esp32c3
 
