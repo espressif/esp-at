@@ -77,7 +77,7 @@ def at_sync_submodule(path, repo, branch, commit, redirect):
             raise Exception('git checkout failed! Please manually run:\r\n{}'.format(cmd))
 
     if new_clone:
-        # init submoules for cloned repository
+        # init submodules for cloned repository
         ret = subprocess.call('cd {} && git submodule init'.format(path), shell = True)
         if ret:
             raise Exception('git submodule init failed')

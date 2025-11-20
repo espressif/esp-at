@@ -41,7 +41,7 @@ Note:
 
 .. only:: esp32c2
 
-  - The official default :doc:`../AT_Binary_Lists/index` only supports 26 MHz crystal oscillator. If your crystal oscillator of {IDF_TARGET_NAME} is 40 MHz, please refer to :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` document to compile {IDF_TARGET_NAME} AT firmware, and configurate in the step 5:
+  - The official default :doc:`../AT_Binary_Lists/index` only supports 26 MHz crystal oscillator. If your crystal oscillator of {IDF_TARGET_NAME} is 40 MHz, please refer to :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` document to compile {IDF_TARGET_NAME} AT firmware, and configure in the step 5:
 
     ::
 

@@ -161,7 +161,7 @@ static int parse_dns_request(char *req, size_t req_len, char *dns_reply, size_t 
     // Prepare the reply
     memcpy(dns_reply, req, req_len);
 
-    // Endianess of NW packet different from chip
+    // Endianness of NW packet different from chip
     dns_header_t *header = (dns_header_t*)dns_reply;
     ESP_LOGD(TAG, "DNS req with header id: 0x%X, flags: 0x%X, qd_count: %d", ntohs(header->id), ntohs(header->flags), ntohs(header->qd_count));
 
@@ -186,7 +186,7 @@ static int parse_dns_request(char *req, size_t req_len, char *dns_reply, size_t 
     char *cur_qd_ptr  = dns_reply + sizeof(dns_header_t);
 
     char name[128] = {0};
-    /* Repond to all questions with the ESP's IP address */
+    /* Respond to all questions with the ESP's IP address */
     for (int i = 0; i < qd_count; i++) {
         char *name_end_ptr = parse_dns_name(cur_qd_ptr, name, sizeof(name));
         if (name_end_ptr == NULL) {

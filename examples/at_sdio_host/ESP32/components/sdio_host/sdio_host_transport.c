@@ -235,7 +235,7 @@ sdio_err_t sdio_host_get_packet(void* out_data, size_t size, size_t* out_length,
             len_to_send = len_remain;
             /* though the driver supports to split packet of unaligned size into length
              * of 4x and 1~3, we still get aligned size of data to get higher
-             * effeciency. The length is determined by the SDIO address, and the
+             * efficiency. The length is determined by the SDIO address, and the
              * remainning will be ignored by the slave hardware.
              */
             err = sdio_driver_read_bytes(1, ESP_SLAVE_CMD53_END_ADDR - len_remain, start_ptr, (len_to_send + 3) & (~3));
@@ -364,7 +364,7 @@ sdio_err_t sdio_host_send_packet(const void* start, size_t length)
     do {
         /* Though the driver supports to split packet of unaligned size into
          * length of 4x and 1~3, we still send aligned size of data to get
-         * higher effeciency. The length is determined by the SDIO address, and
+         * higher efficiency. The length is determined by the SDIO address, and
          * the remainning will be discard by the slave hardware.
          */
         int block_n = len_remain / block_size;

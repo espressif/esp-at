@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -129,12 +129,12 @@ static void at_spi_master_send_data(uint8_t* data, uint32_t len)
     spi_transaction_t trans = {
 #if defined(CONFIG_SPI_QUAD_MODE)
         .flags = SPI_TRANS_MODE_QIO,
-        .cmd = CMD_HD_WRDMA_REG | (0x2 << 4),    // master -> slave command, donnot change
+        .cmd = CMD_HD_WRDMA_REG | (0x2 << 4),    // master -> slave command, do not change
 #elif defined(CONFIG_SPI_DUAL_MODE)
         .flags = SPI_TRANS_MODE_DIO,
         .cmd = CMD_HD_WRDMA_REG | (0x1 << 4),
 #else
-        .cmd = CMD_HD_WRDMA_REG,    // master -> slave command, donnot change
+        .cmd = CMD_HD_WRDMA_REG,    // master -> slave command, do not change
 #endif
         .length = len * 8,
         .tx_buffer = (void*)data
@@ -147,12 +147,12 @@ static void at_spi_master_recv_data(uint8_t* data, uint32_t len)
     spi_transaction_t trans = {
 #if defined(CONFIG_SPI_QUAD_MODE)
         .flags = SPI_TRANS_MODE_QIO,
-        .cmd = CMD_HD_RDDMA_REG | (0x2 << 4),    // master -> slave command, donnot change
+        .cmd = CMD_HD_RDDMA_REG | (0x2 << 4),    // master -> slave command, do not change
 #elif defined(CONFIG_SPI_DUAL_MODE)
         .flags = SPI_TRANS_MODE_DIO,
         .cmd = CMD_HD_RDDMA_REG | (0x1 << 4),
 #else
-        .cmd = CMD_HD_RDDMA_REG,    // master -> slave command, donnot change
+        .cmd = CMD_HD_RDDMA_REG,    // master -> slave command, do not change
 #endif
         .rxlength = len * 8,
         .rx_buffer = (void*)data
@@ -217,7 +217,7 @@ static void spi_master_request_to_write(uint8_t send_seq, uint16_t send_len)
 static int8_t spi_write_data(uint8_t* buf, int32_t len)
 {
     if (len > ESP_SPI_DMA_MAX_LEN) {
-        ESP_LOGE(TAG, "Send length errot, len:%ld", len);
+        ESP_LOGE(TAG, "Send length error, len:%ld", len);
         return -1;
     }
     at_spi_master_send_data(buf, len);
@@ -333,7 +333,7 @@ static void IRAM_ATTR spi_trans_control_task(void* arg)
             printf("%s", trans_data);
             fflush(stdout);    //Force to print even if have not '\n'
         } else {
-            ESP_LOGD(TAG, "Unknow direct: %d", recv_opt.direct);
+            ESP_LOGD(TAG, "Unknown direct: %d", recv_opt.direct);
             spi_mutex_unlock();
             continue;
         }
@@ -357,7 +357,7 @@ void uart_task(void* pvParameters)
         if (xQueueReceive(esp_at_uart_queue, (void *) &event,
                           (TickType_t) portMAX_DELAY)) {
             switch (event.type) {
-            //Event of UART receving data
+            //Event of UART receiving data
             case UART_DATA:
                 if (event.size) {
                     memset(dtmp, 0x0, 1024);

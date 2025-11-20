@@ -21,7 +21,7 @@ at_allowed_chars_list = ['中文', '®', '℃', '…', '✅', '❌', '√', '×'
 at_file_white_list = ['index_of_abbreviations.rst']
 at_not_allowed_chars_list = re.compile(b'[^\x0a\x0d\x20-\x7e]')
 
-# fullwidth space, letters, digits, punctuations that are not allowed in cn document
+# fullwidth space, letters, digits, punctuation that are not allowed in cn document
 at_fullwidth_space = r'　'
 at_fullwidth_letters = r'[Ａ-Ｚａ-ｚ]'
 at_fullwidth_digits = r'[０-９]'

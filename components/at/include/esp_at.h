@@ -114,7 +114,7 @@ void esp_at_ready_before(void);
  * @param[in] expected_response: expected response string
  * @param[in] timeout_ms: timeout in milliseconds
  *
- * @note Once exprected response is received, the function will return immediately.
+ * @note Once expected response is received, the function will return immediately.
  * @note You should not call this function directly from an AT command handler.
  *       The AT command handler typically refers to the test command, query command, set command, and execute command
  *       corresponding to the AT commands registered via esp_at_custom_cmd_array_regist().

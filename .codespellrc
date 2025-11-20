@@ -1,4 +1,4 @@
 [codespell]
 skip = build,*.drawio,*.svg,*.pdf
-ignore-words-list = laf,OT,QUITT
+ignore-words-list = laf,OT,QUITT,rsource,inout
 write-changes = true

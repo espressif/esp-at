@@ -1011,7 +1011,7 @@ Execute Command
 Note
 ^^^^^
 
--  For host MCU OTA, ESP-AT will send the received OTA informations instantly to the host MCU in the format of ``+RMFWNOTIFY:<type>,<size>,<url>,<fw_version>,<ota_job_id>``.
+-  For host MCU OTA, ESP-AT will send the received OTA information instantly to the host MCU in the format of ``+RMFWNOTIFY:<type>,<size>,<url>,<fw_version>,<ota_job_id>``.
 
     -  **<type>**: reserved. It is always set to 0 by ESP-AT.
     -  **<size>**: host MCU OTA firmware size. Unit: byte.

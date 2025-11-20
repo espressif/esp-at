@@ -26,7 +26,7 @@ void at_interface_init(void);
 void at_interface_start(void);
 
 /**
- * @brief This function is used to intialize the interface operations for communication port.
+ * @brief This function is used to initialize the interface operations for communication port.
  *
  * @note Each interface must have its own operations, you can use the default operations or customize your own operations.
  * @note The interface operations include: read data, write data, get data length, wait data tx done.
