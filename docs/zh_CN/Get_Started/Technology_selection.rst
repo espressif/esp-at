@@ -32,7 +32,7 @@ AT 软件方案是乐鑫针对不同芯片提供的 AT 固件，可以帮助您�
 - 如果您想了解 {IDF_TARGET_NAME} 芯片详细的 AT 软件能力，请参考 :doc:`AT 命令集 <../AT_Command_Set/index>`。
 - 如果您想对比 {IDF_TARGET_NAME} 芯片不同的 AT 固件功能，请参考 :doc:`ESP-AT 固件差异 <../Compile_and_Develop/esp-at_firmware_differences>`。
 
-下表列出了不同芯片对应的 AT 固件简要对比图。
+下表为 AT 固件当前支持和计划支持的乐鑫芯片列表及其简要对比。无计划支持的芯片不在此表中展示。
 
 .. list-table::
   :header-rows: 1

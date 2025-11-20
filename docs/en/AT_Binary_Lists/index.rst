@@ -19,6 +19,8 @@ This document covers the following sections:
 .. note::
   To download AT firmware for other chip series, please go to the drop-down list on the upper left corner of this page and select a chip series to navigate to the documentation of that chip for downloading.
 
+  Currently, there is no AT firmware available for the ESP32-H series, ESP32-P series, and ESP32-S3 series. It is recommended to use the ESP32-C series.
+
 .. _brief-intro-firmware:
 
 Brief Introduction to AT Firmware
