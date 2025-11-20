@@ -32,7 +32,7 @@ AT software solution is the AT firmwares provided by Espressif for different chi
 - If you want to know the detailed AT software capabilities of {IDF_TARGET_NAME} chip, please refer to the :doc:`AT Command Set <../AT_Command_Set/index>`.
 - If you want to compare the different AT firmware functionalities of {IDF_TARGET_NAME} chip, please refer to the :doc:`ESP-AT Firmware Differences <../Compile_and_Develop/esp-at_firmware_differences>`.
 
-The table below shows a brief comparison of the AT firmware for different chips.
+The table below lists the Espressif chips that are currently supported or planned to be supported by the AT firmware, along with a brief comparison. Chips without planned support are excluded.
 
 .. list-table::
   :header-rows: 1
