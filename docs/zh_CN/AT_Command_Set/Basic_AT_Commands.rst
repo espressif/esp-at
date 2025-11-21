@@ -1003,6 +1003,8 @@
            - 以 "+DIST_STA_IP:" 开头的提示信息
            - 以 "+BLECONN:" 开头的提示信息 
            - 以 "+BLEDISCONN:" 开头的提示信息
+           - "+BLE_TT_MODE\r\n"
+           - 在透传模式下，使能 notify 或者 indicate 时，打印以 "+WRITE:" 开头的提示消息
 
 说明
 ^^^^
