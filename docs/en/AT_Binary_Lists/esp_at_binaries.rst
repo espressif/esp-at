@@ -184,7 +184,14 @@ Before using the AT firmware below, please read the :doc:`../disclaimer` careful
   ESP32-C5-4MB Series
   ^^^^^^^^^^^^^^^^^^^
 
-  The first version of ESP-AT firmware is planned to be released in November 2025.
+  .. hint::
+    Please contact `Espressif Sales <https://www.espressif.com/en/contact-us/sales-questions>`_ or sales@espressif.com for AT firmware suitable for the {IDF_TARGET_NAME} series chips.
+
+    If you contact us via email, please include "Request {IDF_TARGET_NAME} AT Firmware Download Link" in the subject line, and provide the following information in the email body: your company name, the Espressif product you are using, project name, application scenario, project start date, expected mass production date, project status, annual estimated purchase quantity, and the required AT firmware version.
+
+  Released version:
+
+  - v5.0.0.0 (Recommended)
 
 .. only:: esp32c6
 
@@ -197,10 +204,17 @@ Before using the AT firmware below, please read the :doc:`../disclaimer` careful
 
 .. only:: esp32c61
 
-  ESP32-C6-4MB Series
-  ^^^^^^^^^^^^^^^^^^^
+  ESP32-C61-4MB Series
+  ^^^^^^^^^^^^^^^^^^^^
 
-  The first version of ESP-AT firmware is planned to be released in November 2025.
+  .. hint::
+    Please contact `Espressif Sales <https://www.espressif.com/en/contact-us/sales-questions>`_ or sales@espressif.com for AT firmware suitable for the {IDF_TARGET_NAME} series chips.
+
+    If you contact us via email, please include "Request {IDF_TARGET_NAME} AT Firmware Download Link" in the subject line, and provide the following information in the email body: your company name, the Espressif product you are using, project name, application scenario, project start date, expected mass production date, project status, annual estimated purchase quantity, and the required AT firmware version.
+
+  Released version:
+
+  - v5.0.0.0 (Recommended)
 
 .. only:: esp32s2
 

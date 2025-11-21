@@ -48,11 +48,11 @@ The table below lists the Espressif chips that are currently supported or planne
     -
   * - ESP32-C5
     - **5G Wi-Fi** + **Wi-Fi 6** + BLE 5.0
-    - To be released
+    - `v5.0.0.0 <https://github.com/espressif/esp-at/releases/tag/v5.0.0.0>`_
     -
   * - ESP32-C61
     - **Wi-Fi 6** + BLE 5.0
-    - To be released
+    - `v5.0.0.0 <https://github.com/espressif/esp-at/releases/tag/v5.0.0.0>`_
     -
   * - ESP32-C3
     - Wi-Fi 4 + BLE 5.0

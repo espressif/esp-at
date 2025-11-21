@@ -197,6 +197,13 @@ Note
 
     For more details, please refer to the `RF Coexistence <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ documentation.
 
+.. only:: esp32c5 or esp32c61
+
+  .. attention::
+    When {IDF_TARGET_NAME} is reconnecting to the AP, the AT+CWMODE command to switch the Wi-Fi mode (1->3 or 3->1) may fail.
+
+    Workaround: Send :ref:`AT+CWQAP <cmd-QAP>` to stop the reconnection first, and then send AT+CWMODE.
+
 Example
 ^^^^^^^^
 

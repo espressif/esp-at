@@ -1789,6 +1789,11 @@
 - 由于 RF TX Power 分为不同的等级，而每个等级都有与之对应的取值范围，所以通过 ``esp_wifi_get_max_tx_power`` 查询到的 ``wifi_power`` 的值可能与 ``esp_wifi_set_max_tx_power`` 设定的值存在差异，但不会比该值大。
 - 建议将 <ble_scan_power> 和 <ble_conn_power> 两个参数值设置为与 <ble_adv_power> 参数相同的值，否则，这两个参数将会被自动设置为与 <ble_adv_power> 相同的值。
 
+.. only:: esp32c61
+
+  .. attention::
+    - Bluetooth LE TX Power 必须在 Bluetooth LE 初始化后立即配置。如果扫描功能曾经被启用过一次，之后任意设置 Bluetooth LE TX Power 的命令将会失败。
+
 .. _cmd-RFCAL:
 
 :ref:`AT <Basic-AT>`：RF 全面校准
