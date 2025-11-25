@@ -28,8 +28,8 @@ The following table shows ESP-AT support status of Espressif SoCs.
 |ESP32-C2 | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 |ESP32-C6 | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.0.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 |ESP32-S2 | |  [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.4.0.0) | | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-C5 | | | | | ![alt text][pre-release] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-C61 | | | | | ![alt text][pre-release] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+|ESP32-C5 | | | | | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v5.0.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+|ESP32-C61 | | | | | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v5.0.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 
 - ![alt text][released]: Released versions. You can click ![alt text][released] to go to the corresponding release page and download the AT firmware.
 - ![alt text][supported]: Supported versions. You can click ![alt text][supported] to go to the corresponding branch and develop your own AT firmware.

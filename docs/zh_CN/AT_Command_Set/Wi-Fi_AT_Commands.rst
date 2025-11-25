@@ -197,6 +197,13 @@ Wi-Fi AT 命令集
 
     如您想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
 
+.. only:: esp32c5 or esp32c61
+
+  .. attention::
+    当 {IDF_TARGET_NAME} 正在重新连接到 AP 时，切换 Wi-Fi 模式（1->3 或 3->1）的 AT+CWMODE 命令可能会失败。
+
+    解决方法：先发送 :ref:`AT+CWQAP <cmd-QAP>` 停止重连，然后再发送 AT+CWMODE。
+
 示例
 ^^^^
 

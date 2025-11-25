@@ -1791,6 +1791,11 @@ Note
 - Since the RF TX Power is actually divided into several levels, and each level has its own value range, the ``wifi_power`` value queried by the ``esp_wifi_get_max_tx_power`` may differ from the value set by ``esp_wifi_set_max_tx_power`` and is no larger than the set value.
 - It is recommended to set the two parameters <ble_scan_power> and <ble_conn_power> to the same value as the <ble_adv_power> parameter. Otherwise, they will be automatically adjusted to the value of <ble_adv_power>.
 
+.. only:: esp32c61
+
+  .. attention::
+    The BLE transmit power must be configured immediately after initialization. If scanning has been enabled even once, any subsequent attempts to set the transmit power will fail.
+
 .. _cmd-RFCAL:
 
 :ref:`AT <Basic-AT>`: RF Full Calibration

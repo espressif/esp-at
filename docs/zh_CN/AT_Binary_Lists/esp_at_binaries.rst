@@ -184,7 +184,14 @@
   ESP32-C5-4MB 系列
   ^^^^^^^^^^^^^^^^^^^^^^
 
-  计划在 2025 年 11 月发布首版 ESP-AT 固件。
+  .. hint::
+    请联系 `乐鑫商务 <https://www.espressif.com.cn/zh-hans/contact-us/sales-questions>`_ 或 sales@espressif.com 获取适用于 {IDF_TARGET_NAME} 系列芯片的 AT 固件。
+
+    若通过邮件联系，请在邮件主题注明“请求 {IDF_TARGET_NAME} AT 固件下载链接”，并在邮件正文中提供如下信息：贵司名称、使用的乐鑫产品、项目名称、应用场景、项目启动日期、预计量产日期、项目状态、年预计采购数量、需要的 AT 固件版本。
+
+  已发布的版本：
+
+  - v5.0.0.0（推荐）
 
 .. only:: esp32c6
 
@@ -200,7 +207,14 @@
   ESP32-C61-4MB 系列
   ^^^^^^^^^^^^^^^^^^^^^^
 
-  计划在 2025 年 11 月发布首版 ESP-AT 固件。
+  .. hint::
+    请联系 `乐鑫商务 <https://www.espressif.com.cn/zh-hans/contact-us/sales-questions>`_ 或 sales@espressif.com 获取适用于 {IDF_TARGET_NAME} 系列芯片的 AT 固件。
+
+    若通过邮件联系，请在邮件主题注明“请求 {IDF_TARGET_NAME} AT 固件下载链接”，并在邮件正文中提供如下信息：贵司名称、使用的乐鑫产品、项目名称、应用场景、项目启动日期、预计量产日期、项目状态、年预计采购数量、需要的 AT 固件版本。
+
+  已发布的版本：
+
+  - v5.0.0.0（推荐）
 
 .. only:: esp32s2
 

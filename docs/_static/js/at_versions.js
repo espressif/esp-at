@@ -6,6 +6,9 @@ var DOCUMENTATION_VERSIONS = {
         // latest
         { name: "latest", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3", "esp32c5", "esp32c6", "esp32c61", "esp32s2"] },
 
+        // v5.0.0.0
+        { name: "release-v5.0.0.0", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3", "esp32c5", "esp32c6", "esp32c61", "esp32s2" ] },
+
         // v4.1.0.0
         { name: "release-v4.1.0.0", has_targets: true, supported_targets: [ "esp32", "esp32c2", "esp32c3", "esp32c6", "esp32s2" ] },
 
