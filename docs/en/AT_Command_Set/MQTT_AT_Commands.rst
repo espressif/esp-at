@@ -28,6 +28,7 @@ Introduction
 ------------
 
 .. important::
+  - Currently, AT firmware for {IDF_TARGET_NAME} series supports `MQTT Version 3.1.1 <https://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html>`_.
   - The default AT firmware supports all the AT commands mentioned on this page. If you don't need {IDF_TARGET_NAME} to support MQTT commands, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
 
     - Disable ``Component config`` > ``AT`` > ``AT MQTT command support``

@@ -427,6 +427,9 @@ Example
     // Set to enter TCP server passthrough mode on power-up, listening on port 1002
     AT+SAVETRANSLINK=3,1002,"TCP",2
 
+    // Restart the module
+    AT+RST
+
     // PC connects to esp-ap-001 and uses a TCP client tool to connect to {IDF_TARGET_NAME}'s port 1002
     nc 192.168.4.1 1002
 
@@ -876,8 +879,16 @@ Query Command
 Parameters
 ^^^^^^^^^^
 
--  **<remaining RAM size>**: current remaining heap size. Unit: byte.
--  **<minimum heap size>**: minimum available heap size in the runtime. Unit: byte. When the parameter's value is less than or close to 10 KB, the Wi-Fi and BLE functions of {IDF_TARGET_NAME} may be affected.
+- **<remaining RAM size>**: Current available heap size. Unit: byte. When there is a memory leak, this value will gradually decrease.
+- **<minimum heap size>**: Minimum available heap size recorded since the {IDF_TARGET_NAME} was powered on. Unit: byte. When this value is less than or close to 10 KB, the Wi-Fi and BLE functions of {IDF_TARGET_NAME} may be affected. This value only updates when a new, lower minimum is detected; it never increases.
+
+Note
+^^^^
+
+- When ``<minimum heap size>`` is less than or close to 10 KB, or you see logs like ``alloc failed, size:<requested_size>, caps:<requested_caps>`` on the :term:`AT log port`, consider optimizing memory:
+
+  - Disable unnecessary AT features under ``python build.py menuconfig`` > ``Component config`` > ``AT``.
+  - Refer to the `Minimizing RAM Usage <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/performance/ram-usage.html>`_ documentation for relevant methods.
 
 Example
 ^^^^^^^^
@@ -971,17 +982,17 @@ Parameter
 
 -  **<state>**:
 
-   - Bit0: Prompt information when quitting Wi-Fi :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
+   - Bit0: Prompt information when quitting Network :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
 
-     - 0: Print no prompt information when quitting Wi-Fi :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
-     - 1: Print ``+QUITT`` when quitting Wi-Fi :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
+     - 0: Print no prompt information when quitting Network :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
+     - 1: Print ``+QUITT`` when quitting Network :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
 
    - Bit1: Connection prompt information type.
 
      - 0: Use simple prompt information, such as ``XX,CONNECT``.
      - 1: Use detailed prompt information, such as ``+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port``.
 
-   - Bit2: Connection status prompt information for Wi-Fi :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
+   - Bit2: Connection status prompt information for Network :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
 
      - 0: Print no prompt information.
      - 1: Print one of the following prompt information when Wi-Fi, socket, Bluetooth LE or Bluetooth status is changed:
@@ -1010,7 +1021,7 @@ Notes
 ^^^^^
 
 -  The configuration changes will be saved in the NVS partition if ``AT+SYSSTORE=1``.
--  If you set Bit0 to 1, it will prompt "+QUITT" when you quit Wi-Fi :term:`Passthrough Mode`.
+-  If you set Bit0 to 1, it will prompt "+QUITT" when you quit :term:`Passthrough Mode`.
 -  If you set Bit1 to 1, it will impact the information of command :ref:`AT+CIPSTART <cmd-START>` and :ref:`AT+CIPSERVER <cmd-SERVER>`. It will supply "+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port" instead of "XX,CONNECT".
 
 Example
@@ -1018,7 +1029,7 @@ Example
 
 ::
 
-    // print no prompt info when quitting Wi-Fi passthrough mode
+    // print no prompt info when quitting passthrough mode
     // print detailed connection prompt info
     // print no prompt info when the connection status is changed
     AT+SYSMSG=2
@@ -1850,6 +1861,10 @@ Query the address and version of the current running firmware and the rollback f
 Execute Command
 ^^^^^^^^^^^^^^^
 
+**Function:**
+
+Roll back to the previous firmware.
+
 **Command:**
 
 ::
@@ -1873,11 +1888,12 @@ Parameters
 Note
 ^^^^^
 
-.. only:: esp32c2
+.. list::
 
-  - **{IDF_TARGET_CFG_PREFIX}-4MB AT firmware supports this command, but {IDF_TARGET_CFG_PREFIX}-2MB AT firmware does not due to the compressed OTA firmware**.
-
--  This command will not upgrade via OTA. It only rolls back to the firmware which is in the other OTA partition.
+  - When performing a firmware rollback, {IDF_TARGET_NAME} first verifies the integrity of the target firmware. The rollback proceeds only if verification succeeds; otherwise, an error is returned.
+  :esp32c2: - For {IDF_TARGET_NAME}-2MB AT firmware, the compressed OTA partition stores a firmware image that, after decompression, is identical to the currently running firmware. Therefore, a true firmware switch cannot be performed.
+  :esp32c5 or esp32c61: - For {IDF_TARGET_NAME}-4MB AT firmware, the compressed OTA partition stores a firmware image that, after decompression, is identical to the currently running firmware. Therefore, a true firmware switch cannot be performed.
+  :esp32c2 or esp32c3 or esp32c6 or esp32 or esp32s2: - The rollback function operates independently of the OTA upgrade process and can directly switch execution to the firmware version stored in the other OTA partition.
 
 .. _cmd-SETTIME:
 

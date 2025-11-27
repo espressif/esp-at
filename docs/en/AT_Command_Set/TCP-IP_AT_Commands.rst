@@ -12,8 +12,8 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPSTART <cmd-START>`: Establish TCP connection, UDP transmission, or SSL connection.
 -  :ref:`AT+CIPSTARTEX <cmd-STARTEX>`: Establish TCP connection, UDP transmission, or SSL connection with an automatically assigned ID.
 -  :ref:`[Data Mode Only] +++ <cmd-PLUS>`: Exit from the :term:`data mode`.
--  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Wi-Fi :term:`Passthrough Mode` on power-up.
--  :ref:`AT+CIPSEND <cmd-SEND>`: Send data in the :term:`normal transmission mode` or Wi-Fi :term:`normal transmission mode`.
+-  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Network :term:`Passthrough Mode` on power-up.
+-  :ref:`AT+CIPSEND <cmd-SEND>`: Send data in the :term:`normal transmission mode` or Network :term:`normal transmission mode`.
 -  :ref:`AT+CIPSENDL <cmd-SENDL>`: Send long data in parallel in the :term:`normal transmission mode`.
 -  :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>`: Set the configuration for the command :ref:`AT+CIPSENDL <cmd-SENDL>`.
 -  :ref:`AT+CIPSENDEX <cmd-SENDEX>`: Send data in the :term:`normal transmission mode` in expanded ways.
@@ -29,7 +29,7 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPSNTPTIME <cmd-SNTPT>`: Query the SNTP time.
 -  :ref:`AT+CIPSNTPINTV <cmd-SNTPINTV>`: Query/Set the SNTP time synchronization interval.
 -  :ref:`AT+CIPFWVER <cmd-FWVER>`: Query the existing AT firmware version on the server.
--  :ref:`AT+CIUPDATE <cmd-UPDATE>`: Upgrade the firmware through Wi-Fi.
+-  :ref:`AT+CIUPDATE <cmd-UPDATE>`: Upgrade the firmware through Network.
 -  :ref:`AT+CIPDINFO <cmd-IPDINFO>`: Set "+IPD" message mode.
 -  :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`: Query/Set SSL clients.
 -  :ref:`AT+CIPSSLCCIPHER <cmd-SSLCCIPHER>`: Query/Set the cipher suite of the SSL client.
@@ -38,7 +38,7 @@ TCP/IP AT Commands
 -  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`: Query/Set SSL client Application Layer Protocol Negotiation (ALPN).
 -  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`: Query/Set SSL client Pre-shared Key (PSK) in string format.
 -  :ref:`AT+CIPSSLCPSKHEX <cmd-SSLCPSKHEX>`: Query/Set SSL client Pre-shared Key (PSK) in hexadecimal format.
--  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`: Query/Set the TCP/UDP/SSL reconnection interval for the Wi-Fi :term:`normal transmission mode`.
+-  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`: Query/Set the TCP/UDP/SSL reconnection interval for the Network :term:`normal transmission mode`.
 -  :ref:`AT+CIPRECVTYPE <cmd-CIPRECVTYPE>`: Query/Set socket receiving mode.
 -  :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`: Obtain socket data in passive receiving mode.
 -  :ref:`AT+CIPRECVLEN <cmd-CIPRECVLEN>`: Obtain socket data length in passive receiving mode.
@@ -174,7 +174,7 @@ Set Command
 
 ::
 
-    AT+CIPDOMAIN=<"domain name">[,<ip network>][,<timeout>]
+    AT+CIPDOMAIN=<"domain name">[,<ip network>][,<timeout>][,<show_all_ip>]
 
 **Response:**
 
@@ -196,6 +196,10 @@ Parameter
 
 -  **<"IP address">**: the resolved IPv4 address or IPv6 address.
 -  **<timeout>**: Command timeout. Unit: milliseconds. Default value: 0. Range: [0,60000]. When set to 0, the command timeout depends on the network and lwIP protocol stack; when set to a non-zero value, the command will return within the specified timeout, but it will consume about 5 KB more heap space.
+-  **<show_all_ip>**: whether to show all resolved IP addresses. Default: 0.
+
+   - 0: only show the first resolved IP address
+   - 1: show all resolved IP addresses
 
 Notes
 ^^^^^
@@ -366,7 +370,7 @@ Parameters
 -  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes. If you need to use a domain name and the length of the domain name exceeds 64 bytes, use the :ref:`AT+CIPDOMAIN <cmd-DOMAIN>` command to obtain the IP address corresponding to the domain name, and then use the IP address to establish a connection.
 -  **<remote port>**: remote port number.
 -  **<local port>**: UDP port of {IDF_TARGET_NAME}.
--  **<mode>**: In the UDP Wi-Fi passthrough, the value of this parameter has to be 0.
+-  **<mode>**: In the UDP passthrough, the value of this parameter has to be 0.
 
    -  0: After UDP data is received, the parameters ``<"remote host">`` and ``<remote port>`` will stay unchanged (default).
    -  1: Only the first time that UDP data is received from an IP address and port that are different from the initially set value of parameters ``<remote host>`` and ``<remote port>``, will they be changed to the IP address and port of the device that sends the data.
@@ -532,8 +536,8 @@ Notes
 
 .. _cmd-SEND:
 
-:ref:`AT+CIPSEND <TCPIP-AT>`: Send Data in the :term:`Normal Transmission Mode` or Wi-Fi :term:`Passthrough Mode`
------------------------------------------------------------------------------------------------------------------
+:ref:`AT+CIPSEND <TCPIP-AT>`: Send Data in the :term:`Normal Transmission Mode` or Network :term:`Passthrough Mode`
+-------------------------------------------------------------------------------------------------------------------
 
 Set Command
 ^^^^^^^^^^^
@@ -582,7 +586,7 @@ Execute Command
 
 **Function:**
 
-Enter the Wi-Fi :term:`Passthrough Mode`.
+Enter the Network :term:`Passthrough Mode`.
 
 **Command:**
 
@@ -603,9 +607,9 @@ or
 
     ERROR
 
-Enter the Wi-Fi :term:`Passthrough Mode`. The {IDF_TARGET_NAME} can receive 8192 bytes and send 2920 bytes at most each time. If the data received by {IDF_TARGET_NAME} reaches or exceeds 2920 bytes, the data will be immediately sent in chunks of 2920 bytes. Otherwise, it will wait for 20 milliseconds before being sent (You can configure this interval using :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>` command). When a single packet containing :ref:`+++ <cmd-PLUS>` is received, the {IDF_TARGET_NAME} will exit the data sending mode under the Wi-Fi :term:`Passthrough Mode`. Please wait for at least one second before sending the next AT command.
+Enter the Network :term:`Passthrough Mode`. The {IDF_TARGET_NAME} can receive 8192 bytes and send 2920 bytes at most each time. If the data received by {IDF_TARGET_NAME} reaches or exceeds 2920 bytes, the data will be immediately sent in chunks of 2920 bytes. Otherwise, it will wait for 20 milliseconds before being sent (You can configure this interval using :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>` command). When a single packet containing :ref:`+++ <cmd-PLUS>` is received, the {IDF_TARGET_NAME} will exit the data sending mode under the :term:`Passthrough Mode`. Please wait for at least one second before sending the next AT command.
 
-This command can only be used for single connection in the Wi-Fi :term:`Passthrough Mode`. For UDP Wi-Fi passthrough, the ``<mode>`` parameter has to be 0 when using :ref:`AT+CIPSTART <cmd-START>`.
+This command can only be used for single connection in the Network :term:`Passthrough Mode`. For UDP passthrough, the ``<mode>`` parameter has to be 0 when using :ref:`AT+CIPSTART <cmd-START>`.
 
 Parameters
 ^^^^^^^^^^
@@ -961,18 +965,18 @@ Execute Command
 Parameters
 ^^^^^^^^^^
 
-- **<"APIP">**: IPv4 address of Wi-Fi softAP interface
-- **<"APIP6LL">**: Linklocal IPv6 address of Wi-Fi softAP interface
-- **<"APIP6GL">**: Global IPv6 address of Wi-Fi softAP interface
-- **<"APMAC">**: MAC address of Wi-Fi softAP interface
-- **<"STAIP">**: IPv4 address of Wi-Fi station interface
-- **<"STAIP6LL">**: Linklocal IPv6 address of Wi-Fi station interface
-- **<"STAIP6GL">**: Global IPv6 address of Wi-Fi station interface
-- **<"STAMAC">**: MAC address of Wi-Fi station interface
-- **<"ETHIP">**: IPv4 address of ethernet interface
-- **<"ETHIP6LL">**: Linklocal IPv6 address of ethernet interface
-- **<"ETHIP6GL">**: Global IPv6 address of ethernet interface
-- **<"ETHMAC">**: MAC address of ethernet interface
+- **<"APIP">**: IPv4 address of {IDF_TARGET_NAME} Wi-Fi softAP interface
+- **<"APIP6LL">**: Linklocal IPv6 address of {IDF_TARGET_NAME} Wi-Fi softAP interface
+- **<"APIP6GL">**: Global IPv6 address of {IDF_TARGET_NAME} Wi-Fi softAP interface
+- **<"APMAC">**: MAC address of {IDF_TARGET_NAME} Wi-Fi softAP interface
+- **<"STAIP">**: IPv4 address of {IDF_TARGET_NAME} Wi-Fi station interface
+- **<"STAIP6LL">**: Linklocal IPv6 address of {IDF_TARGET_NAME} Wi-Fi station interface
+- **<"STAIP6GL">**: Global IPv6 address of {IDF_TARGET_NAME} Wi-Fi station interface
+- **<"STAMAC">**: MAC address of {IDF_TARGET_NAME} Wi-Fi station interface
+- **<"ETHIP">**: IPv4 address of {IDF_TARGET_NAME} ethernet interface
+- **<"ETHIP6LL">**: Linklocal IPv6 address of {IDF_TARGET_NAME} ethernet interface
+- **<"ETHIP6GL">**: Global IPv6 address of {IDF_TARGET_NAME} ethernet interface
+- **<"ETHMAC">**: MAC address of {IDF_TARGET_NAME} ethernet interface
 
 Note
 ^^^^^
@@ -1261,13 +1265,13 @@ Parameter
 -  **<mode>**:
 
    -  0: :term:`Normal Transmission Mode`.
-   -  1: Wi-Fi :term:`Passthrough Receiving Mode`, or called transparent receiving transmission, which can only be enabled in TCP single connection mode, UDP mode when the remote host and port do not change, or SSL single connection mode.
+   -  1: Network :term:`Passthrough Receiving Mode`, or called transparent receiving transmission, which can only be enabled in TCP single connection mode, UDP mode when the remote host and port do not change, or SSL single connection mode.
 
 Notes
 ^^^^^
 
 -  The configuration changes will NOT be saved in flash.
--  After the {IDF_TARGET_NAME} enters the Wi-Fi :term:`Passthrough Receiving Mode`, no Bluetooth function can be used.
+-  After the {IDF_TARGET_NAME} enters the Network :term:`Passthrough Receiving Mode`, no Bluetooth function can be used.
 
 Example
 ^^^^^^^^
@@ -1573,10 +1577,10 @@ Notes
 
 .. _cmd-UPDATE:
 
-:ref:`AT+CIUPDATE <TCPIP-AT>`: Upgrade Firmware Through Wi-Fi
--------------------------------------------------------------
+:ref:`AT+CIUPDATE <TCPIP-AT>`: Upgrade Firmware Through Network
+---------------------------------------------------------------
 
-ESP-AT upgrades firmware at runtime by downloading the new firmware from a specific server through Wi-Fi and then flash it into some partitions.
+ESP-AT upgrades firmware at runtime by downloading the new firmware from a specific server through Network and then flash it into some partitions.
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1841,7 +1845,7 @@ Notes
 ^^^^^
 
 -  If you want this configuration to take effect immediately, run this command before establishing an SSL connection.
--  The configuration changes will be saved in the NVS partition. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL Wi-Fi :term:`Passthrough Mode` on power-up, the {IDF_TARGET_NAME} will establish an SSL connection based on this configuration when powered up next time.
+-  The configuration changes will be saved in the NVS partition. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL :term:`Passthrough Mode` on power-up, the {IDF_TARGET_NAME} will establish an SSL connection based on this configuration when powered up next time.
 -  If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the SSL certificate. If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
 -  If ``<auth_mode>`` is configured to 2 or 3, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+CIPSTART <cmd-START>` command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNPTIME? <cmd-SNTPT>` command to query the current time.)
 
@@ -2166,15 +2170,15 @@ Example
 
 .. _cmd-AUTOCONNINT:
 
-:ref:`AT+CIPRECONNINTV <TCPIP-AT>`: Query/Set the TCP/UDP/SSL reconnection Interval for the Wi-Fi :term:`Passthrough Mode`
---------------------------------------------------------------------------------------------------------------------------
+:ref:`AT+CIPRECONNINTV <TCPIP-AT>`: Query/Set the TCP/UDP/SSL reconnection Interval for the Network :term:`Passthrough Mode`
+----------------------------------------------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 
 **Function:**
 
-Query the automatic connect interval for the Wi-Fi :term:`Passthrough Mode`.
+Query the automatic connect interval for the Network :term:`Passthrough Mode`.
 
 **Command:**
 
@@ -2194,7 +2198,7 @@ Set Command
 
 **Function:**
 
-Set the automatic reconnecting interval when TCP/UDP/SSL transmission breaks in the Wi-Fi :term:`Passthrough Mode`.
+Set the automatic reconnecting interval when TCP/UDP/SSL transmission breaks in the Network :term:`Passthrough Mode`.
 
 **Command:**
 
@@ -2282,7 +2286,7 @@ Parameter
 Notes
 ^^^^^
 
--  The configuration can not be used in the Wi-Fi :term:`Passthrough Mode`. If it is a UDP transmission in passive mode, data will be lost when the buffer is full.
+-  The configuration can not be used in the Network :term:`Passthrough Mode`. If it is a UDP transmission in passive mode, data will be lost when the buffer is full.
 
 -  When ESP-AT receives socket data in passive mode, it will prompt the following messages in different scenarios:
 

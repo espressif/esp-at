@@ -1260,7 +1260,7 @@ Below is an example showing how an SSL server is established when {IDF_TARGET_NA
 
      OK
 
-UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP client in single connection
+Network passthrough transmission when the {IDF_TARGET_NAME} works as a TCP client in single connection
 ---------------------------------------------------------------------------------------------------
 
 #. Set the Wi-Fi mode to station.
@@ -1340,7 +1340,7 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP cl
 
      OK
 
-#. Enable the UART Wi-Fi :term:`Passthrough Receiving Mode`.
+#. Enable the Network :term:`Passthrough Receiving Mode`.
 
    Command:
 
@@ -1354,7 +1354,7 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP cl
 
      OK
 
-#. Enter the UART Wi-Fi :term:`Passthrough Mode` and send data.
+#. Enter the Network :term:`Passthrough Mode` and send data.
 
    Command:
 
@@ -1372,13 +1372,13 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP cl
 
 #. Stop sending data.
 
-   When receiving a packet that contains only ``+++``,  the UART Wi-Fi passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
+   When receiving a packet that contains only ``+++``,  the Network passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
 
    .. Important::
 
      The aim of ending the packet with ``+++`` is to exit :term:`Passthrough Mode` and to accept normal AT commands, while TCP still remains connected. However, you can also use command ``AT+CIPSEND`` to go back into :term:`Passthrough Mode`.
 
-#. Exit the UART Wi-Fi :term:`Passthrough Receiving Mode`.
+#. Exit the Network :term:`Passthrough Receiving Mode`.
 
    Command:
 
@@ -1408,7 +1408,7 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP cl
 
      OK
 
-UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP server
+Network passthrough transmission when the {IDF_TARGET_NAME} works as a TCP server
 ------------------------------------------------------------------------------------
 
 #. Set the Wi-Fi mode to station.
@@ -1534,7 +1534,7 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP se
 
      0,CONNECT
 
-#. Enable the UART Wi-Fi :term:`Passthrough Receiving Mode`.
+#. Enable the Network :term:`Passthrough Receiving Mode`.
 
    Command:
 
@@ -1548,7 +1548,7 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP se
 
      OK
 
-#. Enter the UART Wi-Fi :term:`Passthrough Mode` and send data.
+#. Enter the Network :term:`Passthrough Mode` and send data.
 
    Command:
 
@@ -1566,13 +1566,13 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP se
 
 #. Stop sending data.
 
-   When receiving a packet that contains only ``+++``,  the UART Wi-Fi passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
+   When receiving a packet that contains only ``+++``,  the Network passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
 
    .. Important::
 
      The aim of ending the packet with ``+++`` is to exit :term:`Passthrough Mode` and to accept normal AT commands, while TCP still remains connected. However, you can also use command ``AT+CIPSEND`` to go back into :term:`Passthrough Mode`.
 
-#. Exit the UART Wi-Fi :term:`Passthrough Receiving Mode`.
+#. Exit the Network :term:`Passthrough Receiving Mode`.
 
    Command:
 
@@ -1602,7 +1602,7 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a TCP se
 
      OK
 
-UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a softAP in UDP transparent transmission
+Network passthrough transmission when the {IDF_TARGET_NAME} works as a softAP in UDP transparent transmission
 ---------------------------------------------------------------------------------------------------------
 
 #. Set the Wi-Fi mode to softAP.
@@ -1660,7 +1660,7 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a softAP
 
      OK
 
-#. Enter the UART Wi-Fi :term:`Passthrough Receiving Mode`.
+#. Enter the Network :term:`Passthrough Receiving Mode`.
 
    Command:
 
@@ -1674,7 +1674,7 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a softAP
 
      OK
 
-#. Enter the UART Wi-Fi :term:`Passthrough Mode` and send data.
+#. Enter the Network :term:`Passthrough Mode` and send data.
 
    Command:
 
@@ -1692,13 +1692,13 @@ UART Wi-Fi passthrough transmission when the {IDF_TARGET_NAME} works as a softAP
 
 #. Stop sending data.
 
-   When receiving a packet that contains only ``+++``,  the UART Wi-Fi passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
+   When receiving a packet that contains only ``+++``,  the Network passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
 
    .. Important::
 
      The aim of ending the packet with ``+++`` is to exit :term:`Passthrough Mode` and to accept normal AT commands, while TCP still remains connected. However, you can also use command ``AT+CIPSEND`` to go back into :term:`Passthrough Mode`.
 
-#. Exit the UART Wi-Fi :term:`Passthrough Receiving Mode`.
+#. Exit the Network :term:`Passthrough Receiving Mode`.
 
    Command:
 

@@ -1,11 +1,38 @@
+.. include:: ../../inline_substitutions
+
 发布的固件
 ===========
 
 :link_to_translation:`en:[English]`
 
-推荐下载最新版本的固件。目前，乐鑫发布了以下 {IDF_TARGET_NAME} 系列模组的 AT 固件。
+.. list::
+
+  - :ref:`at-firmware-notes`
+  :esp32: - :ref:`firmware-esp32-wroom-32-series`
+  :esp32: - :ref:`firmware-esp32-mini-1-series`
+  :esp32: - :ref:`firmware-esp32-wrover-32-series`
+  :esp32: - :ref:`firmware-esp32-pico-series`
+  :esp32: - :ref:`firmware-esp32-solo-series`
+  :esp32c2: - :ref:`firmware-esp32c2-2mb-g2-series`
+  :esp32c2: - :ref:`firmware-esp32c2-4mb-g2-series`
+  :esp32c2: - :ref:`firmware-esp32c2-2mb-series`
+  :esp32c2: - :ref:`firmware-esp32c2-4mb-series`
+  :esp32c3: - :ref:`firmware-esp32c3-mini-1-series`
+  :esp32c5: - :ref:`firmware-esp32c5-4mb-series`
+  :esp32c6: - :ref:`firmware-esp32c6-4mb-series`
+  :esp32c61: - :ref:`firmware-esp32c61-4mb-series`
+  :esp32s2: - :ref:`firmware-esp32s2-mini-series`
+  - :ref:`at-release-subscription`
+  - :ref:`firmware-differences`
+
+.. _at-firmware-notes:
+
+介绍
+^^^^^^^^
 
 .. note::
+
+  - 在使用下面的 AT 固件前，请仔细阅读 :doc:`../disclaimer`，并遵循其中的各项条款和注意事项。
 
   .. only:: esp32c2
 
@@ -15,11 +42,11 @@
 
   .. only:: esp32 or esp32c2
 
-    - 如果您不确定自己的模组应该使用哪个 AT 固件，请先阅读 :doc:`../Compile_and_Develop/esp-at_firmware_differences` 文档，该文档比较了不同 {IDF_TARGET_NAME} AT 固件在支持的命令集、硬件配置和模组方面的差异，帮助您确认是否有适合您模组硬件配置的固件。
+    - 如果您不确定自己的模组应该使用哪个 AT 固件，请先阅读 :ref:`firmware-differences` 章节，该章节比较了不同 {IDF_TARGET_NAME} AT 固件在支持的命令集、硬件配置和模组方面的差异，帮助您确认是否有适合您模组硬件配置的固件。
 
   .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32s2
 
-    - 如果您不确定自己的模组是否可以使用 AT 默认固件，请先阅读 :doc:`../Compile_and_Develop/esp-at_firmware_differences` 文档，该文档比较了不同 {IDF_TARGET_NAME} AT 固件在支持的命令集、硬件配置和模组方面的差异，帮助您确认您的模组硬件配置是否适合使用 AT 默认固件。
+    - 如果您不确定自己的模组是否可以使用 AT 默认固件，请先阅读 :ref:`firmware-differences` 章节，该章节介绍了 {IDF_TARGET_NAME} AT 固件支持的命令集、硬件配置和支持的模组，帮助您确认您的模组硬件配置是否适合使用 AT 默认固件。
 
   - 如果您想要修改 AT 固件中下面的配置，您可以通过 :doc:`../Compile_and_Develop/tools_at_py` 修改 AT 固件并生成新的 AT 固件。
 
@@ -30,12 +57,9 @@
       - :ref:`at-py-modify-pki`
       :esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61: - :ref:`at-py-modify-gatts`
 
-特别声明
-^^^^^^^^
-
-在使用下面的 AT 固件前，请仔细阅读 :doc:`../disclaimer`，并遵循其中的各项条款和注意事项。
-
 .. only:: esp32
+
+  .. _firmware-esp32-wroom-32-series:
 
   ESP32-WROOM-32 系列
   ^^^^^^^^^^^^^^^^^^^^^^
@@ -54,6 +78,8 @@
   - v1.1.0.0 `ESP32-WROOM-32-AT-V1.1.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32/ESP32-WROOM-32/ESP32-WROOM-32-AT-V1.1.0.0.zip>`__
   - v1.0.0.0 `ESP32-WROOM-32-AT-V1.0.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32/ESP32-WROOM-32/ESP32-WROOM-32-AT-V1.0.0.0.zip>`__
   - v0.10.0.0 `ESP32-WROOM-32-AT-V0.10.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32/ESP32-WROOM-32/ESP32-WROOM-32-AT-V0.10.0.0.zip>`__
+
+  .. _firmware-esp32-mini-1-series:
 
   ESP32-MINI-1 系列
   ^^^^^^^^^^^^^^^^^^^
@@ -81,6 +107,8 @@
   - v2.0.0.0 `ESP32-WROVER-32-AT-V2.0.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32/ESP32-WROVER-32/ESP32-WROVER-32-AT-V2.0.0.0.zip>`__
   - v0.10.0.0 `ESP32-WROVER-32-AT-V0.10.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32/ESP32-WROVER-32/ESP32-WROVER-32-AT-V0.10.0.0.zip>`__
 
+  .. _firmware-esp32-pico-series:
+
   ESP32-PICO 系列
   ^^^^^^^^^^^^^^^^^
 
@@ -93,6 +121,8 @@
   - v2.2.0.0 `ESP32-PICO-D4-AT-V2.2.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32/ESP32-PICO-D4/ESP32-PICO-D4-AT-V2.2.0.0.zip>`__
   - v2.1.0.0 `ESP32-PICO-D4-AT-V2.1.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32/ESP32-PICO-D4/ESP32-PICO-D4-AT-V2.1.0.0.zip>`__
   - v2.0.0.0 `ESP32-PICO-D4-AT-V2.0.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32/ESP32-PICO-D4/ESP32-PICO-D4-AT-V2.0.0.0.zip>`__
+
+  .. _firmware-esp32-solo-series:
 
   ESP32-SOLO 系列
   ^^^^^^^^^^^^^^^^^
@@ -107,7 +137,11 @@
   - v2.1.0.0 `ESP32-SOLO-AT-V2.1.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32/ESP32-SOLO/ESP32-SOLO-AT-V2.1.0.0.zip>`__
   - v2.0.0.0 `ESP32-SOLO-AT-V2.0.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32/ESP32-SOLO/ESP32-SOLO-AT-V2.0.0.0.zip>`__
 
+  .. _at-release-subscription:
+
 .. only:: esp32c2
+
+  .. _firmware-esp32c2-2mb-g2-series:
 
   ESP32-C2-2MB-G2 系列
   ^^^^^^^^^^^^^^^^^^^^^^
@@ -119,6 +153,8 @@
 
   - v3.3.1.0 `ESP32-C2-2MB-G2-AT-V3.3.1.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-2MB-G2-AT-V3.3.1.0.zip>`__
 
+  .. _firmware-esp32c2-4mb-g2-series:
+
   ESP32-C2-4MB-G2 系列
   ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -127,6 +163,8 @@
   - v4.1.1.0 `ESP32-C2-4MB-G2-AT-V4.1.1.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-4MB-G2-AT-V4.1.1.0.zip>`__ （推荐）
   - v4.1.0.0 `ESP32-C2-4MB-G2-AT-V4.1.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-4MB-G2-AT-V4.1.0.0.zip>`__
   - v3.3.1.0 `ESP32-C2-4MB-G2-AT-V3.3.1.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-4MB-G2-AT-V3.3.1.0.zip>`__
+
+  .. _firmware-esp32c2-2mb-series:
 
   ESP32-C2-2MB 系列
   ^^^^^^^^^^^^^^^^^^^^^^
@@ -141,6 +179,8 @@
   - v3.3.0.0 `ESP32-C2-2MB-AT-V3.3.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-2MB-AT-V3.3.0.0.zip>`__
   - v3.1.0.0 `ESP32-C2-2MB-AT-V3.1.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-2MB-AT-V3.1.0.0.zip>`__
   - v3.0.0.0 `ESP32-C2-2MB-AT-V3.0.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-2MB-AT-V3.0.0.0.zip>`__
+
+  .. _firmware-esp32c2-4mb-series:
 
   ESP32-C2-4MB 系列
   ^^^^^^^^^^^^^^^^^^^^^^
@@ -159,7 +199,11 @@
   - v3.1.0.0 `ESP32-C2-4MB-AT-V3.1.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-4MB-AT-V3.1.0.0.zip>`__
   - v3.0.0.0 `ESP32-C2-4MB-AT-V3.0.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c2/ESP32-C2-4MB-AT-V3.0.0.0.zip>`__
 
+  .. _at-release-subscription:
+
 .. only:: esp32c3
+
+  .. _firmware-esp32c3-mini-1-series:
 
   ESP32-C3-MINI-1 系列
   ^^^^^^^^^^^^^^^^^^^^^^
@@ -179,21 +223,41 @@
   - v2.3.0.0 `ESP32-C3-MINI-1-AT-V2.3.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c3/ESP32-C3-MINI-1-AT-V2.3.0.0.zip>`__
   - v2.2.0.0 `ESP32-C3-MINI-1-AT-V2.2.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c3/ESP32-C3-MINI-1-AT-V2.2.0.0.zip>`__
 
+  .. _at-release-subscription:
+
 .. only:: esp32c5
+
+  .. _firmware-esp32c5-4mb-series:
 
   ESP32-C5-4MB 系列
   ^^^^^^^^^^^^^^^^^^^^^^
 
   .. hint::
-    请联系 `乐鑫商务 <https://www.espressif.com.cn/zh-hans/contact-us/sales-questions>`_ 或 sales@espressif.com 获取适用于 {IDF_TARGET_NAME} 系列芯片的 AT 固件。
 
-    若通过邮件联系，请在邮件主题注明“请求 {IDF_TARGET_NAME} AT 固件下载链接”，并在邮件正文中提供如下信息：贵司名称、使用的乐鑫产品、项目名称、应用场景、项目启动日期、预计量产日期、项目状态、年预计采购数量、需要的 AT 固件版本。
+    - 如需测试，请从 :doc:`GitHub Actions 里下载 <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` ``esp32c5-4MB-at`` 固件，或者 :doc:`本地编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`。
+    - 如需量产，请联系 `乐鑫商务 <https://www.espressif.com.cn/zh-hans/contact-us/sales-questions>`_ 或 sales@espressif.com 获取适用于 {IDF_TARGET_NAME} 系列芯片的 AT 固件。若通过邮件联系，请在邮件主题注明“请求 {IDF_TARGET_NAME} AT 固件下载链接”，并在邮件正文中提供如下信息。
 
-  已发布的版本：
+      ::
+
+        贵司名称：
+        使用的乐鑫产品：
+        项目名称：
+        应用场景：
+        项目启动日期：
+        预计量产日期：
+        项目状态：
+        年预计采购数量：
+        需要的 AT 固件版本：
+
+  **已发布的版本：**
 
   - v5.0.0.0（推荐）
 
+  .. _at-release-subscription:
+
 .. only:: esp32c6
+
+  .. _firmware-esp32c6-4mb-series:
 
   ESP32-C6-4MB 系列
   ^^^^^^^^^^^^^^^^^^^^^^
@@ -202,21 +266,41 @@
   - v4.1.0.0 `ESP32-C6-4MB-AT-V4.1.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c6/ESP32-C6-4MB-AT-V4.1.0.0.zip>`__
   - v4.0.0.0 `ESP32-C6-4MB-AT-V4.0.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32c6/ESP32-C6-4MB-AT-V4.0.0.0.zip>`__
 
+  .. _at-release-subscription:
+
 .. only:: esp32c61
+
+  .. _firmware-esp32c61-4mb-series:
 
   ESP32-C61-4MB 系列
   ^^^^^^^^^^^^^^^^^^^^^^
 
   .. hint::
-    请联系 `乐鑫商务 <https://www.espressif.com.cn/zh-hans/contact-us/sales-questions>`_ 或 sales@espressif.com 获取适用于 {IDF_TARGET_NAME} 系列芯片的 AT 固件。
 
-    若通过邮件联系，请在邮件主题注明“请求 {IDF_TARGET_NAME} AT 固件下载链接”，并在邮件正文中提供如下信息：贵司名称、使用的乐鑫产品、项目名称、应用场景、项目启动日期、预计量产日期、项目状态、年预计采购数量、需要的 AT 固件版本。
+    - 如需测试，请从 :doc:`GitHub Actions 里下载 <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` ``esp32c61-4MB-at`` 固件，或者 :doc:`本地编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`。
+    - 如需量产，请联系 `乐鑫商务 <https://www.espressif.com.cn/zh-hans/contact-us/sales-questions>`_ 或 sales@espressif.com 获取适用于 {IDF_TARGET_NAME} 系列芯片的 AT 固件。若通过邮件联系，请在邮件主题注明“请求 {IDF_TARGET_NAME} AT 固件下载链接”，并在邮件正文中提供如下信息。
 
-  已发布的版本：
+      ::
+
+        贵司名称：
+        使用的乐鑫产品：
+        项目名称：
+        应用场景：
+        项目启动日期：
+        预计量产日期：
+        项目状态：
+        年预计采购数量：
+        需要的 AT 固件版本：
+
+  **已发布的版本：**
 
   - v5.0.0.0（推荐）
 
+  .. _at-release-subscription:
+
 .. only:: esp32s2
+
+  .. _firmware-esp32s2-mini-series:
 
   ESP32-S2-MINI 系列
   ^^^^^^^^^^^^^^^^^^^^^^
@@ -224,7 +308,933 @@
   - v4.1.1.0 `ESP32-S2-MINI-AT-V4.1.1.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32s2/ESP32-S2-MINI/ESP32-S2-MINI-AT-V4.1.1.0.zip>`__ （推荐）
   - v3.4.0.0 `ESP32-S2-MINI-AT-V3.4.0.0.zip <https://dl.espressif.com/esp-at/firmwares/esp32s2/ESP32-S2-MINI/ESP32-S2-MINI-AT-V3.4.0.0.zip>`__
 
+  .. _at-release-subscription:
+
+.. only:: placeholder
+
+  .. _at-release-subscription:
+
 订阅 AT 版本发布
 ^^^^^^^^^^^^^^^^^^^^^^
 
 请参考 :ref:`sub-at-release` 文档订阅我们的版本发布通知，及时获取最新版本的发布情况。
+
+.. _firmware-differences:
+
+AT 发布固件差异
+^^^^^^^^^^^^^^^^^^^^^^
+
+本章节比较了以下 {IDF_TARGET_NAME} 系列的 AT 发布固件在支持的命令集、硬件、模组方面的差异。
+
+.. only:: esp32
+
+  - ESP32-WROOM-32-AT-Vx.x.x.x.zip（本节简称为 **WROOM Bin**）
+  - ESP32-WROVER-32-AT-Vx.x.x.x.zip（本节简称为 **WROVER Bin**）
+  - ESP32-PICO-D4-AT-Vx.x.x.x.zip（本节简称为 **PICO-D4 Bin**）
+  - ESP32-SOLO-1-AT-Vx.x.x.x.zip（本节简称为 **SOLO-1 Bin**）
+  - ESP32-MINI-1-AT-Vx.x.x.x.zip（本节简称为 **MINI-1 Bin**）
+  - ESP32-D2WD-AT-Vx.x.x.x.zip（本节简称为 **D2WD Bin**）
+
+.. only:: esp32c2
+
+  - ESP32C2-2MB-AT-Vx.x.x.x.zip（本节简称为 **ESP32C2-2MB Bin**）
+  - ESP32C2-4MB-AT-Vx.x.x.x.zip（本节简称为 **ESP32C2-4MB Bin**）
+  - ESP32C2-2MB-G2-AT-Vx.x.x.x.zip（本节简称为 **ESP32C2-2MB-G2 Bin**）
+  - ESP32C2-4MB-G2-AT-Vx.x.x.x.zip（本节简称为 **ESP32C2-4MB-G2 Bin**）
+  - ESP32C2-2MB-BLE Bin（固件未发布，您可以从 :doc:`GitHub Actions 里下载 <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` ``esp32c2-2mb-ble-at`` 固件，或者 :doc:`本地编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`）
+
+.. only:: esp32c3
+
+  - ESP32-C3-MINI-1-AT-Vx.x.x.x.zip（本节简称为 **MINI-1 Bin**）
+
+.. only:: esp32c5 or esp32c6 or esp32c61
+
+  - {IDF_TARGET_NAME}-4MB-AT-Vx.x.x.x.zip（本节简称为 **{IDF_TARGET_NAME}-4MB Bin**）
+
+.. only:: esp32s2
+
+  - ESP32-S2-MINI-AT-Vx.x.x.x.zip（本节简称为 **MINI Bin**）
+
+支持的命令集
+------------
+
+下表列出了官方适配的 {IDF_TARGET_NAME} 系列 AT 固件默认支持哪些命令集（用 |icon-green-check| 表示）、默认不支持但可以在配置和编译 ESP-AT 工程后支持的命令集（用 |icon-orange-check| 表示）、完全不支持的命令集（用 |icon-red-cross| 表示），下表没有列出的命令集也为完全不支持的命令集。正式发布的固件见 :doc:`../AT_Binary_Lists/index`，已适配但未发布的模组固件，需要自行编译。自行编译的固件无法从乐鑫官方服务器进行 OTA 升级。
+
+.. only:: esp32
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 命令集
+      - WROOM Bin
+      - WROVER Bin
+      - PICO-D4 Bin
+      - SOLO-1 Bin
+      - MINI-1 Bin
+      - D2WD Bin
+    * - base
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - user
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - Wi-Fi
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - TCP-IP
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - mDNS
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - WPS
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - SmartConfig
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ping
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - MQTT
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - HTTP
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - Bluetooth LE
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - Bluetooth LE HID
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - BluFi
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - Bluetooth SPP
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+    * - Bluetooth A2DP
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+    * - ethernet
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+    * - FileSystem
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+    * - driver
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+    * - WPA2 enterprise
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+    * - Web server
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+    * - WebSocket
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+    * - OTA
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-red-cross|
+
+.. only:: esp32c2
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 命令集
+      - ESP32C2-2MB Bin
+      - ESP32C2-4MB Bin
+      - ESP32C2-2MB-G2 Bin
+      - ESP32C2-4MB-G2 Bin
+      - ESP32C2-2MB-BLE Bin
+    * - base
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - user
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - Wi-Fi
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-red-cross|
+    * - TCP-IP
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-red-cross|
+    * - mDNS
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-red-cross|
+    * - WPS
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-red-cross|
+    * - SmartConfig
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-red-cross|
+    * - ping
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-red-cross|
+    * - MQTT
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-red-cross|
+    * - HTTP
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-red-cross|
+    * - Bluetooth LE
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-green-check|
+    * - BluFi
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-red-cross|
+    * - FileSystem
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+    * - driver
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+    * - WPA2 enterprise
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-red-cross|
+    * - WEB server
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-red-cross|
+    * - WebSocket
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-red-cross|
+    * - OTA
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-red-cross|
+
+.. only:: esp32c3
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 命令集
+      - MINI-1 Bin
+    * - base
+      - |icon-green-check|
+    * - user
+      - |icon-green-check|
+    * - Wi-Fi
+      - |icon-green-check|
+    * - TCP-IP
+      - |icon-green-check|
+    * - mDNS
+      - |icon-green-check|
+    * - WPS
+      - |icon-green-check|
+    * - SmartConfig
+      - |icon-green-check|
+    * - ping
+      - |icon-green-check|
+    * - MQTT
+      - |icon-green-check|
+    * - HTTP
+      - |icon-green-check|
+    * - Bluetooth LE
+      - |icon-green-check|
+    * - Bluetooth LE HID
+      - |icon-green-check|
+    * - BluFi
+      - |icon-green-check|
+    * - FileSystem
+      - |icon-orange-check|
+    * - driver
+      - |icon-orange-check|
+    * - WPA2 enterprise
+      - |icon-orange-check|
+    * - Web server
+      - |icon-orange-check|
+    * - WebSocket
+      - |icon-orange-check|
+    * - OTA
+      - |icon-green-check|
+
+.. only:: esp32c5 or esp32c6 or esp32c61
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 命令集
+      - {IDF_TARGET_NAME}-4MB Bin
+    * - base
+      - |icon-green-check|
+    * - user
+      - |icon-green-check|
+    * - Wi-Fi
+      - |icon-green-check|
+    * - TCP-IP
+      - |icon-green-check|
+    * - mDNS
+      - |icon-green-check|
+    * - WPS
+      - |icon-green-check|
+    * - SmartConfig
+      - |icon-green-check|
+    * - ping
+      - |icon-green-check|
+    * - MQTT
+      - |icon-green-check|
+    * - HTTP
+      - |icon-green-check|
+    * - Bluetooth LE
+      - |icon-green-check|
+    * - BluFi
+      - |icon-green-check|
+    * - FileSystem
+      - |icon-orange-check|
+    * - driver
+      - |icon-orange-check|
+    * - WPA2 enterprise
+      - |icon-orange-check|
+    * - Web server
+      - |icon-orange-check|
+    * - WebSocket
+      - |icon-orange-check|
+    * - OTA
+      - |icon-green-check|
+
+.. only:: esp32s2
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 命令集
+      - MINI Bin
+    * - base
+      - |icon-green-check|
+    * - user
+      - |icon-green-check|
+    * - Wi-Fi
+      - |icon-green-check|
+    * - TCP-IP
+      - |icon-green-check|
+    * - mDNS
+      - |icon-green-check|
+    * - WPS
+      - |icon-green-check|
+    * - SmartConfig
+      - |icon-green-check|
+    * - ping
+      - |icon-green-check|
+    * - MQTT
+      - |icon-green-check|
+    * - HTTP
+      - |icon-green-check|
+    * - FileSystem
+      - |icon-orange-check|
+    * - driver
+      - |icon-orange-check|
+    * - WPA2 enterprise
+      - |icon-orange-check|
+    * - Web server
+      - |icon-orange-check|
+    * - WebSocket
+      - |icon-orange-check|
+    * - OTA
+      - |icon-green-check|
+
+硬件差异
+--------
+
+.. only:: esp32
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 硬件
+      - WROOM Bin
+      - WROVER Bin
+      - PICO-D4 Bin
+      - SOLO-1 Bin
+      - MINI-1 Bin
+      - D2WD Bin
+    * - Flash
+      - 4 MB
+      - 4 MB
+      - 4 MB
+      - 4 MB
+      - 4 MB
+      - 2 MB
+    * - PSRAM
+      - |icon-red-cross|
+      - 8 MB
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+    * - UART 管脚 [#one]_
+      - | TX: 17
+        | RX: 16
+        | CTS: 15
+        | RTS: 14
+      - | TX: 22 
+        | RX: 19 
+        | CTS: 15
+        | RTS: 14
+      - | TX: 22 
+        | RX: 19 
+        | CTS: 15
+        | RTS: 14
+      - | TX: 17 
+        | RX: 16 
+        | CTS: 15 
+        | RTS: 14
+      - | TX: 22 
+        | RX: 19 
+        | CTS: 15
+        | RTS: 14
+      - | TX: 22 
+        | RX: 19 
+        | CTS: 15
+        | RTS: 14
+
+.. only:: esp32c2
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 硬件
+      - ESP32C2-2MB Bin
+      - ESP32C2-4MB Bin
+      - ESP32C2-2MB-G2 Bin
+      - ESP32C2-4MB-G2 Bin
+      - ESP32C2-2MB-BLE Bin
+    * - Flash
+      - 2 MB
+      - 4 MB
+      - 2 MB
+      - 4 MB
+      - 2 MB
+    * - PSRAM
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+    * - UART 管脚 [#one]_
+      - | TX: 7
+        | RX: 6
+        | CTS: 19
+        | RTS: 20
+      - | TX: 7
+        | RX: 6
+        | CTS: 5
+        | RTS: 4
+      - | TX: 7
+        | RX: 6
+        | CTS: 19
+        | RTS: 20
+      - | TX: 7
+        | RX: 6
+        | CTS: 5
+        | RTS: 4
+      - | TX: 7
+        | RX: 6
+        | CTS: 5
+        | RTS: 4
+
+.. only:: esp32c3
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 硬件
+      - MINI-1 Bin
+    * - Flash
+      - 4 MB
+    * - PSRAM
+      - |icon-red-cross|
+    * - UART 管脚 [#one]_
+      - | TX: 7
+        | RX: 6
+        | CTS: 5
+        | RTS: 4
+
+.. only:: esp32c5
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 硬件
+      - {IDF_TARGET_NAME}-4MB Bin
+    * - Flash
+      - 4 MB
+    * - PSRAM
+      - |icon-red-cross|
+    * - UART 管脚 [#one]_
+      - | TX: 23
+        | RX: 24
+        | CTS: 25
+        | RTS: 26
+
+.. only:: esp32c6
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 硬件
+      - {IDF_TARGET_NAME}-4MB Bin
+    * - Flash
+      - 4 MB
+    * - PSRAM
+      - |icon-red-cross|
+    * - UART 管脚 [#one]_
+      - | TX: 7
+        | RX: 6
+        | CTS: 5
+        | RTS: 4
+
+.. only:: esp32c61
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 硬件
+      - {IDF_TARGET_NAME}-4MB Bin
+    * - Flash
+      - 4 MB
+    * - PSRAM
+      - |icon-red-cross|
+    * - UART 管脚 [#one]_
+      - | TX: 7
+        | RX: 6
+        | CTS: 5
+        | RTS: 4
+
+.. only:: esp32s2
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 硬件
+      - MINI Bin
+    * - Flash
+      - 4 MB
+    * - PSRAM
+      - |icon-red-cross|
+    * - UART 管脚 [#one]_
+      - | TX: 17
+        | RX: 21
+        | CTS: 20
+        | RTS: 19
+
+.. [#one] UART 管脚可自定义，详情请参考 :doc:`../Compile_and_Develop/How_to_set_AT_port_pin`。
+
+.. _support-modules:
+
+支持的模组
+----------
+
+下表列出了官方发布的 {IDF_TARGET_NAME} 系列 AT 固件默认支持哪些模组或芯片（用 |icon-green-check| 表示）、默认不支持但可以通过 :doc:`../Compile_and_Develop/tools_at_py` 修改后支持的模组（用 |icon-orange-check| 表示），以及完全不支持的模组（用 |icon-red-cross| 表示）。对于完全不支持的模组，您可以 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` 修改您需要的配置后支持。
+
+.. only:: esp32
+
+  .. list-table::
+    :header-rows: 1
+    :widths: 100 40 40 40 40 40 40
+
+    * - 模组/芯片
+      - WROOM Bin
+      - WROVER Bin
+      - PICO-D4 Bin
+      - SOLO-1 Bin
+      - MINI-1 Bin
+      - D2WD Bin
+    * - ESP32-WROOM-32
+      - |icon-green-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROOM-32D
+      - |icon-green-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROOM-32E
+      - |icon-green-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROOM-32U
+      - |icon-green-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROOM-32UE
+      - |icon-green-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROOM-32DA
+      - |icon-green-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROOM-32SE
+      - |icon-green-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROVER-E
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROVER-IE
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROVER-B
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROVER-IB
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-WROVER
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-SOLO-1
+      - |icon-green-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-D2WD
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-green-check|
+    * - ESP32-MINI-1
+      - |icon-orange-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-MINI-1U
+      - |icon-orange-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-PICO-D4
+      - |icon-green-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP32-PICO-V3-ZERO
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+      - |icon-red-cross|
+    * - ESP32-PICO-MINI-02
+      - |icon-orange-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-orange-check|
+    * - ESP32-PICO-MINI-02U
+      - |icon-orange-check|
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-orange-check|
+      - |icon-green-check|
+      - |icon-orange-check|
+
+.. only:: esp32c2
+
+  .. list-table::
+    :header-rows: 1
+    :widths: 100 60 60 60 60 60
+
+    * - 模组/芯片
+      - ESP32C2-2MB Bin
+      - ESP32C2-4MB Bin
+      - ESP32C2-2MB-G2 Bin
+      - ESP32C2-4MB-G2 Bin
+      - ESP32C2-2MB-BLE Bin
+    * - ESP8684-MINI-1/1U
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP8684-WROOM-02C/02UC
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP8684-WROOM-03
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP8684-WROOM-05
+      - |icon-red-cross|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+      - |icon-green-check|
+    * - ESP8684-WROOM-07
+      - |icon-red-cross|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-orange-check|
+      - |icon-green-check|
+
+.. only:: esp32c3
+
+  .. list-table::
+    :header-rows: 1
+    :widths: 100 60
+
+    * - 模组/芯片
+      - MINI-1 Bin
+    * - ESP32-C3-MINI-1/1U
+      - |icon-green-check|
+    * - ESP32-C3-WROOM-02/02U
+      - |icon-green-check|
+    * - ESP8685-WROOM-01
+      - |icon-green-check|
+    * - ESP8685-WROOM-03
+      - |icon-green-check|
+    * - ESP8685-WROOM-04
+      - |icon-green-check|
+    * - ESP8685-WROOM-05
+      - |icon-green-check|
+    * - ESP8685-WROOM-06
+      - |icon-green-check|
+    * - ESP8685-WROOM-07
+      - |icon-orange-check|
+
+.. only:: esp32c5
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 模组/芯片
+      - {IDF_TARGET_NAME}-4MB Bin
+    * - {IDF_TARGET_NAME}-MINI-1
+      - |icon-green-check|
+    * - {IDF_TARGET_NAME}-WROOM-01
+      - |icon-green-check|
+
+.. only:: esp32c6
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 模组/芯片
+      - {IDF_TARGET_NAME}-4MB Bin
+    * - {IDF_TARGET_NAME}-MINI-1
+      - |icon-green-check|
+    * - {IDF_TARGET_NAME}-WROOM-01
+      - |icon-green-check|
+
+.. only:: esp32c61
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 模组/芯片
+      - {IDF_TARGET_NAME}-4MB Bin
+    * - {IDF_TARGET_NAME}-WROOM-01
+      - |icon-green-check|
+
+.. only:: esp32s2
+
+  .. list-table::
+    :header-rows: 1
+
+    * - 模组/芯片
+      - MINI Bin
+    * - ESP32-S2-MINI-2/2U
+      - |icon-green-check|
+    * - ESP32-S2-SOLO-2/2U
+      - |icon-green-check|
