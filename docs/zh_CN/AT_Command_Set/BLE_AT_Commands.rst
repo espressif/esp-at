@@ -2756,6 +2756,10 @@ Bluetooth® Low Energy AT 命令集
 
     -  Bluetooth LE HID 无法与通用 GATT/GAP 命令同时使用。
 
+    .. only:: esp32 or esp32c3
+
+        -  Bluetooth LE HID 命令无法与 :ref:`BluFi 命令 <cmd-BLUFI>` 同时使用。
+
     示例
     ^^^^
 
@@ -2983,6 +2987,11 @@ Bluetooth® Low Energy AT 命令集
 ^^^^
 
 - 您只能在 Bluetooth LE 未初始化情况下开启或关闭 BluFi (:ref:`AT+BLEINIT=0 <cmd-BINIT>`)。
+
+.. only:: esp32 or esp32c3
+
+    - BluFi 命令无法与 :ref:`Bluetooth LE HID 命令 <cmd-BLEHIDINIT>` 同时使用。
+
 - 为获得更好的性能，建议在使用 BluFi 功能前，先发送 :ref:`AT+CWMODE=0/1 <cmd-MODE>` 命令禁用 SoftAP。如您想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
 - BluFi 配网后请发送 :ref:`AT+BLUFI=0 <cmd-BLUFI>` 命令关闭 BluFi，以释放资源。
 

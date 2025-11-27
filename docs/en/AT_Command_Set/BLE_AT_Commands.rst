@@ -2756,6 +2756,10 @@ Introduction
 
     -  The Bluetooth LE HID command cannot be used at the same time with general GATT/GAP commands.
 
+    .. only:: esp32 or esp32c3
+
+        -  The Bluetooth LE HID commands cannot be used at the same time with :ref:`BluFi commands <cmd-BLUFI>`.
+
     Example
     ^^^^^^^^
 
@@ -2983,6 +2987,11 @@ Note
 ^^^^
 
 - You can only start or stop BluFi when Bluetooth LE is not initialized (:ref:`AT+BLEINIT=0 <cmd-BINIT>`).
+
+.. only:: esp32 or esp32c3
+
+    - The BluFi commands cannot be used at the same time with :ref:`Bluetooth LE HID commands <cmd-BLEHIDINIT>`.
+
 - To achieve better performance, it is recommended to disable SoftAP by sending the :ref:`AT+CWMODE=0/1 <cmd-MODE>` command before using BluFi function. For more details, please refer to the `RF Coexistence <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ documentation.
 - After BluFi network configuration is completed, please send the :ref:`AT+BLUFI=0 <cmd-BLUFI>` command to disable BluFi and release resources.
 
