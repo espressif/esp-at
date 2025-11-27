@@ -11,8 +11,8 @@ This document is intended to help you enable ESP-AT Ethernet. After that, a simp
 Step 1. Configure and Flash
 -----------------------------
 
-1. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``AT ethernet support`` to enable the Ethernet interface.
-2. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``Ethernet PHY`` to choose the PHY model. For more details see `PHY Configuration`_.
+1. ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT ethernet support`` to enable the Ethernet interface.
+2. ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``Ethernet PHY`` to choose the PHY model. For more details see `PHY Configuration`_.
 3. Recompile the ``esp-at`` project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`), download AT bin into flash.
 
 PHY Configuration

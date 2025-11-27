@@ -45,7 +45,7 @@
 
     ::
 
-      python build.py menuconfig -> Component config -> Hardware Settings -> Main XTAL Config -> Main XTAL frequency -> 40 MHz
+      python build.py menuconfig > Component config > Hardware Settings > Main XTAL Config > Main XTAL frequency > 40 MHz
 
 - 上图使用 4 根杜邦线连接 {IDF_TARGET_NAME} 开发板和 USB 转 UART 串口模块，但如果您不使用硬件流控功能，只需 2 根杜邦线连接 TX/RX 即可。
 

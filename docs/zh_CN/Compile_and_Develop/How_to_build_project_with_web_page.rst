@@ -100,7 +100,7 @@
 
     点击 Settings
 
-点击 ``Settings`` -> ``Secrets and variables`` -> ``Actions`` 进入 Action 配置页面。
+点击 ``Settings`` > ``Secrets and variables`` > ``Actions`` 进入 Action 配置页面。
 
   .. figure:: ../../_static/web_compile/cfg-ota-token-s2.png
     :align: center

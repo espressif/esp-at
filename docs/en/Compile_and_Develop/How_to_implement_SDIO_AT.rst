@@ -50,7 +50,7 @@ Before testing SDIO AT communication, please configure {IDF_TARGET_NAME} hardwar
 SDIO Slave
 ^^^^^^^^^^^
 
-By default, the ESP-AT project uses UART as the the communication interface. When {IDF_TARGET_NAME} serves as the SDIO slave, please go to ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT via SDIO`` to switch to the SDIO interface. Then, recompile the ESP-AT project, flash and run the new bin.
+By default, the ESP-AT project uses UART as the the communication interface. When {IDF_TARGET_NAME} serves as the SDIO slave, please go to ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT via SDIO`` to switch to the SDIO interface. Then, recompile the ESP-AT project, flash and run the new bin.
 
 
 SDIO MCU

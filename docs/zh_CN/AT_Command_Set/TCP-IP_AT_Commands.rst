@@ -55,10 +55,10 @@ TCP/IP AT 命令
 .. important::
   默认的 AT 固件支持此页面下的所有 AT 命令。如果您需要修改 {IDF_TARGET_NAME} 默认支持的命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择（下面每项是独立的，根据您的需要选择）：
 
-  - 禁用 OTA 命令（:ref:`AT+CIUPDATE <cmd-UPDATE>`、:ref:`AT+CIPFWVER <cmd-FWVER>`）：``Component config`` -> ``AT`` -> ``AT OTA command support``
-  - 禁用 PING 命令（:ref:`AT+PING <cmd-CIPPING>`）：``Component config`` -> ``AT`` -> ``AT ping command support``
-  - 禁用 mDNS 命令（:ref:`AT+MDNS <cmd-MDNS>`）：``Component config`` -> ``AT`` -> ``AT MDNS command support``
-  - 禁用 TCP/IP 命令（不推荐。一旦禁用，所有 TCP/IP 功能将无法使用，您需要自行实现这些 AT 命令）： ``Component config`` -> ``AT`` -> ``AT net command support``
+  - 禁用 OTA 命令（:ref:`AT+CIUPDATE <cmd-UPDATE>`、:ref:`AT+CIPFWVER <cmd-FWVER>`）：``Component config`` > ``AT`` > ``AT OTA command support``
+  - 禁用 PING 命令（:ref:`AT+PING <cmd-CIPPING>`）：``Component config`` > ``AT`` > ``AT ping command support``
+  - 禁用 mDNS 命令（:ref:`AT+MDNS <cmd-MDNS>`）：``Component config`` > ``AT`` > ``AT MDNS command support``
+  - 禁用 TCP/IP 命令（不推荐。一旦禁用，所有 TCP/IP 功能将无法使用，您需要自行实现这些 AT 命令）： ``Component config`` > ``AT`` > ``AT net command support``
 
 .. _cmd-IPV6:
 
@@ -389,7 +389,7 @@ TCP/IP AT 命令
   - 通过 :ref:`AT+CWJAP <cmd-JAP>` 命令获取到一个 IPv6 地址
   - （可选）通过 :ref:`AT+CIPSTA? <cmd-IPSTA>` 命令检查 {IDF_TARGET_NAME} 是否获取到 IPv6 地址
 
-- 如果想接收长度大于 1460 字节的 UDP 包，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：``Component config`` -> ``LWIP`` -> ``Enable reassembly incoming fragmented IP4 packets``
+- 如果想接收长度大于 1460 字节的 UDP 包，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：``Component config`` > ``LWIP`` > ``Enable reassembly incoming fragmented IP4 packets``
 - 若需查看建立 UDP 传输失败原因，请先运行 :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` 启用日志后重试本命令。失败时，AT 会返回更详细的错误码 ``+ERRNO:<error_code>``，以便定位问题。
 
 示例

@@ -30,7 +30,7 @@ MQTT AT 命令集
 .. important::
   - 默认的 AT 固件支持此页面下的所有 AT 命令。如果您不需要 {IDF_TARGET_NAME} 支持 MQTT 命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
 
-    - 禁用 ``Component config`` -> ``AT`` -> ``AT MQTT command support``
+    - 禁用 ``Component config`` > ``AT`` > ``AT MQTT command support``
 
   - MQTT 连接本地 Broker 示例见 :doc:`MQTT AT 示例 <../AT_Command_Examples/MQTT_AT_Examples>`
   - MQTT 连接 AWS IoT 示例见 :doc:`MQTT 云连接 AT 示例 <../AT_Command_Examples/mqtt-at-examples-for-cloud>`

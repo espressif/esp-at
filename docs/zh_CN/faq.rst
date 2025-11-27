@@ -101,8 +101,8 @@ Wi-Fi 常见的兼容性问题有哪些？
     - 如果路由器不支持 AMPDU，那么 {IDF_TARGET_NAME} 会在和路由器交互时，自动关闭 AMPDU 功能。
     - 如果路由器支持 AMPDU，但是路由器和 {IDF_TARGET_NAME} 之间的 AMPDU 传输存在兼容性问题，那么建议关闭路由器的 AMPDU 功能或者 {IDF_TARGET_NAME} 的 AMPDU 功能。如果您要禁用 {IDF_TARGET_NAME} 的 AMPDU 功能，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
 
-      - 禁用 ``Component config`` -> ``Wi-Fi`` -> ``WiFi AMPDU TX``
-      - 禁用 ``Component config`` -> ``Wi-Fi`` -> ``WiFi AMPDU RX``
+      - 禁用 ``Component config`` > ``Wi-Fi`` > ``WiFi AMPDU TX``
+      - 禁用 ``Component config`` > ``Wi-Fi`` > ``WiFi AMPDU RX``
 
   - phy mode 兼容性问题。如果路由器和 {IDF_TARGET_NAME} 之间的 phy mode 存在兼容性问题，那么建议切换路由器的 phy mode 或者 {IDF_TARGET_NAME} 的 phy mode。如果您要切换 {IDF_TARGET_NAME} 的 phy mode，请参考 :ref:`AT+CWSTAPROTO <cmd-STAPROTO>` 命令。
 

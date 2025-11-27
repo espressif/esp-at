@@ -24,10 +24,10 @@ How to enable SPI AT?
 
 You can configure and enable SPI AT through the following steps:
 
-1. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT through SPI`` to enable SPI AT.
-2. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI Data Transmission Mode`` to choose the SPI data transmission mode.
-3. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI GPIO settings`` to change the default pin assignments for SPI AT.
-4. ``./build.py menuconfig`` -> ``Component config`` -> ``AT`` -> ``communicate method for AT command`` -> ``AT SPI driver settings`` to choose the SPI slave mode, and config the buffer size for data transmission.
+1. ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT through SPI`` to enable SPI AT.
+2. ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT SPI Data Transmission Mode`` to choose the SPI data transmission mode.
+3. ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT SPI GPIO settings`` to change the default pin assignments for SPI AT.
+4. ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT SPI driver settings`` to choose the SPI slave mode, and config the buffer size for data transmission.
 5. Recompile the ``esp-at`` project(see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`), download AT bin into flash.
 
 The Default Pin Assignment

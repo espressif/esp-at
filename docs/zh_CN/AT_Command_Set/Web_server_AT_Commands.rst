@@ -16,7 +16,7 @@ Web 服务器 AT 命令
 .. important::
   默认的 AT 固件不支持此页面下的 AT 命令。如果您需要 {IDF_TARGET_NAME} 支持 Web 服务器命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
 
-  - 启用 ``Component config`` -> ``AT`` -> ``AT Web Server command support``
+  - 启用 ``Component config`` > ``AT`` > ``AT Web Server command support``
 
 .. _cmd-WEBSERVER:
 

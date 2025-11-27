@@ -16,7 +16,7 @@ Introduction
 .. important::
   The default AT firmware does not support the AT commands listed on this page. If you need {IDF_TARGET_NAME} to support web server commands, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
 
-  - Enable ``Component config`` -> ``AT`` -> ``AT Web Server command support``
+  - Enable ``Component config`` > ``AT`` > ``AT Web Server command support``
 
 .. _cmd-WEBSERVER:
 

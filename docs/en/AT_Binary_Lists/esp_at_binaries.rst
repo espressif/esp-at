@@ -11,7 +11,7 @@ It is recommended to use the latest version of firmware. Currently, Espressif re
 
     - The released AT firmware only supports chip versions with a crystal oscillator frequency of 26 MHz. If your module uses a crystal oscillator frequency of 40 MHz, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
 
-      - ``Component config`` -> ``Hardware Settings`` -> ``Main XTAL Config`` -> ``Main XTAL frequency`` -> ``40 MHz``
+      - ``Component config`` > ``Hardware Settings`` > ``Main XTAL Config`` > ``Main XTAL frequency`` > ``40 MHz``
 
   .. only:: esp32 or esp32c2
 
