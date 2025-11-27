@@ -132,6 +132,10 @@ def main():
             else:
                 shutil.copy(src_patch_path, dst_patch_path)
                 ESP_LOGI(f'{src_patch_path} has been applied.')
+        # directory
+        elif os.path.isdir(src_patch_path):
+            shutil.copytree(src_patch_path, dst_patch_path, dirs_exist_ok=True)
+            ESP_LOGI(f'Directory {src_patch_path} has been synchronized to {dst_patch_path}.')
 
 if __name__ == '__main__':
     try:
