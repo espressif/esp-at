@@ -51,7 +51,7 @@ esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/))
 
 # ESP-AT 版本支持期限
 
-![support periods](https://dl.espressif.com/esp-at/at-support-periods.png)
+![support periods](https://dl.espressif.com/esp-at/at-support-periods.png?v=1)
 
 - 请参考 [ESP-AT 版本简介](https://docs.espressif.com/projects/esp-at/zh_CN/latest/esp32/versions.html) 了解更多关于 ESP-AT 版本的信息。
 
