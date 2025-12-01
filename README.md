@@ -51,7 +51,7 @@ Please choose one of the following options based on your needs:
 
 # Support Periods of ESP-AT
 
-![support periods](https://dl.espressif.com/esp-at/at-support-periods.png)
+![support periods](https://dl.espressif.com/esp-at/at-support-periods.png?v=1)
 
 - Please refer to [ESP-AT Versions](https://docs.espressif.com/projects/esp-at/en/latest/esp32/versions.html) for more details.
 
