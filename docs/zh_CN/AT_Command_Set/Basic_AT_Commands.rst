@@ -1234,7 +1234,7 @@
 """"""
 
 - 请先使用本命令配置有效的过滤器，再通过 :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>` 命令启用或禁用系统消息过滤，实现更加精细的系统消息管理。
-- 头部和尾部正则表达式格式参考 `POSIX 基本正则语法（BRE） <https://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended>`_。
+- 头部和尾部正则表达式格式参考 `POSIX 基本正则语法 (BRE) <https://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended>`_。
 - 为了避免 :term:`系统消息` (AT 命令口的 TX 数据) 被错误过滤，**强烈建议** 头部正则表达式以 ``^`` 开头，尾部正则表达式以 ``$`` 结束。
 - 只有系统消息 **同时匹配** 上头部正则表达式和尾部正则表达式时，系统消息才会被过滤。过滤后，系统消息被正则表达式匹配上的数据会被 AT 过滤掉，MCU 不会收到；而未被正则表达式匹配上的数据，会原样发往 MCU。
 - 当系统消息匹配到一个过滤器后，不会再继续匹配其它的过滤器。
