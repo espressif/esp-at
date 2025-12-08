@@ -227,6 +227,11 @@ HTTP AT 命令集
 -  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
 -  该命令的 ``content-type`` 默认类型为 ``application/x-www-form-urlencoded``。
 -  如果您想设置 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令设置。
+-  性能优化：本命令使用短连接模式，每次请求都会建立新连接（HTTPS 需进行 SSL 握手）。为实现低时延通信，建议改用 :ref:`AT+CIPSTART <cmd-START>` 建立长连接，由 MCU 构造 HTTP 请求包并通过 :ref:`AT+CIPSEND <cmd-SEND>` 发送，以避免重复握手产生的通信开销。
+-  内存管理：本命令每次新建并关闭连接，会产生 TIME_WAIT 状态占用内存。若发现最小堆空间持续下降，可通过以下方式优化：
+
+  - 减小 TCP Maximum Segment Lifetime (MSL)：``./build.py menuconfig`` > ``Component config`` > ``LWIP`` > ``TCP`` > ``Maximum segment lifetime (MSL)``，然后重新编译 AT 固件。注意：减小 MSL 可以缩短 TIME_WAIT 状态的持续时间，从而更快释放内存，但不能完全消除 TIME_WAIT 状态。
+  - 改用 TCP 长连接复用，避免频繁创建和关闭连接。
 
 .. _cmd-HTTPCPUT:
 

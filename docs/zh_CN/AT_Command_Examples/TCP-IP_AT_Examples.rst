@@ -213,7 +213,7 @@ TCP-IP AT 示例
 
 #. PC 连接到 {IDF_TARGET_NAME} 设备的 softAP。
 
-   .. figure:: ../../img/Connect-SoftAP.png
+   .. figure:: ../../_static/at_command_examples/Connect-SoftAP.png
        :scale: 100 %
        :align: center
        :alt: Connect SoftAP
@@ -822,7 +822,7 @@ TCP-IP AT 示例
 
 #. PC 连接到 {IDF_TARGET_NAME} 设备的 softAP。
 
-   .. figure:: ../../img/Connect-SoftAP.png
+   .. figure:: ../../_static/at_command_examples/Connect-SoftAP.png
        :scale: 100 %
        :align: center
        :alt: Connect SoftAP
@@ -1175,7 +1175,7 @@ TCP-IP AT 示例
 
 #. PC 与 {IDF_TARGET_NAME} 设备连接同一个路由。
 
-   .. figure:: ../../img/Connect-SoftAP.png
+   .. figure:: ../../_static/at_command_examples/Connect-SoftAP.png
        :scale: 100 %
        :align: center
        :alt: Connect SoftAP
@@ -1635,7 +1635,7 @@ TCP-IP AT 示例
 
 #. PC 连接到 {IDF_TARGET_NAME} 设备的 softAP。
 
-   .. figure:: ../../img/Connect-SoftAP.png
+   .. figure:: ../../_static/at_command_examples/Connect-SoftAP.png
        :scale: 100 %
        :align: center
        :alt: Connect SoftAP

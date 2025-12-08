@@ -313,6 +313,11 @@ WebSocket AT 命令集
 
 - **<link_id>**：WebSocket 连接 ID。范围：[0,2]。
 
+说明
+^^^^
+
+- 本命令触发 TCP 层的关闭流程，返回 ``OK`` 仅表示关闭指令已传达，不保证对端已完全断开连接。若需确保连接完全关闭，建议在执行本命令前，先使用 :ref:`AT+WSSEND <cmd-WSSEND>` 发送一个 opcode 为 8 (Close Frame) 的 WebSocket 控制帧，等待服务器回应后再关闭。
+
 示例
 ^^^^
 

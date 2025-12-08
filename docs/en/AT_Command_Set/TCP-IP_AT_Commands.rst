@@ -203,7 +203,8 @@ Parameter
 
 Notes
 ^^^^^
-- If you want to resolve a domain name to multiple IP addresses, please increase the value of ``python build.py menuconfig`` > ``Component config`` > ``LWIP`` > ``DNS`` > ``Maximum number of IP addresses per host``, then recompile the ESP-AT project. The final returned format will be as follows:
+
+- To resolve a domain name to multiple IP addresses, please increase the value of ``python build.py menuconfig`` > ``Component config`` > ``LWIP`` > ``DNS`` > ``Maximum number of IP addresses per host``. Then recompile the ESP-AT project. The command returns the following format:
 
   ::
 
@@ -382,7 +383,7 @@ Parameters
 Notes
 """"""
 - If the remote host over the UDP is an IPv4 multicast address (224.0.0.0 ~ 239.255.255.255), the {IDF_TARGET_NAME} will send and receive the UDPv4 multicast.
-- If the remote host over the UDP is an IPv4 broadcast address (255.255.255.255), the {IDF_TARGET_NAME} will send and receive the UDPv4 broadcast.
+- If the remote host over the UDP is an IPv4 broadcast address (255.255.255.255), the {IDF_TARGET_NAME} will send and receive the UDPv4 broadcast. Note that AT does not support automatic repeated broadcasting. If periodic broadcasting is required, the MCU needs to send data packets at regular intervals.
 - If the remote host over the UDP is an IPv6 multicast address (FF00:0:0:0:0:0:0:0 ~ FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF), the {IDF_TARGET_NAME} will send and receive the UDP multicast based on IPv6 network.
 - To use the parameter ``<mode>``, parameter ``<local port>`` must be set first.
 
@@ -473,11 +474,21 @@ Notes
 """"""
 
 -  The number of SSL connections depends on available memory and the maximum number of connections.
--  SSL connection needs a large amount of memory. Insufficient memory may cause the system reboot.
--  If the ``AT+CIPSTART`` is based on an SSL connection and the timeout of each packet is 10 s, the total timeout will be much longer depending on the number of handshake packets.
+-  SSL connection needs a large amount of memory. Insufficient memory may reboot the system.
+-  If the ``AT+CIPSTART`` is based on an SSL connection and the timeout of each packet is 10 s, the total timeout increases with the number of handshake packets.
 -  Some SSL servers require the SSL client to support the SNI extension field during connection. Please configure SNI using the :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>` command before establishing an SSL connection. Typically, the value of SNI is the domain name of the server.
 
-- To establish a SSL connection based on an IPv6 network, do as follows:
+.. _modify-tls-version:
+
+-  To modify the TLS protocol version, recompile the ESP-AT project. Navigate to ``python build.py menuconfig`` > ``Component config`` > ``mbedTLS`` directory. Disable TLS versions you do not need or enable versions not supported by default.
+
+   For example, to enable the TLS 1.3 protocol:
+
+     - ``python build.py menuconfig`` > ``Component config`` > ``mbedTLS`` > ``Using dynamic TX/RX buffer`` > Uncheck
+     - ``python build.py menuconfig`` > ``Component config`` > ``mbedTLS`` > ``mbedTLS v3.x related`` > ``Keep peer certificate after handshake completion`` > Check
+     - ``python build.py menuconfig`` > ``Component config`` > ``mbedTLS`` > ``mbedTLS v3.x related`` > ``Support TLS 1.3 protocol`` > Check
+
+- To establish an SSL connection based on an IPv6 network, do as follows:
 
   -  Make sure that the AP supports IPv6
   -  Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
@@ -1128,9 +1139,10 @@ Notes
 -  A TCP/SSL server can only be created when multiple connections are activated (:ref:`AT+CIPMUX=1 <cmd-MUX>`).
 -  A server monitor will be created automatically when the server is created. Only one server can be created at most.
 -  When a client is connected to the server, it will take up one connection and be assigned an ID.
--  If you want to create a TCP/SSL server based on IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first, and obtain an IPv6 address.
+-  To create a TCP/SSL server based on an IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first and obtain an IPv6 address.
 -  Parameters ``<"type">`` and ``<CA enable>`` must be omitted when delete a server.
--  To view the reason for server creation failure, please first run :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` to enable logging, then retry this command. Upon failure, AT will return a more detailed error code ``+ERRNO:<error_code>`` to help locate the problem.
+-  To view the reason for server creation failure, please first run :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` to enable logging, then retry this command. If the command fails, AT will return a more detailed error code ``+ERRNO:<error_code>`` to help locate the problem.
+-  For TLS protocol version configuration, please refer to the :ref:`modify tls protocol version note <modify-tls-version>`.
 
 Example
 ^^^^^^^^
@@ -2546,6 +2558,7 @@ Notes
 -  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  The three parameters cannot be set to the same server.
 -  When ``<enable>`` is set to 0, the DNS server may change according to the configuration of the router which the {IDF_TARGET_NAME} is connected to.
+-  When ``<enable>`` is set to 1, the manually set DNS servers will always take effect, and the DNS configuration obtained from the router via DHCP will not override the manually set values. To restore the use of DHCP-assigned DNS, execute ``AT+CIPDNS=0`` to re-enable automatic acquisition.
 
 Example
 ^^^^^^^^

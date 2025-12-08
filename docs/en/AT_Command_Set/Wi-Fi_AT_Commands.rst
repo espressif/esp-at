@@ -864,6 +864,13 @@ Parameters
    - 0: WPS disabled
    - 1: WPS enabled
 
+Notes
+^^^^^
+
+- When the SSID contains ``,``, ``"`` or ``\`` characters, it is necessary to escape these characters before configuration.
+- When unable to scan APs with Chinese SSID, ensure SSID character encoding matches the router (usually UTF-8).
+- When scan results are abnormal, it is recommended to use packet capture tools to analyze the SSID field in Probe Request packets and check whether the **<"ssid">** parameter matches the target AP's SSID completely.
+
 Example
 ^^^^^^^^
 
@@ -1646,6 +1653,7 @@ Notes
    -  If static IPv4 address is enabled, DHCP will be disabled;
    -  If DHCP is enabled, static IPv4 address will be disabled;
    -  The last configuration overwrites the previous configuration.
+-  When using static IP, AT does not provide IP conflict detection. You can implement your own detection mechanism if needed.
 
 Example
 ^^^^^^^^

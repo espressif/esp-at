@@ -198,14 +198,14 @@ Log for normal interaction is as follows:
 
 #. Log on the ESP32 side
 
-   .. figure:: ../../img/esp32at-log.png
+   .. figure:: ../../_static/at_command_examples/esp32at-log.png
        :scale: 100 %
        :align: center
        :alt: Log of Connecting to AWS IoT on ESP32 Side
 
 #. Log on the AWS side
 
-   .. figure:: ../../img/aws-log.png
+   .. figure:: ../../_static/at_command_examples/aws-log.png
        :scale: 100 %
        :align: center
        :alt: Log of Connecting to AWS IoT on AWS Side

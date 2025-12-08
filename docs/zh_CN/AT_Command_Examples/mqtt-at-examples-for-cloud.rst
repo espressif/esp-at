@@ -198,14 +198,14 @@ MQTT AT 连接云示例
 
 #. ESP32 端日志
 
-   .. figure:: ../../img/esp32at-log.png
+   .. figure:: ../../_static/at_command_examples/esp32at-log.png
        :scale: 100 %
        :align: center
        :alt: ESP32 端连接 AWS IoT 日志
 
 #. AWS 端日志
 
-   .. figure:: ../../img/aws-log.png
+   .. figure:: ../../_static/at_command_examples/aws-log.png
        :scale: 100 %
        :align: center
        :alt: AWS 端连接 AWS IoT 日志

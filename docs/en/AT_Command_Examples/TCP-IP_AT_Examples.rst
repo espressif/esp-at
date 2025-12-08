@@ -213,7 +213,7 @@ Below is an example showing how a TCP server is established when {IDF_TARGET_NAM
 
 #. Connect the PC to the {IDF_TARGET_NAME} softAP.
 
-   .. figure:: ../../img/Connect-SoftAP.png
+   .. figure:: ../../_static/at_command_examples/Connect-SoftAP.png
        :scale: 100 %
        :align: center
        :alt: Connect SoftAP
@@ -822,7 +822,7 @@ Below is an example showing how an SSL server is established when {IDF_TARGET_NA
 
 #. Connect the PC to the {IDF_TARGET_NAME} softAP.
 
-   .. figure:: ../../img/Connect-SoftAP.png
+   .. figure:: ../../_static/at_command_examples/Connect-SoftAP.png
        :scale: 100 %
        :align: center
        :alt: Connect SoftAP
@@ -1175,7 +1175,7 @@ Below is an example showing how an SSL server is established when {IDF_TARGET_NA
 
 #. Connect the PC to the {IDF_TARGET_NAME} softAP.
 
-   .. figure:: ../../img/Connect-SoftAP.png
+   .. figure:: ../../_static/at_command_examples/Connect-SoftAP.png
        :scale: 100 %
        :align: center
        :alt: Connect SoftAP
@@ -1635,7 +1635,7 @@ Network passthrough transmission when the {IDF_TARGET_NAME} works as a softAP in
 
 #. Connect the PC to the {IDF_TARGET_NAME} softAP.
 
-   .. figure:: ../../img/Connect-SoftAP.png
+   .. figure:: ../../_static/at_command_examples/Connect-SoftAP.png
        :scale: 100 %
        :align: center
        :alt: Connect SoftAP
