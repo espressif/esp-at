@@ -1,0 +1,43 @@
+================================================================================
+                            ⚠️  IMPORTANT / 重要提示  ⚠️
+================================================================================
+
+【English】
+
+1. This AT firmware is a temporary build for testing purposes only!
+2. This AT firmware does not support official OTA functionality (AT+CIUPDATE).
+3. If you plan to use this firmware for mass production, please make sure to conduct comprehensive function verification and testing based on the actual application scenarios of your product.
+4. If you need released AT firmware or AT firmware with official OTA support for mass production, please contact Espressif sales (https://www.espressif.com/en/contact-us/sales-questions) or sales@espressif.com to obtain the AT firmware.
+   If contacting via email, please specify "Request ESP-AT Firmware Download Link" in the subject line and provide the following information in the email body.
+      Company name:
+      Espressif product you are using:
+      Project name:
+      Application scenario:
+      Project start date:
+      Expected mass production date:
+      Project status:
+      Estimated annual purchase quantity:
+      Required AT firmware version:
+      Details:
+
+--------------------------------------------------------------------------------
+
+【中文】
+
+1. 此 AT 固件为临时构建版本，仅供测试使用！
+2. 此 AT 固件不支持官方 OTA 功能 (AT+CIUPDATE)。
+3. 若使用此固件量产，请务必依据您产品的实际应用场景进行全面的功能验证与测试。
+4. 若需发布的 AT 固件或支持官方 OTA 功能的 AT 固件用于量产，请联系乐鑫商务 (https://www.espressif.com.cn/zh-hans/contact-us/sales-questions) 或 sales@espressif.com 获取 AT 固件。
+   若通过邮件联系，请在邮件主题注明“请求 ESP-AT 固件下载链接”，并在邮件正文中提供如下信息。
+      贵司名称：
+      使用的乐鑫产品：
+      项目名称：
+      应用场景：
+      项目启动日期：
+      预计量产日期：
+      项目状态：
+      年预计采购数量：
+      需要的 AT 固件版本：
+      详情：
+
+================================================================================

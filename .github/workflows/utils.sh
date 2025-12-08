@@ -73,6 +73,10 @@ function disable_all_wifi_cmds() {
   echo -e "CONFIG_ESP_WIFI_SLP_IRAM_OPT=n" >> ${at_sdkconfig_file}
 }
 
+function disable_official_ota_cmd() {
+  echo -e "CONFIG_AT_OTA_SUPPORT=n" >> ${at_sdkconfig_file}
+}
+
 function enable_ethernet_cmds() {
   echo -e "CONFIG_AT_ETHERNET_SUPPORT=y" >> ${at_sdkconfig_file}
 }
