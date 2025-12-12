@@ -16,7 +16,7 @@ on:
       enable_at_debug:
         required: false
         type: boolean
-    # parameters from upstream inherit
+    # parameters inherited from upstream (reserved for potential future custom project needs)
     secrets:
       ESP32C2_4MB_TOKEN:
         required: false
@@ -50,26 +50,18 @@ jobs:
       if: ${{ inputs.enable_at_debug == true }}
       run: |
         source .github/workflows/utils.sh && enable_at_debug
-    - name: Set up OTA tokens
+    - name: Disable official OTA support
       run: |
-        cd components/at/private_include
-        rm -f at_ota_token.h
-        echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_2MB \"${{ secrets.ESP32C2_2MB_TOKEN }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_2MB \"${{ secrets.ESP32C2_2MB_TOKEN }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_4MB \"${{ secrets.ESP32C2_4MB_TOKEN }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_4MB \"${{ secrets.ESP32C2_4MB_TOKEN }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_2MB_G2 \"${{ secrets.ESP32C2_2MB_G2_TOKEN }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_2MB_G2 \"${{ secrets.ESP32C2_2MB_G2_TOKEN }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32C2_4MB_G2 \"${{ secrets.ESP32C2_4MB_G2_TOKEN }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32C2_4MB_G2 \"${{ secrets.ESP32C2_4MB_G2_TOKEN }}\"" >> at_ota_token.h
-        cd -
+        source .github/workflows/utils.sh && disable_official_ota_cmd
     - name: Install compilation environment
       run: |
         ./build.py install
     - name: Compile
       run: |
         ./build.py build
+    - name: Post process
+      run: |
+        cp .github/workflows/NOTES.txt NOTES.txt
     - name: Upload artifacts
       uses: actions/upload-artifact@v4.4.3
       with:
@@ -87,3 +79,4 @@ jobs:
           build/download.config
           build/factory/*
           build/custom_ota_binaries/*
+          NOTES.txt
