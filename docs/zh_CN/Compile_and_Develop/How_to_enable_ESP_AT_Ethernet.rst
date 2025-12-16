@@ -8,6 +8,10 @@
 
 本文档旨在指导用户启用 ESP-AT Ethernet，并通过简单的测试，展示如何确认是否启用成功。
 
+.. note::
+
+  如需了解更多关于以太网的技术细节（包括基本概念、MAC/PHY 配置、时钟配置、驱动程序安装等），请参考 `ESP-IDF 以太网编程指南 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-reference/network/esp_eth.html>`__。
+
 第一步：配置并烧录
 -----------------------
 

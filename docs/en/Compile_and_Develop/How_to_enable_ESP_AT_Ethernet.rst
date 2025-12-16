@@ -8,6 +8,10 @@ Overview
 
 This document is intended to help you enable ESP-AT Ethernet. After that, a simple test will show you how to confirm whether the enablement is successful.
 
+.. note::
+
+  For more technical details about Ethernet (including basic concepts, MAC/PHY configuration, clock configuration, driver installation, and more), please refer to the `ESP-IDF Ethernet Programming Guide <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/network/esp_eth.html>`__.
+
 Step 1. Configure and Flash
 -----------------------------
 
