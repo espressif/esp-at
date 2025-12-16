@@ -11,8 +11,8 @@ MQTT AT 命令集
 -  :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>`：设置 MQTT 登陆用户名
 -  :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>`：设置 MQTT 登陆密码
 -  :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`：设置 MQTT 连接属性
--  :ref:`AT+MQTTALPN <cmd-MQTTALPN>`：设置 MQTT 应用层协议协商（ALPN）
--  :ref:`AT+MQTTSNI <cmd-MQTTSNI>`：设置 MQTT 服务器名称指示（SNI）
+-  :ref:`AT+MQTTALPN <cmd-MQTTALPN>`：设置 MQTT 应用层协议协商 (ALPN)
+-  :ref:`AT+MQTTSNI <cmd-MQTTSNI>`：设置 MQTT 服务器名称指示 (SNI)
 -  :ref:`AT+MQTTCONN <cmd-MQTTCONN>`：连接 MQTT Broker
 -  :ref:`AT+MQTTPUB <cmd-MQTTPUB>`：发布 MQTT 消息（字符串）
 -  :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>`：发布长 MQTT 消息
@@ -274,7 +274,7 @@ MQTT AT 命令集
 
 .. _cmd-MQTTALPN:
 
-:ref:`AT+MQTTALPN <MQTT-AT>`：设置 MQTT 应用层协议协商（ALPN）
+:ref:`AT+MQTTALPN <MQTT-AT>`：设置 MQTT 应用层协议协商 (ALPN)
 -------------------------------------------------------------------------
 
 设置命令
@@ -282,7 +282,7 @@ MQTT AT 命令集
 
 **功能：**
 
-设置 MQTT 应用层协议协商（ALPN）
+设置 MQTT 应用层协议协商 (ALPN)
 
 **命令：**
 
@@ -328,7 +328,7 @@ MQTT AT 命令集
 
 .. _cmd-MQTTSNI:
 
-:ref:`AT+MQTTSNI <MQTT-AT>`：设置 MQTT 服务器名称指示（SNI）
+:ref:`AT+MQTTSNI <MQTT-AT>`：设置 MQTT 服务器名称指示 (SNI)
 -------------------------------------------------------------------------
 
 设置命令
@@ -336,7 +336,7 @@ MQTT AT 命令集
 
 **功能：**
 
-设置 MQTT 服务器名称指示（SNI）
+设置 MQTT 服务器名称指示 (SNI)
 
 **命令：**
 

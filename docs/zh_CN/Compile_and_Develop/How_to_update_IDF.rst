@@ -5,7 +5,7 @@
 
 :link_to_translation:`en:[English]`
 
-ESP-AT 固件基于乐鑫物联网开发框架（ESP-IDF），每个版本的 ESP-AT 固件对应某个特定的 ESP-IDF 版本。强烈建议使用 ESP-AT 工程默认的 ESP-IDF 版本，**不建议** 更新 ESP-IDF 版本，因为 lib{IDF_TARGET_PATH_NAME}_at_core.a 底层的 ESP-IDF 版本与 ESP-AT 工程的 IDF 版本不一致可能会导致固件的错误操作。
+ESP-AT 固件基于乐鑫物联网开发框架 (ESP-IDF)，每个版本的 ESP-AT 固件对应某个特定的 ESP-IDF 版本。强烈建议使用 ESP-AT 工程默认的 ESP-IDF 版本，**不建议** 更新 ESP-IDF 版本，因为 lib{IDF_TARGET_PATH_NAME}_at_core.a 底层的 ESP-IDF 版本与 ESP-AT 工程的 IDF 版本不一致可能会导致固件的错误操作。
 
 但是，在某些特殊情况下，ESP-IDF 的小版本更新也可能适用于 ESP-AT 工程。如果您需要更新，本文档可作为参考。
 
