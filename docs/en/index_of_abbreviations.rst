@@ -228,16 +228,20 @@ Index of Abbreviations
       
       In passthrough mode, users cannot send AT commands except special :ref:`+++ <cmd-PLUS>` command. All MCU data received by AT command port will be sent to the opposite end of transmission without any modification; and the data received from the opposite end of transmission will also be returned to MCU through AT command port without any modification.
 
-      During the Wi-Fi passthrough transmission, if the connection breaks, {IDF_TARGET_NAME} (as client) will keep trying to reconnect until :ref:`+++ <cmd-PLUS>` is input to exit the passthrough transmission; {IDF_TARGET_NAME} (as server) will shutdown the old connection and listen new connection until :ref:`+++ <cmd-PLUS>` is input to exit the passthrough transmission.
+      Passthrough mode can be classified into Network Passthrough Mode and Bluetooth Passthrough Mode according to the transmission method. Network Passthrough Mode can be further classified into TCP Passthrough Mode, UDP Passthrough Mode and SSL Passthrough Mode according to the supported connection methods. Each connection method supports both client and server roles.
+
+      During the Network passthrough transmission, if the connection breaks, {IDF_TARGET_NAME} (as client) will keep trying to reconnect until :ref:`+++ <cmd-PLUS>` is input to exit the passthrough transmission; {IDF_TARGET_NAME} (as server) will shutdown the old connection and listen for a new connection until :ref:`+++ <cmd-PLUS>` is input to exit the passthrough transmission.
 
       More details are in :term:`Transmission Mode Shift Diagram`.
 
     透传模式
       也称为 “透传发送接收模式”。
 
-      在透传模式下，用户不能发送其它 AT 命令，除了特别的 :ref:`+++ <cmd-PLUS>` 命令。AT 命令口收到的所有的 MCU 数据都将无修改地，发送到传输对端。从传输对端收到的数据也会通过 AT 命令口无修改地，返回给 MCU。
+      在透传模式下，除特殊命令 :ref:`+++ <cmd-PLUS>` 外，用户无法发送其他 AT 命令。所有通过 AT 命令端口接收的 MCU 数据将被原样转发至传输对端；同时，从传输对端接收的数据也将通过 AT 命令端口无损回传至 MCU。
 
-      Wi-Fi 透传模式传输时，如果连接断开，{IDF_TARGET_NAME} 作为客户端时，会不停地尝试重连，此时单独输入 :ref:`+++ <cmd-PLUS>` 退出透传，则停止重连；{IDF_TARGET_NAME} 作为服务器时，会关闭连接同时监听新的连接，此时单独输入 :ref:`+++ <cmd-PLUS>` 退出透传。
+      透传模式按照传输方式可分为 Network 透传模式和 Bluetooth 透传模式。Network 透传模式按照支持的连接方式可分为 TCP 透传模式、 UDP 透传模式和 SSL 透传模式，每种连接方式均支持客户端和服务器两种角色。
+
+      Network 透传模式传输时，如果连接断开，{IDF_TARGET_NAME} 作为客户端时，会不停地尝试重连，此时单独输入 :ref:`+++ <cmd-PLUS>` 退出透传，则停止重连；{IDF_TARGET_NAME} 作为服务器时，会关闭连接同时监听新的连接，此时单独输入 :ref:`+++ <cmd-PLUS>` 退出透传。
 
       更多介绍请参考 :term:`Transmission Mode Shift Diagram`。
 

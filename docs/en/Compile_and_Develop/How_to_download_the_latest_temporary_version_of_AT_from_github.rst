@@ -6,7 +6,7 @@ How to Download the Latest Temporary Version of AT Firmware from GitHub
 As ESP-AT enables CI (Continuous Integration) on GitHub, temporary versions of ESP-AT firmware is generated every time when the code is pushed to GitHub.
 
 .. attention::
-  **the latest temporary version of AT firmware downloaded from webpages needs to be tested and verified for functionality based on your own product.**
+  **The latest temporary version of AT firmware you download is for testing purposes only. For mass production, please make sure to conduct comprehensive function verification and testing based on the actual application scenarios of your product.** In addition, the current firmware does not support the official OTA function (:ref:`AT+CIUPDATE <cmd-UPDATE>`).
 
   **Please save the firmware and download link**, for possible issue debugging in the future.
 

@@ -229,11 +229,11 @@ AT 消息
      * - :term:`透传模式` 下的数据
        - ESP-AT 在透传模式下，已收到来自网络或蓝牙的数据
      * - SEND Canceled
-       - 取消在 Wi-Fi :term:`普通传输模式` 下发送数据
+       - 取消在 :term:`普通传输模式` 下发送数据
      * - Have ``<xxx>`` Connections
        - 已达到服务器的最大连接数
      * - +QUITT
-       - ESP-AT 退出 Wi-Fi :term:`透传模式`
+       - ESP-AT 退出 :term:`透传模式`
      * - NO CERT FOUND
        - 在自定义分区中没有找到有效的设备证书
      * - NO PRVT_KEY FOUND

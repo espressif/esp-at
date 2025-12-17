@@ -700,7 +700,7 @@ So, if you set ``AT+TEST=5`` and the input data is ``1234567890``, the ``ESP-AT`
 Input Data of Unspecified Length
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This scenario is similar to the Wi-Fi :term:`Passthrough Mode`. You do not specify the data length.
+This scenario is similar to the Network :term:`Passthrough Mode`. You do not specify the data length.
 
 ::
 
