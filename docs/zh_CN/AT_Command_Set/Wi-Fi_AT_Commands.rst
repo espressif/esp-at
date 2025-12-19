@@ -572,7 +572,7 @@ Wi-Fi AT 命令集
 -  本命令中的 ``<reconn_interval>`` 参数与 :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>` 命令中的 ``<interval_second>`` 参数相同。如果运行本命令时不设置 ``<reconn_interval>`` 参数，Wi-Fi 重连间隔时间将采用默认值 1
 -  如果同时省略 ``<"ssid">`` 和 ``<"password">`` 参数，将使用上一次设置的值
 -  执行命令与设置命令的超时时间相同，默认为 15 秒，可通过参数 ``<jap_timeout>`` 设置
--  不支持通过 `WAPI <https://zh.wikipedia.org/wiki/%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91%E9%89%B4%E5%88%AB%E4%B8%8E%E4%BF%9D%E5%AF%86%E5%9F%BA%E7%A1%80%E7%BB%93%E6%9E%84>`_ 鉴权方式连接路由器。
+-  不支持通过 :term:`WAPI` 鉴权方式连接路由器。
 -  想要获取 IPv6 地址，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`
 -  回复 ``OK`` 代表 IPv4 网络已经准备就绪，而不代表 IPv6 网络准备就绪。当前 ESP-AT 以 IPv4 网络为主，IPv6 网络为辅。
 -  ``WIFI GOT IPv6 LL`` 代表已经获取到本地链路 IPv6 地址，这个地址是通过 EUI-64 本地计算出来的，不需要路由器参与。由于并行时序，这个打印可能在 ``OK`` 之前，也可能在 ``OK`` 之后。

@@ -393,6 +393,15 @@ Index of Abbreviations
       
       Wi-Fi 保护访问 II
     
+    WAPI
+      WLAN Authentication and Privacy Infrastructure. WAPI is a wireless security protocol independently developed in China and designated as a national standard (GB 15629.11). It provides authentication and encryption mechanisms for wireless networks, using a different approach from WPA/WPA2.
+
+      More details are in `Wikipedia <https://en.wikipedia.org/wiki/WLAN_Authentication_and_Privacy_Infrastructure>`__.
+
+      无线局域网鉴别和保密基础结构。WAPI 是中国自主研发的无线安全协议，是中国国家标准 (GB 15629.11)。它为无线网络提供身份验证和加密机制，其实现方式不同于 WPA/WPA2。
+
+      更多介绍请参考 `维基百科 <https://zh.wikipedia.org/wiki/WAPI>`__。
+    
     WPS
       Wi-Fi Protected Setup
       
