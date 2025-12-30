@@ -18,6 +18,9 @@
 #include "esp_bt.h"
 #endif
 #include "at_ota.h"
+#ifdef CONFIG_AT_FS_COMMAND_SUPPORT
+#include "esp_vfs_fat.h"
+#endif
 
 // unknown module name if not defined
 #define ESP_AT_UNKNOWN_STR      "Unknown"
@@ -253,5 +256,21 @@ bool esp_at_get_bluetooth_controller_default_config(esp_bt_controller_config_t *
 
     memcpy(config, &bt_cfg, sizeof(esp_bt_controller_config_t));
     return true;
+}
+#endif
+
+/**************************************************************************
+ * The necessary dependencies required for the AT FileSystem command set
+ *************************************************************************/
+#ifdef CONFIG_AT_FS_COMMAND_SUPPORT
+esp_err_t esp_at_get_vfs_fat_mount_config(esp_vfs_fat_mount_config_t *config)
+{
+    const esp_vfs_fat_mount_config_t mount_config = {
+        .max_files = 4,
+        .format_if_mount_failed = true,
+        .allocation_unit_size = CONFIG_WL_SECTOR_SIZE,
+    };
+    memcpy(config, &mount_config, sizeof(esp_vfs_fat_mount_config_t));
+    return ESP_OK;
 }
 #endif
