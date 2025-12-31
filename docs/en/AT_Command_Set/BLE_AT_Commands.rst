@@ -2688,7 +2688,7 @@ Introduction
 
         AT+BLESETKEY=123456
 
-.. only:: esp32 or esp32c3 
+.. only:: esp32 or esp32c3
 
     .. _cmd-BLEHIDINIT:
 
@@ -2755,6 +2755,10 @@ Introduction
     ^^^^^
 
     -  The Bluetooth LE HID command cannot be used at the same time with general GATT/GAP commands.
+
+    .. only:: esp32 or esp32c3
+
+        -  The Bluetooth LE HID commands cannot be used at the same time with :ref:`BluFi commands <cmd-BLUFI>`.
 
     Example
     ^^^^^^^^
@@ -2897,216 +2901,223 @@ Introduction
 
         AT+BLEHIDCONSUMER=233   // volume up
 
-.. _cmd-BLUFI:
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-:ref:`AT+BLUFI <BLE-AT>`: Start or Stop BluFi
------------------------------------------------------------------
+    .. _cmd-BLUFI:
 
-Query Command
-^^^^^^^^^^^^^
+    :ref:`AT+BLUFI <BLE-AT>`: Start or Stop BluFi
+    -----------------------------------------------------------------
 
-**Function:**
+    Query Command
+    ^^^^^^^^^^^^^
 
-Query the status of BluFi.
+    **Function:**
 
-**Command:**
+    Query the status of BluFi.
 
-::
+    **Command:**
 
-    AT+BLUFI?
+    ::
 
-**Response:**
+        AT+BLUFI?
 
-If BluFi is not started, it will return:
+    **Response:**
 
-::
+    If BluFi is not started, it will return:
 
-    +BLUFI:0
+    ::
 
-    OK
+        +BLUFI:0
 
-If BluFi is started, it will return:
+        OK
 
-::
+    If BluFi is started, it will return:
 
-    +BLUFI:1
+    ::
 
-    OK
+        +BLUFI:1
 
-Set Command
-^^^^^^^^^^^
+        OK
 
-**Function:**
+    Set Command
+    ^^^^^^^^^^^
 
-Start or stop BluFi.
+    **Function:**
 
-**Command:**
+    Start or stop BluFi.
 
-::
+    **Command:**
 
-    AT+BLUFI=<option>[,<auth floor>]
+    ::
 
-**Response:**
+        AT+BLUFI=<option>[,<auth floor>]
 
-::
+    **Response:**
 
-    OK
+    ::
 
-Parameter
-^^^^^^^^^^
+        OK
 
--  **<option>**:
+    Parameter
+    ^^^^^^^^^^
 
-   -  0: stop BluFi
-   -  1: start BluFi
+    -  **<option>**:
 
--  **<auth floor>**: Wi-Fi authentication mode floor. ESP-AT will not connect to the AP whose authmode is lower than this floor.
+       -  0: stop BluFi
+       -  1: start BluFi
 
-   -  0: OPEN (Default)
-   -  1: WEP
-   -  2: WPA_PSK
-   -  3: WPA2_PSK
-   -  4: WPA_WPA2_PSK
-   -  5: WPA2_ENTERPRISE
-   -  6: WPA3_PSK
-   -  7: WPA2_WPA3_PSK
-   -  8: WAPI_PSK
-   -  9: OWE
-   -  10: WPA3_ENT_192
-   -  11: WPA3_EXT_PSK
-   -  12: WPA3_EXT_PSK_MIXED_MODE
-   -  13: DPP
-   -  14: WPA3_ENTERPRISE
-   -  15: WPA2_WPA3_ENTERPRISE
+    -  **<auth floor>**: Wi-Fi authentication mode floor. ESP-AT will not connect to the AP whose authmode is lower than this floor.
 
-Note
-^^^^
+       -  0: OPEN (Default)
+       -  1: WEP
+       -  2: WPA_PSK
+       -  3: WPA2_PSK
+       -  4: WPA_WPA2_PSK
+       -  5: WPA2_ENTERPRISE
+       -  6: WPA3_PSK
+       -  7: WPA2_WPA3_PSK
+       -  8: WAPI_PSK
+       -  9: OWE
+       -  10: WPA3_ENT_192
+       -  11: WPA3_EXT_PSK
+       -  12: WPA3_EXT_PSK_MIXED_MODE
+       -  13: DPP
+       -  14: WPA3_ENTERPRISE
+       -  15: WPA2_WPA3_ENTERPRISE
 
-- You can only start or stop BluFi when Bluetooth LE is not initialized (:ref:`AT+BLEINIT=0 <cmd-BINIT>`).
-- To achieve better performance, it is recommended to disable SoftAP by sending the :ref:`AT+CWMODE=0/1 <cmd-MODE>` command before using BluFi function. For more details, please refer to the `RF Coexistence <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ documentation.
-- After BluFi network configuration is completed, please send the :ref:`AT+BLUFI=0 <cmd-BLUFI>` command to disable BluFi and release resources.
+    Note
+    ^^^^
 
-Example
-^^^^^^^^
+    - You can only start or stop BluFi when Bluetooth LE is not initialized (:ref:`AT+BLEINIT=0 <cmd-BINIT>`).
 
-::
+    .. only:: esp32 or esp32c3
 
-    AT+BLUFI=1
+        - The BluFi commands cannot be used at the same time with :ref:`Bluetooth LE HID commands <cmd-BLEHIDINIT>`.
 
-.. _cmd-BLUFINAME:
+    - To achieve better performance, it is recommended to disable SoftAP by sending the :ref:`AT+CWMODE=0/1 <cmd-MODE>` command before using BluFi function. For more details, please refer to the `RF Coexistence <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ documentation.
+    - After BluFi network configuration is completed, please send the :ref:`AT+BLUFI=0 <cmd-BLUFI>` command to disable BluFi and release resources.
 
-:ref:`AT+BLUFINAME <BLE-AT>`: Query/Set BluFi Device Name
-------------------------------------------------------------------------------
+    Example
+    ^^^^^^^^
 
-Query Command
-^^^^^^^^^^^^^
+    ::
 
-**Function:**
+        AT+BLUFI=1
 
-Query the BluFi name.
+    .. _cmd-BLUFINAME:
 
-**Command:**
+    :ref:`AT+BLUFINAME <BLE-AT>`: Query/Set BluFi Device Name
+    ------------------------------------------------------------------------------
 
-::
+    Query Command
+    ^^^^^^^^^^^^^
 
-    AT+BLUFINAME?
+    **Function:**
 
-**Response:**
+    Query the BluFi name.
 
-::
+    **Command:**
 
-    +BLUFINAME:<device_name>
-    OK
+    ::
 
-Set Command
-^^^^^^^^^^^
+        AT+BLUFINAME?
 
-**Function:**
+    **Response:**
 
-Set the BluFi device name.
+    ::
 
-**Command:**
+        +BLUFINAME:<device_name>
+        OK
 
-::
+    Set Command
+    ^^^^^^^^^^^
 
-    AT+BLUFINAME=<device_name>
+    **Function:**
 
-**Response:**
+    Set the BluFi device name.
 
-::
+    **Command:**
 
-    OK
+    ::
 
-Parameter
-^^^^^^^^^^
+        AT+BLUFINAME=<device_name>
 
--  **<device_name>**: the name of BluFi device.
+    **Response:**
 
-Notes
-^^^^^
+    ::
 
--  If you need to set BluFi name, please set it before command :ref:`AT+BLUFI=1 <cmd-BLUFI>`. Otherwise, it will use the default name ``BLUFI_DEVICE``.
--  The maximum length of BluFi name is 26 bytes.
--  The Blufi APP can be downloaded from the app store.
+        OK
 
-Example
-^^^^^^^^
+    Parameter
+    ^^^^^^^^^^
 
-::
+    -  **<device_name>**: the name of BluFi device.
 
-    AT+BLUFINAME="BLUFI_DEV"
-    AT+BLUFINAME?
+    Notes
+    ^^^^^
 
-.. _cmd-BLUFISEND:
+    -  If you need to set BluFi name, please set it before command :ref:`AT+BLUFI=1 <cmd-BLUFI>`. Otherwise, it will use the default name ``BLUFI_DEVICE``.
+    -  The maximum length of BluFi name is 26 bytes.
+    -  The Blufi APP can be downloaded from the app store.
 
-:ref:`AT+BLUFISEND <BLE-AT>`: Send User-Customized Data over BluFi
------------------------------------------------------------------------------------------------------------------
+    Example
+    ^^^^^^^^
 
-Set Command
-^^^^^^^^^^^
+    ::
 
-**Function:**
+        AT+BLUFINAME="BLUFI_DEV"
+        AT+BLUFINAME?
+
+    .. _cmd-BLUFISEND:
+
+    :ref:`AT+BLUFISEND <BLE-AT>`: Send User-Customized Data over BluFi
+    -----------------------------------------------------------------------------------------------------------------
+
+    Set Command
+    ^^^^^^^^^^^
+
+    **Function:**
  
-Send user-customized data from the ESP side to a phone over BluFi.
+    Send user-customized data from the ESP side to a phone over BluFi.
 
-**Command:**
+    **Command:**
 
-::
+    ::
 
-    AT+BLUFISEND=<length>
+        AT+BLUFISEND=<length>
 
-**Response:**
+    **Response:**
 
-::
+    ::
 
-    >
+        >
 
-The symbol ``>`` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter <length> is met, the transmission starts.
+    The symbol ``>`` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter <length> is met, the transmission starts.
 
-If the data transmission is successful, AT returns:
+    If the data transmission is successful, AT returns:
 
-::
+    ::
 
-   OK
+       OK
 
-Parameters
-^^^^^^^^^^
+    Parameters
+    ^^^^^^^^^^
 
--  **<length>**: customized data length. Unit: byte.
+    -  **<length>**: customized data length. Unit: byte.
 
-Notes
-^^^^^
+    Notes
+    ^^^^^
 
--  The length of customized data cannot exceed 600 bytes.
--  If your ESP chip receives customized data from the phone, the data will be printed in the form of ``+BLUFIDATA:<len>,<data>``.
+    -  The length of customized data cannot exceed 600 bytes.
+    -  If your ESP chip receives customized data from the phone, the data will be printed in the form of ``+BLUFIDATA:<len>,<data>``.
 
-Example
-^^^^^^^^
+    Example
+    ^^^^^^^^
 
-::
+    ::
 
-    AT+BLUFISEND=4 
-    // After the symbol ">" shows, input 4 bytes of data, such as "1234". Then the data will be transmitted automatically.
+        AT+BLUFISEND=4 
+        // After the symbol ">" shows, input 4 bytes of data, such as "1234". Then the data will be transmitted automatically.
 
 .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 

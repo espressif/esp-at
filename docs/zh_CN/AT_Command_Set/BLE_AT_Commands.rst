@@ -2055,7 +2055,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLEGATTCWR=<conn_index>,<srv_index>,<char_index>[,<desc_index>],<length>
 
-    **Response:**
+    **响应:**
 
     ::
 
@@ -2756,6 +2756,10 @@ Bluetooth® Low Energy AT 命令集
 
     -  Bluetooth LE HID 无法与通用 GATT/GAP 命令同时使用。
 
+    .. only:: esp32 or esp32c3
+
+        -  Bluetooth LE HID 命令无法与 :ref:`BluFi 命令 <cmd-BLUFI>` 同时使用。
+
     示例
     ^^^^
 
@@ -2897,216 +2901,223 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLEHIDCONSUMER=233   // 调高音量
 
-.. _cmd-BLUFI:
+.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-:ref:`AT+BLUFI <BLE-AT>`：开启或关闭 BluFi
---------------------------------------------------------------
+    .. _cmd-BLUFI:
 
-查询命令
-^^^^^^^^
+    :ref:`AT+BLUFI <BLE-AT>`：开启或关闭 BluFi
+    --------------------------------------------------------------
 
-**功能：**
+    查询命令
+    ^^^^^^^^
 
-查询 BluFi 状态
+    **功能：**
 
-**命令：**
+    查询 BluFi 状态
 
-::
+    **命令：**
 
-    AT+BLUFI?
+    ::
 
-**响应：**
+        AT+BLUFI?
 
-若 BluFi 未开启，则返回：
+    **响应：**
 
-::
+    若 BluFi 未开启，则返回：
 
-    +BLUFI:0
+    ::
 
-    OK
+        +BLUFI:0
 
-若 BluFi 已开启，则返回：
+        OK
 
-::
+    若 BluFi 已开启，则返回：
 
-    +BLUFI:1
+    ::
 
-    OK
+        +BLUFI:1
 
-设置命令
-^^^^^^^^
+        OK
 
-**功能：**
+    设置命令
+    ^^^^^^^^
 
-开启或关闭 BluFi
+    **功能：**
 
-**命令：**
+    开启或关闭 BluFi
 
-::
+    **命令：**
 
-    AT+BLUFI=<option>[,<auth floor>]
+    ::
 
-**响应：**
+        AT+BLUFI=<option>[,<auth floor>]
 
-::
+    **响应：**
 
-    OK
+    ::
 
-参数
-^^^^
+        OK
 
--  **<option>**：
+    参数
+    ^^^^
 
-   -  0: 关闭 BluFi；
-   -  1: 开启 BluFi。
+    -  **<option>**：
 
--  **<auth floor>**：Wi-Fi 认证模式阈值，ESP-AT 不会连接到认证模式低于此阈值的 AP：
+       -  0: 关闭 BluFi；
+       -  1: 开启 BluFi。
 
-   -  0: OPEN（默认）
-   -  1: WEP
-   -  2: WPA_PSK
-   -  3: WPA2_PSK
-   -  4: WPA_WPA2_PSK
-   -  5: WPA2_ENTERPRISE
-   -  6: WPA3_PSK
-   -  7: WPA2_WPA3_PSK
-   -  8: WAPI_PSK
-   -  9: OWE
-   -  10: WPA3_ENT_192
-   -  11: WPA3_EXT_PSK
-   -  12: WPA3_EXT_PSK_MIXED_MODE
-   -  13: DPP
-   -  14: WPA3_ENTERPRISE
-   -  15: WPA2_WPA3_ENTERPRISE
+    -  **<auth floor>**：Wi-Fi 认证模式阈值，ESP-AT 不会连接到认证模式低于此阈值的 AP：
 
-说明
-^^^^
+       -  0: OPEN（默认）
+       -  1: WEP
+       -  2: WPA_PSK
+       -  3: WPA2_PSK
+       -  4: WPA_WPA2_PSK
+       -  5: WPA2_ENTERPRISE
+       -  6: WPA3_PSK
+       -  7: WPA2_WPA3_PSK
+       -  8: WAPI_PSK
+       -  9: OWE
+       -  10: WPA3_ENT_192
+       -  11: WPA3_EXT_PSK
+       -  12: WPA3_EXT_PSK_MIXED_MODE
+       -  13: DPP
+       -  14: WPA3_ENTERPRISE
+       -  15: WPA2_WPA3_ENTERPRISE
 
-- 您只能在 Bluetooth LE 未初始化情况下开启或关闭 BluFi (:ref:`AT+BLEINIT=0 <cmd-BINIT>`)。
-- 为获得更好的性能，建议在使用 BluFi 功能前，先发送 :ref:`AT+CWMODE=0/1 <cmd-MODE>` 命令禁用 SoftAP。如您想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
-- BluFi 配网后请发送 :ref:`AT+BLUFI=0 <cmd-BLUFI>` 命令关闭 BluFi，以释放资源。
+    说明
+    ^^^^
 
-示例
-^^^^
+    - 您只能在 Bluetooth LE 未初始化情况下开启或关闭 BluFi (:ref:`AT+BLEINIT=0 <cmd-BINIT>`)。
 
-::
+    .. only:: esp32 or esp32c3
 
-    AT+BLUFI=1
+        - BluFi 命令无法与 :ref:`Bluetooth LE HID 命令 <cmd-BLEHIDINIT>` 同时使用。
 
-.. _cmd-BLUFINAME:
+    - 为获得更好的性能，建议在使用 BluFi 功能前，先发送 :ref:`AT+CWMODE=0/1 <cmd-MODE>` 命令禁用 SoftAP。如您想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
+    - BluFi 配网后请发送 :ref:`AT+BLUFI=0 <cmd-BLUFI>` 命令关闭 BluFi，以释放资源。
 
-:ref:`AT+BLUFINAME <BLE-AT>`：查询/设置 BluFi 设备名称
--------------------------------------------------------------------------
+    示例
+    ^^^^
 
-查询命令
-^^^^^^^^
+    ::
 
-**功能：**
+        AT+BLUFI=1
 
-查询 BluFi 名称
+    .. _cmd-BLUFINAME:
 
-**命令：**
+    :ref:`AT+BLUFINAME <BLE-AT>`：查询/设置 BluFi 设备名称
+    -------------------------------------------------------------------------
 
-::
+    查询命令
+    ^^^^^^^^
 
-    AT+BLUFINAME?
+    **功能：**
 
-**响应：**
+    查询 BluFi 名称
 
-::
+    **命令：**
 
-    +BLUFINAME:<device_name>
-    OK
+    ::
 
-设置命令
-^^^^^^^^
+        AT+BLUFINAME?
 
-**功能：**
+    **响应：**
 
-设置 BluFi 设备名称
+    ::
 
-**命令：**
+        +BLUFINAME:<device_name>
+        OK
 
-::
+    设置命令
+    ^^^^^^^^
 
-    AT+BLUFINAME=<device_name>
+    **功能：**
 
-**响应：**
+    设置 BluFi 设备名称
 
-::
+    **命令：**
 
-    OK
+    ::
 
-参数
-^^^^
+        AT+BLUFINAME=<device_name>
 
--  **<device_name>**：BluFi 设备名称。
+    **响应：**
 
-说明
-^^^^
+    ::
 
--  如需设置 BluFi 设备名称，请在运行 :ref:`AT+BLUFI=1 <cmd-BLUFI>` 命令前设置，否则将使用默认名称 ``BLUFI_DEVICE``。
--  BluFi 设备名称最大长度为 26 字节。
--  Blufi APP 可以在应用商店中下载。
+        OK
 
-示例
-^^^^
+    参数
+    ^^^^
 
-::
+    -  **<device_name>**：BluFi 设备名称。
 
-    AT+BLUFINAME="BLUFI_DEV"
-    AT+BLUFINAME?
+    说明
+    ^^^^
 
-.. _cmd-BLUFISEND:
+    -  如需设置 BluFi 设备名称，请在运行 :ref:`AT+BLUFI=1 <cmd-BLUFI>` 命令前设置，否则将使用默认名称 ``BLUFI_DEVICE``。
+    -  BluFi 设备名称最大长度为 26 字节。
+    -  Blufi APP 可以在应用商店中下载。
 
-:ref:`AT+BLUFISEND <BLE-AT>`: 发送 BluFi 用户自定义数据
----------------------------------------------------------------------------
+    示例
+    ^^^^
 
-设置命令
-^^^^^^^^
+    ::
 
-**功能：**
+        AT+BLUFINAME="BLUFI_DEV"
+        AT+BLUFINAME?
 
-发送 BluFi 用户自定义数据给手机端
+    .. _cmd-BLUFISEND:
 
-**命令：**
+    :ref:`AT+BLUFISEND <BLE-AT>`: 发送 BluFi 用户自定义数据
+    ---------------------------------------------------------------------------
 
-::
+    设置命令
+    ^^^^^^^^
 
-    AT+BLUFISEND=<length>
+    **功能：**
 
-**Response:**
+    发送 BluFi 用户自定义数据给手机端
 
-::
+    **命令：**
 
-    >
+    ::
 
-符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，开始传输数据。
+        AT+BLUFISEND=<length>
 
-若数据传输成功，则提示：
+    **响应:**
 
-::
+    ::
 
-   OK
+        >
 
-参数
-^^^^
+    符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，开始传输数据。
 
--  **<length>**：数据长度，单位：字节。
+    若数据传输成功，则提示：
 
-说明
-^^^^
+    ::
 
--  自定义数据的长度不能超过 600 字节。
--  如果 ESP 收到手机发来的用户自定义数据，那么会以 ``+BLUFIDATA:<len>,<data>`` 格式打印。
+       OK
 
-示例
-^^^^
+    参数
+    ^^^^
 
-::
+    -  **<length>**：数据长度，单位：字节。
 
-    AT+BLUFISEND=4
-    // 提示 ">" 符号后，输入 4 字节的数据即可，如 "1234"，然后数据会被自动发送给手机
+    说明
+    ^^^^
+
+    -  自定义数据的长度不能超过 600 字节。
+    -  如果 ESP 收到手机发来的用户自定义数据，那么会以 ``+BLUFIDATA:<len>,<data>`` 格式打印。
+
+    示例
+    ^^^^
+
+    ::
+
+        AT+BLUFISEND=4
+        // 提示 ">" 符号后，输入 4 字节的数据即可，如 "1234"，然后数据会被自动发送给手机
 
 .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
