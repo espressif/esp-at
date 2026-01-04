@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -303,13 +303,17 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
                 break;
             }
         } else if (data_len < 0) {
+            if (data_len == -ESP_ERR_HTTP_EAGAIN) {
+                ESP_LOGD(TAG, "ESP_ERR_HTTP_EAGAIN invoked: Call timed out before data was ready");
+                continue;
+            }
             ESP_AT_LOGE(TAG, "Connection aborted!");
             break;
         } else {
             ret = ESP_OK;
             break;
         }
-    } while (ret == ESP_OK && data_len > 0);
+    } while (ret == ESP_OK && (data_len > 0 || data_len == -ESP_ERR_HTTP_EAGAIN));
     free(data);
 
     if (sp_http_to_fs->is_chunked) {
