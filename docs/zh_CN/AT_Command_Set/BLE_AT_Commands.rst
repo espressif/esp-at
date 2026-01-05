@@ -163,17 +163,21 @@ Bluetooth® Low Energy AT 命令集
     说明
     ^^^^
 
-    -  为获得更好的性能，建议在使用 Bluetooth LE 功能前，先发送 :ref:`AT+CWMODE=0/1 <cmd-MODE>` 命令禁用 SoftAP。如您想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
-    -  使用其它 Bluetooth LE 命令之前，请先调用本命令，初始化 Bluetooth LE 角色。
-    -  Bluetooth LE 角色初始化后，不能直接切换。如需切换角色，需要先调用 :ref:`AT+RST <cmd-RST>` 命令重启系统，再重新初始化 Bluetooth LE 角色。
-    -  建议在注销 Bluetooth LE 之前，停止正在进行的广播、扫描并断开所有的连接。
-    -  如果 Bluetooth LE 已初始化，则 :ref:`AT+CIPMODE <cmd-IPMODE>` 无法设置为 1。
-    -  如果设置为双角色，则既可以使用服务器角色相关的命令，也可以使用客户端角色相关的命令。
-    -  在双角色模式下，BLE 透传相关命令和 BLE 自动透传开机功能不支持。
-    -  在双角色模式下，可以设置广播参数、查询广播参数并开始或停止广播。
-    -  在双角色模式下，可以设置扫描参数、查询扫描参数并开始或停止扫描。
-    -  在双角色模式下，可以发起所有连接相关参数更新并查询连接参数。
-    -  在双角色模式下，连接和广播的总数限制为 3。
+    .. list::
+
+      -  为获得更好的性能，建议在使用 Bluetooth LE 功能前，先发送 :ref:`AT+CWMODE=0/1 <cmd-MODE>` 命令禁用 SoftAP。如您想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
+      -  使用其它 Bluetooth LE 命令之前，请先调用本命令，初始化 Bluetooth LE 角色。
+      -  Bluetooth LE 角色初始化后，不能直接切换角色。如需切换角色，请先执行 :ref:`AT+BLEINIT=0 <cmd-BINIT>` 注销 Bluetooth LE，或执行 :ref:`AT+RST <cmd-RST>` 重启系统，然后重新初始化 Bluetooth LE 角色。
+      -  建议在注销 Bluetooth LE 之前，停止正在进行的广播、扫描并断开所有的连接。
+      -  如果 Bluetooth LE 已初始化，则 :ref:`AT+CIPMODE <cmd-IPMODE>` 无法设置为 1。
+      -  如果设置为双角色，则既可以使用服务器角色相关的命令，也可以使用客户端角色相关的命令。
+      -  在双角色模式下，BLE 透传相关命令和 BLE 自动透传开机功能不支持。
+      -  在双角色模式下，可以设置广播参数、查询广播参数并开始或停止广播。
+      -  在双角色模式下，可以设置扫描参数、查询扫描参数并开始或停止扫描。
+      -  在双角色模式下，可以发起所有连接相关参数更新并查询连接参数。
+      -  在双角色模式下，连接和广播的总数限制为 3。
+      :esp32c2 or esp32c5 or esp32c6 or esp32c61: - 服务创建说明：当初始化 BLE 为 server 角色（``<init>`` 为 2）或双角色（``<init>`` 为 3）时，会自动创建 GATT 服务，无需单独的 AT 命令创建服务。
+      :esp32 or esp32c3: - 服务创建说明：初始化 BLE 为 server 或双角色（``<init>`` 为 2 或 3）后，请依次执行 :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>` 和 :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>` 来创建并启动 GATT 服务。
 
     示例
     ^^^^

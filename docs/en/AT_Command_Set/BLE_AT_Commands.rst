@@ -163,17 +163,21 @@ Introduction
     Notes
     ^^^^^
 
-    -  To achieve better performance, it is recommended to disable SoftAP by sending the :ref:`AT+CWMODE=0/1 <cmd-MODE>` command before using Bluetooth LE function. For more details, please refer to the `RF Coexistence <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ documentation.
-    -  Before using other Bluetooth LE AT commands, you should run this command first to trigger the initialization process.
-    -  After the initialization, the Bluetooth LE role cannot be changed unless you run :ref:`AT+RST <cmd-RST>` to restart the system first and then re-initialize the Bluetooth LE role.
-    -  Before you deinitialize the Bluetooth stack, it is recommended to stop broadcasting, stop scanning, and disconnect all existing connections.
-    -  If Bluetooth LE is initialized, :ref:`AT+CIPMODE <cmd-IPMODE>` cannot be set to 1.
-    -  In dual mode, both server-specific and client-specific commands are available.
-    -  In dual-mode, BLE passthrough-related commands and BLE auto-passthrough at startup are not supported.
-    -  In dual mode, it is possible to set advertising parameters, query advertising parameters, and start or stop advertising.
-    -  In dual mode, it is possible to set scanning parameters, query scanning parameters, and start or stop scanning.
-    -  In dual mode, it is possible to initiate all connection-related parameter updates and query connection parameters.
-    -  In dual mode, the total number of connections and advertisements combined is limited to 3.
+    .. list::
+
+      -  To achieve better performance, it is recommended to disable SoftAP by sending the :ref:`AT+CWMODE=0/1 <cmd-MODE>` command before using Bluetooth LE function. For more details, please refer to the `RF Coexistence <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ documentation.
+      -  Before using other Bluetooth LE AT commands, you should run this command first to trigger the initialization process.
+      -  The Bluetooth LE role cannot be changed directly after initialization. To switch roles, first execute :ref:`AT+BLEINIT=0 <cmd-BINIT>` to deinitialize Bluetooth LE, or execute :ref:`AT+RST <cmd-RST>` to restart the system, then re-initialize the Bluetooth LE role.
+      -  Before you deinitialize the Bluetooth stack, it is recommended to stop broadcasting, stop scanning, and disconnect all existing connections.
+      -  If Bluetooth LE is initialized, :ref:`AT+CIPMODE <cmd-IPMODE>` cannot be set to 1.
+      -  In dual mode, both server-specific and client-specific commands are available.
+      -  In dual-mode, BLE passthrough-related commands and BLE auto-passthrough at startup are not supported.
+      -  In dual mode, it is possible to set advertising parameters, query advertising parameters, and start or stop advertising.
+      -  In dual mode, it is possible to set scanning parameters, query scanning parameters, and start or stop scanning.
+      -  In dual mode, it is possible to initiate all connection-related parameter updates and query connection parameters.
+      -  In dual mode, the total number of connections and advertisements combined is limited to 3.
+      :esp32c2 or esp32c5 or esp32c6 or esp32c61: - Service Creation: When initializing BLE as a server role (``<init>`` = 2) or dual role (``<init>`` = 3), the GATT services are automatically created. Separate AT commands to create services are not required.
+      :esp32 or esp32c3: - Service Creation: After initializing BLE as a server role or dual role (set ``<init>`` to 2 or 3), please execute :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>` and :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>` in sequence to create and start GATT services.
 
     Example
     ^^^^^^^^
