@@ -91,7 +91,7 @@ ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_driver_cmd_regist, 19);
 #endif
 
 #ifdef CONFIG_AT_ETHERNET_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_eth_cmd_regist, 20);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_eth_cmd_regist, 2);
 #endif
 
 void esp_at_cmd_set_register(void)
