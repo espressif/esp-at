@@ -49,23 +49,49 @@ Note:
 
 - In the above picture, four jump wires are used to connect the {IDF_TARGET_NAME} board and USB to serial converter. If you do not use hardware flow control, two wires connecting TX/RX and a simpler converter will be enough.
 
-.. only:: esp32 or esp32c5 or esp32c6 or esp32c61 or esp32s2
+.. only:: esp32
 
-  - If you use an {IDF_TARGET_NAME} module instead of a development board and flash firmware via UART, you need to reserve the UART pins (refer to {IDF_TARGET_DATASHEET_EN_URL} > Section Pin Description for more details) and strapping pins (refer to {IDF_TARGET_DATASHEET_EN_URL} > Section Strapping Pins for more details), and enter the download mode by controlling the strapping pin level.
+  - If you use an {IDF_TARGET_NAME} module (instead of a development board) and flash firmware via UART, you need to:
+
+    - Reserve the U0RXD and U0TXD pins (refer to `Datasheet > Pin Overview <{IDF_TARGET_DATASHEET_EN_URL}>`_)
+    - Reserve the strapping pins (refer to `Datasheet > Boot Configurations <{IDF_TARGET_DATASHEET_EN_URL}>`_), enter download mode by controlling the strapping pin level
+    - For more details, please refer to `{IDF_TARGET_NAME} Hardware Requirements for Entering Download Mode <https://docs.espressif.com/projects/esp-techpedia/en/latest/esp-friends/get-started/try-firmware/try-firmware-hardware/{IDF_TARGET_PATH_NAME}.html>`_
+
+.. only:: esp32c5 or esp32c6 or esp32c61 or esp32s2
+
+  - If you use an {IDF_TARGET_NAME} module (instead of a development board) and flash firmware via UART, you need to:
+
+    - Reserve the U0RXD and U0TXD pins (refer to `Datasheet > IO Pins <{IDF_TARGET_DATASHEET_EN_URL}>`_)
+    - Reserve the strapping pins (refer to `Datasheet > Boot Configurations <{IDF_TARGET_DATASHEET_EN_URL}>`_), enter download mode by controlling the strapping pin level
+    - For more details, please refer to `{IDF_TARGET_NAME} Hardware Requirements for Entering Download Mode <https://docs.espressif.com/projects/esp-techpedia/en/latest/esp-friends/get-started/try-firmware/try-firmware-hardware/{IDF_TARGET_PATH_NAME}.html>`_
 
 .. only:: esp32c2
 
-  - If you use an {IDF_TARGET_NAME} module instead of a development board and flash firmware via UART, you need to reserve the UART pins (refer to {IDF_TARGET_DATASHEET_EN_URL} > Section Pin Description for more details) and one of the following conditions needs to be met:
+  - If you use an {IDF_TARGET_NAME} module (instead of a development board) and flash firmware via UART, you need to:
 
-    - Reserve the Strapping pins (refer to {IDF_TARGET_DATASHEET_EN_URL} > Section Strapping Pins for more details), and enter the download mode by controlling the Strapping pin level.
-    - Enter the download mode by sending :ref:`AT+RST=1,1 <cmd-RST>` command.
+    - Reserve the U0RXD and U0TXD pins (refer to `Datasheet > IO Pins <{IDF_TARGET_DATASHEET_EN_URL}>`_)
+    - Choose one of the following methods to enter download mode:
+
+      - Reserve the strapping pins (refer to `Datasheet > Boot Configurations <{IDF_TARGET_DATASHEET_EN_URL}>`_) and enter download mode by controlling the strapping pin level
+      - Send :ref:`AT+RST=1,1 <cmd-RST>` command to enter download mode
+
+    - For more details, please refer to `{IDF_TARGET_NAME} Hardware Requirements for Entering Download Mode <https://docs.espressif.com/projects/esp-techpedia/en/latest/esp-friends/get-started/try-firmware/try-firmware-hardware/{IDF_TARGET_PATH_NAME}.html>`_
 
 .. only:: esp32c3
 
-  - If you use an {IDF_TARGET_NAME} module instead of a development board, you need to reserve the UART/USB pins (refer to {IDF_TARGET_DATASHEET_EN_URL} > Section Pin Description for more details) and one of the following conditions needs to be met:
+  - If you use an {IDF_TARGET_NAME} module (instead of a development board) and flash firmware via UART/USB, you need to:
 
-    - Reserve the Strapping pins (refer to {IDF_TARGET_DATASHEET_EN_URL} > Section Strapping Pins for more details), and enter the download mode by controlling the Strapping pin level.
-    - Enter the download mode by sending :ref:`AT+RST=1,1 <cmd-RST>` command.
+    - Reserve the relevant pins (refer to `Datasheet > IO Pins <{IDF_TARGET_DATASHEET_EN_URL}>`_):
+
+      - For UART flashing: reserve U0RXD and U0TXD pins
+      - For USB flashing: reserve USB pins
+
+    - Methods to enter download mode (choose one):
+
+      - Reserve the strapping pins (refer to `Datasheet > Boot Configurations <{IDF_TARGET_DATASHEET_EN_URL}>`_) and enter download mode by controlling the pin levels
+      - Send the :ref:`AT+RST=1,1 <cmd-RST>` command to enter download mode
+
+    - For more details, please refer to `{IDF_TARGET_NAME} Hardware Requirements for Entering Download Mode <https://docs.espressif.com/projects/esp-techpedia/en/latest/esp-friends/get-started/try-firmware/try-firmware-hardware/{IDF_TARGET_PATH_NAME}.html>`_
 
 .. only:: esp32
 
