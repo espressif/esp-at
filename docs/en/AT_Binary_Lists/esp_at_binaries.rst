@@ -185,13 +185,13 @@ Before using the AT firmware below, please read the :doc:`../disclaimer` careful
   ^^^^^^^^^^^^^^^^^^^
 
   .. hint::
-    Please contact `Espressif Sales <https://www.espressif.com/en/contact-us/sales-questions>`_ or sales@espressif.com for AT firmware suitable for the {IDF_TARGET_NAME} series chips.
 
-    If you contact us via email, please include "Request {IDF_TARGET_NAME} AT Firmware Download Link" in the subject line, and provide the following information in the email body: your company name, the Espressif product you are using, project name, application scenario, project start date, expected mass production date, project status, annual estimated purchase quantity, and the required AT firmware version.
+    - For testing purposes, you may download the ``esp32c5-4MB-at`` firmware from :doc:`GitHub Actions <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>`, or :doc:`compile the ESP-AT project locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>`.
+    - For production use, please click on the released version below, fill out the AT Firmware Application form, and obtain the AT firmware suitable for the {IDF_TARGET_NAME} series chips.
 
   Released version:
 
-  - v5.0.0.0 (Recommended)
+  - `v5.0.0.0 <https://www.espressif.com/en/contact-us/at-firmware-application?chip={IDF_TARGET_NAME}&type={IDF_TARGET_NAME}-4mb&version=v5.0.0.0>`__ (Recommended)
 
 .. only:: esp32c6
 
@@ -208,13 +208,13 @@ Before using the AT firmware below, please read the :doc:`../disclaimer` careful
   ^^^^^^^^^^^^^^^^^^^^
 
   .. hint::
-    Please contact `Espressif Sales <https://www.espressif.com/en/contact-us/sales-questions>`_ or sales@espressif.com for AT firmware suitable for the {IDF_TARGET_NAME} series chips.
 
-    If you contact us via email, please include "Request {IDF_TARGET_NAME} AT Firmware Download Link" in the subject line, and provide the following information in the email body: your company name, the Espressif product you are using, project name, application scenario, project start date, expected mass production date, project status, annual estimated purchase quantity, and the required AT firmware version.
+    - For testing purposes, you may download the ``esp32c61-4MB-at`` firmware from :doc:`GitHub Actions <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>`, or :doc:`compile the ESP-AT project locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>`.
+    - For production use, please click on the released version below, fill out the AT Firmware Application form, and obtain the AT firmware suitable for the {IDF_TARGET_NAME} series chips.
 
   Released version:
 
-  - v5.0.0.0 (Recommended)
+  - `v5.0.0.0 <https://www.espressif.com/en/contact-us/at-firmware-application?chip={IDF_TARGET_NAME}&type={IDF_TARGET_NAME}-4mb&version=v5.0.0.0>`__ (Recommended)
 
 .. only:: esp32s2
 

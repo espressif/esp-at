@@ -187,11 +187,12 @@
   .. hint::
     请联系 `乐鑫商务 <https://www.espressif.com.cn/zh-hans/contact-us/sales-questions>`_ 或 sales@espressif.com 获取适用于 {IDF_TARGET_NAME} 系列芯片的 AT 固件。
 
-    若通过邮件联系，请在邮件主题注明“请求 {IDF_TARGET_NAME} AT 固件下载链接”，并在邮件正文中提供如下信息：贵司名称、使用的乐鑫产品、项目名称、应用场景、项目启动日期、预计量产日期、项目状态、年预计采购数量、需要的 AT 固件版本。
+    - 如需测试，请从 :doc:`GitHub Actions 里下载 <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` ``esp32c5-4MB-at`` 固件，或者 :doc:`本地编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`。
+    - 如需量产，请点击下面已发布的版本，填写 AT 固件申请表，获取适用于 {IDF_TARGET_NAME} 系列芯片的 AT 固件。
 
-  已发布的版本：
+  **已发布的版本：**
 
-  - v5.0.0.0（推荐）
+  - `v5.0.0.0 <https://www.espressif.com/zh-hans/contact-us/at-firmware-application?chip={IDF_TARGET_NAME}&type={IDF_TARGET_NAME}-4mb&version=v5.0.0.0>`__ （推荐）
 
 .. only:: esp32c6
 
@@ -210,11 +211,12 @@
   .. hint::
     请联系 `乐鑫商务 <https://www.espressif.com.cn/zh-hans/contact-us/sales-questions>`_ 或 sales@espressif.com 获取适用于 {IDF_TARGET_NAME} 系列芯片的 AT 固件。
 
-    若通过邮件联系，请在邮件主题注明“请求 {IDF_TARGET_NAME} AT 固件下载链接”，并在邮件正文中提供如下信息：贵司名称、使用的乐鑫产品、项目名称、应用场景、项目启动日期、预计量产日期、项目状态、年预计采购数量、需要的 AT 固件版本。
+    - 如需测试，请从 :doc:`GitHub Actions 里下载 <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` ``esp32c61-4MB-at`` 固件，或者 :doc:`本地编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`。
+    - 如需量产，请点击下面已发布的版本，填写 AT 固件申请表，获取适用于 {IDF_TARGET_NAME} 系列芯片的 AT 固件。
 
-  已发布的版本：
+  **已发布的版本：**
 
-  - v5.0.0.0（推荐）
+  - `v5.0.0.0 <https://www.espressif.com/zh-hans/contact-us/at-firmware-application?chip={IDF_TARGET_NAME}&type={IDF_TARGET_NAME}-4mb&version=v5.0.0.0>`__ （推荐）
 
 .. only:: esp32s2
 

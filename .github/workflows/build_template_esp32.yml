@@ -19,7 +19,7 @@ on:
       enable_at_debug:
         required: false
         type: boolean
-    # parameters from upstream inherit
+    # parameters inherited from upstream (reserved for potential future custom project needs)
     secrets:
       AT_OTA_TOKEN_WROOM32:
         required: false
@@ -65,28 +65,18 @@ jobs:
       if: ${{ inputs.enable_all_wifi_features_no_bt == true || inputs.enable_all_bt_features_no_wifi == true || inputs.enable_at_debug == true }}
       run: |
         source .github/workflows/utils.sh && enlarge_app_partition
-    - name: Set up OTA tokens
+    - name: Disable official OTA support
       run: |
-        cd components/at/private_include
-        rm -f at_ota_token.h
-        echo -e "#pragma once" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROOM32 \"${{ secrets.AT_OTA_TOKEN_WROOM32 }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROOM32 \"${{ secrets.AT_OTA_TOKEN_WROOM32 }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_WROVER32 \"${{ secrets.AT_OTA_TOKEN_WROVER32 }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_WROVER32 \"${{ secrets.AT_OTA_TOKEN_WROVER32 }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_PICO_D4 \"${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_PICO_D4 \"${{ secrets.AT_OTA_TOKEN_ESP32_PICO_D4 }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_SOLO_1 \"${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_SOLO_1 \"${{ secrets.AT_OTA_TOKEN_ESP32_SOLO_1 }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1 \"${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}\"" >> at_ota_token.h
-        echo -e "#define CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 \"${{ secrets.AT_OTA_TOKEN_ESP32_MINI_1 }}\"" >> at_ota_token.h
-        cd -
+        source .github/workflows/utils.sh && disable_official_ota_cmd
     - name: Install compilation environment
       run: |
         ./build.py install
     - name: Compile
       run: |
         ./build.py build
+    - name: Post process
+      run: |
+        cp .github/workflows/NOTES.txt NOTES.txt
     - name: Upload artifacts
       uses: actions/upload-artifact@v4.4.3
       with:
@@ -103,3 +93,4 @@ jobs:
           build/project_description.json
           build/download.config
           build/factory/*
+          NOTES.txt

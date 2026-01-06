@@ -1,0 +1,49 @@
+================================================================================
+                            ⚠️  IMPORTANT / 重要提示  ⚠️
+================================================================================
+
+【English】
+
+1. This AT firmware is a temporary build for testing purposes only!
+2. This AT firmware does not support official OTA functionality (AT+CIUPDATE).
+3. If you plan to use this firmware for mass production, please make sure to conduct comprehensive function verification and testing based on the actual application scenarios of your product.
+4. If you need released AT firmware for mass production, please visit https://www.espressif.com/en/contact-us/at-firmware-application to fill out the application form.
+5. If you need AT firmware with official OTA support (AT+CIUPDATE support based on item 1) for mass production, please contact Espressif sales via one of the following channels:
+   Sales contact page: https://www.espressif.com/en/contact-us/sales-questions
+   Email: sales@espressif.com
+   If contacting via email, please specify "Request GitHub Actions AT Firmware Download Link with Official OTA Support" in the subject line and provide the following information in the email body.
+      Company name:
+      Espressif product you are using:
+      Project name:
+      Application scenario:
+      Project start date:
+      Expected mass production date:
+      Project status:
+      Estimated annual purchase quantity:
+      Required AT firmware version: <Fill in the URL link of the temporary build version from item 1, and indicate that official OTA support (AT+CIUPDATE) is required>
+      Details:
+
+--------------------------------------------------------------------------------
+
+【中文】
+
+1. 此 AT 固件为临时构建版本，仅供测试使用！
+2. 此 AT 固件不支持官方 OTA 功能 (AT+CIUPDATE)。
+3. 若使用此固件量产，请务必依据您产品的实际应用场景进行全面的功能验证与测试。
+4. 若需发布的 AT 固件用于量产，请访问 https://www.espressif.com/zh-hans/contact-us/at-firmware-application 填写申请表获取。
+5. 若需支持官方 OTA 功能的 AT 固件（在第 1 条的基础上加上 AT+CIUPDATE 支持）用于量产，请通过以下任一渠道联系乐鑫商务
+   联系商务页面：https://www.espressif.com.cn/zh-hans/contact-us/sales-questions
+   电子邮箱：sales@espressif.com
+   若通过邮件联系，请在邮件主题注明“请求支持官方 OTA 功能的 GitHub Actions AT 固件下载链接”，并在邮件正文中提供如下信息。
+      贵司名称：
+      使用的乐鑫产品：
+      项目名称：
+      应用场景：
+      项目启动日期：
+      预计量产日期：
+      项目状态：
+      年预计采购数量：
+      需要的 AT 固件版本：<填写第 1 条临时构建版本的 URL 链接，并注明需要支持官方 OTA 功能 (AT+CIUPDATE)>
+      详情：
+
+================================================================================
