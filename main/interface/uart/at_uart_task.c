@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -20,6 +20,7 @@
 #include "esp_system.h"
 #include "driver/gpio.h"
 #include "driver/uart.h"
+#include "soc/uart_channel.h"
 #include "at_uart.h"
 #include "esp_at_interface.h"
 
@@ -206,6 +207,14 @@ static void at_uart_init(void)
                 g_at_cmd_port, g_uart_port_pin.tx_pin, g_uart_port_pin.rx_pin,
                 g_uart_port_pin.cts_pin, g_uart_port_pin.rts_pin, config.baud_rate);
 
+#if CONFIG_ESP_CONSOLE_UART_CUSTOM
+    ESP_AT_LOGI(TAG, "AT log port:uart%d tx:%d rx:%d baudrate:%d", CONFIG_ESP_CONSOLE_UART_NUM,
+                (CONFIG_ESP_CONSOLE_UART_TX_GPIO >= 0) ? CONFIG_ESP_CONSOLE_UART_TX_GPIO : UART_NUM_0_TXD_DIRECT_GPIO_NUM,
+                (CONFIG_ESP_CONSOLE_UART_RX_GPIO >= 0) ? CONFIG_ESP_CONSOLE_UART_RX_GPIO : UART_NUM_0_RXD_DIRECT_GPIO_NUM,
+                CONFIG_ESP_CONSOLE_UART_BAUDRATE);
+#else
+    ESP_AT_LOGI(TAG, "AT log port:uart%d baudrate:%d", CONFIG_ESP_CONSOLE_UART_NUM, CONFIG_ESP_CONSOLE_UART_BAUDRATE);
+#endif
     xTaskCreate(at_uart_task, "uTask", 1024, NULL, 1, &s_task_handle);
 }
 
