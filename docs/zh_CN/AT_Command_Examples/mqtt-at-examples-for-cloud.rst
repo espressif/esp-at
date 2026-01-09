@@ -42,22 +42,28 @@ MQTT AT 连接云示例
 使用 MQTT AT 命令基于双向认证连接 AWS IoT
 ----------------------------------------------
 
-替换证书
+配置证书
 ^^^^^^^^^^^^^^
+
+有三种方式可以替换 MQTT 证书：
+
+**方式一：重新编译固件**
 
 打开本地 ESP-AT 工程，并执行如下操作：
 
-- 使用 ``Amazon-root-CA-1.pem`` 替换 :component_file:`customized_partitions/raw_data/mqtt_ca/mqtt_ca.crt`。
-- 使用 ``device.pem.crt`` 替换 :component_file:`customized_partitions/raw_data/mqtt_cert/mqtt_client.crt`。
-- 使用 ``private.pem.key`` 替换 :component_file:`customized_partitions/raw_data/mqtt_key/mqtt_client.key`。
+- 使用 ``Amazon-root-CA-1.pem`` 替换 :component_file:`mqtt_ca.crt <customized_partitions/raw_data/mqtt_ca/mqtt_ca.crt>`。
+- 使用 ``device.pem.crt`` 替换 :component_file:`mqtt_client.crt <customized_partitions/raw_data/mqtt_cert/mqtt_client.crt>`。
+- 使用 ``private.pem.key`` 替换 :component_file:`mqtt_client.key <customized_partitions/raw_data/mqtt_key/mqtt_client.key>`。
 
-编译和烧录 AT 固件
-^^^^^^^^^^^^^^^^^^^^
+然后编译 ESP-AT 项目以构建 AT 固件，并将固件烧录到您的 {IDF_TARGET_NAME} 设备。欲了解更多信息，请参阅 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`。
 
-编译 ESP-AT 项目以构建 AT 固件，并将固件烧录到您的 {IDF_TARGET_NAME} 设备。欲了解更多信息，请参阅 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`。
+**方式二：运行时更新证书**
 
-.. note::
-  若不想编译 ESP-AT 工程替换证书，可直接使用 AT 命令替换固件中的证书，具体请参阅 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+如果不想重新编译固件，可以直接使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令在运行时更新 MQTT 证书。具体操作步骤请参考 :ref:`AT+SYSMFG 命令示例中的 PKI 配置 <sysmfg-pki>`，证书配置方法与 SSL 证书相同，仅需将命名空间修改为 ``mqtt_cert``、``mqtt_key``、``mqtt_ca`` 即可。
+
+**方式三：仅更新证书 bin 文件**
+
+如果您已有 AT 固件，只需预烧录自己的证书，可以直接更新 ``mfg_nvs.bin`` 文件。具体操作步骤请参阅 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
 
 使用 AT 命令连接到 AWS IoT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

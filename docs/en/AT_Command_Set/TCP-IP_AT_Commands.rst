@@ -1858,7 +1858,7 @@ Notes
 
 -  If you want this configuration to take effect immediately, run this command before establishing an SSL connection.
 -  The configuration changes will be saved in the NVS partition. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL :term:`Passthrough Mode` on power-up, the {IDF_TARGET_NAME} will establish an SSL connection based on this configuration when powered up next time.
--  If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the SSL certificate. If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
+-  If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the SSL certificate (for detailed steps, please refer to :ref:`AT+SYSMFG command examples <sysmfg-ssl-client>`). If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
 -  If ``<auth_mode>`` is configured to 2 or 3, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+CIPSTART <cmd-START>` command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNPTIME? <cmd-SNTPT>` command to query the current time.)
 
 .. _cmd-SSLCCIPHER:

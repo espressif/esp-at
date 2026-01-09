@@ -366,7 +366,10 @@ WebSocket AT 示例
 
    说明：
 
-   - 如果您想使用自己的客户端证书或者使用多套证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+   - 如果您想使用自己的客户端证书或者使用多套证书，有两种方式：
+   
+     - 运行时更新：可以直接使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新证书，无需重新编译固件。具体操作请参考 :ref:`AT+SYSMFG 命令示例中的 PKI 配置 <sysmfg-pki>`，证书配置方法与 SSL 证书相同，仅需将命名空间修改为 ``wss_cert``、``wss_key``、``wss_ca`` 即可。
+     - 预烧录证书：如果想要在编译时预烧录证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
 
 #. {IDF_TARGET_NAME} 设备作为客户端连接到 WebSocket 服务器。
 

@@ -32,6 +32,7 @@ AT FAQ
       - :ref:`MCU 给设备发 AT 命令无返回，是什么原因？ <faq-no-response>`
       - :ref:`AT 命令中特殊字符如何处理？ <faq-special-char>`
       - :ref:`AT 命令中串口波特率是否可以修改？ <faq-change-baudrate>`
+      - :ref:`如何修改 AT 命令端口的 UART 管脚？ <faq-change-uart-pins>`
       - :ref:`如何解决 TCP/SSL 数据传输时的丢失问题？ <faq-data-loss>`
       - :ref:`透传模式热点断开能否给出提示信息？ <faq-passthrough-disconnect>`
       - :ref:`Wi-Fi 断开是为什么？ <faq-wifi-disconnect>`
@@ -207,8 +208,20 @@ ESP 系列模组出厂时 Flash 中未烧录 ESP-AT 固件，上电后会提示 
 
 可以修改，方法：
 
-  - 使用串口命令 :ref:`AT+UART_CUR <cmd-UARTC>` 或 :ref:`AT+UART_DEF <cmd-UARTD>`
-  - 重新编译 AT 固件，参考 :doc:`如何编译 AT 工程 <Compile_and_Develop/How_to_clone_project_and_compile_it>` 和 :doc:`修改 UART 波特率配置 <Compile_and_Develop/How_to_set_AT_port_pin>`
+  - 第一种方法，您可以通过串口命令 :ref:`AT+UART_CUR <cmd-UARTC>` 或 :ref:`AT+UART_DEF <cmd-UARTD>`。
+  - 第二种方法，您可以重新编译 AT 固件，编译介绍： :doc:`如何编译 AT 工程 <Compile_and_Develop/How_to_clone_project_and_compile_it>` 与 :doc:`修改 UART 波特率配置 <Compile_and_Develop/How_to_set_AT_port_pin>`。
+  - 第三种方法，您可以使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令修改出厂默认的 UART 波特率，请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-uart-config>`。
+
+.. _faq-change-uart-pins:
+
+:ref:`如何修改 AT 命令端口的 UART 管脚？ <faq-at-index>`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  有多种方法可以修改 AT 命令端口的 UART 管脚：
+
+  - 第一种方法，请参考 :doc:`如何设置 AT 端口管脚 <Compile_and_Develop/How_to_set_AT_port_pin>` 文档，修改 ``factory_param_data.csv`` 文件中的 UART 配置参数，然后重新编译和烧录固件。
+  - 第二种方法，如果您想在运行时通过 AT 命令修改 UART 配置而无需重新编译固件，请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-uart-config>`。此方法可以动态修改出厂默认的 UART 配置，包括波特率、管脚等参数。
+  - 第三种方法，如果您已有 AT 固件并且只需要修改 UART 管脚，可以使用 :doc:`at.py 工具 <Compile_and_Develop/tools_at_py>` 直接修改固件参数，无需重新编译。
 
 .. _faq-data-loss:
 

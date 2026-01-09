@@ -7,3 +7,4 @@
 # Empty lines and lines starting with # are ignored
 
 get-started/ESP_AT_Commands_Set              AT_Command_Set/AT_Command_Set
+AT_Command_Examples/system_mfg_at_examples   AT_Command_Examples/sysmfg_at_examples

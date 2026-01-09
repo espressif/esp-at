@@ -898,7 +898,7 @@ Below is an example showing how an SSL server is established when {IDF_TARGET_NA
 
 In this example, the certificate used is the default certificate in esp-at. You can also use your own certificate:
 
-  - To use your own SSL client certificate, replace the default certificate according to the :doc:`../Compile_and_Develop/How_to_update_pki_config` document.
+  - To use your own SSL client certificate, you can either update it at runtime using the :ref:`AT+SYSMFG <cmd-SYSMFG>` command (refer to :ref:`PKI Configuration in AT+SYSMFG command examples <sysmfg-pki>`), or replace the default certificate by recompiling the firmware (refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`).
   - To use your own SSL server certificate, replace the SSL server certificate path below with your own certificate path.
 
 #. Set the Wi-Fi mode to station.

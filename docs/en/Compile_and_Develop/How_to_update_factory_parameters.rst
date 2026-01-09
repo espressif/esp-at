@@ -5,7 +5,10 @@ How to Update Factory Parameters
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document describes how to update the default factory parameter configuration for ESP-AT. The factory parameter configuration includes some Wi-Fi configurations, UART configurations, and module configurations.
+This document describes how to update the default factory parameter configuration for ESP-AT by recompiling the firmware. The factory parameter configuration includes some Wi-Fi configurations, UART configurations, and module configurations.
+
+.. note::
+  If you want to update factory parameters at runtime using AT commands without recompiling the firmware, please refer to :ref:`AT+SYSMFG command examples <sysmfg-factory-param>`.
 
 .. contents::
    :local:
@@ -25,6 +28,10 @@ The default factory parameters are configured in the source file :component_file
       * - Function
         - Current Configuration
         - Related AT Commands
+      * - Version Information
+        - version (version number of the factory parameter structure, currently version 4, used to identify parameter format and compatibility)
+        - :ref:`AT+SYSMFG <cmd-SYSMFG>`
+
       * - Wi-Fi Configuration
         -
           * max_tx_power (Wi-Fi maximum transmission power for {IDF_TARGET_NAME}, see `{IDF_TARGET_NAME} Transmit Power <https://docs.espressif.com/projects/esp-idf/en/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t>`_ for the setting range)
@@ -42,6 +49,13 @@ The default factory parameters are configured in the source file :component_file
           * uart_cts_pin (UART CTS pin)
           * uart_rts_pin (UART RTS pin)
         - All AT commands requiring UART functionality
+
+      * - System Store Mode
+        - sys_store (default system store mode)
+
+          * 0: Do not automatically store configuration changes to flash
+          * 1: Automatically store configuration changes to flash (default)
+        - :ref:`AT+SYSSTORE <cmd-SYSSTORE>`
 
       * - Module Name
         - module_name
