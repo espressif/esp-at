@@ -49,23 +49,49 @@
 
 - 上图使用 4 根杜邦线连接 {IDF_TARGET_NAME} 开发板和 USB 转 UART 串口模块，但如果您不使用硬件流控功能，只需 2 根杜邦线连接 TX/RX 即可。
 
-.. only:: esp32 or esp32c5 or esp32c6 or esp32c61 or esp32s2
+.. only:: esp32
 
-  - 如果您使用的是 {IDF_TARGET_NAME} 模组，而不是开发板，则通过 UART 烧录时，您需要预留出 UART 管脚（参考 {IDF_TARGET_DATASHEET_CN_URL} > 章节管脚描述），预留出 Strapping 管脚（参考 {IDF_TARGET_DATASHEET_CN_URL} > 章节 Strapping 管脚），通过控制 Strapping 管脚电平进入下载模式。
+  - 如果您使用 {IDF_TARGET_NAME} 模组（而非开发板）并通过 UART 烧录固件，需要：
+
+    - 预留 U0RXD 和 U0TXD 管脚（参考 `技术规格书 > 管脚概述 <{IDF_TARGET_DATASHEET_CN_URL}>`_）
+    - 预留 Strapping 管脚（参考 `技术规格书 > 启动配置项 <{IDF_TARGET_DATASHEET_CN_URL}>`_），通过控制 Strapping 管脚电平进入下载模式
+    - 更多细节请参考 `{IDF_TARGET_NAME} 进入下载模式的硬件要求 <https://docs.espressif.com/projects/esp-techpedia/zh_CN/latest/esp-friends/get-started/try-firmware/try-firmware-hardware/{IDF_TARGET_PATH_NAME}.html>`_
+
+.. only:: esp32c5 or esp32c6 or esp32c61 or esp32s2
+
+  - 如果您使用 {IDF_TARGET_NAME} 模组（而非开发板）并通过 UART 烧录固件，需要：
+
+    - 预留 U0RXD 和 U0TXD 管脚（参考 `技术规格书 > IO 管脚 <{IDF_TARGET_DATASHEET_CN_URL}>`_）
+    - 预留 Strapping 管脚（参考 `技术规格书 > 启动配置项 <{IDF_TARGET_DATASHEET_CN_URL}>`_），通过控制 Strapping 管脚电平进入下载模式
+    - 更多细节请参考 `{IDF_TARGET_NAME} 进入下载模式的硬件要求 <https://docs.espressif.com/projects/esp-techpedia/zh_CN/latest/esp-friends/get-started/try-firmware/try-firmware-hardware/{IDF_TARGET_PATH_NAME}.html>`_
 
 .. only:: esp32c2
 
-  - 如果您使用的是 {IDF_TARGET_NAME} 模组，而不是开发板，则通过 UART 烧录时，您需要预留出 UART 管脚（参考 {IDF_TARGET_DATASHEET_CN_URL} > 章节管脚描述），同时需要满足以下条件之一：
+  - 如果您使用 {IDF_TARGET_NAME} 模组（而非开发板）并通过 UART 烧录固件，需要：
 
-    - 预留出 Strapping 管脚（参考 {IDF_TARGET_DATASHEET_CN_URL} > 章节 Strapping 管脚），通过控制管脚电平进入下载模式
-    - 通过发送 :ref:`AT+RST=1,1 <cmd-RST>` 命令，进入下载模式
+    - 预留 U0RXD 和 U0TXD 管脚（参考 `技术规格书 > IO 管脚 <{IDF_TARGET_DATASHEET_CN_URL}>`_）
+    - 选择以下方式之一进入下载模式：
+
+      - 预留 Strapping 管脚（参考 `技术规格书 > 启动配置项 <{IDF_TARGET_DATASHEET_CN_URL}>`_）并通过控制管脚电平进入下载模式
+      - 发送 :ref:`AT+RST=1,1 <cmd-RST>` 命令进入下载模式
+
+    - 更多细节请参考 `{IDF_TARGET_NAME} 进入下载模式的硬件要求 <https://docs.espressif.com/projects/esp-techpedia/zh_CN/latest/esp-friends/get-started/try-firmware/try-firmware-hardware/{IDF_TARGET_PATH_NAME}.html>`_
 
 .. only:: esp32c3
 
-  - 如果您使用的是 {IDF_TARGET_NAME} 模组，而不是开发板，则通过 UART/USB 烧录时，您需要预留出 UART/USB 管脚（参考 {IDF_TARGET_DATASHEET_CN_URL} > 章节管脚描述），同时需要满足以下条件之一：
+  - 如果您使用 {IDF_TARGET_NAME} 模组（而非开发板）并通过 UART/USB 烧录固件，需要：
 
-    - 预留出 Strapping 管脚（参考 {IDF_TARGET_DATASHEET_CN_URL} > 章节 Strapping 管脚），通过控制管脚电平进入下载模式
-    - 通过发送 :ref:`AT+RST=1,1 <cmd-RST>` 命令，进入下载模式
+    - 预留相关管脚（参考 `技术规格书 > IO 管脚 <{IDF_TARGET_DATASHEET_CN_URL}>`_）：
+
+      - UART 烧录：预留 U0RXD 和 U0TXD 管脚
+      - USB 烧录：预留 USB 管脚
+
+    - 进入下载模式的方式（任选其一）：
+
+      - 预留 Strapping 管脚（参考 `技术规格书 > 启动配置项 <{IDF_TARGET_DATASHEET_CN_URL}>`_），通过控制管脚电平进入下载模式
+      - 发送 :ref:`AT+RST=1,1 <cmd-RST>` 命令进入下载模式
+
+    - 更多细节请参考 `{IDF_TARGET_NAME} 进入下载模式的硬件要求 <https://docs.espressif.com/projects/esp-techpedia/zh_CN/latest/esp-friends/get-started/try-firmware/try-firmware-hardware/{IDF_TARGET_PATH_NAME}.html>`_
 
 .. only:: esp32
 
