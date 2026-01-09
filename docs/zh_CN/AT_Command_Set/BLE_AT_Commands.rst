@@ -1056,6 +1056,7 @@ Bluetooth® Low Energy AT 命令集
     -  :ref:`AT+BLEGATTCWR <cmd-GCWR>`
     -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
     -  如果 :ref:`AT+BLECONN? <cmd-BCONN>` 在 Bluetooth LE 未初始的情况下执行 (:ref:`AT+BLEINIT=0 <cmd-BINIT>`)，则系统不会输出 ``+BLECONN:<conn_index>,<remote_address>`` 。
+    -  支持地址解析功能。
 
     示例
     ^^^^
@@ -1293,9 +1294,10 @@ Bluetooth® Low Energy AT 命令集
 
     .. list::
 
-        - 本命令要求先建立 Bluetooth LE 连接。
-        - 仅支持客户端运行本命令设置 MTU 的长度。
-        :esp32 or esp32c3: - MTU 的实际长度需要协商，响应 ``OK`` 只表示尝试协商 MTU 长度，因此设置长度不一定生效，建议调用 :ref:`AT+BLECFGMTU? <cmd-BMTU>` 查询实际 MTU 长度
+        - 使用前需先建立 Bluetooth LE 连接。若未主动执行本命令，连接建立后将不会主动发起 MTU 协商，默认使用 23 字节长度。
+        :esp32 or esp32c3: - 客户端和服务端均可使用本命令发起 MTU 协商。服务端需先执行 :ref:`AT+BLECONN <cmd-BCONN>` 使用相同的 <conn_index> 反向连接下客户端，再执行本命令更新 MTU。
+        :esp32 or esp32c3: - 可在命令中指定期望的 MTU 值。MTU 长度需双方协商，返回 ``OK`` 仅表示发起协商请求，实际 MTU 可能小于设定值，建议通过 :ref:`AT+BLECFGMTU? <cmd-BMTU>` 查询实际协商结果。
+        :esp32c2 or esp32c5 or esp32c6 or esp32c61: - 客户端和服务端均可使用本命令发起 MTU 协商。本命令不接受 MTU 长度参数，仅触发协商，默认协商值为 203 字节。如需更高 MTU 值，请在编译时配置：``python build.py menuconfig`` > ``Component config`` > ``Bluetooth`` > ``NimBLE Options`` > ``Preferred MTU size in octets``。
 
     示例
     ^^^^
@@ -1628,7 +1630,12 @@ Bluetooth® Low Energy AT 命令集
     -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
     -  **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
     -  **<char_index>**：服务特征的序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
-    -  **<length>**：数据长度，最大长度： ``（ :ref:`MTU <cmd-BMTU>` - 3）``。
+    -  **<length>**：数据长度，最大长度： (:ref:`MTU <cmd-BMTU>` – 3)。
+
+    说明
+    ^^^^
+
+    -  数据单次发送的最大长度为 (:ref:`MTU <cmd-BMTU>` – 3) 字节。若设置的长度超过此值，底层会自动分包传输。
 
     示例
     ^^^^
@@ -1696,7 +1703,7 @@ Bluetooth® Low Energy AT 命令集
     -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
     -  **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
     -  **<char_index>**：服务特征的序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
-    -  **<length>**：数据长度，最大长度：（:ref:`MTU <cmd-BMTU>` - 3）。
+    -  **<length>**：数据长度，最大长度：（:ref:`MTU <cmd-BMTU>` – 3）。
 
     示例
     ^^^^
@@ -2059,7 +2066,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLEGATTCWR=<conn_index>,<srv_index>,<char_index>[,<desc_index>],<length>
 
-    **响应:**
+    **响应：**
 
     ::
 
@@ -3090,7 +3097,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLUFISEND=<length>
 
-    **响应:**
+    **响应：**
 
     ::
 

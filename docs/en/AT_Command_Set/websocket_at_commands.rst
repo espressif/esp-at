@@ -313,6 +313,11 @@ Parameters
 
 - **<link_id>**: ID of the WebSocket connection. Range: [0,2].
 
+Notes
+^^^^^
+
+- This command triggers the TCP layer close process. Returning ``OK`` only indicates that the close instruction has been issued and does not guarantee that the peer has completely disconnected. To ensure the connection is fully closed, it is recommended to first send a WebSocket control frame with opcode 8 (Close Frame) using the :ref:`AT+WSSEND <cmd-WSSEND>` command before executing this command, and wait for the server to respond before closing.
+
 Example
 ^^^^^^^^
 

@@ -134,6 +134,8 @@ SPI 是一种 master-slave 结构的外设，所有的传输均由 master 发起
   2. master 检测到握手线上的 slave 发出的允许发送的信号后，开始发送数据。
   3. master 发送数据后，通知 slave 数据发送结束。
 
+  如果在 slave 接收数据期间，master 提交发送请求，请求会被缓冲并在接收完成后处理，避免产生两次上升沿中断。这确保了数据处理的稳定性。
+
 - Master 接收 slave 发送的 AT 数据时，使用握手线的方法为：
 
   1. slave 通过握手线通知 master 开始接收数据。
@@ -295,7 +297,8 @@ SPI AT 数据交互流程主要分为两个方面：
 3. master 开始接收来自 slave 的数据。
 4. 数据接收完毕后，master 向 slave 发送一条代表接收数据结束的消息。
 
-**说明** 1. 为了方便理解，我们还以发送 AT 命令为例，提供了通信涉及的所有交互流程和逻辑分析仪数据，请参考 :example_file:`at_spi_master/spi/esp32_c_series/README.md`。
+.. important::
+  我们以发送 AT 命令为例，提供了完整的交互流程和逻辑分析仪数据，详见 :example_file:`at_spi_master/spi/esp32_c_series/README.md`。强烈建议您阅读并理解相关内容。
 
 SPI AT 对应的 SPI master 侧示例代码
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

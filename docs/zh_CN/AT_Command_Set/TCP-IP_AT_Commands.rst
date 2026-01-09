@@ -203,6 +203,7 @@ TCP/IP AT 命令
 
 说明
 ^^^^
+
 - 如果您想解析域名为多个 IP 地址，请增加 ``python build.py menuconfig`` > ``Component config`` > ``LWIP`` > ``DNS`` > ``Maximum number of IP addresses per host`` 的值，然后重新编译 ESP-AT 工程。最终返回的格式如下：
 
   ::
@@ -382,7 +383,7 @@ TCP/IP AT 命令
 说明
 """""
 - 如果 UDP 连接中的远端 IP 地址是 IPv4 组播地址 (224.0.0.0 ~ 239.255.255.255)，{IDF_TARGET_NAME} 设备将发送和接收 UDPv4 组播
-- 如果 UDP 连接中的远端 IP 地址是 IPv4 广播地址 (255.255.255.255)，{IDF_TARGET_NAME} 设备将发送和接收 UDPv4 广播
+- 如果 UDP 连接中的远端 IP 地址是 IPv4 广播地址 (255.255.255.255)，{IDF_TARGET_NAME} 设备将发送和接收 UDPv4 广播。需要注意的是，AT 不支持自动重复广播，如需定期广播，MCU 需要定时发送数据包。
 - 如果 UDP 连接中的远端 IP 地址是 IPv6 组播地址 (FF00:0:0:0:0:0:0:0 ~ FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF)，{IDF_TARGET_NAME} 设备将基于 IPv6 网络，发送和接收 UDP 组播
 - 使用参数 ``<mode>`` 前，需先设置参数 ``<local port>``
 
@@ -476,6 +477,16 @@ TCP/IP AT 命令
 - SSL 连接需占用大量内存，内存不足会导致系统重启
 - 如果 ``AT+CIPSTART`` 命令是基于 SSL 连接，且每个数据包的超时时间为 10 秒，则总超时时间会变得更长，具体取决于握手数据包的个数
 - 有一些 SSL 服务器需要 SSL 客户端在连接时要求拓展字段支持 SNI，请在 SSL 连接前先使用 :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>` 命令配置 SNI。通常情况下，SNI 的值为服务器的域名。
+
+.. _modify-tls-version:
+
+- 如果需要调整 TLS 协议版本，请重新编译 ESP-AT 工程。通过 ``python build.py menuconfig`` > ``Component config`` > ``mbedTLS`` 路径，禁用不需要的 TLS 版本或启用默认未支持的版本。
+
+    例如，启用 TLS 1.3 协议：
+
+        - ``python build.py menuconfig`` > ``Component config`` > ``mbedTLS`` > ``Using dynamic TX/RX buffer`` > 取消勾选
+        - ``python build.py menuconfig`` > ``Component config`` > ``mbedTLS`` > ``mbedTLS v3.x related`` > ``Keep peer certificate after handshake completion`` > 勾选
+        - ``python build.py menuconfig`` > ``Component config`` > ``mbedTLS`` > ``mbedTLS v3.x related`` > ``Support TLS 1.3 protocol`` > 勾选
 
 - 如果您想基于 IPv6 网络建立一个 SSL 连接，请执行以下操作：
 
@@ -1131,6 +1142,7 @@ TCP/IP AT 命令
 - 如果您想基于 IPv6 网络创建一个 TCP/SSL 服务器，请首先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`，并获取一个IPv6地址。
 - 关闭服务器时，参数 ``<"type">``、 ``<CA enable>`` 和 ``<netiif>`` 必须省略。
 - 若需查看建立服务器失败原因，请先运行 :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` 启用日志后重试本命令。失败时，AT 会返回更详细的错误码 ``+ERRNO:<error_code>``，以便定位问题。
+- 关于 TLS 协议版本配置：请参考 :ref:`修改 TLS 协议版本说明 <modify-tls-version>`。
 
 示例
 ^^^^
@@ -2546,6 +2558,7 @@ ping 对端主机
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 区。
 -  这三个参数不能设置在同一个服务器上。
 -  当 ``<enable>`` 为 0 时，DNS 服务器可能会根据 {IDF_TARGET_NAME} 设备所连接的路由器的配置而改变。
+-  当 ``<enable>`` 为 1 时，手动设置的 DNS 服务器将始终生效，DHCP 从路由器获取的 DNS 配置不会覆盖手动设置的值。若要恢复使用 DHCP 分配的 DNS，需执行 ``AT+CIPDNS=0`` 重新启用自动获取。
 
 示例
 ^^^^

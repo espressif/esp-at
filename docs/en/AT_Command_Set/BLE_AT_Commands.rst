@@ -1056,6 +1056,7 @@ Introduction
     -  :ref:`AT+BLEGATTCWR <cmd-GCWR>`
     -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
     -  If the :ref:`AT+BLECONN? <cmd-BCONN>` is executed when the Bluetooth LE is not initialized (:ref:`AT+BLEINIT=0 <cmd-BINIT>`), the system will not output ``+BLECONN:<conn_index>,<remote_address>`` .
+    -  Supports address resolution.
 
     Example
     ^^^^^^^^
@@ -1293,9 +1294,10 @@ Introduction
 
     .. list::
 
-        - Bluetooth LE connection has to be established first.
-        - Only the client can call this command to set the length of MTU.
-        :esp32 or esp32c3: - The actual length of MTU needs to be negotiated. The ``OK`` response only indicates an attempt to negotiate the length. The actual length may not be the value you set. Therefore, it is recommended to run command :ref:`AT+BLECFGMTU? <cmd-BMTU>` to query the actual length.
+        - The Bluetooth LE connection must be established first. If this command is not executed, MTU negotiation will not be initiated automatically after the connection is established, and the default length is 23 bytes.
+        :esp32 or esp32c3: - Both client and server can use this command to initiate MTU negotiation. For servers, execute :ref:`AT+BLECONN <cmd-BCONN>` first with the same <conn_index> to establish a reverse connection to the client, then execute this command to update the MTU.
+        :esp32 or esp32c3: - You can specify the desired MTU value in the command. The MTU length needs to be negotiated between both parties. The ``OK`` response only indicates that a negotiation request has been initiated. The actual MTU may be less than the set value. It is recommended to query the actual negotiated result using :ref:`AT+BLECFGMTU? <cmd-BMTU>`.
+        :esp32c2 or esp32c5 or esp32c6 or esp32c61: - Both client and server can use this command to initiate MTU negotiation. This command does not accept an MTU length parameter and only triggers negotiation. The default negotiated value is 203 bytes. To use a higher MTU value, configure it during compilation: ``python build.py menuconfig`` > ``Component config`` > ``Bluetooth`` > ``NimBLE Options`` > ``Preferred MTU size in octets``.
 
     Example
     ^^^^^^^^
@@ -1628,7 +1630,12 @@ Introduction
     -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
     -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
     -  **<char_index>**: characteristic's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
-    -  **<length>**: data length. The maximum length is ``( :ref:`MTU <cmd-BMTU>` - 3)``.
+    -  **<length>**: data length. The maximum length is (:ref:`MTU <cmd-BMTU>` - 3).
+
+    Note
+    ^^^^
+
+    -  The maximum data length per transmission is (:ref:`MTU <cmd-BMTU>` - 3) bytes. If you send more than this, the underlying layer will automatically split the data into packets for transmission.
 
     Example
     ^^^^^^^^

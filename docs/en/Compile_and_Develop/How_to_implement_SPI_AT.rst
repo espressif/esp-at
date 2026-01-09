@@ -134,6 +134,8 @@ The specific methods of using the handshake line are as follows:
   2. After the master detects the permission signal sent by the slave on the handshake line, it starts to send data.
   3. After sending the data, the master notifies slave that the data transmission is finished.
 
+  If a send request is submitted by the master during data reception by the slave, the request will be buffered and processed after reception is complete, avoiding two rising edge interrupts. This ensures stable data processing.
+
 - When slave sends AT responses to master via SPI, the workflow with an extra handshake line is as follows:
 
   1. The slave sends a signal through the handshake line to inform the master to start receiving data.
@@ -295,7 +297,8 @@ step 2. After receiving the interrupt, master will query the status register of 
 step 3. The master receives the data send by the slave.
 step 4. After receiving all data, the master notifies the slave that the data transmission is finished.
 
-**Note** 1. To facilitate understanding, the :example_file:`at_spi_master/spi/esp32_c_series/README.md` provides all the interaction workflow and logic analyzer data involved in the communication by taking sending an AT command as an example.
+.. important::
+  To facilitate understanding, the :example_file:`at_spi_master/spi/esp32_c_series/README.md` provides all the interaction workflow and logic analyzer data for communication using an AT command as an example. It is highly recommended to read and understand this content.
 
 Sample Code of SPI Master for SPI AT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

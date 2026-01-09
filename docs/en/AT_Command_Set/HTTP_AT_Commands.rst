@@ -227,6 +227,11 @@ Note
 - If the length of the entire command containing the URL exceeds 256 bytes, please use the :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command to preset the URL first, and then set the ``<"url">`` parameter of this command to ``""``.
 - the default type of ``content-type`` is ``application/x-www-form-urlencoded`` for this command.
 - To set HTTP request headers, use the :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` command to set them.
+- Performance optimization: This command uses short connections. It establishes a new connection for each request (HTTPS requires an SSL handshake). For low latency, it is recommended to use :ref:`AT+CIPSTART <cmd-START>` to establish a persistent connection. Construct HTTP request packets with the MCU and send them via :ref:`AT+CIPSEND <cmd-SEND>`. This avoids repeated handshake overhead.
+- Memory management: This command creates and closes a connection each time, which generates TIME_WAIT state and occupies memory. If the minimum heap space keeps decreasing, you can optimize it in the following ways:
+
+  - Reduce TCP Maximum Segment Lifetime (MSL): ``./build.py menuconfig`` > ``Component config`` > ``LWIP`` > ``TCP`` > ``Maximum segment lifetime (MSL)``, then recompile the AT firmware. Note: Reducing MSL can shorten the duration of TIME_WAIT state, thereby releasing memory faster, but it cannot completely eliminate the TIME_WAIT state.
+  - Use persistent TCP connections to avoid frequently creating and closing connections.
 
 .. _cmd-HTTPCPUT:
 
