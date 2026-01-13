@@ -8,6 +8,7 @@ AT 命令示例
    :maxdepth: 1
 
    AT 响应消息格式控制示例 <at_msg_resp_fmt_ctrl_examples>
+   AT+SYSMFG 命令示例 <sysmfg_at_examples>
    TCP-IP AT 示例 <TCP-IP_AT_Examples>
    :esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61: Bluetooth® Low Energy AT 示例 <bluetooth_le_at_examples>
    MQTT AT 示例 <MQTT_AT_Examples>

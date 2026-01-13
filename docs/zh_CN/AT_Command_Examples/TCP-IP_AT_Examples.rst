@@ -898,7 +898,7 @@ TCP-IP AT 示例
 
 本示例中使用的证书是 ESP-AT 中默认的证书，您也可以使用自己的证书：
 
-  * 要使用您自己的 SSL 客户端证书，请根据 :doc:`../Compile_and_Develop/How_to_update_pki_config` 文档替换默认的证书。
+  * 要使用您自己的 SSL 客户端证书，可以在运行时使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新证书（请参考 :ref:`AT+SYSMFG 命令示例中的 PKI 配置 <sysmfg-pki>`），也可以通过重新编译固件替换默认证书（请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`）。
   * 要使用您自己的 SSL 服务器证书，请用您自己的证书路径替换下面的 SSL 服务器证书。
 
 #. 设置 Wi-Fi 模式为 station。

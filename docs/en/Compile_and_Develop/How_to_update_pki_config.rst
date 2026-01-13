@@ -3,7 +3,10 @@ How to Update PKI Configuration
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document describes how to update the default :term:`PKI` configuration provided by ESP-AT. The PKI configuration includes certificates and keys for TLS clients, TLS servers, MQTT clients, and WPA2 Enterprise clients.
+This document describes how to update the default :term:`PKI` configuration provided by ESP-AT by recompiling the firmware. The PKI configuration includes certificates and keys for TLS clients, TLS servers, MQTT clients, WebSocket clients, HTTP clients, and WPA2 Enterprise clients.
+
+.. note::
+  If you want to update certificates at runtime using AT commands without recompiling the firmware, please refer to :ref:`AT+SYSMFG command examples <sysmfg-pki>`.
 
 .. contents::
    :local:

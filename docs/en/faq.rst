@@ -32,6 +32,7 @@ AT FAQ
       - :ref:`MCU sends AT command with no response <faq-no-response>`
       - :ref:`How to handle special characters in AT commands? <faq-special-char>`
       - :ref:`Can the UART baudrate be modified? <faq-change-baudrate>`
+      - :ref:`How to modify the UART pins of the AT command port? <faq-change-uart-pins>`
       - :ref:`How to solve TCP/SSL data loss during transmission? <faq-data-loss>`
       - :ref:`Can passthrough mode notify hotspot disconnection? <faq-passthrough-disconnect>`
       - :ref:`Why does Wi-Fi disconnect? <faq-wifi-disconnect>`
@@ -205,10 +206,22 @@ Refer to the escape character syntax described in the :ref:`at-command-types` se
 :ref:`Can the serial port baudrate be modified in AT Commands? (Default: 115200) <faq-at-index>`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Yes, use either method:
+  Yes, you can use either of the three ways below to modify it: 
 
-  - Use the command :ref:`AT+UART_CUR <cmd-UARTC>` or :ref:`AT+UART_DEF <cmd-UARTD>`
-  - Re-compile the AT firmware: refer to :doc:`establish the compiling environment <Compile_and_Develop/How_to_clone_project_and_compile_it>` and :doc:`change the UART baudrate <Compile_and_Develop/How_to_set_AT_port_pin>`
+  - Use the command :ref:`AT+UART_CUR <cmd-UARTC>` or :ref:`AT+UART_DEF <cmd-UARTD>`.
+  - Re-compile the AT firmware: :doc:`establish the compiling environment <Compile_and_Develop/How_to_clone_project_and_compile_it>` and :doc:`change the UART baudrate <Compile_and_Develop/How_to_set_AT_port_pin>`.
+  - Use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to modify the factory default UART configuration, please refer to :ref:`AT+SYSMFG command examples <sysmfg-uart-config>`.
+
+.. _faq-change-uart-pins:
+
+:ref:`How to modify the UART pins of the AT command port? <faq-at-index>`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  You can use either of the three ways below to modify it:
+
+  - Please refer to the :doc:`How to set AT port pins <Compile_and_Develop/How_to_set_AT_port_pin>` document. Modify the UART configuration parameters in the ``factory_param_data.csv`` file, then recompile and flash the firmware.
+  - If you want to modify the UART configuration at runtime through AT commands without recompiling the firmware, please refer to :ref:`AT+SYSMFG command examples <sysmfg-uart-config>`. This method allows you to dynamically modify the factory default UART configuration, including baudrate, pins, and other parameters.
+  - If you already have AT firmware and only need to modify the UART pins, you can use the :doc:`at.py tool <Compile_and_Develop/tools_at_py>` to directly modify the firmware parameters without recompiling.
 
 .. _faq-data-loss:
 

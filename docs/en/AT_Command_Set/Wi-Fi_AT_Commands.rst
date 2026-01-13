@@ -2090,7 +2090,7 @@ Note
 -  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 -  This command requires Station mode to be active.
 -  TLS mode will use client certificate. Please make sure it is enabled.
--  If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the WPA2 Enterprise certificate. If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
+-  If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the WPA2 Enterprise certificate (for detailed steps, please refer to :ref:`AT+SYSMFG command examples <sysmfg-pki>`, the certificate configuration method is the same as SSL certificates). If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
 -  If ``<security>`` is configured to 2, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+CWJEAP <cmd-JEAP>` command. (You can send :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>` command to configure the current time, and send :ref:`AT+SYSTIMESTAMP? <cmd-SETTIME>` command to query the current time.)
 
 .. _cmd-HOSTNAME:

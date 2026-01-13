@@ -759,7 +759,7 @@
 ^^^^
 
 -  配置更改将保存在 NVS 分区，当设备再次上电时仍然有效。
--  使用硬件流控功能需要连接设备的 CTS/RTS 管脚，详情请见 :doc:`../Get_Started/Hardware_connection` 和 ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``。 
+-  使用硬件流控功能需要连接设备的 CTS/RTS 管脚，详情请见 :doc:`../Get_Started/Hardware_connection` 和 ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``。
 
 示例
 ^^^^
@@ -1626,6 +1626,8 @@
 - 请先阅读 `非易失性存储 (NVS) <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/storage/nvs_flash.html>`_，了解命名空间、键值对的概念。
 - 写入前，您无需主动擦除命名空间或键值对（NVS 会根据需要自动擦除键值对）。
 - 如果您想修改 mfg_nvs 分区中的某些数据，请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令（NVS 中的键值对操作）。如果您想修改整个 mfg_nvs 分区，请使用 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令（分区操作）。
+- 更多 AT+SYSMFG 命令的使用示例，请参考 :doc:`../AT_Command_Examples/sysmfg_at_examples`。
+- 修改配置时，本命令不会对配置值进行功能性检查。即使您配置了错误的数值，也会被存储。因此，您需要自行确保配置数据的正确性。
 
 示例
 """""

@@ -2090,7 +2090,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
 -  使用本命令需开启 Station 模式
 -  使用 TLS 认证方式需使能客户端证书
--  如果您想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 WPA2 Enterprise 客户端证书。如果您想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+-  如果您想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 WPA2 Enterprise 客户端证书（具体步骤请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-pki>`，证书配置方法与 SSL 证书相同）。如果您想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
 -  如果 ``<security>`` 配置为 2，为了校验服务器的证书有效期，请在发送 :ref:`AT+CWJEAP <cmd-JEAP>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（您可以发送 :ref:`AT+SYSTIMESTAMP=\<unix_timestamp\> <cmd-SETTIME>` 命令来配置当前时间，发送 :ref:`AT+SYSTIMESTAMP? <cmd-SETTIME>` 命令查询当前时间。）
 
 .. _cmd-HOSTNAME:

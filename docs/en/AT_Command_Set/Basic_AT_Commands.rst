@@ -1626,6 +1626,8 @@ Note
 - Please refer to the `Non-Volatile Storage (NVS) <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/nvs_flash.html>`_ documentation to understand the concept of namespace and key-value pairs.
 - Before writing, you do not need to manually erase namespaces or key-value pairs (NVS will automatically erase key-value pairs as needed).
 - If you want to modify some data in the "mfg_nvs" partition, please use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command (key-value pairs operation). If you want to modify total "mfg_nvs" partition, please use the :ref:`AT+SYSFLASH <cmd-SYSFLASH>` command (partition operation).
+- For more examples of using the AT+SYSMFG command, please refer to :doc:`../AT_Command_Examples/sysmfg_at_examples`.
+- When modifying configurations, this command does not perform functional validation on the configuration values. Even if you configure incorrect values, they will be stored. Therefore, you need to ensure the correctness of the configuration data yourself.
 
 Example
 """""""
