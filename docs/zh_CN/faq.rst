@@ -68,7 +68,7 @@ AT FAQ
       - :ref:`AT 如何使能调试日志？ <faq-debug-log>`
       - :ref:`如何修改 AT 固件首次启动时的默认 Wi-Fi 模式？ <faq-default-wifi-mode>`
       - :ref:`AT 指令如何实现 HTTP 断点续传功能？ <faq-http-resume>`
-      - :ref:`如何从 HTTP 服务器下载文件并存储到 FATFS，或将 FATFS 文件系统中的文件上传到 HTTP 服务器？ <faq-http-fatfs>`
+      - :ref:`如何从 HTTP 服务器下载文件并存储到 FATFS，或将 FATFS 文件系统中的文件上传到 HTTP 服务器？ <faq-http-fs>`
       :esp32: - :ref:`如何进行 BQB 认证？ <faq-bqb>`
       :esp32: - :ref:`AT 支持 PPP 吗？ <faq-ppp>`
 
@@ -437,15 +437,15 @@ AT 当前不支持 ESP-WIFI-MESH。
   - 使用 HTTP 的 Range 字段指定读取范围，参考 :ref:`AT+HTTPCHEAD 示例 <cmd-HTTPCHEAD_example>`
   - 使用 AT TCP 指令自行构造 HTTP GET 请求。在 :ref:`{IDF_TARGET_NAME} 设备获取被动接收模式下的套接字数据示例 <example-passive_recv>` 的第 6 步和第 7 步之间，使用 :ref:`AT+CIPSEND <cmd-SEND>` 发送构造的 HTTP GET 请求。被动接收模式下，使用 :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` 读取数据
 
-.. _faq-http-fatfs:
+.. _faq-http-fs:
 
 :ref:`如何从 HTTP 服务器下载文件并存储到 FATFS，或将 FATFS 文件系统中的文件上传到 HTTP 服务器？ <faq-at-index>`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 参考 GitHub 示例：
 
-  - :example:`at_http_get_to_fatfs` - 从 HTTP 服务器下载文件并存储到 FATFS 文件系统
-  - :example:`at_fatfs_to_http_server` - 将 FATFS 文件系统中的文件上传到 HTTP 服务器
+  - :example:`at_http_get_to_fs` - 从 HTTP 服务器下载文件并存储到 FATFS 文件系统
+  - :example:`at_fs_to_http_server` - 将 FATFS 文件系统中的文件上传到 HTTP 服务器
 
 .. only:: esp32
 

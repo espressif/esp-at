@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -36,13 +36,7 @@
 
 #ifdef CONFIG_AT_WEB_SERVER_SUPPORT
 #include "esp_http_server.h"
-// AT web can use fatfs to storage html or use embedded file to storage html.
-// If use fatfs,we should enable AT FS Command support.
-#ifdef CONFIG_AT_WEB_USE_FATFS
-#include "esp_vfs_fat.h"
-#include "diskio_wl.h"
-#include "diskio_impl.h"
-#endif
+
 #ifdef CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE
 #include "at_web_dns_server.h"
 static char *s_at_web_redirect_url = NULL;
@@ -68,7 +62,6 @@ static char *s_at_web_redirect_url = NULL;
 #define ESP_AT_WEB_SCRATCH_BUFSIZE                     320
 #define ESP_AT_WEB_WIFI_MAX_RECONNECT_TIMEOUT          60     // 60sec
 #define ESP_AT_WEB_WIFI_MIN_RECONNECT_TIMEOUT          21     // 21sec
-#define ESP_AT_WEB_MOUNT_POINT                         "/www"
 #define ESP_AT_WEB_TIMER_POLLING_PERIOD                500    // 500ms
 #define ESP_AT_WEB_BROADCAST_TIMES_DEFAULT             20     // When connect without ssid, for multicast wifi connect result
 #define ESP_AT_WEB_BROADCAST_INTERVAL_DEFAULT          500000 // 500000us
@@ -154,12 +147,6 @@ static const char *s_ota_receive_success_response = "+WEBSERVERRSP:4\r\n";
 static const char *s_ota_receive_fail_response = "+WEBSERVERRSP:5\r\n";
 static SLIST_HEAD(router_fail_list_head_, router_obj) s_router_fail_list = SLIST_HEAD_INITIALIZER(s_router_fail_list);
 static const char *TAG = "at-web";
-
-// AT web can use fatfs to storage html or use embedded file to storage html.
-// If use fatfs,we should enable AT FS Command support.
-#ifdef CONFIG_AT_WEB_USE_FATFS
-static wl_handle_t s_wl_handle = WL_INVALID_HANDLE; // Handle of the wear levelling library instance
-#endif
 
 static uint8_t at_web_get_mac_match_len(uint8_t *mac1, uint8_t *mac2, uint8_t mac_length)
 {
@@ -691,9 +678,7 @@ static int at_web_find_arg(char *line, char *arg, char *buff, int buffLen)
     return -1; // not found
 }
 
-// AT web can use fatfs to storage html or use embedded file to storage html.
-// If use fatfs,we should enable AT FS Command support.
-#ifdef CONFIG_AT_WEB_USE_FATFS
+#ifdef CONFIG_AT_WEB_USE_FS
 /* Send HTTP response with the contents of the requested file */
 static esp_err_t web_common_get_handler(httpd_req_t *req)
 {
@@ -1857,48 +1842,17 @@ err:
     return ESP_FAIL;
 }
 
-#ifdef CONFIG_AT_WEB_USE_FATFS
-
-/*
-*  Init file system, assert we can mount the fs.
-*/
-static esp_err_t at_web_fatfs_spiflash_init(void)
-{
-    const esp_vfs_fat_mount_config_t mount_config = {
-        .max_files = 5,
-        .format_if_mount_failed = false,
-        .allocation_unit_size = CONFIG_WL_SECTOR_SIZE,
-    };
-
-    esp_err_t err = esp_vfs_fat_spiflash_mount_rw_wl(ESP_AT_WEB_MOUNT_POINT, "fatfs", &mount_config, &s_wl_handle);
-    if (err != ESP_OK) {
-        ESP_LOGE(TAG, "failed to mount fatfs, errno:0x%x", err);
-        return ESP_FAIL;
-    }
-
-    ESP_LOGI(TAG, "mount fatfs success");
-    return ESP_OK;
-}
-
-static esp_err_t at_web_fatfs_spiflash_deinit(void)
-{
-    return esp_vfs_fat_spiflash_unmount_rw_wl(ESP_AT_WEB_MOUNT_POINT, s_wl_handle);
-}
-#endif
-
 static esp_err_t at_web_start(uint16_t server_port)
 {
     esp_err_t err;
 
     if (s_server == NULL) {
-        /*AT web can use fatfs to storage html or use embedded file to storage html.If use fatfs, we should enable AT FS Command support*/
-#ifdef CONFIG_AT_WEB_USE_FATFS
-        err = at_web_fatfs_spiflash_init();
-        if (err != ESP_OK) {
-            return err;
+#ifdef CONFIG_AT_WEB_USE_FS
+        if (!esp_at_fs_mount()) {
+            return ESP_FAIL;
         }
 #endif
-        err = start_web_server(ESP_AT_WEB_MOUNT_POINT, server_port);
+        err = start_web_server(esp_at_fs_get_mount_point(), server_port);
         if (err != ESP_OK) {
             return err;
         }
@@ -1924,9 +1878,9 @@ static esp_err_t at_web_destory(void)
 #ifdef CONFIG_AT_WEB_CAPTIVE_PORTAL_ENABLE
         at_dns_server_stop();
 #endif
-#ifdef CONFIG_AT_WEB_USE_FATFS
-        if ((err = at_web_fatfs_spiflash_deinit()) != ESP_OK) {
-            return err;
+#ifdef CONFIG_AT_WEB_USE_FS
+        if (!esp_at_fs_unmount()) {
+            return ESP_FAIL;
         }
 #endif
     }

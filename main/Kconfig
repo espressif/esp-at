@@ -283,6 +283,45 @@ config AT_FS_COMMAND_SUPPORT
     default "n"
     depends on AT_ENABLE
 
+choice AT_FS_TYPE
+    prompt "Filesystem type for AT FS command"
+    depends on AT_FS_COMMAND_SUPPORT
+    default AT_FS_LITTLEFS
+    help
+        Select which filesystem implementation is used by AT FS command.
+
+config AT_FS_LITTLEFS
+    bool "LittleFS (recommended)"
+    help
+        Use LittleFS as the underlying filesystem.
+        The partition label it operates on is "fs_storage".
+        This is the recommended file system type for new designs.
+        Compared with fatfs, littlefs provides power-loss resilience and offers faster read/write performance, lower RAM usage, and a smaller flash footprint,
+        making it more suitable for resource-constrained embedded systems.
+
+config AT_FS_FATFS
+    bool "FatFS"
+    help
+        Use FatFS as the underlying filesystem.
+        The partition label it operates on is "fs_storage".
+
+config AT_FS_FATFS_LEGACY
+    bool "FatFS (legacy partition, upgrade only, READ HELP FIRST)"
+    help
+        Use FatFS as the underlying filesystem.
+        The partition label it operates on is "fatfs", which was used by older ESP-AT versions.
+
+        This option is intended ONLY for upgrading esp-at.bin on devices
+        that already contain a legacy FatFS partition.
+
+        When this option is enabled, the generated esp-at.bin will operate
+        ONLY on the legacy FatFS partition and will NOT access the
+        "fs_storage" partition.
+
+        Do NOT use this option for new designs.
+
+endchoice
+
 config AT_DRIVER_COMMAND_SUPPORT
     bool "AT driver command support."
     default "n"
@@ -305,12 +344,12 @@ config AT_WEB_SERVER_SUPPORT
     help
       Please enable this configure if you want use web server.
 
-config AT_WEB_USE_FATFS
-    bool "Use fatfs to store html"
+config AT_WEB_USE_FS
+    bool "Use filesystem to store html"
     default "n"
     depends on AT_WEB_SERVER_SUPPORT && AT_FS_COMMAND_SUPPORT
     help
-        If enable this configure, html will be stored in fatfs(Please enable AT FS Command).
+        If enable this configure, html will be stored in filesystem (Please enable AT FS Command).
         Otherwise, html file will be compiled as embedded code.
 config AT_WEB_CAPTIVE_PORTAL_ENABLE
     bool "AT WEB captive portal support"

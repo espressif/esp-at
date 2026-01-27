@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
 
 import os
@@ -41,6 +41,10 @@ def main():
                 if not os.access(tool_name, os.X_OK):
                     os.chmod(tool_name, stat.S_IRUSR | stat.S_IXUSR)
                 ret = subprocess.call([sys.executable, tool_name, '--partition_name', partition_name, '--partition_size', file_size, '--outdir', output_dir, '--project_path', project_dir], shell = False)
+                if ret != 0:
+                    print(f'Error: {tool_name} failed with return code {ret}')
+                    return ret
+    return 0
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

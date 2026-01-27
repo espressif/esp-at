@@ -31,7 +31,7 @@ The ESP-AT firmware package contains several binary files for specific functiona
 .. code-block:: none
 
   build
-  ├── at_customize.bin        // Secondary partition table (user partition table, listing the start address and size of the mfg_nvs partition and fatfs partition)
+  ├── at_customize.bin        // Secondary partition table (user partition table, listing the start address and size of the mfg_nvs partition and fs_storage partition)
   ├── bootloader
   │   └── bootloader.bin      // Bootloader
   ├── customized_partitions

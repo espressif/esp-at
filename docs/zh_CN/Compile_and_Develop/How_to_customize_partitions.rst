@@ -271,7 +271,7 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
       # Name,Type,SubType,Offset,Size
       ... ...
       test,0x40,15,0x3D000,4K
-      fatfs,data,fat,0x70000,576K
+      fs_storage,data,0xff,0x70000,576K
 
 .. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
@@ -280,7 +280,7 @@ ESP-AT 提供了二级分区表 at_customize.csv 供您存储自定义数据块�
       # Name,Type,SubType,Offset,Size
       ... ...
       test,0x40,15,0x3E000,4K
-      fatfs,data,fat,0x47000,100K
+      fs_storage,data,0xff,0x47000,100K
 
 第二步，重新编译 ESP-AT 工程，或者在 ESP-AT 根目录下执行 python 脚本生成 at_customize.bin。
 

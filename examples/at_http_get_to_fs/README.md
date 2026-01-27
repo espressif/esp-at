@@ -1,5 +1,5 @@
 ### Usage
-1. Add this `at_http_get_to_fatfs` component into the build system of esp-at project.
+1. Add this `at_http_get_to_fs` component into the build system of esp-at project.
 
 - Linux or macOS
 ```

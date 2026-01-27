@@ -68,7 +68,7 @@ AT FAQ
       - :ref:`How to enable debug log for AT? <faq-debug-log>`
       - :ref:`How to modify the default Wi-Fi mode? <faq-default-wifi-mode>`
       - :ref:`How to implement HTTP resume transfer functionality? <faq-http-resume>`
-      - :ref:`How to download files from HTTP server and store them to FATFS, or upload files from FATFS file system to HTTP server? <faq-http-fatfs>`
+      - :ref:`How to download files from HTTP server and store them to FATFS, or upload files from FATFS file system to HTTP server? <faq-http-fs>`
       :esp32: - :ref:`How to conduct BQB certification? <faq-bqb>`
       :esp32: - :ref:`Does AT support PPP? <faq-ppp>`
 
@@ -437,15 +437,15 @@ Two methods:
   - Use the HTTP Range field to specify the data range to be read. Refer to the example of :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD_example>`
   - Construct an HTTP GET request using AT TCP commands. Between steps 6 and 7 of :ref:`{IDF_TARGET_NAME} obtains socket data in passive receiving mode <example-passive_recv>`, use :ref:`AT+CIPSEND <cmd-SEND>` to send your own HTTP GET request. In passive receive mode, use :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` to read data
 
-.. _faq-http-fatfs:
+.. _faq-http-fs:
 
 :ref:`How to download files from HTTP server and store them to FATFS, or upload files from FATFS file system to HTTP server? <faq-at-index>`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Refer to GitHub examples:
 
-  - :example:`at_http_get_to_fatfs` - Download files from HTTP server and store them to FATFS file system
-  - :example:`at_fatfs_to_http_server` - Upload files from FATFS file system to HTTP server
+  - :example:`at_http_get_to_fs` - Download files from HTTP server and store them to file system
+  - :example:`at_fs_to_http_server` - Upload files from file system to HTTP server
 
 .. only:: esp32
 

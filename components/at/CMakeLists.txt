@@ -1,6 +1,6 @@
 
 set(require_components nvs_flash mqtt mdns esp_http_client esp_https_ota json freertos spiffs
-    bootloader_support app_update wpa_supplicant spi_flash esp_http_server bt fatfs esp_websocket_client main)
+    bootloader_support app_update wpa_supplicant spi_flash esp_http_server bt fatfs littlefs esp_websocket_client main)
 
 if ("${IDF_TARGET}" STREQUAL "esp32")
     list(APPEND require_components esp_eth)
@@ -46,9 +46,12 @@ endif()
 if (CONFIG_AT_SELF_COMMAND_SUPPORT)
     list(APPEND srcs "src/at_self_cmd.c")
 endif()
+if (CONFIG_AT_FS_COMMAND_SUPPORT)
+    list(APPEND srcs "src/at_fs.c")
+endif()
 
 if (CONFIG_AT_WEB_SERVER_SUPPORT)
-    if(NOT CONFIG_AT_WEB_USE_FATFS)
+    if(NOT CONFIG_AT_WEB_USE_FS)
         set(embed_txt_files ../fs_image/index.html)
     endif()
 endif()

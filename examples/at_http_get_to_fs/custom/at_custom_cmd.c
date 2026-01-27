@@ -21,7 +21,6 @@
 #define AT_NETWORK_TIMEOUT_MS       (5000)
 #define AT_URL_LEN_MAX              (8 * 1024)
 #define AT_HEAP_BUFFER_SIZE         4096
-#define AT_FATFS_MOUNT_POINT        "/fatfs"
 
 typedef struct {
     bool fs_mounted;                /*!< File system mounted */
@@ -54,33 +53,33 @@ at_write_fs_handle_t *at_http_to_fs_begin(char *path)
     }
 
     // mount file system
-    if (!at_fatfs_mount()) {
+    if (!esp_at_fs_mount()) {
         free(fs_handle);
-        ESP_AT_LOGE(TAG, "at_fatfs_mount failed");
+        ESP_AT_LOGE(TAG, "esp_at_fs_mount failed");
         return NULL;
     }
     fs_handle->fs_mounted = true;
 
     // get available size
-    uint64_t fs_total_size = 0, fs_free_size = 0;
-    if (esp_vfs_fat_info(AT_FATFS_MOUNT_POINT, &fs_total_size, &fs_free_size) != ESP_OK) {
+    uint32_t fs_total_size = 0, fs_free_size = 0;
+    if (esp_at_get_fs_info(&fs_total_size, &fs_free_size) != ESP_OK) {
         free(fs_handle);
-        at_fatfs_unmount();
-        ESP_AT_LOGE(TAG, "esp_vfs_fat_info failed");
+        esp_at_fs_unmount();
+        ESP_AT_LOGE(TAG, "esp_at_get_fs_info failed");
         return NULL;
     }
     fs_handle->total_size = fs_total_size;
     fs_handle->available_size = fs_free_size;
-    ESP_AT_LOGI(TAG, "fatfs available size:%u, total size:%u", fs_handle->available_size, fs_handle->total_size);
+    ESP_AT_LOGI(TAG, "fs available size:%u, total size:%u", fs_handle->available_size, fs_handle->total_size);
 
     // init path
-    fs_handle->path = (char *)calloc(1, strlen(AT_FATFS_MOUNT_POINT) + strlen(path) + 2);
+    fs_handle->path = (char *)calloc(1, strlen(esp_at_fs_get_mount_point()) + strlen(path) + 2);
     if (!fs_handle->path) {
         free(fs_handle);
-        at_fatfs_unmount();
+        esp_at_fs_unmount();
         return NULL;
     }
-    sprintf(fs_handle->path, "%s/%s", AT_FATFS_MOUNT_POINT, path);
+    sprintf(fs_handle->path, "%s/%s", esp_at_fs_get_mount_point(), path);
 
     // open file
     remove(fs_handle->path);
@@ -88,7 +87,7 @@ at_write_fs_handle_t *at_http_to_fs_begin(char *path)
     if (!fs_handle->fp) {
         free(fs_handle->path);
         free(fs_handle);
-        at_fatfs_unmount();
+        esp_at_fs_unmount();
         ESP_AT_LOGE(TAG, "fopen failed");
         return NULL;
     }
@@ -147,7 +146,7 @@ static void at_http_to_fs_clean(void)
                 sp_http_to_fs->fs_handle->path = NULL;
             }
             if (sp_http_to_fs->fs_handle->fs_mounted) {
-                at_fatfs_unmount();
+                esp_at_fs_unmount();
                 sp_http_to_fs->fs_handle->fs_mounted = false;
             }
             free(sp_http_to_fs->fs_handle);
@@ -283,7 +282,7 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
         goto cmd_exit;
     }
     if (sp_http_to_fs->fs_handle->available_size < sp_http_to_fs->total_size) {
-        ESP_AT_LOGE(TAG, "fatfs available size:%u, but res total size:%d", sp_http_to_fs->fs_handle->available_size, sp_http_to_fs->total_size);
+        ESP_AT_LOGE(TAG, "fs available size:%u, but res total size:%d", sp_http_to_fs->fs_handle->available_size, sp_http_to_fs->total_size);
         ret = ESP_FAIL;
         goto cmd_exit;
     }
@@ -316,15 +315,12 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
     } while (ret == ESP_OK && (data_len > 0 || data_len == -ESP_ERR_HTTP_EAGAIN));
     free(data);
 
-    if (sp_http_to_fs->is_chunked) {
-        ESP_AT_LOGI(TAG, "total received len:%d, total wrote size:%d", sp_http_to_fs->recv_size, sp_http_to_fs->fs_handle->wrote_size);
+    uint32_t expected_size = sp_http_to_fs->is_chunked ? sp_http_to_fs->recv_size : sp_http_to_fs->total_size;
+    if (sp_http_to_fs->fs_handle->wrote_size != expected_size || expected_size == 0) {
+        ESP_AT_LOGE(TAG, "expected to write size:%d, but actual wrote size:%d", expected_size, sp_http_to_fs->fs_handle->wrote_size);
+        ret = ESP_FAIL;
     } else {
-        if (sp_http_to_fs->total_size != sp_http_to_fs->fs_handle->wrote_size) {
-            ESP_AT_LOGE(TAG, "total expected len:%d, but total wrote size:%d", sp_http_to_fs->total_size, sp_http_to_fs->fs_handle->wrote_size);
-            ret = ESP_FAIL;
-        } else {
-            ESP_AT_LOGI(TAG, "total wrote size matches expected size:%d", sp_http_to_fs->fs_handle->wrote_size);
-        }
+        ESP_AT_LOGI(TAG, "file download completed, total wrote size:%d", sp_http_to_fs->fs_handle->wrote_size);
     }
 
 cmd_exit:
