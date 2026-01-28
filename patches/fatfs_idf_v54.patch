@@ -1,0 +1,434 @@
+diff --git a/components/fatfs/fatfs_utils/utils.py b/components/fatfs/fatfs_utils/utils.py
+index 662586a50b69..3d84ee592228 100644
+--- a/components/fatfs/fatfs_utils/utils.py
++++ b/components/fatfs/fatfs_utils/utils.py
+@@ -303,6 +303,8 @@ class FATDefaults:
+     VOLUME_LABEL: str = 'Espressif'
+     FILE_SYS_TYPE: str = 'FAT'
+     ROOT_ENTRIES_COUNT: int = 512  # number of entries in the root directory, recommended 512
++    FAT12_MAX_ROOT_ENTRIES: int = 224  # maximum number of entries in FAT12 root directory
++    FAT16_MAX_ROOT_ENTRIES: int = 512  # maximum number of entries in FAT16 root directory
+     MEDIA_TYPE: int = 0xf8
+     SIGNATURE_WORD: bytes = b'\x55\xAA'
+ 
+diff --git a/components/fatfs/fatfsgen.py b/components/fatfs/fatfsgen.py
+index 30d274f52604..c52346259d2d 100755
+--- a/components/fatfs/fatfsgen.py
++++ b/components/fatfs/fatfsgen.py
+@@ -57,8 +57,7 @@ class FATFS:
+                  root_entry_count: int = FATDefaults.ROOT_ENTRIES_COUNT,
+                  explicit_fat_type: Optional[int] = None,
+                  media_type: int = FATDefaults.MEDIA_TYPE) -> None:
+-        # root directory bytes should be aligned by sector size
+-        assert (int(root_entry_count) * BYTES_PER_DIRECTORY_ENTRY) % sector_size == 0
++
+         # number of bytes in the root dir must be even multiple of BPB_BytsPerSec
+         if (int(root_entry_count) > 128):
+             assert ((int(root_entry_count) * BYTES_PER_DIRECTORY_ENTRY) // sector_size) % 2 == 0
+@@ -251,10 +250,24 @@ def calculate_min_space(path: List[str],
+ def main() -> None:
+     args = get_args_for_partition_generator('Create a FAT filesystem and populate it with directory content', wl=False)
+ 
++    # 0 == default (512 items)
++    root_dir_count = args.root_entry_count
++    if root_dir_count == 0:
++        root_dir_count = FATDefaults.ROOT_ENTRIES_COUNT
++
++    # apply de-facto limits based on FAT type
++    if args.fat_type == 12:
++        if root_dir_count > FATDefaults.FAT12_MAX_ROOT_ENTRIES:
++            root_dir_count = FATDefaults.FAT12_MAX_ROOT_ENTRIES
++
++    if args.fat_type == 16:
++        if root_dir_count > FATDefaults.FAT16_MAX_ROOT_ENTRIES:
++            root_dir_count = FATDefaults.FAT16_MAX_ROOT_ENTRIES
++
+     if args.partition_size == -1:
+         clusters = calculate_min_space([], args.input_directory, args.sector_size, long_file_names=True, is_root=True)
+         fats = get_fat_sectors_count(clusters, args.sector_size)
+-        root_dir_sectors = (FATDefaults.ROOT_ENTRIES_COUNT * FATDefaults.ENTRY_SIZE) // args.sector_size
++        root_dir_sectors = max((root_dir_count * FATDefaults.ENTRY_SIZE // args.sector_size), 1)
+         args.partition_size = max(FATFS_MIN_ALLOC_UNIT * args.sector_size,
+                                   (clusters + fats + get_non_data_sectors_cnt(RESERVED_CLUSTERS_COUNT,
+                                                                               fats,
+@@ -269,7 +282,7 @@ def main() -> None:
+                   sector_size=args.sector_size,
+                   long_names_enabled=args.long_name_support,
+                   use_default_datetime=args.use_default_datetime,
+-                  root_entry_count=args.root_entry_count,
++                  root_entry_count=root_dir_count,
+                   explicit_fat_type=args.fat_type)
+ 
+     fatfs.generate(args.input_directory)
+diff --git a/components/fatfs/src/ff.c b/components/fatfs/src/ff.c
+index 3c3f1ace61d1..dca543beef15 100644
+--- a/components/fatfs/src/ff.c
++++ b/components/fatfs/src/ff.c
+@@ -6298,6 +6298,14 @@ FRESULT f_mkfs (
+ 			}
+ 			if (fsty == FS_FAT12 && n_clst > MAX_FAT12) LEAVE_MKFS(FR_MKFS_ABORTED);	/* Too many clusters for FAT12 */
+ 
++			/* deploy de-facto rootdir limits given for FAT12 and FAT16 */
++			if (fsty == FS_FAT12) {
++				if (n_root > 224) n_root = 224;
++			}
++			else if (fsty == FS_FAT16) {
++				if (n_root > 512) n_root = 512;
++			}
++
+ 			/* Ok, it is the valid cluster configuration */
+ 			break;
+ 		} while (1);
+diff --git a/components/fatfs/vfs/esp_vfs_fat.h b/components/fatfs/vfs/esp_vfs_fat.h
+index 7b87818fa87d..dbe4abf4532f 100644
+--- a/components/fatfs/vfs/esp_vfs_fat.h
++++ b/components/fatfs/vfs/esp_vfs_fat.h
+@@ -111,6 +111,12 @@ typedef struct {
+      * may be different.
+      */
+     bool use_one_fat;
++    /**
++     * Number of reserved root directory items.
++     * Effective only on FAT12/16, ignored on other file systems (by FatFS lib).
++     * 0 == default (maximum number of 32B entries given by the sector size).
++     */
++    size_t rootdir_entries;
+ } esp_vfs_fat_mount_config_t;
+ 
+ #define VFS_FAT_MOUNT_DEFAULT_CONFIG() \
+@@ -120,6 +126,7 @@ typedef struct {
+         .allocation_unit_size = 0, \
+         .disk_status_check_enable = false, \
+         .use_one_fat = false, \
++        .rootdir_entries = 0, \
+     }
+ 
+ // Compatibility definition
+diff --git a/components/fatfs/vfs/vfs_fat_spiflash.c b/components/fatfs/vfs/vfs_fat_spiflash.c
+index 7144f165f6a5..66db63ba7d5d 100644
+--- a/components/fatfs/vfs/vfs_fat_spiflash.c
++++ b/components/fatfs/vfs/vfs_fat_spiflash.c
+@@ -1,5 +1,5 @@
+ /*
+- * SPDX-FileCopyrightText: 2015-2024 Espressif Systems (Shanghai) CO LTD
++ * SPDX-FileCopyrightText: 2015-2025 Espressif Systems (Shanghai) CO LTD
+  *
+  * SPDX-License-Identifier: Apache-2.0
+  */
+@@ -25,7 +25,7 @@ static vfs_fat_spiflash_ctx_t *s_ctx[FF_VOLUMES] = {};
+ 
+ extern esp_err_t esp_vfs_set_readonly_flag(const char* base_path); // from vfs/vfs.c to set readonly flag in esp_vfs_t struct externally
+ 
+-static bool s_get_context_id_by_label(const char *label, uint32_t *out_id)
++static bool get_context_id_by_label(const char *label, uint32_t *out_id)
+ {
+     vfs_fat_spiflash_ctx_t *p_ctx = NULL;
+     for (int i = 0; i < FF_VOLUMES; i++) {
+@@ -44,7 +44,7 @@ static bool s_get_context_id_by_label(const char *label, uint32_t *out_id)
+     return false;
+ }
+ 
+-static bool s_get_context_id_by_wl_handle(wl_handle_t wlhandle, uint32_t *out_id)
++static bool get_context_id_by_wl_handle(wl_handle_t wlhandle, uint32_t *out_id)
+ {
+     vfs_fat_spiflash_ctx_t *p_ctx = NULL;
+     for (int i = 0; i < FF_VOLUMES; i++) {
+@@ -59,7 +59,7 @@ static bool s_get_context_id_by_wl_handle(wl_handle_t wlhandle, uint32_t *out_id
+     return false;
+ }
+ 
+-static uint32_t s_get_unused_context_id(void)
++static uint32_t get_unused_context_id(void)
+ {
+     for (uint32_t i = 0; i < FF_VOLUMES; i++) {
+         if (!s_ctx[i]) {
+@@ -72,55 +72,74 @@ static uint32_t s_get_unused_context_id(void)
+ vfs_fat_spiflash_ctx_t* get_vfs_fat_spiflash_ctx(wl_handle_t wlhandle)
+ {
+     uint32_t id = FF_VOLUMES;
+-    if (s_get_context_id_by_wl_handle(wlhandle, &id)) {
++    if (get_context_id_by_wl_handle(wlhandle, &id)) {
+         return s_ctx[id];
+     }
+     return NULL;
+ }
+ 
+-static esp_err_t s_f_mount_rw(FATFS *fs, const char *drv, const esp_vfs_fat_mount_config_t *mount_config, vfs_fat_x_ctx_flags_t *out_flags, size_t sec_num)
++static esp_err_t f_mount_rw(FATFS *fs, const char *drv, const esp_vfs_fat_mount_config_t *mount_config, vfs_fat_x_ctx_flags_t *out_flags)
+ {
+     FRESULT fresult = f_mount(fs, drv, 1);
+-    if (fresult != FR_OK) {
+-        ESP_LOGW(TAG, "f_mount failed (%d)", fresult);
+ 
+-        bool need_mount_again = (fresult == FR_NO_FILESYSTEM || fresult == FR_INT_ERR) && mount_config->format_if_mount_failed;
+-        if (!need_mount_again) {
+-            return ESP_FAIL;
+-        }
++    const char *msg = "Unknown";
++    const char *note = "";
++    bool recoverable = false;
++
++    switch (fresult) {
++        case FR_OK:
++            return ESP_OK;
++        case FR_NO_FILESYSTEM:
++            msg = "No filesystem detected";
++            note = "(This may indicate corrupt FS, or attempt to mount read-only fatfsgen image for write)";
++            recoverable = true;
++            break;
++        case FR_INT_ERR:
++            msg = "Assertion failed";
++            recoverable = true;
++            break;
++        default:
++            break;
++    }
+ 
+-        const size_t workbuf_size = 4096;
+-        void *workbuf = ff_memalloc(workbuf_size);
+-        if (workbuf == NULL) {
+-            return ESP_ERR_NO_MEM;
+-        }
++    if (!recoverable || !mount_config->format_if_mount_failed) {
++        ESP_LOGE(TAG, "f_mount failed with error: \"%s\" [%d]. %s", msg, fresult, note);
++        return ESP_FAIL;
++    }
+ 
+-        size_t alloc_unit_size = esp_vfs_fat_get_allocation_unit_size(CONFIG_WL_SECTOR_SIZE, mount_config->allocation_unit_size);
+-        ESP_LOGI(TAG, "Formatting FATFS partition, allocation unit size=%d", alloc_unit_size);
+-        UINT root_dir_entries;
+-        if (CONFIG_WL_SECTOR_SIZE == 512) {
+-            root_dir_entries = 16;
+-        } else {
+-            root_dir_entries = 128;
+-        }
+-        const MKFS_PARM opt = {(BYTE)(FM_ANY | FM_SFD), (mount_config->use_one_fat ? 1 : 2), 0, (sec_num <= MIN_REQ_SEC ? root_dir_entries : 0), alloc_unit_size};
+-        fresult = f_mkfs(drv, &opt, workbuf, workbuf_size);
+-        free(workbuf);
+-        workbuf = NULL;
+-        ESP_RETURN_ON_FALSE(fresult == FR_OK, ESP_FAIL, TAG, "f_mkfs failed (%d)", fresult);
+-
+-        if (out_flags) {
+-            *out_flags |= FORMATTED_DURING_LAST_MOUNT; // set flag
+-        }
++    ESP_LOGW(TAG, "FatFS mount (f_mount) failed with error: \"%s\" [%d]. Retrying after format...", msg, fresult);
+ 
+-        ESP_LOGI(TAG, "Mounting again");
+-        fresult = f_mount(fs, drv, 1);
+-        ESP_RETURN_ON_FALSE(fresult == FR_OK, ESP_FAIL, TAG, "f_mount failed after formatting (%d)", fresult);
+-    } else {
+-        if (out_flags) {
+-            *out_flags  &= ~FORMATTED_DURING_LAST_MOUNT; // reset flag
+-        }
++    const size_t workbuf_size = 4096;
++    void *workbuf = ff_memalloc(workbuf_size);
++    if (workbuf == NULL) {
++        return ESP_ERR_NO_MEM;
++    }
++
++    size_t alloc_unit_size = esp_vfs_fat_get_allocation_unit_size(CONFIG_WL_SECTOR_SIZE, mount_config->allocation_unit_size);
++    ESP_LOGI(TAG, "Formatting FATFS partition, allocation unit size=%d", alloc_unit_size);
++
++    //if root directory entries set as default, allocate whole 1 sector for this purpose (one rootdir entry == 32B)
++    UINT root_dir_entries = mount_config->rootdir_entries;
++    if (root_dir_entries == 0) {
++        root_dir_entries = CONFIG_WL_SECTOR_SIZE / 32;
++    }
++    const MKFS_PARM opt = {(BYTE)(FM_ANY | FM_SFD), (mount_config->use_one_fat ? 1 : 2), 0, root_dir_entries, alloc_unit_size};
++    ESP_LOGD(TAG, "f_mkfs() params:  root_dir_entries: %ul, alloc_unit_size=%ul", root_dir_entries, alloc_unit_size);
++
++    fresult = f_mkfs(drv, &opt, workbuf, workbuf_size);
++
++    free(workbuf);
++    workbuf = NULL;
++    ESP_RETURN_ON_FALSE(fresult == FR_OK, ESP_FAIL, TAG, "f_mkfs failed (%d)", fresult);
++
++    if (out_flags) {
++        *out_flags |= FORMATTED_DURING_LAST_MOUNT; // set flag
+     }
++
++    ESP_LOGI(TAG, "Mounting again");
++    fresult = f_mount(fs, drv, 1);
++    ESP_RETURN_ON_FALSE(fresult == FR_OK, ESP_FAIL, TAG, "f_mount failed after formatting (%d)", fresult);
++
+     return ESP_OK;
+ }
+ 
+@@ -132,11 +151,9 @@ esp_err_t esp_vfs_fat_spiflash_mount_rw_wl(const char* base_path,
+     esp_err_t ret = ESP_OK;
+     vfs_fat_spiflash_ctx_t *ctx = NULL;
+     uint32_t ctx_id = FF_VOLUMES;
++    esp_partition_subtype_t subtype = partition_label ? ESP_PARTITION_SUBTYPE_ANY : ESP_PARTITION_SUBTYPE_DATA_FAT;
+ 
+-    esp_partition_subtype_t subtype = partition_label ?
+-            ESP_PARTITION_SUBTYPE_ANY : ESP_PARTITION_SUBTYPE_DATA_FAT;
+-    const esp_partition_t *data_partition = esp_partition_find_first(ESP_PARTITION_TYPE_DATA,
+-                                                subtype, partition_label);
++    const esp_partition_t *data_partition = esp_partition_find_first(ESP_PARTITION_TYPE_DATA, subtype, partition_label);
+     ESP_RETURN_ON_FALSE(data_partition, ESP_ERR_NOT_FOUND, TAG, "Failed to find FATFS partition (type='data', subtype='fat', partition_label='%s'). Check the partition table.", partition_label);
+ 
+     ESP_RETURN_ON_ERROR(wl_mount(data_partition, wl_handle), TAG, "failed to mount wear levelling layer. ret = %i", ret);
+@@ -167,9 +184,8 @@ esp_err_t esp_vfs_fat_spiflash_mount_rw_wl(const char* base_path,
+ 
+     vfs_fat_x_ctx_flags_t flags = 0;
+ 
+-    size_t sec_num = wl_size(*wl_handle) / wl_sector_size(*wl_handle);
+     // Try to mount partition
+-    ret = s_f_mount_rw(fs, drv, mount_config, &flags, sec_num);
++    ret = f_mount_rw(fs, drv, mount_config, &flags);
+     if (ret != ESP_OK) {
+         goto fail;
+     }
+@@ -183,7 +199,7 @@ esp_err_t esp_vfs_fat_spiflash_mount_rw_wl(const char* base_path,
+     ctx->wlhandle = *wl_handle;
+     ctx->flags = flags;
+     memcpy(&ctx->mount_config, mount_config, sizeof(esp_vfs_fat_mount_config_t));
+-    ctx_id = s_get_unused_context_id();
++    ctx_id = get_unused_context_id();
+     //At this stage, we should always get a free context, otherwise program should return already
+     assert(ctx_id != FF_VOLUMES);
+     s_ctx[ctx_id] = ctx;
+@@ -207,7 +223,7 @@ esp_err_t esp_vfs_fat_spiflash_unmount_rw_wl(const char* base_path, wl_handle_t
+     ESP_RETURN_ON_FALSE(pdrv != 0xff, ESP_ERR_INVALID_STATE, TAG, "partition isn't registered, call esp_vfs_fat_spiflash_mount_rw_wl first");
+ 
+     uint32_t id = FF_VOLUMES;
+-    ESP_RETURN_ON_FALSE(s_get_context_id_by_wl_handle(wl_handle, &id), ESP_ERR_INVALID_STATE, TAG, "partition isn't registered, call esp_vfs_fat_spiflash_mount_rw_wl first");
++    ESP_RETURN_ON_FALSE(get_context_id_by_wl_handle(wl_handle, &id), ESP_ERR_INVALID_STATE, TAG, "partition isn't registered, call esp_vfs_fat_spiflash_mount_rw_wl first");
+     //At this stage, as the wl_handle is valid, we should always get its context id, otherwise program should return already
+     assert(id != FF_VOLUMES);
+ 
+@@ -235,9 +251,8 @@ esp_err_t esp_vfs_fat_spiflash_format_cfg_rw_wl(const char* base_path, const cha
+ 
+     wl_handle_t temp_handle = WL_INVALID_HANDLE;
+     uint32_t id = FF_VOLUMES;
+-    size_t sec_num = 0;
+ 
+-    bool found = s_get_context_id_by_label(partition_label, &id);
++    bool found = get_context_id_by_label(partition_label, &id);
+     if (!found) {
+         esp_vfs_fat_mount_config_t default_mount_config = {
+             .max_files = 1,
+@@ -250,8 +265,7 @@ esp_err_t esp_vfs_fat_spiflash_format_cfg_rw_wl(const char* base_path, const cha
+             mount_cfg = &default_mount_config;
+         }
+         ESP_RETURN_ON_ERROR(esp_vfs_fat_spiflash_mount_rw_wl(base_path, partition_label, mount_cfg, &temp_handle), TAG, "Failed to mount");
+-        found = s_get_context_id_by_label(partition_label, &id);
+-        sec_num = wl_size(temp_handle) / wl_sector_size(temp_handle);
++        found = get_context_id_by_label(partition_label, &id);
+         assert(found);
+         if (s_ctx[id]->flags & FORMATTED_DURING_LAST_MOUNT) {
+             ESP_LOGD(TAG, "partition was formatted during mounting, skipping another format");
+@@ -264,7 +278,6 @@ esp_err_t esp_vfs_fat_spiflash_format_cfg_rw_wl(const char* base_path, const cha
+             s_ctx[id]->mount_config = *cfg;
+         }
+         temp_handle = s_ctx[id]->wlhandle;
+-        sec_num = wl_size(temp_handle) / wl_sector_size(temp_handle);
+     }
+ 
+     //unmount
+@@ -281,13 +294,14 @@ esp_err_t esp_vfs_fat_spiflash_format_cfg_rw_wl(const char* base_path, const cha
+     }
+     size_t alloc_unit_size = esp_vfs_fat_get_allocation_unit_size(CONFIG_WL_SECTOR_SIZE, s_ctx[id]->mount_config.allocation_unit_size);
+     ESP_LOGI(TAG, "Formatting FATFS partition, allocation unit size=%d", alloc_unit_size);
+-    UINT root_dir_entries;
+-    if (CONFIG_WL_SECTOR_SIZE == 512) {
+-        root_dir_entries = 16;
+-    } else {
+-        root_dir_entries = 128;
++
++    //if root directory entries set as default, allocate whole 1 sector for this purpose (one rootdir entry == 32B)
++    UINT root_dir_entries = s_ctx[id]->mount_config.rootdir_entries;
++    if (root_dir_entries == 0) {
++        root_dir_entries = CONFIG_WL_SECTOR_SIZE / 32;
+     }
+-    const MKFS_PARM opt = {(BYTE)(FM_ANY | FM_SFD), (s_ctx[id]->mount_config.use_one_fat ? 1 : 2), 0, (sec_num <= MIN_REQ_SEC ? root_dir_entries : 0), alloc_unit_size};
++    const MKFS_PARM opt = {(BYTE)(FM_ANY | FM_SFD), (s_ctx[id]->mount_config.use_one_fat ? 1 : 2), 0, root_dir_entries, alloc_unit_size};
++
+     fresult = f_mkfs(drv, &opt, workbuf, workbuf_size);
+     free(workbuf);
+     workbuf = NULL;
+@@ -295,7 +309,7 @@ esp_err_t esp_vfs_fat_spiflash_format_cfg_rw_wl(const char* base_path, const cha
+ 
+ mount_back:
+     if (partition_was_mounted) {
+-        esp_err_t err = s_f_mount_rw(s_ctx[id]->fs, drv, &s_ctx[id]->mount_config, NULL, sec_num);
++        esp_err_t err = f_mount_rw(s_ctx[id]->fs, drv, &s_ctx[id]->mount_config, NULL);
+         if (err != ESP_OK) {
+             ESP_LOGE(TAG, "failed to mount back, go to recycle");
+             goto recycle;
+diff --git a/components/fatfs/wl_fatfsgen.py b/components/fatfs/wl_fatfsgen.py
+index 13ef51689b92..af44840b0766 100755
+--- a/components/fatfs/wl_fatfsgen.py
++++ b/components/fatfs/wl_fatfsgen.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python
+-# SPDX-FileCopyrightText: 2021-2024 Espressif Systems (Shanghai) CO LTD
++# SPDX-FileCopyrightText: 2021-2025 Espressif Systems (Shanghai) CO LTD
+ # SPDX-License-Identifier: Apache-2.0
+ from typing import Optional
+ 
+@@ -92,7 +92,7 @@ class WLFATFS:
+                  reserved_sectors_cnt: int = FATDefaults.RESERVED_SECTORS_COUNT,
+                  fat_tables_cnt: int = FATDefaults.FAT_TABLES_COUNT,
+                  sectors_per_cluster: int = FATDefaults.SECTORS_PER_CLUSTER,
+-                 explicit_fat_type: int = None,
++                 explicit_fat_type: Optional[int] = None,
+                  hidden_sectors: int = FATDefaults.HIDDEN_SECTORS,
+                  long_names_enabled: bool = False,
+                  num_heads: int = FATDefaults.NUM_HEADS,
+@@ -103,7 +103,7 @@ class WLFATFS:
+                  use_default_datetime: bool = True,
+                  version: int = FATDefaults.VERSION,
+                  temp_buff_size: int = FATDefaults.TEMP_BUFFER_SIZE,
+-                 device_id: int = None,
++                 device_id: Optional[int] = None,
+                  root_entry_count: int = FATDefaults.ROOT_ENTRIES_COUNT,
+                  media_type: int = FATDefaults.MEDIA_TYPE,
+                  wl_mode: Optional[str] = None) -> None:
+@@ -119,14 +119,15 @@ class WLFATFS:
+         # determine the number of required sectors (roundup to sector size)
+         self.wl_state_sectors = (self.wl_state_size + FATDefaults.WL_SECTOR_SIZE - 1) // FATDefaults.WL_SECTOR_SIZE
+ 
+-        self.boot_sector_start = FATDefaults.WL_SECTOR_SIZE  # shift by one "dummy" sector
+-        self.fat_table_start = self.boot_sector_start + reserved_sectors_cnt * FATDefaults.WL_SECTOR_SIZE
+-
+         wl_sectors = (WLFATFS.WL_DUMMY_SECTORS_COUNT + WLFATFS.WL_CFG_SECTORS_COUNT +
+                       self.wl_state_sectors * WLFATFS.WL_STATE_COPY_COUNT)
++
+         if self.wl_mode is not None and self.wl_mode == 'safe':
+             wl_sectors += WLFATFS.WL_SAFE_MODE_DUMP_SECTORS
+ 
++        self.boot_sector_start = FATDefaults.WL_SECTOR_SIZE  # shift by one "dummy" sector
++        self.fat_table_start = self.boot_sector_start + reserved_sectors_cnt * FATDefaults.WL_SECTOR_SIZE
++
+         self.plain_fat_sectors = self.total_sectors - wl_sectors
+         self.plain_fatfs = FATFS(
+             explicit_fat_type=explicit_fat_type,
+@@ -187,7 +188,7 @@ class WLFATFS:
+         wl_state_data = WLFATFS.WL_STATE_T_DATA.build(
+             dict(
+                 pos=0,
+-                max_pos=self.plain_fat_sectors + WLFATFS.WL_DUMMY_SECTORS_COUNT,
++                max_pos=(self.plain_fat_sectors + WLFATFS.WL_DUMMY_SECTORS_COUNT + (WLFATFS.WL_SAFE_MODE_DUMP_SECTORS if self.wl_mode == 'safe' else 0)),
+                 move_count=0,
+                 access_count=0,
+                 max_count=FATDefaults.UPDATE_RATE,
+@@ -200,10 +201,14 @@ class WLFATFS:
+         wl_state_crc = Int32ul.build(crc)
+         wl_state = wl_state_data + wl_state_crc
+         wl_state_sector_padding: bytes = (FATDefaults.WL_SECTOR_SIZE - WLFATFS.WL_STATE_HEADER_SIZE) * FULL_BYTE
+-        wl_state_sector: bytes = (
+-            wl_state + wl_state_sector_padding + (self.wl_state_sectors - 1) * FATDefaults.WL_SECTOR_SIZE * FULL_BYTE
+-        )
+-        self.fatfs_binary_image += (WLFATFS.WL_STATE_COPY_COUNT * wl_state_sector)
++        wl_state_sectors: bytes = (wl_state + wl_state_sector_padding + (self.wl_state_sectors - 1) * FATDefaults.WL_SECTOR_SIZE * FULL_BYTE)
++
++        # add 2 extra state-preservation sectors in 'Safe' mode
++        if self.wl_mode is not None and self.wl_mode == 'safe':
++            wl_safe_dummy_sec: bytes = (WLFATFS.WL_SAFE_MODE_DUMP_SECTORS * FATDefaults.WL_SECTOR_SIZE * FULL_BYTE)
++            self.fatfs_binary_image += wl_safe_dummy_sec
++
++        self.fatfs_binary_image += (WLFATFS.WL_STATE_COPY_COUNT * wl_state_sectors)
+ 
+     def wl_write_filesystem(self, output_path: str) -> None:
+         if not self._initialized:
