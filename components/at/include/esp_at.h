@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -7,6 +7,7 @@
 
 #include "sdkconfig.h"
 #include "esp_log.h"
+#include "esp_at_types.h"
 #include "esp_at_core.h"
 #include "esp_at_cmd_register.h"
 #include "nvs.h"
@@ -168,3 +169,47 @@ esp_err_t esp_at_nvs_set_str(nvs_handle_t handle, const char *key, const char *v
 esp_err_t esp_at_nvs_get_str(nvs_handle_t handle, const char *key, char *out_value, size_t *length);
 esp_err_t esp_at_nvs_set_blob(nvs_handle_t handle, const char *key, const void *value, size_t length);
 esp_err_t esp_at_nvs_get_blob(nvs_handle_t handle, const char *key, void *out_value, size_t *length);
+
+/**
+ * @brief Get the mount point of the filesystem
+ *
+ * @return pointer to the mount point string
+ */
+const char *esp_at_fs_get_mount_point(void);
+
+/**
+ * @brief Mount the filesystem
+ *
+ * @return
+ *      - true: mount successfully
+ *      - false: mount failed
+ */
+bool esp_at_fs_mount(void);
+
+/**
+ * @brief Unmount the filesystem
+ *
+ * @return
+ *      - true: unmount successfully
+ *      - false: unmount failed
+ */
+bool esp_at_fs_unmount(void);
+
+/**
+ * @brief Get the filesystem information
+ *
+ * @param[out] out_total_bytes: pointer to store total bytes of the filesystem
+ * @param[out] out_free_bytes: pointer to store free bytes of the filesystem
+ *
+ * @return
+ *      - ESP_OK: get filesystem info successfully
+ *      - others: see esp_err.h
+ */
+esp_err_t esp_at_get_fs_info(uint32_t *out_total_bytes, uint32_t *out_free_bytes);
+
+/**
+ * @brief Get the filesystem type
+ *
+ * @return the filesystem type, see at_fs_type_t
+ */
+at_fs_type_t esp_at_fs_get_type(void);

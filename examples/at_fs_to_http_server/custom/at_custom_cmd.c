@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2025-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -10,7 +10,6 @@
 #include "sdkconfig.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
-#include "esp_vfs_fat.h"
 #include "esp_http_client.h"
 #include "esp_log.h"
 #include "esp_at.h"
@@ -23,7 +22,6 @@
 #define AT_URL_LEN_MAX              (8 * 1024)
 #define AT_HEAP_BUFFER_SIZE         4096
 #define AT_RESP_PREFIX_LEN_MAX      64
-#define AT_FATFS_MOUNT_POINT        "/fatfs"
 
 typedef struct {
     bool fs_mounted;                /*!< File system mounted */
@@ -48,8 +46,8 @@ static const char *TAG = "at_fs_to_http";
 static at_read_fs_handle_t *at_fs_to_http_begin(char *path)
 {
     // mount file system
-    if (!at_fatfs_mount()) {
-        ESP_LOGE(TAG, "at_fatfs_mount failed");
+    if (!esp_at_fs_mount()) {
+        ESP_LOGE(TAG, "esp_at_fs_mount failed");
         return NULL;
     }
 
@@ -62,14 +60,14 @@ static at_read_fs_handle_t *at_fs_to_http_begin(char *path)
     fs_handle->fs_mounted = true;
 
     // init path
-    fs_handle->path = (char *)calloc(1, strlen(AT_FATFS_MOUNT_POINT) + strlen(path) + 2);
+    fs_handle->path = (char *)calloc(1, strlen(esp_at_fs_get_mount_point()) + strlen(path) + 2);
     if (!fs_handle->path) {
         free(fs_handle);
-        at_fatfs_unmount();
+        esp_at_fs_unmount();
         ESP_LOGE(TAG, "calloc failed");
         return NULL;
     }
-    sprintf(fs_handle->path, "%s/%s", AT_FATFS_MOUNT_POINT, path);
+    sprintf(fs_handle->path, "%s/%s", esp_at_fs_get_mount_point(), path);
 
     // get file size
     struct stat st;
@@ -78,7 +76,7 @@ static at_read_fs_handle_t *at_fs_to_http_begin(char *path)
         ESP_LOGE(TAG, "stat(%s) failed\n", fs_handle->path);
         free(fs_handle->path);
         free(fs_handle);
-        at_fatfs_unmount();
+        esp_at_fs_unmount();
         return NULL;
     }
     fs_handle->total_size = st.st_size;
@@ -89,7 +87,7 @@ static at_read_fs_handle_t *at_fs_to_http_begin(char *path)
         ESP_LOGE(TAG, "fopen(%s) failed", fs_handle->path);
         free(fs_handle->path);
         free(fs_handle);
-        at_fatfs_unmount();
+        esp_at_fs_unmount();
         return NULL;
     }
 
@@ -141,7 +139,7 @@ static void at_fs_to_http_clean(void)
                 sp_fs_to_http->fs_handle->path = NULL;
             }
             if (sp_fs_to_http->fs_handle->fs_mounted) {
-                at_fatfs_unmount();
+                esp_at_fs_unmount();
                 sp_fs_to_http->fs_handle->fs_mounted = false;
             }
             free(sp_fs_to_http->fs_handle);

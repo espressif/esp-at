@@ -321,8 +321,8 @@
   - *enable_intf_security
   - export AT_CUSTOM_COMPONENTS="
       $CI_PROJECT_DIR/examples/at_custom_cmd
-      $CI_PROJECT_DIR/examples/at_fatfs_to_http_server
-      $CI_PROJECT_DIR/examples/at_http_get_to_fatfs
+      $CI_PROJECT_DIR/examples/at_fs_to_http_server
+      $CI_PROJECT_DIR/examples/at_http_get_to_fs
       $CI_PROJECT_DIR/examples/at_interface_security
       "
   - *build_project

@@ -19,7 +19,7 @@ in order to integrate customized partitions to the build systems, we created `cu
 2. server_cert
 3. server_key
 4. server_ca
-5. fatfs
+5. fs_storage
 
 ##### check if required partition is defined
 We need to check if the partition required by enabled AT command is defined in partition table. Therefore we created a file `AT\_partition\_dependency.txt` to config the dependency. Each line of the file defines the AT menuconfig option and the required partition name.
@@ -28,7 +28,7 @@ For example, the following contents in AT\_partition\_dependency defines the dep
 
 ```
 AT_BLE_COMMAND_SUPPORT ble_data
-AT_FS_COMMAND_SUPPORT fatfs
+AT_FS_COMMAND_SUPPORT fs_storage
 AT_NET_COMMAND_SUPPORT server_cert
 AT_NET_COMMAND_SUPPORT server_key
 AT_NET_COMMAND_SUPPORT server_ca

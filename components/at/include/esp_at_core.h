@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -452,30 +452,6 @@ const uint8_t* esp_at_get_current_cmd_name(void);
  * - others : fail
  */
 int32_t esp_at_get_core_version(char *buffer, uint32_t size);
-
-/**
- * @brief Mount FATFS partition
- *
- * @note if you want to use FATFS, you should enable "AT FS command support" in menuconfig first.
- * @note esp-at uses a fixed partition for the filesystem, which defined in esp-at/module_config/$your_module_config/at_customize.csv,
- *       and uses a fixed mount point "/fatfs".
- * @note when using FATFS, you should call this function to mount the partition first,
- *       and call at_fatfs_unmount() to unmount the partition when you don't need it.
- *
- * @return
- * - true : succeed
- * - false : fail
-*/
-bool at_fatfs_mount(void);
-
-/**
- * @brief Unmount FATFS partition
- *
- * @return
- * - true : succeed
- * - false : fail
-*/
-bool at_fatfs_unmount(void);
 
 /**
  * @brief Check if the string is NULL

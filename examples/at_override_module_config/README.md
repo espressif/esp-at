@@ -62,7 +62,7 @@ mfg_nvs, data, nvs, 0x1f000, 0x41000
 The build system will use `at_override_module_config/at_customize.csv` as your secondary partition table configuration.
 
 **Notes:**
-- In order to increase the size of the `mfg_nvs` partition, the `fatfs` partition has been removed in this example. This means that you cannot use the FileSystem command (`AT+FS`) provided by the AT firmware.
+- In order to increase the size of the `mfg_nvs` partition, the `fs_storage` partition has been removed in this example. This means that you cannot use the FileSystem command (`AT+FS`) provided by the AT firmware.
 - You need to override `sdkconfig.defaults` as you need to specify the relative path of the secondary partition table in `sdkconfig.defaults` using `CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_FILE`. The relative path is relative to `at_override_module_config` for `at_customize.csv`.
 
 #### 2.5 Override the esp-idf version

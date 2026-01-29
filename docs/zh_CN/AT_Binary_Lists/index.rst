@@ -31,7 +31,7 @@ ESP-AT 固件包含了若干个特定功能的二进制文件：
 .. code-block:: none
 
   build
-  ├── at_customize.bin        // 二级分区表（用户分区表，列出了 mfg_nvs 分区以及 fatfs 分区的起始地址和分区大小）
+  ├── at_customize.bin        // 二级分区表（用户分区表，列出了 mfg_nvs 分区以及 fs_storage 分区的起始地址和分区大小）
   ├── bootloader
   │   └── bootloader.bin      // 启动加载器
   ├── customized_partitions

@@ -11,3 +11,6 @@ pycryptodome==3.19.1
 pyyaml
 xlrd
 configparser
+
+# littlefs image building requirements
+littlefs-python==0.15.0

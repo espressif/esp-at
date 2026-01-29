@@ -271,7 +271,7 @@ Firstly, find the at_customize.csv table for {IDF_TARGET_PRODUCT_NAME} and set t
       # Name,Type,SubType,Offset,Size
       ... ...
       test,0x40,15,0x3D000,4K
-      fatfs,data,fat,0x70000,576K
+      fs_storage,data,0xff,0x70000,576K
 
 .. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
@@ -280,7 +280,7 @@ Firstly, find the at_customize.csv table for {IDF_TARGET_PRODUCT_NAME} and set t
       # Name,Type,SubType,Offset,Size
       ... ...
       test,0x40,15,0x3E000,4K
-      fatfs,data,fat,0x47000,100K
+      fs_storage,data,0xff,0x47000,100K
 
 Secondly, recompile the ESP-AT project, or execute the python script in the ESP-AT root directory to generate at_customize.bin.
 
