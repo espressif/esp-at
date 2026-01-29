@@ -9,7 +9,7 @@
 #include "sdkconfig.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
-#include "esp_vfs_fat.h"
+#include "esp_timer.h"
 #include "esp_http_client.h"
 #include "esp_log.h"
 #include "esp_at.h"
@@ -214,6 +214,18 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
+    // cmd timeout
+    int32_t elapsed_ms = 0, cmd_timeout_ms = 0;
+    int64_t start_ms = esp_timer_get_time() / 1000;
+    if (cnt < para_num) {
+        if (esp_at_get_para_as_digit(cnt++, &cmd_timeout_ms) != ESP_AT_PARA_PARSE_RESULT_OK) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+        if (cmd_timeout_ms < 0) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+    }
+
     // parameters are ready
     if (cnt != para_num) {
         return ESP_AT_RESULT_CODE_ERROR;
@@ -258,7 +270,7 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
     esp_http_client_config_t config = {
         .url = (const char*)sp_http_to_fs->url,
         .event_handler = at_http_event_handler,
-        .timeout_ms = AT_NETWORK_TIMEOUT_MS,
+        .timeout_ms = ((cmd_timeout_ms < AT_NETWORK_TIMEOUT_MS) ? cmd_timeout_ms : AT_NETWORK_TIMEOUT_MS),
         .buffer_size_tx = 4096,
     };
     sp_http_to_fs->is_chunked = true;
@@ -295,6 +307,17 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
         goto cmd_exit;
     }
     do {
+        // check timeout
+        if (cmd_timeout_ms > 0) {
+            elapsed_ms = esp_timer_get_time() / 1000 - start_ms;
+            if (elapsed_ms >= cmd_timeout_ms) {
+                ESP_AT_LOGE(TAG, "command timeout reached %u ms", cmd_timeout_ms);
+                ret = ESP_ERR_TIMEOUT;
+                break;
+            }
+        }
+
+        // read data from http client and write to fs
         data_len = esp_http_client_read(sp_http_to_fs->client, (char *)data, AT_HEAP_BUFFER_SIZE);
         if (data_len > 0) {
             ret = at_http_to_fs_write(sp_http_to_fs->fs_handle, data, data_len);
