@@ -1207,7 +1207,7 @@
 
 ::
 
-    AT+SYSMSGFILTERCFG=<operator>,<head_regexp_len>,<tail_regexp_len>
+    AT+SYSMSGFILTERCFG=<operator>,<head_regexp_len>,<tail_regexp_len>[,<cflags>]
 
 **响应：**
 
@@ -1240,6 +1240,11 @@
 
 - **<head_regexp_len>**：头部正则表达式长度。范围：[0,64]。如果设置为 0，代表忽略头部正则表达式的匹配，同时 ``<tail_regexp_len>`` 不能为 0。
 - **<tail_regexp_len>**：尾部正则表达式长度。范围：[0,64]。如果设置为 0，代表忽略尾部正则表达式的匹配，同时 ``<head_regexp_len>`` 不能为 0。
+- **<cflags>**：可选参数，正则表达式的编译标志，详见 `cflags 说明 <https://linux.die.net/man/3/regcomp>`__。默认值：0。
+
+  - bit 0: REG_EXTENDED，使用 POSIX 扩展正则表达式语法。
+  - bit 1: REG_ICASE，忽略大小写匹配。
+  - bit 2: REG_NEWLINE，改变 ``^`` 和 ``$`` 的行为，使其匹配行的开头和结尾，而不是整个字符串的开头和结尾。
 
 说明
 """"""
@@ -1247,7 +1252,7 @@
 - 请先使用本命令配置有效的过滤器，再通过 :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>` 命令启用或禁用系统消息过滤，实现更加精细的系统消息管理。
 - 头部和尾部正则表达式格式参考 `POSIX 基本正则语法 (BRE) <https://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended>`_。
 - 为了避免 :term:`系统消息` (AT 命令口的 TX 数据) 被错误过滤，**强烈建议** 头部正则表达式以 ``^`` 开头，尾部正则表达式以 ``$`` 结束。
-- 只有系统消息 **同时匹配** 上头部正则表达式和尾部正则表达式时，系统消息才会被过滤。过滤后，系统消息被正则表达式匹配上的数据会被 AT 过滤掉，MCU 不会收到；而未被正则表达式匹配上的数据，会原样发往 MCU。
+- 只有系统消息 **同时匹配** 上头部正则表达式和尾部正则表达式时，系统消息才会被过滤。过滤后，系统消息被正则表达式匹配上的数据会被 AT 过滤掉，MCU 不会收到；而未被正则表达式匹配上的数据，会原样发往 MCU。例如：收到数据 data，长度为 n 字节，头部正则表达式匹配了 data[0] ~ data[i]，尾部正则表达式匹配了 data[j] ~ data[n-1]，那么最终 MCU 收到的数据为 data[i+1] ~ data[j-1]。
 - 当系统消息匹配到一个过滤器后，不会再继续匹配其它的过滤器。
 - 系统消息匹配过滤器时，系统消息不会缓存，即不会将上一条的系统消息和本条系统消息合在一起，进行匹配。
 - 对于吞吐量较大的设备，强烈建议您设置较少的过滤器，同时及时通过 :ref:`AT+SYSMSGFILTER=0 <cmd-SYSMSGFILTER>` 命令禁用系统消息过滤。
@@ -1283,7 +1288,7 @@
 
 ::
 
-    AT+SYSMSGFILTERCFG=<operator>,<head_regexp_len>,<tail_regexp_len>
+    AT+SYSMSGFILTERCFG=<operator>,<head_regexp_len>,<tail_regexp_len>[,<cflags>]
 
 **响应：**
 
@@ -1316,6 +1321,11 @@
 
 - **<head_regexp_len>**：头部正则表达式长度。范围：[0,64]。如果设置为 0，则 ``<tail_regexp_len>`` 不能为 0。
 - **<tail_regexp_len>**：尾部正则表达式长度。范围：[0,64]。如果设置为 0，则 ``<head_regexp_len>`` 不能为 0。
+- **<cflags>**：可选参数，正则表达式的编译标志，详见 `cflags 说明 <https://linux.die.net/man/3/regcomp>`__。默认值：0。
+
+  - bit 0: REG_EXTENDED，使用 POSIX 扩展正则表达式语法。
+  - bit 1: REG_ICASE，忽略大小写匹配。
+  - bit 2: REG_NEWLINE，改变 ``^`` 和 ``$`` 的行为，使其匹配行的开头和结尾，而不是整个字符串的开头和结尾。
 
 说明
 """"""

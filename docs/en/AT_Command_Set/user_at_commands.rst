@@ -260,7 +260,7 @@ Parameters
 
   - Bit 0: Whether to enable :ref:`AT+USERMCUSLEEP <cmd-USERMCUSLEEP>` command linkage. Enabled by default. That is, when receiving AT+USERMCUSLEEP=0 command from MCU, AT knows that MCU is in awake state; when receiving AT+USERMCUSLEEP=1 command, AT knows that MCU is in sleep.
   - Bit 1: Whether to enable :ref:`AT+SLEEP=0/1/2/3 <cmd-SLEEP>` command linkage. Disabled by default. That is, when receiving AT+SLEEP=0 command, AT knows that MCU is in awake state; when receiving AT+SLEEP=1/2/3 command, AT knows that MCU is in sleep.
-  - Bit 2: Whether to enable the function of indicating MCU state after ``<delay time>`` timeout. Disabled by default. That is, when disabled, it indicates that MCU is in sleep after ``<delay time>``; when enabled, it indicates that MCU is in awake state after ``<delay time>``.
+  - Bit 2: Whether to enable the function of indicating that the MCU wakes up after ``<delay time>`` timeout. Disabled by default. When disabled, the MCU is indicated as sleeping after ``<delay time>``; when enabled, the MCU is indicated as awake after ``<delay time>``. Bit 2 must be used together with bit 0 or bit 1. If used alone, since the MCU is awake by default, it will not wake up the MCU each time.
   - Bit 3 (not implemented yet): Whether to enable the function of indicating MCU state via GPIO. Unsupported by default.
 
 Notes
@@ -268,7 +268,7 @@ Notes
 
 - This command needs to be configured only once.
 - Each time before the AT actively sends data to MCU, it will send a wake-up signal first and then enter the waiting time. When ``<delay time>`` is reached, it will directly send data. This wait timeout will reduce the transmission efficiency with MCU.
-- If AT receives any wake-up event in ``<check mcu wake method>`` before ``<delay time>``, it will immediately clear the wake-up state; otherwise, the wake-up state will be cleared automatically after the ``<delay time>`` timeout.
+- If AT receives a wake-up event defined by bit 0 or bit 1 in ``<check mcu awake method>`` before the ``<delay time>`` (in milliseconds) expires, the wake-up state is cleared immediately. Otherwise, AT continues waiting until the ``<delay time>`` times out and then automatically clears the wake-up state after the timeout.
 
 Example
 ^^^^^^^

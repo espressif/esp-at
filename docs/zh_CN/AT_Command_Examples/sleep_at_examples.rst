@@ -36,7 +36,7 @@ Sleep AT 示例
 
     - 将分别描述在 Wi-Fi 模式和蓝牙模式下将 {IDF_TARGET_NAME} 设置为睡眠模式。
     - 在单 Wi-Fi 模式下，只有 ``station`` 模式支持 ``Modem-sleep`` 模式和 ``Light-sleep`` 模式。
-    - 对于蓝牙模式下的 ``Light-sleep`` 模式，请确保外部存在 32 KHz 晶振。如果外部不存在 32 KHz 晶振，ESP-AT 将工作在 Modem-sleep 模式。
+    - 在单蓝牙模式下的 ``Light-sleep`` 模式，如果配置了外部 32 kHz 晶振，功耗可降至 μA 级别。如果没有外部 32 kHz 晶振，系统将自动使用内部主晶振作为 RTC 时钟源，功耗约为几 mA。
 
 测量方法
 ^^^^^^^^^^^^^^^^^^^^

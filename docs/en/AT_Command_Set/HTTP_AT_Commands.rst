@@ -374,7 +374,7 @@ Set Command
 
     >
 
-The ``>`` symbol indicates that AT is ready to receive AT command data. At this point, you can enter the HTTP request header (in the format of ``key: value``). When the data length reaches the value of parameter ``<req_header_len>``, AT returns:
+The ``>`` symbol indicates that AT is ready to receive AT command data. At this point, you can enter the HTTP request header (in the format of ``key: value``, no need to end with ``\r\n``). When the data length reaches the value of parameter ``<req_header_len>``, AT returns:
 
 ::
 

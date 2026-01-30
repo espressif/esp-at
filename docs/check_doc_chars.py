@@ -17,7 +17,7 @@ def ESP_LOGE(x):
     print('\033[31m{}\033[0m'.format(x))
 
 # allowed characters, include some chinese characters, symbol, and punctuation in en document
-at_allowed_chars_list = ['中文', '®', '℃', '…', '✅', '❌', '√', '×', '├', '└', '│', '–', '—']
+at_allowed_chars_list = ['中文', '®', '℃', '…', '✅', '❌', '√', '×', '├', '└', '│', '–', '—', 'µ']
 at_file_white_list = ['index_of_abbreviations.rst']
 at_not_allowed_chars_list = re.compile(b'[^\x0a\x0d\x20-\x7e]')
 
