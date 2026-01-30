@@ -421,7 +421,7 @@ def install_prerequisites():
     if sys.platform == 'linux':
         cmd = 'sudo apt-get install git wget flex bison gperf python3 python3-pip python3-venv python3-setuptools cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0'
     elif sys.platform == 'darwin':
-        cmd = 'sudo easy_install pip && brew install cmake ninja dfu-util ccache python3'
+        cmd = 'brew install cmake ninja dfu-util ccache python3'
     elif sys.platform == 'win32':
         print('Windows Installer Download has already installed all prerequisites.')
     elif sys.platform == 'linux2':
