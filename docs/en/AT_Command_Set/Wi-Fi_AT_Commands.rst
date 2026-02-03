@@ -317,17 +317,15 @@ Parameters
 
   .. list::
 
-    - 0: Not supported, only valid in query command
+    - 0: When used in a set command, it means the default value is kept. When used in a query command, it indicates that the current value is invalid
     - 1: 20 MHz
     :not esp32c2: - 2: 40 MHz
 
-.. only:: esp32c5
+- **<bandwidth_5ghz>**: 5 GHz bandwidth
 
-  - **<bandwidth_5ghz>**: 5 GHz bandwidth
-
-    - 0: Not supported, only valid in query command
-    - 1: 20 MHz
-    - 2: 40 MHz
+  - 0: When used in a set command, it means the default value is kept. When used in a query command, it indicates that the current value is invalid
+  - 1: 20 MHz
+  - 2: 40 MHz
 
 Notes
 ^^^^^
@@ -469,7 +467,7 @@ Connect an {IDF_TARGET_NAME} station to a targeted AP.
 
 ::
 
-    AT+CWJAP=[<"ssid">],[<"pwd">][,<"bssid">][,<pci_en>][,<reconn_interval>][,<listen_interval>][,<scan_mode>][,<jap_timeout>][,<pmf>]
+    AT+CWJAP=[<"ssid">],[<"pwd">][,<"bssid">][,<authmode>][,<reconn_interval>][,<listen_interval>][,<scan_mode>][,<jap_timeout>][,<pmf>]
 
 **Response:**
 
@@ -528,14 +526,29 @@ Parameters
    -  Escape character syntax is needed if SSID or password contains special characters, such as ``,``, ``"``, or ``\``.
    -  Chinese SSID is supported. Chinese SSID of some routers or hotspots is not encoded in UTF-8 encoding format. You can scan SSID first, and then connect using the scanned SSID.
 
--  **<"pwd">**: password, MAX: 63-byte ASCII.
+-  **<"pwd">**: password, MAX: 64-byte ASCII.
 -  **<"bssid">**: the MAC address of the target AP. It cannot be omitted when multiple APs have the same SSID.
 -  **<channel>**: channel.
 -  **<rssi>**: signal strength.
--  **<pci_en>**: PCI Authentication.
+-  **<authmode>**: Wi-Fi authentication mode threshold. ESP-AT only connects to APs with an authentication mode equal to or higher than this threshold.
 
-   - 0: The {IDF_TARGET_NAME} station will connect APs with all encryption methods, including OPEN and WEP.
-   - 1: The {IDF_TARGET_NAME} station will connect APs with all encryption methods, except OPEN and WEP.
+   - 0: OPEN (when ``<"pwd">`` is not set or is empty) or WEP (when ``<"pwd">`` length is greater than or equal to 8 bytes)
+   - 1: WPA_PSK
+   - 2: WPA_PSK
+   - 3: WPA2_PSK
+   - 4: WPA_WPA2_PSK
+   - 5: WPA2_ENTERPRISE
+   - 6: WPA3_PSK
+   - 7: WPA2_WPA3_PSK
+   - 8: WAPI_PSK
+   - 9: OWE
+   - 10: WPA3_ENT_192
+   - 11: WPA3_EXT_PSK
+   - 12: WPA3_EXT_PSK_MIXED_MODE
+   - 13: DPP
+   - 14: WPA3_ENTERPRISE
+   - 15: WPA2_WPA3_ENTERPRISE
+   - 16: WPA_ENTERPRISE
 
 -  **<reconn_interval>**: the interval between Wi-Fi reconnections. Unit: second. Default: 1. Maximum: 7200.
 
@@ -631,7 +644,7 @@ Set the configuration of Wi-Fi reconnect.
 
 ::
 
-    AT+CWRECONNCFG=<interval_second>,<repeat_count>
+    AT+CWRECONNCFG=<interval_second>,<repeat_count>[,<reconnect_now>]
 
 **Response:**
 
@@ -652,6 +665,11 @@ Parameters
    -  0: The {IDF_TARGET_NAME} station will always try to reconnect to AP.
    -  [1,1000]: The {IDF_TARGET_NAME} station will attempt to reconnect to AP for the specified times.
 
+-  **[<reconnect_now>]**: whether to start reconnecting to the AP immediately after the setting is complete. Default: 0. Note: Reconnection only occurs if the {IDF_TARGET_NAME}'s Wi-Fi has not yet obtained an IP address; if an IP address has already been obtained, the current connection state will remain unchanged.
+
+   - 0: Do not reconnect to the AP immediately.
+   - 1: Reconnect to the AP immediately.
+
 Example
 ^^^^^^^^
 
@@ -662,6 +680,9 @@ Example
 
     // The {IDF_TARGET_NAME} station will not reconnect to AP when disconnected.
     AT+CWRECONNCFG=0,0
+
+    // Start reconnecting to the AP immediately after the command is set.
+    AT+CWRECONNCFG=2,50,1
 
 Notes
 ^^^^^
@@ -949,7 +970,7 @@ Parameters
 ^^^^^^^^^^
 
 -  **<"ssid">**: string parameter showing SSID of the AP.
--  **<"pwd">**: string parameter showing the password. Length: 8 ~ 63 bytes ASCII.
+-  **<"pwd">**: string parameter showing the password. Length: 8 ~ 64 bytes ASCII.
 -  **<channel>**: channel ID.
 -  **<ecn>**: encryption method; WEP is not supported.
 

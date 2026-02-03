@@ -1207,7 +1207,7 @@ Set Command
 
 ::
 
-    AT+SYSMSGFILTERCFG=<operator>,<head_regexp_len>,<tail_regexp_len>
+    AT+SYSMSGFILTERCFG=<operator>,<head_regexp_len>,<tail_regexp_len>[,<cflags>]
 
 **Response:**
 
@@ -1240,6 +1240,11 @@ Parameters
 
 - **<head_regexp_len>**: The length of the header regular expression. Range: [0,64]. If it is set to 0, the matching of the regular expression in the header is ignored, and ``<tail_regexp_len>`` cannot be 0.
 - **<tail_regexp_len>**: The length of the tail regular expression. Range: [0,64]. If it is set to 0, the matching of the regular expression in the tail is ignored, and ``<head_regexp_len>`` cannot be 0.
+- **<cflags>**: Optional parameter, the compilation flags for regular expressions. Please refer to `cflags description <https://linux.die.net/man/3/regcomp>`__. Default: 0.
+
+  - bit 0: REG_EXTENDED, use POSIX Extended Regular Expression syntax.
+  - bit 1: REG_ICASE, ignore case when matching.
+  - bit 2: REG_NEWLINE, change the behavior of ``^`` and ``$`` to match the beginning and end of lines, rather than the beginning and end of the entire string.
 
 Notes
 """"""
@@ -1247,7 +1252,7 @@ Notes
 - Please use this command to set up system message filters. Then, use :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>` to enable the system message filtering to achieve more sophisticated system message management.
 - For more details about header and tail regular expression format, refer to `POSIX Basic Regular Expression (BRE) <https://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended>`_.
 - In order to avoid :term:`system message` (TX data of AT command port) being filtered incorrectly, it is **strongly recommended** that the header regular expression starts with ``^`` and the tail regular expression ends with ``$``.
-- Only when the system message matches both the header regular expression and the tail regular expression **at the same time** is the system message filtered. After filtering, the data matching the regular expression will be filtered out by AT, and MCU will not receive it, whereas the unmatched data will be sent to the MCU as it is.
+- Only when the system message matches both the header regular expression and the tail regular expression **at the same time** is the system message filtered. After filtering, the data matching the regular expression will be filtered out by AT, and MCU will not receive it, whereas the unmatched data will be sent to the MCU as it is. For example: if data is received with a length of n bytes, and the header regular expression matches data[0] ~ data[i], and the tail regular expression matches data[j] ~ data[n-1], then the data received by MCU will be data[i+1] ~ data[j-1].
 - When the system message matches one filter, it will not continue to match other filters.
 - When the system message matches the filter, the system message will not be cached, that is, the previous system message and the current system message will not be combined for matching.
 - For devices with large throughput, it is **strongly recommended** that you limit the number of filters and disable system message filtering using the :ref:`AT+SYSMSGFILTER=0 <cmd-SYSMSGFILTER>` command in time.
@@ -1283,7 +1288,7 @@ Set Command
 
 ::
 
-    AT+SYSMSGFILTERCFG=<operator>,<head_regexp_len>,<tail_regexp_len>
+    AT+SYSMSGFILTERCFG=<operator>,<head_regexp_len>,<tail_regexp_len>[,<cflags>]
 
 **Response:**
 
@@ -1316,6 +1321,11 @@ Parameters
 
 - **<head_regexp_len>**: The length of the header regular expression. Range: [0,64]. If it is set to 0, the ``<tail_regexp_len>`` cannot be 0.
 - **<tail_regexp_len>**: The length of the header regular expression. Range: [0,64]. If it is set to 0, the ``<head_regexp_len>`` cannot be 0.
+- **<cflags>**: Optional parameter, the compilation flags for regular expressions. Please refer to `cflags description <https://linux.die.net/man/3/regcomp>`__. Default: 0.
+
+  - bit 0: REG_EXTENDED, use POSIX Extended Regular Expression syntax.
+  - bit 1: REG_ICASE, ignore case when matching.
+  - bit 2: REG_NEWLINE, change the behavior of ``^`` and ``$`` to match the beginning and end of lines, rather than the beginning and end of the entire string.
 
 Notes
 """"""

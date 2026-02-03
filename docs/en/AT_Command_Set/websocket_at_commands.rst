@@ -10,7 +10,9 @@ WebSocket AT Commands
 - :ref:`AT+WSHEAD <cmd-WSHEAD>`: Set/Query WebSocket request headers.
 - :ref:`AT+WSOPEN <cmd-WSOPEN>`: Query/Open a WebSocket connection.
 - :ref:`AT+WSSEND <cmd-WSSEND>`: Send data to a WebSocket connection.
+- :ref:`AT+WSDATAFMT <cmd-WSDATAFMT>`: Set WebSocket received data format.
 - :ref:`AT+WSCLOSE <cmd-WSCLOSE>`: Close a WebSocket connection.
+- :ref:`WebSocket Example <example-websocket>`
 
 .. _cmd-ws-intro:
 
@@ -54,7 +56,7 @@ Parameters
 - **<link_id>**: ID of the WebSocket connection. Range: [0,2], which means that AT can support up to three WebSocket connections.
 - **<ping_intv_sec>**: WebSocket Ping interval. Unit: second. Range: [1,7200]. Default: 10, which means that WebSocket Ping packets are sent every 10 seconds by default.
 - **<ping_timeout_sec>**: WebSocket Ping timeout. Unit: second. Range: [1,7200]. Default: 120, which means that by default, if the WebSocket Pong packet is not received within 120 seconds, the connection will be closed.
-- **<buffer_size>**: WebSocket buffer size. Unit: byte. Range: [1,8192]. Default: 1024.
+- **<buffer_size>**: WebSocket buffer size. Unit: byte. Range: [1,16384]. Default: 1024.
 - **<auth_mode>**:
 
   - 0: no authentication. In this case ``<pki_number>`` and ``<ca_number>`` are not required.
@@ -119,7 +121,7 @@ Set Command
 
     >
 
-The ``>`` symbol indicates that AT is ready to receive AT command data. At this point, you can enter the WebSocket request header (in the format of ``key: value``). When the data length reaches the value of parameter ``<req_header_len>``, AT returns:
+The ``>`` symbol indicates that AT is ready to receive AT command data. At this point, you can enter the WebSocket request header (in the format of ``key: value``, no need to end with ``\r\n``). When the data length reaches the value of parameter ``<req_header_len>``, AT returns:
 
 ::
 
@@ -246,7 +248,7 @@ Set Command
 
 ::
 
-    AT+WSSEND=<link_id>,<length>[,<opcode>][,<timeout_ms>]
+    AT+WSSEND=<link_id>,<length>[,<opcode>][,<timeout_ms>][,<fin>]
 
 **Response:**
 
@@ -274,7 +276,7 @@ Parameters
 ^^^^^^^^^^
 
 - **<link_id>**: ID of the WebSocket connection. Range: [0,2].
-- **<length>**: Length of data to send. Unit: byte. The maximum length that can be sent is determined by subtracting the value of ``<buffer_size>`` in `AT+WSCFG <cmd-WSCFG>` by 10 and the size of the heap space that the system can allocate (taking the smaller value of the two).
+- **<length>**: Length of the data to be sent. Unit: byte. The maximum allowable length is the smaller of 16 KiB and the amount of heap memory currently available for allocation.
 - **<opcode>**: The opcode in the WebSocket frame sent. Range: [0,0xF]. Default: 1, which means text frame. For details about opcode, please refer to `Section: RFC6455 5.2 <https://www.rfc-editor.org/rfc/rfc6455#section-5.2>`_.
 
    - 0x0: continuation frame
@@ -287,6 +289,71 @@ Parameters
    - 0xB - 0xF: reserved for further control frames
 
 - **<timeout_ms>**: Send timeout. Unit: millisecond. Range: [0,60000]. Default: 10000.
+- **<fin>**: Indicates whether the data frame is the last fragment. Default: 1.
+
+  - 0: Indicates the data frame has subsequent fragments.
+  - 1: Indicates the data frame is the last fragment.
+
+.. _cmd-WSDATAFMT:
+
+:ref:`AT+WSDATAFMT <WS-AT>`: Set WebSocket Received Data Format
+----------------------------------------------------------------
+
+Set Command
+^^^^^^^^^^^
+
+**Function:**
+
+By default, when the {IDF_TARGET_NAME} receives WebSocket data, it will output the data in the format ``+WS_DATA:<link_id>,<data_len>,<data>\r\n``. This command allows you to configure the metadata output format when receiving data to meet different application requirements. The complete output format is as follows:
+
+::
+
+    +WS_DATA:<link_id>[,<opcode>][,<fin>][,<payload_len>][,<payload_offset>][,<data_len>],<data>[<\r\n>]
+
+**Command:**
+
+::
+
+    AT+WSDATAFMT=<link_id>[,<meta_data_level>][,<meta_data_mask>]
+
+**Response:**
+
+::
+
+    OK
+
+or
+
+::
+
+    ERROR
+
+Parameters
+^^^^^^^^^^
+
+- **<link_id>**: ID of the WebSocket connection. Range: [0,2].
+- **<meta_data_level>**: Metadata output level. Default: 0. The meanings of each level are as follows:
+
+  - 0: chunked level. Each time data is received from the transport layer, metadata prefixed with ``+WS_DATA`` is added.
+  - 1: frame level. Metadata prefixed with ``+WS_DATA`` is only added before and after a complete WebSocket frame.
+  - 2: message level. Metadata prefixed with ``+WS_DATA`` is only added before and after a complete WebSocket message.
+
+- **<meta_data_mask>**: A bitmask used to control the ``+WS_DATA`` output format. Setting a corresponding bit to 1 will include the field associated with that bit in the output. Default: 48 (in this case, only ``<data_len>`` and ``<\r\n>`` are output).
+
+  - bit 0: ``<opcode>``, WebSocket frame type
+  - bit 1: ``<fin>``, whether it is the last frame of the message
+  - bit 2: ``<payload_len>``, complete payload length
+  - bit 3: ``<payload_offset>``, offset of current data in the payload
+  - bit 4: ``<data_len>``, length of the current output data
+  - bit 5: ``<\r\n>``, newline at the end of data
+
+Example
+^^^^^^^
+
+::
+
+    // Set the WebSocket connection with link_id 0 to use message level, only output payload_len.
+    AT+WSDATAFMT=0,2,4
 
 .. _cmd-WSCLOSE:
 

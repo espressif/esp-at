@@ -270,14 +270,18 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - Received an encrypted pairing request from a Bluetooth LE connection.
      * - +BLEAUTHCMPL:<conn_index>,<enc_result>
        - Bluetooth LE SMP pairing completed
+     * - +SSID:``<ssid>``
+       - In BluFi network configuration mode, the {IDF_TARGET_NAME} received the SSID sent from the phone.
+     * - +PASSWORD:``<password>``
+       - In BluFi network configuration mode, the {IDF_TARGET_NAME} received the password sent from the phone.
      * - +BLUFIDATA:<len>,<data>
-       - The ESP device received customized data from the phone over BluFi.
+       - The {IDF_TARGET_NAME} received customized data from the phone over BluFi.
      * - +WS_DISCONNECTED:<link_id>
        - The WebSocket connection of ID ``<link_id>`` is disconnected.
      * - +WS_CONNECTED:<link_id>
        - The WebSocket connection of ID ``<link_id>`` is established.
      * - +WS_DATA:<link_id>,<data_len>,<data>
-       - The Websocket connection of ID ``<link_id>`` has received the data.
+       - The WebSocket connection of ID ``<link_id>`` has received the data. You can use the :ref:`AT+WSDATAFMT <cmd-WSDATAFMT>` command to control the received data format.
      * - +WS_CLOSED:<link_id>
        - The WebSocket connection of ID ``<link_id>`` is closed.
      * - +BLESCANDONE

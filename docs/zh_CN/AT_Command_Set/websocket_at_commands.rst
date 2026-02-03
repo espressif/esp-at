@@ -10,7 +10,9 @@ WebSocket AT 命令集
 - :ref:`AT+WSHEAD <cmd-WSHEAD>`：设置/查询 WebSocket 请求头
 - :ref:`AT+WSOPEN <cmd-WSOPEN>`：查询/打开 WebSocket 连接
 - :ref:`AT+WSSEND <cmd-WSSEND>`：向 WebSocket 连接发送数据
+- :ref:`AT+WSDATAFMT <cmd-WSDATAFMT>`：设置 WebSocket 接收数据格式
 - :ref:`AT+WSCLOSE <cmd-WSCLOSE>`：关闭 WebSocket 连接
+- :ref:`WebSocket 示例 <example-websocket>`
 
 .. _cmd-ws-intro:
 
@@ -54,7 +56,7 @@ WebSocket AT 命令集
 - **<link_id>**：WebSocket 连接 ID。范围：[0,2]，即最大支持三个 WebSocket 连接。
 - **<ping_intv_sec>**：发送 WebSocket Ping 间隔。单位：秒。范围：[1,7200]。默认值：10，即：每隔 10 秒发送一次 WebSocket Ping 包。
 - **<ping_timeout_sec>**：WebSocket Ping 超时。单位：秒。范围：[1,7200]。默认值：120，即：120 秒未收到 WebSocket Pong 包，则关闭连接。
-- **<buffer_size>**：WebSocket 缓冲区大小。单位：字节。范围：[1,8192]。默认值：1024。
+- **<buffer_size>**：WebSocket 缓冲区大小。单位：字节。范围：[1,16384]。默认值：1024。
 - **<auth_mode>**:
 
   - 0: 不认证，此时无需填写 ``<pki_number>`` 和 ``<ca_number>`` 参数；
@@ -119,7 +121,7 @@ WebSocket AT 命令集
 
     >
 
-符号 ``>`` 表示 AT 准备好接收 AT 命令口数据，此时您可以输入 WebSocket 请求头（请求头为 ``key: value`` 形式），当数据长度达到参数 ``<req_header_len>`` 的值时，AT 返回：
+符号 ``>`` 表示 AT 准备好接收 AT 命令口数据，此时您可以输入 WebSocket 请求头（请求头为 ``key: value`` 形式，无需以 ``\r\n`` 结尾），当数据长度达到参数 ``<req_header_len>`` 的值时，AT 返回：
 
 ::
 
@@ -246,7 +248,7 @@ WebSocket AT 命令集
 
 ::
 
-    AT+WSSEND=<link_id>,<length>[,<opcode>][,<timeout_ms>]
+    AT+WSSEND=<link_id>,<length>[,<opcode>][,<timeout_ms>][,<fin>]
 
 **响应：**
 
@@ -274,7 +276,7 @@ WebSocket AT 命令集
 ^^^^
 
 - **<link_id>**：WebSocket 连接 ID。范围：[0,2]。
-- **<length>**：发送的数据长度。单位：字节。可发送的最大长度由 :ref:`AT+WSCFG <cmd-WSCFG>` 中的 ``<buffer_size>`` 值减去 10 和系统可分配的堆空间大小共同决定（取两个中的小值）。
+- **<length>**：发送的数据长度。单位：字节。最大可发送长度取决于 16 KiB 与系统可分配堆空间大小中的较小者。
 - **<opcode>**：发送的 WebSocket 帧中的 opcode。范围：[0,0xF]。默认值：1，即 text 帧。请参考 `RFC6455 5.2 章节 <https://www.rfc-editor.org/rfc/rfc6455#section-5.2>`_ 了解更多的 opcode。
 
    - 0x0：continuation 帧
@@ -287,6 +289,71 @@ WebSocket AT 命令集
    - 0xB - 0xF：为其它控制帧保留
 
 - **<timeout_ms>**：发送超时时间。单位：毫秒。范围：[0,60000]。默认值：10000。
+- **<fin>**：表示数据帧是否为最后一个分片。默认值：1。
+
+  - 0：表示数据帧还有后续分片。
+  - 1：表示数据帧为最后一个分片。
+
+.. _cmd-WSDATAFMT:
+
+:ref:`AT+WSDATAFMT <WS-AT>`：设置 WebSocket 接收数据格式
+-------------------------------------------------------------
+
+设置命令
+^^^^^^^^
+
+**功能：**
+
+默认情况下，{IDF_TARGET_NAME} 在收到 WebSocket 数据时，会以 ``+WS_DATA:<link_id>,<data_len>,<data>\r\n`` 的格式输出数据。本命令允许您配置接收数据时的元数据输出格式，以满足不同的应用需求。完整的输出格式如下：
+
+::
+
+    +WS_DATA:<link_id>[,<opcode>][,<fin>][,<payload_len>][,<payload_offset>][,<data_len>],<data>[<\r\n>]
+
+**命令：**
+
+::
+
+    AT+WSDATAFMT=<link_id>[,<meta_data_level>][,<meta_data_mask>]
+
+**响应：**
+
+::
+
+    OK
+
+或
+
+::
+
+    ERROR
+
+参数
+^^^^
+
+- **<link_id>**：WebSocket 连接 ID。范围：[0,2]。
+- **<meta_data_level>**：元数据输出等级，默认值：0。各等级含义如下：
+
+  - 0: chunked 等级。每次从传输层收到数据，都会添加 ``+WS_DATA`` 开头的元数据。
+  - 1: frame 等级。仅在完整的 WebSocket 帧前后，会添加 ``+WS_DATA`` 开头的元数据。
+  - 2: message 等级。仅在完整的 WebSocket 消息前后，会添加 ``+WS_DATA`` 开头的元数据。
+
+- **<meta_data_mask>**：用于控制 ``+WS_DATA`` 输出格式的位掩码。将相应 bit 设为 1 即可在输出中包含该位所对应的字段。默认值：48（此时仅输出 ``<data_len>`` 和 ``<\r\n>``）。
+
+  - bit 0: ``<opcode>``，WebSocket 帧类型
+  - bit 1: ``<fin>``，是否为消息的最后一帧
+  - bit 2: ``<payload_len>``，完整负载长度
+  - bit 3: ``<payload_offset>``，当前数据在负载中的偏移
+  - bit 4: ``<data_len>``，当前输出的数据长度
+  - bit 5: ``<\r\n>``，数据末尾的换行符
+
+示例
+^^^^
+
+::
+
+    // 设置 link_id 为 0 的 WebSocket 连接，使用 message 等级，仅输出 payload_len。
+    AT+WSDATAFMT=0,2,4
 
 .. _cmd-WSCLOSE:
 

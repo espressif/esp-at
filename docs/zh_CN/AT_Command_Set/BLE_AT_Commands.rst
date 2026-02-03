@@ -3000,6 +3000,7 @@ Bluetooth® Low Energy AT 命令集
     ^^^^
 
     - 您只能在 Bluetooth LE 未初始化情况下开启或关闭 BluFi (:ref:`AT+BLEINIT=0 <cmd-BINIT>`)。
+    - BluFi 配网过程中，{IDF_TARGET_NAME} 收到手机端发送的 SSID 和密码时，会分别输出 ``+SSID:<ssid>`` 和 ``+PASSWORD:<password>``。
 
     .. only:: esp32 or esp32c3
 

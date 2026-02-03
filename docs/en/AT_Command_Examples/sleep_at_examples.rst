@@ -36,7 +36,7 @@ For current consumption of {IDF_TARGET_NAME}, please refer to `{IDF_TARGET_NAME}
 
     - Setting {IDF_TARGET_NAME} to sleep modes in Wi-Fi mode and Bluetooth LE mode will be described separately.
     - In single Wi-Fi mode, only ``station`` mode supports ``Modem-sleep`` mode and ``Light-sleep`` mode.
-    - For Light-sleep mode in Bluetooth LE mode, please ensure that there is an external 32 KHz crystal oscillator. If there is no external 32 KHz crystal oscillator, ESP-AT will work as the Modem-sleep mode.
+    - In single Bluetooth mode, when operating in Light-sleep mode, the power consumption can be reduced to the µA level if an external 32 kHz crystal oscillator is configured. If no external 32 kHz crystal is present, the system automatically uses the internal main crystal oscillator as the RTC clock source, and the power consumption is approximately several mA.
 
 Measurement Method
 ^^^^^^^^^^^^^^^^^^^^

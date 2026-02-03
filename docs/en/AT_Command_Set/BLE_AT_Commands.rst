@@ -3000,6 +3000,7 @@ Introduction
     ^^^^
 
     - You can only start or stop BluFi when Bluetooth LE is not initialized (:ref:`AT+BLEINIT=0 <cmd-BINIT>`).
+    - During the BluFi network configuration process, when the {IDF_TARGET_NAME} receives the SSID and password sent from the phone, it will output ``+SSID:<ssid>`` and ``+PASSWORD:<password>`` respectively.
 
     .. only:: esp32 or esp32c3
 

@@ -270,14 +270,18 @@ AT 消息
        - 收到来自 Bluetooth LE 连接的加密配对请求
      * - +BLEAUTHCMPL:<conn_index>,<enc_result>
        - Bluetooth LE SMP 配对完成
+     * - +SSID:``<ssid>``
+       - BluFi 配网模式下，{IDF_TARGET_NAME} 收到手机端发送的 SSID
+     * - +PASSWORD:``<password>``
+       - BluFi 配网模式下，{IDF_TARGET_NAME} 收到手机端发送的密码
      * - +BLUFIDATA:<len>,<data>
-       - ESP 设备收到从手机端发送的 BluFi 用户自定义数据
+       - {IDF_TARGET_NAME} 收到从手机端发送的 BluFi 用户自定义数据
      * - +WS_DISCONNECTED:<link_id>
        - 连接 ID 为 ``<link_id>`` 的 WebSocket 连接已断开
      * - +WS_CONNECTED:<link_id>
        - 连接 ID 为 ``<link_id>`` 的 WebSocket 连接已建立
      * - +WS_DATA:<link_id>,<data_len>,<data>
-       - 连接 ID 为 ``<link_id>`` 的 WebSocket 连接收到数据
+       - 连接 ID 为 ``<link_id>`` 的 WebSocket 连接收到数据，您可以通过 :ref:`AT+WSDATAFMT <cmd-WSDATAFMT>` 命令来控制接收的数据格式
      * - +WS_CLOSED:<link_id>
        - 连接 ID 为 ``<link_id>`` 的 WebSocket 连接已关闭
      * - +BLESCANDONE

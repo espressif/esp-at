@@ -317,17 +317,15 @@ Wi-Fi AT 命令集
 
   .. list::
 
-    - 0: 不支持，仅在查询命令中有效
+    - 0: 在设置命令中表示保持默认值，在查询命令中表示当前值无效
     - 1: 20 MHz
     :not esp32c2: - 2: 40 MHz
 
-.. only:: esp32c5
+- **<bandwidth_5ghz>**：5 GHz 带宽
 
-  - **<bandwidth_5ghz>**：5 GHz 带宽
-
-    - 0: 不支持，仅在查询命令中有效
-    - 1: 20 MHz
-    - 2: 40 MHz
+  - 0: 在设置命令中表示保持默认值，在查询命令中表示当前值无效
+  - 1: 20 MHz
+  - 2: 40 MHz
 
 说明
 ^^^^
@@ -469,7 +467,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CWJAP=[<"ssid">],[<"pwd">][,<"bssid">][,<pci_en>][,<reconn_interval>][,<listen_interval>][,<scan_mode>][,<jap_timeout>][,<pmf>]
+    AT+CWJAP=[<"ssid">],[<"pwd">][,<"bssid">][,<authmode>][,<reconn_interval>][,<listen_interval>][,<scan_mode>][,<jap_timeout>][,<pmf>]
 
 **响应：**
 
@@ -528,14 +526,29 @@ Wi-Fi AT 命令集
    -  如果 SSID 和密码中有 ``,``、``"``、``\`` 等特殊字符，需转义
    -  AT 支持连接 SSID 为中文的 AP，但是某些路由器或者热点的中文 SSID 不是 UTF-8 编码格式。您可以先扫描 SSID，然后使用扫描到的 SSID 进行连接。
 
--  **<"pwd">**：密码最长 63 字节 ASCII
+-  **<"pwd">**：密码最长 64 字节 ASCII
 -  **<"bssid">**：目标 AP 的 MAC 地址，当多个 AP 有相同的 SSID 时，该参数不可省略
 -  **<channel>**：信道号
 -  **<rssi>**：信号强度
--  **<pci_en>**：PCI 认证
+-  **<authmode>**：Wi-Fi 认证模式阈值。ESP-AT 仅连接认证模式等于或高于此阈值的 AP
 
-   - 0: {IDF_TARGET_NAME} station 可与任何一种加密方式的 AP 连接，包括 OPEN 和 WEP
-   - 1: {IDF_TARGET_NAME} station 可与除 OPEN 和 WEP 之外的任何一种加密方式的 AP 连接
+   - 0: OPEN（当 ``<"pwd">`` 未设置或为空时）或 WEP（当 ``<"pwd">`` 长度大于等于 8 字节时）
+   - 1: WPA_PSK
+   - 2: WPA_PSK
+   - 3: WPA2_PSK
+   - 4: WPA_WPA2_PSK
+   - 5: WPA2_ENTERPRISE
+   - 6: WPA3_PSK
+   - 7: WPA2_WPA3_PSK
+   - 8: WAPI_PSK
+   - 9: OWE
+   - 10: WPA3_ENT_192
+   - 11: WPA3_EXT_PSK
+   - 12: WPA3_EXT_PSK_MIXED_MODE
+   - 13: DPP
+   - 14: WPA3_ENTERPRISE
+   - 15: WPA2_WPA3_ENTERPRISE
+   - 16: WPA_ENTERPRISE
 
 -  **<reconn_interval>**：Wi-Fi 重连间隔，单位：秒，默认值：1，最大值：7200
 
@@ -631,7 +644,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CWRECONNCFG=<interval_second>,<repeat_count>
+    AT+CWRECONNCFG=<interval_second>,<repeat_count>[,<reconnect_now>]
 
 **响应：**
 
@@ -652,6 +665,11 @@ Wi-Fi AT 命令集
    -  0: {IDF_TARGET_NAME} station 始终尝试连接 AP
    -  [1,1000]: {IDF_TARGET_NAME} station 按照本参数指定的次数重连 AP
 
+-  **[<reconnect_now>]**：设置完成后，是否立即开始重连 AP，默认值：0。注意：仅当 {IDF_TARGET_NAME} 的 Wi-Fi 尚未获取到 IP 地址时，才会重连；若已获取到 IP 地址，则保持当前连接状态不变
+
+   - 0: 不立即重连 AP
+   - 1: 立即重连 AP
+
 示例
 ^^^^
 
@@ -662,6 +680,9 @@ Wi-Fi AT 命令集
 
     // {IDF_TARGET_NAME} station 在断开连接后不重连 AP
     AT+CWRECONNCFG=0,0
+
+    // 命令设置完成后，立即开始重连 AP
+    AT+CWRECONNCFG=2,50,1
 
 说明
 ^^^^
@@ -949,7 +970,7 @@ Wi-Fi AT 命令集
 ^^^^
 
 -  **<"ssid">**：字符串参数，接入点名称
--  **<"pwd">**：字符串参数，密码，范围：8 ~ 63 字节 ASCII
+-  **<"pwd">**：字符串参数，密码，范围：8 ~ 64 字节 ASCII
 -  **<channel>**：信道号
 -  **<ecn>**：加密方式，不支持 WEP
 
