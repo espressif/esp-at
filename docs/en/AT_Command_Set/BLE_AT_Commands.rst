@@ -62,6 +62,8 @@ Bluetooth® Low Energy AT Commands
     :esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESYNCSTOP <cmd-BLESYNCSTOP>`: Stop synchronizing with periodic advertising.
     :esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEREADPHY <cmd-BLERDPHY>`: Query the current transmitter PHY.
     :esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESETPHY <cmd-BLESETPHY>`: Set the current transmitter PHY.
+    :esp32 or esp32c3: - :ref:`AT+BLERDRSSI <cmd-BLERDRSSI>`: Query the current connection RSSI.
+    :esp32 or esp32c3: - :ref:`AT+BLEWL <cmd-BLEWL>`: Set the white list.
 
 .. _cmd-ble-intro:
 
@@ -463,8 +465,8 @@ Introduction
 
     -  **<enable>**:
 
-    -  1: enable continuous scanning.
-    -  0: disable continuous scanning.
+        -  1: enable continuous scanning.
+        -  0: disable continuous scanning.
 
     -  **[<duration>]**: optional parameter. Unit: second.
 
@@ -476,10 +478,16 @@ Introduction
 
     -  **[<filter_type>]**: filtering option.
 
-    -  1: "MAC".
-    -  2: "NAME".
+        -  1: "MAC".
+        -  2: "NAME".
+        -  3: "UUID".
+        -  4: "RSSI".
 
-    -  **<filter_param>**: filtering parameter showing the remote device MAC address or remote device name.
+    -  **[<filter_param>]**: filtering parameter showing the remote device MAC address or remote device name or UUID or RSSI.
+    -  **[<duplicate_check>]**: duplicate check.
+
+        -  1: perform duplicate check.
+
     -  **<addr>**: Bluetooth LE address.
     -  **<rssi>**: signal strength.
     -  **<adv_data>**: advertising data.
@@ -491,6 +499,11 @@ Introduction
 
     -  The response ``OK`` does not necessarily come before the response ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>``. It may be output before ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` or after it.
     -  To obtain the scan response data, use the :ref:`AT+BLESCANPARAM <BLE-AT>` command to set the scan type to ``active scan (AT+BLESCANPARAM=1,0,0,100,50)``, and the peer device needs to set the ``scan_rsp_data``.
+    -  If the filter type is MAC, the default filter is supported, such as ``AT+BLESCAN=1,3,1,"24:0A:C4"``.
+    -  If the filter type is NAME, the default filter is supported, such as ``AT+BLESCAN=1,3,2,"ESP"``.
+    -  UUID filtering supports 16-bit, 32-bit, and 128-bit UUIDs. The UUID filter parameter must be specified as a hexadecimal string. For example, to set the UUID filter parameter to "0xFF01", use the command: ``AT+BLESCAN=1,3,3,"FF01"``.
+    -  The value of the RSSI filter parameter is an integer. For example, if you want to set the RSSI filter parameter to -50, the command should be ``AT+BLESCAN=1,3,4,-50``. Only devices with RSSI greater than or equal to -50 dBm will be returned.
+    -  To enable the duplicate check, use the :ref:`AT+BLESCAN <BLE-AT>` command to set the duplicate check parameter to ``1`` (If this parameter is not set, the duplicate-checking function is disabled.). The duplicate check function needs to be used together with the previous filter parameters.
 
     Example
     ^^^^^^^^
@@ -502,6 +515,9 @@ Introduction
         AT+BLESCAN=0    // stop scanning
         AT+BLESCAN=1,3,1,"24:0A:C4:96:E6:88"  // start scanning, filter type is MAC address
         AT+BLESCAN=1,3,2,"ESP-AT"  // start scanning, filter type is device name
+        AT+BLESCAN=1,3,3,"FF01"  // start scanning, filter type is UUID
+        AT+BLESCAN=1,3,4,-50  // start scanning, filter type is RSSI
+        AT+BLESCAN=1,3,1,"24:0A:C4:96:E6:88",1  // start scanning, filter type is MAC address, perform duplicate check
 
     .. _cmd-BSCANR:
 
@@ -1779,7 +1795,7 @@ Introduction
     -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
     -  **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
 
-    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
+    .. only:: esp32 or esp32c3
 
         -  **[<desc_index>]**: descriptor's index.
 
@@ -3440,3 +3456,102 @@ Introduction
         AT+BLEINIT=1   // Role: client
         AT+BLECONN=0,"24:0a:c4:09:34:23"
         AT+BLESETPHY=0,1
+
+.. only:: esp32 or esp32c3
+    
+    .. _cmd-BLERDRSSI:
+
+    :ref:`AT+BLERDRSSI <BLE-AT>`: Query the current connection RSSI
+    -----------------------------------------------------------------------------
+
+    Set Command
+    ^^^^^^^^^^^
+
+    **Function:**
+
+    Query the current connection RSSI.
+
+    **Command:**
+
+    ::
+
+        AT+BLERDRSSI=<conn_index>
+
+    **Response:**
+
+    ::
+
+        +BLERDRSSI:<rssi>
+        OK
+
+    Parameters
+    ^^^^^^^^^^
+
+    -  **<conn_index>**: index of Bluetooth LE connection.
+
+    Notes
+    ^^^^^
+
+    -  This command is used to obtain the signal strength of the connection, so a BLE connection must be established first.
+
+    Example
+    ^^^^^^^^
+
+    ::
+
+        AT+BLEINIT=1   // Role: client
+        AT+BLECONN=0,"24:0a:c4:09:34:23" // establish a BLE connection
+        AT+BLERDRSSI=0 // query current connection RSSI
+    
+    .. _cmd-BLEWL:
+
+    :ref:`AT+BLEWL <BLE-AT>`: Set the white list
+    -----------------------------------------------------------------------------
+
+    Set Command
+    ^^^^^^^^^^^
+
+    **Function:**
+
+    Set the white list.
+
+    **Command:**
+
+    ::
+
+        AT+BLEWL=<add_or_rmv>[,<addr_type>,<addr>]
+
+    **Response:**
+
+    ::
+
+        OK
+
+    Parameters
+    ^^^^^^^^^^
+
+    -  **<add_or_rmv>**:
+
+      -  0: remove all devices from the white list
+      -  1: add a device to the white list
+
+    -  **[<addr_type>]**: address type
+
+      - 0: Public Address
+      - 1: Random Address
+
+    -  **[<addr>]**: device address
+
+    Notes
+    ^^^^^
+
+    -  If <add_or_rmv> is set to 0, the <addr_type> and <addr> parameters are not needed.
+
+    Example
+    ^^^^^^^^
+
+    ::
+
+        AT+BLEWL=1,0,"24:0a:c4:09:34:23" // add a device to the white list
+        AT+BLEWL=0 // remove all devices from the white list
+    
