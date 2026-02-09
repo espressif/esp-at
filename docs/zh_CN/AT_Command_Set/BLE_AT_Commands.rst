@@ -62,6 +62,8 @@ Bluetooth® Low Energy AT 命令集
     :esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESYNCSTOP <cmd-BLESYNCSTOP>`：停止周期性广播同步
     :esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEREADPHY <cmd-BLERDPHY>`：查询当前连接使用的 PHY
     :esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESETPHY <cmd-BLESETPHY>`：设置当前连接使用的 PHY
+    :esp32 or esp32c3: - :ref:`AT+BLERDRSSI <cmd-BLERDRSSI>`：查询当前连接的 RSSI
+    :esp32 or esp32c3: - :ref:`AT+BLEWL <cmd-BLEWL>`：设置白名单
 
 .. _cmd-ble-intro:
 
@@ -448,7 +450,7 @@ Bluetooth® Low Energy AT 命令集
 
     ::
 
-        AT+BLESCAN=<enable>[,<duration>][,<filter_type>,<filter_param>]
+        AT+BLESCAN=<enable>[,<duration>][,<filter_type>,<filter_param>][,<duplicate_check>]
 
     **响应：**
 
@@ -463,8 +465,8 @@ Bluetooth® Low Energy AT 命令集
 
     -  **<enable>**：
 
-    -  1: 开始持续扫描
-    -  0: 停止持续扫描
+        -  1: 开始持续扫描
+        -  0: 停止持续扫描
 
     -  **[<duration>]**：扫描持续时间，单位：秒。
 
@@ -476,10 +478,16 @@ Bluetooth® Low Energy AT 命令集
 
     -  **[<filter_type>]**：过滤选项
 
-    -  1: "MAC"
-    -  2: "NAME"
+        -  1: "MAC"
+        -  2: "NAME"
+        -  3: "UUID"
+        -  4: "RSSI"
 
-    -  **<filter_param>**：过滤参数，表示对方设备 MAC 地址或名称
+    -  **[<filter_param>]**：过滤参数，表示对方设备 MAC 地址或名称或 UUID 或 RSSI
+    -  **[<duplicate_check>]**：重复检查
+
+        -  1: 进行重复检查
+
     -  **<addr>**：Bluetooth LE 地址
     -  **<rssi>**：信号强度
     -  **<adv_data>**：广播数据
@@ -491,6 +499,11 @@ Bluetooth® Low Energy AT 命令集
 
     -  响应中的 ``OK`` 和 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 在输出顺序上没有严格意义上的先后顺序。``OK`` 可能在 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 之前输出，也有可能在 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 之后输出。 
     -  如果您想要获得扫描响应数据，需要使用 :ref:`AT+BLESCANPARAM <cmd-BSCANP>` 命令设置扫描方式为 ``active scan (AT+BLESCANPARAM=1,0,0,100,50)``，并且对端设备需要设置 ``scan rsp data``，才能获得扫描响应数据。
+    -  如果根据 MAC 地址过滤，可以支持缺省过滤，如 ``AT+BLESCAN=1,3,1,"24:0A:C4"``。
+    -  如果根据设备名称过滤，可以支持缺省过滤，如 ``AT+BLESCAN=1,3,2,"ESP"``。
+    -  UUID 过滤功能支持 16 位、32 位及 128 位格式的 UUID。参数值需以十六进制字符串形式提供。例如，若需将过滤 UUID 设置为 "0xFF01"，可使用命令 ``AT+BLESCAN=1,3,3,"FF01"``。
+    -  RSSI 过滤参数的值为整数。例如，若想设置 RSSI 过滤参数为 -50，则命令为 ``AT+BLESCAN=1,3,4,-50``。只会返回 RSSI 大于等于 -50 dBm 的设备。
+    -  如需启用重复检查功能，须先用 :ref:`AT+BLESCAN <cmd-BSCAN>` 命令将重复检查参数设为 ``1`` （如果不设置此参数，即关闭重复检查功能）。该功能需与前述过滤参数配合使用。
 
     示例
     ^^^^
@@ -502,6 +515,9 @@ Bluetooth® Low Energy AT 命令集
         AT+BLESCAN=0    // 停止扫描
         AT+BLESCAN=1,3,1,"24:0A:C4:96:E6:88"  // 开始扫描，过滤类型为 MAC 地址
         AT+BLESCAN=1,3,2,"ESP-AT"  // 开始扫描，过滤类型为设备名称
+        AT+BLESCAN=1,3,3,"FF01"  // 开始扫描，过滤类型为 UUID
+        AT+BLESCAN=1,3,4,-50  // 开始扫描，过滤类型为 RSSI
+        AT+BLESCAN=1,3,1,"24:0A:C4:96:E6:88",1  // 开始扫描，过滤类型为 MAC 地址，进行重复检查
 
     .. _cmd-BSCANR:
 
@@ -1779,7 +1795,7 @@ Bluetooth® Low Energy AT 命令集
     -  **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
     -  **<char_index>**：服务特征的序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
 
-    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
+    .. only:: esp32 or esp32c3
 
         -  **[<desc_index>]**：特征描述符序号：
 
@@ -3440,3 +3456,101 @@ Bluetooth® Low Energy AT 命令集
         AT+BLEINIT=1   // 角色：客户端
         AT+BLECONN=0,"24:0a:c4:09:34:23"
         AT+BLEREADPHY=0
+
+.. only:: esp32 or esp32c3
+
+    .. _cmd-BLERDRSSI:
+
+    :ref:`AT+BLERDRSSI <BLE-AT>`: 查询当前连接的 RSSI
+    -----------------------------------------------------------------------------
+
+    设置命令
+    ^^^^^^^^^^^
+
+    **功能:**
+
+    查询当前连接的 RSSI。
+
+    **命令:**
+
+    ::
+
+        AT+BLERDRSSI=<conn_index>
+
+    **响应:**
+
+    ::
+
+        +BLERDRSSI:<rssi>
+        OK
+
+    参数
+    ^^^^^^^^^^
+
+    -  **<conn_index>**：Bluetooth LE 连接号。
+
+    说明
+    ^^^^^
+
+    -  此命令用于获取连接的信号强度，因此必须先建立 BLE 连接。
+
+    示例
+    ^^^^^^^^
+
+    ::
+
+        AT+BLEINIT=1   // 角色：客户端
+        AT+BLECONN=0,"24:0a:c4:09:34:23" // 建立 BLE 连接
+        AT+BLERDRSSI=0 // 查询当前连接的 RSSI
+
+    .. _cmd-BLEWL:
+
+    :ref:`AT+BLEWL <BLE-AT>`: 设置白名单
+    -----------------------------------------------------------------------------
+
+    设置命令
+    ^^^^^^^^^^^
+
+    **功能:**
+
+    设置白名单。
+
+    **命令:**
+
+    ::
+
+        AT+BLEWL=<add_or_rmv>[,<addr_type>,<addr>]
+
+    **响应:**
+
+    ::
+
+        OK
+
+    参数
+    ^^^^^^^^^^
+
+    -  **<add_or_rmv>**:
+
+      -  0: 从白名单中移除所有设备
+      -  1: 向白名单添加一个设备
+
+    -  **[<addr_type>]**：地址类型
+
+      -  0: 公共地址
+      -  1: 随机地址
+
+    -  **[<addr>]**：设备地址
+
+    说明
+    ^^^^^
+
+    -  如果 <add_or_rmv> 设置为 0，则 <addr_type> 和 <addr> 参数不需要。
+
+    示例
+    ^^^^^^^^
+
+    ::
+
+        AT+BLEWL=1,0,"24:0a:c4:09:34:23" // 添加设备到白名单
+        AT+BLEWL=0 // 删除所有设备从白名单
