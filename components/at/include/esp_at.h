@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -168,3 +168,24 @@ esp_err_t esp_at_nvs_set_str(nvs_handle_t handle, const char *key, const char *v
 esp_err_t esp_at_nvs_get_str(nvs_handle_t handle, const char *key, char *out_value, size_t *length);
 esp_err_t esp_at_nvs_set_blob(nvs_handle_t handle, const char *key, const void *value, size_t length);
 esp_err_t esp_at_nvs_get_blob(nvs_handle_t handle, const char *key, void *out_value, size_t *length);
+
+/**
+ * @brief Yield the current task if the system has not recently executed the idle task.
+ *
+ * This function measures the elapsed time since the last execution of the FreeRTOS
+ * idle hook. If that duration exceeds the specified threshold, the current task
+ * voluntarily delays for a given number of RTOS ticks to allow lower-priority
+ * tasks (including the idle task) to run.
+ *
+ * This mechanism is intended to prevent long-running tasks from monopolizing
+ * the CPU under high workload conditions (e.g., heavy RX traffic), which may
+ * otherwise trigger the task watchdog.
+ *
+ * @note This function must not be called from ISR context.
+ *
+ * @param[in] idle_timeout_ms  Threshold in milliseconds. If the time since the
+ *                             last idle hook execution exceeds this value,
+ *                             a yield is performed.
+ * @param[in] yield_ticks      Number of RTOS ticks to delay when yielding.
+ */
+void esp_at_yield_if_idle_timeout(uint32_t idle_timeout_ms, uint32_t yield_ticks);
