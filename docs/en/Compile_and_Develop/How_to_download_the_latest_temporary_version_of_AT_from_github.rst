@@ -14,7 +14,7 @@ The following steps guide you on how to download the latest temporary version of
 
 #. Sign in your GitHub account
 
-   Before you start, **please sign in your GitHub account**, as you need login permission to download firmware. 
+   Before you start, **please sign in your GitHub account**, as you need login permission to download firmware.
 
 #. Open the website https://github.com/espressif/esp-at
 

@@ -228,7 +228,7 @@
   .. only:: esp32
 
     ::
-      
+
       CONFIG_ESP_SYSTEM_EVENT_TASK_STACK_SIZE=4096
       CONFIG_FREERTOS_UNICORE=n
       CONFIG_FREERTOS_HZ=1000
@@ -240,7 +240,7 @@
   .. only:: esp32c2
 
     ::
-      
+
       CONFIG_ESP_SYSTEM_EVENT_TASK_STACK_SIZE=4096
       CONFIG_FREERTOS_UNICORE=n
       CONFIG_FREERTOS_HZ=1000
@@ -252,7 +252,7 @@
   .. only:: esp32c5
 
     ::
-      
+
       CONFIG_ESP_SYSTEM_EVENT_TASK_STACK_SIZE=4096
       CONFIG_FREERTOS_UNICORE=n
       CONFIG_FREERTOS_HZ=1000
@@ -264,7 +264,7 @@
   .. only:: esp32c3 or esp32c6 or esp32c61
 
     ::
-      
+
       CONFIG_ESP_SYSTEM_EVENT_TASK_STACK_SIZE=4096
       CONFIG_FREERTOS_UNICORE=n
       CONFIG_FREERTOS_HZ=1000

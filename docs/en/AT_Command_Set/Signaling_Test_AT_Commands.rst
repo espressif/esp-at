@@ -6,7 +6,7 @@ Signaling Test AT Commands
 :link_to_translation:`zh_CN:[中文]`
 
 - :ref:`Introduction <cmd-signal-test-intro>`
--  :ref:`AT+FACTPLCP <cmd-FACTPLCP>`: Send with long or short PLCP (Physical Layer Convergence Procedure)
+- :ref:`AT+FACTPLCP <cmd-FACTPLCP>`: Send with long or short PLCP (Physical Layer Convergence Procedure).
 
 .. _cmd-signal-test-intro:
 
@@ -41,12 +41,12 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<enable>**: Enable or disable manual configuration.
+- **<enable>**: Enable or disable manual configuration.
 
-   -  0: Disable manual configuration. The default value for the parameter ``<tx_with_long>`` will be used.
-   -  1: Enable manual configuration. The type of PLCP that AT sends depends on ``<tx_with_long>``.
+   - 0: Disable manual configuration. The default value for the parameter ``<tx_with_long>`` will be used.
+   - 1: Enable manual configuration. The type of PLCP that AT sends depends on ``<tx_with_long>``.
 
--  **<tx_with_long>**: Send with long PLCP or short PLCP.
+- **<tx_with_long>**: Send with long PLCP or short PLCP.
 
-   -  0: Send with short PLCP (default).
-   -  1: Send with long PLCP.
+   - 0: Send with short PLCP (default).
+   - 1: Send with long PLCP.

@@ -6,18 +6,18 @@ Driver AT Commands
 :link_to_translation:`zh_CN:[中文]`
 
 - :ref:`Introduction <cmd-driver-intro>`
--  :ref:`AT+DRVADC <cmd-DRVADC>`: Read ADC channel value.
--  :ref:`AT+DRVPWMINIT <cmd-DRVPWMINIT>`: Initialize PWM driver.
--  :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>`: Set PWM duty.
--  :ref:`AT+DRVPWMFADE <cmd-DRVPWMFADE>`: Set PWM fade.
--  :ref:`AT+DRVI2CINIT <cmd-DRVI2CINIT>`: Initialize I2C master driver.
--  :ref:`AT+DRVI2CRD <cmd-DRVI2CRD>`: Read I2C data.
--  :ref:`AT+DRVI2CWRDATA <cmd-DRVI2CWRDATA>`: Write I2C data.
--  :ref:`AT+DRVI2CWRBYTES <cmd-DRVI2CWRBYTES>`: Write no more than 4 bytes I2C data.
--  :ref:`AT+DRVSPICONFGPIO <cmd-DRVSPICONFGPIO>`: Configure SPI GPIO.
--  :ref:`AT+DRVSPIINIT <cmd-DRVSPIINIT>`: Initialize SPI master driver.
--  :ref:`AT+DRVSPIRD <cmd-DRVSPIRD>`: Read SPI data.
--  :ref:`AT+DRVSPIWR <cmd-DRVSPIWR>`: Write SPI data.
+- :ref:`AT+DRVADC <cmd-DRVADC>`: Read ADC channel value.
+- :ref:`AT+DRVPWMINIT <cmd-DRVPWMINIT>`: Initialize PWM driver.
+- :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>`: Set PWM duty.
+- :ref:`AT+DRVPWMFADE <cmd-DRVPWMFADE>`: Set PWM fade.
+- :ref:`AT+DRVI2CINIT <cmd-DRVI2CINIT>`: Initialize I2C master driver.
+- :ref:`AT+DRVI2CRD <cmd-DRVI2CRD>`: Read I2C data.
+- :ref:`AT+DRVI2CWRDATA <cmd-DRVI2CWRDATA>`: Write I2C data.
+- :ref:`AT+DRVI2CWRBYTES <cmd-DRVI2CWRBYTES>`: Write no more than 4 bytes I2C data.
+- :ref:`AT+DRVSPICONFGPIO <cmd-DRVSPICONFGPIO>`: Configure SPI GPIO.
+- :ref:`AT+DRVSPIINIT <cmd-DRVSPIINIT>`: Initialize SPI master driver.
+- :ref:`AT+DRVSPIRD <cmd-DRVSPIRD>`: Read SPI data.
+- :ref:`AT+DRVSPIWR <cmd-DRVSPIWR>`: Write SPI data.
 
 .. _cmd-driver-intro:
 
@@ -54,7 +54,7 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<channel>**: ADC1 channel.
+- **<channel>**: ADC1 channel.
 
   .. only:: esp32 or esp32s2
 
@@ -102,30 +102,30 @@ Parameters
         * - 4
           - GPIO4
 
--  **<atten>**: attenuation.
+- **<atten>**: attenuation.
 
   .. only:: esp32 or esp32s2
 
-    -  0: 0 dB attenuation, effective measurement range is [100, 950] mV.
-    -  1: 2.5 dB attenuation, effective measurement range is [100, 1250] mV.
-    -  2: 6 dB attenuation, effective measurement range is [150, 1750] mV.
-    -  3: 11 dB attenuation, effective measurement range is [150, 2450] mV.
+    - 0: 0 dB attenuation, effective measurement range is [100, 950] mV.
+    - 1: 2.5 dB attenuation, effective measurement range is [100, 1250] mV.
+    - 2: 6 dB attenuation, effective measurement range is [150, 1750] mV.
+    - 3: 11 dB attenuation, effective measurement range is [150, 2450] mV.
 
   .. only:: esp32c3 or esp32c2 or esp32c5 or esp32c6 or esp32c61
 
-    -  0: 0 dB attenuation, effective measurement range is [0, 750] mV.
-    -  1: 2.5 dB attenuation, effective measurement range is [0, 1050] mV.
-    -  2: 6 dB attenuation, effective measurement range is [0, 1300] mV.
-    -  3: 11 dB attenuation, effective measurement range is [0, 2500] mV.
+    - 0: 0 dB attenuation, effective measurement range is [0, 750] mV.
+    - 1: 2.5 dB attenuation, effective measurement range is [0, 1050] mV.
+    - 2: 6 dB attenuation, effective measurement range is [0, 1300] mV.
+    - 3: 11 dB attenuation, effective measurement range is [0, 2500] mV.
 
-- **<raw data>**: ADC channel value. 
+- **<raw data>**: ADC channel value.
 
 Notes
 ^^^^^
 
--  ESP-AT only supports ADC1.
--  {IDF_TARGET_NAME} support 12-bit width.
--  For details on how to convert the channel value into voltage, please refer to `ADC Conversion <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/adc_continuous.html#adc-continuous-read-conversion-result>`__.
+- ESP-AT only supports ADC1.
+- {IDF_TARGET_NAME} support 12-bit width.
+- For details on how to convert the channel value into voltage, please refer to `ADC Conversion <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/adc_continuous.html#adc-continuous-read-conversion-result>`__.
 
 Example
 ^^^^^^^^
@@ -175,16 +175,16 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<freq>**: LEDC timer frequency. Unit: Hz. Range: 1 Hz ~ 8 MHz.
--  **<duty_res>**: LEDC channel duty resolution. Range: 0 ~ 20 bits.
--  **<chx_gpio>**: LEDC output GPIO number of channel x. For example, if you want to use GPIO16 as channel 0, set <ch0_gpio> to 16.
+- **<freq>**: LEDC timer frequency. Unit: Hz. Range: 1 Hz ~ 8 MHz.
+- **<duty_res>**: LEDC channel duty resolution. Range: 0 ~ 20 bits.
+- **<chx_gpio>**: LEDC output GPIO number of channel x. For example, if you want to use GPIO16 as channel 0, set <ch0_gpio> to 16.
 
 Notes
 ^^^^^
 
--  AT can support a maximum of 4 channels.
--  The number of channels that you initialize using this command will determine how many channels you can set using other PWM commands, including :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>` and :ref:`AT+DRVPWMFADE <cmd-DRVPWMFADE>`. For example, if you initialize two channels, you can only change the two channels' PWM duty using command ``AT+DRVPWMDUTY``.
--  The frequency and the duty resolution are interdependent. See `Supported Range of Frequency and Duty Resolutions <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/ledc.html#supported-range-of-frequency-and-duty-resolutions>`_ for more details.
+- AT can support a maximum of 4 channels.
+- The number of channels that you initialize using this command will determine how many channels you can set using other PWM commands, including :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>` and :ref:`AT+DRVPWMFADE <cmd-DRVPWMFADE>`. For example, if you initialize two channels, you can only change the two channels' PWM duty using command ``AT+DRVPWMDUTY``.
+- The frequency and the duty resolution are interdependent. See `Supported Range of Frequency and Duty Resolutions <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/ledc.html#supported-range-of-frequency-and-duty-resolutions>`_ for more details.
 
 Example
 ^^^^^^^^
@@ -217,13 +217,13 @@ Set Command
 Parameter
 ^^^^^^^^^^
 
--  **<duty>**: LEDC channel duty. Range: [0,2 :sup:`duty_resolution`].
+- **<duty>**: LEDC channel duty. Range: [0,2 :sup:`duty_resolution`].
 
 Notes
 ^^^^^
 
--  AT can support a maximum of 4 channels.
--  If you do not want to set ``<duty>`` for a specific channel, just omit it.
+- AT can support a maximum of 4 channels.
+- If you do not want to set ``<duty>`` for a specific channel, just omit it.
 
 Example
 ^^^^^^^^
@@ -256,14 +256,14 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<target_duty>**: target duty of fading. Range: [0, 2 :sup:`duty_resolution`–1].
--  **<fade_time>**: the maximum time of fading. Unit: millisecond.
+- **<target_duty>**: target duty of fading. Range: [0, 2 :sup:`duty_resolution`–1].
+- **<fade_time>**: the maximum time of fading. Unit: millisecond.
 
 Notes
 ^^^^^
 
--  AT can support a maximum of 4 channels.
--  If you do not want to set ``<target_duty>`` and ``<fade_time>`` for a specific channel, just omit them.
+- AT can support a maximum of 4 channels.
+- If you do not want to set ``<target_duty>`` and ``<fade_time>`` for a specific channel, just omit them.
 
 Example
 ^^^^^^^^
@@ -296,15 +296,15 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<num>**: I2C port number. Range: 0 ~ 1. If the following parameters are not set, AT will deinitialize the I2C port. 
--  **<scl_io>**: GPIO number for I2C SCL signal.
--  **<sda_io>**: GPIO number for I2C SDA signal.
--  **<clock>**: I2C clock frequency for master mode. Unit: Hz. Maximum: 1 MHz.
+- **<num>**: I2C port number. Range: 0 ~ 1. If the following parameters are not set, AT will deinitialize the I2C port.
+- **<scl_io>**: GPIO number for I2C SCL signal.
+- **<sda_io>**: GPIO number for I2C SDA signal.
+- **<clock>**: I2C clock frequency for master mode. Unit: Hz. Maximum: 1 MHz.
 
 Note
 ^^^^^
 
--  This command only supports I2C masters.
+- This command only supports I2C masters.
 
 Example
 ^^^^^^^^
@@ -338,19 +338,19 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<num>**: I2C port number. Range: 0 ~ 1.
--  **<address>**: I2C slave device address.
+- **<num>**: I2C port number. Range: 0 ~ 1.
+- **<address>**: I2C slave device address.
 
-   -  7-bit address: 0 ~ 0x7F.
-   -  10-bit address: The first seven bits of the first byte are the combination 1111 0XX of which the last two bits (XX) are the two Most Significant Bits (MSBs) of the 10-bit address. For example, if the 10-bit address is 0x2FF (b'1011111111), the input address should be 0x7AFF (b'111101011111111).
+   - 7-bit address: 0 ~ 0x7F.
+   - 10-bit address: The first seven bits of the first byte are the combination 1111 0XX of which the last two bits (XX) are the two Most Significant Bits (MSBs) of the 10-bit address. For example, if the 10-bit address is 0x2FF (b'1011111111), the input address should be 0x7AFF (b'111101011111111).
 
--  **<length>**: I2C data length. Range: 1 ~ 2048.
--  **<read data>**: I2C data.
+- **<length>**: I2C data length. Range: 1 ~ 2048.
+- **<read data>**: I2C data.
 
 Note
 ^^^^^
 
--  I2C transmission timeout is one second.
+- I2C transmission timeout is one second.
 
 Example
 ^^^^^^^^
@@ -391,7 +391,7 @@ If the data is transmitted successfully, AT returns:
 
 ::
 
-    OK 
+    OK
 
 If the data transmission fails, AT returns:
 
@@ -402,18 +402,18 @@ If the data transmission fails, AT returns:
 Parameters
 ^^^^^^^^^^
 
--  **<num>**: I2C port number. Range: 0 ~ 1.
--  **<address>**: I2C slave device address.
+- **<num>**: I2C port number. Range: 0 ~ 1.
+- **<address>**: I2C slave device address.
 
-   -  7-bit address: 0 ~ 0x7F.
-   -  10-bit address: The first seven bits of the first byte are the combination 1111 0XX of which the last two bits (XX) are the two Most Significant Bits (MSBs) of the 10-bit address. For example, if the 10-bit address is 0x2FF (b'1011111111), the input address should be 0x7AFF (b'111101011111111).
+   - 7-bit address: 0 ~ 0x7F.
+   - 10-bit address: The first seven bits of the first byte are the combination 1111 0XX of which the last two bits (XX) are the two Most Significant Bits (MSBs) of the 10-bit address. For example, if the 10-bit address is 0x2FF (b'1011111111), the input address should be 0x7AFF (b'111101011111111).
 
--  **<length>**: I2C data length. Range: 1 ~ 2048.
+- **<length>**: I2C data length. Range: 1 ~ 2048.
 
 Note
 ^^^^^
 
--  I2C transmission timeout is one second.
+- I2C transmission timeout is one second.
 
 Example
 ^^^^^^^^
@@ -445,19 +445,19 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<num>**: I2C port number. Range: 0 ~ 1.
--  **<address>**: I2C slave device address.
+- **<num>**: I2C port number. Range: 0 ~ 1.
+- **<address>**: I2C slave device address.
 
-   -  7-bit address: 0 ~ 0x7F.
-   -  10-bit address: The first seven bits of the first byte are the combination 1111 0XX of which the last two bits (XX) are the two Most Significant Bits (MSBs) of the 10-bit address. For example, if the 10-bit address is 0x2FF (b'1011111111), the input address should be 0x7AFF (b'111101011111111).
+   - 7-bit address: 0 ~ 0x7F.
+   - 10-bit address: The first seven bits of the first byte are the combination 1111 0XX of which the last two bits (XX) are the two Most Significant Bits (MSBs) of the 10-bit address. For example, if the 10-bit address is 0x2FF (b'1011111111), the input address should be 0x7AFF (b'111101011111111).
 
--  **<length>**: the length of the I2C data you want to write. Range: 1 ~ 4 bytes.
--  **<data>**: the data of ``<length>`` long. Range: 0 ~ 0xFFFFFFFF.
+- **<length>**: the length of the I2C data you want to write. Range: 1 ~ 4 bytes.
+- **<data>**: the data of ``<length>`` long. Range: 0 ~ 0xFFFFFFFF.
 
 Note
 ^^^^^
 
--  I2C transmission timeout is one second.
+- I2C transmission timeout is one second.
 
 Example
 ^^^^^^^^
@@ -493,10 +493,10 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<mosi>**: GPIO pin for Master Out Slave In signal.
--  **<miso>**: GPIO pin for Master In Slave Out signal, or -1 if not used.
--  **<sclk>**: GPIO pin for SPI Clock signal.
--  **<cs>**: GPIO pin for slave selection signal, or -1 if not used.
+- **<mosi>**: GPIO pin for Master Out Slave In signal.
+- **<miso>**: GPIO pin for Master In Slave Out signal, or -1 if not used.
+- **<sclk>**: GPIO pin for SPI Clock signal.
+- **<cs>**: GPIO pin for slave selection signal, or -1 if not used.
 
 .. _cmd-DRVSPIINIT:
 
@@ -521,19 +521,19 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<clock>**: Clock speed, divisors of 80 MHz. Unit: Hz. Maximum: 40 MHz.
--  **<mode>**: SPI mode. Range: 0 ~ 3.
--  **<cmd_bit>**: Default amount of bits in command phase. Range: 0 ~ 16.
--  **<addr_bit>**: Default amount of bits in address phase. Range: 0 ~ 64.
--  **<dma_chan>**: Either channel 1 or 2, or 0 in the case when no DMA is required.
--  **<bits_msb>**: SPI data format:
-   
-   - Bit0:
-    
+- **<clock>**: Clock speed, divisors of 80 MHz. Unit: Hz. Maximum: 40 MHz.
+- **<mode>**: SPI mode. Range: 0 ~ 3.
+- **<cmd_bit>**: Default amount of bits in command phase. Range: 0 ~ 16.
+- **<addr_bit>**: Default amount of bits in address phase. Range: 0 ~ 64.
+- **<dma_chan>**: Either channel 1 or 2, or 0 in the case when no DMA is required.
+- **<bits_msb>**: SPI data format:
+
+   - bit 0:
+
      - 0: Transmit MSB first (default).
      - 1: Transmit LSB first.
-   
-   - Bit1:
+
+   - bit 1:
 
      - 0: Receive data MSB first (default).
      - 1: Receive data LSB first.
@@ -551,7 +551,7 @@ Example
     AT+DRVSPIINIT=102400,0,0,0,0,3 // SPI clock: 100 kHz; mode: 0; both command and address bits are 0; not use DMA; transmit and receive LSB first
     OK
     AT+DRVSPIINIT=0   // delete SPI Driver
-    OK 
+    OK
 
 .. _cmd-DRVSPIRD:
 
@@ -577,16 +577,16 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<data_len>**: length of SPI data you want to read. Range: 1 ~ 4092 bytes.
--  **<cmd>**: command data. The length of the data is set in ``<cmd_len>``.
--  **<cmd_len>**: command length in this transaction. Range: 0 ~ 2 bytes.
--  **<addr>**: command address. The length of the address is set in ``<addr_len>``.
--  **<addr_len>**: The address length in this transaction. Range: 0 ~ 4 bytes.
+- **<data_len>**: length of SPI data you want to read. Range: 1 ~ 4092 bytes.
+- **<cmd>**: command data. The length of the data is set in ``<cmd_len>``.
+- **<cmd_len>**: command length in this transaction. Range: 0 ~ 2 bytes.
+- **<addr>**: command address. The length of the address is set in ``<addr_len>``.
+- **<addr_len>**: The address length in this transaction. Range: 0 ~ 4 bytes.
 
 Note
 ^^^^^
 
--  If you do not use DMA, the maximum ``<data_len>`` you can set is 64 bytes each time.
+- If you do not use DMA, the maximum ``<data_len>`` you can set is 64 bytes each time.
 
 Example
 ^^^^^^^^
@@ -636,21 +636,21 @@ When ``<data_len>`` is equal to 0, which means AT transmits commands and address
 
 ::
 
-    OK 
+    OK
 
 Parameters
 ^^^^^^^^^^
 
--  **<data_len>**: SPI data length. Range: 0 ~ 4092.
--  **<cmd>**: command data. The length of the data is set in ``<cmd_len>``.
--  **<cmd_len>**: command length in this transaction. Range: 0 ~ 2 bytes.
--  **<addr>**: command address. The length of the address is set in ``<addr_len>``.
--  **<addr_len>**: The address length in this transaction. Range: 0 ~ 4 bytes.
+- **<data_len>**: SPI data length. Range: 0 ~ 4092.
+- **<cmd>**: command data. The length of the data is set in ``<cmd_len>``.
+- **<cmd_len>**: command length in this transaction. Range: 0 ~ 2 bytes.
+- **<addr>**: command address. The length of the address is set in ``<addr_len>``.
+- **<addr_len>**: The address length in this transaction. Range: 0 ~ 4 bytes.
 
 Note
 ^^^^^
 
--  If you do not use DMA, the maximum ``<data_len>`` you can set is 64 bytes each time.
+- If you do not use DMA, the maximum ``<data_len>`` you can set is 64 bytes each time.
 
 Example
 ^^^^^^^^

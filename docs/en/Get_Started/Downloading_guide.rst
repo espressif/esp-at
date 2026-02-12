@@ -47,7 +47,7 @@ Here, we download ``{IDF_TARGET_FACTORY_BIN}`` for {IDF_TARGET_MODULE_NAME}. The
    │   └── partition-table.bin
    └── sdkconfig                        // compilation configuration for AT firmware
 
-The file ``download.config`` contains the configuration to flash the firmware into multiple addresses: 
+The file ``download.config`` contains the configuration to flash the firmware into multiple addresses:
 
 .. only:: esp32
 
@@ -322,7 +322,7 @@ To check whether AT works, do as follows:
 - Set Parity to None;
 - Set Stop Bits to 1;
 - Set Flow Type to None;
-- Enter the command "AT+GMR" with a new line (CR LF). 
+- Enter the command "AT+GMR" with a new line (CR LF).
 
 If the response is OK as shown below, AT works.
 

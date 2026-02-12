@@ -5,22 +5,22 @@ MQTT AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
--  :ref:`Introduction <cmd-mqtt-intro>`
--  :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`: Set MQTT user configuration
--  :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>`: Set MQTT client ID
--  :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>`: Set MQTT username
--  :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>`: Set MQTT password
--  :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`: Set configuration of MQTT connection
--  :ref:`AT+MQTTALPN <cmd-MQTTALPN>`: Set MQTT Application Layer Protocol Negotiation (ALPN)
--  :ref:`AT+MQTTSNI <cmd-MQTTSNI>`: Set MQTT Server Name Indication (SNI)
--  :ref:`AT+MQTTCONN <cmd-MQTTCONN>`: Connect to MQTT Brokers
--  :ref:`AT+MQTTPUB <cmd-MQTTPUB>`: Publish MQTT Messages in string
--  :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>`: Publish long MQTT messages
--  :ref:`AT+MQTTSUB <cmd-MQTTSUB>`: Subscribe to MQTT topics
--  :ref:`AT+MQTTUNSUB <cmd-MQTTUNSUB>`: Unsubscribe from MQTT topics
--  :ref:`AT+MQTTCLEAN <cmd-MQTTCLEAN>`: Close MQTT connections
--  :ref:`MQTT AT Error Codes <MQTTErrCod>`
--  :ref:`MQTT AT Notes <MQTTNote>`
+- :ref:`Introduction <cmd-mqtt-intro>`
+- :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`: Set MQTT user configuration.
+- :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>`: Set MQTT client ID.
+- :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>`: Set MQTT username.
+- :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>`: Set MQTT password.
+- :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`: Set configuration of MQTT connection.
+- :ref:`AT+MQTTALPN <cmd-MQTTALPN>`: Set MQTT Application Layer Protocol Negotiation (ALPN).
+- :ref:`AT+MQTTSNI <cmd-MQTTSNI>`: Set MQTT Server Name Indication (SNI).
+- :ref:`AT+MQTTCONN <cmd-MQTTCONN>`: Connect to MQTT Brokers.
+- :ref:`AT+MQTTPUB <cmd-MQTTPUB>`: Publish MQTT Messages in string.
+- :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>`: Publish long MQTT messages.
+- :ref:`AT+MQTTSUB <cmd-MQTTSUB>`: Subscribe to MQTT topics.
+- :ref:`AT+MQTTUNSUB <cmd-MQTTUNSUB>`: Unsubscribe from MQTT topics.
+- :ref:`AT+MQTTCLEAN <cmd-MQTTCLEAN>`: Close MQTT connections.
+- :ref:`MQTT AT Error Codes <MQTTErrCod>`
+- :ref:`MQTT AT Notes <MQTTNote>`
 
 .. _cmd-mqtt-intro:
 
@@ -63,34 +63,34 @@ Set MQTT User Configuration.
 Parameters
 ^^^^^^^^^^
 
--  **<LinkID>**: currently only supports link ID 0.
--  **<scheme>**:
+- **<LinkID>**: currently only supports link ID 0.
+- **<scheme>**:
 
-   -  1: MQTT over TCP.
-   -  2: MQTT over TLS (no certificate verify).
-   -  3: MQTT over TLS (verify server certificate).
-   -  4: MQTT over TLS (provide client certificate).
-   -  5: MQTT over TLS (verify server certificate and provide client certificate).
-   -  6: MQTT over WebSocket (based on TCP).
-   -  7: MQTT over WebSocket Secure (based on TLS, no certificate verify).
-   -  8: MQTT over WebSocket Secure (based on TLS, verify server certificate).
-   -  9: MQTT over WebSocket Secure (based on TLS, provide client certificate).
-   -  10: MQTT over WebSocket Secure (based on TLS, verify server certificate and provide client certificate).
+   - 1: MQTT over TCP.
+   - 2: MQTT over TLS (no certificate verify).
+   - 3: MQTT over TLS (verify server certificate).
+   - 4: MQTT over TLS (provide client certificate).
+   - 5: MQTT over TLS (verify server certificate and provide client certificate).
+   - 6: MQTT over WebSocket (based on TCP).
+   - 7: MQTT over WebSocket Secure (based on TLS, no certificate verify).
+   - 8: MQTT over WebSocket Secure (based on TLS, verify server certificate).
+   - 9: MQTT over WebSocket Secure (based on TLS, provide client certificate).
+   - 10: MQTT over WebSocket Secure (based on TLS, verify server certificate and provide client certificate).
 
--  **<"client_id">**: MQTT client ID. Maximum length: 256 bytes.
--  **<"username">**: the username to login to the MQTT broker. Maximum length: 64 bytes.
--  **<"password">**: the password to login to the MQTT broker. Maximum length: 64 bytes.
--  **<cert_key_ID>**: certificate ID. Currently, ESP-AT only supports one certificate for ID 0.
--  **<CA_ID>**: CA ID. Currently, ESP-AT only supports one CA for ID 0.
--  **<"path">**: the path of the resource. Maximum length: 32 bytes.
+- **<"client_id">**: MQTT client ID. Maximum length: 256 bytes.
+- **<"username">**: the username to login to the MQTT broker. Maximum length: 64 bytes.
+- **<"password">**: the password to login to the MQTT broker. Maximum length: 64 bytes.
+- **<cert_key_ID>**: certificate ID. Currently, ESP-AT only supports one certificate for ID 0.
+- **<CA_ID>**: CA ID. Currently, ESP-AT only supports one CA for ID 0.
+- **<"path">**: the path of the resource. Maximum length: 32 bytes.
 
 Note
 ^^^^^
 
--  The length of the entire AT command should be less than 256 bytes.
--  If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the MQTT certificate (for detailed steps, please refer to :ref:`AT+SYSMFG command examples <sysmfg-pki>`, the certificate configuration method is the same as SSL certificates). If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
--  If ``<scheme>`` is configured to 3, 5, 8, or 10, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+MQTTCONN <cmd-MQTTCONN>` command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNPTIME? <cmd-SNTPT>` command to query the current time.)
--  For TLS protocol version configuration, please refer to the :ref:`modify tls protocol version note <modify-tls-version>`.
+- The length of the entire AT command should be less than 256 bytes.
+- If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the MQTT certificate (for detailed steps, please refer to :ref:`AT+SYSMFG command examples <sysmfg-pki>`, the certificate configuration method is the same as SSL certificates). If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
+- If ``<scheme>`` is configured to 3, 5, 8, or 10, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+MQTTCONN <cmd-MQTTCONN>` command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNPTIME? <cmd-SNTPT>` command to query the current time.)
+- For TLS protocol version configuration, please refer to the :ref:`modify tls protocol version note <modify-tls-version>`.
 
 .. _cmd-MQTTLONGCLIENTID:
 
@@ -102,7 +102,7 @@ Set Command
 
 **Function:**
 
-Set MQTT Client ID.  
+Set MQTT Client ID.
 
 **Command:**
 
@@ -127,13 +127,13 @@ This response indicates that AT is ready for receiving MQTT Client ID. You shoul
 Parameters
 ^^^^^^^^^^
 
--  **<LinkID>**: currently only supports link ID 0.
--  **<length>**: MQTT client ID length. Range: [1,1024].
+- **<LinkID>**: currently only supports link ID 0.
+- **<length>**: MQTT client ID length. Range: [1,1024].
 
 Notes
 ^^^^^
 
--  The command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` can also set MQTT client ID. The differences between the two commands include:
+- The command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` can also set MQTT client ID. The differences between the two commands include:
 
    - You can use :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>` to set a relatively long client ID since there is a limitation on the length of the :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` command.
    - You should set :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>` after setting the :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` command.
@@ -173,13 +173,13 @@ This response indicates that AT is ready for receiving MQTT username. You should
 Parameters
 ^^^^^^^^^^
 
--  **<LinkID>**: only supports link ID 0 currently.
--  **<length>**: MQTT username length. Range: [1,1024].
+- **<LinkID>**: only supports link ID 0 currently.
+- **<length>**: MQTT username length. Range: [1,1024].
 
 Notes
 ^^^^^
 
--  The command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` can also set MQTT username. The differences between the two commands include:
+- The command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` can also set MQTT username. The differences between the two commands include:
 
    - You can use :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>` to set a relatively long username since there is a limitation on the length of the :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` command.
    - You should set :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>` after setting the command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
@@ -194,7 +194,7 @@ Set Command
 
 **Function:**
 
-Set MQTT password. 
+Set MQTT password.
 
 **Command:**
 
@@ -219,13 +219,13 @@ This response indicates that AT is ready for receiving MQTT password. You should
 Parameters
 ^^^^^^^^^^
 
--  **<LinkID>**: only supports link ID 0 currently.
--  **<length>**: MQTT password length. Range: [1,1024].
+- **<LinkID>**: only supports link ID 0 currently.
+- **<length>**: MQTT password length. Range: [1,1024].
 
 Notes
 ^^^^^
 
--  The command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` can also set MQTT password. The differences between the two commands include:
+- The command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` can also set MQTT password. The differences between the two commands include:
 
    - You can use :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>` to set a relatively long password since there is a limitation on the length of the :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` command.
    - You should set :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>` after setting the command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
@@ -257,17 +257,17 @@ Set configuration of MQTT Connection.
 Parameters
 ^^^^^^^^^^
 
--  **<LinkID>**: only supports link ID 0 currently.
--  **<keepalive>**: timeout of MQTT ping. Unit: second. Range [0,7200]. The default value is 0, which will be force-changed to 120 s.
--  **<disable_clean_session>**: set MQTT clean session. For more details about this parameter, please refer to the section `Clean Session <http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.pdf>`_ in *MQTT Version 3.1.1*.
+- **<LinkID>**: only supports link ID 0 currently.
+- **<keepalive>**: timeout of MQTT ping. Unit: second. Range [0,7200]. The default value is 0, which will be force-changed to 120 s.
+- **<disable_clean_session>**: set MQTT clean session. For more details about this parameter, please refer to the section `Clean Session <http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.pdf>`_ in *MQTT Version 3.1.1*.
 
-   -  0: enable clean session.
-   -  1: disable clean session.
+   - 0: Enable clean session.
+   - 1: Disable clean session.
 
--  **<"lwt_topic">**: LWT (Last Will and Testament) message topic. Maximum length: 128 bytes.
--  **<"lwt_msg">**: LWT message. Maximum length: 128 bytes.
--  **<lwt_qos>**: LWT QoS, which can be set to 0, 1, or 2. Default: 0.
--  **<lwt_retain>**: LWT retain, which can be set to 0 or 1. Default: 0.
+- **<"lwt_topic">**: LWT (Last Will and Testament) message topic. Maximum length: 128 bytes.
+- **<"lwt_msg">**: LWT message. Maximum length: 128 bytes.
+- **<lwt_qos>**: LWT QoS, which can be set to 0, 1, or 2. Default: 0.
+- **<lwt_retain>**: LWT retain, which can be set to 0 or 1. Default: 0.
 
 Note
 ^^^^
@@ -301,20 +301,20 @@ Set MQTT Application Layer Protocol Negotiation (ALPN).
 Parameters
 ^^^^^^^^^^
 
--  **<LinkID>**: only supports link ID 0 currently.
--  **<alpn_counts>**: the number of <"alpn"> parameters. Range: [0,5].
+- **<LinkID>**: only supports link ID 0 currently.
+- **<alpn_counts>**: the number of <"alpn"> parameters. Range: [0,5].
 
-  - 0: clean the MQTT ALPN configuration.
-  - [1,5]: set the MQTT ALPN configuration.
+  - 0: Clean the MQTT ALPN configuration.
+  - [1,5]: Set the MQTT ALPN configuration.
 
--  **<"alpn">**: you can send more than one ALPN in ClientHello to the server.
+- **<"alpn">**: you can send more than one ALPN in ClientHello to the server.
 
 Notes
 ^^^^^
 
--  The length of the entire AT command should be less than 256 bytes.
--  MQTT ALPN will be effective only if the MQTT connection is based on TLS or WSS.
--  You should set :ref:`AT+MQTTALPN <cmd-MQTTALPN>` after setting the command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
+- The length of the entire AT command should be less than 256 bytes.
+- MQTT ALPN will be effective only if the MQTT connection is based on TLS or WSS.
+- You should set :ref:`AT+MQTTALPN <cmd-MQTTALPN>` after setting the command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
 
 Example
 ^^^^^^^^
@@ -355,15 +355,15 @@ Set MQTT Server Name Indication (SNI).
 Parameters
 ^^^^^^^^^^
 
--  **<LinkID>**: only supports link ID 0 currently.
--  **<"sni">**: MQTT Server Name Indication. You can send it in ClientHello to the server.
+- **<LinkID>**: only supports link ID 0 currently.
+- **<"sni">**: MQTT Server Name Indication. You can send it in ClientHello to the server.
 
 Notes
 ^^^^^
 
--  The length of the entire AT command should be less than 256 bytes.
--  MQTT SNI will be effective only if the MQTT connection is based on TLS or WSS.
--  You should set :ref:`AT+MQTTSNI <cmd-MQTTSNI>` after setting the command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
+- The length of the entire AT command should be less than 256 bytes.
+- MQTT SNI will be effective only if the MQTT connection is based on TLS or WSS.
+- You should set :ref:`AT+MQTTSNI <cmd-MQTTSNI>` after setting the command :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
 
 Example
 ^^^^^^^^
@@ -407,7 +407,7 @@ Set Command
 
 **Function:**
 
-Connect to an MQTT broker.  
+Connect to an MQTT broker.
 
 **Command:**
 
@@ -424,38 +424,38 @@ Connect to an MQTT broker.
 Parameters
 ^^^^^^^^^^
 
--  **<LinkID>**: only supports link ID 0 currently.
--  **<"host">**: MQTT broker domain. Maximum length: 128 bytes.
--  **<port>**: MQTT broker port. Maximum: port 65535.
--  **<"path">**: path. Maximum length: 32 bytes.
--  **<reconnect>**:
+- **<LinkID>**: only supports link ID 0 currently.
+- **<"host">**: MQTT broker domain. Maximum length: 128 bytes.
+- **<port>**: MQTT broker port. Maximum: port 65535.
+- **<"path">**: path. Maximum length: 32 bytes.
+- **<reconnect>**:
 
-   -  0: MQTT will not reconnect automatically. If MQTT connection established and then disconnected, you cannot use this command to reestablish MQTT connection. Please send :ref:`AT+MQTTCLEAN=0 <cmd-MQTTCLEAN>` command to clean MQTT connection first, reconfigure the connection parameters, and then establish a new MQTT connection.
-   -  1: MQTT will reconnect automatically. It takes more resources.
+   - 0: MQTT will not reconnect automatically. If MQTT connection established and then disconnected, you cannot use this command to reestablish MQTT connection. Please send :ref:`AT+MQTTCLEAN=0 <cmd-MQTTCLEAN>` command to clean MQTT connection first, reconfigure the connection parameters, and then establish a new MQTT connection.
+   - 1: MQTT will reconnect automatically. It takes more resources.
 
--  **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
--  **<state>**: MQTT state.
+- **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
+- **<state>**: MQTT state.
 
-   -  0: MQTT uninitialized.
-   -  1: already set :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
-   -  2: already set :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`.
-   -  3: connection disconnected.
-   -  4: connection established.
-   -  5: connected, but did not subscribe to any topic.
-   -  6: connected, and subscribed to MQTT topics.
+   - 0: MQTT uninitialized.
+   - 1: Already set :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
+   - 2: Already set :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`.
+   - 3: Connection disconnected.
+   - 4: Connection established.
+   - 5: Connected, but did not subscribe to any topic.
+   - 6: Connected, and subscribed to MQTT topics.
 
--  **<scheme>**:
+- **<scheme>**:
 
-   -  1: MQTT over TCP.
-   -  2: MQTT over TLS (no certificate verify).
-   -  3: MQTT over TLS (verify server certificate).
-   -  4: MQTT over TLS (provide client certificate).
-   -  5: MQTT over TLS (verify server certificate and provide client certificate).
-   -  6: MQTT over WebSocket (based on TCP).
-   -  7: MQTT over WebSocket Secure (based on TLS, verify no certificate).
-   -  8: MQTT over WebSocket Secure (based on TLS, verify server certificate).
-   -  9: MQTT over WebSocket Secure (based on TLS, provide client certificate).
-   -  10: MQTT over WebSocket Secure (based on TLS, verify server certificate and provide client certificate).
+   - 1: MQTT over TCP.
+   - 2: MQTT over TLS (no certificate verify).
+   - 3: MQTT over TLS (verify server certificate).
+   - 4: MQTT over TLS (provide client certificate).
+   - 5: MQTT over TLS (verify server certificate and provide client certificate).
+   - 6: MQTT over WebSocket (based on TCP).
+   - 7: MQTT over WebSocket Secure (based on TLS, verify no certificate).
+   - 8: MQTT over WebSocket Secure (based on TLS, verify server certificate).
+   - 9: MQTT over WebSocket Secure (based on TLS, provide client certificate).
+   - 10: MQTT over WebSocket Secure (based on TLS, verify server certificate and provide client certificate).
 
 .. _cmd-MQTTPUB:
 
@@ -484,18 +484,18 @@ Publish MQTT messages in string to a defined topic. If the amount of data you pu
 Parameters
 ^^^^^^^^^^
 
--  **<LinkID>**: only supports link ID 0 currently.
--  **<"topic">**: MQTT topic. Maximum length: 128 bytes.
--  **<data>**: MQTT message in string.
--  **<qos>**: QoS of message, which can be set to 0, 1, or 2. Default: 0.
--  **<retain>**: retain flag.
--  **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
+- **<LinkID>**: only supports link ID 0 currently.
+- **<"topic">**: MQTT topic. Maximum length: 128 bytes.
+- **<data>**: MQTT message in string.
+- **<qos>**: QoS of message, which can be set to 0, 1, or 2. Default: 0.
+- **<retain>**: retain flag.
+- **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
 
 Notes
 ^^^^^
 
--  The length of the entire AT command should be less than 256 bytes.
--  This command cannot send data ``\0``. If you need to send ``\0``, please use the command :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` instead.
+- The length of the entire AT command should be less than 256 bytes.
+- This command cannot send data ``\0``. If you need to send ``\0``, please use the command :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` instead.
 
 Example
 ^^^^^^^^
@@ -531,7 +531,7 @@ Publish long MQTT messages to a defined topic. If the amount of data you publish
 ::
 
     OK
-    > 
+    >
 
 The symbol ``>`` indicates that AT is ready for receiving serial data, and you can enter the data now. When the requirement of message length determined by the parameter ``<length>`` is met, the transmission starts.
 
@@ -539,23 +539,23 @@ If the transmission is successful, AT returns:
 
 ::
 
-    +MQTTPUB:OK  
+    +MQTTPUB:OK
 
 Otherwise, it returns:
 
 ::
 
-    +MQTTPUB:FAIL    
+    +MQTTPUB:FAIL
 
 Parameters
 ^^^^^^^^^^
 
--  **<LinkID>**: only supports link ID 0 currently.
--  **<"topic">**: MQTT topic. Maximum length: 128 bytes.
--  **<length>**: length of MQTT message. The maximum length is limited by available memory.
--  **<qos>**: QoS of the published message, which can be set to 0, 1, or 2. Default is 0.
--  **<retain>**: retain flag.
--  **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
+- **<LinkID>**: only supports link ID 0 currently.
+- **<"topic">**: MQTT topic. Maximum length: 128 bytes.
+- **<length>**: length of MQTT message. The maximum length is limited by available memory.
+- **<qos>**: QoS of the published message, which can be set to 0, 1, or 2. Default is 0.
+- **<retain>**: retain flag.
+- **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
 
 .. _cmd-MQTTSUB:
 
@@ -580,7 +580,7 @@ List all MQTT topics that have been already subscribed.
 
 ::
 
-    +MQTTSUB:<LinkID>,<state>,<"topic1">,<qos>  
+    +MQTTSUB:<LinkID>,<state>,<"topic1">,<qos>
     +MQTTSUB:<LinkID>,<state>,<"topic2">,<qos>
     +MQTTSUB:<LinkID>,<state>,<"topic3">,<qos>
     ...
@@ -610,7 +610,7 @@ When AT receives MQTT messages of the subscribed topic, it will prompt:
 
 ::
 
-    +MQTTSUBRECV:<LinkID>,<"topic">,<data_length>,data    
+    +MQTTSUBRECV:<LinkID>,<"topic">,<data_length>,data
 
 If the topic has been subscribed before, it will prompt:
 
@@ -621,20 +621,20 @@ If the topic has been subscribed before, it will prompt:
 Parameters
 ^^^^^^^^^^
 
--  **<LinkID>**: only supports link ID 0 currently.
--  **<state>**: MQTT state.
+- **<LinkID>**: only supports link ID 0 currently.
+- **<state>**: MQTT state.
 
-   -  0: MQTT uninitialized.
-   -  1: already set :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
-   -  2: already set :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`.
-   -  3: connection disconnected.
-   -  4: connection established.
-   -  5: connected, but subscribe to no topic.
-   -  6: connected, and subscribed to MQTT topics.
+   - 0: MQTT uninitialized.
+   - 1: Already set :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`.
+   - 2: Already set :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`.
+   - 3: Connection disconnected.
+   - 4: Connection established.
+   - 5: Connected, but subscribe to no topic.
+   - 6: Connected, and subscribed to MQTT topics.
 
--  **<"topic">**: the topic that is subscribed to.
--  **<qos>**: the QoS that is subscribed to.
--  **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
+- **<"topic">**: the topic that is subscribed to.
+- **<qos>**: the QoS that is subscribed to.
+- **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
 
 Note
 ^^^^
@@ -661,7 +661,7 @@ Unsubscribe the client from defined topics. This command can be called multiple 
 
 ::
 
-    AT+MQTTUNSUB=<LinkID>,<"topic">[,<timeout_ms>]   
+    AT+MQTTUNSUB=<LinkID>,<"topic">[,<timeout_ms>]
 
 
 **Response:**
@@ -674,16 +674,16 @@ If the topic has not been subscribed, AT will prompt:
 
 ::
 
-  NO UNSUBSCRIBE 
-  
+  NO UNSUBSCRIBE
+
   OK
 
 Parameters
 ^^^^^^^^^^
 
--  **<LinkID>**: only supports link ID 0 currently.
--  **<"topic">**: MQTT topic. Maximum length: 128 bytes.
--  **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
+- **<LinkID>**: only supports link ID 0 currently.
+- **<"topic">**: MQTT topic. Maximum length: 128 bytes.
+- **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
 
 .. _cmd-MQTTCLEAN:
 
@@ -712,7 +712,7 @@ Close the MQTT connection and release the resource.
 Parameter
 ^^^^^^^^^^
 
--  **<LinkID>**: only supports link ID 0 currently.
+- **<LinkID>**: only supports link ID 0 currently.
 
 .. _MQTTErrCod:
 
@@ -897,5 +897,5 @@ The MQTT Error code will be prompted as ``ERR CODE:0x<%08x>``.
 :ref:`MQTT AT Notes <MQTT-AT>`
 -------------------------------
 
--  When the MQTT connection ends, it will prompt the message ``+MQTTDISCONNECTED:<LinkID>``.
--  When the MQTT connection established, it will prompt the message ``+MQTTCONNECTED:<LinkID>,<scheme>,<"host">,port,<"path">,<reconnect>``.
+- When the MQTT connection ends, it will prompt the message ``+MQTTDISCONNECTED:<LinkID>``.
+- When the MQTT connection established, it will prompt the message ``+MQTTCONNECTED:<LinkID>,<scheme>,<"host">,port,<"path">,<reconnect>``.

@@ -8,7 +8,7 @@
 本文档介绍了如何通过重新编译固件来更新 ESP-AT 默认的出厂参数配置。出厂参数配置包括一些 Wi-Fi 配置、UART 配置、模组配置。
 
 .. note::
-  如果您想在运行时通过 AT 命令更新出厂参数而无需重新编译固件，请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-factory-param>`。
+  如果你想在运行时通过 AT 命令更新出厂参数而无需重新编译固件，请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-factory-param>`。
 
 .. contents::
    :local:
@@ -53,8 +53,8 @@
       * - 系统存储模式
         - sys_store（系统默认存储模式）
 
-          * 0：不自动存储配置更改到 flash
-          * 1：自动存储配置更改到 flash（默认值）
+          * 0: 不自动存储配置更改到 flash
+          * 1: 自动存储配置更改到 flash（默认值）
         - :ref:`AT+SYSSTORE <cmd-SYSSTORE>`
 
       * - 模组名称

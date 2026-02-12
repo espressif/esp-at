@@ -42,19 +42,19 @@ Bluetooth® Low Energy AT 命令集
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61: - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`：设置 Bluetooth LE 开机 :term:`透传模式` 信息
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`：查询/设置 Bluetooth LE 加密参数
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEENC <cmd-BLEENC>`：发起 Bluetooth LE 加密请求
-    :esp32 or esp32c3 : - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`：回复对端设备发起的配对请求
+    :esp32 or esp32c3: - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`：回复对端设备发起的配对请求
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`：给对方设备回复密钥
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`：给对方设备回复确认结果（传统连接阶段）
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`：查询绑定的 Bluetooth LE 加密设备列表
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`：清除 Bluetooth LE 加密设备列表
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESETKEY <cmd-BLESETKEY>`：设置 Bluetooth LE 静态配对密钥
-    :esp32 or esp32c3 : - :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`：Bluetooth LE HID 协议初始化
-    :esp32 or esp32c3 : - :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`：发送 Bluetooth LE HID 键盘信息
-    :esp32 or esp32c3 : - :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`：发送 Bluetooth LE HID 鼠标信息
-    :esp32 or esp32c3 : - :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`：发送 Bluetooth LE HID consumer 信息
+    :esp32 or esp32c3: - :ref:`AT+BLEHIDINIT <cmd-BLEHIDINIT>`：Bluetooth LE HID 协议初始化
+    :esp32 or esp32c3: - :ref:`AT+BLEHIDKB <cmd-BLEHIDKB>`：发送 Bluetooth LE HID 键盘信息
+    :esp32 or esp32c3: - :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`：发送 Bluetooth LE HID 鼠标信息
+    :esp32 or esp32c3: - :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`：发送 Bluetooth LE HID consumer 信息
     - :ref:`AT+BLUFI <cmd-BLUFI>`：开启或关闭 BluFi
     - :ref:`AT+BLUFINAME <cmd-BLUFINAME>`：查询/设置 BluFi 设备名称
-    - :ref:`AT+BLUFISEND <cmd-BLUFISEND>`: 发送 BluFi 用户自定义数据
+    - :ref:`AT+BLUFISEND <cmd-BLUFISEND>`：发送 BluFi 用户自定义数据
     :esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEPERIODICDATA <cmd-BLEPADATA>`：设置 Bluetooth LE 周期性广播数据
     :esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEPERIODICSTART <cmd-BLEPASTART>`：开启 Bluetooth LE 周期性广播
     :esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEPERIODICSTOP <cmd-BLEPASTOP>`：停止 Bluetooth LE 周期性广播
@@ -81,7 +81,7 @@ Bluetooth® Low Energy AT 命令集
 .. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
   .. important::
-    默认的 AT 固件支持此页面下的所有 AT 命令。如果您需要修改 {IDF_TARGET_NAME} 默认支持的命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择（下面每项是独立的，根据您的需要选择）：
+    默认的 AT 固件支持此页面下的所有 AT 命令。如果你需要修改 {IDF_TARGET_NAME} 默认支持的命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择（下面每项是独立的，根据你的需要选择）：
 
     - 禁用 BluFi 命令：``Component config`` > ``AT`` > ``AT blufi command support``
     - 禁用 Bluetooth LE 命令：``Component config`` > ``AT`` > ``AT ble command support``
@@ -93,9 +93,9 @@ Bluetooth® Low Energy AT 命令集
     默认的 {IDF_TARGET_CFG_PREFIX}-4MB AT 固件支持 BluFi 功能，而 {IDF_TARGET_CFG_PREFIX}-2MB AT 固件不支持 BluFi 功能。{IDF_TARGET_CFG_PREFIX}-2MB AT 固件不支持 BluFi 功能，是因为 2 MB flash 大小不足以同时支持 Wi-Fi、BluFi 和 OTA 功能。
 
   .. important::
-    默认的 {IDF_TARGET_CFG_PREFIX}-4MB AT 固件 和 {IDF_TARGET_CFG_PREFIX}-2MB AT 固件均不支持 Bluetooth LE 功能。如果您需要支持 Bluetooth LE 功能，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第三步安装环境时，选择 ``ESP32C2-2MB-BLE``。
+    默认的 {IDF_TARGET_CFG_PREFIX}-4MB AT 固件 和 {IDF_TARGET_CFG_PREFIX}-2MB AT 固件均不支持 Bluetooth LE 功能。如果你需要支持 Bluetooth LE 功能，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第三步安装环境时，选择 ``ESP32C2-2MB-BLE``。
 
-    由于 {IDF_TARGET_NAME} 内存受限，您无法在一个固件里同时支持 Wi-Fi 和 Bluetooth LE 功能。
+    由于 {IDF_TARGET_NAME} 内存受限，你无法在一个固件里同时支持 Wi-Fi 和 Bluetooth LE 功能。
 
 .. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
@@ -155,29 +155,29 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<init>**:
+    - **<init>**:
 
-    -  0: 注销 Bluetooth LE
-    -  1: client 角色
-    -  2: server 角色
-    -  3: 双角色（client 和 server）
+    - 0: 注销 Bluetooth LE
+    - 1: client 角色
+    - 2: server 角色
+    - 3: 双角色（client 和 server）
 
     说明
     ^^^^
 
     .. list::
 
-      -  为获得更好的性能，建议在使用 Bluetooth LE 功能前，先发送 :ref:`AT+CWMODE=0/1 <cmd-MODE>` 命令禁用 SoftAP。如您想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
-      -  使用其它 Bluetooth LE 命令之前，请先调用本命令，初始化 Bluetooth LE 角色。
-      -  Bluetooth LE 角色初始化后，不能直接切换角色。如需切换角色，请先执行 :ref:`AT+BLEINIT=0 <cmd-BINIT>` 注销 Bluetooth LE，或执行 :ref:`AT+RST <cmd-RST>` 重启系统，然后重新初始化 Bluetooth LE 角色。
-      -  建议在注销 Bluetooth LE 之前，停止正在进行的广播、扫描并断开所有的连接。
-      -  如果 Bluetooth LE 已初始化，则 :ref:`AT+CIPMODE <cmd-IPMODE>` 无法设置为 1。
-      -  如果设置为双角色，则既可以使用服务器角色相关的命令，也可以使用客户端角色相关的命令。
-      -  在双角色模式下，BLE 透传相关命令和 BLE 自动透传开机功能不支持。
-      -  在双角色模式下，可以设置广播参数、查询广播参数并开始或停止广播。
-      -  在双角色模式下，可以设置扫描参数、查询扫描参数并开始或停止扫描。
-      -  在双角色模式下，可以发起所有连接相关参数更新并查询连接参数。
-      -  在双角色模式下，连接和广播的总数限制为 3。
+      - 为获得更好的性能，建议在使用 Bluetooth LE 功能前，先发送 :ref:`AT+CWMODE=0/1 <cmd-MODE>` 命令禁用 SoftAP。如你想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
+      - 使用其它 Bluetooth LE 命令之前，请先调用本命令，初始化 Bluetooth LE 角色。
+      - Bluetooth LE 角色初始化后，不能直接切换角色。如需切换角色，请先执行 :ref:`AT+BLEINIT=0 <cmd-BINIT>` 注销 Bluetooth LE，或执行 :ref:`AT+RST <cmd-RST>` 重启系统，然后重新初始化 Bluetooth LE 角色。
+      - 建议在注销 Bluetooth LE 之前，停止正在进行的广播、扫描并断开所有的连接。
+      - 如果 Bluetooth LE 已初始化，则 :ref:`AT+CIPMODE <cmd-IPMODE>` 无法设置为 1。
+      - 如果设置为双角色，则既可以使用服务器角色相关的命令，也可以使用客户端角色相关的命令。
+      - 在双角色模式下，BLE 透传相关命令和 BLE 自动透传开机功能不支持。
+      - 在双角色模式下，可以设置广播参数、查询广播参数并开始或停止广播。
+      - 在双角色模式下，可以设置扫描参数、查询扫描参数并开始或停止扫描。
+      - 在双角色模式下，可以发起所有连接相关参数更新并查询连接参数。
+      - 在双角色模式下，连接和广播的总数限制为 3。
       :esp32c2 or esp32c5 or esp32c6 or esp32c61: - 服务创建说明：当初始化 BLE 为 server 角色（``<init>`` 为 2）或双角色（``<init>`` 为 3）时，会自动创建 GATT 服务，无需单独的 AT 命令创建服务。
       :esp32 or esp32c3: - 服务创建说明：初始化 BLE 为 server 或双角色（``<init>`` 为 2 或 3）后，请依次执行 :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>` 和 :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>` 来创建并启动 GATT 服务。
 
@@ -262,21 +262,21 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<addr_type>**:
+    - **<addr_type>**:
 
-    -  0: 公共地址 (Public Address)
-    -  1: 随机地址 (Random Address)
+    - 0: 公共地址 (Public Address)
+    - 1: 随机地址 (Random Address)
 
     说明
     ^^^^
 
-    -  静态地址 (Static Address) 应满足以下条件：
+    - 静态地址 (Static Address) 应满足以下条件：
 
-    -  地址最高两位应为 1；
-    -  随机地址部分至少有 1 位为 0；
-    -  随机地址部分至少有 1 位为 1。
+    - 地址最高两位应为 1；
+    - 随机地址部分至少有 1 位为 0；
+    - 随机地址部分至少有 1 位为 1。
 
-    -  设置的静态地址不会被保存在 NVS 区。
+    - 设置的静态地址不会被保存在 NVS 区。
 
     示例
     ^^^^
@@ -288,7 +288,7 @@ Bluetooth® Low Energy AT 命令集
             AT+BLEADDR=1,"f8:7f:24:87:1c:7b"    // 设置随机设备地址的静态地址
             AT+BLEADDR=1                        // 设置随机设备地址的私有地址
             AT+BLEADDR=0                        // 设置公共设备地址
-    
+
     .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
 
         ::
@@ -342,13 +342,13 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<device_name>**：Bluetooth LE 设备名称，最大长度：32，默认名称为 "ESP-AT"。
+    - **<device_name>**：Bluetooth LE 设备名称，最大长度：32，默认名称为 "ESP-AT"。
 
     说明
     ^^^^
 
-    -  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 区。
-    -  通过该命令设置设备名称后，建议您执行 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令将设备名称放进广播数据当中。
+    - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 区。
+    - 通过该命令设置设备名称后，建议你执行 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令将设备名称放进广播数据当中。
 
     示例
     ^^^^
@@ -404,27 +404,27 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<scan_type>**：扫描类型
+    - **<scan_type>**：扫描类型
 
-    -  0: 被动扫描
-    -  1: 主动扫描
+    - 0: 被动扫描
+    - 1: 主动扫描
 
-    -  **<own_addr_type>**：地址类型
+    - **<own_addr_type>**：地址类型
 
-    -  0: 公共地址
-    -  1: 随机地址
-    -  2: RPA 公共地址
-    -  3: RPA 随机地址
+    - 0: 公共地址
+    - 1: 随机地址
+    - 2: RPA 公共地址
+    - 3: RPA 随机地址
 
-    -  **<filter_policy>**：扫描过滤方式
+    - **<filter_policy>**：扫描过滤方式
 
-    -  0: BLE_SCAN_FILTER_ALLOW_ALL
-    -  1: BLE_SCAN_FILTER_ALLOW_ONLY_WLST
-    -  2: BLE_SCAN_FILTER_ALLOW_UND_RPA_DIR
-    -  3: BLE_SCAN_FILTER_ALLOW_WLIST_PRA_DIR
+    - 0: BLE_SCAN_FILTER_ALLOW_ALL
+    - 1: BLE_SCAN_FILTER_ALLOW_ONLY_WLST
+    - 2: BLE_SCAN_FILTER_ALLOW_UND_RPA_DIR
+    - 3: BLE_SCAN_FILTER_ALLOW_WLIST_PRA_DIR
 
-    -  **<scan_interval>**：扫描间隔。本参数值应大于等于 ``<scan_window>`` 参数值。参数范围：[0x0004,0x4000]。扫描间隔是该参数乘以 ``0.625`` 毫秒，所以实际的扫描间隔范围为 [2.5,10240] 毫秒。
-    -  **<scan_window>**：扫描窗口。本参数值应小于等于 ``<scan_interval>`` 参数值。参数范围：[0x0004,0x4000]。扫描窗口是该参数乘以 ``0.625`` 毫秒，所以实际的扫描窗口范围为 [2.5,10240] 毫秒。
+    - **<scan_interval>**：扫描间隔。本参数值应大于等于 ``<scan_window>`` 参数值。参数范围：[0x0004,0x4000]。扫描间隔是该参数乘以 ``0.625`` 毫秒，所以实际的扫描间隔范围为 [2.5,10240] 毫秒。
+    - **<scan_window>**：扫描窗口。本参数值应小于等于 ``<scan_interval>`` 参数值。参数范围：[0x0004,0x4000]。扫描窗口是该参数乘以 ``0.625`` 毫秒，所以实际的扫描窗口范围为 [2.5,10240] 毫秒。
 
     示例
     ^^^^
@@ -463,47 +463,47 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<enable>**：
+    - **<enable>**：
 
-        -  1: 开始持续扫描
-        -  0: 停止持续扫描
+        - 1: 开始持续扫描
+        - 0: 停止持续扫描
 
-    -  **[<duration>]**：扫描持续时间，单位：秒。
+    - **[<duration>]**：扫描持续时间，单位：秒。
 
-    -  若设置停止扫描，无需设置本参数；
-    -  若设置开始扫描，需设置本参数：
+    - 若设置停止扫描，无需设置本参数；
+    - 若设置开始扫描，需设置本参数：
 
         - 本参数设为 0 时，则表示开始持续扫描；
         - 本参数设为非 0 值时，例如 ``AT+BLESCAN=1,3``，则表示扫描 3 秒后自动结束扫描，然后返回扫描结果。
 
-    -  **[<filter_type>]**：过滤选项
+    - **[<filter_type>]**：过滤选项
 
-        -  1: "MAC"
-        -  2: "NAME"
-        -  3: "UUID"
-        -  4: "RSSI"
+        - 1: "MAC"
+        - 2: "NAME"
+        - 3: "UUID"
+        - 4: "RSSI"
 
-    -  **[<filter_param>]**：过滤参数，表示对方设备 MAC 地址或名称或 UUID 或 RSSI
-    -  **[<duplicate_check>]**：重复检查
+    - **[<filter_param>]**：过滤参数，表示对方设备 MAC 地址或名称或 UUID 或 RSSI
+    - **[<duplicate_check>]**：重复检查
 
-        -  1: 进行重复检查
+        - 1: 进行重复检查
 
-    -  **<addr>**：Bluetooth LE 地址
-    -  **<rssi>**：信号强度
-    -  **<adv_data>**：广播数据
-    -  **<scan_rsp_data>**：扫描响应数据
-    -  **<addr_type>**：广播设备地址类型
+    - **<addr>**：Bluetooth LE 地址
+    - **<rssi>**：信号强度
+    - **<adv_data>**：广播数据
+    - **<scan_rsp_data>**：扫描响应数据
+    - **<addr_type>**：广播设备地址类型
 
     说明
     ^^^^
 
-    -  响应中的 ``OK`` 和 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 在输出顺序上没有严格意义上的先后顺序。``OK`` 可能在 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 之前输出，也有可能在 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 之后输出。 
-    -  如果您想要获得扫描响应数据，需要使用 :ref:`AT+BLESCANPARAM <cmd-BSCANP>` 命令设置扫描方式为 ``active scan (AT+BLESCANPARAM=1,0,0,100,50)``，并且对端设备需要设置 ``scan rsp data``，才能获得扫描响应数据。
-    -  如果根据 MAC 地址过滤，可以支持缺省过滤，如 ``AT+BLESCAN=1,3,1,"24:0A:C4"``。
-    -  如果根据设备名称过滤，可以支持缺省过滤，如 ``AT+BLESCAN=1,3,2,"ESP"``。
-    -  UUID 过滤功能支持 16 位、32 位及 128 位格式的 UUID。参数值需以十六进制字符串形式提供。例如，若需将过滤 UUID 设置为 "0xFF01"，可使用命令 ``AT+BLESCAN=1,3,3,"FF01"``。
-    -  RSSI 过滤参数的值为整数。例如，若想设置 RSSI 过滤参数为 -50，则命令为 ``AT+BLESCAN=1,3,4,-50``。只会返回 RSSI 大于等于 -50 dBm 的设备。
-    -  如需启用重复检查功能，须先用 :ref:`AT+BLESCAN <cmd-BSCAN>` 命令将重复检查参数设为 ``1`` （如果不设置此参数，即关闭重复检查功能）。该功能需与前述过滤参数配合使用。
+    - 响应中的 ``OK`` 和 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 在输出顺序上没有严格意义上的先后顺序。``OK`` 可能在 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 之前输出，也有可能在 ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` 之后输出。
+    - 如果你想要获得扫描响应数据，需要使用 :ref:`AT+BLESCANPARAM <cmd-BSCANP>` 命令设置扫描方式为 ``active scan (AT+BLESCANPARAM=1,0,0,100,50)``，并且对端设备需要设置 ``scan rsp data``，才能获得扫描响应数据。
+    - 如果根据 MAC 地址过滤，可以支持缺省过滤，如 ``AT+BLESCAN=1,3,1,"24:0A:C4"``。
+    - 如果根据设备名称过滤，可以支持缺省过滤，如 ``AT+BLESCAN=1,3,2,"ESP"``。
+    - UUID 过滤功能支持 16 位、32 位及 128 位格式的 UUID。参数值需以十六进制字符串形式提供。例如，若需将过滤 UUID 设置为 "0xFF01"，可使用命令 ``AT+BLESCAN=1,3,3,"FF01"``。
+    - RSSI 过滤参数的值为整数。例如，若想设置 RSSI 过滤参数为 -50，则命令为 ``AT+BLESCAN=1,3,4,-50``。只会返回 RSSI 大于等于 -50 dBm 的设备。
+    - 如需启用重复检查功能，须先用 :ref:`AT+BLESCAN <cmd-BSCAN>` 命令将重复检查参数设为 ``1`` （如果不设置此参数，即关闭重复检查功能）。该功能需与前述过滤参数配合使用。
 
     示例
     ^^^^
@@ -541,12 +541,12 @@ Bluetooth® Low Energy AT 命令集
 
     ::
 
-        OK  
+        OK
 
     参数
     ^^^^
 
-    -  **<scan_rsp_data>**：扫描响应数据，为 HEX 字符串。例如，若想设置扫描响应数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLESCANRSPDATA="1122334455"``。
+    - **<scan_rsp_data>**：扫描响应数据，为 HEX 字符串。例如，若想设置扫描响应数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLESCANRSPDATA="1122334455"``。
 
     示例
     ^^^^
@@ -621,78 +621,78 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<adv_int_min>**：最小广播间隔。参数范围：[0x0020,0x4000]。广播间隔等于该参数乘以 ``0.625`` 毫秒，所以实际的最小广播间隔范围为 [20,10240] 毫秒。本参数值应小于等于 ``<adv_int_max>`` 参数值。
-    -  **<adv_int_max>**：最大广播间隔。参数范围：[0x0020,0x4000]。广播间隔等于该参数乘以 ``0.625`` 毫秒，所以实际的最大广播间隔范围为 [20,10240] 毫秒。本参数值应大于等于 ``<adv_int_min>`` 参数值。
-    -  **<adv_type>**:
+    - **<adv_int_min>**：最小广播间隔。参数范围：[0x0020,0x4000]。广播间隔等于该参数乘以 ``0.625`` 毫秒，所以实际的最小广播间隔范围为 [20,10240] 毫秒。本参数值应小于等于 ``<adv_int_max>`` 参数值。
+    - **<adv_int_max>**：最大广播间隔。参数范围：[0x0020,0x4000]。广播间隔等于该参数乘以 ``0.625`` 毫秒，所以实际的最大广播间隔范围为 [20,10240] 毫秒。本参数值应大于等于 ``<adv_int_min>`` 参数值。
+    - **<adv_type>**:
 
     .. only:: esp32
 
-        -  0: ADV_TYPE_IND
-        -  1: ADV_TYPE_DIRECT_IND_HIGH
-        -  2: ADV_TYPE_SCAN_IND
-        -  3: ADV_TYPE_NONCONN_IND
-        -  4: ADV_TYPE_DIRECT_IND_LOW
+        - 0: ADV_TYPE_IND
+        - 1: ADV_TYPE_DIRECT_IND_HIGH
+        - 2: ADV_TYPE_SCAN_IND
+        - 3: ADV_TYPE_NONCONN_IND
+        - 4: ADV_TYPE_DIRECT_IND_LOW
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-        -  0: ADV_TYPE_IND
-        -  1: ADV_TYPE_DIRECT_IND_HIGH
-        -  2: ADV_TYPE_SCAN_IND
-        -  3: ADV_TYPE_NONCONN_IND
-        -  4: ADV_TYPE_DIRECT_IND_LOW
-        -  5: ADV_TYPE_EXT_NOSCANNABLE_IND
-        -  6: ADV_TYPE_EXT_CONNECTABLE_IND
-        -  7: ADV_TYPE_EXT_SCANNABLE_IND
-            -  当设置广播类型为 0-4，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播参数最多只能设置 31 字节，如果需要设置更长的广播参数，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 命令来设置。
-            -  当设置广播类型为 5-7，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播参数最多只能设置 119 字节。
+        - 0: ADV_TYPE_IND
+        - 1: ADV_TYPE_DIRECT_IND_HIGH
+        - 2: ADV_TYPE_SCAN_IND
+        - 3: ADV_TYPE_NONCONN_IND
+        - 4: ADV_TYPE_DIRECT_IND_LOW
+        - 5: ADV_TYPE_EXT_NOSCANNABLE_IND
+        - 6: ADV_TYPE_EXT_CONNECTABLE_IND
+        - 7: ADV_TYPE_EXT_SCANNABLE_IND
+            - 当设置广播类型为 0-4，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播参数最多只能设置 31 字节，如果需要设置更长的广播参数，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 命令来设置。
+            - 当设置广播类型为 5-7，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播参数最多只能设置 119 字节。
 
-    -  **<own_addr_type>**：Bluetooth LE 地址类型
+    - **<own_addr_type>**：Bluetooth LE 地址类型
 
-    -  0: BLE_ADDR_TYPE_PUBLIC
-    -  1: BLE_ADDR_TYPE_RANDOM
+    - 0: BLE_ADDR_TYPE_PUBLIC
+    - 1: BLE_ADDR_TYPE_RANDOM
 
-    -  **<channel_map>**：广播信道
+    - **<channel_map>**：广播信道
 
-    -  1: ADV_CHNL_37
-    -  2: ADV_CHNL_38
-    -  4: ADV_CHNL_39
-    -  7: ADV_CHNL_ALL
+    - 1: ADV_CHNL_37
+    - 2: ADV_CHNL_38
+    - 4: ADV_CHNL_39
+    - 7: ADV_CHNL_ALL
 
-    -  **[<adv_filter_policy>]**：广播过滤器规则
+    - **[<adv_filter_policy>]**：广播过滤器规则
 
-    -  0: ADV_FILTER_ALLOW_SCAN_ANY_CON_ANY
-    -  1: ADV_FILTER_ALLOW_SCAN_WLST_CON_ANY
-    -  2: ADV_FILTER_ALLOW_SCAN_ANY_CON_WLST
-    -  3: ADV_FILTER_ALLOW_SCAN_WLST_CON_WLST
+    - 0: ADV_FILTER_ALLOW_SCAN_ANY_CON_ANY
+    - 1: ADV_FILTER_ALLOW_SCAN_WLST_CON_ANY
+    - 2: ADV_FILTER_ALLOW_SCAN_ANY_CON_WLST
+    - 3: ADV_FILTER_ALLOW_SCAN_WLST_CON_WLST
 
-    -  **[<peer_addr_type>]**：对方 Bluetooth LE 地址类型
+    - **[<peer_addr_type>]**：对方 Bluetooth LE 地址类型
 
-    -  0: PUBLIC
-    -  1: RANDOM
+    - 0: PUBLIC
+    - 1: RANDOM
 
-    -  **[<"peer_addr">]**：对方 Bluetooth LE 地址
+    - **[<"peer_addr">]**：对方 Bluetooth LE 地址
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-        -  **[<primary_phy>]**：广播 primary PHY。默认值：1M PHY。
-        
-            -  1: 1M PHY
-            -  3: Coded PHY
-        
-        -  **[<secondary_phy>]**：广播 secondary PHY。默认值：1M PHY。
-        
-            -  1: 1M PHY
-            -  2: 2M PHY
-            -  3: Coded PHY
+        - **[<primary_phy>]**：广播 primary PHY。默认值：1M PHY。
+
+            - 1: 1M PHY
+            - 3: Coded PHY
+
+        - **[<secondary_phy>]**：广播 secondary PHY。默认值：1M PHY。
+
+            - 1: 1M PHY
+            - 2: 2M PHY
+            - 3: Coded PHY
 
     说明
     ^^^^
 
-    -  如果从未设置过 ``peer_addr``, 那么查询出来的结果会是全零。
+    - 如果从未设置过 ``peer_addr``, 那么查询出来的结果会是全零。
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-        -  ``primary_phy`` 和 ``secondary_phy`` 需要一起设置，如果不设置，那么未设置的参数会使用默认 1M PHY。
+        - ``primary_phy`` 和 ``secondary_phy`` 需要一起设置，如果不设置，那么未设置的参数会使用默认 1M PHY。
 
     .. only:: esp32
 
@@ -767,27 +767,27 @@ Bluetooth® Low Energy AT 命令集
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-        -  **<adv_data>**：广播数据，为 HEX 字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATA="1122334455"``。最大长度：119 字节。
+        - **<adv_data>**：广播数据，为 HEX 字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATA="1122334455"``。最大长度：119 字节。
 
     .. only:: esp32
 
-        -  **<adv_data>**：广播数据，为 HEX 字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATA="1122334455"``。最大长度：31 字节。
+        - **<adv_data>**：广播数据，为 HEX 字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATA="1122334455"``。最大长度：31 字节。
 
     说明
     ^^^^
 
-    -  如果之前已经使用命令 :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power> 设置了广播数据，则会被本命令设置的广播数据覆盖。
-    -  如果您想使用本命令修改设备名称，则建议在执行完该命令之后执行 :ref:`AT+BLENAME <cmd-BNAME>` 命令将设备名称设置为同样的名称。
+    - 如果之前已经使用命令 :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power> 设置了广播数据，则会被本命令设置的广播数据覆盖。
+    - 如果你想使用本命令修改设备名称，则建议在执行完该命令之后执行 :ref:`AT+BLENAME <cmd-BNAME>` 命令将设备名称设置为同样的名称。
 
     .. only:: esp32
 
-        -  如果需要设置更长的广播数据，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 命令来设置。
+        - 如果需要设置更长的广播数据，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 命令来设置。
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-        -  在使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令之前，必须先通过 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播参数。
-        -  当调用 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播类型为 0-4，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播数据最多只能设置 31 字节，如果需要设置更长的广播数据，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 命令来设置。
-        -  当调用 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播类型为 5-7，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播数据最多只能设置 119 字节。
+        - 在使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令之前，必须先通过 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播参数。
+        - 当调用 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播类型为 0-4，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播数据最多只能设置 31 字节，如果需要设置更长的广播数据，请调用 :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>` 命令来设置。
+        - 当调用 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置广播类型为 5-7，则使用 :ref:`AT+BLEADVDATA <cmd-BADVD>` 命令设置广播数据最多只能设置 119 字节。
 
     示例
     ^^^^
@@ -846,20 +846,20 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<dev_name>**：字符串参数，表示设备名称。例如，若想设置设备名称为 "just-test"，则命令为 ``AT+BLEADVSTARTEX="just-test",<uuid>,<manufacturer_data>,<include_power>``。
+    - **<dev_name>**：字符串参数，表示设备名称。例如，若想设置设备名称为 "just-test"，则命令为 ``AT+BLEADVSTARTEX="just-test",<uuid>,<manufacturer_data>,<include_power>``。
 
-    -  **<uuid>**：字符串参数。例如，若想设置 UUID 为 "0xA002"，则命令为 ``AT+BLEADVSTARTEX=<dev_name>,"A002",<manufacturer_data>,<include_power>``。
+    - **<uuid>**：字符串参数。例如，若想设置 UUID 为 "0xA002"，则命令为 ``AT+BLEADVSTARTEX=<dev_name>,"A002",<manufacturer_data>,<include_power>``。
 
-    -  **<manufacturer_data>**：制造商数据，为 HEX 字符串。例如，若想设置制造商数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVSTARTEX=<dev_name>,<uuid>,"1122334455",<include_power>``。
+    - **<manufacturer_data>**：制造商数据，为 HEX 字符串。例如，若想设置制造商数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVSTARTEX=<dev_name>,<uuid>,"1122334455",<include_power>``。
 
-    -  **<include_power>**：若广播数据需包含 TX 功率，本参数应该设为 ``1``；否则，为 ``0``。
+    - **<include_power>**：若广播数据需包含 TX 功率，本参数应该设为 ``1``；否则，为 ``0``。
 
     说明
     ^^^^
 
-    -  如果之前已经使用命令 :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data> 设置了广播数据，则会被本命令设置的广播数据覆盖。
-    -  此命令会自动将之前使用 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置的广播类型更改为 0。
-    -  AT 会根据用户输入的参数依次自动组包，但数据总长度最大为 31 字节，若超出该长度，将被截断。
+    - 如果之前已经使用命令 :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data> 设置了广播数据，则会被本命令设置的广播数据覆盖。
+    - 此命令会自动将之前使用 :ref:`AT+BLEADVPARAM <cmd-BADVP>` 命令设置的广播类型更改为 0。
+    - AT 会根据用户输入的参数依次自动组包，但数据总长度最大为 31 字节，若超出该长度，将被截断。
 
     示例
     ^^^^
@@ -898,15 +898,15 @@ Bluetooth® Low Energy AT 命令集
 
     .. only:: esp32 or esp32c3
 
-        -  若未使用命令 :ref:`AT+BLEADVPARAM <cmd-BADVP>`\=<adv_parameter> 设置广播参数，则使用默认广播参数。
+        - 若未使用命令 :ref:`AT+BLEADVPARAM <cmd-BADVP>`\=<adv_parameter> 设置广播参数，则使用默认广播参数。
 
     .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
 
-        -  必须先使用命令 :ref:`AT+BLEADVPARAM <cmd-BADVP>`\=<adv_parameter> 在开启广播之前设置广播参数。
+        - 必须先使用命令 :ref:`AT+BLEADVPARAM <cmd-BADVP>`\=<adv_parameter> 在开启广播之前设置广播参数。
 
-    -  若未使用命令 :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data> 设置广播数据，则发送全 0 数据包。
-    -  若之前已经使用命令 :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data> 设置过广播数据，则会被 :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power> 设置的广播数据覆盖，相反，如果先使用 AT+BLEADVDATAEX，则会被 AT+BLEADVDATA 设置的广播数据覆盖。
-    -  开启 Bluetooth LE 广播后，如果没有建立 Bluetooth LE 连接，那么将会一直保持广播；如果建立了连接，则会自动结束广播。
+    - 若未使用命令 :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data> 设置广播数据，则发送全 0 数据包。
+    - 若之前已经使用命令 :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data> 设置过广播数据，则会被 :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power> 设置的广播数据覆盖，相反，如果先使用 AT+BLEADVDATAEX，则会被 AT+BLEADVDATA 设置的广播数据覆盖。
+    - 开启 Bluetooth LE 广播后，如果没有建立 Bluetooth LE 连接，那么将会一直保持广播；如果建立了连接，则会自动结束广播。
 
     示例
     ^^^^
@@ -953,7 +953,7 @@ Bluetooth® Low Energy AT 命令集
     说明
     ^^^^
 
-    -  若开始广播后，成功建立 Bluetooth LE 连接，则会自动结束 Bluetooth LE 广播，无需调用本命令。
+    - 若开始广播后，成功建立 Bluetooth LE 连接，则会自动结束 Bluetooth LE 广播，无需调用本命令。
 
     示例
     ^^^^
@@ -1061,18 +1061,18 @@ Bluetooth® Low Energy AT 命令集
     说明
     ^^^^
 
-    -  建议在建立新连接之前，先运行 :ref:`AT+BLESCAN <cmd-BSCAN>` 命令扫描设备，确保目标设备处于广播状态。
-    -  最大连接超时为 30 秒。
-    -  如果 Bluetooth LE server 已初始化且连接已成功建立，则可以使用此命令在对等设备 (GATTC) 中发现服务。还可以使用以下 GATTC 命令：
+    - 建议在建立新连接之前，先运行 :ref:`AT+BLESCAN <cmd-BSCAN>` 命令扫描设备，确保目标设备处于广播状态。
+    - 最大连接超时为 30 秒。
+    - 如果 Bluetooth LE server 已初始化且连接已成功建立，则可以使用此命令在对等设备 (GATTC) 中发现服务。还可以使用以下 GATTC 命令：
 
-    -  :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`
-    -  :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`
-    -  :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`
-    -  :ref:`AT+BLEGATTCRD <cmd-GCRD>`
-    -  :ref:`AT+BLEGATTCWR <cmd-GCWR>`
-    -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
-    -  如果 :ref:`AT+BLECONN? <cmd-BCONN>` 在 Bluetooth LE 未初始的情况下执行 (:ref:`AT+BLEINIT=0 <cmd-BINIT>`)，则系统不会输出 ``+BLECONN:<conn_index>,<remote_address>`` 。
-    -  支持地址解析功能。
+    - :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`
+    - :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`
+    - :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`
+    - :ref:`AT+BLEGATTCRD <cmd-GCRD>`
+    - :ref:`AT+BLEGATTCWR <cmd-GCWR>`
+    - :ref:`AT+BLEGATTSIND <cmd-GSIND>`
+    - 如果 :ref:`AT+BLECONN? <cmd-BCONN>` 在 Bluetooth LE 未初始的情况下执行 (:ref:`AT+BLEINIT=0 <cmd-BINIT>`)，则系统不会输出 ``+BLECONN:<conn_index>,<remote_address>`` 。
+    - 支持地址解析功能。
 
     示例
     ^^^^
@@ -1135,17 +1135,17 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<min_interval>**：最小连接间隔。本参数值应小于等于 ``<max_interval>`` 参数值。参数范围：[0x0006,0x0C80]。连接间隔等于该参数乘以 ``1.25`` 毫秒，所以实际的最小连接间隔范围为 [7.5,4000] 毫秒。
-    -  **<max_interval>**：最大连接间隔。本参数值应大于等于 ``<min_interval>`` 参数值。参数范围：[0x0006,0x0C80]。连接间隔等于该参数乘以 ``1.25`` 毫秒，所以实际的最大连接间隔范围为 [7.5,4000] 毫秒。
-    -  **<cur_interval>**：当前连接间隔。
-    -  **<latency>**：延迟。参数范围：[0x0000,0x01F3]。
-    -  **<timeout>**：超时。参数范围：[0x000A,0x0C80]。超时等于该参数乘以 ``10`` 毫秒，所以实际的超时范围为 [100,32000] 毫秒。
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<min_interval>**：最小连接间隔。本参数值应小于等于 ``<max_interval>`` 参数值。参数范围：[0x0006,0x0C80]。连接间隔等于该参数乘以 ``1.25`` 毫秒，所以实际的最小连接间隔范围为 [7.5,4000] 毫秒。
+    - **<max_interval>**：最大连接间隔。本参数值应大于等于 ``<min_interval>`` 参数值。参数范围：[0x0006,0x0C80]。连接间隔等于该参数乘以 ``1.25`` 毫秒，所以实际的最大连接间隔范围为 [7.5,4000] 毫秒。
+    - **<cur_interval>**：当前连接间隔。
+    - **<latency>**：延迟。参数范围：[0x0000,0x01F3]。
+    - **<timeout>**：超时。参数范围：[0x000A,0x0C80]。超时等于该参数乘以 ``10`` 毫秒，所以实际的超时范围为 [100,32000] 毫秒。
 
     说明
     ^^^^
 
-    -  本命令要求先建立连接，client 或者 server 角色都支持更新连接参数。
+    - 本命令要求先建立连接，client 或者 server 角色都支持更新连接参数。
 
     示例
     ^^^^
@@ -1154,7 +1154,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLEINIT=1   // 角色：客户端
         AT+BLECONN=0,"24:0a:c4:09:34:23"
-        AT+BLECONNPARAM=0,12,14,1,500  
+        AT+BLECONNPARAM=0,12,14,1,500
 
     .. _cmd-BDISC:
 
@@ -1184,8 +1184,8 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<remote_address>**：对方 Bluetooth LE 设备地址。
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<remote_address>**：对方 Bluetooth LE 设备地址。
 
     示例
     ^^^^
@@ -1220,18 +1220,18 @@ Bluetooth® Low Energy AT 命令集
 
     ::
 
-        OK 
+        OK
 
     参数
     ^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<pkt_data_len>**：数据包长度，范围：[0x001B,0x00FB]。
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<pkt_data_len>**：数据包长度，范围：[0x001B,0x00FB]。
 
     说明
     ^^^^
 
-    -  需要先建立 Bluetooth LE 连接，才能设置数据包长度。
+    - 需要先建立 Bluetooth LE 连接，才能设置数据包长度。
 
     示例
     ^^^^
@@ -1363,17 +1363,17 @@ Bluetooth® Low Energy AT 命令集
     说明
     ^^^^
 
-    -  使用 {IDF_TARGET_NAME} 作为 Bluetooth LE server 创建服务，需烧录带有 GATTS 配置的 mfg_nvs.bin 文件到 flash 中。
-    -  Bluetooth LE server 初始化后，请及时调用本命令创建服务；如果先建立 Bluetooth LE 连接，则无法创建服务。
-    -  如果 Bluetooth LE client 已初始化成功，可以使用此命令创建服务；也可以使用其他一些相应的 GATTS 命令，例如启动和停止服务、设置服务特征值和 notification/indication，具体命令如下：
+    - 使用 {IDF_TARGET_NAME} 作为 Bluetooth LE server 创建服务，需烧录带有 GATTS 配置的 mfg_nvs.bin 文件到 flash 中。
+    - Bluetooth LE server 初始化后，请及时调用本命令创建服务；如果先建立 Bluetooth LE 连接，则无法创建服务。
+    - 如果 Bluetooth LE client 已初始化成功，可以使用此命令创建服务；也可以使用其他一些相应的 GATTS 命令，例如启动和停止服务、设置服务特征值和 notification/indication，具体命令如下：
 
-        -  :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>` (建议在 Bluetooth LE 连接建立之前使用)
-        -  :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>` (建议在 Bluetooth LE 连接建立之前使用)
-        -  :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`
-        -  :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`
-        -  :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`
-        -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
-        -  :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`
+        - :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>` (建议在 Bluetooth LE 连接建立之前使用)
+        - :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>` (建议在 Bluetooth LE 连接建立之前使用)
+        - :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`
+        - :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`
+        - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`
+        - :ref:`AT+BLEGATTSIND <cmd-GSIND>`
+        - :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`
 
     示例
     ^^^^
@@ -1418,12 +1418,12 @@ Bluetooth® Low Energy AT 命令集
 
     ::
 
-        OK  
+        OK
 
     参数
     ^^^^
 
-    -  **<srv_index>**：服务序号，从 1 开始递增。
+    - **<srv_index>**：服务序号，从 1 开始递增。
 
     示例
     ^^^^
@@ -1469,12 +1469,12 @@ Bluetooth® Low Energy AT 命令集
 
     ::
 
-        OK  
+        OK
 
     参数
     ^^^^
 
-    -  **<srv_index>**：服务序号，从 1 开始递增。
+    - **<srv_index>**：服务序号，从 1 开始递增。
 
     示例
     ^^^^
@@ -1516,17 +1516,17 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<srv_index>**：服务序号，从 1 开始递增。
-    -  **<start>**：
+    - **<srv_index>**：服务序号，从 1 开始递增。
+    - **<start>**：
 
-    -  0: 服务未开始；
-    -  1: 服务已开始。
+    - 0: 服务未开始；
+    - 1: 服务已开始。
 
-    -  **<srv_uuid>**：服务的 UUID。
-    -  **<srv_type>**：服务的类型：
+    - **<srv_uuid>**：服务的 UUID。
+    - **<srv_type>**：服务的类型：
 
-    -  0: 次要服务；
-    -  1: 首要服务。
+    - 0: 次要服务；
+    - 1: 首要服务。
 
     示例
     ^^^^
@@ -1576,18 +1576,18 @@ Bluetooth® Low Energy AT 命令集
 
     ::
 
-        +BLEGATTSCHAR:"desc",<srv_index>,<char_index>,<desc_index>,<desc_uuid> 
+        +BLEGATTSCHAR:"desc",<srv_index>,<char_index>,<desc_index>,<desc_uuid>
         OK
 
     参数
     ^^^^
 
-    -  **<srv_index>**：服务序号，从 1 开始递增。
-    -  **<char_index>**：服务特征的序号，从 1 起始递增。
-    -  **<char_uuid>**：服务特征的 UUID。
-    -  **<char_prop>**：服务特征的属性。
-    -  **<desc_index>**：特征描述符序号。
-    -  **<desc_uuid>**：特征描述符的 UUID。
+    - **<srv_index>**：服务序号，从 1 开始递增。
+    - **<char_index>**：服务特征的序号，从 1 起始递增。
+    - **<char_uuid>**：服务特征的 UUID。
+    - **<char_prop>**：服务特征的属性。
+    - **<desc_index>**：特征描述符序号。
+    - **<desc_uuid>**：特征描述符的 UUID。
 
     示例
     ^^^^
@@ -1632,7 +1632,7 @@ Bluetooth® Low Energy AT 命令集
 
         >
 
-    符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行 notify 操作。
+    符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行 notify 操作。
 
     若数据传输成功，则提示：
 
@@ -1643,15 +1643,15 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
-    -  **<char_index>**：服务特征的序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
-    -  **<length>**：数据长度，最大长度： (:ref:`MTU <cmd-BMTU>` – 3)。
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
+    - **<char_index>**：服务特征的序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
+    - **<length>**：数据长度，最大长度： (:ref:`MTU <cmd-BMTU>` – 3)。
 
     说明
     ^^^^
 
-    -  数据单次发送的最大长度为 (:ref:`MTU <cmd-BMTU>` – 3) 字节。若设置的长度超过此值，底层会自动分包传输。
+    - 数据单次发送的最大长度为 (:ref:`MTU <cmd-BMTU>` – 3) 字节。若设置的长度超过此值，底层会自动分包传输。
 
     示例
     ^^^^
@@ -1666,7 +1666,7 @@ Bluetooth® Low Energy AT 命令集
             AT+BLEADVSTART    // 开始广播，当 client 连接后，必须配置接收 notify
             AT+BLEGATTSCHAR?  // 查询允许 notify 客户端的特征
             // 例如，使用 3 号服务的 6 号特征 notify 长度为 4 字节的数据，使用如下命令：
-            AT+BLEGATTSNTFY=0,3,6,4 
+            AT+BLEGATTSNTFY=0,3,6,4
             // 提示 ">" 符号后，输入 4 字节的数据，如 "1234"，然后数据自动传输
 
     .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
@@ -1678,7 +1678,7 @@ Bluetooth® Low Energy AT 命令集
             AT+BLEADVSTART    // 开始广播，当 client 连接后，必须配置接收 notify
             AT+BLEGATTSCHAR?  // 查询允许 notify 客户端的特征
             // 例如，使用 3 号服务的 6 号特征 notify 长度为 4 字节的数据，使用如下命令：
-            AT+BLEGATTSNTFY=0,3,6,4 
+            AT+BLEGATTSNTFY=0,3,6,4
             // 提示 ">" 符号后，输入 4 字节的数据，如 "1234"，然后数据自动传输
 
     .. _cmd-GSIND:
@@ -1690,7 +1690,7 @@ Bluetooth® Low Energy AT 命令集
     ^^^^^^^^
 
     **功能：**
-    
+
     服务器 indicate 服务特征值给客户端
 
     **命令：**
@@ -1705,7 +1705,7 @@ Bluetooth® Low Energy AT 命令集
 
         >
 
-    符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行 indicate 操作。
+    符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行 indicate 操作。
 
     若数据传输成功，则提示：
 
@@ -1716,10 +1716,10 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
-    -  **<char_index>**：服务特征的序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
-    -  **<length>**：数据长度，最大长度：（:ref:`MTU <cmd-BMTU>` – 3）。
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
+    - **<char_index>**：服务特征的序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
+    - **<length>**：数据长度，最大长度：（:ref:`MTU <cmd-BMTU>` – 3）。
 
     示例
     ^^^^
@@ -1734,7 +1734,7 @@ Bluetooth® Low Energy AT 命令集
             AT+BLEADVSTART    // 开始广播，当 client 连接后，必须配置接收 indication
             AT+BLEGATTSCHAR?  // 查询客户端可以接收 indication 的特征
             // 例如，使用 3 号服务的 7 号特征 indicate 长度为 4 字节的数据，命令如下：
-            AT+BLEGATTSIND=0,3,7,4 
+            AT+BLEGATTSIND=0,3,7,4
             // 提示 ">" 符号后，输入 4 字节的数据，如 "1234"，然后数据自动传输
 
     .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
@@ -1746,7 +1746,7 @@ Bluetooth® Low Energy AT 命令集
             AT+BLEADVSTART    // 开始广播，当 client 连接后，必须配置接收 indication
             AT+BLEGATTSCHAR?  // 查询客户端可以接收 indication 的特征
             // 例如，使用 3 号服务的 7 号特征 indicate 长度为 4 字节的数据，命令如下：
-            AT+BLEGATTSIND=0,3,7,4 
+            AT+BLEGATTSIND=0,3,7,4
             // 提示 ">" 符号后，输入 4 字节的数据，如 "1234"，然后数据自动传输
 
     .. _cmd-GSSETA:
@@ -1781,7 +1781,7 @@ Bluetooth® Low Energy AT 命令集
 
         >
 
-    符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行设置操作。
+    符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行设置操作。
 
     若数据传输成功，则提示：
 
@@ -1792,26 +1792,26 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
-    -  **<char_index>**：服务特征的序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
+    - **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
+    - **<char_index>**：服务特征的序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
 
     .. only:: esp32 or esp32c3
 
-        -  **[<desc_index>]**：特征描述符序号：
+        - **[<desc_index>]**：特征描述符序号：
 
-    -  若填写，则设置描述符的值；
-    -  若未填写，则设置特征值。
+    - 若填写，则设置描述符的值；
+    - 若未填写，则设置特征值。
 
-    -  **<length>**：数据长度。
+    - **<length>**：数据长度。
 
     说明
     ^^^^
 
-    -  如果 ``<length>`` 参数值大于支持的最大长度，则设置会失败。关于 service table，请见 :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>`。
+    - 如果 ``<length>`` 参数值大于支持的最大长度，则设置会失败。关于 service table，请见 :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>`。
 
     .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
 
-        -  无法设置特征值描述符的值。
+        - 无法设置特征值描述符的值。
 
     示例
     ^^^^
@@ -1823,7 +1823,7 @@ Bluetooth® Low Energy AT 命令集
             AT+BLEINIT=2   // 角色：服务器
             AT+BLEGATTSSRVCRE
             AT+BLEGATTSSRVSTART
-            AT+BLEGATTSCHAR? 
+            AT+BLEGATTSCHAR?
             // 例如，向 1 号服务的 1 号特征写入长度为 1 字节的数据，命令如下：
             AT+BLEGATTSSETATTR=1,1,,1
             // 提示 ">" 符号后，输入 1 字节的数据即可，例如 "8"，然后设置开始
@@ -1833,7 +1833,7 @@ Bluetooth® Low Energy AT 命令集
         ::
 
             AT+BLEINIT=2   // 角色：服务器
-            AT+BLEGATTSCHAR? 
+            AT+BLEGATTSCHAR?
             // 例如，向 1 号服务的 1 号特征写入长度为 1 字节的数据，命令如下：
             AT+BLEGATTSSETATTR=1,1,1
             // 提示 ">" 符号后，输入 1 字节的数据即可，例如 "8"，然后设置开始
@@ -1866,18 +1866,18 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<srv_index>**：服务序号，从 1 开始递增。
-    -  **<srv_uuid>**：服务的 UUID。
-    -  **<srv_type>**：服务的类型：
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<srv_index>**：服务序号，从 1 开始递增。
+    - **<srv_uuid>**：服务的 UUID。
+    - **<srv_type>**：服务的类型：
 
-    -  0: 次要服务；
-    -  1: 首要服务。
+    - 0: 次要服务；
+    - 1: 首要服务。
 
     说明
     ^^^^
 
-    -  使用本命令，需要先建立 Bluetooth LE 连接。
+    - 使用本命令，需要先建立 Bluetooth LE 连接。
 
     示例
     ^^^^
@@ -1916,24 +1916,24 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 查询。
-    -  **<srv_uuid>**：服务的 UUID。
-    -  **<srv_type>**：服务的类型：
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 查询。
+    - **<srv_uuid>**：服务的 UUID。
+    - **<srv_type>**：服务的类型：
 
-    -  0: 次要服务；
-    -  1: 首要服务。
+    - 0: 次要服务；
+    - 1: 首要服务。
 
-    -  **<included_srv_uuid>**：包含服务的 UUID。
-    -  **<included_srv_type>**：包含服务的类型：
+    - **<included_srv_uuid>**：包含服务的 UUID。
+    - **<included_srv_type>**：包含服务的类型：
 
-    -  0: 次要服务；
-    -  1: 首要服务。
+    - 0: 次要服务；
+    - 1: 首要服务。
 
     说明
     ^^^^
 
-    -  使用本命令，需要先建立 Bluetooth LE 连接。
+    - 使用本命令，需要先建立 Bluetooth LE 连接。
 
     示例
     ^^^^
@@ -1975,24 +1975,24 @@ Bluetooth® Low Energy AT 命令集
 
     ::
 
-        +BLEGATTCCHAR:"desc",<conn_index>,<srv_index>,<char_index>,<desc_index>,<desc_uuid> 
+        +BLEGATTCCHAR:"desc",<conn_index>,<srv_index>,<char_index>,<desc_index>,<desc_uuid>
         OK
 
     参数
     ^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 查询。
-    -  **<char_index>**：服务特征的序号，从 1 开始递增。
-    -  **<char_uuid>**：服务特征的 UUID。
-    -  **<char_prop>**：服务特征的属性。
-    -  **<desc_index>**：特征描述符序号。
-    -  **<desc_uuid>**：特征描述符的 UUID。
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 查询。
+    - **<char_index>**：服务特征的序号，从 1 开始递增。
+    - **<char_uuid>**：服务特征的 UUID。
+    - **<char_prop>**：服务特征的属性。
+    - **<desc_index>**：特征描述符序号。
+    - **<desc_uuid>**：特征描述符的 UUID。
 
     说明
     ^^^^
 
-    -  使用本命令，需要先建立 Bluetooth LE 连接。
+    - 使用本命令，需要先建立 Bluetooth LE 连接。
 
     示例
     ^^^^
@@ -2032,25 +2032,25 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 查询。
-    -  **<char_index>**：服务特征序号，可运行 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 查询。
-    -  **[<desc_index>]**：特征描述符序号：
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 查询。
+    - **<char_index>**：服务特征序号，可运行 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 查询。
+    - **[<desc_index>]**：特征描述符序号：
 
-    -  若设置，读取目标描述符的值；
-    -  若未设置，读取目标特征的值。
+    - 若设置，读取目标描述符的值；
+    - 若未设置，读取目标特征的值。
 
-    -  **<len>**：数据长度。
-    -  **<value>**：<char_value> 或者 <desc_value>。
+    - **<len>**：数据长度。
+    - **<value>**：<char_value> 或者 <desc_value>。
 
-    -  **<char_value>**：服务特征值，字符串格式，运行 :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index> 读取。例如，若响应为 ``+BLEGATTCRD:0,1,0``，则表示数据长度为 1，内容为 "0"。
-    -  **<desc_value>**：服务特征描述符的值，字符串格式，运行 :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index>,<desc_index> 读取。例如，若响应为 ``+BLEGATTCRD:0,4,0123``，则表示数据长度为 4，内容为 "0123"。
+    - **<char_value>**：服务特征值，字符串格式，运行 :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index> 读取。例如，若响应为 ``+BLEGATTCRD:0,1,0``，则表示数据长度为 1，内容为 "0"。
+    - **<desc_value>**：服务特征描述符的值，字符串格式，运行 :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index>,<desc_index> 读取。例如，若响应为 ``+BLEGATTCRD:0,4,0123``，则表示数据长度为 4，内容为 "0123"。
 
     说明
     ^^^^
 
-    -  使用本命令，需要先建立 Bluetooth LE 连接。
-    -  若目标服务特征不支持读操作，则返回 "ERROR"。
+    - 使用本命令，需要先建立 Bluetooth LE 连接。
+    - 若目标服务特征不支持读操作，则返回 "ERROR"。
 
     示例
     ^^^^
@@ -2088,7 +2088,7 @@ Bluetooth® Low Energy AT 命令集
 
         >
 
-    符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行写入操作。
+    符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行写入操作。
 
     若数据传输成功，则提示：
 
@@ -2099,21 +2099,21 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 查询。
-    -  **<char_index>**：服务特征序号，可运行 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 查询。
-    -  **[<desc_index>]**：特征描述符序号：
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 查询。
+    - **<char_index>**：服务特征序号，可运行 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 查询。
+    - **[<desc_index>]**：特征描述符序号：
 
-    -  若设置，则写目标描述符的值；
-    -  若未设置，则写目标特征的值。
+    - 若设置，则写目标描述符的值；
+    - 若未设置，则写目标特征的值。
 
-    -  **<length>**：数据长度。该参数的取值范围受 :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>` 中 ``val_max_len`` 参数影响。
+    - **<length>**：数据长度。该参数的取值范围受 :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>` 中 ``val_max_len`` 参数影响。
 
     说明
     ^^^^
 
-    -  使用本命令，需要先建立 Bluetooth LE 连接。
-    -  若目标服务特征不支持写操作，则返回 "ERROR"。
+    - 使用本命令，需要先建立 Bluetooth LE 连接。
+    - 若目标服务特征不支持写操作，则返回 "ERROR"。
 
     示例
     ^^^^
@@ -2125,7 +2125,7 @@ Bluetooth® Low Energy AT 命令集
         AT+BLEGATTCPRIMSRV=0
         AT+BLEGATTCCHAR=0,3 // 根据前一条命令的查询结果，指定 index 查询
         // 例如，向第 3 号服务的第 4 号特征，写入长度为 6 字节的数据，命令如下：
-        AT+BLEGATTCWR=0,3,4,,6 
+        AT+BLEGATTCWR=0,3,4,,6
         // 提示 ">" 符号后，输入 6 字节的数据即可，如 "123456"，然后开始写入
 
     .. _cmd-BLESPPCFG:
@@ -2175,26 +2175,26 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<cfg_enable>**：
+    - **<cfg_enable>**：
 
-    -  0: 重置所有 SPP 参数，后面参数无需填写；
-    -  1: 后面参数需要填写。
+    - 0: 重置所有 SPP 参数，后面参数无需填写；
+    - 1: 后面参数需要填写。
 
-    -  **<tx_service_index>**：tx 服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 和 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 查询。
-    -  **<tx_char_index>**：tx 服务特征序号，可运行 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 和 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
-    -  **<rx_service_index>**：rx 服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 和 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 查询。
-    -  **<rx_char_index>**：rx 服务特征序号，可运行 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 和 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
-    -  **<auto_conn>**: 自动重连标志位，默认情况下，自动重连功能被使能。
+    - **<tx_service_index>**：tx 服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 和 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 查询。
+    - **<tx_char_index>**：tx 服务特征序号，可运行 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 和 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
+    - **<rx_service_index>**：rx 服务序号，可运行 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 和 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 查询。
+    - **<rx_char_index>**：rx 服务特征序号，可运行 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 和 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
+    - **<auto_conn>**: 自动重连标志位，默认情况下，自动重连功能被使能。
 
-    -  0: 禁止 Bluetooth LE 透传自动重连功能。
-    -  1: 使能 Bluetooth LE 透传自动重连功能。
+    - 0: 禁止 Bluetooth LE 透传自动重连功能。
+    - 1: 使能 Bluetooth LE 透传自动重连功能。
 
     说明
     ^^^^
 
-    -  对于 Bluetooth LE 客户端，tx 服务特征属性必须是 ``write with response`` 或 ``write without response``，rx 服务特征属性必须是 ``indicate`` 或 ``notify``。
-    -  对于 Bluetooth LE 服务器，tx 服务特征属性必须是 ``indicate`` 或 ``notify``，rx 服务特征属性必须是 ``write with response`` 或 ``write without response``。
-    -  禁用了自动重连功能后，如果连接断开，会提示有断开连接信息提示(依赖于 AT+SYSMSG)，需要重新发送连接的命令；使能的情况下，连接断开后，会自动重连， MCU 侧将感知不到连接的断开，如果对端的 MAC 发生了改变，则无法连接成功。
+    - 对于 Bluetooth LE 客户端，tx 服务特征属性必须是 ``write with response`` 或 ``write without response``，rx 服务特征属性必须是 ``indicate`` 或 ``notify``。
+    - 对于 Bluetooth LE 服务器，tx 服务特征属性必须是 ``indicate`` 或 ``notify``，rx 服务特征属性必须是 ``write with response`` 或 ``write without response``。
+    - 禁用了自动重连功能后，如果连接断开，会提示有断开连接信息提示(依赖于 AT+SYSMSG)，需要重新发送连接的命令；使能的情况下，连接断开后，会自动重连， MCU 侧将感知不到连接的断开，如果对端的 MAC 发生了改变，则无法连接成功。
 
     示例
     ^^^^
@@ -2242,9 +2242,9 @@ Bluetooth® Low Energy AT 命令集
     说明
     ^^^^
 
-    -  在 SPP 传输中，若未设置 :ref:`AT+SYSMSG <cmd-SYSMSG>` Bit0 为 1，则 AT 不会提示任何退出 SPP 透传模式的信息。
-    -  在 SPP 传输中，若未设置 :ref:`AT+SYSMSG <cmd-SYSMSG>` Bit2 为 1，则 AT 不会提示任何连接状态变更的信息。
-    -  当系统收到只含有 +++ 的包时，设备返回到普通命令模式，请至少等待一秒再发送下一个 AT 命令。
+    - 在 SPP 传输中，若未设置 :ref:`AT+SYSMSG <cmd-SYSMSG>` Bit0 为 1，则 AT 不会提示任何退出 SPP 透传模式的信息。
+    - 在 SPP 传输中，若未设置 :ref:`AT+SYSMSG <cmd-SYSMSG>` Bit2 为 1，则 AT 不会提示任何连接状态变更的信息。
+    - 当系统收到只含有 +++ 的包时，设备返回到普通命令模式，请至少等待一秒再发送下一个 AT 命令。
 
     示例
     ^^^^
@@ -2300,41 +2300,41 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<auth_req>**：认证请求。
+    - **<auth_req>**：认证请求。
 
-    -  0: NO_BOND
-    -  1: BOND
-    -  4: MITM
-    -  8: SC_ONLY
-    -  9: SC_BOND
-    -  12: SC_MITM
-    -  13: SC_MITM_BOND
+    - 0: NO_BOND
+    - 1: BOND
+    - 4: MITM
+    - 8: SC_ONLY
+    - 9: SC_BOND
+    - 12: SC_MITM
+    - 13: SC_MITM_BOND
 
-    -  **<iocap>**：输入输出能力。
+    - **<iocap>**：输入输出能力。
 
-    -  0: DisplayOnly
-    -  1: DisplayYesNo
-    -  2: KeyboardOnly
-    -  3: NoInputNoOutput
-    -  4: Keyboard display
+    - 0: DisplayOnly
+    - 1: DisplayYesNo
+    - 2: KeyboardOnly
+    - 3: NoInputNoOutput
+    - 4: Keyboard display
 
-    -  **<enc_key_size>**：加密密钥长度。参数范围：[7,16]。单位：字节。
-    -  **<init_key>**：多个比特位组成的初始密钥。
-    -  **<rsp_key>**：多个比特位组成的响应密钥。
-    -  **<auth_option>**：安全认证选项：
+    - **<enc_key_size>**：加密密钥长度。参数范围：[7,16]。单位：字节。
+    - **<init_key>**：多个比特位组成的初始密钥。
+    - **<rsp_key>**：多个比特位组成的响应密钥。
+    - **<auth_option>**：安全认证选项：
 
-    -  0: 自动选择安全等级；
-    -  1: 如果无法满足之前设定的安全等级，则会断开连接。
+    - 0: 自动选择安全等级；
+    - 1: 如果无法满足之前设定的安全等级，则会断开连接。
 
     说明
     ^^^^
 
-    -  ``<init_key>`` 和 ``<rsp_key>`` 参数的比特位组合模式如下：
+    - ``<init_key>`` 和 ``<rsp_key>`` 参数的比特位组合模式如下：
 
-    -  Bit0: 用于交换初始密钥和响应密钥的加密密钥；
-    -  Bit1: 用于交换初始密钥和响应密钥的 IRK 密钥；
-    -  Bit2: 用于交换初始密钥和响应密钥的 CSRK 密钥；
-    -  Bit3: 用于交换初始密钥和响应密钥的 link 密钥（仅用于 Bluetooth LE 和 BR/EDR 共存模式）。
+    - Bit0: 用于交换初始密钥和响应密钥的加密密钥；
+    - Bit1: 用于交换初始密钥和响应密钥的 IRK 密钥；
+    - Bit2: 用于交换初始密钥和响应密钥的 CSRK 密钥；
+    - Bit3: 用于交换初始密钥和响应密钥的 link 密钥（仅用于 Bluetooth LE 和 BR/EDR 共存模式）。
 
     示例
     ^^^^
@@ -2370,18 +2370,18 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<sec_act>**：
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<sec_act>**：
 
-    -  0: SEC_NONE；
-    -  1: SEC_ENCRYPT；
-    -  2: SEC_ENCRYPT_NO_MITM；
-    -  3: SEC_ENCRYPT_MITM。
+    - 0: SEC_NONE；
+    - 1: SEC_ENCRYPT；
+    - 2: SEC_ENCRYPT_NO_MITM；
+    - 3: SEC_ENCRYPT_MITM。
 
     说明
     ^^^^
 
-    -  使用本命令前，请先设置安全参数、建立与对方设备的连接。
+    - 使用本命令前，请先设置安全参数、建立与对方设备的连接。
 
     示例
     ^^^^
@@ -2444,23 +2444,23 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<accept>**：
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<accept>**：
 
-    -  0: 拒绝；
-    -  1: 接受。
+    - 0: 拒绝；
+    - 1: 接受。
 
     说明
     ^^^^
 
-    -  使用本命令后，AT 会在配对请求流程结束后输出配对结果。
+    - 使用本命令后，AT 会在配对请求流程结束后输出配对结果。
 
     ::
 
         +BLEAUTHCMPL:<conn_index>,<enc_result>
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<enc_result>**:
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<enc_result>**:
 
     - 0: 加密配对成功；
     - 1: 加密配对失败。
@@ -2501,8 +2501,8 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<key>**：配对密钥。
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<key>**：配对密钥。
 
     示例
     ^^^^
@@ -2538,11 +2538,11 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
-    -  **<confirm>**：
+    - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+    - **<confirm>**：
 
-    -  0: 否
-    -  1: 是
+    - 0: 否
+    - 1: 是
 
     示例
     ^^^^
@@ -2579,13 +2579,13 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<enc_dev_index>**：已绑定设备的连接号。该参数不一定等于命令 :ref:`AT+BLECONN <cmd-BCONN>` 查询出的 Bluetooth LE 连接列表中的 ``conn_index`` 参数。范围：[0,14]。
-    -  **<mac_address>**：MAC 地址。
+    - **<enc_dev_index>**：已绑定设备的连接号。该参数不一定等于命令 :ref:`AT+BLECONN <cmd-BCONN>` 查询出的 Bluetooth LE 连接列表中的 ``conn_index`` 参数。范围：[0,14]。
+    - **<mac_address>**：MAC 地址。
 
     说明
     ^^^^
 
-    -  ESP-AT 最多允许绑定 ``15`` 个设备。如果绑定的设备数量超过 15 个，那么新绑定的设备信息会根据绑定顺序从 0 到 14 号依次覆盖之前的设备信息。
+    - ESP-AT 最多允许绑定 ``15`` 个设备。如果绑定的设备数量超过 15 个，那么新绑定的设备信息会根据绑定顺序从 0 到 14 号依次覆盖之前的设备信息。
 
     示例
     ^^^^
@@ -2640,7 +2640,7 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<enc_dev_index>**：已绑定设备的连接号。
+    - **<enc_dev_index>**：已绑定设备的连接号。
 
     示例
     ^^^^
@@ -2706,7 +2706,7 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<static_key>**：Bluetooth LE 静态配对密钥。
+    - **<static_key>**：Bluetooth LE 静态配对密钥。
 
     示例
     ^^^^
@@ -2773,26 +2773,26 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<init>**：
+    - **<init>**：
 
-    -  0: 取消 Bluetooth LE HID 协议的初始化；
-    -  1: 初始化 Bluetooth LE HID 协议。
+    - 0: 取消 Bluetooth LE HID 协议的初始化；
+    - 1: 初始化 Bluetooth LE HID 协议。
 
     说明
     ^^^^
 
-    -  Bluetooth LE HID 无法与通用 GATT/GAP 命令同时使用。
+    - Bluetooth LE HID 无法与通用 GATT/GAP 命令同时使用。
 
     .. only:: esp32 or esp32c3
 
-        -  Bluetooth LE HID 命令无法与 :ref:`BluFi 命令 <cmd-BLUFI>` 同时使用。
+        - Bluetooth LE HID 命令无法与 :ref:`BluFi 命令 <cmd-BLUFI>` 同时使用。
 
     示例
     ^^^^
 
     ::
 
-        AT+BLEHIDINIT=1 
+        AT+BLEHIDINIT=1
 
     .. _cmd-BLEHIDKB:
 
@@ -2821,19 +2821,19 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<Modifier_keys>**：组合键。
-    -  **<key_1>**：键代码 1。
-    -  **<key_2>**：键代码 2。
-    -  **<key_3>**：键代码 3。
-    -  **<key_4>**：键代码 4。
-    -  **<key_5>**：键代码 5。
-    -  **<key_6>**：键代码 6。
+    - **<Modifier_keys>**：组合键。
+    - **<key_1>**：键代码 1。
+    - **<key_2>**：键代码 2。
+    - **<key_3>**：键代码 3。
+    - **<key_4>**：键代码 4。
+    - **<key_5>**：键代码 5。
+    - **<key_6>**：键代码 6。
 
     说明
     ^^^^
 
     - 更多键代码的信息，请参考 `Universal Serial Bus HID Usage Tables <https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf>`_ 的 Keyboard/Keypad Page 章节。
-    - 要使此命令与 iOS 产品交互，您的设备需要先通过 `MFI <https://mfi.apple.com/>`_ 认证。
+    - 要使此命令与 iOS 产品交互，你的设备需要先通过 `MFI <https://mfi.apple.com/>`_ 认证。
 
     示例
     ^^^^
@@ -2869,16 +2869,16 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<buttons>**：鼠标按键。
-    -  **<X_displacement>**：X 位移。
-    -  **<Y_displacement>**：Y 位移。
-    -  **<wheel>**：滚轮。
+    - **<buttons>**：鼠标按键。
+    - **<X_displacement>**：X 位移。
+    - **<Y_displacement>**：Y 位移。
+    - **<wheel>**：滚轮。
 
     说明
     ^^^^
 
     - 更多 HID 鼠标信息，请参考 `Universal Serial Bus HID Usage Tables <https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf>`_ 的 Generic Desktop Page 和 Application Usages 章节。
-    - 要使此命令与 iOS 产品交互，您的设备需要先通过 `MFI <https://mfi.apple.com/>`_ 认证。
+    - 要使此命令与 iOS 产品交互，你的设备需要先通过 `MFI <https://mfi.apple.com/>`_ 认证。
 
     示例
     ^^^^
@@ -2914,12 +2914,12 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<consumer_usage_id>**：consumer ID，如 power、reset、help、volume 等。详情请参考 `HID Usage Tables for Universal Serial Bus (USB) <https://usb.org/sites/default/files/hut1_21_0.pdf>`_ 中的 Consumer Page (0x0C) 章节。
+    - **<consumer_usage_id>**：consumer ID，如 power、reset、help、volume 等。详情请参考 `HID Usage Tables for Universal Serial Bus (USB) <https://usb.org/sites/default/files/hut1_21_0.pdf>`_ 中的 Consumer Page (0x0C) 章节。
 
     说明
     ^^^^
 
-    - 要使此命令与 iOS 产品交互，您的设备需要先通过 `MFI <https://mfi.apple.com/>`_ 认证。
+    - 要使此命令与 iOS 产品交互，你的设备需要先通过 `MFI <https://mfi.apple.com/>`_ 认证。
 
     示例
     ^^^^
@@ -2988,41 +2988,41 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<option>**：
+    - **<option>**：
 
-       -  0: 关闭 BluFi；
-       -  1: 开启 BluFi。
+       - 0: 关闭 BluFi；
+       - 1: 开启 BluFi。
 
-    -  **<auth floor>**：Wi-Fi 认证模式阈值，ESP-AT 不会连接到认证模式低于此阈值的 AP：
+    - **<auth floor>**：Wi-Fi 认证模式阈值，ESP-AT 不会连接到认证模式低于此阈值的 AP：
 
-       -  0: OPEN（默认）
-       -  1: WEP
-       -  2: WPA_PSK
-       -  3: WPA2_PSK
-       -  4: WPA_WPA2_PSK
-       -  5: WPA2_ENTERPRISE
-       -  6: WPA3_PSK
-       -  7: WPA2_WPA3_PSK
-       -  8: WAPI_PSK
-       -  9: OWE
-       -  10: WPA3_ENT_192
-       -  11: WPA3_EXT_PSK
-       -  12: WPA3_EXT_PSK_MIXED_MODE
-       -  13: DPP
-       -  14: WPA3_ENTERPRISE
-       -  15: WPA2_WPA3_ENTERPRISE
+       - 0: OPEN（默认）
+       - 1: WEP
+       - 2: WPA_PSK
+       - 3: WPA2_PSK
+       - 4: WPA_WPA2_PSK
+       - 5: WPA2_ENTERPRISE
+       - 6: WPA3_PSK
+       - 7: WPA2_WPA3_PSK
+       - 8: WAPI_PSK
+       - 9: OWE
+       - 10: WPA3_ENT_192
+       - 11: WPA3_EXT_PSK
+       - 12: WPA3_EXT_PSK_MIXED_MODE
+       - 13: DPP
+       - 14: WPA3_ENTERPRISE
+       - 15: WPA2_WPA3_ENTERPRISE
 
     说明
     ^^^^
 
-    - 您只能在 Bluetooth LE 未初始化情况下开启或关闭 BluFi (:ref:`AT+BLEINIT=0 <cmd-BINIT>`)。
+    - 你只能在 Bluetooth LE 未初始化情况下开启或关闭 BluFi (:ref:`AT+BLEINIT=0 <cmd-BINIT>`)。
     - BluFi 配网过程中，{IDF_TARGET_NAME} 收到手机端发送的 SSID 和密码时，会分别输出 ``+SSID:<ssid>`` 和 ``+PASSWORD:<password>``。
 
     .. only:: esp32 or esp32c3
 
         - BluFi 命令无法与 :ref:`Bluetooth LE HID 命令 <cmd-BLEHIDINIT>` 同时使用。
 
-    - 为获得更好的性能，建议在使用 BluFi 功能前，先发送 :ref:`AT+CWMODE=0/1 <cmd-MODE>` 命令禁用 SoftAP。如您想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
+    - 为获得更好的性能，建议在使用 BluFi 功能前，先发送 :ref:`AT+CWMODE=0/1 <cmd-MODE>` 命令禁用 SoftAP。如你想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
     - BluFi 配网后请发送 :ref:`AT+BLUFI=0 <cmd-BLUFI>` 命令关闭 BluFi，以释放资源。
 
     示例
@@ -3079,14 +3079,14 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<device_name>**：BluFi 设备名称。
+    - **<device_name>**：BluFi 设备名称。
 
     说明
     ^^^^
 
-    -  如需设置 BluFi 设备名称，请在运行 :ref:`AT+BLUFI=1 <cmd-BLUFI>` 命令前设置，否则将使用默认名称 ``BLUFI_DEVICE``。
-    -  BluFi 设备名称最大长度为 26 字节。
-    -  Blufi APP 可以在应用商店中下载。
+    - 如需设置 BluFi 设备名称，请在运行 :ref:`AT+BLUFI=1 <cmd-BLUFI>` 命令前设置，否则将使用默认名称 ``BLUFI_DEVICE``。
+    - BluFi 设备名称最大长度为 26 字节。
+    - Blufi APP 可以在应用商店中下载。
 
     示例
     ^^^^
@@ -3120,7 +3120,7 @@ Bluetooth® Low Energy AT 命令集
 
         >
 
-    符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，开始传输数据。
+    符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，开始传输数据。
 
     若数据传输成功，则提示：
 
@@ -3131,13 +3131,13 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    -  **<length>**：数据长度，单位：字节。
+    - **<length>**：数据长度，单位：字节。
 
     说明
     ^^^^
 
-    -  自定义数据的长度不能超过 600 字节。
-    -  如果 ESP 收到手机发来的用户自定义数据，那么会以 ``+BLUFIDATA:<len>,<data>`` 格式打印。
+    - 自定义数据的长度不能超过 600 字节。
+    - 如果 ESP 收到手机发来的用户自定义数据，那么会以 ``+BLUFIDATA:<len>,<data>`` 格式打印。
 
     示例
     ^^^^
@@ -3151,17 +3151,17 @@ Bluetooth® Low Energy AT 命令集
 
     .. _cmd-BLEPADATA:
 
-    :ref:`AT+BLEPERIODICDATA <BLE-AT>`: 设置 Bluetooth LE 周期性广播数据
+    :ref:`AT+BLEPERIODICDATA <BLE-AT>`：设置 Bluetooth LE 周期性广播数据
     ------------------------------------------------------------------------------------
 
     设置命令
     ^^^^^^^^^^^
 
-    **功能:**
+    **功能：**
 
     设置周期性广播数据。
 
-    **命令:**
+    **命令：**
 
     ::
 
@@ -3176,7 +3176,7 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^^^^^^^
 
-    -  **<periodic_data>**: 周期性广播数据，为 16 进制字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEPERIODICDATA="1122334455"``。
+    - **<periodic_data>**: 周期性广播数据，为 16 进制字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEPERIODICDATA="1122334455"``。
 
     示例
     ^^^^^^^^
@@ -3194,11 +3194,11 @@ Bluetooth® Low Energy AT 命令集
     执行命令
     ^^^^^^^^^^^^^^^
 
-    **功能:**
+    **功能：**
 
     开启周期性广播。
 
-    **命令:**
+    **命令：**
 
     ::
 
@@ -3213,7 +3213,7 @@ Bluetooth® Low Energy AT 命令集
     说明
     ^^^^^
 
-    -  在开始周期性广播之前，需要先开启扩展广播，扩展广播类型为 ADV_TYPE_EXT_NOSCANNABLE_IND。
+    - 在开始周期性广播之前，需要先开启扩展广播，扩展广播类型为 ADV_TYPE_EXT_NOSCANNABLE_IND。
 
     示例
     ^^^^^^^^
@@ -3234,11 +3234,11 @@ Bluetooth® Low Energy AT 命令集
     执行命令
     ^^^^^^^^^^^^^^^
 
-    **功能:**
+    **功能：**
 
     停止周期性广播
 
-    **命令:**
+    **命令：**
 
     ::
 
@@ -3265,11 +3265,11 @@ Bluetooth® Low Energy AT 命令集
     设置命令
     ^^^^^^^^^^^
 
-    **功能:**
+    **功能：**
 
     与正在进行周期性广播的设备同步。
 
-    **命令:**
+    **命令：**
 
     ::
 
@@ -3285,14 +3285,14 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^^^^^^^
 
-    -  **<addr>**: 设备地址
-    -  **<rssi>**: 信号强度
-    -  **<periodic_adv_data>**: 周期性广播数据
+    - **<addr>**: 设备地址
+    - **<rssi>**: 信号强度
+    - **<periodic_adv_data>**: 周期性广播数据
 
     说明
     ^^^^^
 
-    -  在开启周期性广播同步之前，需要保持 Bluetooth LE 扫描功能持续进行。
+    - 在开启周期性广播同步之前，需要保持 Bluetooth LE 扫描功能持续进行。
 
     示例
     ^^^^^^^^
@@ -3311,11 +3311,11 @@ Bluetooth® Low Energy AT 命令集
     执行命令
     ^^^^^^^^^^^
 
-    **功能:**
+    **功能：**
 
     停止周期性广播同步功能。
 
-    **命令:**
+    **命令：**
 
     ::
 
@@ -3331,7 +3331,7 @@ Bluetooth® Low Energy AT 命令集
     说明
     ^^^^^
 
-    -  如果客户将 BLE 扫描功能关闭，那么周期性广播同步功能也会被自动停止。
+    - 如果客户将 BLE 扫描功能关闭，那么周期性广播同步功能也会被自动停止。
 
     示例
     ^^^^^^^^
@@ -3351,11 +3351,11 @@ Bluetooth® Low Energy AT 命令集
     设置命令
     ^^^^^^^^^^^
 
-    **功能:**
+    **功能：**
 
     查询当前连接使用的 PHY。
 
-    **命令:**
+    **命令：**
 
     ::
 
@@ -3380,19 +3380,19 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^^^^^^^
 
-    -  **<device_addr>**: 对端设备地址
+    - **<device_addr>**: 对端设备地址
 
-    -  **<tx_phy>**:
+    - **<tx_phy>**:
 
-    -  1: 1M PHY.
-    -  2: 2M PHY.
-    -  3: Coded PHY.
+    - 1: 1M PHY.
+    - 2: 2M PHY.
+    - 3: Coded PHY.
 
-    -  **<rx_phy>**:
+    - **<rx_phy>**:
 
-    -  1: 1M PHY.
-    -  2: 2M PHY.
-    -  3: Coded PHY.
+    - 1: 1M PHY.
+    - 2: 2M PHY.
+    - 3: Coded PHY.
 
     示例
     ^^^^^^^^
@@ -3411,11 +3411,11 @@ Bluetooth® Low Energy AT 命令集
     设置命令
     ^^^^^^^^^^^
 
-    **功能:**
+    **功能：**
 
     设置当前连接的 PHY。
 
-    **命令:**
+    **命令：**
 
     ::
 
@@ -3440,13 +3440,13 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^^^^^^^
 
-    -  **<device_addr>**：对端设备地址
+    - **<device_addr>**：对端设备地址
 
-    -  **<tx_rx_phy>**:
+    - **<tx_rx_phy>**:
 
-    -  1: 1M PHY
-    -  2: 2M PHY
-    -  3: Coded PHY
+    - 1: 1M PHY
+    - 2: 2M PHY
+    - 3: Coded PHY
 
     示例
     ^^^^^^^^
@@ -3461,17 +3461,17 @@ Bluetooth® Low Energy AT 命令集
 
     .. _cmd-BLERDRSSI:
 
-    :ref:`AT+BLERDRSSI <BLE-AT>`: 查询当前连接的 RSSI
+    :ref:`AT+BLERDRSSI <BLE-AT>`：查询当前连接的 RSSI
     -----------------------------------------------------------------------------
 
     设置命令
     ^^^^^^^^^^^
 
-    **功能:**
+    **功能：**
 
     查询当前连接的 RSSI。
 
-    **命令:**
+    **命令：**
 
     ::
 
@@ -3487,12 +3487,12 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^^^^^^^
 
-    -  **<conn_index>**：Bluetooth LE 连接号。
+    - **<conn_index>**：Bluetooth LE 连接号。
 
     说明
     ^^^^^
 
-    -  此命令用于获取连接的信号强度，因此必须先建立 BLE 连接。
+    - 此命令用于获取连接的信号强度，因此必须先建立 BLE 连接。
 
     示例
     ^^^^^^^^
@@ -3511,11 +3511,11 @@ Bluetooth® Low Energy AT 命令集
     设置命令
     ^^^^^^^^^^^
 
-    **功能:**
+    **功能：**
 
     设置白名单。
 
-    **命令:**
+    **命令：**
 
     ::
 
@@ -3530,22 +3530,22 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^^^^^^^
 
-    -  **<add_or_rmv>**:
+    - **<add_or_rmv>**:
 
-      -  0: 从白名单中移除所有设备
-      -  1: 向白名单添加一个设备
+      - 0: 从白名单中移除所有设备
+      - 1: 向白名单添加一个设备
 
-    -  **[<addr_type>]**：地址类型
+    - **[<addr_type>]**：地址类型
 
-      -  0: 公共地址
-      -  1: 随机地址
+      - 0: 公共地址
+      - 1: 随机地址
 
-    -  **[<addr>]**：设备地址
+    - **[<addr>]**：设备地址
 
     说明
     ^^^^^
 
-    -  如果 <add_or_rmv> 设置为 0，则 <addr_type> 和 <addr> 参数不需要。
+    - 如果 <add_or_rmv> 设置为 0，则 <addr_type> 和 <addr> 参数不需要。
 
     示例
     ^^^^^^^^

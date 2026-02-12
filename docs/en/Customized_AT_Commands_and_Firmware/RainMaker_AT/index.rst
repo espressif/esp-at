@@ -6,7 +6,7 @@ RainMaker AT Commands and Firmware
 
 .. toctree::
    :maxdepth: 1
-   
+
    RainMaker AT Command Set <RainMaker_AT_Command_Set>
    RainMaker AT Examples <RainMaker_AT_Examples>
    RainMaker_AT_OTA_Guide <RainMaker_AT_OTA_Guide>

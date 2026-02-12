@@ -7,8 +7,8 @@ WebSocket AT Commands
 
 - :ref:`Introduction <cmd-ws-intro>`
 - :ref:`AT+WSCFG <cmd-WSCFG>`: Set the WebSocket configuration.
-- :ref:`AT+WSHEAD <cmd-WSHEAD>`: Set/Query WebSocket request headers.
-- :ref:`AT+WSOPEN <cmd-WSOPEN>`: Query/Open a WebSocket connection.
+- :ref:`AT+WSHEAD <cmd-WSHEAD>`: Set or query WebSocket request headers.
+- :ref:`AT+WSOPEN <cmd-WSOPEN>`: Query or open a WebSocket connection.
 - :ref:`AT+WSSEND <cmd-WSSEND>`: Send data to a WebSocket connection.
 - :ref:`AT+WSDATAFMT <cmd-WSDATAFMT>`: Set WebSocket received data format.
 - :ref:`AT+WSCLOSE <cmd-WSCLOSE>`: Close a WebSocket connection.
@@ -59,10 +59,10 @@ Parameters
 - **<buffer_size>**: WebSocket buffer size. Unit: byte. Range: [1,16384]. Default: 1024.
 - **<auth_mode>**:
 
-  - 0: no authentication. In this case ``<pki_number>`` and ``<ca_number>`` are not required.
-  - 1: the client provides the client certificate for the server to verify.
-  - 2: the client loads CA certificate to verify the server's certificate.
-  - 3: mutual authentication.
+  - 0: No authentication. In this case ``<pki_number>`` and ``<ca_number>`` are not required.
+  - 1: The client provides the client certificate for the server to verify.
+  - 2: The client loads CA certificate to verify the server's certificate.
+  - 3: Mutual authentication.
 
 - **<pki_number>**: the index of certificate and private key. If there is only one certificate and private key, the value should be 0.
 - **<ca_number>**: the index of CA. If there is only one CA, the value should be 0.
@@ -84,8 +84,8 @@ Example
 
 .. _cmd-WSHEAD:
 
-:ref:`AT+WSHEAD <HTTP-AT>`: Set/Query WebSocket Request Headers
----------------------------------------------------------------
+:ref:`AT+WSHEAD <HTTP-AT>`: Set or query WebSocket Request Headers
+-------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -158,8 +158,8 @@ Example
 
 .. _cmd-WSOPEN:
 
-:ref:`AT+WSOPEN <WS-AT>`: Query/Open a WebSocket Connection
------------------------------------------------------------
+:ref:`AT+WSOPEN <WS-AT>`: Query or open a WebSocket Connection
+--------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^^^
@@ -334,9 +334,9 @@ Parameters
 - **<link_id>**: ID of the WebSocket connection. Range: [0,2].
 - **<meta_data_level>**: Metadata output level. Default: 0. The meanings of each level are as follows:
 
-  - 0: chunked level. Each time data is received from the transport layer, metadata prefixed with ``+WS_DATA`` is added.
-  - 1: frame level. Metadata prefixed with ``+WS_DATA`` is only added before and after a complete WebSocket frame.
-  - 2: message level. Metadata prefixed with ``+WS_DATA`` is only added before and after a complete WebSocket message.
+  - 0: Chunked level. Each time data is received from the transport layer, metadata prefixed with ``+WS_DATA`` is added.
+  - 1: Frame level. Metadata prefixed with ``+WS_DATA`` is only added before and after a complete WebSocket frame.
+  - 2: Message level. Metadata prefixed with ``+WS_DATA`` is only added before and after a complete WebSocket message.
 
 - **<meta_data_mask>**: A bitmask used to control the ``+WS_DATA`` output format. Setting a corresponding bit to 1 will include the field associated with that bit in the output. Default: 48 (in this case, only ``<data_len>`` and ``<\r\n>`` are output).
 

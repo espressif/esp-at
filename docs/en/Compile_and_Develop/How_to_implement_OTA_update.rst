@@ -43,7 +43,7 @@ This command uses iot.espressif.cn as the default HTTP server. It can upgrade bo
 To upgrade the customized bin file with this command, please select one of the following ways.
 
   #. **replace iot.espressif.cn with the your own HTTP server and implement the interactive process.** For how to implement your own AT+CIUPDATE command, please refer to :component_file:`at/src/at_ota_cmd.c`.
-  #. **create a devices on iot.espressif.cn and upload customized AT firmware on it. (The premise is that the firmware running in the module already corresponds to the device you created on the Espressif server.)** For more information, please refer to `OTA Upgrade with AT+CIUPDATE`_.  
+  #. **create a devices on iot.espressif.cn and upload customized AT firmware on it. (The premise is that the firmware running in the module already corresponds to the device you created on the Espressif server.)** For more information, please refer to `OTA Upgrade with AT+CIUPDATE`_.
 
 The application scenarios of this command are as follows:
 
@@ -114,10 +114,10 @@ To upgrade the customized bin file with :ref:`AT+CIUPDATE <cmd-UPDATE>` command,
 
    .. figure:: ../../_static/compile_and_develop/ota/OTA-4.png
     :align: center
-    :alt: Click on "Create" 
+    :alt: Click on "Create"
     :figclass: align-center
 
-    Click on "Create" 
+    Click on "Create"
 
 4. A key is generated when the device is successfully created, as the figure below shows.
 

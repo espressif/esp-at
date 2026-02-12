@@ -41,17 +41,17 @@
 
 .. only:: esp32c2
 
-  - 官方提供的默认 :doc:`../AT_Binary_Lists/index` 仅支持 26 MHz 晶振。如果您的 {IDF_TARGET_NAME} 晶振为 40 MHz，请参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` 自行编译 {IDF_TARGET_NAME} AT 固件。在第五步配置：
+  - 官方提供的默认 :doc:`../AT_Binary_Lists/index` 仅支持 26 MHz 晶振。如果你的 {IDF_TARGET_NAME} 晶振为 40 MHz，请参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` 自行编译 {IDF_TARGET_NAME} AT 固件。在第五步配置：
 
     ::
 
       python build.py menuconfig > Component config > Hardware Settings > Main XTAL Config > Main XTAL frequency > 40 MHz
 
-- 上图使用 4 根杜邦线连接 {IDF_TARGET_NAME} 开发板和 USB 转 UART 串口模块，但如果您不使用硬件流控功能，只需 2 根杜邦线连接 TX/RX 即可。
+- 上图使用 4 根杜邦线连接 {IDF_TARGET_NAME} 开发板和 USB 转 UART 串口模块，但如果你不使用硬件流控功能，只需 2 根杜邦线连接 TX/RX 即可。
 
 .. only:: esp32
 
-  - 如果您使用 {IDF_TARGET_NAME} 模组（而非开发板）并通过 UART 烧录固件，需要：
+  - 如果你使用 {IDF_TARGET_NAME} 模组（而非开发板）并通过 UART 烧录固件，需要：
 
     - 预留 U0RXD 和 U0TXD 管脚（参考 `技术规格书 > 管脚概述 <{IDF_TARGET_DATASHEET_CN_URL}>`_）
     - 预留 Strapping 管脚（参考 `技术规格书 > 启动配置项 <{IDF_TARGET_DATASHEET_CN_URL}>`_），通过控制 Strapping 管脚电平进入下载模式
@@ -59,7 +59,7 @@
 
 .. only:: esp32c5 or esp32c6 or esp32c61 or esp32s2
 
-  - 如果您使用 {IDF_TARGET_NAME} 模组（而非开发板）并通过 UART 烧录固件，需要：
+  - 如果你使用 {IDF_TARGET_NAME} 模组（而非开发板）并通过 UART 烧录固件，需要：
 
     - 预留 U0RXD 和 U0TXD 管脚（参考 `技术规格书 > IO 管脚 <{IDF_TARGET_DATASHEET_CN_URL}>`_）
     - 预留 Strapping 管脚（参考 `技术规格书 > 启动配置项 <{IDF_TARGET_DATASHEET_CN_URL}>`_），通过控制 Strapping 管脚电平进入下载模式
@@ -67,7 +67,7 @@
 
 .. only:: esp32c2
 
-  - 如果您使用 {IDF_TARGET_NAME} 模组（而非开发板）并通过 UART 烧录固件，需要：
+  - 如果你使用 {IDF_TARGET_NAME} 模组（而非开发板）并通过 UART 烧录固件，需要：
 
     - 预留 U0RXD 和 U0TXD 管脚（参考 `技术规格书 > IO 管脚 <{IDF_TARGET_DATASHEET_CN_URL}>`_）
     - 选择以下方式之一进入下载模式：
@@ -79,7 +79,7 @@
 
 .. only:: esp32c3
 
-  - 如果您使用 {IDF_TARGET_NAME} 模组（而非开发板）并通过 UART/USB 烧录固件，需要：
+  - 如果你使用 {IDF_TARGET_NAME} 模组（而非开发板）并通过 UART/USB 烧录固件，需要：
 
     - 预留相关管脚（参考 `技术规格书 > IO 管脚 <{IDF_TARGET_DATASHEET_CN_URL}>`_）：
 
@@ -132,7 +132,7 @@
           * RTS
           * CTS
 
-  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，你只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -173,7 +173,7 @@
           * RTS
           * CTS
 
-  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，你只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -213,7 +213,7 @@
           * RTS
           * CTS
 
-  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，你只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -254,7 +254,7 @@
           * RTS
           * CTS
 
-  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，你只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -295,7 +295,7 @@
           * RTS
           * CTS
 
-  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，你只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -344,7 +344,7 @@
           * RTS
           * CTS
 
-  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，你只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -396,7 +396,7 @@
       - USB 转 UART 串口模块
           * RX
 
-  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，你只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -414,7 +414,7 @@
 
   {IDF_TARGET_NAME}-2MB-BLE/{IDF_TARGET_NAME}-2MB-BLE-G2 系列硬件连接与 :ref:`ESP32-C2-4MB/ESP32-C2-4MB-G2 <hw-connection-esp32c2-4mb>` 系列完全相同，区别仅在于软件支持的功能不同。
 
-  该系列 AT 固件未发布，您可以任选下面一种方式获取该系列的 AT 固件：
+  该系列 AT 固件未发布，你可以任选下面一种方式获取该系列的 AT 固件：
 
   - 参考 :doc:`如何从 GitHub 下载最新临时版本 AT 固件 <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` 文档，下载 ``esp32c2-2mb-ble-at``/``esp32c2-2mb-ble-g2-at`` 固件。
   - 自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第三步安装环境里 ``Platform name`` 选择 ``PLATFORM_ESP32C2``，``Module name`` 选择 ``ESP32-C2-2MB-BLE``/``ESP32-C2-2MB-BLE-G2``。
@@ -424,7 +424,7 @@
 
   {IDF_TARGET_NAME}-2MB-NO-OTA-G2 系列硬件连接与 :ref:`ESP32-C2-4MB/ESP32-C2-4MB-G2 <hw-connection-esp32c2-4mb>` 系列完全相同，区别仅在于软件支持的功能不同。
 
-  该系列 AT 固件未发布，您可以任选下面一种方式获取该系列的 AT 固件：
+  该系列 AT 固件未发布，你可以任选下面一种方式获取该系列的 AT 固件：
 
   - 参考 :doc:`如何从 GitHub 下载最新临时版本 AT 固件 <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` 文档，下载 ``esp32c2-2mb-no-ota-g2-at`` 固件。
   - 自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第三步安装环境里 ``Platform name`` 选择 ``PLATFORM_ESP32C2``，``Module name`` 选择 ``ESP32C2-2MB-NO-OTA-G2``。
@@ -463,7 +463,7 @@
           * RTS
           * CTS
 
-  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，你只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -510,7 +510,7 @@
           * RTS
           * CTS
 
-  **说明** 1：{IDF_TARGET_NAME}-4MB 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME}-4MB 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME}-4MB 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME}-4MB 开发板上，你只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -557,7 +557,7 @@
           * RTS
           * CTS
 
-  **说明** 1：{IDF_TARGET_NAME}-4MB 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME}-4MB 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME}-4MB 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME}-4MB 开发板上，你只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -604,7 +604,7 @@
           * RTS
           * CTS
 
-  **说明** 1：{IDF_TARGET_NAME}-4MB 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME}-4MB 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME}-4MB 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME}-4MB 开发板上，你只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 
@@ -651,7 +651,7 @@
           * RTS
           * CTS
 
-  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，您只需使用 USB 数据线连接开发板和 PC 即可。
+  **说明** 1：{IDF_TARGET_NAME} 开发板和 PC 之间的管脚连接已内置在 {IDF_TARGET_NAME} 开发板上，你只需使用 USB 数据线连接开发板和 PC 即可。
 
   **说明** 2：CTS/RTS 管脚只有在使用硬件流控功能时才需连接。
 

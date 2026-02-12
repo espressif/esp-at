@@ -8,7 +8,7 @@
 
 本文档以 {IDF_TARGET_MODULE_NAME} 模组为例，介绍如何下载 {IDF_TARGET_MODULE_NAME} 模组对应的 AT 固件，以及如何将固件烧录到模组上，其它 {IDF_TARGET_NAME} 系列模组也可参考本文档。
 
-下载和烧录 AT 固件之前，请确保您已正确连接所需硬件，具体可参考 :doc:`Hardware_connection`。
+下载和烧录 AT 固件之前，请确保你已正确连接所需硬件，具体可参考 :doc:`Hardware_connection`。
 
 对于不同系列的模组，AT 默认固件所支持的命令会有所差异。具体可参考 :doc:`/Compile_and_Develop/esp-at_firmware_differences`。
 
@@ -20,7 +20,7 @@
 请按照以下步骤将 AT 固件下载至 PC：
 
 - 前往 :doc:`../AT_Binary_Lists/index`
-- 找到您的模组所对应的 AT 固件
+- 找到你的模组所对应的 AT 固件
 - 点击相应链接进行下载
 
 此处，我们下载了 {IDF_TARGET_MODULE_NAME} 对应的 ``{IDF_TARGET_FACTORY_BIN}`` 固件，该固件的目录结构及其中各个 bin 文件介绍如下，其它 {IDF_TARGET_NAME} 系列模组固件的目录结构及 bin 文件也可参考如下介绍：
@@ -148,7 +148,7 @@
 烧录 AT 固件至设备
 -------------------
 
-请根据您的操作系统选择对应的烧录方法。
+请根据你的操作系统选择对应的烧录方法。
 
 Windows
 ^^^^^^^^
@@ -157,8 +157,8 @@ Windows
 
 - 打开 Flash 下载工具；
 - 选择芯片类型；（此处，我们选择 ``{IDF_TARGET_NAME}``。）
-- 根据您的需求选择一种工作模式；（此处，我们选择 ``develop``。)
-- 根据您的需求选择一种下载接口；（此处，我们选择 ``uart``。)
+- 根据你的需求选择一种工作模式；（此处，我们选择 ``develop``。)
+- 根据你的需求选择一种下载接口；（此处，我们选择 ``uart``。)
 
 .. figure:: ../../_static/get_started/download_guide/download_tool_{IDF_TARGET_PATH_NAME}.png
    :align: center
@@ -187,7 +187,7 @@ Windows
 
         下载至多个地址界面图（点击放大）
 
-为了避免烧录出现问题，请查看开发板的下载接口的 COM 端口号，并从 "COM:" 下拉列表中选择该端口号。有关如何查看端口号的详细介绍请参考 `在 Windows 上查看端口 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/get-started/establish-serial-connection.html#windows>`_。 
+为了避免烧录出现问题，请查看开发板的下载接口的 COM 端口号，并从 "COM:" 下拉列表中选择该端口号。有关如何查看端口号的详细介绍请参考 `在 Windows 上查看端口 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/get-started/establish-serial-connection.html#windows>`_。
 
 烧录完成后, 请 `检查 AT 固件是否烧录成功`_。
 
@@ -204,7 +204,7 @@ Linux 或 macOS
 
       esptool.py --chip auto --port PORTNAME --baud 115200 --before default_reset --after hard_reset write_flash -z download.config
 
-  将 ``PORTNAME`` 替换成开发板的下载接口名称，若您无法确定该接口名称，请参考 `在 Linux 和 macOS 上查看端口 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/get-started/establish-serial-connection.html#linux-macos>`_。
+  将 ``PORTNAME`` 替换成开发板的下载接口名称，若你无法确定该接口名称，请参考 `在 Linux 和 macOS 上查看端口 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/get-started/establish-serial-connection.html#linux-macos>`_。
 
   将 ``download.config`` 替换成该文件里的参数列表。
 
@@ -258,7 +258,7 @@ Linux 或 macOS
 
      esptool.py --chip auto --port PORTNAME --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB 0x0 FILEDIRECTORY
 
-  将 ``PORTNAME`` 替换成开发板的下载接口名称，若您无法确定该接口名称，请参考 `在 Linux 和 macOS 上查看端口 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/get-started/establish-serial-connection.html#linux-macos>`_。
+  将 ``PORTNAME`` 替换成开发板的下载接口名称，若你无法确定该接口名称，请参考 `在 Linux 和 macOS 上查看端口 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/get-started/establish-serial-connection.html#linux-macos>`_。
 
   将 ``FILEDIRECTORY`` 替换成打包好的量产固件的文件路径，通常情况下，文件路径是 ``factory/XXX.bin``。
 
@@ -410,8 +410,8 @@ Linux 或 macOS
 
       OK
 
-否则，您需要通过以下方式之一检查 {IDF_TARGET_NAME} 设备开机日志：
-  
+否则，你需要通过以下方式之一检查 {IDF_TARGET_NAME} 设备开机日志：
+
 **方法 1：**
 
 - 打开串口工具，如 SecureCRT；

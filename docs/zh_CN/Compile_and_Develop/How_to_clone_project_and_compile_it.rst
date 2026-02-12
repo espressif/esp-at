@@ -9,20 +9,20 @@
 
 .. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
-  本文档详细介绍了如何本地编译 ESP-AT 工程，并将生成的固件烧录到 {IDF_TARGET_NAME} 设备中。当默认的 :doc:`官方发布的固件 <../AT_Binary_Lists/index>` 无法满足需求时，如您需要自定义 :doc:`AT 端口管脚 <How_to_set_AT_port_pin>`、:doc:`低功耗蓝牙服务 <How_to_customize_BLE_services>` 以及 :doc:`分区 <How_to_customize_partitions>` 等，那么就需要编译 ESP-AT 工程。
+  本文档详细介绍了如何本地编译 ESP-AT 工程，并将生成的固件烧录到 {IDF_TARGET_NAME} 设备中。当默认的 :doc:`官方发布的固件 <../AT_Binary_Lists/index>` 无法满足需求时，如你需要自定义 :doc:`AT 端口管脚 <How_to_set_AT_port_pin>`、:doc:`低功耗蓝牙服务 <How_to_customize_BLE_services>` 以及 :doc:`分区 <How_to_customize_partitions>` 等，那么就需要编译 ESP-AT 工程。
 
 .. only:: esp32c2 or esp32s2
 
-  本文档详细介绍了如何本地编译 ESP-AT 工程，并将生成的固件烧录到 {IDF_TARGET_NAME} 设备中。当默认的 :doc:`官方发布的固件 <../AT_Binary_Lists/index>` 无法满足需求时，如您需要自定义 :doc:`AT 端口管脚 <How_to_set_AT_port_pin>` 以及 :doc:`分区 <How_to_customize_partitions>` 等，那么就需要编译 ESP-AT 工程。
+  本文档详细介绍了如何本地编译 ESP-AT 工程，并将生成的固件烧录到 {IDF_TARGET_NAME} 设备中。当默认的 :doc:`官方发布的固件 <../AT_Binary_Lists/index>` 无法满足需求时，如你需要自定义 :doc:`AT 端口管脚 <How_to_set_AT_port_pin>` 以及 :doc:`分区 <How_to_customize_partitions>` 等，那么就需要编译 ESP-AT 工程。
 
-如果本地编译 ESP-AT 工程有困难，或者需要修改的代码量较少，推荐您通过 :doc:`如何在 GitHub 网页上编译 ESP-AT 工程 <How_to_build_project_with_web_page>`。
+如果本地编译 ESP-AT 工程有困难，或者需要修改的代码量较少，推荐你通过 :doc:`如何在 GitHub 网页上编译 ESP-AT 工程 <How_to_build_project_with_web_page>`。
 
 .. _esp-at-started-steps:
 
 详细步骤
 ^^^^^^^^^^^^^
 
-请根据下方详细步骤，完成 ESP-AT 工程的克隆、环境安装、配置、编译以及烧录。**推荐您优先选择 Linux 系统开发。**
+请根据下方详细步骤，完成 ESP-AT 工程的克隆、环境安装、配置、编译以及烧录。**推荐你优先选择 Linux 系统开发。**
 
 * :ref:`esp-at-idf-prerequisites`
 * :ref:`esp-at-get-at-sdk`
@@ -40,11 +40,11 @@
 
 在编译 ESP-AT 工程之前，请先学习使用 ESP-IDF，因为 ESP-AT 是基于 ESP-IDF 开发的。
 
-请您根据 `ESP-IDF v{IDF_TARGET_VER} 快速入门文档 <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/get-started/index.html>`__ 的指导，完成 ``hello_world`` 工程的配置、编译以及下载固件至 {IDF_TARGET_NAME} 开发板等步骤。
+请你根据 `ESP-IDF v{IDF_TARGET_VER} 快速入门文档 <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/get-started/index.html>`__ 的指导，完成 ``hello_world`` 工程的配置、编译以及下载固件至 {IDF_TARGET_NAME} 开发板等步骤。
 
 .. note::
 
-  此步骤不是必须的，但如果您是初学者，强烈建议您完成此步骤，以熟悉 ESP-IDF 并确保顺利进行以下步骤。
+  此步骤不是必须的，但如果你是初学者，强烈建议你完成此步骤，以熟悉 ESP-IDF 并确保顺利进行以下步骤。
 
 完成上一步的 ESP-IDF 快速入门后，便可以开始下面的 ESP-AT 工程的编译。
 
@@ -55,7 +55,7 @@
 
 编译 ESP-AT 工程需下载乐鑫提供的软件库文件 ESP-AT 仓库。
 
-打开终端，切换到您要保存 ESP-AT 的工作目录，使用 ``git clone`` 命令克隆远程仓库，获取 ESP-AT 的本地副本。以下是不同操作系统的获取方式。
+打开终端，切换到你要保存 ESP-AT 的工作目录，使用 ``git clone`` 命令克隆远程仓库，获取 ESP-AT 的本地副本。以下是不同操作系统的获取方式。
 
 - Linux 或 macOS
 
@@ -66,20 +66,20 @@
 
 - Windows
 
-  对于 {IDF_TARGET_NAME} 系列模组，推荐您以管理员权限运行 `ESP-IDF {IDF_TARGET_VER} CMD <https://dl.espressif.com/dl/esp-idf/?idf={IDF_TARGET_VER}>`__。
+  对于 {IDF_TARGET_NAME} 系列模组，推荐你以管理员权限运行 `ESP-IDF {IDF_TARGET_VER} CMD <https://dl.espressif.com/dl/esp-idf/?idf={IDF_TARGET_VER}>`__。
 
   ::
 
     cd %userprofile%\esp
     git clone --recursive https://github.com/espressif/esp-at.git
 
-如果您在中国或无法访问 GitHub 的地区，可以通过以下镜像更快地克隆 ESP-AT：``git clone https://jihulab.com/esp-mirror/espressif/esp-at.git``。
+如果你在中国或无法访问 GitHub 的地区，可以通过以下镜像更快地克隆 ESP-AT：``git clone https://jihulab.com/esp-mirror/espressif/esp-at.git``。
 
 ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userprofile%\esp\esp-at``。
 
 .. note::
 
-    在本文档中，Linux 和 macOS 操作系统中 ESP-AT 的默认安装路径为 ``~/esp``；Windows 操作系统的默认路径为 ``%userprofile%\esp``。您也可以将 ESP-AT 安装在任何其它路径下，但请注意在使用命令行时进行相应替换。注意，ESP-AT 不支持带有空格的路径。
+    在本文档中，Linux 和 macOS 操作系统中 ESP-AT 的默认安装路径为 ``~/esp``；Windows 操作系统的默认路径为 ``%userprofile%\esp``。你也可以将 ESP-AT 安装在任何其它路径下，但请注意在使用命令行时进行相应替换。注意，ESP-AT 不支持带有空格的路径。
 
 .. _esp-at-install-env:
 
@@ -89,15 +89,15 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 运行项目工具 ``install`` 来安装环境。此安装工具将自动安装依赖的 Python 包、ESP-IDF 仓库以及 ESP-IDF 依赖的编译器、工具等。
 
 - Linux 或 macOS
-  
+
   ::
-    
+
     ./build.py install
 
 - Windows
 
   ::
-    
+
     python build.py install
 
 如果是第一次安装环境，请为 {IDF_TARGET_NAME} 设备选择以下配置选项。
@@ -108,7 +108,7 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
   .. _esp-at_silence_mode_cfg:
 
   - 在选择启用或禁用 silence mode 之前，请先阅读 :doc:`文档 <../Compile_and_Develop/How_to_configure_silence_mode>`，了解 silence mode。一般情况下请禁用。
-  - 如果 ``build/module_info.json`` 文件存在，上述三个配置选项将不会出现。因此，如果您想重新配置模组信息，请删除该文件。
+  - 如果 ``build/module_info.json`` 文件存在，上述三个配置选项将不会出现。因此，如果你想重新配置模组信息，请删除该文件。
 
   .. only:: esp32
 
@@ -118,7 +118,7 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 
         $ ./build.py install
         Ready to install ESP-IDF prerequisites..
-    
+
         ... (more lines of install ESP-IDF prerequisites)
 
         Ready to install ESP-AT prerequisites..
@@ -160,7 +160,7 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 
         $ ./build.py install
         Ready to install ESP-IDF prerequisites..
-    
+
         ... (more lines of install ESP-IDF prerequisites)
 
         Ready to install ESP-AT prerequisites..
@@ -204,7 +204,7 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 
         $ ./build.py install
         Ready to install ESP-IDF prerequisites..
-    
+
         ... (more lines of install ESP-IDF prerequisites)
 
         Ready to install ESP-AT prerequisites..
@@ -247,7 +247,7 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 
         $ ./build.py install
         Ready to install ESP-IDF prerequisites..
-    
+
         ... (more lines of install ESP-IDF prerequisites)
 
         Ready to install ESP-AT prerequisites..
@@ -291,7 +291,7 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 
         $ ./build.py install
         Ready to install ESP-IDF prerequisites..
-    
+
         ... (more lines of install ESP-IDF prerequisites)
 
         Ready to install ESP-AT prerequisites..
@@ -334,7 +334,7 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 
         $ ./build.py install
         Ready to install ESP-IDF prerequisites..
-    
+
         ... (more lines of install ESP-IDF prerequisites)
 
         Ready to install ESP-AT prerequisites..
@@ -377,7 +377,7 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 
         $ ./build.py install
         Ready to install ESP-IDF prerequisites..
-    
+
         ... (more lines of install ESP-IDF prerequisites)
 
         Ready to install ESP-AT prerequisites..
@@ -416,7 +416,7 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 第四步：连接设备
 ^^^^^^^^^^^^^^^^
 
-使用 USB 线将您的 {IDF_TARGET_NAME} 设备连接到 PC 上，以下载固件和输出日志，详情请见 :doc:`../Get_Started/Hardware_connection`。注意，如果您在编译过程中不发送 AT 命令和接收 AT 响应，则不需要建立 "AT 命令/响应" 连接。关于更改默认端口管脚的信息请参考 :doc:`How_to_set_AT_port_pin`。
+使用 USB 线将你的 {IDF_TARGET_NAME} 设备连接到 PC 上，以下载固件和输出日志，详情请见 :doc:`../Get_Started/Hardware_connection`。注意，如果你在编译过程中不发送 AT 命令和接收 AT 响应，则不需要建立 "AT 命令/响应" 连接。关于更改默认端口管脚的信息请参考 :doc:`How_to_set_AT_port_pin`。
 
 .. _esp-at-project-config:
 
@@ -426,15 +426,15 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 运行项目工具 ``menuconfig`` 来配置。
 
 - Linux 或 macOS
-  
+
   ::
-    
+
     ./build.py menuconfig
 
 - Windows
 
   ::
-    
+
     python build.py menuconfig
 
 如果以上所有步骤都正确，则会弹出下面的菜单：
@@ -499,7 +499,7 @@ ESP-AT 将下载至 Linux 和 macOS 的 ``~/esp/esp-at``、Windows 的 ``%userpr
 build.py 进阶用法
 ^^^^^^^^^^^^^^^^^^^^^^
 
-``build.py`` 脚本是基于 `idf.py <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/build-system.html#idf-py>`__ 封装的工具（即 ``idf.py <cmd>`` 功能均包含在 ``build.py <cmd>`` 里），您可以运行以下命令查看更多用法。
+``build.py`` 脚本是基于 `idf.py <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/build-system.html#idf-py>`__ 封装的工具（即 ``idf.py <cmd>`` 功能均包含在 ``build.py <cmd>`` 里），你可以运行以下命令查看更多用法。
 
 - Linux 或 macOS
 

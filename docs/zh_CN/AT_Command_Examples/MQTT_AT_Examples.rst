@@ -17,7 +17,7 @@ MQTT AT 示例
 
 以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 MQTT 发布者（只作为 MQTT 发布者角色），另一块作为 MQTT 订阅者（只作为 MQTT 订阅者角色）。
 
-示例介绍了如何基于 TCP 创建 MQTT 连接。首先您需要创建一个本地 MQTT 代理，假设 MQTT 代理的 IP 地址为 ``192.168.3.102``，端口为 ``8883``。
+示例介绍了如何基于 TCP 创建 MQTT 连接。首先你需要创建一个本地 MQTT 代理，假设 MQTT 代理的 IP 地址为 ``192.168.3.102``，端口为 ``8883``。
 
 .. Important::
   步骤中以 ``{IDF_TARGET_NAME} MQTT 发布者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 发布者端执行即可，以 ``{IDF_TARGET_NAME} MQTT 订阅者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 订阅者端执行即可。如果操作没有特别指明在哪端操作，则需要在发布者端和订阅者端都执行。
@@ -61,7 +61,7 @@ MQTT AT 示例
      AT+MQTTCONN=0,"192.168.3.102",8883,1
 
    响应：
-  
+
    .. code-block:: none
 
      +MQTTCONNECTED:0,1,"192.168.3.102","8883","",1
@@ -70,7 +70,7 @@ MQTT AT 示例
 
    说明：
 
-   - 您输入的 MQTT 代理域名或 MQTT 代理 IP 地址可能与上述命令中的不同。
+   - 你输入的 MQTT 代理域名或 MQTT 代理 IP 地址可能与上述命令中的不同。
 
 #. 订阅 MQTT 主题。
 
@@ -83,7 +83,7 @@ MQTT AT 示例
      AT+MQTTSUB=0,"topic",1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -99,7 +99,7 @@ MQTT AT 示例
      AT+MQTTPUB=0,"topic","test",1,0
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -121,7 +121,7 @@ MQTT AT 示例
      AT+MQTTCLEAN=0
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -131,9 +131,9 @@ MQTT AT 示例
 
 以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 MQTT 发布者（只作为 MQTT 发布者角色），另一块作为 MQTT 订阅者（只作为 MQTT 订阅者角色）。
 
-示例介绍了如何基于 TCP 创建 MQTT 连接。首先您需要创建一个本地 MQTT 代理，假设 MQTT 代理的 IP 地址为 ``192.168.3.102``，端口为 ``8883``。
+示例介绍了如何基于 TCP 创建 MQTT 连接。首先你需要创建一个本地 MQTT 代理，假设 MQTT 代理的 IP 地址为 ``192.168.3.102``，端口为 ``8883``。
 
-如果您发布消息的数据量相对较多，已经超过了单条 AT 命令的长度阈值 ``256``，则您可以使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
+如果你发布消息的数据量相对较多，已经超过了单条 AT 命令的长度阈值 ``256``，则你可以使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
 
 .. Important::
   步骤中以 ``{IDF_TARGET_NAME} MQTT 发布者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 发布者端执行即可，以 ``{IDF_TARGET_NAME} MQTT 订阅者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 订阅者端执行即可。如果操作没有特别指明在哪端操作，则需要在发布者端和订阅者端都执行。
@@ -186,7 +186,7 @@ MQTT AT 示例
 
    说明：
 
-   - 您输入的 MQTT 代理域名或 MQTT 代理 IP 地址可能与上述命令中的不同。
+   - 你输入的 MQTT 代理域名或 MQTT 代理 IP 地址可能与上述命令中的不同。
 
 #. 订阅 MQTT 主题。
 
@@ -228,7 +228,7 @@ MQTT AT 示例
 
      >
 
-   上述响应表示 AT 已准备好接收串行数据，此时您可以输入数据，当 AT 接收到的数据长度达到 ``<length>`` 后，数据传输开始。
+   上述响应表示 AT 已准备好接收串行数据，此时你可以输入数据，当 AT 接收到的数据长度达到 ``<length>`` 后，数据传输开始。
 
    .. code-block:: none
 
@@ -262,7 +262,7 @@ MQTT AT 示例
 
 以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 MQTT 发布者（只作为 MQTT 发布者角色），另一块作为 MQTT 订阅者（只作为 MQTT 订阅者角色）。
 
-示例介绍了如何基于 TLS 创建 MQTT 连接。首先您需要创建一个本地 MQTT 代理，假设 MQTT 代理的 IP 地址为 ``192.168.3.102``，端口为 ``8883``。
+示例介绍了如何基于 TLS 创建 MQTT 连接。首先你需要创建一个本地 MQTT 代理，假设 MQTT 代理的 IP 地址为 ``192.168.3.102``，端口为 ``8883``。
 
 .. Important::
   步骤中以 ``{IDF_TARGET_NAME} MQTT 发布者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 发布者端执行即可，以 ``{IDF_TARGET_NAME} MQTT 订阅者`` 开头的操作只需要在 {IDF_TARGET_NAME} MQTT 订阅者端执行即可。如果操作没有特别指明在哪端操作，则需要在发布者端和订阅者端都执行。
@@ -276,7 +276,7 @@ MQTT AT 示例
      AT+CIPSNTPCFG=1,8,"ntp1.aliyun.com"
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -290,7 +290,7 @@ MQTT AT 示例
      AT+CIPSNTPTIME?
 
    响应：
-  
+
    .. code-block:: none
 
      +CIPSNTPTIME:Thu Sep  2 18:57:03 2021
@@ -298,7 +298,7 @@ MQTT AT 示例
 
    说明：
 
-   - 您的查询 SNTP 结果可能与上述响应中的不同。
+   - 你的查询 SNTP 结果可能与上述响应中的不同。
    - 请确保 SNTP 时间一定是真实有效的时间，不能是 1970 年及之前的时间。
    - 设置时间是为了在 TLS 认证时校验证书的有效期。
 
@@ -327,7 +327,7 @@ MQTT AT 示例
      AT+MQTTUSERCFG=0,4,"subscriber","espressif","123456789",0,0,""
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -341,7 +341,7 @@ MQTT AT 示例
      AT+MQTTCONNCFG=0,0,0,"lwtt","lwtm",0,0
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -355,7 +355,7 @@ MQTT AT 示例
      AT+MQTTCONN=0,"192.168.3.102",8883,1
 
    响应：
-  
+
    .. code-block:: none
 
      +MQTTCONNECTED:0,4,"192.168.3.102","8883","",1
@@ -364,7 +364,7 @@ MQTT AT 示例
 
    说明：
 
-   - 您输入的 MQTT 代理域名或 MQTT 代理 IP 地址可能与上述命令中的不同。
+   - 你输入的 MQTT 代理域名或 MQTT 代理 IP 地址可能与上述命令中的不同。
 
 #. 订阅 MQTT 主题。
 
@@ -377,7 +377,7 @@ MQTT AT 示例
      AT+MQTTSUB=0,"topic",1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -393,7 +393,7 @@ MQTT AT 示例
      AT+MQTTPUB=0,"topic","test",1,0
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -415,7 +415,7 @@ MQTT AT 示例
      AT+MQTTCLEAN=0
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -439,7 +439,7 @@ MQTT AT 示例
      AT+CIPSNTPCFG=1,8,"ntp1.aliyun.com"
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -453,7 +453,7 @@ MQTT AT 示例
      AT+CIPSNTPTIME?
 
    响应：
-  
+
    .. code-block:: none
 
      +CIPSNTPTIME:Thu Sep  2 18:57:03 2021
@@ -461,7 +461,7 @@ MQTT AT 示例
 
    说明：
 
-   - 您的查询 SNTP 结果可能与上述响应中的不同。
+   - 你的查询 SNTP 结果可能与上述响应中的不同。
    - 请确保 SNTP 时间一定是真实有效的时间，不能是 1970 年及之前的时间。
    - 设置时间是为了在 TLS 认证时校验证书的有效期。
 
@@ -490,7 +490,7 @@ MQTT AT 示例
      AT+MQTTUSERCFG=0,7,"subscriber","","",0,0,"mqtt"
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -504,7 +504,7 @@ MQTT AT 示例
      AT+MQTTCONN=0,"test.mosquitto.org",8081,1
 
    响应：
-  
+
    .. code-block:: none
 
      +MQTTCONNECTED:0,7,"test.mosquitto.org","8081","/mqtt",1
@@ -513,7 +513,7 @@ MQTT AT 示例
 
    说明：
 
-   - 您输入的 MQTT 代理域名或 MQTT 代理 IP 地址可能与上述命令中的不同。
+   - 你输入的 MQTT 代理域名或 MQTT 代理 IP 地址可能与上述命令中的不同。
 
 #. 订阅 MQTT 主题。
 
@@ -526,7 +526,7 @@ MQTT AT 示例
      AT+MQTTSUB=0,"topic",1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -542,7 +542,7 @@ MQTT AT 示例
      AT+MQTTPUB=0,"topic","test",1,0
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -564,7 +564,7 @@ MQTT AT 示例
      AT+MQTTCLEAN=0
 
    响应：
-  
+
    .. code-block:: none
 
      OK

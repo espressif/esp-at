@@ -24,7 +24,7 @@ With the web server, mobile phone or PC is able to control {IDF_TARGET_NAME}'s W
 Introduction to Operation Steps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The whole process can be divided into the following three steps:  
+The whole process can be divided into the following three steps:
 
 .. contents::
    :local:
@@ -39,45 +39,45 @@ Firstly, {IDF_TARGET_NAME} needs to be configured to softAP + STA mode, and crea
 
 
    - Command
-   
+
      ::
- 
+
        AT+RESTORE
 
 #. Set the Wi-Fi mode to Station+SoftAP.
 
 
    - Command
-   
+
      ::
- 
+
        AT+CWMODE=3
 
 #. Set the configuration of an {IDF_TARGET_NAME} SoftAP. (For example, set the default connection ssid to "pos_softap", Wi-Fi without password.)
 
 
    - Command
-   
+
      ::
- 
+
        AT+CWSAP="pos_softap","",11,0,3
 
 #. Enable multiple connections.
 
 
    - Command
-   
+
      ::
- 
+
        AT+CIPMUX=1
 
 #. Create a web server, port: 80, connection timeout: 25 s (default maximum is 60 s).
 
 
    - Command
-   
+
      ::
- 
+
        AT+WEBSERVER=1,80,25
 
 After starting the web sever according to the above commands, you can turn on the Wi-Fi connection function on your STA device, and connect it to the softAP of the {IDF_TARGET_NAME}:
@@ -129,10 +129,10 @@ At the same time, the following messages will be returned from the ESP-AT comman
 
 ::
 
-    +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information  
-    WIFI CONNECTED       // meaning that {IDF_TARGET_NAME} is connecting 
+    +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information
+    WIFI CONNECTED       // meaning that {IDF_TARGET_NAME} is connecting
     WIFI GOT IP          // meaning that {IDF_TARGET_NAME} connect successfully to the destination router
-    +WEBSERVERRSP:2      // meaning that STA device has received Wi-Fi connection result, and web resources can be released  
+    +WEBSERVERRSP:2      // meaning that STA device has received Wi-Fi connection result, and web resources can be released
 
 If the {IDF_TARGET_NAME} fails to connect to the router, the web page will display:
 
@@ -183,7 +183,7 @@ As shown in the figure, click on the "OTA" option in the lower right corner of t
 
 **Note** 1: The configuration interface can only be opened when the STA device is connected to the AP of the {IDF_TARGET_NAME}, or the STA device accessing the OTA configuration page is connected to the {IDF_TARGET_NAME} in the same subnet.
 
-**Note** 2: The "current app version" displayed on the webpage is the version number of the application. You can change the version number through ``./build.py menuconfig`` --> ``Component config`` --> ``AT`` --> ``AT firmware version`` (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`). In this case, you can manage your application firmware version.
+**Note** 2: The "current app version" displayed on the webpage is the version number of the application. You can change the version number through ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT firmware version`` (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`). In this case, you can manage your application firmware version.
 
 Selecting the Partition to Upgrade
 """""""""""""""""""""""""""""""""""""""
@@ -283,27 +283,27 @@ Firstly, {IDF_TARGET_NAME} needs to be configured to softAP + STA mode, and crea
 
 
    - Command
-   
+
      ::
- 
+
        AT+RESTORE
 
 #. Set the Wi-Fi mode to Station+SoftAP.
 
 
    - Command
-   
+
      ::
- 
+
        AT+CWMODE=3
 
 #. Set the configuration of an {IDF_TARGET_NAME} SoftAP. (For example, set the default connection ssid to "pos_softap", and password to "espressif".)
 
 
    - Command
-   
+
      ::
- 
+
        AT+CWSAP="pos_softap","espressif",11,3,3
 
   .. note::
@@ -314,18 +314,18 @@ Firstly, {IDF_TARGET_NAME} needs to be configured to softAP + STA mode, and crea
 
 
    - Command
-   
+
      ::
- 
+
        AT+CIPMUX=1
 
 #. Create a web server, port: 80, connection timeout: 40 s (default maximum is 60 s).
 
 
    - Command
-   
+
      ::
- 
+
        AT+WEBSERVER=1,80,40
 
 Load WeChat Applet
@@ -415,10 +415,10 @@ At the same time, the following messages will be returned from the ESP-AT comman
 
 ::
 
-    +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information  
-    WIFI CONNECTED       // meaning that {IDF_TARGET_NAME} is connecting 
+    +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information
+    WIFI CONNECTED       // meaning that {IDF_TARGET_NAME} is connecting
     WIFI GOT IP          // meaning that {IDF_TARGET_NAME} connect successfully to the destination router
-    +WEBSERVERRSP:2      // meaning that STA device has received Wi-Fi connection result, and web resources can be released  
+    +WEBSERVERRSP:2      // meaning that STA device has received Wi-Fi connection result, and web resources can be released
 
 5.If the {IDF_TARGET_NAME} fails to connect to the router, the page will display:
 
@@ -474,7 +474,7 @@ Troubleshooting
 
 OTA Firmware Upgrade Using a WeChat Applet
 -------------------------------------------
-The WeChat applet support online firmware upgrade , please refer to the above-described `Configure {IDF_TARGET_NAME} Device Parameters`_ specific steps performed {IDF_TARGET_NAME} configuration (if the configuration has been completed, do not repeat configuration). Once configured, the device performs OTA firmware upgrade processes is similar as `OTA Firmware Upgrade Using a Browser`_ .
+The WeChat applet support online firmware upgrade, please refer to the above-described `Configure {IDF_TARGET_NAME} Device Parameters`_ specific steps performed {IDF_TARGET_NAME} configuration (if the configuration has been completed, do not repeat configuration). Once configured, the device performs OTA firmware upgrade processes is similar as `OTA Firmware Upgrade Using a Browser`_ .
 
 .. _using-captive-portal:
 

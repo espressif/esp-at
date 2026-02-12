@@ -6,18 +6,18 @@
 :link_to_translation:`en:[English]`
 
 - :ref:`介绍 <cmd-driver-intro>`
--  :ref:`AT+DRVADC <cmd-DRVADC>`：读取 ADC 通道值
--  :ref:`AT+DRVPWMINIT <cmd-DRVPWMINIT>`：初始化 PWM 驱动器
--  :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>`：设置 PWM 占空比
--  :ref:`AT+DRVPWMFADE <cmd-DRVPWMFADE>`：设置 PWM 渐变
--  :ref:`AT+DRVI2CINIT <cmd-DRVI2CINIT>`：初始化 I2C 主机驱动
--  :ref:`AT+DRVI2CRD <cmd-DRVI2CRD>`：读取 I2C 数据
--  :ref:`AT+DRVI2CWRDATA <cmd-DRVI2CWRDATA>`：写入 I2C 数据
--  :ref:`AT+DRVI2CWRBYTES <cmd-DRVI2CWRBYTES>`：写入不超过 4 字节的 I2C 数据
--  :ref:`AT+DRVSPICONFGPIO <cmd-DRVSPICONFGPIO>`：配置 SPI GPIO
--  :ref:`AT+DRVSPIINIT <cmd-DRVSPIINIT>`：初始化 SPI 主机驱动
--  :ref:`AT+DRVSPIRD <cmd-DRVSPIRD>`：读取 SPI 数据
--  :ref:`AT+DRVSPIWR <cmd-DRVSPIWR>`：写入 SPI 数据
+- :ref:`AT+DRVADC <cmd-DRVADC>`：读取 ADC 通道值
+- :ref:`AT+DRVPWMINIT <cmd-DRVPWMINIT>`：初始化 PWM 驱动器
+- :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>`：设置 PWM 占空比
+- :ref:`AT+DRVPWMFADE <cmd-DRVPWMFADE>`：设置 PWM 渐变
+- :ref:`AT+DRVI2CINIT <cmd-DRVI2CINIT>`：初始化 I2C 主机驱动
+- :ref:`AT+DRVI2CRD <cmd-DRVI2CRD>`：读取 I2C 数据
+- :ref:`AT+DRVI2CWRDATA <cmd-DRVI2CWRDATA>`：写入 I2C 数据
+- :ref:`AT+DRVI2CWRBYTES <cmd-DRVI2CWRBYTES>`：写入不超过 4 字节的 I2C 数据
+- :ref:`AT+DRVSPICONFGPIO <cmd-DRVSPICONFGPIO>`：配置 SPI GPIO
+- :ref:`AT+DRVSPIINIT <cmd-DRVSPIINIT>`：初始化 SPI 主机驱动
+- :ref:`AT+DRVSPIRD <cmd-DRVSPIRD>`：读取 SPI 数据
+- :ref:`AT+DRVSPIWR <cmd-DRVSPIWR>`：写入 SPI 数据
 
 .. _cmd-driver-intro:
 
@@ -25,7 +25,7 @@
 ------
 
 .. important::
-  默认的 AT 固件不支持此页面下的 AT 命令。如果您需要 {IDF_TARGET_NAME} 支持驱动命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+  默认的 AT 固件不支持此页面下的 AT 命令。如果你需要 {IDF_TARGET_NAME} 支持驱动命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
 
   - 启用 ``Component config`` > ``AT`` > ``AT driver command support``
 
@@ -54,7 +54,7 @@
 参数
 ^^^^
 
--  **<channel>**：ADC1 通道。
+- **<channel>**：ADC1 通道。
 
   .. only:: esp32 or esp32s2
 
@@ -102,7 +102,7 @@
         * - 4
           - GPIO4
 
--  **<atten>**：衰减值。
+- **<atten>**：衰减值。
 
   .. only:: esp32 or esp32s2
 
@@ -123,9 +123,9 @@
 说明
 ^^^^
 
--  ESP-AT 只支持 ADC1。
--  {IDF_TARGET_NAME} 支持 12 位宽度。
--  对于如何将通道值转换为电压，可以参考 `ADC 转换 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/adc_continuous.html#adc-continuous-read-conversion-result>`__。
+- ESP-AT 只支持 ADC1。
+- {IDF_TARGET_NAME} 支持 12 位宽度。
+- 对于如何将通道值转换为电压，可以参考 `ADC 转换 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/adc_continuous.html#adc-continuous-read-conversion-result>`__。
 
 示例
 ^^^^
@@ -175,16 +175,16 @@
 参数
 ^^^^
 
--  **<freq>**：LEDC 定时器频率，单位：Hz，范围：1 Hz ~ 8 MHz。
--  **<duty_res>**：LEDC 通道占空比分辨率，范围：0 ~ 20 位。
--  **<chx_gpio>**：LEDC 通道 x 的输出 GPIO。例如，如果您想将 GPIO16 作为通道 0，需设置 ``<ch0_gpio>`` 为 16。
+- **<freq>**：LEDC 定时器频率，单位：Hz，范围：1 Hz ~ 8 MHz。
+- **<duty_res>**：LEDC 通道占空比分辨率，范围：0 ~ 20 位。
+- **<chx_gpio>**：LEDC 通道 x 的输出 GPIO。例如，如果你想将 GPIO16 作为通道 0，需设置 ``<ch0_gpio>`` 为 16。
 
 说明
 ^^^^
 
--  ESP-AT 最多能支持 4 个通道。
--  使用本命令初始化的通道数量直接决定了其它 PWM 命令（如 :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>` 和 :ref:`AT+DRVPWMFADE <cmd-DRVPWMFADE>`）能够设置的通道。例如，如果您只初始化了两个通道，那么 ``AT+DRVPWMDUTY`` 命令只能用来更改这两个通道的 PWM 占空比。
--  频率和占空比分辨率相互影响。更多信息请见 `频率和占空比分辨率支持范围 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/ledc.html#ledc-api-supported-range-frequency-duty-resolution>`_。
+- ESP-AT 最多能支持 4 个通道。
+- 使用本命令初始化的通道数量直接决定了其它 PWM 命令（如 :ref:`AT+DRVPWMDUTY <cmd-DRVPWMDUTY>` 和 :ref:`AT+DRVPWMFADE <cmd-DRVPWMFADE>`）能够设置的通道。例如，如果你只初始化了两个通道，那么 ``AT+DRVPWMDUTY`` 命令只能用来更改这两个通道的 PWM 占空比。
+- 频率和占空比分辨率相互影响。更多信息请见 `频率和占空比分辨率支持范围 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/ledc.html#ledc-api-supported-range-frequency-duty-resolution>`_。
 
 示例
 ^^^^
@@ -217,13 +217,13 @@
 参数
 ^^^^
 
--  **<duty>**：LEDC 通道占空比，范围：[0,2 :sup:`占空比分辨率`]。
+- **<duty>**：LEDC 通道占空比，范围：[0,2 :sup:`占空比分辨率`]。
 
 说明
 ^^^^
 
--  ESP-AT 最多能支持 4 个通道。
--  若某个通道无需设置占空比，直接省略该参数。
+- ESP-AT 最多能支持 4 个通道。
+- 若某个通道无需设置占空比，直接省略该参数。
 
 示例
 ^^^^
@@ -256,14 +256,14 @@
 参数
 ^^^^
 
--  **<target_duty>**：目标渐变占空比，范围：[0,2 :sup:`duty_resolution`–1]。
--  **<fade_time>**：渐变的最长时间，单位：毫秒。
+- **<target_duty>**：目标渐变占空比，范围：[0,2 :sup:`duty_resolution`–1]。
+- **<fade_time>**：渐变的最长时间，单位：毫秒。
 
 说明
 ^^^^
 
--  ESP-AT 最多能支持 4 个通道。
--  若某个通道无需设置 ``<target_duty>`` 和 ``<fade_time>``，直接省略即可。
+- ESP-AT 最多能支持 4 个通道。
+- 若某个通道无需设置 ``<target_duty>`` 和 ``<fade_time>``，直接省略即可。
 
 示例
 ^^^^
@@ -296,15 +296,15 @@
 参数
 ^^^^
 
--  **<num>**：I2C 端口号，范围：0 ~ 1。如果未设置后面的参数，AT 将不初始化该 I2C 端口。 
--  **<scl_io>**：I2C SCL 信号的 GPIO 号。
--  **<sda_io>**：I2C SDA 信号的 GPIO 号。
--  **<clock>**：主机模式下的 I2C 时钟频率，单位：Hz，最大值：1 MHz。
+- **<num>**：I2C 端口号，范围：0 ~ 1。如果未设置后面的参数，AT 将不初始化该 I2C 端口。
+- **<scl_io>**：I2C SCL 信号的 GPIO 号。
+- **<sda_io>**：I2C SDA 信号的 GPIO 号。
+- **<clock>**：主机模式下的 I2C 时钟频率，单位：Hz，最大值：1 MHz。
 
 说明
 ^^^^
 
--  本命令只支持 I2C 主机。
+- 本命令只支持 I2C 主机。
 
 示例
 ^^^^
@@ -338,19 +338,19 @@
 参数
 ^^^^
 
--  **<num>**：I2C 端口号，范围：0 ~ 1。
--  **<address>**：I2C 从机设备地址：
+- **<num>**：I2C 端口号，范围：0 ~ 1。
+- **<address>**：I2C 从机设备地址：
 
-   -  7 位地址：0 ~ 0x7F；
-   -  10 位地址：第一个字节的前七个位是 1111 0XX，其中最后两位 XX 是 10 位地址的最高两位。例如，如果 10 位地址为 0x2FF (b'1011111111)，那么输入的地址为 0x7AFF (b'111101011111111)。
+   - 7 位地址：0 ~ 0x7F；
+   - 10 位地址：第一个字节的前七个位是 1111 0XX，其中最后两位 XX 是 10 位地址的最高两位。例如，如果 10 位地址为 0x2FF (b'1011111111)，那么输入的地址为 0x7AFF (b'111101011111111)。
 
--  **<length>**：I2C 数据长度，范围：1 ~ 2048。
--  **<read data>**：I2C 数据。
+- **<length>**：I2C 数据长度，范围：1 ~ 2048。
+- **<read data>**：I2C 数据。
 
 说明
 ^^^^
 
--  I2C 传输超时时间为一秒。
+- I2C 传输超时时间为一秒。
 
 示例
 ^^^^
@@ -385,13 +385,13 @@
     OK
     >
 
-收到上述响应后，请输入您想写入的数据，当数据达到参数指定长度后，数据传输开始。
+收到上述响应后，请输入你想写入的数据，当数据达到参数指定长度后，数据传输开始。
 
 若数据传输成功，则返回：
 
 ::
 
-    OK 
+    OK
 
 若数据传输失败，则返回：
 
@@ -402,18 +402,18 @@
 参数
 ^^^^
 
--  **<num>**：I2C 端口号，范围：0 ~ 1。
--  **<address>**：I2C 从机设备地址：
+- **<num>**：I2C 端口号，范围：0 ~ 1。
+- **<address>**：I2C 从机设备地址：
 
-   -  7 位地址：0 ~ 0x7F；
-   -  10 位地址：第一个字节的前七个位是 1111 0XX，其中最后两位 XX 是 10 位地址的最高两位。例如，如果 10 位地址为 0x2FF (b'1011111111)，那么输入的地址为 0x7AFF (b'111101011111111)。
+   - 7 位地址：0 ~ 0x7F；
+   - 10 位地址：第一个字节的前七个位是 1111 0XX，其中最后两位 XX 是 10 位地址的最高两位。例如，如果 10 位地址为 0x2FF (b'1011111111)，那么输入的地址为 0x7AFF (b'111101011111111)。
 
--  **<length>**：I2C 数据长度，范围：1 ~ 2048。
+- **<length>**：I2C 数据长度，范围：1 ~ 2048。
 
 说明
 ^^^^
 
--  I2C 传输超时时间为一秒。
+- I2C 传输超时时间为一秒。
 
 示例
 ^^^^
@@ -445,19 +445,19 @@
 参数
 ^^^^
 
--  **<num>**：I2C 端口号，范围：0 ~ 1。
--  **<address>**：I2C 从机设备地址。
+- **<num>**：I2C 端口号，范围：0 ~ 1。
+- **<address>**：I2C 从机设备地址。
 
-   -  7 位地址：0 ~ 0x7F。
-   -  10 位地址：第一个字节的前七个位是 1111 0XX，其中最后两位 XX 是 10 位地址的最高两位。例如，如果 10 位地址为 0x2FF (b'1011111111)，那么输入的地址为 0x7AFF (b'111101011111111)。
+   - 7 位地址：0 ~ 0x7F。
+   - 10 位地址：第一个字节的前七个位是 1111 0XX，其中最后两位 XX 是 10 位地址的最高两位。例如，如果 10 位地址为 0x2FF (b'1011111111)，那么输入的地址为 0x7AFF (b'111101011111111)。
 
--  **<length>**：待写入的 I2C 数据长度，范围：1 ~ 4 字节。
--  **<data>**：参数 ``<length>`` 指定长度的数据，范围：0 ~ 0xFFFFFFFF。
+- **<length>**：待写入的 I2C 数据长度，范围：1 ~ 4 字节。
+- **<data>**：参数 ``<length>`` 指定长度的数据，范围：0 ~ 0xFFFFFFFF。
 
 说明
 ^^^^
 
--  I2C 传输超时时间为一秒。
+- I2C 传输超时时间为一秒。
 
 示例
 ^^^^
@@ -493,10 +493,10 @@
 参数
 ^^^^
 
--  **<mosi>**：主出从入信号对应的 GPIO 管脚。
--  **<miso>**：主入从出信号对应 GPIO 管脚，若不使用，置位 -1。
--  **<sclk>**：SPI 时钟信号对应的 GPIO 管脚。
--  **<cs>**：选择从机的信号对应 GPIO 管脚，若不使用，置位 -1。
+- **<mosi>**：主出从入信号对应的 GPIO 管脚。
+- **<miso>**：主入从出信号对应 GPIO 管脚，若不使用，置位 -1。
+- **<sclk>**：SPI 时钟信号对应的 GPIO 管脚。
+- **<cs>**：选择从机的信号对应 GPIO 管脚，若不使用，置位 -1。
 
 .. _cmd-DRVSPIINIT:
 
@@ -521,19 +521,19 @@
 参数
 ^^^^
 
--  **<clock>**：时钟速度，分频数为 80 MHz，单位：Hz，最大值：40 MHz。
--  **<mode>**：SPI 模式，范围：0 ~ 3。
--  **<cmd_bit>**：命令阶段的默认位数，范围：0 ~ 16。
--  **<addr_bit>**：地址阶段的默认位数，范围：0 ~ 64。
--  **<dma_chan>**：通道 1 或 2，不需要 DMA 时也可为 0。
--  **<bits_msb>**：SPI 数据格式：
-   
-   - bit0:
-    
+- **<clock>**：时钟速度，分频数为 80 MHz，单位：Hz，最大值：40 MHz。
+- **<mode>**：SPI 模式，范围：0 ~ 3。
+- **<cmd_bit>**：命令阶段的默认位数，范围：0 ~ 16。
+- **<addr_bit>**：地址阶段的默认位数，范围：0 ~ 64。
+- **<dma_chan>**：通道 1 或 2，不需要 DMA 时也可为 0。
+- **<bits_msb>**：SPI 数据格式：
+
+   - bit 0:
+
      - 0: 先传输 MSB（默认）；
      - 1: 先传输 LSB。
-   
-   - bit1:
+
+   - bit 1:
 
      - 0: 先接收 MSB（默认）；
      - 1: 先接收 LSB。
@@ -551,7 +551,7 @@
     AT+DRVSPIINIT=102400,0,0,0,0,3 // SPI 时钟：100 kHz；模式：0；命令阶段和地址阶段默认位数均为 0；不使用 DMA；先传输和接收 LSB
     OK
     AT+DRVSPIINIT=0   // 删除 SPI 驱动
-    OK 
+    OK
 
 .. _cmd-DRVSPIRD:
 
@@ -577,16 +577,16 @@
 参数
 ^^^^
 
--  **<data_len>**：待读取的 SPI 数据长度，范围：1 ~ 4092 字节。
--  **<cmd>**：命令数据，数据长度由 ``<cmd_len>`` 参数设定。
--  **<cmd_len>**：本次传输中的命令长度，范围：0 ~ 2 字节。
--  **<addr>**：命令地址，地址长度由 ``<addr_len>`` 参数设定。
--  **<addr_len>**：本次传输中地址长度，范围：0 ~ 4 字节。
+- **<data_len>**：待读取的 SPI 数据长度，范围：1 ~ 4092 字节。
+- **<cmd>**：命令数据，数据长度由 ``<cmd_len>`` 参数设定。
+- **<cmd_len>**：本次传输中的命令长度，范围：0 ~ 2 字节。
+- **<addr>**：命令地址，地址长度由 ``<addr_len>`` 参数设定。
+- **<addr_len>**：本次传输中地址长度，范围：0 ~ 4 字节。
 
 说明
 ^^^^
 
--  若不使用 DMA，``<data_len>`` 参数每次能够设定的最大值为 64 字节。
+- 若不使用 DMA，``<data_len>`` 参数每次能够设定的最大值为 64 字节。
 
 示例
 ^^^^
@@ -624,7 +624,7 @@
     OK
     >
 
-收到上述响应后，请输入您想写入的数据，当数据达到参数指定长度后，数据传输开始。
+收到上述响应后，请输入你想写入的数据，当数据达到参数指定长度后，数据传输开始。
 
 若数据传输成功，AT 返回：
 
@@ -636,21 +636,21 @@
 
 ::
 
-    OK 
+    OK
 
 参数
 ^^^^
 
--  **<data_len>**：SPI 数据长度，范围：0 ~ 4092。
--  **<cmd>**：命令数据，数据长度由 ``<cmd_len>`` 参数设定。
--  **<cmd_len>**：本次传输中的命令长度，范围：0 ~ 2 字节。
--  **<addr>**：命令地址，地址长度由 ``<addr_len>`` 参数设定。
--  **<addr_len>**：本次传输中地址长度，范围：0 ~ 4 字节。
+- **<data_len>**：SPI 数据长度，范围：0 ~ 4092。
+- **<cmd>**：命令数据，数据长度由 ``<cmd_len>`` 参数设定。
+- **<cmd_len>**：本次传输中的命令长度，范围：0 ~ 2 字节。
+- **<addr>**：命令地址，地址长度由 ``<addr_len>`` 参数设定。
+- **<addr_len>**：本次传输中地址长度，范围：0 ~ 4 字节。
 
 说明
 ^^^^
 
--  若不使用 DMA，``<data_len>`` 参数每次能够设定的最大值为 64 字节。
+- 若不使用 DMA，``<data_len>`` 参数每次能够设定的最大值为 64 字节。
 
 示例
 ^^^^

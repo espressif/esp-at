@@ -67,7 +67,7 @@ The ESP-AT project creates Bluetooth LE services based on its Bluetooth LE servi
 Below are descriptions of the table above.
 
 - ``perm`` field describes the permission. Its definition in the ESP-AT project is as follows:
-  
+
   .. code-block:: c
 
     /* relate to BTA_GATT_PERM_xxx in bta/bta_gatt_api.h */
@@ -142,7 +142,7 @@ You can define more than one service. For example, if you want to define three s
 
    .. list-table::
       :header-rows: 1
-   
+
       * - index
         - uuid_len
         - uuid
@@ -161,10 +161,10 @@ You can define more than one service. For example, if you want to define three s
 2. Add the characteristic declaration and characteristic value.
 
    In this example, we define a readable and writable characteristic with UUID 0xC300, and set its value to 0x30.
-   
+
    .. list-table::
       :header-rows: 1
-   
+
       * - index
         - uuid_len
         - uuid
@@ -193,7 +193,7 @@ You can define more than one service. For example, if you want to define three s
 
    .. list-table::
       :header-rows: 1
-   
+
       * - index
         - uuid_len
         - uuid

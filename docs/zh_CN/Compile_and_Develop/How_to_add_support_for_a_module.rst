@@ -44,7 +44,7 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
 第二步：配置新增模组的 OTA
 -----------------------------------
 
-在 :component_file:`at/src/at_default_config.c` 中的 ``s_module_info`` 结构体中添加自定义模组的信息。 
+在 :component_file:`at/src/at_default_config.c` 中的 ``s_module_info`` 结构体中添加自定义模组的信息。
 
 ``s_module_info`` 结构体提供 ``OTA`` 升级验证 ``token``：
 
@@ -196,17 +196,17 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
 .. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
   - 使用 SPI 配置，移除 UART 配置
-  
+
     - 移除 UART 配置
-    
+
       ::
-  
+
         CONFIG_AT_BASE_ON_UART=n
-  
+
     - 新增 SPI 配置
-  
+
       ::
-  
+
         CONFIG_AT_BASE_ON_SPI=y
         CONFIG_SPI_STANDARD_MODE=y
         CONFIG_SPI_SCLK_PIN=6
@@ -222,9 +222,9 @@ ESP-AT 工程支持多个模组，并提供了模组的配置文件：:component
 .. only:: esp32 or esp32s2
 
   - 添加启用 :ref:`文件系统 AT 命令 <FS-AT>` 配置
-    
+
     ::
-  
+
       CONFIG_AT_FS_COMMAND_SUPPORT=y
 
 完成上述步骤后，可重新编译 ESP-AT 工程生成模组固件。本例中，我们在本地编译 AT 固件 :ref:`第三步安装环境 <esp-at-install-env>` 时，就可以选择 ``PLATFORM_{IDF_TARGET_CFG_PREFIX}`` 和 ``{IDF_TARGET_CFG_PREFIX}-USER-DEFINED`` 来生成 AT 固件。

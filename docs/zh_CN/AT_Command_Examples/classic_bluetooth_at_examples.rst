@@ -10,7 +10,7 @@
    :depth: 1
 
 .. Important::
-  
+
   固件默认不支持 Classic Bluetooth 命令。有关如何使能对 Classic Bluetooth 的支持，请参考文档 :ref:`Classic Bluetooth AT 命令的介绍 <cmd-bt-intro>`。
 
 以普通传输模式在移动电话或者 PC 和 {IDF_TARGET_NAME} 之间建立 SPP 连接并且设置 IO 能力为 NoInputNoOutput
@@ -19,7 +19,7 @@
 在本例中，移动电话或 PC 为主机，{IDF_TARGET_NAME} 为从机。该示例展示了如何建立 SPP 连接。
 
 #. Classic Bluetooth 初始化。
-   
+
    命令：
 
    .. code-block:: none
@@ -27,13 +27,13 @@
      AT+BTINIT=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. Classic Bluetooth SPP 协议初始化并且设置角色为 slave。
-   
+
    命令：
 
    .. code-block:: none
@@ -41,13 +41,13 @@
      AT+BTSPPINIT=2
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 设置 Classic Bluetooth 设备名称。
-   
+
    命令：
 
    .. code-block:: none
@@ -55,13 +55,13 @@
      AT+BTNAME="EXAMPLE"
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 设置 Classic Bluetooth 扫描模式为可发现可连接。
-   
+
    命令：
 
    .. code-block:: none
@@ -69,13 +69,13 @@
      AT+BTSCANMODE=2
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 设置 Classic Bluetooth 安全参数。设置 ``io_cap`` 为 ``NoInputNoOutput``，``pin_type`` 为 ``fixed``，``pin_code`` to ``9527``。
-   
+
    命令：
 
    .. code-block:: none
@@ -83,13 +83,13 @@
      AT+BTSECPARAM=3,1,"9527"
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 开启 Classic Bluetooth SPP 协议。
-   
+
    命令：
 
    .. code-block:: none
@@ -97,7 +97,7 @@
      AT+BTSPPSTART
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -112,7 +112,7 @@
 
    说明：
 
-   - 您获取到的地址可能与上述响应中的不同。
+   - 你获取到的地址可能与上述响应中的不同。
 
 #. 发送 4 字节数据。
 
@@ -128,7 +128,7 @@
 
      >
 
-   符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<data_len>`` 的值时，执行写入操作。
+   符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<data_len>`` 的值时，执行写入操作。
 
    输入 4 字节数据，例如输入数据是 ``test``，之后 AT 将会输出以下信息。
 
@@ -167,7 +167,7 @@
 
    说明：
 
-   - 您获取到的地址可能与上述响应中的不同。
+   - 你获取到的地址可能与上述响应中的不同。
 
 以透传模式在移动电话或者 PC 和 {IDF_TARGET_NAME} 之间建立 SPP 连接并且设置 IO 能力为 NoInputNoOutput
 -------------------------------------------------------------------------------------------------------------------------------
@@ -175,7 +175,7 @@
 在本例中，移动电话或 PC 为主机，{IDF_TARGET_NAME} 为从机。该示例展示了如何建立 SPP 连接。
 
 #. Classic Bluetooth 初始化。
-   
+
    命令：
 
    .. code-block:: none
@@ -183,13 +183,13 @@
      AT+BTINIT=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. Classic Bluetooth SPP 协议初始化并且设置角色为 slave。
-   
+
    命令：
 
    .. code-block:: none
@@ -197,13 +197,13 @@
      AT+BTSPPINIT=2
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 设置 Classic Bluetooth 设备名称。
-   
+
    命令：
 
    .. code-block:: none
@@ -211,13 +211,13 @@
      AT+BTNAME="EXAMPLE"
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 设置 Classic Bluetooth 扫描模式为可发现可连接。
-   
+
    命令：
 
    .. code-block:: none
@@ -225,13 +225,13 @@
      AT+BTSCANMODE=2
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 设置 Classic Bluetooth 安全参数。设置 ``io_cap`` 为 ``NoInputNoOutput``，``pin_type`` 为 ``fixed``，``pin_code`` 为 ``9527``。
-   
+
    命令：
 
    .. code-block:: none
@@ -239,13 +239,13 @@
      AT+BTSECPARAM=3,1,"9527"
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 开启 Classic Bluetooth SPP 协议。
-   
+
    命令：
 
    .. code-block:: none
@@ -253,7 +253,7 @@
      AT+BTSPPSTART
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -268,7 +268,7 @@
 
    说明：
 
-   - 您获取到的地址可能与上述响应中的不同。
+   - 你获取到的地址可能与上述响应中的不同。
 
 #. 在透传模式下发送数据。
 
@@ -298,7 +298,7 @@
 
    .. Important::
 
-     使用 ``+++`` 可退出透传发送数据，回到正常 AT 命令模式。您也可以使用 ``AT+BTSPPSEND`` 命令恢复透传。
+     使用 ``+++`` 可退出透传发送数据，回到正常 AT 命令模式。你也可以使用 ``AT+BTSPPSEND`` 命令恢复透传。
 
 #. 断开 Classic Bluetooth SPP 连接。
 
@@ -318,7 +318,7 @@
 
    说明：
 
-   - 您获取到的地址可能与上述响应中的不同。
+   - 你获取到的地址可能与上述响应中的不同。
 
 在移动电话或者 PC 和 {IDF_TARGET_NAME} 之间建立 SPP 连接并且设置 IO 能力为 KeyboardOnly
 --------------------------------------------------------------------------------------------
@@ -326,7 +326,7 @@
 该过程基本和 `以普通传输模式在移动电话或者 PC 和 {IDF_TARGET_NAME} 之间建立 SPP 连接并且设置 IO 能力为 NoInputNoOutput`_ 描述的一样。唯一的区别在于安全参数设置。
 
 #. Classic Bluetooth 初始化。
-   
+
    命令：
 
    .. code-block:: none
@@ -334,13 +334,13 @@
      AT+BTINIT=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. Classic Bluetooth SPP 协议初始化并且设置角色为 slave。
-   
+
    命令：
 
    .. code-block:: none
@@ -348,13 +348,13 @@
      AT+BTSPPINIT=2
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 设置 Classic Bluetooth 设备名称。
-   
+
    命令：
 
    .. code-block:: none
@@ -362,13 +362,13 @@
      AT+BTNAME="EXAMPLE"
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 设置 Classic Bluetooth 扫描模式为可发现可连接。
-   
+
    命令：
 
    .. code-block:: none
@@ -376,13 +376,13 @@
      AT+BTSCANMODE=2
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 设置 Classic Bluetooth 安全参数。设置 ``io_cap`` 为 ``KeyboardOnly``，``pin_type`` 为 ``variable``，``pin_code`` 为 ``9527``。
-   
+
    命令：
 
    .. code-block:: none
@@ -390,13 +390,13 @@
      AT+BTSECPARAM=2,0,"9527"
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 开启 Classic Bluetooth SPP 协议。
-   
+
    命令：
 
    .. code-block:: none
@@ -404,14 +404,14 @@
      AT+BTSPPSTART
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 移动电话或者 PC 发起连接。
 
-   移动电话或者 PC 可以发起连接并且产生 PIN 码，您可以在 {IDF_TARGET_NAME} 端输入 PIN 码。
+   移动电话或者 PC 可以发起连接并且产生 PIN 码，你可以在 {IDF_TARGET_NAME} 端输入 PIN 码。
 
    .. code-block:: none
 
@@ -425,8 +425,8 @@
 
    说明：
 
-   - 您输入的 PIN 码可能与上述命令中的不同。请使用真实的 PIN 码代替。
-   - 您获取到的地址可能与上述响应中的不同。
+   - 你输入的 PIN 码可能与上述命令中的不同。请使用真实的 PIN 码代替。
+   - 你获取到的地址可能与上述响应中的不同。
 
 #. 断开 Classic Bluetooth SPP 连接。
 
@@ -446,7 +446,7 @@
 
    说明：
 
-   - 您获取到的地址可能与上述响应中的不同。
+   - 你获取到的地址可能与上述响应中的不同。
 
 在两个 {IDF_TARGET_NAME} 开发板之间建立 SPP 连接
 ----------------------------------------------------
@@ -458,7 +458,7 @@
   在以下步骤中以 ``主机`` 开头的操作只需要在主机端执行即可，以 ``从机`` 开头的操作只需要在从机端执行即可。如果操作没有特别指明在哪端操作，则需要在主机端和从机端都执行。
 
 #. Classic Bluetooth 初始化。
-   
+
    命令：
 
    .. code-block:: none
@@ -466,7 +466,7 @@
      AT+BTINIT=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -482,7 +482,7 @@
      AT+BTSPPINIT=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -496,7 +496,7 @@
      AT+BTSPPINIT=2
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -512,7 +512,7 @@
      AT+BTNAME="EXAMPLE"
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -528,7 +528,7 @@
      AT+BTSCANMODE=2
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -544,7 +544,7 @@
      AT+BTSECPARAM=3,1,"9527"
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -560,7 +560,7 @@
      AT+BTSPPSTART
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -576,7 +576,7 @@
      AT+BTSTARTDISC=0,10,10
 
    响应：
-  
+
    .. code-block:: none
 
      +BTSTARTDISC:"10:f6:05:f9:bc:4f",realme V11 5G,0x2,0x3,0x2d0,-34
@@ -600,7 +600,7 @@
 
    说明：
 
-   - 您的发现结果可能与上述响应中的不同。
+   - 你的发现结果可能与上述响应中的不同。
 
 #. 建立 SPP 连接。
 
@@ -613,7 +613,7 @@
      AT+BTSPPCONN=0,0,"24:0a:c4:d6:e4:46"
 
    响应：
-  
+
    .. code-block:: none
 
      +BTSPPCONN:0,"24:0a:c4:d6:e4:46"
@@ -622,7 +622,7 @@
 
    说明：
 
-   - 输入上述命令时，请使用您的从机地址。
+   - 输入上述命令时，请使用你的从机地址。
    - 如果连接建立成功，从机端则会提示 ``+BTSPPCONN:0,"30:ae:a4:80:06:8e"``。
 
 #. 断开 Classic Bluetooth SPP 连接。
@@ -652,7 +652,7 @@
 -------------------------------------------
 
 .. Important::
-  
+
   - 使用 ``A2DP Sink`` 需要客户自己添加 ``I2S`` 部分的代码。初始化 ``I2S`` 部分的代码请参考 `a2dp sink 例程 <https://github.com/espressif/esp-idf/blob/master/examples/bluetooth/bluedroid/classic_bt/a2dp_sink/main/main.c>`__。
   - ``decoder`` 芯片部分的驱动代码也需要客户自行添加或使用现成的开发板。
 
@@ -665,7 +665,7 @@
      AT+BTINIT=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -679,13 +679,13 @@
      AT+BTA2DPINIT=2
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 设置 Classic Bluetooth 设备名称。
-   
+
    命令：
 
    .. code-block:: none
@@ -693,7 +693,7 @@
      AT+BTNAME="EXAMPLE"
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -707,14 +707,14 @@
      AT+BTSCANMODE=2
 
    响应：
-  
+
    .. code-block:: none
 
      OK
 
 #. 建立连接。
 
-   source 角色应能找到名为 “EXAMPLE” 的蓝牙设备。在本例中您可以使用您的移动电话发起连接。如果连接成功建立，{IDF_TARGET_NAME} 将提示：
+   source 角色应能找到名为 “EXAMPLE” 的蓝牙设备。在本例中你可以使用你的移动电话发起连接。如果连接成功建立，{IDF_TARGET_NAME} 将提示：
 
    .. code-block:: none
 
@@ -722,7 +722,7 @@
 
    说明：
 
-   - 您获取到的地址可能与上述响应中的不同。
+   - 你获取到的地址可能与上述响应中的不同。
 
 #. 开始播放音乐。
 
@@ -733,7 +733,7 @@
      AT+BTA2DPCTRL=0,1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -751,7 +751,7 @@
      AT+BTA2DPCTRL=0,0
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -769,7 +769,7 @@
      AT+BTA2DPDISCONN=0
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -787,7 +787,7 @@
      AT+BTENCDEV?
 
    响应：
-  
+
    .. code-block:: none
 
      +BTA2DPDISCONN:0,"e0:24:81:47:90:bc"
@@ -810,7 +810,7 @@
         AT+BTENCCLEAR=0
 
       响应：
-     
+
       .. code-block:: none
 
         OK
@@ -824,7 +824,7 @@
         AT+BTENCCLEAR
 
       响应：
-     
+
       .. code-block:: none
 
         OK

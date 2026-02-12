@@ -6,7 +6,7 @@
 
 .. note::
 
-        您正在切换的芯片不支持该功能，页面将跳转到上一级目录。
+        你正在切换的芯片不支持该功能，页面将跳转到上一级目录。
 
     .. only:: html
 
@@ -16,5 +16,5 @@
 
 .. figure:: ../_static/404-page__cn.svg
     :align: center
-    :alt: 抱歉，无法找到您想访问的页面。
+    :alt: 抱歉，无法找到你想访问的页面。
     :figclass: align-center

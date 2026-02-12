@@ -65,6 +65,12 @@ repos:
         language: python
         pass_filenames: false
         always_run: true
+      - id: check-docs-format
+        name: Check Documentation Format
+        entry: tools/ci/check_docs_format.py
+        language: python
+        types: [text]
+        files: '\.rst$'
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
     hooks:

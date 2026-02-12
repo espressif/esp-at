@@ -19,7 +19,7 @@ This document mainly introduces the following network provisioning methods suppo
   .. list-table:: Summary of Key Parameters for Provisioning Methods
      :header-rows: 1
      :widths: 45 35 35 35 35
-  
+
      * - Provisioning Method
        - BluFi Provisioning
        - SmartConfig Provisioning
@@ -61,7 +61,7 @@ This document mainly introduces the following network provisioning methods suppo
   .. list-table:: Summary of Key Parameters for Provisioning Methods
      :header-rows: 1
      :widths: 45 35 35 35 35
-  
+
      * - Provisioning Method
        - BluFi Provisioning
        - SmartConfig Provisioning
@@ -187,7 +187,7 @@ This document mainly introduces the following network provisioning methods suppo
   #. Establish BluFi connection on your mobile device and perform Wi-Fi provisioning.
 
      4.1 BluFi Connection
-    
+
        Enable the system's Bluetooth and GPS location services on your mobile device, then launch the EspBluFi app. Find the device named ``blufi_test`` and click it to enter. Next, click ``Connect`` to establish a connection. At this point, the ESP device should log something similar to ``+BLUFICONN``, and the app will display the below information, indicating that the BluFi connection has been successfully established.
 
        .. code-block:: none
@@ -205,9 +205,9 @@ This document mainly introduces the following network provisioning methods suppo
        After the connection is established, click ``Configure`` button in the EspBluFi app. The page will navigate to ``Configure`` page. Enter the Wi-Fi SSID and password, then click ``OK`` button to start provisioning. After a short wait, the app will display the below information.
 
        .. code-block:: none
-  
+
          Post configure params complete
-  
+
          Receive device status response:
          OpMode: Station
          Station connect Wi-Fi now
@@ -357,45 +357,45 @@ ESP-TOUCH v2 Provisioning Example
 
 .. AirKiss Provisioning Example
 .. ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. 
+..
 .. #. Open the WeChat application on your mobile device, search for and follow the "Espressif Technology" official account.
-.. 
+..
 .. #. Set the ESP device to Station mode.
-.. 
+..
 ..    Command:
-.. 
+..
 ..    .. code-block:: none
-.. 
+..
 ..      AT+CWMODE=1
-.. 
+..
 ..    Response:
-.. 
+..
 ..    .. code-block:: none
-.. 
+..
 ..      OK
-.. 
+..
 .. #. Enable SmartConfig on the {IDF_TARGET_NAME} device.
-.. 
+..
 ..    Command:
-.. 
+..
 ..    .. code-block:: none
-.. 
+..
 ..      AT+CWSTARTSMART=2
-.. 
+..
 ..    Response:
-.. 
+..
 ..    .. code-block:: none
-.. 
+..
 ..      OK
-.. 
+..
 .. #. Perform Wi-Fi provisioning on your mobile device.
-.. 
+..
 ..    Connect your mobile device to the Wi-Fi network that requires provisioning (e.g., SSID: test, password: 1234567890), then open WeChat, and go to the "Espressif Systems" official account. Click ``Product Resources``, find the AirKiss device, and enter its page. On the redirected page, enter the Wi-Fi password ``1234567890``. After a moment, the mobile will display the log message ``Configuration successful......``.
-.. 
+..
 ..    At this point, the ESP device should output the below information:
-.. 
+..
 ..    .. code-block:: none
-.. 
+..
 ..      smartconfig type:AIRKISS
 ..      Smart get wifi info
 ..      ssid:test
@@ -403,21 +403,21 @@ ESP-TOUCH v2 Provisioning Example
 ..      WIFI CONNECTED
 ..      WIFI GOT IP
 ..      smartconfig connected wifi
-.. 
+..
 ..    At this point, the ESP device's provisioning has been successfully completed.
-.. 
+..
 .. #. Disable SmartConfig on the {IDF_TARGET_NAME} device.
-.. 
+..
 ..    Command:
-.. 
+..
 ..    .. code-block:: none
-.. 
+..
 ..      AT+CWSTOPSMART
-.. 
+..
 ..    Response:
-.. 
+..
 ..    .. code-block:: none
-.. 
+..
 ..      OK
 
 .. _example-at_softap:
@@ -483,7 +483,7 @@ WPS Provisioning
 
      +CWJAP:"test",......
      OK
-  
+
 #. Disable WPS provisioning on the {IDF_TARGET_NAME} device.
 
    Command:

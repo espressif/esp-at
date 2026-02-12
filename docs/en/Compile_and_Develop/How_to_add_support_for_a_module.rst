@@ -196,15 +196,15 @@ In this example, we copy the ``module_{IDF_TARGET_PATH_NAME}_default`` folder as
 .. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
   - Modify the two files to use the SPI configuration and remove the UART configuration as follows:
-  
+
     - Remove the UART configuration
-    
+
       ::
-  
+
         CONFIG_AT_BASE_ON_UART=n
-  
+
     - Add the SPI configuration
-  
+
       ::
 
         CONFIG_AT_BASE_ON_SPI=y
@@ -224,7 +224,7 @@ In this example, we copy the ``module_{IDF_TARGET_PATH_NAME}_default`` folder as
   - Add support for :ref:`FileSystem AT commands <FS-AT>` configuration
 
     ::
-  
+
       CONFIG_AT_FS_COMMAND_SUPPORT=y
 
 After completing the above steps, you can recompile the ESP-AT project to generate the module firmware. In this example, when we compile the AT firmware locally during :ref:`Step 3: Install Environment <esp-at-install-env>`, we can select ``PLATFORM_{IDF_TARGET_CFG_PREFIX}`` and ``{IDF_TARGET_CFG_PREFIX}-USER-DEFINED`` to generate the AT firmware.

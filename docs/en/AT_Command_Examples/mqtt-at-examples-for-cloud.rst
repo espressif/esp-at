@@ -21,7 +21,7 @@ Obtain certificates and endpoints from AWS IoT
 1. Sign in to your AWS IoT Console account and switch to the IoT Core services.
 
 2. Create an AWS IoT policy, thing, and certificates following the instructions in `Create AWS IoT Resources <https://docs.aws.amazon.com/en_us/iot/latest/developerguide/create-iot-resources.html>`_.
-  
+
   Make sure you have got the following certificate and key files:
 
   - device.pem.crt (Device certificate)
@@ -77,7 +77,7 @@ Use AT commands to connect to AWS IoT
      AT+CWMODE=1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -91,7 +91,7 @@ Use AT commands to connect to AWS IoT
      AT+CWJAP=<"ssid">,<"password">
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -105,7 +105,7 @@ Use AT commands to connect to AWS IoT
      AT+CIPSNTPCFG=1,8,"pool.ntp.org"
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -119,7 +119,7 @@ Use AT commands to connect to AWS IoT
      AT+CIPSNTPTIME?
 
    Response:
-  
+
    .. code-block:: none
 
      +CIPSNTPTIME:<asctime style time>
@@ -138,7 +138,7 @@ Use AT commands to connect to AWS IoT
      AT+MQTTUSERCFG=0,5,"esp32","espressif","1234567890",0,0,""
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -156,7 +156,7 @@ Use AT commands to connect to AWS IoT
      AT+MQTTCONN=0,"<endpoint>",8883,1
 
    Response:
-  
+
    .. code-block:: none
 
      +MQTTCONNECTED:0,5,<endpoint>,"8883","",1
@@ -176,7 +176,7 @@ Use AT commands to connect to AWS IoT
      AT+MQTTSUB=0,"topic/esp32at",1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -190,7 +190,7 @@ Use AT commands to connect to AWS IoT
      AT+MQTTPUB=0,"topic/esp32at","hello aws!",1,0
 
    Response:
-  
+
    .. code-block:: none
 
      +MQTTSUBRECV:0,"topic/esp32at",10,hello aws!

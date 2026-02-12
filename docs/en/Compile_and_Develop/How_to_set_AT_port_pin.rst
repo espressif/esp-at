@@ -3,7 +3,7 @@ How to Set AT Port Pins
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document introduces how to modify :term:`AT port` pins in the firmware for {IDF_TARGET_NAME} series of products. By default, ESP-AT uses two UART interfaces as AT ports: one is to output logs (named as log port below) and the other to send AT commands and receive responses (named as command port below). 
+This document introduces how to modify :term:`AT port` pins in the firmware for {IDF_TARGET_NAME} series of products. By default, ESP-AT uses two UART interfaces as AT ports: one is to output logs (named as log port below) and the other to send AT commands and receive responses (named as command port below).
 
 If you already have the {IDF_TARGET_NAME} AT firmware and only need to modify the command port pins, you can directly modify the firmware using the :doc:`tools_at_py` to generate a new firmware for your module. Otherwise, if you need to modify the AT port pins of your {IDF_TARGET_NAME} device, you need to complete the following steps:
 
@@ -64,9 +64,9 @@ By default, the {IDF_TARGET_NAME} AT firmware provided by Espressif uses the fol
 
 When compiling your ESP-AT project, you can modify them to other pins with the menuconfig utility:
 
-* ``./build.py menuconfig`` --> ``Component config`` --> ``ESP System Settings`` --> ``Channel for console output`` --> ``Custom UART``
-* ``./build.py menuconfig`` --> ``Component config`` --> ``ESP System Settings`` --> ``UART TX on GPIO#``
-* ``./build.py menuconfig`` --> ``Component config`` --> ``ESP System Settings`` --> ``UART RX on GPIO#``
+* ``./build.py menuconfig`` > ``Component config`` > ``ESP System Settings`` > ``Channel for console output`` > ``Custom UART``
+* ``./build.py menuconfig`` > ``Component config`` > ``ESP System Settings`` > ``UART TX on GPIO#``
+* ``./build.py menuconfig`` > ``Component config`` > ``ESP System Settings`` > ``UART RX on GPIO#``
 
 Modify Command Port Pins
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -19,7 +19,7 @@ AT 配网示例
   .. list-table:: 配网方式关键参数总结
      :header-rows: 1
      :widths: 45 35 35 35 35
-  
+
      * - 配网方式
        - BluFi 配网
        - SmartConfig 配网
@@ -61,7 +61,7 @@ AT 配网示例
   .. list-table:: 配网方式关键参数总结
      :header-rows: 1
      :widths: 45 35 35 35 35
-  
+
      * - 配网方式
        - BluFi 配网
        - SmartConfig 配网
@@ -103,7 +103,7 @@ AT 配网示例
   .. list-table:: 配网方式关键参数总结
      :header-rows: 1
      :widths: 45 35 35 35
-  
+
      * - 配网方式
        - SmartConfig 配网
        - SoftAP 配网
@@ -187,7 +187,7 @@ AT 配网示例
   #. 手机创建 BluFi 连接并进行配网。
 
      4.1 BluFi 连接
-     
+
        手机打开系统蓝牙和 GPS 定位功能，启动 EspBluFi 应用程序，找到名为 ``blufi_test`` 的设备并点击进入，再点击 ``连接`` 进行连接。此时，ESP 设备端应打印类似于 ``+BLUFICONN`` 的日志，应用程序页面也会输出类似以下信息，表明 BluFi 连接已成功建立。
 
        .. code-block:: none
@@ -205,9 +205,9 @@ AT 配网示例
        连接完成后，在 EspBluFi 应用程序中点击 ``配网`` 按钮，页面将会跳转至 ``配置`` 页面。在此页面输入 Wi-Fi 的 SSID 和密码，并点击 ``确定`` 按钮开始配网。稍等片刻，应用程序页面也会显示类似以下信息。
 
        .. code-block:: none
-  
+
          Post configure params complete
-  
+
          Receive device status response:
          OpMode: Station
          Station connect Wi-Fi now
@@ -224,52 +224,52 @@ AT 配网示例
          WIFI GOT IP
 
   #. （可选步骤）{IDF_TARGET_NAME} 设备发送 BluFi 用户自定义数据。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLUFISEND=4
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        >
-    
+
      输入 4 字节数据，例如输入数据是 ``test``，之后 AT 将会输出以下信息。
-  
+
      .. code-block:: none
-  
+
        OK
-  
+
      此时手机应用程序端显示了类似以下信息：
-  
+
      .. code-block:: none
-  
+
        Receive custom data:
        test
-  
+
   #. {IDF_TARGET_NAME} 设备关闭 BluFi。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLUFI=0
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        +BLUFIDISCONN
-  
+
        OK
-  
+
      此时手机应用程序端显示了类似以下信息：
-  
+
      .. code-block:: none
-  
+
        Disconnect <mac>, status=19
 
 .. _example-at_smartconfig:
@@ -483,7 +483,7 @@ WPS 配网
 
      +CWJAP:"test",......
      OK
-  
+
 #. {IDF_TARGET_NAME} 设备关闭 WPS 配网。
 
    命令：

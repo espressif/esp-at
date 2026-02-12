@@ -26,7 +26,7 @@ Here is a list of AT commands.
    Driver AT Commands <Driver_AT_Commands>
    User AT Commands <user_at_commands>
 
-It is strongly recommended to read the following sections for some common information on AT commands before you dive into the details of each command.   
+It is strongly recommended to read the following sections for some common information on AT commands before you dive into the details of each command.
 
 .. contents::
    :local:
@@ -43,58 +43,58 @@ Generic AT command has four types:
    :header-rows: 1
    :widths: 25 20 55
 
-   * - Type 
-     - Command Format 
+   * - Type
+     - Command Format
      - Description
-   * - Test Command 
+   * - Test Command
      - AT+<CommandName>=?
      - Query the Set Commands' internal parameters and their range of values.
-   * - Query Command 
+   * - Query Command
      - AT+<CommandName>?
      - Return the current value of parameters.
-   * - Set Command 
-     - AT+<CommandName>=<...> 
+   * - Set Command
+     - AT+<CommandName>=<...>
      - Set the value of user-defined parameters in commands, and run these commands.
-   * - Execute Command 
+   * - Execute Command
      - AT+<CommandName>
      - Run commands with no user-defined parameters.
 
--  Not all AT commands support all of the four types mentioned above.
--  Currently, only strings and integer numbers are supported as input parameters in AT commands.
--  Angle brackets < > designate parameters that can not be omitted.
--  Square brackets [ ] designate optional parameters that can be omitted. The default value of the parameter will be used instead when you omit it. Below are examples of entering the command :ref:`AT+CWJAP <cmd-JAP>` with some parameters omitted.
+- Not all AT commands support all of the four types mentioned above.
+- Currently, only strings and integer numbers are supported as input parameters in AT commands.
+- Angle brackets < > designate parameters that can not be omitted.
+- Square brackets [ ] designate optional parameters that can be omitted. The default value of the parameter will be used instead when you omit it. Below are examples of entering the command :ref:`AT+CWJAP <cmd-JAP>` with some parameters omitted.
    ::
 
       AT+CWJAP="ssid","password"
       AT+CWJAP="ssid","password","11:22:33:44:55:66"
 
--  If the parameter you want to omit is followed by a parameter(s), you must give a ``,`` to indicate it.
+- If the parameter you want to omit is followed by a parameter(s), you must give a ``,`` to indicate it.
    ::
-   
+
       AT+CWJAP="ssid","password",,1
 
--  String values need to be included in double quotation marks.
+- String values need to be included in double quotation marks.
    ::
 
       AT+CWSAP="ESP756290","21030826",1,4
 
--  Escape character syntax is needed if a string contains special characters. The characters that need to be escaped are ``,``, ``"``, and ``\``:
+- Escape character syntax is needed if a string contains special characters. The characters that need to be escaped are ``,``, ``"``, and ``\``:
 
-   -  ``\\``: escape the backslash itself
-   -  ``\,``: escape comma which is not used to separate each parameter
-   -  ``\"``: escape double quotation mark which is not used to mark string input
-   -  ``\<any>``: escape ``<any>`` character means that drop backslash symbol and only use ``<any>`` character
+   - ``\\``: escape the backslash itself
+   - ``\,``: escape comma which is not used to separate each parameter
+   - ``\"``: escape double quotation mark which is not used to mark string input
+   - ``\<any>``: escape ``<any>`` character means that drop backslash symbol and only use ``<any>`` character
 
--  Escape is needed in AT commands only, not elsewhere. For example, when AT command port prints ``>`` and wait for your input, the input does not need to be escaped.
+- Escape is needed in AT commands only, not elsewhere. For example, when AT command port prints ``>`` and wait for your input, the input does not need to be escaped.
    ::
-      
+
       AT+CWJAP="comma\,backslash\\ssid","1234567890"
       AT+MQTTPUB=0,"topic","\"{\"sensor\":012}\"",1,0
 
--  The default baud rate of AT command is 115200.
--  The length of each AT command should be no more than 256 bytes.
--  AT commands end with a new-line (CR-LF), so the serial tool should be set to "New Line Mode".
--  Definitions of AT command error codes are provided in :doc:`../Compile_and_Develop/AT_API_Reference`:
+- The default baud rate of AT command is 115200.
+- The length of each AT command should be no more than 256 bytes.
+- AT commands end with a new-line (CR-LF), so the serial tool should be set to "New Line Mode".
+- Definitions of AT command error codes are provided in :doc:`../Compile_and_Develop/AT_API_Reference`:
 
    - :cpp:type:`esp_at_error_code`
    - :cpp:type:`esp_at_para_parse_result_type`
@@ -105,9 +105,9 @@ AT Commands with Configuration Saved in the Flash
 
 Configuration settings entered by the following AT Commands will always be saved in the flash NVS Area, so they can be automatically restored on reset:
 
--  :ref:`AT+UART_DEF <cmd-UARTD>`: ``AT+UART_DEF=115200,8,1,0,3``
--  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: ``AT+SAVETRANSLINK=1,"192.168.6.10",1001``
--  :ref:`AT+CWAUTOCONN <cmd-AUTOC>`: ``AT+CWAUTOCONN=1``
+- :ref:`AT+UART_DEF <cmd-UARTD>`: ``AT+UART_DEF=115200,8,1,0,3``
+- :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: ``AT+SAVETRANSLINK=1,"192.168.6.10",1001``
+- :ref:`AT+CWAUTOCONN <cmd-AUTOC>`: ``AT+CWAUTOCONN=1``
 
 Saving of configuration settings by several other commands can be switched on or off with :ref:`AT+SYSSTORE <cmd-SYSSTORE>` command, which is mentioned in the Note section of these commands.
 
@@ -124,13 +124,13 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
 .. _at-messages-response:
 
 - ESP-AT Response Messages (passive)
-  
+
   Each ESP-AT command input returns response messages to tell the sender the result of the ESP-AT command. The last message in the response is either ``OK`` or ``ERROR``.
-    
+
   .. list-table:: ESP-AT Response Messages
       :header-rows: 1
       :widths: 40 60
-  
+
       * - AT Response Messages
         - Description
       * - OK
@@ -144,7 +144,7 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
       * - SET OK
         - The URL has been set successfully (specific to :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command)
       * - +<Command Name>:``...``
-        - Response to the sender that describes AT command process results in details   
+        - Response to the sender that describes AT command process results in details
 
 .. _at-messages-report:
 
@@ -155,7 +155,7 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
   .. list-table:: ESP-AT Message Reports
      :header-rows: 1
      :widths: 60 60
-  
+
      * - ESP-AT Message Report
        - Description
      * - ready
@@ -206,7 +206,7 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - A station has connected to the Wi-Fi softAP interface of ESP-AT
      * - +DIST_STA_IP: <sta_mac>,<sta_ip>
        - The Wi-Fi softAP interface of ESP-AT distributes an IP address to the station
-     * - +STA_DISCONNECTED: <sta_mac> 
+     * - +STA_DISCONNECTED: <sta_mac>
        - A station disconnected from the Wi-Fi softAP interface of ESP-AT
      * - >
        - ESP-AT is waiting for more data to be received
@@ -254,7 +254,7 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - MQTT publish data done
      * - +BLECONN
        - A Bluetooth LE connection established
-     * - +BLEDISCONN 
+     * - +BLEDISCONN
        - A Bluetooth LE connection ends
      * - +READ
        - A read operation from Bluetooth LE connection

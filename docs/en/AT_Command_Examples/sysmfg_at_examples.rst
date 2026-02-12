@@ -1519,7 +1519,7 @@ You can use the same commands to erase server_key and server_ca data.
      .. code-block:: none
 
        OK
-     
+
        >
 
      **Send the data:**

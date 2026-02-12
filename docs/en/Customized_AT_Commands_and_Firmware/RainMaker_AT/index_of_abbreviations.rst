@@ -11,7 +11,7 @@ Index of Abbreviations
     RainMaker 普通传输模式
       默认传输模式
 
-      在普通传输模式下，您必须先在设备下添加参数，ESP-AT 会将参数转换为 RainMaker 数据模型后以字符串形式（JSON 格式）和云端通信。在该模式下，您可以对设备下的多个参数进行操作。
+      在普通传输模式下，你必须先在设备下添加参数，ESP-AT 会将参数转换为 RainMaker 数据模型后以字符串形式（JSON 格式）和云端通信。在该模式下，你可以对设备下的多个参数进行操作。
 
     RainMaker Passthrough Mode
       Also called as "RainMaker Passthrough Sending & Receiving Mode".

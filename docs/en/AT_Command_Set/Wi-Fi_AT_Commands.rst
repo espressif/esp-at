@@ -8,35 +8,35 @@ Wi-Fi AT Commands
 .. list::
 
   - :ref:`Introduction <cmd-wifi-intro>`
-  - :ref:`AT+CWINIT <cmd-INIT>`: Initialize/Deinitialize Wi-Fi driver.
+  - :ref:`AT+CWINIT <cmd-INIT>`: Initialize or deinitialize Wi-Fi driver.
   - :ref:`AT+CWMODE <cmd-MODE>`: Set the Wi-Fi mode (Station/SoftAP/Station+SoftAP).
-  :esp32c5: - :ref:`AT+CWBANDMODE <cmd-CWBANDMODE>`: Query/Set Wi-Fi band mode.
-  - :ref:`AT+CWBANDWIDTH <cmd-CWBANDWIDTH>`: Query/Set Wi-Fi bandwidth.
+  :esp32c5: - :ref:`AT+CWBANDMODE <cmd-CWBANDMODE>`: Query or set Wi-Fi band mode.
+  - :ref:`AT+CWBANDWIDTH <cmd-CWBANDWIDTH>`: Query or set Wi-Fi bandwidth.
   - :ref:`AT+CWSTATE <cmd-WSTATE>`: Query the Wi-Fi state and Wi-Fi information.
-  - :ref:`AT+CWCONFIG <cmd-CWCONFIG>`: Query/Set Wi-Fi inactive time and listen interval time.
+  - :ref:`AT+CWCONFIG <cmd-CWCONFIG>`: Query or set Wi-Fi inactive time and listen interval time.
   - :ref:`AT+CWJAP <cmd-JAP>`: Connect to an AP.
-  - :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`: Query/Set the Wi-Fi reconnecting configuration.
+  - :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`: Query or set the Wi-Fi reconnecting configuration.
   - :ref:`AT+CWLAPOPT <cmd-LAPOPT>`: Set the configuration for the command :ref:`AT+CWLAP <cmd-LAP>`.
   - :ref:`AT+CWLAP <cmd-LAP>`: List available APs.
   - :ref:`AT+CWQAP <cmd-QAP>`: Disconnect from an AP.
-  - :ref:`AT+CWSAP <cmd-SAP>`: Query/Set the configuration of an {IDF_TARGET_NAME} SoftAP.
+  - :ref:`AT+CWSAP <cmd-SAP>`: Query or set the configuration of an {IDF_TARGET_NAME} SoftAP.
   - :ref:`AT+CWLIF <cmd-LIF>`: Obtain IP address of the station that connects to an {IDF_TARGET_NAME} SoftAP.
   - :ref:`AT+CWQIF <cmd-QIF>`: Disconnect stations from an {IDF_TARGET_NAME} SoftAP.
-  - :ref:`AT+CWDHCP <cmd-DHCP>`: Enable/disable DHCP.
-  - :ref:`AT+CWDHCPS <cmd-DHCPS>`: Query/Set the IPv4 addresses allocated by an {IDF_TARGET_NAME} SoftAP DHCP server.
+  - :ref:`AT+CWDHCP <cmd-DHCP>`: Enable or disable DHCP.
+  - :ref:`AT+CWDHCPS <cmd-DHCPS>`: Query or set the IPv4 addresses allocated by an {IDF_TARGET_NAME} SoftAP DHCP server.
   - :ref:`AT+CWAUTOCONN <cmd-AUTOC>`: Connect to an AP automatically when powered on.
-  - :ref:`AT+CWAPPROTO <cmd-APPROTO>`: Query/Set the Wi-Fi protocol standard of SoftAP mode.
-  - :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`: Query/Set the Wi-Fi protocol standard of station mode.
-  - :ref:`AT+CIPSTAMAC <cmd-STAMAC>`: Query/Set the MAC address of an {IDF_TARGET_NAME} station.
-  - :ref:`AT+CIPAPMAC <cmd-APMAC>`: Query/Set the MAC address of an {IDF_TARGET_NAME} SoftAP.
-  - :ref:`AT+CIPSTA <cmd-IPSTA>`: Query/Set the IP address of an {IDF_TARGET_NAME} station.
-  - :ref:`AT+CIPAP <cmd-IPAP>`: Query/Set the IP address of an {IDF_TARGET_NAME} SoftAP.
+  - :ref:`AT+CWAPPROTO <cmd-APPROTO>`: Query or set the Wi-Fi protocol standard of SoftAP mode.
+  - :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`: Query or set the Wi-Fi protocol standard of station mode.
+  - :ref:`AT+CIPSTAMAC <cmd-STAMAC>`: Query or set the MAC address of an {IDF_TARGET_NAME} station.
+  - :ref:`AT+CIPAPMAC <cmd-APMAC>`: Query or set the MAC address of an {IDF_TARGET_NAME} SoftAP.
+  - :ref:`AT+CIPSTA <cmd-IPSTA>`: Query or set the IP address of an {IDF_TARGET_NAME} station.
+  - :ref:`AT+CIPAP <cmd-IPAP>`: Query or set the IP address of an {IDF_TARGET_NAME} SoftAP.
   - :ref:`AT+CWSTARTSMART <cmd-STARTS>`: Start SmartConfig.
   - :ref:`AT+CWSTOPSMART <cmd-STOPS>`: Stop SmartConfig.
   - :ref:`AT+WPS <cmd-WPS>`: Enable the WPS function.
   - :ref:`AT+CWJEAP <cmd-JEAP>`: Connect to a WPA2 Enterprise AP.
-  - :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`: Query/Set the host name of an {IDF_TARGET_NAME} station.
-  - :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`: Query/Set the Wi-Fi Country Code.
+  - :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`: Query or set the host name of an {IDF_TARGET_NAME} station.
+  - :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`: Query or set the Wi-Fi Country Code.
 
 .. _cmd-wifi-intro:
 
@@ -99,10 +99,10 @@ Initialize or deinitialize Wi-Fi driver of {IDF_TARGET_NAME} device.
 Parameters
 ^^^^^^^^^^
 
--  **<init>**:
+- **<init>**:
 
-   -  0: Deinitialize Wi-Fi driver of {IDF_TARGET_NAME} device.
-   -  1: Initialize Wi-Fi driver of {IDF_TARGET_NAME} device. (Default value)
+   - 0: Deinitialize Wi-Fi driver of {IDF_TARGET_NAME} device.
+   - 1: Initialize Wi-Fi driver of {IDF_TARGET_NAME} device. (Default value)
 
 Note
 ^^^^^
@@ -120,8 +120,8 @@ Example
 
 .. _cmd-MODE:
 
-:ref:`AT+CWMODE <WiFi-AT>`: Query/Set the Wi-Fi Mode (Station/SoftAP/Station+SoftAP)
--------------------------------------------------------------------------------------
+:ref:`AT+CWMODE <WiFi-AT>`: Query or Set the Wi-Fi Mode (Station/SoftAP/Station+SoftAP)
+-----------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -165,17 +165,17 @@ Set the Wi-Fi mode of {IDF_TARGET_NAME}.
 Parameters
 ^^^^^^^^^^
 
--  **<mode>**:
+- **<mode>**:
 
-   -  0: Null mode. Wi-Fi RF will be disabled.
-   -  1: Station mode.
-   -  2: SoftAP mode.
-   -  3: SoftAP+Station mode.
+   - 0: Null mode. Wi-Fi RF will be disabled.
+   - 1: Station mode.
+   - 2: SoftAP mode.
+   - 3: SoftAP+Station mode.
 
--  **<auto_connect>**: Enable or disable automatic connection to an AP when you change the mode of the {IDF_TARGET_NAME} from the SoftAP mode or null mode to the station mode or the SoftAP+Station mode. Default: 1. If you omit the parameter, the default value will be used, i.e. automatically connecting to an AP. 
+- **<auto_connect>**: Enable or disable automatic connection to an AP when you change the mode of the {IDF_TARGET_NAME} from the SoftAP mode or null mode to the station mode or the SoftAP+Station mode. Default: 1. If you omit the parameter, the default value will be used, i.e. automatically connecting to an AP.
 
-   -  0: The {IDF_TARGET_NAME} will not automatically connect to an AP.
-   -  1: The {IDF_TARGET_NAME} will automatically connect to an AP if the configuration to connect to the AP has already been saved in flash before.
+   - 0: The {IDF_TARGET_NAME} will not automatically connect to an AP.
+   - 1: The {IDF_TARGET_NAME} will automatically connect to an AP if the configuration to connect to the AP has already been saved in flash before.
 
 Note
 ^^^^^
@@ -209,13 +209,13 @@ Example
 
 ::
 
-    AT+CWMODE=3 
+    AT+CWMODE=3
 
 .. only:: esp32c5
 
     .. _cmd-CWBANDMODE:
 
-    :ref:`AT+CWBANDMODE <WiFi-AT>`: Query/Set Wi-Fi Band Mode
+    :ref:`AT+CWBANDMODE <WiFi-AT>`: Query or Set Wi-Fi Band Mode
     -----------------------------------------------------------------
 
     Query Command
@@ -270,8 +270,8 @@ Example
 
     .. _cmd-CWBANDWIDTH:
 
-:ref:`AT+CWBANDWIDTH <WiFi-AT>`: Query/Set Wi-Fi Bandwidth
-----------------------------------------------------------
+:ref:`AT+CWBANDWIDTH <WiFi-AT>`: Query or Set Wi-Fi Bandwidth
+--------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -367,15 +367,15 @@ Query the Wi-Fi state and Wi-Fi information of {IDF_TARGET_NAME}.
 Parameters
 ^^^^^^^^^^
 
--  **<state>**: current Wi-Fi state.
+- **<state>**: current Wi-Fi state.
 
-   -  0: {IDF_TARGET_NAME} station has not started any Wi-Fi connection.
-   -  1: {IDF_TARGET_NAME} station has connected to an AP, but does not get an IPv4 address yet.
-   -  2: {IDF_TARGET_NAME} station has connected to an AP, and got an IPv4 address.
-   -  3: {IDF_TARGET_NAME} station is in Wi-Fi connecting or reconnecting state.
-   -  4: {IDF_TARGET_NAME} station is in Wi-Fi disconnected state.
+   - 0: {IDF_TARGET_NAME} station has not started any Wi-Fi connection.
+   - 1: {IDF_TARGET_NAME} station has connected to an AP, but does not get an IPv4 address yet.
+   - 2: {IDF_TARGET_NAME} station has connected to an AP, and got an IPv4 address.
+   - 3: {IDF_TARGET_NAME} station is in Wi-Fi connecting or reconnecting state.
+   - 4: {IDF_TARGET_NAME} station is in Wi-Fi disconnected state.
 
--  **<"ssid">**: the SSID of the target AP.
+- **<"ssid">**: the SSID of the target AP.
 
 Note
 ^^^^^
@@ -384,8 +384,8 @@ Note
 
 .. _cmd-CWCONFIG:
 
-:ref:`AT+CWCONFIG <WiFi-AT>`: Query/Set Wi-Fi Inactive Time and Listen Interval Time
-------------------------------------------------------------------------------------
+:ref:`AT+CWCONFIG <WiFi-AT>`: Query or Set Wi-Fi Inactive Time and Listen Interval Time
+----------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -521,16 +521,16 @@ or
 Parameters
 ^^^^^^^^^^
 
--  **<"ssid">**: the SSID of the target AP.
+- **<"ssid">**: the SSID of the target AP.
 
-   -  Escape character syntax is needed if SSID or password contains special characters, such as ``,``, ``"``, or ``\``.
-   -  Chinese SSID is supported. Chinese SSID of some routers or hotspots is not encoded in UTF-8 encoding format. You can scan SSID first, and then connect using the scanned SSID.
+   - Escape character syntax is needed if SSID or password contains special characters, such as ``,``, ``"``, or ``\``.
+   - Chinese SSID is supported. Chinese SSID of some routers or hotspots is not encoded in UTF-8 encoding format. You can scan SSID first, and then connect using the scanned SSID.
 
--  **<"pwd">**: password, MAX: 64-byte ASCII.
--  **<"bssid">**: the MAC address of the target AP. It cannot be omitted when multiple APs have the same SSID.
--  **<channel>**: channel.
--  **<rssi>**: signal strength.
--  **<authmode>**: Wi-Fi authentication mode threshold. ESP-AT only connects to APs with an authentication mode equal to or higher than this threshold.
+- **<"pwd">**: password, MAX: 64-byte ASCII.
+- **<"bssid">**: the MAC address of the target AP. It cannot be omitted when multiple APs have the same SSID.
+- **<channel>**: channel.
+- **<rssi>**: signal strength.
+- **<authmode>**: Wi-Fi authentication mode threshold. ESP-AT only connects to APs with an authentication mode equal to or higher than this threshold.
 
    - 0: OPEN (when ``<"pwd">`` is not set or is empty) or WEP (when ``<"pwd">`` length is greater than or equal to 8 bytes)
    - 1: WPA_PSK
@@ -550,46 +550,46 @@ Parameters
    - 15: WPA2_WPA3_ENTERPRISE
    - 16: WPA_ENTERPRISE
 
--  **<reconn_interval>**: the interval between Wi-Fi reconnections. Unit: second. Default: 1. Maximum: 7200.
+- **<reconn_interval>**: the interval between Wi-Fi reconnections. Unit: second. Default: 1. Maximum: 7200.
 
-   -  0: The {IDF_TARGET_NAME} station will not reconnect to the AP when disconnected.
-   -  [1,7200]: The {IDF_TARGET_NAME} station will reconnect to the AP at the specified interval when disconnected.
+   - 0: The {IDF_TARGET_NAME} station will not reconnect to the AP when disconnected.
+   - [1,7200]: The {IDF_TARGET_NAME} station will reconnect to the AP at the specified interval when disconnected.
 
--  **<listen_interval>**: the interval of listening to the AP's beacon. Unit: AP beacon intervals. Default: 3. Range: [1,100].
--  **<scan_mode>**:
+- **<listen_interval>**: the interval of listening to the AP's beacon. Unit: AP beacon intervals. Default: 3. Range: [1,100].
+- **<scan_mode>**:
 
-   -  0: fast scan. It will end after finding the targeted AP. The {IDF_TARGET_NAME} station will connect to the first scanned AP.
-   -  1: all-channel scan. It will end after all the channels are scanned. The device will connect to the scanned AP with the strongest signal.
+   - 0: Fast scan. It will end after finding the targeted AP. The {IDF_TARGET_NAME} station will connect to the first scanned AP.
+   - 1: All-channel scan. It will end after all the channels are scanned. The device will connect to the scanned AP with the strongest signal.
 
--  **<jap_timeout>**: maximum timeout for :ref:`AT+CWJAP <cmd-JAP>` command. Unit: second. Default: 15. Range: [3,600].
--  **<pmf>**: Protected Management Frames. Default: 1.
+- **<jap_timeout>**: maximum timeout for :ref:`AT+CWJAP <cmd-JAP>` command. Unit: second. Default: 15. Range: [3,600].
+- **<pmf>**: Protected Management Frames. Default: 1.
 
     - 0 means disable PMF.
     - bit 0: PMF capable, advertises support for protected management frame. Device will prefer to connect in PMF mode if other device also advertises PMF capability.
     - bit 1: PMF required, advertises that protected management frame is required. Device will not associate to non-PMF capable devices.
 
--  **<error code>**: (for reference only)
+- **<error code>**: (for reference only)
 
-   -  1: connection timeout.
-   -  2: wrong password.
-   -  3: cannot find the target AP.
-   -  4: connection failed.
-   -  others: unknown error occurred.
+   - 1: Connection timeout.
+   - 2: Wrong password.
+   - 3: Cannot find the target AP.
+   - 4: Connection failed.
+   - others: Unknown error occurred.
 
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  This command requires Station mode to be enabled.
+- The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+- This command requires Station mode to be enabled.
 - After {IDF_TARGET_NAME} station is connected to an AP, it is recommended to use this command to query Wi-Fi information; when {IDF_TARGET_NAME} station is not connected to an AP, it is recommended to use :ref:`AT+CWSTATE <cmd-WSTATE>` to query Wi-Fi information.
--  The parameter ``<reconn_interval>`` of this command is the same as ``<interval_second>`` of the command :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`. Therefore, if you omit ``<reconn_interval>`` when running this command, the interval between Wi-Fi reconnections will use the default value 1.
--  If the ``<"ssid">`` and ``<"password">`` parameter are omitted, AT will use the last configuration.
--  Execute command has the same maximum timeout to setup command. The default value is 15 seconds, but you can change it by setting the parameter ``<jap_timeout>``.
--  The authentication method via :term:`WAPI` is not supported for connecting to the router.
--  To get an IPv6 address, you need to set :ref:`AT+CIPV6=1 <cmd-IPV6>`.
--  Response ``OK`` means that the IPv4 network is ready, but not the IPv6 network. At present, ESP-AT is mainly based on IPv4 network, supplemented by IPv6 network.
--  ``WIFI GOT IPv6 LL`` represents that the linklocal IPv6 address has been obtained. This address is calculated locally through EUI-64 and does not require the participation of the AP. Because of the parallel timing, this print may be before or after ``OK``.
--  ``WIFI GOT IPv6 GL`` represents that the global IPv6 address has been obtained. This address is combined by the prefix issued by AP and the suffix calculated internally, which requires the participation of the AP. Because of the parallel timing, this print may be before or after ``OK``, or it may not be printed because the AP does not support IPv6.
+- The parameter ``<reconn_interval>`` of this command is the same as ``<interval_second>`` of the command :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`. Therefore, if you omit ``<reconn_interval>`` when running this command, the interval between Wi-Fi reconnections will use the default value 1.
+- If the ``<"ssid">`` and ``<"password">`` parameter are omitted, AT will use the last configuration.
+- Execute command has the same maximum timeout to setup command. The default value is 15 seconds, but you can change it by setting the parameter ``<jap_timeout>``.
+- The authentication method via :term:`WAPI` is not supported for connecting to the router.
+- To get an IPv6 address, you need to set :ref:`AT+CIPV6=1 <cmd-IPV6>`.
+- Response ``OK`` means that the IPv4 network is ready, but not the IPv6 network. At present, ESP-AT is mainly based on IPv4 network, supplemented by IPv6 network.
+- ``WIFI GOT IPv6 LL`` represents that the linklocal IPv6 address has been obtained. This address is calculated locally through EUI-64 and does not require the participation of the AP. Because of the parallel timing, this print may be before or after ``OK``.
+- ``WIFI GOT IPv6 GL`` represents that the global IPv6 address has been obtained. This address is combined by the prefix issued by AP and the suffix calculated internally, which requires the participation of the AP. Because of the parallel timing, this print may be before or after ``OK``, or it may not be printed because the AP does not support IPv6.
 
 Example
 ^^^^^^^^
@@ -603,14 +603,14 @@ Example
     AT+CWJAP="ab\\\,c","0123456789\"\\"
 
     // If multiple APs all have the SSID of "abc", the target AP can be found by BSSID:
-    AT+CWJAP="abc","0123456789","ca:d7:19:d8:a6:44" 
+    AT+CWJAP="abc","0123456789","ca:d7:19:d8:a6:44"
 
     // If esp-at is required that connect to a AP by protected management frame, the command should be:
     AT+CWJAP="abc","0123456789",,,,,,,3
 
 .. _cmd-RECONNCFG:
 
-:ref:`AT+CWRECONNCFG <WiFi-AT>`: Query/Set the Wi-Fi Reconnecting Configuration
+:ref:`AT+CWRECONNCFG <WiFi-AT>`: Query or Set the Wi-Fi Reconnecting Configuration
 -------------------------------------------------------------------------------------------
 
 Query Command
@@ -655,17 +655,17 @@ Set the configuration of Wi-Fi reconnect.
 Parameters
 ^^^^^^^^^^
 
--  **<interval_second>**: the interval between Wi-Fi reconnections. Unit: second. Default: 0. Maximum: 7200.
+- **<interval_second>**: the interval between Wi-Fi reconnections. Unit: second. Default: 0. Maximum: 7200.
 
-   -  0: The {IDF_TARGET_NAME} station will not reconnect to the AP when disconnected.
-   -  [1,7200]: The {IDF_TARGET_NAME} station will reconnect to the AP at the specified interval when disconnected.
+   - 0: The {IDF_TARGET_NAME} station will not reconnect to the AP when disconnected.
+   - [1,7200]: The {IDF_TARGET_NAME} station will reconnect to the AP at the specified interval when disconnected.
 
--  **<repeat_count>**: the number of attempts the {IDF_TARGET_NAME} makes to reconnect to the AP. This parameter only works when the parameter ``<interval_second>`` is not 0. Default: 0. Maximum: 1000.
+- **<repeat_count>**: the number of attempts the {IDF_TARGET_NAME} makes to reconnect to the AP. This parameter only works when the parameter ``<interval_second>`` is not 0. Default: 0. Maximum: 1000.
 
-   -  0: The {IDF_TARGET_NAME} station will always try to reconnect to AP.
-   -  [1,1000]: The {IDF_TARGET_NAME} station will attempt to reconnect to AP for the specified times.
+   - 0: The {IDF_TARGET_NAME} station will always try to reconnect to AP.
+   - [1,1000]: The {IDF_TARGET_NAME} station will attempt to reconnect to AP for the specified times.
 
--  **[<reconnect_now>]**: whether to start reconnecting to the AP immediately after the setting is complete. Default: 0. Note: Reconnection only occurs if the {IDF_TARGET_NAME}'s Wi-Fi has not yet obtained an IP address; if an IP address has already been obtained, the current connection state will remain unchanged.
+- **<reconnect_now>**: whether to start reconnecting to the AP immediately after the setting is complete. Default: 0. Note: Reconnection only occurs if the {IDF_TARGET_NAME}'s Wi-Fi has not yet obtained an IP address; if an IP address has already been obtained, the current connection state will remain unchanged.
 
    - 0: Do not reconnect to the AP immediately.
    - 1: Reconnect to the AP immediately.
@@ -721,40 +721,40 @@ or
 Parameters
 ^^^^^^^^^^
 
--  **<reserved>**: reserved item.
--  **<print mask>**: determine whether the following parameters are shown in the result of :ref:`AT+CWLAP <cmd-LAP>`. Default: 0x7FF. If you set them to 1, it means showing the corresponding parameters; if you set them as 0, it means NOT showing the corresponding parameters.  
+- **<reserved>**: reserved item.
+- **<print mask>**: determine whether the following parameters are shown in the result of :ref:`AT+CWLAP <cmd-LAP>`. Default: 0x7FF. If you set them to 1, it means showing the corresponding parameters; if you set them as 0, it means NOT showing the corresponding parameters.
 
-   -  bit 0: determine whether <ecn> will be shown.
-   -  bit 1: determine whether <"ssid"> will be shown.
-   -  bit 2: determine whether <rssi> will be shown.
-   -  bit 3: determine whether <"mac"> will be shown.
-   -  bit 4: determine whether <channel> will be shown.
-   -  bit 5: determine whether <freq_offset> will be shown.
-   -  bit 6: determine whether <freqcal_val> will be shown.
-   -  bit 7: determine whether <pairwise_cipher> will be shown.
-   -  bit 8: determine whether <group_cipher> will be shown.
-   -  bit 9: determine whether <bgn> will be shown.
-   -  bit 10: determine whether <wps> will be shown.
+   - bit 0: determine whether <ecn> will be shown.
+   - bit 1: determine whether <"ssid"> will be shown.
+   - bit 2: determine whether <rssi> will be shown.
+   - bit 3: determine whether <"mac"> will be shown.
+   - bit 4: determine whether <channel> will be shown.
+   - bit 5: determine whether <freq_offset> will be shown.
+   - bit 6: determine whether <freqcal_val> will be shown.
+   - bit 7: determine whether <pairwise_cipher> will be shown.
+   - bit 8: determine whether <group_cipher> will be shown.
+   - bit 9: determine whether <bgn> will be shown.
+   - bit 10: determine whether <wps> will be shown.
 
--  **[<rssi filter>]**: determine whether the result of the command :ref:`AT+CWLAP <cmd-LAP>` will be filtered according to ``rssi filter``. In other words, the result of the command will **NOT** show the APs whose signal strength is below ``rssi filter``. Unit: dBm. Default: -100. Range: [-100,40]. 
--  **[<authmode mask>]**: determine whether APs with the following authmodes are shown in the result of :ref:`AT+CWLAP <cmd-LAP>`. Default: 0xFFFF. If you set ``bit x`` to 1, the APs with the corresponding authmode will be shown. If you set ``bit x`` to 0, the APs with the corresponding authmode will NOT be shown;
+- **<rssi filter>**: determine whether the result of the command :ref:`AT+CWLAP <cmd-LAP>` will be filtered according to ``rssi filter``. In other words, the result of the command will **NOT** show the APs whose signal strength is below ``rssi filter``. Unit: dBm. Default: -100. Range: [-100,40].
+- **<authmode mask>**: determine whether APs with the following authmodes are shown in the result of :ref:`AT+CWLAP <cmd-LAP>`. Default: 0xFFFF. If you set ``bit x`` to 1, the APs with the corresponding authmode will be shown. If you set ``bit x`` to 0, the APs with the corresponding authmode will NOT be shown;
 
-   -  bit 0: determine whether APs with ``OPEN`` authmode will be shown.
-   -  bit 1: determine whether APs with ``WEP`` authmode will be shown.
-   -  bit 2: determine whether APs with ``WPA_PSK`` authmode will be shown.
-   -  bit 3: determine whether APs with ``WPA2_PSK`` authmode will be shown.
-   -  bit 4: determine whether APs with ``WPA_WPA2_PSK`` authmode will be shown.
-   -  bit 5: determine whether APs with ``WPA2_ENTERPRISE`` authmode will be shown.
-   -  bit 6: determine whether APs with ``WPA3_PSK`` authmode will be shown.
-   -  bit 7: determine whether AP with ``WPA2_WPA3_PSK`` authmode will be shown.
-   -  bit 8: determine whether AP with ``WAPI_PSK`` authmode will be shown.
-   -  bit 9: determine whether AP with ``OWE`` authmode will be shown.
-   -  bit 10: determine whether AP with ``WPA3_ENT_192`` authmode will be shown.
-   -  bit 11: determine whether AP with ``WPA3_EXT_PSK`` authmode will be shown.
-   -  bit 12: determine whether AP with ``WPA3_EXT_PSK_MIXED_MODE`` authmode will be shown.
-   -  bit 13: determine whether AP with ``DPP`` authmode will be shown.
-   -  bit 14: determine whether AP with ``WPA3_ENTERPRISE`` authmode will be shown.
-   -  bit 15: determine whether AP with ``WPA2_WPA3_ENTERPRISE`` authmode will be shown.
+   - bit 0: determine whether APs with ``OPEN`` authmode will be shown.
+   - bit 1: determine whether APs with ``WEP`` authmode will be shown.
+   - bit 2: determine whether APs with ``WPA_PSK`` authmode will be shown.
+   - bit 3: determine whether APs with ``WPA2_PSK`` authmode will be shown.
+   - bit 4: determine whether APs with ``WPA_WPA2_PSK`` authmode will be shown.
+   - bit 5: determine whether APs with ``WPA2_ENTERPRISE`` authmode will be shown.
+   - bit 6: determine whether APs with ``WPA3_PSK`` authmode will be shown.
+   - bit 7: determine whether AP with ``WPA2_WPA3_PSK`` authmode will be shown.
+   - bit 8: determine whether AP with ``WAPI_PSK`` authmode will be shown.
+   - bit 9: determine whether AP with ``OWE`` authmode will be shown.
+   - bit 10: determine whether AP with ``WPA3_ENT_192`` authmode will be shown.
+   - bit 11: determine whether AP with ``WPA3_EXT_PSK`` authmode will be shown.
+   - bit 12: determine whether AP with ``WPA3_EXT_PSK_MIXED_MODE`` authmode will be shown.
+   - bit 13: determine whether AP with ``DPP`` authmode will be shown.
+   - bit 14: determine whether AP with ``WPA3_ENTERPRISE`` authmode will be shown.
+   - bit 15: determine whether AP with ``WPA2_WPA3_ENTERPRISE`` authmode will be shown.
 
 Example
 ^^^^^^^^
@@ -820,57 +820,57 @@ List all available APs.
 Parameters
 ^^^^^^^^^^
 
--  **<ecn>**: encryption method.
+- **<ecn>**: encryption method.
 
-   -  0: OPEN
-   -  1: WEP
-   -  2: WPA_PSK
-   -  3: WPA2_PSK
-   -  4: WPA_WPA2_PSK
-   -  5: WPA2_ENTERPRISE
-   -  6: WPA3_PSK
-   -  7: WPA2_WPA3_PSK
-   -  8: WAPI_PSK
-   -  9: OWE
-   -  10: WPA3_ENT_192
-   -  11: WPA3_EXT_PSK
-   -  12: WPA3_EXT_PSK_MIXED_MODE
-   -  13: DPP
-   -  14: WPA3_ENTERPRISE
-   -  15: WPA2_WPA3_ENTERPRISE
+   - 0: OPEN
+   - 1: WEP
+   - 2: WPA_PSK
+   - 3: WPA2_PSK
+   - 4: WPA_WPA2_PSK
+   - 5: WPA2_ENTERPRISE
+   - 6: WPA3_PSK
+   - 7: WPA2_WPA3_PSK
+   - 8: WAPI_PSK
+   - 9: OWE
+   - 10: WPA3_ENT_192
+   - 11: WPA3_EXT_PSK
+   - 12: WPA3_EXT_PSK_MIXED_MODE
+   - 13: DPP
+   - 14: WPA3_ENTERPRISE
+   - 15: WPA2_WPA3_ENTERPRISE
 
--  **<"ssid">**: string parameter showing SSID of the AP.
--  **<rssi>**: signal strength.
--  **<"mac">**: string parameter showing MAC address of the AP.
--  **<channel>**: channel number. When specified, only scan this channel.
--  **<scan_type>**: Wi-Fi scan type. Default: 0.
+- **<"ssid">**: string parameter showing SSID of the AP.
+- **<rssi>**: signal strength.
+- **<"mac">**: string parameter showing MAC address of the AP.
+- **<channel>**: channel number. When specified, only scan this channel.
+- **<scan_type>**: Wi-Fi scan type. Default: 0.
 
-   -  0: active scan
-   -  1: passive scan
+   - 0: active scan
+   - 1: passive scan
 
--  **<scan_time_min>**: the minimum active scan time per channel. Unit: millisecond. Range [0,1500]. If the scan type is passive, this parameter is invalid.
--  **<scan_time_max>**: the maximum active scan time per channel. Unit: millisecond. Range [0,1500]. If this parameter is 0, the firmware will use the default time: 120 ms for active scan; 360 ms for passive scan.
--  **<2ghz_channel_bitmap>**: Bitmap for 2.4 GHz band channels. Effective when ``<channel>`` is omitted or set to 0. Each bit corresponds to a channel; 1 means scan this channel, 0 means do not scan. For supported 2.4 GHz channels, see: `2.4G Channels <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L415-L428>`_. For example, if bit1 and bit2 are set to 1, it means scanning channels 1 and 2.
+- **<scan_time_min>**: the minimum active scan time per channel. Unit: millisecond. Range [0,1500]. If the scan type is passive, this parameter is invalid.
+- **<scan_time_max>**: the maximum active scan time per channel. Unit: millisecond. Range [0,1500]. If this parameter is 0, the firmware will use the default time: 120 ms for active scan; 360 ms for passive scan.
+- **<2ghz_channel_bitmap>**: Bitmap for 2.4 GHz band channels. Effective when ``<channel>`` is omitted or set to 0. Each bit corresponds to a channel; 1 means scan this channel, 0 means do not scan. For supported 2.4 GHz channels, see: `2.4G Channels <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L415-L428>`_. For example, if bit 1 and bit 2 are set to 1, it means scanning channels 1 and 2.
 
 .. only:: esp32c5
 
-  -  **<5ghz_channel_bitmap>**: Bitmap for 5 GHz band channels. Effective when ``<channel>`` is omitted or set to 0. Each bit corresponds to a channel; 1 means scan this channel, 0 means do not scan. For supported 5 GHz channels, see: `5G Channels <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L433-L460>`_. For example, if bit1 and bit2 are set to 1, it means scanning channels 36 and 40.
+  - **<5ghz_channel_bitmap>**: Bitmap for 5 GHz band channels. Effective when ``<channel>`` is omitted or set to 0. Each bit corresponds to a channel; 1 means scan this channel, 0 means do not scan. For supported 5 GHz channels, see: `5G Channels <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L433-L460>`_. For example, if bit 1 and bit 2 are set to 1, it means scanning channels 36 and 40.
 
--  **<freq_offset>**: frequency offset (reserved item).
--  **<freqcal_val>**: frequency calibration value (reserved item).
--  **<pairwise_cipher>**: pairwise cipher type.
+- **<freq_offset>**: frequency offset (reserved item).
+- **<freqcal_val>**: frequency calibration value (reserved item).
+- **<pairwise_cipher>**: pairwise cipher type.
 
-   -  0: None
-   -  1: WEP40
-   -  2: WEP104
-   -  3: TKIP
-   -  4: CCMP
-   -  5: TKIP and CCMP
-   -  6: AES-CMAC-128
-   -  7: Unknown
+   - 0: None
+   - 1: WEP40
+   - 2: WEP104
+   - 3: TKIP
+   - 4: CCMP
+   - 5: TKIP and CCMP
+   - 6: AES-CMAC-128
+   - 7: Unknown
 
--  **<group_cipher>**: group cipher type, same enumerated value to ``<pairwise_cipher>``.
--  **<wifi_protocol>**: Wi-Fi protocol standard. If the corresponding bit is 1, the corresponding mode is enabled; if the corresponding bit is 0, the corresponding mode is disabled.
+- **<group_cipher>**: group cipher type, same enumerated value to ``<pairwise_cipher>``.
+- **<wifi_protocol>**: Wi-Fi protocol standard. If the corresponding bit is 1, the corresponding mode is enabled; if the corresponding bit is 0, the corresponding mode is disabled.
 
    - bit 0: bit to identify if 802.11b mode is enabled or not
    - bit 1: bit to identify if 802.11g mode is enabled or not
@@ -880,7 +880,7 @@ Parameters
    - bit 5: 802.11a protocol standard
    - bit 6: 802.11ac protocol standard
 
--  **<wps>**: wps flag.
+- **<wps>**: wps flag.
 
    - 0: WPS disabled
    - 1: WPS enabled
@@ -898,8 +898,8 @@ Example
 ::
 
     AT+CWLAP="Wi-Fi","ca:d7:19:d8:a6:44",6,0,400,1000
-    
-    // Search for APs with a designated SSID: 
+
+    // Search for APs with a designated SSID:
     AT+CWLAP="Wi-Fi"
 
 .. _cmd-QAP:
@@ -924,7 +924,7 @@ Execute Command
 
 .. _cmd-SAP:
 
-:ref:`AT+CWSAP <WiFi-AT>`: Query/Set the configuration of an {IDF_TARGET_NAME} SoftAP
+:ref:`AT+CWSAP <WiFi-AT>`: Query or set the configuration of an {IDF_TARGET_NAME} SoftAP
 -------------------------------------------------------------------------------------
 
 Query Command
@@ -969,35 +969,35 @@ Set the configuration of an {IDF_TARGET_NAME} SoftAP.
 Parameters
 ^^^^^^^^^^
 
--  **<"ssid">**: string parameter showing SSID of the AP.
--  **<"pwd">**: string parameter showing the password. Length: 8 ~ 64 bytes ASCII.
--  **<channel>**: channel ID.
--  **<ecn>**: encryption method; WEP is not supported.
+- **<"ssid">**: string parameter showing SSID of the AP.
+- **<"pwd">**: string parameter showing the password. Length: 8 ~ 64 bytes ASCII.
+- **<channel>**: channel ID.
+- **<ecn>**: encryption method; WEP is not supported.
 
-   -  0: OPEN
-   -  2: WPA_PSK
-   -  3: WPA2_PSK
-   -  4: WPA_WPA2_PSK
+   - 0: OPEN
+   - 2: WPA_PSK
+   - 3: WPA2_PSK
+   - 4: WPA_WPA2_PSK
 
--  **[<max conn>]**: maximum number of stations that {IDF_TARGET_NAME} SoftAP can connect. Range: refer to `max_connection description <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#ap-basic-configuration>`_.
--  **[<ssid hidden>]**:
+- **<max conn>**: maximum number of stations that {IDF_TARGET_NAME} SoftAP can connect. Range: refer to `max_connection description <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#ap-basic-configuration>`_.
+- **<ssid hidden>**:
 
-   -  0: broadcasting SSID (default).
-   -  1: not broadcasting SSID.
+   - 0: Broadcasting SSID (default).
+   - 1: Not broadcasting SSID.
 
 Notes
 ^^^^^
 
--  This command works only when :ref:`AT+CWMODE=2 <cmd-MODE>` or :ref:`AT+CWMODE=3 <cmd-MODE>`.
--  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  The default SSID varies from devices to device as it consists of the MAC address of the device. You can use :ref:`AT+CWSAP? <cmd-SAP>` to query the default SSID.
+- This command works only when :ref:`AT+CWMODE=2 <cmd-MODE>` or :ref:`AT+CWMODE=3 <cmd-MODE>`.
+- The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+- The default SSID varies from devices to device as it consists of the MAC address of the device. You can use :ref:`AT+CWSAP? <cmd-SAP>` to query the default SSID.
 
 Example
 ^^^^^^^^
 
 ::
 
-    AT+CWSAP="ESP","1234567890",5,3   
+    AT+CWSAP="ESP","1234567890",5,3
 
 .. _cmd-LIF:
 
@@ -1024,13 +1024,13 @@ Execute Command
 Parameters
 ^^^^^^^^^^
 
--  **<ip addr>**: IP address of the station that connects to the {IDF_TARGET_NAME} SoftAP.
--  **<mac>**: MAC address of the station that connects to the {IDF_TARGET_NAME} SoftAP.
+- **<ip addr>**: IP address of the station that connects to the {IDF_TARGET_NAME} SoftAP.
+- **<mac>**: MAC address of the station that connects to the {IDF_TARGET_NAME} SoftAP.
 
 Note
 ^^^^^
 
--  This command cannot get a static IP. It works only when DHCP of both the {IDF_TARGET_NAME} SoftAP and the connected station are enabled.
+- This command cannot get a static IP. It works only when DHCP of both the {IDF_TARGET_NAME} SoftAP and the connected station are enabled.
 
 .. _cmd-QIF:
 
@@ -1078,11 +1078,11 @@ Disconnect a specific station from the {IDF_TARGET_NAME} SoftAP.
 Parameter
 ^^^^^^^^^^
 
--  **<"mac">**: MAC address of the station to disconnect.
+- **<"mac">**: MAC address of the station to disconnect.
 
 .. _cmd-DHCP:
 
-:ref:`AT+CWDHCP <WiFi-AT>`: Enable/Disable DHCP
+:ref:`AT+CWDHCP <WiFi-AT>`: Enable or disable DHCP
 -----------------------------------------------------
 
 Query Command
@@ -1105,8 +1105,8 @@ Set Command
 ^^^^^^^^^^^
 
 **Function:**
- 
-Enable/disable DHCP.
+
+Enable or disable DHCP.
 
 **Command:**
 
@@ -1123,41 +1123,41 @@ Enable/disable DHCP.
 Parameters
 ^^^^^^^^^^
 
--  **<operate>**:
+- **<operate>**:
 
-   -  0: disable
-   -  1: enable
+   - 0: disable
+   - 1: enable
 
--  **<mode>**:
+- **<mode>**:
 
-   -  Bit0: Station DHCP
-   -  Bit1: SoftAP DHCP
+   - bit 0: Station DHCP
+   - bit 1: SoftAP DHCP
 
--  **<state>**: the status of DHCP
-   
-   - Bit0:
+- **<state>**: the status of DHCP
+
+   - bit 0:
 
      - 0: Station DHCP is disabled.
      - 1: Station DHCP is enabled.
-   
-   - Bit1:
+
+   - bit 1:
 
      - 0: SoftAP DHCP is disabled.
      - 1: SoftAP DHCP is enabled.
 
-   - Bit2:
+   - bit 2:
 
      - 0: Ethernet DHCP is disabled.
      - 1: Ethernet DHCP is enabled.
 
 Notes
 ^^^^^
--  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  This Set Command correlates with the commands that set static IP, such as :ref:`AT+CIPSTA <cmd-IPSTA>` and :ref:`AT+CIPAP <cmd-IPAP>`:
+- The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+- This Set Command correlates with the commands that set static IP, such as :ref:`AT+CIPSTA <cmd-IPSTA>` and :ref:`AT+CIPAP <cmd-IPAP>`:
 
-   -  If DHCP is enabled, static IPv4 address will be disabled;
-   -  If static IPv4 address is enabled, DHCP will be disabled;
-   -  The last configuration overwrites the previous configuration.
+   - If DHCP is enabled, static IPv4 address will be disabled;
+   - If static IPv4 address is enabled, DHCP will be disabled;
+   - The last configuration overwrites the previous configuration.
 
 Example
 ^^^^^^^^
@@ -1167,12 +1167,12 @@ Example
     // Enable Station DHCP. If the last DHCP mode is 2, the current DHCP mode will be 3.
     AT+CWDHCP=1,1
 
-    // Disable SoftAP DHCP. If the last DHCP mode is 3, the current DHCP mode will be 1.    
+    // Disable SoftAP DHCP. If the last DHCP mode is 3, the current DHCP mode will be 1.
     AT+CWDHCP=0,2
 
 .. _cmd-DHCPS:
 
-:ref:`AT+CWDHCPS <WiFi-AT>`: Query/Set the IPv4 Addresses Allocated by an {IDF_TARGET_NAME} SoftAP DHCP Server
+:ref:`AT+CWDHCPS <WiFi-AT>`: Query or Set the IPv4 Addresses Allocated by an {IDF_TARGET_NAME} SoftAP DHCP Server
 ------------------------------------------------------------------------------------------------------------
 
 Query Command
@@ -1213,21 +1213,21 @@ Set the IPv4 address range of the {IDF_TARGET_NAME} SoftAP DHCP server.
 Parameters
 ^^^^^^^^^^
 
--  **<enable>**:
-   
-   -  1: Enable DHCP server settings. The parameters below have to be set.
-   -  0: Disable DHCP server settings and use the default IPv4 address range.
+- **<enable>**:
 
--  **<lease time>**: lease time. Unit: minute. Range [1,2880].
--  **<"start IP">**: start IPv4 address of the IPv4 address range that can be obtained from {IDF_TARGET_NAME} SoftAP DHCP server.
--  **<"end IP">**: end IPv4 address of the IPv4 address range that can be obtained from {IDF_TARGET_NAME} SoftAP DHCP server.
+   - 1: Enable DHCP server settings. The parameters below have to be set.
+   - 0: Disable DHCP server settings and use the default IPv4 address range.
+
+- **<lease time>**: lease time. Unit: minute. Range [1,2880].
+- **<"start IP">**: start IPv4 address of the IPv4 address range that can be obtained from {IDF_TARGET_NAME} SoftAP DHCP server.
+- **<"end IP">**: end IPv4 address of the IPv4 address range that can be obtained from {IDF_TARGET_NAME} SoftAP DHCP server.
 
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  This AT command works only when both SoftAP and DHCP server are enabled for {IDF_TARGET_NAME}.
--  The IPv4 address should be in the same network segment as the IPv4 address of {IDF_TARGET_NAME} SoftAP.
+- The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+- This AT command works only when both SoftAP and DHCP server are enabled for {IDF_TARGET_NAME}.
+- The IPv4 address should be in the same network segment as the IPv4 address of {IDF_TARGET_NAME} SoftAP.
 
 Example
 ^^^^^^^^
@@ -1235,12 +1235,12 @@ Example
 ::
 
     AT+CWDHCPS=1,3,"192.168.4.10","192.168.4.15"
-    
+
     AT+CWDHCPS=0 // Disable the settings and use the default IPv4 address range.
 
 .. _cmd-AUTOC:
 
-:ref:`AT+CWAUTOCONN <WiFi-AT>`: Query/Set Automatic Connection to an AP When Powered on
+:ref:`AT+CWAUTOCONN <WiFi-AT>`: Query or Set Automatic Connection to an AP When Powered on
 -----------------------------------------------------------------------------------------------
 
 Query Command
@@ -1277,10 +1277,10 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<enable>**:
+- **<enable>**:
 
-   -  1: Enable automatic connection to an AP when powered on. (Default)   
-   -  0: Disable automatic connection to an AP when powered on.
+   - 1: Enable automatic connection to an AP when powered on. (Default)
+   - 0: Disable automatic connection to an AP when powered on.
 
 Note
 ^^^^^
@@ -1297,8 +1297,8 @@ Example
 
 .. _cmd-APPROTO:
 
-:ref:`AT+CWAPPROTO <WiFi-AT>`: Query/Set the Wi-Fi Protocol Standard of SoftAP Mode
------------------------------------------------------------------------------------
+:ref:`AT+CWAPPROTO <WiFi-AT>`: Query or Set the Wi-Fi Protocol Standard of SoftAP Mode
+---------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1355,11 +1355,11 @@ Parameters
 
   .. list::
 
-    - bit0: 802.11b protocol standard.
-    - bit1: 802.11g protocol standard.
-    - bit2: 802.11n protocol standard.
-    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit3: `802.11 LR Espressif Proprietary protocol <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_.
-    :esp32c5 or esp32c6 or esp32c61: - bit4: 802.11ax protocol standard.
+    - bit 0: 802.11b protocol standard.
+    - bit 1: 802.11g protocol standard.
+    - bit 2: 802.11n protocol standard.
+    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit 3: `802.11 LR Espressif Proprietary protocol <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_.
+    :esp32c5 or esp32c6 or esp32c61: - bit 4: 802.11ax protocol standard.
 
 .. only:: esp32c5
 
@@ -1367,10 +1367,10 @@ Parameters
 
     .. list::
 
-      - bit2: 802.11n protocol standard.
-      - bit4: 802.11ax protocol standard.
-      - bit5: 802.11a protocol standard.
-      - bit6: 802.11ac protocol standard.
+      - bit 2: 802.11n protocol standard.
+      - bit 4: 802.11ax protocol standard.
+      - bit 5: 802.11a protocol standard.
+      - bit 6: 802.11ac protocol standard.
 
 Notes
 ^^^^^
@@ -1386,8 +1386,8 @@ Notes
 
 .. _cmd-STAPROTO:
 
-:ref:`AT+CWSTAPROTO <WiFi-AT>`: Query/Set the Wi-Fi Protocol Standard of Station Mode
--------------------------------------------------------------------------------------
+:ref:`AT+CWSTAPROTO <WiFi-AT>`: Query or Set the Wi-Fi Protocol Standard of Station Mode
+-----------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1444,11 +1444,11 @@ Parameters
 
   .. list::
 
-    - bit0: 802.11b protocol standard.
-    - bit1: 802.11g protocol standard.
-    - bit2: 802.11n protocol standard.
-    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit3: `802.11 LR Espressif Proprietary protocol <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_.
-    :esp32c5 or esp32c6 or esp32c61: - bit4: 802.11ax protocol standard.
+    - bit 0: 802.11b protocol standard.
+    - bit 1: 802.11g protocol standard.
+    - bit 2: 802.11n protocol standard.
+    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit 3: `802.11 LR Espressif Proprietary protocol <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_.
+    :esp32c5 or esp32c6 or esp32c61: - bit 4: 802.11ax protocol standard.
 
 .. only:: esp32c5
 
@@ -1456,10 +1456,10 @@ Parameters
 
     .. list::
 
-      - bit2: 802.11n protocol standard.
-      - bit4: 802.11ax protocol standard.
-      - bit5: 802.11a protocol standard.
-      - bit6: 802.11ac protocol standard.
+      - bit 2: 802.11n protocol standard.
+      - bit 4: 802.11ax protocol standard.
+      - bit 5: 802.11a protocol standard.
+      - bit 6: 802.11ac protocol standard.
 
 Notes
 ^^^^^
@@ -1476,7 +1476,7 @@ Notes
 
 .. _cmd-STAMAC:
 
-:ref:`AT+CIPSTAMAC <WiFi-AT>`: Query/Set the MAC Address of an {IDF_TARGET_NAME} Station
+:ref:`AT+CIPSTAMAC <WiFi-AT>`: Query or Set the MAC Address of an {IDF_TARGET_NAME} Station
 ----------------------------------------------------------------------------------------
 
 Query Command
@@ -1521,7 +1521,7 @@ Set the MAC address of an {IDF_TARGET_NAME} station.
 Parameters
 ^^^^^^^^^^
 
--  **<"mac">**: string parameter showing MAC address of an {IDF_TARGET_NAME} station.
+- **<"mac">**: string parameter showing MAC address of an {IDF_TARGET_NAME} station.
 
 Notes
 ^^^^^
@@ -1543,7 +1543,7 @@ Example
 
 .. _cmd-APMAC:
 
-:ref:`AT+CIPAPMAC <WiFi-AT>`: Query/Set the MAC Address of an {IDF_TARGET_NAME} SoftAP
+:ref:`AT+CIPAPMAC <WiFi-AT>`: Query or Set the MAC Address of an {IDF_TARGET_NAME} SoftAP
 --------------------------------------------------------------------------------------
 
 Query Command
@@ -1587,7 +1587,7 @@ Set the MAC address of the {IDF_TARGET_NAME} SoftAP.
 Parameters
 ^^^^^^^^^^
 
--  **<"mac">**: string parameter showing MAC address of the {IDF_TARGET_NAME} SoftAP.
+- **<"mac">**: string parameter showing MAC address of the {IDF_TARGET_NAME} SoftAP.
 
 Notes
 ^^^^^
@@ -1605,11 +1605,11 @@ Example
 
 ::
 
-    AT+CIPAPMAC="18:fe:35:98:d3:7b" 
+    AT+CIPAPMAC="18:fe:35:98:d3:7b"
 
 .. _cmd-IPSTA:
 
-:ref:`AT+CIPSTA <WiFi-AT>`: Query/Set the IP Address of an {IDF_TARGET_NAME} Station
+:ref:`AT+CIPSTA <WiFi-AT>`: Query or Set the IP Address of an {IDF_TARGET_NAME} Station
 ------------------------------------------------------------------------------------
 
 Query Command
@@ -1659,33 +1659,33 @@ Set the IPv4 address of the {IDF_TARGET_NAME} station.
 Parameters
 ^^^^^^^^^^
 
--  **<"ip">**: string parameter showing the IPv4 address of the {IDF_TARGET_NAME} station.
--  **<"gateway">**: gateway.
--  **<"netmask">**: netmask.
--  **<"ipv6 addr">**: string parameter showing the IPv6 address of the {IDF_TARGET_NAME} station.
+- **<"ip">**: string parameter showing the IPv4 address of the {IDF_TARGET_NAME} station.
+- **<"gateway">**: gateway.
+- **<"netmask">**: netmask.
+- **<"ipv6 addr">**: string parameter showing the IPv6 address of the {IDF_TARGET_NAME} station.
 
 Notes
 ^^^^^
 
--  For the query command, only when the {IDF_TARGET_NAME} station is connected to an AP or the static IP address is configured can its IP address be queried.
--  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  The Set Command correlates with the commands that set DHCP, such as :ref:`AT+CWDHCP <cmd-DHCP>`.
+- For the query command, only when the {IDF_TARGET_NAME} station is connected to an AP or the static IP address is configured can its IP address be queried.
+- The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+- The Set Command correlates with the commands that set DHCP, such as :ref:`AT+CWDHCP <cmd-DHCP>`.
 
-   -  If static IPv4 address is enabled, DHCP will be disabled;
-   -  If DHCP is enabled, static IPv4 address will be disabled;
-   -  The last configuration overwrites the previous configuration.
--  When using static IP, AT does not provide IP conflict detection. You can implement your own detection mechanism if needed.
+   - If static IPv4 address is enabled, DHCP will be disabled;
+   - If DHCP is enabled, static IPv4 address will be disabled;
+   - The last configuration overwrites the previous configuration.
+- When using static IP, AT does not provide IP conflict detection. You can implement your own detection mechanism if needed.
 
 Example
 ^^^^^^^^
 
 ::
 
-    AT+CIPSTA="192.168.6.100","192.168.6.1","255.255.255.0" 
+    AT+CIPSTA="192.168.6.100","192.168.6.1","255.255.255.0"
 
 .. _cmd-IPAP:
 
-:ref:`AT+CIPAP <WiFi-AT>`: Query/Set the IP Address of an {IDF_TARGET_NAME} SoftAP
+:ref:`AT+CIPAP <WiFi-AT>`: Query or Set the IP Address of an {IDF_TARGET_NAME} SoftAP
 ------------------------------------------------------------------------------------
 
 Query Command
@@ -1734,21 +1734,21 @@ Set the IPv4 address of the {IDF_TARGET_NAME} SoftAP.
 Parameters
 ^^^^^^^^^^
 
--  **<"ip">**: string parameter showing the IPv4 address of the {IDF_TARGET_NAME} SoftAP.
--  **<"gateway">**: gateway.
--  **<"netmask">**: netmask.
--  **<"ipv6 addr">**: string parameter showing the IPv6 address of the {IDF_TARGET_NAME} SoftAP.
+- **<"ip">**: string parameter showing the IPv4 address of the {IDF_TARGET_NAME} SoftAP.
+- **<"gateway">**: gateway.
+- **<"netmask">**: netmask.
+- **<"ipv6 addr">**: string parameter showing the IPv6 address of the {IDF_TARGET_NAME} SoftAP.
 
 Notes
 ^^^^^
 
--  The set command is just applied to the IPv4 network, but not the IPv6 network.
--  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  The set command correlates with the commands that set DHCP, such as :ref:`AT+CWDHCP <cmd-DHCP>`.
+- The set command is just applied to the IPv4 network, but not the IPv6 network.
+- The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+- The set command correlates with the commands that set DHCP, such as :ref:`AT+CWDHCP <cmd-DHCP>`.
 
-   -  If static IPv4 address is enabled, DHCP will be disabled;
-   -  If DHCP is enabled, static IPv4 address will be disabled;
-   -  The last configuration overwrites the previous configuration.
+   - If static IPv4 address is enabled, DHCP will be disabled;
+   - If DHCP is enabled, static IPv4 address will be disabled;
+   - The last configuration overwrites the previous configuration.
 
 Example
 ^^^^^^^^
@@ -1792,49 +1792,49 @@ Start SmartConfig of a designated type.
 
 ::
 
-    OK  
+    OK
 
 Parameters
 ^^^^^^^^^^
 
--  **<type>**:
+- **<type>**:
 
-   -  1: ESP-TOUCH
-   -  2: AirKiss
-   -  3: ESP-TOUCH+AirKiss
-   -  4: ESP-TOUCH v2
+   - 1: ESP-TOUCH
+   - 2: AirKiss
+   - 3: ESP-TOUCH+AirKiss
+   - 4: ESP-TOUCH v2
 
--  **<auth floor>**: Wi-Fi authentication mode floor. ESP-AT will not connect to the AP whose authmode is lower than this floor.
+- **<auth floor>**: Wi-Fi authentication mode floor. ESP-AT will not connect to the AP whose authmode is lower than this floor.
 
-   -  0: OPEN (Default)
-   -  1: WEP
-   -  2: WPA_PSK
-   -  3: WPA2_PSK
-   -  4: WPA_WPA2_PSK
-   -  5: WPA2_ENTERPRISE
-   -  6: WPA3_PSK
-   -  7: WPA2_WPA3_PSK
-   -  8: WAPI_PSK
-   -  9: OWE
-   -  10: WPA3_ENT_192
-   -  11: WPA3_EXT_PSK
-   -  12: WPA3_EXT_PSK_MIXED_MODE
-   -  13: DPP
-   -  14: WPA3_ENTERPRISE
-   -  15: WPA2_WPA3_ENTERPRISE
+   - 0: OPEN (Default)
+   - 1: WEP
+   - 2: WPA_PSK
+   - 3: WPA2_PSK
+   - 4: WPA_WPA2_PSK
+   - 5: WPA2_ENTERPRISE
+   - 6: WPA3_PSK
+   - 7: WPA2_WPA3_PSK
+   - 8: WAPI_PSK
+   - 9: OWE
+   - 10: WPA3_ENT_192
+   - 11: WPA3_EXT_PSK
+   - 12: WPA3_EXT_PSK_MIXED_MODE
+   - 13: DPP
+   - 14: WPA3_ENTERPRISE
+   - 15: WPA2_WPA3_ENTERPRISE
 
 - **<"esptouch v2 key">**: ESP-TOUCH v2 decrypt key. It is used to decrypt Wi-Fi password and reserved data. Length: 16 bytes.
 
 Notes
 ^^^^^
 
--  For more details on SmartConfig, please see `ESP-TOUCH User Guide <https://www.espressif.com/sites/default/files/documentation/esp-touch_user_guide_en.pdf>`_.
--  SmartConfig is only available in the {IDF_TARGET_NAME} station mode.
--  The message ``Smart get Wi-Fi info`` means that SmartConfig has successfully acquired the AP information. {IDF_TARGET_NAME} will try to connect to the target AP.
--  Message ``+SCRD:<length>,<rvd data>`` means that ESP-Touch v2 has successfully acquired the reserved data information.
--  Message ``Smartconfig connected Wi-Fi`` is printed if the connection is successful.
--  When AT returns ``Smartconfig connected Wi-Fi``, it is recommended to delay more than ``6`` seconds before executing :ref:`AT+CWSTOPSMART <cmd-STOPS>` because the {IDF_TARGET_NAME} needs to synchronize the SmartConfig results to the mobile phone.
--  Use command :ref:`AT+CWSTOPSMART <cmd-STOPS>` to stop SmartConfig before running other commands. Please make sure that you do not execute other commands during SmartConfig.
+- For more details on SmartConfig, please see `ESP-TOUCH User Guide <https://www.espressif.com/sites/default/files/documentation/esp-touch_user_guide_en.pdf>`_.
+- SmartConfig is only available in the {IDF_TARGET_NAME} station mode.
+- The message ``Smart get Wi-Fi info`` means that SmartConfig has successfully acquired the AP information. {IDF_TARGET_NAME} will try to connect to the target AP.
+- Message ``+SCRD:<length>,<rvd data>`` means that ESP-Touch v2 has successfully acquired the reserved data information.
+- Message ``Smartconfig connected Wi-Fi`` is printed if the connection is successful.
+- When AT returns ``Smartconfig connected Wi-Fi``, it is recommended to delay more than ``6`` seconds before executing :ref:`AT+CWSTOPSMART <cmd-STOPS>` because the {IDF_TARGET_NAME} needs to synchronize the SmartConfig results to the mobile phone.
+- Use command :ref:`AT+CWSTOPSMART <cmd-STOPS>` to stop SmartConfig before running other commands. Please make sure that you do not execute other commands during SmartConfig.
 
 Example
 ^^^^^^^^
@@ -1867,7 +1867,7 @@ Execute Command
 Note
 ^^^^^
 
--  Irrespective of whether SmartConfig succeeds or not, please always call :ref:`AT+CWSTOPSMART <cmd-STOPS>` before executing any other AT commands to release the internal memory taken up by SmartConfig.
+- Irrespective of whether SmartConfig succeeds or not, please always call :ref:`AT+CWSTOPSMART <cmd-STOPS>` before executing any other AT commands to release the internal memory taken up by SmartConfig.
 
 Example
 ^^^^^^^^
@@ -1896,40 +1896,40 @@ Set Command
 
 ::
 
-    OK 
+    OK
 
 Parameters
 ^^^^^^^^^^
 
--  **<enable>**:
+- **<enable>**:
 
-   -  1: Enable WPS (Wi-Fi Protected Setup) that uses PBC (Push Button Configuration) mode.
-   -  0: Disable WPS that uses PBC mode.
+   - 1: Enable WPS (Wi-Fi Protected Setup) that uses PBC (Push Button Configuration) mode.
+   - 0: Disable WPS that uses PBC mode.
 
--  **<auth floor>**: Wi-Fi authentication mode floor. ESP-AT will not connect to the AP whose authmode is lower than this floor.
+- **<auth floor>**: Wi-Fi authentication mode floor. ESP-AT will not connect to the AP whose authmode is lower than this floor.
 
-   -  0: OPEN (Default)
-   -  1: WEP
-   -  2: WPA_PSK
-   -  3: WPA2_PSK
-   -  4: WPA_WPA2_PSK
-   -  5: WPA2_ENTERPRISE
-   -  6: WPA3_PSK
-   -  7: WPA2_WPA3_PSK
-   -  8: WAPI_PSK
-   -  9: OWE
-   -  10: WPA3_ENT_192
-   -  11: WPA3_EXT_PSK
-   -  12: WPA3_EXT_PSK_MIXED_MODE
-   -  13: DPP
-   -  14: WPA3_ENTERPRISE
-   -  15: WPA2_WPA3_ENTERPRISE
+   - 0: OPEN (Default)
+   - 1: WEP
+   - 2: WPA_PSK
+   - 3: WPA2_PSK
+   - 4: WPA_WPA2_PSK
+   - 5: WPA2_ENTERPRISE
+   - 6: WPA3_PSK
+   - 7: WPA2_WPA3_PSK
+   - 8: WAPI_PSK
+   - 9: OWE
+   - 10: WPA3_ENT_192
+   - 11: WPA3_EXT_PSK
+   - 12: WPA3_EXT_PSK_MIXED_MODE
+   - 13: DPP
+   - 14: WPA3_ENTERPRISE
+   - 15: WPA2_WPA3_ENTERPRISE
 
 Notes
 ^^^^^
 
--  WPS can only be used when the {IDF_TARGET_NAME} station is enabled.
--  WPS does not support WEP (Wired-Equivalent Privacy) encryption.
+- WPS can only be used when the {IDF_TARGET_NAME} station is enabled.
+- WPS does not support WEP (Wired-Equivalent Privacy) encryption.
 
 Example
 ^^^^^^^^
@@ -1993,25 +1993,25 @@ or
 Parameters
 ^^^^^^^^^^
 
--  **<"ssid">**: the SSID of the Enterprise AP.
+- **<"ssid">**: the SSID of the Enterprise AP.
 
-   -  Escape character syntax is needed if SSID or password contains any special characters, such as ``,``, ``"``, or ``\\``.
+   - Escape character syntax is needed if SSID or password contains any special characters, such as ``,``, ``"``, or ``\\``.
 
--  **<method>**: WPA2 Enterprise authentication method.
+- **<method>**: WPA2 Enterprise authentication method.
 
-   -  0: EAP-TLS.
-   -  1: EAP-PEAP.
-   -  2: EAP-TTLS.
+   - 0: EAP-TLS.
+   - 1: EAP-PEAP.
+   - 2: EAP-TTLS.
 
--  **<"identity">**: identity for phase 1. String limited to 1 ~ 32.
--  **<"username">**: username for phase 2. Range: 1 ~ 32 bytes. For the EAP-PEAP and EAP-TTLS method, you must set this parameter. For the EAP-TLS method, you do not need to.
--  **<"password">**: password for phase 2. Range: 1 ~ 32 bytes. For the EAP-PEAP and EAP-TTLS method, you must set this parameter. For the EAP-TLS method, you do not need to.
--  **<security>**:
+- **<"identity">**: identity for phase 1. String limited to 1 ~ 32.
+- **<"username">**: username for phase 2. Range: 1 ~ 32 bytes. For the EAP-PEAP and EAP-TTLS method, you must set this parameter. For the EAP-TLS method, you do not need to.
+- **<"password">**: password for phase 2. Range: 1 ~ 32 bytes. For the EAP-PEAP and EAP-TTLS method, you must set this parameter. For the EAP-TLS method, you do not need to.
+- **<security>**:
 
-   -  Bit0: provide the certificate for the server to verify.
-   -  Bit1: load the CA certificate to verify the server's certificate.
+   - bit 0: provide the certificate for the server to verify.
+   - bit 1: load the CA certificate to verify the server's certificate.
 
--  **[<jeap_timeout>]**: maximum timeout for :ref:`AT+CWJEAP <cmd-JEAP>` command. Unit: second. Default: 15. Range: [3,600].
+- **<jeap_timeout>**: maximum timeout for :ref:`AT+CWJEAP <cmd-JEAP>` command. Unit: second. Default: 15. Range: [3,600].
 
 Example
 ^^^^^^^^
@@ -2108,15 +2108,15 @@ The WPA2 Enterprise error code will be prompt as ``ERR CODE:0x<%08x>``.
 Note
 ^^^^^
 
--  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  This command requires Station mode to be active.
--  TLS mode will use client certificate. Please make sure it is enabled.
--  If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the WPA2 Enterprise certificate (for detailed steps, please refer to :ref:`AT+SYSMFG command examples <sysmfg-pki>`, the certificate configuration method is the same as SSL certificates). If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
--  If ``<security>`` is configured to 2, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+CWJEAP <cmd-JEAP>` command. (You can send :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>` command to configure the current time, and send :ref:`AT+SYSTIMESTAMP? <cmd-SETTIME>` command to query the current time.)
+- The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+- This command requires Station mode to be active.
+- TLS mode will use client certificate. Please make sure it is enabled.
+- If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the WPA2 Enterprise certificate (for detailed steps, please refer to :ref:`AT+SYSMFG command examples <sysmfg-pki>`, the certificate configuration method is the same as SSL certificates). If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
+- If ``<security>`` is configured to 2, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+CWJEAP <cmd-JEAP>` command. (You can send :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>` command to configure the current time, and send :ref:`AT+SYSTIMESTAMP? <cmd-SETTIME>` command to query the current time.)
 
 .. _cmd-HOSTNAME:
 
-:ref:`AT+CWHOSTNAME <WiFi-AT>`: Query/Set the Host Name of an {IDF_TARGET_NAME} Station
+:ref:`AT+CWHOSTNAME <WiFi-AT>`: Query or Set the Host Name of an {IDF_TARGET_NAME} Station
 ---------------------------------------------------------------------------------------
 
 Query Command
@@ -2168,12 +2168,12 @@ If the Station mode is not enabled, the command will return:
 Parameters
 ^^^^^^^^^^
 
--  **<"hostname">**: the host name of the {IDF_TARGET_NAME} Station. Maximum length: 32 bytes.
+- **<"hostname">**: the host name of the {IDF_TARGET_NAME} Station. Maximum length: 32 bytes.
 
 Note
 ^^^^^
 
--  The configuration changes are not saved in the flash.
+- The configuration changes are not saved in the flash.
 
 Example
 ^^^^^^^^
@@ -2185,7 +2185,7 @@ Example
 
 .. _cmd-COUNTRY:
 
-:ref:`AT+CWCOUNTRY <WiFi-AT>`: Query/Set the Wi-Fi Country Code
+:ref:`AT+CWCOUNTRY <WiFi-AT>`: Query or Set the Wi-Fi Country Code
 --------------------------------------------------------------------
 
 Query Command
@@ -2253,8 +2253,8 @@ Parameters
 
   - **<country_policy>**:
 
-    - 0: will change the county code to be the same as the AP that the {IDF_TARGET_NAME} is connected to.
-    - 1: the country code will not change, always be the one set by command.
+    - 0: Will change the county code to be the same as the AP that the {IDF_TARGET_NAME} is connected to.
+    - 1: The country code will not change, always be the one set by command.
 
   - **<"country_code">**: country code. Maximum length: 3 characters. Refer to `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ for country codes.
   - **<start_channel>**: the channel number to start. Range: [1,14].
@@ -2264,8 +2264,8 @@ Parameters
 Note
 ^^^^^
 
--  See `Wi-Fi Country Code <https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/api-guides/wifi.html#wi-fi-country-code>`_ for more details.
--  The configuration changes are not saved in the flash.
+- See `Wi-Fi Country Code <https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/api-guides/wifi.html#wi-fi-country-code>`_ for more details.
+- The configuration changes are not saved in the flash.
 
 Example
 ^^^^^^^^

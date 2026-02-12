@@ -56,7 +56,7 @@ Then, define desired type of command. Assuming that ``AT+TEST`` supports all the
 - First, call :cpp:type:`esp_at_cmd_struct` to define the name and type(s) that your AT command supports. The sample code below defined the name ``+TEST`` (omitting ``AT``) and all the four types.
 
     .. code-block:: c
-    
+
         static const esp_at_cmd_struct at_custom_cmd[] = {
             {"+TEST", at_test_cmd_test, at_query_cmd_test, at_setup_cmd_test, at_exe_cmd_test},
             /**
@@ -70,26 +70,26 @@ Then, define desired type of command. Assuming that ``AT+TEST`` supports all the
 - Test Command:
 
     .. code-block:: c
-    
+
         static uint8_t at_test_cmd_test(uint8_t *cmd_name)
         {
             uint8_t buffer[64] = {0};
             snprintf((char *)buffer, 64, "test command: <AT%s=?> is executed\r\n", cmd_name);
             esp_at_port_write_data(buffer, strlen((char *)buffer));
-    
+
             return ESP_AT_RESULT_CODE_OK;
         }
 
 - Query Command:
 
     .. code-block:: c
-    
+
         static uint8_t at_query_cmd_test(uint8_t *cmd_name)
         {
             uint8_t buffer[64] = {0};
             snprintf((char *)buffer, 64, "query command: <AT%s?> is executed\r\n", cmd_name);
             esp_at_port_write_data(buffer, strlen((char *)buffer));
-    
+
             return ESP_AT_RESULT_CODE_OK;
         }
 
@@ -98,23 +98,23 @@ Then, define desired type of command. Assuming that ``AT+TEST`` supports all the
 - Set Command:
 
     .. code-block:: c
-    
+
         static uint8_t at_setup_cmd_test(uint8_t para_num)
         {
             uint8_t index = 0;
-    
+
             // get first parameter, and parse it into a digit
             int32_t digit = 0;
             if (esp_at_get_para_as_digit(index++, &digit) != ESP_AT_PARA_PARSE_RESULT_OK) {
                 return ESP_AT_RESULT_CODE_ERROR;
             }
-    
+
             // get second parameter, and parse it into a string
             uint8_t *str = NULL;
             if (esp_at_get_para_as_str(index++, &str) != ESP_AT_PARA_PARSE_RESULT_OK) {
                 return ESP_AT_RESULT_CODE_ERROR;
             }
-    
+
             // allocate a buffer and construct the data, then send the data to mcu via interface (uart/spi/sdio/socket)
             uint8_t *buffer = (uint8_t *)malloc(512);
             if (!buffer) {
@@ -123,23 +123,23 @@ Then, define desired type of command. Assuming that ``AT+TEST`` supports all the
             int len = snprintf((char *)buffer, 512, "setup command: <AT%s=%d,\"%s\"> is executed\r\n",
                                esp_at_get_current_cmd_name(), digit, str);
             esp_at_port_write_data(buffer, len);
-    
+
             // remember to free the buffer
             free(buffer);
-    
+
             return ESP_AT_RESULT_CODE_OK;
         }
 
 - Execute Command:
 
     .. code-block:: c
-    
+
         static uint8_t at_exe_cmd_test(uint8_t *cmd_name)
         {
             uint8_t buffer[64] = {0};
             snprintf((char *)buffer, 64, "execute command: <AT%s> is executed\r\n", cmd_name);
             esp_at_port_write_data(buffer, strlen((char *)buffer));
-    
+
             return ESP_AT_RESULT_CODE_OK;
         }
 
@@ -153,7 +153,7 @@ Step 2: Register AT Command Functions
   Sample code:
 
   .. code-block:: c
-  
+
       bool esp_at_custom_cmd_register(void)
       {
           return esp_at_custom_cmd_array_regist(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(esp_at_cmd_struct));
@@ -213,7 +213,7 @@ This section introduces two methods for setting the ``at_custom_cmd`` component 
     .. code-block:: none
 
         export AT_CUSTOM_COMPONENTS=(path_of_at_custom_cmd)
-     
+
     - Windows
 
     .. code-block:: none

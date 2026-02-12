@@ -26,7 +26,7 @@ In this example, the HTTP server is http://httpbin.org.
     AT+RESTORE
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -40,7 +40,7 @@ In this example, the HTTP server is http://httpbin.org.
      AT+CWMODE=1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -106,7 +106,7 @@ This example describes how to download an image file in JPG format. The image li
      AT+RESTORE
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -120,7 +120,7 @@ This example describes how to download an image file in JPG format. The image li
      AT+CWMODE=1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -188,7 +188,7 @@ In this example, the HTTP server is http://httpbin.org and the data type is ``ap
      AT+RESTORE
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -202,7 +202,7 @@ In this example, the HTTP server is http://httpbin.org and the data type is ``ap
      AT+CWMODE=1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -241,24 +241,24 @@ In this example, the HTTP server is http://httpbin.org and the data type is ``ap
    .. code-block:: none
 
      +HTTPCLIENT:282,{
-       "args": {}, 
-       "data": "{\"form\":{\"purpose\":\"test\"}}", 
-       "files": {}, 
-       "form": {}, 
+       "args": {},
+       "data": "{\"form\":{\"purpose\":\"test\"}}",
+       "files": {},
+       "form": {},
        "headers": {
-         "Content-Length": "27", 
-         "Content-Type": "application/json", 
-         "Host": "httpbin.org", 
-         "User-Agent": "ESP32 HTTP Client/1.0", 
+         "Content-Length": "27",
+         "Content-Type": "application/json",
+         "Host": "httpbin.org",
+         "User-Agent": "ESP32 HTTP Client/1.0",
          "X-Amzn-Trace-Id": "Root=
      +HTTPCLIENT:173,1-61503a3f-4b16b71918855b97614c5dfb"
-       }, 
+       },
        "json": {
          "form": {
            "purpose": "test"
          }
-       }, 
-       "origin": "20.187.154.207", 
+       },
+       "origin": "20.187.154.207",
        "url": "http://httpbin.org/post"
      }
 
@@ -285,7 +285,7 @@ In this example, the HTTP server is http://httpbin.org and the data type is ``ap
      AT+RESTORE
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -299,7 +299,7 @@ In this example, the HTTP server is http://httpbin.org and the data type is ``ap
      AT+CWMODE=1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -352,34 +352,34 @@ In this example, the HTTP server is http://httpbin.org and the data type is ``ap
    .. code-block:: none
 
      +HTTPCPOST:281,{
-       "args": {}, 
+       "args": {},
        "data": "{\"headers\": {\"Accept\": \"application/json\",\"Accept-Encoding\": \"gzip, deflate\",\"Accept-Language\": \"en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7\",\"Content-Length\": \"0\",\"Host\": \"httpbin.org\",\"Origin\": \"http://httpbin.org\",\"Referer\": \"htt
-     +HTTPCPOST:512,p://httpbin.org/\",\"User-Agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36\",\"X-Amzn-Trace-Id\": \"Root=1-6150581e-1ad4bd5254b4bf5218070413\"}}", 
-       "files": {}, 
-       "form": {}, 
+     +HTTPCPOST:512,p://httpbin.org/\",\"User-Agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36\",\"X-Amzn-Trace-Id\": \"Root=1-6150581e-1ad4bd5254b4bf5218070413\"}}",
+       "files": {},
+       "form": {},
        "headers": {
-         "Content-Length": "427", 
-         "Content-Type": "application/json", 
-         "Host": "httpbin.org", 
-         "User-Agent": "ESP32 HTTP Client/1.0", 
+         "Content-Length": "427",
+         "Content-Type": "application/json",
+         "Host": "httpbin.org",
+         "User-Agent": "ESP32 HTTP Client/1.0",
          "X-Amzn-Trace-Id": "Root=1-61505e76-278b5c267aaf55842bd58b32"
-       }, 
+       },
        "json": {
          "headers": {
-           
-     +HTTPCPOST:512,"Accept": "application/json", 
-           "Accept-Encoding": "gzip, deflate", 
-           "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7", 
-           "Content-Length": "0", 
-           "Host": "httpbin.org", 
-           "Origin": "http://httpbin.org", 
-           "Referer": "http://httpbin.org/", 
-           "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36", 
+
+     +HTTPCPOST:512,"Accept": "application/json",
+           "Accept-Encoding": "gzip, deflate",
+           "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
+           "Content-Length": "0",
+           "Host": "httpbin.org",
+           "Origin": "http://httpbin.org",
+           "Referer": "http://httpbin.org/",
+           "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
            "X-Amzn-Trace-Id": "Root=1-6150581e-1ad4bd5254b4bf5218070413"
          }
-       }, 
+       },
        "origin": "20.187.154
-     +HTTPCPOST:45,.207", 
+     +HTTPCPOST:45,.207",
        "url": "http://httpbin.org/post"
      }
 
@@ -459,20 +459,20 @@ In this example, the HTTP server is http://httpbin.org. PUT request supports `Qu
      +HTTPCLIENT:282,{
        "args": {
          "user": "foo"
-       }, 
-       "data": "", 
-       "files": {}, 
-       "form": {}, 
+       },
+       "data": "",
+       "files": {},
+       "form": {},
        "headers": {
-         "Content-Length": "0", 
-         "Content-Type": "application/x-www-form-urlencoded", 
-         "Host": "httpbin.org", 
-         "User-Agent": "ESP32 HTTP Client/1.0", 
+         "Content-Length": "0",
+         "Content-Type": "application/x-www-form-urlencoded",
+         "Host": "httpbin.org",
+         "User-Agent": "ESP32 HTTP Client/1.0",
          "X-Amzn-Trace-Id": "R
      +HTTPCLIENT:140,oot=1-61503d41-1dd8cbe0056190f721ab1912"
-       }, 
-       "json": null, 
-       "origin": "20.187.154.207", 
+       },
+       "json": null,
+       "origin": "20.187.154.207",
        "url": "http://httpbin.org/put?user=foo"
      }
 
@@ -564,34 +564,34 @@ In this example, the HTTP server is http://httpbin.org and the data type is ``ap
    .. code-block:: none
 
       +HTTPCPUT:281,{
-        "args": {}, 
+        "args": {},
         "data": "{\"headers\": {\"Accept\": \"application/json\",\"Accept-Encoding\": \"gzip, deflate\",\"Accept-Language\": \"en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7\",\"Content-Length\": \"0\",\"Host\": \"httpbin.org\",\"Origin\": \"http://httpbin.org\",\"Referer\": \"htt
-      +HTTPCPUT:512,p://httpbin.org/\",\"User-Agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36\",\"X-Amzn-Trace-Id\": \"Root=1-6150581e-1ad4bd5254b4bf5218070413\"}}", 
-        "files": {}, 
-        "form": {}, 
+      +HTTPCPUT:512,p://httpbin.org/\",\"User-Agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36\",\"X-Amzn-Trace-Id\": \"Root=1-6150581e-1ad4bd5254b4bf5218070413\"}}",
+        "files": {},
+        "form": {},
         "headers": {
-          "Content-Length": "427", 
-          "Content-Type": "application/json", 
-          "Host": "httpbin.org", 
-          "User-Agent": "ESP32 HTTP Client/1.0", 
+          "Content-Length": "427",
+          "Content-Type": "application/json",
+          "Host": "httpbin.org",
+          "User-Agent": "ESP32 HTTP Client/1.0",
           "X-Amzn-Trace-Id": "Root=1-635f7009-681be2d5478504dc5b83624a"
-        }, 
+        },
         "json": {
           "headers": {
-            
-      +HTTPCPUT:512,"Accept": "application/json", 
-            "Accept-Encoding": "gzip, deflate", 
-            "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7", 
-            "Content-Length": "0", 
-            "Host": "httpbin.org", 
-            "Origin": "http://httpbin.org", 
-            "Referer": "http://httpbin.org/", 
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36", 
+
+      +HTTPCPUT:512,"Accept": "application/json",
+            "Accept-Encoding": "gzip, deflate",
+            "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
+            "Content-Length": "0",
+            "Host": "httpbin.org",
+            "Origin": "http://httpbin.org",
+            "Referer": "http://httpbin.org/",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
             "X-Amzn-Trace-Id": "Root=1-6150581e-1ad4bd5254b4bf5218070413"
           }
-        }, 
+        },
         "origin": "52.246.135
-      +HTTPCPUT:43,.57", 
+      +HTTPCPUT:43,.57",
         "url": "http://httpbin.org/put"
       }
 
@@ -616,7 +616,7 @@ In this example, the HTTP server is http://httpbin.org. The DELETE method is use
      AT+RESTORE
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -630,7 +630,7 @@ In this example, the HTTP server is http://httpbin.org. The DELETE method is use
      AT+CWMODE=1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -669,20 +669,20 @@ In this example, the HTTP server is http://httpbin.org. The DELETE method is use
    .. code-block:: none
 
      +HTTPCLIENT:282,{
-       "args": {}, 
-       "data": "", 
-       "files": {}, 
-       "form": {}, 
+       "args": {},
+       "data": "",
+       "files": {},
+       "form": {},
        "headers": {
-         "Content-Length": "0", 
-         "Content-Type": "application/x-www-form-urlencoded", 
-         "Host": "httpbin.org", 
-         "User-Agent": "ESP32 HTTP Client/1.0", 
+         "Content-Length": "0",
+         "Content-Type": "application/x-www-form-urlencoded",
+         "Host": "httpbin.org",
+         "User-Agent": "ESP32 HTTP Client/1.0",
          "X-Amzn-Trace-Id": "Root=1-61504289-468a41
      +HTTPCLIENT:114,737b0d251672acec9d"
-       }, 
-       "json": null, 
-       "origin": "20.187.154.207", 
+       },
+       "json": null,
+       "origin": "20.187.154.207",
        "url": "https://httpbin.org/delete"
      }
 

@@ -7,27 +7,27 @@
 
 - :ref:`Introduction <cmd-bt-intro>`
 - :ref:`AT+BTINIT <cmd-BTINIT>`: Classic Bluetooth initialization.
-- :ref:`AT+BTNAME <cmd-BTNAME>`: Query/Set Classic Bluetooth device name.
+- :ref:`AT+BTNAME <cmd-BTNAME>`: Query or set Classic Bluetooth device name.
 - :ref:`AT+BTSCANMODE <cmd-BTSCANMODE>`: Set Classic Bluetooth scan mode.
 - :ref:`AT+BTSTARTDISC <cmd-BTDISC>`: Start Classic Bluetooth discovery.
 - :ref:`AT+BTSPPINIT <cmd-BTSPPINIT>`: Classic Bluetooth SPP profile initialization.
-- :ref:`AT+BTSPPCONN <cmd-BTSPPCONN>`: Query/Establish SPP connection.
+- :ref:`AT+BTSPPCONN <cmd-BTSPPCONN>`: Query or establish SPP connection.
 - :ref:`AT+BTSPPDISCONN <cmd-BTSPPDISCONN>`: End SPP connection.
 - :ref:`AT+BTSPPSTART <cmd-BTSPPSTART>`: Start Classic Bluetooth SPP profile.
 - :ref:`AT+BTSPPSEND <cmd-BTSPPSEND>`: Send data to remote Classic Bluetooth SPP device.
 - :ref:`AT+BTA2DPINIT <cmd-BTA2DPINIT>`: Classic Bluetooth A2DP profile initialization.
 - :ref:`AT+BTA2DPCONN <cmd-BTA2DPCONN>`: Establish A2DP connection.
 - :ref:`AT+BTA2DPDISCONN <cmd-BTA2DPDISCONN>`: End A2DP connection.
-- :ref:`AT+BTA2DPSRC <cmd-BTA2DPSRC>`: Query/Set the audio file URL.
+- :ref:`AT+BTA2DPSRC <cmd-BTA2DPSRC>`: Query or set the audio file URL.
 - :ref:`AT+BTA2DPCTRL <cmd-BTA2DPCTRL>`: Control the audio play.
-- :ref:`AT+BTSECPARAM <cmd-BTSECPARAM>`: Query/Set the Classic Bluetooth security parameters.
+- :ref:`AT+BTSECPARAM <cmd-BTSECPARAM>`: Query or set the Classic Bluetooth security parameters.
 - :ref:`AT+BTKEYREPLY <cmd-BTKEYREPLY>`: Input the Simple Pair Key.
 - :ref:`AT+BTPINREPLY <cmd-BTPINREPLY>`: Input the Legacy Pair PIN Code.
 - :ref:`AT+BTSECCFM <cmd-BTSECCFM>`: Reply the confirm value to the peer device in the legacy connection stage.
 - :ref:`AT+BTENCDEV <cmd-BTENCDEV>`: Query Classic Bluetooth encryption device list.
 - :ref:`AT+BTENCCLEAR <cmd-BTENCCLEAR>`: Clear Classic Bluetooth encryption device list.
 - :ref:`AT+BTCOD <cmd-BTCOD>`: Set class of devices.
-- :ref:`AT+BTPOWER <cmd-BTPWR>`: Query/Set power of Classic Bluetooth.
+- :ref:`AT+BTPOWER <cmd-BTPWR>`: Query or set power of Classic Bluetooth.
 
 .. _cmd-bt-intro:
 
@@ -100,10 +100,10 @@ Initialize or deinitialize Classic Bluetooth.
 Parameter
 ^^^^^^^^^^
 
--  **<init>**:
+- **<init>**:
 
-   -  0: deinitialize Classic Bluetooth.
-   -  1: initialize Classic Bluetooth.
+   - 0: Deinitialize Classic Bluetooth.
+   - 1: Initialize Classic Bluetooth.
 
 Notes
 ^^^^^
@@ -116,11 +116,11 @@ Example
 
 ::
 
-    AT+BTINIT=1    
+    AT+BTINIT=1
 
 .. _cmd-BTNAME:
 
-:ref:`AT+BTNAME <BT-AT>`: Query/Set Classic Bluetooth Device Name
+:ref:`AT+BTNAME <BT-AT>`: Query or Set Classic Bluetooth Device Name
 -------------------------------------------------------------------------------
 
 Query Command
@@ -165,20 +165,20 @@ Set the Classic Bluetooth device name.
 Parameter
 ^^^^^^^^^^
 
--  **<device_name>**: the Classic Bluetooth device name. The maximum length is 32. Default: "ESP32_AT".
+- **<device_name>**: the Classic Bluetooth device name. The maximum length is 32. Default: "ESP32_AT".
 
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  The default Classic Bluetooth device name is "{IDF_TARGET_NAME}_AT".
+- The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+- The default Classic Bluetooth device name is "{IDF_TARGET_NAME}_AT".
 
 Example
 ^^^^^^^^
 
 ::
 
-    AT+BTNAME="esp_demo"    
+    AT+BTNAME="esp_demo"
 
 .. _cmd-BTSCANMODE:
 
@@ -207,12 +207,12 @@ Set the scan mode of Classic Bluetooth.
 Parameter
 ^^^^^^^^^^
 
--  **<scan_mode>**:
+- **<scan_mode>**:
 
-   -  0: Neither discoverable nor connectable.
-   -  1: Connectable but not discoverable.
-   -  2: Both discoverable and connectable.
-   -  3: Discoverable but not connectable.
+   - 0: Neither discoverable nor connectable.
+   - 1: Connectable but not discoverable.
+   - 2: Both discoverable and connectable.
+   - 3: Discoverable but not connectable.
 
 Example
 ^^^^^^^^
@@ -250,45 +250,45 @@ Start Classic Bluetooth discovery.
 Parameters
 ^^^^^^^^^^
 
--  **<inq_mode>**:
+- **<inq_mode>**:
 
-   -  0: general inquiry mode.
-   -  1: limited inquiry mode.
+   - 0: General inquiry mode.
+   - 1: Limited inquiry mode.
 
--  **<inq_len>**: inquiry duration. Range: 0x01 ~ 0x30.
--  **<inq_num_rsps>**: number of inquiry responses that can be received. If you set it to 0, AT will receive an unlimited number of responses.
--  **<bt_addr>**: Classic Bluetooth address.
--  **<dev_name>**: device name.
--  **<major_dev_class>**:
+- **<inq_len>**: inquiry duration. Range: 0x01 ~ 0x30.
+- **<inq_num_rsps>**: number of inquiry responses that can be received. If you set it to 0, AT will receive an unlimited number of responses.
+- **<bt_addr>**: Classic Bluetooth address.
+- **<dev_name>**: device name.
+- **<major_dev_class>**:
 
-   -  0x0: miscellaneous.
-   -  0x1: computer.
-   -  0x2: phone (cellular, cordless, pay phone, modem).
-   -  0x3: LAN, Network Access Point.
-   -  0x4: audio/video (headset, speaker, stereo, video display, VCR).
-   -  0x5: peripheral (mouse, joystick, keyboard).
-   -  0x6: imaging (printer, scanner, camera, display).
-   -  0x7: wearable.
-   -  0x8: toy.
-   -  0x9: health.
-   -  0x1F: uncategorized device.
+   - 0x0: miscellaneous.
+   - 0x1: computer.
+   - 0x2: phone (cellular, cordless, pay phone, modem).
+   - 0x3: LAN, Network Access Point.
+   - 0x4: audio/video (headset, speaker, stereo, video display, VCR).
+   - 0x5: peripheral (mouse, joystick, keyboard).
+   - 0x6: imaging (printer, scanner, camera, display).
+   - 0x7: wearable.
+   - 0x8: toy.
+   - 0x9: health.
+   - 0x1F: uncategorized device.
 
--  **<minor_dev_class>**: please refer to `Minor Device Class field <https://www.bluetooth.com/specifications/assigned-numbers/>`_.
+- **<minor_dev_class>**: please refer to `Minor Device Class field <https://www.bluetooth.com/specifications/assigned-numbers/>`_.
 
--  **<major_srv_class>**:
+- **<major_srv_class>**:
 
-   -  0x0: an invalid value.
-   -  0x1: Limited Discoverable Mode.
-   -  0x8: positioning (location identification).
-   -  0x10: networking, such as LAN, Ad hoc.
-   -  0x20: rendering, such as printing, speakers.
-   -  0x40: capturing, such as scanner, microphone.
-   -  0x80: object transfer, such as v-Inbox, v-Folder.
-   -  0x100: audio, such as speaker, microphone, headerset service.
-   -  0x200: telephony, such as cordless telephony, modem, headset service.
-   -  0x400: information, such as WEB-server, WAP-server.
+   - 0x0: an invalid value.
+   - 0x1: Limited Discoverable Mode.
+   - 0x8: positioning (location identification).
+   - 0x10: networking, such as LAN, Ad hoc.
+   - 0x20: rendering, such as printing, speakers.
+   - 0x40: capturing, such as scanner, microphone.
+   - 0x80: object transfer, such as v-Inbox, v-Folder.
+   - 0x100: audio, such as speaker, microphone, headerset service.
+   - 0x200: telephony, such as cordless telephony, modem, headset service.
+   - 0x400: information, such as WEB-server, WAP-server.
 
--  **<rssi>**: signal strength.
+- **<rssi>**: signal strength.
 
 Example
 ^^^^^^^^
@@ -356,11 +356,11 @@ Initialize or deinitialize Classic Bluetooth SPP profile.
 Parameter
 ^^^^^^^^^^
 
--  **<init>**:
+- **<init>**:
 
-   -  0: deinitialize Classic Bluetooth SPP profile.
-   -  1: initialize Classic Bluetooth SPP profile, the role is master.
-   -  2: initialize Classic Bluetooth SPP profile, the role is slave.
+   - 0: Deinitialize Classic Bluetooth SPP profile.
+   - 1: Initialize Classic Bluetooth SPP profile, the role is master.
+   - 2: Initialize Classic Bluetooth SPP profile, the role is slave.
 
 Example
 ^^^^^^^^
@@ -372,7 +372,7 @@ Example
 
 .. _cmd-BTSPPCONN:
 
-:ref:`AT+BTSPPCONN <BT-AT>`: Query/Establish SPP Connection
+:ref:`AT+BTSPPCONN <BT-AT>`: Query or establish SPP Connection
 -------------------------------------------------------------------------
 
 Query Command
@@ -435,16 +435,16 @@ Otherwise, AT will return:
 Parameters
 ^^^^^^^^^^
 
--  **<conn_index>**: index of Classic Bluetooth SPP connection. Only 0 is supported for the single connection right now.
--  **<sec_mode>**: 
+- **<conn_index>**: index of Classic Bluetooth SPP connection. Only 0 is supported for the single connection right now.
+- **<sec_mode>**:
 
-   -  0x0000: no security.
-   -  0x0001: authorization required (only needed for out going connection).
-   -  0x0036: encryption required.
-   -  0x3000: Man-In-The-Middle protection.
-   -  0x4000: Min 16 digit for pin code.
+   - 0x0000: no security.
+   - 0x0001: authorization required (only needed for out going connection).
+   - 0x0036: encryption required.
+   - 0x3000: Man-In-The-Middle protection.
+   - 0x4000: Min 16 digit for pin code.
 
--  **<remote_address>**: remote Classic Bluetooth SPP device address.
+- **<remote_address>**: remote Classic Bluetooth SPP device address.
 
 Example
 ^^^^^^^^
@@ -492,8 +492,8 @@ If the command is fail, it will prompt:
 Parameters
 ^^^^^^^^^^
 
--  **<conn_index>**: index of Classic Bluetooth SPP connection. Only 0 is supported for the single connection right now.
--  **<remote_address>**: remote Classic Bluetooth A2DP device address.
+- **<conn_index>**: index of Classic Bluetooth SPP connection. Only 0 is supported for the single connection right now.
+- **<remote_address>**: remote Classic Bluetooth A2DP device address.
 
 Example
 ^^^^^^^^
@@ -524,7 +524,7 @@ Enter Classic Bluetooth SPP mode.
 
 ::
 
-    >   
+    >
 
 Set Command
 ^^^^^^^^^^^^^^^
@@ -548,13 +548,13 @@ Send data to the remote Classic Bluetooth SPP device.
 Parameters
 ^^^^^^^^^^
 
--  **<conn_index>**: index of Classic Bluetooth SPP connection. Only 0 is supported for the single connection right now.
--  **<data_len>**: the length of the data which is ready to be sent.
+- **<conn_index>**: index of Classic Bluetooth SPP connection. Only 0 is supported for the single connection right now.
+- **<data_len>**: the length of the data which is ready to be sent.
 
 Notes
 ^^^^^
 
--  The wrap return is > after this command is executed. Then, the {IDF_TARGET_NAME} enters UART Bluetooth passthrough mode. When the packet which only contains :ref:`+++ <cmd-PLUS>` is received, the device returns to normal command mode. Please wait for at least one second before sending the next AT command.
+- The wrap return is > after this command is executed. Then, the {IDF_TARGET_NAME} enters UART Bluetooth passthrough mode. When the packet which only contains :ref:`+++ <cmd-PLUS>` is received, the device returns to normal command mode. Please wait for at least one second before sending the next AT command.
 
 Example
 ^^^^^^^^
@@ -591,7 +591,7 @@ Start Classic Bluetooth SPP profile.
 Note
 ^^^^
 
--  During the SPP transmission, AT will not prompt any connection status changes unless bit2 of :ref:`AT+SYSMSG <cmd-SYSMSG>` is 1.
+- During the SPP transmission, AT will not prompt any connection status changes unless bit 2 of :ref:`AT+SYSMSG <cmd-SYSMSG>` is 1.
 
 Example
 ^^^^^^^^
@@ -658,11 +658,11 @@ Initialize or deinitialize Classic Bluetooth A2DP profile.
 Parameters
 ^^^^^^^^^^
 
--  **<role>**: role
+- **<role>**: role
 
-   -  0: deinitialize Classic Bluetooth A2DP profile.
-   -  1: source.
-   -  2: sink.
+   - 0: Deinitialize Classic Bluetooth A2DP profile.
+   - 1: Source.
+   - 2: Sink.
 
 Example
 ^^^^^^^^
@@ -673,7 +673,7 @@ Example
 
 .. _cmd-BTA2DPCONN:
 
-:ref:`AT+BTA2DPCONN <BT-AT>`: Query/Establish A2DP Connection
+:ref:`AT+BTA2DPCONN <BT-AT>`: Query or establish A2DP Connection
 ---------------------------------------------------------------------------
 
 Query Command
@@ -732,8 +732,8 @@ Otherwise, it will return:
 Parameters
 ^^^^^^^^^^
 
--  **<conn_index>**: index of Classic Bluetooth A2DP connection. Only 0 is supported for the single connection right now.
--  **<remote_address>**: remote Classic Bluetooth A2DP device address.
+- **<conn_index>**: index of Classic Bluetooth A2DP connection. Only 0 is supported for the single connection right now.
+- **<remote_address>**: remote Classic Bluetooth A2DP device address.
 
 Example
 ^^^^^^^^
@@ -770,8 +770,8 @@ End the Classic Bluetooth A2DP connection.
 Parameters
 ^^^^^^^^^^
 
--  **<conn_index>**: index of Classic Bluetooth A2DP connection. Only 0 is supported for the single connection right now.
--  **<remote_address>**: remote Classic Bluetooth A2DP device address.
+- **<conn_index>**: index of Classic Bluetooth A2DP connection. Only 0 is supported for the single connection right now.
+- **<remote_address>**: remote Classic Bluetooth A2DP device address.
 
 Example
 ^^^^^^^^
@@ -782,7 +782,7 @@ Example
 
 .. _cmd-BTA2DPSRC:
 
-:ref:`AT+BTA2DPSRC <BT-AT>`: Query/Set the Audio File URL
+:ref:`AT+BTA2DPSRC <BT-AT>`: Query or Set the Audio File URL
 -----------------------------------------------------------------------------
 
 Query Command
@@ -827,14 +827,14 @@ Set the audio file URL.
 Parameters
 ^^^^^^^^^^
 
--  **<conn_index>**: index of Classic Bluetooth A2DP connection. Only 0 is supported for the single connection right now.
--  **<url>**: the path of the source file. HTTP, HTTPS and FLASH are currently supported.
--  **<type>**: the type of audio file, such as "mp3".
+- **<conn_index>**: index of Classic Bluetooth A2DP connection. Only 0 is supported for the single connection right now.
+- **<url>**: the path of the source file. HTTP, HTTPS and FLASH are currently supported.
+- **<type>**: the type of audio file, such as "mp3".
 
 Note
 ^^^^^
 
--  Only mp3 format is currently supported.
+- Only mp3 format is currently supported.
 
 Example
 ^^^^^^^^
@@ -871,18 +871,18 @@ Control the audio play.
 Parameters
 ^^^^^^^^^^
 
--  **<conn_index>**: index of Classic Bluetooth A2DP connection. Only 0 is supported for the single connection right now.
--  **<ctrl>**: types of control.
+- **<conn_index>**: index of Classic Bluetooth A2DP connection. Only 0 is supported for the single connection right now.
+- **<ctrl>**: types of control.
 
-   -  0: A2DP Sink, stop play.
-   -  1: A2DP Sink, start play.
-   -  2: A2DP Sink, forward.
-   -  3: A2DP Sink, backward.
-   -  4: A2DP Sink, fastward start.
-   -  5: A2DP Sink, fastward stop.
-   -  0: A2DP Source, stop play.
-   -  1: A2DP Source, start play.
-   -  2: A2DP Source, suspend.
+   - 0: A2DP Sink, stop play.
+   - 1: A2DP Sink, start play.
+   - 2: A2DP Sink, forward.
+   - 3: A2DP Sink, backward.
+   - 4: A2DP Sink, fastward start.
+   - 5: A2DP Sink, fastward stop.
+   - 0: A2DP Source, stop play.
+   - 1: A2DP Source, start play.
+   - 2: A2DP Source, suspend.
 
 Example
 ^^^^^^^^
@@ -893,7 +893,7 @@ Example
 
 .. _cmd-BTSECPARAM:
 
-:ref:`AT+BTSECPARAM <BT-AT>`: Query/Set the Classic Bluetooth Security Parameters
+:ref:`AT+BTSECPARAM <BT-AT>`: Query or Set the Classic Bluetooth Security Parameters
 ------------------------------------------------------------------------------------------------------
 
 Query Command
@@ -938,24 +938,24 @@ Set the Classic Bluetooth security parameters.
 Parameters
 ^^^^^^^^^^
 
--  **<io_cap>**: input and output capability.
+- **<io_cap>**: input and output capability.
 
-   -  0: DisplayOnly.
-   -  1: DisplayYesNo.
-   -  2: KeyboardOnly.
-   -  3: NoInputNoOutput.
+   - 0: DisplayOnly.
+   - 1: DisplayYesNo.
+   - 2: KeyboardOnly.
+   - 3: NoInputNoOutput.
 
--  **<pin_type>**: use variable or fixed PIN.
+- **<pin_type>**: use variable or fixed PIN.
 
-   -  0: variable.
-   -  1: fixed.
+   - 0: Variable.
+   - 1: Fixed.
 
--  **<pin_code>**: Legacy Pair PIN Code. Maximum: 16 bytes.
+- **<pin_code>**: Legacy Pair PIN Code. Maximum: 16 bytes.
 
 Note
 ^^^^^
 
--  If you set the parameter ``<pin_type>`` to 0, ``<pin_code>`` will be ignored.
+- If you set the parameter ``<pin_type>`` to 0, ``<pin_code>`` will be ignored.
 
 Example
 ^^^^^^^^
@@ -991,8 +991,8 @@ Input the Simple Pair Key.
 Parameters
 ^^^^^^^^^^
 
--  **<conn_index>**: index of Classic Bluetooth connection. Currently, only 0 is supported for the single connection.
--  **<Key>**: the Simple Pair Key.
+- **<conn_index>**: index of Classic Bluetooth connection. Currently, only 0 is supported for the single connection.
+- **<Key>**: the Simple Pair Key.
 
 Example
 ^^^^^^^^
@@ -1028,8 +1028,8 @@ Input the Legacy Pair PIN Code.
 Parameters
 ^^^^^^^^^^
 
--  **<conn_index>**: index of Classic Bluetooth connection. Currently, only 0 is supported for the single connection.
--  **<Pin>**: the Legacy Pair PIN Code.
+- **<conn_index>**: index of Classic Bluetooth connection. Currently, only 0 is supported for the single connection.
+- **<Pin>**: the Legacy Pair PIN Code.
 
 Example
 ^^^^^^^^
@@ -1065,11 +1065,11 @@ Reply the confirm value to the peer device in the legacy connection stage.
 Parameters
 ^^^^^^^^^^
 
--  **<conn_index>**: index of Classic Bluetooth connection. Currently, only 0 is supported for the single connection.
--  **<accept>**: reject or accept.
+- **<conn_index>**: index of Classic Bluetooth connection. Currently, only 0 is supported for the single connection.
+- **<accept>**: reject or accept.
 
-   -  0: reject.
-   -  1: accept.
+   - 0: Reject.
+   - 1: Accept.
 
 Example
 ^^^^^^^^
@@ -1106,8 +1106,8 @@ Query the bound devices.
 Parameters
 ^^^^^^^^^^
 
--  **<enc_dev_index>**: index of the bound devices.
--  **<mac_address>**: MAC address.
+- **<enc_dev_index>**: index of the bound devices.
+- **<mac_address>**: MAC address.
 
 Example
 ^^^^^^^^
@@ -1162,7 +1162,7 @@ Remove all devices from the security database.
 Parameter
 ^^^^^^^^^^
 
--  **<enc_dev_index>**: index of the bound devices.
+- **<enc_dev_index>**: index of the bound devices.
 
 Example
 ^^^^^^^^
@@ -1198,9 +1198,9 @@ Set the Classic Bluetooth class of devices.
 Parameters
 ^^^^^^^^^^
 
--  **<major>**: `major class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_.
--  **<minor>**: `minor class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_.
--  **<service>**: `service class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_.
+- **<major>**: `major class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_.
+- **<minor>**: `minor class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_.
+- **<service>**: `service class <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_.
 
 Example
 ^^^^^^^^
@@ -1211,7 +1211,7 @@ Example
 
 .. _cmd-BTPWR:
 
-:ref:`AT+BTPOWER <BT-AT>`: Query/Set TX power of Classic Bluetooth
+:ref:`AT+BTPOWER <BT-AT>`: Query or Set TX power of Classic Bluetooth
 -------------------------------------------------------------------------------
 
 Query Command
@@ -1257,8 +1257,8 @@ Set the Classic Bluetooth tx power.
 Parameters
 ^^^^^^^^^^
 
--  **<min_tx_power>**: The minimum power level. Range: [0,7].
--  **<max_tx_power>**: The maximum power level. Range: [0,7].
+- **<min_tx_power>**: The minimum power level. Range: [0,7].
+- **<max_tx_power>**: The maximum power level. Range: [0,7].
 
 Example
 ^^^^^^^^
