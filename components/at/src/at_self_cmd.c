@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -24,6 +24,7 @@
 typedef struct {
     EventGroupHandle_t status_bits;     /*!< status bits for self command event */
     char *cmd;         /*!< command string from self command */
+    int32_t data_len;  /*!< available data length of self command */
     char *resp;        /*!< expected response from self command */
     bool mode;         /*!< self command mode */
 } at_self_cmd_t;
@@ -46,8 +47,9 @@ static void at_self_cmd_set_mode(bool mode)
 
 int32_t at_self_cmd_read_data(uint8_t *buffer, int32_t buffer_len)
 {
-    int32_t len = strlen(s_self_cmd->cmd) < buffer_len ? strlen(s_self_cmd->cmd) : buffer_len;
-    memcpy(buffer, s_self_cmd->cmd, len);
+    int32_t len = s_self_cmd->data_len < buffer_len ? s_self_cmd->data_len : buffer_len;
+    memcpy(buffer, s_self_cmd->cmd + (strlen(s_self_cmd->cmd) - s_self_cmd->data_len), len);
+    s_self_cmd->data_len -= len;
     return len;
 }
 
@@ -66,7 +68,7 @@ int32_t at_self_cmd_write_data(uint8_t *data, int32_t len)
 
 int32_t at_self_cmd_get_data_len(void)
 {
-    return strlen(s_self_cmd->cmd);
+    return s_self_cmd->data_len;
 }
 
 static void at_self_cmd_cleanup(void)
@@ -101,6 +103,7 @@ esp_err_t at_exe_cmd(const char *cmd, const char *expected_response, uint32_t ti
 
     s_self_cmd->status_bits = xEventGroupCreate();
     s_self_cmd->cmd = strdup(cmd);
+    s_self_cmd->data_len = strlen(cmd);
     s_self_cmd->resp = strdup(expected_response);
     if (!s_self_cmd->status_bits || !s_self_cmd->cmd || !s_self_cmd->resp) {
         at_self_cmd_cleanup();
