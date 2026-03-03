@@ -410,7 +410,7 @@ Parameters
 Notes
 """""""
 
-- This command will save the :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+- This command will save the :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 3, {IDF_TARGET_NAME} will enter the :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 - When {IDF_TARGET_NAME} works as a Wi-Fi Station, please configure the Wi-Fi connection information in advance and enable the reconnection mechanism; when it works as a SoftAP, please configure the SoftAP parameters in advance to ensure it can work normally after power-on.
 - In the TCP/SSL server passthrough mode, only a single passthrough connection is supported: once a client establishes a passthrough connection, the server will enter passthrough mode and reject subsequent passthrough connection requests.
 - When the underlying network interface (netif) is stopped or disconnected, existing connections will be closed, and the server will return to listening state, ready to accept new normal connections.
@@ -465,7 +465,7 @@ Parameters
 
 - **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
 - **<remote port>**: the remote port number.
-- **<"type">**: string parameter showing the type of transmission: "UDP" or "UDPv6". Default: "TCP".
+- **<"type">**: string parameter showing the type of transmission: "UDP" or "UDPv6".
 - **<local port>**: local port when UDP passthrough is enabled on power-up.
 
 Notes
@@ -1300,13 +1300,13 @@ Set Command
 
 The symbol ``>`` indicates that AT is ready for receiving regular expressions from AT command port. You should enter the head regular expression and the tail regular expression. When the length reaches the ``<head_regexp_len>`` + ``<tail_regexp_len>`` value, the regular expression integrity check starts.
 
-If the regular expression integrity check fails or the addition of filter fails, AT returns:
+If the regular expression integrity check fails or the deletion of filter fails, AT returns:
 
 ::
 
     ERROR
 
-If the integrity of the regular expression is verified successfully and the filter is added successfully, AT returns:
+If the integrity of the regular expression is verified successfully and the filter is deleted successfully, AT returns:
 
 ::
 
@@ -1320,7 +1320,7 @@ Parameters
     - 2: Delete a filter.
 
 - **<head_regexp_len>**: The length of the header regular expression. Range: [0,64]. If it is set to 0, the ``<tail_regexp_len>`` cannot be 0.
-- **<tail_regexp_len>**: The length of the header regular expression. Range: [0,64]. If it is set to 0, the ``<head_regexp_len>`` cannot be 0.
+- **<tail_regexp_len>**: The length of the tail regular expression. Range: [0,64]. If it is set to 0, the ``<head_regexp_len>`` cannot be 0.
 - **<cflags>**: Optional parameter, the compilation flags for regular expressions. Please refer to `cflags description <https://linux.die.net/man/3/regcomp>`__. Default: 0.
 
   - bit 0: REG_EXTENDED, use POSIX Extended Regular Expression syntax.
@@ -1808,7 +1808,7 @@ Parameters
   - **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. The same as ``<ble_adv_power>``.
 
 Note
-------
+^^^^^
 
 - When Wi-Fi is turned off or not initialized, the :ref:`AT+RFPOWER <cmd-RFPOWER>` command cannot set or query the RF TX Power of Wi-Fi. Similarly, when Bluetooth LE is not initialized, the command cannot set or query that of Bluetooth LE, either.
 - Since the RF TX Power is actually divided into several levels, and each level has its own value range, the ``wifi_power`` value queried by the ``esp_wifi_get_max_tx_power`` may differ from the value set by ``esp_wifi_set_max_tx_power`` and is no larger than the set value.
@@ -1821,8 +1821,8 @@ Note
 
 .. _cmd-RFCAL:
 
-:ref:`AT <Basic-AT>`: RF Full Calibration
------------------------------------------
+:ref:`AT+RFCAL <Basic-AT>`: RF Full Calibration
+-----------------------------------------------
 
 Execute Command
 ^^^^^^^^^^^^^^^
@@ -1837,10 +1837,10 @@ Execute Command
 
 ::
 
-     OK
+    OK
 
 Note
------
+^^^^^
 
 - {IDF_TARGET_NAME} will automatically perform RF full calibration on the first startup, and partial calibration on subsequent startups. For more details, please refer to `RF Calibration <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/RF_calibration.html>`_.
 - It is recommended to perform RF full calibration after firmware upgrade, changes to the device environment, or prolonged periods of device inactivity.

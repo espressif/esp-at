@@ -846,11 +846,11 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    - **<dev_name>**：字符串参数，表示设备名称。例如，若想设置设备名称为 "just-test"，则命令为 ``AT+BLEADVSTARTEX="just-test",<uuid>,<manufacturer_data>,<include_power>``。
+    - **<dev_name>**：字符串参数，表示设备名称。例如，若想设置设备名称为 "just-test"，则命令为 ``AT+BLEADVDATAEX="just-test",<uuid>,<manufacturer_data>,<include_power>``。
 
-    - **<uuid>**：字符串参数。例如，若想设置 UUID 为 "0xA002"，则命令为 ``AT+BLEADVSTARTEX=<dev_name>,"A002",<manufacturer_data>,<include_power>``。
+    - **<uuid>**：字符串参数。例如，若想设置 UUID 为 "0xA002"，则命令为 ``AT+BLEADVDATAEX=<dev_name>,"A002",<manufacturer_data>,<include_power>``。
 
-    - **<manufacturer_data>**：制造商数据，为 HEX 字符串。例如，若想设置制造商数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVSTARTEX=<dev_name>,<uuid>,"1122334455",<include_power>``。
+    - **<manufacturer_data>**：制造商数据，为 HEX 字符串。例如，若想设置制造商数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATAEX=<dev_name>,<uuid>,"1122334455",<include_power>``。
 
     - **<include_power>**：若广播数据需包含 TX 功率，本参数应该设为 ``1``；否则，为 ``0``。
 
@@ -3098,7 +3098,7 @@ Bluetooth® Low Energy AT 命令集
 
     .. _cmd-BLUFISEND:
 
-    :ref:`AT+BLUFISEND <BLE-AT>`: 发送 BluFi 用户自定义数据
+    :ref:`AT+BLUFISEND <BLE-AT>`：发送 BluFi 用户自定义数据
     ---------------------------------------------------------------------------
 
     设置命令
@@ -3167,7 +3167,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLEPERIODICDATA=<periodic_data>
 
-    **响应:**
+    **响应：**
 
     ::
 
@@ -3176,7 +3176,7 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^^^^^^^
 
-    - **<periodic_data>**: 周期性广播数据，为 16 进制字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEPERIODICDATA="1122334455"``。
+    - **<periodic_data>**：周期性广播数据，为 16 进制字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEPERIODICDATA="1122334455"``。
 
     示例
     ^^^^^^^^
@@ -3188,7 +3188,7 @@ Bluetooth® Low Energy AT 命令集
 
     .. _cmd-BLEPASTART:
 
-    :ref:`AT+BLEPERIODICSTART <BLE-AT>`: 开启周期性广播
+    :ref:`AT+BLEPERIODICSTART <BLE-AT>`：开启周期性广播
     ----------------------------------------------------------------------------------
 
     执行命令
@@ -3204,7 +3204,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLEPERIODICSTART
 
-    **响应:**
+    **响应：**
 
     ::
 
@@ -3228,7 +3228,7 @@ Bluetooth® Low Energy AT 命令集
 
     .. _cmd-BLEPASTOP:
 
-    :ref:`AT+BLEPERIODICSTOP <BLE-AT>`: 停止周期性广播同步
+    :ref:`AT+BLEPERIODICSTOP <BLE-AT>`：停止周期性广播同步
     --------------------------------------------------------------------------------
 
     执行命令
@@ -3244,7 +3244,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLEPERIODICSTOP
 
-    **响应:**
+    **响应：**
 
     ::
 
@@ -3259,7 +3259,7 @@ Bluetooth® Low Energy AT 命令集
 
     .. _cmd-BLESYNCSTART:
 
-    :ref:`AT+BLESYNCSTART <BLE-AT>`: 开启同步周期性广播
+    :ref:`AT+BLESYNCSTART <BLE-AT>`：开启同步周期性广播
     ---------------------------------------------------------------------------------
 
     设置命令
@@ -3275,7 +3275,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLESYNCSTART=<target_address>
 
-    **响应:**
+    **响应：**
 
     ::
 
@@ -3285,9 +3285,10 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^^^^^^^
 
-    - **<addr>**: 设备地址
-    - **<rssi>**: 信号强度
-    - **<periodic_adv_data>**: 周期性广播数据
+    - **<target_address>**：目标设备地址，即正在进行周期性广播的对端设备地址。
+    - **<addr>**：设备地址。
+    - **<rssi>**：信号强度。
+    - **<periodic_adv_data>**：周期性广播数据。
 
     说明
     ^^^^^
@@ -3305,7 +3306,7 @@ Bluetooth® Low Energy AT 命令集
 
     .. _cmd-BLESYNCSTOP:
 
-    :ref:`AT+BLESYNCSTOP <BLE-AT>`: 停止周期性广播同步
+    :ref:`AT+BLESYNCSTOP <BLE-AT>`：停止周期性广播同步
     ---------------------------------------------------------------------------------
 
     执行命令
@@ -3321,7 +3322,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLESYNCSTOP
 
-    **响应:**
+    **响应：**
 
     ::
 
@@ -3345,7 +3346,7 @@ Bluetooth® Low Energy AT 命令集
 
     .. _cmd-BLERDPHY:
 
-    :ref:`AT+BLEREADPHY <BLE-AT>`: 查询当前连接使用的 PHY
+    :ref:`AT+BLEREADPHY <BLE-AT>`：查询当前连接使用的 PHY
     -----------------------------------------------------------------------------
 
     设置命令
@@ -3361,7 +3362,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLEREADPHY=<conn_index>
 
-    **响应:**
+    **响应：**
 
     如果查询成功，返回:
 
@@ -3380,15 +3381,15 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^^^^^^^
 
-    - **<device_addr>**: 对端设备地址
+    - **<device_addr>**：对端设备地址
 
-    - **<tx_phy>**:
+    - **<tx_phy>**：
 
     - 1: 1M PHY.
     - 2: 2M PHY.
     - 3: Coded PHY.
 
-    - **<rx_phy>**:
+    -  **<rx_phy>**：
 
     - 1: 1M PHY.
     - 2: 2M PHY.
@@ -3405,7 +3406,7 @@ Bluetooth® Low Energy AT 命令集
 
     .. _cmd-BLESETPHY:
 
-    :ref:`AT+BLESETPHY <BLE-AT>`: 设置当前连接的 PHY
+    :ref:`AT+BLESETPHY <BLE-AT>`：设置当前连接的 PHY
     -----------------------------------------------------------------------------
 
     设置命令
@@ -3421,7 +3422,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLESETPHY=<conn_index>,<tx_rx_phy>
 
-    **响应:**
+    **响应：**
 
     如果查询成功，返回:
 
@@ -3442,7 +3443,7 @@ Bluetooth® Low Energy AT 命令集
 
     - **<device_addr>**：对端设备地址
 
-    - **<tx_rx_phy>**:
+    - **<tx_rx_phy>**：
 
     - 1: 1M PHY
     - 2: 2M PHY
@@ -3477,7 +3478,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLERDRSSI=<conn_index>
 
-    **响应:**
+    **响应：**
 
     ::
 
@@ -3505,7 +3506,7 @@ Bluetooth® Low Energy AT 命令集
 
     .. _cmd-BLEWL:
 
-    :ref:`AT+BLEWL <BLE-AT>`: 设置白名单
+    :ref:`AT+BLEWL <BLE-AT>`：设置白名单
     -----------------------------------------------------------------------------
 
     设置命令
@@ -3521,7 +3522,7 @@ Bluetooth® Low Energy AT 命令集
 
         AT+BLEWL=<add_or_rmv>[,<addr_type>,<addr>]
 
-    **响应:**
+    **响应：**
 
     ::
 
@@ -3530,7 +3531,7 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^^^^^^^
 
-    - **<add_or_rmv>**:
+    - **<add_or_rmv>**：
 
       - 0: 从白名单中移除所有设备
       - 1: 向白名单添加一个设备

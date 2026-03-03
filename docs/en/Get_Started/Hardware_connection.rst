@@ -19,15 +19,15 @@ What You Need
      - Function
    * - {IDF_TARGET_NAME} board
      - Slave MCU.
-   * - USB cable ({IDF_TARGET_NAME} board to PC)
+   * - USB cable (connects {IDF_TARGET_NAME} board to the PC)
      - Download/Log output connection.
    * - PC
      - Act as Host MCU. Download firmware to Slave MCU.
-   * - USB cable (PC to serial port converter)
+   * - USB cable (connects the PC to the USB-to-UART converter)
      - AT command/response connection.
-   * - USB to serial port converter
+   * - USB-to-UART converter
      - Convert between USB signals and TTL signals.
-   * - Jumper wires (serial port converter to {IDF_TARGET_NAME} board)
+   * - Jumper wires (connects the USB-to-UART converter to {IDF_TARGET_NAME} board)
      - AT command/response connection.
 
 .. figure:: ../../_static/get_started/hw_connection/hw-connection-what-you-need.png
@@ -47,7 +47,7 @@ Note:
 
       python build.py menuconfig > Component config > Hardware Settings > Main XTAL Config > Main XTAL frequency > 40 MHz
 
-- In the above picture, four jump wires are used to connect the {IDF_TARGET_NAME} board and USB to serial converter. If you do not use hardware flow control, two wires connecting TX/RX and a simpler converter will be enough.
+- In the above picture, four jump wires are used to connect the {IDF_TARGET_NAME} board and USB-to-UART converter. If you do not use hardware flow control, two wires connecting TX/RX and a simpler converter will be enough.
 
 .. only:: esp32
 
@@ -105,7 +105,7 @@ Note:
 
   All {IDF_TARGET_NAME} modules use GPIO1 and GPIO3 as UART0, but they use different GPIOs as UART1. The following sections illustrate which GPIOs you should connect for each {IDF_TARGET_NAME} series of modules.
 
-  For more details of {IDF_TARGET_NAME} modules and boards, please refer to `{IDF_TARGET_NAME} modules <https://espressif.com/en/products/modules?id={IDF_TARGET_NAME}>`_ and `{IDF_TARGET_NAME} boards <https://www.espressif.com/en/products/devkits?id={IDF_TARGET_NAME}>`_.
+  For more details of {IDF_TARGET_NAME} modules and boards, please refer to `{IDF_TARGET_NAME} modules <https://www.espressif.com/en/products/modules?id={IDF_TARGET_NAME}>`_ and `{IDF_TARGET_NAME} boards <https://www.espressif.com/en/products/devkits?id={IDF_TARGET_NAME}>`_.
 
   ESP32-WROOM-32 Series
   ^^^^^^^^^^^^^^^^^^^^^^
@@ -129,7 +129,7 @@ Note:
           * GPIO17 (TX)
           * GPIO15 (CTS)
           * GPIO14 (RTS)
-      - USB to serial converter
+      - USB-to-UART converter
           * TX
           * RX
           * RTS
@@ -137,7 +137,7 @@ Note:
 
   **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
-  **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
+  **Note** 2: CTS and RTS pins are required only when hardware flow control is enabled.
 
   .. figure:: ../../_static/get_started/hw_connection/esp32-wroom-hw-connection.png
     :align: center
@@ -170,7 +170,7 @@ Note:
           * GPIO22 (TX)
           * GPIO15 (CTS)
           * GPIO14 (RTS)
-      - USB to serial converter
+      - USB-to-UART converter
           * TX
           * RX
           * RTS
@@ -178,7 +178,7 @@ Note:
 
   **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
-  **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
+  **Note** 2: CTS and RTS pins are required only when hardware flow control is enabled.
 
   .. figure:: ../../_static/get_started/hw_connection/esp32-mini-hw-connection.jpg
     :align: center
@@ -210,7 +210,7 @@ Note:
           * GPIO22 (TX)
           * GPIO15 (CTS)
           * GPIO14 (RTS)
-      - USB to serial converter
+      - USB-to-UART converter
           * TX
           * RX
           * RTS
@@ -218,7 +218,7 @@ Note:
 
   **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
-  **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
+  **Note** 2: CTS and RTS pins are required only when hardware flow control is enabled.
 
   .. figure:: ../../_static/get_started/hw_connection/esp32-wrover-hw-connection.png
     :align: center
@@ -251,7 +251,7 @@ Note:
           * GPIO22 (TX)
           * GPIO15 (CTS)
           * GPIO14 (RTS)
-      - USB to serial converter
+      - USB-to-UART converter
           * TX
           * RX
           * RTS
@@ -259,7 +259,7 @@ Note:
 
   **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
-  **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
+  **Note** 2: CTS and RTS pins are required only when hardware flow control is enabled.
 
   .. figure:: ../../_static/get_started/hw_connection/esp32-pico-hw-connection.png
     :align: center
@@ -292,7 +292,7 @@ Note:
           * GPIO17 (TX)
           * GPIO15 (CTS)
           * GPIO14 (RTS)
-      - USB to serial converter
+      - USB-to-UART converter
           * TX
           * RX
           * RTS
@@ -300,7 +300,7 @@ Note:
 
   **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
-  **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
+  **Note** 2: CTS and RTS pins are required only when hardware flow control is enabled.
 
   .. figure:: ../../_static/get_started/hw_connection/esp32-solo-hw-connection.png
     :align: center
@@ -341,7 +341,7 @@ Note:
           * GPIO7 (TX)
           * GPIO5 (CTS)
           * GPIO4 (RTS)
-      - USB to serial converter
+      - USB-to-UART converter
           * TX
           * RX
           * RTS
@@ -349,7 +349,7 @@ Note:
 
   **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
-  **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
+  **Note** 2: CTS and RTS pins are required only when hardware flow control is enabled.
 
   .. figure:: ../../_static/get_started/hw_connection/esp32-c2-4mb-hw-connection.png
     :align: center
@@ -358,7 +358,7 @@ Note:
 
     {IDF_TARGET_NAME}-4MB/{IDF_TARGET_NAME}-4MB-G2 Series Hardware Connection
 
-  If you want to connect your device directly with {IDF_TARGET_NAME} module rather than the {IDF_TARGET_NAME} board that integrates it, please refer to the corresponding module `datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for more details.
+  If you want to connect your device directly with {IDF_TARGET_NAME} module rather than the {IDF_TARGET_NAME} board that integrates it, please refer to the corresponding `module datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for details.
 
   .. _hw-connection-esp32c2-2mb:
 
@@ -388,7 +388,7 @@ Note:
           * GPIO7 (TX)
           * GPIO19 (CTS)
           * GPIO20 (RTS)
-      - USB to serial converter
+      - USB-to-UART converter
           * TX
           * RX
           * RTS
@@ -396,12 +396,12 @@ Note:
     * - Log output
       - UART0
           * GPIO8 (TX)
-      - USB to serial converter
+      - USB-to-UART converter
           * RX
 
   **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
-  **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
+  **Note** 2: CTS and RTS pins are required only when hardware flow control is enabled.
 
   .. figure:: ../../_static/get_started/hw_connection/esp32-c2-2mb-hw-connection.png
     :align: center
@@ -410,7 +410,7 @@ Note:
 
     {IDF_TARGET_NAME}-2MB/{IDF_TARGET_NAME}-2MB-G2 Series Hardware Connection
 
-  If you want to connect your device directly with {IDF_TARGET_NAME} module rather than the {IDF_TARGET_NAME} board that integrates it, please refer to the corresponding module `datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for more details.
+  If you want to connect your device directly with {IDF_TARGET_NAME} module rather than the {IDF_TARGET_NAME} board that integrates it, please refer to the corresponding `module datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for details.
 
   {IDF_TARGET_NAME}-2MB-BLE/{IDF_TARGET_NAME}-2MB-BLE-G2 Series
   -------------------------------------------------------------
@@ -460,7 +460,7 @@ Note:
           * GPIO7 (TX)
           * GPIO5 (CTS)
           * GPIO4 (RTS)
-      - USB to serial converter
+      - USB-to-UART converter
           * TX
           * RX
           * RTS
@@ -468,7 +468,7 @@ Note:
 
   **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
-  **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
+  **Note** 2: CTS and RTS pins are required only when hardware flow control is enabled.
 
   .. figure:: ../../_static/get_started/hw_connection/esp32-c3-hw-connection.png
     :align: center
@@ -507,15 +507,15 @@ Note:
           * GPIO23 (TX)
           * GPIO25 (CTS)
           * GPIO26 (RTS)
-      - USB to UART converter
+      - USB-to-UART converter
           * TX
           * RX
           * RTS
           * CTS
 
-  **Note** 1: Connection between ESP32-C5-4MB board and PC is already established on ESP32-C5-4MB board. You only need to provide a USB cable.
+  **Note** 1: Connection between individual pins of the ESP32-C5-4MB board and the PC is already established internally on the ESP32-C5-4MB board. You only need to provide USB cable between the board and PC.
 
-  **Note** 2: CTS/RTS pins only need to be connected if you want to enable hardware flow control.
+  **Note** 2: CTS and RTS pins are required only when hardware flow control is enabled.
 
   .. figure:: ../../_static/get_started/hw_connection/esp-hw-connection.png
     :align: center
@@ -524,7 +524,7 @@ Note:
 
     ESP32-C5-4MB Series Hardware Connection
 
-  If you want to connect your device directly with ESP32-C5-4MB module rather than the ESP32-C5 board that integrates it, please refer to the corresponding module's `technical documents <https://www.espressif.com/en/support/documents/technical-documents>`_ for more details.
+  If you want to connect your device directly with ESP32-C5-4MB module rather than the ESP32-C5 board that integrates it, please refer to the corresponding `module datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for details.
 
 .. only:: esp32c6
 
@@ -554,7 +554,7 @@ Note:
           * GPIO7 (TX)
           * GPIO5 (CTS)
           * GPIO4 (RTS)
-      - USB to serial converter
+      - USB-to-UART converter
           * TX
           * RX
           * RTS
@@ -562,7 +562,7 @@ Note:
 
   **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME}-4MB board and the PC is already established internally on the {IDF_TARGET_NAME}-4MB board. You only need to provide USB cable between the board and PC.
 
-  **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
+  **Note** 2: CTS and RTS pins are required only when hardware flow control is enabled.
 
   .. figure:: ../../_static/get_started/hw_connection/esp-hw-connection.png
     :align: center
@@ -571,14 +571,14 @@ Note:
 
     {IDF_TARGET_NAME}-4MB Series Hardware Connection
 
-  If you want to connect your device directly with {IDF_TARGET_NAME}-4MB module rather than the {IDF_TARGET_NAME}-4MB board that integrates it, please refer to the corresponding module `datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for more details.
+  If you want to connect your device directly with {IDF_TARGET_NAME}-4MB module rather than the {IDF_TARGET_NAME}-4MB board that integrates it, please refer to the corresponding `module datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for details.
 
 .. only:: esp32c61
 
   {IDF_TARGET_NAME}-4MB Series
   --------------------------------
 
-  {IDF_TARGET_NAME}-4MB series refer to the module or board that has a built-in {IDF_TARGET_NAME} chip with a 4 MB flash, such as {IDF_TARGET_NAME} WROOM series device.
+  {IDF_TARGET_NAME}-4MB series refer to the module or board that has a built-in {IDF_TARGET_NAME} chip with a 4 MB flash, such as {IDF_TARGET_NAME} MINI series device and {IDF_TARGET_NAME} WROOM series device.
 
   {IDF_TARGET_NAME}-4MB AT uses two UART ports: UART0 is used to download firmware and log output; UART1 is used to send AT commands and receive AT responses. Both UART0 and UART1 use ``115200`` baud rate for communication by default.
 
@@ -601,15 +601,15 @@ Note:
           * GPIO7 (TX)
           * GPIO5 (CTS)
           * GPIO4 (RTS)
-      - USB to UART converter
+      - USB-to-UART converter
           * TX
           * RX
           * RTS
           * CTS
 
-  **Note** 1: Connection between {IDF_TARGET_NAME}-4MB board and PC is already established on {IDF_TARGET_NAME}-4MB board. You only need to provide a USB cable.
+  **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME}-4MB board and the PC is already established internally on the {IDF_TARGET_NAME}-4MB board. You only need to provide USB cable between the board and PC.
 
-  **Note** 2: CTS/RTS pins only need to be connected if you want to enable hardware flow control.
+  **Note** 2: CTS and RTS pins are required only when hardware flow control is enabled.
 
   .. figure:: ../../_static/get_started/hw_connection/esp-hw-connection.png
     :align: center
@@ -618,7 +618,7 @@ Note:
 
     {IDF_TARGET_NAME}-4MB Series Hardware Connection
 
-  If you want to connect your device directly with {IDF_TARGET_NAME}-4MB module rather than the {IDF_TARGET_NAME} board that integrates it, please refer to the corresponding module's `technical documents <https://www.espressif.com/en/support/documents/technical-documents>`_ for more details.
+  If you want to connect your device directly with {IDF_TARGET_NAME}-4MB module rather than the {IDF_TARGET_NAME} board that integrates it, please refer to the corresponding `module datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for details.
 
 .. only:: esp32s2
 
@@ -648,7 +648,7 @@ Note:
           * GPIO17 (TX)
           * GPIO20 (CTS)
           * GPIO19 (RTS)
-      - USB to serial converter
+      - USB-to-UART converter
           * TX
           * RX
           * RTS
@@ -656,7 +656,7 @@ Note:
 
   **Note** 1: Connection between individual pins of the {IDF_TARGET_NAME} board and the PC is already established internally on the {IDF_TARGET_NAME} board. You only need to provide USB cable between the board and PC.
 
-  **Note** 2: Connection between CTS/RTS is optional, depending on whether you want to use hardware flow control.
+  **Note** 2: CTS and RTS pins are required only when hardware flow control is enabled.
 
   .. figure:: ../../_static/get_started/hw_connection/esp32-s2-hw-connection.jpg
     :align: center
@@ -665,4 +665,4 @@ Note:
 
     {IDF_TARGET_NAME} Series Hardware Connection
 
-  If you want to connect your device directly with {IDF_TARGET_NAME} module rather than the {IDF_TARGET_NAME} board that integrates it, please refer to `Datasheet for your module <https://www.espressif.com/zh-hans/support/documents/technical-documents>`_ for more details.
+  If you want to connect your device directly with {IDF_TARGET_NAME} module rather than the {IDF_TARGET_NAME} board that integrates it, please refer to the corresponding `module datasheet <https://www.espressif.com/en/support/documents/technical-documents>`_ for details.

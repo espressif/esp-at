@@ -14,7 +14,7 @@
   - :ref:`AT+RST <cmd-RST>`：重启模块
   - :ref:`AT+GMR <cmd-GMR>`：查看版本信息
   - :ref:`AT+CMD <cmd-cmd>`：查询当前固件支持的所有命令及命令类型
-  - :ref:`AT+GSLP <cmd-GSLP>`：进⼊ Deep-sleep 模式
+  - :ref:`AT+GSLP <cmd-GSLP>`：进入 Deep-sleep 模式
   - :ref:`ATE <cmd-ATE>`：开启或关闭 AT 回显功能
   - :ref:`AT+RESTORE <cmd-RESTORE>`：恢复出厂设置
   - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`：设置开机 Network/Bluetooth LE :term:`透传模式` 信息
@@ -361,7 +361,7 @@
     AT+SAVETRANSLINK=1,"192.168.6.110",1002,"TCP"
     AT+SAVETRANSLINK=1,"www.baidu.com",443,"SSL"
     AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"TCPv6"
-    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"SSLv6
+    AT+SAVETRANSLINK=1,"240e:3a1:2070:11c0:55ce:4e19:9649:b75",8080,"SSLv6"
 
 .. _savetrans-tcpssl-server:
 
@@ -410,7 +410,7 @@
 说明
 """""""
 
-- 本设置将开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入 :term:`透传模式`。需重启生效。
+- 本设置将开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 3 ，下次上电自动进入 :term:`透传模式`。需重启生效。
 - {IDF_TARGET_NAME} 作为 Wi‑Fi Station 时，请提前配置好 Wi‑Fi 连接信息并启用重连机制；作为 SoftAP 时，请提前配置好 SoftAP 参数，保证上电后能正常工作。
 - 在 TCP/SSL 服务器的透传模式下，仅支持单一透传连接：一旦有客户端建立透传连接，服务器将进入透传模式并拒绝后续的透传连接请求。
 - 当底层网络接口 (netif) 停止或断开时，已有连接会被关闭，服务器会恢复为监听状态，准备接受新的普通连接。
@@ -465,7 +465,7 @@
 
 - **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
 - **<remote port>**：远端端口值。
-- **<"type">**：字符串参数，表示传输类型："UDP" 或 "UDPv6"。默认值："TCP"。
+- **<"type">**：字符串参数，表示传输类型："UDP" 或 "UDPv6"。
 - **<local port>**：开机进入 UDP 传输时，使用的本地端口。
 
 说明
@@ -1808,7 +1808,7 @@
   - **<ble_conn_power>**：Bluetooth LE 连接的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
 
 说明
------
+^^^^
 
 - 当 Wi-Fi 关闭或未初始化时，``AT+RFPOWER`` 命令无法设置/查询 Wi-Fi 的 RF TX Power。当 Bluetooth LE 未初始化时，``AT+RFPOWER`` 命令无法设置/查询 Bluetooth LE 的 RF TX Power。
 - 由于 RF TX Power 分为不同的等级，而每个等级都有与之对应的取值范围，所以通过 ``esp_wifi_get_max_tx_power`` 查询到的 ``wifi_power`` 的值可能与 ``esp_wifi_set_max_tx_power`` 设定的值存在差异，但不会比该值大。
@@ -1821,8 +1821,8 @@
 
 .. _cmd-RFCAL:
 
-:ref:`AT <Basic-AT>`：RF 全面校准
-------------------------------------------
+:ref:`AT+RFCAL <Basic-AT>`：RF 全面校准
+-----------------------------------------------
 
 执行命令
 ^^^^^^^^
@@ -1831,16 +1831,16 @@
 
 ::
 
-  AT+RFCAL
+    AT+RFCAL
 
 **响应：**
 
 ::
 
-   OK
+    OK
 
 说明
------
+^^^^
 
 - {IDF_TARGET_NAME} 首次启动时会自动执行 RF 全面校准，之后启动时会自动执行 RF 部分校准。请参考 `RF 校准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/RF_calibration.html>`_ 了解更多细节。
 - 通常在固件升级、设备环境改变，设备长期未使用等情况后，建议执行 RF 全面校准。
