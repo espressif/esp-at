@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -10,6 +10,8 @@
 #include "nvs_flash.h"
 #include "esp_event.h"
 #include "esp_wifi.h"
+#include "esp_freertos_hooks.h"
+#include "esp_timer.h"
 #include "esp_log.h"
 
 #if defined(CONFIG_BT_ENABLED)
@@ -33,6 +35,7 @@
 const char *g_at_mfg_nvs_name = "mfg_nvs";
 
 // static variables
+static volatile int64_t s_last_idle_enter_us = 0;
 static const char *s_ready_str = "\r\nready\r\n";
 static at_mfg_params_storage_mode_t s_at_param_mode = AT_PARAMS_NONE;
 static const char *TAG = "at-init";
@@ -322,6 +325,26 @@ static IRAM_ATTR void at_alloc_failed_cb(size_t requested_size, uint32_t caps, c
     esp_rom_printf(DRAM_STR(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_RED) "alloc failed, size:%u, caps:0x%x" LOG_ANSI_COLOR_RESET "\n"), requested_size, caps);
 }
 
+static bool at_idle_hook_cb(void)
+{
+    s_last_idle_enter_us = esp_timer_get_time();
+    return true;
+}
+
+void esp_at_yield_if_idle_timeout(uint32_t idle_timeout_ms, uint32_t yield_ticks)
+{
+    int64_t idle_gap_us = esp_timer_get_time() - s_last_idle_enter_us;
+    const int64_t threshold_us = (int64_t)idle_timeout_ms * 1000;
+
+    if (idle_gap_us < threshold_us) {
+        return;
+    }
+
+    if (yield_ticks > 0) {
+        vTaskDelay(yield_ticks);
+    }
+}
+
 #ifdef CONFIG_AT_DEBUG
 static void at_reconfigure_twdt(void)
 {
@@ -360,6 +383,9 @@ void esp_at_init(void)
 
     // register the callback function to be invoked if a memory allocation operation fails
     heap_caps_register_failed_alloc_callback(at_alloc_failed_cb);
+
+    // register idle hook to track last idle timestamp for watchdog prevention
+    esp_register_freertos_idle_hook(at_idle_hook_cb);
 
 #ifdef CONFIG_AT_DEBUG
     // reconfigure task watchdog timer to cancel the panic trigger when AT_DEBUG is enabled
