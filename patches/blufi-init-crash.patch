@@ -1,0 +1,28 @@
+From 8b385a27e4d1937d624fd771a42174d77508af3a Mon Sep 17 00:00:00 2001
+From: xiewenxiang <xiewenxiang@espressif.com>
+Date: Wed, 4 Mar 2026 11:41:31 +0800
+Subject: [PATCH] fix(nimble): re-init event queue on host re-init to fix blufi
+ second init crash
+
+---
+ porting/nimble/src/nimble_port.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/porting/nimble/src/nimble_port.c b/porting/nimble/src/nimble_port.c
+index 29aa68210..570f2aeba 100644
+--- a/porting/nimble/src/nimble_port.c
++++ b/porting/nimble/src/nimble_port.c
+@@ -194,6 +194,10 @@ esp_err_t esp_nimble_init(void)
+ 
+ #endif
+ 
++#if SOC_ESP_NIMBLE_CONTROLLER && CONFIG_BT_CONTROLLER_ENABLED
++    ble_npl_eventq_init(&g_eventq_dflt);
++#endif
++
+     /* Initialize the host */
+     ble_transport_hs_init();
+     
+-- 
+2.50.1 (Apple Git-155)
+
