@@ -66,16 +66,21 @@ typedef struct {
     bool slave_notify_flag; // when slave recv done or slave notify master to recv, it will be true
 } spi_master_msg_t;
 
+/* Byte order:
+ * The 4-byte send & receive data is transmitted in little-endian order on the wire (byte 0 = bits 0~7, byte 1 = bits 8~15, byte 2 = bits 16~23, byte 3 = bits 24~31).
+ *  Implementations on big-endian hosts must pack/unpack accordingly.
+*/
+
 typedef struct {
-    uint32_t     magic    : 8;    // 0xFE
-    uint32_t     send_seq : 8;
-    uint32_t     send_len : 16;
+    uint32_t     magic    : 8;    // 24~31 bits, value: 0xFE
+    uint32_t     send_seq : 8;     // 16~23 bits
+    uint32_t     send_len : 16;    // 0~15 bits
 } spi_send_opt_t;
 
 typedef struct {
-    uint32_t     direct : 8;
-    uint32_t     seq_num : 8;
-    uint32_t     transmit_len : 16;
+    uint32_t     direct : 8;          // 24~31 bits, 0x1 means readable, and 0x2 means writable.
+    uint32_t     seq_num : 8;         // 16~23 bits
+    uint32_t     transmit_len : 16;  // 0~15 bits
 } spi_recv_opt_t;
 
 typedef struct {

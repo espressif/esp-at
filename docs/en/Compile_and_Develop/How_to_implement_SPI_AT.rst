@@ -227,6 +227,8 @@ The 4-byte length ``data_info`` contains the information about the packet to be 
 2. 16~23 bits: the sequence number of the packet sent by the master to the slave.
 3. 24~31 bits: the magic num, and default value is 0xFE.
 
+**Byte order:** The 4-byte DATA is transmitted in **little-endian** order on the wire (byte 0 = bits 0~7, byte 1 = bits 8~15, byte 2 = bits 16~23, byte 3 = bits 24~31). Implementations on big-endian hosts must pack/unpack accordingly.
+
 - After receiving the signal from the handshake line, the master can send the message to query the read or write status of the slave:
 
 .. list-table:: Master query the read/write status of the slave
@@ -247,6 +249,8 @@ After sending the query request, the slave's status returned will be stored in t
 1. 0~15 bits: the length of the data the slave wants to send to the master. This field is valid only when the slave is readable.
 2. 16~23 bits: the sequence number of the packet to be sent. The maximum sequence number is 0xFF, and if the number is reached, the sequence number is incremented by 1 from 0.
 3. 24~31 bits: the slave status (readable/writable). 0x1 means readable, and 0x2 means writable.
+
+**Byte order:** Same as above — little-endian (byte 0 = bits 0~7, byte 1 = bits 8~15, byte 2 = bits 16~23, byte 3 = bits 24~31).
 
 SPI AT Workflow
 ^^^^^^^^^^^^^^^^^^^^^^
