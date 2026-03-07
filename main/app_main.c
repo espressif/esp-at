@@ -12,6 +12,7 @@
 
 void app_main(void)
 {
+    ESP_LOGW("Main","Main");
     esp_at_main_preprocess();
 
     ESP_ERROR_CHECK(nvs_flash_init());
