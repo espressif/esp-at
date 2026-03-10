@@ -21,15 +21,15 @@ esp-at 作为由 Espressif Systems (@[espressif](https://github.com/espressif/))
 # ESP-AT 与乐鑫芯片
 下表总结了乐鑫芯片在 ESP-AT 主要版本中的支持状态。
 
-| 芯片 | v3.3.0.0 | v3.4.0.0 | v4.0.0.0 | v4.1.1.0 | v5.0.0.0 | master |
-|:- |:-:| :-:| :-:| :-:| :-:| :-:|
-| ESP32 | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.3.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-C3 | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-C2 | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v4.0.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-C6 | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.3.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/release/v3.4.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.0.0.0) | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-S2 | |  [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v3.4.0.0) | | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-C5 | | | | | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v5.0.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
-|ESP32-C61 | | | | | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v5.0.0.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+| 芯片 | v4.1.1.0 | v5.0.1.0 | master |
+| :- | :-: | :-: | :-: |
+| ESP32 | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+| ESP32-C3 | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+| ESP32-C2 | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+| ESP32-C6 | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+| ESP32-S2 | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v4.1.1.0) | ![alt text][no-plan] | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+| ESP32-C5 | | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v5.0.1.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
+| ESP32-C61 | | [![alt text][released]](https://github.com/espressif/esp-at/releases/tag/v5.0.1.0) | [![alt text][supported]](https://github.com/espressif/esp-at/tree/master) |
 
 - ![alt text][released]：已发布的版本，您可以点击 ![alt text][released] 前往对应的发布页下载 AT 固件。
 - ![alt text][supported]：已支持的版本，您可以点击 ![alt text][supported] 前往对应的分支开发您自己的 AT 固件。

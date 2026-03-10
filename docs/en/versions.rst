@@ -73,13 +73,20 @@ Each ESP-IDF major and minor release version has an associated support period. A
      - IDF Version
      - IDF EOL Date
      - AT New Version Plan
+   * - **v5.0.1.0** (2026.3.9)
+     -
+       * ESP32-C5
+       * ESP32-C61
+     - ~v5.5.3 (`82e525ef <https://github.com/espressif/esp-idf/commit/82e525ef>`_)
+     - 2028.1.21
+     - 2027.8.21 - 2027.10.21
    * - **v5.0.0.0** (2025.11.24)
      -
        * ESP32-C5
        * ESP32-C61
      - ~v5.5.2 (`cc569cbd <https://github.com/espressif/esp-idf/commit/cc569cbd>`_)
      - 2028.1.21
-     - 2027.8.21 - 2027.10.21
+     - New version v5.0.1.0 released
    * - **v4.1.1.0** (2025.7.31)
      -
        * ESP32
