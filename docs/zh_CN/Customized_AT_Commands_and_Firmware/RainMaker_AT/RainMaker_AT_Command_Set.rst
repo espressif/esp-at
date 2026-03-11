@@ -8,7 +8,7 @@ RainMaker AT 命令集
 .. important::
   默认的 AT 固件不支持此页面下的 AT 命令。如果你需要 {IDF_TARGET_NAME} 支持 RainMaker 命令，请任选下面一种方式：
 
-  - 参考 :doc:`如何从 GitHub 下载最新临时版本 AT 固件 <../../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` 文档，下载 esp32c3-rainmaker-at 固件
+  - 参考 :doc:`如何从 GitHub 下载最新临时版本 AT 固件 <../../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` 文档，下载 esp32c3-rainmaker-at 固件。
   - 自行 :doc:`编译 ESP-AT 工程 <../../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第三步安装环境里 ``Platform name`` 选择 ``PLATFORM_ESP32C3``，``Module name`` 选择 ESP32C3_RAINMAKER。
 
 - :ref:`AT+RMNODEINIT <cmd-RMNODEINIT>`：初始化节点
@@ -229,7 +229,7 @@ RainMaker AT 命令集
 - **<"dev_opt">**：设备操作。
 
    - 0: 添加一个设备。
-   - 1: 删除一个设备
+   - 1: 删除一个设备。
 
 - **<"unique_name">**：设备唯一标识名。
 - **<"device_name">**：设备名称，将作为应用上显示的默认设备名称。
@@ -972,7 +972,7 @@ RainMaker AT 命令集
 ^^^^
 
 - **<type>**：保留。
-- **<"ota_job_id">**：OTA job ID.
+- **<"ota_job_id">**：OTA job ID。
 - **<result>**：OTA 结果。
 
    - 1: OTA 进行中。

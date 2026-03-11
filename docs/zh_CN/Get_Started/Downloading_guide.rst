@@ -155,10 +155,10 @@ Windows
 
 开始烧录之前，请下载 Windows `Flash 下载工具 <https://dl.espressif.com/public/flash_download_tool.zip>`_，详细指导可参阅 `Flash 下载工具用户指南 <https://docs.espressif.com/projects/esp-test-tools/zh_CN/latest/{IDF_TARGET_PATH_NAME}/production_stage/tools/flash_download_tool.html>`_。
 
-- 打开 Flash 下载工具；
-- 选择芯片类型；（此处，我们选择 ``{IDF_TARGET_NAME}``。）
-- 根据你的需求选择一种工作模式；（此处，我们选择 ``develop``。)
-- 根据你的需求选择一种下载接口；（此处，我们选择 ``uart``。)
+- 打开 Flash 下载工具
+- 选择芯片类型（此处，我们选择 ``{IDF_TARGET_NAME}``）
+- 根据你的需求选择一种工作模式（此处，我们选择 ``develop``)
+- 根据你的需求选择一种下载接口（此处，我们选择 ``uart``)
 
 .. figure:: ../../_static/get_started/download_guide/download_tool_{IDF_TARGET_PATH_NAME}.png
    :align: center

@@ -60,6 +60,41 @@ def is_in_code_block(line, in_code_block, expecting_code):
 
 
 # ---------------------------------------------------------------------------
+# Shared helpers: list-item detection
+# ---------------------------------------------------------------------------
+
+# Matches one list item line, with or without a conditional-compilation tag prefix.
+#
+# Style guide Rule 2 states that list items prefixed with a RST conditional tag
+# (e.g.  ":not esp32c6: - content"  or  ":esp32c6: - content") must be included
+# in the same consistency / sentence checks as plain list items.
+#
+# The optional tag group matches "<colon><non-whitespace, non-colon char(s)><colon><space>"
+# so that common RST roles like :ref:` or :doc:` (which are immediately followed by a
+# backtick, not a space) are NOT mistaken for conditional tags.
+_LIST_ITEM_RE = re.compile(
+    r'^\s*'                      # optional leading whitespace
+    r'(?::[^:\s][^:]*:\s+)?'     # optional conditional tag  ":tag: "
+    r'[-*]\s+'                   # list marker followed by one or more spaces
+)
+
+
+def _extract_list_item(line):
+    """Return (is_item, content) for a line that may be a list item.
+
+    Handles both plain items and conditional-tag-prefixed items:
+      "  - content"               → (True, "content")
+      "  :not esp32c6: - content" → (True, "content")
+      "  :esp32c6: - content"     → (True, "content")
+    Non-list lines return (False, "").
+    """
+    m = _LIST_ITEM_RE.match(line)
+    if m:
+        return True, line[m.end():].strip()
+    return False, ''
+
+
+# ---------------------------------------------------------------------------
 # Rule 1: '您' usage
 # ---------------------------------------------------------------------------
 
@@ -81,66 +116,251 @@ def check_ni_usage(file_path):
 # Rule 2: List punctuation consistency
 # ---------------------------------------------------------------------------
 
+# Matches the first cell of a list-table row: leading spaces + "* - " + content
+_ROW_START_RE = re.compile(r'^(\s+)\*\s*-\s*(.*)')
+# Matches subsequent cells in the same row: leading spaces + "- " + content
+_TABLE_CELL_RE = re.compile(r'^(\s+)-\s+(.*)')
+# Matches list-table option lines: "  :option: value"
+_TABLE_OPT_RE = re.compile(r'^\s+:[a-z]')
+
+
 def check_list_punctuation(file_path):
-    """Rule 2: Check that all items in a list either end with punctuation or none do."""
+    """Rule 2 (CN): Check that all items in a list end with punctuation consistently —
+    either every item has a trailing punctuation mark or none do.
+
+    Three kinds of lists are checked:
+    - ``.. list-table::`` RST directive blocks: header rows are skipped; punctuation
+      consistency is checked *per column* across the data rows.  If a column cell
+      contains a nested sub-list, the sub-list items are checked for internal
+      consistency but are NOT counted towards the column-level check.
+    - ``.. list::`` RST directive blocks (Espressif extension): all items are checked
+      together.
+    - Plain RST bullet lists (lines starting with ``- `` or ``* `` outside a
+      directive): a group ends when a blank line or non-list line is encountered.
+
+    List items prefixed by a RST conditional-compilation tag are included in the
+    check, per the style guide:
+      :not esp32c6: - 0 表示立即重启。
+      :esp32c6:     - 最小 Deep-sleep 时长为 5 毫秒。
+      - 最大 Deep-sleep 时长约为 28.8 天（2 :sup:`31`-1 毫秒）。
+
+    Exemptions:
+    - Items ending with a colon (``：`` or ``:``) introduce a sub-list; excluded.
+    - Items ending with ``**`` (closing bold markup): the punctuation *before* the
+      ``**`` is used for the check, e.g. "- **末尾有句号。**" counts as having ``。``.
+    """
     errors = []
-    in_list = False
-    list_items = []
-    list_start_line = 0
+
+    _CN_PUNCT_RE = re.compile(r'[。，、；：！？]$')
+
+    def _effective_content(content):
+        """Strip trailing RST bold/italic markers (**) before punctuation check.
+
+        Per the style guide: if a list item ends with ** (bold close), the
+        punctuation before ** counts as the trailing punctuation.
+        """
+        return re.sub(r'\*+$', '', content).rstrip()
+
+    def _has_cn_punct(content):
+        return bool(_CN_PUNCT_RE.search(_effective_content(content)))
+
+    def _colon_exempt(content):
+        """Items ending with a colon introduce a sub-list; exclude from check."""
+        return bool(re.search(r'[：:]$', _effective_content(content)))
+
+    def _flush_group(items, start_line):
+        """Emit errors for a completed list group with inconsistent punctuation."""
+        if len(items) < 2:
+            return
+        punct_flags = [hp for _, hp, _ in items]
+        if not all(punct_flags) and any(punct_flags):
+            for item_line, _, content in items:
+                errors.append((
+                    item_line,
+                    content,
+                    f'Inconsistent list punctuation: list starts at line {start_line}; '
+                    f'some items have punctuation, some do not'
+                ))
+
+    def _flush_table(table_cols, nested_items):
+        """Flush a finished list-table: check per-column and pending nested groups."""
+        _flush_group(nested_items, nested_items[0][0] if nested_items else 0)
+        for col_items in table_cols.values():
+            if col_items:
+                _flush_group(col_items, col_items[0][0])
 
     with open(file_path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
     in_code_block = False
     expecting_code = False
+
+    # State for ``.. list-table::`` blocks
+    in_list_table = False
+    table_header_rows = 1
+    table_row_idx = 0        # current row (1-based after first * - line)
+    table_col_idx = 0        # current column within the row (0-based)
+    table_row_indent = None  # leading spaces before the '* -' row marker
+    table_col_indent = None  # leading spaces of regular column cells ('  - content')
+    table_cols = {}          # col_idx -> [(line_num, has_punct, content), ...]
+    table_dir_indent = 0     # leading spaces of the '.. list-table::' line
+    # Nested sub-list items within the current column cell
+    table_nested_items = []
+    table_nested_start = 0
+
+    # State for ``.. list::`` directive blocks
+    in_directive = False
+    directive_items = []
+    directive_start_line = 0
+
+    # State for plain RST bullet lists
+    plain_items = []
+    plain_start_line = 0
+
     for line_num, line in enumerate(lines, start=1):
         in_code_block, expecting_code = is_in_code_block(line, in_code_block, expecting_code)
         if in_code_block or expecting_code:
+            if plain_items:
+                _flush_group(plain_items, plain_start_line)
+                plain_items = []
             continue
 
         stripped = line.strip()
 
-        # Detect list start
-        if stripped.startswith('.. list::'):
-            in_list = True
-            list_items = []
-            list_start_line = line_num
+        # ── ``.. list-table::`` directive ─────────────────────────────────────
+        if stripped.startswith('.. list-table::'):
+            if plain_items:
+                _flush_group(plain_items, plain_start_line)
+                plain_items = []
+            if in_directive:
+                _flush_group(directive_items, directive_start_line)
+                in_directive = False
+                directive_items = []
+            in_list_table = True
+            table_header_rows = 1
+            table_row_idx = 0
+            table_col_idx = 0
+            table_row_indent = None
+            table_col_indent = None
+            table_cols = {}
+            table_nested_items = []
+            table_nested_start = 0
+            table_dir_indent = len(line) - len(line.lstrip())
             continue
 
-        if in_list:
-            if re.match(r'^\s+[-*]\s+', line):
-                item_content = re.sub(r'^\s+[-*]\s+', '', line).strip()
-                if item_content:
-                    has_punctuation = bool(re.search(r'[。，、；：！？]$', item_content))
-                    list_items.append((line_num, has_punctuation, item_content))
-            elif stripped == '':
-                continue
-            elif not line.startswith(' ') or not re.match(r'^\s+[-*]\s+', line):
-                # List ended; check punctuation consistency
-                if len(list_items) > 1:
-                    punct_flags = [has_punct for _, has_punct, _ in list_items]
-                    if not all(punct_flags) and any(punct_flags):
-                        for item_line, has_punct, content in list_items:
-                            errors.append((
-                                item_line,
-                                content,
-                                f'Inconsistent list punctuation: list starts at line {list_start_line}; '
-                                f'some items have punctuation, some do not'
-                            ))
-                in_list = False
-                list_items = []
+        if in_list_table:
+            if stripped == '':
+                continue  # blank lines inside the table block are fine
 
-    # Handle list at end of file
-    if in_list and len(list_items) > 1:
-        punct_flags = [has_punct for _, has_punct, _ in list_items]
-        if not all(punct_flags) and any(punct_flags):
-            for item_line, has_punct, content in list_items:
-                errors.append((
-                    item_line,
-                    content,
-                    f'Inconsistent list punctuation: list starts at line {list_start_line}; '
-                    f'some items have punctuation, some do not'
-                ))
+            line_indent = len(line) - len(line.lstrip())
+            min_indent = table_dir_indent + 2  # content must be indented vs directive
+
+            if line_indent < min_indent:
+                # This line is outside the table block — flush and fall through.
+                _flush_table(table_cols, table_nested_items)
+                in_list_table = False
+                table_cols = {}
+                table_nested_items = []
+                # Fall through to plain-list / directive processing below.
+            else:
+                # Process as table content (options, row starts, or cell lines).
+                row_m = _ROW_START_RE.match(line)
+                if row_m:
+                    # A new table row starts here.  Flush nested items from the
+                    # previous cell before resetting column tracking.
+                    if table_nested_items:
+                        _flush_group(table_nested_items, table_nested_start)
+                        table_nested_items = []
+
+                    row_ind = len(row_m.group(1))
+                    content = row_m.group(2).rstrip()
+                    if table_row_indent is None:
+                        table_row_indent = row_ind
+                    if row_ind == table_row_indent:
+                        table_row_idx += 1
+                        table_col_idx = 0
+                        if table_row_idx > table_header_rows and content and not _colon_exempt(content):
+                            table_cols.setdefault(0, []).append(
+                                (line_num, _has_cn_punct(content), content))
+                elif _TABLE_OPT_RE.match(line):
+                    # Option line — check for :header-rows:.
+                    opt_m = re.match(r'^\s+:header-rows:\s+(\d+)', line)
+                    if opt_m:
+                        table_header_rows = int(opt_m.group(1))
+                else:
+                    cell_m = _TABLE_CELL_RE.match(line)
+                    if cell_m and table_row_indent is not None:
+                        cell_ind = len(cell_m.group(1))
+                        content = cell_m.group(2).rstrip()
+
+                        if table_col_indent is None and cell_ind > table_row_indent:
+                            # First column cell seen — record the expected indent.
+                            table_col_indent = cell_ind
+
+                        if cell_ind == table_col_indent:
+                            # Regular column cell: flush previous nested group first.
+                            if table_nested_items:
+                                _flush_group(table_nested_items, table_nested_start)
+                                table_nested_items = []
+                            table_col_idx += 1
+                            if table_row_idx > table_header_rows and content and not _colon_exempt(content):
+                                table_cols.setdefault(table_col_idx, []).append(
+                                    (line_num, _has_cn_punct(content), content))
+                        elif table_col_indent is not None and cell_ind > table_col_indent:
+                            # Nested sub-list item inside a cell — check internally,
+                            # do NOT count towards the column-level check.
+                            if table_row_idx > table_header_rows and content and not _colon_exempt(content):
+                                if not table_nested_items:
+                                    table_nested_start = line_num
+                                table_nested_items.append(
+                                    (line_num, _has_cn_punct(content), content))
+                continue  # table lines are fully consumed here
+
+        # ── ``.. list::`` directive ────────────────────────────────────────────
+        if stripped.startswith('.. list::'):
+            if plain_items:
+                _flush_group(plain_items, plain_start_line)
+                plain_items = []
+            in_directive = True
+            directive_items = []
+            directive_start_line = line_num
+            continue
+
+        if in_directive:
+            is_item, item_content = _extract_list_item(line)
+            if is_item:
+                if item_content and not _colon_exempt(item_content):
+                    has_punct = _has_cn_punct(item_content)
+                    directive_items.append((line_num, has_punct, item_content))
+            elif stripped == '':
+                continue  # blank lines inside a directive block are allowed
+            else:
+                _flush_group(directive_items, directive_start_line)
+                in_directive = False
+                directive_items = []
+                # Fall through: this line may start a plain list.
+
+        # ── Plain RST bullet list (outside any directive) ─────────────────────
+        if not in_directive:
+            is_item, item_content = _extract_list_item(line)
+            if is_item:
+                if item_content and not _colon_exempt(item_content):
+                    has_punct = _has_cn_punct(item_content)
+                    if not plain_items:
+                        plain_start_line = line_num
+                    plain_items.append((line_num, has_punct, item_content))
+            else:
+                if plain_items:
+                    _flush_group(plain_items, plain_start_line)
+                    plain_items = []
+
+    # Flush any groups that reach the end of file.
+    if in_list_table:
+        _flush_table(table_cols, table_nested_items)
+    if in_directive:
+        _flush_group(directive_items, directive_start_line)
+    if plain_items:
+        _flush_group(plain_items, plain_start_line)
 
     return errors
 
@@ -253,10 +473,6 @@ def check_punctuation_usage(file_path):
         for line_num, line in enumerate(f, start=1):
             in_code_block, expecting_code = is_in_code_block(line, in_code_block, expecting_code)
             if in_code_block or expecting_code:
-                continue
-
-            # Skip list items (handled by check_list_punctuation)
-            if re.match(r'^\s+[-*]\s+', line):
                 continue
 
             # Skip RST directives and role markers
@@ -399,6 +615,8 @@ def check_menuconfig_arrows(file_path):
       steps, not '->' or '-->'.
     - '->' is acceptable in data-flow contexts (e.g. 'S1 -> S2 -> S3').
     - '->' is acceptable when indicating a configuration value change (e.g. '1->3').
+
+    List items are included: a list item can contain a menuconfig navigation path.
     """
     errors = []
     in_code_block = False
@@ -408,9 +626,6 @@ def check_menuconfig_arrows(file_path):
         for line_num, line in enumerate(f, start=1):
             in_code_block, expecting_code = is_in_code_block(line, in_code_block, expecting_code)
             if in_code_block or expecting_code:
-                continue
-
-            if re.match(r'^\s+[-*]\s+', line):
                 continue
 
             if line.strip().startswith('.. ') or line.strip().startswith(':'):
@@ -564,18 +779,26 @@ def check_range_symbols(file_path):
     """Rule 11: Check range symbol usage.
 
     Requirements:
-    1. In Chinese: use '～' (fullwidth tilde U+FF5E), e.g. 'bit 23 ～ bit 16'.
-    2. In English: use '–' (en dash U+2013), e.g. 'bit 23 – bit 16'.
+    1. In Chinese docs (zh_CN/): use '～' (fullwidth tilde U+FF5E), e.g. 'bit 23 ～ bit 16'.
+    2. In English docs (en/):    use '–' (en dash U+2013),          e.g. 'bit 23 – bit 16'.
     3. When both sides of the range are plain numbers, surrounding spaces are not required,
        e.g. 'bit 23–16'.
     4. When either side contains non-digit content, a space before the symbol is required,
        e.g. 'bit 23 – bit 16'.
     5. If neither side of the symbol contains a digit, it is not treated as a range and
        is skipped (e.g. '工程配置 - 主窗口').
+
+    Whether a file is in Chinese or English context is determined solely by whether the
+    file path contains 'zh_CN' — NOT by whether individual lines contain Chinese characters.
+    This mirrors the approach used by all other locale-sensitive rules (Rules 1, 10, 12, 13).
+
+    List items are included: parameter description lists can contain range expressions
+    such as "- bit 23 ～ bit 16：说明".
     """
     errors = []
     in_code_block = False
     expecting_code = False
+    is_zh_cn = 'zh_CN' in file_path
 
     with open(file_path, 'r', encoding='utf-8') as f:
         for line_num, line in enumerate(f, start=1):
@@ -583,51 +806,46 @@ def check_range_symbols(file_path):
             if in_code_block or expecting_code:
                 continue
 
-            if re.match(r'^\s+[-*]\s+', line):
-                continue
-
             if line.strip().startswith('.. ') or line.strip().startswith(':'):
                 continue
 
-            # Chinese text: should use ～, not -, –, —, or ~
-            chinese_range_patterns = [
-                (r'[\u4e00-\u9fff]+\s*[-~—]\s*[\u4e00-\u9fff]+', 'Chinese ranges should use ～'),
-                (r'[\u4e00-\u9fff]+\s*–\s*[\u4e00-\u9fff]+',     'Chinese ranges should use ～ instead of –'),
-            ]
-
-            for pattern, msg in chinese_range_patterns:
-                for match in re.finditer(pattern, line):
-                    pos = match.start()
-                    if is_in_backticks(line, pos):
-                        continue
-
-                    match_text = match.group(0)
-                    symbol_match = re.search(r'[-~—–]', match_text)
-                    if symbol_match:
-                        before_symbol = match_text[:symbol_match.start()]
-                        after_symbol  = match_text[symbol_match.start() + len(symbol_match.group()):]
-                        # Skip if neither side has a digit (not a numeric range)
-                        if not re.search(r'\d', before_symbol) or not re.search(r'\d', after_symbol):
+            # Chinese-doc-only check: Chinese characters flanking a range symbol must use ～.
+            # These patterns require Chinese characters in the match itself, so they naturally
+            # never fire in EN files even without an explicit is_zh_cn guard.
+            if is_zh_cn:
+                chinese_range_patterns = [
+                    (r'[\u4e00-\u9fff]+\s*[-~—]\s*[\u4e00-\u9fff]+', 'Chinese ranges should use ～'),
+                    (r'[\u4e00-\u9fff]+\s*–\s*[\u4e00-\u9fff]+',     'Chinese ranges should use ～ instead of –'),
+                ]
+                for pattern, msg in chinese_range_patterns:
+                    for match in re.finditer(pattern, line):
+                        pos = match.start()
+                        if is_in_backticks(line, pos):
                             continue
 
-                    if re.search(r'[\u4e00-\u9fff]', match_text):
+                        match_text = match.group(0)
+                        symbol_match = re.search(r'[-~—–]', match_text)
+                        if symbol_match:
+                            before_symbol = match_text[:symbol_match.start()]
+                            after_symbol  = match_text[symbol_match.start() + len(symbol_match.group()):]
+                            # Skip if neither side has a digit (not a numeric range)
+                            if not re.search(r'\d', before_symbol) or not re.search(r'\d', after_symbol):
+                                continue
+
                         if '～' not in match_text and (
                             '-' in match_text or '–' in match_text
                             or '—' in match_text or '~' in match_text
                         ):
                             errors.append((line_num, line.rstrip(), f'Column {pos + 1}: {msg}'))
 
-            # 'bit N <symbol> bit N' pattern
+            # 'bit N <symbol> bit N' pattern — locale determined by file path, not line content.
             for match in re.finditer(r'\bbit\s+\d+\s*([-~—–])\s*bit\s+\d+', line, re.IGNORECASE):
                 pos = match.start()
                 symbol = match.group(1)
                 if is_in_backticks(line, pos):
                     continue
 
-                context = line[max(0, pos - 30):min(len(line), match.end() + 30)]
-                has_chinese = bool(re.search(r'[\u4e00-\u9fff]', context))
-
-                if has_chinese:
+                if is_zh_cn:
                     if symbol != '～':
                         errors.append((
                             line_num, line.rstrip(),
@@ -640,17 +858,15 @@ def check_range_symbols(file_path):
                             f"Column {pos + 1}: English range should use '–' (en dash U+2013) instead of '{symbol}'"
                         ))
 
-            # 'bit N<symbol>N' pattern (plain-number range, no space needed)
+            # 'bit N<symbol>N' pattern (plain-number range, no space needed).
+            # Locale determined by file path, not line content.
             for match in re.finditer(r'\bbit\s+(\d+)([-~—–])(\d+)', line, re.IGNORECASE):
                 pos = match.start()
                 symbol = match.group(2)
                 if is_in_backticks(line, pos):
                     continue
 
-                context = line[max(0, pos - 30):min(len(line), match.end() + 30)]
-                has_chinese = bool(re.search(r'[\u4e00-\u9fff]', context))
-
-                if has_chinese:
+                if is_zh_cn:
                     if symbol != '～':
                         errors.append((
                             line_num, line.rstrip(),
@@ -1052,9 +1268,12 @@ def _is_rst_heading_underline(line):
 def _description_is_code_only(description):
     """Return True if the description contains only backtick code spans (no plain text).
 
-    e.g. '``AT+UART_DEF=115200,8,1,0,3``' is code-only and should be skipped.
+    Per the style guide (Rule 2), the requirements for sentence-initial capitalisation
+    and a trailing period apply only to *non-backtick* text descriptions.  A description
+    that consists entirely of inline code spans is explicitly allowed without these
+    requirements, e.g.:
+      - :ref:`AT+UART_DEF <cmd-UARTD>`: ``AT+UART_DEF=115200,8,1,0,3``
     """
-    # Remove all backtick spans (single or double) and check if anything remains.
     stripped = re.sub(r'``[^`]+``', '', description)
     stripped = re.sub(r'`[^`]+`', '', stripped)
     return not stripped.strip()
@@ -1093,17 +1312,22 @@ def check_list_sentence(file_path):
       - :ref:`AT+CMD <ANCHOR>`: Description text here.
 
     Requirements:
-    - The description must start with an uppercase letter.
-    - The description must end with a period '.'.
+    - If the description contains non-backtick plain text, it must start with an
+      uppercase letter and end with a period '.'.
     - Do not use '/' to mean 'or' between words; use 'or' instead.
 
     Exemptions:
-    - Description that consists entirely of backtick code spans is skipped
-      (e.g. - :ref:`AT+UART_DEF <cmd-UARTD>`: ``AT+UART_DEF=115200,8,1,0,3``).
+    - Descriptions consisting entirely of inline code spans (backtick-only, no plain
+      text) are exempt from the uppercase and period checks; these lists are valid as
+      long as all items consistently have no trailing punctuation, e.g.:
+        - :ref:`AT+UART_DEF <cmd-UARTD>`: ``AT+UART_DEF=115200,8,1,0,3``
     - Slash between all-uppercase abbreviations is allowed
       (e.g. TCP/IP, TCP/UDP/SSL, TCP/SSL).
     - Section-title lines (a :ref: line immediately followed by an RST heading
       underline) are exempt from the period check, but the '/' check still applies.
+
+    Conditional-compilation-tag prefixes are stripped before parsing, so items
+    such as ":not esp32c6: - :ref:`AT+CMD <A>`: Description." are fully checked.
     """
     if 'zh_CN' in file_path:
         return []
@@ -1121,9 +1345,10 @@ def check_list_sentence(file_path):
         if in_code_block or expecting_code:
             continue
 
-        # Extract content (strip list marker if present)
-        list_match = re.match(r'^\s*[-*]\s+(.*)', line)
-        content = list_match.group(1) if list_match else line.strip()
+        # Extract content: strip the list marker (and optional conditional tag) if present;
+        # fall back to the stripped line for standalone :ref: title lines.
+        is_item, item_content = _extract_list_item(line)
+        content = item_content if is_item else line.strip()
 
         # Match :ref:`...`: description at the start of content
         ref_match = re.match(r'^:ref:`[^`]+`\s*:\s*(.+)', content)
@@ -1131,10 +1356,6 @@ def check_list_sentence(file_path):
             continue
 
         description = ref_match.group(1).rstrip()
-
-        # Exemption: description is only code spans — skip all checks.
-        if _description_is_code_only(description):
-            continue
 
         # Detect section-title lines: the immediately following non-blank line
         # is an RST heading underline.
@@ -1144,6 +1365,12 @@ def check_list_sentence(file_path):
                 next_non_blank = all_lines[j]
                 break
         is_section_title = _is_rst_heading_underline(next_non_blank)
+
+        # Descriptions made up entirely of backtick code spans are exempt from
+        # capitalisation and period checks (style guide Rule 2: "如果存在非反引号里的
+        # 文本描述，需以句子形式呈现").
+        if _description_is_code_only(description):
+            continue
 
         # Check 1: first character of description must be uppercase
         if description and description[0].islower():

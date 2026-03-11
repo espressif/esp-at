@@ -15,7 +15,7 @@ RainMaker AT OTA 指南
 当前 `ESP RainMaker Dashboard <https://dashboard.rainmaker.espressif.com/login>`__ 支持 2 种 OTA 触发方式：
 
   - **Force Push**：直接升级。ESP RainMaker 云立即下发一条 OTA 消息。
-  - **User Approval**：用户确认。用户需要在手机应用上确认后才能接收到 ESP RainMaker 云下发的 OTA 消息。（推荐）
+  - **User Approval**：用户确认。用户需要在手机应用上确认后才能接收到 ESP RainMaker 云下发的 OTA 消息（推荐）。
 
 当前主控 MCU 和 Wi-Fi MCU 均支持通过 ESP RainMaker 云进行 OTA 升级：
 

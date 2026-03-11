@@ -1374,8 +1374,8 @@ server_cert、server_key 和 server_ca 命名空间存储设备作为 SSL 服务
 
 .. note::
 
-  - SSL 服务器会自动从 manufacturing 分区（manufacturing partition）读取 ``server_cert`` 和 ``server_key`` 命名空间中的证书和密钥，无需额外配置。
-  - 如果在 :ref:`AT+CIPSERVER <cmd-SERVER>` 命令中启用了 CA 验证（``<CA enable>`` = 1），服务器还会从 ``server_ca`` 命名空间读取 CA 证书来验证客户端证书，实现双向认证。
+  - SSL 服务器会自动从 manufacturing 分区 (manufacturing partition) 读取 ``server_cert`` 和 ``server_key`` 命名空间中的证书和密钥，无需额外配置。
+  - 如果在 :ref:`AT+CIPSERVER <cmd-SERVER>` 命令中启用了 CA 验证 (``<CA enable>`` = 1)，服务器还会从 ``server_ca`` 命名空间读取 CA 证书来验证客户端证书，实现双向认证。
   - 有关 SSL 服务器配置的更多详细信息，请参阅 :ref:`AT+CIPSERVER <cmd-SERVER>` 命令文档。
 
 擦除证书
@@ -2106,8 +2106,8 @@ server_cert、server_key 和 server_ca 命名空间存储设备作为 SSL 服务
   **自定义命名空间最佳实践：**
 
   - 自定义命名空间可用于存储任何类型的持久化数据
-  - 根据需求选择合适的数据类型：数值类型（1-6）用于数字，字符串（7）用于文本，二进制（8）用于证书或二进制数据
-  - **建议按用途分离命名空间**：例如将证书数据（``my_app_ca``）与配置参数（``my_app_config``）分开存储，便于管理和维护
+  - 根据需求选择合适的数据类型：数值类型 (1-6) 用于数字，字符串 (7) 用于文本，二进制 (8) 用于证书或二进制数据
+  - **建议按用途分离命名空间**：例如将证书数据 (``my_app_ca``) 与配置参数 (``my_app_config``) 分开存储，便于管理和维护
   - 命名空间名称应具有描述性，清楚表明其用途（如 ``my_app_certs``、``my_app_settings``）
   - 键名可以是任意字符串，但建议使用有意义的名称以便识别
   - 所有自定义数据在重启后保持持久化，直到被明确擦除

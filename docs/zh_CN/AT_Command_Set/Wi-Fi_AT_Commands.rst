@@ -523,7 +523,7 @@ Wi-Fi AT 命令集
 
 - **<"ssid">**：目标 AP 的 SSID
 
-   - 如果 SSID 和密码中有 ``,``、``"``、``\`` 等特殊字符，需转义
+   - 如果 SSID 和密码中有 ``,``、``"``、``\`` 等特殊字符，需转义。
    - AT 支持连接 SSID 为中文的 AP，但是某些路由器或者热点的中文 SSID 不是 UTF-8 编码格式。你可以先扫描 SSID，然后使用扫描到的 SSID 进行连接。
 
 - **<"pwd">**：密码最长 64 字节 ASCII
@@ -579,14 +579,14 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
-- 如果 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
-- 使用本命令需要开启 station 模式
-- 当 {IDF_TARGET_NAME} station 已连接上 AP 后，推荐使用此命令查询 Wi-Fi 信息；当 {IDF_TARGET_NAME} station 没有连接上 AP 时，推荐使用 :ref:`AT+CWSTATE <cmd-WSTATE>` 命令查询 Wi-Fi 信息
-- 本命令中的 ``<reconn_interval>`` 参数与 :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>` 命令中的 ``<interval_second>`` 参数相同。如果运行本命令时不设置 ``<reconn_interval>`` 参数，Wi-Fi 重连间隔时间将采用默认值 1
-- 如果同时省略 ``<"ssid">`` 和 ``<"password">`` 参数，将使用上一次设置的值
-- 执行命令与设置命令的超时时间相同，默认为 15 秒，可通过参数 ``<jap_timeout>`` 设置
+- 如果 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区。
+- 使用本命令需要开启 station 模式。
+- 当 {IDF_TARGET_NAME} station 已连接上 AP 后，推荐使用此命令查询 Wi-Fi 信息；当 {IDF_TARGET_NAME} station 没有连接上 AP 时，推荐使用 :ref:`AT+CWSTATE <cmd-WSTATE>` 命令查询 Wi-Fi 信息。
+- 本命令中的 ``<reconn_interval>`` 参数与 :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>` 命令中的 ``<interval_second>`` 参数相同。如果运行本命令时不设置 ``<reconn_interval>`` 参数，Wi-Fi 重连间隔时间将采用默认值 1。
+- 如果同时省略 ``<"ssid">`` 和 ``<"password">`` 参数，将使用上一次设置的值。
+- 执行命令与设置命令的超时时间相同，默认为 15 秒，可通过参数 ``<jap_timeout>`` 设置。
 - 不支持通过 :term:`WAPI` 鉴权方式连接路由器。
-- 想要获取 IPv6 地址，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`
+- 想要获取 IPv6 地址，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`。
 - 回复 ``OK`` 代表 IPv4 网络已经准备就绪，而不代表 IPv6 网络准备就绪。当前 ESP-AT 以 IPv4 网络为主，IPv6 网络为辅。
 - ``WIFI GOT IPv6 LL`` 代表已经获取到本地链路 IPv6 地址，这个地址是通过 EUI-64 本地计算出来的，不需要路由器参与。由于并行时序，这个打印可能在 ``OK`` 之前，也可能在 ``OK`` 之后。
 - ``WIFI GOT IPv6 GL`` 代表已经获取到全局 IPv6 地址，该地址是由 AP 下发的前缀加上内部计算出来的后缀进行组合而来的，需要路由器参与。由于并行时序，这个打印可能在 ``OK`` 之前，也可能在 ``OK`` 之后；也可能由于 AP 不支持 IPv6 而不打印。
@@ -842,7 +842,7 @@ Wi-Fi AT 命令集
 - **<"ssid">**：字符串参数，AP 的 SSID
 - **<rssi>**：信号强度
 - **<"mac">**：字符串参数，AP 的 MAC 地址
-- **<channel>**：信道号，指定后仅扫描该信道。
+- **<channel>**：信道号，指定后仅扫描该信道
 - **<scan_type>**：Wi-Fi 扫描类型，默认值为：0
 
    - 0: 主动扫描
@@ -850,7 +850,7 @@ Wi-Fi AT 命令集
 
 - **<scan_time_min>**：每个信道最短扫描时间，单位：毫秒，范围：[0,1500]，如果扫描类型为被动扫描，本参数无效
 - **<scan_time_max>**：每个信道最长扫描时间，单位：毫秒，范围：[0,1500]，如果设为 0，固件采用参数默认值，主动扫描为 120 ms，被动扫描为 360 ms
-- **<2ghz_channel_bitmap>**：2.4 GHz 频段信道的位图。在 ``<channel>`` 缺省时或为 0 时生效。每一位对应一个信道，1 表示扫描该信道，0 表示不扫描该信道。2.4 GHz 频段支持的信道见：`2.4G 信道 <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L415-L428>`_。例如，若 bit 1 和 bit 2 设为 1，则表示扫描信道 1 和信道 2。
+- **<2ghz_channel_bitmap>**：2.4 GHz 频段信道的位图。在 ``<channel>`` 缺省时或为 0 时生效。每一位对应一个信道，1 表示扫描该信道，0 表示不扫描该信道。2.4 GHz 频段支持的信道见：`2.4G 信道 <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L415-L428>`_。例如，若 bit 1 和 bit 2 设为 1，则表示扫描信道 1 和信道 2
 
 .. only:: esp32c5
 
@@ -988,8 +988,8 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
-- 本命令只有当 :ref:`AT+CWMODE=2 <cmd-MODE>` 或者 :ref:`AT+CWMODE=3 <cmd-MODE>` 时才有效
-- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 分区
+- 本命令只有当 :ref:`AT+CWMODE=2 <cmd-MODE>` 或者 :ref:`AT+CWMODE=3 <cmd-MODE>` 时才有效。
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 分区。
 - 默认 SSID 因设备而异，因为它由设备的 MAC 地址组成。 你可以使用 :ref:`AT+CWSAP? <cmd-SAP>` 查询默认的SSID。
 
 示例
@@ -2008,8 +2008,8 @@ Wi-Fi AT 命令集
 - **<"password">**：阶段 2 的密码，范围：1 ~ 32 字节，EAP-PEAP、EAP-TTLS 两种认证方式需设置本参数，EAP-TLS 方式无需设置本参数
 - **<security>**：
 
-   - bit 0: 提供证书供 WPA2 Enterprise 服务器端 CA 证书校验；
-   - bit 1: 客户端载入 CA 证书来校验 WPA2 Enterprise 服务器端的证书；
+   - bit 0: 提供证书供 WPA2 Enterprise 服务器端 CA 证书校验
+   - bit 1: 客户端载入 CA 证书来校验 WPA2 Enterprise 服务器端的证书
 
 - **<jeap_timeout>**：:ref:`AT+CWJEAP <cmd-JEAP>` 命令的最大超时时间，单位：秒，默认值：15，范围：[3,600]
 
@@ -2108,11 +2108,11 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 说明
 ^^^^
 
-- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
-- 使用本命令需开启 Station 模式
-- 使用 TLS 认证方式需使能客户端证书
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区。
+- 使用本命令需开启 Station 模式。
+- 使用 TLS 认证方式需使能客户端证书。
 - 如果你想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 WPA2 Enterprise 客户端证书（具体步骤请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-pki>`，证书配置方法与 SSL 证书相同）。如果你想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
-- 如果 ``<security>`` 配置为 2，为了校验服务器的证书有效期，请在发送 :ref:`AT+CWJEAP <cmd-JEAP>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（你可以发送 :ref:`AT+SYSTIMESTAMP=\<unix_timestamp\> <cmd-SETTIME>` 命令来配置当前时间，发送 :ref:`AT+SYSTIMESTAMP? <cmd-SETTIME>` 命令查询当前时间。）
+- 如果 ``<security>`` 配置为 2，为了校验服务器的证书有效期，请在发送 :ref:`AT+CWJEAP <cmd-JEAP>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间（你可以发送 :ref:`AT+SYSTIMESTAMP=\<unix_timestamp\> <cmd-SETTIME>` 命令来配置当前时间，发送 :ref:`AT+SYSTIMESTAMP? <cmd-SETTIME>` 命令查询当前时间）。
 
 .. _cmd-HOSTNAME:
 
@@ -2265,7 +2265,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 ^^^^
 
 - 详细说明请参考：`Wi-Fi 国家/地区代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id45>`_。
-- 配置更改不保存到 flash
+- 配置更改不保存到 flash。
 
 示例
 ^^^^

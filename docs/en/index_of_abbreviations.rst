@@ -255,9 +255,9 @@ Index of Abbreviations
 
       More details are in the following introduction.
 
-      * :term:`Normal Transmission Mode` (:term:`普通传输模式`)
-      * :term:`Passthrough Receiving Mode` (:term:`透传接收模式`)
-      * :term:`Passthrough Mode` (:term:`透传模式`)
+      * :term:`Normal Transmission Mode` （:term:`普通传输模式`）
+      * :term:`Passthrough Receiving Mode` （:term:`透传接收模式`）
+      * :term:`Passthrough Mode` （:term:`透传模式`）
       * :ref:`AT+CIPMODE <cmd-IPMODE>`
       * :ref:`AT+CIPSEND <cmd-SEND>`
       * :ref:`+++ <cmd-PLUS>`

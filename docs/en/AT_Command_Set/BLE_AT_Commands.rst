@@ -20,7 +20,7 @@ Bluetooth® Low Energy AT Commands
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEADVSTART <cmd-BADVSTART>`: Start Bluetooth LE advertising.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEADVSTOP <cmd-BADVSTOP>`: Stop Bluetooth LE advertising.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLECONN <cmd-BCONN>`: Establish Bluetooth LE connection.
-    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLECONNPARAM <cmd-BCONNP>`: Query/Update parameters of Bluetooth LE connection.
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLECONNPARAM <cmd-BCONNP>`: Query or update parameters of Bluetooth LE connection.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEDISCONN <cmd-BDISC>`: End Bluetooth LE connection.
     :esp32 or esp32c3 : - :ref:`AT+BLEDATALEN <cmd-BDLEN>`: Set Bluetooth LE data packet length.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLECFGMTU <cmd-BMTU>`: Set Bluetooth LE MTU length.

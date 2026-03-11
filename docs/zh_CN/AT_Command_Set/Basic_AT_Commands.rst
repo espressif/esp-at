@@ -229,7 +229,7 @@
 
   .. list::
 
-    :not esp32c6: - 0 表示立即重启
+    :not esp32c6: - 0 表示立即重启。
     :esp32c6: - 最小 Deep-sleep 时长为 5 毫秒。
     - 最大 Deep-sleep 时长约为 28.8 天（2 :sup:`31`-1 毫秒）。
 
@@ -337,13 +337,13 @@
    - 1: 开启 {IDF_TARGET_NAME} 上电进入 TCP/SSL 客户端 :term:`透传模式`
 
 - **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
-- **<remote port>**：远端端口值
-- **<"type">**：字符串参数，表示传输类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6"。默认值："TCP"
+- **<remote port>**：远端端口值。
+- **<"type">**：字符串参数，表示传输类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6"。默认值："TCP"。
 - **<keep_alive>**：配置套接字的 ``SO_KEEPALIVE`` 选项（参考：`SO_KEEPALIVE 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`_），单位：秒。
 
   - 范围：[0,7200]。
 
-    - 0: 禁用 keep-alive 功能；（默认）
+    - 0: 禁用 keep-alive 功能（默认）。
     - 1 ~ 7200: 开启 keep-alive 功能。`TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ 值为 **<keep_alive>**，`TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ 值为 1，`TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ 值为 3。
 
   - 本命令中的 ``<keep_alive>`` 参数与 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令中的 ``<keep_alive>`` 参数相同，最终值由后设置的命令决定。如果运行本命令时不设置 ``<keep_alive>`` 参数，则默认使用上次配置的值。
@@ -392,7 +392,7 @@
    - 3: 开启 {IDF_TARGET_NAME} 上电进入 TCP/SSL 服务器 :term:`透传模式`
 
 - **<port>**：服务器监听的端口，默认值：333。
-- **<"type">**：服务器类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6". 默认值："TCP"
+- **<"type">**：服务器类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6". 默认值："TCP"。
 - **<CA enable>**：仅在 ``<type>`` 为 "SSL" 或 "SSLv6" 时才有此参数。
 
    - 0: 不使用 CA 认证
@@ -464,8 +464,8 @@
    - 1: 开启 {IDF_TARGET_NAME} 上电进入 UDP :term:`透传模式`
 
 - **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
-- **<remote port>**：远端端口值
-- **<"type">**：字符串参数，表示传输类型："UDP" 或 "UDPv6"。默认值："TCP"
+- **<remote port>**：远端端口值。
+- **<"type">**：字符串参数，表示传输类型："UDP" 或 "UDPv6"。默认值："TCP"。
 - **<local port>**：开机进入 UDP 传输时，使用的本地端口。
 
 说明
@@ -2050,9 +2050,9 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
    * - 类型
      - 子类型
      - 扩展
-   * - bit 32 ~ bit 24
-     - bit 23 ~ bit 16
-     - bit 15 ~ bit 0
+   * - bit 32 ～ bit 24
+     - bit 23 ～ bit 16
+     - bit 15 ～ bit 0
 
 - **category：** 固定值 0x01
 - **subcategory：** 错误类型
