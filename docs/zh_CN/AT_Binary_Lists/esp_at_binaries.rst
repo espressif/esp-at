@@ -239,7 +239,8 @@
 
   **已发布的版本：**
 
-  - `v5.0.0.0 <https://www.espressif.com/zh-hans/contact-us/at-firmware-application?chip={IDF_TARGET_NAME}&type={IDF_TARGET_NAME}-4mb&version=v5.0.0.0>`__ （推荐）
+  - `v5.0.1.0 <https://www.espressif.com/zh-hans/contact-us/at-firmware-application?chip={IDF_TARGET_NAME}&type={IDF_TARGET_NAME}-4mb&version=v5.0.1.0>`__ （推荐）
+  - `v5.0.0.0 <https://www.espressif.com/zh-hans/contact-us/at-firmware-application?chip={IDF_TARGET_NAME}&type={IDF_TARGET_NAME}-4mb&version=v5.0.0.0>`__
 
   .. _at-release-subscription:
 
@@ -270,7 +271,8 @@
 
   **已发布的版本：**
 
-  - `v5.0.0.0 <https://www.espressif.com/zh-hans/contact-us/at-firmware-application?chip={IDF_TARGET_NAME}&type={IDF_TARGET_NAME}-4mb&version=v5.0.0.0>`__ （推荐）
+  - `v5.0.1.0 <https://www.espressif.com/zh-hans/contact-us/at-firmware-application?chip={IDF_TARGET_NAME}&type={IDF_TARGET_NAME}-4mb&version=v5.0.1.0>`__ （推荐）
+  - `v5.0.0.0 <https://www.espressif.com/zh-hans/contact-us/at-firmware-application?chip={IDF_TARGET_NAME}&type={IDF_TARGET_NAME}-4mb&version=v5.0.0.0>`__
 
   .. _at-release-subscription:
 
