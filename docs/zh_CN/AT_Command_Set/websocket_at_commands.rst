@@ -20,7 +20,7 @@ WebSocket AT 命令集
 ------
 
 .. important::
-  默认的 AT 固件不支持此页面下的 AT 命令。如果您需要 {IDF_TARGET_NAME} 支持 WebSocket 命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+  默认的 AT 固件不支持此页面下的 AT 命令。如果你需要 {IDF_TARGET_NAME} 支持 WebSocket 命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
 
   - 启用 ``Component config`` > ``AT`` > ``AT WebSocket command support``
 
@@ -57,7 +57,7 @@ WebSocket AT 命令集
 - **<ping_intv_sec>**：发送 WebSocket Ping 间隔。单位：秒。范围：[1,7200]。默认值：10，即：每隔 10 秒发送一次 WebSocket Ping 包。
 - **<ping_timeout_sec>**：WebSocket Ping 超时。单位：秒。范围：[1,7200]。默认值：120，即：120 秒未收到 WebSocket Pong 包，则关闭连接。
 - **<buffer_size>**：WebSocket 缓冲区大小。单位：字节。范围：[1,16384]。默认值：1024。
-- **<auth_mode>**:
+- **<auth_mode>**：
 
   - 0: 不认证，此时无需填写 ``<pki_number>`` 和 ``<ca_number>`` 参数；
   - 1: ESP-AT 提供客户端证书供服务器端 CA 证书校验；
@@ -70,8 +70,8 @@ WebSocket AT 命令集
 说明
 ^^^^
 - 此命令应在 :ref:`AT+WSOPEN <cmd-WSOPEN>` 之前配置，否则不会生效。
-- 如果您想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 WebSocket 证书。如果您想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
-- 如果 ``<auth_mode>`` 配置为 2 或者 3，为了校验服务器的证书有效期，请在发送 :ref:`AT+WSOPEN <cmd-WSOPEN>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（您可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间。）
+- 如果你想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 WebSocket 证书。如果你想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+- 如果 ``<auth_mode>`` 配置为 2 或者 3，为了校验服务器的证书有效期，请在发送 :ref:`AT+WSOPEN <cmd-WSOPEN>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间（你可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间）。
 - 相互认证的示例： :ref:`基于 TLS 的 WebSocket 连接（相互鉴权）<example-websocket-tls>`。
 
 示例
@@ -121,7 +121,7 @@ WebSocket AT 命令集
 
     >
 
-符号 ``>`` 表示 AT 准备好接收 AT 命令口数据，此时您可以输入 WebSocket 请求头（请求头为 ``key: value`` 形式，无需以 ``\r\n`` 结尾），当数据长度达到参数 ``<req_header_len>`` 的值时，AT 返回：
+符号 ``>`` 表示 AT 准备好接收 AT 命令口数据，此时你可以输入 WebSocket 请求头（请求头为 ``key: value`` 形式，无需以 ``\r\n`` 结尾），当数据长度达到参数 ``<req_header_len>`` 的值时，AT 返回：
 
 ::
 
@@ -133,7 +133,7 @@ WebSocket AT 命令集
 - **<"req_header">**：WebSocket 请求头。
 - **<req_header_len>**：WebSocket 请求头长度。单位：字节。
 
-  - 0：清除所有已设置的 WebSocket 请求头。
+  - 0: 清除所有已设置的 WebSocket 请求头。
   - 其他值：设置一个新的 WebSocket 请求头。
 
 说明
@@ -215,11 +215,11 @@ WebSocket AT 命令集
 - **<link_id>**：WebSocket 连接 ID。范围：[0,2]，即最大支持三个 WebSocket 连接。
 - **<state>**：WebSocket 连接的状态。
 
-   - 0：WebSocket 连接已关闭。
-   - 1：WebSocket 连接正在重连。
-   - 2：已建立 WebSocket 连接。
-   - 3：接收 WebSocket Pong 超时或读取连接数据错误，正在等待重连。
-   - 4：已收到服务器端 WebSocket 关闭帧，正在发送关闭帧到服务器。
+   - 0: WebSocket 连接已关闭。
+   - 1: WebSocket 连接正在重连。
+   - 2: 已建立 WebSocket 连接。
+   - 3: 接收 WebSocket Pong 超时或读取连接数据错误，正在等待重连。
+   - 4: 已收到服务器端 WebSocket 关闭帧，正在发送关闭帧到服务器。
 
 - **<"uri">**：WebSocket 服务器的统一资源标识符。
 - **<"subprotocol">**：WebSocket 子协议（参考 `RFC6455 1.9 章节 <https://www.rfc-editor.org/rfc/rfc6455#section-1.9>`_）。
@@ -258,7 +258,7 @@ WebSocket AT 命令集
 
     >
 
-上述响应表示 AT 已准备好从 AT port 接收数据，此时您可以输入数据，当 AT 接收到的数据长度达到 ``<length>`` 后，数据传输开始。
+上述响应表示 AT 已准备好从 AT port 接收数据，此时你可以输入数据，当 AT 接收到的数据长度达到 ``<length>`` 后，数据传输开始。
 
 如果未建立连接或数据传输时连接被断开，返回：
 
@@ -291,8 +291,8 @@ WebSocket AT 命令集
 - **<timeout_ms>**：发送超时时间。单位：毫秒。范围：[0,60000]。默认值：10000。
 - **<fin>**：表示数据帧是否为最后一个分片。默认值：1。
 
-  - 0：表示数据帧还有后续分片。
-  - 1：表示数据帧为最后一个分片。
+  - 0: 表示数据帧还有后续分片。
+  - 1: 表示数据帧为最后一个分片。
 
 .. _cmd-WSDATAFMT:
 
@@ -304,7 +304,7 @@ WebSocket AT 命令集
 
 **功能：**
 
-默认情况下，{IDF_TARGET_NAME} 在收到 WebSocket 数据时，会以 ``+WS_DATA:<link_id>,<data_len>,<data>\r\n`` 的格式输出数据。本命令允许您配置接收数据时的元数据输出格式，以满足不同的应用需求。完整的输出格式如下：
+默认情况下，{IDF_TARGET_NAME} 在收到 WebSocket 数据时，会以 ``+WS_DATA:<link_id>,<data_len>,<data>\r\n`` 的格式输出数据。本命令允许你配置接收数据时的元数据输出格式，以满足不同的应用需求。完整的输出格式如下：
 
 ::
 

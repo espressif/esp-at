@@ -206,7 +206,7 @@ Refer to the escape character syntax described in the :ref:`at-command-types` se
 :ref:`Can the serial port baudrate be modified in AT Commands? (Default: 115200) <faq-at-index>`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  Yes, you can use either of the three ways below to modify it: 
+  Yes, you can use either of the three ways below to modify it:
 
   - Use the command :ref:`AT+UART_CUR <cmd-UARTC>` or :ref:`AT+UART_DEF <cmd-UARTD>`.
   - Re-compile the AT firmware: :doc:`establish the compiling environment <Compile_and_Develop/How_to_clone_project_and_compile_it>` and :doc:`change the UART baudrate <Compile_and_Develop/How_to_set_AT_port_pin>`.
@@ -254,9 +254,9 @@ Generic firmware may not provide detailed reasons. To obtain specific informatio
 :ref:`What are the common Wi-Fi compatibility issues? <faq-at-index>`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- AMPDU compatibility issue. 
- 
-  - If the router does not support AMPDU, {IDF_TARGET_NAME} will automatically disable the AMPDU function when interacting with the router. 
+- AMPDU compatibility issue.
+
+  - If the router does not support AMPDU, {IDF_TARGET_NAME} will automatically disable the AMPDU function when interacting with the router.
   - If the router supports AMPDU but there is a compatibility issue with AMPDU transmission between the router and {IDF_TARGET_NAME}, it is recommended to disable the function on the router or {IDF_TARGET_NAME}. For information on how to disable it on {IDF_TARGET_NAME}, please refer to :doc:`Compile_and_Develop/How_to_clone_project_and_compile_it` and select the following options in the fifth step of configuring the project:
 
     - Disable ``Component config`` > ``Wi-Fi`` > ``WiFi AMPDU TX``
@@ -351,7 +351,7 @@ Usually check the error log from :term:`AT log port`.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 {IDF_TARGET_NAME} supports IO matrix. When compiling ESP-AT, you can configure UART1 pins in menuconfig, so they may be inconsistent with the pins described in the module datasheet.
-See :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` for details. 
+See :component_file:`factory_param_data.csv <customized_partitions/raw_data/factory_param/factory_param_data.csv>` for details.
 
 .. _faq-performance:
 
@@ -364,7 +364,7 @@ See :component_file:`factory_param_data.csv <customized_partitions/raw_data/fact
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In an office scenario, AT takes about 5 seconds to connect. Actual connection time depends on router performance, network environment, module antenna performance, etc.
-The maximum timeout can be set using the **<jap_timeout>** parameter of :ref:`AT+CWJAP <cmd-JAP>`. 
+The maximum timeout can be set using the **<jap_timeout>** parameter of :ref:`AT+CWJAP <cmd-JAP>`.
 
 .. _faq-tcp-window:
 
@@ -389,7 +389,7 @@ If the test rate does not meet your requirements, refer to :doc:`Compile_and_Dev
 By default, the maximum number of TCP segment retransmissions is 6 (range: [3-12]). Reconfigure it as follows:
 
 - **Local compilation**: Refer to :doc:`compile ESP-AT project locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>`, configure in menuconfig:
-  
+
   ::
 
     Component config > LWIP > TCP > Maximum number of retransmissions of data segments

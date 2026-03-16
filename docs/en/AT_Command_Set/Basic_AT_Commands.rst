@@ -17,25 +17,25 @@ Basic AT Commands
   - :ref:`AT+GSLP <cmd-GSLP>`: Enter Deep-sleep mode.
   - :ref:`ATE <cmd-ATE>`: Configure AT commands echoing.
   - :ref:`AT+RESTORE <cmd-RESTORE>`: Restore factory default settings of the module.
-  - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter  Network/Bluetooth :term:`Passthrough Mode` on power-up.
+  - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Network or Bluetooth :term:`Passthrough Mode` on power-up.
   - :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>`: Set the data transmission interval in the :term:`Passthrough Mode`.
   - :ref:`AT+UART_CUR <cmd-UARTC>`: Current UART configuration, not saved in flash.
   - :ref:`AT+UART_DEF <cmd-UARTD>`: Default UART configuration, saved in flash.
   - :ref:`AT+SLEEP <cmd-SLEEP>`: Set the sleep mode.
   - :ref:`AT+SYSRAM <cmd-SYSRAM>`: Query the heap memory status.
-  - :ref:`AT+SYSMSG <cmd-SYSMSG>`: Query/Set System Prompt Information.
+  - :ref:`AT+SYSMSG <cmd-SYSMSG>`: Query or set System Prompt Information.
   - :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>`: Enable or disable the :term:`system message` filter.
-  - :ref:`AT+SYSMSGFILTERCFG <cmd-SYSMSGFILTERCFG>`: Query/Set the :term:`system message` filters.
-  - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`: Query/Set User Partitions in Flash.
-  - :ref:`AT+SYSMFG <cmd-SYSMFG>`: Query/Set :term:`manufacturing nvs` User Partitions.
-  - :ref:`AT+RFPOWER <cmd-RFPOWER>`: Query/Set RF TX Power.
+  - :ref:`AT+SYSMSGFILTERCFG <cmd-SYSMSGFILTERCFG>`: Query or set the :term:`system message` filters.
+  - :ref:`AT+SYSFLASH <cmd-SYSFLASH>`: Query or set User Partitions in Flash.
+  - :ref:`AT+SYSMFG <cmd-SYSMFG>`: Query or set :term:`manufacturing nvs` User Partitions.
+  - :ref:`AT+RFPOWER <cmd-RFPOWER>`: Query or set RF TX Power.
   - :ref:`AT+RFCAL <cmd-RFCAL>`: RF full calibration.
   - :ref:`AT+SYSROLLBACK <cmd-SYSROLLBACK>`: Roll back to the previous firmware.
-  - :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`: Query/Set local time stamp.
+  - :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>`: Query or set local time stamp.
   - :ref:`AT+SYSLOG <cmd-SYSLOG>`: Enable or disable the AT error code prompt.
-  - :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`: Query/Set the light-sleep wakeup source and awake GPIO.
-  - :ref:`AT+SYSSTORE <cmd-SYSSTORE>`: Query/Set parameter store mode.
-  - :ref:`AT+SYSREG <cmd-SYSREG>`: Read/write the register.
+  - :ref:`AT+SLEEPWKCFG <cmd-WKCFG>`: Query or set the light-sleep wakeup source and awake GPIO.
+  - :ref:`AT+SYSSTORE <cmd-SYSSTORE>`: Query or set parameter store mode.
+  - :ref:`AT+SYSREG <cmd-SYSREG>`: Read or write the register.
   :esp32c3: - :ref:`AT+SYSTEMP <cmd-SYSTEMP>`: Read the internal chip Celsius temperature value.
 
 .. _cmd-basic-intro:
@@ -58,13 +58,13 @@ Execute Command
 
 ::
 
-    AT  
+    AT
 
 **Response:**
 
 ::
 
-    OK  
+    OK
 
 .. _cmd-RST:
 
@@ -78,13 +78,13 @@ Execute Command
 
 ::
 
-    AT+RST  
+    AT+RST
 
 **Response:**
 
 ::
 
-    OK  
+    OK
 
 .. only:: esp32c2 or esp32c3
 
@@ -144,16 +144,16 @@ Execute Command
 Parameters
 ^^^^^^^^^^
 
--  **<AT version info>**: information about the esp-at core library version, which is under the directory: ``esp-at/components/at/lib/``. Code is closed source, no plan to open.
--  **<SDK version info>**: information about the esp-at platform sdk version, which is defined in file: ``esp-at/module_config/module_{platform}_default/IDF_VERSION``
--  **<compile time>**: the time to compile the firmware.
--  **<Bin version>**: esp-at firmware version. Version information can be modified in menuconfig. ``python build.py menuconfig`` > ``Application manager`` > ``Project version``. Maximum length: 32 bytes.
+- **<AT version info>**: information about the esp-at core library version, which is under the directory: ``esp-at/components/at/lib/``. Code is closed source, no plan to open.
+- **<SDK version info>**: information about the esp-at platform sdk version, which is defined in file: ``esp-at/module_config/module_{platform}_default/IDF_VERSION``
+- **<compile time>**: the time to compile the firmware.
+- **<Bin version>**: esp-at firmware version. Version information can be modified in menuconfig. ``python build.py menuconfig`` > ``Application manager`` > ``Project version``. Maximum length: 32 bytes.
 - **<module_name>**: the module name, which is defined in file: ``esp-at/components/customized_partitions/raw_data/factory_param/factory_param_data.csv``.
 
 Note
 ^^^^^
 
--  If you have any issues on esp-at firmware, please provide ``AT+GMR`` version information firstly.
+- If you have any issues on esp-at firmware, please provide ``AT+GMR`` version information firstly.
 
 Example
 ^^^^^^^^
@@ -193,12 +193,12 @@ Query Command
 Parameters
 ^^^^^^^^^^
 
--  **<index>**: AT command sequence number.
--  **<"AT command name">**: AT command name.
--  **<support test command>**: 0 means not supported, 1 means supported.
--  **<support query command>**: 0 means not supported, 1 means supported.
--  **<support set command>**: 0 means not supported, 1 means supported.
--  **<support execute command>**: 0 means not supported, 1 means supported.
+- **<index>**: AT command sequence number.
+- **<"AT command name">**: AT command name.
+- **<support test command>**: 0 means not supported, 1 means supported.
+- **<support query command>**: 0 means not supported, 1 means supported.
+- **<support set command>**: 0 means not supported, 1 means supported.
+- **<support execute command>**: 0 means not supported, 1 means supported.
 
 .. _cmd-GSLP:
 
@@ -250,25 +250,25 @@ Execute Command
 
 ::
 
-    ATE0  
+    ATE0
 
 or
 
 ::
 
-    ATE1  
+    ATE1
 
 **Response:**
 
 ::
 
-    OK  
+    OK
 
 Parameters
 ^^^^^^^^^^
 
--  **ATE0**: Switch echo off.
--  **ATE1**: Switch echo on.
+- **ATE0**: Switch echo off.
+- **ATE1**: Switch echo on.
 
 .. _cmd-RESTORE:
 
@@ -282,24 +282,24 @@ Execute Command
 
 ::
 
-    AT+RESTORE  
+    AT+RESTORE
 
 **Response:**
 
 ::
 
-    OK  
+    OK
 
 Notes
 ^^^^^
 
--  The execution of this command will restore all parameters saved in flash to factory default settings of the module.
--  The device will be restarted when this command is executed.
+- The execution of this command will restore all parameters saved in flash to factory default settings of the module.
+- The device will be restarted when this command is executed.
 
 .. _cmd-SAVET:
 
-:ref:`AT+SAVETRANSLINK <Basic-AT>`: Set Whether to Enter Network/Bluetooth LE :term:`Passthrough Mode` on Power-up
-------------------------------------------------------------------------------------------------------------------
+:ref:`AT+SAVETRANSLINK <Basic-AT>`: Set Whether to Enter Network or Bluetooth LE :term:`Passthrough Mode` on Power-up
+----------------------------------------------------------------------------------------------------------------------
 
 .. list::
 
@@ -331,27 +331,27 @@ Set Command
 Parameters
 """"""""""""""
 
--  **<mode>**:
+- **<mode>**:
 
-   -  0: {IDF_TARGET_NAME} will NOT enter TCP/SSL client :term:`Passthrough Mode` on power-up.
-   -  1: {IDF_TARGET_NAME} will enter TCP/SSL client :term:`Passthrough Mode` on power-up.
+   - 0: {IDF_TARGET_NAME} will NOT enter TCP/SSL client :term:`Passthrough Mode` on power-up.
+   - 1: {IDF_TARGET_NAME} will enter TCP/SSL client :term:`Passthrough Mode` on power-up.
 
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
--  **<remote port>**: the remote port number.
--  **<"type">**: string parameter showing the type of transmission: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP".
--  **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
+- **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
+- **<remote port>**: the remote port number.
+- **<"type">**: string parameter showing the type of transmission: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP".
+- **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
 
    - Range: [0,7200].
 
-     - 0: disable keep-alive function (default).
-     - 1 ~ 7200: enable keep-alive function. `TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ value is **<keep_alive>**, `TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ value is 1, and `TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ value is 3.
+     - 0: Disable keep-alive function (default).
+     - 1 ~ 7200: Enable keep-alive function. `TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ value is **<keep_alive>**, `TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ value is 1, and `TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ value is 3.
 
    - This parameter of this command is the same as the ``<keep_alive>`` parameter of :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command. It always takes the value set later by either of the two commands. If it is omitted or not set, the last configured value is used by default.
 
 Notes
 """""""
 
--  This command will save the :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+- This command will save the :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 
 Example
 """"""""
@@ -386,17 +386,17 @@ Set Command
 Parameters
 """"""""""""""
 
--  **<mode>**:
+- **<mode>**:
 
-   -  0: {IDF_TARGET_NAME} will NOT enter TCP/SSL server :term:`Passthrough Mode` on power-up.
-   -  3: {IDF_TARGET_NAME} will enter TCP/SSL server :term:`Passthrough Mode` on power-up.
+   - 0: {IDF_TARGET_NAME} will NOT enter TCP/SSL server :term:`Passthrough Mode` on power-up.
+   - 3: {IDF_TARGET_NAME} will enter TCP/SSL server :term:`Passthrough Mode` on power-up.
 
--  **[<port>]**: The port that the server listens to. Default: 333.
--  **<"type">**: Server type: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP".
--  **<CA enable>**: This parameter is only valid when ``<type>`` is "SSL" or "SSLv6".
+- **<port>**: The port that the server listens to. Default: 333.
+- **<"type">**: Server type: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP".
+- **<CA enable>**: This parameter is only valid when ``<type>`` is "SSL" or "SSLv6".
 
-   -  0: Do not use CA certificate.
-   -  1: Use CA certificate.
+   - 0: Do not use CA certificate.
+   - 1: Use CA certificate.
 
 - **<netif>**: Specifies the network interface for the server to listen on. Default: 0.
 
@@ -458,26 +458,26 @@ Set Command
 Parameters
 """"""""""""""
 
--  **<mode>**:
+- **<mode>**:
 
-   -  0: {IDF_TARGET_NAME} will NOT enter UDP :term:`Passthrough Mode` on power-up.
-   -  1: {IDF_TARGET_NAME} will enter UDP :term:`Passthrough Mode` on power-up.
+   - 0: {IDF_TARGET_NAME} will NOT enter UDP :term:`Passthrough Mode` on power-up.
+   - 1: {IDF_TARGET_NAME} will enter UDP :term:`Passthrough Mode` on power-up.
 
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
--  **<remote port>**: the remote port number.
--  **<"type">**: string parameter showing the type of transmission: "UDP" or "UDPv6". Default: "TCP".
--  **<local port>**: local port when UDP passthrough is enabled on power-up.
+- **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes.
+- **<remote port>**: the remote port number.
+- **<"type">**: string parameter showing the type of transmission: "UDP" or "UDPv6". Default: "TCP".
+- **<local port>**: local port when UDP passthrough is enabled on power-up.
 
 Notes
 """""""
 
--  This command will save the :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+- This command will save the :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 1, {IDF_TARGET_NAME} will enter the :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 
--  To establish an UDP transmission based on an IPv6 network, do as follows:
+- To establish an UDP transmission based on an IPv6 network, do as follows:
 
-  -  Make sure that the AP supports IPv6
-  -  Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
-  -  Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
+  - Make sure that the AP supports IPv6
+  - Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  - Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
   - (Optional) Check whether {IDF_TARGET_NAME} has obtained an IPv6 address using the :ref:`AT+CIPSTA? <cmd-IPSTA>` command
 
 Example
@@ -513,26 +513,26 @@ Example
     Parameters
     """"""""""""""
 
-    -  **<mode>**:
+    - **<mode>**:
 
-        -  0: {IDF_TARGET_NAME} will NOT enter BLE :term:`Passthrough Mode` on power-up.
-        -  2: {IDF_TARGET_NAME} will enter BLE :term:`Passthrough Mode` on power-up.
+        - 0: {IDF_TARGET_NAME} will NOT enter BLE :term:`Passthrough Mode` on power-up.
+        - 2: {IDF_TARGET_NAME} will enter BLE :term:`Passthrough Mode` on power-up.
 
-    -  **<role>**:
+    - **<role>**:
 
-        -  1: client role.
-        -  2: server role.
+        - 1: client role.
+        - 2: server role.
 
-    -  **<tx_srv>**: tx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` if AT works as GATTS role.
-    -  **<tx_char>**: tx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` if AT works as GATTS role.
-    -  **<rx_srv>**: rx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` if AT works as GATTS role.
-    -  **<rx_char>**: rx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` if AT works as GATTS role.
-    -  **<"peer_addr">**: remote Bluetooth LE address.
+    - **<tx_srv>**: tx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` if AT works as GATTS role.
+    - **<tx_char>**: tx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` if AT works as GATTS role.
+    - **<rx_srv>**: rx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` if AT works as GATTS role.
+    - **<rx_char>**: rx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> if AT works as GATTC role or with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` if AT works as GATTS role.
+    - **<"peer_addr">**: remote Bluetooth LE address.
 
     Notes
     """""""
 
-    -  This command will save the BLE :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 2, {IDF_TARGET_NAME} will enter the Bluetooth LE :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
+    - This command will save the BLE :term:`Passthrough Mode` configuration in the NVS partition. If ``<mode>`` is set to 2, {IDF_TARGET_NAME} will enter the Bluetooth LE :term:`Passthrough Mode` in the next power on. The configuration will take effect after {IDF_TARGET_NAME} reboots.
 
     Example
     """""""""
@@ -641,49 +641,49 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<baudrate>**: UART baud rate
+- **<baudrate>**: UART baud rate
 
    - For {IDF_TARGET_NAME} devices, the supported range is 80 ~ {IDF_TARGET_SOC_UART_BITRATE_MAX}.
 
--  **<databits>**: data bits
+- **<databits>**: data bits
 
-   -  5: 5-bit data
-   -  6: 6-bit data
-   -  7: 7-bit data
-   -  8: 8-bit data
+   - 5: 5-bit data
+   - 6: 6-bit data
+   - 7: 7-bit data
+   - 8: 8-bit data
 
--  **<stopbits>**: stop bits
+- **<stopbits>**: stop bits
 
-   -  1: 1-bit stop bit
-   -  2: 1.5-bit stop bit
-   -  3: 2-bit stop bit
+   - 1: 1-bit stop bit
+   - 2: 1.5-bit stop bit
+   - 3: 2-bit stop bit
 
--  **<parity>**: parity bit
+- **<parity>**: parity bit
 
-   -  0: None
-   -  1: Odd
-   -  2: Even
+   - 0: None
+   - 1: Odd
+   - 2: Even
 
--  **<flow control>**: flow control
+- **<flow control>**: flow control
 
-   -  0: flow control is not enabled
-   -  1: enable RTS
-   -  2: enable CTS
-   -  3: enable both RTS and CTS
+   - 0: Flow control is not enabled.
+   - 1: Enable RTS.
+   - 2: Enable CTS.
+   - 3: Enable both RTS and CTS.
 
 Notes
 ^^^^^
 
--  The Query Command will return actual values of UART configuration parameters, which may have minor differences from the set value because of the clock division.
--  The configuration changes will NOT be saved in flash.
--  To use hardware flow control, you need to connect CTS/RTS pins of your {IDF_TARGET_NAME}. For more details, please refer to :doc:`../Get_Started/Hardware_connection` or ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``.
+- The Query Command will return actual values of UART configuration parameters, which may have minor differences from the set value because of the clock division.
+- The configuration changes will NOT be saved in flash.
+- To use hardware flow control, you need to connect CTS/RTS pins of your {IDF_TARGET_NAME}. For more details, please refer to :doc:`../Get_Started/Hardware_connection` or ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``.
 
 Example
 ^^^^^^^^
 
 ::
 
-    AT+UART_CUR=115200,8,1,0,3  
+    AT+UART_CUR=115200,8,1,0,3
 
 .. _cmd-UARTD:
 
@@ -725,48 +725,48 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<baudrate>**: UART baud rate
+- **<baudrate>**: UART baud rate
 
    - For {IDF_TARGET_NAME} devices, the supported range is 80 ~ {IDF_TARGET_SOC_UART_BITRATE_MAX}.
 
--  **<databits>**: data bits
+- **<databits>**: data bits
 
-   -  5: 5-bit data
-   -  6: 6-bit data
-   -  7: 7-bit data
-   -  8: 8-bit data
+   - 5: 5-bit data
+   - 6: 6-bit data
+   - 7: 7-bit data
+   - 8: 8-bit data
 
--  **<stopbits>**: stop bits
+- **<stopbits>**: stop bits
 
-   -  1: 1-bit stop bit
-   -  2: 1.5-bit stop bit
-   -  3: 2-bit stop bit
+   - 1: 1-bit stop bit
+   - 2: 1.5-bit stop bit
+   - 3: 2-bit stop bit
 
--  **<parity>**: parity bit
+- **<parity>**: parity bit
 
-   -  0: None
-   -  1: Odd
-   -  2: Even
+   - 0: None
+   - 1: Odd
+   - 2: Even
 
--  **<flow control>**: flow control
+- **<flow control>**: flow control
 
-   -  0: flow control is not enabled
-   -  1: enable RTS
-   -  2: enable CTS
-   -  3: enable both RTS and CTS
+   - 0: Flow control is not enabled.
+   - 1: Enable RTS.
+   - 2: Enable CTS.
+   - 3: Enable both RTS and CTS.
 
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS partition, and will still be valid when the chip is powered on again.
--  To use hardware flow control, you need to connect CTS/RTS pins of your {IDF_TARGET_NAME}. For more details, please refer to :doc:`../Get_Started/Hardware_connection` or ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``.
+- The configuration changes will be saved in the NVS partition, and will still be valid when the chip is powered on again.
+- To use hardware flow control, you need to connect CTS/RTS pins of your {IDF_TARGET_NAME}. For more details, please refer to :doc:`../Get_Started/Hardware_connection` or ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``.
 
 Example
 ^^^^^^^^
 
 ::
 
-    AT+UART_DEF=115200,8,1,0,3  
+    AT+UART_DEF=115200,8,1,0,3
 
 .. _cmd-SLEEP:
 
@@ -808,7 +808,7 @@ Set Command
 Parameter
 ^^^^^^^^^^
 
--  **<sleep mode>**:
+- **<sleep mode>**:
 
    - 0: Disable the sleep mode.
 
@@ -867,14 +867,14 @@ Query Command
 
 ::
 
-    AT+SYSRAM?  
+    AT+SYSRAM?
 
 **Response:**
 
 ::
 
     +SYSRAM:<remaining RAM size>,<minimum heap size>
-    OK  
+    OK
 
 Parameters
 ^^^^^^^^^^
@@ -922,28 +922,28 @@ Query the memory usage under given capabilities.
 Parameters
 ^^^^^^^^^^
 
--  **<caps>**: Capability value. See `Different capability definitions <https://github.com/espressif/esp-idf/blob/release/v5.4/components/heap/include/esp_heap_caps.h#L29-L49>`_ for details. Multiple values can be combined, e.g., ``AT+SYSRAM=0x1800`` represents ``MALLOC_CAP_INTERNAL | MALLOC_CAP_DEFAULT``.
--  **<caps_largest_free_block_size>**: The maximum size of a free block that can be allocated under the given caps. Unit: byte.
--  **<caps_free_size>**: The total size of all free blocks under the given caps. Unit: byte.
--  **<caps_minimum_free_size>**: The minimum total size of all free blocks under the given caps since power-on. Unit: byte.
--  **<caps_total_size>**: The total memory size under the given caps. Unit: byte.
+- **<caps>**: Capability value. See `Different capability definitions <https://github.com/espressif/esp-idf/blob/release/v5.4/components/heap/include/esp_heap_caps.h#L29-L49>`_ for details. Multiple values can be combined, e.g., ``AT+SYSRAM=0x1800`` represents ``MALLOC_CAP_INTERNAL | MALLOC_CAP_DEFAULT``.
+- **<caps_largest_free_block_size>**: The maximum size of a free block that can be allocated under the given caps. Unit: byte.
+- **<caps_free_size>**: The total size of all free blocks under the given caps. Unit: byte.
+- **<caps_minimum_free_size>**: The minimum total size of all free blocks under the given caps since power-on. Unit: byte.
+- **<caps_total_size>**: The total memory size under the given caps. Unit: byte.
 
 Note
 ^^^^
 
--  During system operation, if there is insufficient memory, the :term:`AT log port` will output ``alloc failed, size:<requested_size>, caps:<requested_caps>``. You can send ``AT+SYSRAM=<requested_caps>`` to check the memory usage under the current caps. The ``<caps_largest_free_block_size>`` determines whether a memory block of size ``<requested_size>`` can be allocated.
+- During system operation, if there is insufficient memory, the :term:`AT log port` will output ``alloc failed, size:<requested_size>, caps:<requested_caps>``. You can send ``AT+SYSRAM=<requested_caps>`` to check the memory usage under the current caps. The ``<caps_largest_free_block_size>`` determines whether a memory block of size ``<requested_size>`` can be allocated.
 
 .. _cmd-SYSMSG:
 
-:ref:`AT+SYSMSG <Basic-AT>`: Query/Set System Prompt Information
------------------------------------------------------------------
+:ref:`AT+SYSMSG <Basic-AT>`: Query or Set System Prompt Information
+---------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 
 **Function:**
 
-Query the current system prompt information state. 
+Query the current system prompt information state.
 
 **Command:**
 
@@ -975,24 +975,24 @@ Configure system prompt information. If you need more fine-grained management of
 
 ::
 
-    OK  
+    OK
 
 Parameter
 ^^^^^^^^^^
 
--  **<state>**:
+- **<state>**:
 
-   - Bit0: Prompt information when quitting Network :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
+   - bit 0: Prompt information when quitting Network :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
 
      - 0: Print no prompt information when quitting Network :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
      - 1: Print ``+QUITT`` when quitting Network :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
 
-   - Bit1: Connection prompt information type.
+   - bit 1: Connection prompt information type.
 
      - 0: Use simple prompt information, such as ``XX,CONNECT``.
      - 1: Use detailed prompt information, such as ``+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port``.
 
-   - Bit2: Connection status prompt information for Network :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
+   - bit 2: Connection status prompt information for Network :term:`Passthrough Mode`, Bluetooth LE SPP and Bluetooth SPP.
 
      - 0: Print no prompt information.
      - 1: Print one of the following prompt information when Wi-Fi, socket, Bluetooth LE or Bluetooth status is changed:
@@ -1020,9 +1020,9 @@ Parameter
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS partition if ``AT+SYSSTORE=1``.
--  If you set Bit0 to 1, it will prompt "+QUITT" when you quit :term:`Passthrough Mode`.
--  If you set Bit1 to 1, it will impact the information of command :ref:`AT+CIPSTART <cmd-START>` and :ref:`AT+CIPSERVER <cmd-SERVER>`. It will supply "+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port" instead of "XX,CONNECT".
+- The configuration changes will be saved in the NVS partition if ``AT+SYSSTORE=1``.
+- If you set bit 0 to 1, it will prompt "+QUITT" when you quit :term:`Passthrough Mode`.
+- If you set bit 1 to 1, it will impact the information of command :ref:`AT+CIPSTART <cmd-START>` and :ref:`AT+CIPSERVER <cmd-SERVER>`. It will supply "+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port" instead of "XX,CONNECT".
 
 Example
 ^^^^^^^^
@@ -1123,8 +1123,8 @@ For detailed examples, refer to :ref:`system message filtering example <example-
 
 .. _cmd-SYSMSGFILTERCFG:
 
-:ref:`AT+SYSMSGFILTERCFG <Basic-AT>`: Query/Set the :term:`system message` Filters
-----------------------------------------------------------------------------------
+:ref:`AT+SYSMSGFILTERCFG <Basic-AT>`: Query or Set the :term:`system message` Filters
+--------------------------------------------------------------------------------------
 
 * :ref:`sysmsgfiltercfg-query`
 * :ref:`sysmsgfiltercfg-clear`
@@ -1348,8 +1348,8 @@ Example
 
 .. _cmd-SYSFLASH:
 
-:ref:`AT+SYSFLASH <Basic-AT>`: Query/Set User Partitions in Flash
--------------------------------------------------------------------
+:ref:`AT+SYSFLASH <Basic-AT>`: Query or Set User Partitions in Flash
+-----------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1369,7 +1369,7 @@ Query user partitions in flash.
 ::
 
     +SYSFLASH:<partition>,<type>,<subtype>,<addr>,<size>
-    OK  
+    OK
 
 Set Command
 ^^^^^^^^^^^
@@ -1389,35 +1389,35 @@ Read, write, and erase the user partitions in flash.
 ::
 
     +SYSFLASH:<length>,<data>
-    OK  
+    OK
 
 Parameters
 ^^^^^^^^^^
 
--  **<operation>**:
+- **<operation>**:
 
-   -  0: erase sector
-   -  1: write data into the user partition
-   -  2: read data from the user partition
+   - 0: Erase sector.
+   - 1: Write data into the user partition.
+   - 2: Read data from the user partition.
 
--  **<partition>**: name of user partition
--  **<offset>**: offset of user partition
--  **<length>**: data length
--  **<type>**: type of user partition
--  **<subtype>**: subtype of user partition
--  **<addr>**: address of user partition
--  **<size>**: size of user partition
+- **<partition>**: name of user partition
+- **<offset>**: offset of user partition
+- **<length>**: data length
+- **<type>**: type of user partition
+- **<subtype>**: subtype of user partition
+- **<addr>**: address of user partition
+- **<size>**: size of user partition
 
 Notes
 ^^^^^
 
--  Please make sure that you have downloaded at_customize.bin before using this command. For more details, please refer to :doc:`../Compile_and_Develop/How_to_customize_partitions`.
--  When erasing a partition, please erase the target partition in its entirety. This can be done by omitting the parameters ``<offset>`` and ``<length>``. For example, command ``AT+SYSFLASH=0,"mfg_nvs"`` can erase the entire "mfg_nvs" user partition.
--  The introduction to partitions is in `ESP-IDF Partition Tables <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_.
--  If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
--  If the operator is ``write``, please make sure that you have already erased this partition.
--  If you want to modify some data in the "mfg_nvs" partition, please use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command (key-value pairs operation). If you want to modify total "mfg_nvs" partition, please use the :ref:`AT+SYSFLASH <cmd-SYSFLASH>` command (partition operation).
--  When writing to a partition, the MCU should write data in multiple chunks to avoid memory exhaustion caused by writing too much data at once. For example, write 4 KB of data each time until the write is complete.
+- Please make sure that you have downloaded at_customize.bin before using this command. For more details, please refer to :doc:`../Compile_and_Develop/How_to_customize_partitions`.
+- When erasing a partition, please erase the target partition in its entirety. This can be done by omitting the parameters ``<offset>`` and ``<length>``. For example, command ``AT+SYSFLASH=0,"mfg_nvs"`` can erase the entire "mfg_nvs" user partition.
+- The introduction to partitions is in `ESP-IDF Partition Tables <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_.
+- If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
+- If the operator is ``write``, please make sure that you have already erased this partition.
+- If you want to modify some data in the "mfg_nvs" partition, please use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command (key-value pairs operation). If you want to modify total "mfg_nvs" partition, please use the :ref:`AT+SYSFLASH <cmd-SYSFLASH>` command (partition operation).
+- When writing to a partition, the MCU should write data in multiple chunks to avoid memory exhaustion caused by writing too much data at once. For example, write 4 KB of data each time until the write is complete.
 
 Example
 ^^^^^^^^
@@ -1432,8 +1432,8 @@ Example
 
 .. _cmd-SYSMFG:
 
-:ref:`AT+SYSMFG <Basic-AT>`: Query/Set :term:`manufacturing nvs` User Partitions
---------------------------------------------------------------------------------
+:ref:`AT+SYSMFG <Basic-AT>`: Query or Set :term:`manufacturing nvs` User Partitions
+------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1479,9 +1479,9 @@ Parameters
 
 - **<operation>**:
 
-   - 0: erase operation
-   - 1: read operation
-   - 2: write operation
+   - 0: Erase operation
+   - 1: Read operation
+   - 2: Write operation
 
 - **<"namespace">**: namespace name.
 - **<"key">**: key name. If this parameter is omitted, all key-value pairs of current ``<"namespace">`` will be erased. Otherwise, only the current key-value pair is erased.
@@ -1544,11 +1544,11 @@ Parameters
 
 - **<operation>**:
 
-   - 0: erase operation
-   - 1: read operation
-   - 2: write operation
+   - 0: Erase operation
+   - 1: Read operation
+   - 2: Write operation
 
-- **<"namespace">**: namespace name.
+- **<"namespace">**: Namespace name.
 - **<"key">**: key name.
 - **<offset>**: The offset of the value.
 - **<length>**: The length of the value.
@@ -1651,8 +1651,8 @@ Example
 
 .. _cmd-RFPOWER:
 
-:ref:`AT+RFPOWER <Basic-AT>`: Query/Set RF TX Power
-----------------------------------------------------
+:ref:`AT+RFPOWER <Basic-AT>`: Query or Set RF TX Power
+--------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1752,60 +1752,60 @@ Parameters
 
 .. only:: esp32
 
-  -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,7].
+  - **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,7].
 
-    -  0: 7 dBm
-    -  1: 4 dBm
-    -  2: 1 dBm
-    -  3: -2 dBm
-    -  4: -5 dBm
-    -  5: -8 dBm
-    -  6: -11 dBm
-    -  7: -14 dBm
+    - 0: 7 dBm
+    - 1: 4 dBm
+    - 2: 1 dBm
+    - 3: -2 dBm
+    - 4: -5 dBm
+    - 5: -8 dBm
+    - 6: -11 dBm
+    - 7: -14 dBm
 
 .. only:: esp32c3 or esp32c2 or esp32c5
 
-  -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,15].
+  - **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,15].
 
-    -  0: -24 dBm
-    -  1: -21 dBm
-    -  2: -18 dBm
-    -  3: -15 dBm
-    -  4: -12 dBm
-    -  5: -9 dBm
-    -  6: -6 dBm
-    -  7: -3 dBm
-    -  8: 0 dBm
-    -  9: 3 dBm
-    -  10: 6 dBm
-    -  11: 9 dBm
-    -  12: 12 dBm
-    -  13: 15 dBm
-    -  14: 18 dBm
-    -  15: 20 dBm
+    - 0: -24 dBm
+    - 1: -21 dBm
+    - 2: -18 dBm
+    - 3: -15 dBm
+    - 4: -12 dBm
+    - 5: -9 dBm
+    - 6: -6 dBm
+    - 7: -3 dBm
+    - 8: 0 dBm
+    - 9: 3 dBm
+    - 10: 6 dBm
+    - 11: 9 dBm
+    - 12: 12 dBm
+    - 13: 15 dBm
+    - 14: 18 dBm
+    - 15: 20 dBm
 
 .. only:: esp32c6 or esp32c61
 
-  -  **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [3,15].
+  - **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [3,15].
 
-    -  3: -15 dBm
-    -  4: -12 dBm
-    -  5: -9 dBm
-    -  6: -6 dBm
-    -  7: -3 dBm
-    -  8: 0 dBm
-    -  9: 3 dBm
-    -  10: 6 dBm
-    -  11: 9 dBm
-    -  12: 12 dBm
-    -  13: 15 dBm
-    -  14: 18 dBm
-    -  15: 20 dBm
+    - 3: -15 dBm
+    - 4: -12 dBm
+    - 5: -9 dBm
+    - 6: -6 dBm
+    - 7: -3 dBm
+    - 8: 0 dBm
+    - 9: 3 dBm
+    - 10: 6 dBm
+    - 11: 9 dBm
+    - 12: 12 dBm
+    - 13: 15 dBm
+    - 14: 18 dBm
+    - 15: 20 dBm
 
 .. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
-  -  **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. The parameters are the same as ``<ble_adv_power>``.
-  -  **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. The same as ``<ble_adv_power>``.
+  - **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. The parameters are the same as ``<ble_adv_power>``.
+  - **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. The same as ``<ble_adv_power>``.
 
 Note
 ------
@@ -1909,8 +1909,8 @@ Note
 
 .. _cmd-SETTIME:
 
-:ref:`AT+SYSTIMESTAMP <Basic-AT>`: Query/Set Local Time Stamp
---------------------------------------------------------------
+:ref:`AT+SYSTIMESTAMP <Basic-AT>`: Query or Set Local Time Stamp
+------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1954,7 +1954,7 @@ Set local time stamp. It will be the same as SNTP time when the SNTP time is upd
 Parameter
 ^^^^^^^^^^
 
--  **<Unix-timestamp>**: Unix timestamp. Unit: second.
+- **<Unix-timestamp>**: Unix timestamp. Unit: second.
 
 Example
 ^^^^^^^^
@@ -1979,15 +1979,15 @@ Query whether the AT error code prompt is enabled or not.
 
 ::
 
-    AT+SYSLOG?  
+    AT+SYSLOG?
 
 **Response:**
 
 ::
 
-    +SYSLOG:<status>  
+    +SYSLOG:<status>
 
-    OK  
+    OK
 
 Set Command
 ^^^^^^^^^^^
@@ -2011,10 +2011,10 @@ Enable or disable the AT error code prompt.
 Parameter
 ^^^^^^^^^^
 
--  **<status>**: enable or disable
+- **<status>**: enable or disable
 
-   -  0: disable
-   -  1: enable
+   - 0: disable
+   - 1: enable
 
 Example
 ^^^^^^^^
@@ -2038,9 +2038,9 @@ Example
 
    OK
    AT+FAKE
-   // No `ERR CODE:0x01090000` 
+   // No `ERR CODE:0x01090000`
 
-   ERROR  
+   ERROR
 
 The error code is a 32-bit hexadecimal value and defined as follows:
 
@@ -2050,16 +2050,16 @@ The error code is a 32-bit hexadecimal value and defined as follows:
    * - category
      - subcategory
      - extension
-   * - bit32 ~ bit24
-     - bit23 ~ bit16
-     - bit15 ~ bit0
+   * - bit 32 – bit 24
+     - bit 23 – bit 16
+     - bit 15 – bit 0
 
--  **category:** stationary value 0x01.
--  **subcategory:** error type.
+- **category:** stationary value 0x01.
+- **subcategory:** error type.
 
-   .. list-table:: Subcategory of Error Code  
+   .. list-table:: Subcategory of Error Code
       :header-rows: 1
-       
+
       * - Error Type
         - Error Code
         - Description
@@ -2068,7 +2068,7 @@ The error code is a 32-bit hexadecimal value and defined as follows:
         - OK
       * - ESP_AT_SUB_COMMON_ERROR
         - 0x01
-        - reserved  
+        - reserved
       * - ESP_AT_SUB_NO_TERMINATOR
         - 0x02
         - terminator character not found ("\r\n" expected)
@@ -2095,7 +2095,7 @@ The error code is a 32-bit hexadecimal value and defined as follows:
         - the command is not supported
       * - ESP_AT_SUB_CMD_EXEC_FAIL
         - 0x0A
-        - the command execution failed 
+        - the command execution failed
       * - ESP_AT_SUB_CMD_PROCESSING
         - 0x0B
         - processing of previous command is in progress
@@ -2103,7 +2103,7 @@ The error code is a 32-bit hexadecimal value and defined as follows:
         - 0x0C
         - the command operation type is error
 
--  **extension:** error extension information. There are different extensions for different subcategory. For more information, please see the ``components/at/include/esp_at.h``.
+- **extension:** error extension information. There are different extensions for different subcategory. For more information, please see the ``components/at/include/esp_at.h``.
 
 For example, the error code ``ERR CODE:0x01090000`` means the command is not supported.
 
@@ -2130,23 +2130,23 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<wakeup source>**:
+- **<wakeup source>**:
 
-   -  0: reserved, not supported now.
-   -  1: reserved, not supported now.
-   -  2: wakeup by GPIO.
+   - 0: Reserved, not supported now.
+   - 1: Reserved, not supported now.
+   - 2: Wakeup by GPIO.
 
--  **<param1>**:
+- **<param1>**:
 
-   -  If the wakeup source is GPIO, it means the GPIO number.
-   -  Reserved, not supported now.
+   - If the wakeup source is GPIO, it means the GPIO number.
+   - Reserved, not supported now.
 
--  **<param2>**:
+- **<param2>**:
 
-   -  If the wakeup source is GPIO, it means the wakeup level:
+   - If the wakeup source is GPIO, it means the wakeup level:
 
-     - 0: low level.
-     - 1: high level.
+     - 0: Low level.
+     - 1: High level.
 
 Example
 ^^^^^^^^
@@ -2163,29 +2163,29 @@ Note
 
 .. _cmd-SYSSTORE:
 
-:ref:`AT+SYSSTORE <Basic-AT>`: Query/Set Parameter Store Mode
---------------------------------------------------------------
+:ref:`AT+SYSSTORE <Basic-AT>`: Query or Set Parameter Store Mode
+------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
 
 **Function:**
 
-Query the AT parameter store mode.  
+Query the AT parameter store mode.
 
 **Command:**
 
 ::
 
-    AT+SYSSTORE?  
+    AT+SYSSTORE?
 
 **Response:**
 
 ::
 
-    +SYSSTORE:<store_mode>  
+    +SYSSTORE:<store_mode>
 
-    OK  
+    OK
 
 Set Command
 ^^^^^^^^^^^
@@ -2205,10 +2205,10 @@ Set Command
 Parameter
 ^^^^^^^^^^
 
--  **<store_mode>**:
+- **<store_mode>**:
 
-   -  0: command configuration is not stored into flash.
-   -  1: command configuration is stored into flash. (Default)
+   - 0: Command configuration is not stored into flash.
+   - 1: Command configuration is stored into flash. (Default)
 
 Note
 ^^^^^
@@ -2266,7 +2266,7 @@ Examples
 
 .. _cmd-SYSREG:
 
-:ref:`AT+SYSREG <Basic-AT>`: Read/Write the Register
+:ref:`AT+SYSREG <Basic-AT>`: Read or Write the Register
 --------------------------------------------------------
 
 Set Command
@@ -2288,13 +2288,13 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<direct>**: read or write register.
+- **<direct>**: read or write register.
 
-   -  0: read register.
-   -  1: write register.
+   - 0: Read register.
+   - 1: Write register.
 
--  **<address>**: (uint32) register address. You can refer to Technical Reference Manuals.
--  **<write value>**: (uint32) write value (only in write mode).
+- **<address>**: (uint32) register address. You can refer to Technical Reference Manuals.
+- **<write value>**: (uint32) write value (only in write mode).
 
 Note
 ^^^^^

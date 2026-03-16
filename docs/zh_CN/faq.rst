@@ -208,9 +208,9 @@ ESP 系列模组出厂时 Flash 中未烧录 ESP-AT 固件，上电后会提示 
 
 可以修改，方法：
 
-  - 第一种方法，您可以通过串口命令 :ref:`AT+UART_CUR <cmd-UARTC>` 或 :ref:`AT+UART_DEF <cmd-UARTD>`。
-  - 第二种方法，您可以重新编译 AT 固件，编译介绍： :doc:`如何编译 AT 工程 <Compile_and_Develop/How_to_clone_project_and_compile_it>` 与 :doc:`修改 UART 波特率配置 <Compile_and_Develop/How_to_set_AT_port_pin>`。
-  - 第三种方法，您可以使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令修改出厂默认的 UART 波特率，请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-uart-config>`。
+  - 第一种方法，你可以通过串口命令 :ref:`AT+UART_CUR <cmd-UARTC>` 或 :ref:`AT+UART_DEF <cmd-UARTD>`。
+  - 第二种方法，你可以重新编译 AT 固件，编译介绍： :doc:`如何编译 AT 工程 <Compile_and_Develop/How_to_clone_project_and_compile_it>` 与 :doc:`修改 UART 波特率配置 <Compile_and_Develop/How_to_set_AT_port_pin>`。
+  - 第三种方法，你可以使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令修改出厂默认的 UART 波特率，请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-uart-config>`。
 
 .. _faq-change-uart-pins:
 
@@ -220,8 +220,8 @@ ESP 系列模组出厂时 Flash 中未烧录 ESP-AT 固件，上电后会提示 
   有多种方法可以修改 AT 命令端口的 UART 管脚：
 
   - 第一种方法，请参考 :doc:`如何设置 AT 端口管脚 <Compile_and_Develop/How_to_set_AT_port_pin>` 文档，修改 ``factory_param_data.csv`` 文件中的 UART 配置参数，然后重新编译和烧录固件。
-  - 第二种方法，如果您想在运行时通过 AT 命令修改 UART 配置而无需重新编译固件，请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-uart-config>`。此方法可以动态修改出厂默认的 UART 配置，包括波特率、管脚等参数。
-  - 第三种方法，如果您已有 AT 固件并且只需要修改 UART 管脚，可以使用 :doc:`at.py 工具 <Compile_and_Develop/tools_at_py>` 直接修改固件参数，无需重新编译。
+  - 第二种方法，如果你想在运行时通过 AT 命令修改 UART 配置而无需重新编译固件，请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-uart-config>`。此方法可以动态修改出厂默认的 UART 配置，包括波特率、管脚等参数。
+  - 第三种方法，如果你已有 AT 固件并且只需要修改 UART 管脚，可以使用 :doc:`at.py 工具 <Compile_and_Develop/tools_at_py>` 直接修改固件参数，无需重新编译。
 
 .. _faq-data-loss:
 
@@ -257,12 +257,12 @@ ESP 系列模组出厂时 Flash 中未烧录 ESP-AT 固件，上电后会提示 
 - AMPDU 兼容性问题。
 
   - 如果路由器不支持 AMPDU，那么 {IDF_TARGET_NAME} 会在和路由器交互时，自动关闭 AMPDU 功能。
-  - 如果路由器支持 AMPDU，但是路由器和 {IDF_TARGET_NAME} 之间的 AMPDU 传输存在兼容性问题，那么建议关闭路由器的 AMPDU 功能或者 {IDF_TARGET_NAME} 的 AMPDU 功能。如果您要禁用 {IDF_TARGET_NAME} 的 AMPDU 功能，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+  - 如果路由器支持 AMPDU，但是路由器和 {IDF_TARGET_NAME} 之间的 AMPDU 传输存在兼容性问题，那么建议关闭路由器的 AMPDU 功能或者 {IDF_TARGET_NAME} 的 AMPDU 功能。如果你要禁用 {IDF_TARGET_NAME} 的 AMPDU 功能，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
 
     - 禁用 ``Component config`` > ``Wi-Fi`` > ``WiFi AMPDU TX``
     - 禁用 ``Component config`` > ``Wi-Fi`` > ``WiFi AMPDU RX``
 
-- phy mode 兼容性问题。如果路由器和 {IDF_TARGET_NAME} 之间的 phy mode 存在兼容性问题，那么建议切换路由器的 phy mode 或者 {IDF_TARGET_NAME} 的 phy mode。如果您要切换 {IDF_TARGET_NAME} 的 phy mode，请参考 :ref:`AT+CWSTAPROTO <cmd-STAPROTO>` 命令。
+- phy mode 兼容性问题。如果路由器和 {IDF_TARGET_NAME} 之间的 phy mode 存在兼容性问题，那么建议切换路由器的 phy mode 或者 {IDF_TARGET_NAME} 的 phy mode。如果你要切换 {IDF_TARGET_NAME} 的 phy mode，请参考 :ref:`AT+CWSTAPROTO <cmd-STAPROTO>` 命令。
 
 .. _faq-wifi-mesh:
 
@@ -389,7 +389,7 @@ AT 当前不支持 ESP-WIFI-MESH。
 默认重传最大次数为 6 次，取值范围 [3-12]。重新配置方法：
 
 - **本地编译**：参考 :doc:`本地编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在 menuconfig 中配置：
-  
+
   ::
 
     Component config > LWIP > TCP > Maximum number of retransmissions of data segments

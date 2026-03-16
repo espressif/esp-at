@@ -14,7 +14,7 @@ This document covers the following sections:
 .. list::
 
   - :doc:`Download {IDF_TARGET_NAME} AT Released Firmware <esp_at_binaries>`
-  - :ref:`brief-intro-firmware`: What binary files the AT firmware contains and their functions
+  - :ref:`brief-intro-firmware`: What binary files the AT firmware contains and their functions.
 
 .. note::
   To download AT firmware for other chip series, please go to the drop-down list on the upper left corner of this page and select a chip series to navigate to the documentation of that chip for downloading.

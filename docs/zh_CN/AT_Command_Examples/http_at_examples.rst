@@ -26,7 +26,7 @@ HTTP 客户端 HEAD 请求方法
      AT+RESTORE
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -40,7 +40,7 @@ HTTP 客户端 HEAD 请求方法
      AT+CWMODE=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -64,9 +64,9 @@ HTTP 客户端 HEAD 请求方法
 
    说明：
 
-   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+   - 你输入的 SSID 和密码可能跟上述命令中的不同。请使用你的路由器的 SSID 和密码。
 
-#. 发送一个 HTTP HEAD 请求。设置 ``opt`` 为 ``1`` （HEAD 方法），``url`` 为 ``http://httpbin.org/get``，``transport_type`` 为 ``1`` （HTTP_TRANSPORT_OVER_TCP）。
+#. 发送一个 HTTP HEAD 请求。设置 ``opt`` 为 ``1`` （HEAD 方法），``url`` 为 ``http://httpbin.org/get``，``transport_type`` 为 ``1`` (HTTP_TRANSPORT_OVER_TCP)。
 
    命令：
 
@@ -90,7 +90,7 @@ HTTP 客户端 HEAD 请求方法
 
    说明：
 
-   - 您获取到的 HTTP 头部信息可能与上述响应中的不同。
+   - 你获取到的 HTTP 头部信息可能与上述响应中的不同。
 
 HTTP 客户端 GET 请求方法
 ---------------------------------------------------
@@ -106,7 +106,7 @@ HTTP 客户端 GET 请求方法
      AT+RESTORE
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -120,7 +120,7 @@ HTTP 客户端 GET 请求方法
      AT+CWMODE=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -144,9 +144,9 @@ HTTP 客户端 GET 请求方法
 
    说明：
 
-   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+   - 你输入的 SSID 和密码可能跟上述命令中的不同。请使用你的路由器的 SSID 和密码。
 
-#. 发送一个 HTTP GET 请求。设置 ``opt`` 为 ``2`` （GET 方法），``url`` 为 ``https://www.espressif.com/sites/all/themes/espressif/images/about-us/solution-platform.jpg``，``transport_type`` 为 ``2`` （HTTP_TRANSPORT_OVER_SSL）。
+#. 发送一个 HTTP GET 请求。设置 ``opt`` 为 ``2`` （GET 方法），``url`` 为 ``https://www.espressif.com/sites/all/themes/espressif/images/about-us/solution-platform.jpg``，``transport_type`` 为 ``2`` (HTTP_TRANSPORT_OVER_SSL)。
 
    命令：
 
@@ -188,7 +188,7 @@ HTTP 客户端 POST 请求方法（适用于 POST 少量数据）
      AT+RESTORE
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -202,7 +202,7 @@ HTTP 客户端 POST 请求方法（适用于 POST 少量数据）
      AT+CWMODE=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -226,9 +226,9 @@ HTTP 客户端 POST 请求方法（适用于 POST 少量数据）
 
    说明：
 
-   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+   - 你输入的 SSID 和密码可能跟上述命令中的不同。请使用你的路由器的 SSID 和密码。
 
-#. 发送一个 HTTP POST 请求。设置 ``opt`` 为 ``3`` （POST 方法），``url`` 为 ``http://httpbin.org/post``，``content-type`` 为 ``1`` （application/json），``transport_type`` 为 ``1`` （HTTP_TRANSPORT_OVER_TCP）。
+#. 发送一个 HTTP POST 请求。设置 ``opt`` 为 ``3`` （POST 方法），``url`` 为 ``http://httpbin.org/post``，``content-type`` 为 ``1`` （application/json），``transport_type`` 为 ``1`` (HTTP_TRANSPORT_OVER_TCP)。
 
    命令：
 
@@ -241,24 +241,24 @@ HTTP 客户端 POST 请求方法（适用于 POST 少量数据）
    .. code-block:: none
 
      +HTTPCLIENT:282,{
-       "args": {}, 
-       "data": "{\"form\":{\"purpose\":\"test\"}}", 
-       "files": {}, 
-       "form": {}, 
+       "args": {},
+       "data": "{\"form\":{\"purpose\":\"test\"}}",
+       "files": {},
+       "form": {},
        "headers": {
-         "Content-Length": "27", 
-         "Content-Type": "application/json", 
-         "Host": "httpbin.org", 
-         "User-Agent": "ESP32 HTTP Client/1.0", 
+         "Content-Length": "27",
+         "Content-Type": "application/json",
+         "Host": "httpbin.org",
+         "User-Agent": "ESP32 HTTP Client/1.0",
          "X-Amzn-Trace-Id": "Root=
      +HTTPCLIENT:173,1-61503a3f-4b16b71918855b97614c5dfb"
-       }, 
+       },
        "json": {
          "form": {
            "purpose": "test"
          }
-       }, 
-       "origin": "20.187.154.207", 
+       },
+       "origin": "20.187.154.207",
        "url": "http://httpbin.org/post"
      }
 
@@ -267,12 +267,12 @@ HTTP 客户端 POST 请求方法（适用于 POST 少量数据）
 
    说明：
 
-   - 您获取到的结果可能与上述响应中的不同。
+   - 你获取到的结果可能与上述响应中的不同。
 
 HTTP 客户端 POST 请求方法（推荐方式）
 -------------------------------------------------------------------------------------
 
-如果您 POST 的数据量相对较多，已经超过了单条 AT 命令的长度阈值 ``256``，则建议您可以使用 :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>` 命令。
+如果你 POST 的数据量相对较多，已经超过了单条 AT 命令的长度阈值 ``256``，则建议你可以使用 :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>` 命令。
 
 该示例以 http://httpbin.org 作为 HTTP 服务器，数据类型为 ``application/json``。
 
@@ -285,7 +285,7 @@ HTTP 客户端 POST 请求方法（推荐方式）
      AT+RESTORE
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -299,7 +299,7 @@ HTTP 客户端 POST 请求方法（推荐方式）
      AT+CWMODE=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -323,7 +323,7 @@ HTTP 客户端 POST 请求方法（推荐方式）
 
    说明：
 
-   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+   - 你输入的 SSID 和密码可能跟上述命令中的不同。请使用你的路由器的 SSID 和密码。
 
 #. Post 指定长度数据。该命令设置 HTTP 头部字段数量为 2，分别是 ``connection`` 字段和 ``content-type`` 字段，``connection`` 字段值为 ``keep-alive``，``connection`` 字段值为 ``application/json``。
 
@@ -347,39 +347,39 @@ HTTP 客户端 POST 请求方法（推荐方式）
 
      >
 
-   上述响应表示 AT 已准备好接收串行数据，此时您可以输入上面提到的 427 字节长的数据，当 AT 接收到的数据长度达到 ``<length>`` 后，数据传输开始。
+   上述响应表示 AT 已准备好接收串行数据，此时你可以输入上面提到的 427 字节长的数据，当 AT 接收到的数据长度达到 ``<length>`` 后，数据传输开始。
 
    .. code-block:: none
 
      +HTTPCPOST:281,{
-       "args": {}, 
+       "args": {},
        "data": "{\"headers\": {\"Accept\": \"application/json\",\"Accept-Encoding\": \"gzip, deflate\",\"Accept-Language\": \"en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7\",\"Content-Length\": \"0\",\"Host\": \"httpbin.org\",\"Origin\": \"http://httpbin.org\",\"Referer\": \"htt
-     +HTTPCPOST:512,p://httpbin.org/\",\"User-Agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36\",\"X-Amzn-Trace-Id\": \"Root=1-6150581e-1ad4bd5254b4bf5218070413\"}}", 
-       "files": {}, 
-       "form": {}, 
+     +HTTPCPOST:512,p://httpbin.org/\",\"User-Agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36\",\"X-Amzn-Trace-Id\": \"Root=1-6150581e-1ad4bd5254b4bf5218070413\"}}",
+       "files": {},
+       "form": {},
        "headers": {
-         "Content-Length": "427", 
-         "Content-Type": "application/json", 
-         "Host": "httpbin.org", 
-         "User-Agent": "ESP32 HTTP Client/1.0", 
+         "Content-Length": "427",
+         "Content-Type": "application/json",
+         "Host": "httpbin.org",
+         "User-Agent": "ESP32 HTTP Client/1.0",
          "X-Amzn-Trace-Id": "Root=1-61505e76-278b5c267aaf55842bd58b32"
-       }, 
+       },
        "json": {
          "headers": {
-           
-     +HTTPCPOST:512,"Accept": "application/json", 
-           "Accept-Encoding": "gzip, deflate", 
-           "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7", 
-           "Content-Length": "0", 
-           "Host": "httpbin.org", 
-           "Origin": "http://httpbin.org", 
-           "Referer": "http://httpbin.org/", 
-           "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36", 
+
+     +HTTPCPOST:512,"Accept": "application/json",
+           "Accept-Encoding": "gzip, deflate",
+           "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
+           "Content-Length": "0",
+           "Host": "httpbin.org",
+           "Origin": "http://httpbin.org",
+           "Referer": "http://httpbin.org/",
+           "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
            "X-Amzn-Trace-Id": "Root=1-6150581e-1ad4bd5254b4bf5218070413"
          }
-       }, 
+       },
        "origin": "20.187.154
-     +HTTPCPOST:45,.207", 
+     +HTTPCPOST:45,.207",
        "url": "http://httpbin.org/post"
      }
 
@@ -404,7 +404,7 @@ HTTP 客户端 PUT 请求方法（适用于无数据情况）
      AT+RESTORE
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -418,7 +418,7 @@ HTTP 客户端 PUT 请求方法（适用于无数据情况）
      AT+CWMODE=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -442,9 +442,9 @@ HTTP 客户端 PUT 请求方法（适用于无数据情况）
 
    说明：
 
-   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+   - 你输入的 SSID 和密码可能跟上述命令中的不同。请使用你的路由器的 SSID 和密码。
 
-#. 发送一个 HTTP PUT 请求。设置 ``opt`` 为 ``4`` （PUT 方法），``url`` 为 ``http://httpbin.org/put``，``transport_type`` 为 ``1`` （HTTP_TRANSPORT_OVER_TCP）。
+#. 发送一个 HTTP PUT 请求。设置 ``opt`` 为 ``4`` （PUT 方法），``url`` 为 ``http://httpbin.org/put``，``transport_type`` 为 ``1`` (HTTP_TRANSPORT_OVER_TCP)。
 
    命令：
 
@@ -459,20 +459,20 @@ HTTP 客户端 PUT 请求方法（适用于无数据情况）
      +HTTPCLIENT:282,{
        "args": {
          "user": "foo"
-       }, 
-       "data": "", 
-       "files": {}, 
-       "form": {}, 
+       },
+       "data": "",
+       "files": {},
+       "form": {},
        "headers": {
-         "Content-Length": "0", 
-         "Content-Type": "application/x-www-form-urlencoded", 
-         "Host": "httpbin.org", 
-         "User-Agent": "ESP32 HTTP Client/1.0", 
+         "Content-Length": "0",
+         "Content-Type": "application/x-www-form-urlencoded",
+         "Host": "httpbin.org",
+         "User-Agent": "ESP32 HTTP Client/1.0",
          "X-Amzn-Trace-Id": "R
      +HTTPCLIENT:140,oot=1-61503d41-1dd8cbe0056190f721ab1912"
-       }, 
-       "json": null, 
-       "origin": "20.187.154.207", 
+       },
+       "json": null,
+       "origin": "20.187.154.207",
        "url": "http://httpbin.org/put?user=foo"
      }
 
@@ -481,7 +481,7 @@ HTTP 客户端 PUT 请求方法（适用于无数据情况）
 
    说明：
 
-   - 您获取到的结果可能与上述响应中的不同。
+   - 你获取到的结果可能与上述响应中的不同。
 
 HTTP 客户端 PUT 请求方法（推荐方式）
 -------------------------------------------------------------------------------------
@@ -535,7 +535,7 @@ HTTP 客户端 PUT 请求方法（推荐方式）
 
    说明：
 
-   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+   - 你输入的 SSID 和密码可能跟上述命令中的不同。请使用你的路由器的 SSID 和密码。
 
 #. PUT 指定长度数据。该命令设置 HTTP 头部字段数量为 2，分别是 ``connection`` 字段和 ``content-type`` 字段，``connection`` 字段值为 ``keep-alive``，``connection`` 字段值为 ``application/json``。
 
@@ -559,39 +559,39 @@ HTTP 客户端 PUT 请求方法（推荐方式）
 
      >
 
-   上述响应表示 AT 已准备好接收串行数据，此时您可以输入上面提到的 427 字节长的数据，当 AT 接收到的数据长度达到 ``<length>`` 后，数据传输开始。
+   上述响应表示 AT 已准备好接收串行数据，此时你可以输入上面提到的 427 字节长的数据，当 AT 接收到的数据长度达到 ``<length>`` 后，数据传输开始。
 
    .. code-block:: none
 
       +HTTPCPUT:281,{
-        "args": {}, 
+        "args": {},
         "data": "{\"headers\": {\"Accept\": \"application/json\",\"Accept-Encoding\": \"gzip, deflate\",\"Accept-Language\": \"en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7\",\"Content-Length\": \"0\",\"Host\": \"httpbin.org\",\"Origin\": \"http://httpbin.org\",\"Referer\": \"htt
-      +HTTPCPUT:512,p://httpbin.org/\",\"User-Agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36\",\"X-Amzn-Trace-Id\": \"Root=1-6150581e-1ad4bd5254b4bf5218070413\"}}", 
-        "files": {}, 
-        "form": {}, 
+      +HTTPCPUT:512,p://httpbin.org/\",\"User-Agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36\",\"X-Amzn-Trace-Id\": \"Root=1-6150581e-1ad4bd5254b4bf5218070413\"}}",
+        "files": {},
+        "form": {},
         "headers": {
-          "Content-Length": "427", 
-          "Content-Type": "application/json", 
-          "Host": "httpbin.org", 
-          "User-Agent": "ESP32 HTTP Client/1.0", 
+          "Content-Length": "427",
+          "Content-Type": "application/json",
+          "Host": "httpbin.org",
+          "User-Agent": "ESP32 HTTP Client/1.0",
           "X-Amzn-Trace-Id": "Root=1-635f7009-681be2d5478504dc5b83624a"
-        }, 
+        },
         "json": {
           "headers": {
-            
-      +HTTPCPUT:512,"Accept": "application/json", 
-            "Accept-Encoding": "gzip, deflate", 
-            "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7", 
-            "Content-Length": "0", 
-            "Host": "httpbin.org", 
-            "Origin": "http://httpbin.org", 
-            "Referer": "http://httpbin.org/", 
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36", 
+
+      +HTTPCPUT:512,"Accept": "application/json",
+            "Accept-Encoding": "gzip, deflate",
+            "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
+            "Content-Length": "0",
+            "Host": "httpbin.org",
+            "Origin": "http://httpbin.org",
+            "Referer": "http://httpbin.org/",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
             "X-Amzn-Trace-Id": "Root=1-6150581e-1ad4bd5254b4bf5218070413"
           }
-        }, 
+        },
         "origin": "52.246.135
-      +HTTPCPUT:43,.57", 
+      +HTTPCPUT:43,.57",
         "url": "http://httpbin.org/put"
       }
 
@@ -616,7 +616,7 @@ HTTP 客户端 DELETE 请求方法
      AT+RESTORE
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -630,7 +630,7 @@ HTTP 客户端 DELETE 请求方法
      AT+CWMODE=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -654,9 +654,9 @@ HTTP 客户端 DELETE 请求方法
 
    说明：
 
-   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+   - 你输入的 SSID 和密码可能跟上述命令中的不同。请使用你的路由器的 SSID 和密码。
 
-#. 发送一个 HTTP DELETE 请求。设置  ``opt`` to ``5`` （DELETE 方法），``url`` 为 ``http://httpbin.org/delete``，``transport_type`` to ``1`` （HTTP_TRANSPORT_OVER_TCP）。
+#. 发送一个 HTTP DELETE 请求。设置 ``opt`` to ``5`` （DELETE 方法），``url`` 为 ``http://httpbin.org/delete``，``transport_type`` to ``1`` (HTTP_TRANSPORT_OVER_TCP)。
 
    命令：
 
@@ -669,20 +669,20 @@ HTTP 客户端 DELETE 请求方法
    .. code-block:: none
 
      +HTTPCLIENT:282,{
-       "args": {}, 
-       "data": "", 
-       "files": {}, 
-       "form": {}, 
+       "args": {},
+       "data": "",
+       "files": {},
+       "form": {},
        "headers": {
-         "Content-Length": "0", 
-         "Content-Type": "application/x-www-form-urlencoded", 
-         "Host": "httpbin.org", 
-         "User-Agent": "ESP32 HTTP Client/1.0", 
+         "Content-Length": "0",
+         "Content-Type": "application/x-www-form-urlencoded",
+         "Host": "httpbin.org",
+         "User-Agent": "ESP32 HTTP Client/1.0",
          "X-Amzn-Trace-Id": "Root=1-61504289-468a41
      +HTTPCLIENT:114,737b0d251672acec9d"
-       }, 
-       "json": null, 
-       "origin": "20.187.154.207", 
+       },
+       "json": null,
+       "origin": "20.187.154.207",
        "url": "https://httpbin.org/delete"
      }
 
@@ -691,4 +691,4 @@ HTTP 客户端 DELETE 请求方法
 
    说明：
 
-   - 您获取到的结果可能与上述响应中的不同。
+   - 你获取到的结果可能与上述响应中的不同。

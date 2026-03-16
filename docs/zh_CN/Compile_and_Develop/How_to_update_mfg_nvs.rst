@@ -16,7 +16,7 @@ mfg_nvs (:term:`manufacturing nvs`) 分区定义在 ``esp-at/module_config/{modu
     - PKI 配置（各类证书和密钥配置）：请参考 :ref:`factory-pki-intro`。
     :esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61: - GATTS 配置（低功耗蓝牙服务）：请参考 :ref:`factory-gatts-intro`。
 
-当您需要修改出厂参数配置、PKI 配置或者 GATTS 配置时，您可以重新编译 ESP-AT 工程，生成新的 mfg_nvs.bin 文件；或者通过 :doc:`../Compile_and_Develop/tools_at_py` 修改固件，为您的模组生成新的固件。本文介绍前者。
+当你需要修改出厂参数配置、PKI 配置或者 GATTS 配置时，你可以重新编译 ESP-AT 工程，生成新的 mfg_nvs.bin 文件；或者通过 :doc:`../Compile_and_Develop/tools_at_py` 修改固件，为你的模组生成新的固件。本文介绍前者。
 
 .. _mfg-nvs-generate:
 
@@ -37,19 +37,19 @@ mfg_nvs (:term:`manufacturing nvs`) 分区定义在 ``esp-at/module_config/{modu
 
   - Windows
 
-      请下载 Windows `Flash 下载工具 <https://dl.espressif.com/public/flash_download_tool.zip>`_。详细指导可参阅 `Flash 下载工具用户指南 <https://docs.espressif.com/projects/esp-test-tools/zh_CN/latest/{IDF_TARGET_PATH_NAME}/production_stage/tools/flash_download_tool.html>`_。下载 ``build/customized_partitions/mfg_nvs.bin`` 文件到 {IDF_TARGET_NAME}。您可以通过 :ref:`AT+SYSFLASH? <cmd-SYSFLASH>` 命令查询 mfg_nvs.bin 的下载地址。
+      请下载 Windows `Flash 下载工具 <https://dl.espressif.com/public/flash_download_tool.zip>`_。详细指导可参阅 `Flash 下载工具用户指南 <https://docs.espressif.com/projects/esp-test-tools/zh_CN/latest/{IDF_TARGET_PATH_NAME}/production_stage/tools/flash_download_tool.html>`_。下载 ``build/customized_partitions/mfg_nvs.bin`` 文件到 {IDF_TARGET_NAME}。你可以通过 :ref:`AT+SYSFLASH? <cmd-SYSFLASH>` 命令查询 mfg_nvs.bin 的下载地址。
 
   - Linux or macOS
 
       请使用 `esptool.py <https://github.com/espressif/esptool>`_。
 
-      您可以在 ESP-AT 根目录执行以下命令下载 mfg_nvs.bin 文件。
+      你可以在 ESP-AT 根目录执行以下命令下载 mfg_nvs.bin 文件。
 
       .. code-block:: none
 
           esptool.py --chip auto --port PORTNAME --baud 921600 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size 4MB ADDRESS mfg_nvs.bin
 
-      将 ``PORTNAME`` 替换为您的串口名称。``ADDRESS`` 替换为下载 mfg_nvs.bin 文件的地址，您可以通过 :ref:`AT+SYSFLASH? <cmd-SYSFLASH>` 命令查询下载地址。
+      将 ``PORTNAME`` 替换为你的串口名称。``ADDRESS`` 替换为下载 mfg_nvs.bin 文件的地址，你可以通过 :ref:`AT+SYSFLASH? <cmd-SYSFLASH>` 命令查询下载地址。
 
 - MCU 发送 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令更新 {IDF_TARGET_NAME} 中的 mfg_nvs 分区。
 
@@ -61,4 +61,4 @@ mfg_nvs (:term:`manufacturing nvs`) 分区定义在 ``esp-at/module_config/{modu
       # 写入 mfg_nvs.bin 文件
       AT+SYSFLASH=1,"mfg_nvs",0,MFG_NVS_SIZE
 
-  ``MFG_NVS_SIZE`` 替换为下载 mfg_nvs.bin 文件的大小，不同的模组有不同的分区大小，您可以通过 :ref:`AT+SYSFLASH? <cmd-SYSFLASH>` 命令查询分区大小。
+  ``MFG_NVS_SIZE`` 替换为下载 mfg_nvs.bin 文件的大小，不同的模组有不同的分区大小，你可以通过 :ref:`AT+SYSFLASH? <cmd-SYSFLASH>` 命令查询分区大小。

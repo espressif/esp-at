@@ -8,7 +8,7 @@
 
   **待开发。**
 
-如果您对第三方开放云平台的定制 AT 命令和固件有任何需求，请联系 `乐鑫商务组 <https://www.espressif.com/zh-hans/contact-us/sales-questions>`_ 进行评估。
+如果你对第三方开放云平台的定制 AT 命令和固件有任何需求，请联系 `乐鑫商务组 <https://www.espressif.com/zh-hans/contact-us/sales-questions>`_ 进行评估。
 
 .. toctree::
    :maxdepth: 1

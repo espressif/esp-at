@@ -28,7 +28,7 @@ You can configure and enable SPI AT through the following steps:
 2. ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT SPI Data Transmission Mode`` to choose the SPI data transmission mode.
 3. ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT SPI GPIO settings`` to change the default pin assignments for SPI AT.
 4. ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``communicate method for AT command`` > ``AT SPI driver settings`` to choose the SPI slave mode, and config the buffer size for data transmission.
-5. Recompile the ``esp-at`` project(see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`), download AT bin into flash.
+5. Recompile the ``esp-at`` project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`), download AT bin into flash.
 
 The Default Pin Assignment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -117,7 +117,7 @@ You can change the default pin assignments by ``./build.py menuconfig`` > ``Comp
 How to Use SPI AT?
 -----------------------
 
-When SPI AT is used, {IDF_TARGET_NAME} works in SPI half-duplex mode as a slave. 
+When SPI AT is used, {IDF_TARGET_NAME} works in SPI half-duplex mode as a slave.
 
 Handshake Pin
 ^^^^^^^^^^^^^^^^
@@ -252,7 +252,7 @@ SPI AT Workflow
 ^^^^^^^^^^^^^^^^^^^^^^
 The workflows mainly includes two aspects:
 
-- When master sends AT commands to slave, the workflow is as follows: 
+- When master sends AT commands to slave, the workflow is as follows:
 
 .. code-block:: none
 
@@ -276,7 +276,7 @@ step 3. After receiving the interrupt, master will query the status register of 
 step 4. The master send data to the slave.
 step 5. After sending the data, the master notifies slave that the data transmission is finished.
 
-- When master receives AT responses from slave, the workflow is as follows: 
+- When master receives AT responses from slave, the workflow is as follows:
 
 .. code-block:: none
 
@@ -313,7 +313,7 @@ SPI AT Throughput
 Introduction of the Test
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- An ESP32 or ESP32-C3 development board is been used as SPI master. The application runs in the board can be found under the directory :example:`at_spi_master/spi/esp32_c_series` of the `ESP-AT <https://github.com/espressif/esp-at>`_ project. Some related configurations are described below: 
+- An ESP32 or ESP32-C3 development board is been used as SPI master. The application runs in the board can be found under the directory :example:`at_spi_master/spi/esp32_c_series` of the `ESP-AT <https://github.com/espressif/esp-at>`_ project. Some related configurations are described below:
 
 1. Hardware configuration: The frequency of CPU is 240 MHz, flash SPI mode is in QIO mode with 40 MHz.
 

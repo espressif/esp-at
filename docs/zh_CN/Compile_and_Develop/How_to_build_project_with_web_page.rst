@@ -3,10 +3,10 @@
 
 :link_to_translation:`en:[English]`
 
-本文档详细介绍了如何通过网页编译 ESP-AT 工程。当默认的 :doc:`官方发布的固件 <../AT_Binary_Lists/index>` 无法满足需求时，如您需要开启 :doc:`WebSocket 功能 <../AT_Command_Set/websocket_at_commands>` 并关闭 :ref:`mDNS 功能 <cmd-MDNS>`，那么就需要编译 ESP-AT 工程。通常推荐您 :doc:`本地搭建环境编译 ESP-AT 工程 <How_to_clone_project_and_compile_it>`，但如果您本地搭建环境编译有困难，则请参考本文档，通过网页编译 ESP-AT 工程。
+本文档详细介绍了如何通过网页编译 ESP-AT 工程。当默认的 :doc:`官方发布的固件 <../AT_Binary_Lists/index>` 无法满足需求时，如你需要开启 :doc:`WebSocket 功能 <../AT_Command_Set/websocket_at_commands>` 并关闭 :ref:`mDNS 功能 <cmd-MDNS>`，那么就需要编译 ESP-AT 工程。通常推荐你 :doc:`本地搭建环境编译 ESP-AT 工程 <How_to_clone_project_and_compile_it>`，但如果你本地搭建环境编译有困难，则请参考本文档，通过网页编译 ESP-AT 工程。
 
 .. attention::
-  **网页编译的 AT 固件，需要您根据自己的产品自行测试验证功能。**
+  **网页编译的 AT 固件，需要你根据自己的产品自行测试验证功能。**
 
   **请保存好下载的固件以及下载链接**，用于后续可能的问题调试。
 
@@ -24,10 +24,10 @@
 
 .. _at-wc-github-login:
 
-第一步：登录您的 GitHub 账号
+第一步：登录你的 GitHub 账号
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-在开始之前，请先 `登录您的 GitHub 账号 <https://github.com/login>`_，因为编译和下载固件需要登录权限。
+在开始之前，请先 `登录你的 GitHub 账号 <https://github.com/login>`_，因为编译和下载固件需要登录权限。
 
 .. _at-wc-project-fork:
 
@@ -43,7 +43,7 @@
 
     点击 Fork
 
-点击 ``Create fork`` 复制仓库到自己的 GitHub 账号下。默认的 Fork 仅拷贝 master 分支。如果您需要基于指定的分支修改代码，请取消勾选 ``Copy the master branch only``。
+点击 ``Create fork`` 复制仓库到自己的 GitHub 账号下。默认的 Fork 仅拷贝 master 分支。如果你需要基于指定的分支修改代码，请取消勾选 ``Copy the master branch only``。
 
   .. figure:: ../../_static/web_compile/fork-s2.png
     :align: center
@@ -89,7 +89,7 @@
 第四步：配置编译 ESP-AT 工程所需的密钥
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-如果您有 `Espressif OTA server <http://iot.espressif.cn>`_ 的账户和 OTA token，并且需要使用 :ref:`AT+CIUPDATE <cmd-UPDATE>` 命令升级 AT 固件，那么需要完成此步骤。否则，建议您禁用 CONFIG_AT_OTA_SUPPORT（有关更多详细信息，请参阅 :ref:`at-wc-commit-changes`）或者跳过此步骤。
+如果你有 `Espressif OTA server <http://iot.espressif.cn>`_ 的账户和 OTA token，并且需要使用 :ref:`AT+CIUPDATE <cmd-UPDATE>` 命令升级 AT 固件，那么需要完成此步骤。否则，建议你禁用 CONFIG_AT_OTA_SUPPORT（有关更多详细信息，请参阅 :ref:`at-wc-commit-changes`）或者跳过此步骤。
 
 点击仓库下的 ``Settings`` 进入设置页面。
 
@@ -239,7 +239,7 @@
 
     暂存修改（点击放大）
 
-输入提交消息，描述您所做的更改。点击 ``Commit & Push`` 提交。
+输入提交消息，描述你所做的更改。点击 ``Commit & Push`` 提交。
 
   .. figure:: ../../_static/web_compile/commit-change-s8.png
     :align: center
@@ -250,11 +250,11 @@
     提交修改（点击放大）
 
 .. note::
-  如果您想要启用或禁用 AT 固件的 :ref:`silence mode <silence-mode-usage>`，请参考 :doc:`如何启用或禁用 silence mode <How_to_configure_silence_mode>` 文档。
+  如果你想要启用或禁用 AT 固件的 :ref:`silence mode <silence-mode-usage>`，请参考 :doc:`如何启用或禁用 silence mode <How_to_configure_silence_mode>` 文档。
 
 .. _at-wc-action-compile:
 
 第六步：GitHub Actions 编译 AT 固件
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-上述步骤完成之后，会自动触发 GitHub Actions 编译您的 ESP-AT 固件。请参考 :doc:`如何从 GitHub 下载最新临时版本 AT 固件 <How_to_download_the_latest_temporary_version_of_AT_from_github>` 文档，下载您所需要的 AT 固件（注意：文档里的步骤都是基于您自己账号下的 esp-at 仓库进行的，而不是 https://github.com/espressif/esp-at 仓库）。GitHub 上的 AT 固件会在到达 90天有效期后自动失效，请自行保存下载的 AT 固件。
+上述步骤完成之后，会自动触发 GitHub Actions 编译你的 ESP-AT 固件。请参考 :doc:`如何从 GitHub 下载最新临时版本 AT 固件 <How_to_download_the_latest_temporary_version_of_AT_from_github>` 文档，下载你所需要的 AT 固件（注意：文档里的步骤都是基于你自己账号下的 esp-at 仓库进行的，而不是 https://github.com/espressif/esp-at 仓库）。GitHub 上的 AT 固件会在到达 90天有效期后自动失效，请自行保存下载的 AT 固件。

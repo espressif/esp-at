@@ -5,16 +5,16 @@ HTTP AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
--  :ref:`Introduction <cmd-http-intro>`
--  :ref:`AT+HTTPCLIENT <cmd-HTTPCLIENT>`: Send HTTP Client Request
--  :ref:`AT+HTTPGETSIZE <cmd-HTTPGETSIZE>`: Get HTTP Resource Size
--  :ref:`AT+HTTPCGET <cmd-HTTPCGET>`: Get HTTP Resource
--  :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>`: Post HTTP data of specified length
--  :ref:`AT+HTTPCPUT <cmd-HTTPCPUT>`: Put HTTP data of specified length
--  :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>`: Set/Get long HTTP URL
--  :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>`: Set/Query HTTP request headers
--  :ref:`AT+HTTPCFG <cmd-HTTPCFG>`: Set HTTP Client Configuration
--  :ref:`HTTP AT Error Codes <cmd-HTTPErrCode>`
+- :ref:`Introduction <cmd-http-intro>`
+- :ref:`AT+HTTPCLIENT <cmd-HTTPCLIENT>`: Send HTTP Client Request.
+- :ref:`AT+HTTPGETSIZE <cmd-HTTPGETSIZE>`: Get HTTP Resource Size.
+- :ref:`AT+HTTPCGET <cmd-HTTPCGET>`: Get HTTP Resource.
+- :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>`: Post HTTP data of specified length.
+- :ref:`AT+HTTPCPUT <cmd-HTTPCPUT>`: Put HTTP data of specified length.
+- :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>`: Set or get long HTTP URL.
+- :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>`: Set or query HTTP request headers.
+- :ref:`AT+HTTPCFG <cmd-HTTPCFG>`: Set HTTP Client Configuration.
+- :ref:`HTTP AT Error Codes <cmd-HTTPErrCode>`
 
 .. _cmd-http-intro:
 
@@ -51,40 +51,40 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<opt>**: method of HTTP client request.
-   
-   -  1: HEAD
-   -  2: GET
-   -  3: POST
-   -  4: PUT
-   -  5: DELETE
+- **<opt>**: method of HTTP client request.
 
--  **<content-type>**: data type of HTTP client request.
+   - 1: HEAD
+   - 2: GET
+   - 3: POST
+   - 4: PUT
+   - 5: DELETE
 
-   -  0: ``application/x-www-form-urlencoded``
-   -  1: ``application/json``
-   -  2: ``multipart/form-data``
-   -  3: ``text/xml``
+- **<content-type>**: data type of HTTP client request.
 
--  **<"url">**: HTTP URL. The parameter can override the ``<"host">`` and ``<"path">`` parameters if they are null.
--  **<"host">**: domain name or IP address.
--  **<"path">**: HTTP Path.
--  **<transport_type>**: HTTP Client transport type. Default: 1.
+   - 0: ``application/x-www-form-urlencoded``
+   - 1: ``application/json``
+   - 2: ``multipart/form-data``
+   - 3: ``text/xml``
 
-   -  1: ``HTTP_TRANSPORT_OVER_TCP``
-   -  2: ``HTTP_TRANSPORT_OVER_SSL``
+- **<"url">**: HTTP URL. The parameter can override the ``<"host">`` and ``<"path">`` parameters if they are null.
+- **<"host">**: domain name or IP address.
+- **<"path">**: HTTP Path.
+- **<transport_type>**: HTTP Client transport type. Default: 1.
 
--  **<"data">**: If ``<opt>`` is a POST request, this parameter holds the data you send to the HTTP server. If not, this parameter does not exist, which means there is no need to input a comma to indicate this parameter.
--  **<"http_req_header">**: you can send more than one request header to the server.
+   - 1: ``HTTP_TRANSPORT_OVER_TCP``
+   - 2: ``HTTP_TRANSPORT_OVER_SSL``
+
+- **<"data">**: If ``<opt>`` is a POST request, this parameter holds the data you send to the HTTP server. If not, this parameter does not exist, which means there is no need to input a comma to indicate this parameter.
+- **<"http_req_header">**: you can send more than one request header to the server.
 
 Notes
 ^^^^^
--  If the length of the entire command containing the URL exceeds 256 bytes, please use the :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command to preset the URL first, and then set the ``<"url">`` parameter of this command to ``""``.
--  If the ``url`` parameter is not null, HTTP client will use it and ignore the ``host`` parameter and ``path`` parameter; If the ``url`` parameter is omitted or null string, HTTP client will use ``host`` parameter and ``path`` parameter.
--  In some released firmware, HTTP client commands are not supported (see :doc:`../Compile_and_Develop/esp-at_firmware_differences`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support`` and build the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
--  The command does not support redirection. After getting the status code 301 (permanent redirection) or 302 (temporary redirection) from the server, AT will not automatically redirect to the new URL address. You can use some tools to get the actual URL, and then access it using this command.
--  If the length of the entire command containing the ``<"data">`` exceeds 256 bytes, please use the :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>` command.
--  To set more HTTP request headers, use the :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` command.
+- If the length of the entire command containing the URL exceeds 256 bytes, please use the :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command to preset the URL first, and then set the ``<"url">`` parameter of this command to ``""``.
+- If the ``url`` parameter is not null, HTTP client will use it and ignore the ``host`` parameter and ``path`` parameter; If the ``url`` parameter is omitted or null string, HTTP client will use ``host`` parameter and ``path`` parameter.
+- In some released firmware, HTTP client commands are not supported (see :doc:`../Compile_and_Develop/esp-at_firmware_differences`), but you can enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support`` and build the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`).
+- The command does not support redirection. After getting the status code 301 (permanent redirection) or 302 (temporary redirection) from the server, AT will not automatically redirect to the new URL address. You can use some tools to get the actual URL, and then access it using this command.
+- If the length of the entire command containing the ``<"data">`` exceeds 256 bytes, please use the :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>` command.
+- To set more HTTP request headers, use the :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` command.
 
 Example
 ^^^^^^^^
@@ -134,8 +134,8 @@ Parameters
 Note
 ^^^^^
 
--  If the length of the entire command containing the URL exceeds 256 bytes, please use the :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command to preset the URL first, and then set the ``<"url">`` parameter of this command to ``""``.
--  To set HTTP request headers, use the :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` command to set them.
+- If the length of the entire command containing the URL exceeds 256 bytes, please use the :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command to preset the URL first, and then set the ``<"url">`` parameter of this command to ``""``.
+- To set HTTP request headers, use the :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` command to set them.
 
 Example
 ^^^^^^^^
@@ -219,7 +219,7 @@ Parameters
 - **<"url">**: HTTP URL. It is a string parameter and should be enclosed with quotes.
 - **<length>**: HTTP data length to POST. The maximum length is equal to the system allocable heap size.
 - **<http_req_header_cnt>**: the number of <"http_req_header"> parameters.
-- **[<"http_req_header">]**: HTTP request header. You can send more than one request header to the server.
+- **<"http_req_header">**: HTTP request header. You can send more than one request header to the server.
 
 Note
 ^^^^^
@@ -274,7 +274,7 @@ Parameters
 - **<"url">**: HTTP URL. It is a string parameter and should be enclosed with quotes.
 - **<length>**: HTTP data length to PUT. The maximum length is equal to the system allocable heap size.
 - **<http_req_header_cnt>**: the number of <"http_req_header"> parameters.
-- **[<"http_req_header">]**: HTTP request header. You can send more than one request header to the server.
+- **<"http_req_header">**: HTTP request header. You can send more than one request header to the server.
 
 Note
 ^^^^^
@@ -284,8 +284,8 @@ Note
 
 .. _cmd-HTTPURLCFG:
 
-:ref:`AT+HTTPURLCFG <HTTP-AT>`: Set/Get long HTTP URL
------------------------------------------------------
+:ref:`AT+HTTPURLCFG <HTTP-AT>`: Set or get long HTTP URL
+---------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -330,15 +330,15 @@ Parameters
 ^^^^^^^^^^
 - **<url length>**: HTTP URL length. Unit: byte.
 
-  - 0: clean the HTTP URL configuration.
-  - [8,8192]: set the HTTP URL configuration.
+  - 0: Clean the HTTP URL configuration.
+  - [8,8192]: Set the HTTP URL configuration.
 
 - **<data>**: HTTP URL data.
 
 .. _cmd-HTTPCHEAD:
 
-:ref:`AT+HTTPCHEAD <HTTP-AT>`: Set/Query HTTP Request Headers
--------------------------------------------------------------
+:ref:`AT+HTTPCHEAD <HTTP-AT>`: Set or query HTTP Request Headers
+-----------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^

@@ -14,9 +14,9 @@ This is the documentation for `ESP-AT <https://github.com/espressif/esp-at>`_ De
     **This document describes using ESP-AT with the {IDF_TARGET_NAME} SoC**.
 
 ======================================  ======================================  ======================================
-|Get Started|_                          |AT Binary Lists|_                      |AT Command Set|_    
+|Get Started|_                          |AT Binary Lists|_                      |AT Command Set|_
 --------------------------------------  --------------------------------------  --------------------------------------
-`Get Started`_                          `AT Binary Lists`_                      `AT Command Set`_   
+`Get Started`_                          `AT Binary Lists`_                      `AT Command Set`_
 --------------------------------------  --------------------------------------  --------------------------------------
 |AT Command Examples|_                  |compile and develop|_                  |Customized AT Commands and Firmware|_
 --------------------------------------  --------------------------------------  --------------------------------------

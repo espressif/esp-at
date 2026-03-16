@@ -23,7 +23,7 @@ This example describes how to download an image file in PNG format. The image li
      AT+RESTORE
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -37,7 +37,7 @@ This example describes how to download an image file in PNG format. The image li
      AT+CWMODE=1
 
    Response:
-  
+
    .. code-block:: none
 
      OK

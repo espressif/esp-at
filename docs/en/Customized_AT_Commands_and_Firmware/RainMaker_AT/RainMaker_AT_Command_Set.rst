@@ -11,23 +11,23 @@ RainMaker AT Command Set
   - Refer to the :doc:`How to Download the Latest Temporary Version of AT Firmware from GitHub <../../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` documentation to download the esp32c3-rainmaker-at firmware.
   - Compile the ESP-AT project yourself by following the steps in :doc:`Compiling the ESP-AT Project </Compile_and_Develop/How_to_clone_project_and_compile_it>`. During the third step (Install Environment), choose ``PLATFORM_ESP32C3`` for the ``Platform name`` and choose ``ESP32C3_RAINMAKER`` for the ``Module name``.
 
--  :ref:`AT+RMNODEINIT <cmd-RMNODEINIT>`: Initialize the node.
--  :ref:`AT+RMNODEATTR <cmd-RMNODEATTR>`: Attributes operations.
--  :ref:`AT+RMDEV <cmd-RMDEV>`: Device operations.
--  :ref:`AT+RMPARAM <cmd-RMPARAM>`: Device parameters operations.
--  :ref:`AT+RMPARAMBOUNDS <cmd-RMPARAMBOUNDS>`: Add bounds to numeric parameters.
--  :ref:`AT+RMPARAMSTRLIST <cmd-RMPARAMSTRLIST>`: Add a list of strings to a character parameters.
--  :ref:`AT+RMPARAMCOUNT <cmd-RMPARAMCOUNT>`: Add maximum number of elements to array parameters.
--  :ref:`AT+RMUSERMAPPING <cmd-RMUSERMAPPING>`: Start user-node mapping.
--  :ref:`AT+RMUSERUNMAPPING <cmd-RMUSERUNMAPPING>`: Clear user-node mapping.
--  :ref:`AT+RMPROV <cmd-RMPROV>`: Provisioning and user-node mapping.
--  :ref:`AT+RMCONN <cmd-RMCONN>`: Connect to ESP RainMaker cloud.
--  :ref:`AT+RMCLOSE <cmd-RMCLOSED>`: Actively disconnect from ESP RainMaker cloud.
--  :ref:`AT+RMPARAMUPDATE <cmd-RMPARAMUPDATE>`: Update parameters.
--  :ref:`AT+RMMODE <cmd-RMMODE>`: Set the transmission mode.
--  :ref:`AT+RMSEND <cmd-RMSEND>`: Send data in the :term:`RainMaker Normal Transmission Mode` or :term:`RainMaker Passthrough Mode`.
--  :ref:`AT+RMOTARESULT <cmd-RMOTARESULT>`: Send the OTA result.
--  :ref:`AT+RMOTAFETCH <cmd-RMOTAFETCH>`: Fetch OTA information.
+- :ref:`AT+RMNODEINIT <cmd-RMNODEINIT>`: Initialize the node.
+- :ref:`AT+RMNODEATTR <cmd-RMNODEATTR>`: Attributes operations.
+- :ref:`AT+RMDEV <cmd-RMDEV>`: Device operations.
+- :ref:`AT+RMPARAM <cmd-RMPARAM>`: Device parameters operations.
+- :ref:`AT+RMPARAMBOUNDS <cmd-RMPARAMBOUNDS>`: Add bounds to numeric parameters.
+- :ref:`AT+RMPARAMSTRLIST <cmd-RMPARAMSTRLIST>`: Add a list of strings to a character parameters.
+- :ref:`AT+RMPARAMCOUNT <cmd-RMPARAMCOUNT>`: Add maximum number of elements to array parameters.
+- :ref:`AT+RMUSERMAPPING <cmd-RMUSERMAPPING>`: Start user-node mapping.
+- :ref:`AT+RMUSERUNMAPPING <cmd-RMUSERUNMAPPING>`: Clear user-node mapping.
+- :ref:`AT+RMPROV <cmd-RMPROV>`: Provisioning and user-node mapping.
+- :ref:`AT+RMCONN <cmd-RMCONN>`: Connect to ESP RainMaker cloud.
+- :ref:`AT+RMCLOSE <cmd-RMCLOSED>`: Actively disconnect from ESP RainMaker cloud.
+- :ref:`AT+RMPARAMUPDATE <cmd-RMPARAMUPDATE>`: Update parameters.
+- :ref:`AT+RMMODE <cmd-RMMODE>`: Set the transmission mode.
+- :ref:`AT+RMSEND <cmd-RMSEND>`: Send data in the :term:`RainMaker Normal Transmission Mode` or :term:`RainMaker Passthrough Mode`.
+- :ref:`AT+RMOTARESULT <cmd-RMOTARESULT>`: Send the OTA result.
+- :ref:`AT+RMOTAFETCH <cmd-RMOTAFETCH>`: Fetch OTA information.
 
 .. _cmd-RMNODEINIT:
 
@@ -149,21 +149,21 @@ After the command is executed successfully, the node configuration will be saved
 Note
 ^^^^^
 
--  This command should be executed before any other ESP RainMaker AT commands.
--  This command enables the services of system management, OTA, time, and scheduling by default.
--  This command will first obtain the authentication information from the mass manufacturing partition ``rmaker_mfg``. If the information is not found, it will search the system NVS. If it is still not found, it will perform claiming.
--  This command will load the parameters from the mass manufacturing partition ``rmaker_mfg``. If the parameters do not exist, the default configuration will be used to create a node automatically.
--  After the command is executed successfully, the node configuration will be saved internally. There are some default key-value pairs in the node configuration.
+- This command should be executed before any other ESP RainMaker AT commands.
+- This command enables the services of system management, OTA, time, and scheduling by default.
+- This command will first obtain the authentication information from the mass manufacturing partition ``rmaker_mfg``. If the information is not found, it will search the system NVS. If it is still not found, it will perform claiming.
+- This command will load the parameters from the mass manufacturing partition ``rmaker_mfg``. If the parameters do not exist, the default configuration will be used to create a node automatically.
+- After the command is executed successfully, the node configuration will be saved internally. There are some default key-value pairs in the node configuration.
 
-   -  node_id: Unique identifier derived from certificates and cannot be changed.
-   -  config_version: Temporarily no practical use. No need to change.
-   -  name: Fixed to "ESP RainMaker AT Node".
-   -  fw_version: RainMaker AT version information.
-   -  type: Fixed to "AT Node".
-   -  model: Fixed to "esp-at".
-   -  project_name: Fixed to "esp-at".
-   -  platform: Fixed to "{IDF_TARGET_NAME}".
-   -  services: system, OTA, time, and scheduling services.
+   - node_id: Unique identifier derived from certificates and cannot be changed.
+   - config_version: Temporarily no practical use. No need to change.
+   - name: Fixed to "ESP RainMaker AT Node".
+   - fw_version: RainMaker AT version information.
+   - type: Fixed to "AT Node".
+   - model: Fixed to "esp-at".
+   - project_name: Fixed to "esp-at".
+   - platform: Fixed to "{IDF_TARGET_NAME}".
+   - services: system, OTA, time, and scheduling services.
 
 .. _cmd-RMNODEATTR:
 
@@ -188,13 +188,13 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<"name">**: node attribute key name.
--  **<"value">**: node attribute value.
+- **<"name">**: node attribute key name.
+- **<"value">**: node attribute value.
 
 Note
 ^^^^^
 
--  This command should be used before the device is connected to the RainMaker cloud (please refer to :ref:`AT+RMPROV <cmd-RMPROV>` or :ref:`AT+RMCONN <cmd-RMCONN>`).
+- This command should be used before the device is connected to the RainMaker cloud (please refer to :ref:`AT+RMPROV <cmd-RMPROV>` or :ref:`AT+RMCONN <cmd-RMCONN>`).
 
 Example
 ^^^^^^^^
@@ -226,21 +226,21 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<"dev_opt">**: device operations.
+- **<"dev_opt">**: device operations.
 
-   -  0: Add a device.
-   -  1: Delete a device.
+   - 0: Add a device.
+   - 1: Delete a device.
 
--  **<"unique_name">**: device unique name.
--  **<"device_name">**: device name, which will be used as the default device name displayed on the app.
--  **<"device_type">**: device type. Please refer to `Devices <https://rainmaker.espressif.com/docs/standard-types.html#devices>`__.
+- **<"unique_name">**: device unique name.
+- **<"device_name">**: device name, which will be used as the default device name displayed on the app.
+- **<"device_type">**: device type. Please refer to `Devices <https://rainmaker.espressif.com/docs/standard-types.html#devices>`__.
 
 Note
 ^^^^^
 
--  This command should be used before the device is connected to the RainMaker cloud (please refer to :ref:`AT+RMPROV <cmd-RMPROV>` or :ref:`AT+RMCONN <cmd-RMCONN>`).
--  Currently, only one device can be added to a node.
--  With the command being executed successfully, the device is added to the node configuration. The default type in the params is "esp.param.name", the data type in the params is "string", and the properties are "read" and "write".
+- This command should be used before the device is connected to the RainMaker cloud (please refer to :ref:`AT+RMPROV <cmd-RMPROV>` or :ref:`AT+RMCONN <cmd-RMCONN>`).
+- Currently, only one device can be added to a node.
+- With the command being executed successfully, the device is added to the node configuration. The default type in the params is "esp.param.name", the data type in the params is "string", and the properties are "read" and "write".
 
 Example
 ^^^^^^^^
@@ -393,34 +393,34 @@ Add parameters to the device.
 Parameters
 ^^^^^^^^^^
 
--  **<"unique_name">**: device unique name.
--  **<"param_name">**: parameter name.
--  **<"param_type">**: parameter type. Please refer to `Parameters <https://rainmaker.espressif.com/docs/standard-types.html#parameters>`__.
--  **<data_type>**: data type.
+- **<"unique_name">**: device unique name.
+- **<"param_name">**: parameter name.
+- **<"param_type">**: parameter type. Please refer to `Parameters <https://rainmaker.espressif.com/docs/standard-types.html#parameters>`__.
+- **<data_type>**: data type.
 
-   -  bit 0: boolean.
-   -  bit 1: integer.
-   -  bit 2: floating-point number.
-   -  bit 3: string.
-   -  bit 4: object.
-   -  bit 5: array.
+   - bit 0: boolean
+   - bit 1: integer
+   - bit 2: floating-point number
+   - bit 3: string
+   - bit 4: object
+   - bit 5: array
 
--  **<properties>**: data properties.
+- **<properties>**: data properties.
 
-   -  bit 0: read.
-   -  bit 1: write.
-   -  bit 2: time_series.
-   -  bit 3: persist.
+   - bit 0: read
+   - bit 1: write
+   - bit 2: time_series
+   - bit 3: persist
 
--  **<"ui_type">**: UI type. Please refer to `UI Elements <https://rainmaker.espressif.com/docs/standard-types.html#ui-elements>`__.
--  **<"def">**: default value.
+- **<"ui_type">**: UI type. Please refer to `UI Elements <https://rainmaker.espressif.com/docs/standard-types.html#ui-elements>`__.
+- **<"def">**: default value.
 
 Note
 ^^^^^
 
--  This command should be used before the device is connected to the RainMaker cloud (please refer to :ref:`AT+RMPROV <cmd-RMPROV>` or :ref:`AT+RMCONN <cmd-RMCONN>`).
--  Please make sure the parameter ``<def>`` matches the parameter ``<data_type>``. AT does not check it internally.
--  In the :term:`RainMaker Passthrough Mode`, only one parameter is allowed in the device (the default parameter created by the :ref:`AT+RMDEV <cmd-RMDEV>` command is not included). If there are multiple parameters, the device cannot enter the :term:`RainMaker Passthrough Mode`.
+- This command should be used before the device is connected to the RainMaker cloud (please refer to :ref:`AT+RMPROV <cmd-RMPROV>` or :ref:`AT+RMCONN <cmd-RMCONN>`).
+- Please make sure the parameter ``<def>`` matches the parameter ``<data_type>``. AT does not check it internally.
+- In the :term:`RainMaker Passthrough Mode`, only one parameter is allowed in the device (the default parameter created by the :ref:`AT+RMDEV <cmd-RMDEV>` command is not included). If there are multiple parameters, the device cannot enter the :term:`RainMaker Passthrough Mode`.
 
 Example
 ^^^^^^^^
@@ -452,17 +452,17 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<"unique_name">**: device unique name.
--  **<"param_name">**: parameter name.
--  **<"min">**: minimum value.
--  **<"max">**: maximum value.
--  **<"step">**: step value.
+- **<"unique_name">**: device unique name.
+- **<"param_name">**: parameter name.
+- **<"min">**: minimum value.
+- **<"max">**: maximum value.
+- **<"step">**: step value.
 
 Note
 ^^^^^
 
--  This command should be used before the device is connected to the RainMaker cloud (please refer to :ref:`AT+RMPROV <cmd-RMPROV>` or :ref:`AT+RMCONN <cmd-RMCONN>`).
--  This command is only for parameter whose type is an integer or a floating-point number (please refer to the parameter ``<data_type>`` in the :ref:`AT+RMPARAM <RainMaker-AT>`). Please make sure the parameters ``<"min">``, ``<"max">``, and ``<"step">`` match the parameter ``<data_type>``. AT does not check it internally.
+- This command should be used before the device is connected to the RainMaker cloud (please refer to :ref:`AT+RMPROV <cmd-RMPROV>` or :ref:`AT+RMCONN <cmd-RMCONN>`).
+- This command is only for parameter whose type is an integer or a floating-point number (please refer to the parameter ``<data_type>`` in the :ref:`AT+RMPARAM <RainMaker-AT>`). Please make sure the parameters ``<"min">``, ``<"max">``, and ``<"step">`` match the parameter ``<data_type>``. AT does not check it internally.
 
 Example
 ^^^^^^^^
@@ -514,15 +514,15 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<"unique_name">**: device unique name.
--  **<"param_name">**: parameter name.
--  **<"str">**: members of a list of strings.
+- **<"unique_name">**: device unique name.
+- **<"param_name">**: parameter name.
+- **<"str">**: members of a list of strings.
 
 Note
 ^^^^^
 
--  This command should be used before the device is connected to the RainMaker cloud (please refer to :ref:`AT+RMPROV <cmd-RMPROV>` or :ref:`AT+RMCONN <cmd-RMCONN>`).
--  This command is only for parameter whose type is a string (please refer to the parameter ``<data_type>`` in the :ref:`AT+RMPARAM <RainMaker-AT>`). Please make sure the parameters ``<"str">`` matches the parameter ``<data_type>``. AT does not check it internally.
+- This command should be used before the device is connected to the RainMaker cloud (please refer to :ref:`AT+RMPROV <cmd-RMPROV>` or :ref:`AT+RMCONN <cmd-RMCONN>`).
+- This command is only for parameter whose type is a string (please refer to the parameter ``<data_type>`` in the :ref:`AT+RMPARAM <RainMaker-AT>`). Please make sure the parameters ``<"str">`` matches the parameter ``<data_type>``. AT does not check it internally.
 
 Example
 ^^^^^^^^
@@ -577,15 +577,15 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<"unique_name">**: device unique name.
--  **<"param_name">**: parameter name.
--  **<array_count>**: maximum number of elements in an array.
+- **<"unique_name">**: device unique name.
+- **<"param_name">**: parameter name.
+- **<array_count>**: maximum number of elements in an array.
 
 Note
 ^^^^^
 
--  This command should be used before the device is connected to the RainMaker cloud (please refer to :ref:`AT+RMPROV <cmd-RMPROV>` or :ref:`AT+RMCONN <cmd-RMCONN>`).
--  This command is only for parameter whose type is array (please refer to the parameter ``<data_type>`` in the :ref:`AT+RMPARAM <RainMaker-AT>`). Please make sure the parameters ``<array_count>`` matches the parameter ``<data_type>``, AT doesn't check internally.
+- This command should be used before the device is connected to the RainMaker cloud (please refer to :ref:`AT+RMPROV <cmd-RMPROV>` or :ref:`AT+RMCONN <cmd-RMCONN>`).
+- This command is only for parameter whose type is array (please refer to the parameter ``<data_type>`` in the :ref:`AT+RMPARAM <RainMaker-AT>`). Please make sure the parameters ``<array_count>`` matches the parameter ``<data_type>``, AT doesn't check internally.
 
 Example
 ^^^^^^^^
@@ -643,14 +643,14 @@ If the mapping completes, the system returns:
 Parameters
 ^^^^^^^^^^
 
--  **<"user_id">**: user identifier.
--  **<"secret_key">**: secret key.
+- **<"user_id">**: user identifier.
+- **<"secret_key">**: secret key.
 
 Note
 ^^^^^
 
--  Before executing this command, please make sure the device is connected to the cloud. For more information, please refer to :ref:`AT+RMCONN <cmd-RMCONN>`.
--  This command does not guarantee the success of the actual mapping. The mapping status needs to be checked separately by the clients (phone app/CLI).
+- Before executing this command, please make sure the device is connected to the cloud. For more information, please refer to :ref:`AT+RMCONN <cmd-RMCONN>`.
+- This command does not guarantee the success of the actual mapping. The mapping status needs to be checked separately by the clients (phone app/CLI).
 
 .. _cmd-RMUSERUNMAPPING:
 
@@ -695,14 +695,14 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<mode>**: mode.
+- **<mode>**: mode.
 
-   -  0: start provisioning and user-node mapping.
-   -  1: stop provisioning.
+   - 0: Start provisioning and user-node mapping.
+   - 1: Stop provisioning.
 
--  **<customer_id>**: customer identifier, used to distinguish different customers. Range:[0,65535]. If you want to use the `Nova Home <https://rainmaker.espressif.com>`__, please `contact us <https://www.espressif.com/en/contact-us/sales-questions>`__.
--  **<device_extra_code>**: device code, used to identify the device icon when provisioning. Range:[0,255].
--  **<"broadcast_name">**: device name when customizing the Bluetooth broadcast. Range:[0,12]. Unit: byte.
+- **<customer_id>**: customer identifier, used to distinguish different customers. Range:[0,65535]. If you want to use the `Nova Home <https://rainmaker.espressif.com>`__, please `contact us <https://www.espressif.com/en/contact-us/sales-questions>`__.
+- **<device_extra_code>**: device code, used to identify the device icon when provisioning. Range:[0,255].
+- **<"broadcast_name">**: device name when customizing the Bluetooth broadcast. Range:[0,12]. Unit: byte.
 
 .. _cmd-RMCONN:
 
@@ -760,7 +760,7 @@ If the device fails to connect to the cloud, the system returns:
 Parameters
 ^^^^^^^^^^
 
--  **<conn_timeout>**: maximum timeout for connection. Range:[3,600]. Unit: second. Default: 15.
+- **<conn_timeout>**: maximum timeout for connection. Range:[3,600]. Unit: second. Default: 15.
 
 .. _cmd-RMCLOSED:
 
@@ -785,7 +785,7 @@ Execute Command
 Note
 ^^^^^
 
--  When the device actively calls this command to disconnect from the cloud, AT will not report the `+RMDISCONNECTED` message. Only when the device is passively disconnected from the cloud, AT will report the `+RMDISCONNECTED` message.
+- When the device actively calls this command to disconnect from the cloud, AT will not report the `+RMDISCONNECTED` message. Only when the device is passively disconnected from the cloud, AT will report the `+RMDISCONNECTED` message.
 
 .. _cmd-RMPARAMUPDATE:
 
@@ -810,16 +810,16 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<"unique_name">**: device unique name.
--  **<"param_name">**: parameter name.
--  **<"param_value">**: parameter value.
+- **<"unique_name">**: device unique name.
+- **<"param_name">**: parameter name.
+- **<"param_value">**: parameter value.
 
 Note
 ^^^^^
 
--  The parameter ``<"param_value">`` must match the parameter ``<data_type>`` set in :ref:`AT+RMPARAM <cmd-RMPARAM>`.
--  The command supports up to 15 parameters, namely, 1 ``<"unique_name">`` + 7 ``<"param_name">`` + 7 ``<"param_value">``.
--  The length of the entire AT command should be less than ``256`` bytes. If the amount of data you want to update is relatively large, please use the :ref:`AT+RMSEND <cmd-RMSEND>` command.
+- The parameter ``<"param_value">`` must match the parameter ``<data_type>`` set in :ref:`AT+RMPARAM <cmd-RMPARAM>`.
+- The command supports up to 15 parameters, namely, 1 ``<"unique_name">`` + 7 ``<"param_name">`` + 7 ``<"param_value">``.
+- The length of the entire AT command should be less than ``256`` bytes. If the amount of data you want to update is relatively large, please use the :ref:`AT+RMSEND <cmd-RMSEND>` command.
 
 Example
 ^^^^^^^^
@@ -851,15 +851,15 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<mode>**: transmission mode.
+- **<mode>**: transmission mode.
 
-   -  0: :term:`RainMaker Normal Transmission Mode`.
-   -  1: :term:`RainMaker Passthrough Mode`.
+   - 0: :term:`RainMaker Normal Transmission Mode`.
+   - 1: :term:`RainMaker Passthrough Mode`.
 
 Note
 ^^^^^
 
--  In the :term:`RainMaker Passthrough Mode`, only one parameter is allowed in the devices (the default parameter created by the :ref:`AT+RMDEV <cmd-RMDEV>` command is not included). If there are multiple parameters, the device cannot enter the :term:`RainMaker Passthrough Mode`.
+- In the :term:`RainMaker Passthrough Mode`, only one parameter is allowed in the devices (the default parameter created by the :ref:`AT+RMDEV <cmd-RMDEV>` command is not included). If there are multiple parameters, the device cannot enter the :term:`RainMaker Passthrough Mode`.
 
 .. _cmd-RMSEND:
 
@@ -937,16 +937,16 @@ Enter the :term:`RainMaker Passthrough Mode`. When a single packet containing ``
 Parameters
 ^^^^^^^^^^
 
--  **<"unique_name">**: device unique name.
--  **<"param_name">**: parameter name.
--  **<len>**: data length. The length depends on the RAM size. You can use :ref:`AT+SYSRAM <cmd-SYSRAM>` to query the remaining RAM size.
+- **<"unique_name">**: device unique name.
+- **<"param_name">**: parameter name.
+- **<len>**: data length. The length depends on the RAM size. You can use :ref:`AT+SYSRAM <cmd-SYSRAM>` to query the remaining RAM size.
 
 Note
 ^^^^^
 
--  In the :term:`RainMaker Passthrough Mode`, only one parameter in the devices is allowed (the default parameter created by the :ref:`AT+RMDEV <cmd-RMDEV>` command is not included). If there are multiple parameters, the device cannot enter the :term:`RainMaker Passthrough Mode`.
+- In the :term:`RainMaker Passthrough Mode`, only one parameter in the devices is allowed (the default parameter created by the :ref:`AT+RMDEV <cmd-RMDEV>` command is not included). If there are multiple parameters, the device cannot enter the :term:`RainMaker Passthrough Mode`.
 
--  If you want to update multiple parameters at the same time, please refer to :ref:`AT+RMPARAMUPDATE <cmd-RMPARAMUPDATE>` command.
+- If you want to update multiple parameters at the same time, please refer to :ref:`AT+RMPARAMUPDATE <cmd-RMPARAMUPDATE>` command.
 
 .. _cmd-RMOTARESULT:
 
@@ -971,22 +971,22 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<type>**: reserved.
--  **<"ota_job_id">**: OTA job ID.
--  **<result>**: OTA result.
+- **<type>**: reserved.
+- **<"ota_job_id">**: OTA job ID.
+- **<result>**: OTA result.
 
-   -  1: OTA in progress.
-   -  2: OTA succeeded.
-   -  3: OTA failed.
-   -  4: OTA delayed by the application.
-   -  5: OTA rejected due to some reason.
+   - 1: OTA in progress.
+   - 2: OTA succeeded.
+   - 3: OTA failed.
+   - 4: OTA delayed by the application.
+   - 5: OTA rejected due to some reason.
 
--  **<"additional_info">**: Additional information for the OTA status.
+- **<"additional_info">**: Additional information for the OTA status.
 
 Note
 ^^^^^
 
--  This command is only applicable to host MCU OTA. For {IDF_TARGET_NAME} Wi-Fi OTA, the system will automatically send the OTA status.
+- This command is only applicable to host MCU OTA. For {IDF_TARGET_NAME} Wi-Fi OTA, the system will automatically send the OTA status.
 
 .. _cmd-RMOTAFETCH:
 
@@ -1011,20 +1011,20 @@ Execute Command
 Note
 ^^^^^
 
--  For host MCU OTA, ESP-AT will send the received OTA information instantly to the host MCU in the format of ``+RMFWNOTIFY:<type>,<size>,<url>,<fw_version>,<ota_job_id>``.
+- For host MCU OTA, ESP-AT will send the received OTA information instantly to the host MCU in the format of ``+RMFWNOTIFY:<type>,<size>,<url>,<fw_version>,<ota_job_id>``.
 
-    -  **<type>**: reserved. It is always set to 0 by ESP-AT.
-    -  **<size>**: host MCU OTA firmware size. Unit: byte.
-    -  **<url>**: host MCU OTA download URI. You can use the :ref:`AT+HTTPCGET <cmd-HTTPCGET>` command to download firmware.
-    -  **<fw_version>**: host MCU OTA firmware version.
-    -  **<ota_job_id>**: host MCU OTA job ID. You can use the :ref:`AT+RMOTARESULT <cmd-RMOTARESULT>` command to send the OTA result.
+    - **<type>**: reserved. It is always set to 0 by ESP-AT.
+    - **<size>**: host MCU OTA firmware size. Unit: byte.
+    - **<url>**: host MCU OTA download URI. You can use the :ref:`AT+HTTPCGET <cmd-HTTPCGET>` command to download firmware.
+    - **<fw_version>**: host MCU OTA firmware version.
+    - **<ota_job_id>**: host MCU OTA job ID. You can use the :ref:`AT+RMOTARESULT <cmd-RMOTARESULT>` command to send the OTA result.
 
--  For {IDF_TARGET_NAME} Wi-Fi OTA, the system will automatically executes the OTA. ESP-AT will send the OTA status to the host MCU in the format of ``+RMOTA:<status>``.
+- For {IDF_TARGET_NAME} Wi-Fi OTA, the system will automatically executes the OTA. ESP-AT will send the OTA status to the host MCU in the format of ``+RMOTA:<status>``.
 
-    -  1: OTA in progress.
-    -  2: OTA succeeded.
-    -  3: OTA failed.
-    -  4: OTA delayed by the application.
-    -  5: OTA rejected due to some reason.
+    - 1: OTA in progress.
+    - 2: OTA succeeded.
+    - 3: OTA failed.
+    - 4: OTA delayed by the application.
+    - 5: OTA rejected due to some reason.
 
--  Please refer to :doc:`RainMaker_AT_OTA_Guide` for how to implement OTA via ESP RainMaker cloud.
+- Please refer to :doc:`RainMaker_AT_OTA_Guide` for how to implement OTA via ESP RainMaker cloud.

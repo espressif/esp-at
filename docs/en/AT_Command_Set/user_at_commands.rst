@@ -5,12 +5,12 @@ User AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
--  :ref:`Introduction <cmd-user-intro>`
--  :ref:`AT+USERRAM <cmd-USERRAM>`: Operate user's free RAM.
--  :ref:`AT+USEROTA <cmd-USEROTA>`: Upgrade the firmware according to the specified URL.
--  :ref:`AT+USERWKMCUCFG <cmd-USERWKMCUCFG>`: Configure how AT wakes up MCU.
--  :ref:`AT+USERMCUSLEEP <cmd-USERMCUSLEEP>`: MCU indicates its sleep state.
--  :ref:`AT+USERDOCS <cmd-USERDOCS>`: Query the ESP-AT user guide for current firmware.
+- :ref:`Introduction <cmd-user-intro>`
+- :ref:`AT+USERRAM <cmd-USERRAM>`: Operate user's free RAM.
+- :ref:`AT+USEROTA <cmd-USEROTA>`: Upgrade the firmware according to the specified URL.
+- :ref:`AT+USERWKMCUCFG <cmd-USERWKMCUCFG>`: Configure how AT wakes up MCU.
+- :ref:`AT+USERMCUSLEEP <cmd-USERMCUSLEEP>`: MCU indicates its sleep state.
+- :ref:`AT+USERDOCS <cmd-USERDOCS>`: Query the ESP-AT user guide for current firmware.
 
 .. _cmd-user-intro:
 
@@ -71,23 +71,23 @@ Operate user's free RAM
 Parameters
 ^^^^^^^^^^
 
--  **<operation>**:
+- **<operation>**:
 
-   -  0: release user's RAM
-   -  1: malloc user's RAM
-   -  2: write user's RAM
-   -  3: read user's RAM
-   -  4: clear user's RAM
+   - 0: release user's RAM
+   - 1: malloc user's RAM
+   - 2: write user's RAM
+   - 3: read user's RAM
+   - 4: clear user's RAM
 
--  **<size>**: the size to malloc/read/write
--  **<offset>**: the offset to read/write. Default: 0
+- **<size>**: the size to malloc/read/write
+- **<offset>**: the offset to read/write. Default: 0
 
 Notes
 ^^^^^
 
--  Please malloc the RAM size before you perform any other operations.
--  If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
--  If the operator is ``read`` and the length is bigger than 1024, ESP-AT will reply multiple times in the same format, each reply can carry up to 1024 bytes of data, and eventually end up with ``\r\nOK\r\n``.
+- Please malloc the RAM size before you perform any other operations.
+- If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
+- If the operator is ``read`` and the length is bigger than 1024, ESP-AT will reply multiple times in the same format, each reply can carry up to 1024 bytes of data, and eventually end up with ``\r\nOK\r\n``.
 
 Example
 ^^^^^^^^
@@ -160,7 +160,7 @@ Parameters
 Note
 ^^^^^
 
--  You can :doc:`Download AT firmware from GitHub Actions <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>`, or you can generate AT firmware from :doc:`Compile ESP-AT Project <../Compile_and_Develop/How_to_clone_project_and_compile_it>` as well.
+- You can :doc:`Download AT firmware from GitHub Actions <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>`, or you can generate AT firmware from :doc:`Compile ESP-AT Project <../Compile_and_Develop/How_to_clone_project_and_compile_it>` as well.
 
 .. only:: esp32c2
 
@@ -174,14 +174,14 @@ Note
 
   - OTA firmware is ``build/esp-at.bin``.
 
--  The speed of the upgrade depends on the network status.
--  If the upgrade fails due to unfavorable network conditions, AT will return ``ERROR``. Please wait for some time before retrying.
--  Downgrading to an older version is not recommended due to potential compatibility issues and the risk of operational failure. If you still prefer downgrading to an older version, please test and verify the functionality based on your product.
--  After you upgrade the AT firmware, you are suggested to call the command AT+RESTORE to restore the factory default settings.
--  ``AT+USEROTA`` supports ``HTTP`` and ``HTTPS``.
--  After AT outputs the ``>`` character, the special characters in the URL does not need to be escaped through the escape character, and it does not need to end with a new line(CR-LF).
--  When the URL is ``HTTPS``, SSL verification is not recommended. If SSL verification is required, you need to generate your own PKI files and download them into the corresponding partition, and then load the certificates in the code implemented by the ``AT+USEROTA`` command. Please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config` for PKI files. For ``AT+USEROTA`` command, ESP-AT project provides an example of `USEROTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_user_cmd.c>`_.
--  Please refer to :doc:`../Compile_and_Develop/How_to_implement_OTA_update` for more OTA commands.
+- The speed of the upgrade depends on the network status.
+- If the upgrade fails due to unfavorable network conditions, AT will return ``ERROR``. Please wait for some time before retrying.
+- Downgrading to an older version is not recommended due to potential compatibility issues and the risk of operational failure. If you still prefer downgrading to an older version, please test and verify the functionality based on your product.
+- After you upgrade the AT firmware, you are suggested to call the command AT+RESTORE to restore the factory default settings.
+- ``AT+USEROTA`` supports ``HTTP`` and ``HTTPS``.
+- After AT outputs the ``>`` character, the special characters in the URL does not need to be escaped through the escape character, and it does not need to end with a new line (CR-LF).
+- When the URL is ``HTTPS``, SSL verification is not recommended. If SSL verification is required, you need to generate your own PKI files and download them into the corresponding partition, and then load the certificates in the code implemented by the ``AT+USEROTA`` command. Please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config` for PKI files. For ``AT+USEROTA`` command, ESP-AT project provides an example of `USEROTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_user_cmd.c>`_.
+- Please refer to :doc:`../Compile_and_Develop/How_to_implement_OTA_update` for more OTA commands.
 
 Example
 ^^^^^^^^
@@ -258,10 +258,10 @@ Parameters
 
 - **<check mcu awake method>**: AT checks whether MCU is in awake state.
 
-  - Bit 0: Whether to enable :ref:`AT+USERMCUSLEEP <cmd-USERMCUSLEEP>` command linkage. Enabled by default. That is, when receiving AT+USERMCUSLEEP=0 command from MCU, AT knows that MCU is in awake state; when receiving AT+USERMCUSLEEP=1 command, AT knows that MCU is in sleep.
-  - Bit 1: Whether to enable :ref:`AT+SLEEP=0/1/2/3 <cmd-SLEEP>` command linkage. Disabled by default. That is, when receiving AT+SLEEP=0 command, AT knows that MCU is in awake state; when receiving AT+SLEEP=1/2/3 command, AT knows that MCU is in sleep.
-  - Bit 2: Whether to enable the function of indicating that the MCU wakes up after ``<delay time>`` timeout. Disabled by default. When disabled, the MCU is indicated as sleeping after ``<delay time>``; when enabled, the MCU is indicated as awake after ``<delay time>``. Bit 2 must be used together with bit 0 or bit 1. If used alone, since the MCU is awake by default, it will not wake up the MCU each time.
-  - Bit 3 (not implemented yet): Whether to enable the function of indicating MCU state via GPIO. Unsupported by default.
+  - bit 0: Whether to enable :ref:`AT+USERMCUSLEEP <cmd-USERMCUSLEEP>` command linkage. Enabled by default. That is, when receiving AT+USERMCUSLEEP=0 command from MCU, AT knows that MCU is in awake state; when receiving AT+USERMCUSLEEP=1 command, AT knows that MCU is in sleep.
+  - bit 1: Whether to enable :ref:`AT+SLEEP=0/1/2/3 <cmd-SLEEP>` command linkage. Disabled by default. That is, when receiving AT+SLEEP=0 command, AT knows that MCU is in awake state; when receiving AT+SLEEP=1/2/3 command, AT knows that MCU is in sleep.
+  - bit 2: Whether to enable the function of indicating that the MCU wakes up after ``<delay time>`` timeout. Disabled by default. When disabled, the MCU is indicated as sleeping after ``<delay time>``; when enabled, the MCU is indicated as awake after ``<delay time>``. Bit 2 must be used together with bit 0 or bit 1. If used alone, since the MCU is awake by default, it will not wake up the MCU each time.
+  - bit 3 (not implemented yet): Whether to enable the function of indicating MCU state via GPIO. Unsupported by default.
 
 Notes
 ^^^^^
@@ -351,8 +351,8 @@ Query the ESP-AT English and Chinese user guide for current running firmware.
 Parameters
 ^^^^^^^^^^
 
--  **<"en url">**: the URL for English document
--  **<"cn url">**: the URL for Chinese document
+- **<"en url">**: the URL for English document
+- **<"cn url">**: the URL for Chinese document
 
 Example
 ^^^^^^^

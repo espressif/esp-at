@@ -61,7 +61,7 @@ The example shows how to establish MQTT connections over TCP. You need to first 
      AT+MQTTCONN=0,"192.168.3.102",8883,1
 
    Response:
-  
+
    .. code-block:: none
 
      +MQTTCONNECTED:0,1,"192.168.3.102","8883","",1
@@ -83,7 +83,7 @@ The example shows how to establish MQTT connections over TCP. You need to first 
      AT+MQTTSUB=0,"topic",1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -99,7 +99,7 @@ The example shows how to establish MQTT connections over TCP. You need to first 
      AT+MQTTPUB=0,"topic","test",1,0
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -121,7 +121,7 @@ The example shows how to establish MQTT connections over TCP. You need to first 
      AT+MQTTCLEAN=0
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -276,7 +276,7 @@ The example shows how to establish MQTT connections over TLS. You need to first 
      AT+CIPSNTPCFG=1,8,"ntp1.aliyun.com"
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -290,7 +290,7 @@ The example shows how to establish MQTT connections over TLS. You need to first 
      AT+CIPSNTPTIME?
 
    Response:
-  
+
    .. code-block:: none
 
      +CIPSNTPTIME:Thu Sep  2 18:57:03 2021
@@ -327,7 +327,7 @@ The example shows how to establish MQTT connections over TLS. You need to first 
      AT+MQTTUSERCFG=0,4,"subscriber","espressif","123456789",0,0,""
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -341,7 +341,7 @@ The example shows how to establish MQTT connections over TLS. You need to first 
      AT+MQTTCONNCFG=0,0,0,"lwtt","lwtm",0,0
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -355,7 +355,7 @@ The example shows how to establish MQTT connections over TLS. You need to first 
      AT+MQTTCONN=0,"192.168.3.102",8883,1
 
    Response:
-  
+
    .. code-block:: none
 
      +MQTTCONNECTED:0,4,"192.168.3.102","8883","",1
@@ -377,7 +377,7 @@ The example shows how to establish MQTT connections over TLS. You need to first 
      AT+MQTTSUB=0,"topic",1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -393,7 +393,7 @@ The example shows how to establish MQTT connections over TLS. You need to first 
      AT+MQTTPUB=0,"topic","test",1,0
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -415,7 +415,7 @@ The example shows how to establish MQTT connections over TLS. You need to first 
      AT+MQTTCLEAN=0
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -439,7 +439,7 @@ The example shows how to establish MQTT connections over WSS and how to communic
      AT+CIPSNTPCFG=1,8,"ntp1.aliyun.com"
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -453,7 +453,7 @@ The example shows how to establish MQTT connections over WSS and how to communic
      AT+CIPSNTPTIME?
 
    Response:
-  
+
    .. code-block:: none
 
      +CIPSNTPTIME:Thu Sep  2 18:57:03 2021
@@ -490,7 +490,7 @@ The example shows how to establish MQTT connections over WSS and how to communic
      AT+MQTTUSERCFG=0,7,"subscriber","","",0,0,"mqtt"
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -504,7 +504,7 @@ The example shows how to establish MQTT connections over WSS and how to communic
      AT+MQTTCONN=0,"test.mosquitto.org",8081,1
 
    Response:
-  
+
    .. code-block:: none
 
      +MQTTCONNECTED:0,7,"test.mosquitto.org","8081","/mqtt",1
@@ -526,7 +526,7 @@ The example shows how to establish MQTT connections over WSS and how to communic
      AT+MQTTSUB=0,"topic",1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -542,7 +542,7 @@ The example shows how to establish MQTT connections over WSS and how to communic
      AT+MQTTPUB=0,"topic","test",1,0
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -564,7 +564,7 @@ The example shows how to establish MQTT connections over WSS and how to communic
      AT+MQTTCLEAN=0
 
    Response:
-  
+
    .. code-block:: none
 
      OK

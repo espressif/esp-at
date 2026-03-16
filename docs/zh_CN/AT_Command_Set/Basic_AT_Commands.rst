@@ -58,13 +58,13 @@
 
 ::
 
-    AT  
+    AT
 
 **响应：**
 
 ::
 
-    OK  
+    OK
 
 .. _cmd-RST:
 
@@ -78,13 +78,13 @@
 
 ::
 
-    AT+RST  
+    AT+RST
 
 **响应：**
 
 ::
 
-    OK  
+    OK
 
 .. only:: esp32c2 or esp32c3
 
@@ -114,7 +114,7 @@
     说明
     ^^^^
 
-    - 如果您要实现下载，可以考虑发送此设置命令让 {IDF_TARGET_NAME} 进入下载模式，这样您可以在硬件上节省 Boot 管脚。
+    - 如果你要实现下载，可以考虑发送此设置命令让 {IDF_TARGET_NAME} 进入下载模式，这样你可以在硬件上节省 Boot 管脚。
 
 .. _cmd-GMR:
 
@@ -144,16 +144,16 @@
 参数
 ^^^^
 
--  **<AT version info>**：AT 核心库的版本信息，它们在 ``esp-at/components/at/lib/`` 目录下。代码是闭源的，无开放计划。
--  **<SDK version info>**：AT 使用的平台 SDK 版本信息，它们定义在 ``esp-at/module_config/module_{platform}_default/IDF_VERSION`` 文件中。
--  **<compile time>**：固件生成时间。
--  **<Bin version>**：AT 固件版本信息。版本信息可以在 menuconfig 中修改，``python build.py menuconfig`` > ``Application manager`` > ``Project version``。最大长度：32 字节。
--  **<module_name>**：模块名称，在 ``esp-at/components/customized_partitions/raw_data/factory_param/factory_param_data.csv`` 里定义。
+- **<AT version info>**：AT 核心库的版本信息，它们在 ``esp-at/components/at/lib/`` 目录下。代码是闭源的，无开放计划。
+- **<SDK version info>**：AT 使用的平台 SDK 版本信息，它们定义在 ``esp-at/module_config/module_{platform}_default/IDF_VERSION`` 文件中。
+- **<compile time>**：固件生成时间。
+- **<Bin version>**：AT 固件版本信息。版本信息可以在 menuconfig 中修改，``python build.py menuconfig`` > ``Application manager`` > ``Project version``。最大长度：32 字节。
+- **<module_name>**：模块名称，在 ``esp-at/components/customized_partitions/raw_data/factory_param/factory_param_data.csv`` 里定义。
 
 说明
 ^^^^
 
-- 如果您在使用 ESP-AT 固件中有任何问题，请先提供 ``AT+GMR`` 版本信息。
+- 如果你在使用 ESP-AT 固件中有任何问题，请先提供 ``AT+GMR`` 版本信息。
 
 示例
 ^^^^
@@ -193,12 +193,12 @@
 参数
 ^^^^
 
--  **<index>**：AT 命令序号
--  **<"AT command name">**：AT 命令名称
--  **<support test command>**：0 表示不支持，1 表示支持
--  **<support query command>**：0 表示不支持，1 表示支持
--  **<support set command>**：0 表示不支持，1 表示支持
--  **<support execute command>**：0 表示不支持，1 表示支持
+- **<index>**：AT 命令序号
+- **<"AT command name">**：AT 命令名称
+- **<support test command>**：0 表示不支持，1 表示支持
+- **<support query command>**：0 表示不支持，1 表示支持
+- **<support set command>**：0 表示不支持，1 表示支持
+- **<support execute command>**：0 表示不支持，1 表示支持
 
 .. _cmd-GSLP:
 
@@ -229,7 +229,7 @@
 
   .. list::
 
-    :not esp32c6: - 0 表示立即重启
+    :not esp32c6: - 0 表示立即重启。
     :esp32c6: - 最小 Deep-sleep 时长为 5 毫秒。
     - 最大 Deep-sleep 时长约为 28.8 天（2 :sup:`31`-1 毫秒）。
 
@@ -250,25 +250,25 @@
 
 ::
 
-    ATE0  
+    ATE0
 
 或
 
 ::
 
-    ATE1  
+    ATE1
 
 **响应：**
 
 ::
 
-    OK  
+    OK
 
 参数
 ^^^^
 
--  **ATE0**：关闭回显
--  **ATE1**：开启回显
+- **ATE0**：关闭回显
+- **ATE1**：开启回显
 
 .. _cmd-RESTORE:
 
@@ -282,19 +282,19 @@
 
 ::
 
-    AT+RESTORE  
+    AT+RESTORE
 
 **响应：**
 
 ::
 
-    OK  
+    OK
 
 说明
 ^^^^
 
--  该命令将擦除所有保存到 flash 的参数，并恢复为默认参数。
--  运行该命令会重启设备。
+- 该命令将擦除所有保存到 flash 的参数，并恢复为默认参数。
+- 运行该命令会重启设备。
 
 .. _cmd-SAVET:
 
@@ -331,22 +331,22 @@
 参数
 """"""""""""""
 
--  **<mode>**:
+- **<mode>**：
 
-   -  0: 关闭 {IDF_TARGET_NAME} 上电进入 TCP/SSL 客户端 :term:`透传模式`
-   -  1: 开启 {IDF_TARGET_NAME} 上电进入 TCP/SSL 客户端 :term:`透传模式`
+   - 0: 关闭 {IDF_TARGET_NAME} 上电进入 TCP/SSL 客户端 :term:`透传模式`
+   - 1: 开启 {IDF_TARGET_NAME} 上电进入 TCP/SSL 客户端 :term:`透传模式`
 
--  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
--  **<remote port>**：远端端口值
--  **<"type">**：字符串参数，表示传输类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6"。默认值："TCP"
--  **<keep_alive>**：配置套接字的 ``SO_KEEPALIVE`` 选项（参考：`SO_KEEPALIVE 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`_），单位：秒。
+- **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
+- **<remote port>**：远端端口值。
+- **<"type">**：字符串参数，表示传输类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6"。默认值："TCP"。
+- **<keep_alive>**：配置套接字的 ``SO_KEEPALIVE`` 选项（参考：`SO_KEEPALIVE 介绍 <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`_），单位：秒。
 
   - 范围：[0,7200]。
 
-    - 0：禁用 keep-alive 功能；（默认）
-    - 1 ~ 7200：开启 keep-alive 功能。`TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ 值为 **<keep_alive>**，`TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ 值为 1，`TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ 值为 3。
+    - 0: 禁用 keep-alive 功能（默认）。
+    - 1 ~ 7200: 开启 keep-alive 功能。`TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ 值为 **<keep_alive>**，`TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ 值为 1，`TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ 值为 3。
 
-  -  本命令中的 ``<keep_alive>`` 参数与 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令中的 ``<keep_alive>`` 参数相同，最终值由后设置的命令决定。如果运行本命令时不设置 ``<keep_alive>`` 参数，则默认使用上次配置的值。
+  - 本命令中的 ``<keep_alive>`` 参数与 :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` 命令中的 ``<keep_alive>`` 参数相同，最终值由后设置的命令决定。如果运行本命令时不设置 ``<keep_alive>`` 参数，则默认使用上次配置的值。
 
 说明
 """""""
@@ -386,26 +386,26 @@
 参数
 """"
 
--  **<mode>**:
+- **<mode>**：
 
-   -  0: 关闭 {IDF_TARGET_NAME} 上电进入 TCP/SSL 服务器 :term:`透传模式`
-   -  3: 开启 {IDF_TARGET_NAME} 上电进入 TCP/SSL 服务器 :term:`透传模式`
+   - 0: 关闭 {IDF_TARGET_NAME} 上电进入 TCP/SSL 服务器 :term:`透传模式`
+   - 3: 开启 {IDF_TARGET_NAME} 上电进入 TCP/SSL 服务器 :term:`透传模式`
 
--  **[<port>]**：服务器监听的端口，默认值：333。
--  **<"type">**：服务器类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6". 默认值："TCP"
--  **<CA enable>**：仅在 ``<type>`` 为 "SSL" 或 "SSLv6" 时才有此参数。
+- **<port>**：服务器监听的端口，默认值：333。
+- **<"type">**：服务器类型："TCP"，"TCPv6"，"SSL"，或 "SSLv6". 默认值："TCP"。
+- **<CA enable>**：仅在 ``<type>`` 为 "SSL" 或 "SSLv6" 时才有此参数。
 
-   -  0：不使用 CA 认证
-   -  1：使用 CA 认证
+   - 0: 不使用 CA 认证
+   - 1: 使用 CA 认证
 
 - **<netif>**：指定服务器监听的网络接口，默认值：0。
 
   .. list::
 
-    - 0：所有网络接口
-    - 1：Wi-Fi station 接口
-    - 2：Wi-Fi SoftAP 接口
-    :esp32: - 3：以太网接口
+    - 0: 所有网络接口
+    - 1: Wi-Fi station 接口
+    - 2: Wi-Fi SoftAP 接口
+    :esp32: - 3: 以太网接口
 
 说明
 """""""
@@ -458,22 +458,22 @@
 参数
 """"
 
--  **<mode>**:
+- **<mode>**：
 
-   -  0: 关闭 {IDF_TARGET_NAME} 上电进入 UDP :term:`透传模式`
-   -  1: 开启 {IDF_TARGET_NAME} 上电进入 UDP :term:`透传模式`
+   - 0: 关闭 {IDF_TARGET_NAME} 上电进入 UDP :term:`透传模式`
+   - 1: 开启 {IDF_TARGET_NAME} 上电进入 UDP :term:`透传模式`
 
--  **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
--  **<remote port>**：远端端口值
--  **<"type">**：字符串参数，表示传输类型："UDP" 或 "UDPv6"。默认值："TCP"
--  **<local port>**：开机进入 UDP 传输时，使用的本地端口。
+- **<"remote host">**：字符串参数，表示远端 IPv4 地址、IPv6 地址，或域名。最长为 64 字节。
+- **<remote port>**：远端端口值。
+- **<"type">**：字符串参数，表示传输类型："UDP" 或 "UDPv6"。默认值："TCP"。
+- **<local port>**：开机进入 UDP 传输时，使用的本地端口。
 
 说明
 """""""
 
 - 本设置将 UDP 开机 :term:`透传模式` 信息保存在 NVS 区，若参数 ``<mode>`` 为 1 ，下次上电自动进入 UDP :term:`透传模式`。需重启生效。
 
-- 如果您想基于 IPv6 网络建立一个 UDP 传输，请执行以下操作：
+- 如果你想基于 IPv6 网络建立一个 UDP 传输，请执行以下操作：
 
   - 确保 AP 支持 IPv6
   - 设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`
@@ -513,21 +513,21 @@
     参数
     """"
 
-    -  **<mode>**：
+    - **<mode>**：
 
-        -  0: 关闭 {IDF_TARGET_NAME} 上电进入 BLE :term:`透传模式`
-        -  2: 开启 {IDF_TARGET_NAME} 上电进入 BLE :term:`透传模式`
+        - 0: 关闭 {IDF_TARGET_NAME} 上电进入 BLE :term:`透传模式`
+        - 2: 开启 {IDF_TARGET_NAME} 上电进入 BLE :term:`透传模式`
 
-    -  **<role>**：
+    - **<role>**：
 
-        -  1: client 角色
-        -  2: server 角色
+        - 1: client 角色
+        - 2: server 角色
 
-    -  **<tx_srv>**：tx 服务序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询。
-    -  **<tx_char>**：tx 服务特征序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 命令查询。
-    -  **<rx_srv>**：rx 服务序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询。
-    -  **<rx_char>**：rx 服务特征序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 命令查询。
-    -  **<"peer_addr">**：对方 Bluetooth LE 地址。
+    - **<tx_srv>**：tx 服务序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询。
+    - **<tx_char>**：tx 服务特征序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 命令查询。
+    - **<rx_srv>**：rx 服务序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询。
+    - **<rx_char>**：rx 服务特征序号。AT 作为 GATTC 时，通过 :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> 命令查询；作为 GATTS 时，通过 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 命令查询。
+    - **<"peer_addr">**：对方 Bluetooth LE 地址。
 
     说明
     """""""
@@ -585,7 +585,7 @@
 参数
 ^^^^
 
--  **<interval>**：数据发送间隔。单位：毫秒。默认值：20。范围：[0,1000]。
+- **<interval>**：数据发送间隔。单位：毫秒。默认值：20。范围：[0,1000]。
 
 说明
 ^^^^
@@ -641,49 +641,49 @@
 参数
 ^^^^
 
--  **<baudrate>**：UART 波特率
+- **<baudrate>**：UART 波特率
 
    - {IDF_TARGET_NAME} 设备：支持范围为 80 ~ {IDF_TARGET_SOC_UART_BITRATE_MAX}
 
--  **<databits>**：数据位
+- **<databits>**：数据位
 
-   -  5：5 bit 数据位
-   -  6：6 bit 数据位
-   -  7：7 bit 数据位
-   -  8：8 bit 数据位
+   - 5: 5 bit 数据位
+   - 6: 6 bit 数据位
+   - 7: 7 bit 数据位
+   - 8: 8 bit 数据位
 
--  **<stopbits>**：停止位
+- **<stopbits>**：停止位
 
-   -  1：1 bit 停止位
-   -  2：1.5 bit 停止位
-   -  3：2 bit 停止位
+   - 1: 1 bit 停止位
+   - 2: 1.5 bit 停止位
+   - 3: 2 bit 停止位
 
--  **<parity>**：校验位
+- **<parity>**：校验位
 
-   -  0：None
-   -  1：Odd
-   -  2：Even
+   - 0: None
+   - 1: Odd
+   - 2: Even
 
--  **<flow control>**：流控
+- **<flow control>**：流控
 
-   -  0：不使能流控
-   -  1：使能 RTS
-   -  2：使能 CTS
-   -  3：同时使能 RTS 和 CTS
+   - 0: 不使能流控
+   - 1: 使能 RTS
+   - 2: 使能 CTS
+   - 3: 同时使能 RTS 和 CTS
 
 说明
 ^^^^
 
--  查询命令返回的是 UART 配置参数的实际值，由于时钟分频的原因，可能与设定值有细微的差异。
--  本设置不保存到 flash。
--  使用硬件流控功能需要连接设备的 CTS/RTS 管脚，详情请见 :doc:`../Get_Started/Hardware_connection` 和 ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``。
+- 查询命令返回的是 UART 配置参数的实际值，由于时钟分频的原因，可能与设定值有细微的差异。
+- 本设置不保存到 flash。
+- 使用硬件流控功能需要连接设备的 CTS/RTS 管脚，详情请见 :doc:`../Get_Started/Hardware_connection` 和 ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``。
 
 示例
 ^^^^
 
 ::
 
-    AT+UART_CUR=115200,8,1,0,3  
+    AT+UART_CUR=115200,8,1,0,3
 
 .. _cmd-UARTD:
 
@@ -725,48 +725,48 @@
 参数
 ^^^^
 
--  **<baudrate>**：UART 波特率
+- **<baudrate>**：UART 波特率
 
    - {IDF_TARGET_NAME} 设备：支持范围为 80 ~ {IDF_TARGET_SOC_UART_BITRATE_MAX}
 
--  **<databits>**：数据位
+- **<databits>**：数据位
 
-   -  5：5 bit 数据位
-   -  6：6 bit 数据位
-   -  7：7 bit 数据位
-   -  8：8 bit 数据位
+   - 5: 5 bit 数据位
+   - 6: 6 bit 数据位
+   - 7: 7 bit 数据位
+   - 8: 8 bit 数据位
 
--  **<stopbits>**：停止位
+- **<stopbits>**：停止位
 
-   -  1：1 bit 停止位
-   -  2：1.5 bit 停止位
-   -  3：2 bit 停止位
+   - 1: 1 bit 停止位
+   - 2: 1.5 bit 停止位
+   - 3: 2 bit 停止位
 
--  **<parity>**：校验位
+- **<parity>**：校验位
 
-   -  0：None
-   -  1：Odd
-   -  2：Even
+   - 0: None
+   - 1: Odd
+   - 2: Even
 
--  **<flow control>**：流控
+- **<flow control>**：流控
 
-   -  0：不使能流控
-   -  1：使能 RTS
-   -  2：使能 CTS
-   -  3：同时使能 RTS 和 CTS
+   - 0: 不使能流控
+   - 1: 使能 RTS
+   - 2: 使能 CTS
+   - 3: 同时使能 RTS 和 CTS
 
 说明
 ^^^^
 
--  配置更改将保存在 NVS 分区，当设备再次上电时仍然有效。
--  使用硬件流控功能需要连接设备的 CTS/RTS 管脚，详情请见 :doc:`../Get_Started/Hardware_connection` 和 ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``。
+- 配置更改将保存在 NVS 分区，当设备再次上电时仍然有效。
+- 使用硬件流控功能需要连接设备的 CTS/RTS 管脚，详情请见 :doc:`../Get_Started/Hardware_connection` 和 ``components/customized_partitions/raw_data/factory_param/factory_param_data.csv``。
 
 示例
 ^^^^
 
 ::
 
-    AT+UART_DEF=115200,8,1,0,3  
+    AT+UART_DEF=115200,8,1,0,3
 
 .. _cmd-SLEEP:
 
@@ -808,13 +808,13 @@
 参数
 ^^^^
 
--  **<sleep mode>**：
+- **<sleep mode>**：
 
-   - 0：禁用睡眠模式。
+   - 0: 禁用睡眠模式。
 
-   - 1：Wi-Fi Modem-sleep 模式。射频模块将根据 AP 的 ``DTIM`` 定期关闭。仅在 Wi-Fi 模式为 Station 时设置生效；在无 Wi-Fi 模式下，允许设置，但不会生效（为了兼容旧版 AT 固件）；其他情况下不可设置。
+   - 1: Wi-Fi Modem-sleep 模式。射频模块将根据 AP 的 ``DTIM`` 定期关闭。仅在 Wi-Fi 模式为 Station 时设置生效；在无 Wi-Fi 模式下，允许设置，但不会生效（为了兼容旧版 AT 固件）；其他情况下不可设置。
 
-   - 2：Light-sleep 模式。在 Wi-Fi 模式为 SoftAP 或 Station+SoftAP 时不可设置。
+   - 2: Light-sleep 模式。在 Wi-Fi 模式为 SoftAP 或 Station+SoftAP 时不可设置。
 
      - 无 Wi-Fi 模式
 
@@ -835,7 +835,7 @@
 
             - CPU 将自动进入睡眠，射频模块根据电源管理模块定期关闭。
 
-   - 3：Wi-Fi Modem-sleep listen interval 模式。射频模块将根据 :ref:`AT+CWJAP <cmd-JAP>` 或 :ref:`AT+CWCONFIG <cmd-CWCONFIG>` 命令设置的 ``listen interval`` 参数定期关闭。仅在 Wi-Fi 模式为 Station 时设置生效；在无 Wi-Fi 模式下，允许设置，但不会生效（为了兼容旧版 AT 固件）；其他情况下不可设置。
+   - 3: Wi-Fi Modem-sleep listen interval 模式。射频模块将根据 :ref:`AT+CWJAP <cmd-JAP>` 或 :ref:`AT+CWCONFIG <cmd-CWCONFIG>` 命令设置的 ``listen interval`` 参数定期关闭。仅在 Wi-Fi 模式为 Station 时设置生效；在无 Wi-Fi 模式下，允许设置，但不会生效（为了兼容旧版 AT 固件）；其他情况下不可设置。
 
 说明
 ^^^^
@@ -867,14 +867,14 @@
 
 ::
 
-    AT+SYSRAM?  
+    AT+SYSRAM?
 
 **响应：**
 
 ::
 
     +SYSRAM:<remaining RAM size>,<minimum heap size>
-    OK  
+    OK
 
 参数
 ^^^^
@@ -922,16 +922,16 @@
 参数
 ^^^^
 
--  **<caps>**：能力值。详见 `不同 capabilities 定义 <https://github.com/espressif/esp-idf/blob/release/v5.4/components/heap/include/esp_heap_caps.h#L29-L49>`_。可以组合使用，如 ``AT+SYSRAM=0x1800``，表示 ``MALLOC_CAP_INTERNAL | MALLOC_CAP_DEFAULT``。
--  **<caps_largest_free_block_size>**：当前 caps 下能够分配的最大空闲块，单位：byte。
--  **<caps_free_size>**：当前 caps 下所有的空闲块大小总和，单位：byte。
--  **<caps_minimum_free_size>**：芯片上电后，caps 下所有的空闲块大小总和的最小值，单位：byte。
--  **<caps_total_size>**：当前 caps 下总内存大小，单位：byte。
+- **<caps>**：能力值。详见 `不同 capabilities 定义 <https://github.com/espressif/esp-idf/blob/release/v5.4/components/heap/include/esp_heap_caps.h#L29-L49>`_。可以组合使用，如 ``AT+SYSRAM=0x1800``，表示 ``MALLOC_CAP_INTERNAL | MALLOC_CAP_DEFAULT``。
+- **<caps_largest_free_block_size>**：当前 caps 下能够分配的最大空闲块，单位：byte。
+- **<caps_free_size>**：当前 caps 下所有的空闲块大小总和，单位：byte。
+- **<caps_minimum_free_size>**：芯片上电后，caps 下所有的空闲块大小总和的最小值，单位：byte。
+- **<caps_total_size>**：当前 caps 下总内存大小，单位：byte。
 
 说明
 ^^^^
 
--  系统运行过程中，一旦内存不足，:term:`AT 日志端口` 会输出 ``alloc failed, size:<requested_size>, caps:<requested_caps>``。您可以发送  ``AT+SYSRAM=<requested_caps>`` 查看当前 caps 的内存使用情况。其中 ``<caps_largest_free_block_size>`` 决定了能否分配 ``<requested_size>`` 大小的内存块。
+- 系统运行过程中，一旦内存不足，:term:`AT 日志端口` 会输出 ``alloc failed, size:<requested_size>, caps:<requested_caps>``。你可以发送 ``AT+SYSRAM=<requested_caps>`` 查看当前 caps 的内存使用情况。其中 ``<caps_largest_free_block_size>`` 决定了能否分配 ``<requested_size>`` 大小的内存块。
 
 .. _cmd-SYSMSG:
 
@@ -963,7 +963,7 @@
 
 **功能：**
 
-设置系统提示信息。如果您需要更加精细的管理 AT 消息，请使用 :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>` 命令。
+设置系统提示信息。如果你需要更加精细的管理 AT 消息，请使用 :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>` 命令。
 
 **命令：**
 
@@ -975,27 +975,27 @@
 
 ::
 
-    OK  
+    OK
 
 参数
 ^^^^
 
--  **<state>**：
+- **<state>**：
 
-   - Bit0：退出 Network :term:`透传模式`, Bluetooth LE SPP 及 Bluetooth SPP 时是否打印提示信息
+   - bit 0: 退出 Network :term:`透传模式`, Bluetooth LE SPP 及 Bluetooth SPP 时是否打印提示信息
 
-     - 0：不打印
-     - 1：打印 ``+QUITT``
+     - 0: 不打印
+     - 1: 打印 ``+QUITT``
 
-   - Bit1：连接时提示信息类型
+   - bit 1: 连接时提示信息类型
 
-     - 0：使用简单版提示信息，如 ``XX,CONNECT``
-     - 1：使用详细版提示信息，如 ``+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port``
+     - 0: 使用简单版提示信息，如 ``XX,CONNECT``
+     - 1: 使用详细版提示信息，如 ``+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port``
 
-   - Bit2：连接状态提示信息，适用于 Network :term:`透传模式`、Bluetooth LE SPP 及 Bluetooth SPP
+   - bit 2: 连接状态提示信息，适用于 Network :term:`透传模式`、Bluetooth LE SPP 及 Bluetooth SPP
 
-     - 0：不打印提示信息
-     - 1：当 Wi-Fi、socket、Bluetooth LE 或 Bluetooth 状态发生改变时，打印提示信息，如：
+     - 0: 不打印提示信息
+     - 1: 当 Wi-Fi、socket、Bluetooth LE 或 Bluetooth 状态发生改变时，打印提示信息，如：
 
       ::
 
@@ -1012,7 +1012,7 @@
            - 以 "+STA_CONNECTED:" 开头的提示信息
            - 以 "+STA_DISCONNECTED:" 开头的提示信息
            - 以 "+DIST_STA_IP:" 开头的提示信息
-           - 以 "+BLECONN:" 开头的提示信息 
+           - 以 "+BLECONN:" 开头的提示信息
            - 以 "+BLEDISCONN:" 开头的提示信息
            - "+BLE_TT_MODE\r\n"
            - 在透传模式下，使能 notify 或者 indicate 时，打印以 "+WRITE:" 开头的提示消息
@@ -1020,9 +1020,9 @@
 说明
 ^^^^
 
--  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将被保存在 NVS 分区。
--  若设 Bit0 为 1，退出 :term:`透传模式` 时会提示 ``+QUITT``。
--  若设 Bit1 为 1，将会影响 :ref:`AT+CIPSTART <cmd-START>` 和 :ref:`AT+CIPSERVER <cmd-SERVER>` 命令，系统将提示 "+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port"，而不是 "XX,CONNECT"。
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将被保存在 NVS 分区。
+- 若设 bit 0 为 1，退出 :term:`透传模式` 时会提示 ``+QUITT``。
+- 若设 bit 1 为 1，将会影响 :ref:`AT+CIPSTART <cmd-START>` 和 :ref:`AT+CIPSERVER <cmd-SERVER>` 命令，系统将提示 "+LINK_CONN:status_type,link_id,ip_type,terminal_type,remote_ip,remote_port,local_port"，而不是 "XX,CONNECT"。
 
 示例
 ^^^^
@@ -1038,7 +1038,7 @@
 
 ::
 
-    // 透传模式下，Wi-Fi、socket、Bluetooth LE 或 Bluetooth 状态改变时会打印提示信息 
+    // 透传模式下，Wi-Fi、socket、Bluetooth LE 或 Bluetooth 状态改变时会打印提示信息
     AT+SYSMSG=4
 
 .. _cmd-SYSMSGFILTER:
@@ -1091,16 +1091,16 @@
 
 - **<enable>**：
 
-    - 0：禁用系统消息过滤。系统默认值。禁用后，系统消息不会被设置的过滤器过滤。
-    - 1：启用系统消息过滤。开启后，系统消息被正则表达式匹配上的数据会被 AT 过滤掉，MCU 不会收到；而未被正则表达式匹配上的数据，会原样发往 MCU。
+    - 0: 禁用系统消息过滤。系统默认值。禁用后，系统消息不会被设置的过滤器过滤。
+    - 1: 启用系统消息过滤。开启后，系统消息被正则表达式匹配上的数据会被 AT 过滤掉，MCU 不会收到；而未被正则表达式匹配上的数据，会原样发往 MCU。
 
 说明
 ^^^^
 
 - 请先使用 :ref:`AT+SYSMSGFILTERCFG <cmd-SYSMSGFILTERCFG>` 命令配置有效的过滤器，再通过本命令启用或禁用系统消息过滤，实现更加精细的系统消息管理。
-- 请谨慎使用 :ref:`AT+SYSMSGFILTER=1 <cmd-SYSMSGFILTER>` 命令，建议您开启系统消息过滤后要及时禁用，防止 AT 的系统消息被过度过滤。
+- 请谨慎使用 :ref:`AT+SYSMSGFILTER=1 <cmd-SYSMSGFILTER>` 命令，建议你开启系统消息过滤后要及时禁用，防止 AT 的系统消息被过度过滤。
 - 在进入 :term:`透传模式` 前，强烈建议使用 :ref:`AT+SYSMSGFILTER=0 <cmd-SYSMSGFILTER>` 命令，禁用系统消息过滤。
-- 如果您基于 AT 工程二次开发，请使用如下的 APIs 实现 AT 命令口的数据发送。
+- 如果你基于 AT 工程二次开发，请使用如下的 APIs 实现 AT 命令口的数据发送。
 
 ::
 
@@ -1185,7 +1185,7 @@
 
 - **<operator>**：
 
-    - 0：清除所有过滤器。清除后，可以释放一些过滤器所占用的堆空间大小。
+    - 0: 清除所有过滤器。清除后，可以释放一些过滤器所占用的堆空间大小。
 
 示例
 """"""
@@ -1217,7 +1217,7 @@
 
     >
 
-上述响应表示 AT 已准备好接收 AT 命令口的数据，此时您可以输入数据（即：头部正则表达式和尾部正则表达式），当 AT 接收到的数据长度达到 ``<head_regexp_len>`` + ``<tail_regexp_len>`` 后，进行正则表达式完整性校验。
+上述响应表示 AT 已准备好接收 AT 命令口的数据，此时你可以输入数据（即：头部正则表达式和尾部正则表达式），当 AT 接收到的数据长度达到 ``<head_regexp_len>`` + ``<tail_regexp_len>`` 后，进行正则表达式完整性校验。
 
 如果正则表达式完整性校验失败或添加过滤器失败，返回：
 
@@ -1236,7 +1236,7 @@
 
 - **<operator>**：
 
-    - 1：增加一个过滤器。一个过滤器包含头部正则表达式和尾部正则表达式。
+    - 1: 增加一个过滤器。一个过滤器包含头部正则表达式和尾部正则表达式。
 
 - **<head_regexp_len>**：头部正则表达式长度。范围：[0,64]。如果设置为 0，代表忽略头部正则表达式的匹配，同时 ``<tail_regexp_len>`` 不能为 0。
 - **<tail_regexp_len>**：尾部正则表达式长度。范围：[0,64]。如果设置为 0，代表忽略尾部正则表达式的匹配，同时 ``<head_regexp_len>`` 不能为 0。
@@ -1251,11 +1251,11 @@
 
 - 请先使用本命令配置有效的过滤器，再通过 :ref:`AT+SYSMSGFILTER <cmd-SYSMSGFILTER>` 命令启用或禁用系统消息过滤，实现更加精细的系统消息管理。
 - 头部和尾部正则表达式格式参考 `POSIX 基本正则语法 (BRE) <https://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended>`_。
-- 为了避免 :term:`系统消息` (AT 命令口的 TX 数据) 被错误过滤，**强烈建议** 头部正则表达式以 ``^`` 开头，尾部正则表达式以 ``$`` 结束。
+- 为了避免 :term:`系统消息` （AT 命令口的 TX 数据）被错误过滤，**强烈建议** 头部正则表达式以 ``^`` 开头，尾部正则表达式以 ``$`` 结束。
 - 只有系统消息 **同时匹配** 上头部正则表达式和尾部正则表达式时，系统消息才会被过滤。过滤后，系统消息被正则表达式匹配上的数据会被 AT 过滤掉，MCU 不会收到；而未被正则表达式匹配上的数据，会原样发往 MCU。例如：收到数据 data，长度为 n 字节，头部正则表达式匹配了 data[0] ~ data[i]，尾部正则表达式匹配了 data[j] ~ data[n-1]，那么最终 MCU 收到的数据为 data[i+1] ~ data[j-1]。
 - 当系统消息匹配到一个过滤器后，不会再继续匹配其它的过滤器。
 - 系统消息匹配过滤器时，系统消息不会缓存，即不会将上一条的系统消息和本条系统消息合在一起，进行匹配。
-- 对于吞吐量较大的设备，强烈建议您设置较少的过滤器，同时及时通过 :ref:`AT+SYSMSGFILTER=0 <cmd-SYSMSGFILTER>` 命令禁用系统消息过滤。
+- 对于吞吐量较大的设备，强烈建议你设置较少的过滤器，同时及时通过 :ref:`AT+SYSMSGFILTER=0 <cmd-SYSMSGFILTER>` 命令禁用系统消息过滤。
 
 示例
 """"""
@@ -1298,7 +1298,7 @@
 
     >
 
-上述响应表示 AT 已准备好接收 AT 命令口的数据，此时您可以输入数据（即：头部正则表达式和尾部正则表达式），当 AT 接收到的数据长度达到 ``<head_regexp_len>`` + ``<tail_regexp_len>`` 后，进行正则表达式完整性校验。
+上述响应表示 AT 已准备好接收 AT 命令口的数据，此时你可以输入数据（即：头部正则表达式和尾部正则表达式），当 AT 接收到的数据长度达到 ``<head_regexp_len>`` + ``<tail_regexp_len>`` 后，进行正则表达式完整性校验。
 
 如果正则表达式完整性校验失败或删除过滤器失败，返回：
 
@@ -1317,7 +1317,7 @@
 
 - **<operator>**：
 
-    - 2：删除一个过滤器。
+    - 2: 删除一个过滤器。
 
 - **<head_regexp_len>**：头部正则表达式长度。范围：[0,64]。如果设置为 0，则 ``<tail_regexp_len>`` 不能为 0。
 - **<tail_regexp_len>**：尾部正则表达式长度。范围：[0,64]。如果设置为 0，则 ``<head_regexp_len>`` 不能为 0。
@@ -1369,7 +1369,7 @@
 ::
 
     +SYSFLASH:<partition>,<type>,<subtype>,<addr>,<size>
-    OK  
+    OK
 
 设置命令
 ^^^^^^^^
@@ -1389,35 +1389,35 @@
 ::
 
     +SYSFLASH:<length>,<data>
-    OK  
+    OK
 
 参数
 ^^^^
 
--  **<operation>**：
+- **<operation>**：
 
-   -  0：擦除分区
-   -  1：写分区
-   -  2：读分区
+   - 0: 擦除分区
+   - 1: 写分区
+   - 2: 读分区
 
--  **<partition>**：用户分区名称
--  **<offset>**：偏移地址
--  **<length>**：数据长度
--  **<type>**：用户分区类型
--  **<subtype>**：用户分区子类型
--  **<addr>**：用户分区地址
--  **<size>**：用户分区大小
+- **<partition>**：用户分区名称
+- **<offset>**：偏移地址
+- **<length>**：数据长度
+- **<type>**：用户分区类型
+- **<subtype>**：用户分区子类型
+- **<addr>**：用户分区地址
+- **<size>**：用户分区大小
 
 说明
 ^^^^
 
--  使用本命令需烧录 at_customize.bin，详细信息可参考 :doc:`../Compile_and_Develop/How_to_customize_partitions`。
--  擦除分区时，请完整擦除该目标分区。这可以通过省略 ``<offset>`` 和 ``<length>`` 参数来完成。例如，命令 ``AT+SYSFLASH=0,"mfg_nvs"`` 可擦除整个 "mfg_nvs" 区域。
--  关于分区的定义可参考 `ESP-IDF 分区表 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_。
--  当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时您可以输入要写的数据，数据长度应与 ``<length>`` 一致。
--  写分区前，请先擦除该分区。
--  如果您想修改 mfg_nvs 分区中的某些数据，请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令（NVS 中的键值对操作）。如果您想修改整个 mfg_nvs 分区，请使用 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令（分区操作）。
--  写分区时，MCU 应该分次写入数据，避免一次性写入过多数据导致内存不足。例如每次写入 4 KB 字节数据，直到写入完成。
+- 使用本命令需烧录 at_customize.bin，详细信息可参考 :doc:`../Compile_and_Develop/How_to_customize_partitions`。
+- 擦除分区时，请完整擦除该目标分区。这可以通过省略 ``<offset>`` 和 ``<length>`` 参数来完成。例如，命令 ``AT+SYSFLASH=0,"mfg_nvs"`` 可擦除整个 "mfg_nvs" 区域。
+- 关于分区的定义可参考 `ESP-IDF 分区表 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_。
+- 当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时你可以输入要写的数据，数据长度应与 ``<length>`` 一致。
+- 写分区前，请先擦除该分区。
+- 如果你想修改 mfg_nvs 分区中的某些数据，请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令（NVS 中的键值对操作）。如果你想修改整个 mfg_nvs 分区，请使用 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令（分区操作）。
+- 写分区时，MCU 应该分次写入数据，避免一次性写入过多数据导致内存不足。例如每次写入 4 KB 字节数据，直到写入完成。
 
 示例
 ^^^^
@@ -1479,9 +1479,9 @@
 
 - **<operation>**：
 
-   - 0：擦除操作
-   - 1：读取操作
-   - 2：写入操作
+   - 0: 擦除操作
+   - 1: 读取操作
+   - 2: 写入操作
 
 - **<"namespace">**：命名空间。
 - **<"key">**：主键，或称为键。当 ``<"key">`` 缺省时，擦除 ``<"namespace">`` 内所有的键值对；否则只擦除当前指定的 ``<"key">`` 的键值对。
@@ -1544,9 +1544,9 @@
 
 - **<operation>**：
 
-   - 0：擦除操作
-   - 1：读取操作
-   - 2：写入操作
+   - 0: 擦除操作
+   - 1: 读取操作
+   - 2: 写入操作
 
 - **<"namespace">**：命名空间。
 - **<"key">**：主键，或称为键。
@@ -1554,14 +1554,14 @@
 - **<length>**：键值的长度。
 - **<type>**：键值的类型。
 
-  - 1：u8
-  - 2：i8
-  - 3：u16
-  - 4：i16
-  - 5：u32
-  - 6：i32
-  - 7：string
-  - 8：binary
+  - 1: u8
+  - 2: i8
+  - 3: u16
+  - 4: i16
+  - 5: u32
+  - 6: i32
+  - 7: string
+  - 8: binary
 
 - **<value>**：键值的数据。
 
@@ -1609,35 +1609,35 @@
 
 - **<operation>**：
 
-   - 0：擦除操作
-   - 1：读取操作
-   - 2：写入操作
+   - 0: 擦除操作
+   - 1: 读取操作
+   - 2: 写入操作
 
 - **<"namespace">**：命名空间。
 - **<"key">**：主键，或称为键。
 - **<type>**：键值的类型。
 
-  - 1：u8
-  - 2：i8
-  - 3：u16
-  - 4：i16
-  - 5：u32
-  - 6：i32
-  - 7：string
-  - 8：binary
+  - 1: u8
+  - 2: i8
+  - 3: u16
+  - 4: i16
+  - 5: u32
+  - 6: i32
+  - 7: string
+  - 8: binary
 
 - **<value>**：参数 ``<type>`` 不同，则此参数意义不同：
 
   - 如果 ``<type>`` 是 1-6，``<value>`` 代表键值的数据。
-  - 如果 ``<type>`` 是 7-8，``<value>`` 代表键值的数据的长度。在您发送完此条命令后，AT 返回 ``>``，表示 AT 已准备好接收串行数据，此时您可以输入数据，当 AT 接收到的数据长度达到 ``<value>`` 后，则立即向命名空间内写入键值对。
+  - 如果 ``<type>`` 是 7-8，``<value>`` 代表键值的数据的长度。在你发送完此条命令后，AT 返回 ``>``，表示 AT 已准备好接收串行数据，此时你可以输入数据，当 AT 接收到的数据长度达到 ``<value>`` 后，则立即向命名空间内写入键值对。
 
 说明
 ^^^^
 - 请先阅读 `非易失性存储 (NVS) <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/storage/nvs_flash.html>`_，了解命名空间、键值对的概念。
-- 写入前，您无需主动擦除命名空间或键值对（NVS 会根据需要自动擦除键值对）。
-- 如果您想修改 mfg_nvs 分区中的某些数据，请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令（NVS 中的键值对操作）。如果您想修改整个 mfg_nvs 分区，请使用 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令（分区操作）。
+- 写入前，你无需主动擦除命名空间或键值对（NVS 会根据需要自动擦除键值对）。
+- 如果你想修改 mfg_nvs 分区中的某些数据，请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令（NVS 中的键值对操作）。如果你想修改整个 mfg_nvs 分区，请使用 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令（分区操作）。
 - 更多 AT+SYSMFG 命令的使用示例，请参考 :doc:`../AT_Command_Examples/sysmfg_at_examples`。
-- 修改配置时，本命令不会对配置值进行功能性检查。即使您配置了错误的数值，也会被存储。因此，您需要自行确保配置数据的正确性。
+- 修改配置时，本命令不会对配置值进行功能性检查。即使你配置了错误的数值，也会被存储。因此，你需要自行确保配置数据的正确性。
 
 示例
 """""
@@ -1752,60 +1752,60 @@
 
 .. only:: esp32
 
-  -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [0,7]：
+  - **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [0,7]：
 
-    -  0: 7 dBm
-    -  1: 4 dBm
-    -  2: 1 dBm
-    -  3: -2 dBm
-    -  4: -5 dBm
-    -  5: -8 dBm
-    -  6: -11 dBm
-    -  7: -14 dBm
+    - 0: 7 dBm
+    - 1: 4 dBm
+    - 2: 1 dBm
+    - 3: -2 dBm
+    - 4: -5 dBm
+    - 5: -8 dBm
+    - 6: -11 dBm
+    - 7: -14 dBm
 
 .. only:: esp32c3 or esp32c2 or esp32c5
 
-  -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [0,15]：
+  - **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [0,15]：
 
-    -  0: -24 dBm
-    -  1: -21 dBm
-    -  2: -18 dBm
-    -  3: -15 dBm
-    -  4: -12 dBm
-    -  5: -9 dBm
-    -  6: -6 dBm
-    -  7: -3 dBm
-    -  8: 0 dBm
-    -  9: 3 dBm
-    -  10: 6 dBm
-    -  11: 9 dBm
-    -  12: 12 dBm
-    -  13: 15 dBm
-    -  14: 18 dBm
-    -  15: 20 dBm
+    - 0: -24 dBm
+    - 1: -21 dBm
+    - 2: -18 dBm
+    - 3: -15 dBm
+    - 4: -12 dBm
+    - 5: -9 dBm
+    - 6: -6 dBm
+    - 7: -3 dBm
+    - 8: 0 dBm
+    - 9: 3 dBm
+    - 10: 6 dBm
+    - 11: 9 dBm
+    - 12: 12 dBm
+    - 13: 15 dBm
+    - 14: 18 dBm
+    - 15: 20 dBm
 
 .. only:: esp32c6 or esp32c61
 
-  -  **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [3,15]：
+  - **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [3,15]：
 
-    -  3: -15 dBm
-    -  4: -12 dBm
-    -  5: -9 dBm
-    -  6: -6 dBm
-    -  7: -3 dBm
-    -  8: 0 dBm
-    -  9: 3 dBm
-    -  10: 6 dBm
-    -  11: 9 dBm
-    -  12: 12 dBm
-    -  13: 15 dBm
-    -  14: 18 dBm
-    -  15: 20 dBm
+    - 3: -15 dBm
+    - 4: -12 dBm
+    - 5: -9 dBm
+    - 6: -6 dBm
+    - 7: -3 dBm
+    - 8: 0 dBm
+    - 9: 3 dBm
+    - 10: 6 dBm
+    - 11: 9 dBm
+    - 12: 12 dBm
+    - 13: 15 dBm
+    - 14: 18 dBm
+    - 15: 20 dBm
 
 .. only:: esp32 or esp32c3 or esp32c6 or esp32c61 or esp32c5
 
-  -  **<ble_scan_power>**：Bluetooth LE 扫描的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
-  -  **<ble_conn_power>**：Bluetooth LE 连接的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
+  - **<ble_scan_power>**：Bluetooth LE 扫描的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
+  - **<ble_conn_power>**：Bluetooth LE 连接的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
 
 说明
 -----
@@ -1954,7 +1954,7 @@
 参数
 ^^^^
 
--  **<Unix-timestamp>**：Unix 时间戳，单位：秒。
+- **<Unix-timestamp>**：Unix 时间戳，单位：秒。
 
 示例
 ^^^^
@@ -1979,15 +1979,15 @@
 
 ::
 
-    AT+SYSLOG?  
+    AT+SYSLOG?
 
 **响应：**
 
 ::
 
-    +SYSLOG:<status>  
+    +SYSLOG:<status>
 
-    OK  
+    OK
 
 设置命令
 ^^^^^^^^
@@ -2011,10 +2011,10 @@
 参数
 ^^^^
 
--  **<status>**：错误代码提示状态
+- **<status>**：错误代码提示状态
 
-   -  0：禁用
-   -  1：启用
+   - 0: 禁用
+   - 1: 启用
 
 示例
 ^^^^
@@ -2038,9 +2038,9 @@
 
    OK
    AT+FAKE
-   // 不提示 `ERR CODE:0x01090000` 
+   // 不提示 `ERR CODE:0x01090000`
 
-   ERROR  
+   ERROR
 
 AT 错误代码是一个 32 位十六进制数值，定义如下：
 
@@ -2050,16 +2050,16 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
    * - 类型
      - 子类型
      - 扩展
-   * - bit32 ~ bit24
-     - bit23 ~ bit16
-     - bit15 ~ bit0 
+   * - bit 32 ～ bit 24
+     - bit 23 ～ bit 16
+     - bit 15 ～ bit 0
 
--  **category：** 固定值 0x01
--  **subcategory：** 错误类型
+- **category：** 固定值 0x01
+- **subcategory：** 错误类型
 
-   .. list-table::    
-      :header-rows: 1 
-       
+   .. list-table::
+      :header-rows: 1
+
       * - 错误类型
         - 错误代码
         - 说明
@@ -2068,7 +2068,7 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
         - OK
       * - ESP_AT_SUB_COMMON_ERROR
         - 0x01
-        - 保留  
+        - 保留
       * - ESP_AT_SUB_NO_TERMINATOR
         - 0x02
         - 未找到结束符（应以 "\r\n" 结尾）
@@ -2095,7 +2095,7 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
         - 不支持该命令
       * - ESP_AT_SUB_CMD_EXEC_FAIL
         - 0x0A
-        - 执行命令失败 
+        - 执行命令失败
       * - ESP_AT_SUB_CMD_PROCESSING
         - 0x0B
         - 仍在执行上一条命令
@@ -2103,7 +2103,7 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
         - 0x0C
         - 命令操作类型错误
 
--  **extension：** 错误扩展信息，不同的子类型有不同的扩展信息，详情请见 ``components/at/include/esp_at.h``。
+- **extension：** 错误扩展信息，不同的子类型有不同的扩展信息，详情请见 ``components/at/include/esp_at.h``。
 
 例如，错误代码 ``ERR CODE:0x01090000`` 表示“不支持该命令”。
 
@@ -2130,23 +2130,23 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
 参数
 ^^^^
 
--  **<wakeup source>**: 唤醒源
+- **<wakeup source>**：唤醒源
 
-   -  0：保留配置，暂不支持
-   -  1：保留配置，暂不支持
-   -  2：GPIO 唤醒
+   - 0: 保留配置，暂不支持
+   - 1: 保留配置，暂不支持
+   - 2: GPIO 唤醒
 
--  **<param1>**:
+- **<param1>**：
 
-   -  当唤醒源为 GPIO 时，该参数表示 GPIO 管脚
-   -  保留配置，暂不支持
+   - 当唤醒源为 GPIO 时，该参数表示 GPIO 管脚
+   - 保留配置，暂不支持
 
--  **<param2>**:
+- **<param2>**：
 
-   -  当唤醒源为 GPIO 时，该参数表示唤醒电平
+   - 当唤醒源为 GPIO 时，该参数表示唤醒电平
 
-     - 0：低电平
-     - 1：高电平
+     - 0: 低电平
+     - 1: 高电平
 
 示例
 ^^^^
@@ -2171,21 +2171,21 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
 
 **功能：**
 
-查询 AT 参数存储模式 
+查询 AT 参数存储模式
 
 **命令：**
 
 ::
 
-    AT+SYSSTORE?  
+    AT+SYSSTORE?
 
 **响应：**
 
 ::
 
-    +SYSSTORE:<store_mode>  
+    +SYSSTORE:<store_mode>
 
-    OK  
+    OK
 
 设置命令
 ^^^^^^^^
@@ -2205,10 +2205,10 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
 参数
 ^^^^
 
--  **<store_mode>**：参数存储模式
+- **<store_mode>**：参数存储模式
 
-   -  0：命令配置不存入 flash
-   -  1：命令配置存入 flash（默认）
+   - 0: 命令配置不存入 flash
+   - 1: 命令配置存入 flash（默认）
 
 说明
 ^^^^
@@ -2288,13 +2288,13 @@ AT 错误代码是一个 32 位十六进制数值，定义如下：
 参数
 ^^^^
 
--  **<direct>**：读或写寄存器
+- **<direct>**：读或写寄存器
 
-   -  0：读寄存器
-   -  1：写寄存器
+   - 0: 读寄存器
+   - 1: 写寄存器
 
--  **<address>**：(uint32) 寄存器地址，详情请参考相关的《技术参考手册》
--  **<write value>**：(uint32) 写入值，仅适用于写寄存器时
+- **<address>**：(uint32) 寄存器地址，详情请参考相关的《技术参考手册》
+- **<write value>**：(uint32) 写入值，仅适用于写寄存器时
 
 说明
 ^^^^

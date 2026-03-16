@@ -12,7 +12,7 @@ RainMaker AT 示例
 简介
 ------------
 
-**乐鑫** 提供了一个官方应用 `Nova Home <https://rainmaker.espressif.com/zh-hans/index.html>`__ 来和设备进行交互。您可以通过 `Google Play (Android) <https://play.google.com/store/apps/details?id=com.espressif.novahome>`__ 或者 `App Store (iOS) <https://apps.apple.com/cn/app/nova-home/id1563728960>`__ 下载。在文档的示例中，默认使用 Nova Home（版本：1.6.2）作为客户端应用。
+**乐鑫** 提供了一个官方应用 `Nova Home <https://rainmaker.espressif.com/zh-hans/index.html>`__ 来和设备进行交互。你可以通过 `Google Play (Android) <https://play.google.com/store/apps/details?id=com.espressif.novahome>`__ 或者 `App Store (iOS) <https://apps.apple.com/cn/app/nova-home/id1563728960>`__ 下载。在文档的示例中，默认使用 Nova Home（版本：1.6.2）作为客户端应用。
 
 .. _simple-communi:
 
@@ -330,7 +330,7 @@ RainMaker AT 示例
 
      OK
 
-   如果 {IDF_TARGET_NAME} 之前已经连接一个 AP，则设备首先会断开连接。之后在 app 右上角，您可以点击 "+" 按钮 > ``Add Device``，然后 app 通过 Bluetooth LE 扫描并显示发现的设备。
+   如果 {IDF_TARGET_NAME} 之前已经连接一个 AP，则设备首先会断开连接。之后在 app 右上角，你可以点击 "+" 按钮 > ``Add Device``，然后 app 通过 Bluetooth LE 扫描并显示发现的设备。
 
    .. figure:: ../../../_static/RainMaker/nova_add_device.png
       :align: center
@@ -368,7 +368,7 @@ RainMaker AT 示例
      +RMCONNECTED
      +RMMAPPINGDONE
 
-   之后您可以在 app 上设置设备的名字和房间。
+   之后你可以在 app 上设置设备的名字和房间。
 
    .. figure:: ../../../_static/RainMaker/nova_device.png
       :align: center
@@ -394,7 +394,7 @@ RainMaker AT 示例
 
      OK
 
-   之后您可以在 app 上看到灯的状态从关闭状态切换到打开状态。
+   之后你可以在 app 上看到灯的状态从关闭状态切换到打开状态。
 
    .. figure:: ../../../_static/RainMaker/nova_change_light_status.png
       :align: center
@@ -406,7 +406,7 @@ RainMaker AT 示例
 
 7. 远程控制设备。
 
-   您可以在 app 上控制灯的状态。例如，您可以将灯的状态由打开状态切换到关闭状态。当 {IDF_TARGET_NAME} 接收到控制消息时，系统返回：
+   你可以在 app 上控制灯的状态。例如，你可以将灯的状态由打开状态切换到关闭状态。当 {IDF_TARGET_NAME} 接收到控制消息时，系统返回：
 
    .. code-block:: none
 
@@ -536,7 +536,7 @@ RainMaker AT 示例
 
      >
 
-   之后您可以直接输入数据，输入 ``1`` 可以将灯切换到开灯状态，输入 ``0`` 可以将灯切换到关灯状态。
+   之后你可以直接输入数据，输入 ``1`` 可以将灯切换到开灯状态，输入 ``0`` 可以将灯切换到关灯状态。
 
 8. 停止发送数据。
 
@@ -544,7 +544,7 @@ RainMaker AT 示例
 
    .. Important::
 
-     使用 :ref:`+++ <cmd-PLUS>` 可退出 :term:`RainMaker 透传模式`，回到 :term:`RainMaker 普通传输模式`。您可以再次使用 ``AT+RMSEND`` 命令进入到 :term:`RainMaker 透传模式`。
+     使用 :ref:`+++ <cmd-PLUS>` 可退出 :term:`RainMaker 透传模式`，回到 :term:`RainMaker 普通传输模式`。你可以再次使用 ``AT+RMSEND`` 命令进入到 :term:`RainMaker 透传模式`。
 
 9. 主动断开与 ESP RainMaker 云的连接。
 
@@ -586,7 +586,7 @@ RainMaker AT 示例
 
    说明：
 
-   您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+   你输入的 SSID 和密码可能跟上述命令中的不同。请使用你的路由器的 SSID 和密码。
 
 3. 初始化节点。
 
@@ -628,7 +628,7 @@ RainMaker AT 示例
 
    **乐鑫** 提供了 `REST APIs <https://swaggerapis.rainmaker.espressif.com/>`__ 操作 RainMaker 后台服务。
 
-   首先您可以通过 API `/{version}/login <https://swaggerapis.rainmaker.espressif.com/#/User/login>`__ 输入 ``user_name`` 和 ``password`` 来获取 ``accesstoken``。之后可以点击 ``Authorize`` 按钮来输入刚获取到的 ``accesstoken``。
+   首先你可以通过 API `/{version}/login <https://swaggerapis.rainmaker.espressif.com/#/User/login>`__ 输入 ``user_name`` 和 ``password`` 来获取 ``accesstoken``。之后可以点击 ``Authorize`` 按钮来输入刚获取到的 ``accesstoken``。
 
    .. figure:: ../../../_static/RainMaker/rest_api_login.png
       :align: center
@@ -694,13 +694,13 @@ RainMaker AT 示例
 
      +RMMAPPINGDONE
 
-   之后，您可以在 app 上刷新就可以看到刚添加的设备。
+   之后，你可以在 app 上刷新就可以看到刚添加的设备。
 
    说明：
 
    该命令不保证映射成功。映射结果需要由客户端单独检查 (Phone app/CLI)。
 
-9. 清除用户和节点之间的映射。(可选)
+9. 清除用户和节点之间的映射。（可选）
 
    命令：
 

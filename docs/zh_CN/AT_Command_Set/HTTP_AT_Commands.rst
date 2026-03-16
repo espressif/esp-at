@@ -5,16 +5,16 @@ HTTP AT 命令集
 
 :link_to_translation:`en:[English]`
 
--  :ref:`介绍 <cmd-http-intro>`
--  :ref:`AT+HTTPCLIENT <cmd-HTTPCLIENT>`：发送 HTTP 客户端请求
--  :ref:`AT+HTTPGETSIZE <cmd-HTTPGETSIZE>`：获取 HTTP 资源大小
--  :ref:`AT+HTTPCGET <cmd-HTTPCGET>`：获取 HTTP 资源
--  :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>`：Post 指定长度的 HTTP 数据
--  :ref:`AT+HTTPCPUT <cmd-HTTPCPUT>`：Put 指定长度的 HTTP 数据
--  :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>`：设置/获取长的 HTTP URL
--  :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>`：设置/查询 HTTP 请求头
--  :ref:`AT+HTTPCFG <cmd-HTTPCFG>`：设置 HTTP 客户端配置
--  :ref:`HTTP AT 错误码 <cmd-HTTPErrCode>`
+- :ref:`介绍 <cmd-http-intro>`
+- :ref:`AT+HTTPCLIENT <cmd-HTTPCLIENT>`：发送 HTTP 客户端请求
+- :ref:`AT+HTTPGETSIZE <cmd-HTTPGETSIZE>`：获取 HTTP 资源大小
+- :ref:`AT+HTTPCGET <cmd-HTTPCGET>`：获取 HTTP 资源
+- :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>`：Post 指定长度的 HTTP 数据
+- :ref:`AT+HTTPCPUT <cmd-HTTPCPUT>`：Put 指定长度的 HTTP 数据
+- :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>`：设置/获取长的 HTTP URL
+- :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>`：设置/查询 HTTP 请求头
+- :ref:`AT+HTTPCFG <cmd-HTTPCFG>`：设置 HTTP 客户端配置
+- :ref:`HTTP AT 错误码 <cmd-HTTPErrCode>`
 
 .. _cmd-http-intro:
 
@@ -22,7 +22,7 @@ HTTP AT 命令集
 ------
 
 .. important::
-  默认的 AT 固件支持此页面下的所有 AT 命令。如果您不需要 {IDF_TARGET_NAME} 支持 HTTP 命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+  默认的 AT 固件支持此页面下的所有 AT 命令。如果你不需要 {IDF_TARGET_NAME} 支持 HTTP 命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
 
   - 禁用 ``Component config`` > ``AT`` > ``AT http command support``
 
@@ -51,40 +51,40 @@ HTTP AT 命令集
 参数
 ^^^^
 
--  **<opt>**：HTTP 客户端请求方法：
-   
-   -  1：HEAD
-   -  2：GET
-   -  3：POST
-   -  4：PUT
-   -  5：DELETE
+- **<opt>**：HTTP 客户端请求方法：
 
--  **<content-type>**：客户端请求数据类型：
+   - 1: HEAD
+   - 2: GET
+   - 3: POST
+   - 4: PUT
+   - 5: DELETE
 
-   -  0：``application/x-www-form-urlencoded``
-   -  1：``application/json``
-   -  2：``multipart/form-data``
-   -  3：``text/xml``
+- **<content-type>**：客户端请求数据类型：
 
--  **<"url">**：HTTP URL，当后面的 ``<"host">`` 和 ``<"path">`` 参数为空时，本参数会自动覆盖这两个参数。
--  **<"host">**：域名或 IP 地址。
--  **<"path">**：HTTP 路径。
--  **<transport_type>**：HTTP 客户端传输类型，默认值为 1：
+   - 0: ``application/x-www-form-urlencoded``
+   - 1: ``application/json``
+   - 2: ``multipart/form-data``
+   - 3: ``text/xml``
 
-   -  1：``HTTP_TRANSPORT_OVER_TCP``
-   -  2：``HTTP_TRANSPORT_OVER_SSL``
+- **<"url">**：HTTP URL，当后面的 ``<"host">`` 和 ``<"path">`` 参数为空时，本参数会自动覆盖这两个参数。
+- **<"host">**：域名或 IP 地址。
+- **<"path">**：HTTP 路径。
+- **<transport_type>**：HTTP 客户端传输类型，默认值为 1：
 
--  **<"data">**：当 ``<opt>`` 是 POST 请求时，本参数为发送给 HTTP 服务器的数据。当 ``<opt>`` 不是 POST 请求时，这个参数不存在（也就是，不需要输入逗号来表示有这个参数）。
--  **<"http_req_header">**：可发送多个请求头给服务器。
+   - 1: ``HTTP_TRANSPORT_OVER_TCP``
+   - 2: ``HTTP_TRANSPORT_OVER_SSL``
+
+- **<"data">**：当 ``<opt>`` 是 POST 请求时，本参数为发送给 HTTP 服务器的数据。当 ``<opt>`` 不是 POST 请求时，这个参数不存在（也就是，不需要输入逗号来表示有这个参数）。
+- **<"http_req_header">**：可发送多个请求头给服务器。
 
 说明
 ^^^^
--  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
--  如果 ``url`` 参数不为空，HTTP 客户端将使用它并忽略 ``host`` 参数和 ``path`` 参数；如果 ``url`` 参数被省略或字符串为空，HTTP 客户端将使用 ``host`` 参数和 ``path`` 参数。
--  某些已发布的固件默认不支持 HTTP 客户端命令（详情请见 :doc:`../Compile_and_Develop/esp-at_firmware_differences`），但是可通过以下方式使其支持该命令：``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support``，然后编译项目（详情请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
--  该命令不支持 URL 重定向，在获取到服务器返回的状态码 301（永久性重定向）或者 302（临时性重定向）后不会自动跳转到新的 URL 地址。您可以使用某些工具获取要访问的实际 URL，然后通过该命令访问它。
--  如果包含 ``<"data">`` 参数的整条命令的长度超过了 256 字节，请使用 :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>` 命令。
--  要设置更多的 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令。
+- 如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
+- 如果 ``url`` 参数不为空，HTTP 客户端将使用它并忽略 ``host`` 参数和 ``path`` 参数；如果 ``url`` 参数被省略或字符串为空，HTTP 客户端将使用 ``host`` 参数和 ``path`` 参数。
+- 某些已发布的固件默认不支持 HTTP 客户端命令（详情请见 :doc:`../Compile_and_Develop/esp-at_firmware_differences`），但是可通过以下方式使其支持该命令：``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support``，然后编译项目（详情请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）。
+- 该命令不支持 URL 重定向，在获取到服务器返回的状态码 301（永久性重定向）或者 302（临时性重定向）后不会自动跳转到新的 URL 地址。你可以使用某些工具获取要访问的实际 URL，然后通过该命令访问它。
+- 如果包含 ``<"data">`` 参数的整条命令的长度超过了 256 字节，请使用 :ref:`AT+HTTPCPOST <cmd-HTTPCPOST>` 命令。
+- 要设置更多的 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令。
 
 示例
 ^^^^
@@ -134,8 +134,8 @@ HTTP AT 命令集
 说明
 ^^^^
 
--  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
--  如果您想设置 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令设置。
+- 如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
+- 如果你想设置 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令设置。
 
 示例
 ^^^^
@@ -175,8 +175,8 @@ HTTP AT 命令集
 说明
 ^^^^^
 
--  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
--  如果您想设置 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令设置。
+- 如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
+- 如果你想设置 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令设置。
 
 .. _cmd-HTTPCPOST:
 
@@ -200,7 +200,7 @@ HTTP AT 命令集
 
     >
 
-符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，传输开始。
+符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，传输开始。
 
 若传输成功，则返回：
 
@@ -219,16 +219,16 @@ HTTP AT 命令集
 - **<"url">**：HTTP URL。
 - **<length>**：需 POST 的 HTTP 数据长度。最大长度等于系统可分配的堆空间大小。
 - **<http_req_header_cnt>**：``<"http_req_header">`` 参数的数量。
-- **[<"http_req_header">]**：HTTP 请求头。可发送多个请求头给服务器。
+- **<"http_req_header">**：HTTP 请求头。可发送多个请求头给服务器。
 
 说明
 ^^^^^
 
--  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
--  该命令的 ``content-type`` 默认类型为 ``application/x-www-form-urlencoded``。
--  如果您想设置 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令设置。
--  性能优化：本命令使用短连接模式，每次请求都会建立新连接（HTTPS 需进行 SSL 握手）。为实现低时延通信，建议改用 :ref:`AT+CIPSTART <cmd-START>` 建立长连接，由 MCU 构造 HTTP 请求包并通过 :ref:`AT+CIPSEND <cmd-SEND>` 发送，以避免重复握手产生的通信开销。
--  内存管理：本命令每次新建并关闭连接，会产生 TIME_WAIT 状态占用内存。若发现最小堆空间持续下降，可通过以下方式优化：
+- 如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
+- 该命令的 ``content-type`` 默认类型为 ``application/x-www-form-urlencoded``。
+- 如果你想设置 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令设置。
+- 性能优化：本命令使用短连接模式，每次请求都会建立新连接（HTTPS 需进行 SSL 握手）。为实现低时延通信，建议改用 :ref:`AT+CIPSTART <cmd-START>` 建立长连接，由 MCU 构造 HTTP 请求包并通过 :ref:`AT+CIPSEND <cmd-SEND>` 发送，以避免重复握手产生的通信开销。
+- 内存管理：本命令每次新建并关闭连接，会产生 TIME_WAIT 状态占用内存。若发现最小堆空间持续下降，可通过以下方式优化：
 
   - 减小 TCP Maximum Segment Lifetime (MSL)：``./build.py menuconfig`` > ``Component config`` > ``LWIP`` > ``TCP`` > ``Maximum segment lifetime (MSL)``，然后重新编译 AT 固件。注意：减小 MSL 可以缩短 TIME_WAIT 状态的持续时间，从而更快释放内存，但不能完全消除 TIME_WAIT 状态。
   - 改用 TCP 长连接复用，避免频繁创建和关闭连接。
@@ -255,7 +255,7 @@ HTTP AT 命令集
 
     >
 
-符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，传输开始。
+符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，传输开始。
 
 若传输成功，则返回：
 
@@ -274,13 +274,13 @@ HTTP AT 命令集
 - **<"url">**：HTTP URL。
 - **<length>**：需 Put 的 HTTP 数据长度。最大长度等于系统可分配的堆空间大小。
 - **<http_req_header_cnt>**：``<"http_req_header">`` 参数的数量。
-- **[<"http_req_header">]**：HTTP 请求头。可发送多个请求头给服务器。
+- **<"http_req_header">**：HTTP 请求头。可发送多个请求头给服务器。
 
 说明
 ^^^^^
 
--  如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
--  如果您想设置 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令设置。
+- 如果包含 URL 的整条命令的长度超过了 256 字节，请先使用 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令预配置 URL，然后本命令里的 ``<"url">`` 参数需要设置为 ``""``。
+- 如果你想设置 HTTP 请求头，请使用 :ref:`AT+HTTPCHEAD <cmd-HTTPCHEAD>` 命令设置。
 
 .. _cmd-HTTPURLCFG:
 
@@ -320,7 +320,7 @@ HTTP AT 命令集
 
     >
 
-符号 > 表示 AT 准备好接收串口数据，此时您可以输入 URL，当数据长度达到参数 ``<url length>`` 的值时，系统返回：
+符号 > 表示 AT 准备好接收串口数据，此时你可以输入 URL，当数据长度达到参数 ``<url length>`` 的值时，系统返回：
 
 ::
 
@@ -330,8 +330,8 @@ HTTP AT 命令集
 ^^^^^^^^^^
 - **<url length>**：HTTP URL 长度。单位：字节。
 
-  - 0：清除 HTTP URL 配置。
-  - [8,8192]：设置 HTTP URL 配置。
+  - 0: 清除 HTTP URL 配置。
+  - [8,8192]: 设置 HTTP URL 配置。
 
 - **<data>**： HTTP URL 数据。
 
@@ -374,7 +374,7 @@ HTTP AT 命令集
 
     >
 
-符号 ``>`` 表示 AT 准备好接收 AT 命令口数据，此时您可以输入 HTTP 请求头（请求头为 ``key: value`` 形式，无需以 ``\r\n`` 结尾），当数据长度达到参数 ``<req_header_len>`` 的值时，AT 返回：
+符号 ``>`` 表示 AT 准备好接收 AT 命令口数据，此时你可以输入 HTTP 请求头（请求头为 ``key: value`` 形式，无需以 ``\r\n`` 结尾），当数据长度达到参数 ``<req_header_len>`` 的值时，AT 返回：
 
 ::
 
@@ -386,7 +386,7 @@ HTTP AT 命令集
 - **<"req_header">**：HTTP 请求头。
 - **<req_header_len>**：HTTP 请求头长度。单位：字节。
 
-  - 0：清除所有已设置的 HTTP 请求头。
+  - 0: 清除所有已设置的 HTTP 请求头。
   - 其他值：设置一个新的 HTTP 请求头。
 
 说明
@@ -436,7 +436,7 @@ HTTP AT 命令集
 参数
 ^^^^
 
-- **<auth_mode>**:
+- **<auth_mode>**：
 
   - 0: 不认证，此时无需填写 ``<pki_number>`` 和 ``<ca_number>`` 参数；
   - 1: ESP-AT 提供 HTTP 客户端证书供 HTTP 服务器端 CA 证书校验；
@@ -449,10 +449,10 @@ HTTP AT 命令集
 说明
 ^^^^
 
-- 默认 AT 固件不支持 HTTP 证书配置，您可以启用 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support`` > ``AT HTTP authentication method`` 下选型来使其支持。
+- 默认 AT 固件不支持 HTTP 证书配置，你可以启用 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT http command support`` > ``AT HTTP authentication method`` 下选型来使其支持。
 - 本命令配置的参数是全局性的，一旦设置，所有 HTTP 命令都会共用该配置。
-- 如果您想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 HTTP 证书（具体步骤请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-pki>`，证书配置方法与 SSL 证书相同）。如果您想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
-- 如果 ``<auth_mode>`` 配置为 2 或者 3，为了校验服务器的证书有效期，请在发送其它 HTTP 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（您可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间。）
+- 如果你想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 HTTP 证书（具体步骤请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-pki>`，证书配置方法与 SSL 证书相同）。如果你想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+- 如果 ``<auth_mode>`` 配置为 2 或者 3，为了校验服务器的证书有效期，请在发送其它 HTTP 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间（你可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间）。
 
 .. _cmd-HTTPErrCode:
 

@@ -45,7 +45,7 @@ Establish a TCP connection on Ethernet network
      OK
 
 #. Obtain the IP address of the server.
-  
+
    Command:
 
    .. code-block:: none

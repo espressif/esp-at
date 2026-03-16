@@ -37,7 +37,7 @@
 {IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/specs/>`_。
 
 .. important::
-  默认的 AT 固件不支持此页面下的 AT 命令。如果您需要 {IDF_TARGET_NAME} 支持经典蓝牙命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择（下面每项是独立的，根据您的需要选择）：
+  默认的 AT 固件不支持此页面下的 AT 命令。如果你需要 {IDF_TARGET_NAME} 支持经典蓝牙命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择（下面每项是独立的，根据你的需要选择）：
 
   - 启用通用蓝牙命令：``Component config`` > ``AT`` > ``AT bt command support``
   - 启用 SPP 命令： ``Component config`` > ``AT`` > ``AT bt command support`` > ``AT bt spp command support``
@@ -100,15 +100,15 @@
 参数
 ^^^^
 
--  **<init>**：
+- **<init>**：
 
-   -  0: 注销 Classic Bluetooth；
-   -  1: 初始化 Classic Bluetooth。
+   - 0: 注销 Classic Bluetooth；
+   - 1: 初始化 Classic Bluetooth。
 
 说明
 ^^^^
 
-- 为获得更好的性能，建议在使用 Classic Bluetooth 功能前，先发送 :ref:`AT+CWMODE=0/1 <cmd-MODE>` 命令禁用 SoftAP。如您想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
+- 为获得更好的性能，建议在使用 Classic Bluetooth 功能前，先发送 :ref:`AT+CWMODE=0/1 <cmd-MODE>` 命令禁用 SoftAP。如你想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
 - 如果 Classic Bluetooth 已初始化，则 :ref:`AT+CIPMODE <cmd-IPMODE>` 无法设置为 1。
 
 示例
@@ -165,13 +165,13 @@
 参数
 ^^^^
 
--  **<device_name>**：Classic Bluetooth 设备名称，最大长度为：32。默认："ESP32_AT"。
+- **<device_name>**：Classic Bluetooth 设备名称，最大长度为：32。默认："ESP32_AT"。
 
 说明
 ^^^^
 
--  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 区。
--  默认 Classic Bluetooth 设备名称为 "{IDF_TARGET_NAME}_AT"。
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 区。
+- 默认 Classic Bluetooth 设备名称为 "{IDF_TARGET_NAME}_AT"。
 
 示例
 ^^^^
@@ -207,12 +207,12 @@
 参数
 ^^^^
 
--  **<scan_mode>**：
+- **<scan_mode>**：
 
-   -  0: 不可发现且不可连接；
-   -  1: 可连接但不可发现；
-   -  2: 既可发现也可连接；
-   -  3: 可发现但不可连接。
+   - 0: 不可发现且不可连接；
+   - 1: 可连接但不可发现；
+   - 2: 既可发现也可连接；
+   - 3: 可发现但不可连接。
 
 示例
 ^^^^
@@ -250,45 +250,45 @@
 参数
 ^^^^
 
--  **<inq_mode>**：
+- **<inq_mode>**：
 
-   -  0: general inquiry mode；
-   -  1: limited inquiry mode。
+   - 0: general inquiry mode；
+   - 1: limited inquiry mode。
 
--  **<inq_len>**：inquiry 时长，范围：0x01 ~ 0x30。
--  **<inq_num_rsps>**：可以收到的 inquiry responses 的数量，若设为 0，AT 将收到无限个 response。
--  **<bt_addr>**：Classic Bluetooth 地址。
--  **<dev_name>**：设备名称。
--  **<major_dev_class>**：主要设备类型：
+- **<inq_len>**：inquiry 时长，范围：0x01 ~ 0x30。
+- **<inq_num_rsps>**：可以收到的 inquiry responses 的数量，若设为 0，AT 将收到无限个 response。
+- **<bt_addr>**：Classic Bluetooth 地址。
+- **<dev_name>**：设备名称。
+- **<major_dev_class>**：主要设备类型：
 
-   -  0x0: 其他；
-   -  0x1: 计算机；
-   -  0x2: 电话（手机、无绳、支付电话、调制解调器）；
-   -  0x3: LAN、网络接入点；
-   -  0x4: 音频/视频（耳机、扬声器、立体声、视频显示、VCR）；
-   -  0x5: 配件（鼠标、游戏杆、键盘）；
-   -  0x6: 成像（打印、扫描仪、相机、显示）；
-   -  0x7: 可穿戴；
-   -  0x8: 玩具；
-   -  0x9: 健康；
-   -  0x1F: 未分类。
+   - 0x0: 其他；
+   - 0x1: 计算机；
+   - 0x2: 电话（手机、无绳、支付电话、调制解调器）；
+   - 0x3: LAN、网络接入点；
+   - 0x4: 音频/视频（耳机、扬声器、立体声、视频显示、VCR）；
+   - 0x5: 配件（鼠标、游戏杆、键盘）；
+   - 0x6: 成像（打印、扫描仪、相机、显示）；
+   - 0x7: 可穿戴；
+   - 0x8: 玩具；
+   - 0x9: 健康；
+   - 0x1F: 未分类。
 
--  **<minor_dev_class>**：请参考 `次要设备类型 (Minor Device Class field) <https://www.bluetooth.com/specifications/assigned-numbers/>`_。
+- **<minor_dev_class>**：请参考 `次要设备类型 (Minor Device Class field) <https://www.bluetooth.com/specifications/assigned-numbers/>`_。
 
--  **<major_srv_class>**：主要服务类型：
+- **<major_srv_class>**：主要服务类型：
 
-   -  0x0: 无效值；
-   -  0x1: 有限可发现模式 (Limited Discoverable Mode)；
-   -  0x8: 定位（位置标志）；
-   -  0x10: 网络，如 LAN、点对点；
-   -  0x20: 渲染，如打印、扬声器；
-   -  0x40: 捕捉，如扫描仪、麦克风；
-   -  0x80: 对象传输，如 v-Inbox、v-Folder；
-   -  0x100: 音频，如扬声器、麦克风、耳机服务；
-   -  0x200: 电话，如无绳电话、调制解调器、耳机服务；
-   -  0x400: 信息，如 WEB 服务器、WAP 服务器。
+   - 0x0: 无效值；
+   - 0x1: 有限可发现模式 (Limited Discoverable Mode)；
+   - 0x8: 定位（位置标志）；
+   - 0x10: 网络，如 LAN、点对点；
+   - 0x20: 渲染，如打印、扬声器；
+   - 0x40: 捕捉，如扫描仪、麦克风；
+   - 0x80: 对象传输，如 v-Inbox、v-Folder；
+   - 0x100: 音频，如扬声器、麦克风、耳机服务；
+   - 0x200: 电话，如无绳电话、调制解调器、耳机服务；
+   - 0x400: 信息，如 WEB 服务器、WAP 服务器。
 
--  **<rssi>**：信号强度。
+- **<rssi>**：信号强度。
 
 示例
 ^^^^
@@ -356,11 +356,11 @@
 参数
 ^^^^
 
--  **<init>**：
+- **<init>**：
 
-   -  0: 注销 Classic Bluetooth SPP 协议；
-   -  1: 初始化 Classic Bluetooth SPP 协议，角色为 master；
-   -  2: 初始化 Classic Bluetooth SPP 协议，角色为 slave。
+   - 0: 注销 Classic Bluetooth SPP 协议；
+   - 1: 初始化 Classic Bluetooth SPP 协议，角色为 master；
+   - 2: 初始化 Classic Bluetooth SPP 协议，角色为 slave。
 
 示例
 ^^^^
@@ -435,16 +435,16 @@
 参数
 ^^^^
 
--  **<conn_index>**：Classic Bluetooth SPP 连接号，当前只支持单连接，连接号为 0。
--  **<sec_mode>**：
+- **<conn_index>**：Classic Bluetooth SPP 连接号，当前只支持单连接，连接号为 0。
+- **<sec_mode>**：
 
-   -  0x0000: 无安全保障；
-   -  0x0001: 需要授权（仅对外连接需要）；
-   -  0x0036: 需要加密；
-   -  0x3000: 中间人保护；
-   -  0x4000: 最少 16 位密码。
+   - 0x0000: 无安全保障；
+   - 0x0001: 需要授权（仅对外连接需要）；
+   - 0x0036: 需要加密；
+   - 0x3000: 中间人保护；
+   - 0x4000: 最少 16 位密码。
 
--  **<remote_address>**：对方 Classic Bluetooth SPP 设备地址。
+- **<remote_address>**：对方 Classic Bluetooth SPP 设备地址。
 
 示例
 ^^^^
@@ -492,8 +492,8 @@
 参数
 ^^^^
 
--  **<conn_index>**：Classic Bluetooth SPP 连接号，当前只支持单连接，连接号为 0。
--  **<remote_address>**：对方 Classic Bluetooth A2DP 设备地址。
+- **<conn_index>**：Classic Bluetooth SPP 连接号，当前只支持单连接，连接号为 0。
+- **<remote_address>**：对方 Classic Bluetooth A2DP 设备地址。
 
 示例
 ^^^^
@@ -524,7 +524,7 @@
 
 ::
 
-    >   
+    >
 
 设置命令
 ^^^^^^^^^^^^
@@ -548,13 +548,13 @@
 参数
 ^^^^
 
--  **<conn_index>**：Classic Bluetooth SPP 连接号，当前只支持单连接，连接号为 0。
--  **<data_len>**：发送数据的长度。
+- **<conn_index>**：Classic Bluetooth SPP 连接号，当前只支持单连接，连接号为 0。
+- **<data_len>**：发送数据的长度。
 
 说明
 ^^^^
 
--  系统收到此命令后先换行返回 ``>``，然后 {IDF_TARGET_NAME} 设备进入 UART Bluetooth 透传模式，当系统收到只含有 :ref:`+++ <cmd-PLUS>` 的包时，设备返回到普通命令模式，请等待一秒再发送下一个 AT 命令。
+- 系统收到此命令后先换行返回 ``>``，然后 {IDF_TARGET_NAME} 设备进入 UART Bluetooth 透传模式，当系统收到只含有 :ref:`+++ <cmd-PLUS>` 的包时，设备返回到普通命令模式，请等待一秒再发送下一个 AT 命令。
 
 示例
 ^^^^
@@ -591,7 +591,7 @@
 说明
 ^^^^
 
--  在 SPP 传输中，如果未设置 :ref:`AT+SYSMSG <cmd-SYSMSG>` 命令的 bit2 为 1，则系统不会提示任何连接状态改变的信息。
+- 在 SPP 传输中，如果未设置 :ref:`AT+SYSMSG <cmd-SYSMSG>` 命令的 bit 2 为 1，则系统不会提示任何连接状态改变的信息。
 
 示例
 ^^^^
@@ -658,11 +658,11 @@
 参数
 ^^^^
 
--  **<role>**：角色
+- **<role>**：角色
 
-   -  0: 注销 Classic Bluetooth A2DP 协议；
-   -  1: source；
-   -  2: sink。
+   - 0: 注销 Classic Bluetooth A2DP 协议；
+   - 1: source；
+   - 2: sink。
 
 示例
 ^^^^
@@ -732,8 +732,8 @@
 参数
 ^^^^
 
--  **<conn_index>**：Classic Bluetooth A2DP 连接号，当前只支持单连接，连接号为 0。
--  **<remote_address>**：对方 Classic Bluetooth A2DP 设备地址。
+- **<conn_index>**：Classic Bluetooth A2DP 连接号，当前只支持单连接，连接号为 0。
+- **<remote_address>**：对方 Classic Bluetooth A2DP 设备地址。
 
 示例
 ^^^^
@@ -770,8 +770,8 @@
 参数
 ^^^^
 
--  **<conn_index>**：Classic Bluetooth A2DP 连接号，当前只支持单连接，连接号为 0。
--  **<remote_address>**：对方 Classic Bluetooth A2DP 设备地址。
+- **<conn_index>**：Classic Bluetooth A2DP 连接号，当前只支持单连接，连接号为 0。
+- **<remote_address>**：对方 Classic Bluetooth A2DP 设备地址。
 
 示例
 ^^^^
@@ -827,14 +827,14 @@
 参数
 ^^^^
 
--  **<conn_index>**：Classic Bluetooth A2DP 连接号，当前只支持单连接，连接号为 0。
--  **<url>**：源文件路径，当前只支持 HTTP、HTTPS 和 FLASH。
--  **<type>**：音频文件类型，如 "mp3"。
+- **<conn_index>**：Classic Bluetooth A2DP 连接号，当前只支持单连接，连接号为 0。
+- **<url>**：源文件路径，当前只支持 HTTP、HTTPS 和 FLASH。
+- **<type>**：音频文件类型，如 "mp3"。
 
 说明
 ^^^^
 
--  当前只支持 mp3 格式文件。
+- 当前只支持 mp3 格式文件。
 
 示例
 ^^^^
@@ -871,18 +871,18 @@
 参数
 ^^^^
 
--  **<conn_index>**：Classic Bluetooth A2DP 连接号，当前只支持单连接，连接号为 0。
--  **<ctrl>**：控制类型：
+- **<conn_index>**：Classic Bluetooth A2DP 连接号，当前只支持单连接，连接号为 0。
+- **<ctrl>**：控制类型：
 
-   -  0: A2DP Sink，停止播放；
-   -  1: A2DP Sink，开始播放；
-   -  2: A2DP Sink，快进；
-   -  3: A2DP Sink，后退；
-   -  4: A2DP Sink，快进启动；
-   -  5: A2DP Sink，快进停止；
-   -  0: A2DP Source，停止播放；
-   -  1: A2DP Source，开始播放；
-   -  2: A2DP Source，暂停播放。
+   - 0: A2DP Sink，停止播放；
+   - 1: A2DP Sink，开始播放；
+   - 2: A2DP Sink，快进；
+   - 3: A2DP Sink，后退；
+   - 4: A2DP Sink，快进启动；
+   - 5: A2DP Sink，快进停止；
+   - 0: A2DP Source，停止播放；
+   - 1: A2DP Source，开始播放；
+   - 2: A2DP Source，暂停播放。
 
 示例
 ^^^^
@@ -938,24 +938,24 @@
 参数
 ^^^^
 
--  **<io_cap>**：输入输出能力：
+- **<io_cap>**：输入输出能力：
 
-   -  0: DisplayOnly；
-   -  1: DisplayYesNo；
-   -  2: KeyboardOnly；
-   -  3: NoInputNoOutput。
+   - 0: DisplayOnly；
+   - 1: DisplayYesNo；
+   - 2: KeyboardOnly；
+   - 3: NoInputNoOutput。
 
--  **<pin_type>**：使用可变或固定密码：
+- **<pin_type>**：使用可变或固定密码：
 
-   -  0: 可变密码；
-   -  1: 固定密码。
+   - 0: 可变密码；
+   - 1: 固定密码。
 
--  **<pin_code>**：传统配对密码，最大长度：16 字节。
+- **<pin_code>**：传统配对密码，最大长度：16 字节。
 
 说明
 ^^^^
 
--  若设置 ``<pin_type>`` 为 0，则会自动忽略 ``<pin_code>`` 参数。
+- 若设置 ``<pin_type>`` 为 0，则会自动忽略 ``<pin_code>`` 参数。
 
 示例
 ^^^^
@@ -991,8 +991,8 @@
 参数
 ^^^^
 
--  **<conn_index>**：Classic Bluetooth 连接号，当前只支持单连接，连接号为 0。
--  **<Key>**：简单配对密钥 (Simple Pair Key)。
+- **<conn_index>**：Classic Bluetooth 连接号，当前只支持单连接，连接号为 0。
+- **<Key>**：简单配对密钥 (Simple Pair Key)。
 
 示例
 ^^^^
@@ -1028,8 +1028,8 @@
 参数
 ^^^^
 
--  **<conn_index>**：Classic Bluetooth 连接号，当前只支持单连接，连接号为 0。
--  **<Pin>**：传统配对密码 (Legacy Pair PIN Code)。
+- **<conn_index>**：Classic Bluetooth 连接号，当前只支持单连接，连接号为 0。
+- **<Pin>**：传统配对密码 (Legacy Pair PIN Code)。
 
 示例
 ^^^^
@@ -1065,11 +1065,11 @@
 参数
 ^^^^
 
--  **<conn_index>**：Classic Bluetooth 连接，当前只支持单连接，连接号为 0。
--  **<accept>**：拒绝或接受：
+- **<conn_index>**：Classic Bluetooth 连接，当前只支持单连接，连接号为 0。
+- **<accept>**：拒绝或接受：
 
-   -  0: 拒绝；
-   -  1: 接受。
+   - 0: 拒绝；
+   - 1: 接受。
 
 示例
 ^^^^
@@ -1106,8 +1106,8 @@
 参数
 ^^^^
 
--  **<enc_dev_index>**：绑定设备序号。
--  **<mac_address>**：MAC 地址。
+- **<enc_dev_index>**：绑定设备序号。
+- **<mac_address>**：MAC 地址。
 
 示例
 ^^^^
@@ -1162,7 +1162,7 @@
 参数
 ^^^^
 
--  **<enc_dev_index>**：绑定设备序号。
+- **<enc_dev_index>**：绑定设备序号。
 
 示例
 ^^^^
@@ -1198,9 +1198,9 @@
 参数
 ^^^^
 
--  **<major>**：`主要设备类型 (major class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_；
--  **<minor>**：`次要设备类型 (minor class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_；
--  **<service>**：`服务类型 (service class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_。
+- **<major>**：`主要设备类型 (major class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_；
+- **<minor>**：`次要设备类型 (minor class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_；
+- **<service>**：`服务类型 (service class) <https://btprodspecificationrefs.blob.core.windows.net/assigned-numbers/Assigned%20Number%20Types/Assigned_Numbers.pdf>`_。
 
 示例
 ^^^^
@@ -1257,8 +1257,8 @@
 参数
 ^^^^
 
--  **<min_tx_power>**：最小功率水平，范围：[0,7]。
--  **<max_tx_power>**：最大功率水平，范围：[0,7]。
+- **<min_tx_power>**：最小功率水平，范围：[0,7]。
+- **<max_tx_power>**：最大功率水平，范围：[0,7]。
 
 示例
 ^^^^

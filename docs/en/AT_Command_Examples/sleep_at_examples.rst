@@ -307,7 +307,7 @@ Set Light-sleep mode in Wi-Fi mode
     .. code-block:: none
 
       OK
-    
+
     If the connection parameters are updated successfully, AT will output:
 
     .. code-block:: none

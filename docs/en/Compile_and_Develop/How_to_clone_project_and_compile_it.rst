@@ -58,7 +58,7 @@ To compile an ESP-AT project, you need the software libraries provided by Espres
 To get ESP-AT, navigate to your installation directory and clone the repository with ``git clone``, following instructions below specific to your operating system.
 
 - Linux or macOS
-  
+
   ::
 
     cd ~/esp
@@ -89,15 +89,15 @@ Step 3. Install Environment
 Run the project tool ``install`` to install the environment. This tool will automatically install Python packages, ESP-IDF repository, and the compiler and tools used by ESP-IDF.
 
 - Linux or macOS
-  
+
   ::
-    
+
     ./build.py install
 
 - Windows
 
   ::
-    
+
     python build.py install
 
 Select the following configuration options for your {IDF_TARGET_NAME} if it is your first time.
@@ -118,7 +118,7 @@ Select the following configuration options for your {IDF_TARGET_NAME} if it is y
 
         $ ./build.py install
         Ready to install ESP-IDF prerequisites..
-    
+
         ... (more lines of install ESP-IDF prerequisites)
 
         Ready to install ESP-AT prerequisites..
@@ -160,7 +160,7 @@ Select the following configuration options for your {IDF_TARGET_NAME} if it is y
 
         $ ./build.py install
         Ready to install ESP-IDF prerequisites..
-    
+
         ... (more lines of install ESP-IDF prerequisites)
 
         Ready to install ESP-AT prerequisites..
@@ -204,7 +204,7 @@ Select the following configuration options for your {IDF_TARGET_NAME} if it is y
 
         $ ./build.py install
         Ready to install ESP-IDF prerequisites..
-    
+
         ... (more lines of install ESP-IDF prerequisites)
 
         Ready to install ESP-AT prerequisites..
@@ -247,7 +247,7 @@ Select the following configuration options for your {IDF_TARGET_NAME} if it is y
 
         $ ./build.py install
         Ready to install ESP-IDF prerequisites..
-    
+
         ... (more lines of install ESP-IDF prerequisites)
 
         Ready to install ESP-AT prerequisites..
@@ -291,7 +291,7 @@ Select the following configuration options for your {IDF_TARGET_NAME} if it is y
 
         $ ./build.py install
         Ready to install ESP-IDF prerequisites..
-    
+
         ... (more lines of install ESP-IDF prerequisites)
 
         Ready to install ESP-AT prerequisites..
@@ -334,7 +334,7 @@ Select the following configuration options for your {IDF_TARGET_NAME} if it is y
 
         $ ./build.py install
         Ready to install ESP-IDF prerequisites..
-    
+
         ... (more lines of install ESP-IDF prerequisites)
 
         Ready to install ESP-AT prerequisites..
@@ -377,7 +377,7 @@ Select the following configuration options for your {IDF_TARGET_NAME} if it is y
 
         $ ./build.py install
         Ready to install ESP-IDF prerequisites..
-    
+
         ... (more lines of install ESP-IDF prerequisites)
 
         Ready to install ESP-AT prerequisites..
@@ -428,13 +428,13 @@ Run the project configuration utility ``menuconfig`` to configure.
 - Linux or macOS
 
   ::
-    
+
     ./build.py menuconfig
 
 - Windows
 
   ::
-    
+
     python build.py menuconfig
 
 If the previous steps have been done correctly, the following menu pops up:

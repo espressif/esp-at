@@ -36,19 +36,19 @@
 
   .. only:: esp32c2
 
-    - 发布的 AT 固件仅支持 26 MHz 晶振频率的芯片版本。如果您的模组使用的是 40 MHz 的晶振频率，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+    - 发布的 AT 固件仅支持 26 MHz 晶振频率的芯片版本。如果你的模组使用的是 40 MHz 的晶振频率，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
 
       - ``Component config`` > ``Hardware Settings`` > ``Main XTAL Config`` > ``Main XTAL frequency`` > ``40 MHz``
 
   .. only:: esp32 or esp32c2
 
-    - 如果您不确定自己的模组应该使用哪个 AT 固件，请先阅读 :ref:`firmware-differences` 章节，该章节比较了不同 {IDF_TARGET_NAME} AT 固件在支持的命令集、硬件配置和模组方面的差异，帮助您确认是否有适合您模组硬件配置的固件。
+    - 如果你不确定自己的模组应该使用哪个 AT 固件，请先阅读 :ref:`firmware-differences` 章节，该章节比较了不同 {IDF_TARGET_NAME} AT 固件在支持的命令集、硬件配置和模组方面的差异，帮助你确认是否有适合你模组硬件配置的固件。
 
   .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32s2
 
-    - 如果您不确定自己的模组是否可以使用 AT 默认固件，请先阅读 :ref:`firmware-differences` 章节，该章节介绍了 {IDF_TARGET_NAME} AT 固件支持的命令集、硬件配置和支持的模组，帮助您确认您的模组硬件配置是否适合使用 AT 默认固件。
+    - 如果你不确定自己的模组是否可以使用 AT 默认固件，请先阅读 :ref:`firmware-differences` 章节，该章节介绍了 {IDF_TARGET_NAME} AT 固件支持的命令集、硬件配置和支持的模组，帮助你确认你的模组硬件配置是否适合使用 AT 默认固件。
 
-  - 如果您想要修改 AT 固件中下面的配置，您可以通过 :doc:`../Compile_and_Develop/tools_at_py` 修改 AT 固件并生成新的 AT 固件。
+  - 如果你想要修改 AT 固件中下面的配置，你可以通过 :doc:`../Compile_and_Develop/tools_at_py` 修改 AT 固件并生成新的 AT 固件。
 
     .. list::
 
@@ -186,7 +186,7 @@
   ^^^^^^^^^^^^^^^^^^^^^^
 
   .. note::
-    - 如果您的硬件是 ECO4 (Rev v2.0) 系列芯片，推荐使用 ESP32-C2-4MB-G2 系列代替。
+    - 如果你的硬件是 ECO4 (Rev v2.0) 系列芯片，推荐使用 ESP32-C2-4MB-G2 系列代替。
 
   下面固件适用于 {IDF_TARGET_NAME} ECO1 (Rev v1.0) ~ ECO4 (Rev v2.0) 系列芯片（包括 ECO1 和 ECO4）。
 
@@ -319,7 +319,7 @@ AT 发布固件差异
   - ESP32C2-4MB-AT-Vx.x.x.x.zip（本节简称为 **ESP32C2-4MB Bin**）
   - ESP32C2-2MB-G2-AT-Vx.x.x.x.zip（本节简称为 **ESP32C2-2MB-G2 Bin**）
   - ESP32C2-4MB-G2-AT-Vx.x.x.x.zip（本节简称为 **ESP32C2-4MB-G2 Bin**）
-  - ESP32C2-2MB-BLE Bin（固件未发布，您可以从 :doc:`GitHub Actions 里下载 <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` ``esp32c2-2mb-ble-at`` 固件，或者 :doc:`本地编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`）
+  - ESP32C2-2MB-BLE Bin（固件未发布，你可以从 :doc:`GitHub Actions 里下载 <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` ``esp32c2-2mb-ble-at`` 固件，或者 :doc:`本地编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`）
 
 .. only:: esp32c3
 
@@ -789,24 +789,24 @@ AT 发布固件差异
         | RX: 16
         | CTS: 15
         | RTS: 14
-      - | TX: 22 
-        | RX: 19 
+      - | TX: 22
+        | RX: 19
         | CTS: 15
         | RTS: 14
-      - | TX: 22 
-        | RX: 19 
+      - | TX: 22
+        | RX: 19
         | CTS: 15
         | RTS: 14
-      - | TX: 17 
-        | RX: 16 
-        | CTS: 15 
-        | RTS: 14
-      - | TX: 22 
-        | RX: 19 
+      - | TX: 17
+        | RX: 16
         | CTS: 15
         | RTS: 14
-      - | TX: 22 
-        | RX: 19 
+      - | TX: 22
+        | RX: 19
+        | CTS: 15
+        | RTS: 14
+      - | TX: 22
+        | RX: 19
         | CTS: 15
         | RTS: 14
 
@@ -947,7 +947,7 @@ AT 发布固件差异
 支持的模组
 ----------
 
-下表列出了官方发布的 {IDF_TARGET_NAME} 系列 AT 固件默认支持哪些模组或芯片（用 |icon-green-check| 表示）、默认不支持但可以通过 :doc:`../Compile_and_Develop/tools_at_py` 修改后支持的模组（用 |icon-orange-check| 表示），以及完全不支持的模组（用 |icon-red-cross| 表示）。对于完全不支持的模组，您可以 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` 修改您需要的配置后支持。
+下表列出了官方发布的 {IDF_TARGET_NAME} 系列 AT 固件默认支持哪些模组或芯片（用 |icon-green-check| 表示）、默认不支持但可以通过 :doc:`../Compile_and_Develop/tools_at_py` 修改后支持的模组（用 |icon-orange-check| 表示），以及完全不支持的模组（用 |icon-red-cross| 表示）。对于完全不支持的模组，你可以 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` 修改你需要的配置后支持。
 
 .. only:: esp32
 

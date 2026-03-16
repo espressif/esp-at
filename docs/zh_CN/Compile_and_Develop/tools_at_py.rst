@@ -5,14 +5,14 @@ at.py 工具
 
 :link_to_translation:`en:[English]`
 
-``at.py`` 工具用于修改打包好的 2 MB/4 MB AT 量产固件（即 ``build/factory`` 目录下的 ``factory_XXX.bin``）中的多种参数配置。这些配置包括 Wi-Fi 配置、证书和密钥配置、UART 配置、GATTS 配置等。当默认的固件无法满足您的需求时，您可以使用 ``at.py`` 工具修改固件中的这些参数配置。
+``at.py`` 工具用于修改打包好的 2 MB/4 MB AT 量产固件（即 ``build/factory`` 目录下的 ``factory_XXX.bin``）中的多种参数配置。这些配置包括 Wi-Fi 配置、证书和密钥配置、UART 配置、GATTS 配置等。当默认的固件无法满足你的需求时，你可以使用 ``at.py`` 工具修改固件中的这些参数配置。
 
 .. _esp-at-py-steps:
 
 详细步骤
 -------------
 
-请根据下方详细步骤，完成 ``at.py`` 工具下载、固件中的配置修改以及固件烧录。**推荐您优先选择 Linux 系统开发**。
+请根据下方详细步骤，完成 ``at.py`` 工具下载、固件中的配置修改以及固件烧录。**推荐你优先选择 Linux 系统开发**。
 
 * :ref:`esp-at-py-prerequisites`
 * :ref:`esp-at-py-download`
@@ -25,9 +25,9 @@ at.py 工具
 第一步：Python 安装
 ----------------------------
 
-如果您本地已经安装过 Python，则可以跳过此步骤。否则，请根据 `Python 官方文档 <https://www.python.org/downloads/>`_，完成 Python 的下载和安装。**推荐您使用 Python 3.10.0 或更高版本**。
+如果你本地已经安装过 Python，则可以跳过此步骤。否则，请根据 `Python 官方文档 <https://www.python.org/downloads/>`_，完成 Python 的下载和安装。**推荐你使用 Python 3.10.0 或更高版本**。
 
-安装完成后，您可以在命令行中输入 ``python --version``，查看 Python 版本。
+安装完成后，你可以在命令行中输入 ``python --version``，查看 Python 版本。
 
 .. _esp-at-py-download:
 
@@ -64,8 +64,8 @@ at.py 工具
 
 .. note::
 
-  - 您可以混合修改多种参数配置，例如，您可以同时修改 Wi-Fi 配置和证书和密钥配置。
-  - 待修改的参数配置，脚本并不会检查其合法性，请确保您输入的参数配置是合法的。
+  - 你可以混合修改多种参数配置，例如，你可以同时修改 Wi-Fi 配置和证书和密钥配置。
+  - 待修改的参数配置，脚本并不会检查其合法性，请确保你输入的参数配置是合法的。
   - 修改后的参数配置，在当前 mfg_nvs 目录下的 ``mfg_nvs.csv`` 中，会有对应的记录。
 
 .. _at-py-modify-wifi:
@@ -95,7 +95,7 @@ at.py 工具
     - Wi-Fi 的总信道数
     - 详情见 `Wi-Fi 国家/地区代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id46>`_ 中的 nchan 字段
 
-例如，您可以使用以下命令，修改 Wi-Fi 的最大发射功率为 18 dBm，国家代码为 US，起始信道为 1，总信道数为 11：
+例如，你可以使用以下命令，修改 Wi-Fi 的最大发射功率为 18 dBm，国家代码为 US，起始信道为 1，总信道数为 11：
 
 .. code-block:: none
 
@@ -164,7 +164,7 @@ at.py 工具
     - WPA2-Enterprise 客户端的密钥
     - :component_file:`wpa2_client.key <customized_partitions/raw_data/wpa2_key/wpa2_client.key>`
 
-例如，您可以使用以下命令，修改 MQTT 客户端的 CA 证书、客户端的证书和密钥。
+例如，你可以使用以下命令，修改 MQTT 客户端的 CA 证书、客户端的证书和密钥。
 
 .. code-block:: none
 
@@ -191,13 +191,13 @@ at.py 工具
     - 仅在 AT 日志口同时用作 AT 命令口时，需要修改此参数。同时需保证下面的 ``tx_pin`` 和 ``rx_pin`` 要配置与 :term:`AT 日志端口` 的 tx 和 rx 管脚一致，如果 :term:`AT 日志端口` 只配置了 rx，则下面 ``tx_pin`` 需要配置与下载固件口（可查看 :doc:`硬件连接 <../Get_Started/Hardware_connection>`）的 UART 的 tx 管脚一致。
   * - \--baud
     - AT 命令口的波特率
-    - 原始值：115200
+    - 原始值：115200。
   * - \--tx_pin
     - AT 命令口的 TX 管脚
-    - 请保证待修改的管脚不会和其他管脚冲突
+    - 请保证待修改的管脚不会和其他管脚冲突。
   * - \--rx_pin
     - AT 命令口的 RX 管脚
-    - 请保证待修改的管脚不会和其他管脚冲突
+    - 请保证待修改的管脚不会和其他管脚冲突。
   * - \--cts_pin
     - AT 命令口的 CTS 管脚
     - 请保证待修改的管脚不会和其他管脚冲突。不用流控时，修改此参数为 -1。
@@ -205,7 +205,7 @@ at.py 工具
     - AT 命令口的 RTS 管脚
     - 请保证待修改的管脚不会和其他管脚冲突。不用流控时，修改此参数为 -1。
 
-例如，您可以使用以下命令，修改 AT 命令口的波特率为 921600，TX 管脚为 17，RX 管脚为 16，禁用流控。
+例如，你可以使用以下命令，修改 AT 命令口的波特率为 921600，TX 管脚为 17，RX 管脚为 16，禁用流控。
 
 .. code-block:: none
 
@@ -293,7 +293,7 @@ at.py 工具
     * - \--gatts_cfg30
       - 更新 :component_file:`gatts_data.csv <customized_partitions/raw_data/ble_data/gatts_data.csv>` 文件中 index 为 30 的一行数据
 
-  例如，您可以使用以下命令，修改 index 为 0 行的 perm 权限。
+  例如，你可以使用以下命令，修改 index 为 0 行的 perm 权限。
 
   .. code-block:: none
 
@@ -309,7 +309,7 @@ at.py 工具
   ----------------------------
 
   .. attention::
-    **修改后的 AT 固件，需要您根据自己的产品自行测试验证功能。**
+    **修改后的 AT 固件，需要你根据自己的产品自行测试验证功能。**
 
     **请保存好修改前和修改后的固件以及下载链接**，用于后续可能的问题调试。
 
@@ -323,7 +323,7 @@ at.py 工具
   ----------------------------
 
   .. attention::
-    **修改后的 AT 固件，需要您根据自己的产品自行测试验证功能。**
+    **修改后的 AT 固件，需要你根据自己的产品自行测试验证功能。**
 
     **请保存好修改前和修改后的固件以及下载链接**，用于后续可能的问题调试。
 

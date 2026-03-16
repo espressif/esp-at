@@ -5,22 +5,22 @@ MQTT AT 命令集
 
 :link_to_translation:`en:[English]`
 
--  :ref:`介绍 <cmd-mqtt-intro>`
--  :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`：设置 MQTT 用户属性
--  :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>`：设置 MQTT 客户端 ID
--  :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>`：设置 MQTT 登陆用户名
--  :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>`：设置 MQTT 登陆密码
--  :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`：设置 MQTT 连接属性
--  :ref:`AT+MQTTALPN <cmd-MQTTALPN>`：设置 MQTT 应用层协议协商 (ALPN)
--  :ref:`AT+MQTTSNI <cmd-MQTTSNI>`：设置 MQTT 服务器名称指示 (SNI)
--  :ref:`AT+MQTTCONN <cmd-MQTTCONN>`：连接 MQTT Broker
--  :ref:`AT+MQTTPUB <cmd-MQTTPUB>`：发布 MQTT 消息（字符串）
--  :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>`：发布长 MQTT 消息
--  :ref:`AT+MQTTSUB <cmd-MQTTSUB>`：订阅 MQTT Topic
--  :ref:`AT+MQTTUNSUB <cmd-MQTTUNSUB>`：取消订阅 MQTT Topic
--  :ref:`AT+MQTTCLEAN <cmd-MQTTCLEAN>`：断开 MQTT 连接
--  :ref:`MQTT AT 错误码 <MQTTErrCod>`
--  :ref:`MQTT AT 说明 <MQTTNote>`
+- :ref:`介绍 <cmd-mqtt-intro>`
+- :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`：设置 MQTT 用户属性
+- :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>`：设置 MQTT 客户端 ID
+- :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>`：设置 MQTT 登陆用户名
+- :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>`：设置 MQTT 登陆密码
+- :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`：设置 MQTT 连接属性
+- :ref:`AT+MQTTALPN <cmd-MQTTALPN>`：设置 MQTT 应用层协议协商 (ALPN)
+- :ref:`AT+MQTTSNI <cmd-MQTTSNI>`：设置 MQTT 服务器名称指示 (SNI)
+- :ref:`AT+MQTTCONN <cmd-MQTTCONN>`：连接 MQTT Broker
+- :ref:`AT+MQTTPUB <cmd-MQTTPUB>`：发布 MQTT 消息（字符串）
+- :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>`：发布长 MQTT 消息
+- :ref:`AT+MQTTSUB <cmd-MQTTSUB>`：订阅 MQTT Topic
+- :ref:`AT+MQTTUNSUB <cmd-MQTTUNSUB>`：取消订阅 MQTT Topic
+- :ref:`AT+MQTTCLEAN <cmd-MQTTCLEAN>`：断开 MQTT 连接
+- :ref:`MQTT AT 错误码 <MQTTErrCod>`
+- :ref:`MQTT AT 说明 <MQTTNote>`
 
 .. _cmd-mqtt-intro:
 
@@ -29,7 +29,7 @@ MQTT AT 命令集
 
 .. important::
   - 当前，{IDF_TARGET_NAME} 系列 AT 固件支持 `MQTT 3.1.1 版本 <https://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html>`_。
-  - 默认的 AT 固件支持此页面下的所有 AT 命令。如果您不需要 {IDF_TARGET_NAME} 支持 MQTT 命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
+  - 默认的 AT 固件支持此页面下的所有 AT 命令。如果你不需要 {IDF_TARGET_NAME} 支持 MQTT 命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择：
 
     - 禁用 ``Component config`` > ``AT`` > ``AT MQTT command support``
 
@@ -63,34 +63,34 @@ MQTT AT 命令集
 参数
 ^^^^
 
--  **<LinkID>**：当前仅支持 link ID 0。
--  **<scheme>**：
+- **<LinkID>**：当前仅支持 link ID 0。
+- **<scheme>**：
 
-   -  1: MQTT over TCP；
-   -  2: MQTT over TLS（不校验证书）；
-   -  3: MQTT over TLS（校验 server 证书）；
-   -  4: MQTT over TLS（提供 client 证书）；
-   -  5: MQTT over TLS（校验 server 证书并且提供 client 证书）；
-   -  6: MQTT over WebSocket（基于 TCP）；
-   -  7: MQTT over WebSocket Secure（基于 TLS，不校验证书）；
-   -  8: MQTT over WebSocket Secure（基于 TLS，校验 server 证书）；
-   -  9: MQTT over WebSocket Secure（基于 TLS，提供 client 证书）；
-   -  10: MQTT over WebSocket Secure（基于 TLS，校验 server 证书并且提供 client 证书）。
+   - 1: MQTT over TCP；
+   - 2: MQTT over TLS（不校验证书）；
+   - 3: MQTT over TLS（校验 server 证书）；
+   - 4: MQTT over TLS（提供 client 证书）；
+   - 5: MQTT over TLS（校验 server 证书并且提供 client 证书）；
+   - 6: MQTT over WebSocket（基于 TCP）；
+   - 7: MQTT over WebSocket Secure（基于 TLS，不校验证书）；
+   - 8: MQTT over WebSocket Secure（基于 TLS，校验 server 证书）；
+   - 9: MQTT over WebSocket Secure（基于 TLS，提供 client 证书）；
+   - 10: MQTT over WebSocket Secure（基于 TLS，校验 server 证书并且提供 client 证书）。
 
--  **<"client_id">**：MQTT 客户端 ID，最大长度：256 字节。
--  **<"username">**：用户名，用于登陆 MQTT broker，最大长度：64 字节。
--  **<"password">**：密码，用于登陆 MQTT broker，最大长度：64 字节。
--  **<cert_key_ID>**：证书 ID，目前 ESP-AT 仅支持一套 cert 证书，参数为 0。
--  **<CA_ID>**：CA ID，目前 ESP-AT 仅支持一套 CA 证书，参数为 0。
--  **<"path">**：资源路径，最大长度：32 字节。
+- **<"client_id">**：MQTT 客户端 ID，最大长度：256 字节。
+- **<"username">**：用户名，用于登陆 MQTT broker，最大长度：64 字节。
+- **<"password">**：密码，用于登陆 MQTT broker，最大长度：64 字节。
+- **<cert_key_ID>**：证书 ID，目前 ESP-AT 仅支持一套 cert 证书，参数为 0。
+- **<CA_ID>**：CA ID，目前 ESP-AT 仅支持一套 CA 证书，参数为 0。
+- **<"path">**：资源路径，最大长度：32 字节。
 
 说明
 ^^^^
 
--  每条 AT 命令的总长度不能超过 256 字节。
--  如果您想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 MQTT 证书（具体步骤请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-pki>`，证书配置方法与 SSL 证书相同）。如果您想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
--  如果 ``<scheme>`` 配置为 3、5、8、10，为了校验服务器的证书有效期，请在发送 :ref:`AT+MQTTCONN <cmd-MQTTCONN>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（您可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间。）
--  关于 TLS 协议版本配置：请参考 :ref:`修改 TLS 协议版本说明 <modify-tls-version>`。
+- 每条 AT 命令的总长度不能超过 256 字节。
+- 如果你想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 MQTT 证书（具体步骤请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-pki>`，证书配置方法与 SSL 证书相同）。如果你想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+- 如果 ``<scheme>`` 配置为 3、5、8、10，为了校验服务器的证书有效期，请在发送 :ref:`AT+MQTTCONN <cmd-MQTTCONN>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间（你可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间）。
+- 关于 TLS 协议版本配置：请参考 :ref:`修改 TLS 协议版本说明 <modify-tls-version>`。
 
 .. _cmd-MQTTLONGCLIENTID:
 
@@ -118,7 +118,7 @@ MQTT AT 命令集
 
     >
 
-上述响应表示 AT 已准备好接收 MQTT 客户端 ID，此时您可以输入客户端 ID，当 AT 接收到的客户端 ID 长度达到 ``<length>`` 后，返回：
+上述响应表示 AT 已准备好接收 MQTT 客户端 ID，此时你可以输入客户端 ID，当 AT 接收到的客户端 ID 长度达到 ``<length>`` 后，返回：
 
 ::
 
@@ -127,13 +127,13 @@ MQTT AT 命令集
 参数
 ^^^^
 
--  **<LinkID>**：当前仅支持 link ID 0。
--  **<length>**：MQTT 客户端 ID 长度。范围：[1,1024]。
+- **<LinkID>**：当前仅支持 link ID 0。
+- **<length>**：MQTT 客户端 ID 长度。范围：[1,1024]。
 
 说明
 ^^^^
 
--  :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令也可以设置 MQTT 客户端 ID，二者之间的差别包括：
+- :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令也可以设置 MQTT 客户端 ID，二者之间的差别包括：
 
    - :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>` 命令可以用来设置相对较长的客户端 ID，因为 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令的长度受限；
    - 应在设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 后再使用 :ref:`AT+MQTTLONGCLIENTID <cmd-MQTTLONGCLIENTID>`。
@@ -164,7 +164,7 @@ MQTT AT 命令集
 
     >
 
-上述响应表示 AT 已准备好接收 MQTT 用户名，此时您可以输入 MQTT 用户名，当 AT 接收到的 MQTT 用户名长度达到 ``<length>`` 后，返回：
+上述响应表示 AT 已准备好接收 MQTT 用户名，此时你可以输入 MQTT 用户名，当 AT 接收到的 MQTT 用户名长度达到 ``<length>`` 后，返回：
 
 ::
 
@@ -173,13 +173,13 @@ MQTT AT 命令集
 参数
 ^^^^
 
--  **<LinkID>**：当前仅支持 link ID 0。
--  **<length>**：MQTT 用户名长度。范围：[1,1024]。
+- **<LinkID>**：当前仅支持 link ID 0。
+- **<length>**：MQTT 用户名长度。范围：[1,1024]。
 
 说明
 ^^^^
 
--  :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令也可以设置 MQTT 用户名，二者之间的差别包括：
+- :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令也可以设置 MQTT 用户名，二者之间的差别包括：
 
    - :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>` 命令可以用来设置相对较长的用户名，因为 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令的长度受限。
    - 应在设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 后再使用 :ref:`AT+MQTTLONGUSERNAME <cmd-MQTTLONGUSERNAME>`。
@@ -210,7 +210,7 @@ MQTT AT 命令集
 
     >
 
-上述响应表示 AT 已准备好接收 MQTT 密码，此时您可以输入 MQTT 密码，当 AT 接收到的 MQTT 密码长度达到 ``<length>`` 后，返回：
+上述响应表示 AT 已准备好接收 MQTT 密码，此时你可以输入 MQTT 密码，当 AT 接收到的 MQTT 密码长度达到 ``<length>`` 后，返回：
 
 ::
 
@@ -219,13 +219,13 @@ MQTT AT 命令集
 参数
 ^^^^
 
--  **<LinkID>**：当前仅支持 link ID 0。
--  **<length>**：MQTT 密码长度。范围：[1,1024]。
+- **<LinkID>**：当前仅支持 link ID 0。
+- **<length>**：MQTT 密码长度。范围：[1,1024]。
 
 说明
 ^^^^
 
--  :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令也可以设置 MQTT 密码，二者之间的差别包括：
+- :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令也可以设置 MQTT 密码，二者之间的差别包括：
 
    - :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>` 可以用来设置相对较长的密码，因为 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 命令的长度受限；
    - 应在设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>` 后再使用 :ref:`AT+MQTTLONGPASSWORD <cmd-MQTTLONGPASSWORD>`。
@@ -257,17 +257,17 @@ MQTT AT 命令集
 参数
 ^^^^
 
--  **<LinkID>**：当前仅支持 link ID 0。
--  **<keepalive>**：MQTT ping 超时时间，单位：秒。范围：[0,7200]。默认值：0，会被强制改为 120 秒。
--  **<disable_clean_session>**：设置 MQTT 清理会话标志，有关该参数的更多信息请参考 MQTT 3.1.1 协议中的 `Clean Session <http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.pdf>`_ 章节。
+- **<LinkID>**：当前仅支持 link ID 0。
+- **<keepalive>**：MQTT ping 超时时间，单位：秒。范围：[0,7200]。默认值：0，会被强制改为 120 秒。
+- **<disable_clean_session>**：设置 MQTT 清理会话标志，有关该参数的更多信息请参考 MQTT 3.1.1 协议中的 `Clean Session <http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.pdf>`_ 章节。
 
-   -  0: 使能清理会话
-   -  1: 禁用清理会话
+   - 0: 使能清理会话
+   - 1: 禁用清理会话
 
--  **<"lwt_topic">**：遗嘱 topic，最大长度：128 字节。
--  **<"lwt_msg">**：遗嘱 message，最大长度：128 字节。
--  **<lwt_qos>**：遗嘱 QoS，参数可选 0、1、2，默认值：0。
--  **<lwt_retain>**：遗嘱 retain，参数可选 0 或 1，默认值：0。
+- **<"lwt_topic">**：遗嘱 topic，最大长度：128 字节。
+- **<"lwt_msg">**：遗嘱 message，最大长度：128 字节。
+- **<lwt_qos>**：遗嘱 QoS，参数可选 0、1、2，默认值：0。
+- **<lwt_retain>**：遗嘱 retain，参数可选 0 或 1，默认值：0。
 
 说明
 ^^^^
@@ -301,13 +301,13 @@ MQTT AT 命令集
 参数
 ^^^^
 
--  **<LinkID>**：当前仅支持 link ID 0。
--  **<alpn_counts>**：<"alpn"> 参数个数。范围：[0,5]。
+- **<LinkID>**：当前仅支持 link ID 0。
+- **<alpn_counts>**：<"alpn"> 参数个数。范围：[0,5]。
 
-   - 0：清除 MQTT ALPN 配置
-   - [1,5]：设置 MQTT ALPN 配置
+   - 0: 清除 MQTT ALPN 配置
+   - [1,5]: 设置 MQTT ALPN 配置
 
--  **<"alpn">**：字符串参数，表示 ClientHello 中的 ALPN，用户可以发送多个 ALPN 字段到服务器。
+- **<"alpn">**：字符串参数，表示 ClientHello 中的 ALPN，用户可以发送多个 ALPN 字段到服务器。
 
 说明
 ^^^^
@@ -355,8 +355,8 @@ MQTT AT 命令集
 参数
 ^^^^
 
--  **<LinkID>**：当前仅支持 link ID 0。
--  **<"sni">**：MQTT 服务器名称指示。您可以在 ClientHello 中将其发送到服务器。
+- **<LinkID>**：当前仅支持 link ID 0。
+- **<"sni">**：MQTT 服务器名称指示。你可以在 ClientHello 中将其发送到服务器。
 
 说明
 ^^^^
@@ -407,7 +407,7 @@ MQTT AT 命令集
 
 **功能：**
 
-连接 MQTT Broker 
+连接 MQTT Broker
 
 **命令：**
 
@@ -424,38 +424,38 @@ MQTT AT 命令集
 参数
 ^^^^
 
--  **<LinkID>**：当前仅支持 link ID 0。
--  **<"host">**：MQTT broker 域名，最大长度：128 字节。
--  **<port>**：MQTT broker 端口，最大端口：65535。
--  **<"path">**：资源路径，最大长度：32 字节。
--  **<reconnect>**：
+- **<LinkID>**：当前仅支持 link ID 0。
+- **<"host">**：MQTT broker 域名，最大长度：128 字节。
+- **<port>**：MQTT broker 端口，最大端口：65535。
+- **<"path">**：资源路径，最大长度：32 字节。
+- **<reconnect>**：
 
-   -  0: MQTT 不自动重连。如果 MQTT 建立连接后又断开，则无法再次使用本命令重新建立连接，您需要先发送 :ref:`AT+MQTTCLEAN=0 <cmd-MQTTCLEAN>` 命令清理信息，重新配置参数，再建立新的连接。
-   -  1: MQTT 自动重连，会消耗较多的内存资源。
+   - 0: MQTT 不自动重连。如果 MQTT 建立连接后又断开，则无法再次使用本命令重新建立连接，你需要先发送 :ref:`AT+MQTTCLEAN=0 <cmd-MQTTCLEAN>` 命令清理信息，重新配置参数，再建立新的连接。
+   - 1: MQTT 自动重连，会消耗较多的内存资源。
 
--  **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
--  **<state>**：MQTT 状态：
+- **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
+- **<state>**：MQTT 状态：
 
-   -  0: MQTT 未初始化；
-   -  1: 已设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`；
-   -  2: 已设置 :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`；
-   -  3: 连接已断开；
-   -  4: 已建立连接；
-   -  5: 已连接，但未订阅 topic；
-   -  6: 已连接，已订阅过 topic。
+   - 0: MQTT 未初始化；
+   - 1: 已设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`；
+   - 2: 已设置 :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`；
+   - 3: 连接已断开；
+   - 4: 已建立连接；
+   - 5: 已连接，但未订阅 topic；
+   - 6: 已连接，已订阅过 topic。
 
--  **<scheme>**：
+- **<scheme>**：
 
-   -  1: MQTT over TCP；
-   -  2: MQTT over TLS（不校验证书）；
-   -  3: MQTT over TLS（校验 server 证书）；
-   -  4: MQTT over TLS（提供 client 证书）；
-   -  5: MQTT over TLS（校验 server 证书并且提供 client 证书）；
-   -  6: MQTT over WebSocket（基于 TCP）；
-   -  7: MQTT over WebSocket Secure（基于 TLS，不校验证书）；
-   -  8: MQTT over WebSocket Secure（基于 TLS，校验 server 证书）；
-   -  9: MQTT over WebSocket Secure（基于 TLS，提供 client 证书）；
-   -  10: MQTT over WebSocket Secure（基于 TLS，校验 server 证书并且提供 client 证书）。
+   - 1: MQTT over TCP；
+   - 2: MQTT over TLS（不校验证书）；
+   - 3: MQTT over TLS（校验 server 证书）；
+   - 4: MQTT over TLS（提供 client 证书）；
+   - 5: MQTT over TLS（校验 server 证书并且提供 client 证书）；
+   - 6: MQTT over WebSocket（基于 TCP）；
+   - 7: MQTT over WebSocket Secure（基于 TLS，不校验证书）；
+   - 8: MQTT over WebSocket Secure（基于 TLS，校验 server 证书）；
+   - 9: MQTT over WebSocket Secure（基于 TLS，提供 client 证书）；
+   - 10: MQTT over WebSocket Secure（基于 TLS，校验 server 证书并且提供 client 证书）。
 
 .. _cmd-MQTTPUB:
 
@@ -467,7 +467,7 @@ MQTT AT 命令集
 
 **功能：**
 
-通过 topic 发布 MQTT **字符串** 消息。如果您发布消息的数据量相对较多，已经超过了单条 AT 命令的长度阈值 ``256`` 字节，请使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
+通过 topic 发布 MQTT **字符串** 消息。如果你发布消息的数据量相对较多，已经超过了单条 AT 命令的长度阈值 ``256`` 字节，请使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
 
 **命令：**
 
@@ -484,18 +484,18 @@ MQTT AT 命令集
 参数
 ^^^^
 
--  **<LinkID>**：当前仅支持 link ID 0。
--  **<"topic">**：MQTT topic，最大长度：128 字节。
--  **<data>**：MQTT 字符串消息。
--  **<qos>**：发布消息的 QoS，参数可选 0、1、或 2，默认值：0。
--  **<retain>**：发布 retain。
--  **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
+- **<LinkID>**：当前仅支持 link ID 0。
+- **<"topic">**：MQTT topic，最大长度：128 字节。
+- **<data>**：MQTT 字符串消息。
+- **<qos>**：发布消息的 QoS，参数可选 0、1、或 2，默认值：0。
+- **<retain>**：发布 retain。
+- **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
 
 说明
 ^^^^
 
--  每条 AT 命令的总长度不能超过 256 字节。
--  本命令不能发送数据 ``\0``，若需要发送该数据，请使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
+- 每条 AT 命令的总长度不能超过 256 字节。
+- 本命令不能发送数据 ``\0``，若需要发送该数据，请使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
 
 示例
 ^^^^
@@ -518,7 +518,7 @@ MQTT AT 命令集
 
 **功能：**
 
-通过 topic 发布长 MQTT 消息。如果您发布消息的数据量相对较少，不大于单条 AT 命令的长度阈值 ``256`` 字节，也可以使用 :ref:`AT+MQTTPUB <cmd-MQTTPUB>` 命令。
+通过 topic 发布长 MQTT 消息。如果你发布消息的数据量相对较少，不大于单条 AT 命令的长度阈值 ``256`` 字节，也可以使用 :ref:`AT+MQTTPUB <cmd-MQTTPUB>` 命令。
 
 **命令：**
 
@@ -531,9 +531,9 @@ MQTT AT 命令集
 ::
 
     OK
-    > 
+    >
 
-符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，数据传输开始。
+符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，数据传输开始。
 
 若传输成功，则 AT 返回：
 
@@ -550,12 +550,12 @@ MQTT AT 命令集
 参数
 ^^^^
 
--  **<LinkID>**：当前仅支持 link ID 0。
--  **<"topic">**：MQTT topic，最大长度：128 字节。
--  **<length>**：MQTT 消息长度，不同 {IDF_TARGET_NAME} 设备的最大长度受到可利用内存的限制。
--  **<qos>**：发布消息的 QoS，参数可选 0、1、或 2，默认值：0。
--  **<retain>**：发布 retain。
--  **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
+- **<LinkID>**：当前仅支持 link ID 0。
+- **<"topic">**：MQTT topic，最大长度：128 字节。
+- **<length>**：MQTT 消息长度，不同 {IDF_TARGET_NAME} 设备的最大长度受到可利用内存的限制。
+- **<qos>**：发布消息的 QoS，参数可选 0、1、或 2，默认值：0。
+- **<retain>**：发布 retain。
+- **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
 
 .. _cmd-MQTTSUB:
 
@@ -621,26 +621,26 @@ MQTT AT 命令集
 参数
 ^^^^
 
--  **<LinkID>**：当前仅支持 link ID 0。
--  **<state>**：MQTT 状态：
+- **<LinkID>**：当前仅支持 link ID 0。
+- **<state>**：MQTT 状态：
 
-   -  0: MQTT 未初始化；
-   -  1: 已设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`；
-   -  2: 已设置 :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`；
-   -  3: 连接已断开；
-   -  4: 已建立连接；
-   -  5: 已连接，但未订阅 topic；
-   -  6: 已连接，已订阅过 MQTT topic。
+   - 0: MQTT 未初始化；
+   - 1: 已设置 :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`；
+   - 2: 已设置 :ref:`AT+MQTTCONNCFG <cmd-MQTTCONNCFG>`；
+   - 3: 连接已断开；
+   - 4: 已建立连接；
+   - 5: 已连接，但未订阅 topic；
+   - 6: 已连接，已订阅过 MQTT topic。
 
--  **<"topic">**：订阅的 topic。
--  **<qos>**：订阅的 QoS。
--  **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
+- **<"topic">**：订阅的 topic。
+- **<qos>**：订阅的 QoS。
+- **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
 
 说明
 ^^^^
 
 - 由于广域网每个路由节点的 MTU 限制或流量策略管理等，MQTT broker 发送的一条消息，最终可能会被分为多个消息发给 {IDF_TARGET_NAME} 设备，因此 {IDF_TARGET_NAME} 可能会收到多条 ``+MQTTSUBRECV`` 消息。
-- 若 {IDF_TARGET_NAME} 设备收到一条 MQTT 消息，且消息长度超过 1024 字节（包括 MQTT 报头和 MQTT 有效载荷），也会被分为多条 ``+MQTTSUBRECV`` 消息。此时，您可以通过下面方式增加 MQTT 缓冲区来避免此情况。
+- 若 {IDF_TARGET_NAME} 设备收到一条 MQTT 消息，且消息长度超过 1024 字节（包括 MQTT 报头和 MQTT 有效载荷），也会被分为多条 ``+MQTTSUBRECV`` 消息。此时，你可以通过下面方式增加 MQTT 缓冲区来避免此情况。
 
   - ``./build.py menuconfig`` > ``Component config`` > ``ESP-MQTT Configurations`` > ``MQTT Using custom configurations``
   - ``./build.py menuconfig`` > ``Component config`` > ``ESP-MQTT Configurations`` > ``MQTT Using custom configurations`` > ``Default MQTT Buffer Size`` > ``1460``
@@ -674,16 +674,16 @@ MQTT AT 命令集
 
 ::
 
-  NO UNSUBSCRIBE 
-  
+  NO UNSUBSCRIBE
+
   OK
 
 参数
 ^^^^
 
--  **<LinkID>**：当前仅支持 link ID 0。
--  **<"topic">**：MQTT topic，最大长度：128 字节。
--  **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
+- **<LinkID>**：当前仅支持 link ID 0。
+- **<"topic">**：MQTT topic，最大长度：128 字节。
+- **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
 
 .. _cmd-MQTTCLEAN:
 
@@ -712,7 +712,7 @@ MQTT AT 命令集
 参数
 ^^^^
 
--  **<LinkID>**：当前仅支持 link ID 0。
+- **<LinkID>**：当前仅支持 link ID 0。
 
 .. _MQTTErrCod:
 
@@ -897,5 +897,5 @@ MQTT 错误码以 ``ERR CODE:0x<%08x>`` 形式打印。
 :ref:`MQTT AT 说明 <MQTT-AT>`
 -------------------------------
 
--  当 MQTT 连接断开时，会提示 ``+MQTTDISCONNECTED:<LinkID>`` 消息。
--  当 MQTT 连接建立时，会提示 ``+MQTTCONNECTED:<LinkID>,<scheme>,<"host">,port,<"path">,<reconnect>`` 消息。
+- 当 MQTT 连接断开时，会提示 ``+MQTTDISCONNECTED:<LinkID>`` 消息。
+- 当 MQTT 连接建立时，会提示 ``+MQTTCONNECTED:<LinkID>,<scheme>,<"host">,port,<"path">,<reconnect>`` 消息。

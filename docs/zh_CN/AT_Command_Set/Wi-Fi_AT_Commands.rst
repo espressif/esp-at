@@ -22,7 +22,7 @@ Wi-Fi AT 命令集
   - :ref:`AT+CWSAP <cmd-SAP>`：配置 {IDF_TARGET_NAME} SoftAP 参数
   - :ref:`AT+CWLIF <cmd-LIF>`：查询连接到 {IDF_TARGET_NAME} SoftAP 的 station 信息
   - :ref:`AT+CWQIF <cmd-QIF>`：断开 station 与 {IDF_TARGET_NAME} SoftAP 的连接
-  - :ref:`AT+CWDHCP <cmd-DHCP>`：启用/禁用 DHCP
+  - :ref:`AT+CWDHCP <cmd-DHCP>`：启用或禁用 DHCP
   - :ref:`AT+CWDHCPS <cmd-DHCPS>`：查询/设置 {IDF_TARGET_NAME} SoftAP DHCP 分配的 IPv4 地址范围
   - :ref:`AT+CWAUTOCONN <cmd-AUTOC>`：上电是否自动连接 AP
   - :ref:`AT+CWAPPROTO <cmd-APPROTO>`：查询/设置 SoftAP 模式下 Wi-Fi 协议标准
@@ -44,12 +44,12 @@ Wi-Fi AT 命令集
 ------
 
 .. important::
-  默认的 AT 固件支持此页面下除 :ref:`AT+CWJEAP <cmd-JEAP>` 之外的所有 AT 命令。如果您需要修改 {IDF_TARGET_NAME} 默认支持的命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择（下面每项是独立的，根据您的需要选择）：
+  默认的 AT 固件支持此页面下除 :ref:`AT+CWJEAP <cmd-JEAP>` 之外的所有 AT 命令。如果你需要修改 {IDF_TARGET_NAME} 默认支持的命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择（下面每项是独立的，根据你的需要选择）：
 
   - 启用 EAP 命令（:ref:`AT+CWJEAP <cmd-JEAP>`）： ``Component config`` > ``AT`` > ``AT WPA2 Enterprise command support``
   - 禁用 WPS 命令（:ref:`AT+WPS <cmd-WPS>`）：``Component config`` > ``AT`` > ``AT WPS command support``
   - 禁用 smartconfig 命令（:ref:`AT+CWSTARTSMART <cmd-STARTS>`、:ref:`AT+CWSTOPSMART <cmd-STOPS>`）：``Component config`` > ``AT`` > ``AT smartconfig command support``
-  - 禁用所有 Wi-Fi 命令（不推荐。一旦禁用，所有 Wi-Fi 以及以上的功能将无法使用，您需要自行实现这些 AT 命令）： ``Component config`` > ``AT`` > ``AT wifi command support``
+  - 禁用所有 Wi-Fi 命令（不推荐。一旦禁用，所有 Wi-Fi 以及以上的功能将无法使用，你需要自行实现这些 AT 命令）： ``Component config`` > ``AT`` > ``AT wifi command support``
 
 .. _cmd-INIT:
 
@@ -99,16 +99,16 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<init>**：
+- **<init>**：
 
-   -  0: 清理 Wi-Fi 驱动程序
-   -  1: 初始化 Wi-Fi 驱动程序（默认值）
+   - 0: 清理 Wi-Fi 驱动程序
+   - 1: 初始化 Wi-Fi 驱动程序（默认值）
 
 说明
 ^^^^
 
 - 本设置不保存到 flash，重启后会恢复为默认值 1。
-- 当您 RAM 资源不足时，在不使用 Wi-Fi 的前提下，可以使用此命令清理 Wi-Fi 驱动程序，以释放 RAM 资源。
+- 当你 RAM 资源不足时，在不使用 Wi-Fi 的前提下，可以使用此命令清理 Wi-Fi 驱动程序，以释放 RAM 资源。
 
 示例
 ^^^^
@@ -165,17 +165,17 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<mode>**：模式
+- **<mode>**：模式
 
-   -  0: 无 Wi-Fi 模式，并且关闭 Wi-Fi RF 
-   -  1: Station 模式
-   -  2: SoftAP 模式
-   -  3: SoftAP+Station 模式
+   - 0: 无 Wi-Fi 模式，并且关闭 Wi-Fi RF
+   - 1: Station 模式
+   - 2: SoftAP 模式
+   - 3: SoftAP+Station 模式
 
--  **<auto_connect>**：切换 {IDF_TARGET_NAME} 设备的 Wi-Fi 模式时（例如，从 SoftAP 或无 Wi-Fi 模式切换为 Station 模式或 SoftAP+Station 模式），是否启用自动连接 AP 的功能，默认值：1。参数缺省时，使用默认值，也就是能自动连接。
+- **<auto_connect>**：切换 {IDF_TARGET_NAME} 设备的 Wi-Fi 模式时（例如，从 SoftAP 或无 Wi-Fi 模式切换为 Station 模式或 SoftAP+Station 模式），是否启用自动连接 AP 的功能，默认值：1。参数缺省时，使用默认值，也就是能自动连接。
 
-   -  0: 禁用自动连接 AP 的功能
-   -  1: 启用自动连接 AP 的功能，若之前已经将自动连接 AP 的配置保存到 flash 中，则 {IDF_TARGET_NAME} 设备将自动连接 AP
+   - 0: 禁用自动连接 AP 的功能
+   - 1: 启用自动连接 AP 的功能，若之前已经将自动连接 AP 的配置保存到 flash 中，则 {IDF_TARGET_NAME} 设备将自动连接 AP
 
 说明
 ^^^^
@@ -184,7 +184,7 @@ Wi-Fi AT 命令集
 
 .. only:: esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
-  - 如您之前使用过蓝牙功能，为获得更好的性能，建议在使用 SoftAP 或 SoftAP+Station 功能前，先发送以下命令注销已初始化过的功能：
+  - 如你之前使用过蓝牙功能，为获得更好的性能，建议在使用 SoftAP 或 SoftAP+Station 功能前，先发送以下命令注销已初始化过的功能：
 
     .. only:: esp32
 
@@ -195,7 +195,7 @@ Wi-Fi AT 命令集
         - :ref:`AT+BLEINIT=0 <cmd-BINIT>` （注销 Bluetooth LE）
         - :ref:`AT+BLUFI=0 <cmd-BLUFI>` （关闭 BluFi）
 
-    如您想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
+    如你想了解更多细节，请阅读 `RF 共存 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ 文档。
 
 .. only:: esp32c5 or esp32c61
 
@@ -367,7 +367,7 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<state>**：当前 Wi-Fi 状态
+- **<state>**：当前 Wi-Fi 状态
 
    - 0: {IDF_TARGET_NAME} station 尚未进行任何 Wi-Fi 连接
    - 1: {IDF_TARGET_NAME} station 已经连接上 AP，但尚未获取到 IPv4 地址
@@ -375,7 +375,7 @@ Wi-Fi AT 命令集
    - 3: {IDF_TARGET_NAME} station 正在进行 Wi-Fi 连接或 Wi-Fi 重连
    - 4: {IDF_TARGET_NAME} station 处于 Wi-Fi 断开状态
 
--  **<"ssid">**：目标 AP 的 SSID
+- **<"ssid">**：目标 AP 的 SSID
 
 说明
 ^^^^
@@ -424,7 +424,7 @@ Wi-Fi AT 命令集
 
 - **<ap_inactive_time>**：SoftAP 模式下的非活动时间。单位：秒，默认值：300，范围：[10,3600]。如果 SoftAP 在非活动时间内没有接收到某个已连接的 Station 的任何数据，SoftAP 将强制断开该 Station 的 Wi-Fi 连接。
 - **<sta_inactive_time>**：Station 模式下的非活动时间。单位：秒，默认值：6，范围：[3,600]。如果 Station 在非活动时间内没有接收到已连接的 SoftAP 的任何信标帧，将强制断开 {IDF_TARGET_NAME} 的 Wi-Fi 连接。
-- **<listen_interval>**：监听 AP beacon 的间隔，单位为 AP beacon 间隔，默认值：3，范围：[1,100]。和 :ref:`AT+CWJAP <cmd-JAP>` 中的 **<listen_interval>**  参数相同，但此配置是全局性的。
+- **<listen_interval>**：监听 AP beacon 的间隔，单位为 AP beacon 间隔，默认值：3，范围：[1,100]。和 :ref:`AT+CWJAP <cmd-JAP>` 中的 **<listen_interval>** 参数相同，但此配置是全局性的。
 
 说明
 ^^^^
@@ -521,16 +521,16 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<"ssid">**：目标 AP 的 SSID
+- **<"ssid">**：目标 AP 的 SSID
 
-   -  如果 SSID 和密码中有 ``,``、``"``、``\`` 等特殊字符，需转义
-   -  AT 支持连接 SSID 为中文的 AP，但是某些路由器或者热点的中文 SSID 不是 UTF-8 编码格式。您可以先扫描 SSID，然后使用扫描到的 SSID 进行连接。
+   - 如果 SSID 和密码中有 ``,``、``"``、``\`` 等特殊字符，需转义。
+   - AT 支持连接 SSID 为中文的 AP，但是某些路由器或者热点的中文 SSID 不是 UTF-8 编码格式。你可以先扫描 SSID，然后使用扫描到的 SSID 进行连接。
 
--  **<"pwd">**：密码最长 64 字节 ASCII
--  **<"bssid">**：目标 AP 的 MAC 地址，当多个 AP 有相同的 SSID 时，该参数不可省略
--  **<channel>**：信道号
--  **<rssi>**：信号强度
--  **<authmode>**：Wi-Fi 认证模式阈值。ESP-AT 仅连接认证模式等于或高于此阈值的 AP
+- **<"pwd">**：密码最长 64 字节 ASCII
+- **<"bssid">**：目标 AP 的 MAC 地址，当多个 AP 有相同的 SSID 时，该参数不可省略
+- **<channel>**：信道号
+- **<rssi>**：信号强度
+- **<authmode>**：Wi-Fi 认证模式阈值。ESP-AT 仅连接认证模式等于或高于此阈值的 AP
 
    - 0: OPEN（当 ``<"pwd">`` 未设置或为空时）或 WEP（当 ``<"pwd">`` 长度大于等于 8 字节时）
    - 1: WPA_PSK
@@ -550,46 +550,46 @@ Wi-Fi AT 命令集
    - 15: WPA2_WPA3_ENTERPRISE
    - 16: WPA_ENTERPRISE
 
--  **<reconn_interval>**：Wi-Fi 重连间隔，单位：秒，默认值：1，最大值：7200
+- **<reconn_interval>**：Wi-Fi 重连间隔，单位：秒，默认值：1，最大值：7200
 
-   -  0: 断开连接后，{IDF_TARGET_NAME} station 不重连 AP
-   -  [1,7200]: 断开连接后，{IDF_TARGET_NAME} station 每隔指定的时间与 AP 重连
+   - 0: 断开连接后，{IDF_TARGET_NAME} station 不重连 AP
+   - [1,7200]: 断开连接后，{IDF_TARGET_NAME} station 每隔指定的时间与 AP 重连
 
--  **<listen_interval>**：监听 AP beacon 的间隔，单位为 AP beacon 间隔，默认值：3，范围：[1,100]
--  **<scan_mode>**：扫描模式
+- **<listen_interval>**：监听 AP beacon 的间隔，单位为 AP beacon 间隔，默认值：3，范围：[1,100]
+- **<scan_mode>**：扫描模式
 
-   -  0: 快速扫描，找到目标 AP 后终止扫描，{IDF_TARGET_NAME} station 与第一个扫描到的 AP 连接
-   -  1: 全信道扫描，所有信道都扫描后才终止扫描，{IDF_TARGET_NAME} station 与扫描到的信号最强的 AP 连接
+   - 0: 快速扫描，找到目标 AP 后终止扫描，{IDF_TARGET_NAME} station 与第一个扫描到的 AP 连接
+   - 1: 全信道扫描，所有信道都扫描后才终止扫描，{IDF_TARGET_NAME} station 与扫描到的信号最强的 AP 连接
 
--  **<jap_timeout>**：:ref:`AT+CWJAP <cmd-JAP>` 命令超时的最大值，单位：秒，默认值：15，范围：[3,600]
--  **<pmf>**：PMF（Protected Management Frames，受保护的管理帧），默认值 1
+- **<jap_timeout>**：:ref:`AT+CWJAP <cmd-JAP>` 命令超时的最大值，单位：秒，默认值：15，范围：[3,600]
+- **<pmf>**：PMF（Protected Management Frames，受保护的管理帧），默认值 1
 
     - 0 表示禁用 PMF
     - bit 0: 具有 PMF 功能，提示支持 PMF，如果其他设备具有 PMF 功能，则 {IDF_TARGET_NAME} 设备将优先选择以 PMF 模式连接
     - bit 1: 需要 PMF，提示需要 PMF，设备将不会关联不支持 PMF 功能的设备
 
--  **<error code>**：错误码，仅供参考
+- **<error code>**：错误码，仅供参考
 
-   -  1: 连接超时
-   -  2: 密码错误
-   -  3: 无法找到目标 AP
-   -  4: 连接失败
-   -  其它值: 发生未知错误
+   - 1: 连接超时
+   - 2: 密码错误
+   - 3: 无法找到目标 AP
+   - 4: 连接失败
+   - 其它值: 发生未知错误
 
 说明
 ^^^^
 
--  如果 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
--  使用本命令需要开启 station 模式
-- 当 {IDF_TARGET_NAME} station 已连接上 AP 后，推荐使用此命令查询 Wi-Fi 信息；当 {IDF_TARGET_NAME} station 没有连接上 AP 时，推荐使用 :ref:`AT+CWSTATE <cmd-WSTATE>` 命令查询 Wi-Fi 信息
--  本命令中的 ``<reconn_interval>`` 参数与 :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>` 命令中的 ``<interval_second>`` 参数相同。如果运行本命令时不设置 ``<reconn_interval>`` 参数，Wi-Fi 重连间隔时间将采用默认值 1
--  如果同时省略 ``<"ssid">`` 和 ``<"password">`` 参数，将使用上一次设置的值
--  执行命令与设置命令的超时时间相同，默认为 15 秒，可通过参数 ``<jap_timeout>`` 设置
--  不支持通过 :term:`WAPI` 鉴权方式连接路由器。
--  想要获取 IPv6 地址，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`
--  回复 ``OK`` 代表 IPv4 网络已经准备就绪，而不代表 IPv6 网络准备就绪。当前 ESP-AT 以 IPv4 网络为主，IPv6 网络为辅。
--  ``WIFI GOT IPv6 LL`` 代表已经获取到本地链路 IPv6 地址，这个地址是通过 EUI-64 本地计算出来的，不需要路由器参与。由于并行时序，这个打印可能在 ``OK`` 之前，也可能在 ``OK`` 之后。
--  ``WIFI GOT IPv6 GL`` 代表已经获取到全局 IPv6 地址，该地址是由 AP 下发的前缀加上内部计算出来的后缀进行组合而来的，需要路由器参与。由于并行时序，这个打印可能在 ``OK`` 之前，也可能在 ``OK`` 之后；也可能由于 AP 不支持 IPv6 而不打印。
+- 如果 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区。
+- 使用本命令需要开启 station 模式。
+- 当 {IDF_TARGET_NAME} station 已连接上 AP 后，推荐使用此命令查询 Wi-Fi 信息；当 {IDF_TARGET_NAME} station 没有连接上 AP 时，推荐使用 :ref:`AT+CWSTATE <cmd-WSTATE>` 命令查询 Wi-Fi 信息。
+- 本命令中的 ``<reconn_interval>`` 参数与 :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>` 命令中的 ``<interval_second>`` 参数相同。如果运行本命令时不设置 ``<reconn_interval>`` 参数，Wi-Fi 重连间隔时间将采用默认值 1。
+- 如果同时省略 ``<"ssid">`` 和 ``<"password">`` 参数，将使用上一次设置的值。
+- 执行命令与设置命令的超时时间相同，默认为 15 秒，可通过参数 ``<jap_timeout>`` 设置。
+- 不支持通过 :term:`WAPI` 鉴权方式连接路由器。
+- 想要获取 IPv6 地址，需要先设置 :ref:`AT+CIPV6=1 <cmd-IPV6>`。
+- 回复 ``OK`` 代表 IPv4 网络已经准备就绪，而不代表 IPv6 网络准备就绪。当前 ESP-AT 以 IPv4 网络为主，IPv6 网络为辅。
+- ``WIFI GOT IPv6 LL`` 代表已经获取到本地链路 IPv6 地址，这个地址是通过 EUI-64 本地计算出来的，不需要路由器参与。由于并行时序，这个打印可能在 ``OK`` 之前，也可能在 ``OK`` 之后。
+- ``WIFI GOT IPv6 GL`` 代表已经获取到全局 IPv6 地址，该地址是由 AP 下发的前缀加上内部计算出来的后缀进行组合而来的，需要路由器参与。由于并行时序，这个打印可能在 ``OK`` 之前，也可能在 ``OK`` 之后；也可能由于 AP 不支持 IPv6 而不打印。
 
 示例
 ^^^^
@@ -603,7 +603,7 @@ Wi-Fi AT 命令集
     AT+CWJAP="ab\\\,c","0123456789\"\\"
 
     // 如果多个 AP 有相同的 SSID "abc"，可通过 BSSID 找到目标 AP：
-    AT+CWJAP="abc","0123456789","ca:d7:19:d8:a6:44" 
+    AT+CWJAP="abc","0123456789","ca:d7:19:d8:a6:44"
 
     // 如果 ESP-AT 要求通过 PMF 连接 AP，则命令是：
     AT+CWJAP="abc","0123456789",,,,,,,3
@@ -655,17 +655,17 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<interval_second>**：Wi-Fi 重连间隔，单位：秒，默认值：0，最大值 7200
+- **<interval_second>**：Wi-Fi 重连间隔，单位：秒，默认值：0，最大值 7200
 
-   -  0: 断开连接后，{IDF_TARGET_NAME} station 不重连 AP
-   -  [1,7200]: 断开连接后，{IDF_TARGET_NAME} station 每隔指定的时间与 AP 重连
+   - 0: 断开连接后，{IDF_TARGET_NAME} station 不重连 AP
+   - [1,7200]: 断开连接后，{IDF_TARGET_NAME} station 每隔指定的时间与 AP 重连
 
--  **<repeat_count>**：{IDF_TARGET_NAME} 设备尝试重连 AP 的次数，本参数在 ``<interval_second>`` 不为 0 时有效，默认值：0，最大值：1000
+- **<repeat_count>**：{IDF_TARGET_NAME} 设备尝试重连 AP 的次数，本参数在 ``<interval_second>`` 不为 0 时有效，默认值：0，最大值：1000
 
-   -  0: {IDF_TARGET_NAME} station 始终尝试连接 AP
-   -  [1,1000]: {IDF_TARGET_NAME} station 按照本参数指定的次数重连 AP
+   - 0: {IDF_TARGET_NAME} station 始终尝试连接 AP
+   - [1,1000]: {IDF_TARGET_NAME} station 按照本参数指定的次数重连 AP
 
--  **[<reconnect_now>]**：设置完成后，是否立即开始重连 AP，默认值：0。注意：仅当 {IDF_TARGET_NAME} 的 Wi-Fi 尚未获取到 IP 地址时，才会重连；若已获取到 IP 地址，则保持当前连接状态不变
+- **<reconnect_now>**：设置完成后，是否立即开始重连 AP，默认值：0。注意：仅当 {IDF_TARGET_NAME} 的 Wi-Fi 尚未获取到 IP 地址时，才会重连；若已获取到 IP 地址，则保持当前连接状态不变
 
    - 0: 不立即重连 AP
    - 1: 立即重连 AP
@@ -721,40 +721,40 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<reserved>**：保留项
--  **<print mask>**：:ref:`AT+CWLAP <cmd-LAP>` 的扫描结果是否显示以下参数，默认值：0x7FF，若 bit 设为 1，则显示对应参数，若设为 0，则不显示对应参数
+- **<reserved>**：保留项
+- **<print mask>**：:ref:`AT+CWLAP <cmd-LAP>` 的扫描结果是否显示以下参数，默认值：0x7FF，若 bit 设为 1，则显示对应参数，若设为 0，则不显示对应参数
 
-   -  bit 0: 是否显示 <ecn>
-   -  bit 1: 是否显示 <"ssid">
-   -  bit 2: 是否显示 <rssi>
-   -  bit 3: 是否显示 <"mac">
-   -  bit 4: 是否显示 <channel>
-   -  bit 5: 是否显示 <freq_offset>
-   -  bit 6: 是否显示 <freqcal_val>
-   -  bit 7: 是否显示 <pairwise_cipher>
-   -  bit 8: 是否显示 <group_cipher>
-   -  bit 9: 是否显示 <bgn>
-   -  bit 10: 是否显示 <wps>
+   - bit 0: 是否显示 <ecn>
+   - bit 1: 是否显示 <"ssid">
+   - bit 2: 是否显示 <rssi>
+   - bit 3: 是否显示 <"mac">
+   - bit 4: 是否显示 <channel>
+   - bit 5: 是否显示 <freq_offset>
+   - bit 6: 是否显示 <freqcal_val>
+   - bit 7: 是否显示 <pairwise_cipher>
+   - bit 8: 是否显示 <group_cipher>
+   - bit 9: 是否显示 <bgn>
+   - bit 10: 是否显示 <wps>
 
--  **[<rssi filter>]**：:ref:`AT+CWLAP <cmd-LAP>` 的扫描结果是否按照本参数过滤，也即，是否过滤掉信号强度低于 ``rssi filter`` 参数值的 AP，单位：dBm，默认值：–100，范围：[–100,40]
--  **[<authmode mask>]**：:ref:`AT+CWLAP <cmd-LAP>` 的扫描结果是否显示以下认证方式的 AP，默认值：0xFFFF，如果 ``bit x`` 设为 1，则显示对应认证方式的 AP，若设为 0，则不显示
+- **<rssi filter>**：:ref:`AT+CWLAP <cmd-LAP>` 的扫描结果是否按照本参数过滤，也即，是否过滤掉信号强度低于 ``rssi filter`` 参数值的 AP，单位：dBm，默认值：–100，范围：[–100,40]
+- **<authmode mask>**：:ref:`AT+CWLAP <cmd-LAP>` 的扫描结果是否显示以下认证方式的 AP，默认值：0xFFFF，如果 ``bit x`` 设为 1，则显示对应认证方式的 AP，若设为 0，则不显示
 
-   -  bit 0: 是否显示 ``OPEN`` 认证方式的 AP
-   -  bit 1: 是否显示 ``WEP`` 认证方式的 AP
-   -  bit 2: 是否显示 ``WPA_PSK`` 认证方式的 AP
-   -  bit 3: 是否显示 ``WPA2_PSK`` 认证方式的 AP
-   -  bit 4: 是否显示 ``WPA_WPA2_PSK`` 认证方式的 AP
-   -  bit 5: 是否显示 ``WPA2_ENTERPRISE`` 认证方式的 AP
-   -  bit 6: 是否显示 ``WPA3_PSK`` 认证方式的 AP
-   -  bit 7: 是否显示 ``WPA2_WPA3_PSK`` 认证方式的 AP
-   -  bit 8: 是否显示 ``WAPI_PSK`` 认证方式的 AP
-   -  bit 9: 是否显示 ``OWE`` 认证方式的 AP
-   -  bit 10: 是否显示 ``WPA3_ENT_192`` 认证方式的 AP
-   -  bit 11: 是否显示 ``WPA3_EXT_PSK`` 认证方式的 AP
-   -  bit 12: 是否显示 ``WPA3_EXT_PSK_MIXED_MODE`` 认证方式的 AP
-   -  bit 13: 是否显示 ``DPP`` 认证方式的 AP
-   -  bit 14: 是否显示 ``WPA3_ENTERPRISE`` 认证方式的 AP
-   -  bit 15: 是否显示 ``WPA2_WPA3_ENTERPRISE`` 认证方式的 AP
+   - bit 0: 是否显示 ``OPEN`` 认证方式的 AP
+   - bit 1: 是否显示 ``WEP`` 认证方式的 AP
+   - bit 2: 是否显示 ``WPA_PSK`` 认证方式的 AP
+   - bit 3: 是否显示 ``WPA2_PSK`` 认证方式的 AP
+   - bit 4: 是否显示 ``WPA_WPA2_PSK`` 认证方式的 AP
+   - bit 5: 是否显示 ``WPA2_ENTERPRISE`` 认证方式的 AP
+   - bit 6: 是否显示 ``WPA3_PSK`` 认证方式的 AP
+   - bit 7: 是否显示 ``WPA2_WPA3_PSK`` 认证方式的 AP
+   - bit 8: 是否显示 ``WAPI_PSK`` 认证方式的 AP
+   - bit 9: 是否显示 ``OWE`` 认证方式的 AP
+   - bit 10: 是否显示 ``WPA3_ENT_192`` 认证方式的 AP
+   - bit 11: 是否显示 ``WPA3_EXT_PSK`` 认证方式的 AP
+   - bit 12: 是否显示 ``WPA3_EXT_PSK_MIXED_MODE`` 认证方式的 AP
+   - bit 13: 是否显示 ``DPP`` 认证方式的 AP
+   - bit 14: 是否显示 ``WPA3_ENTERPRISE`` 认证方式的 AP
+   - bit 15: 是否显示 ``WPA2_WPA3_ENTERPRISE`` 认证方式的 AP
 
 示例
 ^^^^
@@ -820,57 +820,57 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<ecn>**：加密方式
+- **<ecn>**：加密方式
 
-   -  0: OPEN
-   -  1: WEP
-   -  2: WPA_PSK
-   -  3: WPA2_PSK
-   -  4: WPA_WPA2_PSK
-   -  5: WPA2_ENTERPRISE
-   -  6: WPA3_PSK
-   -  7: WPA2_WPA3_PSK
-   -  8: WAPI_PSK
-   -  9: OWE
-   -  10: WPA3_ENT_192
-   -  11: WPA3_EXT_PSK
-   -  12: WPA3_EXT_PSK_MIXED_MODE
-   -  13: DPP
-   -  14: WPA3_ENTERPRISE
-   -  15: WPA2_WPA3_ENTERPRISE
+   - 0: OPEN
+   - 1: WEP
+   - 2: WPA_PSK
+   - 3: WPA2_PSK
+   - 4: WPA_WPA2_PSK
+   - 5: WPA2_ENTERPRISE
+   - 6: WPA3_PSK
+   - 7: WPA2_WPA3_PSK
+   - 8: WAPI_PSK
+   - 9: OWE
+   - 10: WPA3_ENT_192
+   - 11: WPA3_EXT_PSK
+   - 12: WPA3_EXT_PSK_MIXED_MODE
+   - 13: DPP
+   - 14: WPA3_ENTERPRISE
+   - 15: WPA2_WPA3_ENTERPRISE
 
--  **<"ssid">**：字符串参数，AP 的 SSID
--  **<rssi>**：信号强度
--  **<"mac">**：字符串参数，AP 的 MAC 地址
--  **<channel>**：信道号，指定后仅扫描该信道。
--  **<scan_type>**：Wi-Fi 扫描类型，默认值为：0
+- **<"ssid">**：字符串参数，AP 的 SSID
+- **<rssi>**：信号强度
+- **<"mac">**：字符串参数，AP 的 MAC 地址
+- **<channel>**：信道号，指定后仅扫描该信道
+- **<scan_type>**：Wi-Fi 扫描类型，默认值为：0
 
-   -  0: 主动扫描
-   -  1: 被动扫描
+   - 0: 主动扫描
+   - 1: 被动扫描
 
--  **<scan_time_min>**：每个信道最短扫描时间，单位：毫秒，范围：[0,1500]，如果扫描类型为被动扫描，本参数无效
--  **<scan_time_max>**：每个信道最长扫描时间，单位：毫秒，范围：[0,1500]，如果设为 0，固件采用参数默认值，主动扫描为 120 ms，被动扫描为 360 ms
-- **<2ghz_channel_bitmap>**：2.4 GHz 频段信道的位图。在 ``<channel>`` 缺省时或为 0 时生效。每一位对应一个信道，1 表示扫描该信道，0 表示不扫描该信道。2.4 GHz 频段支持的信道见：`2.4G 信道 <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L415-L428>`_。例如，若 bit1 和 bit2 设为 1，则表示扫描信道 1 和信道 2。
+- **<scan_time_min>**：每个信道最短扫描时间，单位：毫秒，范围：[0,1500]，如果扫描类型为被动扫描，本参数无效
+- **<scan_time_max>**：每个信道最长扫描时间，单位：毫秒，范围：[0,1500]，如果设为 0，固件采用参数默认值，主动扫描为 120 ms，被动扫描为 360 ms
+- **<2ghz_channel_bitmap>**：2.4 GHz 频段信道的位图。在 ``<channel>`` 缺省时或为 0 时生效。每一位对应一个信道，1 表示扫描该信道，0 表示不扫描该信道。2.4 GHz 频段支持的信道见：`2.4G 信道 <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L415-L428>`_。例如，若 bit 1 和 bit 2 设为 1，则表示扫描信道 1 和信道 2
 
 .. only:: esp32c5
 
-  - **<5ghz_channel_bitmap>**：5 GHz 频段信道的位图。在 ``<channel>`` 缺省时或为 0 时生效。每一位对应一个信道，1 表示扫描该信道，0 表示不扫描该信道。5 GHz 频段支持的信道见：`5G 信道 <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L433-L460>`_。例如，若 bit1 和 bit2 设为 1，则表示扫描信道 36 和信道 40。
+  - **<5ghz_channel_bitmap>**：5 GHz 频段信道的位图。在 ``<channel>`` 缺省时或为 0 时生效。每一位对应一个信道，1 表示扫描该信道，0 表示不扫描该信道。5 GHz 频段支持的信道见：`5G 信道 <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L433-L460>`_。例如，若 bit 1 和 bit 2 设为 1，则表示扫描信道 36 和信道 40。
 
--  **<freq_offset>**：频偏（保留项目）
--  **<freqcal_val>**：频率校准值（保留项目）
--  **<pairwise_cipher>**：成对加密类型
+- **<freq_offset>**：频偏（保留项目）
+- **<freqcal_val>**：频率校准值（保留项目）
+- **<pairwise_cipher>**：成对加密类型
 
-   -  0: None
-   -  1: WEP40
-   -  2: WEP104
-   -  3: TKIP
-   -  4: CCMP
-   -  5: TKIP and CCMP
-   -  6: AES-CMAC-128
-   -  7: 未知
+   - 0: None
+   - 1: WEP40
+   - 2: WEP104
+   - 3: TKIP
+   - 4: CCMP
+   - 5: TKIP and CCMP
+   - 6: AES-CMAC-128
+   - 7: 未知
 
--  **<group_cipher>**：组加密类型，与 ``<pairwise_cipher>`` 参数的枚举值相同
--  **<wifi_protocol>**：Wi-Fi 协议标准，若 bit 设为 1，则表示使能对应模式，若设为 0，则表示禁用对应模式
+- **<group_cipher>**：组加密类型，与 ``<pairwise_cipher>`` 参数的枚举值相同
+- **<wifi_protocol>**：Wi-Fi 协议标准，若 bit 设为 1，则表示使能对应模式，若设为 0，则表示禁用对应模式
 
    - bit 0: 是否使能 802.11b 模式
    - bit 1: 是否使能 802.11g 模式
@@ -880,7 +880,7 @@ Wi-Fi AT 命令集
    - bit 5: 802.11a 协议标准
    - bit 6: 802.11ac 协议标准
 
--  **<wps>**：wps flag
+- **<wps>**：wps flag
 
    - 0: 不支持 WPS
    - 1: 支持 WPS
@@ -898,7 +898,7 @@ Wi-Fi AT 命令集
 ::
 
     AT+CWLAP="Wi-Fi","ca:d7:19:d8:a6:44",6,0,400,1000
-    
+
     // 寻找指定 SSID 的 AP
     AT+CWLAP="Wi-Fi"
 
@@ -969,35 +969,35 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<"ssid">**：字符串参数，接入点名称
--  **<"pwd">**：字符串参数，密码，范围：8 ~ 64 字节 ASCII
--  **<channel>**：信道号
--  **<ecn>**：加密方式，不支持 WEP
+- **<"ssid">**：字符串参数，接入点名称
+- **<"pwd">**：字符串参数，密码，范围：8 ~ 64 字节 ASCII
+- **<channel>**：信道号
+- **<ecn>**：加密方式，不支持 WEP
 
-   -  0: OPEN
-   -  2: WPA_PSK
-   -  3: WPA2_PSK
-   -  4: WPA_WPA2_PSK
+   - 0: OPEN
+   - 2: WPA_PSK
+   - 3: WPA2_PSK
+   - 4: WPA_WPA2_PSK
 
--  **[<max conn>]**：允许连入 {IDF_TARGET_NAME} SoftAP 的最多 station 数目，取值范围：参考 `max_connection 描述 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id39>`_。
--  **[<ssid hidden>]**：
+- **<max conn>**：允许连入 {IDF_TARGET_NAME} SoftAP 的最多 station 数目，取值范围：参考 `max_connection 描述 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id39>`_。
+- **<ssid hidden>**：
 
-   -  0: 广播 SSID（默认）
-   -  1: 不广播 SSID
+   - 0: 广播 SSID（默认）
+   - 1: 不广播 SSID
 
 说明
 ^^^^
 
--  本命令只有当 :ref:`AT+CWMODE=2 <cmd-MODE>` 或者 :ref:`AT+CWMODE=3 <cmd-MODE>` 时才有效
--  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 分区
--  默认 SSID 因设备而异，因为它由设备的 MAC 地址组成。 您可以使用 :ref:`AT+CWSAP? <cmd-SAP>` 查询默认的SSID。
+- 本命令只有当 :ref:`AT+CWMODE=2 <cmd-MODE>` 或者 :ref:`AT+CWMODE=3 <cmd-MODE>` 时才有效。
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 分区。
+- 默认 SSID 因设备而异，因为它由设备的 MAC 地址组成。 你可以使用 :ref:`AT+CWSAP? <cmd-SAP>` 查询默认的SSID。
 
 示例
 ^^^^
 
 ::
 
-    AT+CWSAP="ESP","1234567890",5,3   
+    AT+CWSAP="ESP","1234567890",5,3
 
 .. _cmd-LIF:
 
@@ -1024,13 +1024,13 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<ip addr>**：连接到 {IDF_TARGET_NAME} SoftAP 的 station 的 IP 地址
--  **<mac>**：连接到 {IDF_TARGET_NAME} SoftAP 的 station 的 MAC 地址
+- **<ip addr>**：连接到 {IDF_TARGET_NAME} SoftAP 的 station 的 IP 地址
+- **<mac>**：连接到 {IDF_TARGET_NAME} SoftAP 的 station 的 MAC 地址
 
 说明
 ^^^^
 
--  本命令无法查询静态 IP，仅支持在 {IDF_TARGET_NAME} SoftAP 和连入的 station DHCP 均使能的情况下有效
+- 本命令无法查询静态 IP，仅支持在 {IDF_TARGET_NAME} SoftAP 和连入的 station DHCP 均使能的情况下有效
 
 .. _cmd-QIF:
 
@@ -1078,11 +1078,11 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<"mac">**：需断开连接的 station 的 MAC 地址
+- **<"mac">**：需断开连接的 station 的 MAC 地址
 
 .. _cmd-DHCP:
 
-:ref:`AT+CWDHCP <WiFi-AT>`：启用/禁用 DHCP
+:ref:`AT+CWDHCP <WiFi-AT>`：启用或禁用 DHCP
 -----------------------------------------------------
 
 查询命令
@@ -1105,8 +1105,8 @@ Wi-Fi AT 命令集
 ^^^^^^^^
 
 **功能：**
- 
-启用/禁用 DHCP
+
+启用或禁用 DHCP
 
 **命令：**
 
@@ -1123,41 +1123,41 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<operate>**：
+- **<operate>**：
 
-   -  0: 禁用
-   -  1: 启用
+   - 0: 禁用
+   - 1: 启用
 
--  **<mode>**：
+- **<mode>**：
 
-   -  Bit0: Station 的 DHCP
-   -  Bit1: SoftAP 的 DHCP
+   - bit 0: Station 的 DHCP
+   - bit 1: SoftAP 的 DHCP
 
--  **<state>**：DHCP 的状态
-   
-   - Bit0:
+- **<state>**：DHCP 的状态
+
+   - bit 0:
 
      - 0: 禁用 Station 的 DHCP
      - 1: 启用 Station 的 DHCP
-   
-   - Bit1:
+
+   - bit 1:
 
      - 0: 禁用 SoftAP 的 DHCP
      - 1: 启用 SoftAP 的 DHCP
 
-   - Bit2:
+   - bit 2:
 
      - 0: 禁用 Ethernet 的 DHCP
      - 1: 启用 Ethernet 的 DHCP
 
 说明
 ^^^^
--  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
--  本设置命令与设置静态 IPv4 地址的命令会相互影响，如 :ref:`AT+CIPSTA <cmd-IPSTA>` 和 :ref:`AT+CIPAP <cmd-IPAP>`
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
+- 本设置命令与设置静态 IPv4 地址的命令会相互影响，如 :ref:`AT+CIPSTA <cmd-IPSTA>` 和 :ref:`AT+CIPAP <cmd-IPAP>`
 
-   -  若启用 DHCP，则静态 IPv4 地址会被禁用
-   -  若启用静态 IPv4，则 DHCP 会被禁用
-   -  最后一次配置会覆盖上一次配置
+   - 若启用 DHCP，则静态 IPv4 地址会被禁用
+   - 若启用静态 IPv4，则 DHCP 会被禁用
+   - 最后一次配置会覆盖上一次配置
 
 示例
 ^^^^
@@ -1213,21 +1213,21 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<enable>**：
-   
-   -  1: 设置 DHCP server 信息，后续参数必须填写
-   -  0: 清除 DHCP server 信息，恢复默认值，后续参数无需填写
+- **<enable>**：
 
--  **<lease time>**：租约时间，单位：分钟，取值范围：[1,2880]
--  **<"start IP">**：{IDF_TARGET_NAME} SoftAP DHCP 服务器 IPv4 地址池的起始 IP
--  **<"end IP">**：{IDF_TARGET_NAME} SoftAP DHCP 服务器 IPv4 地址池的结束 IP
+   - 1: 设置 DHCP server 信息，后续参数必须填写
+   - 0: 清除 DHCP server 信息，恢复默认值，后续参数无需填写
+
+- **<lease time>**：租约时间，单位：分钟，取值范围：[1,2880]
+- **<"start IP">**：{IDF_TARGET_NAME} SoftAP DHCP 服务器 IPv4 地址池的起始 IP
+- **<"end IP">**：{IDF_TARGET_NAME} SoftAP DHCP 服务器 IPv4 地址池的结束 IP
 
 说明
 ^^^^
 
--  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
--  本命令必须在 {IDF_TARGET_NAME} SoftAP 模式使能，且开启 DHCP server 的情况下使用
--  设置的 IPv4 地址范围必须与 {IDF_TARGET_NAME} SoftAP 在同一网段
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
+- 本命令必须在 {IDF_TARGET_NAME} SoftAP 模式使能，且开启 DHCP server 的情况下使用
+- 设置的 IPv4 地址范围必须与 {IDF_TARGET_NAME} SoftAP 在同一网段
 
 示例
 ^^^^
@@ -1235,7 +1235,7 @@ Wi-Fi AT 命令集
 ::
 
     AT+CWDHCPS=1,3,"192.168.4.10","192.168.4.15"
-    
+
     AT+CWDHCPS=0 // 清除设置，恢复默认值
 
 .. _cmd-AUTOC:
@@ -1277,10 +1277,10 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<enable>**：
+- **<enable>**：
 
-   -  1: 上电自动连接 AP（默认）   
-   -  0: 上电不自动连接 AP
+   - 1: 上电自动连接 AP（默认）
+   - 0: 上电不自动连接 AP
 
 说明
 ^^^^
@@ -1355,11 +1355,11 @@ Wi-Fi AT 命令集
 
   .. list::
 
-    - bit0: 802.11b 协议标准
-    - bit1: 802.11g 协议标准
-    - bit2: 802.11n 协议标准
-    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
-    :esp32c5 or esp32c6 or esp32c61: - bit4: 802.11ax 协议标准
+    - bit 0: 802.11b 协议标准
+    - bit 1: 802.11g 协议标准
+    - bit 2: 802.11n 协议标准
+    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit 3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+    :esp32c5 or esp32c6 or esp32c61: - bit 4: 802.11ax 协议标准
 
 .. only:: esp32c5
 
@@ -1367,10 +1367,10 @@ Wi-Fi AT 命令集
 
     .. list::
 
-      - bit2: 802.11n 协议标准
-      - bit4: 802.11ax 协议标准
-      - bit5: 802.11a 协议标准
-      - bit6: 802.11ac 协议标准
+      - bit 2: 802.11n 协议标准
+      - bit 4: 802.11ax 协议标准
+      - bit 5: 802.11a 协议标准
+      - bit 6: 802.11ac 协议标准
 
 说明
 ^^^^
@@ -1444,11 +1444,11 @@ Wi-Fi AT 命令集
 
   .. list::
 
-    - bit0: 802.11b 协议标准
-    - bit1: 802.11g 协议标准
-    - bit2: 802.11n 协议标准
-    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
-    :esp32c5 or esp32c6 or esp32c61: - bit4: 802.11ax 协议标准
+    - bit 0: 802.11b 协议标准
+    - bit 1: 802.11g 协议标准
+    - bit 2: 802.11n 协议标准
+    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit 3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+    :esp32c5 or esp32c6 or esp32c61: - bit 4: 802.11ax 协议标准
 
 .. only:: esp32c5
 
@@ -1456,10 +1456,10 @@ Wi-Fi AT 命令集
 
     .. list::
 
-      - bit2: 802.11n 协议标准
-      - bit4: 802.11ax 协议标准
-      - bit5: 802.11a 协议标准
-      - bit6: 802.11ac 协议标准
+      - bit 2: 802.11n 协议标准
+      - bit 4: 802.11ax 协议标准
+      - bit 5: 802.11a 协议标准
+      - bit 6: 802.11ac 协议标准
 
 说明
 ^^^^
@@ -1521,17 +1521,17 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<"mac">**：字符串参数，表示 {IDF_TARGET_NAME} Station 的 MAC 地址
+- **<"mac">**：字符串参数，表示 {IDF_TARGET_NAME} Station 的 MAC 地址
 
 说明
 ^^^^
 
 .. list::
-  
+
   - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
   :esp32: - {IDF_TARGET_NAME} Station 的 MAC 地址与 {IDF_TARGET_NAME} Ethernet 和 {IDF_TARGET_NAME} SoftAP 不同，不要为二者设置同样的 MAC 地址
   :esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61: - {IDF_TARGET_NAME} Station 的 MAC 地址与 {IDF_TARGET_NAME} SoftAP 不同，不要为二者设置同样的 MAC 地址
-  - MAC 地址的 Bit 0 不能为 1，例如，MAC 地址可以是 "1a:…"，但不可以是 "15:…"
+  - MAC 地址的 bit 0 不能为 1，例如，MAC 地址可以是 "1a:…"，但不可以是 "15:…"
   - FF:FF:FF:FF:FF:FF 和 00:00:00:00:00:00 是无效地址，不能设置
 
 示例
@@ -1587,7 +1587,7 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<"mac">**：字符串参数，表示 {IDF_TARGET_NAME} SoftAP 的 MAC 地址
+- **<"mac">**：字符串参数，表示 {IDF_TARGET_NAME} SoftAP 的 MAC 地址
 
 说明
 ^^^^
@@ -1597,7 +1597,7 @@ Wi-Fi AT 命令集
   - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
   :esp32: - {IDF_TARGET_NAME} SoftAP 的 MAC 地址与 {IDF_TARGET_NAME} Station 和 {IDF_TARGET_NAME} Ethernet 不同，不要为二者设置同样的 MAC 地址
   :esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61: - {IDF_TARGET_NAME} SoftAP 的 MAC 地址与 {IDF_TARGET_NAME} Station 不同，不要为二者设置同样的 MAC 地址
-  - MAC 地址的 Bit 0 不能为 1，例如，MAC 地址可以是 "18:…"，但不可以是 "15:…"
+  - MAC 地址的 bit 0 不能为 1，例如，MAC 地址可以是 "18:…"，但不可以是 "15:…"
   - FF:FF:FF:FF:FF:FF 和 00:00:00:00:00:00 是无效地址，不能设置
 
 示例
@@ -1605,7 +1605,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CIPAPMAC="18:fe:35:98:d3:7b" 
+    AT+CIPAPMAC="18:fe:35:98:d3:7b"
 
 .. _cmd-IPSTA:
 
@@ -1659,29 +1659,29 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<"ip">**：字符串参数，表示 {IDF_TARGET_NAME} station 的 IPv4 地址
--  **<"gateway">**：网关
--  **<"netmask">**：子网掩码
--  **<"ipv6 addr">**：{IDF_TARGET_NAME} station 的 IPv6 地址
+- **<"ip">**：字符串参数，表示 {IDF_TARGET_NAME} station 的 IPv4 地址
+- **<"gateway">**：网关
+- **<"netmask">**：子网掩码
+- **<"ipv6 addr">**：{IDF_TARGET_NAME} station 的 IPv6 地址
 
 说明
 ^^^^
 
--  使用查询命令时，只有当 {IDF_TARGET_NAME} station 连入 AP 或者配置过静态 IP 地址后，才能查询到它的 IP 地址
--  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
--  本设置命令与设置 DHCP 的命令相互影响，如 :ref:`AT+CWDHCP <cmd-DHCP>`
+- 使用查询命令时，只有当 {IDF_TARGET_NAME} station 连入 AP 或者配置过静态 IP 地址后，才能查询到它的 IP 地址
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
+- 本设置命令与设置 DHCP 的命令相互影响，如 :ref:`AT+CWDHCP <cmd-DHCP>`
 
-   -  若启用静态 IPv4 地址，则禁用 DHCP
-   -  若启用 DHCP，则禁用静态 IPv4 地址
-   -  最后一次配置会覆盖上一次配置
--  使用静态 IP 时，AT 不提供 IP 冲突检测功能，如有需要请自行实现
+   - 若启用静态 IPv4 地址，则禁用 DHCP
+   - 若启用 DHCP，则禁用静态 IPv4 地址
+   - 最后一次配置会覆盖上一次配置
+- 使用静态 IP 时，AT 不提供 IP 冲突检测功能，如有需要请自行实现
 
 示例
 ^^^^
 
 ::
 
-    AT+CIPSTA="192.168.6.100","192.168.6.1","255.255.255.0" 
+    AT+CIPSTA="192.168.6.100","192.168.6.1","255.255.255.0"
 
 .. _cmd-IPAP:
 
@@ -1734,21 +1734,21 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<"ip">**：字符串参数，表示 {IDF_TARGET_NAME} SoftAP 的 IPv4 地址
--  **<"gateway">**：网关
--  **<"netmask">**：子网掩码
--  **<"ipv6 addr">**：{IDF_TARGET_NAME} SoftAP 的 IPv6 地址
+- **<"ip">**：字符串参数，表示 {IDF_TARGET_NAME} SoftAP 的 IPv4 地址
+- **<"gateway">**：网关
+- **<"netmask">**：子网掩码
+- **<"ipv6 addr">**：{IDF_TARGET_NAME} SoftAP 的 IPv6 地址
 
 说明
 ^^^^
 
--  本设置命令仅适用于 IPv4 网络，不适用于 IPv6 网络
--  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
--  本设置命令与设置 DHCP 的命令相互影响，如 :ref:`AT+CWDHCP <cmd-DHCP>`
+- 本设置命令仅适用于 IPv4 网络，不适用于 IPv6 网络
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
+- 本设置命令与设置 DHCP 的命令相互影响，如 :ref:`AT+CWDHCP <cmd-DHCP>`
 
-   -  若启用静态 IPv4 地址，则禁用 DHCP
-   -  若启用 DHCP，则禁用静态 IPv4 地址
-   -  最后一次配置会覆盖上一次配置
+   - 若启用静态 IPv4 地址，则禁用 DHCP
+   - 若启用 DHCP，则禁用静态 IPv4 地址
+   - 最后一次配置会覆盖上一次配置
 
 示例
 ^^^^
@@ -1792,49 +1792,49 @@ Wi-Fi AT 命令集
 
 ::
 
-    OK  
+    OK
 
 参数
 ^^^^
 
--  **<type>**：类型
+- **<type>**：类型
 
-   -  1: ESP-TOUCH
-   -  2: AirKiss
-   -  3: ESP-TOUCH+AirKiss
-   -  4: ESP-TOUCH v2
+   - 1: ESP-TOUCH
+   - 2: AirKiss
+   - 3: ESP-TOUCH+AirKiss
+   - 4: ESP-TOUCH v2
 
--  **<auth floor>**：Wi-Fi 认证模式阈值，ESP-AT 不会连接到 authmode 低于此阈值的 AP
+- **<auth floor>**：Wi-Fi 认证模式阈值，ESP-AT 不会连接到 authmode 低于此阈值的 AP
 
-   -  0: OPEN（默认）
-   -  1: WEP
-   -  2: WPA_PSK
-   -  3: WPA2_PSK
-   -  4: WPA_WPA2_PSK
-   -  5: WPA2_ENTERPRISE
-   -  6: WPA3_PSK
-   -  7: WPA2_WPA3_PSK
-   -  8: WAPI_PSK
-   -  9: OWE
-   -  10: WPA3_ENT_192
-   -  11: WPA3_EXT_PSK
-   -  12: WPA3_EXT_PSK_MIXED_MODE
-   -  13: DPP
-   -  14: WPA3_ENTERPRISE
-   -  15: WPA2_WPA3_ENTERPRISE
+   - 0: OPEN（默认）
+   - 1: WEP
+   - 2: WPA_PSK
+   - 3: WPA2_PSK
+   - 4: WPA_WPA2_PSK
+   - 5: WPA2_ENTERPRISE
+   - 6: WPA3_PSK
+   - 7: WPA2_WPA3_PSK
+   - 8: WAPI_PSK
+   - 9: OWE
+   - 10: WPA3_ENT_192
+   - 11: WPA3_EXT_PSK
+   - 12: WPA3_EXT_PSK_MIXED_MODE
+   - 13: DPP
+   - 14: WPA3_ENTERPRISE
+   - 15: WPA2_WPA3_ENTERPRISE
 
 - **<"esptouch v2 key">**：ESP-TOUCH v2 的解密秘钥，用于解密 Wi-Fi 密码和自定义数据。长度应为 16 字节。
 
 说明
 ^^^^
 
--  更多有关 SmartConfig 的信息，请参考 `ESP-TOUCH 使用指南 <https://www.espressif.com/sites/default/files/documentation/esp-touch_user_guide_cn.pdf>`_；
--  SmartConfig 仅支持在 {IDF_TARGET_NAME} Station 模式下调用；
--  消息 ``Smart get Wi-Fi info`` 表示 SmartConfig 成功获取到 AP 信息，之后 {IDF_TARGET_NAME} 尝试连接 AP；
--  消息 ``+SCRD:<length>,<rvd data>`` 表示 ESP-Touch v2 成功获取到自定义数据；
--  消息 ``Smartconfig connected Wi-Fi`` 表示成功连接到 AP；
--  因为 {IDF_TARGET_NAME} 设备需要将 SmartConfig 配网结果同步给手机端，所以建议在消息 ``Smartconfig connected Wi-Fi`` 输出后延迟超过 ``6`` 秒再调用 :ref:`AT+CWSTOPSMART <cmd-STOPS>`；
--  可调用 :ref:`AT+CWSTOPSMART <cmd-STOPS>` 停止 SmartConfig，然后再执行其他命令。注意，在 SmartConfig 过程中请勿执行其他命令。
+- 更多有关 SmartConfig 的信息，请参考 `ESP-TOUCH 使用指南 <https://www.espressif.com/sites/default/files/documentation/esp-touch_user_guide_cn.pdf>`_；
+- SmartConfig 仅支持在 {IDF_TARGET_NAME} Station 模式下调用；
+- 消息 ``Smart get Wi-Fi info`` 表示 SmartConfig 成功获取到 AP 信息，之后 {IDF_TARGET_NAME} 尝试连接 AP；
+- 消息 ``+SCRD:<length>,<rvd data>`` 表示 ESP-Touch v2 成功获取到自定义数据；
+- 消息 ``Smartconfig connected Wi-Fi`` 表示成功连接到 AP；
+- 因为 {IDF_TARGET_NAME} 设备需要将 SmartConfig 配网结果同步给手机端，所以建议在消息 ``Smartconfig connected Wi-Fi`` 输出后延迟超过 ``6`` 秒再调用 :ref:`AT+CWSTOPSMART <cmd-STOPS>`；
+- 可调用 :ref:`AT+CWSTOPSMART <cmd-STOPS>` 停止 SmartConfig，然后再执行其他命令。注意，在 SmartConfig 过程中请勿执行其他命令。
 
 示例
 ^^^^
@@ -1867,7 +1867,7 @@ Wi-Fi AT 命令集
 说明
 ^^^^
 
--  无论 SmartConfig 成功与否，都请在执行其他命令之前调用 :ref:`AT+CWSTOPSMART <cmd-STOPS>` 释放 SmartConfig 占用的内存
+- 无论 SmartConfig 成功与否，都请在执行其他命令之前调用 :ref:`AT+CWSTOPSMART <cmd-STOPS>` 释放 SmartConfig 占用的内存
 
 示例
 ^^^^
@@ -1896,40 +1896,40 @@ Wi-Fi AT 命令集
 
 ::
 
-    OK 
+    OK
 
 参数
 ^^^^
 
--  **<enable>**：
+- **<enable>**：
 
-   -  1: 开启 PBC 类型的 WPS
-   -  0: 关闭 PBC 类型的 WPS
+   - 1: 开启 PBC 类型的 WPS
+   - 0: 关闭 PBC 类型的 WPS
 
--  **<auth floor>**: Wi-Fi 认证模式阈值，ESP-AT 不会连接到 authmode 低于此阈值的 AP
+- **<auth floor>**：Wi-Fi 认证模式阈值，ESP-AT 不会连接到 authmode 低于此阈值的 AP
 
-   -  0: OPEN（默认）
-   -  1: WEP
-   -  2: WPA_PSK
-   -  3: WPA2_PSK
-   -  4: WPA_WPA2_PSK
-   -  5: WPA2_ENTERPRISE
-   -  6: WPA3_PSK
-   -  7: WPA2_WPA3_PSK
-   -  8: WAPI_PSK
-   -  9: OWE
-   -  10: WPA3_ENT_192
-   -  11: WPA3_EXT_PSK
-   -  12: WPA3_EXT_PSK_MIXED_MODE
-   -  13: DPP
-   -  14: WPA3_ENTERPRISE
-   -  15: WPA2_WPA3_ENTERPRISE
+   - 0: OPEN（默认）
+   - 1: WEP
+   - 2: WPA_PSK
+   - 3: WPA2_PSK
+   - 4: WPA_WPA2_PSK
+   - 5: WPA2_ENTERPRISE
+   - 6: WPA3_PSK
+   - 7: WPA2_WPA3_PSK
+   - 8: WAPI_PSK
+   - 9: OWE
+   - 10: WPA3_ENT_192
+   - 11: WPA3_EXT_PSK
+   - 12: WPA3_EXT_PSK_MIXED_MODE
+   - 13: DPP
+   - 14: WPA3_ENTERPRISE
+   - 15: WPA2_WPA3_ENTERPRISE
 
 说明
 ^^^^
 
--  WPS 功能必须在 {IDF_TARGET_NAME} Station 使能的情况下调用
--  WPS 不支持 WEP 加密方式
+- WPS 功能必须在 {IDF_TARGET_NAME} Station 使能的情况下调用
+- WPS 不支持 WEP 加密方式
 
 示例
 ^^^^
@@ -1993,25 +1993,25 @@ Wi-Fi AT 命令集
 参数
 ^^^^
 
--  **<"ssid">**：企业版 AP 的 SSID
+- **<"ssid">**：企业版 AP 的 SSID
 
-   -  如果 SSID 或密码中包含 ``,``、``"``、``\\`` 等特殊字符，需转义
+   - 如果 SSID 或密码中包含 ``,``、``"``、``\\`` 等特殊字符，需转义
 
--  **<method>**：WPA2 企业版认证方式
+- **<method>**：WPA2 企业版认证方式
 
-   -  0: EAP-TLS
-   -  1: EAP-PEAP
-   -  2: EAP-TTLS
+   - 0: EAP-TLS
+   - 1: EAP-PEAP
+   - 2: EAP-TTLS
 
--  **<"identity">**：阶段 1 的身份，字符串限制为 1 ~ 32
--  **<"username">**：阶段 2 的用户名，范围：1 ~ 32 字节，EAP-PEAP、EAP-TTLS 两种认证方式需设置本参数，EAP-TLS 方式无需设置本参数
--  **<"password">**：阶段 2 的密码，范围：1 ~ 32 字节，EAP-PEAP、EAP-TTLS 两种认证方式需设置本参数，EAP-TLS 方式无需设置本参数
--  **<security>**：
+- **<"identity">**：阶段 1 的身份，字符串限制为 1 ~ 32
+- **<"username">**：阶段 2 的用户名，范围：1 ~ 32 字节，EAP-PEAP、EAP-TTLS 两种认证方式需设置本参数，EAP-TLS 方式无需设置本参数
+- **<"password">**：阶段 2 的密码，范围：1 ~ 32 字节，EAP-PEAP、EAP-TTLS 两种认证方式需设置本参数，EAP-TLS 方式无需设置本参数
+- **<security>**：
 
-   -  Bit0: 提供证书供 WPA2 Enterprise 服务器端 CA 证书校验；
-   -  Bit1: 客户端载入 CA 证书来校验 WPA2 Enterprise 服务器端的证书；
+   - bit 0: 提供证书供 WPA2 Enterprise 服务器端 CA 证书校验
+   - bit 1: 客户端载入 CA 证书来校验 WPA2 Enterprise 服务器端的证书
 
--  **[<jeap_timeout>]**：:ref:`AT+CWJEAP <cmd-JEAP>` 命令的最大超时时间，单位：秒，默认值：15，范围：[3,600]
+- **<jeap_timeout>**：:ref:`AT+CWJEAP <cmd-JEAP>` 命令的最大超时时间，单位：秒，默认值：15，范围：[3,600]
 
 示例
 ^^^^
@@ -2024,7 +2024,7 @@ Wi-Fi AT 命令集
     // 连接至 EAP-PEAP 认证方式的企业版 AP，设置身份、用户名、密码，不验证服务器证书，不加载客户端证书
     AT+CWJEAP="dlink11111",1,"example@espressif.com","espressif","test11",0
 
-**错误代码:**
+**错误代码：**
 
 WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 
@@ -2108,11 +2108,11 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 说明
 ^^^^
 
--  若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
--  使用本命令需开启 Station 模式
--  使用 TLS 认证方式需使能客户端证书
--  如果您想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 WPA2 Enterprise 客户端证书（具体步骤请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-pki>`，证书配置方法与 SSL 证书相同）。如果您想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
--  如果 ``<security>`` 配置为 2，为了校验服务器的证书有效期，请在发送 :ref:`AT+CWJEAP <cmd-JEAP>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间。（您可以发送 :ref:`AT+SYSTIMESTAMP=\<unix_timestamp\> <cmd-SETTIME>` 命令来配置当前时间，发送 :ref:`AT+SYSTIMESTAMP? <cmd-SETTIME>` 命令查询当前时间。）
+- 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区。
+- 使用本命令需开启 Station 模式。
+- 使用 TLS 认证方式需使能客户端证书。
+- 如果你想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 WPA2 Enterprise 客户端证书（具体步骤请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-pki>`，证书配置方法与 SSL 证书相同）。如果你想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+- 如果 ``<security>`` 配置为 2，为了校验服务器的证书有效期，请在发送 :ref:`AT+CWJEAP <cmd-JEAP>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间（你可以发送 :ref:`AT+SYSTIMESTAMP=\<unix_timestamp\> <cmd-SETTIME>` 命令来配置当前时间，发送 :ref:`AT+SYSTIMESTAMP? <cmd-SETTIME>` 命令查询当前时间）。
 
 .. _cmd-HOSTNAME:
 
@@ -2168,12 +2168,12 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 参数
 ^^^^
 
--  **<"hostname">**：{IDF_TARGET_NAME} Station 的主机名称，最大长度：32 字节
+- **<"hostname">**：{IDF_TARGET_NAME} Station 的主机名称，最大长度：32 字节
 
 说明
 ^^^^
 
--  配置更改不保存到 flash
+- 配置更改不保存到 flash
 
 示例
 ^^^^
@@ -2253,19 +2253,19 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 
   - **<country_policy>**：
 
-    - 0: 将国家代码改为 {IDF_TARGET_NAME} 设备连入的 AP 的国家代码
-    - 1: 不改变国家代码，始终保持本命令设置的国家代码
+    - 0: 将国家代码改为 {IDF_TARGET_NAME} 设备连入的 AP 的国家代码。
+    - 1: 不改变国家代码，始终保持本命令设置的国家代码。
 
   - **<"country_code">**：国家代码，最大长度：3 个字符，各国国家代码请参考 `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ 标准。
-  - **<start_channel>**：起始信号道，范围：[1,14]
-  - **<total_channel_count>**：信道总个数
+  - **<start_channel>**：起始信号道，范围：[1,14]。
+  - **<total_channel_count>**：信道总个数。
   :esp32c5: - **<5g_channel_bitmap>**：表示 5GHz 频段信道的位图，每一位对应一个信道，1 表示启用该信道，0 表示禁用该信道。支持的信道见：`5G 信道 <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L433-L460>`_。
 
 说明
 ^^^^
 
--  详细说明请参考：`Wi-Fi 国家/地区代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id45>`_。
--  配置更改不保存到 flash
+- 详细说明请参考：`Wi-Fi 国家/地区代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id45>`_。
+- 配置更改不保存到 flash。
 
 示例
 ^^^^

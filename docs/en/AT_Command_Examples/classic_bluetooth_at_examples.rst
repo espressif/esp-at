@@ -10,7 +10,7 @@ This document provides detailed command examples to illustrate how to utilize :d
    :depth: 1
 
 .. Important::
-  
+
   The default firmware does not support Classic Bluetooth commands. For how to enable support for those commands, please refer to :ref:`Introduction to Classic Bluetooth <cmd-bt-intro>`.
 
 Establish SPP connection between phone (or PC) and {IDF_TARGET_NAME} in Normal Transmission mode with IO capability set to NoInputNoOutput
@@ -19,7 +19,7 @@ Establish SPP connection between phone (or PC) and {IDF_TARGET_NAME} in Normal T
 In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. The example shows how to establish SPP connection.
 
 #. Classic Bluetooth initialization.
-   
+
    Command:
 
    .. code-block:: none
@@ -27,13 +27,13 @@ In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. Th
      AT+BTINIT=1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Classic Bluetooth SPP profile initialization, and the role is set to slave.
-   
+
    Command:
 
    .. code-block:: none
@@ -41,13 +41,13 @@ In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. Th
      AT+BTSPPINIT=2
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Set Classic Bluetooth device name.
-   
+
    Command:
 
    .. code-block:: none
@@ -55,13 +55,13 @@ In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. Th
      AT+BTNAME="EXAMPLE"
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Set Classic Bluetooth scan mode to discoverable and connectable.
-   
+
    Command:
 
    .. code-block:: none
@@ -69,13 +69,13 @@ In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. Th
      AT+BTSCANMODE=2
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Set Classic Bluetooth security parameters. Set ``io_cap`` to ``NoInputNoOutput``, ``pin_type`` to ``fixed``, ``pin_code`` to ``9527``.
-   
+
    Command:
 
    .. code-block:: none
@@ -83,13 +83,13 @@ In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. Th
      AT+BTSECPARAM=3,1,"9527"
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Start Classic Bluetooth SPP profile.
-   
+
    Command:
 
    .. code-block:: none
@@ -97,7 +97,7 @@ In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. Th
      AT+BTSPPSTART
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -175,7 +175,7 @@ Establish SPP connection between phone (or PC) and {IDF_TARGET_NAME} in Passthro
 In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. The example shows how to establish SPP connection.
 
 #. Classic Bluetooth initialization.
-   
+
    Command:
 
    .. code-block:: none
@@ -183,13 +183,13 @@ In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. Th
      AT+BTINIT=1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Classic Bluetooth SPP profile initialization, and the role is set to slave.
-   
+
    Command:
 
    .. code-block:: none
@@ -197,13 +197,13 @@ In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. Th
      AT+BTSPPINIT=2
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Set Classic Bluetooth device name.
-   
+
    Command:
 
    .. code-block:: none
@@ -211,13 +211,13 @@ In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. Th
      AT+BTNAME="EXAMPLE"
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Set Classic Bluetooth scan mode to discoverable and connectable.
-   
+
    Command:
 
    .. code-block:: none
@@ -225,13 +225,13 @@ In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. Th
      AT+BTSCANMODE=2
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Set Classic Bluetooth security parameters. Set ``io_cap`` to ``NoInputNoOutput``, ``pin_type`` to ``fixed``, ``pin_code`` to ``9527``.
-   
+
    Command:
 
    .. code-block:: none
@@ -239,13 +239,13 @@ In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. Th
      AT+BTSECPARAM=3,1,"9527"
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Start Classic Bluetooth SPP profile.
-   
+
    Command:
 
    .. code-block:: none
@@ -253,7 +253,7 @@ In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. Th
      AT+BTSPPSTART
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -326,7 +326,7 @@ Establish SPP connection between phone (or PC) and {IDF_TARGET_NAME} with IO cap
 The process is basically the same as in the `Establish SPP connection between phone (or PC) and {IDF_TARGET_NAME} in Normal Transmission mode with IO capability set to NoInputNoOutput`_. The only difference lies in security parameters settings.
 
 #. Classic Bluetooth initialization.
-   
+
    Command:
 
    .. code-block:: none
@@ -334,13 +334,13 @@ The process is basically the same as in the `Establish SPP connection between ph
      AT+BTINIT=1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Classic Bluetooth SPP profile initialization, and the role is set to slave.
-   
+
    Command:
 
    .. code-block:: none
@@ -348,13 +348,13 @@ The process is basically the same as in the `Establish SPP connection between ph
      AT+BTSPPINIT=2
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Set Classic Bluetooth device name.
-   
+
    Command:
 
    .. code-block:: none
@@ -362,13 +362,13 @@ The process is basically the same as in the `Establish SPP connection between ph
      AT+BTNAME="EXAMPLE"
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Set Classic Bluetooth scan mode to discoverable and connectable.
-   
+
    Command:
 
    .. code-block:: none
@@ -376,13 +376,13 @@ The process is basically the same as in the `Establish SPP connection between ph
      AT+BTSCANMODE=2
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Set Classic Bluetooth security parameters. Set ``io_cap`` to ``KeyboardOnly``, ``pin_type`` to ``variable``, ``pin_code`` to ``9527``.
-   
+
    Command:
 
    .. code-block:: none
@@ -390,13 +390,13 @@ The process is basically the same as in the `Establish SPP connection between ph
      AT+BTSECPARAM=2,0,"9527"
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Start Classic Bluetooth SPP profile.
-   
+
    Command:
 
    .. code-block:: none
@@ -404,7 +404,7 @@ The process is basically the same as in the `Establish SPP connection between ph
      AT+BTSPPSTART
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -458,7 +458,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as ma
   In the following steps, the operations starting with ``Master`` only need to be executed at master, and the operations starting with ``Slave`` only need to be executed at slave. If the operation is not specified on which side it is executed, it needs to be executed on both the master side and the slave side.
 
 #. Classic Bluetooth initialization.
-   
+
    Command:
 
    .. code-block:: none
@@ -466,7 +466,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as ma
      AT+BTINIT=1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -482,7 +482,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as ma
      AT+BTSPPINIT=1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -496,7 +496,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as ma
      AT+BTSPPINIT=2
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -512,7 +512,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as ma
      AT+BTNAME="EXAMPLE"
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -528,7 +528,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as ma
      AT+BTSCANMODE=2
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -544,7 +544,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as ma
      AT+BTSECPARAM=3,1,"9527"
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -560,7 +560,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as ma
      AT+BTSPPSTART
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -576,7 +576,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as ma
      AT+BTSTARTDISC=0,10,10
 
    Response:
-  
+
    .. code-block:: none
 
      +BTSTARTDISC:"10:f6:05:f9:bc:4f",realme V11 5G,0x2,0x3,0x2d0,-34
@@ -613,7 +613,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as ma
      AT+BTSPPCONN=0,0,"24:0a:c4:d6:e4:46"
 
    Response:
-  
+
    .. code-block:: none
 
      +BTSPPCONN:0,"24:0a:c4:d6:e4:46"
@@ -652,7 +652,7 @@ Establish A2DP connection and enable A2DP Sink to play music
 -------------------------------------------------------------
 
 .. Important::
-  
+
   - To use ``A2DP Sink``, you need to add the code of the ``I2S`` part by yourself. For the code to initialize the ``I2S`` part, please refer to `a2dp sink example <https://github.com/espressif/esp-idf/blob/master/examples/bluetooth/bluedroid/classic_bt/a2dp_sink/main/main.c>`__.
   - The driver code of the ``decoder`` chip part also needs to be added by yourself or use an off-the-shelf development board.
 
@@ -665,7 +665,7 @@ Establish A2DP connection and enable A2DP Sink to play music
      AT+BTINIT=1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -679,13 +679,13 @@ Establish A2DP connection and enable A2DP Sink to play music
      AT+BTA2DPINIT=2
 
    Response:
-  
+
    .. code-block:: none
 
      OK
 
 #. Set Classic Bluetooth device name.
-   
+
    Command:
 
    .. code-block:: none
@@ -693,7 +693,7 @@ Establish A2DP connection and enable A2DP Sink to play music
      AT+BTNAME="EXAMPLE"
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -707,7 +707,7 @@ Establish A2DP connection and enable A2DP Sink to play music
      AT+BTSCANMODE=2
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -733,7 +733,7 @@ Establish A2DP connection and enable A2DP Sink to play music
      AT+BTA2DPCTRL=0,1
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -751,7 +751,7 @@ Establish A2DP connection and enable A2DP Sink to play music
      AT+BTA2DPCTRL=0,0
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -769,7 +769,7 @@ Establish A2DP connection and enable A2DP Sink to play music
      AT+BTA2DPDISCONN=0
 
    Response:
-  
+
    .. code-block:: none
 
      OK
@@ -787,7 +787,7 @@ Query and clear Classic Bluetooth encryption device list
      AT+BTENCDEV?
 
    Response:
-  
+
    .. code-block:: none
 
      +BTA2DPDISCONN:0,"e0:24:81:47:90:bc"
@@ -810,7 +810,7 @@ Query and clear Classic Bluetooth encryption device list
         AT+BTENCCLEAR=0
 
       Response:
-     
+
       .. code-block:: none
 
         OK
@@ -824,7 +824,7 @@ Query and clear Classic Bluetooth encryption device list
         AT+BTENCCLEAR
 
       Response:
-     
+
       .. code-block:: none
 
         OK

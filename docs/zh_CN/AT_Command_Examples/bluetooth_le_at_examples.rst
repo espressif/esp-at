@@ -67,7 +67,7 @@ Bluetooth LE 客户端读写服务特征值
      AT+BLEINIT=2
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -81,7 +81,7 @@ Bluetooth LE 客户端读写服务特征值
      AT+BLEINIT=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -103,36 +103,36 @@ Bluetooth LE 客户端读写服务特征值
 
    说明：
 
-   - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
+   - 你查询到的地址可能与上述响应中的不同，请记住你的地址，下面的步骤中会用到。
 
 .. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTSSRVCRE
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTSSRVSTART
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端发现服务特征。
@@ -223,7 +223,7 @@ Bluetooth LE 客户端读写服务特征值
 
    说明：
 
-   - 您的扫描结果可能与上述响应中的不同。
+   - 你的扫描结果可能与上述响应中的不同。
 
 #. 建立 Bluetooth LE 连接。
 
@@ -240,12 +240,12 @@ Bluetooth LE 客户端读写服务特征值
    .. code-block:: none
 
      +BLECONN:0,"24:0a:c4:d6:e4:46"
-     
+
      OK
 
    说明：
 
-   - 输入上述命令时，请使用您的 {IDF_TARGET_NAME} Bluetooth LE 服务端地址。
+   - 输入上述命令时，请使用你的 {IDF_TARGET_NAME} Bluetooth LE 服务端地址。
    - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
    - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
 
@@ -314,7 +314,7 @@ Bluetooth LE 客户端读写服务特征值
        +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
        +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
        +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
-      
+
        OK
 
    .. only:: esp32c2
@@ -369,7 +369,7 @@ Bluetooth LE 客户端读写服务特征值
 
      >
 
-   符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行写入操作。
+   符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行写入操作。
 
    .. code-block:: none
 
@@ -395,7 +395,7 @@ Bluetooth LE 客户端读写服务特征值
 
      >
 
-   符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行写入操作。
+   符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行写入操作。
 
    为了接收 {IDF_TARGET_NAME} Bluetooth LE 服务端发送过来的数据（通过 ``notify`` 方式或者 ``indicate`` 方式），{IDF_TARGET_NAME} Bluetooth LE 客户端需要提前向服务端注册。对于 ``notify`` 方式，需要写入值 ``0x0001``，对于 ``indicate`` 方式，需要写入值 ``0x0002``。在本例中写入 ``0x0002`` 来使用 ``indicate`` 方式。
 
@@ -421,7 +421,7 @@ Bluetooth LE 客户端读写服务特征值
 
      >
 
-   符号 ``>`` 表示 AT 准备好接收串口数据，此时您可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行 indicate 操作。
+   符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行 indicate 操作。
 
    .. code-block:: none
 
@@ -431,284 +431,284 @@ Bluetooth LE 客户端读写服务特征值
 
    - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端接收到 indication, 则会提示 ``+INDICATE:<conn_index>,<srv_index>,<char_index>,<len>,<value>``。
    - 对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服户端的 <srv_index> 值 + 2，这是正常现象。
-   - 对于服务中特征的权限，您可参考文档 :doc:`../Compile_and_Develop/How_to_customize_BLE_services`。
+   - 对于服务中特征的权限，你可参考文档 :doc:`../Compile_and_Develop/How_to_customize_BLE_services`。
 
 .. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
   Bluetooth LE 服务端读写服务特征值
   ---------------------------------------------------------
-  
+
   以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何建立 Bluetooth LE 连接，以及服务端读写服务特征值和客户端设置，notify 服务特征值。
-  
+
   .. Important::
     步骤中以 ``{IDF_TARGET_NAME} Bluetooth LE 服务端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 服务端执行即可，以 ``{IDF_TARGET_NAME} Bluetooth LE 客户端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 客户端执行即可。
-  
+
   #. 初始化 Bluetooth LE 功能。
-  
+
      {IDF_TARGET_NAME} Bluetooth LE 服务端：
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEINIT=2
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
-  
+
      {IDF_TARGET_NAME} Bluetooth LE 客户端：
-    
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEINIT=1
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
 
   .. only:: esp32 or esp32c3
 
     #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
-    
+
        命令：
-    
+
        .. code-block:: none
-    
+
          AT+BLEGATTSSRVCRE
-    
+
        响应：
-    
+
        .. code-block:: none
-    
+
          OK
-    
+
     #. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
-    
+
        命令：
-    
+
        .. code-block:: none
-    
+
          AT+BLEGATTSSRVSTART
-    
+
        响应：
-    
+
        .. code-block:: none
-    
+
          OK
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端获取其 MAC 地址。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEADDR?
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        +BLEADDR:"24:0a:c4:d6:e4:46"
        OK
-  
+
      说明：
-  
-     - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
-  
+
+     - 你查询到的地址可能与上述响应中的不同，请记住你的地址，下面的步骤中会用到。
+
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播参数。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEADVPARAM=50,50,0,0,7,0,,
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播数据。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEADVDATA="0201060A09457370726573736966030302A0"
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端开始广播。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEADVSTART
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
 
   .. only:: esp32 or esp32c3
 
     #. {IDF_TARGET_NAME} Bluetooth LE 客户端创建服务。
-    
+
        命令：
-    
+
        .. code-block:: none
-    
+
          AT+BLEGATTSSRVCRE
-    
+
        响应：
-    
+
        .. code-block:: none
-    
+
          OK
-    
+
     #. {IDF_TARGET_NAME} Bluetooth LE 客户端开启服务。
-    
+
        命令：
-    
+
        .. code-block:: none
-    
+
          AT+BLEGATTSSRVSTART
-    
+
        响应：
-    
+
        .. code-block:: none
-    
+
          OK
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 客户端获取其 MAC 地址。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEADDR?
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        +BLEADDR:"24:0a:c4:03:a7:4e"
        OK
-  
+
      说明：
-  
-     - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
-  
+
+     - 你查询到的地址可能与上述响应中的不同，请记住你的地址，下面的步骤中会用到。
+
   #. {IDF_TARGET_NAME} Bluetooth LE 客户端开始扫描，持续 3 秒。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLESCAN=1,3
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
        +BLESCAN:"24:0a:c4:d6:e4:46",-78,0201060a09457370726573736966030302a0,,0
        +BLESCAN:"45:03:cb:ac:aa:a0",-62,0201060aff4c001005441c61df7d,,1
        +BLESCAN:"24:0a:c4:d6:e4:46",-26,0201060a09457370726573736966030302a0,,0
-  
+
      说明：
-  
-     - 您的扫描结果可能与上述响应中的不同。
-  
+
+     - 你的扫描结果可能与上述响应中的不同。
+
   #. 建立 the Bluetooth LE 连接。
-  
+
      {IDF_TARGET_NAME} Bluetooth LE 客户端：
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLECONN=0,"24:0a:c4:d6:e4:46"
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        +BLECONN:0,"24:0a:c4:d6:e4:46"
-       
+
        OK
-  
+
      说明：
-  
-     - 输入上述命令时，请使用您的 {IDF_TARGET_NAME} Bluetooth LE 服务端地址。
+
+     - 输入上述命令时，请使用你的 {IDF_TARGET_NAME} Bluetooth LE 服务端地址。
      - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
      - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
-  
+
     {IDF_TARGET_NAME} Bluetooth LE 服务端：
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLECONN=0,"24:0a:c4:03:a7:4e"
-  
+
      响应：
-  
+
      .. code-block:: none
-       
+
        +BLECONN:0,"24:0a:c4:03:a7:4e"
-  
+
        OK
-  
+
      说明：
-  
-     - 输入上述命令时，请使用您的 {IDF_TARGET_NAME} Bluetooth LE 客户端地址。
+
+     - 输入上述命令时，请使用你的 {IDF_TARGET_NAME} Bluetooth LE 客户端地址。
      - 如果 Bluetooth LE 连接成功，则会提示 ``OK``，不会提示 ``+BLECONN:0,"24:0a:c4:03:a7:4e``。
      - 如果 Bluetooth LE 连接失败，则会提示 ``ERROR``，不会提示 ``+BLECONN:0,-1``。
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 客户端查询本地服务。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTSSRV?
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        +BLEGATTSSRV:1,1,0xA002,1
        +BLEGATTSSRV:2,1,0xA003,1
-       
+
        OK
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 客户端发现本地特征。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTSCHAR?
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        +BLEGATTSCHAR:"char",1,1,0xC300,0x02
        +BLEGATTSCHAR:"desc",1,1,1,0x2901
        +BLEGATTSCHAR:"char",1,2,0xC301,0x02
@@ -728,44 +728,44 @@ Bluetooth LE 客户端读写服务特征值
        +BLEGATTSCHAR:"desc",2,1,1,0x2901
        +BLEGATTSCHAR:"char",2,2,0xC401,0x02
        +BLEGATTSCHAR:"desc",2,2,1,0x2901
-  
+
        OK
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端发现对端服务。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTCPRIMSRV=0
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        +BLEGATTCPRIMSRV:0,1,0x1801,1
        +BLEGATTCPRIMSRV:0,2,0x1800,1
        +BLEGATTCPRIMSRV:0,3,0xA002,1
        +BLEGATTCPRIMSRV:0,4,0xA003,1
-  
+
        OK
-  
+
      说明：
-  
+
      - {IDF_TARGET_NAME} Bluetooth LE 服务端查询服务的结果，比 {IDF_TARGET_NAME} Bluetooth LE 客户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801）。正因如此，对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 服务端查询的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 客户端查询的 <srv_index> 值 + 2。例如，上述示例中的服务 0xA002，当前在 {IDF_TARGET_NAME} Bluetooth LE 服务端查询到的 <srv_index> 为 3，如果在 {IDF_TARGET_NAME} Bluetooth LE 服务端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端发现对端特征。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTCCHAR=0,3
-  
+
      响应：
-  
+
      .. code-block:: none
- 
+
        +BLEGATTCCHAR:"char",0,3,1,0xC300,0x02
        +BLEGATTCCHAR:"desc",0,3,1,1,0x2901
        +BLEGATTCCHAR:"char",0,3,2,0xC301,0x02
@@ -781,115 +781,115 @@ Bluetooth LE 客户端读写服务特征值
        +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
        +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
        +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
-       
+
        OK
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 客户端设置服务特征值。
-  
-     选择支持写操作的服务特征（characteristic）去设置服务特征值。
-  
+
+     选择支持写操作的服务特征 (characteristic) 去设置服务特征值。
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTSSETATTR=1,8,,1
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        >
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        写入一个字节 ``9``
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端读服务特征值。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTCRD=0,3,8,
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        +BLEGATTCRD:0,1,9
-  
+
        OK
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端写服务特征值。
-  
+
      选择支持写操作的服务特性写入特性。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTCWR=0,3,6,1,2
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        >
-    
+
      命令：
-  
+
      .. code-block:: none
-  
+
        写入2个字节 ``12``
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
-  
+
      说明：
-  
+
      - 如果 Bluetooth LE 服务端写服务特征值成功后，Bluetooth LE 客户端则会提示 ``+WRITE:0,1,6,1,2,12``。
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 客户端 notify 服务特征值
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTSNTFY=0,1,6,10
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        >
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        写入 ``1234567890`` 10个字节
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
-  
+
      说明：
-  
+
      - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端 notify 服务特征值给服务端成功，Bluetooth LE 服务端则会提示 ``+NOTIFY:0,3,6,10,1234567890``。
-  
+
 Bluetooth LE 连接加密
 ----------------------------------
 
@@ -912,7 +912,7 @@ Bluetooth LE 连接加密
      AT+BLEINIT=2
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -926,7 +926,7 @@ Bluetooth LE 连接加密
      AT+BLEINIT=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -948,36 +948,36 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
+   - 你查询到的地址可能与上述响应中的不同，请记住你的地址，下面的步骤中会用到。
 
 .. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTSSRVCRE
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTSSRVSTART
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端发现服务特征。
@@ -1068,7 +1068,7 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - 您的扫描结果可能与上述响应中的不同。
+   - 你的扫描结果可能与上述响应中的不同。
 
 #. 建立 Bluetooth LE 连接。
 
@@ -1085,12 +1085,12 @@ Bluetooth LE 连接加密
    .. code-block:: none
 
      +BLECONN:0,"24:0a:c4:d6:e4:46"
-     
+
      OK
 
    说明：
 
-   - 输入上述命令时，请使用您的 {IDF_TARGET_NAME} Bluetooth LE 服务端地址。
+   - 输入上述命令时，请使用你的 {IDF_TARGET_NAME} Bluetooth LE 服务端地址。
    - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
    - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
 
@@ -1159,7 +1159,7 @@ Bluetooth LE 连接加密
        +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
        +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
        +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
-      
+
        OK
 
    .. only:: esp32c2
@@ -1290,12 +1290,12 @@ Bluetooth LE 连接加密
      +BLESECKEYTYPE:0,32
      +BLEAUTHCMPL:0,0
 
-   您可以忽略以 ``+BLESECKEYTYPE`` 开头的信息。信息 ``+BLEAUTHCMPL:0,0`` 中的第二个参数为 ``0`` 表示加密成功，为 ``1`` 表示加密失败。
+   你可以忽略以 ``+BLESECKEYTYPE`` 开头的信息。信息 ``+BLEAUTHCMPL:0,0`` 中的第二个参数为 ``0`` 表示加密成功，为 ``1`` 表示加密失败。
 
 两个 {IDF_TARGET_NAME} 开发板之间建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下传输数据
 -----------------------------------------------------------------------------------------------------
 
-以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何建立 Bluetooth LE 连接，以及建立透传通信 Bluetooth LE SPP (Serial Port Profile, UART-Bluetooth LE 透传模式)。
+以下示例同时使用两块 {IDF_TARGET_NAME} 开发板，其中一块作为 Bluetooth LE 服务端（只作为 Bluetooth LE 服务端角色），另一块作为 Bluetooth LE 客户端（只作为 Bluetooth LE 客户端角色）。这个例子展示了应如何建立 Bluetooth LE 连接，以及建立透传通信 Bluetooth LE SPP（Serial Port Profile，UART-Bluetooth LE 透传模式）。
 
 .. Important::
 
@@ -1318,7 +1318,7 @@ Bluetooth LE 连接加密
      OK
 
    {IDF_TARGET_NAME} Bluetooth LE 客户端：
-  
+
    命令：
 
    .. code-block:: none
@@ -1334,31 +1334,31 @@ Bluetooth LE 连接加密
 .. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTSSRVCRE
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTSSRVSTART
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端获取其 MAC 地址。
@@ -1378,7 +1378,7 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
+   - 你查询到的地址可能与上述响应中的不同，请记住你的地址，下面的步骤中会用到。
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播参数。
 
@@ -1441,7 +1441,7 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - 您的扫描结果可能与上述响应中的不同。
+   - 你的扫描结果可能与上述响应中的不同。
 
 #. 建立 the Bluetooth LE 连接。
 
@@ -1458,12 +1458,12 @@ Bluetooth LE 连接加密
    .. code-block:: none
 
      +BLECONN:0,"24:0a:c4:d6:e4:46"
-     
+
      OK
 
    说明：
 
-   - 输入上述命令时，请使用您的 {IDF_TARGET_NAME} Bluetooth LE 服务端地址。
+   - 输入上述命令时，请使用你的 {IDF_TARGET_NAME} Bluetooth LE 服务端地址。
    - 如果 Bluetooth LE 连接成功，则会提示 ``+BLECONN:0,"24:0a:c4:d6:e4:46``。
    - 如果 Bluetooth LE 连接失败，则会提示 ``+BLECONN:0,-1``。
 
@@ -1481,7 +1481,7 @@ Bluetooth LE 连接加密
 
      +BLEGATTSSRV:1,1,0xA002,1
      +BLEGATTSSRV:2,1,0xA003,1
-     
+
      OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端发现特征。
@@ -1602,7 +1602,7 @@ Bluetooth LE 连接加密
        +BLEGATTCCHAR:"desc",0,3,7,1,0x2902
        +BLEGATTCCHAR:"char",0,3,8,0xC307,0x02
        +BLEGATTCCHAR:"desc",0,3,8,1,0x2901
-      
+
        OK
 
    .. only:: esp32c2
@@ -1624,7 +1624,7 @@ Bluetooth LE 连接加密
 
 #. {IDF_TARGET_NAME} Bluetooth LE 客户端配置 Bluetooth LE SPP。
 
-   选择支持写操作的服务特征（characteristic）作为写通道发送数据，选择支持 notify 或者 indicate 的 characteristic 作为读通道接收数据。
+   选择支持写操作的服务特征 (characteristic) 作为写通道发送数据，选择支持 notify 或者 indicate 的 characteristic 作为读通道接收数据。
 
    命令：
 
@@ -1700,7 +1700,7 @@ Bluetooth LE 连接加密
    - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端端没有先开启 Bluetooth LE SPP 透传，或者使用其他设备作为 Bluetooth LE 客户端，则 {IDF_TARGET_NAME} Bluetooth LE 客户端需要先开启侦听 Notify 或者 Indicate。例如，{IDF_TARGET_NAME} Bluetooth LE 客户端如果未开启透传，则应先调用 `AT+BLEGATTCWR=0,3,7,1,1` 开启侦听，{IDF_TARGET_NAME} Bluetooth LE 服务端 才能成功实现透传。
    - 对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服务端的 <srv_index> 值 + 2，这是正常现象。
 
-{IDF_TARGET_NAME} 与手机建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下传输数据 
+{IDF_TARGET_NAME} 与手机建立 SPP 连接，以及在 UART-Bluetooth LE 透传模式下传输数据
 --------------------------------------------------------------------------------------
 
 该示例展示了如何在 {IDF_TARGET_NAME} 开发板（仅作为低功耗蓝牙服务器角色）和手机（仅作为低功耗蓝牙客户端角色）之间建立 SPP 连接，以及如何在 UART-Bluetooth LE 透传模式下传输数据。
@@ -1729,31 +1729,31 @@ Bluetooth LE 连接加密
 .. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTSSRVCRE
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTSSRVSTART
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端获取其 MAC 地址。
@@ -1773,7 +1773,7 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
+   - 你查询到的地址可能与上述响应中的不同，请记住你的地址，下面的步骤中会用到。
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播参数。
 
@@ -1835,7 +1835,7 @@ Bluetooth LE 连接加密
 
      +BLEGATTSSRV:1,1,0xA002,1
      +BLEGATTSSRV:2,1,0xA003,1
-     
+
      OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端发现特征。
@@ -1934,7 +1934,7 @@ Bluetooth LE 连接加密
    在 LightBlue 客户端选择 0xC304 服务特征值发送数据 ``test`` 给 {IDF_TARGET_NAME} Bluetooth LE 服务端，此时 {IDF_TARGET_NAME} Bluetooth LE 服务端可以收到 ``test``。
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端发送数据。
-    
+
    在 {IDF_TARGET_NAME} Bluetooth LE 服务端直接发送 ``test``，此时 LightBlue 客户端可以收到 ``test``。
 
 {IDF_TARGET_NAME} 和手机之间建立 Bluetooth LE 连接并配对
@@ -1943,7 +1943,7 @@ Bluetooth LE 连接加密
 该示例展示了如何在 {IDF_TARGET_NAME} 开发板（仅作为低功耗蓝牙服务器角色）和手机（仅作为低功耗蓝牙客户端角色）之间建立 Bluetooth LE 连接并输入密钥完成配对。
 
 .. Important::
-  步骤中以 ``{IDF_TARGET_NAME} Bluetooth LE 服务端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 服务端执行即可，而以 ``Bluetooth LE 客户端`` 开头的操作只需要在手机的蓝牙调试助手中执行即可。 
+  步骤中以 ``{IDF_TARGET_NAME} Bluetooth LE 服务端`` 开头的操作只需要在 {IDF_TARGET_NAME} Bluetooth LE 服务端执行即可，而以 ``Bluetooth LE 客户端`` 开头的操作只需要在手机的蓝牙调试助手中执行即可。
 
 #. 在手机端下载 Bluetooth LE 调试助手，例如 LightBlue 应用程序。
 
@@ -1966,31 +1966,31 @@ Bluetooth LE 连接加密
 .. only:: esp32 or esp32c3
 
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端创建服务。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTSSRVCRE
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
-  
+
   #. {IDF_TARGET_NAME} Bluetooth LE 服务端开启服务。
-  
+
      命令：
-  
+
      .. code-block:: none
-  
+
        AT+BLEGATTSSRVSTART
-  
+
      响应：
-  
+
      .. code-block:: none
-  
+
        OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端获取其 MAC 地址。
@@ -2010,7 +2010,7 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - 您查询到的地址可能与上述响应中的不同，请记住您的地址，下面的步骤中会用到。
+   - 你查询到的地址可能与上述响应中的不同，请记住你的地址，下面的步骤中会用到。
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播参数。
 
@@ -2105,7 +2105,7 @@ Bluetooth LE 连接加密
    .. code-block:: none
 
      OK
-  
+
    此时 {IDF_TARGET_NAME} Bluetooth LE 服务端会打印类似于以下日志，这表示 {IDF_TARGET_NAME} Bluetooth LE 服务端与手机 Bluetooth LE 客户端完成了配对。
 
    .. code-block:: none

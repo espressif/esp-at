@@ -12,7 +12,7 @@ WebSocket AT 示例
    :depth: 1
 
 .. Important::
-  默认的 AT 固件不支持 WebSocket 功能。如果您需要 {IDF_TARGET_NAME} 支持 WebSocket 功能，请参考 :ref:`介绍 <cmd-ws-intro>`。
+  默认的 AT 固件不支持 WebSocket 功能。如果你需要 {IDF_TARGET_NAME} 支持 WebSocket 功能，请参考 :ref:`介绍 <cmd-ws-intro>`。
 
 .. _example-websocket-tcp:
 
@@ -52,7 +52,7 @@ WebSocket AT 示例
 
    说明：
 
-   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+   - 你输入的 SSID 和密码可能跟上述命令中的不同。请使用你的路由器的 SSID 和密码。
 
 #. PC 与 {IDF_TARGET_NAME} 设备连接同一个路由。
 
@@ -87,8 +87,8 @@ WebSocket AT 示例
 
    说明：
 
-   - 如果您的 PC 上没有安装 ``websockets`` 库，请使用 ``pip install websockets`` 安装。
-   - 默认设置的 WebSocket 服务器端口为 ``8765``，您也可以设置为其它端口。
+   - 如果你的 PC 上没有安装 ``websockets`` 库，请使用 ``pip install websockets`` 安装。
+   - 默认设置的 WebSocket 服务器端口为 ``8765``，你也可以设置为其它端口。
 
 #. {IDF_TARGET_NAME} 设备作为客户端连接到 WebSocket 服务器。
 
@@ -178,7 +178,7 @@ WebSocket AT 示例
 
    说明：
 
-   - 您输入的 SSID 和密码可能跟上述命令中的不同。请使用您的路由器的 SSID 和密码。
+   - 你输入的 SSID 和密码可能跟上述命令中的不同。请使用你的路由器的 SSID 和密码。
 
 #. 设置 SNTP 服务器。
 
@@ -196,7 +196,7 @@ WebSocket AT 示例
 
    说明：
 
-   - 您可以根据自己国家的时区设置 SNTP 服务器。
+   - 你可以根据自己国家的时区设置 SNTP 服务器。
 
 #. 查询 SNTP 时间。
 
@@ -215,14 +215,14 @@ WebSocket AT 示例
 
    说明：
 
-   - 您可以查询 SNTP 时间与实时时间是否相符来判断您设置的 SNTP 服务器是否生效。
+   - 你可以查询 SNTP 时间与实时时间是否相符来判断你设置的 SNTP 服务器是否生效。
    - 设置时间是为了在 TLS 认证时校验证书的有效期。
 
 #. PC 与 {IDF_TARGET_NAME} 设备连接同一个路由。
 
 #. 获取 WebSocket 服务器端的 CA、证书、私钥。
 
-   您可以使用 ``openssl`` 工具生成 CA、证书、和私钥。如果遇到困难，请使用以下配置进行测试：
+   你可以使用 ``openssl`` 工具生成 CA、证书、和私钥。如果遇到困难，请使用以下配置进行测试：
 
    ``wss_ca.crt``
 
@@ -347,8 +347,8 @@ WebSocket AT 示例
 
    说明：
 
-   - 如果您的 PC 上没有安装 ``websockets`` 库，请使用 ``pip install websockets`` 安装。
-   - 设置的 WebSocket 服务器端口为 ``8766``，您也可以设置为其它端口。
+   - 如果你的 PC 上没有安装 ``websockets`` 库，请使用 ``pip install websockets`` 安装。
+   - 设置的 WebSocket 服务器端口为 ``8766``，你也可以设置为其它端口。
 
 #. 配置 WebSocket 连接为相互鉴权。
 
@@ -366,8 +366,8 @@ WebSocket AT 示例
 
    说明：
 
-   - 如果您想使用自己的客户端证书或者使用多套证书，有两种方式：
-   
+   - 如果你想使用自己的客户端证书或者使用多套证书，有两种方式：
+
      - 运行时更新：可以直接使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新证书，无需重新编译固件。具体操作请参考 :ref:`AT+SYSMFG 命令示例中的 PKI 配置 <sysmfg-pki>`，证书配置方法与 SSL 证书相同，仅需将命名空间修改为 ``wss_cert``、``wss_key``、``wss_ca`` 即可。
      - 预烧录证书：如果想要在编译时预烧录证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
 

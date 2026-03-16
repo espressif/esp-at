@@ -3,13 +3,13 @@ MQTT AT 连接云示例
 
 :link_to_translation:`en:[English]`
 
-本文档主要介绍您的设备如何通过 AT 命令对接 AWS IoT。
+本文档主要介绍你的设备如何通过 AT 命令对接 AWS IoT。
 
 .. Important::
     有关如何使用 MQTT AT 命令的详细信息，请参阅 :doc:`../AT_Command_Set/MQTT_AT_Commands`。
-    您需要通过阅读 `AWS IoT 开发指南 <https://docs.aws.amazon.com/zh_cn/iot/latest/developerguide/iot-gs.html>`_ 来熟悉 AWS IoT。
+    你需要通过阅读 `AWS IoT 开发指南 <https://docs.aws.amazon.com/zh_cn/iot/latest/developerguide/iot-gs.html>`_ 来熟悉 AWS IoT。
 
-请按照以下步骤使用 ESP-AT 将您的 {IDF_TARGET_NAME} 设备连接到 AWS IoT。
+请按照以下步骤使用 ESP-AT 将你的 {IDF_TARGET_NAME} 设备连接到 AWS IoT。
 
 .. contents::
    :local:
@@ -18,11 +18,11 @@ MQTT AT 连接云示例
 从 AWS IoT 获取证书以及 endpoint
 -----------------------------------------
 
-1. 登录您的 AWS IoT 控制台帐号，以及切换至 IoT Core services。
+1. 登录你的 AWS IoT 控制台帐号，以及切换至 IoT Core services。
 
 2. 按照 `创建 AWS IoT 资源 <https://docs.aws.amazon.com/zh_cn/iot/latest/developerguide/create-iot-resources.html>`_ 中的说明创建 AWS IoT 策略、事物和证书。
 
-  确保您已获得以下证书和密钥文件：
+  确保你已获得以下证书和密钥文件：
 
   - device.pem.crt（设备证书）
   - private.pem.key（私有密钥）
@@ -33,7 +33,7 @@ MQTT AT 连接云示例
     端点的格式为 “xxx-ats.iot.us-east-2.amazonaws.com”。
 
 .. note::
-  强烈建议您熟悉 `AWS IoT 开发人员指南 <https://docs.aws.amazon.com/zh_cn/iot/latest/developerguide/what-is-aws-iot.html>`_ 以下是本指南中值得注意的一些要点。
+  强烈建议你熟悉 `AWS IoT 开发人员指南 <https://docs.aws.amazon.com/zh_cn/iot/latest/developerguide/what-is-aws-iot.html>`_ 以下是本指南中值得注意的一些要点。
 
   - AWS IoT 需要所有设备必须有事物证书、事物私钥、和根证书。
   - 有关如何激活证书。
@@ -55,7 +55,7 @@ MQTT AT 连接云示例
 - 使用 ``device.pem.crt`` 替换 :component_file:`mqtt_client.crt <customized_partitions/raw_data/mqtt_cert/mqtt_client.crt>`。
 - 使用 ``private.pem.key`` 替换 :component_file:`mqtt_client.key <customized_partitions/raw_data/mqtt_key/mqtt_client.key>`。
 
-然后编译 ESP-AT 项目以构建 AT 固件，并将固件烧录到您的 {IDF_TARGET_NAME} 设备。欲了解更多信息，请参阅 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`。
+然后编译 ESP-AT 项目以构建 AT 固件，并将固件烧录到你的 {IDF_TARGET_NAME} 设备。欲了解更多信息，请参阅 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`。
 
 **方式二：运行时更新证书**
 
@@ -63,7 +63,7 @@ MQTT AT 连接云示例
 
 **方式三：仅更新证书 bin 文件**
 
-如果您已有 AT 固件，只需预烧录自己的证书，可以直接更新 ``mfg_nvs.bin`` 文件。具体操作步骤请参阅 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+如果你已有 AT 固件，只需预烧录自己的证书，可以直接更新 ``mfg_nvs.bin`` 文件。具体操作步骤请参阅 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
 
 使用 AT 命令连接到 AWS IoT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -77,7 +77,7 @@ MQTT AT 连接云示例
      AT+CWMODE=1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -91,7 +91,7 @@ MQTT AT 连接云示例
      AT+CWJAP=<"ssid">,<"password">
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -105,7 +105,7 @@ MQTT AT 连接云示例
      AT+CIPSNTPCFG=1,8,"pool.ntp.org"
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -119,7 +119,7 @@ MQTT AT 连接云示例
      AT+CIPSNTPTIME?
 
    响应：
-  
+
    .. code-block:: none
 
      +CIPSNTPTIME:<asctime style time>
@@ -138,7 +138,7 @@ MQTT AT 连接云示例
      AT+MQTTUSERCFG=0,5,"esp32","espressif","1234567890",0,0,""
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -156,7 +156,7 @@ MQTT AT 连接云示例
      AT+MQTTCONN=0,"<endpoint>",8883,1
 
    响应：
-  
+
    .. code-block:: none
 
      +MQTTCONNECTED:0,5,<endpoint>,"8883","",1
@@ -164,7 +164,7 @@ MQTT AT 连接云示例
 
    说明：
 
-   - 请在 `<endpoint>` 参数中填写您的 <endpoint> 值。
+   - 请在 `<endpoint>` 参数中填写你的 <endpoint> 值。
    - 无法更改端口 8883。
 
 #. 订阅消息。
@@ -176,7 +176,7 @@ MQTT AT 连接云示例
      AT+MQTTSUB=0,"topic/esp32at",1
 
    响应：
-  
+
    .. code-block:: none
 
      OK
@@ -190,7 +190,7 @@ MQTT AT 连接云示例
      AT+MQTTPUB=0,"topic/esp32at","hello aws!",1,0
 
    响应：
-  
+
    .. code-block:: none
 
      +MQTTSUBRECV:0,"topic/esp32at",10,hello aws!

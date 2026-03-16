@@ -39,7 +39,7 @@ Compilation Failure Log Example:
 
   Generated /path/to/esp-at/build/esp-at.bin
   [836/838] cd /path/to/esp-at/build/esp-at.bin
-  FAILED: esp-idf/esptool_py/CMakeFiles/app_check_size 
+  FAILED: esp-idf/esptool_py/CMakeFiles/app_check_size
   cd /path/to/esp-at/build/esp-idf/esptool_py && [...]/bin/python /path/to/esp-at/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /path/to/esp-at/build/partition_table/partition-table.bin /path/to/esp-at/build/esp-at.bin
   Error: app partition is too small for binary esp-at.bin size 0x135ae0:
     - Part 'ota_0' 0/16 @ 0xd0000 size 0x130000 (overflow 0x5ae0)

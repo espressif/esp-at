@@ -12,19 +12,19 @@ Web Server AT 示例
 .. 注解::
 
    默认的 AT 固件并不支持 AT web server 的功能，请参考 :doc:`../AT_Command_Set/Web_server_AT_Commands` 启用该功能。
-   
+
 使用浏览器进行 Wi-Fi 配网
 --------------------------
 
 简介
 ^^^^
 
-通过 web server，手机或 PC 可以设置 {IDF_TARGET_NAME} 设备的 Wi-Fi 连接信息。您可以使用手机或电脑连接到 {IDF_TARGET_NAME} 设备的 AP，通过浏览器打开配网网页，并将 Wi-Fi 配置信息发送给 {IDF_TARGET_NAME} 设备，然后 {IDF_TARGET_NAME} 设备将根据该配置信息连接到指定的路由器。
+通过 web server，手机或 PC 可以设置 {IDF_TARGET_NAME} 设备的 Wi-Fi 连接信息。你可以使用手机或电脑连接到 {IDF_TARGET_NAME} 设备的 AP，通过浏览器打开配网网页，并将 Wi-Fi 配置信息发送给 {IDF_TARGET_NAME} 设备，然后 {IDF_TARGET_NAME} 设备将根据该配置信息连接到指定的路由器。
 
 流程
 ^^^^
 
-整个配网流程可以分为以下三步：  
+整个配网流程可以分为以下三步：
 
 .. contents::
    :local:
@@ -39,45 +39,45 @@ Web Server AT 示例
 
 
    - Command
-   
+
      ::
- 
+
        AT+RESTORE
 
 #. 配置 {IDF_TARGET_NAME} 设备为 Station + SoftAP 模式。
 
 
    - Command
-   
+
      ::
- 
+
        AT+CWMODE=3
 
 #. 设置 SoftAP 的 ssid 和 password（如设置默认连接 ssid 为 `pos_softap`，无密码的 Wi-Fi）。
 
 
    - Command
-   
+
      ::
- 
+
        AT+CWSAP="pos_softap","",11,0,3
 
 #. 使能多连接。
 
 
    - Command
-   
+
      ::
- 
+
        AT+CIPMUX=1
 
 #. 创建 web server，端口：80，最大连接时间：25 s（默认最大为 60 s）。
 
 
    - Command
-   
+
      ::
- 
+
        AT+WEBSERVER=1,80,25
 
 然后，使用上述命令启动 web server 后，打开配网设备的 Wi-Fi 连接功能，连接 {IDF_TARGET_NAME} 设备的 AP：
@@ -93,7 +93,7 @@ Web Server AT 示例
 """"""""""""""""""""""""
 
 在配网设备连接到 {IDF_TARGET_NAME} 设备后，即可发送 HTTP 请求，配置待接入的路由器的信息：（注意，浏览器配网不支持配网设备作为待接入 AP，例如，如果使用手机连接到 {IDF_TARGET_NAME} 的 AP，则该手机不建议作为 {IDF_TARGET_NAME} 设备待接入的热点。）
-在浏览器中输入 web server 默认的 IP 地址（如果未设置 {IDF_TARGET_NAME} 设备的 SoftAP IP 地址，默认为 192.168.4.1，您可以通过 AT+CIPAP? 命令查询当前的 SoftAP IP 地址)，打开配网界面，输入拟连接的路由器的 ssid、password，点击“开始配网”即可开始配网：
+在浏览器中输入 web server 默认的 IP 地址（如果未设置 {IDF_TARGET_NAME} 设备的 SoftAP IP 地址，默认为 192.168.4.1，你可以通过 AT+CIPAP? 命令查询当前的 SoftAP IP 地址)，打开配网界面，输入拟连接的路由器的 ssid、password，点击“开始配网”即可开始配网：
 
 .. figure:: ../../_static/Web_server/web_brower_open_html.png
    :align: center
@@ -129,10 +129,10 @@ Web Server AT 示例
 
 ::
 
-    +WEBSERVERRSP:1      // 代表启动配网  
-    WIFI CONNECTED       // 代表正在连接  
-    WIFI GOT IP          // 连接成功并获取到 IP  
-    +WEBSERVERRSP:2      // 代表网页端收到配网成功结果，此时可以释放 WEB 资源  
+    +WEBSERVERRSP:1      // 代表启动配网
+    WIFI CONNECTED       // 代表正在连接
+    WIFI GOT IP          // 连接成功并获取到 IP
+    +WEBSERVERRSP:2      // 代表网页端收到配网成功结果，此时可以释放 WEB 资源
 
 如果配网失败，网页将显示：
 
@@ -183,7 +183,7 @@ Web Server AT 示例
 
 **说明** 1：仅当浏览器连接 {IDF_TARGET_NAME} 模块的AP，或者访问 OTA 配置页面的设备与 {IDF_TARGET_NAME} 模块连接在同一个子网中时，才可以打开该配置界面。
 
-**说明** 2：网页上显示的“当前固件版本”为当前用户编译的应用程序版本号，用户可通过 ``./build.py menuconfig`` --> ``Component config`` --> ``AT`` --> ``AT firmware version`` (参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`)更改该版本号，建立固件版本与应用程序的同步关系，以便于管理应用程序固件版本。
+**说明** 2：网页上显示的“当前固件版本”为当前用户编译的应用程序版本号，用户可通过 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT firmware version`` （参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）更改该版本号，建立固件版本与应用程序的同步关系，以便于管理应用程序固件版本。
 
 选择要更新的分区
 """""""""""""""""""""
@@ -263,7 +263,7 @@ Web Server AT 示例
 微信小程序配网是通过微信小程序连接 {IDF_TARGET_NAME} 设备创建的 AP，并通过微信小程序将需要连接的 AP 信息传输给 {IDF_TARGET_NAME} 设备，{IDF_TARGET_NAME} 设备通过这些信息连接到对应的 AP，并通知微信小程序配网结果的解决方案。
 
 .. important::
-  ESP-AT 微信小程序将于 2024 年 12 月 31 日下架。在此期间，请做好产品功能的过渡。如您此后仍有相关需求，敬请联系 `乐鑫商务 <https://www.espressif.com/zh-hans/contact-us/sales-questions>`_，我们将竭诚为您提供支持和解决方案，感谢您的理解和支持。
+  ESP-AT 微信小程序将于 2024 年 12 月 31 日下架。在此期间，请做好产品功能的过渡。如你此后仍有相关需求，敬请联系 `乐鑫商务 <https://www.espressif.com/zh-hans/contact-us/sales-questions>`_，我们将竭诚为你提供支持和解决方案，感谢你的理解和支持。
 
 流程
 ^^^^
@@ -283,27 +283,27 @@ Web Server AT 示例
 
 
    - Command
-   
+
      ::
- 
+
        AT+RESTORE
 
 #. 配置 {IDF_TARGET_NAME} 设备为 Station + SoftAP 模式。
 
 
    - Command
-   
+
      ::
- 
+
        AT+CWMODE=3
 
 #. 设置 SoftAP 的 ssid 和 password（如设置默认连接 ssid 为 `pos_softap`，password 为 `espressif`）。
 
 
    - Command
-   
+
      ::
- 
+
        AT+CWSAP="pos_softap","espressif",11,3,3
 
   .. 注解::
@@ -314,18 +314,18 @@ Web Server AT 示例
 
 
    - Command
-   
+
      ::
- 
+
        AT+CIPMUX=1
 
 #. 创建 web server，端口：80，最大连接时间：40 s（默认最大为 60 s）。
 
 
    - Command
-   
+
      ::
- 
+
        AT+WEBSERVER=1,80,40
 
 加载微信小程序
@@ -352,7 +352,7 @@ Web Server AT 示例
 目标 AP 选择
 """"""""""""""""
 
-加载微信小程序后，根据待连接的目标 AP，可将配网情况分为两种情况：  
+加载微信小程序后，根据待连接的目标 AP，可将配网情况分为两种情况：
 
 1.待接入的目标 AP 为本机配网手机提供的热点。此时请选中微信小程序页面的“本机手机热点”选项框。
 
@@ -415,10 +415,10 @@ Web Server AT 示例
 
 ::
 
-    +WEBSERVERRSP:1      // 代表启动配网  
-    WIFI CONNECTED       // 代表正在连接  
-    WIFI GOT IP          // 连接成功并获取到 IP  
-    +WEBSERVERRSP:2      // 代表小程序收到配网成功结果，此时可以释放 WEB 资源  
+    +WEBSERVERRSP:1      // 代表启动配网
+    WIFI CONNECTED       // 代表正在连接
+    WIFI GOT IP          // 连接成功并获取到 IP
+    +WEBSERVERRSP:2      // 代表小程序收到配网成功结果，此时可以释放 WEB 资源
 
 5.若配网失败，则小程序页面显示：
 
@@ -474,7 +474,7 @@ Web Server AT 示例
 
 使用微信小程序进行 OTA 固件升级
 ---------------------------------
-微信小程序支持在线完成 {IDF_TARGET_NAME} 设备的固件升级，请参考上述 `配置 {IDF_TARGET_NAME} 设备参数`_  的具体步骤完成 {IDF_TARGET_NAME} 模块的配置（如果已经在配网时完成配置，不用重复配置）。完成配置后，设备执行 OTA 固件升级的流程与使用浏览器进行 OTA 固件升级类似，请参考 `使用浏览器进行 OTA 固件升级`_。
+微信小程序支持在线完成 {IDF_TARGET_NAME} 设备的固件升级，请参考上述 `配置 {IDF_TARGET_NAME} 设备参数`_ 的具体步骤完成 {IDF_TARGET_NAME} 模块的配置（如果已经在配网时完成配置，不用重复配置）。完成配置后，设备执行 OTA 固件升级的流程与使用浏览器进行 OTA 固件升级类似，请参考 `使用浏览器进行 OTA 固件升级`_。
 
 .. _using-captive-portal:
 

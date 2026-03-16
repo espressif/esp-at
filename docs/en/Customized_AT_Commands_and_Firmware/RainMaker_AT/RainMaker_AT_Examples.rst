@@ -446,7 +446,7 @@ Connect to the RainMaker cloud for simple communications in passthrough mode
 4. Add parameters to the device.
 
    In the :term:`RainMaker Passthrough Mode`, only one parameter is allowed in the devices (the default parameter created by the :ref:`AT+RMDEV <cmd-RMDEV>` command is not included). If there are multiple parameters, the device cannot enter the :term:`RainMaker Passthrough Mode`.
-   
+
    For example, {IDF_TARGET_NAME} adds the "Power" parameter to the "Light" device. The parameter name is "Power", parameter type is "esp.param.power", data type is bool, properties are read and write, UI type is "esp.ui.toggle", and default value is false ("0").
 
    Command:

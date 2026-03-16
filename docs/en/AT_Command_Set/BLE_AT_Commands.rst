@@ -9,18 +9,18 @@ Bluetooth® Low Energy AT Commands
 
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`Introduction <cmd-ble-intro>`
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEINIT <cmd-BINIT>`: Bluetooth LE initialization.
-    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEADDR <cmd-BADDR>`: Query/Set Bluetooth LE device address.
-    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLENAME <cmd-BNAME>`: Query/Set Bluetooth LE device name.
-    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`: Query/Set parameters of Bluetooth LE scanning.
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEADDR <cmd-BADDR>`: Query or set Bluetooth LE device address.
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLENAME <cmd-BNAME>`: Query or set Bluetooth LE device name.
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`: Query or set parameters of Bluetooth LE scanning.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESCAN <cmd-BSCAN>`: Enable Bluetooth LE scanning.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`: Set Bluetooth LE scan response.
-    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEADVPARAM <cmd-BADVP>`: Query/Set parameters of Bluetooth LE advertising.
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEADVPARAM <cmd-BADVP>`: Query or set parameters of Bluetooth LE advertising.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEADVDATA <cmd-BADVD>`: Set Bluetooth LE advertising data.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`: Automatically set Bluetooth LE advertising data.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEADVSTART <cmd-BADVSTART>`: Start Bluetooth LE advertising.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEADVSTOP <cmd-BADVSTOP>`: Stop Bluetooth LE advertising.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLECONN <cmd-BCONN>`: Establish Bluetooth LE connection.
-    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLECONNPARAM <cmd-BCONNP>`: Query/Update parameters of Bluetooth LE connection.
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLECONNPARAM <cmd-BCONNP>`: Query or update parameters of Bluetooth LE connection.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEDISCONN <cmd-BDISC>`: End Bluetooth LE connection.
     :esp32 or esp32c3 : - :ref:`AT+BLEDATALEN <cmd-BDLEN>`: Set Bluetooth LE data packet length.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLECFGMTU <cmd-BMTU>`: Set Bluetooth LE MTU length.
@@ -37,10 +37,10 @@ Bluetooth® Low Energy AT Commands
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`: GATTC discovers characteristics.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTCRD <cmd-GCRD>`: GATTC reads characteristics.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTCWR <cmd-GCWR>`: GATTC writes characteristics.
-    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`: Query/Set Bluetooth LE SPP parameters.
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESPPCFG <cmd-BLESPPCFG>`: Query or set Bluetooth LE SPP parameters.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESPP <cmd-BLESPP>`: Enter Bluetooth LE SPP mode.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61: - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Bluetooth LE :term:`Passthrough Mode` on power-up.
-    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`: Query/Set Bluetooth LE encryption parameters.
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`: Query or set Bluetooth LE encryption parameters.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEENC <cmd-BLEENC>`: Initiate Bluetooth LE encryption request.
     :esp32 or esp32c3 : - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`: Respond to the pairing request from the peer device.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`: Reply the key value to the peer device.
@@ -53,7 +53,7 @@ Bluetooth® Low Energy AT Commands
     :esp32 or esp32c3 : - :ref:`AT+BLEHIDMUS <cmd-BLEHIDMUS>`: Send Bluetooth LE HID mouse information.
     :esp32 or esp32c3 : - :ref:`AT+BLEHIDCONSUMER <cmd-BLEHIDC>`: Send Bluetooth LE HID consumer information.
     - :ref:`AT+BLUFI <cmd-BLUFI>`: Start or Stop BluFi.
-    - :ref:`AT+BLUFINAME <cmd-BLUFINAME>`: Query/Set BluFi device name.
+    - :ref:`AT+BLUFINAME <cmd-BLUFINAME>`: Query or set BluFi device name.
     - :ref:`AT+BLUFISEND <cmd-BLUFISEND>`: Send user-customized data over BluFi.
     :esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEPERIODICDATA <cmd-BLEPADATA>`: Set Bluetooth LE periodic advertising data.
     :esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEPERIODICSTART <cmd-BLEPASTART>`: Start Bluetooth LE periodic advertising.
@@ -73,7 +73,7 @@ Introduction
  .. only:: esp32
 
   Currently, AT firmware for {IDF_TARGET_NAME} series supports `Bluetooth® Core Specification Version 4.2 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_.
- 
+
  .. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
   Currently, AT firmware for {IDF_TARGET_NAME} supports `Bluetooth® Core Specification Version 5.0 <https://www.bluetooth.com/specifications/specs/core-specification-5-0/>`_.
@@ -155,29 +155,29 @@ Introduction
     Parameter
     ^^^^^^^^^^
 
-    -  **<init>**:
+    - **<init>**:
 
-    -  0: deinit Bluetooth LE
-    -  1: client role
-    -  2: server role
-    -  3: dual role (client and server)
+    - 0: deinit Bluetooth LE
+    - 1: client role
+    - 2: server role
+    - 3: dual role (client and server)
 
     Notes
     ^^^^^
 
     .. list::
 
-      -  To achieve better performance, it is recommended to disable SoftAP by sending the :ref:`AT+CWMODE=0/1 <cmd-MODE>` command before using Bluetooth LE function. For more details, please refer to the `RF Coexistence <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ documentation.
-      -  Before using other Bluetooth LE AT commands, you should run this command first to trigger the initialization process.
-      -  The Bluetooth LE role cannot be changed directly after initialization. To switch roles, first execute :ref:`AT+BLEINIT=0 <cmd-BINIT>` to deinitialize Bluetooth LE, or execute :ref:`AT+RST <cmd-RST>` to restart the system, then re-initialize the Bluetooth LE role.
-      -  Before you deinitialize the Bluetooth stack, it is recommended to stop broadcasting, stop scanning, and disconnect all existing connections.
-      -  If Bluetooth LE is initialized, :ref:`AT+CIPMODE <cmd-IPMODE>` cannot be set to 1.
-      -  In dual mode, both server-specific and client-specific commands are available.
-      -  In dual-mode, BLE passthrough-related commands and BLE auto-passthrough at startup are not supported.
-      -  In dual mode, it is possible to set advertising parameters, query advertising parameters, and start or stop advertising.
-      -  In dual mode, it is possible to set scanning parameters, query scanning parameters, and start or stop scanning.
-      -  In dual mode, it is possible to initiate all connection-related parameter updates and query connection parameters.
-      -  In dual mode, the total number of connections and advertisements combined is limited to 3.
+      - To achieve better performance, it is recommended to disable SoftAP by sending the :ref:`AT+CWMODE=0/1 <cmd-MODE>` command before using Bluetooth LE function. For more details, please refer to the `RF Coexistence <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/coexist.html>`_ documentation.
+      - Before using other Bluetooth LE AT commands, you should run this command first to trigger the initialization process.
+      - The Bluetooth LE role cannot be changed directly after initialization. To switch roles, first execute :ref:`AT+BLEINIT=0 <cmd-BINIT>` to deinitialize Bluetooth LE, or execute :ref:`AT+RST <cmd-RST>` to restart the system, then re-initialize the Bluetooth LE role.
+      - Before you deinitialize the Bluetooth stack, it is recommended to stop broadcasting, stop scanning, and disconnect all existing connections.
+      - If Bluetooth LE is initialized, :ref:`AT+CIPMODE <cmd-IPMODE>` cannot be set to 1.
+      - In dual mode, both server-specific and client-specific commands are available.
+      - In dual-mode, BLE passthrough-related commands and BLE auto-passthrough at startup are not supported.
+      - In dual mode, it is possible to set advertising parameters, query advertising parameters, and start or stop advertising.
+      - In dual mode, it is possible to set scanning parameters, query scanning parameters, and start or stop scanning.
+      - In dual mode, it is possible to initiate all connection-related parameter updates and query connection parameters.
+      - In dual mode, the total number of connections and advertisements combined is limited to 3.
       :esp32c2 or esp32c5 or esp32c6 or esp32c61: - Service Creation: When initializing BLE as a server role (``<init>`` = 2) or dual role (``<init>`` = 3), the GATT services are automatically created. Separate AT commands to create services are not required.
       :esp32 or esp32c3: - Service Creation: After initializing BLE as a server role or dual role (set ``<init>`` to 2 or 3), please execute :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>` and :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>` in sequence to create and start GATT services.
 
@@ -190,7 +190,7 @@ Introduction
 
     .. _cmd-BADDR:
 
-    :ref:`AT+BLEADDR <BLE-AT>`: Query/Set Bluetooth LE Device Address
+    :ref:`AT+BLEADDR <BLE-AT>`: Query or Set Bluetooth LE Device Address
     -------------------------------------------------------------------------------------
 
     Query Command
@@ -262,21 +262,21 @@ Introduction
     Parameter
     ^^^^^^^^^^
 
-    -  **<addr_type>**:
+    - **<addr_type>**:
 
-    -  0: Public Address
-    -  1: Random Address
+    - 0: Public Address
+    - 1: Random Address
 
     Note
     ^^^^^
 
-    -  A Static Address should meet the following requirements:
+    - A Static Address should meet the following requirements:
 
-    -  The two most significant bits of the address should be equal to 1.
-    -  At least one bit of the random part of the address should be 0.
-    -  At least one bit of the random part of the address should be 1.
+    - The two most significant bits of the address should be equal to 1.
+    - At least one bit of the random part of the address should be 0.
+    - At least one bit of the random part of the address should be 1.
 
-    -  The configuration changes will be saved in the NVS partition. 
+    - The configuration changes will be saved in the NVS partition.
 
     Example
     ^^^^^^^^
@@ -297,7 +297,7 @@ Introduction
 
     .. _cmd-BNAME:
 
-    :ref:`AT+BLENAME <BLE-AT>`: Query/Set Bluetooth LE Device Name
+    :ref:`AT+BLENAME <BLE-AT>`: Query or Set Bluetooth LE Device Name
     ----------------------------------------------------------------------------------
 
     Query Command
@@ -342,13 +342,13 @@ Introduction
     Parameter
     ^^^^^^^^^^
 
-    -  **<device_name>**: the Bluetooth LE device name. The maximum length is 32. Default: "ESP-AT".
+    - **<device_name>**: the Bluetooth LE device name. The maximum length is 32. Default: "ESP-AT".
 
     Note
     ^^^^^
 
-    -  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`. 
-    -  After setting the device name with this command, it is recommended that you execute the :ref:`AT+BLEADVDATA <cmd-BADVD>` command to add the device name into the advertising data.
+    - The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+    - After setting the device name with this command, it is recommended that you execute the :ref:`AT+BLEADVDATA <cmd-BADVD>` command to add the device name into the advertising data.
 
     Example
     ^^^^^^^^
@@ -359,7 +359,7 @@ Introduction
 
     .. _cmd-BSCANP:
 
-    :ref:`AT+BLESCANPARAM <BLE-AT>`: Query/Set Parameters of Bluetooth LE Scanning
+    :ref:`AT+BLESCANPARAM <BLE-AT>`: Query or Set Parameters of Bluetooth LE Scanning
     --------------------------------------------------------------------------------------------------
 
     Query Command
@@ -404,27 +404,27 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<scan_type>**:
+    - **<scan_type>**:
 
-    -  0: passive scan
-    -  1: active scan
+    - 0: passive scan
+    - 1: active scan
 
-    -  **<own_addr_type>**:
+    - **<own_addr_type>**:
 
-    -  0: Public Address
-    -  1: Random Address
-    -  2: RPA Public Address
-    -  3: RPA Random Address
+    - 0: Public Address
+    - 1: Random Address
+    - 2: RPA Public Address
+    - 3: RPA Random Address
 
-    -  **<filter_policy>**:
+    - **<filter_policy>**:
 
-    -  0: BLE_SCAN_FILTER_ALLOW_ALL
-    -  1: BLE_SCAN_FILTER_ALLOW_ONLY_WLST
-    -  2: BLE_SCAN_FILTER_ALLOW_UND_RPA_DIR
-    -  3: BLE_SCAN_FILTER_ALLOW_WLIST_PRA_DIR
+    - 0: BLE_SCAN_FILTER_ALLOW_ALL
+    - 1: BLE_SCAN_FILTER_ALLOW_ONLY_WLST
+    - 2: BLE_SCAN_FILTER_ALLOW_UND_RPA_DIR
+    - 3: BLE_SCAN_FILTER_ALLOW_WLIST_PRA_DIR
 
-    -  **<scan_interval>**: scan interval. It should be more than or equal to the value of ``<scan_window>``. The range of this parameter is [0x0004,0x4000]. The scan interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual scan interval is [2.5,10240] ms.
-    -  **<scan_window>**: scan window. It should be less than or equal to the value of ``<scan_interval>``. The range of this parameter is [0x0004,0x4000]. The scan window equals this parameter multiplied by ``0.625 ms``, so the range for the actual scan window is [2.5,10240] ms.
+    - **<scan_interval>**: scan interval. It should be more than or equal to the value of ``<scan_window>``. The range of this parameter is [0x0004,0x4000]. The scan interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual scan interval is [2.5,10240] ms.
+    - **<scan_window>**: scan window. It should be less than or equal to the value of ``<scan_interval>``. The range of this parameter is [0x0004,0x4000]. The scan window equals this parameter multiplied by ``0.625 ms``, so the range for the actual scan window is [2.5,10240] ms.
 
     Example
     ^^^^^^^^
@@ -444,7 +444,7 @@ Introduction
 
     **Function:**
 
-    Enable/disable scanning.
+    Enable or disable scanning.
 
     **Command:**
 
@@ -463,47 +463,47 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<enable>**:
+    - **<enable>**:
 
-        -  1: enable continuous scanning.
-        -  0: disable continuous scanning.
+        - 1: enable continuous scanning.
+        - 0: disable continuous scanning.
 
-    -  **[<duration>]**: optional parameter. Unit: second.
+    - **[<duration>]**: optional parameter. Unit: second.
 
-    -  If you want to disable the scanning, this parameter should be omitted.
-    -  If you want to enable the scanning, set a value for this parameter:
+    - If you want to disable the scanning, this parameter should be omitted.
+    - If you want to enable the scanning, set a value for this parameter:
 
         - When you set it to 0, it means that scanning is continuous.
         - When set it to a value other than 0, for example, ``AT+BLESCAN=1,3``, it means that scanning will last for 3 seconds and then stop automatically. The scanning results will be returned.
 
-    -  **[<filter_type>]**: filtering option.
+    - **[<filter_type>]**: filtering option.
 
-        -  1: "MAC".
-        -  2: "NAME".
-        -  3: "UUID".
-        -  4: "RSSI".
+        - 1: "MAC".
+        - 2: "NAME".
+        - 3: "UUID".
+        - 4: "RSSI".
 
-    -  **[<filter_param>]**: filtering parameter showing the remote device MAC address or remote device name or UUID or RSSI.
-    -  **[<duplicate_check>]**: duplicate check.
+    - **[<filter_param>]**: filtering parameter showing the remote device MAC address or remote device name or UUID or RSSI.
+    - **[<duplicate_check>]**: duplicate check.
 
-        -  1: perform duplicate check.
+        - 1: perform duplicate check.
 
-    -  **<addr>**: Bluetooth LE address.
-    -  **<rssi>**: signal strength.
-    -  **<adv_data>**: advertising data.
-    -  **<scan_rsp_data>**: scan response data.
-    -  **<addr_type>**: the address type of broadcasters.
+    - **<addr>**: Bluetooth LE address.
+    - **<rssi>**: signal strength.
+    - **<adv_data>**: advertising data.
+    - **<scan_rsp_data>**: scan response data.
+    - **<addr_type>**: the address type of broadcasters.
 
     Notes
     ^^^^^
 
-    -  The response ``OK`` does not necessarily come before the response ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>``. It may be output before ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` or after it.
-    -  To obtain the scan response data, use the :ref:`AT+BLESCANPARAM <BLE-AT>` command to set the scan type to ``active scan (AT+BLESCANPARAM=1,0,0,100,50)``, and the peer device needs to set the ``scan_rsp_data``.
-    -  If the filter type is MAC, the default filter is supported, such as ``AT+BLESCAN=1,3,1,"24:0A:C4"``.
-    -  If the filter type is NAME, the default filter is supported, such as ``AT+BLESCAN=1,3,2,"ESP"``.
-    -  UUID filtering supports 16-bit, 32-bit, and 128-bit UUIDs. The UUID filter parameter must be specified as a hexadecimal string. For example, to set the UUID filter parameter to "0xFF01", use the command: ``AT+BLESCAN=1,3,3,"FF01"``.
-    -  The value of the RSSI filter parameter is an integer. For example, if you want to set the RSSI filter parameter to -50, the command should be ``AT+BLESCAN=1,3,4,-50``. Only devices with RSSI greater than or equal to -50 dBm will be returned.
-    -  To enable the duplicate check, use the :ref:`AT+BLESCAN <BLE-AT>` command to set the duplicate check parameter to ``1`` (If this parameter is not set, the duplicate-checking function is disabled.). The duplicate check function needs to be used together with the previous filter parameters.
+    - The response ``OK`` does not necessarily come before the response ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>``. It may be output before ``+BLESCAN:<addr>,<rssi>,<adv_data>,<scan_rsp_data>,<addr_type>`` or after it.
+    - To obtain the scan response data, use the :ref:`AT+BLESCANPARAM <BLE-AT>` command to set the scan type to ``active scan (AT+BLESCANPARAM=1,0,0,100,50)``, and the peer device needs to set the ``scan_rsp_data``.
+    - If the filter type is MAC, the default filter is supported, such as ``AT+BLESCAN=1,3,1,"24:0A:C4"``.
+    - If the filter type is NAME, the default filter is supported, such as ``AT+BLESCAN=1,3,2,"ESP"``.
+    - UUID filtering supports 16-bit, 32-bit, and 128-bit UUIDs. The UUID filter parameter must be specified as a hexadecimal string. For example, to set the UUID filter parameter to "0xFF01", use the command: ``AT+BLESCAN=1,3,3,"FF01"``.
+    - The value of the RSSI filter parameter is an integer. For example, if you want to set the RSSI filter parameter to -50, the command should be ``AT+BLESCAN=1,3,4,-50``. Only devices with RSSI greater than or equal to -50 dBm will be returned.
+    - To enable the duplicate check, use the :ref:`AT+BLESCAN <BLE-AT>` command to set the duplicate check parameter to ``1`` (If this parameter is not set, the duplicate-checking function is disabled.). The duplicate check function needs to be used together with the previous filter parameters.
 
     Example
     ^^^^^^^^
@@ -541,12 +541,12 @@ Introduction
 
     ::
 
-        OK  
+        OK
 
     Parameter
     ^^^^^^^^^^
 
-    -  **<scan_rsp_data>**: scan response data is a HEX string. For example, if you want to set the response data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLESCANRSPDATA="1122334455"``.
+    - **<scan_rsp_data>**: scan response data is a HEX string. For example, if you want to set the response data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLESCANRSPDATA="1122334455"``.
 
     Example
     ^^^^^^^^
@@ -559,7 +559,7 @@ Introduction
 
     .. _cmd-BADVP:
 
-    :ref:`AT+BLEADVPARAM <BLE-AT>`: Query/Set Parameters of Bluetooth LE Advertising
+    :ref:`AT+BLEADVPARAM <BLE-AT>`: Query or Set Parameters of Bluetooth LE Advertising
     ----------------------------------------------------------------------------------------------------
 
     Query Command
@@ -621,78 +621,78 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<adv_int_min>**: minimum advertising interval. The range of this parameter is [0x0020,0x4000]. The actual advertising interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual minimum interval is [20, 10240] ms. It should be less than or equal to the value of ``<adv_int_max>``.
-    -  **<adv_int_max>**: maximum advertising interval. The range of this parameter is [0x0020,0x4000]. The actual advertising interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual maximum interval is [20, 10240] ms. It should be more than or equal to the value of ``<adv_int_min>``.
-    -  **<adv_type>**:
+    - **<adv_int_min>**: minimum advertising interval. The range of this parameter is [0x0020,0x4000]. The actual advertising interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual minimum interval is [20, 10240] ms. It should be less than or equal to the value of ``<adv_int_max>``.
+    - **<adv_int_max>**: maximum advertising interval. The range of this parameter is [0x0020,0x4000]. The actual advertising interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual maximum interval is [20, 10240] ms. It should be more than or equal to the value of ``<adv_int_min>``.
+    - **<adv_type>**:
 
     .. only:: esp32
 
-        -  0: ADV_TYPE_IND
-        -  1: ADV_TYPE_DIRECT_IND_HIGH
-        -  2: ADV_TYPE_SCAN_IND
-        -  3: ADV_TYPE_NONCONN_IND
-        -  4: ADV_TYPE_DIRECT_IND_LOW
+        - 0: ADV_TYPE_IND
+        - 1: ADV_TYPE_DIRECT_IND_HIGH
+        - 2: ADV_TYPE_SCAN_IND
+        - 3: ADV_TYPE_NONCONN_IND
+        - 4: ADV_TYPE_DIRECT_IND_LOW
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-        -  0: ADV_TYPE_IND
-        -  1: ADV_TYPE_DIRECT_IND_HIGH
-        -  2: ADV_TYPE_SCAN_IND
-        -  3: ADV_TYPE_NONCONN_IND
-        -  4: ADV_TYPE_DIRECT_IND_LOW
-        -  5: ADV_TYPE_EXT_NOSCANNABLE_IND
-        -  6: ADV_TYPE_EXT_CONNECTABLE_IND
-        -  7: ADV_TYPE_EXT_SCANNABLE_IND
-            -  When <adv_type> is set to 0-4, the maximum allowed size for advertising data using the :ref:`AT+BLEADVDATA <cmd-BADVD>` command is 31 bytes. If the advertising data exceeds the maximum limit of this command, use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
-            -  When <adv_type> is set to 5-7, the maximum allowed size for advertising data using the :ref:`AT+BLEADVDATA <cmd-BADVD>` command is 119 bytes.
+        - 0: ADV_TYPE_IND
+        - 1: ADV_TYPE_DIRECT_IND_HIGH
+        - 2: ADV_TYPE_SCAN_IND
+        - 3: ADV_TYPE_NONCONN_IND
+        - 4: ADV_TYPE_DIRECT_IND_LOW
+        - 5: ADV_TYPE_EXT_NOSCANNABLE_IND
+        - 6: ADV_TYPE_EXT_CONNECTABLE_IND
+        - 7: ADV_TYPE_EXT_SCANNABLE_IND
+            - When <adv_type> is set to 0-4, the maximum allowed size for advertising data using the :ref:`AT+BLEADVDATA <cmd-BADVD>` command is 31 bytes. If the advertising data exceeds the maximum limit of this command, use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
+            - When <adv_type> is set to 5-7, the maximum allowed size for advertising data using the :ref:`AT+BLEADVDATA <cmd-BADVD>` command is 119 bytes.
 
-    -  **<own_addr_type>**: own Bluetooth LE address type.
+    - **<own_addr_type>**: own Bluetooth LE address type.
 
-    -  0: BLE_ADDR_TYPE_PUBLIC
-    -  1: BLE_ADDR_TYPE_RANDOM
+    - 0: BLE_ADDR_TYPE_PUBLIC
+    - 1: BLE_ADDR_TYPE_RANDOM
 
-    -  **<channel_map>**: channel of advertising.
+    - **<channel_map>**: channel of advertising.
 
-    -  1: ADV_CHNL_37
-    -  2: ADV_CHNL_38
-    -  4: ADV_CHNL_39
-    -  7: ADV_CHNL_ALL
+    - 1: ADV_CHNL_37
+    - 2: ADV_CHNL_38
+    - 4: ADV_CHNL_39
+    - 7: ADV_CHNL_ALL
 
-    -  **[<adv_filter_policy>]**: filter policy of advertising.
+    - **[<adv_filter_policy>]**: filter policy of advertising.
 
-    -  0: ADV_FILTER_ALLOW_SCAN_ANY_CON_ANY
-    -  1: ADV_FILTER_ALLOW_SCAN_WLST_CON_ANY
-    -  2: ADV_FILTER_ALLOW_SCAN_ANY_CON_WLST
-    -  3: ADV_FILTER_ALLOW_SCAN_WLST_CON_WLST
+    - 0: ADV_FILTER_ALLOW_SCAN_ANY_CON_ANY
+    - 1: ADV_FILTER_ALLOW_SCAN_WLST_CON_ANY
+    - 2: ADV_FILTER_ALLOW_SCAN_ANY_CON_WLST
+    - 3: ADV_FILTER_ALLOW_SCAN_WLST_CON_WLST
 
-    -  **[<peer_addr_type>]**: remote Bluetooth LE address type.
+    - **[<peer_addr_type>]**: remote Bluetooth LE address type.
 
-    -  0: PUBLIC
-    -  1: RANDOM
+    - 0: PUBLIC
+    - 1: RANDOM
 
-    -  **[<"peer_addr">]**: remote Bluetooth LE address.
+    - **[<"peer_addr">]**: remote Bluetooth LE address.
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-        -  **[<primary_phy>]**: advertising primary PHY. Default: 1M PHY.
-        
-            -  1: 1M PHY
-            -  3: Coded PHY
-        
-        -  **[<secondary_phy>]**: advertising secondary PHY. Default: 1M PHY.
-        
-            -  1: 1M PHY
-            -  2: 2M PHY
-            -  3: Coded PHY
+        - **[<primary_phy>]**: advertising primary PHY. Default: 1M PHY.
+
+            - 1: 1M PHY
+            - 3: Coded PHY
+
+        - **[<secondary_phy>]**: advertising secondary PHY. Default: 1M PHY.
+
+            - 1: 1M PHY
+            - 2: 2M PHY
+            - 3: Coded PHY
 
     Note
     ^^^^^
 
-    -  If ``peer_addr`` is not set, the query result will be all zero.
+    - If ``peer_addr`` is not set, the query result will be all zero.
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-        -  The ``primary_phy`` and ``secondary_phy`` must be set together, otherwise, the default 1M PHY is used for unconfigured parameter.
+        - The ``primary_phy`` and ``secondary_phy`` must be set together, otherwise, the default 1M PHY is used for unconfigured parameter.
 
     .. only:: esp32
 
@@ -767,27 +767,27 @@ Introduction
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-        -  **<adv_data>**: advertising data in HEX string. For example, to set the advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATA="1122334455"``. The maximum length is 119 bytes.
+        - **<adv_data>**: advertising data in HEX string. For example, to set the advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATA="1122334455"``. The maximum length is 119 bytes.
 
     .. only:: esp32
 
-        -  **<adv_data>**: advertising data in HEX string. For example, to set the advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATA="1122334455"``. The maximum length is 31 bytes.
+        - **<adv_data>**: advertising data in HEX string. For example, to set the advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATA="1122334455"``. The maximum length is 31 bytes.
 
     Note
     ^^^^^
 
-    -  If advertising data is preset by command :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power>, it will be overwritten by this command.
-    -  If you run this command to modify the device name, it is recommended to also execute the :ref:`AT+BLENAME <cmd-BNAME>` command to set the same device name afterwards.
+    - If advertising data is preset by command :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power>, it will be overwritten by this command.
+    - If you run this command to modify the device name, it is recommended to also execute the :ref:`AT+BLENAME <cmd-BNAME>` command to set the same device name afterwards.
 
     .. only:: esp32
 
-        -  If the advertising data exceeds the maximum limit of this command, use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
+        - If the advertising data exceeds the maximum limit of this command, use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-        -  Please set the Bluetooth LE advertising parameters by the :ref:`AT+BLEADVPARAM <cmd-BADVP>` command before you use the :ref:`AT+BLEADVDATA <cmd-BADVD>` command.
-        -  When the <adv_type> is set to 0-4 by the :ref:`AT+BLEADVPARAM <cmd-BADVP>` command, the maximum allowed size for advertising data using the AT+BLEADVDATA command is 31 bytes. If the advertising data exceeds the maximum limit of this command, use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
-        -  When the <adv_type> is set to 5-7 by the :ref:`AT+BLEADVPARAM <cmd-BADVP>` command, the maximum allowed size for advertising data using the AT+BLEADVDATA command is 119 bytes.
+        - Please set the Bluetooth LE advertising parameters by the :ref:`AT+BLEADVPARAM <cmd-BADVP>` command before you use the :ref:`AT+BLEADVDATA <cmd-BADVD>` command.
+        - When the <adv_type> is set to 0-4 by the :ref:`AT+BLEADVPARAM <cmd-BADVP>` command, the maximum allowed size for advertising data using the AT+BLEADVDATA command is 31 bytes. If the advertising data exceeds the maximum limit of this command, use command :ref:`AT+BLESCANRSPDATA <cmd-BSCANR>`.
+        - When the <adv_type> is set to 5-7 by the :ref:`AT+BLEADVPARAM <cmd-BADVP>` command, the maximum allowed size for advertising data using the AT+BLEADVDATA command is 119 bytes.
 
     Example
     ^^^^^^^^
@@ -846,20 +846,20 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<dev_name>**: string parameter showing a device name. For example, if you want to set the device name to "just-test", the command should be ``AT+BLEADVSTARTEX="just-test",<uuid>,<manufacturer_data>,<include_power>``.
+    - **<dev_name>**: string parameter showing a device name. For example, if you want to set the device name to "just-test", the command should be ``AT+BLEADVSTARTEX="just-test",<uuid>,<manufacturer_data>,<include_power>``.
 
-    -  **<uuid>**: string parameter. For example, if you want to set the UUID to "0xA002", the command should be ``AT+BLEADVSTARTEX=<dev_name>,"A002",<manufacturer_data>,<include_power>``.
+    - **<uuid>**: string parameter. For example, if you want to set the UUID to "0xA002", the command should be ``AT+BLEADVSTARTEX=<dev_name>,"A002",<manufacturer_data>,<include_power>``.
 
-    -  **<manufacturer_data>**: manufacturer data in HEX string. For example, if you set the manufacturer data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVSTARTEX=<dev_name>,<uuid>,"1122334455",<include_power>``.
+    - **<manufacturer_data>**: manufacturer data in HEX string. For example, if you set the manufacturer data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVSTARTEX=<dev_name>,<uuid>,"1122334455",<include_power>``.
 
-    -  **<include_power>**: If you need to include the TX power in the advertising data, you should set the parameter to ``1``. Otherwise, set it to ``0``.
+    - **<include_power>**: If you need to include the TX power in the advertising data, you should set the parameter to ``1``. Otherwise, set it to ``0``.
 
     Note
     ^^^^^
 
-    -  If advertising data is preset by command :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data>, it will be overwritten by this command.
-    -  This command automatically changes the adv type previously set using :ref:`AT+BLEADVPARAM <cmd-BADVP>` to 0.
-    -  The AT module automatically assembles packets in sequence based on the parameters provided by the user. However, the total data length is limited to 31 bytes. Any data exceeding this limit will be truncated.
+    - If advertising data is preset by command :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data>, it will be overwritten by this command.
+    - This command automatically changes the adv type previously set using :ref:`AT+BLEADVPARAM <cmd-BADVP>` to 0.
+    - The AT module automatically assembles packets in sequence based on the parameters provided by the user. However, the total data length is limited to 31 bytes. Any data exceeding this limit will be truncated.
 
     Example
     ^^^^^^^^
@@ -898,15 +898,15 @@ Introduction
 
     .. only:: esp32 or esp32c3
 
-        -  If advertising parameters are NOT set by command :ref:`AT+BLEADVPARAM <cmd-BADVP>`\=<adv_parameter>, the default parameters will be used.
+        - If advertising parameters are NOT set by command :ref:`AT+BLEADVPARAM <cmd-BADVP>`\=<adv_parameter>, the default parameters will be used.
 
     .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
 
-        -  You must set the advertisement parameters using the :ref:`AT+BLEADVPARAM <cmd-BADVP>`\=<adv_parameter> command before advertisement is started.
+        - You must set the advertisement parameters using the :ref:`AT+BLEADVPARAM <cmd-BADVP>`\=<adv_parameter> command before advertisement is started.
 
-    -  If advertising data is NOT set by command :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data>, the advertising playload will be empty.
-    -  If advertising data is preset by command :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data>, it will be overwritten by :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power> and vice versa.
-    -  After the start of Bluetooth LE advertisement, if no connection is established, the advertisement will keep going on; if a connection is established, the advertisement will automatically end.
+    - If advertising data is NOT set by command :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data>, the advertising playload will be empty.
+    - If advertising data is preset by command :ref:`AT+BLEADVDATA <cmd-BADVD>`\=<adv_data>, it will be overwritten by :ref:`AT+BLEADVDATAEX <cmd-BADVDEX>`\=<dev_name>,<uuid>,<manufacturer_data>,<include_power> and vice versa.
+    - After the start of Bluetooth LE advertisement, if no connection is established, the advertisement will keep going on; if a connection is established, the advertisement will automatically end.
 
     Example
     ^^^^^^^^
@@ -953,7 +953,7 @@ Introduction
     Note
     ^^^^^
 
-    -  After the start of advertising, if the Bluetooth LE connection is established successfully, it will stop advertising automatically. In such a case, this command does NOT need to be called.
+    - After the start of advertising, if the Bluetooth LE connection is established successfully, it will stop advertising automatically. In such a case, this command does NOT need to be called.
 
     Example
     ^^^^^^^^
@@ -1061,18 +1061,18 @@ Introduction
     Notes
     ^^^^^
 
-    -  It is recommended to scan devices by running :ref:`AT+BLESCAN <cmd-BSCAN>` before initiating a new connection to ensure that the target device is in the broadcast state.
-    -  The maximum timeout for connection is 30 seconds.
-    -  If the Bluetooth LE server is initialized and the connection is established successfully, you can use this command to discover the services in the peer device (GATTC). The following GATTC commands can also be used:
+    - It is recommended to scan devices by running :ref:`AT+BLESCAN <cmd-BSCAN>` before initiating a new connection to ensure that the target device is in the broadcast state.
+    - The maximum timeout for connection is 30 seconds.
+    - If the Bluetooth LE server is initialized and the connection is established successfully, you can use this command to discover the services in the peer device (GATTC). The following GATTC commands can also be used:
 
-    -  :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`
-    -  :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`
-    -  :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`
-    -  :ref:`AT+BLEGATTCRD <cmd-GCRD>`
-    -  :ref:`AT+BLEGATTCWR <cmd-GCWR>`
-    -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
-    -  If the :ref:`AT+BLECONN? <cmd-BCONN>` is executed when the Bluetooth LE is not initialized (:ref:`AT+BLEINIT=0 <cmd-BINIT>`), the system will not output ``+BLECONN:<conn_index>,<remote_address>`` .
-    -  Supports address resolution.
+    - :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`
+    - :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`
+    - :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`
+    - :ref:`AT+BLEGATTCRD <cmd-GCRD>`
+    - :ref:`AT+BLEGATTCWR <cmd-GCWR>`
+    - :ref:`AT+BLEGATTSIND <cmd-GSIND>`
+    - If the :ref:`AT+BLECONN? <cmd-BCONN>` is executed when the Bluetooth LE is not initialized (:ref:`AT+BLEINIT=0 <cmd-BINIT>`), the system will not output ``+BLECONN:<conn_index>,<remote_address>`` .
+    - Supports address resolution.
 
     Example
     ^^^^^^^^
@@ -1135,17 +1135,17 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<min_interval>**: minimum connecting interval. It should be less than or equal to the value of ``<max_interval>``. The range of this parameter is [0x0006,0x0C80]. The actual connecting interval equals this parameter multiplied by ``1.25 ms``, so the range for the actual minimum interval is [7.5,4000] ms.
-    -  **<max_interval>**: maximum connecting interval. It should be more than or equal to the value of ``<min_interval>``. The range of this parameter is [0x0006,0x0C80]. The actual connecting interval equals this parameter multiplied by ``1.25 ms``, so the range for the actual maximum interval is [7.5,4000] ms.
-    -  **<cur_interval>**: current connecting interval.
-    -  **<latency>**: latency. Range: [0x0000,0x01F3].
-    -  **<timeout>**: timeout. The range of this parameter is [0x000A,0x0C80]. The actual timeout equals this parameter multiplied by ``10 ms``, so the range for the actual timeout is [100,32000] ms.
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<min_interval>**: minimum connecting interval. It should be less than or equal to the value of ``<max_interval>``. The range of this parameter is [0x0006,0x0C80]. The actual connecting interval equals this parameter multiplied by ``1.25 ms``, so the range for the actual minimum interval is [7.5,4000] ms.
+    - **<max_interval>**: maximum connecting interval. It should be more than or equal to the value of ``<min_interval>``. The range of this parameter is [0x0006,0x0C80]. The actual connecting interval equals this parameter multiplied by ``1.25 ms``, so the range for the actual maximum interval is [7.5,4000] ms.
+    - **<cur_interval>**: current connecting interval.
+    - **<latency>**: latency. Range: [0x0000,0x01F3].
+    - **<timeout>**: timeout. The range of this parameter is [0x000A,0x0C80]. The actual timeout equals this parameter multiplied by ``10 ms``, so the range for the actual timeout is [100,32000] ms.
 
     Note
     ^^^^^
 
-    -  This command supports client or server roles  when updating its connection parameters. Of course, the connection has to be established first.
+    - This command supports client or server roles  when updating its connection parameters. Of course, the connection has to be established first.
 
     Example
     ^^^^^^^^
@@ -1154,7 +1154,7 @@ Introduction
 
         AT+BLEINIT=1   // Role: client
         AT+BLECONN=0,"24:0a:c4:09:34:23"
-        AT+BLECONNPARAM=0,12,14,1,500  
+        AT+BLECONNPARAM=0,12,14,1,500
 
     .. _cmd-BDISC:
 
@@ -1179,13 +1179,13 @@ Introduction
     ::
 
         OK  // The AT+BLEDISCONN command is received.
-        +BLEDISCONN:<conn_index>,<remote_address>  // The command is successful. 
+        +BLEDISCONN:<conn_index>,<remote_address>  // The command is successful.
 
     Parameters
     ^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<remote_address>**: remote Bluetooth LE address.
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<remote_address>**: remote Bluetooth LE address.
 
     Example
     ^^^^^^^^
@@ -1220,18 +1220,18 @@ Introduction
 
     ::
 
-        OK 
+        OK
 
     Parameters
     ^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<pkt_data_len>**: data packet's length. Range: [0x001B,0x00FB].
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<pkt_data_len>**: data packet's length. Range: [0x001B,0x00FB].
 
     Note
     ^^^^^
 
-    -  The Bluetooth LE connection has to be established first.
+    - The Bluetooth LE connection has to be established first.
 
     Example
     ^^^^^^^^
@@ -1363,17 +1363,17 @@ Introduction
     Notes
     ^^^^^
 
-    -  If you are using an {IDF_TARGET_NAME} as a Bluetooth LE server, the ``mfg_nvs.bin`` with GATTS configuration should be downloaded into flash in order to provide services.
-    -  This command should be called immediately to create services, right after the Bluetooth LE server is initialized; If a Bluetooth LE connection is established first, the service creation will fail.
-    -  If the Bluetooth LE client is initialized, you can use this command to create local services. Some GATTS commands can also be used, such as those to start and stop services, set attribute values, and send notifications/indications. See the list below for the specific commands.
+    - If you are using an {IDF_TARGET_NAME} as a Bluetooth LE server, the ``mfg_nvs.bin`` with GATTS configuration should be downloaded into flash in order to provide services.
+    - This command should be called immediately to create services, right after the Bluetooth LE server is initialized; If a Bluetooth LE connection is established first, the service creation will fail.
+    - If the Bluetooth LE client is initialized, you can use this command to create local services. Some GATTS commands can also be used, such as those to start and stop services, set attribute values, and send notifications/indications. See the list below for the specific commands.
 
-        -  :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>` (It is recommended to execute this command before the connection is established)
-        -  :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>` (It is recommended to execute this command before the connection is established)
-        -  :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`
-        -  :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`
-        -  :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`
-        -  :ref:`AT+BLEGATTSIND <cmd-GSIND>`
-        -  :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`
+        - :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>` (It is recommended to execute this command before the connection is established)
+        - :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>` (It is recommended to execute this command before the connection is established)
+        - :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`
+        - :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`
+        - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`
+        - :ref:`AT+BLEGATTSIND <cmd-GSIND>`
+        - :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`
 
     Example
     ^^^^^^^^
@@ -1418,12 +1418,12 @@ Introduction
 
     ::
 
-        OK  
+        OK
 
     Parameter
     ^^^^^^^^^^
 
-    -  **<srv_index>**: service's index starting from 1.
+    - **<srv_index>**: service's index starting from 1.
 
     Example
     ^^^^^^^^
@@ -1469,12 +1469,12 @@ Introduction
 
     ::
 
-        OK  
+        OK
 
     Parameter
     ^^^^^^^^^^
 
-    -  **<srv_index>**: service's index starting from 1.
+    - **<srv_index>**: service's index starting from 1.
 
     Example
     ^^^^^^^^
@@ -1516,17 +1516,17 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<srv_index>**: service's index starting from 1.
-    -  **<start>**:
+    - **<srv_index>**: service's index starting from 1.
+    - **<start>**:
 
-    -  0: the service has not started.
-    -  1: the service has already started.
+    - 0: the service has not started.
+    - 1: the service has already started.
 
-    -  **<srv_uuid>**: service's UUID.
-    -  **<srv_type>**: service's type.
+    - **<srv_uuid>**: service's UUID.
+    - **<srv_type>**: service's type.
 
-    -  0: not primary service.
-    -  1: primary service.
+    - 0: not primary service.
+    - 1: primary service.
 
     Example
     ^^^^^^^^
@@ -1582,12 +1582,12 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<srv_index>**: service's index starting from 1.
-    -  **<char_index>**: characteristic's index starting from 1.
-    -  **<char_uuid>**: characteristic's UUID.
-    -  **<char_prop>**: characteristic's properties.
-    -  **<desc_index>**: descriptor's index.
-    -  **<desc_uuid>**: descriptor's UUID.
+    - **<srv_index>**: service's index starting from 1.
+    - **<char_index>**: characteristic's index starting from 1.
+    - **<char_uuid>**: characteristic's UUID.
+    - **<char_prop>**: characteristic's properties.
+    - **<desc_index>**: descriptor's index.
+    - **<desc_uuid>**: descriptor's UUID.
 
     Example
     ^^^^^^^^
@@ -1643,15 +1643,15 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
-    -  **<char_index>**: characteristic's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
-    -  **<length>**: data length. The maximum length is (:ref:`MTU <cmd-BMTU>` - 3).
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+    - **<char_index>**: characteristic's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+    - **<length>**: data length. The maximum length is (:ref:`MTU <cmd-BMTU>` - 3).
 
     Note
     ^^^^
 
-    -  The maximum data length per transmission is (:ref:`MTU <cmd-BMTU>` - 3) bytes. If you send more than this, the underlying layer will automatically split the data into packets for transmission.
+    - The maximum data length per transmission is (:ref:`MTU <cmd-BMTU>` - 3) bytes. If you send more than this, the underlying layer will automatically split the data into packets for transmission.
 
     Example
     ^^^^^^^^
@@ -1666,7 +1666,7 @@ Introduction
             AT+BLEADVSTART    // Start advertising. After the client is connected, it must be configured to receive notifications.
             AT+BLEGATTSCHAR?  // Query the characteristics which the client will be notified of.
             // For example, to notify of 4-byte data using the 6th characteristic in the 3rd service, use the following command:
-            AT+BLEGATTSNTFY=0,3,6,4 
+            AT+BLEGATTSNTFY=0,3,6,4
             // After the symbol ">" shows, enter the 4-byte data, such as "1234". Then the data will be transmitted automatically.
 
     .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
@@ -1678,7 +1678,7 @@ Introduction
             AT+BLEADVSTART    // Start advertising. After the client is connected, it must be configured to receive notifications.
             AT+BLEGATTSCHAR?  // Query the characteristics which the client will be notified of.
             // For example, to notify of 4-byte data using the 6th characteristic in the 3rd service, use the following command:
-            AT+BLEGATTSNTFY=0,3,6,4 
+            AT+BLEGATTSNTFY=0,3,6,4
             // After the symbol ">" shows, enter the 4-byte data, such as "1234". Then the data will be transmitted automatically.
 
     .. _cmd-GSIND:
@@ -1690,7 +1690,7 @@ Introduction
     ^^^^^^^^^^^
 
     **Function:**
-    
+
     Indicate the characteristic value from the server to a client.
 
     **Command:**
@@ -1716,10 +1716,10 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
-    -  **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
-    -  **<length>**: data length. The maximum length is (:ref:`MTU <cmd-BMTU>` - 3).
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+    - **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+    - **<length>**: data length. The maximum length is (:ref:`MTU <cmd-BMTU>` - 3).
 
     Example
     ^^^^^^^^
@@ -1734,7 +1734,7 @@ Introduction
             AT+BLEADVSTART    // Start advertising. After the client is connected, it must be configured to receive indications.
             AT+BLEGATTSCHAR?  // Query the characteristics which the client can receive indications.
             // For example, to indicate 4 bytes of data using the 7th characteristic in the 3rd service, use the following command:
-            AT+BLEGATTSIND=0,3,7,4 
+            AT+BLEGATTSIND=0,3,7,4
             // After the symbol ">" shows, input 4 bytes of data, such as "1234". Then the data will be transmitted automatically.
 
     .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
@@ -1746,7 +1746,7 @@ Introduction
             AT+BLEADVSTART    // Start advertising. After the client is connected, it must be configured to receive indications.
             AT+BLEGATTSCHAR?  // Query the characteristics which the client can receive indications.
             // For example, to indicate 4 bytes of data using the 7th characteristic in the 3rd service, use the following command:
-            AT+BLEGATTSIND=0,3,7,4 
+            AT+BLEGATTSIND=0,3,7,4
             // After the symbol ">" shows, input 4 bytes of data, such as "1234". Then the data will be transmitted automatically.
 
     .. _cmd-GSSETA:
@@ -1792,26 +1792,26 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
-    -  **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+    - **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+    - **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
 
     .. only:: esp32 or esp32c3
 
-        -  **[<desc_index>]**: descriptor's index.
+        - **[<desc_index>]**: descriptor's index.
 
-    -  If it is set, this command is used to set the value of the descriptor. 
-    -  Otherwise, this command is used to set the value of the characteristic.
+    - If it is set, this command is used to set the value of the descriptor.
+    - Otherwise, this command is used to set the value of the characteristic.
 
-    -  **<length>**: data length.
+    - **<length>**: data length.
 
     Note
     ^^^^^
 
-    -  If the value of ``<length>`` is larger than the maximum length allowed, the setting will fail. The service table is defined in :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>`.
+    - If the value of ``<length>`` is larger than the maximum length allowed, the setting will fail. The service table is defined in :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>`.
 
     .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
 
-        -  The characteristic descriptor value cannot be set.
+        - The characteristic descriptor value cannot be set.
 
     Example
     ^^^^^^^^
@@ -1823,7 +1823,7 @@ Introduction
             AT+BLEINIT=2   // Role: server.
             AT+BLEGATTSSRVCRE
             AT+BLEGATTSSRVSTART
-            AT+BLEGATTSCHAR? 
+            AT+BLEGATTSCHAR?
             // For example, to set 1 byte of data of the 1st characteristic in the 1st service, use the following command:
             AT+BLEGATTSSETATTR=1,1,,1
             // After the symbol ">" shows, input 1 byte of data, such as "8". Then the setting starts.
@@ -1833,7 +1833,7 @@ Introduction
         ::
 
             AT+BLEINIT=2   // Role: server.
-            AT+BLEGATTSCHAR? 
+            AT+BLEGATTSCHAR?
             // For example, to set 1 byte of data of the 1st characteristic in the 1st service, use the following command:
             AT+BLEGATTSSETATTR=1,1,1
             // After the symbol ">" shows, input 1 byte of data, such as "8". Then the setting starts.
@@ -1866,18 +1866,18 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<srv_index>**: service's index starting from 1.
-    -  **<srv_uuid>**: service's UUID.
-    -  **<srv_type>**: service's type.
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<srv_index>**: service's index starting from 1.
+    - **<srv_uuid>**: service's UUID.
+    - **<srv_type>**: service's type.
 
-    -  0: not primary service.
-    -  1: primary service.
+    - 0: not primary service.
+    - 1: primary service.
 
     Note
     ^^^^^
 
-    -  The Bluetooth LE connection has to be established first.
+    - The Bluetooth LE connection has to be established first.
 
     Example
     ^^^^^^^^
@@ -1916,24 +1916,24 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
-    -  **<srv_uuid>**: service's UUID.
-    -  **<srv_type>**: service's type.
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
+    - **<srv_uuid>**: service's UUID.
+    - **<srv_type>**: service's type.
 
-    -  0: not primary service.
-    -  1: primary service.
+    - 0: not primary service.
+    - 1: primary service.
 
-    -  **<included_srv_uuid>**: included service's UUID.
-    -  **<included_srv_type>**: included service's type.
+    - **<included_srv_uuid>**: included service's UUID.
+    - **<included_srv_type>**: included service's type.
 
-    -  0: not primary service.
-    -  1: primary service.
+    - 0: not primary service.
+    - 1: primary service.
 
     Note
     ^^^^^
 
-    -  The Bluetooth LE connection has to be established first.
+    - The Bluetooth LE connection has to be established first.
 
     Example
     ^^^^^^^^
@@ -1975,24 +1975,24 @@ Introduction
 
     ::
 
-        +BLEGATTCCHAR:"desc",<conn_index>,<srv_index>,<char_index>,<desc_index>,<desc_uuid> 
+        +BLEGATTCCHAR:"desc",<conn_index>,<srv_index>,<char_index>,<desc_index>,<desc_uuid>
         OK
 
     Parameters
     ^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
-    -  **<char_index>**: characteristic's index starting from 1.
-    -  **<char_uuid>**: characteristic's UUID.
-    -  **<char_prop>**: characteristic's properties.
-    -  **<desc_index>**: descriptor's index.
-    -  **<desc_uuid>**: descriptor's UUID.
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
+    - **<char_index>**: characteristic's index starting from 1.
+    - **<char_uuid>**: characteristic's UUID.
+    - **<char_prop>**: characteristic's properties.
+    - **<desc_index>**: descriptor's index.
+    - **<desc_uuid>**: descriptor's UUID.
 
     Note
     ^^^^^
 
-    -  The Bluetooth LE connection has to be established first.
+    - The Bluetooth LE connection has to be established first.
 
     Example
     ^^^^^^^^
@@ -2032,25 +2032,25 @@ Introduction
     Parameters
     ^^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
-    -  **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index>.
-    -  **[<desc_index>]**: descriptor's index.
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
+    - **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index>.
+    - **[<desc_index>]**: descriptor's index.
 
-    -  If it is set, the value of the target descriptor will be read.
-    -  if it is not set, the value of the target characteristic will be read.
+    - If it is set, the value of the target descriptor will be read.
+    - if it is not set, the value of the target characteristic will be read.
 
-    -  **<len>**: data length.
-    -  **<value>**: ``<char_value>`` or ``<desc_value>``.
+    - **<len>**: data length.
+    - **<value>**: ``<char_value>`` or ``<desc_value>``.
 
-    -  **<char_value>**: characteristic's value. String format is read by command :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index>. For example, if the response is ``+BLEGATTCRD:0,1,0``, it means that the value length is 1, and the content is "0".
-    -  **<desc_value>**: descriptor's value. String format is read by command :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index>,<desc_index>. For example, if the response is ``+BLEGATTCRD:0,4,0123``, it means that the value length is 4, and the content is "0123".
+    - **<char_value>**: characteristic's value. String format is read by command :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index>. For example, if the response is ``+BLEGATTCRD:0,1,0``, it means that the value length is 1, and the content is "0".
+    - **<desc_value>**: descriptor's value. String format is read by command :ref:`AT+BLEGATTCRD <cmd-GCRD>`\=<conn_index>,<srv_index>,<char_index>,<desc_index>. For example, if the response is ``+BLEGATTCRD:0,4,0123``, it means that the value length is 4, and the content is "0123".
 
     Notes
     ^^^^^
 
-    -  The Bluetooth LE connection has to be established first.
-    -  If the target characteristic cannot be read, it will return "ERROR".
+    - The Bluetooth LE connection has to be established first.
+    - If the target characteristic cannot be read, it will return "ERROR".
 
     Example
     ^^^^^^^^
@@ -2099,21 +2099,21 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
-    -  **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index>.
-    -  **[<desc_index>]**: descriptor's index.
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index>.
+    - **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index>.
+    - **[<desc_index>]**: descriptor's index.
 
-    -  If it is set, the value of the target descriptor will be written.
-    -  If it is not set, the value of the target characteristic will be written.
+    - If it is set, the value of the target descriptor will be written.
+    - If it is not set, the value of the target characteristic will be written.
 
-    -  **<length>**: data length. The value range of this parameter is subject to :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>` in ``val_max_len`` parameter.
+    - **<length>**: data length. The value range of this parameter is subject to :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>` in ``val_max_len`` parameter.
 
     Notes
     ^^^^^
 
-    -  The Bluetooth LE connection has to be established first.
-    -  If the target characteristic cannot be written, it will return "ERROR".
+    - The Bluetooth LE connection has to be established first.
+    - If the target characteristic cannot be written, it will return "ERROR".
 
     Example
     ^^^^^^^^
@@ -2125,12 +2125,12 @@ Introduction
         AT+BLEGATTCPRIMSRV=0
         AT+BLEGATTCCHAR=0,3 // Set a specific index according to the result of the previous command.
         // For example, to write 6 bytes of data to the 4th characteristic in the 3rd service, use the following command:
-        AT+BLEGATTCWR=0,3,4,,6 
+        AT+BLEGATTCWR=0,3,4,,6
         // After the symbol ">" shows, input 6 bytes of data, such as "123456". Then the writing starts.
 
     .. _cmd-BLESPPCFG:
 
-    :ref:`AT+BLESPPCFG <BLE-AT>`: Query/Set Bluetooth LE SPP Parameters
+    :ref:`AT+BLESPPCFG <BLE-AT>`: Query or Set Bluetooth LE SPP Parameters
     ---------------------------------------------------------------------------------------
 
     Query Command
@@ -2175,26 +2175,26 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<cfg_enable>**:
+    - **<cfg_enable>**:
 
-    -  0: all the SPP parameters will be reset, and the following parameters do not need input.
-    -  1: you should input the following parameters.
+    - 0: all the SPP parameters will be reset, and the following parameters do not need input.
+    - 1: you should input the following parameters.
 
-    -  **<tx_service_index>**: tx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`.
-    -  **<tx_char_index>**: tx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> and :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
-    -  **<rx_service_index>**: rx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`.
-    -  **<rx_char_index>**: rx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> and :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
-    -  **<auto_conn>**: Bluetooth LE SPP auto-reconnection flag. By default, automatic reconnection is enabled.
+    - **<tx_service_index>**: tx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`.
+    - **<tx_char_index>**: tx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> and :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+    - **<rx_service_index>**: rx service's index. It can be queried with command :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`\=<conn_index> and :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>`.
+    - **<rx_char_index>**: rx characteristic's index. It can be queried with command :ref:`AT+BLEGATTCCHAR <cmd-GCCHAR>`\=<conn_index>,<srv_index> and :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
+    - **<auto_conn>**: Bluetooth LE SPP auto-reconnection flag. By default, automatic reconnection is enabled.
 
-    -  0: disable Bluetooth LE SPP automatic reconnection.
-    -  1: enable Bluetooth LE SPP automatic reconnection
+    - 0: disable Bluetooth LE SPP automatic reconnection.
+    - 1: enable Bluetooth LE SPP automatic reconnection
 
     Notes
     ^^^^^
 
-    -  In Bluetooth LE client, the property of tx characteristic must be ``write with response`` or ``write without response``, and the property of rx characteristic must be ``indicate`` or ``notify``.
-    -  In Bluetooth LE server, the property of tx characteristic must be ``indicate`` or ``notify``, and the property of rx characteristic must be ``write with response`` or ``write without response``.
-    -  If the automatic reconnection function is disabled, when the connection is disconnected, a disconnection message is displayed (depending on AT+SYSMSG), you need to send the connection command again; If this function is enabled, the connection will be automatically reconnected after disconnection, and the MCU side will not be aware of the disconnection. If the MAC of the peer end changes, the connection will fail.
+    - In Bluetooth LE client, the property of tx characteristic must be ``write with response`` or ``write without response``, and the property of rx characteristic must be ``indicate`` or ``notify``.
+    - In Bluetooth LE server, the property of tx characteristic must be ``indicate`` or ``notify``, and the property of rx characteristic must be ``write with response`` or ``write without response``.
+    - If the automatic reconnection function is disabled, when the connection is disconnected, a disconnection message is displayed (depending on AT+SYSMSG), you need to send the connection command again; If this function is enabled, the connection will be automatically reconnected after disconnection, and the MCU side will not be aware of the disconnection. If the MAC of the peer end changes, the connection will fail.
 
     Example
     ^^^^^^^^
@@ -2203,7 +2203,7 @@ Introduction
 
         AT+BLESPPCFG=0          // reset Bluetooth LE SPP parameters
         AT+BLESPPCFG=1,3,5,3,7  // set Bluetooth LE SPP parameters
-        AT+BLESPPCFG?           // query Bluetooth LE SPP parameters 
+        AT+BLESPPCFG?           // query Bluetooth LE SPP parameters
 
     .. _cmd-BLESPP:
 
@@ -2242,9 +2242,9 @@ Introduction
     Notes
     ^^^^^
 
-    -  During the SPP transmission, AT will not prompt any exit the Bluetooth LE SPP passthrough mode information unless Bit0 of :ref:`AT+SYSMSG <cmd-SYSMSG>` is 1.
-    -  During the SPP transmission, AT will not prompt any connection status changes unless Bit2 of :ref:`AT+SYSMSG <cmd-SYSMSG>` is 1.
-    -  When the packet which only contains +++ is received, the device returns to normal command mode. Please wait for at least one second before sending the next AT command.
+    - During the SPP transmission, AT will not prompt any exit the Bluetooth LE SPP passthrough mode information unless Bit0 of :ref:`AT+SYSMSG <cmd-SYSMSG>` is 1.
+    - During the SPP transmission, AT will not prompt any connection status changes unless Bit2 of :ref:`AT+SYSMSG <cmd-SYSMSG>` is 1.
+    - When the packet which only contains +++ is received, the device returns to normal command mode. Please wait for at least one second before sending the next AT command.
 
     Example
     ^^^^^^^^
@@ -2255,7 +2255,7 @@ Introduction
 
     .. _cmd-BLESMPPAR:
 
-    :ref:`AT+BLESECPARAM <BLE-AT>`: Query/Set Bluetooth LE Encryption Parameters
+    :ref:`AT+BLESECPARAM <BLE-AT>`: Query or Set Bluetooth LE Encryption Parameters
     ------------------------------------------------------------------------------------------------
 
     Query Command
@@ -2300,41 +2300,41 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<auth_req>**: authentication request.
+    - **<auth_req>**: authentication request.
 
-    -  0: NO_BOND
-    -  1: BOND
-    -  4: MITM
-    -  8: SC_ONLY
-    -  9: SC_BOND
-    -  12: SC_MITM
-    -  13: SC_MITM_BOND
+    - 0: NO_BOND
+    - 1: BOND
+    - 4: MITM
+    - 8: SC_ONLY
+    - 9: SC_BOND
+    - 12: SC_MITM
+    - 13: SC_MITM_BOND
 
-    -  **<iocap>**: input and output capability.
+    - **<iocap>**: input and output capability.
 
-    -  0: DisplayOnly
-    -  1: DisplayYesNo
-    -  2: KeyboardOnly
-    -  3: NoInputNoOutput
-    -  4: Keyboard display
+    - 0: DisplayOnly
+    - 1: DisplayYesNo
+    - 2: KeyboardOnly
+    - 3: NoInputNoOutput
+    - 4: Keyboard display
 
-    -  **<enc_key_size>**: encryption key size. Range: [7,16]. Unit: byte.
-    -  **<init_key>**: initial key represented in bit combinations.
-    -  **<rsp_key>**: response key represented in bit combinations.
-    -  **<auth_option>**: authentication option of security.
+    - **<enc_key_size>**: encryption key size. Range: [7,16]. Unit: byte.
+    - **<init_key>**: initial key represented in bit combinations.
+    - **<rsp_key>**: response key represented in bit combinations.
+    - **<auth_option>**: authentication option of security.
 
-    -  0: Select the security level automatically.
-    -  1: If it cannot follow the preset security level, the connection will disconnect.
+    - 0: Select the security level automatically.
+    - 1: If it cannot follow the preset security level, the connection will disconnect.
 
     Note
     ^^^^^
 
-    -  The bit pattern for parameters ``<init_key>`` and ``<rsp_key>`` is:
+    - The bit pattern for parameters ``<init_key>`` and ``<rsp_key>`` is:
 
-    -  Bit0: Used to exchange the encryption key in the init key & response key.
-    -  Bit1: Used to exchange the IRK key in the init key & response key.
-    -  Bit2: Used to exchange the CSRK key in the init key & response key.
-    -  Bit3: Used to exchange the link key (only used in the Bluetooth LE & BR/EDR coexist mode) in the init key & response key.
+    - Bit0: Used to exchange the encryption key in the init key & response key.
+    - Bit1: Used to exchange the IRK key in the init key & response key.
+    - Bit2: Used to exchange the CSRK key in the init key & response key.
+    - Bit3: Used to exchange the link key (only used in the Bluetooth LE & BR/EDR coexist mode) in the init key & response key.
 
     Example
     ^^^^^^^^
@@ -2370,18 +2370,18 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<sec_act>**:
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<sec_act>**:
 
-    -  0: SEC_NONE
-    -  1: SEC_ENCRYPT
-    -  2: SEC_ENCRYPT_NO_MITM
-    -  3: SEC_ENCRYPT_MITM
+    - 0: SEC_NONE
+    - 1: SEC_ENCRYPT
+    - 2: SEC_ENCRYPT_NO_MITM
+    - 3: SEC_ENCRYPT_MITM
 
     Note
     ^^^^^
 
-    -  Before running this command, please set the security parameters and connection with remote devices.
+    - Before running this command, please set the security parameters and connection with remote devices.
 
     Example
     ^^^^^^^^
@@ -2444,23 +2444,23 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<accept>**:
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<accept>**:
 
-    -  0: reject
-    -  1: accept
+    - 0: reject
+    - 1: accept
 
     Note
     ^^^^^
 
-    -  After running this command, AT will output the pairing result at the end of the pairing process.
+    - After running this command, AT will output the pairing result at the end of the pairing process.
 
     ::
 
         +BLEAUTHCMPL:<conn_index>,<enc_result>
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<enc_result>**:
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<enc_result>**:
 
     - 0: encryption succeeded
     - 1: encryption failed
@@ -2501,8 +2501,8 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<key>**: pairing key.
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<key>**: pairing key.
 
     Example
     ^^^^^^^^
@@ -2538,11 +2538,11 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
-    -  **<confirm>**:
+    - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+    - **<confirm>**:
 
-    -  0: No
-    -  1: Yes
+    - 0: No
+    - 1: Yes
 
     Example
     ^^^^^^^^
@@ -2579,13 +2579,13 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<enc_dev_index>**: index of the bonded devices. This parameter is not necessarily equal to the ``conn_index`` parameter in the Bluetooth LE connection list queried by the command :ref:`AT+BLECONN <cmd-BCONN>`. Range: [0,14].
-    -  **<mac_address>**: MAC address.
+    - **<enc_dev_index>**: index of the bonded devices. This parameter is not necessarily equal to the ``conn_index`` parameter in the Bluetooth LE connection list queried by the command :ref:`AT+BLECONN <cmd-BCONN>`. Range: [0,14].
+    - **<mac_address>**: MAC address.
 
     Note
     ^^^^^
 
-    -  ESP-AT allows a maximum of ``15`` devices to be bonded. If the number of bonded devices exceeds 15, the newly bonded device information will sequentially (from 0 to 14) overwrite the previous device information according to the binding order.
+    - ESP-AT allows a maximum of ``15`` devices to be bonded. If the number of bonded devices exceeds 15, the newly bonded device information will sequentially (from 0 to 14) overwrite the previous device information according to the binding order.
 
     Example
     ^^^^^^^^
@@ -2640,7 +2640,7 @@ Introduction
     Parameter
     ^^^^^^^^^^
 
-    -  **<enc_dev_index>**: index of the bonded devices.
+    - **<enc_dev_index>**: index of the bonded devices.
 
     Example
     ^^^^^^^^
@@ -2706,7 +2706,7 @@ Introduction
     Parameter
     ^^^^^^^^^^
 
-    -  **<static_key>**: static Bluetooth LE pair key.
+    - **<static_key>**: static Bluetooth LE pair key.
 
     Example
     ^^^^^^^^
@@ -2773,26 +2773,26 @@ Introduction
     Parameter
     ^^^^^^^^^^
 
-    -  **<init>**:
+    - **<init>**:
 
-    -  0: deinit Bluetooth LE HID profile
-    -  1: init Bluetooth LE HID profile
+    - 0: deinit Bluetooth LE HID profile
+    - 1: init Bluetooth LE HID profile
 
     Note
     ^^^^^
 
-    -  The Bluetooth LE HID command cannot be used at the same time with general GATT/GAP commands.
+    - The Bluetooth LE HID command cannot be used at the same time with general GATT/GAP commands.
 
     .. only:: esp32 or esp32c3
 
-        -  The Bluetooth LE HID commands cannot be used at the same time with :ref:`BluFi commands <cmd-BLUFI>`.
+        - The Bluetooth LE HID commands cannot be used at the same time with :ref:`BluFi commands <cmd-BLUFI>`.
 
     Example
     ^^^^^^^^
 
     ::
 
-        AT+BLEHIDINIT=1 
+        AT+BLEHIDINIT=1
 
     .. _cmd-BLEHIDKB:
 
@@ -2821,13 +2821,13 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<Modifier_keys>**: modifier keys mask
-    -  **<key_1>**: key code 1
-    -  **<key_2>**: key code 2
-    -  **<key_3>**: key code 3
-    -  **<key_4>**: key code 4
-    -  **<key_5>**: key code 5
-    -  **<key_6>**: key code 6
+    - **<Modifier_keys>**: modifier keys mask
+    - **<key_1>**: key code 1
+    - **<key_2>**: key code 2
+    - **<key_3>**: key code 3
+    - **<key_4>**: key code 4
+    - **<key_5>**: key code 5
+    - **<key_6>**: key code 6
 
     Note
     ^^^^
@@ -2869,10 +2869,10 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<buttons>**: mouse button
-    -  **<X_displacement>**: X displacement
-    -  **<Y_displacement>**: Y displacement
-    -  **<wheel>**: wheel
+    - **<buttons>**: mouse button
+    - **<X_displacement>**: X displacement
+    - **<Y_displacement>**: Y displacement
+    - **<wheel>**: wheel
 
     Note
     ^^^^
@@ -2914,7 +2914,7 @@ Introduction
     Parameter
     ^^^^^^^^^^
 
-    -  **<consumer_usage_id>**: consumer ID, such as power, reset, help, volume and so on. See chapter Consumer Page (0x0C) of `HID Usage Tables for Universal Serial Bus (USB) <https://usb.org/sites/default/files/hut1_21_0.pdf>`_ for more information.
+    - **<consumer_usage_id>**: consumer ID, such as power, reset, help, volume and so on. See chapter Consumer Page (0x0C) of `HID Usage Tables for Universal Serial Bus (USB) <https://usb.org/sites/default/files/hut1_21_0.pdf>`_ for more information.
 
     Note
     ^^^^
@@ -2988,29 +2988,29 @@ Introduction
     Parameter
     ^^^^^^^^^^
 
-    -  **<option>**:
+    - **<option>**:
 
-       -  0: stop BluFi
-       -  1: start BluFi
+       - 0: stop BluFi
+       - 1: start BluFi
 
-    -  **<auth floor>**: Wi-Fi authentication mode floor. ESP-AT will not connect to the AP whose authmode is lower than this floor.
+    - **<auth floor>**: Wi-Fi authentication mode floor. ESP-AT will not connect to the AP whose authmode is lower than this floor.
 
-       -  0: OPEN (Default)
-       -  1: WEP
-       -  2: WPA_PSK
-       -  3: WPA2_PSK
-       -  4: WPA_WPA2_PSK
-       -  5: WPA2_ENTERPRISE
-       -  6: WPA3_PSK
-       -  7: WPA2_WPA3_PSK
-       -  8: WAPI_PSK
-       -  9: OWE
-       -  10: WPA3_ENT_192
-       -  11: WPA3_EXT_PSK
-       -  12: WPA3_EXT_PSK_MIXED_MODE
-       -  13: DPP
-       -  14: WPA3_ENTERPRISE
-       -  15: WPA2_WPA3_ENTERPRISE
+       - 0: OPEN (Default)
+       - 1: WEP
+       - 2: WPA_PSK
+       - 3: WPA2_PSK
+       - 4: WPA_WPA2_PSK
+       - 5: WPA2_ENTERPRISE
+       - 6: WPA3_PSK
+       - 7: WPA2_WPA3_PSK
+       - 8: WAPI_PSK
+       - 9: OWE
+       - 10: WPA3_ENT_192
+       - 11: WPA3_EXT_PSK
+       - 12: WPA3_EXT_PSK_MIXED_MODE
+       - 13: DPP
+       - 14: WPA3_ENTERPRISE
+       - 15: WPA2_WPA3_ENTERPRISE
 
     Note
     ^^^^
@@ -3034,7 +3034,7 @@ Introduction
 
     .. _cmd-BLUFINAME:
 
-    :ref:`AT+BLUFINAME <BLE-AT>`: Query/Set BluFi Device Name
+    :ref:`AT+BLUFINAME <BLE-AT>`: Query or Set BluFi Device Name
     ------------------------------------------------------------------------------
 
     Query Command
@@ -3079,14 +3079,14 @@ Introduction
     Parameter
     ^^^^^^^^^^
 
-    -  **<device_name>**: the name of BluFi device.
+    - **<device_name>**: the name of BluFi device.
 
     Notes
     ^^^^^
 
-    -  If you need to set BluFi name, please set it before command :ref:`AT+BLUFI=1 <cmd-BLUFI>`. Otherwise, it will use the default name ``BLUFI_DEVICE``.
-    -  The maximum length of BluFi name is 26 bytes.
-    -  The Blufi APP can be downloaded from the app store.
+    - If you need to set BluFi name, please set it before command :ref:`AT+BLUFI=1 <cmd-BLUFI>`. Otherwise, it will use the default name ``BLUFI_DEVICE``.
+    - The maximum length of BluFi name is 26 bytes.
+    - The Blufi APP can be downloaded from the app store.
 
     Example
     ^^^^^^^^
@@ -3105,7 +3105,7 @@ Introduction
     ^^^^^^^^^^^
 
     **Function:**
- 
+
     Send user-customized data from the ESP side to a phone over BluFi.
 
     **Command:**
@@ -3131,20 +3131,20 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<length>**: customized data length. Unit: byte.
+    - **<length>**: customized data length. Unit: byte.
 
     Notes
     ^^^^^
 
-    -  The length of customized data cannot exceed 600 bytes.
-    -  If your ESP chip receives customized data from the phone, the data will be printed in the form of ``+BLUFIDATA:<len>,<data>``.
+    - The length of customized data cannot exceed 600 bytes.
+    - If your ESP chip receives customized data from the phone, the data will be printed in the form of ``+BLUFIDATA:<len>,<data>``.
 
     Example
     ^^^^^^^^
 
     ::
 
-        AT+BLUFISEND=4 
+        AT+BLUFISEND=4
         // After the symbol ">" shows, input 4 bytes of data, such as "1234". Then the data will be transmitted automatically.
 
 .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
@@ -3176,7 +3176,7 @@ Introduction
     Parameter
     ^^^^^^^^^^
 
-    -  **<periodic_data>**: Periodic advertising data in HEX string. For example, to set the periodic advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEPERIODICDATA="1122334455"``.
+    - **<periodic_data>**: Periodic advertising data in HEX string. For example, to set the periodic advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEPERIODICDATA="1122334455"``.
 
     Example
     ^^^^^^^^
@@ -3213,7 +3213,7 @@ Introduction
     Notes
     ^^^^^
 
-    -  The extended advertising should be started before the start of periodic advertising, and the adv type should be ADV_TYPE_EXT_NOSCANNABLE_IND.
+    - The extended advertising should be started before the start of periodic advertising, and the adv type should be ADV_TYPE_EXT_NOSCANNABLE_IND.
 
     Example
     ^^^^^^^^
@@ -3285,14 +3285,14 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<addr>**: Bluetooth LE address.
-    -  **<rssi>**: signal strength.
-    -  **<periodic_adv_data>**: periodic advertising data.
+    - **<addr>**: Bluetooth LE address.
+    - **<rssi>**: signal strength.
+    - **<periodic_adv_data>**: periodic advertising data.
 
     Notes
     ^^^^^
 
-    -  Before you start to synchronize with the remote device, the blescan must be start.
+    - Before you start to synchronize with the remote device, the blescan must be start.
 
     Example
     ^^^^^^^^
@@ -3331,7 +3331,7 @@ Introduction
     Notes
     ^^^^^
 
-    -  If you stop blescan with ``AT+BLESCAN=0`` command, the synchronization will be stopped automatically.
+    - If you stop blescan with ``AT+BLESCAN=0`` command, the synchronization will be stopped automatically.
 
     Example
     ^^^^^^^^
@@ -3380,19 +3380,19 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<device_addr>**: remote device address.
+    - **<device_addr>**: remote device address.
 
-    -  **<tx_PHY>**:
+    - **<tx_PHY>**:
 
-    -  1: 1M PHY.
-    -  2: 2M PHY.
-    -  3: Coded PHY.
+    - 1: 1M PHY.
+    - 2: 2M PHY.
+    - 3: Coded PHY.
 
-    -  **<rx_PHY>**:
+    - **<rx_PHY>**:
 
-    -  1: 1M PHY.
-    -  2: 2M PHY.
-    -  3: Coded PHY.
+    - 1: 1M PHY.
+    - 2: 2M PHY.
+    - 3: Coded PHY.
 
     Example
     ^^^^^^^^
@@ -3440,13 +3440,13 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<device_addr>**: remote device address.
+    - **<device_addr>**: remote device address.
 
-    -  **<tx_rx_phy>**:
+    - **<tx_rx_phy>**:
 
-    -  1: 1M PHY.
-    -  2: 2M PHY.
-    -  3: Coded PHY.
+    - 1: 1M PHY.
+    - 2: 2M PHY.
+    - 3: Coded PHY.
 
     Example
     ^^^^^^^^
@@ -3458,7 +3458,7 @@ Introduction
         AT+BLESETPHY=0,1
 
 .. only:: esp32 or esp32c3
-    
+
     .. _cmd-BLERDRSSI:
 
     :ref:`AT+BLERDRSSI <BLE-AT>`: Query the current connection RSSI
@@ -3487,12 +3487,12 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<conn_index>**: index of Bluetooth LE connection.
+    - **<conn_index>**: index of Bluetooth LE connection.
 
     Notes
     ^^^^^
 
-    -  This command is used to obtain the signal strength of the connection, so a BLE connection must be established first.
+    - This command is used to obtain the signal strength of the connection, so a BLE connection must be established first.
 
     Example
     ^^^^^^^^
@@ -3502,7 +3502,7 @@ Introduction
         AT+BLEINIT=1   // Role: client
         AT+BLECONN=0,"24:0a:c4:09:34:23" // establish a BLE connection
         AT+BLERDRSSI=0 // query current connection RSSI
-    
+
     .. _cmd-BLEWL:
 
     :ref:`AT+BLEWL <BLE-AT>`: Set the white list
@@ -3530,22 +3530,22 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    -  **<add_or_rmv>**:
+    - **<add_or_rmv>**:
 
-      -  0: remove all devices from the white list
-      -  1: add a device to the white list
+      - 0: remove all devices from the white list
+      - 1: add a device to the white list
 
-    -  **[<addr_type>]**: address type
+    - **[<addr_type>]**: address type
 
       - 0: Public Address
       - 1: Random Address
 
-    -  **[<addr>]**: device address
+    - **[<addr>]**: device address
 
     Notes
     ^^^^^
 
-    -  If <add_or_rmv> is set to 0, the <addr_type> and <addr> parameters are not needed.
+    - If <add_or_rmv> is set to 0, the <addr_type> and <addr> parameters are not needed.
 
     Example
     ^^^^^^^^
@@ -3554,4 +3554,3 @@ Introduction
 
         AT+BLEWL=1,0,"24:0a:c4:09:34:23" // add a device to the white list
         AT+BLEWL=0 // remove all devices from the white list
-    

@@ -5,47 +5,47 @@ TCP/IP AT Commands
 
 :link_to_translation:`zh_CN:[中文]`
 
--  :ref:`Introduction <cmd-tcpip-intro>`
--  :ref:`AT+CIPV6 <cmd-IPV6>`: Enable/disable the network of Internet Protocol Version 6 (IPv6).
--  :ref:`AT+CIPSTATE <cmd-IPSTATE>`: Obtain the TCP/UDP/SSL connection information.
--  :ref:`AT+CIPDOMAIN <cmd-DOMAIN>`: Resolve a Domain Name.
--  :ref:`AT+CIPSTART <cmd-START>`: Establish TCP connection, UDP transmission, or SSL connection.
--  :ref:`AT+CIPSTARTEX <cmd-STARTEX>`: Establish TCP connection, UDP transmission, or SSL connection with an automatically assigned ID.
--  :ref:`[Data Mode Only] +++ <cmd-PLUS>`: Exit from the :term:`data mode`.
--  :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Network :term:`Passthrough Mode` on power-up.
--  :ref:`AT+CIPSEND <cmd-SEND>`: Send data in the :term:`normal transmission mode` or Network :term:`normal transmission mode`.
--  :ref:`AT+CIPSENDL <cmd-SENDL>`: Send long data in parallel in the :term:`normal transmission mode`.
--  :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>`: Set the configuration for the command :ref:`AT+CIPSENDL <cmd-SENDL>`.
--  :ref:`AT+CIPSENDEX <cmd-SENDEX>`: Send data in the :term:`normal transmission mode` in expanded ways.
--  :ref:`AT+CIPCLOSE <cmd-CLOSE>`: Close TCP/UDP/SSL connection.
--  :ref:`AT+CIPCONNPERSIST <cmd-CONNPERSIST>`: Query/Set TCP/SSL connection persistence.
--  :ref:`AT+CIFSR <cmd-IFSR>`: Obtain the local IP address and MAC address.
--  :ref:`AT+CIPMUX <cmd-MUX>`: Enable/disable the multiple connections mode.
--  :ref:`AT+CIPSERVER <cmd-SERVER>`: Delete/create a TCP/SSL server.
--  :ref:`AT+CIPSERVERMAXCONN <cmd-SERVERMAX>`: Query/Set the maximum connections allowed by a server.
--  :ref:`AT+CIPMODE <cmd-IPMODE>`: Query/Set the transmission mode.
--  :ref:`AT+CIPSTO <cmd-STO>`: Query/Set the local TCP Server Timeout.
--  :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>`: Query/Set the time zone and SNTP server.
--  :ref:`AT+CIPSNTPTIME <cmd-SNTPT>`: Query the SNTP time.
--  :ref:`AT+CIPSNTPINTV <cmd-SNTPINTV>`: Query/Set the SNTP time synchronization interval.
--  :ref:`AT+CIPFWVER <cmd-FWVER>`: Query the existing AT firmware version on the server.
--  :ref:`AT+CIUPDATE <cmd-UPDATE>`: Upgrade the firmware through Network.
--  :ref:`AT+CIPDINFO <cmd-IPDINFO>`: Set "+IPD" message mode.
--  :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`: Query/Set SSL clients.
--  :ref:`AT+CIPSSLCCIPHER <cmd-SSLCCIPHER>`: Query/Set the cipher suite of the SSL client.
--  :ref:`AT+CIPSSLCCN <cmd-SSLCCN>`: Query/Set the Common Name of the SSL client.
--  :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>`: Query/Set SSL client Server Name Indication (SNI).
--  :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`: Query/Set SSL client Application Layer Protocol Negotiation (ALPN).
--  :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`: Query/Set SSL client Pre-shared Key (PSK) in string format.
--  :ref:`AT+CIPSSLCPSKHEX <cmd-SSLCPSKHEX>`: Query/Set SSL client Pre-shared Key (PSK) in hexadecimal format.
--  :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`: Query/Set the TCP/UDP/SSL reconnection interval for the Network :term:`normal transmission mode`.
--  :ref:`AT+CIPRECVTYPE <cmd-CIPRECVTYPE>`: Query/Set socket receiving mode.
--  :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`: Obtain socket data in passive receiving mode.
--  :ref:`AT+CIPRECVLEN <cmd-CIPRECVLEN>`: Obtain socket data length in passive receiving mode.
--  :ref:`AT+PING <cmd-CIPPING>`: Ping the remote host.
--  :ref:`AT+CIPDNS <cmd-DNS>`: Query/Set DNS server information.
--  :ref:`AT+MDNS <cmd-MDNS>`: Configure the mDNS function.
--  :ref:`AT+CIPTCPOPT <cmd-TCPOPT>`: Query/Set the socket options.
+- :ref:`Introduction <cmd-tcpip-intro>`
+- :ref:`AT+CIPV6 <cmd-IPV6>`: Enable or disable the network of Internet Protocol Version 6 (IPv6).
+- :ref:`AT+CIPSTATE <cmd-IPSTATE>`: Obtain the TCP/UDP/SSL connection information.
+- :ref:`AT+CIPDOMAIN <cmd-DOMAIN>`: Resolve a Domain Name.
+- :ref:`AT+CIPSTART <cmd-START>`: Establish TCP connection, UDP transmission, or SSL connection.
+- :ref:`AT+CIPSTARTEX <cmd-STARTEX>`: Establish TCP connection, UDP transmission, or SSL connection with an automatically assigned ID.
+- :ref:`[Data Mode Only] +++ <cmd-PLUS>`: Exit from the :term:`data mode`.
+- :ref:`AT+SAVETRANSLINK <cmd-SAVET>`: Set whether to enter Network :term:`Passthrough Mode` on power-up.
+- :ref:`AT+CIPSEND <cmd-SEND>`: Send data in the :term:`normal transmission mode` or Network :term:`normal transmission mode`.
+- :ref:`AT+CIPSENDL <cmd-SENDL>`: Send long data in parallel in the :term:`normal transmission mode`.
+- :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>`: Set the configuration for the command :ref:`AT+CIPSENDL <cmd-SENDL>`.
+- :ref:`AT+CIPSENDEX <cmd-SENDEX>`: Send data in the :term:`normal transmission mode` in expanded ways.
+- :ref:`AT+CIPCLOSE <cmd-CLOSE>`: Close TCP/UDP/SSL connection.
+- :ref:`AT+CIPCONNPERSIST <cmd-CONNPERSIST>`: Query or set TCP/SSL connection persistence.
+- :ref:`AT+CIFSR <cmd-IFSR>`: Obtain the local IP address and MAC address.
+- :ref:`AT+CIPMUX <cmd-MUX>`: Enable or disable the multiple connections mode.
+- :ref:`AT+CIPSERVER <cmd-SERVER>`: Delete or create a TCP/SSL server.
+- :ref:`AT+CIPSERVERMAXCONN <cmd-SERVERMAX>`: Query or set the maximum connections allowed by a server.
+- :ref:`AT+CIPMODE <cmd-IPMODE>`: Query or set the transmission mode.
+- :ref:`AT+CIPSTO <cmd-STO>`: Query or set the local TCP Server Timeout.
+- :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>`: Query or set the time zone and SNTP server.
+- :ref:`AT+CIPSNTPTIME <cmd-SNTPT>`: Query the SNTP time.
+- :ref:`AT+CIPSNTPINTV <cmd-SNTPINTV>`: Query or set the SNTP time synchronization interval.
+- :ref:`AT+CIPFWVER <cmd-FWVER>`: Query the existing AT firmware version on the server.
+- :ref:`AT+CIUPDATE <cmd-UPDATE>`: Upgrade the firmware through Network.
+- :ref:`AT+CIPDINFO <cmd-IPDINFO>`: Set "+IPD" message mode.
+- :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`: Query or set SSL clients.
+- :ref:`AT+CIPSSLCCIPHER <cmd-SSLCCIPHER>`: Query or set the cipher suite of the SSL client.
+- :ref:`AT+CIPSSLCCN <cmd-SSLCCN>`: Query or set the Common Name of the SSL client.
+- :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>`: Query or set SSL client Server Name Indication (SNI).
+- :ref:`AT+CIPSSLCALPN <cmd-SSLCALPN>`: Query or set SSL client Application Layer Protocol Negotiation (ALPN).
+- :ref:`AT+CIPSSLCPSK <cmd-SSLCPSK>`: Query or set SSL client Pre-shared Key (PSK) in string format.
+- :ref:`AT+CIPSSLCPSKHEX <cmd-SSLCPSKHEX>`: Query or set SSL client Pre-shared Key (PSK) in hexadecimal format.
+- :ref:`AT+CIPRECONNINTV <cmd-AUTOCONNINT>`: Query or set the TCP/UDP/SSL reconnection interval for the Network :term:`normal transmission mode`.
+- :ref:`AT+CIPRECVTYPE <cmd-CIPRECVTYPE>`: Query or set socket receiving mode.
+- :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`: Obtain socket data in passive receiving mode.
+- :ref:`AT+CIPRECVLEN <cmd-CIPRECVLEN>`: Obtain socket data length in passive receiving mode.
+- :ref:`AT+PING <cmd-CIPPING>`: Ping the remote host.
+- :ref:`AT+CIPDNS <cmd-DNS>`: Query or set DNS server information.
+- :ref:`AT+MDNS <cmd-MDNS>`: Configure the mDNS function.
+- :ref:`AT+CIPTCPOPT <cmd-TCPOPT>`: Query or set the socket options.
 
 .. _cmd-tcpip-intro:
 
@@ -62,8 +62,8 @@ Introduction
 
 .. _cmd-IPV6:
 
-:ref:`AT+CIPV6 <TCPIP-AT>`: Enable/disable the network of Internet Protocol Version 6 (IPv6)
---------------------------------------------------------------------------------------------
+:ref:`AT+CIPV6 <TCPIP-AT>`: Enable or disable the network of Internet Protocol Version 6 (IPv6)
+------------------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -91,7 +91,7 @@ Set Command
 
 **Function:**
 
-Enable/Disable IPv6 network.
+Enable or disable IPv6 network.
 
 **Command:**
 
@@ -108,16 +108,16 @@ Enable/Disable IPv6 network.
 Parameters
 ^^^^^^^^^^
 
--  **<enable>**: status of IPv6 network. Default: 0.
+- **<enable>**: status of IPv6 network. Default: 0.
 
-   -  0: disable IPv6 network.
-   -  1: enable IPv6 network.
+   - 0: Disable IPv6 network.
+   - 1: Enable IPv6 network.
 
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS partition if ``AT+SYSSTORE=1``.
--  You should enable IPv6 network before using IPv6 related upper layer AT commands (TCP/UDP/SSL/PING/DNS based on IPv6 network, also known as TCP6/UDP6/SSL6/PING6/DNS6 or TCPv6/UDPv6/SSLv6/PINGv6/DNSv6).
+- The configuration changes will be saved in the NVS partition if ``AT+SYSSTORE=1``.
+- You should enable IPv6 network before using IPv6 related upper layer AT commands (TCP/UDP/SSL/PING/DNS based on IPv6 network, also known as TCP6/UDP6/SSL6/PING6/DNS6 or TCPv6/UDPv6/SSLv6/PINGv6/DNSv6).
 
 .. _cmd-IPSTATE:
 
@@ -152,15 +152,15 @@ When there is no connection, AT returns:
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0~4), used for multiple connections.
--  **<"type">**: string parameter showing the type of transmission: "TCP", "TCPv6", "UDP", "UDPv6", "SSL", or "SSLv6".
--  **<"remote IP">**: string parameter showing the remote IPv4 address or IPv6 address.
--  **<remote port>**: the remote port number.
--  **<local port>**: the local port number.
--  **<tetype>**:
+- **<link ID>**: ID of the connection (0~4), used for multiple connections.
+- **<"type">**: string parameter showing the type of transmission: "TCP", "TCPv6", "UDP", "UDPv6", "SSL", or "SSLv6".
+- **<"remote IP">**: string parameter showing the remote IPv4 address or IPv6 address.
+- **<remote port>**: the remote port number.
+- **<local port>**: the local port number.
+- **<tetype>**:
 
-   -  0: {IDF_TARGET_NAME} runs as a client.
-   -  1: {IDF_TARGET_NAME} runs as a server.
+   - 0: {IDF_TARGET_NAME} runs as a client.
+   - 1: {IDF_TARGET_NAME} runs as a server.
 
 .. _cmd-DOMAIN:
 
@@ -187,19 +187,19 @@ Set Command
 Parameter
 ^^^^^^^^^^
 
--  **<"domain name">**: the domain name.
--  **<ip network>**: preferred IP network. Default: 1.
+- **<"domain name">**: the domain name.
+- **<ip network>**: preferred IP network. Default: 1.
 
-   - 1: preferred resolution of IPv4 address
-   - 2: resolve IPv4 address only
-   - 3: resolve IPv6 address only
+   - 1: Preferred resolution of IPv4 address.
+   - 2: Resolve IPv4 address only.
+   - 3: Resolve IPv6 address only.
 
--  **<"IP address">**: the resolved IPv4 address or IPv6 address.
--  **<timeout>**: Command timeout. Unit: milliseconds. Default value: 0. Range: [0,60000]. When set to 0, the command timeout depends on the network and lwIP protocol stack; when set to a non-zero value, the command will return within the specified timeout, but it will consume about 5 KB more heap space.
--  **<show_all_ip>**: whether to show all resolved IP addresses. Default: 0.
+- **<"IP address">**: the resolved IPv4 address or IPv6 address.
+- **<timeout>**: Command timeout. Unit: milliseconds. Default value: 0. Range: [0,60000]. When set to 0, the command timeout depends on the network and lwIP protocol stack; when set to a non-zero value, the command will return within the specified timeout, but it will consume about 5 KB more heap space.
+- **<show_all_ip>**: whether to show all resolved IP addresses. Default: 0.
 
-   - 0: only show the first resolved IP address
-   - 1: show all resolved IP addresses
+   - 0: Only show the first resolved IP address.
+   - 1: Show all resolved IP addresses.
 
 Notes
 ^^^^^
@@ -280,30 +280,30 @@ For multiple connections, it returns:
 Parameters
 """""""""""
 
--  **<link ID>**: ID of network connection (0~4), used for multiple connections. The range of this parameter depends on two configuration items in ``menuconfig``. One is ``AT_SOCKET_MAX_CONN_NUM`` of the ``AT`` component, and its default value is 5. The other is ``LWIP_MAX_SOCKETS`` of the ``LWIP`` component, and its default value is 10. To modify the range of this parameter, you need to set ``AT_SOCKET_MAX_CONN_NUM`` and make sure it is no larger than the value of ``LWIP_MAX_SOCKETS``. (See :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` for details on configuring and build ESP-AT projects.)
--  **<"type">**: string parameter showing the type of transmission: "TCP", or "TCPv6". Default: "TCP".
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes. If you need to use a domain name and the length of the domain name exceeds 64 bytes, use the :ref:`AT+CIPDOMAIN <cmd-DOMAIN>` command to obtain the IP address corresponding to the domain name, and then use the IP address to establish a connection.
--  **<remote port>**: the remote port number.
--  **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
+- **<link ID>**: ID of network connection (0~4), used for multiple connections. The range of this parameter depends on two configuration items in ``menuconfig``. One is ``AT_SOCKET_MAX_CONN_NUM`` of the ``AT`` component, and its default value is 5. The other is ``LWIP_MAX_SOCKETS`` of the ``LWIP`` component, and its default value is 10. To modify the range of this parameter, you need to set ``AT_SOCKET_MAX_CONN_NUM`` and make sure it is no larger than the value of ``LWIP_MAX_SOCKETS``. (See :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it` for details on configuring and build ESP-AT projects.)
+- **<"type">**: string parameter showing the type of transmission: "TCP", or "TCPv6". Default: "TCP".
+- **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes. If you need to use a domain name and the length of the domain name exceeds 64 bytes, use the :ref:`AT+CIPDOMAIN <cmd-DOMAIN>` command to obtain the IP address corresponding to the domain name, and then use the IP address to establish a connection.
+- **<remote port>**: the remote port number.
+- **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
 
    - Range: [0,7200].
 
-     - 0: disable keep-alive function (default).
-     - 1 ~ 7200: enable keep-alive function. `TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ value is **<keep_alive>**, `TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ value is 1, and `TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ value is 3.
+     - 0: Disable keep-alive function (default).
+     - 1 ~ 7200: Enable keep-alive function. `TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ value is **<keep_alive>**, `TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ value is 1, and `TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ value is 3.
 
    - This parameter of this command is the same as the ``<keep_alive>`` parameter of :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command. It always takes the value set later by either of the two commands. If it is omitted or not set, the last configured value is used by default.
 
--  **<"local IP">**: the local IPv4 address or IPv6 address that the connection binds. This parameter is useful when you are using multiple network interfaces or multiple IP addresses. By default, it is disabled. If you want to use it, you should specify it first. Null is also valid.
--  **<timeout>**: Command timeout. Unit: milliseconds. Default value: 0. Range: [0,60000]. When set to 0, the command timeout depends on the network and lwIP protocol stack; when set to a non-zero value, the command will return within the specified timeout, but it will consume about 5 KB more heap space.
+- **<"local IP">**: the local IPv4 address or IPv6 address that the connection binds. This parameter is useful when you are using multiple network interfaces or multiple IP addresses. By default, it is disabled. If you want to use it, you should specify it first. Null is also valid.
+- **<timeout>**: Command timeout. Unit: milliseconds. Default value: 0. Range: [0,60000]. When set to 0, the command timeout depends on the network and lwIP protocol stack; when set to a non-zero value, the command will return within the specified timeout, but it will consume about 5 KB more heap space.
 
 Notes
 """"""
 
 - To establish a TCP connection based on an IPv6 network, do as follows:
 
-  -  Make sure that the AP supports IPv6
-  -  Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
-  -  Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
+  - Make sure that the AP supports IPv6
+  - Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  - Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
   - (Optional) Check whether {IDF_TARGET_NAME} has obtained an IPv6 address using the :ref:`AT+CIPSTA? <cmd-IPSTA>` command
 
 - To view the reason for TCP connection establishment failure, please first run :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` to enable logging, then retry this command. Upon failure, AT will return a more detailed error code ``+ERRNO:<error_code>`` to help locate the problem.
@@ -366,19 +366,19 @@ For multiple connections, it returns:
 Parameters
 """""""""""
 
--  **<link ID>**: ID of network connection (0~4), used for multiple connections.
--  **<"type">**: string parameter showing the type of transmission: "UDP", or "UDPv6". Default: "TCP".
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes. If you need to use a domain name and the length of the domain name exceeds 64 bytes, use the :ref:`AT+CIPDOMAIN <cmd-DOMAIN>` command to obtain the IP address corresponding to the domain name, and then use the IP address to establish a connection.
--  **<remote port>**: remote port number.
--  **<local port>**: UDP port of {IDF_TARGET_NAME}.
--  **<mode>**: In the UDP passthrough, the value of this parameter has to be 0.
+- **<link ID>**: ID of network connection (0~4), used for multiple connections.
+- **<"type">**: string parameter showing the type of transmission: "UDP", or "UDPv6". Default: "TCP".
+- **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes. If you need to use a domain name and the length of the domain name exceeds 64 bytes, use the :ref:`AT+CIPDOMAIN <cmd-DOMAIN>` command to obtain the IP address corresponding to the domain name, and then use the IP address to establish a connection.
+- **<remote port>**: remote port number.
+- **<local port>**: UDP port of {IDF_TARGET_NAME}.
+- **<mode>**: In the UDP passthrough, the value of this parameter has to be 0.
 
-   -  0: After UDP data is received, the parameters ``<"remote host">`` and ``<remote port>`` will stay unchanged (default).
-   -  1: Only the first time that UDP data is received from an IP address and port that are different from the initially set value of parameters ``<remote host>`` and ``<remote port>``, will they be changed to the IP address and port of the device that sends the data.
-   -  2: Each time UDP data is received, the ``<"remote host">`` and ``<remote port>`` will be changed to the IP address and port of the device that sends the data.
+   - 0: After UDP data is received, the parameters ``<"remote host">`` and ``<remote port>`` will stay unchanged (default).
+   - 1: Only the first time that UDP data is received from an IP address and port that are different from the initially set value of parameters ``<remote host>`` and ``<remote port>``, will they be changed to the IP address and port of the device that sends the data.
+   - 2: Each time UDP data is received, the ``<"remote host">`` and ``<remote port>`` will be changed to the IP address and port of the device that sends the data.
 
--  **<"local IP">**: the local IPv4 address or IPv6 address that the connection binds. This parameter is useful when you are using multiple network interfaces or multiple IP addresses. By default, it is disabled. If you want to use it, you should specify it first. Null is also valid.
--  **<timeout>**: Command timeout. Unit: milliseconds. Default value: 0. Range: [0,60000]. When set to 0, the command timeout depends on the network and lwIP protocol stack; when set to a non-zero value, the command will return within the specified timeout, but it will consume about 5 KB more heap space.
+- **<"local IP">**: the local IPv4 address or IPv6 address that the connection binds. This parameter is useful when you are using multiple network interfaces or multiple IP addresses. By default, it is disabled. If you want to use it, you should specify it first. Null is also valid.
+- **<timeout>**: Command timeout. Unit: milliseconds. Default value: 0. Range: [0,60000]. When set to 0, the command timeout depends on the network and lwIP protocol stack; when set to a non-zero value, the command will return within the specified timeout, but it will consume about 5 KB more heap space.
 
 Notes
 """"""
@@ -389,9 +389,9 @@ Notes
 
 - To establish an UDP transmission based on an IPv6 network, do as follows:
 
-  -  Make sure that the AP supports IPv6
-  -  Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
-  -  Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
+  - Make sure that the AP supports IPv6
+  - Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  - Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
   - (Optional) Check whether {IDF_TARGET_NAME} has obtained an IPv6 address using the :ref:`AT+CIPSTA? <cmd-IPSTA>` command
 
 - If you want to receive a UDP packet longer than 1460 bytes, please compile the firmware on your own by following :doc:`Compile ESP-AT Project <../Compile_and_Develop/How_to_clone_project_and_compile_it>` and choosing the following configurations in the Step 5. Configure: ``Component config`` > ``LWIP`` > ``Enable reassembly incoming fragmented IP4 packets``.
@@ -454,33 +454,33 @@ For multiple connections, it returns:
 Parameters
 """""""""""
 
--  **<link ID>**: ID of network connection (0~4), used for multiple connections.
--  **<"type">**: string parameter showing the type of transmission: "SSL", or "SSLv6". Default: "TCP".
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes. If you need to use a domain name and the length of the domain name exceeds 64 bytes, use the :ref:`AT+CIPDOMAIN <cmd-DOMAIN>` command to obtain the IP address corresponding to the domain name, and then use the IP address to establish a connection.
--  **<remote port>**: the remote port number.
--  **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
+- **<link ID>**: ID of network connection (0~4), used for multiple connections.
+- **<"type">**: string parameter showing the type of transmission: "SSL", or "SSLv6". Default: "TCP".
+- **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. The maximum length is 64 bytes. If you need to use a domain name and the length of the domain name exceeds 64 bytes, use the :ref:`AT+CIPDOMAIN <cmd-DOMAIN>` command to obtain the IP address corresponding to the domain name, and then use the IP address to establish a connection.
+- **<remote port>**: the remote port number.
+- **<keep_alive>**: It configures the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
 
    - Range: [0,7200].
 
-     - 0: disable keep-alive function (default).
-     - 1 ~ 7200: enable keep-alive function. `TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ value is **<keep_alive>**, `TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ value is 1, and `TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ value is 3.
+     - 0: Disable keep-alive function (default).
+     - 1 ~ 7200: Enable keep-alive function. `TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ value is **<keep_alive>**, `TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ value is 1, and `TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ value is 3.
 
    - This parameter of this command is the same as the ``<keep_alive>`` parameter of :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command. It always takes the value set later by either of the two commands. If it is omitted or not set, the last configured value is used by default.
 
--  **<"local IP">**: the local IPv4 address or IPv6 address that the connection binds. This parameter is useful when you are using multiple network interfaces or multiple IP addresses. By default, it is disabled. If you want to use it, you should specify it first. Null is also valid.
--  **<timeout>**: Command timeout. Unit: milliseconds. Default value: 0. Range: [0,60000]. When set to 0, the command timeout depends on the network and lwIP protocol stack; when set to a non-zero value, the command will return within the specified timeout, but it will consume about 5 KB more heap space.
+- **<"local IP">**: the local IPv4 address or IPv6 address that the connection binds. This parameter is useful when you are using multiple network interfaces or multiple IP addresses. By default, it is disabled. If you want to use it, you should specify it first. Null is also valid.
+- **<timeout>**: Command timeout. Unit: milliseconds. Default value: 0. Range: [0,60000]. When set to 0, the command timeout depends on the network and lwIP protocol stack; when set to a non-zero value, the command will return within the specified timeout, but it will consume about 5 KB more heap space.
 
 Notes
 """"""
 
--  The number of SSL connections depends on available memory and the maximum number of connections.
--  SSL connection needs a large amount of memory. Insufficient memory may reboot the system.
--  If the ``AT+CIPSTART`` is based on an SSL connection and the timeout of each packet is 10 s, the total timeout increases with the number of handshake packets.
--  Some SSL servers require the SSL client to support the SNI extension field during connection. Please configure SNI using the :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>` command before establishing an SSL connection. Typically, the value of SNI is the domain name of the server.
+- The number of SSL connections depends on available memory and the maximum number of connections.
+- SSL connection needs a large amount of memory. Insufficient memory may reboot the system.
+- If the ``AT+CIPSTART`` is based on an SSL connection and the timeout of each packet is 10 s, the total timeout increases with the number of handshake packets.
+- Some SSL servers require the SSL client to support the SNI extension field during connection. Please configure SNI using the :ref:`AT+CIPSSLCSNI <cmd-SSLCSNI>` command before establishing an SSL connection. Typically, the value of SNI is the domain name of the server.
 
 .. _modify-tls-version:
 
--  To modify the TLS protocol version, recompile the ESP-AT project. Navigate to ``python build.py menuconfig`` > ``Component config`` > ``mbedTLS`` directory. Disable TLS versions you do not need or enable versions not supported by default.
+- To modify the TLS protocol version, recompile the ESP-AT project. Navigate to ``python build.py menuconfig`` > ``Component config`` > ``mbedTLS`` directory. Disable TLS versions you do not need or enable versions not supported by default.
 
    For example, to enable the TLS 1.3 protocol:
 
@@ -490,9 +490,9 @@ Notes
 
 - To establish an SSL connection based on an IPv6 network, do as follows:
 
-  -  Make sure that the AP supports IPv6
-  -  Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
-  -  Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
+  - Make sure that the AP supports IPv6
+  - Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  - Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
   - (Optional) Check whether {IDF_TARGET_NAME} has obtained an IPv6 address using the :ref:`AT+CIPSTA? <cmd-IPSTA>` command
 
 - To view the reason for SSL connection establishment failure, please first run :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` to enable logging, then retry this command. Upon failure, AT will return a more detailed error code ``+ERRNO:<error_code>`` to help locate the problem.
@@ -540,10 +540,10 @@ Exit from :term:`Data Mode` and enter the :term:`Command Mode`.
 Notes
 """"""
 
--  This special execution command consists of three identical ``+`` characters (0x2b ASCII), and no CR-LF appends to the command tail.
--  Make sure there is more than 20 ms interval before the first ``+`` character, more than 20 ms interval after the third ``+`` character, less than 20 ms interval among the three ``+`` characters. Otherwise, the ``+`` characters will be sent out as normal data.
--  This command returns no reply.
--  Please wait for at least one second before sending the next AT command.
+- This special execution command consists of three identical ``+`` characters (0x2b ASCII), and no CR-LF appends to the command tail.
+- Make sure there is more than 20 ms interval before the first ``+`` character, more than 20 ms interval after the third ``+`` character, less than 20 ms interval among the three ``+`` characters. Otherwise, the ``+`` characters will be sent out as normal data.
+- This command returns no reply.
+- Please wait for at least one second before sending the next AT command.
 
 .. _cmd-SEND:
 
@@ -625,10 +625,10 @@ This command can only be used for single connection in the Network :term:`Passth
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0~4), for multiple connections.
--  **<length>**: data length. Maximum: 8192 bytes.
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. It can be set in UDP transmission.
--  **<remote port>**: the remote port number.
+- **<link ID>**: ID of the connection (0~4), for multiple connections.
+- **<length>**: data length. Maximum: 8192 bytes.
+- **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. It can be set in UDP transmission.
+- **<remote port>**: the remote port number.
 
 Notes
 ^^^^^
@@ -692,19 +692,19 @@ If the data has been successfully sent to the protocol stack (It does not mean t
 
 ::
 
-    SEND OK 
+    SEND OK
 
 When the connection is disconnected, you can send :ref:`+++ <cmd-PLUS>` command to cancel the transmission, then the {IDF_TARGET_NAME} will exit from the :term:`Data Mode`, otherwise, the :term:`Data Mode` will not end until the AT command port receives all the data of the specified ``<length>``.
 
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0~4), for multiple connections.
--  **<length>**: data length. Maximum: 2 :sup:`31` - 1 bytes.
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. It can be set in UDP transmission.
--  **<remote port>**: the remote port number.
--  **<had sent len>**: the length of data successfully sent to the underlying protocol stack.
--  **<port recv len>**: data length received by AT command port.
+- **<link ID>**: ID of the connection (0~4), for multiple connections.
+- **<length>**: data length. Maximum: 2 :sup:`31` - 1 bytes.
+- **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. It can be set in UDP transmission.
+- **<remote port>**: the remote port number.
+- **<had sent len>**: the length of data successfully sent to the underlying protocol stack.
+- **<port recv len>**: data length received by AT command port.
 
 Notes
 ^^^^^
@@ -760,8 +760,8 @@ Set the configuration of :ref:`AT+CIPSENDL <cmd-SENDL>`.
 Parameters
 ^^^^^^^^^^
 
--  **<report size>**: report block size for :ref:`AT+CIPSENDL <cmd-SENDL>`. Default: 1024. Range: [100,2 :sup:`20`]. For example, set ``<report size>`` to 100, ``<had sent len>`` report sequence in the response of :ref:`AT+CIPSENDL <cmd-SENDL>` will be (100, 200, 300, 400, ...). The final ``<had sent len>`` report is always equal to the data length that had been sent out.
--  **<transmit size>**: transmit block size of :ref:`AT+CIPSENDL <cmd-SENDL>`. It specifies the size of the data block sent to the underlying protocol stack. Default: 2920. Range: [100,2920]. If the data received by {IDF_TARGET_NAME} reaches or exceeds ``<transmit size>`` bytes, the data will be immediately sent in chunks of ``<transmit size>`` bytes. Otherwise, it will wait for 20 milliseconds before being sent (You can configure this interval using :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>` command).
+- **<report size>**: report block size for :ref:`AT+CIPSENDL <cmd-SENDL>`. Default: 1024. Range: [100,2 :sup:`20`]. For example, set ``<report size>`` to 100, ``<had sent len>`` report sequence in the response of :ref:`AT+CIPSENDL <cmd-SENDL>` will be (100, 200, 300, 400, ...). The final ``<had sent len>`` report is always equal to the data length that had been sent out.
+- **<transmit size>**: transmit block size of :ref:`AT+CIPSENDL <cmd-SENDL>`. It specifies the size of the data block sent to the underlying protocol stack. Default: 2920. Range: [100,2920]. If the data received by {IDF_TARGET_NAME} reaches or exceeds ``<transmit size>`` bytes, the data will be immediately sent in chunks of ``<transmit size>`` bytes. Otherwise, it will wait for 20 milliseconds before being sent (You can configure this interval using :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>` command).
 
 Note
 """"""
@@ -819,17 +819,17 @@ If the data has been successfully sent to the protocol stack (It does not mean t
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0~4), for multiple connections.
--  **<length>**: data length. Maximum: 8192 bytes.
--  **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. It can be set in UDP transmission.
--  **<remote port>**: remote port can be set in UDP transmission.
+- **<link ID>**: ID of the connection (0~4), for multiple connections.
+- **<length>**: data length. Maximum: 8192 bytes.
+- **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. It can be set in UDP transmission.
+- **<remote port>**: remote port can be set in UDP transmission.
 
 Notes
 ^^^^^^
 
--  When the requirement of data length is met, or when the string ``\0`` (0x5c, 0x30 in ASCII) appears, the transmission of data starts. Go back to the normal command mode and wait for the next AT command.
--  If the data contains the ``\<any>``, it means that drop backslash symbol and only use ``<any>`` character.
--  When sending ``\0``, please use a backslash to escape it as ``\\0``.
+- When the requirement of data length is met, or when the string ``\0`` (0x5c, 0x30 in ASCII) appears, the transmission of data starts. Go back to the normal command mode and wait for the next AT command.
+- If the data contains the ``\<any>``, it means that drop backslash symbol and only use ``<any>`` character.
+- When sending ``\0``, please use a backslash to escape it as ``\\0``.
 - You can use :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command to configure socket options for each TCP connection. For example, setting <so_sndtimeo> to 5000 will enable TCP send operation to return results within 5 seconds, regardless of success or failure. This can save the time that the MCU waits for AT command response.
 
 .. _cmd-CLOSE:
@@ -880,12 +880,12 @@ Close TCP/UDP/SSL connection in the single connection mode.
 Parameter
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection that you want to close. If you set it to 5, all connections will be closed.
+- **<link ID>**: ID of the connection that you want to close. If you set it to 5, all connections will be closed.
 
 .. _cmd-CONNPERSIST:
 
-:ref:`AT+CIPCONNPERSIST <TCPIP-AT>`: Query/Set TCP/SSL Connection Persistence
------------------------------------------------------------------------------
+:ref:`AT+CIPCONNPERSIST <TCPIP-AT>`: Query or Set TCP/SSL Connection Persistence
+---------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -934,8 +934,8 @@ Set the persistence attributes of TCP/SSL connections.
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the network connection to configure.
--  **<persist_link>**: Whether to enable connection persistence. When disabled (default), {IDF_TARGET_NAME} will actively close TCP/SSL connections on this netif immediately after the netif stops, disconnects, or loses its IP address; when enabled, AT will not actively close the connection, letting the protocol stack handle the connection state itself.
+- **<link ID>**: ID of the network connection to configure.
+- **<persist_link>**: Whether to enable connection persistence. When disabled (default), {IDF_TARGET_NAME} will actively close TCP/SSL connections on this netif immediately after the netif stops, disconnects, or loses its IP address; when enabled, AT will not actively close the connection, letting the protocol stack handle the connection state itself.
 
   - 0: Disable connection persistence (default).
   - 1: Enable connection persistence.
@@ -952,7 +952,7 @@ Execute Command
 
 ::
 
-    AT+CIFSR    
+    AT+CIFSR
 
 **Response:**
 
@@ -992,12 +992,12 @@ Parameters
 Note
 ^^^^^
 
--  Only when the {IDF_TARGET_NAME} has the valid interface information can you query its IP address and MAC address.
+- Only when the {IDF_TARGET_NAME} has the valid interface information can you query its IP address and MAC address.
 
 .. _cmd-MUX:
 
-:ref:`AT+CIPMUX <TCPIP-AT>`: Enable/disable Multiple Connections
-----------------------------------------------------------------
+:ref:`AT+CIPMUX <TCPIP-AT>`: Enable or disable Multiple Connections
+--------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1041,30 +1041,30 @@ Set the connection type.
 Parameter
 ^^^^^^^^^^
 
--  **<mode>**: connection mode. Default: 0.
+- **<mode>**: connection mode. Default: 0.
 
-   -  0: single connection.
-   -  1: multiple connections.
+   - 0: Single connection.
+   - 1: Multiple connections.
 
 Notes
 ^^^^^
 
--  This mode can only be changed after all connections are disconnected.
--  If you want to set the multiple connections mode, {IDF_TARGET_NAME} should be in the :term:`Normal Transmission Mode` (:ref:`AT+CIPMODE=0 <cmd-IPMODE>`).
--  If you want to set the single connection mode when the TCP/SSL server is running, you should delete the server first. (:ref:`AT+CIPSERVER=0 <cmd-SERVER>`).
--  When transmitting large amounts of data in parallel over multiple connections, memory peaks may be insufficient. Please test according to your product's actual situation and implement MCU handling for insufficient memory.
+- This mode can only be changed after all connections are disconnected.
+- If you want to set the multiple connections mode, {IDF_TARGET_NAME} should be in the :term:`Normal Transmission Mode` (:ref:`AT+CIPMODE=0 <cmd-IPMODE>`).
+- If you want to set the single connection mode when the TCP/SSL server is running, you should delete the server first. (:ref:`AT+CIPSERVER=0 <cmd-SERVER>`).
+- When transmitting large amounts of data in parallel over multiple connections, memory peaks may be insufficient. Please test according to your product's actual situation and implement MCU handling for insufficient memory.
 
 Example
 ^^^^^^^^
 
 ::
 
-    AT+CIPMUX=1 
+    AT+CIPMUX=1
 
 .. _cmd-SERVER:
 
-:ref:`AT+CIPSERVER <TCPIP-AT>`: Delete/create a TCP/SSL Server
---------------------------------------------------------------
+:ref:`AT+CIPSERVER <TCPIP-AT>`: Delete or create a TCP/SSL Server
+------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1100,29 +1100,29 @@ Set Command
 
 ::
 
-    OK  
+    OK
 
 Parameters
 ^^^^^^^^^^
 
--  **<mode>**:
+- **<mode>**:
 
-   -  0: delete a server.
-   -  1: create a server.
+   - 0: Delete a server.
+   - 1: Create a server.
 
--  **<param2>**: It means differently depending on the parameter ``<mode>``:
+- **<param2>**: It means differently depending on the parameter ``<mode>``:
 
   - If ``<mode>`` is 1, ``<param2>`` represents the port number. Default: 333.
   - If ``<mode>`` is 0, ``<param2>`` represents whether the server closes all connections. Default: 0.
 
-    - 0: shutdown the server and keep existing connections.
-    - 1: shutdown the server and close all connections.
+    - 0: Shutdown the server and keep existing connections.
+    - 1: Shutdown the server and close all connections.
 
--  **<"type">**: server type: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP".
--  **<CA enable>**:
+- **<"type">**: server type: "TCP", "TCPv6", "SSL", or "SSLv6". Default: "TCP".
+- **<CA enable>**:
 
-   -  0: disable CA.
-   -  1: enable CA.
+   - 0: Disable CA.
+   - 1: Enable CA.
 
 - **<netif>**: Specify the network interface for the server to listen on. Default: 0.
 
@@ -1136,13 +1136,13 @@ Parameters
 Notes
 ^^^^^
 
--  A TCP/SSL server can only be created when multiple connections are activated (:ref:`AT+CIPMUX=1 <cmd-MUX>`).
--  A server monitor will be created automatically when the server is created. Only one server can be created at most.
--  When a client is connected to the server, it will take up one connection and be assigned an ID.
--  To create a TCP/SSL server based on an IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first and obtain an IPv6 address.
--  Parameters ``<"type">`` and ``<CA enable>`` must be omitted when delete a server.
--  To view the reason for server creation failure, please first run :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` to enable logging, then retry this command. If the command fails, AT will return a more detailed error code ``+ERRNO:<error_code>`` to help locate the problem.
--  For TLS protocol version configuration, please refer to the :ref:`modify tls protocol version note <modify-tls-version>`.
+- A TCP/SSL server can only be created when multiple connections are activated (:ref:`AT+CIPMUX=1 <cmd-MUX>`).
+- A server monitor will be created automatically when the server is created. Only one server can be created at most.
+- When a client is connected to the server, it will take up one connection and be assigned an ID.
+- To create a TCP/SSL server based on an IPv6 network, set :ref:`AT+CIPV6=1 <cmd-IPV6>` first and obtain an IPv6 address.
+- Parameters ``<"type">`` and ``<CA enable>`` must be omitted when delete a server.
+- To view the reason for server creation failure, please first run :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` to enable logging, then retry this command. If the command fails, AT will return a more detailed error code ``+ERRNO:<error_code>`` to help locate the problem.
+- For TLS protocol version configuration, please refer to the :ref:`modify tls protocol version note <modify-tls-version>`.
 
 Example
 ^^^^^^^^
@@ -1166,8 +1166,8 @@ Example
 
 .. _cmd-SERVERMAX:
 
-:ref:`AT+CIPSERVERMAXCONN <TCPIP-AT>`: Query/Set the Maximum Connections Allowed by a Server
----------------------------------------------------------------------------------------------
+:ref:`AT+CIPSERVERMAXCONN <TCPIP-AT>`: Query or Set the Maximum Connections Allowed by a Server
+-------------------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1187,7 +1187,7 @@ Obtain the maximum number of clients allowed to connect to the TCP/SSL server.
 ::
 
     +CIPSERVERMAXCONN:<num>
-    OK  
+    OK
 
 Set Command
 ^^^^^^^^^^^
@@ -1206,17 +1206,17 @@ Set the maximum number of clients allowed to connect to the TCP/SSL server.
 
 ::
 
-    OK  
+    OK
 
 Parameter
 ^^^^^^^^^^
 
--  **<num>**: the maximum number of clients allowed to connect to the TCP/SSL server. Range: [1,5]. For how to change the upper limit of this range, please refer to the description of the ``<link ID>`` parameter of the :ref:`AT+CIPSTART <cmd-START>` command.
+- **<num>**: the maximum number of clients allowed to connect to the TCP/SSL server. Range: [1,5]. For how to change the upper limit of this range, please refer to the description of the ``<link ID>`` parameter of the :ref:`AT+CIPSTART <cmd-START>` command.
 
 Note
 ^^^^^
 
--  You should call the command ``AT+CIPSERVERMAXCONN=<num>`` before creating a server.
+- You should call the command ``AT+CIPSERVERMAXCONN=<num>`` before creating a server.
 
 Example
 ^^^^^^^^
@@ -1229,8 +1229,8 @@ Example
 
 .. _cmd-IPMODE:
 
-:ref:`AT+CIPMODE <TCPIP-AT>`: Query/Set the Transmission Mode
--------------------------------------------------------------
+:ref:`AT+CIPMODE <TCPIP-AT>`: Query or Set the Transmission Mode
+-----------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1274,28 +1274,28 @@ Set the transmission mode.
 Parameter
 ^^^^^^^^^^
 
--  **<mode>**:
+- **<mode>**:
 
-   -  0: :term:`Normal Transmission Mode`.
-   -  1: Network :term:`Passthrough Receiving Mode`, or called transparent receiving transmission, which can only be enabled in TCP single connection mode, UDP mode when the remote host and port do not change, or SSL single connection mode.
+   - 0: :term:`Normal Transmission Mode`.
+   - 1: Network :term:`Passthrough Receiving Mode`, or called transparent receiving transmission, which can only be enabled in TCP single connection mode, UDP mode when the remote host and port do not change, or SSL single connection mode.
 
 Notes
 ^^^^^
 
--  The configuration changes will NOT be saved in flash.
--  After the {IDF_TARGET_NAME} enters the Network :term:`Passthrough Receiving Mode`, no Bluetooth function can be used.
+- The configuration changes will NOT be saved in flash.
+- After the {IDF_TARGET_NAME} enters the Network :term:`Passthrough Receiving Mode`, no Bluetooth function can be used.
 
 Example
 ^^^^^^^^
 
 ::
 
-    AT+CIPMODE=1    
+    AT+CIPMODE=1
 
 .. _cmd-STO:
 
-:ref:`AT+CIPSTO <TCPIP-AT>`: Query/Set the local TCP/SSL Server Timeout
------------------------------------------------------------------------
+:ref:`AT+CIPSTO <TCPIP-AT>`: Query or Set the local TCP/SSL Server Timeout
+---------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1339,14 +1339,14 @@ Set the local TCP/SSL server timeout.
 Parameter
 ^^^^^^^^^^
 
--  **<time>**: local TCP/SSL server timeout. Unit: second. Range: [0,7200].
+- **<time>**: local TCP/SSL server timeout. Unit: second. Range: [0,7200].
 
 Notes
 ^^^^^
 
--  When a TCP/SSL client does not communicate with the {IDF_TARGET_NAME} server within the ``<time>`` value, the server will terminate this connection.
--  If you set ``<time>`` to 0, the connection will never timeout. This configuration is not recommended.
--  When the client initiates a communication with the server or the server initiate a communication with the client within the set time, the timer will restart. After the timeout expires, the client is closed.
+- When a TCP/SSL client does not communicate with the {IDF_TARGET_NAME} server within the ``<time>`` value, the server will terminate this connection.
+- If you set ``<time>`` to 0, the connection will never timeout. This configuration is not recommended.
+- When the client initiates a communication with the server or the server initiate a communication with the client within the set time, the timer will restart. After the timeout expires, the client is closed.
 
 Example
 ^^^^^^^^
@@ -1359,8 +1359,8 @@ Example
 
 .. _cmd-SNTPCFG:
 
-:ref:`AT+CIPSNTPCFG <TCPIP-AT>`: Query/Set the Time Zone and the SNTP Server
-----------------------------------------------------------------------------
+:ref:`AT+CIPSNTPCFG <TCPIP-AT>`: Query or Set the Time Zone and the SNTP Server
+--------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1396,26 +1396,26 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<enable>**: configure the SNTP server:
+- **<enable>**: configure the SNTP server:
 
-   -  1: the SNTP server is configured.
-   -  0: the SNTP server is not configured.
+   - 1: The SNTP server is configured.
+   - 0: The SNTP server is not configured.
 
--  **<timezone>**: support the following two formats:
+- **<timezone>**: support the following two formats:
 
-   -  The first format range is [-12,14]. It marks most of the time zones by offset from Coordinated Universal Time (UTC) in **whole hours** (`UTC–12:00 <https://en.wikipedia.org/wiki/UTC%E2%88%9212:00>`__ to `UTC+14:00 <https://en.wikipedia.org/wiki/UTC%2B14:00>`_).
-   -  The second format is ``UTC offset``. The ``UTC offset`` specifies the time value you must add to the UTC time to get a local time value. It has syntax like ``[+|-][hh]mm``. This is negative if the local time zone is on the west of the Prime Meridian and positive if it is on the east. The hour(hh) must be between -12 and 14, and the minute(mm) between 0 and 59. For example, if you want to set the timezone to New Zealand (Chatham Islands) which is in ``UTC+12:45``, you should set the parameter ``<timezone>`` to ``1245``. Please refer to `UTC offset wiki <https://en.wikipedia.org/wiki/Time_zone#List_of_UTC_offsets>`_ for more information.
+   - The first format range is [-12,14]. It marks most of the time zones by offset from Coordinated Universal Time (UTC) in **whole hours** (`UTC–12:00 <https://en.wikipedia.org/wiki/UTC%E2%88%9212:00>`__ to `UTC+14:00 <https://en.wikipedia.org/wiki/UTC%2B14:00>`_).
+   - The second format is ``UTC offset``. The ``UTC offset`` specifies the time value you must add to the UTC time to get a local time value. It has syntax like ``[+|-][hh]mm``. This is negative if the local time zone is on the west of the Prime Meridian and positive if it is on the east. The hour (hh) must be between -12 and 14, and the minute (mm) between 0 and 59. For example, if you want to set the timezone to New Zealand (Chatham Islands) which is in ``UTC+12:45``, you should set the parameter ``<timezone>`` to ``1245``. Please refer to `UTC offset wiki <https://en.wikipedia.org/wiki/Time_zone#List_of_UTC_offsets>`_ for more information.
 
--  **[<"SNTP server1">]**: the first SNTP server.
--  **[<"SNTP server2">]**: the second SNTP server.
--  **[<"SNTP server3">]**: the third SNTP server.
+- **<"SNTP server1">**: the first SNTP server.
+- **<"SNTP server2">**: the second SNTP server.
+- **<"SNTP server3">**: the third SNTP server.
 
 Note
 ^^^^^
 
--  If the three SNTP servers are not configured, one of the following default servers will be used: "cn.ntp.org.cn", "ntp.sjtu.edu.cn", and "us.pool.ntp.org".
--  For the query command, ``<timezone>`` parameter in the response may be different from the ``<timezone>`` parameter in set command. Because the ``<timezone>`` parameter supports the second ``UTC offset`` format, for example, set ``AT+CIPSNTPCFG=1,015``, for query command, ESP-AT ignores the leading zero of the ``<timezone>`` parameter, and the valid value is ``15``. It does not belong to the first format, so it is parsed according to the second ``UTC offset`` format, that is, ``UTC+00:15``, that is, ``timezone`` is 0 in the response.
--  Since SNTP operates over the UDP protocol for sending requests and receiving replies, if there is packet loss in the network, the time synchronization of {IDF_TARGET_NAME} may be delayed. Once the AT command output shows :ref:`+TIME_UPDATED <at-messages-report>`, it indicates that the time has been synchronized, and you can then send the :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` command to query the current time.
+- If the three SNTP servers are not configured, one of the following default servers will be used: "cn.ntp.org.cn", "ntp.sjtu.edu.cn", and "us.pool.ntp.org".
+- For the query command, ``<timezone>`` parameter in the response may be different from the ``<timezone>`` parameter in set command. Because the ``<timezone>`` parameter supports the second ``UTC offset`` format, for example, set ``AT+CIPSNTPCFG=1,015``, for query command, ESP-AT ignores the leading zero of the ``<timezone>`` parameter, and the valid value is ``15``. It does not belong to the first format, so it is parsed according to the second ``UTC offset`` format, that is, ``UTC+00:15``, that is, ``timezone`` is 0 in the response.
+- Since SNTP operates over the UDP protocol for sending requests and receiving replies, if there is packet loss in the network, the time synchronization of {IDF_TARGET_NAME} may be delayed. Once the AT command output shows :ref:`+TIME_UPDATED <at-messages-report>`, it indicates that the time has been synchronized, and you can then send the :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` command to query the current time.
 
 Example
 ^^^^^^^^
@@ -1447,7 +1447,7 @@ Query Command
 
 ::
 
-    AT+CIPSNTPTIME? 
+    AT+CIPSNTPTIME?
 
 **Response:**
 
@@ -1459,8 +1459,8 @@ Query Command
 Note
 ^^^^^
 
--  The asctime style time is defined at `asctime man page <https://linux.die.net/man/3/asctime>`_.
--  When {IDF_TARGET_NAME} enters Light-sleep or Deep-sleep mode and then wakes up, the system time may become inaccurate. It is recommended to resend the :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to obtain the new time from the NTP server.
+- The asctime style time is defined at `asctime man page <https://linux.die.net/man/3/asctime>`_.
+- When {IDF_TARGET_NAME} enters Light-sleep or Deep-sleep mode and then wakes up, the system time may become inaccurate. It is recommended to resend the :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to obtain the new time from the NTP server.
 
 .. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32s2
 
@@ -1493,8 +1493,8 @@ Example
 
 .. _cmd-SNTPINTV:
 
-:ref:`AT+CIPSNTPINTV <TCPIP-AT>`: Query/Set the SNTP time synchronization interval
-----------------------------------------------------------------------------------
+:ref:`AT+CIPSNTPINTV <TCPIP-AT>`: Query or Set the SNTP time synchronization interval
+--------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1503,7 +1503,7 @@ Query Command
 
 ::
 
-    AT+CIPSNTPINTV? 
+    AT+CIPSNTPINTV?
 
 **Response:**
 
@@ -1531,7 +1531,7 @@ Set Command
 Parameters
 """"""""""
 
--  **<interval second>**: the SNTP time synchronization interval. Unit: second. Range: [15,4294967].
+- **<interval second>**: the SNTP time synchronization interval. Unit: second. Range: [15,4294967].
 
 Notes
 ^^^^^
@@ -1626,7 +1626,7 @@ Upgrade OTA the latest version of firmware via TCP from the server in blocking m
 
 ::
 
-    AT+CIUPDATE  
+    AT+CIUPDATE
 
 **Response:**
 
@@ -1657,7 +1657,7 @@ If OTA succeeds in blocking mode, the system returns:
     +CIPUPDATE:2
     +CIPUPDATE:3
     +CIPUPDATE:4
-    
+
     OK
 
 If OTA succeeds in non-blocking mode, the system returns:
@@ -1689,7 +1689,7 @@ If OTA fails in non-blocking mode, the system returns:
 Parameters
 ^^^^^^^^^^
 - **<ota mode>**:
-    
+
     - 0: OTA via HTTP.
     - 1: OTA via HTTPS. If it does not work, please check whether ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``OTA based upon ssl`` is enabled. For more information, please refer to :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`.
 
@@ -1711,15 +1711,15 @@ Parameters
 Notes
 ^^^^^
 
--  The speed of the upgrade depends on the network status.
--  If the upgrade fails due to unfavorable network conditions, AT will return ``ERROR``. Please wait for some time before retrying.
--  If you use Espressif's AT `BIN <https://www.espressif.com/en/support/download/at>`_, ``AT+CIUPDATE`` will download a new AT BIN from the Espressif Cloud.
--  If you use a user-compiled AT BIN, you need to implement your own AT+CIUPDATE FOTA function or use :ref:`AT+USEROTA <cmd-USEROTA>` or :ref:`AT+WEBSERVER <cmd-WEBSERVER>` command. ESP-AT project provides an example of `FOTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_ota_cmd.c>`_.
--  After you upgrade the AT firmware, you are suggested to call the command :ref:`AT+RESTORE <cmd-RESTORE>` to restore the factory default settings.
--  The timeout of OTA process is ``3`` minutes.
--  The response ``OK`` in non-blocking mode does not necessarily come before the response ``+CIPUPDATE:<state>``. It may be output before ``+CIPUPDATE:<state>`` or after it.
--  Downgrading to an older version is not recommended due to potential compatibility issues and the risk of operational failure. If you still prefer downgrading to an older version, please test and verify the functionality based on your product.
--  Please refer to :doc:`../Compile_and_Develop/How_to_implement_OTA_update` for more OTA commands.
+- The speed of the upgrade depends on the network status.
+- If the upgrade fails due to unfavorable network conditions, AT will return ``ERROR``. Please wait for some time before retrying.
+- If you use Espressif's AT `BIN <https://www.espressif.com/en/support/download/at>`_, ``AT+CIUPDATE`` will download a new AT BIN from the Espressif Cloud.
+- If you use a user-compiled AT BIN, you need to implement your own AT+CIUPDATE FOTA function or use :ref:`AT+USEROTA <cmd-USEROTA>` or :ref:`AT+WEBSERVER <cmd-WEBSERVER>` command. ESP-AT project provides an example of `FOTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_ota_cmd.c>`_.
+- After you upgrade the AT firmware, you are suggested to call the command :ref:`AT+RESTORE <cmd-RESTORE>` to restore the factory default settings.
+- The timeout of OTA process is ``3`` minutes.
+- The response ``OK`` in non-blocking mode does not necessarily come before the response ``+CIPUPDATE:<state>``. It may be output before ``+CIPUPDATE:<state>`` or after it.
+- Downgrading to an older version is not recommended due to potential compatibility issues and the risk of operational failure. If you still prefer downgrading to an older version, please test and verify the functionality based on your product.
+- Please refer to :doc:`../Compile_and_Develop/How_to_implement_OTA_update` for more OTA commands.
 
 Example
 ^^^^^^^^
@@ -1757,11 +1757,11 @@ Query Command
 
     +CIPDINFO:true
     OK
-    
+
 or
 
 ::
-    
+
     +CIPDINFO:false
     OK
 
@@ -1772,21 +1772,21 @@ Set Command
 
 ::
 
-    AT+CIPDINFO=<mode>  
+    AT+CIPDINFO=<mode>
 
 **Response:**
 
 ::
 
-    OK  
+    OK
 
 Parameters
 ^^^^^^^^^^
 
--  **<mode>**:
+- **<mode>**:
 
-   -  0: does not show the remote host and port in "+IPD" and "+CIPRECVDATA" messages.
-   -  1: show the remote host and port in "+IPD" and "+CIPRECVDATA" messages.
+   - 0: Does not show the remote host and port in "+IPD" and "+CIPRECVDATA" messages.
+   - 1: Show the remote host and port in "+IPD" and "+CIPRECVDATA" messages.
 
 Example
 ^^^^^^^^
@@ -1797,8 +1797,8 @@ Example
 
 .. _cmd-SSLCCONF:
 
-:ref:`AT+CIPSSLCCONF <TCPIP-AT>`: Query/Set SSL Clients
--------------------------------------------------------
+:ref:`AT+CIPSSLCCONF <TCPIP-AT>`: Query or Set SSL Clients
+-----------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1842,29 +1842,29 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0 ~ max). For multiple connections, if the value is max, it means all connections. By default, max is 5.
--  **<auth_mode>**:
+- **<link ID>**: ID of the connection (0 ~ max). For multiple connections, if the value is max, it means all connections. By default, max is 5.
+- **<auth_mode>**:
 
-   -  0: no authentication. In this case ``<pki_number>`` and ``<ca_number>`` are not required.
-   -  1: the client provides the client certificate for the server to verify.
-   -  2: the client loads CA certificate to verify the server's certificate.
-   -  3: mutual authentication.
+   - 0: No authentication. In this case ``<pki_number>`` and ``<ca_number>`` are not required.
+   - 1: The client provides the client certificate for the server to verify.
+   - 2: The client loads CA certificate to verify the server's certificate.
+   - 3: Mutual authentication.
 
--  **<pki_number>**: the index of certificate and private key. If there is only one certificate and private key, the value should be 0.
--  **<ca_number>**: the index of CA. If there is only one CA, the value should be 0.
+- **<pki_number>**: the index of certificate and private key. If there is only one certificate and private key, the value should be 0.
+- **<ca_number>**: the index of CA. If there is only one CA, the value should be 0.
 
 Notes
 ^^^^^
 
--  If you want this configuration to take effect immediately, run this command before establishing an SSL connection.
--  The configuration changes will be saved in the NVS partition. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL :term:`Passthrough Mode` on power-up, the {IDF_TARGET_NAME} will establish an SSL connection based on this configuration when powered up next time.
--  If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the SSL certificate (for detailed steps, please refer to :ref:`AT+SYSMFG command examples <sysmfg-ssl-client>`). If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
--  If ``<auth_mode>`` is configured to 2 or 3, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+CIPSTART <cmd-START>` command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNPTIME? <cmd-SNTPT>` command to query the current time.)
+- If you want this configuration to take effect immediately, run this command before establishing an SSL connection.
+- The configuration changes will be saved in the NVS partition. If you set the command :ref:`AT+SAVETRANSLINK <cmd-SAVET>` to enter SSL :term:`Passthrough Mode` on power-up, the {IDF_TARGET_NAME} will establish an SSL connection based on this configuration when powered up next time.
+- If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the SSL certificate (for detailed steps, please refer to :ref:`AT+SYSMFG command examples <sysmfg-ssl-client>`). If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
+- If ``<auth_mode>`` is configured to 2 or 3, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+CIPSTART <cmd-START>` command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNPTIME? <cmd-SNTPT>` command to query the current time.)
 
 .. _cmd-SSLCCIPHER:
 
-:ref:`AT+CIPSSLCCIPHER <TCPIP-AT>`: Query/Set the Cipher Suite of the SSL Client
---------------------------------------------------------------------------------
+:ref:`AT+CIPSSLCCIPHER <TCPIP-AT>`: Query or Set the Cipher Suite of the SSL Client
+------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1936,8 +1936,8 @@ Example
 
 .. _cmd-SSLCCN:
 
-:ref:`AT+CIPSSLCCN <TCPIP-AT>`: Query/Set the Common Name of the SSL Client
----------------------------------------------------------------------------
+:ref:`AT+CIPSSLCCN <TCPIP-AT>`: Query or Set the Common Name of the SSL Client
+-------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -1981,18 +1981,18 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
--  **<"common name">**: this parameter is used to verify the Common Name in the certificate sent by the server.
+- **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
+- **<"common name">**: this parameter is used to verify the Common Name in the certificate sent by the server.
 
 Note
 ^^^^^
 
--  If you want this configuration to take effect immediately, run this command before establishing the SSL connection.
+- If you want this configuration to take effect immediately, run this command before establishing the SSL connection.
 
 .. _cmd-SSLCSNI:
 
-:ref:`AT+CIPSSLCSNI <TCPIP-AT>`: Query/Set SSL Client Server Name Indication (SNI)
-----------------------------------------------------------------------------------
+:ref:`AT+CIPSSLCSNI <TCPIP-AT>`:Query or Set SSL Client Server Name Indication (SNI)
+--------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -2036,18 +2036,18 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
--  **<"sni">**: the Server Name Indication in ClientHello.
+- **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
+- **<"sni">**: the Server Name Indication in ClientHello.
 
 Notes
 ^^^^^
 
--  If you want this configuration to take effect immediately, run this command before establishing the SSL connection.
+- If you want this configuration to take effect immediately, run this command before establishing the SSL connection.
 
 .. _cmd-SSLCALPN:
 
-:ref:`AT+CIPSSLCALPN <TCPIP-AT>`: Query/Set SSL Client Application Layer Protocol Negotiation (ALPN)
-----------------------------------------------------------------------------------------------------
+:ref:`AT+CIPSSLCALPN <TCPIP-AT>`: Query or Set SSL Client Application Layer Protocol Negotiation (ALPN)
+--------------------------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -2092,23 +2092,23 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
--  **<counts>**: the number of ALPNs. Range: [0,5].
+- **<link ID>**: ID of the connection (0 ~ max). For the single connection, the link ID is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
+- **<counts>**: the number of ALPNs. Range: [0,5].
 
-  - 0: clean the ALPN configuration.
-  - [1,5]: set the ALPN configuration.
+  - 0: Clean the ALPN configuration.
+  - [1,5]: Set the ALPN configuration.
 
--  **<"alpn">**: a string parameter showing the ALPN in ClientHello. The maximum length of alpn is limited by the command length.
+- **<"alpn">**: a string parameter showing the ALPN in ClientHello. The maximum length of alpn is limited by the command length.
 
 Note
 ^^^^^
 
--  If you want this configuration to take effect immediately, run this command before establishing the SSL connection.
+- If you want this configuration to take effect immediately, run this command before establishing the SSL connection.
 
 .. _cmd-SSLCPSK:
 
-:ref:`AT+CIPSSLCPSK <TCPIP-AT>`: Query/Set SSL Client Pre-shared Key (PSK) in String Format
--------------------------------------------------------------------------------------------
+:ref:`AT+CIPSSLCPSK <TCPIP-AT>`: Query or Set SSL Client Pre-shared Key (PSK) in String Format
+-----------------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -2152,18 +2152,18 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0 ~ max). For single connection, <link ID> is 0. For multiple connections, if the value is max, it means all connections, max is 5 by default.
--  **<"psk">**: PSK identity in string format. Maximum length: 32. Please use :ref:`AT+CIPSSLCPSKHEX <cmd-SSLCPSKHEX>` command if your ``<"psk">`` parameter contains ``\0`` characters.
--  **<"hint">**: PSK hint. Maximum length: 32.
+- **<link ID>**: ID of the connection (0 ~ max). For single connection, <link ID> is 0. For multiple connections, if the value is max, it means all connections, max is 5 by default.
+- **<"psk">**: PSK identity in string format. Maximum length: 32. Please use :ref:`AT+CIPSSLCPSKHEX <cmd-SSLCPSKHEX>` command if your ``<"psk">`` parameter contains ``\0`` characters.
+- **<"hint">**: PSK hint. Maximum length: 32.
 
 Notes
 ^^^^^
--  If you want this configuration to take effect immediately, run this command before establishing the SSL connection.
+- If you want this configuration to take effect immediately, run this command before establishing the SSL connection.
 
 .. _cmd-SSLCPSKHEX:
 
-:ref:`AT+CIPSSLCPSKHEX <TCPIP-AT>`: Query/Set SSL Client Pre-shared Key (PSK) in Hexadecimal Format
----------------------------------------------------------------------------------------------------
+:ref:`AT+CIPSSLCPSKHEX <TCPIP-AT>`: Query or Set SSL Client Pre-shared Key (PSK) in Hexadecimal Format
+-------------------------------------------------------------------------------------------------------
 
 Note
 ^^^^^
@@ -2182,8 +2182,8 @@ Example
 
 .. _cmd-AUTOCONNINT:
 
-:ref:`AT+CIPRECONNINTV <TCPIP-AT>`: Query/Set the TCP/UDP/SSL reconnection Interval for the Network :term:`Passthrough Mode`
-----------------------------------------------------------------------------------------------------------------------------
+:ref:`AT+CIPRECONNINTV <TCPIP-AT>`: Query or Set the TCP/UDP/SSL reconnection Interval for the Network :term:`Passthrough Mode`
+--------------------------------------------------------------------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -2227,24 +2227,24 @@ Set the automatic reconnecting interval when TCP/UDP/SSL transmission breaks in 
 Parameter
 ^^^^^^^^^^
 
--  **<interval>**: the duration between automatic reconnections. Unit: 100 milliseconds. Default: 1. Range: [1,36000]. 
+- **<interval>**: the duration between automatic reconnections. Unit: 100 milliseconds. Default: 1. Range: [1,36000].
 
 Note
 ^^^^^
 
--  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+- The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 
 Example
 ^^^^^^^^
 
 ::
 
-    AT+CIPRECONNINTV=10  
+    AT+CIPRECONNINTV=10
 
 .. _cmd-CIPRECVTYPE:
 
-:ref:`AT+CIPRECVTYPE <TCPIP-AT>`: Query/Set Socket Receiving Mode
------------------------------------------------------------------
+:ref:`AT+CIPRECVTYPE <TCPIP-AT>`: Query or Set Socket Receiving Mode
+---------------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -2289,26 +2289,26 @@ Set Command
 Parameter
 ^^^^^^^^^^
 
--  **<link ID>**: ID of the connection (0 ~ max). For a single connection, <link ID> is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
+- **<link ID>**: ID of the connection (0 ~ max). For a single connection, <link ID> is 0. For multiple connections, if the value is max, it means all connections. Max is 5 by default.
 - **<mode>**: the receive mode of socket data. Default: 0.
-   
-   - 0: active mode. ESP-AT will send all the received socket data instantly to the host MCU with the header "+IPD". (The socket receive window is 5760 bytes by default. The maximum valid bytes sent to MCU is 2920 bytes each time.)
-   - 1: passive mode. ESP-AT will keep the received socket data in an internal buffer (socket receive window, 5760 bytes by default), and wait for the host MCU to read. If the buffer is full, the socket transmission will be blocked for TCP/SSL connections, or data will be lost for UDP connections.
+
+   - 0: Active mode. ESP-AT will send all the received socket data instantly to the host MCU with the header "+IPD". (The socket receive window is 5760 bytes by default. The maximum valid bytes sent to MCU is 2920 bytes each time.)
+   - 1: Passive mode. ESP-AT will keep the received socket data in an internal buffer (socket receive window, 5760 bytes by default), and wait for the host MCU to read. If the buffer is full, the socket transmission will be blocked for TCP/SSL connections, or data will be lost for UDP connections.
 
 Notes
 ^^^^^
 
--  The configuration can not be used in the Network :term:`Passthrough Mode`. If it is a UDP transmission in passive mode, data will be lost when the buffer is full.
+- The configuration can not be used in the Network :term:`Passthrough Mode`. If it is a UDP transmission in passive mode, data will be lost when the buffer is full.
 
--  When ESP-AT receives socket data in passive mode, it will prompt the following messages in different scenarios:
+- When ESP-AT receives socket data in passive mode, it will prompt the following messages in different scenarios:
 
-   -  For multiple connections mode (AT+CIPMUX=1), the message is ``+IPD,<link ID>,<len>``.
-   -  For single connection mode (AT+CIPMUX=0), the message is ``+IPD,<len>``.
+   - For multiple connections mode (AT+CIPMUX=1), the message is ``+IPD,<link ID>,<len>``.
+   - For single connection mode (AT+CIPMUX=0), the message is ``+IPD,<len>``.
 
--  ``<len>`` is the total length of socket data in the buffer.
--  You should read data by running :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` once there is a ``+IPD`` reported. Otherwise, the next ``+IPD`` will not be reported to the host MCU until the previous ``+IPD`` has been read.
--  In case of disconnection, the buffered socket data will still be there and can be read by the MCU until you send :ref:`AT+CIPCLOSE <cmd-CLOSE>` (AT as client) or :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` (AT as server). In other words, if ``+IPD`` has been reported, the message ``CLOSED`` of this connection will never come until you send :ref:`AT+CIPCLOSE <cmd-CLOSE>` or :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` or read all data by command :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`.
--  When a large amount of network data is expected to be received and the MCU cannot process it timely, you can refer to :ref:`example <using-passive-mode>` and use the passive receive data mode.
+- ``<len>`` is the total length of socket data in the buffer.
+- You should read data by running :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>` once there is a ``+IPD`` reported. Otherwise, the next ``+IPD`` will not be reported to the host MCU until the previous ``+IPD`` has been read.
+- In case of disconnection, the buffered socket data will still be there and can be read by the MCU until you send :ref:`AT+CIPCLOSE <cmd-CLOSE>` (AT as client) or :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` (AT as server). In other words, if ``+IPD`` has been reported, the message ``CLOSED`` of this connection will never come until you send :ref:`AT+CIPCLOSE <cmd-CLOSE>` or :ref:`AT+CIPSERVER=0,1 <cmd-SERVER>` or read all data by command :ref:`AT+CIPRECVDATA <cmd-CIPRECVDATA>`.
+- When a large amount of network data is expected to be received and the MCU cannot process it timely, you can refer to :ref:`example <using-passive-mode>` and use the passive receive data mode.
 
 Example
 ^^^^^^^^
@@ -2356,12 +2356,12 @@ or
 Parameters
 ^^^^^^^^^^
 
--  **<link_id>**: connection ID in multiple connections mode.
--  **<len>**: the max value is 0x7fffffff. If the actual length of the received data is less than ``len``, the actual length will be returned.
--  **<actual_len>**: length of the data you actually obtain.
--  **<data>**: the data you want to obtain.
--  **<"remote IP">**: string parameter showing the remote IPv4 address or IPv6 address, enabled by the command :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>`.
--  **<remote port>**: the remote port number, enabled by the command :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>`.
+- **<link_id>**: connection ID in multiple connections mode.
+- **<len>**: the max value is 0x7fffffff. If the actual length of the received data is less than ``len``, the actual length will be returned.
+- **<actual_len>**: length of the data you actually obtain.
+- **<data>**: the data you want to obtain.
+- **<"remote IP">**: string parameter showing the remote IPv4 address or IPv6 address, enabled by the command :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>`.
+- **<remote port>**: the remote port number, enabled by the command :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>`.
 
 Note
 ^^^^^
@@ -2377,7 +2377,7 @@ Example
 
     AT+CIPRECVTYPE=1
 
-    // For example, if host MCU gets a message of receiving 100-byte data in connection with No.0, 
+    // For example, if host MCU gets a message of receiving 100-byte data in connection with No.0,
     // the message will be "+IPD,0,100".
     // Then you can read those 100-byte data by using the command below.
     AT+CIPRECVDATA=0,100
@@ -2416,7 +2416,7 @@ Parameters
 Note
 ^^^^^
 
--  For SSL connections, the data length returned by ESP-AT may be less than the actual data length.
+- For SSL connections, the data length returned by ESP-AT may be less than the actual data length.
 
 Example
 ^^^^^^^^
@@ -2470,11 +2470,11 @@ Parameters
 Notes
 ^^^^^
 
--  To ping a remote host based on an IPv6 network, do as follows:
+- To ping a remote host based on an IPv6 network, do as follows:
 
-  -  Make sure that the AP supports IPv6
-  -  Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
-  -  Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
+  - Make sure that the AP supports IPv6
+  - Set :ref:`AT+CIPV6=1 <cmd-IPV6>`
+  - Obtain an IPv6 address through the :ref:`AT+CWJAP <cmd-JAP>` command
   - (Optional) Check whether {IDF_TARGET_NAME} has obtained an IPv6 address using the :ref:`AT+CIPSTA? <cmd-IPSTA>` command
 
 - If the remote host is a domain name string, ping will first resolve the domain name (IPv4 address preferred) from DNS (domain name server), and then ping the remote IP address.
@@ -2492,8 +2492,8 @@ Example
 
 .. _cmd-DNS:
 
-:ref:`AT+CIPDNS <TCPIP-AT>`: Query/Set DNS Server Information
--------------------------------------------------------------
+:ref:`AT+CIPDNS <TCPIP-AT>`: Query or Set DNS Server Information
+-----------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -2543,22 +2543,22 @@ or
 Parameters
 ^^^^^^^^^^
 
--  **<enable>**: configure DNS server settings
+- **<enable>**: configure DNS server settings
 
-   -  0: Enable automatic DNS server settings from DHCP. The DNS will be restored to ``208.67.222.222``, ``114.114.114.114`` and ``8.8.8.8``. Only when the {IDF_TARGET_NAME} station completes the DHCP process, the DNS server of the {IDF_TARGET_NAME} station could be updated.
-   -  1: Enable manual DNS server settings. If you do not set a value for ``<DNS IPx>``, it will use ``208.67.222.222``, ``114.114.114.114`` and ``8.8.8.8`` by default.
+   - 0: Enable automatic DNS server settings from DHCP. The DNS will be restored to ``208.67.222.222``, ``114.114.114.114`` and ``8.8.8.8``. Only when the {IDF_TARGET_NAME} station completes the DHCP process, the DNS server of the {IDF_TARGET_NAME} station could be updated.
+   - 1: Enable manual DNS server settings. If you do not set a value for ``<DNS IPx>``, it will use ``208.67.222.222``, ``114.114.114.114`` and ``8.8.8.8`` by default.
 
--  **<"DNS IP1">**: the first DNS server IP address. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
--  **<"DNS IP2">**: the second DNS server IP address. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
--  **<"DNS IP3">**: the third DNS server IP address. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
+- **<"DNS IP1">**: the first DNS server IP address. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
+- **<"DNS IP2">**: the second DNS server IP address. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
+- **<"DNS IP3">**: the third DNS server IP address. For the set command, this parameter only works when you set <enable> to 1, i.e. enable manual DNS settings. If you set <enable> to 1 and a value for this parameter, the ESP-AT will return this parameter as the current DNS setting when you run the query command.
 
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
--  The three parameters cannot be set to the same server.
--  When ``<enable>`` is set to 0, the DNS server may change according to the configuration of the router which the {IDF_TARGET_NAME} is connected to.
--  When ``<enable>`` is set to 1, the manually set DNS servers will always take effect, and the DNS configuration obtained from the router via DHCP will not override the manually set values. To restore the use of DHCP-assigned DNS, execute ``AT+CIPDNS=0`` to re-enable automatic acquisition.
+- The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
+- The three parameters cannot be set to the same server.
+- When ``<enable>`` is set to 0, the DNS server may change according to the configuration of the router which the {IDF_TARGET_NAME} is connected to.
+- When ``<enable>`` is set to 1, the manually set DNS servers will always take effect, and the DNS configuration obtained from the router via DHCP will not override the manually set values. To restore the use of DHCP-assigned DNS, execute ``AT+CIPDNS=0`` to re-enable automatic acquisition.
 
 Example
 ^^^^^^^^
@@ -2606,10 +2606,10 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
--  **<mode>**:
+- **<mode>**:
 
-   -  1: Start an mDNS service. The following parameters need to be set.
-   -  0: Disable the mDNS function. Please do not set the following parameters.
+   - 1: Start an mDNS service. The following parameters need to be set.
+   - 0: Disable the mDNS function. Please do not set the following parameters.
 
 - **<"hostname">**: mDNS host name.
 - **<"service_type">**: mDNS service type.
@@ -2627,7 +2627,7 @@ Example
 ::
 
     // Start an mDNS service. Set the hostname to "espressif", service type to "_iot", and port to 8080.
-    AT+MDNS=1,"espressif","_iot",8080  
+    AT+MDNS=1,"espressif","_iot",8080
 
     // Disable mDNS function
     AT+MDNS=0
@@ -2751,8 +2751,8 @@ Example
 
 .. _cmd-TCPOPT:
 
-:ref:`AT+CIPTCPOPT <TCPIP-AT>`: Query/Set the Socket Options
--------------------------------------------------------------
+:ref:`AT+CIPTCPOPT <TCPIP-AT>`: Query or Set the Socket Options
+-----------------------------------------------------------------
 
 Query Command
 ^^^^^^^^^^^^^
@@ -2802,35 +2802,35 @@ or
 Parameters
 ^^^^^^^^^^
 
--  **<link_id>**: ID of the connection (0 ~ max). For multiple connections, if the value is max, it means all connections. By default, max is 5.
--  **<so_linger>**: configure the ``SO_LINGER`` options for the socket (refer to `SO_LINGER description <https://man7.org/linux/man-pages/man7/socket.7.html#SO_LINGER>`_). Unit: second. Default: -1.
+- **<link_id>**: ID of the connection (0 ~ max). For multiple connections, if the value is max, it means all connections. By default, max is 5.
+- **<so_linger>**: configure the ``SO_LINGER`` options for the socket (refer to `SO_LINGER description <https://man7.org/linux/man-pages/man7/socket.7.html#SO_LINGER>`_). Unit: second. Default: -1.
 
-   -  = -1: off
-   -  = 0: on, linger time = 0
-   -  > 0: on, linger time = <so_linger>
+   - = -1: off
+   - = 0: on, linger time = 0
+   - > 0: on, linger time = <so_linger>
 
--  **<tcp_nodelay>**: configure the ``TCP_NODELAY`` option for the socket (refer to `TCP_NODELAY description <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_NODELAY>`_). Default: 0.
+- **<tcp_nodelay>**: configure the ``TCP_NODELAY`` option for the socket (refer to `TCP_NODELAY description <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_NODELAY>`_). Default: 0.
 
-   -  0: disable TCP_NODELAY
-   -  1: enable TCP_NODELAY
+   - 0: disable TCP_NODELAY
+   - 1: enable TCP_NODELAY
 
--  **<so_sndtimeo>**: configure the ``SO_SNDTIMEO`` option for socket (refer to `SO_SNDTIMEO description <https://man7.org/linux/man-pages/man7/socket.7.html#SO_SNDTIMEO>`_). Unit: millisecond. Default: 0.
+- **<so_sndtimeo>**: configure the ``SO_SNDTIMEO`` option for socket (refer to `SO_SNDTIMEO description <https://man7.org/linux/man-pages/man7/socket.7.html#SO_SNDTIMEO>`_). Unit: millisecond. Default: 0.
 
--  **<keep_alive>**: configure the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
+- **<keep_alive>**: configure the `SO_KEEPALIVE <https://man7.org/linux/man-pages/man7/socket.7.html#SO_KEEPALIVE>`__ option for socket. Unit: second.
 
    - Range: [0,7200].
 
-     - 0: disable keep-alive function (default).
-     - 1 ~ 7200: enable keep-alive function. `TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ value is **<keep_alive>**, `TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ value is 1, and `TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ value is 3.
+     - 0: Disable keep-alive function (default).
+     - 1 ~ 7200: Enable keep-alive function. `TCP_KEEPIDLE <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPIDLE>`_ value is **<keep_alive>**, `TCP_KEEPINTVL <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPINTVL>`_ value is 1, and `TCP_KEEPCNT <https://man7.org/linux/man-pages/man7/tcp.7.html#TCP_KEEPCNT>`_ value is 3.
 
    - This parameter of this command is the same as the ``<keep_alive>`` parameter of :ref:`AT+CIPSTART <cmd-START>` command. It always takes the value set later by either of the two commands. If it is omitted or not set, the last configured value is used by default.
 
 Notes
 ^^^^^
 
--  The configuration changes will be saved in the NVS partition if ``AT+SYSSTORE=1``.
--  Before configuring these socket options, **please make sure you fully understand the function of them and the possible impact after configuration**.
--  It is not recommended to set a large value for the SO_LINGER option. For example, if SO_LINGER is set to 60, the :ref:`AT+CIPCLOSE <cmd-CLOSE>` command may block for up to 60 seconds if {IDF_TARGET_NAME} does not receive a TCP FIN packet from the remote TCP peer due to network issues. During this period, {IDF_TARGET_NAME} will be unable to respond to any other AT commands. Therefore, it is recommended to keep the SO_LINGER option at its default value.
--  The TCP_NODELAY option is used for situations with low throughput but high real-time requirements. When enabled, :term:`LwIP` will speed up TCP transmission. However, in poor network conditions, this may lead to increased retransmissions and reduced throughput. Therefore, it is recommended to keep the TCP_NODELAY option at its default value.
--  The SO_SNDTIMEO option is used for situations where the keepalive parameter is not configured in :ref:`AT+CIPSTART <cmd-START>` command. After this option is configured, :ref:`AT+CIPSEND <cmd-SEND>`, :ref:`AT+CIPSENDL <cmd-SENDL>`, and :ref:`AT+CIPSENDEX <cmd-SENDEX>` commands will exit within this timeout, regardless of whether data are sent successfully or not. Here, SO_SNDTIMEO is recommended to be set to 5 ~ 10 seconds.
--  The SO_KEEPALIVE option is used for actively and regularly detecting whether the connection is disconnected. It is generally recommended to configure this option when AT is used as a TCP server. After this option is configured, additional network bandwidth will be cost. Recommended value of SO_KEEPALIVE should be not less than 60 seconds.
+- The configuration changes will be saved in the NVS partition if ``AT+SYSSTORE=1``.
+- Before configuring these socket options, **please make sure you fully understand the function of them and the possible impact after configuration**.
+- It is not recommended to set a large value for the SO_LINGER option. For example, if SO_LINGER is set to 60, the :ref:`AT+CIPCLOSE <cmd-CLOSE>` command may block for up to 60 seconds if {IDF_TARGET_NAME} does not receive a TCP FIN packet from the remote TCP peer due to network issues. During this period, {IDF_TARGET_NAME} will be unable to respond to any other AT commands. Therefore, it is recommended to keep the SO_LINGER option at its default value.
+- The TCP_NODELAY option is used for situations with low throughput but high real-time requirements. When enabled, :term:`LwIP` will speed up TCP transmission. However, in poor network conditions, this may lead to increased retransmissions and reduced throughput. Therefore, it is recommended to keep the TCP_NODELAY option at its default value.
+- The SO_SNDTIMEO option is used for situations where the keepalive parameter is not configured in :ref:`AT+CIPSTART <cmd-START>` command. After this option is configured, :ref:`AT+CIPSEND <cmd-SEND>`, :ref:`AT+CIPSENDL <cmd-SENDL>`, and :ref:`AT+CIPSENDEX <cmd-SENDEX>` commands will exit within this timeout, regardless of whether data are sent successfully or not. Here, SO_SNDTIMEO is recommended to be set to 5 ~ 10 seconds.
+- The SO_KEEPALIVE option is used for actively and regularly detecting whether the connection is disconnected. It is generally recommended to configure this option when AT is used as a TCP server. After this option is configured, additional network bandwidth will be cost. Recommended value of SO_KEEPALIVE should be not less than 60 seconds.

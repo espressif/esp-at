@@ -210,7 +210,7 @@ WebSocket Connection over TLS (Mutual Authentication)
 
    .. code-block:: none
 
-     +CIPSNTPTIME:Mon Oct 18 20:12:27 2021 
+     +CIPSNTPTIME:Mon Oct 18 20:12:27 2021
      OK
 
    Note:
@@ -367,7 +367,7 @@ WebSocket Connection over TLS (Mutual Authentication)
    Note:
 
    - If you want to use your own certificates or use multiple sets of certificates, there are two methods:
-   
+
      - Runtime update: You can directly use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update certificates without recompiling the firmware. For detailed operation steps, please refer to :ref:`PKI Configuration in AT+SYSMFG command examples <sysmfg-pki>`. The certificate configuration method is the same as SSL certificates, just change the namespace to ``wss_cert``, ``wss_key``, and ``wss_ca``.
      - Pre-flash certificates: If you want to pre-flash certificates during compilation, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
 

@@ -966,7 +966,7 @@ In this example, the certificate used is the default certificate in esp-at. You 
 
    .. code-block:: none
 
-     +CIPSNTPTIME:Mon Oct 18 20:12:27 2021 
+     +CIPSNTPTIME:Mon Oct 18 20:12:27 2021
      OK
 
    Note:
@@ -1372,7 +1372,7 @@ Network passthrough transmission when the {IDF_TARGET_NAME} works as a TCP clien
 
 #. Stop sending data.
 
-   When receiving a packet that contains only ``+++``,  the Network passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
+   When receiving a packet that contains only ``+++``, the Network passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
 
    .. Important::
 
@@ -1566,7 +1566,7 @@ Network passthrough transmission when the {IDF_TARGET_NAME} works as a TCP serve
 
 #. Stop sending data.
 
-   When receiving a packet that contains only ``+++``,  the Network passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
+   When receiving a packet that contains only ``+++``, the Network passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
 
    .. Important::
 
@@ -1692,7 +1692,7 @@ Network passthrough transmission when the {IDF_TARGET_NAME} works as a softAP in
 
 #. Stop sending data.
 
-   When receiving a packet that contains only ``+++``,  the Network passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
+   When receiving a packet that contains only ``+++``, the Network passthrough transmission process will be stopped. Then please wait at least 1 second before sending the next AT command. Please note that if you input ``+++`` directly by typing, the ``+++`` may not be recognized as three consecutive ``+`` because of the prolonged typing duration. For more details, please refer to :ref:`[Passthrough Mode Only] +++ <cmd-PLUS>`.
 
    .. Important::
 

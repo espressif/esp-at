@@ -17,7 +17,7 @@
 
 1. ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT ethernet support`` 启用以太网功能。
 2. ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``Ethernet PHY`` 选择以太网 PHY。选择以太网 PHY 的说明请参考 `PHY 配置`_。
-3. 重新编译 ``esp-at`` 工程 (参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`)，将生成的固件烧录到开发板中运行。
+3. 重新编译 ``esp-at`` 工程（参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`），将生成的固件烧录到开发板中运行。
 
 PHY 配置
 ^^^^^^^^^^
