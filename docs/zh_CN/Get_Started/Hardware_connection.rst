@@ -61,9 +61,12 @@
 
   - 如果您使用 {IDF_TARGET_NAME} 模组（而非开发板）并通过 UART 烧录固件，需要：
 
-    - 预留 U0RXD 和 U0TXD 管脚（参考 `技术规格书 > IO 管脚 <{IDF_TARGET_DATASHEET_CN_URL}>`_）
-    - 预留 Strapping 管脚（参考 `技术规格书 > 启动配置项 <{IDF_TARGET_DATASHEET_CN_URL}>`_），通过控制 Strapping 管脚电平进入下载模式
-    - 更多细节请参考 `{IDF_TARGET_NAME} 进入下载模式的硬件要求 <https://docs.espressif.com/projects/esp-techpedia/zh_CN/latest/esp-friends/get-started/try-firmware/try-firmware-hardware/{IDF_TARGET_PATH_NAME}.html>`_
+    .. list::
+
+      - 预留 U0RXD 和 U0TXD 管脚（参考 `技术规格书 > IO 管脚 <{IDF_TARGET_DATASHEET_CN_URL}>`_）
+      - 预留 Strapping 管脚（参考 `技术规格书 > 启动配置项 <{IDF_TARGET_DATASHEET_CN_URL}>`_），通过控制 Strapping 管脚电平进入下载模式
+      :esp32c5 or esp32s2: - 更多细节请参考 `{IDF_TARGET_NAME} 进入下载模式的硬件要求 <https://docs.espressif.com/projects/esp-techpedia/zh_CN/latest/esp-friends/get-started/try-firmware/try-firmware-hardware/{IDF_TARGET_PATH_NAME}.html>`_
+      :esp32c6 or esp32c61: - 更多细节请参考 `{IDF_TARGET_NAME} 进入下载模式的硬件要求 <https://docs.espressif.com/projects/esp-techpedia/zh_CN/latest/esp-friends/get-started/try-firmware/try-firmware-hardware/esp32c6-esp32c61.html>`_
 
 .. only:: esp32c2
 

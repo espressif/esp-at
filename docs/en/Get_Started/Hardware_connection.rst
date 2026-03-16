@@ -61,9 +61,12 @@ Note:
 
   - If you use an {IDF_TARGET_NAME} module (instead of a development board) and flash firmware via UART, you need to:
 
-    - Reserve the U0RXD and U0TXD pins (refer to `Datasheet > IO Pins <{IDF_TARGET_DATASHEET_EN_URL}>`_)
-    - Reserve the strapping pins (refer to `Datasheet > Boot Configurations <{IDF_TARGET_DATASHEET_EN_URL}>`_), enter download mode by controlling the strapping pin level
-    - For more details, please refer to `{IDF_TARGET_NAME} Hardware Requirements for Entering Download Mode <https://docs.espressif.com/projects/esp-techpedia/en/latest/esp-friends/get-started/try-firmware/try-firmware-hardware/{IDF_TARGET_PATH_NAME}.html>`_
+    .. list::
+
+      - Reserve the U0RXD and U0TXD pins (refer to `Datasheet > IO Pins <{IDF_TARGET_DATASHEET_EN_URL}>`_)
+      - Reserve the strapping pins (refer to `Datasheet > Boot Configurations <{IDF_TARGET_DATASHEET_EN_URL}>`_), enter download mode by controlling the strapping pin level
+      :esp32c5 or esp32s2: - For more details, please refer to `{IDF_TARGET_NAME} Hardware Requirements for Entering Download Mode <https://docs.espressif.com/projects/esp-techpedia/en/latest/esp-friends/get-started/try-firmware/try-firmware-hardware/{IDF_TARGET_PATH_NAME}.html>`_
+      :esp32c6 or esp32c61: - For more details, please refer to `{IDF_TARGET_NAME} Hardware Requirements for Entering Download Mode <https://docs.espressif.com/projects/esp-techpedia/en/latest/esp-friends/get-started/try-firmware/try-firmware-hardware/esp32c6-esp32c61.html>`_
 
 .. only:: esp32c2
 
