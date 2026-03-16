@@ -241,17 +241,9 @@ Bluetooth® Low Energy AT 命令集
 
     **命令：**
 
-    .. only:: esp32 or esp32c3
+    ::
 
-        ::
-
-            AT+BLEADDR=<addr_type>[,<random_addr>]
-
-    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
-
-        ::
-
-            AT+BLEADDR=<addr_type>
+        AT+BLEADDR=<addr_type>[,<random_addr>]
 
     **响应：**
 
@@ -281,19 +273,11 @@ Bluetooth® Low Energy AT 命令集
     示例
     ^^^^
 
-    .. only:: esp32 or esp32c3
+    ::
 
-        ::
-
-            AT+BLEADDR=1,"f8:7f:24:87:1c:7b"    // 设置随机设备地址的静态地址
-            AT+BLEADDR=1                        // 设置随机设备地址的私有地址
-            AT+BLEADDR=0                        // 设置公共设备地址
-
-    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
-
-        ::
-
-            AT+BLEADDR=1                        // 设置随机设备地址的私有地址
+        AT+BLEADDR=1,"f8:7f:24:87:1c:7b"    // 设置随机设备地址的静态地址
+        AT+BLEADDR=1                        // 设置随机设备地址的私有地址
+        AT+BLEADDR=0                        // 设置公共设备地址
 
     .. _cmd-BNAME:
 
@@ -3532,7 +3516,7 @@ Bluetooth® Low Energy AT 命令集
 
     - **<add_or_rmv>**:
 
-      - 0: 从白名单中移除所有设备
+      - 0: 从白名单中移除一个指定设备或者移除所有设备
       - 1: 向白名单添加一个设备
 
     - **[<addr_type>]**：地址类型
@@ -3545,7 +3529,7 @@ Bluetooth® Low Energy AT 命令集
     说明
     ^^^^^
 
-    - 如果 <add_or_rmv> 设置为 0，则 <addr_type> 和 <addr> 参数不需要。
+    - 当 <add_or_rmv> 参数设置为 0 时，省略 <addr_type> 和 <addr> 参数将清除整个白名单；如果提供了这些参数，指定的设备将从白名单中删除。
 
     示例
     ^^^^^^^^
