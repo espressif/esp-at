@@ -72,6 +72,8 @@ def main():
 
         # check if the patch needs to be applied to the current target
         target_option = config.get(section, 'target') if config.has_option(section, 'target') else at_patch_defaults['target']
+        if isinstance(target_option, str):
+            target_option = [t.strip().strip("'") for t in target_option.split(',')]
         if target not in target_option:
             continue
 
