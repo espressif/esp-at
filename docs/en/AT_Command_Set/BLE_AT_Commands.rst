@@ -241,17 +241,9 @@ Introduction
 
     **Command:**
 
-    .. only:: esp32 or esp32c3
+    ::
 
-        ::
-
-            AT+BLEADDR=<addr_type>[,<random_addr>]
-
-    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
-
-        ::
-
-            AT+BLEADDR=<addr_type>
+        AT+BLEADDR=<addr_type>[,<random_addr>]
 
     **Response:**
 
@@ -281,19 +273,11 @@ Introduction
     Example
     ^^^^^^^^
 
-    .. only:: esp32 or esp32c3
+    ::
 
-        ::
-
-            AT+BLEADDR=1,"f8:7f:24:87:1c:7b"    // Set Random Device Address, Static Address
-            AT+BLEADDR=1                        // Set Random Device Address, Private Address
-            AT+BLEADDR=0                        // Set Public Device Address
-
-    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
-
-        ::
-
-            AT+BLEADDR=1                        // Set Random Device Address, Private Address
+        AT+BLEADDR=1,"f8:7f:24:87:1c:7b"    // Set Random Device Address, Static Address
+        AT+BLEADDR=1                        // Set Random Device Address, Private Address
+        AT+BLEADDR=0                        // Set Public Device Address
 
     .. _cmd-BNAME:
 
@@ -3532,8 +3516,8 @@ Introduction
 
     - **<add_or_rmv>**:
 
-      - 0: remove all devices from the white list
-      - 1: add a device to the white list
+      - 0: remove a single device from the whitelist, or clear the entire whitelist.
+      - 1: add a device to the white list.
 
     - **[<addr_type>]**: address type
 
@@ -3545,7 +3529,7 @@ Introduction
     Notes
     ^^^^^
 
-    - If <add_or_rmv> is set to 0, the <addr_type> and <addr> parameters are not needed.
+    - When the <add_or_rmv> parameter is set to 0, omitting the <addr_type> and <addr> parameters will clear the entire whitelist; if these parameters are provided, the specified device will be removed from the whitelist.
 
     Example
     ^^^^^^^^
