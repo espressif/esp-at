@@ -1,20 +1,20 @@
-From a41350b35c58721084eccf43993366335c0bb34d Mon Sep 17 00:00:00 2001
+From 59a916cbd6d2062d3f8bcc2f3b1c9d70a278628b Mon Sep 17 00:00:00 2001
 From: xiewenxiang <xiewenxiang@espressif.com>
-Date: Tue, 17 Dec 2024 10:13:28 +0800
-Subject: [PATCH] modify bluedroid conn timeout
+Date: Wed, 18 Mar 2026 12:35:32 +0800
+Subject: [PATCH] modify-bluedroid-conn-timeout-v54
 
 ---
  components/bt/host/bluedroid/stack/l2cap/l2c_ble.c | 10 ++++++----
  1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c b/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c
-index 36f91cfe08..69f7038696 100644
+index e0f787c9a19..b47c5a7d667 100644
 --- a/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c
 +++ b/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c
-@@ -952,16 +952,18 @@ BOOLEAN l2cble_init_direct_conn (tL2C_LCB *p_lcb)
-         L2CAP_TRACE_ERROR("initiate direct connection fail, topology limitation");
-         return FALSE;
+@@ -983,16 +983,18 @@ BOOLEAN l2cble_init_direct_conn (tL2C_LCB *p_lcb)
      }
+ #endif // (BLE_TOPOLOGY_CHECK == TRUE)
+ 
 -    uint32_t link_timeout = L2CAP_BLE_LINK_CONNECT_TOUT;
 +    extern int32_t bluedroid_conn_wait_time;
 +
@@ -35,5 +35,5 @@ index 36f91cfe08..69f7038696 100644
      }
  
 -- 
-2.25.1
+2.50.1 (Apple Git-155)
 
