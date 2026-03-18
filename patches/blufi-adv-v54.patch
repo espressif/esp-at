@@ -1,5 +1,14 @@
+From 8de54c3a5dfc584891acc33dfc6c8cc6b0ca0d8f Mon Sep 17 00:00:00 2001
+From: xiewenxiang <xiewenxiang@espressif.com>
+Date: Wed, 18 Mar 2026 09:28:22 +0800
+Subject: [PATCH] blufi-adv-v5.4
+
+---
+ .../profile/esp/blufi/nimble_host/esp_blufi.c | 95 ++++++++++++++++++-
+ 1 file changed, 94 insertions(+), 1 deletion(-)
+
 diff --git a/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c b/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
-index d40a4f4cf2..9961e54719 100644
+index 4813e553080..0c94ea1143d 100644
 --- a/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
 +++ b/components/bt/common/btc/profile/esp/blufi/nimble_host/esp_blufi.c
 @@ -32,11 +32,22 @@
@@ -25,7 +34,7 @@ index d40a4f4cf2..9961e54719 100644
  enum {
      GATT_VALUE_TYPE_CHR,
      GATT_VALUE_TYPE_DSC,
-@@ -395,6 +406,79 @@ esp_blufi_gap_event(struct ble_gap_event *event, void *arg)
+@@ -408,6 +419,79 @@ esp_blufi_gap_event(struct ble_gap_event *event, void *arg)
  
  void esp_blufi_adv_start(void)
  {
@@ -105,15 +114,15 @@ index d40a4f4cf2..9961e54719 100644
      int rc;
  
      rc = ble_hs_util_ensure_addr(0);
-@@ -466,6 +550,7 @@ void esp_blufi_adv_start(void)
+@@ -479,6 +563,7 @@ void esp_blufi_adv_start(void)
          ESP_LOGE(TAG, "error enabling advertisement; rc=%d", rc);
          return;
      }
 +#endif
  }
  
- uint8_t esp_blufi_init(void)
-@@ -513,7 +598,15 @@ void esp_blufi_disconnect(void)
+ void esp_blufi_adv_start_with_name(const char *name)
+@@ -535,7 +620,15 @@ void esp_blufi_disconnect(void)
  
  void esp_blufi_adv_stop(void)
  {
@@ -130,3 +139,6 @@ index d40a4f4cf2..9961e54719 100644
  }
  
  void esp_blufi_send_encap(void *arg)
+-- 
+2.50.1 (Apple Git-155)
+
