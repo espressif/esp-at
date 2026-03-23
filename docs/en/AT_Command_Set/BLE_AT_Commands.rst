@@ -830,11 +830,11 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    - **<dev_name>**: string parameter showing a device name. For example, if you want to set the device name to "just-test", the command should be ``AT+BLEADVSTARTEX="just-test",<uuid>,<manufacturer_data>,<include_power>``.
+    - **<dev_name>**: string parameter showing a device name. For example, if you want to set the device name to "just-test", the command should be ``AT+BLEADVDATAEX="just-test",<uuid>,<manufacturer_data>,<include_power>``.
 
-    - **<uuid>**: string parameter. For example, if you want to set the UUID to "0xA002", the command should be ``AT+BLEADVSTARTEX=<dev_name>,"A002",<manufacturer_data>,<include_power>``.
+    - **<uuid>**: string parameter. For example, if you want to set the UUID to "0xA002", the command should be ``AT+BLEADVDATAEX=<dev_name>,"A002",<manufacturer_data>,<include_power>``.
 
-    - **<manufacturer_data>**: manufacturer data in HEX string. For example, if you set the manufacturer data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVSTARTEX=<dev_name>,<uuid>,"1122334455",<include_power>``.
+    - **<manufacturer_data>**: manufacturer data in HEX string. For example, if you set the manufacturer data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATAEX=<dev_name>,<uuid>,"1122334455",<include_power>``.
 
     - **<include_power>**: If you need to include the TX power in the advertising data, you should set the parameter to ``1``. Otherwise, set it to ``0``.
 
@@ -3251,7 +3251,7 @@ Introduction
 
     **Function:**
 
-    Synchroize with the target device and get the periodic advertising data.
+    Synchronize with the target device and get the periodic advertising data.
 
     **Command:**
 
@@ -3269,6 +3269,7 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
+    - **<target_address>**: the Bluetooth LE address of the target device to synchronize with.
     - **<addr>**: Bluetooth LE address.
     - **<rssi>**: signal strength.
     - **<periodic_adv_data>**: periodic advertising data.
@@ -3276,7 +3277,7 @@ Introduction
     Notes
     ^^^^^
 
-    - Before you start to synchronize with the remote device, the blescan must be start.
+    - Before you start to synchronize with the remote device, the blescan must be started.
 
     Example
     ^^^^^^^^
@@ -3285,7 +3286,7 @@ Introduction
 
         AT+BLEINIT=1   // Role: client
         AT+BLESCAN=1   // start Bluetooth LE scan
-        AT+BLESYNCSTART="24:0a:c4:09:34:23"  // try to Synchroize with the remote device
+        AT+BLESYNCSTART="24:0a:c4:09:34:23"  // try to Synchronize with the remote device
 
     .. _cmd-BLESYNCSTOP:
 
@@ -3325,7 +3326,7 @@ Introduction
         AT+BLEINIT=1   // Role: client
         AT+BLESCAN=1   // start Bluetooth LE scan
         AT+BLESYNCSTART="24:0a:c4:09:34:23"  // try to synchronize with the remote device
-        AT+BLESYNCSTOP  // Stop Synchroize with the remote device
+        AT+BLESYNCSTOP  // Stop Synchronize with the remote device
 
     .. _cmd-BLERDPHY:
 

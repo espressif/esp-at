@@ -46,8 +46,8 @@ Parameters
 
 - **<type>**: Filesystem type, LittleFS is recommended. You can select it in ``Component config`` > ``AT`` > ``AT FS command support`` > ``Filesystem type for AT FS command``.
 
-  - 0: FATFS
-  - 1: LittleFS
+   - 0: FATFS
+   - 1: LittleFS
 
 - **<operation>**:
 
@@ -59,8 +59,9 @@ Parameters
    - 5: Calculate the MD5 hash of a file for verifying file integrity.
    - 6: Query the free space and total space of the filesystem.
 
-- **<offset>**: apply to writing and reading operations only.
-- **<length>**: data length, applying to writing and reading operations only.
+- **<filename>**: file or directory name. Applies to operations 0 to 5 only.
+- **<offset>**: byte offset from the start of the file. Applies to writing and reading operations only.
+- **<length>**: data length. Applies to writing and reading operations only.
 
 Notes
 ^^^^^
@@ -68,7 +69,7 @@ Notes
 - This command will automatically mount the filesystem. After the :ref:`AT+FS <cmd-FS>` filesystem operation is all done, it is strongly recommended to use the :ref:`AT+FSMOUNT=0 <cmd-FSMOUNT>` command to unmount the filesystem to free a large amount of RAM space.
 - Please make sure that you have downloaded at_customize.bin before using this command. For more details, refer to `ESP-IDF Partition Tables <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_ and :doc:`../Compile_and_Develop/How_to_customize_partitions`.
 - If the length of the read data is greater than the actual file length, only the actual data length of the file will be returned.
-- If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
+- If the operation is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
 - If you need to ensure that the AT firmware is compatible with the legacy FATFS partition after an OTA upgrade, please select ``FatFS (legacy partition, upgrade only, READ HELP FIRST)`` at the following configuration path: ``Component config`` > ``AT`` > ``AT FS command support`` > ``Filesystem type for AT FS command``.
 
 Example
