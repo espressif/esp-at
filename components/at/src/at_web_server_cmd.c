@@ -1769,10 +1769,13 @@ static esp_err_t http_common_error_handler(httpd_req_t *req, httpd_err_code_t er
 
 static esp_err_t start_web_server(const char *base_path, uint16_t server_port)
 {
-    ESP_AT_WEB_SERVER_CHECK(base_path, "wrong base path", err);
     s_web_context = calloc(1, sizeof(web_server_context_t));
     ESP_AT_WEB_SERVER_CHECK(s_web_context, "No memory for rest context", err);
+
+#ifdef CONFIG_AT_WEB_USE_FS
+    ESP_AT_WEB_SERVER_CHECK(base_path, "wrong base path", err);
     strlcpy(s_web_context->base_path, base_path, sizeof(s_web_context->base_path));
+#endif
 
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
     config.max_uri_handlers = 8;
@@ -1852,7 +1855,12 @@ static esp_err_t at_web_start(uint16_t server_port)
             return ESP_FAIL;
         }
 #endif
+
+#ifdef CONFIG_AT_WEB_USE_FS
         err = start_web_server(esp_at_fs_get_mount_point(), server_port);
+#else
+        err = start_web_server(NULL, server_port);
+#endif
         if (err != ESP_OK) {
             return err;
         }
