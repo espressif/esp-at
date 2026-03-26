@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -27,7 +27,8 @@ static const char *TAG = "at-intf";
 
 static int32_t at_port_read_data(uint8_t *buffer, int32_t len)
 {
-    if (!s_interface_ops.read_data) {
+    if (!s_interface_ops.read_data || !buffer || len < 0) {
+        ESP_LOGE(TAG, "invalid read_fn:%p or buffer:%p or len:%d", s_interface_ops.read_data, buffer, len);
         return -1;
     }
 
@@ -60,7 +61,8 @@ static int32_t at_port_read_data(uint8_t *buffer, int32_t len)
 
 static int32_t at_port_write_data(uint8_t *data, int32_t len)
 {
-    if (!s_interface_ops.write_data) {
+    if (!s_interface_ops.write_data || !data || len < 0) {
+        ESP_LOGE(TAG, "invalid write_fn:%p or data:%p or len:%d", s_interface_ops.write_data, data, len);
         return -1;
     }
 

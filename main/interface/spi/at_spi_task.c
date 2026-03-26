@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -96,11 +96,6 @@ inline static void at_spi_write_transmit_len(spi_mode_t spi_mode, uint16_t trans
 
 static int32_t at_spi_read_data(uint8_t *data, int32_t len)
 {
-    if (data == NULL || len < 0) {
-        ESP_LOGE(TAG, "invalid data:%p or len:%d", data, len);
-        return -1;
-    }
-
     if (len == 0) {
         ESP_LOGI(TAG, "read empty data");
         return 0;
@@ -118,8 +113,8 @@ static int32_t at_spi_read_data(uint8_t *data, int32_t len)
 
 static int32_t at_spi_write_data(uint8_t *data, int32_t len)
 {
-    if (len < 0 || len > CONFIG_TX_STREAM_BUFFER_SIZE || data == NULL) {
-        ESP_LOGE(TAG, "invalid data:%p or len:%d", data, len);
+    if (len > CONFIG_TX_STREAM_BUFFER_SIZE) {
+        ESP_LOGE(TAG, "invalid len:%d", len);
         return -1;
     }
 

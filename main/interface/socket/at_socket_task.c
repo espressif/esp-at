@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -36,10 +36,6 @@ static const char *TAG = "at-socket";
 
 static int32_t at_socket_read_data(uint8_t *data, int32_t len)
 {
-    if (data == NULL || len < 0) {
-        return -1;
-    }
-
     if (len == 0) {
         ESP_LOGI(TAG, "read empty data");
         return 0;
@@ -60,11 +56,6 @@ static int32_t at_socket_read_data(uint8_t *data, int32_t len)
 
 static int32_t at_socket_write_data(uint8_t *data, int32_t len)
 {
-    if (len < 0 || data == NULL) {
-        ESP_LOGE(TAG, "invalid data:%p or len:%d", data, len);
-        return -1;
-    }
-
     if (len == 0) {
         ESP_LOGI(TAG, "write empty data");
         return 0;

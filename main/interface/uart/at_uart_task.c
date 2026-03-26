@@ -35,42 +35,12 @@ at_uart_port_pins_t g_uart_port_pin;
 
 static int32_t at_uart_write_data(uint8_t *data, int32_t len)
 {
-    uint32_t length = 0;
-
-    length = uart_write_bytes(g_at_cmd_port, (char *)data, len);
-    return length;
+    return uart_write_bytes(g_at_cmd_port, (char *)data, len);
 }
 
 static int32_t at_uart_read_data(uint8_t *buffer, int32_t len)
 {
-    if (len == 0) {
-        return 0;
-    }
-
-    if (buffer == NULL) {
-        if (len == -1) {
-            size_t size = 0;
-            if (uart_get_buffered_data_len(g_at_cmd_port, &size) != ESP_OK) {
-                return -1;
-            }
-            len = size;
-        }
-
-        if (len == 0) {
-            return 0;
-        }
-
-        uint8_t *data = (uint8_t *)malloc(len);
-        if (data) {
-            len = uart_read_bytes(g_at_cmd_port, data, len, portTICK_PERIOD_MS);
-            free(data);
-            return len;
-        } else {
-            return -1;
-        }
-    } else {
-        return uart_read_bytes(g_at_cmd_port, buffer, len, portTICK_PERIOD_MS);
-    }
+    return uart_read_bytes(g_at_cmd_port, buffer, len, portTICK_PERIOD_MS);
 }
 
 static int32_t at_uart_get_data_len(void)
@@ -85,6 +55,12 @@ static int32_t at_uart_get_data_len(void)
     } else {
         return 0;
     }
+}
+
+static void at_uart_flush(void)
+{
+    uart_flush_input(g_at_cmd_port);
+    xQueueReset(s_at_uart_queue);
 }
 
 static bool at_uart_wait_tx_done(int32_t ms)
@@ -202,6 +178,9 @@ static void at_uart_init(void)
 #if !defined(CONFIG_IDF_TARGET_ESP32C5) && !defined(CONFIG_IDF_TARGET_ESP32C61)
     at_uart_workaround();
 #endif
+
+    // flush uart buffer to make sure no data left before AT start
+    at_uart_flush();
 
     ESP_AT_LOGI(TAG, "AT cmd port:uart%d tx:%d rx:%d cts:%d rts:%d baudrate:%d",
                 g_at_cmd_port, g_uart_port_pin.tx_pin, g_uart_port_pin.rx_pin,
