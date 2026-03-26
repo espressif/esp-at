@@ -284,7 +284,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
                 goto OTA_ERROR;
             }
 
-            if (esp_tls_conn_new_sync(server_ip, strlen(server_ip), server_port, tls_cfg, tls) < 0) {
+            if (esp_tls_conn_new_sync(server_ip, strlen(server_ip), server_port, tls_cfg, tls) <= 0) {
                 ESP_AT_LOGE(TAG, "connect to ota server failed");
                 goto OTA_ERROR;
             }
@@ -460,7 +460,7 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
             goto OTA_ERROR;
         }
 
-        if (esp_tls_conn_new_sync(server_ip, strlen(server_ip), server_port, tls_cfg, tls) < 0) {
+        if (esp_tls_conn_new_sync(server_ip, strlen(server_ip), server_port, tls_cfg, tls) <= 0) {
             ESP_AT_LOGE(TAG, "connect to ota server failed");
             goto OTA_ERROR;
         }
