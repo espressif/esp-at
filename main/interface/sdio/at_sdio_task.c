@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -46,13 +46,11 @@ static const char *TAG = "at-sdio";
 
 static int32_t at_sdio_write_data(uint8_t *data, int32_t len)
 {
-    if (len < 0 || data == NULL) {
-        ESP_LOGE(TAG, "invalid data:%p or len:%d", data, len);
-        return -1;
+    if (len == 0) {
+        return 0;
     }
 
     xSemaphoreTake(s_sdio_rw_sema, portMAX_DELAY);
-
     uint32_t had_written_len = 0;
     do {
         int to_send_len = (len - had_written_len) > AT_SDIO_DMA_SIZE ? AT_SDIO_DMA_SIZE : (len - had_written_len);
@@ -82,11 +80,6 @@ static int32_t at_sdio_write_data(uint8_t *data, int32_t len)
 
 static int32_t at_sdio_read_data(uint8_t *data, int32_t len)
 {
-    if (data == NULL || len < 0) {
-        ESP_LOGE(TAG, "invalid data:%p or len:%d", data, len);
-        return -1;
-    }
-
     if (len == 0) {
         ESP_LOGI(TAG, "read empty data");
         return 0;
