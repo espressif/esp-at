@@ -43,6 +43,8 @@ typedef struct {
 static uint8_t s_init_tx_flag = 0;
 static QueueHandle_t s_spi_msg_queue;
 static SemaphoreHandle_t s_spi_rw_sema;
+/** Serializes multi-task xStreamBufferSend to TX stream buffer (must not be held during coord lock). */
+static SemaphoreHandle_t s_spi_tx_ring_mutex;
 static uint8_t s_spi_slave_tx_seq_num = 0;
 static uint8_t s_spi_slave_rx_seq_num = 0;
 static StreamBufferHandle_t s_spi_slave_rx_ring_buf = NULL;
@@ -124,10 +126,12 @@ static int32_t at_spi_write_data(uint8_t *data, int32_t len)
     }
     ESP_LOGD(TAG, "to write len: %d", len);
 
+    while (xSemaphoreTake(s_spi_tx_ring_mutex, portMAX_DELAY) != pdPASS);
     int32_t had_written_len = xStreamBufferSend(s_spi_slave_tx_ring_buf, data, len, portMAX_DELAY);
+    xSemaphoreGive(s_spi_tx_ring_mutex);
+
     if (had_written_len != len) {
-        ESP_LOGE(TAG, "stream buffer send error");
-        return -1;
+        ESP_LOGE(TAG, "stream buffer send not enough (expect:%d actual:%d)", len, had_written_len);
     }
 
     at_spi_mutex_lock();
@@ -142,7 +146,7 @@ static int32_t at_spi_write_data(uint8_t *data, int32_t len)
     }
     at_spi_mutex_unlock();
 
-    return len;
+    return had_written_len;
 }
 
 static int32_t at_spi_get_data_len(void)
@@ -304,12 +308,13 @@ static void at_spi_init(void)
 {
     // init ring buffer, queue, and mutex
     s_spi_rw_sema = xSemaphoreCreateMutex();
+    s_spi_tx_ring_mutex = xSemaphoreCreateMutex();
     s_spi_msg_queue = xQueueCreate(10, sizeof(spi_msg_t));
     s_spi_slave_rx_ring_buf = xStreamBufferCreate(CONFIG_RX_STREAM_BUFFER_SIZE, 1024);
     s_spi_slave_tx_ring_buf = xStreamBufferCreate(CONFIG_TX_STREAM_BUFFER_SIZE, 1024);
-    if (!s_spi_rw_sema || !s_spi_msg_queue || !s_spi_slave_rx_ring_buf || !s_spi_slave_tx_ring_buf) {
-        ESP_LOGE(TAG, "create StreamBuffer error, free heap heap: %d", esp_get_free_heap_size());
-        return;
+    if (!s_spi_rw_sema || !s_spi_tx_ring_mutex || !s_spi_msg_queue || !s_spi_slave_rx_ring_buf || !s_spi_slave_tx_ring_buf) {
+        ESP_LOGE(TAG, "create error, free heap heap: %d", esp_get_free_heap_size());
+        abort();
     }
 
     // init gpio
