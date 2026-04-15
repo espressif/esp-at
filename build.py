@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+# SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
 
 import os
@@ -26,6 +26,9 @@ at_macro_pairs = []
 def ESP_LOGI(x):
     print('\033[32m{}\033[0m'.format(x))
 
+def ESP_LOGW(x):
+    print('\033[33m{}\033[0m'.format(x))
+
 def ESP_LOGE(x):
     print('\033[31m{}\033[0m'.format(x))
 
@@ -42,7 +45,7 @@ preset_origins = {
     'git@jihulab.com:esp-mirror/espressif/esp-at.git':{'preprocess': jihulab_repo_preprocess, 'postprocess': jihulab_repo_postprocess},
 }
 
-def at_sync_submodule(path, repo, branch, commit, redirect):
+def at_sync_submodule(path, repo, ref, ref_type, commit, redirect):
     at_origin = subprocess.check_output(['git', 'remote', '-v']).decode(encoding = 'utf-8').split()[1]
 
     new_clone = False
@@ -53,28 +56,43 @@ def at_sync_submodule(path, repo, branch, commit, redirect):
                 repo = '/'.join([preset_origins[at_origin]['preprocess'](), os.path.basename(repo)])
 
         ESP_LOGI('Cloning into submodule:"{}" from "{}" (This may take some time)..'.format(path, repo))
-        ret = subprocess.call('git clone -b {} {} {}'.format(branch, repo, path), shell = True)
+        ret = subprocess.call('git clone -b {} {} {}'.format(ref, repo, path), shell = True)
         if ret:
             raise Exception('git clone failed')
         new_clone = True
 
     rev_parse_head = subprocess.check_output('cd {} && git rev-parse HEAD'.format(path), shell = True).decode(encoding='utf-8').strip()
+    need_update = False
     if rev_parse_head != commit:
+        need_update = True
         ESP_LOGI('Synchronizing submodule:"{}" from "{}" (This may take time)..'.format(path, repo))
         print('old commit: {}'.format(rev_parse_head))
         print('checkout commit: {}'.format(commit))
-        cmd = 'cd {} && git fetch origin {}'.format(path, branch)
+        if ref_type == 'tag':
+            cmd = 'cd {} && git fetch origin tag {}'.format(path, ref)
+        else:
+            cmd = 'cd {} && git fetch origin {}'.format(path, ref)
         ret = subprocess.call(cmd, shell = True)
         if ret:
             raise Exception('git fetch failed! Please manually run:\r\n{}'.format(cmd))
-        cmd = 'cd {} && git merge origin/{} {}'.format(path, branch, branch)
-        ret = subprocess.call(cmd, shell = True)
-        if ret:
-            raise Exception('git merge failed! Please manually run:\r\n{}'.format(cmd))
+        if ref_type == 'branch':
+            cmd = 'cd {} && git merge origin/{} {}'.format(path, ref, ref)
+            ret = subprocess.call(cmd, shell = True)
+            if ret:
+                raise Exception('git merge failed! Please manually run:\r\n{}'.format(cmd))
         cmd = 'cd {} && git checkout -q {}'.format(path, commit)
         ret = subprocess.call(cmd, shell = True)
         if ret:
             raise Exception('git checkout failed! Please manually run:\r\n{}'.format(cmd))
+    else:
+        # check if submodules are properly initialized even when commit matches
+        try:
+            status_output = subprocess.check_output('cd {} && git submodule status --recursive'.format(path),
+                shell = True, stderr = subprocess.DEVNULL).decode(encoding='utf-8')
+            if any(line.lstrip().startswith('-') for line in status_output.splitlines()):
+                need_update = True
+        except subprocess.CalledProcessError:
+            need_update = True
 
     if new_clone:
         # init submodules for cloned repository
@@ -87,22 +105,52 @@ def at_sync_submodule(path, repo, branch, commit, redirect):
             if redirect and path == 'esp-idf':
                 preset_origins[at_origin]['postprocess'](path, None)
 
-    if rev_parse_head != commit or new_clone:
+    if need_update or new_clone:
+        cmd = 'cd {} && git submodule sync'.format(path)
+        ret = subprocess.call(cmd, shell = True)
+        if ret:
+            raise Exception('git submodule sync failed! Please manually run:\r\n{}'.format(cmd))
         cmd = 'cd {} && git submodule update --init --recursive'.format(path)
         ret = subprocess.call(cmd, shell = True)
         if ret:
-            raise Exception('git submodule update failed! Please manually run:\r\n{}'.format(cmd))
+            ESP_LOGW('Submodule update failed, cleaning up stale gitdir references and retrying..')
+            # find and remove .git files with broken gitdir references (not .git directories)
+            for root, dirs, files in os.walk(path):
+                if '.git' in files:
+                    git_file = os.path.join(root, '.git')
+                    try:
+                        with open(git_file, 'r') as f:
+                            content = f.read().strip()
+                        if content.startswith('gitdir:'):
+                            gitdir = content[len('gitdir:'):].strip()
+                            if not os.path.isabs(gitdir):
+                                gitdir = os.path.normpath(os.path.join(root, gitdir))
+                            if not os.path.isdir(gitdir):
+                                os.remove(git_file)
+                    except Exception:
+                        pass
+            ret = subprocess.call(cmd, shell = True)
+            if ret:
+                raise Exception('git submodule update failed! Please manually run:\r\n{}'.format(cmd))
 
 def at_parse_idf_version(idf_ver_file, pairs):
     if not os.path.exists(idf_ver_file):
         ESP_LOGE('File does not exist: {}'.format(idf_ver_file))
         sys.exit(2)
 
+    branch = ''
+    tag = ''
+    commit = ''
+    repo = ''
     with open(idf_ver_file) as f:
         for line in f.readlines():
             index = line.strip().find('branch:')
             if index >= 0:
                 branch = line[index + len('branch:'):].rstrip('\n')
+                continue
+            index = line.strip().find('tag:')
+            if index >= 0:
+                tag = line[index + len('tag:'):].rstrip('\n')
                 continue
             index = line.strip().find('commit:')
             if index >= 0:
@@ -113,14 +161,19 @@ def at_parse_idf_version(idf_ver_file, pairs):
                 repo = line[index + len('repository:'):].rstrip('\n')
                 continue
 
-    if len(branch) <= 0:
-        sys.exit('ERROR: idf branch is not defined')
+    if branch and tag:
+        sys.exit('ERROR: idf branch and tag cannot both be defined')
+    if not branch and not tag:
+        sys.exit('ERROR: idf branch or tag must be defined')
     if len(commit) <= 0:
         sys.exit('ERROR: idf commit is not defined')
     if len(repo) <= 0:
         sys.exit('ERROR: idf url is not defined')
 
-    pairs.append(('esp-idf', repo, branch, commit, 1))
+    if branch:
+        pairs.append(('esp-idf', repo, branch, 'branch', commit, 1))
+    else:
+        pairs.append(('esp-idf', repo, tag, 'tag', commit, 1))
 
 def at_parse_submodules(submodules_file, pairs):
     import configparser
@@ -130,7 +183,7 @@ def at_parse_submodules(submodules_file, pairs):
     config.read(submodules_file)
     for item in config.sections():
         at_macro_pairs.append('AT_' + item.split()[1].strip('"').upper() + '_SUPPORT')
-        pairs.append((config[item]['path'], config[item]['url'], config[item]['branch'], config[item]['commit'], 0))
+        pairs.append((config[item]['path'], config[item]['url'], config[item]['branch'], 'branch', config[item]['commit'], 0))
 
 def at_submodules_update(platform, module):
     config_dir = os.path.join(os.getcwd(), 'module_config', 'module_{}'.format(module.lower()))
@@ -155,8 +208,8 @@ def at_submodules_update(platform, module):
         ESP_LOGE('Failed to parse submodules:"{}" ({})'.format(submodules_file, e))
         sys.exit(2)
 
-    for path, repo, branch, commit, redirect in list(filter(None, pairs)):
-        at_sync_submodule(path, repo, branch, commit, redirect)
+    for path, repo, ref, ref_type, commit, redirect in list(filter(None, pairs)):
+        at_sync_submodule(path, repo, ref, ref_type, commit, redirect)
 
     ESP_LOGI('submodules check completed for updates.')
 
