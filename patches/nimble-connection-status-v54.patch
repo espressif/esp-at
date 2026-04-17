@@ -1,0 +1,56 @@
+From dcb2a35af0f8dc2c427c8c97a9dcdef6cb7755d1 Mon Sep 17 00:00:00 2001
+From: xiewenxiang <xiewenxiang@espressif.com>
+Date: Thu, 16 Apr 2026 17:38:10 +0800
+Subject: [PATCH] fix(nimble): map HCI status in rd rem used feat before GAP
+ connect event
+
+---
+ nimble/host/src/ble_gap.c | 30 ++++++++++++++++++++++++++++--
+ 1 file changed, 28 insertions(+), 2 deletions(-)
+
+diff --git a/nimble/host/src/ble_gap.c b/nimble/host/src/ble_gap.c
+index dd227b1e9..af0f86088 100644
+--- a/nimble/host/src/ble_gap.c
++++ b/nimble/host/src/ble_gap.c
+@@ -3509,10 +3509,36 @@ ble_gap_rx_rd_rem_sup_feat_complete(const struct ble_hci_ev_le_subev_rd_rem_used
+                 conn->supported_feat = get_le32(ev->features);
+ #endif
+             }
+-            ble_gap_event_connect_call(ev->conn_handle, ev->status);
++            /* ev->status is HCI status of LE Read Remote Used Features, not the
++             * LE Connection Complete status. Passing it raw breaks GAP semantics:
++             * HCI 0x1A (BLE_ERR_UNSUPP_REM_FEATURE, decimal 26) collides with
++             * host errno BLE_HS_EENCRYPT_KEY_SZ (26) when apps interpret status. */
++            {
++                int gap_status;
++
++                if (ev->status == BLE_ERR_SUCCESS) {
++                    gap_status = 0;
++                } else if (ev->status == BLE_ERR_UNSUPP_REM_FEATURE) {
++                    gap_status = 0;
++                    BLE_HS_LOG(INFO, "rd rem used feat: hci 0x%02x (ignored for GAP connect)",
++                               ev->status);
++                } else {
++                    gap_status = BLE_HS_HCI_ERR(ev->status);
++                }
++                ble_gap_event_connect_call(ev->conn_handle, gap_status);
++            }
+             conn->slave_conn = 1;
+         } else if (ev->status != 0) {
+-            ble_gap_event_connect_call(ev->conn_handle, ev->status);
++            int gap_status;
++
++            if (ev->status == BLE_ERR_UNSUPP_REM_FEATURE) {
++                gap_status = 0;
++                BLE_HS_LOG(INFO, "rd rem used feat: hci 0x%02x (ignored for GAP connect)",
++                           ev->status);
++            } else {
++                gap_status = BLE_HS_HCI_ERR(ev->status);
++            }
++            ble_gap_event_connect_call(ev->conn_handle, gap_status);
+         }
+     }
+ #endif
+-- 
+2.50.1 (Apple Git-155)
+
