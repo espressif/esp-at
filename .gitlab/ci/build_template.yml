@@ -6,6 +6,15 @@
 .speedup_repo_clone: &speedup_repo_clone
   - get_module_configs
   - sed -i "s?https://github.com?$GITLAB_SSH_SERVER?g" ${module_cfg_dir}/IDF_VERSION
+  # optimize for idf images from dockerhub
+  - |
+    if [ -d /opt/esp/idf ]; then
+      git config --global --add safe.directory /opt/esp/idf
+      git -C /opt/esp/idf config remote.origin.url $GITLAB_SSH_SERVER/espressif/esp-idf.git
+      git -C /opt/esp/idf submodule sync
+      ln -sf /opt/esp/idf ${CI_PROJECT_DIR}/esp-idf
+      export IDF_PATH=${CI_PROJECT_DIR}/esp-idf
+    fi
 
 .setup_env_variables: &setup_env_variables
   - export HAS_IDF_PREREQUISITES=1
@@ -33,10 +42,11 @@
 
 .build_template:
   stage: build
-  image: $CI_DOCKER_REGISTRY/esp-env-v5.4:1
+  image: espressif/idf:release-v5.4
   needs: []
   tags:
     - esp-at
+    - build
   artifacts:
     name: esp-at-artifacts
     paths:
@@ -319,12 +329,13 @@
 .build_common_examples: &build_common_examples
   - *enable_fs_cmds
   - *enable_intf_security
-  - export AT_CUSTOM_COMPONENTS="
-      $CI_PROJECT_DIR/examples/at_custom_cmd
-      $CI_PROJECT_DIR/examples/at_fs_to_http_server
-      $CI_PROJECT_DIR/examples/at_http_get_to_fs
-      $CI_PROJECT_DIR/examples/at_interface_security
-      "
+  - >-
+    export AT_CUSTOM_COMPONENTS="
+    $CI_PROJECT_DIR/examples/at_custom_cmd
+    $CI_PROJECT_DIR/examples/at_fs_to_http_server
+    $CI_PROJECT_DIR/examples/at_http_get_to_fs
+    $CI_PROJECT_DIR/examples/at_interface_security
+    "
   - *build_project
 
 ##################
@@ -367,7 +378,7 @@
   extends:
     - .build_template
     - .before_script_esp32c5
-  image: $CI_DOCKER_REGISTRY/esp-env-v5.5:2
+  image: espressif/idf:release-v5.5
   variables:
     PLATFORM: "PLATFORM_ESP32C5"
     SILENCE: "0"
@@ -384,7 +395,7 @@
   extends:
     - .build_template
     - .before_script_esp32c61
-  image: $CI_DOCKER_REGISTRY/esp-env-v5.5:2
+  image: espressif/idf:release-v5.5
   variables:
     PLATFORM: "PLATFORM_ESP32C61"
     SILENCE: "0"
