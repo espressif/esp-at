@@ -24,7 +24,7 @@ workflow:
 
 # global variables
 variables:
-  GIT_STRATEGY: clone
+  GIT_STRATEGY: fetch
   AT_FIRMWARE_FROM: gitlab
 
 default:

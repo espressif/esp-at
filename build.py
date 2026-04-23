@@ -68,19 +68,24 @@ def at_sync_submodule(path, repo, ref, ref_type, commit, redirect):
         ESP_LOGI('Synchronizing submodule:"{}" from "{}" (This may take time)..'.format(path, repo))
         print('old commit: {}'.format(rev_parse_head))
         print('checkout commit: {}'.format(commit))
-        if ref_type == 'tag':
-            cmd = 'cd {} && git fetch origin tag {}'.format(path, ref)
-        else:
-            cmd = 'cd {} && git fetch origin {}'.format(path, ref)
-        ret = subprocess.call(cmd, shell = True)
+        # fetch tag or branch only if commit not found
+        cmd = 'cd {} && git log -1 {}'.format(path, commit)
+        ret = subprocess.call(cmd, shell=True)
         if ret:
-            raise Exception('git fetch failed! Please manually run:\r\n{}'.format(cmd))
-        if ref_type == 'branch':
-            cmd = 'cd {} && git merge origin/{} {}'.format(path, ref, ref)
+            print('expected commit not found, fetching tag or branch..')
+            if ref_type == 'tag':
+                cmd = 'cd {} && git fetch origin tag {}'.format(path, ref)
+            else:
+                cmd = 'cd {} && git fetch origin {}'.format(path, ref)
             ret = subprocess.call(cmd, shell = True)
             if ret:
-                raise Exception('git merge failed! Please manually run:\r\n{}'.format(cmd))
-        cmd = 'cd {} && git checkout -q {}'.format(path, commit)
+                raise Exception('git fetch failed! Please manually run:\r\n{}'.format(cmd))
+            if ref_type == 'branch':
+                cmd = 'cd {} && git merge origin/{} {}'.format(path, ref, ref)
+                ret = subprocess.call(cmd, shell = True)
+                if ret:
+                    raise Exception('git merge failed! Please manually run:\r\n{}'.format(cmd))
+        cmd = 'cd {} && git checkout -q {} --force'.format(path, commit)
         ret = subprocess.call(cmd, shell = True)
         if ret:
             raise Exception('git checkout failed! Please manually run:\r\n{}'.format(cmd))
@@ -110,7 +115,7 @@ def at_sync_submodule(path, repo, ref, ref_type, commit, redirect):
         ret = subprocess.call(cmd, shell = True)
         if ret:
             raise Exception('git submodule sync failed! Please manually run:\r\n{}'.format(cmd))
-        cmd = 'cd {} && git submodule update --init --recursive'.format(path)
+        cmd = 'cd {} && git submodule update --init --recursive --force'.format(path)
         ret = subprocess.call(cmd, shell = True)
         if ret:
             ESP_LOGW('Submodule update failed, cleaning up stale gitdir references and retrying..')
