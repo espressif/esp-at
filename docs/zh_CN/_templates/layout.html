@@ -1,4 +1,12 @@
 {% extends '!layout.html' %}
 {% block comments %}
-<p style="text-align:center"><a href="https://www.espressif.com/zh-hans/company/documents/documentation_feedback?docId=4846&sections={{ title|striptags|e }} ({{ pagename }})&version={{ release }} ({{ version }})">提供有关此文档的反馈</a></p>
+{% set doc_id_mapping = {
+    "esp32": "10023",
+    "esp32s2": "10671",
+    "esp32c2": "10029",
+    "esp32c3": "10031",
+    "esp32c6": "10035",
+} %}
+{% set docid = doc_id_mapping.get(idf_target, '') %}
+<p style="text-align:center"><a href="https://www.espressif.com/zh-hans/company/documents/documentation_feedback?docId={{ docid }}&sections={{ title|striptags|e }} ({{ pagename }})&version={{ release }} ({{ version }})">提供有关此文档的反馈</a></p>
 {% endblock %}
