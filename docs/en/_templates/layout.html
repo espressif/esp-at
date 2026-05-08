@@ -1,4 +1,14 @@
 {% extends '!layout.html' %}
 {% block comments %}
-<p style="text-align:center"><a href="https://www.espressif.com/en/company/documents/documentation_feedback?docId=4419&sections={{ title|striptags|e }} ({{ pagename }})&version={{ release }} ({{ version }})">Provide feedback about this document</a></p>
+{% set doc_id_mapping = {
+  "esp32": "8457",
+  "esp32s2": "8491",
+  "esp32c2": "8477",
+  "esp32c3": "8467",
+  "esp32c5": "9883",
+  "esp32c6": "8487",
+  "esp32c61": "9889"
+} %}
+{% set docid = doc_id_mapping.get(idf_target, '') %}
+<p style="text-align:center"><a href="https://www.espressif.com/en/company/documents/documentation_feedback?docId={{ docid }}&sections={{ title|striptags|e }} ({{ pagename }})&version={{ release }} ({{ version }})">Provide feedback about this document</a></p>
 {% endblock %}
