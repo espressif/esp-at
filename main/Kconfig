@@ -202,6 +202,11 @@ config AT_BLUFI_COMMAND_SUPPORT
     default "y"
     depends on AT_ENABLE && BT_ENABLED && (!IDF_TARGET_ESP32C2 || (BT_NIMBLE_ENABLED && BT_NIMBLE_BLUFI_ENABLE && BT_NIMBLE_EXT_ADV))
 
+config AT_BLE_OTA_COMMAND_SUPPORT
+    bool "AT ble ota command support."
+    default "n"
+    depends on AT_ENABLE && BT_ENABLED
+
 config AT_BT_COMMAND_SUPPORT
     bool "AT bt command support."
     default "n"

@@ -66,6 +66,10 @@ if (CONFIG_AT_BLUFI_COMMAND_SUPPORT)
     target_link_libraries(${COMPONENT_LIB} INTERFACE "-u esp_at_blufi_cmd_regist")
 endif()
 
+if (CONFIG_AT_BLE_OTA_COMMAND_SUPPORT)
+    target_link_libraries(${COMPONENT_LIB} INTERFACE "-u esp_at_ble_ota_cmd_regist")
+endif()
+
 if (CONFIG_AT_BT_COMMAND_SUPPORT)
     target_link_libraries(${COMPONENT_LIB} INTERFACE "-u esp_at_bt_cmd_regist")
 endif()

@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -193,6 +193,13 @@ bool esp_at_ble_hid_cmd_regist(void);
  * @return true if success, otherwise false.
  */
 bool esp_at_blufi_cmd_regist(void);
+
+/**
+ * @brief Register the BLE OTA AT commands.
+ *
+ * @return true if success, otherwise false.
+ */
+bool esp_at_ble_ota_cmd_regist(void);
 
 /**
  * @brief Register the Classic Bluetooth AT commands.

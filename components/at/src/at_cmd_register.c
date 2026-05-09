@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -92,6 +92,10 @@ ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_driver_cmd_regist, 19);
 
 #ifdef CONFIG_AT_ETHERNET_SUPPORT
 ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_eth_cmd_regist, 2);
+#endif
+
+#ifdef CONFIG_AT_BLE_OTA_COMMAND_SUPPORT
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ble_ota_cmd_regist, 20);
 #endif
 
 void esp_at_cmd_set_register(void)
