@@ -181,7 +181,7 @@ Web Server AT 示例
 
    OTA 配置页面
 
-**说明** 1：仅当浏览器连接 {IDF_TARGET_NAME} 模块的AP，或者访问 OTA 配置页面的设备与 {IDF_TARGET_NAME} 模块连接在同一个子网中时，才可以打开该配置界面。
+**说明** 1：仅当浏览器连接 {IDF_TARGET_NAME} 模块的 AP，或者访问 OTA 配置页面的设备与 {IDF_TARGET_NAME} 模块连接在同一个子网中时，才可以打开该配置界面。
 
 **说明** 2：网页上显示的“当前固件版本”为当前用户编译的应用程序版本号，用户可通过 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT firmware version`` （参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）更改该版本号，建立固件版本与应用程序的同步关系，以便于管理应用程序固件版本。
 
@@ -211,9 +211,32 @@ Web Server AT 示例
 
 之后点击 “固件升级” 按钮发送新版固件。
 
-**说明** 1：对于 ``ota`` 分区，网页会对选择的固件进行检查。固件命名的后缀必须为 ``.bin``。请确保固件的大小不要超过 ``partitions_at.csv`` 文件中定义的 ``ota`` 分区大小。有关此文件的详细信息，请参考文档 :doc:`../Compile_and_Develop/How_to_add_support_for_a_module`。
+**说明：**
 
-**说明** 2：对于其它分区，网页会对选择的固件进行检查。固件命名的后缀必须为 ``.bin``。请确保固件的大小不要超过 ``at_customize.csv`` 文件中定义的分区大小。有关此文件的详细信息，请参考文档 :doc:`../Compile_and_Develop/How_to_customize_partitions`。
+- 对于 ``ota`` 分区升级，网页会对选择的固件进行检查。固件命名的后缀必须为 ``.bin`` 或 ``.bin.xz.packed`` 。请确保固件的大小不要超过 ``partitions_at.csv`` 文件中定义的 ``ota`` 分区大小。有关此文件的详细信息，请参考文档 :doc:`../Compile_and_Develop/How_to_add_support_for_a_module`。
+- 你可以 :doc:`从 GitHub Actions 里下载 <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>` 所需要的 OTA 固件，也可以自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>` 生成所需要的 OTA 固件。
+
+.. only:: esp32c2
+
+  - 如果你使用的是 ESP32C2-2MB 模组配置，OTA 固件为 ``build/custom_ota_binaries/esp-at.bin.xz.packed`` （压缩 OTA）；如果你使用的是 ESP32C2-4MB 模组配置，OTA 固件为 ``build/esp-at.bin`` （非压缩 OTA）。
+
+.. only:: esp32c5 or esp32c61
+
+  - OTA 固件为 ``build/custom_ota_binaries/esp-at.bin.xz.packed`` （压缩 OTA）。
+
+.. only:: esp32 or esp32c3 or esp32c6 or esp32s2
+
+  - OTA 固件为 ``build/esp-at.bin`` （非压缩 OTA）。
+
+.. note::
+  压缩 OTA 与非压缩 OTA 区别
+
+  - 压缩 OTA （固件后缀 ``.bin.xz.packed`` ）：采用压缩 OTA 升级方式。芯片重启后，bootloader 会自动校验并解压固件，然后执行跳转；若校验失败，则继续使用旧版固件。解压过程发生在芯片重启后、AT 输出 ``ready`` 前，需要一定时间，请耐心等待。
+  - 非压缩 OTA （固件后缀 ``.bin`` ）：采用非压缩 OTA 升级方式。芯片重启后，bootloader 直接校验固件并执行跳转，无需解压过程。
+
+- 不建议升级到旧版本。降到旧版本会存在一定的兼容性问题，甚至无法运行，如果你坚持要升级到旧版本，请根据自己的产品自行测试验证功能。
+
+- 对于非 ``ota`` 分区升级，网页会对选择的固件进行检查。固件命名的后缀必须为 ``.bin``。请确保固件的大小不要超过 ``at_customize.csv`` 文件中定义的分区大小。有关此文件的详细信息，请参考文档 :doc:`../Compile_and_Develop/How_to_customize_partitions`。
 
 获取 OTA 结果
 """"""""""""""""
@@ -507,4 +530,8 @@ Captive Portal，是一种“强制认证主页”技术，当使用支持 Capti
 常见故障排除
 ^^^^^^^^^^^^
 
-**说明** 1：通信双方（station 设备、AP 设备）都支持 Captive Portal 功能才能保证该功能正常使用，因此，若设备连接 {IDF_TARGET_NAME} 设备的 AP 后未提示“需登录/认证”，并且没有自动进入到 AT web 的主界面，可能是 station 设备不支持该功能，此时，请参考上述 `使用浏览器发送配网信息`_ 的具体步骤手动打开 AT web 的主界面。
+**说明：**
+
+- 通信双方（station 设备、AP 设备）都支持 Captive Portal 功能才能保证该功能正常使用，因此，若设备连接 {IDF_TARGET_NAME} 设备的 AP 后未提示“需登录/认证”，并且没有自动进入到 AT web 的主界面，可能是 station 设备不支持该功能，此时，请参考上述 `使用浏览器发送配网信息`_ 的具体步骤手动打开 AT web 的主界面。
+- 某些手机（或设备）采用了激进的 Captive Portal 检测（发起大量网络连接来探测网络连通性），可能会存在兼容性问题。此时，你可以尝试增加 CONFIG_LWIP_MAX_SOCKETS 的值来解决该问题。 menuconfig 路径：``Component config`` > ``LWIP`` > ``Max number of open sockets``。
+

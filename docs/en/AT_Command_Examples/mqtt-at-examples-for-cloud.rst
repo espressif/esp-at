@@ -127,7 +127,69 @@ Use AT commands to connect to AWS IoT
 
    Note:
 
-   - The <asctime style time> obtained at this time must be the real-time time of the set time zone, otherwise the connection will fail due to the validity period of the certificate.
+   - The <asctime style time> obtained at this time must match the actual wall-clock time in the configured time zone; otherwise the connection may fail because the certificate is outside its validity period.
+
+#. **(Optional)** Update the MQTT certificates at runtime.
+
+   a). Update the MQTT root CA certificate.
+
+      Command:
+
+      .. code-block:: none
+
+        AT+SYSMFG=2,"mqtt_ca","mqtt_ca",8,<ca_len>
+
+      Response:
+
+      .. code-block:: none
+
+        OK
+
+        >
+
+      After receiving ``>``, send the complete content of ``Amazon-root-CA-1.pem``, where ``<ca_len>`` is the byte length of the certificate file.
+
+   b). Update the MQTT client private key.
+
+      Command:
+
+      .. code-block:: none
+
+        AT+SYSMFG=2,"mqtt_key","mqtt_key",8,<key_len>
+
+      Response:
+
+      .. code-block:: none
+
+        OK
+
+        >
+
+      After receiving ``>``, send the complete content of ``private.pem.key``, where ``<key_len>`` is the byte length of the private key file.
+
+   c). Update the MQTT client certificate.
+
+      Command:
+
+      .. code-block:: none
+
+        AT+SYSMFG=2,"mqtt_cert","mqtt_cert",8,<cert_len>
+
+      Response:
+
+      .. code-block:: none
+
+        OK
+
+        >
+
+      After receiving ``>``, send the complete content of ``device.pem.crt``, where ``<cert_len>`` is the byte length of the certificate file.
+
+   Note:
+
+   - The key names in the ``mqtt_ca``, ``mqtt_key``, and ``mqtt_cert`` namespaces are the same as their respective namespace names.
+   - The data written is binary type (``<type> = 8``), and the data length sent must exactly match ``<ca_len>``, ``<key_len>``, or ``<cert_len>``.
+   - To query or verify the result, refer to :ref:`AT+SYSMFG Command Examples <cmd-SYSMFG>`.
 
 #. Set MQTT user properties.
 
@@ -164,7 +226,7 @@ Use AT commands to connect to AWS IoT
 
    Note:
 
-   - Please fill in your endpoint value in the `<endpoint>` parameter.
+   - Please enter your actual endpoint string from the AWS IoT console in place of ``<endpoint>`` in the command.
    - The port 8883 cannot be changed.
 
 #. Subscribe to messages.
@@ -202,12 +264,12 @@ Example log
 
 Log for normal interaction is as follows:
 
-#. Log on the ESP32 side
+#. Log on the {IDF_TARGET_NAME} side
 
    .. figure:: ../../_static/at_command_examples/esp32at-log.png
        :scale: 100 %
        :align: center
-       :alt: Log of Connecting to AWS IoT on ESP32 Side
+       :alt: Log of Connecting to AWS IoT on {IDF_TARGET_NAME} Side
 
 #. Log on the AWS side
 

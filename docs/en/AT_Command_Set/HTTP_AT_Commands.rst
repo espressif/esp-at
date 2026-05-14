@@ -395,6 +395,7 @@ Note
 - This command can only set one HTTP request header at a time, but it can be set multiple times to support multiple different HTTP request headers.
 - The HTTP request headers configured by this command are global. Once set, all HTTP commands will carry these request headers.
 - If the ``key`` in the HTTP request header set by this command is the same as that of other HTTP commands, the HTTP request header set by this command will be used.
+- If the ``key`` is duplicated across multiple invocations of this command, the value from the last invocation will be used.
 
 .. _cmd-HTTPCHEAD_example:
 

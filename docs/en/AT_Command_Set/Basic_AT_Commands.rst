@@ -1813,6 +1813,7 @@ Note
 - When Wi-Fi is turned off or not initialized, the :ref:`AT+RFPOWER <cmd-RFPOWER>` command cannot set or query the RF TX Power of Wi-Fi. Similarly, when Bluetooth LE is not initialized, the command cannot set or query that of Bluetooth LE, either.
 - Since the RF TX Power is actually divided into several levels, and each level has its own value range, the ``wifi_power`` value queried by the ``esp_wifi_get_max_tx_power`` may differ from the value set by ``esp_wifi_set_max_tx_power`` and is no larger than the set value.
 - It is recommended to set the two parameters <ble_scan_power> and <ble_conn_power> to the same value as the <ble_adv_power> parameter. Otherwise, they will be automatically adjusted to the value of <ble_adv_power>.
+- The configuration changes are not saved in the flash. If you need to save them to flash, please refer to :ref:`Maximum TX Power Operations <sysmfg-max-tx-power>`.
 
 .. only:: esp32c61
 
@@ -1903,6 +1904,7 @@ Note
 .. list::
 
   - When performing a firmware rollback, {IDF_TARGET_NAME} first verifies the integrity of the target firmware. The rollback proceeds only if verification succeeds; otherwise, an error is returned.
+  - It is recommended to roll back between patch versions. Rolling back across major versions is not recommended, as it may cause compatibility issues or even prevent the firmware from running. If you must roll back across major versions, please test and verify the functionality on your own product.
   :esp32c2: - For {IDF_TARGET_NAME}-2MB AT firmware, the compressed OTA partition stores a firmware image that, after decompression, is identical to the currently running firmware. Therefore, a true firmware switch cannot be performed.
   :esp32c5 or esp32c61: - For {IDF_TARGET_NAME}-4MB AT firmware, the compressed OTA partition stores a firmware image that, after decompression, is identical to the currently running firmware. Therefore, a true firmware switch cannot be performed.
   :esp32c2 or esp32c3 or esp32c6 or esp32 or esp32s2: - The rollback function operates independently of the OTA upgrade process and can directly switch execution to the firmware version stored in the other OTA partition.

@@ -242,7 +242,7 @@ Wi-Fi AT 命令集
 
     ::
 
-        AT+CWBANDMODE=<bandmode>
+        AT+CWBANDMODE=<bandmode>[,<auto_connect>]
 
     **响应：**
 
@@ -258,6 +258,11 @@ Wi-Fi AT 命令集
     - 1: 2.4 GHz 频段
     - 2: 5 GHz 频段
     - 3: 2.4 GHz 和 5 GHz 双频段（默认值）
+
+    - **<auto_connect>**：切换 {IDF_TARGET_NAME} 设备的 Wi-Fi 频段模式时（例如，从 2.4 GHz 频段切换为 5 GHz 频段或 2.4 GHz 和 5 GHz 双频段），是否启用自动连接 AP 的功能，默认值：1。参数缺省时，使用默认值，也就是能自动连接。
+
+      - 0: 禁用自动连接 AP 的功能
+      - 1: 启用自动连接 AP 的功能，若之前已经将自动连接 AP 的配置保存到 flash 中，则 {IDF_TARGET_NAME} 设备将自动连接 AP
 
     说明
     ^^^^
@@ -1975,7 +1980,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CWJEAP=<"ssid">,<method>,<"identity">,<"username">,<"password">,<security>[,<jeap_timeout>]
+    AT+CWJEAP=<"ssid">,<method>,<"identity">,<"username">,<"password">,<security>[,<jeap_timeout>][,<rssi>][,<"bssid">][,<channel>][,<scan_mode>]
 
 **响应：**
 
@@ -2012,6 +2017,13 @@ Wi-Fi AT 命令集
    - bit 1: 客户端载入 CA 证书来校验 WPA2 Enterprise 服务器端的证书
 
 - **<jeap_timeout>**：:ref:`AT+CWJEAP <cmd-JEAP>` 命令的最大超时时间，单位：秒，默认值：15，范围：[3,600]
+- **<rssi>**：连接时的 RSSI 阈值，Wi‑Fi 仅连接 RSSI 不低于该值的 AP。单位：dBm，范围：[-128,127]，默认值：-127
+- **<"bssid">**：指定目标 AP 的 MAC 地址，实现精确连接，避免连接同名但不同 MAC 的 AP。格式为 "xx:xx:xx:xx:xx:xx"
+- **<channel>**：指定扫描起始的信道。从该信道开始，寻找指定 SSID 的 AP
+- **<scan_mode>**：扫描模式，默认值为 0
+
+   - 0: 快速扫描，扫描到对应的 AP 后立即连接，加快连接速度
+   - 1: 全信道扫描，选择信号最强的 AP 连接
 
 示例
 ^^^^
@@ -2264,8 +2276,8 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 说明
 ^^^^
 
-- 详细说明请参考：`Wi-Fi 国家/地区代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id45>`_。
-- 配置更改不保存到 flash。
+- 详细说明请参考：`Wi-Fi 国家/地区代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#id26>`_。
+- 配置更改不保存到 flash。如果需要保存到 flash，请参考 :ref:`国家代码操作 <sysmfg-country-code>` 。
 
 示例
 ^^^^
