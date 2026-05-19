@@ -4,5 +4,7 @@
 
 
 # Name,          Type,    SubType,  Offset,    Size
-mfg_nvs,         data,    nvs,      0x11000,   0x10000
-factory_parameter,data,   0x41,     0x21000,   0x1000
+# 相对 at_customize 起点的偏移量为 0，大小为 64KB (0x10000)
+mfg_nvs,         data,    nvs,      0x0,       0x10000
+# 紧随其后，相对偏移量为 0x10000
+factory_parameter,data,   0x41,     0x10000,   0x1000
