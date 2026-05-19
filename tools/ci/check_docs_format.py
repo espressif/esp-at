@@ -1403,6 +1403,112 @@ def check_list_sentence(file_path):
 
 
 # ---------------------------------------------------------------------------
+# Rule 17: Chinese text must not use English comma, colon, or period
+# ---------------------------------------------------------------------------
+
+_CN_CHAR = r'[\u4e00-\u9fff]'
+_EN_PUNCT_AFTER_CN = {
+    ',': '，',
+    ':': '：',
+    '.': '。',
+}
+
+
+def check_chinese_punctuation(file_path):
+    """Rule 17: Do not use English comma, colon, or period immediately after Chinese.
+
+    Applies to zh_CN files only.  Positions inside inline backticks are skipped.
+    """
+    if 'zh_CN' not in file_path:
+        return []
+
+    errors = []
+    in_code_block = False
+    expecting_code = False
+
+    with open(file_path, 'r', encoding='utf-8') as f:
+        for line_num, line in enumerate(f, start=1):
+            in_code_block, expecting_code = is_in_code_block(line, in_code_block, expecting_code)
+            if in_code_block or expecting_code:
+                continue
+
+            if line.strip().startswith('.. ') or line.strip().startswith(':'):
+                continue
+
+            for i, ch in enumerate(line):
+                if ch not in _EN_PUNCT_AFTER_CN:
+                    continue
+                if i == 0 or not re.match(_CN_CHAR, line[i - 1]):
+                    continue
+                if is_in_backticks(line, i):
+                    continue
+
+                cn_punct = _EN_PUNCT_AFTER_CN[ch]
+                errors.append((
+                    line_num,
+                    line.rstrip(),
+                    f'Column {i + 1}: use a Chinese punctuation mark ({cn_punct}) instead of '
+                    f"English '{ch}' after Chinese text"
+                ))
+
+    return errors
+
+
+# ---------------------------------------------------------------------------
+# Rule 18: Space required between Chinese and English words
+# ---------------------------------------------------------------------------
+
+_CJK_LATIN_BOUNDARY_RE = re.compile(
+    _CN_CHAR + r'(?=[A-Za-z])|(?<=[A-Za-z])' + _CN_CHAR
+)
+
+
+def check_cjk_latin_spacing(file_path):
+    """Rule 18: Require a space between Chinese characters and English words.
+
+    Applies to zh_CN files only.  Positions inside inline backticks are skipped.
+    """
+    if 'zh_CN' not in file_path:
+        return []
+
+    errors = []
+    in_code_block = False
+    expecting_code = False
+
+    with open(file_path, 'r', encoding='utf-8') as f:
+        for line_num, line in enumerate(f, start=1):
+            in_code_block, expecting_code = is_in_code_block(line, in_code_block, expecting_code)
+            if in_code_block or expecting_code:
+                continue
+
+            if line.strip().startswith('.. ') or line.strip().startswith(':'):
+                continue
+
+            for match in _CJK_LATIN_BOUNDARY_RE.finditer(line):
+                pos = match.start()
+                if is_in_backticks(line, pos):
+                    continue
+
+                if re.match(_CN_CHAR, match.group(0)):
+                    errors.append((
+                        line_num,
+                        line.rstrip(),
+                        f'Column {pos + 1}: a space is required between Chinese text and '
+                        f'the following English word'
+                    ))
+                else:
+                    errors.append((
+                        line_num,
+                        line.rstrip(),
+                        f'Column {pos + 1}: a space is required between the preceding English '
+                        f'word and Chinese text'
+                    ))
+                break  # one report per line to avoid noise
+
+    return errors
+
+
+# ---------------------------------------------------------------------------
 # Top-level: run all checks on a single file
 # ---------------------------------------------------------------------------
 
@@ -1423,6 +1529,8 @@ def check_file(file_path):
         ('spacing',           check_spacing),                # Rule 14
         ('line-count',        check_line_count_consistency), # Rule 15
         ('param-brackets',    check_param_brackets),         # Rule 16
+        ('chinese-punct',     check_chinese_punctuation),    # Rule 17
+        ('cjk-latin-space',   check_cjk_latin_spacing),      # Rule 18
     ]
 
     for category, check_fn in checks:

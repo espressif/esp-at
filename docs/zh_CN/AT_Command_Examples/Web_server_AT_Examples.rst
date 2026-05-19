@@ -181,7 +181,7 @@ Web Server AT 示例
 
    OTA 配置页面
 
-**说明** 1：仅当浏览器连接 {IDF_TARGET_NAME} 模块的AP，或者访问 OTA 配置页面的设备与 {IDF_TARGET_NAME} 模块连接在同一个子网中时，才可以打开该配置界面。
+**说明** 1：仅当浏览器连接 {IDF_TARGET_NAME} 模块的 AP，或者访问 OTA 配置页面的设备与 {IDF_TARGET_NAME} 模块连接在同一个子网中时，才可以打开该配置界面。
 
 **说明** 2：网页上显示的“当前固件版本”为当前用户编译的应用程序版本号，用户可通过 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT firmware version`` （参考 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`）更改该版本号，建立固件版本与应用程序的同步关系，以便于管理应用程序固件版本。
 

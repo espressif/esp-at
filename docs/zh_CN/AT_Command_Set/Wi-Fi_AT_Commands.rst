@@ -574,7 +574,7 @@ Wi-Fi AT 命令集
    - 2: 密码错误
    - 3: 无法找到目标 AP
    - 4: 连接失败
-   - 其它值: 发生未知错误
+   - 其它值：发生未知错误
 
 说明
 ^^^^
@@ -990,7 +990,7 @@ Wi-Fi AT 命令集
 
 - 本命令只有当 :ref:`AT+CWMODE=2 <cmd-MODE>` 或者 :ref:`AT+CWMODE=3 <cmd-MODE>` 时才有效。
 - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存在 NVS 分区。
-- 默认 SSID 因设备而异，因为它由设备的 MAC 地址组成。 你可以使用 :ref:`AT+CWSAP? <cmd-SAP>` 查询默认的SSID。
+- 默认 SSID 因设备而异，因为它由设备的 MAC 地址组成。 你可以使用 :ref:`AT+CWSAP? <cmd-SAP>` 查询默认的 SSID。
 
 示例
 ^^^^
