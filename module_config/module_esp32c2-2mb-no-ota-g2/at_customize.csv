@@ -4,5 +4,5 @@
 
 
 # Name,          Type,    SubType,  Offset,    Size
-mfg_nvs,         data,    nvs,      0x10000,   0x10000
-factory_parameter,data,   0x41,     0x20000,   0x1000
+mfg_nvs,         data,    nvs,      0x11000,   0x10000
+factory_parameter,data,   0x41,     0x21000,   0x1000
