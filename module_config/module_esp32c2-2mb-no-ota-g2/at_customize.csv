@@ -4,6 +4,6 @@
 
 
 # Name,          Type,    SubType,  Offset,    Size
-# 绝对地址严格落在主分区表为你开辟的 0x10000 ~ 0x18000 区间内，安全系数 100%
-ble_data,        data,    0x40,     0x10000,   0x4000
+# 严格落在主分区表划定的 0x10000 ~ 0x30000 领土内
+mfg_nvs,         data,    nvs,      0x10000,   0x4000
 factory_param,   data,    0x41,     0x14000,   0x1000
