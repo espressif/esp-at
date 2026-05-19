@@ -2,6 +2,7 @@
 #mfg_nvs, data, nvs, 0x1f000, 124K
 #fs_storage, data, 0xff, 0x47000, 100K
 
+
 # Name,          Type,    SubType,  Offset,    Size
-mfg_nvs,         data,    nvs,      0x0,       0x10000
-factory_parameter,data,   0x41,     0x10000,   0x1000
+mfg_nvs,         data,    nvs,      0x10000,   0x10000
+factory_parameter,data,   0x41,     0x20000,   0x1000
