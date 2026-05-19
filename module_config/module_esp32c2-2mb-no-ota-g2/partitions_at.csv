@@ -9,5 +9,7 @@
 # Name,          Type,    SubType,  Offset,    Size,     Flags
 nvs,             data,    nvs,      0x9000,    0x6000,
 phy_init,        data,    phy,      0xf000,    0x1000,
+# 主分区表明确宣告：0x10000 到 0x18000 属于自定义子分区专用领土
 at_customize,    data,    0x40,     0x10000,   0x8000,
+# 固件从 0x18000 开始，后面有近 1.8MB 的巨大连续空间
 factory,         app,     factory,  0x18000,   0x1E8000,
