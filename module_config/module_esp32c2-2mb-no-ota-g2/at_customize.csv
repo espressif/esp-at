@@ -1,3 +1,4 @@
 # Name, Type, SubType, Offset, Size
 ble_data, data, nvs, 0x11000, 0x5000
 mfg_nvs, data, nvs, 0x1b000, 60K
+
