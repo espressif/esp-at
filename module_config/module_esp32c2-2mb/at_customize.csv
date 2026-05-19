@@ -1,8 +1,2 @@
 # Name, Type, SubType, Offset, Size
 mfg_nvs, data, nvs, 0x1b000, 60K
-
-# Name,       Type,    SubType,  Offset,    Size
-# 基础蓝牙配置数据（保留核心符号对齐）
-ble_data,     data,    0x40,     0x0,       0x4000
-# 工厂预设参数（如默认波特率、Wi-Fi 模式）
-factory_param,data,    0x41,     0x4000,    0x1000
