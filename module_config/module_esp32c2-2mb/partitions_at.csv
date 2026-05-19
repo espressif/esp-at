@@ -1,7 +1,10 @@
-# Name, Type, SubType, Offset, Size
-otadata, data, ota, 0x9000, 0x2000
-phy_init, data, phy, 0xb000, 0x1000
-nvs, data, nvs, 0xc000, 0xe000
-at_customize, 0x40, 0, 0x1a000, 0x10000
-storage, data, 0x22, 0x2a000, 0x96000
-ota_0, app, ota_0, 0xc0000, 0x140000
+# ESP-IDF Partition Table
+# Name,   Type, SubType, Offset,   Size,     Flags
+nvs,      data, nvs,     0x9000,   0x6000,
+otadata,  data, ota,     0xf000,   0x2000,
+phy_init, data, phy,     0x11000,  0x1000,
+# 将原文件系统压缩到 32KB 并挪到最前方，完美避开固件边界
+at_customize, data, 0x40,0x12000,  0x8000,
+# 将 ota_0 和 ota_1 空间由 1280KB 猛增到 1472KB (0x170000)
+ota_0,    app,  ota_0,   0x1a000,  0x170000,
+ota_1,    app,  ota_1,   0x18a000, 0x170000,
