@@ -6,10 +6,8 @@
 #ota_0, app, ota_0, 0x60000, 0x1a0000
 
 
-# Name,          Type,    SubType,  Offset,    Size,     Flags
-nvs,             data,    nvs,      0x9000,    0x6000,
-phy_init,        data,    phy,      0xf000,    0x1000,
-# 自定义数据分区，从 0x10000 开始，大小给足 128KB (0x20000)
-at_customize,    data,    0x40,     0x10000,   0x20000,
-# APP 固件从 0x30000 开始（完美对齐 64KB），吃满剩下所有的 1.81MB 空间
-factory,         app,     factory,  0x30000,   0x1D0000,
+# Name,          Type,    SubType,  Offset,    Size
+nvs,             data,    nvs,      0x9000,    0x6000
+phy_init,        data,    phy,      0xf000,    0x1000
+at_customize,    data,    0x40,     0x10000,   0x20000
+factory,         app,     factory,  0x30000,   0x1D0000

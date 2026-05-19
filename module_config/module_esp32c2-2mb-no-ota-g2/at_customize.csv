@@ -3,7 +3,5 @@
 #fs_storage, data, 0xff, 0x47000, 100K
 
 # Name,          Type,    SubType,  Offset,    Size
-# 1. 扩容到 64KB (0x10000)，上一步已证明此大小能完美通过 NVS 生成
-mfg_nvs,         data,    nvs,      0x10000,   0x10000
-# 2. 必须改成 factory_parameter（带 er），与乐鑫底层的 factory_parameter.py 脚本名字硬核对齐
-factory_parameter,data,   0x41,     0x20000,   0x1000
+mfg_nvs,         data,    nvs,      0x0,       0x10000
+factory_parameter,data,   0x41,     0x10000,   0x1000
