@@ -74,8 +74,8 @@ CONFIG_BT_NIMBLE_MSYS_1_BLOCK_COUNT=16
 CONFIG_BT_NIMBLE_MSYS_1_BLOCK_SIZE=256
 CONFIG_BT_NIMBLE_TRANSPORT_ACL_FROM_LL_COUNT=5
 CONFIG_BT_NIMBLE_TRANSPORT_ACL_SIZE=255
-CONFIG_BT_NIMBLE_EXT_ADV=y
-CONFIG_BT_NIMBLE_50_FEATURE_SUPPORT=y
+CONFIG_BT_NIMBLE_EXT_ADV=n
+CONFIG_BT_NIMBLE_50_FEATURE_SUPPORT=n
 CONFIG_BT_NIMBLE_MAX_CONNECTIONS=1
 CONFIG_BT_NIMBLE_WHITELIST_SIZE=1
 CONFIG_BT_LE_LL_RESOLV_LIST_SIZE=1
@@ -107,7 +107,7 @@ CONFIG_LWIP_IP4_REASSEMBLY=y
 CONFIG_LWIP_TCP_MAXRTX=6
 CONFIG_LWIP_TCP_SYNMAXRTX=3
 CONFIG_LWIP_SO_LINGER=y
-CONFIG_LWIP_IPV6=y
+CONFIG_LWIP_IPV6=n
 #CONFIG_LWIP_IPV6_AUTOCONFIG=n
 CONFIG_LWIP_TCP_MSS=1440
 CONFIG_LWIP_TCP_SND_BUF_DEFAULT=2880
@@ -201,23 +201,3 @@ CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200
 
 # ESP HTTPS OTA
 CONFIG_ESP_HTTPS_OTA_ALLOW_HTTP=y
-
-# =====================================================================
-# 1. 彻底斩断蓝牙扩展广播（修复链接报错，同时释放大几十 KB 空间）
-# =====================================================================
-CONFIG_BT_NIMBLE_EXT_ADV=n
-CONFIG_BT_NIMBLE_50_FEATURE_SUPPORT=n
-
-# =====================================================================
-# 2. 彻底扒掉 IPv6 壳子（抹平 62.8 KB 固件溢出的致命伤）
-# =====================================================================
-CONFIG_LWIP_IPV6=n
-
-# =====================================================================
-# 3. 追加两项更激进的底层压榨（以防万一）
-# =====================================================================
-# 移除所有代码中的错误码文本映射表（直接变为纯数字错误码，立省十几 KB）
-CONFIG_ESP_ERR_TO_NAME_LOOKUP=n
-
-# 确保使用的是轻量级格式化输出（你已经开启，保持即可）
-CONFIG_NEWLIB_NANO_FORMAT=y
