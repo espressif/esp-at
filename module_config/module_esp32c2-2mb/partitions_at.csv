@@ -3,8 +3,10 @@
 nvs,      data, nvs,     0x9000,   0x6000,
 otadata,  data, ota,     0xf000,   0x2000,
 phy_init, data, phy,     0x11000,  0x1000,
-# 将原文件系统压缩到 32KB 并挪到最前方，完美避开固件边界
-at_customize, data, 0x40,0x12000,  0x8000,
-# 将 ota_0 和 ota_1 空间由 1280KB 猛增到 1472KB (0x170000)
-ota_0,    app,  ota_0,   0x1a000,  0x170000,
-ota_1,    app,  ota_1,   0x18a000, 0x170000,
+# 压缩引导特定数据分区 (SubType 0x22 是官方强制硬编码)
+compress, data, 0x22,    0x12000,  0x2000,
+# 自定义核心数据分区表
+at_customize, data, 0x40,0x14000,  0x8000,
+# OTA 固件大房子，完美容纳 1408KB 的固件体积
+ota_0,    app,  ota_0,   0x1c000,  0x160000,
+ota_1,    app,  ota_1,   0x17c000, 0x160000,

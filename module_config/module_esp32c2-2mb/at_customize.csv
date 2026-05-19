@@ -1,6 +1,4 @@
 # Name,          Type,    SubType,  Offset,    Size
-# 1. 蓝牙基础配置数据（必须保留，16KB）
-ble_data,        data,    0x40,     0x0,       0x4000
-
-# 2. 工厂预设参数（如默认串口波特率、Wi-Fi 模式，4KB）
-factory_param,   data,    0x41,     0x4000,    0x1000
+# 移除 Offset 列的固定数值，让脚本全自动向下对齐
+ble_data,        data,    0x40,           ,    0x4000
+factory_param,   data,    0x41,           ,    0x1000
