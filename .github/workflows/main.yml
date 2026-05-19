@@ -125,8 +125,6 @@ jobs:
     with:
       module_name: ESP32C2-2MB
       artifacts_name: esp32c2-2MB-at
-      enable_ble_cmds: true
-      enable_at_debug: true
     secrets: inherit
 
   build-esp32c2-2mb-ble-at:
