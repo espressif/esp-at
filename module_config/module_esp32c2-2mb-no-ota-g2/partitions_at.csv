@@ -9,7 +9,7 @@
 # Name,          Type,    SubType,  Offset,    Size
 nvs,             data,    nvs,      0x9000,    0x6000
 phy_init,        data,    phy,      0xf000,    0x1000
-# 彻底拉开距离，将自定义主分区起点定在 0x14000，长度给足 128KB (0x20000)
-at_customize,    data,    0x40,     0x14000,   0x20000
-# APP 固件顺延从 0x34000 开始，空间依然非常充裕
-factory,         app,     factory,  0x34000,   0x1CC000
+# 保持 0x10000 起点不变，将大小扩容到 192KB (0x30000)
+at_customize,    data,    0x40,     0x10000,   0x30000
+# APP 固件从 0x40000 开始，完美实现 0x10000 (64KB) 的 MMU 硬件对齐
+factory,         app,     factory,  0x40000,   0x1C0000
