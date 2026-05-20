@@ -10,7 +10,6 @@ This document provides detailed examples for using the :ref:`AT+SYSMFG <cmd-SYSM
    - :ref:`Introduction <sysmfg-intro>`
 
      - :ref:`Overview <sysmfg-overview>`
-     - :ref:`Namespace Structure <sysmfg-namespace-structure>`
      - :ref:`Data Types <sysmfg-data-types>`
      - :ref:`Other Important Notes <sysmfg-other-notes>`
 
@@ -41,232 +40,14 @@ Introduction
 Overview
 **********
 
-The manufacturing NVS partition contains multiple namespaces, each containing several key-value pairs to store different types of configuration information. Commonly used namespaces include:
+The manufacturing NVS partition contains multiple namespaces, each containing several key-value pairs to store different types of configuration information. By purpose, they can be grouped into the following categories. The namespaces, key names, and detailed operation examples of each category are described in the corresponding sub-sections:
 
-.. only:: esp32 or esp32c3
+.. list::
 
-  .. list-table::
-     :header-rows: 1
-     :widths: 20 45 25
-
-     * - Namespace
-       - Description
-       - Related AT Commands
-     * - ``factory_param``
-       - Factory parameters (module name, Wi-Fi configuration, UART configuration, etc.)
-       - See :ref:`factory-param-intro`
-     * - ``client_cert``
-       - SSL client certificates
-       -
-         * :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`
-         * :ref:`AT+CIPSTART <cmd-START>`
-     * - ``client_key``
-       - SSL client keys
-       -
-         * :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`
-         * :ref:`AT+CIPSTART <cmd-START>`
-     * - ``client_ca``
-       - SSL client CA certificates
-       -
-         * :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`
-         * :ref:`AT+CIPSTART <cmd-START>`
-     * - ``server_cert``
-       - SSL server certificates
-       - :ref:`AT+CIPSERVER <cmd-SERVER>`
-     * - ``server_key``
-       - SSL server keys
-       - :ref:`AT+CIPSERVER <cmd-SERVER>`
-     * - ``server_ca``
-       - SSL server CA certificates
-       - :ref:`AT+CIPSERVER <cmd-SERVER>`
-     * - ``mqtt_cert``
-       - MQTT client certificates
-       - :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`
-     * - ``mqtt_key``
-       - MQTT client keys
-       - :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`
-     * - ``mqtt_ca``
-       - MQTT client CA certificates
-       - :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`
-     * - ``https_cert``
-       - HTTPS client certificates
-       - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
-     * - ``https_key``
-       - HTTPS client private keys
-       - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
-     * - ``https_ca``
-       - HTTPS client CA certificates
-       - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
-     * - ``wpa2_cert``
-       - WPA2-Enterprise client certificates
-       - :ref:`AT+CWJEAP <cmd-JEAP>`
-     * - ``wpa2_key``
-       - WPA2-Enterprise client private keys
-       - :ref:`AT+CWJEAP <cmd-JEAP>`
-     * - ``wpa2_ca``
-       - WPA2-Enterprise client CA certificates
-       - :ref:`AT+CWJEAP <cmd-JEAP>`
-     * - ``wss_cert``
-       - WebSocket client certificates
-       - :ref:`AT+WSCFG <cmd-WSCFG>`
-     * - ``wss_key``
-       - WebSocket client private keys
-       - :ref:`AT+WSCFG <cmd-WSCFG>`
-     * - ``wss_ca``
-       - WebSocket client CA certificates
-       - :ref:`AT+WSCFG <cmd-WSCFG>`
-     * - ``ble_data``
-       - Bluetooth LE service configurations
-       - :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`
-
-.. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
-
-  .. list-table::
-     :header-rows: 1
-     :widths: 20 45 25
-
-     * - Namespace
-       - Description
-       - Related AT Commands
-     * - ``factory_param``
-       - Factory parameters (module name, Wi-Fi configuration, UART configuration, etc.)
-       - See :ref:`factory-param-intro`
-     * - ``client_cert``
-       - SSL client certificates
-       -
-         * :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`
-         * :ref:`AT+CIPSTART <cmd-START>`
-     * - ``client_key``
-       - SSL client keys
-       -
-         * :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`
-         * :ref:`AT+CIPSTART <cmd-START>`
-     * - ``client_ca``
-       - SSL client CA certificates
-       -
-         * :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`
-         * :ref:`AT+CIPSTART <cmd-START>`
-     * - ``server_cert``
-       - SSL server certificates
-       - :ref:`AT+CIPSERVER <cmd-SERVER>`
-     * - ``server_key``
-       - SSL server keys
-       - :ref:`AT+CIPSERVER <cmd-SERVER>`
-     * - ``server_ca``
-       - SSL server CA certificates
-       - :ref:`AT+CIPSERVER <cmd-SERVER>`
-     * - ``mqtt_cert``
-       - MQTT client certificates
-       - :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`
-     * - ``mqtt_key``
-       - MQTT client keys
-       - :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`
-     * - ``mqtt_ca``
-       - MQTT client CA certificates
-       - :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`
-     * - ``https_cert``
-       - HTTPS client certificates
-       - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
-     * - ``https_key``
-       - HTTPS client private keys
-       - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
-     * - ``https_ca``
-       - HTTPS client CA certificates
-       - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
-     * - ``wpa2_cert``
-       - WPA2-Enterprise client certificates
-       - :ref:`AT+CWJEAP <cmd-JEAP>`
-     * - ``wpa2_key``
-       - WPA2-Enterprise client private keys
-       - :ref:`AT+CWJEAP <cmd-JEAP>`
-     * - ``wpa2_ca``
-       - WPA2-Enterprise client CA certificates
-       - :ref:`AT+CWJEAP <cmd-JEAP>`
-     * - ``wss_cert``
-       - WebSocket client certificates
-       - :ref:`AT+WSCFG <cmd-WSCFG>`
-     * - ``wss_key``
-       - WebSocket client private keys
-       - :ref:`AT+WSCFG <cmd-WSCFG>`
-     * - ``wss_ca``
-       - WebSocket client CA certificates
-       - :ref:`AT+WSCFG <cmd-WSCFG>`
-     * - ``ble_data``
-       - Bluetooth LE service configurations
-       - :ref:`AT+BLEINIT <cmd-BINIT>`
-
-.. only:: esp32s2
-
-  .. list-table::
-     :header-rows: 1
-     :widths: 20 45 25
-
-     * - Namespace
-       - Description
-       - Related AT Commands
-     * - ``factory_param``
-       - Factory parameters (module name, Wi-Fi configuration, UART configuration, etc.)
-       - See :ref:`factory-param-intro`
-     * - ``client_cert``
-       - SSL client certificates
-       -
-         * :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`
-         * :ref:`AT+CIPSTART <cmd-START>`
-     * - ``client_key``
-       - SSL client keys
-       -
-         * :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`
-         * :ref:`AT+CIPSTART <cmd-START>`
-     * - ``client_ca``
-       - SSL client CA certificates
-       -
-         * :ref:`AT+CIPSSLCCONF <cmd-SSLCCONF>`
-         * :ref:`AT+CIPSTART <cmd-START>`
-     * - ``server_cert``
-       - SSL server certificates
-       - :ref:`AT+CIPSERVER <cmd-SERVER>`
-     * - ``server_key``
-       - SSL server keys
-       - :ref:`AT+CIPSERVER <cmd-SERVER>`
-     * - ``server_ca``
-       - SSL server CA certificates
-       - :ref:`AT+CIPSERVER <cmd-SERVER>`
-     * - ``mqtt_cert``
-       - MQTT client certificates
-       - :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`
-     * - ``mqtt_key``
-       - MQTT client keys
-       - :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`
-     * - ``mqtt_ca``
-       - MQTT client CA certificates
-       - :ref:`AT+MQTTUSERCFG <cmd-MQTTUSERCFG>`
-     * - ``https_cert``
-       - HTTPS client certificates
-       - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
-     * - ``https_key``
-       - HTTPS client private keys
-       - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
-     * - ``https_ca``
-       - HTTPS client CA certificates
-       - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
-     * - ``wpa2_cert``
-       - WPA2-Enterprise client certificates
-       - :ref:`AT+CWJEAP <cmd-JEAP>`
-     * - ``wpa2_key``
-       - WPA2-Enterprise client private keys
-       - :ref:`AT+CWJEAP <cmd-JEAP>`
-     * - ``wpa2_ca``
-       - WPA2-Enterprise client CA certificates
-       - :ref:`AT+CWJEAP <cmd-JEAP>`
-     * - ``wss_cert``
-       - WebSocket client certificates
-       - :ref:`AT+WSCFG <cmd-WSCFG>`
-     * - ``wss_key``
-       - WebSocket client private keys
-       - :ref:`AT+WSCFG <cmd-WSCFG>`
-     * - ``wss_ca``
-       - WebSocket client CA certificates
-       - :ref:`AT+WSCFG <cmd-WSCFG>`
+   - :ref:`Factory Parameter Configuration <sysmfg-factory-param>`: The ``factory_param`` namespace, used to store module information, Wi-Fi configuration, UART configuration, etc.
+   - :ref:`PKI Configuration <sysmfg-pki>`: Stores certificates and private keys used by SSL, MQTT, HTTPS, WebSocket, or WPA2-Enterprise clients or servers.
+   :not esp32s2: - :ref:`GATTS Configuration <sysmfg-gatts>`: The ``ble_data`` namespace, used to store Bluetooth LE GATTS service configurations.
+   - :ref:`Custom Data Storage <sysmfg-custom-data>`: User-defined namespaces for storing application-specific persistent data.
 
 Query all namespaces actually supported by the current firmware:
 
@@ -299,17 +80,6 @@ Query all namespaces actually supported by the current firmware:
   - The supported namespaces may vary depending on the chip and firmware version.
   - All command response examples in this document are for reference only. Actual output may differ by chip model, firmware version, and configuration.
 
-.. _sysmfg-namespace-structure:
-
-Namespace Structure
-*********************
-
-Each namespace is a collection of key-value pairs. Different namespaces use different key naming conventions:
-
-- Certificate-related namespaces (``client_cert``, ``client_key``, ``client_ca``, ``server_cert``, ``server_key``, ``server_ca``): Use ``<base_name>.<index>`` format (e.g., ``client_cert.0``, ``client_cert.1``) to store multiple certificate sets.
-- ``factory_param`` namespace: Uses descriptive key names (e.g., ``module_name``, ``uart_port``, ``country_code``).
-- ``ble_data`` namespace: Uses ``cfg`` with index format (e.g., ``cfg0``, ``cfg1``, ``cfg2``).
-
 .. _sysmfg-data-types:
 
 Data Types
@@ -323,8 +93,8 @@ The ``<type>`` parameter in ``AT+SYSMFG`` commands indicates the data type:
 - 4: i16 (16-bit signed integer, range: -32768 to 32767)
 - 5: u32 (32-bit unsigned integer, range: 0-4294967295)
 - 6: i32 (32-bit signed integer, range: -2147483648 to 2147483647, e.g., UART baudrate like 115200)
-- 7: string (text string, e.g., module name "MINI-1", country code "CN")
-- 8: binary (binary data, e.g., certificates, private keys, BLE service configurations)
+- 7: string (text string, e.g., module name "MINI-1", country code "CN", BLE service configurations)
+- 8: binary (binary data, e.g., certificates, private keys)
 
 .. _sysmfg-other-notes:
 
@@ -353,12 +123,60 @@ Factory Parameter Configuration
 
 The factory_param namespace stores factory parameters, such as Wi-Fi configuration, UART configuration, and module information. ESP-AT uses these parameters during initialization. They affect the device's default behavior. For details, please refer to :doc:`factory parameter configuration <../Compile_and_Develop/How_to_update_factory_parameters>`.
 
+**Predefined key names in the ``factory_param`` namespace:**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 50 25
+
+   * - Key Name
+     - Description
+     - See
+   * - ``module_name``
+     - Module name, used to identify the device model.
+     - :ref:`sysmfg-module-name`
+   * - ``max_tx_power``
+     - Wi-Fi maximum TX power. For the value range, see the ``<wifi_power>`` parameter of the :ref:`AT+RFPOWER <cmd-RFPOWER>` command.
+     - :ref:`sysmfg-max-tx-power`
+   * - ``country_code``
+     - Wi-Fi country code. Related command: :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`.
+     - :ref:`sysmfg-country-code`
+   * - ``start_channel``
+     - Wi-Fi starting channel.
+     - :ref:`sysmfg-country-code`
+   * - ``channel_num``
+     - Wi-Fi channel count.
+     - :ref:`sysmfg-country-code`
+   * - ``uart_port``
+     - UART port number.
+     - :ref:`sysmfg-uart-config`
+   * - ``uart_baudrate``
+     - UART baud rate (e.g., 115200).
+     - :ref:`sysmfg-uart-config`
+   * - ``uart_tx_pin``
+     - UART TX pin number.
+     - :ref:`sysmfg-uart-config`
+   * - ``uart_rx_pin``
+     - UART RX pin number.
+     - :ref:`sysmfg-uart-config`
+   * - ``uart_cts_pin``
+     - UART CTS pin number.
+     - :ref:`sysmfg-uart-config`
+   * - ``uart_rts_pin``
+     - UART RTS pin number.
+     - :ref:`sysmfg-uart-config`
+   * - ``sys_store``
+     - System store mode, controlling whether configuration changes are automatically saved to flash. Related command: :ref:`AT+SYSSTORE <cmd-SYSSTORE>`.
+     - :ref:`sysmfg-sys-store`
+
+In addition to the predefined key names listed in the table above, you can also :ref:`add custom key-value pairs <sysmfg-custom-key-value>` in the ``factory_param`` namespace to store application-specific configuration data.
+
 .. important::
 
   After you modify factory parameters, run :ref:`AT+RST <cmd-RST>` or :ref:`AT+RESTORE <cmd-RESTORE>` to restart the device and apply changes.
 
-Query All Parameters
-**********************
+Query All Factory Parameters
+****************************
 
   **Command:**
 
@@ -931,31 +749,99 @@ PKI Configuration
 
 PKI (Public Key Infrastructure) configuration is used to create, manage, distribute, store, and revoke digital certificates, as well as manage public key cryptography. ESP-AT supports configuring certificates for various functions, including SSL client/server, MQTT client, HTTPS client, and more. The configuration method for all certificates is identical, implemented through the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to operate the corresponding namespaces. For more details, please refer to :ref:`PKI Configuration Introduction <factory-pki-intro>`.
 
-**Namespace mapping for different features:**
+**Namespace and key name mapping for different features:**
 
 .. list-table::
    :header-rows: 1
-   :widths: 30 35
+   :widths: 20 20 30 30
 
    * - Feature
-     - Certificate/Key Namespaces
+     - Namespaces
+     - Key Names
+     - Description
    * - SSL Client
-     - ``client_cert``, ``client_key``, ``client_ca``
+     -
+       * ``client_cert``
+       * ``client_key``
+       * ``client_ca``
+     -
+       * ``client_cert.0``, ``client_cert.1``
+       * ``client_key.0``, ``client_key.1``
+       * ``client_ca.0``, ``client_ca.1``
+     -
+       * When AT acts as an SSL client, the client certificate must be configured to identify itself to the server. Multiple certificate sets are stored using the ``client_cert.<index>`` rule.
+       * When AT acts as an SSL client, the client private key must be configured to encrypt communication between the client and server. Multiple key sets are stored using the ``client_key.<index>`` rule.
+       * When AT acts as an SSL client, the client CA certificate must be configured to verify the validity of the server certificate. Multiple CA certificate sets are stored using the ``client_ca.<index>`` rule.
    * - SSL Server
-     - ``server_cert``, ``server_key``, ``server_ca``
+     -
+       * ``server_cert``
+       * ``server_key``
+       * ``server_ca``
+     -
+       * ``server_cert``
+       * ``server_key``
+       * ``server_ca``
+     -
+       * When AT acts as an SSL server, the server certificate must be configured to identify itself to clients. Only one certificate set is supported.
+       * When AT acts as an SSL server, the server private key must be configured to encrypt communication between the server and clients. Only one private key set is supported.
+       * When AT acts as an SSL server, the server CA certificate must be configured to verify the validity of client certificates. Only one CA certificate set is supported.
    * - MQTT Client
-     - ``mqtt_cert``, ``mqtt_key``, ``mqtt_ca``
+     -
+       * ``mqtt_cert``
+       * ``mqtt_key``
+       * ``mqtt_ca``
+     -
+       * ``mqtt_cert``
+       * ``mqtt_key``
+       * ``mqtt_ca``
+     -
+       * When AT acts as an MQTT client, the client certificate must be configured to identify itself to the server. Only one certificate set is supported.
+       * When AT acts as an MQTT client, the client private key must be configured to encrypt communication between the client and server. Only one private key set is supported.
+       * When AT acts as an MQTT client, the client CA certificate must be configured to verify the validity of the server certificate. Only one CA certificate set is supported.
    * - HTTPS Client
-     - ``https_cert``, ``https_key``, ``https_ca``
+     -
+       * ``https_cert``
+       * ``https_key``
+       * ``https_ca``
+     -
+       * ``https_cert.0``, ``https_cert.1``
+       * ``https_key.0``, ``https_key.1``
+       * ``https_ca.0``, ``https_ca.1``
+     -
+       * When AT acts as an HTTPS client, the client certificate must be configured to identify itself to the server. Multiple certificate sets are stored using the ``https_cert.<index>`` rule.
+       * When AT acts as an HTTPS client, the client private key must be configured to encrypt communication between the client and server. Multiple key sets are stored using the ``https_key.<index>`` rule.
+       * When AT acts as an HTTPS client, the client CA certificate must be configured to verify the validity of the server certificate. Multiple CA certificate sets are stored using the ``https_ca.<index>`` rule.
    * - WebSocket Client
-     - ``wss_cert``, ``wss_key``, ``wss_ca``
+     -
+       * ``wss_cert``
+       * ``wss_key``
+       * ``wss_ca``
+     -
+       * ``wss_cert.0``, ``wss_cert.1``
+       * ``wss_key.0``, ``wss_key.1``
+       * ``wss_ca.0``, ``wss_ca.1``
+     -
+       * When AT acts as a WebSocket client, the client certificate must be configured to identify itself to the server. Multiple certificate sets are stored using the ``wss_cert.<index>`` rule.
+       * When AT acts as a WebSocket client, the client private key must be configured to encrypt communication between the client and server. Multiple key sets are stored using the ``wss_key.<index>`` rule.
+       * When AT acts as a WebSocket client, the client CA certificate must be configured to verify the validity of the server certificate. Multiple CA certificate sets are stored using the ``wss_ca.<index>`` rule.
    * - WPA2 Enterprise Client
-     - ``wpa2_cert``, ``wpa2_key``, ``wpa2_ca``
+     -
+       * ``wpa2_cert``
+       * ``wpa2_key``
+       * ``wpa2_ca``
+     -
+       * ``wpa2_cert``
+       * ``wpa2_key``
+       * ``wpa2_ca``
+     -
+       * When AT acts as a WPA2-Enterprise client, the client certificate must be configured to identify itself to the server. Only one certificate set is supported.
+       * When AT acts as a WPA2-Enterprise client, the client private key must be configured to encrypt communication between the client and server. Only one private key set is supported.
+       * When AT acts as a WPA2-Enterprise client, the client CA certificate must be configured to verify the validity of the server certificate. Only one CA certificate set is supported.
 
 .. note::
   You can query all namespaces supported by the current firmware using the ``AT+SYSMFG?`` command to confirm if the certificate namespaces you need are available.
 
-This section uses SSL certificates as an example to illustrate the complete process of certificate configuration. Certificate configuration for other functions (such as MQTT, HTTPS) can follow the same method, only requiring modification of the corresponding namespace names according to the table above.
+This section uses SSL certificates as an example to illustrate the complete process of certificate configuration. Certificate configuration for other functions (such as MQTT, HTTPS) can follow the same method, only requiring modification of the corresponding namespace names and key names according to the table above.
 
 .. _sysmfg-ssl-client:
 
@@ -1419,6 +1305,24 @@ You can use the same commands to erase server_key and server_ca data.
   -------------------
 
   The ble_data namespace stores Bluetooth Low Energy GATTS (Generic Attribute Profile Server) service configurations. This namespace contains individual GATT service configuration items organized as ``cfg0``, ``cfg1``, ``cfg2``, etc., where each configuration item represents one attribute (service, characteristic, or descriptor) in the GATT table. For more details, please refer to :doc:`Bluetooth LE service source file introduction <../Compile_and_Develop/How_to_customize_BLE_services>`.
+
+  **Key names in the ``ble_data`` namespace:**
+
+  .. list-table::
+     :header-rows: 1
+     :widths: 25 50 25
+
+     * - Key Name
+       - Description
+       - Related AT Commands
+     * - ``cfg0``, ``cfg1``, ..., ``cfg30``
+       - Bluetooth LE service configuration items. Each ``cfg<index>`` corresponds to one row (service, characteristic, or descriptor) in the GATT table.
+       -
+
+         .. list::
+
+           :esp32 or esp32c3: - :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`
+           :esp32c2 or esp32c5 or esp32c6 or esp32c61: - :ref:`AT+BLEINIT <cmd-BINIT>`
 
   .. important::
 

@@ -2275,10 +2275,10 @@ Set Command
 ::
 
     // Single connection: (AT+CIPMUX=0)
-    AT+CIPRECVTYPE=<mode>
+    AT+CIPRECVTYPE=<mode>[,<data_len_report_mode>]
 
     // Multiple connections: (AT+CIPMUX=1)
-    AT+CIPRECVTYPE=<link ID>,<mode>
+    AT+CIPRECVTYPE=<link ID>,<mode>[,<data_len_report_mode>]
 
 **Response:**
 
@@ -2294,6 +2294,11 @@ Parameter
 
    - 0: Active mode. ESP-AT will send all the received socket data instantly to the host MCU with the header "+IPD". (The socket receive window is 5760 bytes by default. The maximum valid bytes sent to MCU is 2920 bytes each time.)
    - 1: Passive mode. ESP-AT will keep the received socket data in an internal buffer (socket receive window, 5760 bytes by default), and wait for the host MCU to read. If the buffer is full, the socket transmission will be blocked for TCP/SSL connections, or data will be lost for UDP connections.
+
+- **<data_len_report_mode>**: data length reporting mode. Default: 0.
+
+    - 0: The length reported in the ``+IPD`` and ``+CIPRECVLEN`` messages is the total length of socket data currently in the receive buffer.
+    - 1: The length reported in the ``+IPD`` and ``+CIPRECVLEN`` messages is the length of the next datagram. In UDP transmission, setting this to 1 ensures that the reported length always corresponds to a single complete datagram.
 
 Notes
 ^^^^^
@@ -2334,10 +2339,10 @@ Set Command
 ::
 
     // Single connection: (AT+CIPMUX=0)
-    AT+CIPRECVDATA=<len>
+    AT+CIPRECVDATA=<len>[,<keep_datagram_integrity>]
 
     // Multiple connections: (AT+CIPMUX=1)
-    AT+CIPRECVDATA=<link_id>,<len>
+    AT+CIPRECVDATA=<link_id>,<len>[,<keep_datagram_integrity>]
 
 **Response:**
 
@@ -2358,6 +2363,11 @@ Parameters
 
 - **<link_id>**: connection ID in multiple connections mode.
 - **<len>**: the max value is 0x7fffffff. If the actual length of the received data is less than ``len``, the actual length will be returned.
+- **<keep_datagram_integrity>**: flag to keep datagram integrity. Default: 0.
+
+   - 0: Do not preserve datagram integrity. ESP-AT will return as much data as possible, up to the length specified by ``<len>``.
+   - 1: Preserve datagram integrity. ESP-AT will ensure that each returned data is a complete datagram and does not exceed the length specified by ``<len>``.
+
 - **<actual_len>**: length of the data you actually obtain.
 - **<data>**: the data you want to obtain.
 - **<"remote IP">**: string parameter showing the remote IPv4 address or IPv6 address, enabled by the command :ref:`AT+CIPDINFO=1 <cmd-IPDINFO>`.

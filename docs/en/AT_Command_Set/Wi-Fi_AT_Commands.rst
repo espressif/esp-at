@@ -242,7 +242,7 @@ Example
 
     ::
 
-        AT+CWBANDMODE=<bandmode>
+        AT+CWBANDMODE=<bandmode>[,<auto_connect>]
 
     **Response:**
 
@@ -258,6 +258,11 @@ Example
     - 1: 2.4 GHz band
     - 2: 5 GHz band
     - 3: 2.4 GHz and 5 GHz dual-band (default)
+
+    - **<auto_connect>**: Whether to enable the auto-connect-to-AP feature when switching the Wi-Fi band mode of the {IDF_TARGET_NAME} device (for example, switching from 2.4 GHz band to 5 GHz band or 2.4 GHz and 5 GHz dual-band). Default: 1. When this parameter is omitted, the default value is used, which means auto-connect is enabled.
+
+      - 0: Disable auto-connect to AP.
+      - 1: Enable auto-connect to AP. If the auto-connect configuration has been saved to flash previously, the {IDF_TARGET_NAME} device will automatically connect to the AP.
 
     Notes
     ^^^^^
@@ -1975,7 +1980,7 @@ Connect to the targeted Enterprise AP.
 
 ::
 
-    AT+CWJEAP=<"ssid">,<method>,<"identity">,<"username">,<"password">,<security>[,<jeap_timeout>]
+    AT+CWJEAP=<"ssid">,<method>,<"identity">,<"username">,<"password">,<security>[,<jeap_timeout>][,<rssi>][,<"bssid">][,<channel>][,<scan_mode>]
 
 **Response:**
 
@@ -2012,6 +2017,13 @@ Parameters
    - bit 1: load the CA certificate to verify the server's certificate.
 
 - **<jeap_timeout>**: maximum timeout for :ref:`AT+CWJEAP <cmd-JEAP>` command. Unit: second. Default: 15. Range: [3,600].
+- **<rssi>**: RSSI threshold for connection. Wi-Fi will only connect to APs whose RSSI is no lower than this value. Unit: dBm. Range: [-128,127]. Default: -127.
+- **<"bssid">**: specifies the MAC address of the target AP for precise connection, avoiding connecting to APs with the same SSID but different MAC addresses. Format: "xx:xx:xx:xx:xx:xx".
+- **<channel>**: the starting channel to scan from. Scanning for the AP with the specified SSID begins from this channel.
+- **<scan_mode>**: scan mode. Default: 0.
+
+   - 0: Fast scan. Connect to the AP as soon as it is found, speeding up the connection.
+   - 1: All-channel scan. Select the AP with the strongest signal to connect.
 
 Example
 ^^^^^^^^
@@ -2264,8 +2276,8 @@ Parameters
 Note
 ^^^^^
 
-- See `Wi-Fi Country Code <https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/api-guides/wifi.html#wi-fi-country-code>`_ for more details.
-- The configuration changes are not saved in the flash.
+- See `Wi-Fi Country Code <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#wi-fi-country-code>`_ for more details.
+- The configuration changes are not saved in the flash. If you need to save them to flash, please refer to :ref:`Country Code Operations <sysmfg-country-code>`.
 
 Example
 ^^^^^^^^

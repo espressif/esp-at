@@ -20,7 +20,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 The example shows how to establish MQTT connections over TCP. You need to first create a local MQTT broker. For example, the MQTT broker's IP address is ``192.168.3.102``, and the port is ``8883``.
 
 .. Important::
-  In the step, the operations starting with ``{IDF_TARGET_NAME} MQTT publisher`` only need to be executed at {IDF_TARGET_NAME} MQTT publisher, and the operations starting with ``{IDF_TARGET_NAME} MQTT subscriber`` only need to be executed at {IDF_TARGET_NAME} MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
+  In the following steps, the operations starting with ``{IDF_TARGET_NAME} MQTT publisher`` only need to be executed at {IDF_TARGET_NAME} MQTT publisher, and the operations starting with ``{IDF_TARGET_NAME} MQTT subscriber`` only need to be executed at {IDF_TARGET_NAME} MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
 
 #. Set MQTT user configuration.
 
@@ -136,7 +136,7 @@ The example shows how to establish MQTT connections over TCP. You need to first 
 If the amount of data you publish is relatively large, and the length of a single AT command has exceeded the threshold of ``256``, it is recommended that you use the :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` command.
 
 .. Important::
-  In the step, the operations starting with ``{IDF_TARGET_NAME} MQTT publisher`` only need to be executed at {IDF_TARGET_NAME} MQTT publisher, and the operations starting with ``{IDF_TARGET_NAME} MQTT subscriber`` only need to be executed at {IDF_TARGET_NAME} MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
+  In the following steps, the operations starting with ``{IDF_TARGET_NAME} MQTT publisher`` only need to be executed at {IDF_TARGET_NAME} MQTT publisher, and the operations starting with ``{IDF_TARGET_NAME} MQTT subscriber`` only need to be executed at {IDF_TARGET_NAME} MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
 
 #. Set MQTT user configuration.
 
@@ -265,7 +265,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 The example shows how to establish MQTT connections over TLS. You need to first create a local MQTT broker. For example, the MQTT broker's IP address is ``192.168.3.102``, and port is ``8883``.
 
 .. Important::
-  In the step, the operations starting with ``{IDF_TARGET_NAME} MQTT publisher`` only need to be executed at {IDF_TARGET_NAME} MQTT publisher, and the operations starting with ``{IDF_TARGET_NAME} MQTT subscriber`` only need to be executed at {IDF_TARGET_NAME} MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
+  In the following steps, the operations starting with ``{IDF_TARGET_NAME} MQTT publisher`` only need to be executed at {IDF_TARGET_NAME} MQTT publisher, and the operations starting with ``{IDF_TARGET_NAME} MQTT subscriber`` only need to be executed at {IDF_TARGET_NAME} MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
 
 #. Set the time zone and the SNTP server.
 
@@ -428,7 +428,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 The example shows how to establish MQTT connections over WSS and how to communicate with a MQTT broker. For example, the MQTT broker's domain name is ``test.mosquitto.org``, the path is ``mqtt``, and the port is ``8081``.
 
 .. Important::
-  In the step, the operations starting with ``{IDF_TARGET_NAME} MQTT publisher`` only need to be executed at {IDF_TARGET_NAME} MQTT publisher, and the operations starting with ``{IDF_TARGET_NAME} MQTT subscriber`` only need to be executed at {IDF_TARGET_NAME} MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
+  In the following steps, the operations starting with ``{IDF_TARGET_NAME} MQTT publisher`` only need to be executed at {IDF_TARGET_NAME} MQTT publisher, and the operations starting with ``{IDF_TARGET_NAME} MQTT subscriber`` only need to be executed at {IDF_TARGET_NAME} MQTT subscriber. If the operation is not specified on which side it is executed, it needs to be executed on both the publisher side and the subscriber side.
 
 #. Set the time zone and the SNTP server.
 

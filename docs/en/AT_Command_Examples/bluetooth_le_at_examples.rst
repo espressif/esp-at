@@ -12,7 +12,13 @@ This document provides an introduction and detailed command examples to illustra
 Introduction
 ------------
 
-ESP-AT currently only supports **Bluetooth LE 4.2 protocol specification**, and the description in this document is only for **Bluetooth LE 4.2 protocol specification**. Please refer to `Core Specification 4.2 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`__ for more details.
+.. only:: esp32
+
+  The current {IDF_TARGET_NAME} series AT firmware supports `Bluetooth Core Specification 4.2 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_.
+
+.. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+  The current {IDF_TARGET_NAME} AT firmware supports `Bluetooth Core Specification 5.0 <https://www.bluetooth.com/specifications/specs/core-specification-5-0/>`_.
 
 Bluetooth LE protocol architecture
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -47,8 +53,8 @@ GATT is actually an attribute transmission protocol, which can be regarded as an
 
 ``GATT server`` and ``GATT client`` roles exist after the Bluetooth LE connection is established. The GATT server stores the data transported over the Attribute Protocol and accepts Attribute Protocol requests, commands and confirmations from the GATT client. In short, the end that provides data is called ``GATT server``, and the end that accesses data is called ``GATT client``.
 
-Bluetooth LE client reads and write services
-----------------------------------------------
+Bluetooth LE client reads and writes service characteristic values
+------------------------------------------------------------------
 
 Below is an example of using two {IDF_TARGET_NAME} development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to use Bluetooth LE functions with AT commands.
 
@@ -441,7 +447,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
   Below is an example of using two {IDF_TARGET_NAME} development boards, one as a Bluetooth LE server (only as Bluetooth LE server role), the other one as a Bluetooth LE client (only as Bluetooth LE client role). The example shows how to establish a Bluetooth LE connection, as well as the read and write characteristics of the server and client settings, and notification characteristics.
 
   .. Important::
-    In the step, the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE server`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE server, and the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE client`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE client.
+    In the following steps, the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE server`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE server, and the operations starting with ``{IDF_TARGET_NAME} Bluetooth LE client`` only need to be executed at {IDF_TARGET_NAME} Bluetooth LE client.
 
   #. Bluetooth LE initialization.
 
@@ -828,7 +834,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
        OK
 
-  #. {IDF_TARGET_NAME} Bluetooth LE client write characteristics.
+  #. {IDF_TARGET_NAME} Bluetooth LE client writes characteristics.
 
      Select the service characteristic that supports the write operation to write the characteristics.
 

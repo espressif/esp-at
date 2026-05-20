@@ -1813,6 +1813,7 @@
 - 当 Wi-Fi 关闭或未初始化时，``AT+RFPOWER`` 命令无法设置/查询 Wi-Fi 的 RF TX Power。当 Bluetooth LE 未初始化时，``AT+RFPOWER`` 命令无法设置/查询 Bluetooth LE 的 RF TX Power。
 - 由于 RF TX Power 分为不同的等级，而每个等级都有与之对应的取值范围，所以通过 ``esp_wifi_get_max_tx_power`` 查询到的 ``wifi_power`` 的值可能与 ``esp_wifi_set_max_tx_power`` 设定的值存在差异，但不会比该值大。
 - 建议将 <ble_scan_power> 和 <ble_conn_power> 两个参数值设置为与 <ble_adv_power> 参数相同的值，否则，这两个参数将会被自动设置为与 <ble_adv_power> 相同的值。
+- 配置更改不保存到 flash。如果需要保存到 flash，请参考 :ref:`最大发射功率操作 <sysmfg-max-tx-power>` 。
 
 .. only:: esp32c61
 
@@ -1903,6 +1904,7 @@
 .. list::
 
   - 在执行固件回滚时，{IDF_TARGET_NAME} 会先验证目标固件的有效性，只有验证通过时才会执行回滚操作，否则将返回错误信息。
+  - 建议在补丁版本间回滚，不建议跨大版本回滚。跨大版本回滚可能存在一定的兼容性问题，甚至无法运行，如果你坚持要跨大版本回滚，请根据自己的产品自行测试验证功能。
   :esp32c2: - 由于 {IDF_TARGET_NAME}-2MB AT 固件采用压缩 OTA 分区，压缩固件解压后与当前运行固件为同一镜像，因此无法实现真正的固件切换。
   :esp32c5 or esp32c61: - 由于 {IDF_TARGET_NAME}-4MB AT 固件采用压缩 OTA 分区，压缩固件解压后与当前运行固件为同一镜像，因此无法实现真正的固件切换。
   :esp32c2 or esp32c3 or esp32c6 or esp32 or esp32s2: - 回滚功能独立于 OTA 升级流程，可直接跳转至另一 OTA 分区中的固件版本运行。

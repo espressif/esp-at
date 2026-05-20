@@ -164,15 +164,22 @@ Note
 
 .. only:: esp32c2
 
-  - If you use ESP32C2-2MB module config, OTA firmware is ``build/custom_ota_binaries/esp-at.bin.xz.packed``. If you use ESP32C2-4MB module config, OTA firmware is ``build/esp-at.bin``.
+  - If you use ESP32C2-2MB module config, OTA firmware is ``build/custom_ota_binaries/esp-at.bin.xz.packed`` (compressed OTA). If you use ESP32C2-4MB module config, OTA firmware is ``build/esp-at.bin`` (uncompressed OTA).
 
 .. only:: esp32c5 or esp32c61
 
-  - OTA firmware is ``build/custom_ota_binaries/esp-at.bin.xz.packed``.
+  - OTA firmware is ``build/custom_ota_binaries/esp-at.bin.xz.packed`` (compressed OTA).
 
 .. only:: esp32 or esp32c3 or esp32c6 or esp32s2
 
-  - OTA firmware is ``build/esp-at.bin``.
+  - OTA firmware is ``build/esp-at.bin`` (uncompressed OTA).
+
+
+.. note::
+  Difference between compressed OTA and uncompressed OTA
+
+  - Compressed OTA (firmware suffix ``.bin.xz.packed``): The compressed OTA upgrade method is used. After the chip reboots, the bootloader automatically verifies and decompresses the firmware, then jumps to it. If verification fails, the previous firmware is kept. The decompression happens after the chip reboots and before AT outputs ``ready``, which takes some time, so please be patient.
+  - Uncompressed OTA (firmware suffix ``.bin``): The uncompressed OTA upgrade method is used. After the chip reboots, the bootloader directly verifies the firmware and jumps to it, with no decompression step required.
 
 - The speed of the upgrade depends on the network status.
 - If the upgrade fails due to unfavorable network conditions, AT will return ``ERROR``. Please wait for some time before retrying.

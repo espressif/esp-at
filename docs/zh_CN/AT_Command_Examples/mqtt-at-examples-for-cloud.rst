@@ -33,9 +33,9 @@ MQTT AT 连接云示例
     端点的格式为 “xxx-ats.iot.us-east-2.amazonaws.com”。
 
 .. note::
-  强烈建议你熟悉 `AWS IoT 开发人员指南 <https://docs.aws.amazon.com/zh_cn/iot/latest/developerguide/what-is-aws-iot.html>`_ 以下是本指南中值得注意的一些要点。
+  强烈建议你熟悉 `AWS IoT 开发人员指南 <https://docs.aws.amazon.com/zh_cn/iot/latest/developerguide/what-is-aws-iot.html>`_。以下是本指南中值得注意的一些要点。
 
-  - AWS IoT 需要所有设备必须有事物证书、事物私钥、和根证书。
+  - AWS IoT 需要所有设备必须配备设备证书、私钥和根 CA 证书。
   - 有关如何激活证书。
   - 区域建议选择俄亥俄州 (Ohio)。
 
@@ -129,6 +129,68 @@ MQTT AT 连接云示例
 
    - 此时获得的 <asctime style time> 必须是设置时区的实时时间，否则会因为证书有效期而导致连接失败。
 
+#. **（可选）** 运行时更新 MQTT 证书。
+
+   a). 更新 MQTT 根 CA 证书。
+
+      命令：
+
+      .. code-block:: none
+
+        AT+SYSMFG=2,"mqtt_ca","mqtt_ca",8,<ca_len>
+
+      响应：
+
+      .. code-block:: none
+
+        OK
+
+        >
+
+      收到 ``>`` 后，发送 ``Amazon-root-CA-1.pem`` 的完整内容，其中 ``<ca_len>`` 为证书文件的字节数。
+
+   b). 更新 MQTT 客户端私钥。
+
+      命令：
+
+      .. code-block:: none
+
+        AT+SYSMFG=2,"mqtt_key","mqtt_key",8,<key_len>
+
+      响应：
+
+      .. code-block:: none
+
+        OK
+
+        >
+
+      收到 ``>`` 后，发送 ``private.pem.key`` 的完整内容，其中 ``<key_len>`` 为私钥文件的字节数。
+
+   c). 更新 MQTT 客户端证书。
+
+      命令：
+
+      .. code-block:: none
+
+        AT+SYSMFG=2,"mqtt_cert","mqtt_cert",8,<cert_len>
+
+      响应：
+
+      .. code-block:: none
+
+        OK
+
+        >
+
+      收到 ``>`` 后，发送 ``device.pem.crt`` 的完整内容，其中 ``<cert_len>`` 为证书文件的字节数。
+
+   说明：
+
+   - ``mqtt_ca``、``mqtt_key`` 和 ``mqtt_cert`` 命名空间的键名分别与命名空间同名。
+   - 写入的是二进制类型数据（``<type> = 8``），发送的数据长度必须与 ``<ca_len>``、``<key_len>``、``<cert_len>`` 完全一致。
+   - 如需查询或验证写入结果，可参考 :ref:`AT+SYSMFG 命令示例 <cmd-SYSMFG>`。
+
 #. 设置 MQTT 用户属性。
 
    命令：
@@ -164,7 +226,7 @@ MQTT AT 连接云示例
 
    说明：
 
-   - 请在 `<endpoint>` 参数中填写你的 <endpoint> 值。
+   - 请在 ``<endpoint>`` 参数处填入你在 AWS IoT 控制台获取的实际 endpoint 字符串。
    - 无法更改端口 8883。
 
 #. 订阅消息。
@@ -200,14 +262,14 @@ MQTT AT 连接云示例
 示例日志
 ^^^^^^^^^^^^^^^^^
 
-正常交互日志如下:
+正常交互日志如下：
 
-#. ESP32 端日志
+#. {IDF_TARGET_NAME} 端日志
 
    .. figure:: ../../_static/at_command_examples/esp32at-log.png
        :scale: 100 %
        :align: center
-       :alt: ESP32 端连接 AWS IoT 日志
+       :alt: {IDF_TARGET_NAME} 端连接 AWS IoT 日志
 
 #. AWS 端日志
 

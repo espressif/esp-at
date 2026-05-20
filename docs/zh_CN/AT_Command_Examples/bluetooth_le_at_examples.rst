@@ -12,7 +12,13 @@ Bluetooth LE AT 示例
 简介
 ------------
 
-ESP-AT 当前仅支持 **Bluetooth LE 4.2 协议规范**，本文档中的描述仅适用于 **Bluetooth LE protocol 4.2 协议规范**。请参考 `核心规范 4.2 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`__ 获取更多信息。
+.. only:: esp32
+
+  当前，{IDF_TARGET_NAME} 系列 AT 固件支持 `蓝牙核心规范 4.2 版本 <https://www.bluetooth.com/specifications/specs/core-specification-4-2/>`_。
+
+.. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+  当前， {IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/specs/core-specification-5-0/>`_。
 
 Bluetooth LE 协议架构
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -45,7 +51,7 @@ Bluetooth LE 角色划分
 
 GATT 其实是一种属性传输协议，简单的讲可以认为是一种属性传输的应用层协议。这个属性的结构非常简单。它由 ``服务`` 组成，每个服务由不同数量的 ``特征`` 组成，每个 ``特征`` 又由很多其它的元素组成。
 
-``GATT 服务端`` 和 ``GATT 客户端`` 这两种角色存在于 Bluetooth LE 连接建立之后。GATT 服务器存储通过属性协议传输的数据，并接受来自 GATT 客户端的属性协议请求、命令和确认。简而言之，提供数据的一端称为 ``GATT 服务端``，访问数据的一端称为 ``GATT 客户端``。
+``GATT 服务端`` 和 ``GATT 客户端`` 这两种角色存在于 Bluetooth LE 连接建立之后。GATT 服务端存储通过属性协议传输的数据，并接受来自 GATT 客户端的属性协议请求、命令和确认。简而言之，提供数据的一端称为 ``GATT 服务端``，访问数据的一端称为 ``GATT 客户端``。
 
 Bluetooth LE 客户端读写服务特征值
 ---------------------------------------------------------
@@ -283,7 +289,7 @@ Bluetooth LE 客户端读写服务特征值
 
    说明：
 
-   - {IDF_TARGET_NAME} Bluetooth LE 客户端查询服务的结果，比 {IDF_TARGET_NAME} Bluetooth LE 服户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801），这是正常现象。正因如此，对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端查询的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服户端查询的 <srv_index> 值 + 2。例如上述示例中的服务 0xA002，当前在 {IDF_TARGET_NAME} Bluetooth LE 客户端查询到的 <srv_index> 为 3，如果在 {IDF_TARGET_NAME} Bluetooth LE 服户端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
+   - {IDF_TARGET_NAME} Bluetooth LE 客户端查询服务的结果，比 {IDF_TARGET_NAME} Bluetooth LE 服务端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801），这是正常现象。正因如此，对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端查询的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服务端查询的 <srv_index> 值 + 2。例如上述示例中的服务 0xA002，当前在 {IDF_TARGET_NAME} Bluetooth LE 客户端查询到的 <srv_index> 为 3，如果在 {IDF_TARGET_NAME} Bluetooth LE 服务端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
 
 #. {IDF_TARGET_NAME} Bluetooth LE 客户端发现特征值。
 
@@ -430,7 +436,7 @@ Bluetooth LE 客户端读写服务特征值
    说明：
 
    - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端接收到 indication, 则会提示 ``+INDICATE:<conn_index>,<srv_index>,<char_index>,<len>,<value>``。
-   - 对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服户端的 <srv_index> 值 + 2，这是正常现象。
+   - 对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服务端的 <srv_index> 值 + 2，这是正常现象。
    - 对于服务中特征的权限，你可参考文档 :doc:`../Compile_and_Develop/How_to_customize_BLE_services`。
 
 .. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
@@ -1128,7 +1134,7 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - {IDF_TARGET_NAME} Bluetooth LE 客户端查询服务的结果，比 {IDF_TARGET_NAME} Bluetooth LE 服户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801），这是正常现象。正因如此，对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端查询的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服户端查询的 <srv_index> 值 + 2。例如上述示例中的服务 0xA002，当前在 {IDF_TARGET_NAME} Bluetooth LE 客户端查询到的 <srv_index> 为 3，如果在 {IDF_TARGET_NAME} Bluetooth LE 服户端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
+   - {IDF_TARGET_NAME} Bluetooth LE 客户端查询服务的结果，比 {IDF_TARGET_NAME} Bluetooth LE 服务端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801），这是正常现象。正因如此，对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端查询的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服务端查询的 <srv_index> 值 + 2。例如上述示例中的服务 0xA002，当前在 {IDF_TARGET_NAME} Bluetooth LE 客户端查询到的 <srv_index> 为 3，如果在 {IDF_TARGET_NAME} Bluetooth LE 服务端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
 
 #. {IDF_TARGET_NAME} Bluetooth LE 客户端发现特征值。
 
@@ -1571,7 +1577,7 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - {IDF_TARGET_NAME} Bluetooth LE 客户端查询服务的结果，比 {IDF_TARGET_NAME} Bluetooth LE 服户端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801），这是正常现象。正因如此，对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端查询的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服户端查询的 <srv_index> 值 + 2。例如，上述示例中的服务 0xA002，当前在 {IDF_TARGET_NAME} Bluetooth LE 客户端查询到的 <srv_index> 为 3，如果在 {IDF_TARGET_NAME} Bluetooth LE 服户端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
+   - {IDF_TARGET_NAME} Bluetooth LE 客户端查询服务的结果，比 {IDF_TARGET_NAME} Bluetooth LE 服务端查询服务的结果多两个默认服务（UUID: 0x1800 和 0x1801），这是正常现象。正因如此，对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端查询的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服务端查询的 <srv_index> 值 + 2。例如，上述示例中的服务 0xA002，当前在 {IDF_TARGET_NAME} Bluetooth LE 客户端查询到的 <srv_index> 为 3，如果在 {IDF_TARGET_NAME} Bluetooth LE 服务端通过 :ref:`AT+BLEGATTSSRV? <cmd-GSSRV>` 命令查询，则 <srv_index> 为 1。
 
 #. {IDF_TARGET_NAME} Bluetooth LE 客户端发现特征。
 
@@ -1696,7 +1702,7 @@ Bluetooth LE 连接加密
 
    说明：
 
-   - {IDF_TARGET_NAME} Bluetooth LE 服户端开启 Bluetooth LE SPP 透传模式后，串口收到的数据会通过 Bluetooth LE 传输到 {IDF_TARGET_NAME} Bluetooth LE 客户端。
+   - {IDF_TARGET_NAME} Bluetooth LE 服务端开启 Bluetooth LE SPP 透传模式后，串口收到的数据会通过 Bluetooth LE 传输到 {IDF_TARGET_NAME} Bluetooth LE 客户端。
    - 如果 {IDF_TARGET_NAME} Bluetooth LE 客户端端没有先开启 Bluetooth LE SPP 透传，或者使用其他设备作为 Bluetooth LE 客户端，则 {IDF_TARGET_NAME} Bluetooth LE 客户端需要先开启侦听 Notify 或者 Indicate。例如，{IDF_TARGET_NAME} Bluetooth LE 客户端如果未开启透传，则应先调用 `AT+BLEGATTCWR=0,3,7,1,1` 开启侦听，{IDF_TARGET_NAME} Bluetooth LE 服务端 才能成功实现透传。
    - 对于同一服务，{IDF_TARGET_NAME} Bluetooth LE 客户端的 <srv_index> 值等于 {IDF_TARGET_NAME} Bluetooth LE 服务端的 <srv_index> 值 + 2，这是正常现象。
 

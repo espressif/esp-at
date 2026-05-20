@@ -80,7 +80,7 @@ Firstly, {IDF_TARGET_NAME} needs to be configured to softAP + STA mode, and crea
 
        AT+WEBSERVER=1,80,25
 
-After starting the web sever according to the above commands, you can turn on the Wi-Fi connection function on your STA device, and connect it to the softAP of the {IDF_TARGET_NAME}:
+After starting the web server according to the above commands, you can turn on the Wi-Fi connection function on your STA device, and connect it to the softAP of the {IDF_TARGET_NAME}:
 
 .. figure:: ../../_static/Web_server/web_brower_wifi_ap_en.png
    :align: center
@@ -92,7 +92,7 @@ After starting the web sever according to the above commands, you can turn on th
 Use the Browser to Send Wi-Fi Connection Information
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-After your STA device connected to the {IDF_TARGET_NAME} softAP, it can send Wi-Fi connection information to {IDF_TARGET_NAME} in an HTTP request. Please note that if your target AP is the hotspot of the device which opens the web pages, you may not receive the Wi-Fi connection result.
+After your STA device has connected to the {IDF_TARGET_NAME} softAP, it can send Wi-Fi connection information to {IDF_TARGET_NAME} in an HTTP request. Please note that if your target AP is the hotspot of the device which opens the web pages, you may not receive the Wi-Fi connection result.
 You can enter the default IP address of the web server in the browser (the default IP is 192.168.4.1, or you can query the current SoftAP IP address by command AT+CIPAP?), open the Wi-Fi provisioning interface, and enter the ssid and password of the router to be connected, click "Connect" to let {IDF_TARGET_NAME} start connecting to the router:
 
 .. figure:: ../../_static/Web_server/web_brower_open_html_en.png
@@ -131,7 +131,7 @@ At the same time, the following messages will be returned from the ESP-AT comman
 
     +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information
     WIFI CONNECTED       // meaning that {IDF_TARGET_NAME} is connecting
-    WIFI GOT IP          // meaning that {IDF_TARGET_NAME} connect successfully to the destination router
+    WIFI GOT IP          // meaning that {IDF_TARGET_NAME} connects successfully to the destination router
     +WEBSERVERRSP:2      // meaning that STA device has received Wi-Fi connection result, and web resources can be released
 
 If the {IDF_TARGET_NAME} fails to connect to the router, the web page will display:
@@ -147,12 +147,12 @@ At the same time, the following messages will be returned from the ESP-AT comman
 
 ::
 
-    +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information, but failed to connect to the router.
+    +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information, but there is no subsequent connection or IP acquisition message. The MCU can start a timer upon receiving this message; if the timer expires, provisioning has failed.
 
 Troubleshooting
 ^^^^^^^^^^^^^^^^^^^
 
-**Note** 1: The network configuration page received a prompt "Connection failed". Please check whether the Wi-Fi AP of the {IDF_TARGET_NAME} module is correctly turned on, and the relevant configuration of the AP, and confirm that the correct AT command has been entered to successfully enable the web server.
+**Note** 1: The network configuration page received a prompt "Data transmission failed". Please check whether the Wi-Fi AP of the {IDF_TARGET_NAME} module is correctly turned on, and the relevant configuration of the AP, and confirm that the correct AT command has been entered to successfully enable the web server.
 
 OTA Firmware Upgrade Using a Browser
 ---------------------------------------
@@ -211,14 +211,37 @@ As shown in the figure, click the "Browse" button on the page and select the new
 
 Then you can click "OTA upgrade" button to send the firmware.
 
-**Note** 1: For the ``ota`` partition, the web page will check the selected firmware. The suffix of the firmware name must be ``.bin``. Please make sure that the firmware size does not exceed the size of the ``ota`` partition defined in the ``partitions_at.csv`` file. For more information on this file, please refer to :doc:`../Compile_and_Develop/How_to_add_support_for_a_module`.
+**Note:**
 
-**Note** 2: For other partitions, the web page will check the selected firmware. The suffix of the firmware name must be ``.bin``. Please make sure that the firmware size does not exceed the size defined in the ``at_customize.csv`` file. For more information on this file, please refer to :doc:`../Compile_and_Develop/How_to_customize_partitions`.
+- For the ``ota`` partition upgrade, the web page will check the selected firmware. The suffix of the firmware name must be ``.bin`` or ``.bin.xz.packed``. Please make sure that the firmware size does not exceed the size of the ``ota`` partition defined in the ``partitions_at.csv`` file. For more information on this file, please refer to :doc:`../Compile_and_Develop/How_to_add_support_for_a_module`.
+- You can :doc:`download the required OTA firmware from GitHub Actions <../Compile_and_Develop/How_to_download_the_latest_temporary_version_of_AT_from_github>`, or :doc:`compile the ESP-AT project <../Compile_and_Develop/How_to_clone_project_and_compile_it>` yourself to generate the required OTA firmware.
+
+.. only:: esp32c2
+
+  - If you use the ESP32C2-2MB module configuration, the OTA firmware is ``build/custom_ota_binaries/esp-at.bin.xz.packed`` (compressed OTA). If you use the ESP32C2-4MB module configuration, the OTA firmware is ``build/esp-at.bin`` (uncompressed OTA).
+
+.. only:: esp32c5 or esp32c61
+
+  - The OTA firmware is ``build/custom_ota_binaries/esp-at.bin.xz.packed`` (compressed OTA).
+
+.. only:: esp32 or esp32c3 or esp32c6 or esp32s2
+
+  - The OTA firmware is ``build/esp-at.bin`` (uncompressed OTA).
+
+.. note::
+  Difference between compressed OTA and uncompressed OTA
+
+  - Compressed OTA (firmware suffix ``.bin.xz.packed``): The compressed OTA upgrade method is used. After the chip reboots, the bootloader automatically verifies and decompresses the firmware, then jumps to it. If verification fails, the previous firmware is kept. The decompression happens after the chip reboots and before AT outputs ``ready``, which takes some time, so please be patient.
+  - Uncompressed OTA (firmware suffix ``.bin``): The uncompressed OTA upgrade method is used. After the chip reboots, the bootloader directly verifies the firmware and jumps to it, with no decompression step required.
+
+- Downgrading to older versions is not recommended. Downgrading may cause compatibility issues or even prevent the firmware from running. If you must downgrade to an older version, please test and verify the functionality on your own product.
+
+- For non-``ota`` partition upgrades, the web page will check the selected firmware. The suffix of the firmware name must be ``.bin``. Please make sure that the firmware size does not exceed the size defined in the ``at_customize.csv`` file. For more information on this file, please refer to :doc:`../Compile_and_Develop/How_to_customize_partitions`.
 
 Get the Result of OTA
 """""""""""""""""""""""
 
-As shown in the figure, if the {IDF_TARGET_NAME} OTA successfully, it will prompt "OTA Succeeded":
+As shown in the figure, if OTA succeeds on the {IDF_TARGET_NAME}, it will prompt "OTA Succeeded":
 
 .. figure:: ../../_static/Web_server/web_brower_send_firmware_successfully_en.png
    :align: center
@@ -231,7 +254,7 @@ At the same time, the following messages will be returned from the ESP-AT comman
 
 ::
 
-    +WEBSERVERRSP:3      // meaning that {IDF_TARGET_NAME} begin to receive OTA data
+    +WEBSERVERRSP:3      // meaning that {IDF_TARGET_NAME} begins to receive OTA data
     +WEBSERVERRSP:4      // meaning that {IDF_TARGET_NAME} has received all firmware data
 
 If the {IDF_TARGET_NAME} OTA failed, it will prompt "OTA Failed":
@@ -247,8 +270,8 @@ At the same time, the following message will be received on the serial port:
 
 ::
 
-    +WEBSERVERRSP:3      // meaning that {IDF_TARGET_NAME} begin to receive OTA data
-    +WEBSERVERRSP:5      // meaning a failure of receiving OTA data failed. You can choose to reopen the OTA configuration interface and follow the above steps to restart the firmware upgrade
+    +WEBSERVERRSP:3      // meaning that {IDF_TARGET_NAME} begins to receive OTA data
+    +WEBSERVERRSP:5      // meaning that receiving OTA data failed. You can choose to reopen the OTA configuration interface and follow the above steps to restart the firmware upgrade
 
 **Note** 1: For the ``ota`` partition, you need to execute :ref:`AT+RST <cmd-RST>` to restart the {IDF_TARGET_NAME} to apply the new firmware.
 
@@ -260,7 +283,7 @@ Wi-Fi Provisioning Using a WeChat Applet
 Introduction
 ^^^^^^^^^^^^^
 
-The WeChat applet can automatically connect to the WiFi AP of the {IDF_TARGET_NAME}, and then send the ssid and password required by the {IDF_TARGET_NAME} to connect to the network.
+The WeChat applet can automatically connect to the Wi-Fi AP of the {IDF_TARGET_NAME}, and then send the ssid and password required by the {IDF_TARGET_NAME} to connect to the network.
 
 .. important::
   The ESP-AT WeChat applet will be discontinued on December 31, 2024. During this period, please make arrangements for the transition of its functionalities. If you still have related needs after this date, please contact `Espressif's business <https://www.espressif.com/en/contact-us/sales-questions>`_ team. We will be dedicated to providing you with support and solutions. Thank you for your understanding and support.
@@ -402,14 +425,14 @@ Note: If the ssid of the connected router is not displayed on the current page, 
 
    Connection to the Router via the Applet
 
-4.After the Wi-Fi connection is established successfully, the web page will be displayed as follows:
+4.After the Wi-Fi connection is established successfully, the applet page will be displayed as follows:
 
 .. figure:: ../../_static/Web_server/web_wechat_router_connect_success.png
    :align: center
-   :alt: Successfully connection to the Router via the Applet
+   :alt: Successful connection to the Router via the Applet
    :figclass: align-center
 
-   Successfully connection to the Router via the Applet
+   Successful connection to the Router via the Applet
 
 At the same time, the following messages will be returned from the ESP-AT command port:
 
@@ -417,7 +440,7 @@ At the same time, the following messages will be returned from the ESP-AT comman
 
     +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information
     WIFI CONNECTED       // meaning that {IDF_TARGET_NAME} is connecting
-    WIFI GOT IP          // meaning that {IDF_TARGET_NAME} connect successfully to the destination router
+    WIFI GOT IP          // meaning that {IDF_TARGET_NAME} connects successfully to the destination router
     +WEBSERVERRSP:2      // meaning that STA device has received Wi-Fi connection result, and web resources can be released
 
 5.If the {IDF_TARGET_NAME} fails to connect to the router, the page will display:
@@ -433,7 +456,7 @@ At the same time, the following messages will be returned from the ESP-AT comman
 
 ::
 
-    +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information, but failed to connect to the router.
+    +WEBSERVERRSP:1      // meaning that {IDF_TARGET_NAME} has received Wi-Fi connection information, but there is no subsequent connection or IP acquisition message. The MCU can start a timer upon receiving this message; if the timer expires, provisioning has failed.
 
 The target AP to be accessed is the hotspot provided by the mobile phone which loading the WeChat applet.
 **************************************************************************************************************
@@ -474,7 +497,7 @@ Troubleshooting
 
 OTA Firmware Upgrade Using a WeChat Applet
 -------------------------------------------
-The WeChat applet support online firmware upgrade, please refer to the above-described `Configure {IDF_TARGET_NAME} Device Parameters`_ specific steps performed {IDF_TARGET_NAME} configuration (if the configuration has been completed, do not repeat configuration). Once configured, the device performs OTA firmware upgrade processes is similar as `OTA Firmware Upgrade Using a Browser`_ .
+The WeChat applet support online firmware upgrade. Please refer to `Configure {IDF_TARGET_NAME} Device Parameters`_ above to complete the {IDF_TARGET_NAME} configuration (skip this if you already configured the device during provisioning). Once configured, the OTA firmware upgrade flow is similar to `OTA Firmware Upgrade Using a Browser`_ .
 
 .. _using-captive-portal:
 
@@ -488,12 +511,12 @@ Captive Portal is commonly used to present a specified page to newly connected d
 
 .. note::
 
-   The default firmware does not support web server Captive Portal, you may enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT WEB Server command support`` > ``AT WEB captive portal support`` and build the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`). In addition, enabling this feature may cause page skipping when using wechat applet for Wi-Fi provisioning or OTA firmware upgrade. It is recommended that this feature be enabled only when accessing at web using browser.
+   The default firmware does not support web server Captive Portal, you may enable it by ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``AT WEB Server command support`` > ``AT WEB captive portal support`` and build the project (see :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`). In addition, enabling this feature may cause page skipping when using the WeChat applet for Wi-Fi provisioning or OTA firmware upgrade. It is recommended that this feature be enabled only when accessing AT using a browser.
 
 Introduction to Operation Steps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-After Enable Captive Portal support, please refer to `Use STA Device to Connect to {IDF_TARGET_NAME} Device`_ to complete the configuration of the {IDF_TARGET_NAME}, and then connect to the AP of the {IDF_TARGET_NAME}:
+After enabling Captive Portal support, please refer to `Use STA Device to Connect to {IDF_TARGET_NAME} Device`_ to complete the configuration of the {IDF_TARGET_NAME}, and then connect to the AP of the {IDF_TARGET_NAME}:
 
 .. figure:: ../../_static/Web_server/captive_portal_auth_pages_en.png
    :align: center
@@ -507,4 +530,8 @@ As shown in the figure above, after the Station device is connected to the AP of
 Troubleshooting
 ^^^^^^^^^^^^^^^^^^^
 
-**Note** 1: Both Station device and AP device support the Captive Portal function to ensure the normal use of this function. Therefore, if the device is connected to the AP of the {IDF_TARGET_NAME}, but it does not prompt "Login/Authentication", it may be that the Station device does not support this function. In this case, please refer to the specific steps of `Use the Browser to Send Wi-Fi Connection Information`_ above to open the main interface of AT Web.
+**Note:**
+
+- Both the Station device and the AP device must support the Captive Portal function to ensure the normal use of this feature. Therefore, if the device is connected to the AP of the {IDF_TARGET_NAME} but it does not prompt "Login/Authentication", and it does not automatically enter the main interface of AT Web, it may be that the Station device does not support this function. In this case, please refer to the specific steps of `Use the Browser to Send Wi-Fi Connection Information`_ above to manually open the main interface of AT Web.
+- Some mobile phones (or devices) use aggressive Captive Portal detection (initiating a large number of network connections to probe network connectivity), which may cause compatibility issues. In this case, you can try increasing the value of CONFIG_LWIP_MAX_SOCKETS to resolve the issue. The menuconfig path is: ``Component config`` > ``LWIP`` > ``Max number of open sockets``.
+
