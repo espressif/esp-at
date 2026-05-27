@@ -334,10 +334,10 @@ The data stream of throughput is similar to water flow. In order to improve thro
 
   If UART is used for communication between ESP-AT and host MCU, S4, R4, S5, R5, S6, R6 need not be optimized. If other transmission media are used, S4, R4, S5, R5, S6, R6 should be a factor affecting throughput.
 
-  S4, R4, S5, R5, S6, R6 is the data stream between the transport layer, network layer and data link layer of the communication protocol. Users need to read `How to improve Wi-Fi performance <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#how-to-improve-wi-fi-performance>`_ in ESP-IDF to understand the principle and make reasonable configuration. These configurations can be configured in ``./build.py menuconfig``.
+  S4, R4, S5, R5, S6, R6 is the data stream between the transport layer, network layer and data link layer of the communication protocol. Users need to read `How to improve Wi-Fi performance <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/wifi-performance-and-power-save.html#how-to-improve-wi-fi-performance>`_ in ESP-IDF to understand the principle and make reasonable configuration. These configurations can be configured in ``./build.py menuconfig``.
 
-  - Improve throughput of S4 -> S5 -> S6: `TX direction <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#parameters>`_
-  - Improve throughput of R6 -> R5 -> R4: `RX direction <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#parameters>`_
+  - Improve throughput of S4 -> S5 -> S6: `TX direction <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/wifi-performance-and-power-save.html#parameters>`_
+  - Improve throughput of R6 -> R5 -> R4: `RX direction <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/wifi-performance-and-power-save.html#parameters>`_
 
 **5. S6, R6 throughput optimization**
 

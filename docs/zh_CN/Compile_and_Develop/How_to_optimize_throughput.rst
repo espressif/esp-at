@@ -334,10 +334,10 @@
 
   ESP-AT 和主机之间使用 UART 进行通信，S4、R4、S5、R5、S6、R6 无需优化。ESP-AT 和主机之间使用其他传输介质进行通信时，S4、R4、S5、R5、S6、R6 是影响吞吐的一个因素。
 
-  S4、R4、S5、R5、S6、R6 是通信协议的传输层、网络层、和数据链路层之间的数据流。用户需要阅读 ESP-IDF 中 `如何提高 Wi-Fi 性能 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#how-to-improve-wi-fi-performance>`_ 文档，了解原理，进行合理配置。这些配置均可以在 ``./build.py menuconfig`` 里进行配置。
+  S4、R4、S5、R5、S6、R6 是通信协议的传输层、网络层、和数据链路层之间的数据流。用户需要阅读 ESP-IDF 中 `如何提高 Wi-Fi 性能 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/wifi-performance-and-power-save.html#how-to-improve-wi-fi-performance>`_ 文档，了解原理，进行合理配置。这些配置均可以在 ``./build.py menuconfig`` 里进行配置。
 
-  - 优化 S4 -> S5 -> S6：`发送数据方向配置 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id64>`_
-  - 优化 R6 -> R5 -> R4：`接收数据方向配置 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id64>`_
+  - 优化 S4 -> S5 -> S6：`发送数据方向配置 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/wifi-performance-and-power-save.html#id7>`_
+  - 优化 R6 -> R5 -> R4：`接收数据方向配置 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/wifi-performance-and-power-save.html#id7>`_
 
 **5. S6、R6 吞吐优化**
 

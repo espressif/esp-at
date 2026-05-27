@@ -52,7 +52,7 @@ AT Wi-Fi 功能调试
 
 .. note::
 
-  在分析日志时，你可能会遇到 Wi-Fi 原因码，具体含义请参考 `Wi-Fi 原因代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id34>`_。
+  在分析日志时，你可能会遇到 Wi-Fi 原因码，具体含义请参考 `Wi-Fi 原因代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/station-scenarios.html#esp-wifi-reason-code>`_。
 
 .. _debug-at_network:
 

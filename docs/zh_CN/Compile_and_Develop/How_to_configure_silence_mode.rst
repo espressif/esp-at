@@ -25,7 +25,7 @@
      - 应用固件 (esp-at.bin) 的大小会增加，这可能会导致编译 AT 固件时，应用固件大小超过了代码中划分的应用分区大小，从而导致编译失败（:ref:`编译失败日志 <compilation-failure-log>`）。
    * - 启用静默模式（即设置为 1），不推荐此配置
      - 应用固件 (esp-at.bin) 的大小会减小
-     - 此模式会删除一些 AT 的日志，并会使 `CONFIG_LOG_DEFAULT_LEVEL <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/kconfig.html?highlight=log%20output#config-log-default-level>`_ 配置失效，从而无法输出相应等级日志，这会增加你调试 AT 功能的难度。
+     - 此模式会删除一些 AT 的日志，并会使 `CONFIG_LOG_DEFAULT_LEVEL <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/api-reference/kconfig-reference.html#config-log-default-level>`_ 配置失效，从而无法输出相应等级日志，这会增加你调试 AT 功能的难度。
 
 .. _compilation-failure-log:
 

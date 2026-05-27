@@ -25,7 +25,7 @@ Silence mode is a compilation configuration option for ESP-AT firmware that cont
      - The size of the application firmware (esp-at.bin) will increase, potentially exceeding the allocated application partition size in the code and resulting in a compilation failure (refer to :ref:`compilation failure log <compilation-failure-log>`).
    * - Enabled (i.e., set to 1, not recommended)
      - Reduced size of the application firmware (esp-at.bin)
-     - This mode will remove some AT logs and make the `CONFIG_LOG_DEFAULT_LEVEL <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/kconfig.html?highlight=log%20output#config-log-default-level>`_ configuration ineffective, preventing AT from outputting logs at the corresponding log levels, which will increase the difficulty of debugging AT functions.
+     - This mode will remove some AT logs and make the `CONFIG_LOG_DEFAULT_LEVEL <https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/kconfig-reference.html#config-log-default-level>`_ configuration ineffective, preventing AT from outputting logs at the corresponding log levels, which will increase the difficulty of debugging AT functions.
 
 .. _compilation-failure-log:
 
