@@ -20,7 +20,7 @@
   - :ref:`AT+SAVETRANSLINK <cmd-SAVET>`：设置开机 Network/Bluetooth LE :term:`透传模式` 信息
   - :ref:`AT+TRANSINTVL <cmd-TRANSINTVL>`：设置 :term:`透传模式` 模式下的数据发送间隔
   - :ref:`AT+UART_CUR <cmd-UARTC>`：设置 UART 当前临时配置，不保存到 flash
-  - :ref:`AT+UART_DEF <cmd-UARTD>`：设置 UART 默认配置, 保存到 flash
+  - :ref:`AT+UART_DEF <cmd-UARTD>`：设置 UART 默认配置，保存到 flash
   - :ref:`AT+SLEEP <cmd-SLEEP>`：设置睡眠模式
   - :ref:`AT+SYSRAM <cmd-SYSRAM>`：查询堆空间使用情况
   - :ref:`AT+SYSMSG <cmd-SYSMSG>`：查询/设置系统提示信息

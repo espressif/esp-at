@@ -1830,7 +1830,7 @@ TCP-IP AT 示例
 
 #. TCP 服务器发送 4 字节的数据（数据为 ``test``）。
 
-   说明:
+   说明：
 
    - 此时会回复 ``+IPD,4``，如果后续再接收到服务器数据，是否回复 ``+IPD,``，请阅读 :ref:`AT+CIPRECVTYPE <cmd-CIPRECVTYPE>` 说明部分。
 

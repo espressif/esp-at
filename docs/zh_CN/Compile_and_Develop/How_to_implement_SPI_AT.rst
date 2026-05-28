@@ -296,7 +296,7 @@ SPI AT 数据交互流程主要分为两个方面：
 
 每个步骤具体的说明如下：
 
-1. slave 向 slave_status 寄存器写入允许 master 读取来自 slave 的数据的标志位,然后通过握手线触发 master 上的 GPIO 中断。
+1. slave 向 slave_status 寄存器写入允许 master 读取来自 slave 的数据的标志位，然后通过握手线触发 master 上的 GPIO 中断。
 2. master 接收到中断后，读取 slave 的 slave_status 寄存器，检测到 slave 进入发送数据的状态。
 3. master 开始接收来自 slave 的数据。
 4. 数据接收完毕后，master 向 slave 发送一条代表接收数据结束的消息。

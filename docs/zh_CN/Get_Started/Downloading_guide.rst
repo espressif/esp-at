@@ -189,7 +189,7 @@ Windows
 
 为了避免烧录出现问题，请查看开发板的下载接口的 COM 端口号，并从 "COM:" 下拉列表中选择该端口号。有关如何查看端口号的详细介绍请参考 `在 Windows 上查看端口 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/get-started/establish-serial-connection.html#windows>`_。
 
-烧录完成后, 请 `检查 AT 固件是否烧录成功`_。
+烧录完成后，请 `检查 AT 固件是否烧录成功`_。
 
 Linux 或 macOS
 ^^^^^^^^^^^^^^^
@@ -483,7 +483,7 @@ Linux 或 macOS
 
 .. only:: esp32c2
 
-   {IDF_TARGET_NAME} 开机日志:
+   {IDF_TARGET_NAME} 开机日志：
 
    .. code-block:: none
 
@@ -528,7 +528,7 @@ Linux 或 macOS
 
 .. only:: esp32c3
 
-   {IDF_TARGET_NAME} 开机日志:
+   {IDF_TARGET_NAME} 开机日志：
 
    .. code-block:: none
 
@@ -575,7 +575,7 @@ Linux 或 macOS
 
 .. only:: esp32c5
 
-   {IDF_TARGET_NAME} 开机日志:
+   {IDF_TARGET_NAME} 开机日志：
 
    .. code-block:: none
 
@@ -621,7 +621,7 @@ Linux 或 macOS
 
 .. only:: esp32c6
 
-   {IDF_TARGET_NAME} 开机日志:
+   {IDF_TARGET_NAME} 开机日志：
 
    .. code-block:: none
 
@@ -668,7 +668,7 @@ Linux 或 macOS
 
 .. only:: esp32c61
 
-   {IDF_TARGET_NAME} 开机日志:
+   {IDF_TARGET_NAME} 开机日志：
 
    .. code-block:: none
 
