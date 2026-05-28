@@ -34,6 +34,12 @@ if AT_BASE_ON_UART
                 0: flow control is disabled; 1: enable RTS; 2: enable CTS; 3: enable RTS and CTS
             default 1
             range 0 3
+
+        config AT_UART_TASK_STACK_SIZE
+            int "The stack size of the AT uart task"
+            default 1536 if IDF_TARGET_ESP32
+            default 1024
+            range 1024 8192
     endmenu
 
 endif

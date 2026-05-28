@@ -194,7 +194,7 @@ static void at_uart_init(void)
 #else
     ESP_AT_LOGI(TAG, "AT log port:uart%d baudrate:%d", CONFIG_ESP_CONSOLE_UART_NUM, CONFIG_ESP_CONSOLE_UART_BAUDRATE);
 #endif
-    xTaskCreate(at_uart_task, "uTask", 1024, NULL, 1, &s_task_handle);
+    xTaskCreate(at_uart_task, "uTask", CONFIG_AT_UART_TASK_STACK_SIZE, NULL, 1, &s_task_handle);
 }
 
 void at_uart_transmit_mode_switch_cb(esp_at_status_type status)
