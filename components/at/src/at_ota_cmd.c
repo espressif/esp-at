@@ -92,9 +92,15 @@ static const at_partition_sig_t s_at_partition_sig[] = {
     {"server_ca", 2, 0, {0xF1, 0xF1}},
     {"server_cert", 2, 0, {0xF1, 0xF1}},
     {"server_key", 2, 0, {0xF1, 0xF1}},
+#ifdef CONFIG_AT_EAP_LEGACY_NAMESPACE_SUPPORT
     {"wpa2_ca", 2, 0, {0xF1, 0xF1}},
     {"wpa2_cert", 2, 0, {0xF1, 0xF1}},
     {"wpa2_key", 2, 0, {0xF1, 0xF1}},
+#else
+    {"wpa_ent_ca", 2, 0, {0xF1, 0xF1}},
+    {"wpa_ent_cert", 2, 0, {0xF1, 0xF1}},
+    {"wpa_ent_key", 2, 0, {0xF1, 0xF1}},
+#endif
     {"factory_param", 2, 0, {0xFC, 0xFC}},
 };
 

@@ -54,8 +54,30 @@ def get_to_read_config_dir(at_path):
                     to_read_config_name.append(cfg_dir)
     return to_read_config_name
 
+# Map the Wi-Fi Enterprise certificate namespaces/keys back to the legacy "wpa2_"
+# prefixed names when CONFIG_AT_EAP_LEGACY_NAMESPACE_SUPPORT is enabled, so that the
+# generated mfg_nvs stays backward compatible with old firmware.
+WPA_ENT_LEGACY_NAME_MAP = {
+    'wpa_ent_ca': 'wpa2_ca',
+    'wpa_ent_cert': 'wpa2_cert',
+    'wpa_ent_key': 'wpa2_key',
+}
+
+def is_eap_legacy_namespace(at_path):
+    sdkconfig = os.path.join(at_path, 'sdkconfig')
+    with open(sdkconfig) as f:
+        sdkconfig_data = f.read()
+    return 'CONFIG_AT_EAP_LEGACY_NAMESPACE_SUPPORT=y' in sdkconfig_data
+
+def get_mfg_base_name(cfg_dir, legacy):
+    base_name = os.path.basename(cfg_dir)
+    if legacy:
+        return WPA_ENT_LEGACY_NAME_MAP.get(base_name, base_name)
+    return base_name
+
 def create_mfg_csv(args):
     to_read_cfg_dir = get_to_read_config_dir(args.project_path)
+    legacy = is_eap_legacy_namespace(args.project_path)
 
     # create a new mfg_nvs.csv namespace and write header
     mfg_csv = os.path.join(args.outdir, args.partition_name + '.csv')
@@ -65,14 +87,15 @@ def create_mfg_csv(args):
     with open(mfg_csv, 'a') as f:
         for cfg_dir in to_read_cfg_dir:
             index = 0
+            base_name = get_mfg_base_name(cfg_dir, legacy)
             for cfg_file in sorted(os.listdir(cfg_dir)):
                 if cfg_file.endswith('.crt') or cfg_file.endswith('.key') or cfg_file.endswith('.pem'):
                     if index == 0:
-                        f.write(os.path.basename(cfg_dir) + ',namespace,,\n')
+                        f.write(base_name + ',namespace,,\n')
                     if len(os.listdir(cfg_dir)) == 1:
-                        key = os.path.basename(cfg_dir)
+                        key = base_name
                     else:
-                        key = os.path.basename(cfg_dir) + '.' + str(index)
+                        key = base_name + '.' + str(index)
                         index = index + 1
                     value = os.path.join(cfg_dir, cfg_file)
                     f.write(key + ',file,binary,' + value + '\n')

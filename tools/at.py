@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+# SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
 
 from __future__ import division, print_function
@@ -1079,6 +1079,11 @@ def at_update_mfg_parameters(args, data):
     data = at_update_param('mqtt_ca', 'B', args.mqtt_ca, data)
     data = at_update_param('mqtt_cert', 'B', args.mqtt_cert, data)
     data = at_update_param('mqtt_key', 'B', args.mqtt_key, data)
+    # WiFi Enterprise certificates (default namespaces/keys, shared by WPA2/WPA3 Enterprise)
+    data = at_update_param('wpa_ent_ca', 'B', args.wpa_ent_ca, data)
+    data = at_update_param('wpa_ent_cert', 'B', args.wpa_ent_cert, data)
+    data = at_update_param('wpa_ent_key', 'B', args.wpa_ent_key, data)
+    # WiFi Enterprise certificates (legacy namespaces/keys, only when CONFIG_AT_EAP_LEGACY_NAMESPACE_SUPPORT=y)
     data = at_update_param('wpa2_ca', 'B', args.wpa2_ca, data)
     data = at_update_param('wpa2_cert', 'B', args.wpa2_cert, data)
     data = at_update_param('wpa2_key', 'B', args.wpa2_key, data)
@@ -1372,17 +1377,30 @@ def main(argv=None, esp=None):
         help='Specify the new file path for the MQTT private key to update. This will update the file located at esp-at/components/customized_partitions/raw_data/mqtt_key/mqtt_client.key with the contents of your new file.',
         type=str)
 
-    # wpa2 ca
+    # wpa enterprise ca (default, shared by WPA2/WPA3 Enterprise)
+    parser_modify_bin.add_argument('--wpa_ent_ca', '-wpaentca',
+        help='Specify the new file path for the CA certificate of WPA Enterprise (WPA2/WPA3) client to update. This will update the file located at esp-at/components/customized_partitions/raw_data/wpa_ent_ca/wpa_ent_ca.pem with the contents of your new file.',
+        type=str)
+    # wpa enterprise crt (default, shared by WPA2/WPA3 Enterprise)
+    parser_modify_bin.add_argument('--wpa_ent_cert', '-wpaentcrt',
+        help='Specify the new file path for the WPA Enterprise (WPA2/WPA3) certificate to update. This will update the file located at esp-at/components/customized_partitions/raw_data/wpa_ent_cert/wpa_ent_client.crt with the contents of your new file.',
+        type=str)
+    # wpa enterprise key (default, shared by WPA2/WPA3 Enterprise)
+    parser_modify_bin.add_argument('--wpa_ent_key', '-wpaentkey',
+        help='Specify the new file path for the WPA Enterprise (WPA2/WPA3) private key to update. This will update the file located at esp-at/components/customized_partitions/raw_data/wpa_ent_key/wpa_ent_client.key with the contents of your new file.',
+        type=str)
+
+    # wpa2 ca (legacy alias of --wpa_ent_ca, writes to the legacy wpa2_ca NVS namespace/key)
     parser_modify_bin.add_argument('--wpa2_ca', '-wpa2ca',
-        help='Specify the new file path for the CA certificate of WPA2 enterprise client to update. This will update the file located at esp-at/components/customized_partitions/raw_data/wpa2_ca/wpa2_ca.pem with the contents of your new file.',
+        help='[LEGACY, use --wpa_ent_ca instead] Same as --wpa_ent_ca but writes to the legacy "wpa2_ca" NVS namespace/key. Use only for firmware that stores enterprise certificates under the "wpa2_" namespaces (old firmware, or firmware built with CONFIG_AT_EAP_LEGACY_NAMESPACE_SUPPORT=y).',
         type=str)
-    # wpa2 crt
+    # wpa2 crt (legacy alias of --wpa_ent_cert, writes to the legacy wpa2_cert NVS namespace/key)
     parser_modify_bin.add_argument('--wpa2_cert', '-wpa2crt',
-        help='Specify the new file path for the WPA2 certificate to update. This will update the file located at esp-at/components/customized_partitions/raw_data/wpa2_cert/wpa2_client.crt with the contents of your new file.',
+        help='[LEGACY, use --wpa_ent_cert instead] Same as --wpa_ent_cert but writes to the legacy "wpa2_cert" NVS namespace/key. Use only for firmware that stores enterprise certificates under the "wpa2_" namespaces (old firmware, or firmware built with CONFIG_AT_EAP_LEGACY_NAMESPACE_SUPPORT=y).',
         type=str)
-    # wpa2 key
+    # wpa2 key (legacy alias of --wpa_ent_key, writes to the legacy wpa2_key NVS namespace/key)
     parser_modify_bin.add_argument('--wpa2_key', '-wpa2key',
-        help='Specify the new file path for the WPA2 private key to update. This will update the file located at esp-at/components/customized_partitions/raw_data/wpa2_key/wpa2_client.key with the contents of your new file.',
+        help='[LEGACY, use --wpa_ent_key instead] Same as --wpa_ent_key but writes to the legacy "wpa2_key" NVS namespace/key. Use only for firmware that stores enterprise certificates under the "wpa2_" namespaces (old firmware, or firmware built with CONFIG_AT_EAP_LEGACY_NAMESPACE_SUPPORT=y).',
         type=str)
 
     # gatts config
