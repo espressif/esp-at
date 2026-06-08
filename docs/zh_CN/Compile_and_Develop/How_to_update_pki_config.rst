@@ -3,7 +3,7 @@
 
 :link_to_translation:`en:[English]`
 
-本文档介绍了如何通过重新编译固件来更新 ESP-AT 提供的默认的 :term:`PKI` 配置。PKI 配置包括 TLS 客户端、TLS 服务器、MQTT 客户端、WebSocket 客户端、HTTP 客户端和 WPA2 Enterprise 客户端的证书和密钥。
+本文档介绍了如何通过重新编译固件来更新 ESP-AT 提供的默认的 :term:`PKI` 配置。PKI 配置包括 TLS 客户端、TLS 服务器、MQTT 客户端、WebSocket 客户端、HTTP 客户端和 Wi-Fi Enterprise 客户端的证书和密钥。
 
 .. note::
   如果你想在运行时通过 AT 命令更新证书而无需重新编译固件，请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-pki>`。
@@ -84,11 +84,11 @@ PKI 配置介绍
           * :component_file:`https_client_01.key <customized_partitions/raw_data/https_key/https_client_01.key>`
         - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
 
-      * - WPA2 Enterprise 客户端
+      * - Wi-Fi 企业版客户端 (WPA2-Enterprise/WPA3-Enterprise)
         -
-          * :component_file:`wpa2_ca.pem <customized_partitions/raw_data/wpa2_ca/wpa2_ca.pem>`
-          * :component_file:`wpa2_client.crt <customized_partitions/raw_data/wpa2_cert/wpa2_client.crt>`
-          * :component_file:`wpa2_client.key <customized_partitions/raw_data/wpa2_key/wpa2_client.key>`
+          * :component_file:`wpa_ent_ca.pem <customized_partitions/raw_data/wpa_ent_ca/wpa_ent_ca.pem>`
+          * :component_file:`wpa_ent_client.crt <customized_partitions/raw_data/wpa_ent_cert/wpa_ent_client.crt>`
+          * :component_file:`wpa_ent_client.key <customized_partitions/raw_data/wpa_ent_key/wpa_ent_client.key>`
         - :ref:`AT+CWJEAP <cmd-JEAP>`
 
 请根据自己的需求修改 PKI 配置，然后生成 ``mfg_nvs.bin`` 文件。

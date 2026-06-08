@@ -476,7 +476,7 @@ AT 发布固件差异
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-    * - WPA2 enterprise
+    * - Wi-Fi Enterprise
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
@@ -600,7 +600,7 @@ AT 发布固件差异
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-    * - WPA2 enterprise
+    * - Wi-Fi Enterprise
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
@@ -662,7 +662,7 @@ AT 发布固件差异
       - |icon-orange-check|
     * - driver
       - |icon-orange-check|
-    * - WPA2 enterprise
+    * - Wi-Fi Enterprise
       - |icon-orange-check|
     * - Web server
       - |icon-orange-check|
@@ -706,7 +706,7 @@ AT 发布固件差异
       - |icon-orange-check|
     * - driver
       - |icon-orange-check|
-    * - WPA2 enterprise
+    * - Wi-Fi Enterprise
       - |icon-orange-check|
     * - Web server
       - |icon-orange-check|
@@ -746,7 +746,7 @@ AT 发布固件差异
       - |icon-orange-check|
     * - driver
       - |icon-orange-check|
-    * - WPA2 enterprise
+    * - Wi-Fi Enterprise
       - |icon-orange-check|
     * - Web server
       - |icon-orange-check|

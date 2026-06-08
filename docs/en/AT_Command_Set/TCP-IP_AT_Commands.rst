@@ -53,7 +53,7 @@ Introduction
 ------------
 
 .. important::
-  The default AT firmware supports all the AT commands mentioned on this page. If you need to modify the commands supported by {IDF_TARGET_NAME} by default, please compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections (Each item below is independent. Choose it according to your needs):
+  The default AT firmware supports all the AT commands mentioned on this page. If you need to modify the commands supported by {IDF_TARGET_NAME} by default, please compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In step 5 of the project configuration, make the following selections (Each item below is independent. Choose it according to your needs):
 
   - Disable OTA commands (:ref:`AT+CIUPDATE <cmd-UPDATE>` and :ref:`AT+CIPFWVER <cmd-FWVER>`): ``Component config`` > ``AT`` > ``AT OTA command support``
   - Disable PING commands (:ref:`AT+PING <cmd-CIPPING>`): ``Component config`` > ``AT`` > ``AT ping command support``

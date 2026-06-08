@@ -3,7 +3,7 @@ How to Update PKI Configuration
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document describes how to update the default :term:`PKI` configuration provided by ESP-AT by recompiling the firmware. The PKI configuration includes certificates and keys for TLS clients, TLS servers, MQTT clients, WebSocket clients, HTTP clients, and WPA2 Enterprise clients.
+This document describes how to update the default :term:`PKI` configuration provided by ESP-AT by recompiling the firmware. The PKI configuration includes certificates and keys for TLS clients, TLS servers, MQTT clients, WebSocket clients, HTTP clients, and Wi-Fi Enterprise client (WPA2-Enterprise/WPA3-Enterprise).
 
 .. note::
   If you want to update certificates at runtime using AT commands without recompiling the firmware, please refer to :ref:`AT+SYSMFG command examples <sysmfg-pki>`.
@@ -17,7 +17,7 @@ This document describes how to update the default :term:`PKI` configuration prov
 Introduction to PKI Configuration
 ---------------------------------
 
-The source file for the current default PKI configuration is located in the :component:`customized_partitions/raw_data` directory, as shown below:
+The source files for the current default PKI configuration are located in the :component:`customized_partitions/raw_data` directory, as shown below:
 
    .. list-table::
       :header-rows: 1
@@ -84,21 +84,21 @@ The source file for the current default PKI configuration is located in the :com
           * :component_file:`https_client_01.key <customized_partitions/raw_data/https_key/https_client_01.key>`
         - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
 
-      * - WPA2 Enterprise client
+      * - Wi-Fi Enterprise client (WPA2-Enterprise/WPA3-Enterprise)
         -
-          * :component_file:`wpa2_ca.pem <customized_partitions/raw_data/wpa2_ca/wpa2_ca.pem>`
-          * :component_file:`wpa2_client.crt <customized_partitions/raw_data/wpa2_cert/wpa2_client.crt>`
-          * :component_file:`wpa2_client.key <customized_partitions/raw_data/wpa2_key/wpa2_client.key>`
+          * :component_file:`wpa_ent_ca.pem <customized_partitions/raw_data/wpa_ent_ca/wpa_ent_ca.pem>`
+          * :component_file:`wpa_ent_client.crt <customized_partitions/raw_data/wpa_ent_cert/wpa_ent_client.crt>`
+          * :component_file:`wpa_ent_client.key <customized_partitions/raw_data/wpa_ent_key/wpa_ent_client.key>`
         - :ref:`AT+CWJEAP <cmd-JEAP>`
 
 Please modify the PKI configurations according to your own needs and generate ``mfg_nvs.bin`` file.
 
 Generate mfg_nvs.bin
-^^^^^^^^^^^^^^^^^^^^^
+--------------------
 
 Please refer to :ref:`mfg-nvs-generate` document to generate the ``mfg_nvs.bin`` file with the PKI configurations.
 
 Download mfg_nvs.bin
-^^^^^^^^^^^^^^^^^^^^^
+--------------------
 
 Please refer to :ref:`mfg-nvs-download` document.

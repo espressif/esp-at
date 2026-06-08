@@ -26,7 +26,7 @@ Wi-Fi AT 命令集
   - :ref:`AT+CWDHCPS <cmd-DHCPS>`：查询/设置 {IDF_TARGET_NAME} SoftAP DHCP 分配的 IPv4 地址范围
   - :ref:`AT+CWAUTOCONN <cmd-AUTOC>`：上电是否自动连接 AP
   - :ref:`AT+CWAPPROTO <cmd-APPROTO>`：查询/设置 SoftAP 模式下 Wi-Fi 协议标准
-  - :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`：设置 Station 模式下 Wi-Fi 协议标准
+  - :ref:`AT+CWSTAPROTO <cmd-STAPROTO>`：查询/设置 Station 模式下 Wi-Fi 协议标准
   - :ref:`AT+CIPSTAMAC <cmd-STAMAC>`：查询/设置 {IDF_TARGET_NAME} Station 的 MAC 地址
   - :ref:`AT+CIPAPMAC <cmd-APMAC>`：查询/设置 {IDF_TARGET_NAME} SoftAP 的 MAC 地址
   - :ref:`AT+CIPSTA <cmd-IPSTA>`：查询/设置 {IDF_TARGET_NAME} Station 的 IP 地址
@@ -34,7 +34,7 @@ Wi-Fi AT 命令集
   - :ref:`AT+CWSTARTSMART <cmd-STARTS>`：开启 SmartConfig
   - :ref:`AT+CWSTOPSMART <cmd-STOPS>`：停止 SmartConfig
   - :ref:`AT+WPS <cmd-WPS>`：设置 WPS 功能
-  - :ref:`AT+CWJEAP <cmd-JEAP>`：连接 WPA2 企业版 AP
+  - :ref:`AT+CWJEAP <cmd-JEAP>`：连接 WPA2/WPA3 企业版 AP
   - :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`：查询/设置 {IDF_TARGET_NAME} Station 的主机名称
   - :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`：查询/设置 Wi-Fi 国家代码
 
@@ -46,7 +46,7 @@ Wi-Fi AT 命令集
 .. important::
   默认的 AT 固件支持此页面下除 :ref:`AT+CWJEAP <cmd-JEAP>` 之外的所有 AT 命令。如果你需要修改 {IDF_TARGET_NAME} 默认支持的命令，请自行 :doc:`编译 ESP-AT 工程 <../Compile_and_Develop/How_to_clone_project_and_compile_it>`，在第五步配置工程里选择（下面每项是独立的，根据你的需要选择）：
 
-  - 启用 EAP 命令（:ref:`AT+CWJEAP <cmd-JEAP>`）： ``Component config`` > ``AT`` > ``AT WPA2 Enterprise command support``
+  - 启用 EAP 命令（:ref:`AT+CWJEAP <cmd-JEAP>`）： ``Component config`` > ``AT`` > ``AT Wi-Fi Enterprise command support``
   - 禁用 WPS 命令（:ref:`AT+WPS <cmd-WPS>`）：``Component config`` > ``AT`` > ``AT WPS command support``
   - 禁用 smartconfig 命令（:ref:`AT+CWSTARTSMART <cmd-STARTS>`、:ref:`AT+CWSTOPSMART <cmd-STOPS>`）：``Component config`` > ``AT`` > ``AT smartconfig command support``
   - 禁用所有 Wi-Fi 命令（不推荐。一旦禁用，所有 Wi-Fi 以及以上的功能将无法使用，你需要自行实现这些 AT 命令）： ``Component config`` > ``AT`` > ``AT wifi command support``
@@ -1391,7 +1391,7 @@ Wi-Fi AT 命令集
 
 .. _cmd-STAPROTO:
 
-:ref:`AT+CWSTAPROTO <WiFi-AT>`：设置 Station 模式下 Wi-Fi 协议标准
+:ref:`AT+CWSTAPROTO <WiFi-AT>`：查询/设置 Station 模式下 Wi-Fi 协议标准
 --------------------------------------------------------------------------------------------
 
 查询命令
@@ -1946,7 +1946,7 @@ Wi-Fi AT 命令集
 
 .. _cmd-JEAP:
 
-:ref:`AT+CWJEAP <WiFi-AT>`：连接 WPA2 企业版 AP
+:ref:`AT+CWJEAP <WiFi-AT>`：连接 WPA2/WPA3 企业版 AP
 -------------------------------------------------------------------------
 
 查询命令
@@ -1980,7 +1980,7 @@ Wi-Fi AT 命令集
 
 ::
 
-    AT+CWJEAP=<"ssid">,<method>,<"identity">,<"username">,<"password">,<security>[,<jeap_timeout>][,<rssi>][,<"bssid">][,<channel>][,<scan_mode>]
+    AT+CWJEAP=<"ssid">,<method>,<"identity">,<"username">,<"password">,<security>[,<jeap_timeout>][,<rssi>][,<"bssid">][,<channel>][,<scan_mode>][,<auth_mode>]
 
 **响应：**
 
@@ -2002,7 +2002,7 @@ Wi-Fi AT 命令集
 
    - 如果 SSID 或密码中包含 ``,``、``"``、``\\`` 等特殊字符，需转义
 
-- **<method>**：WPA2 企业版认证方式
+- **<method>**：WPA2/WPA3 企业版认证方式
 
    - 0: EAP-TLS
    - 1: EAP-PEAP
@@ -2013,8 +2013,8 @@ Wi-Fi AT 命令集
 - **<"password">**：阶段 2 的密码，范围：1 ~ 32 字节，EAP-PEAP、EAP-TTLS 两种认证方式需设置本参数，EAP-TLS 方式无需设置本参数
 - **<security>**：
 
-   - bit 0: 提供证书供 WPA2 Enterprise 服务器端 CA 证书校验
-   - bit 1: 客户端载入 CA 证书来校验 WPA2 Enterprise 服务器端的证书
+   - bit 0: 提供客户端证书供企业版服务器端校验
+   - bit 1: 客户端载入 CA 证书来校验企业版服务器端的证书
 
 - **<jeap_timeout>**：:ref:`AT+CWJEAP <cmd-JEAP>` 命令的最大超时时间，单位：秒，默认值：15，范围：[3,600]
 - **<rssi>**：连接时的 RSSI 阈值，Wi‑Fi 仅连接 RSSI 不低于该值的 AP。单位：dBm，范围：[-128,127]，默认值：-127
@@ -2025,20 +2025,39 @@ Wi-Fi AT 命令集
    - 0: 快速扫描，扫描到对应的 AP 后立即连接，加快连接速度
    - 1: 全信道扫描，选择信号最强的 AP 连接
 
+- **<auth_mode>**：可接受的最低企业版安全等级（门槛），默认值为 0。
+
+  .. list::
+
+    - 0: WPA2 企业版
+    - 1: WPA3 企业版
+    :esp32c3 or esp32c5 or esp32c6 or esp32c61: - 2: WPA3 企业版 192-bit（NSA Suite-B）
+
 示例
 ^^^^
 
 ::
 
-    // 连接至 EAP-TLS 认证方式的企业版 AP，设置身份，验证服务器证书，加载客户端证书
+    // 连接至 WPA2 企业版 AP（EAP-TLS 认证方式），设置身份，验证服务器证书，加载客户端证书（校验服务器证书时请先执行 AT+SYSTIMESTAMP 设置时间）
     AT+CWJEAP="dlink11111",0,"example@espressif.com",,,3
 
-    // 连接至 EAP-PEAP 认证方式的企业版 AP，设置身份、用户名、密码，不验证服务器证书，不加载客户端证书
+    // 连接至 WPA2 企业版 AP（EAP-PEAP 认证方式），设置身份、用户名、密码，不验证服务器证书，不加载客户端证书
     AT+CWJEAP="dlink11111",1,"example@espressif.com","espressif","test11",0
+
+    // 连接至 WPA3 企业版 AP（EAP-PEAP 方式），校验服务器证书（请先执行 AT+SYSTIMESTAMP 设置时间）
+    AT+CWJEAP="dlink11111",1,"example@espressif.com","espressif","test11",2,,,,,,1
+
+.. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+    ::
+
+        // 连接至 WPA3 企业版 192-bit（NSA Suite-B）AP（EAP-TLS 方式）。
+        // 需使用满足 Suite-B 要求的证书（EC P-384，或 RSA 密钥长度 >= 3072，且使用 SHA-384 签名），并先执行 AT+SYSTIMESTAMP 设置时间。
+        AT+CWJEAP="dlink11111",0,"example@espressif.com",,,3,,,,,,2
 
 **错误代码：**
 
-WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
+WPA2/WPA3 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 
 .. list-table::
    :header-rows: 1
@@ -2116,6 +2135,34 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
      - 0x8023
    * - AT_EAP_METHOD_ERROR
      - 0x8024
+   * - AT_EAP_GET_CMD_TIMEOUT_FAILED
+     - 0x8025
+   * - AT_EAP_CMD_TIMEOUT_ERROR
+     - 0x8026
+   * - AT_EAP_GET_RSSI_FAILED
+     - 0x8027
+   * - AT_EAP_RSSI_ERROR
+     - 0x8028
+   * - AT_EAP_GET_BSSID_FAILED
+     - 0x8029
+   * - AT_EAP_BSSID_ERROR
+     - 0x802A
+   * - AT_EAP_GET_CHANNEL_FAILED
+     - 0x802B
+   * - AT_EAP_CHANNEL_ERROR
+     - 0x802C
+   * - AT_EAP_GET_SCAN_MODE_FAILED
+     - 0x802D
+   * - AT_EAP_SCAN_MODE_ERROR
+     - 0x802E
+   * - AT_EAP_GET_AUTH_MODE_FAILED
+     - 0x802F
+   * - AT_EAP_AUTH_MODE_ERROR
+     - 0x8030
+   * - AT_EAP_SET_TTLS_PHASE2_FAILED
+     - 0x8031
+   * - AT_EAP_SET_WPA3_ENT_192BIT_FAILED
+     - 0x8032
 
 说明
 ^^^^
@@ -2123,8 +2170,17 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区。
 - 使用本命令需开启 Station 模式。
 - 使用 TLS 认证方式需使能客户端证书。
-- 如果你想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 WPA2 Enterprise 客户端证书（具体步骤请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-pki>`，证书配置方法与 SSL 证书相同）。如果你想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
-- 如果 ``<security>`` 配置为 2，为了校验服务器的证书有效期，请在发送 :ref:`AT+CWJEAP <cmd-JEAP>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间（你可以发送 :ref:`AT+SYSTIMESTAMP=\<unix_timestamp\> <cmd-SETTIME>` 命令来配置当前时间，发送 :ref:`AT+SYSTIMESTAMP? <cmd-SETTIME>` 命令查询当前时间）。
+- 如果你想使用自己的证书，运行时请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令更新 Wi-Fi Enterprise 客户端证书（具体步骤请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-pki>`，证书配置方法与 SSL 证书相同）。如果你想预烧录自己的证书，请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+- 如果 ``<security>`` 的 bit 1 置位（即取值为 2 或 3），为了校验服务器的证书有效期，请在发送 :ref:`AT+CWJEAP <cmd-JEAP>` 命令前确保 {IDF_TARGET_NAME} 已获取到当前时间（你可以发送 :ref:`AT+SYSTIMESTAMP=\<unix_timestamp\> <cmd-SETTIME>` 命令来配置当前时间，发送 :ref:`AT+SYSTIMESTAMP? <cmd-SETTIME>` 命令查询当前时间）。
+- ``<auth_mode>`` 仅为最低门槛，无法强制锁定某一安全等级。最终的安全等级由 AP 的广播能力协商决定，因此设备实际连接的等级可能高于 ``<auth_mode>``。
+
+.. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+  - WPA3 企业版 192-bit（``<auth_mode>`` = 2）要求 CA、客户端证书、服务器证书都必须满足 NSA Suite-B 要求（EC P-384，或 RSA 密钥长度 >= 3072，且使用 SHA-384 签名），否则将连接失败。
+
+.. only:: esp32 or esp32c2 or esp32s2
+
+  - {IDF_TARGET_NAME} 不支持 WPA3 企业版 192-bit，因此本芯片上 ``<auth_mode>`` 不支持取值 2。
 
 .. _cmd-HOSTNAME:
 
@@ -2269,7 +2325,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
     - 1: 不改变国家代码，始终保持本命令设置的国家代码。
 
   - **<"country_code">**：国家代码，最大长度：3 个字符，各国国家代码请参考 `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ 标准。
-  - **<start_channel>**：起始信号道，范围：[1,14]。
+  - **<start_channel>**：起始信道，范围：[1,14]。
   - **<total_channel_count>**：信道总个数。
   :esp32c5: - **<5g_channel_bitmap>**：表示 5GHz 频段信道的位图，每一位对应一个信道，1 表示启用该信道，0 表示禁用该信道。支持的信道见：`5G 信道 <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L433-L460>`_。
 
@@ -2277,7 +2333,7 @@ WPA2 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
 ^^^^
 
 - 详细说明请参考：`Wi-Fi 国家/地区代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#id26>`_。
-- 配置更改不保存到 flash。如果需要保存到 flash，请参考 :ref:`国家代码操作 <sysmfg-country-code>` 。
+- 配置更改不保存到 flash。如果需要保存到 flash，请参考 :ref:`国家代码操作 <sysmfg-country-code>`。
 
 示例
 ^^^^

@@ -154,15 +154,24 @@ The currently modifiable certificate and key configurations are shown in the fol
   * - \--mqtt_key
     - Key for MQTT client
     - :component_file:`mqtt_client.key <customized_partitions/raw_data/mqtt_key/mqtt_client.key>`
+  * - \--wpa_ent_ca
+    - CA certificate for Wi-Fi Enterprise client (WPA2-Enterprise/WPA3-Enterprise)
+    - :component_file:`wpa_ent_ca.pem <customized_partitions/raw_data/wpa_ent_ca/wpa_ent_ca.pem>`
+  * - \--wpa_ent_cert
+    - Certificate for Wi-Fi Enterprise client (WPA2-Enterprise/WPA3-Enterprise)
+    - :component_file:`wpa_ent_client.crt <customized_partitions/raw_data/wpa_ent_cert/wpa_ent_client.crt>`
+  * - \--wpa_ent_key
+    - Key for Wi-Fi Enterprise client (WPA2-Enterprise/WPA3-Enterprise)
+    - :component_file:`wpa_ent_client.key <customized_partitions/raw_data/wpa_ent_key/wpa_ent_client.key>`
   * - \--wpa2_ca
-    - CA certificate for WPA2-Enterprise client
-    - :component_file:`wpa2_ca.pem <customized_partitions/raw_data/wpa2_ca/wpa2_ca.pem>`
+    - [legacy] CA certificate for WPA2-Enterprise client, only effective when the firmware is built with ``CONFIG_AT_EAP_LEGACY_NAMESPACE_SUPPORT=y``
+    - :component_file:`wpa_ent_ca.pem <customized_partitions/raw_data/wpa_ent_ca/wpa_ent_ca.pem>`
   * - \--wpa2_cert
-    - Certificate for WPA2-Enterprise client
-    - :component_file:`wpa2_client.crt <customized_partitions/raw_data/wpa2_cert/wpa2_client.crt>`
+    - [legacy] Certificate for WPA2-Enterprise client, only effective when the firmware is built with ``CONFIG_AT_EAP_LEGACY_NAMESPACE_SUPPORT=y``
+    - :component_file:`wpa_ent_client.crt <customized_partitions/raw_data/wpa_ent_cert/wpa_ent_client.crt>`
   * - \--wpa2_key
-    - Key for WPA2-Enterprise client
-    - :component_file:`wpa2_client.key <customized_partitions/raw_data/wpa2_key/wpa2_client.key>`
+    - [legacy] Key for WPA2-Enterprise client, only effective when the firmware is built with ``CONFIG_AT_EAP_LEGACY_NAMESPACE_SUPPORT=y``
+    - :component_file:`wpa_ent_client.key <customized_partitions/raw_data/wpa_ent_key/wpa_ent_client.key>`
 
 For example, you can use the following command to modify the CA certificate, certificate, and key for the MQTT client:
 
@@ -313,7 +322,7 @@ For example, you can use the following command to modify the baud rate to 921600
 
     **Please save the firmware before and after modification, and the download link**, for possible issue debugging in the future.
 
-  Please follow the :ref:`Flash firmware <flash-at-firmware-into-your-device>` to complete it.
+  Please follow the :ref:`flash firmware guide <flash-at-firmware-into-your-device>` to complete it.
 
 .. only:: esp32s2
 
@@ -327,4 +336,4 @@ For example, you can use the following command to modify the baud rate to 921600
 
     **Please save the firmware before and after modification, and the download link**, for possible issue debugging in the future.
 
-  Please follow the :ref:`Flash firmware <flash-at-firmware-into-your-device>` to complete it.
+  Please follow the :ref:`flash firmware guide <flash-at-firmware-into-your-device>` to complete it.
