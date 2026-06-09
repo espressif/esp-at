@@ -880,7 +880,7 @@ Wi-Fi AT 命令集
    - bit 0: 是否使能 802.11b 模式
    - bit 1: 是否使能 802.11g 模式
    - bit 2: 是否使能 802.11n 模式
-   - bit 3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+   - bit 3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#lr>`__
    - bit 4: 802.11ax 协议标准
    - bit 5: 802.11a 协议标准
    - bit 6: 802.11ac 协议标准
@@ -984,7 +984,7 @@ Wi-Fi AT 命令集
    - 3: WPA2_PSK
    - 4: WPA_WPA2_PSK
 
-- **<max conn>**：允许连入 {IDF_TARGET_NAME} SoftAP 的最多 station 数目，取值范围：参考 `max_connection 描述 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id39>`_。
+- **<max conn>**：允许连入 {IDF_TARGET_NAME} SoftAP 的最多 station 数目，取值范围：参考 `max_connection 描述 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#ap>`_。
 - **<ssid hidden>**：
 
    - 0: 广播 SSID（默认）
@@ -1363,7 +1363,7 @@ Wi-Fi AT 命令集
     - bit 0: 802.11b 协议标准
     - bit 1: 802.11g 协议标准
     - bit 2: 802.11n 协议标准
-    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit 3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit 3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#lr>`__
     :esp32c5 or esp32c6 or esp32c61: - bit 4: 802.11ax 协议标准
 
 .. only:: esp32c5
@@ -1383,7 +1383,7 @@ Wi-Fi AT 命令集
 .. list::
 
   - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
-  - 当前，{IDF_TARGET_NAME} 设备支持的 Wi-Fi 协议标准见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id40>`_
+  - 当前，{IDF_TARGET_NAME} 设备支持的 Wi-Fi 协议标准见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#id20>`__
   :not esp32c5: - 默认情况下，{IDF_TARGET_NAME} 设备的 SoftAP 协议标准是 802.11bgn 协议
   :esp32c5: - 默认情况下，{IDF_TARGET_NAME} 设备的 SoftAP 2.4 GHz 频段下的协议标准是 802.11bgn 协议，5 GHz 频段下的协议标准是 802.11an 协议
   :esp32c3 or esp32c6 or esp32c61 or esp32 or esp32s2: - 注意：Wi-Fi 协议标准受限于硬件能力和 Wi-Fi 带宽设置。例如：40 MHz 带宽模式下，仅可配置 802.11n（2.4 GHz）
@@ -1452,7 +1452,7 @@ Wi-Fi AT 命令集
     - bit 0: 802.11b 协议标准
     - bit 1: 802.11g 协议标准
     - bit 2: 802.11n 协议标准
-    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit 3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit 3: `802.11 LR 乐鑫专利协议标准 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#lr>`__
     :esp32c5 or esp32c6 or esp32c61: - bit 4: 802.11ax 协议标准
 
 .. only:: esp32c5
@@ -1472,7 +1472,7 @@ Wi-Fi AT 命令集
 .. list::
 
   - 若 :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`，配置更改将保存到 NVS 分区
-  - 当前，{IDF_TARGET_NAME} 设备支持的 Wi-Fi 协议标准见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id40>`_
+  - 当前，{IDF_TARGET_NAME} 设备支持的 Wi-Fi 协议标准见：`Wi-Fi 协议模式 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#id20>`__
   :esp32c2 or esp32c3 or esp32 or esp32s2: - 默认情况下，{IDF_TARGET_NAME} 设备的 Station 协议标准是 802.11bgn 协议
   :esp32c6 or esp32c61: - 默认情况下，{IDF_TARGET_NAME} 设备的 Station 协议标准是 802.11bgnax 协议
   :esp32c5: - 默认情况下，{IDF_TARGET_NAME} 设备的 Station 2.4 GHz 频段下的协议标准是 802.11bgnax 协议，5 GHz 频段下的协议标准是 802.11anacax 协议

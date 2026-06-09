@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+# SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
 
 from __future__ import print_function, unicode_literals
@@ -107,3 +107,32 @@ if branch_name == 'master':
     version = 'latest'
 else:
     version = branch_name.replace('/', '-')
+
+# Check link anchors globally; skip anchor validation for selected URL patterns
+linkcheck_anchors = True
+linkcheck_anchors_ignore_for_url = [
+    r'https://github\.com/.*',
+    # man7.org uses name anchors without id attributes; linkcheck cannot match them
+    r'https://man7\.org/linux/man-pages/man7/socket\.7\.html',
+    r'https://man7\.org/linux/man-pages/man7/tcp\.7\.html',
+    # ESP Product Selector is a SPA; hash routes are not verifiable by linkcheck
+    r'https://products\.espressif\.com/.*',
+]
+
+linkcheck_exclude_documents = ['index',  # several false positives due to the way we link to different sections
+                                ]
+
+# URLs to ignore during linkcheck
+linkcheck_ignore = [
+    # component_file / project_file / example roles: GitHub blob/tree/raw links
+    # (404 when CI commit is not on remote; 429 rate limit)
+    r'https://github\.com/espressif/esp-at/(blob|tree|raw)/.*',
+    # GitHub issues/new redirects to login page during automated checks
+    r'https://github\.com/espressif/esp-at/issues/new.*',
+    # External sites that reject linkcheck user-agent (403)
+    r'https://linux\.die\.net/.*',
+    r'https://netcat\.sourceforge\.net/.*',
+    r'https://blog\.csdn\.net/.*',
+    r'https://pan\.baidu\.com/s/.*',
+    r'https://mp\.weixin\.qq\.com/s?.*',
+]

@@ -52,7 +52,7 @@ AT Wi-Fi Function Debugging
 
 .. note::
 
-  When analyzing logs, you may encounter Wi-Fi reason codes. For the specific meanings, please refer to the `Wi-Fi Reason Code <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-reason-code>`_.
+  When analyzing logs, you may encounter Wi-Fi reason codes. For the specific meanings, please refer to the `Wi-Fi Reason Code <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/station-scenarios.html#wi-fi-reason-code>`_.
 
 .. _debug-at_network:
 

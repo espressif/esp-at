@@ -245,7 +245,7 @@ ESP 系列模组出厂时 Flash 中未烧录 ESP-AT 固件，上电后会提示 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 可在 :term:`AT 日志端口` 查看断开原因，通常打印 ``wifi disconnected, rc:<reason_code>``。
-原因代码说明见 `Wi-Fi Reason Code <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id34>`_。
+原因代码说明见 `Wi-Fi Reason Code <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/station-scenarios.html#esp-wifi-reason-code>`_。
 
 通用固件可能无法提供详细原因。若需获取具体信息，需在代码中注册 Wi-Fi disconnect 事件并输出原因代码。
 
@@ -394,7 +394,7 @@ AT 当前不支持 ESP-WIFI-MESH。
 
     Component config > LWIP > TCP > Maximum number of retransmissions of data segments
 
-- **网页编译**：参考 :doc:`网页编译 ESP-AT 工程 <../Compile_and_Develop/How_to_build_project_with_web_page>`，修改 `CONFIG_LWIP_TCP_MAXRTX <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/kconfig.html#config-lwip-tcp-maxrtx>`_ 的值。
+- **网页编译**：参考 :doc:`网页编译 ESP-AT 工程 <../Compile_and_Develop/How_to_build_project_with_web_page>`，修改 `CONFIG_LWIP_TCP_MAXRTX <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/kconfig-reference.html#config-lwip-tcp-maxrtx>`_ 的值。
 
 .. _faq-other:
 

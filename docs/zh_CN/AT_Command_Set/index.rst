@@ -349,7 +349,7 @@ AT 日志
         - 7: VHT20
 
     * - at-wifi: wifi disconnected, rc:``<reason_code>``
-      - Wi-Fi station 断开连接的 `原因代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id34>`_
+      - Wi-Fi station 断开连接的 `原因代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/station-scenarios.html#esp-wifi-reason-code>`_
     * - at-wifi: wifi reconnect..(``<index>``/``<total_count>``)
       - Wi-Fi station 正在重连到 AP
     * - at-net: unknown host: ``<hostname>``

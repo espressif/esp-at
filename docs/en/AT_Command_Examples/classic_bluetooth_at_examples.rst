@@ -653,7 +653,7 @@ Establish A2DP connection and enable A2DP Sink to play music
 
 .. Important::
 
-  - To use ``A2DP Sink``, you need to add the code of the ``I2S`` part by yourself. For the code to initialize the ``I2S`` part, please refer to `a2dp sink example <https://github.com/espressif/esp-idf/blob/master/examples/bluetooth/bluedroid/classic_bt/a2dp_sink/main/main.c>`__.
+  - To use ``A2DP Sink``, you need to add the code of the ``I2S`` part by yourself. For the code to initialize the ``I2S`` part, please refer to `a2dp sink stream example <https://github.com/espressif/esp-idf/blob/master/examples/bluetooth/bluedroid/classic_bt/a2dp_sink_stream>`__.
   - The driver code of the ``decoder`` chip part also needs to be added by yourself or use an off-the-shelf development board.
 
 #. Classic Bluetooth initialization.

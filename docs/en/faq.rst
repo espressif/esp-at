@@ -245,7 +245,7 @@ Note: This command was added after AT v2.1.0.0. It is not available for v2.1.0.0
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Check the disconnection reason on :term:`AT log port`, which prints ``wifi disconnected, rc:<reason_code>``.
-See `Wi-Fi Reason Code <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-reason-code>`_ for details.
+See `Wi-Fi Reason Code <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/station-scenarios.html#wi-fi-reason-code>`_ for details.
 
 Generic firmware may not provide detailed reasons. To obtain specific information, register the Wi-Fi disconnect event in code and output reason code.
 
@@ -394,7 +394,7 @@ By default, the maximum number of TCP segment retransmissions is 6 (range: [3-12
 
     Component config > LWIP > TCP > Maximum number of retransmissions of data segments
 
-- **Web compilation**: Refer to :doc:`compile ESP-AT project on the webpage <../Compile_and_Develop/How_to_build_project_with_web_page>`, modify the value of `CONFIG_LWIP_TCP_MAXRTX <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/kconfig.html#config-lwip-tcp-maxrtx>`_.
+- **Web compilation**: Refer to :doc:`compile ESP-AT project on the webpage <../Compile_and_Develop/How_to_build_project_with_web_page>`, modify the value of `CONFIG_LWIP_TCP_MAXRTX <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/kconfig-reference.html#config-lwip-tcp-maxrtx>`_.
 
 .. _faq-other:
 

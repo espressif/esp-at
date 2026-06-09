@@ -45,7 +45,7 @@ SDIO slave 管脚如下所示：
 如何使用 SDIO AT
 ----------------
 
-在测试 SDIO AT 通信之前，首先请参照 `SD Pull-up Requirements <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/sd_pullup_requirements.html#solutions>`_ 的介绍对 {IDF_TARGET_NAME} 硬件进行处理，否则 SDIO 通信将会异常。
+在测试 SDIO AT 通信之前，首先请参照 `SD Pull-up Requirements <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/sd_pullup_requirements.html#sdio-solutions>`_ 的介绍对 {IDF_TARGET_NAME} 硬件进行处理，否则 SDIO 通信将会异常。
 
 Slave 侧
 ^^^^^^^^

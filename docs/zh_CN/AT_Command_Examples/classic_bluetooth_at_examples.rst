@@ -653,7 +653,7 @@
 
 .. Important::
 
-  - 使用 ``A2DP Sink`` 需要客户自己添加 ``I2S`` 部分的代码。初始化 ``I2S`` 部分的代码请参考 `a2dp sink 例程 <https://github.com/espressif/esp-idf/blob/master/examples/bluetooth/bluedroid/classic_bt/a2dp_sink/main/main.c>`__。
+  - 使用 ``A2DP Sink`` 需要客户自己添加 ``I2S`` 部分的代码。初始化 ``I2S`` 部分的代码请参考 `a2dp sink stream 例程 <https://github.com/espressif/esp-idf/blob/master/examples/bluetooth/bluedroid/classic_bt/a2dp_sink_stream>`__。
   - ``decoder`` 芯片部分的驱动代码也需要客户自行添加或使用现成的开发板。
 
 #. Classic Bluetooth 初始化。

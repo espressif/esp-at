@@ -87,13 +87,13 @@ at.py 工具
     - 详情见 `{IDF_TARGET_NAME} 发射功率 <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_max_tx_power6int8_t>`_
   * - \--country_code
     - Wi-Fi 国家代码
-    - 详情见 `Wi-Fi 国家/地区代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id46>`_ 中的 cc 字段
+    - 详情见 `Wi-Fi 国家/地区代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id45>`_ 中的 cc 字段
   * - \--start_channel
     - Wi-Fi 起始信道
-    - 详情见 `Wi-Fi 国家/地区代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id46>`_ 中的 schan 字段
+    - 详情见 `Wi-Fi 国家/地区代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id45>`_ 中的 schan 字段
   * - \--channel_number
     - Wi-Fi 的总信道数
-    - 详情见 `Wi-Fi 国家/地区代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id46>`_ 中的 nchan 字段
+    - 详情见 `Wi-Fi 国家/地区代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/release-v{IDF_TARGET_VER}/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#id45>`_ 中的 nchan 字段
 
 例如，你可以使用以下命令，修改 Wi-Fi 的最大发射功率为 18 dBm，国家代码为 US，起始信道为 1，总信道数为 11：
 

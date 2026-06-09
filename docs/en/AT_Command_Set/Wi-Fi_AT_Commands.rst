@@ -880,7 +880,7 @@ Parameters
    - bit 0: bit to identify if 802.11b mode is enabled or not
    - bit 1: bit to identify if 802.11g mode is enabled or not
    - bit 2: bit to identify if 802.11n mode is enabled or not
-   - bit 3: `802.11 LR Espressif Proprietary protocol <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_
+   - bit 3: `802.11 LR Espressif Proprietary protocol <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#long-range-lr>`_
    - bit 4: 802.11ax protocol standard
    - bit 5: 802.11a protocol standard
    - bit 6: 802.11ac protocol standard
@@ -984,7 +984,7 @@ Parameters
    - 3: WPA2_PSK
    - 4: WPA_WPA2_PSK
 
-- **<max conn>**: maximum number of stations that {IDF_TARGET_NAME} SoftAP can connect. Range: refer to `max_connection description <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#ap-basic-configuration>`_.
+- **<max conn>**: maximum number of stations that {IDF_TARGET_NAME} SoftAP can connect. Range: refer to `max_connection description <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#ap-basic-configuration>`_.
 - **<ssid hidden>**:
 
    - 0: Broadcasting SSID (default).
@@ -1363,7 +1363,7 @@ Parameters
     - bit 0: 802.11b protocol standard.
     - bit 1: 802.11g protocol standard.
     - bit 2: 802.11n protocol standard.
-    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit 3: `802.11 LR Espressif Proprietary protocol <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_.
+    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit 3: `802.11 LR Espressif Proprietary protocol <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#long-range-lr>`__.
     :esp32c5 or esp32c6 or esp32c61: - bit 4: 802.11ax protocol standard.
 
 .. only:: esp32c5
@@ -1383,7 +1383,7 @@ Notes
 .. list::
 
   - The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
-  - See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-protocol-mode>`_ for the Wi-Fi protocol supported by the {IDF_TARGET_NAME} device.
+  - See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#wi-fi-protocol-mode>`__ for the Wi-Fi protocol supported by the {IDF_TARGET_NAME} device.
   :not esp32c5: - By default, the SoftAP protocol standard of {IDF_TARGET_NAME} is 802.11bgn.
   :esp32c5: - By default, the SoftAP protocol standard for 2.4 GHz band of {IDF_TARGET_NAME} is 802.11bgn, and for 5 GHz band is 802.11an.
   :esp32c3 or esp32c6 or esp32c61 or esp32 or esp32s2: - Note: Wi-Fi protocol standards are limited by hardware capabilities and Wi-Fi bandwidth settings. For example: in 40 MHz bandwidth mode, only 802.11n (2.4 GHz) can be configured.
@@ -1452,7 +1452,7 @@ Parameters
     - bit 0: 802.11b protocol standard.
     - bit 1: 802.11g protocol standard.
     - bit 2: 802.11n protocol standard.
-    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit 3: `802.11 LR Espressif Proprietary protocol <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#lr>`_.
+    :esp32c3 or esp32c5 or esp32c6 or esp32 or esp32s2: - bit 3: `802.11 LR Espressif Proprietary protocol <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#long-range-lr>`_.
     :esp32c5 or esp32c6 or esp32c61: - bit 4: 802.11ax protocol standard.
 
 .. only:: esp32c5
@@ -1472,7 +1472,7 @@ Notes
 .. list::
 
   - The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
-  - See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-protocol-mode>`_ for the Wi-Fi protocol supported by the {IDF_TARGET_NAME} device.
+  - See `Wi-Fi Protocol Mode <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/overview.html#wi-fi-protocol-mode>`_ for the Wi-Fi protocol supported by the {IDF_TARGET_NAME} device.
   :esp32c2 or esp32c3 or esp32 or esp32s2: - By default, the Station protocol standard of {IDF_TARGET_NAME} is 802.11bgn.
   :esp32c6 or esp32c61: - By default, the Station protocol standard of {IDF_TARGET_NAME} is 802.11bgnax.
   :esp32c5: - By default, the Station protocol standard for 2.4 GHz band of {IDF_TARGET_NAME} is 802.11bgnax, and for 5 GHz band is 802.11anacax.

@@ -349,7 +349,7 @@ Through the ``Log Output`` pin described in :doc:`../Get_Started/Hardware_connec
         - 7: VHT20
 
     * - at-wifi: wifi disconnected, rc:``<reason_code>``
-      - Wi-Fi station disconnection `reason code <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi.html#wi-fi-reason-code>`_
+      - Wi-Fi station disconnection `reason code <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/station-scenarios.html#wi-fi-reason-code>`_
     * - at-wifi: wifi reconnect..(``<index>``/``<total_count>``)
       - Wi-Fi station is reconnecting to AP
     * - at-net: unknown host: ``<hostname>``
