@@ -338,7 +338,7 @@ config AT_SIGNALING_COMMAND_SUPPORT
     depends on AT_ENABLE
 
 config AT_EAP_COMMAND_SUPPORT
-    bool "AT WPA2/WPA3 Enterprise command support."
+    bool "AT Wi-Fi Enterprise command support."
     default "n"
     depends on AT_WIFI_COMMAND_SUPPORT
     select ESP_WIFI_ENTERPRISE_SUPPORT
@@ -346,7 +346,7 @@ config AT_EAP_COMMAND_SUPPORT
     select ESP_WIFI_GMAC_SUPPORT if SOC_WIFI_GCMP_SUPPORT
     select ESP_WIFI_SUITE_B_192 if SOC_WIFI_GCMP_SUPPORT
     help
-        Enable AT+CWJEAP command for WPA2/WPA3 Enterprise (including 192-bit Suite-B).
+        Enable AT+CWJEAP command for WPA2-Enterprise and WPA3-Enterprise (including 192-bit Suite-B).
 
 config AT_EAP_LEGACY_NAMESPACE_SUPPORT
     bool "Use legacy wpa2_ namespace/key for Wi-Fi Enterprise certificates (READ HELP FIRST)"
@@ -358,7 +358,7 @@ config AT_EAP_LEGACY_NAMESPACE_SUPPORT
 
         By default, the Wi-Fi Enterprise certificates are stored in the mfg_nvs partition
         using the "wpa_ent_ca", "wpa_ent_cert" and "wpa_ent_key" namespaces and keys,
-        which are shared by both WPA2 Enterprise and WPA3 Enterprise.
+        which are shared by both WPA2-Enterprise and WPA3-Enterprise.
 
         Enable this option to keep backward compatibility with old firmware that reads
         the certificates from the legacy "wpa2_ca", "wpa2_cert" and "wpa2_key" namespaces and keys.

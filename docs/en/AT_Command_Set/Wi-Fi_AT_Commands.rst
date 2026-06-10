@@ -34,7 +34,7 @@ Wi-Fi AT Commands
   - :ref:`AT+CWSTARTSMART <cmd-STARTS>`: Start SmartConfig.
   - :ref:`AT+CWSTOPSMART <cmd-STOPS>`: Stop SmartConfig.
   - :ref:`AT+WPS <cmd-WPS>`: Enable the WPS function.
-  - :ref:`AT+CWJEAP <cmd-JEAP>`: Connect to a WPA2 Enterprise AP.
+  - :ref:`AT+CWJEAP <cmd-JEAP>`: Connect to a Wi-Fi Enterprise AP.
   - :ref:`AT+CWHOSTNAME <cmd-HOSTNAME>`: Query or set the host name of an {IDF_TARGET_NAME} station.
   - :ref:`AT+CWCOUNTRY <cmd-COUNTRY>`: Query or set the Wi-Fi Country Code.
 
@@ -44,9 +44,9 @@ Introduction
 ------------
 
 .. important::
-  The default AT firmware supports all the AT commands except :ref:`AT+CWJEAP <cmd-JEAP>` mentioned on this page. If you need to modify the commands supported by {IDF_TARGET_NAME} by default, please compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections (Each item below is independent. Choose it according to your needs):
+  The default AT firmware supports all the AT commands except :ref:`AT+CWJEAP <cmd-JEAP>` mentioned on this page. If you need to modify the commands supported by {IDF_TARGET_NAME} by default, please compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In step 5 of the project configuration, make the following selections (Each item below is independent. Choose it according to your needs):
 
-  - Enable EAP commands (:ref:`AT+CWJEAP <cmd-JEAP>`): ``Component config`` > ``AT`` > ``AT WPA2 Enterprise command support``
+  - Enable EAP commands (:ref:`AT+CWJEAP <cmd-JEAP>`): ``Component config`` > ``AT`` > ``AT Wi-Fi Enterprise command support``
   - Disable WPS commands (:ref:`AT+WPS <cmd-WPS>`): ``Component config`` > ``AT`` > ``AT WPS command support``
   - Disable smartconfig commands (:ref:`AT+CWSTARTSMART <cmd-STARTS>` and :ref:`AT+CWSTOPSMART <cmd-STOPS>`): ``Component config`` > ``AT`` > ``AT smartconfig command support``
   - Disable all Wi-Fi commands (Not recommended. Once disabled, all Wi-Fi and above functions will be unusable, and you will need to implement these AT commands yourself): ``Component config`` > ``AT`` > ``AT wifi command support``
@@ -588,13 +588,13 @@ Notes
 - This command requires Station mode to be enabled.
 - After {IDF_TARGET_NAME} station is connected to an AP, it is recommended to use this command to query Wi-Fi information; when {IDF_TARGET_NAME} station is not connected to an AP, it is recommended to use :ref:`AT+CWSTATE <cmd-WSTATE>` to query Wi-Fi information.
 - The parameter ``<reconn_interval>`` of this command is the same as ``<interval_second>`` of the command :ref:`AT+CWRECONNCFG <cmd-RECONNCFG>`. Therefore, if you omit ``<reconn_interval>`` when running this command, the interval between Wi-Fi reconnections will use the default value 1.
-- If the ``<"ssid">`` and ``<"password">`` parameter are omitted, AT will use the last configuration.
-- Execute command has the same maximum timeout to setup command. The default value is 15 seconds, but you can change it by setting the parameter ``<jap_timeout>``.
+- If the ``<"ssid">`` and ``<"password">`` parameters are omitted, AT will use the last configuration.
+- The execute command has the same maximum timeout as the set command. The default value is 15 seconds, but you can change it by setting the parameter ``<jap_timeout>``.
 - The authentication method via :term:`WAPI` is not supported for connecting to the router.
 - To get an IPv6 address, you need to set :ref:`AT+CIPV6=1 <cmd-IPV6>`.
 - Response ``OK`` means that the IPv4 network is ready, but not the IPv6 network. At present, ESP-AT is mainly based on IPv4 network, supplemented by IPv6 network.
 - ``WIFI GOT IPv6 LL`` represents that the linklocal IPv6 address has been obtained. This address is calculated locally through EUI-64 and does not require the participation of the AP. Because of the parallel timing, this print may be before or after ``OK``.
-- ``WIFI GOT IPv6 GL`` represents that the global IPv6 address has been obtained. This address is combined by the prefix issued by AP and the suffix calculated internally, which requires the participation of the AP. Because of the parallel timing, this print may be before or after ``OK``, or it may not be printed because the AP does not support IPv6.
+- ``WIFI GOT IPv6 GL`` represents that the global IPv6 address has been obtained. This address is formed from the prefix issued by AP and the suffix calculated internally, which requires the participation of the AP. Because of the parallel timing, this print may be before or after ``OK``, or it may not be printed because the AP does not support IPv6.
 
 Example
 ^^^^^^^^
@@ -610,7 +610,7 @@ Example
     // If multiple APs all have the SSID of "abc", the target AP can be found by BSSID:
     AT+CWJAP="abc","0123456789","ca:d7:19:d8:a6:44"
 
-    // If esp-at is required that connect to a AP by protected management frame, the command should be:
+    // To connect to an AP using protected management frames, use:
     AT+CWJAP="abc","0123456789",,,,,,,3
 
 .. _cmd-RECONNCFG:
@@ -874,7 +874,7 @@ Parameters
    - 6: AES-CMAC-128
    - 7: Unknown
 
-- **<group_cipher>**: group cipher type, same enumerated value to ``<pairwise_cipher>``.
+- **<group_cipher>**: group cipher type, same as the enumerated value for ``<pairwise_cipher>``.
 - **<wifi_protocol>**: Wi-Fi protocol standard. If the corresponding bit is 1, the corresponding mode is enabled; if the corresponding bit is 0, the corresponding mode is disabled.
 
    - bit 0: bit to identify if 802.11b mode is enabled or not
@@ -1946,7 +1946,7 @@ Example
 
 .. _cmd-JEAP:
 
-:ref:`AT+CWJEAP <WiFi-AT>`: Connect to a WPA2 Enterprise AP
+:ref:`AT+CWJEAP <WiFi-AT>`: Connect to a Wi-Fi Enterprise AP
 -------------------------------------------------------------------------
 
 Query Command
@@ -1980,7 +1980,7 @@ Connect to the targeted Enterprise AP.
 
 ::
 
-    AT+CWJEAP=<"ssid">,<method>,<"identity">,<"username">,<"password">,<security>[,<jeap_timeout>][,<rssi>][,<"bssid">][,<channel>][,<scan_mode>]
+    AT+CWJEAP=<"ssid">,<method>,<"identity">,<"username">,<"password">,<security>[,<jeap_timeout>][,<rssi>][,<"bssid">][,<channel>][,<scan_mode>][,<auth_mode>]
 
 **Response:**
 
@@ -2002,7 +2002,7 @@ Parameters
 
    - Escape character syntax is needed if SSID or password contains any special characters, such as ``,``, ``"``, or ``\\``.
 
-- **<method>**: WPA2 Enterprise authentication method.
+- **<method>**: Wi-Fi Enterprise authentication method.
 
    - 0: EAP-TLS.
    - 1: EAP-PEAP.
@@ -2025,20 +2025,39 @@ Parameters
    - 0: Fast scan. Connect to the AP as soon as it is found, speeding up the connection.
    - 1: All-channel scan. Select the AP with the strongest signal to connect.
 
+- **<auth_mode>**: the minimum acceptable enterprise security level (threshold). Default: 0.
+
+  .. list::
+
+    - 0: WPA2-Enterprise.
+    - 1: WPA3-Enterprise.
+    :esp32c3 or esp32c5 or esp32c6 or esp32c61: - 2: WPA3-Enterprise 192-bit (NSA Suite-B).
+
 Example
 ^^^^^^^^
 
 ::
 
-    // Connect to EAP-TLS mode Enterprise AP, set identity, verify server certificate and load client certificate
+    // Connect to WPA2-Enterprise AP (EAP-TLS authentication mode), set identity, verify server certificate and load client certificate (run AT+SYSTIMESTAMP first when verifying the server certificate)
     AT+CWJEAP="dlink11111",0,"example@espressif.com",,,3
 
-    // Connect to EAP-PEAP mode Enterprise AP, set identity, username and password, not verify server certificate and not load client certificate
+    // Connect to WPA2-Enterprise AP (EAP-PEAP authentication mode), set identity, username and password, do not verify server certificate and do not load client certificate
     AT+CWJEAP="dlink11111",1,"example@espressif.com","espressif","test11",0
+
+    // Connect to WPA3-Enterprise AP (EAP-PEAP authentication mode), verify server certificate (run AT+SYSTIMESTAMP first)
+    AT+CWJEAP="dlink11111",1,"example@espressif.com","espressif","test11",2,,,,,,1
+
+.. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+    ::
+
+        // Connect to WPA3-Enterprise 192-bit (NSA Suite-B) AP (EAP-TLS authentication mode).
+        // Requires Suite-B certificates (EC P-384 or RSA >= 3072, signed with SHA-384) and AT+SYSTIMESTAMP set first.
+        AT+CWJEAP="dlink11111",0,"example@espressif.com",,,3,,,,,,2
 
 **Error Code:**
 
-The WPA2 Enterprise error code will be prompt as ``ERR CODE:0x<%08x>``.
+The Wi-Fi Enterprise error code will be prompted as ``ERR CODE:0x<%08x>``.
 
 .. list-table::
    :header-rows: 1
@@ -2116,6 +2135,34 @@ The WPA2 Enterprise error code will be prompt as ``ERR CODE:0x<%08x>``.
      - 0x8023
    * - AT_EAP_METHOD_ERROR
      - 0x8024
+   * - AT_EAP_GET_CMD_TIMEOUT_FAILED
+     - 0x8025
+   * - AT_EAP_CMD_TIMEOUT_ERROR
+     - 0x8026
+   * - AT_EAP_GET_RSSI_FAILED
+     - 0x8027
+   * - AT_EAP_RSSI_ERROR
+     - 0x8028
+   * - AT_EAP_GET_BSSID_FAILED
+     - 0x8029
+   * - AT_EAP_BSSID_ERROR
+     - 0x802A
+   * - AT_EAP_GET_CHANNEL_FAILED
+     - 0x802B
+   * - AT_EAP_CHANNEL_ERROR
+     - 0x802C
+   * - AT_EAP_GET_SCAN_MODE_FAILED
+     - 0x802D
+   * - AT_EAP_SCAN_MODE_ERROR
+     - 0x802E
+   * - AT_EAP_GET_AUTH_MODE_FAILED
+     - 0x802F
+   * - AT_EAP_AUTH_MODE_ERROR
+     - 0x8030
+   * - AT_EAP_SET_TTLS_PHASE2_FAILED
+     - 0x8031
+   * - AT_EAP_SET_WPA3_ENT_192BIT_FAILED
+     - 0x8032
 
 Note
 ^^^^^
@@ -2123,8 +2170,17 @@ Note
 - The configuration changes will be saved in the NVS partition if :ref:`AT+SYSSTORE=1 <cmd-SYSSTORE>`.
 - This command requires Station mode to be active.
 - TLS mode will use client certificate. Please make sure it is enabled.
-- If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the WPA2 Enterprise certificate (for detailed steps, please refer to :ref:`AT+SYSMFG command examples <sysmfg-pki>`, the certificate configuration method is the same as SSL certificates). If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
-- If ``<security>`` is configured to 2, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+CWJEAP <cmd-JEAP>` command. (You can send :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>` command to configure the current time, and send :ref:`AT+SYSTIMESTAMP? <cmd-SETTIME>` command to query the current time.)
+- If you want to use your own certificate at runtime, use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command to update the Wi-Fi Enterprise certificate (for detailed steps, please refer to :ref:`AT+SYSMFG command examples <sysmfg-pki>`, the certificate configuration method is the same as SSL certificates). If you want to pre-burn your own certificate, please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config`.
+- If ``<security>`` has bit 1 set (i.e., the value is 2 or 3), in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending the :ref:`AT+CWJEAP <cmd-JEAP>` command. (You can send :ref:`AT+SYSTIMESTAMP <cmd-SETTIME>` command to configure the current time, and send :ref:`AT+SYSTIMESTAMP? <cmd-SETTIME>` command to query the current time.)
+- ``<auth_mode>`` is only a minimum threshold; it cannot force a specific security level. The final security level is negotiated based on what the AP advertises, so the device may connect with a level higher than ``<auth_mode>``.
+
+.. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+  - WPA3-Enterprise 192-bit (``<auth_mode>`` = 2) requires that the CA, client certificate, and server certificate all meet the NSA Suite-B requirements (EC P-384, or RSA with key length >= 3072, signed with SHA-384). Otherwise the connection will fail.
+
+.. only:: esp32 or esp32c2 or esp32s2
+
+  - {IDF_TARGET_NAME} does not support WPA3-Enterprise 192-bit, so ``<auth_mode>`` does not accept the value 2 on this target.
 
 .. _cmd-HOSTNAME:
 
@@ -2265,7 +2321,7 @@ Parameters
 
   - **<country_policy>**:
 
-    - 0: Will change the county code to be the same as the AP that the {IDF_TARGET_NAME} is connected to.
+    - 0: Will change the country code to be the same as the AP that the {IDF_TARGET_NAME} is connected to.
     - 1: The country code will not change, always be the one set by command.
 
   - **<"country_code">**: country code. Maximum length: 3 characters. Refer to `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ for country codes.

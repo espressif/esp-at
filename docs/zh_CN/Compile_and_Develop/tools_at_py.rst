@@ -154,15 +154,24 @@ at.py 工具
   * - \--mqtt_key
     - MQTT 客户端的密钥
     - :component_file:`mqtt_client.key <customized_partitions/raw_data/mqtt_key/mqtt_client.key>`
+  * - \--wpa_ent_ca
+    - Wi-Fi 企业版客户端 (WPA2-Enterprise/WPA3-Enterprise) 的 CA 证书
+    - :component_file:`wpa_ent_ca.pem <customized_partitions/raw_data/wpa_ent_ca/wpa_ent_ca.pem>`
+  * - \--wpa_ent_cert
+    - Wi-Fi 企业版客户端 (WPA2-Enterprise/WPA3-Enterprise) 的证书
+    - :component_file:`wpa_ent_client.crt <customized_partitions/raw_data/wpa_ent_cert/wpa_ent_client.crt>`
+  * - \--wpa_ent_key
+    - Wi-Fi 企业版客户端 (WPA2-Enterprise/WPA3-Enterprise) 的密钥
+    - :component_file:`wpa_ent_client.key <customized_partitions/raw_data/wpa_ent_key/wpa_ent_client.key>`
   * - \--wpa2_ca
-    - WPA2-Enterprise 客户端的 CA 证书
-    - :component_file:`wpa2_ca.pem <customized_partitions/raw_data/wpa2_ca/wpa2_ca.pem>`
+    - [legacy] WPA2-Enterprise 客户端的 CA 证书，仅当固件使能 ``CONFIG_AT_EAP_LEGACY_NAMESPACE_SUPPORT=y`` 时有效
+    - :component_file:`wpa_ent_ca.pem <customized_partitions/raw_data/wpa_ent_ca/wpa_ent_ca.pem>`
   * - \--wpa2_cert
-    - WPA2-Enterprise 客户端的证书
-    - :component_file:`wpa2_client.crt <customized_partitions/raw_data/wpa2_cert/wpa2_client.crt>`
+    - [legacy] WPA2-Enterprise 客户端的证书，仅当固件使能 ``CONFIG_AT_EAP_LEGACY_NAMESPACE_SUPPORT=y`` 时有效
+    - :component_file:`wpa_ent_client.crt <customized_partitions/raw_data/wpa_ent_cert/wpa_ent_client.crt>`
   * - \--wpa2_key
-    - WPA2-Enterprise 客户端的密钥
-    - :component_file:`wpa2_client.key <customized_partitions/raw_data/wpa2_key/wpa2_client.key>`
+    - [legacy] WPA2-Enterprise 客户端的密钥，仅当固件使能 ``CONFIG_AT_EAP_LEGACY_NAMESPACE_SUPPORT=y`` 时有效
+    - :component_file:`wpa_ent_client.key <customized_partitions/raw_data/wpa_ent_key/wpa_ent_client.key>`
 
 例如，你可以使用以下命令，修改 MQTT 客户端的 CA 证书、客户端的证书和密钥。
 

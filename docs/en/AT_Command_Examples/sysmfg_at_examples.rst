@@ -45,7 +45,7 @@ The manufacturing NVS partition contains multiple namespaces, each containing se
 .. list::
 
    - :ref:`Factory Parameter Configuration <sysmfg-factory-param>`: The ``factory_param`` namespace, used to store module information, Wi-Fi configuration, UART configuration, etc.
-   - :ref:`PKI Configuration <sysmfg-pki>`: Stores certificates and private keys used by SSL, MQTT, HTTPS, WebSocket, or WPA2-Enterprise clients or servers.
+   - :ref:`PKI Configuration <sysmfg-pki>`: Stores certificates and private keys used by SSL, MQTT, HTTPS, WebSocket, or Wi-Fi Enterprise clients or servers.
    :not esp32s2: - :ref:`GATTS Configuration <sysmfg-gatts>`: The ``ble_data`` namespace, used to store Bluetooth LE GATTS service configurations.
    - :ref:`Custom Data Storage <sysmfg-custom-data>`: User-defined namespaces for storing application-specific persistent data.
 
@@ -824,19 +824,20 @@ PKI (Public Key Infrastructure) configuration is used to create, manage, distrib
        * When AT acts as a WebSocket client, the client certificate must be configured to identify itself to the server. Multiple certificate sets are stored using the ``wss_cert.<index>`` rule.
        * When AT acts as a WebSocket client, the client private key must be configured to encrypt communication between the client and server. Multiple key sets are stored using the ``wss_key.<index>`` rule.
        * When AT acts as a WebSocket client, the client CA certificate must be configured to verify the validity of the server certificate. Multiple CA certificate sets are stored using the ``wss_ca.<index>`` rule.
-   * - WPA2 Enterprise Client
+   * - Wi-Fi Enterprise Client (WPA2-Enterprise/WPA3-Enterprise)
      -
-       * ``wpa2_cert``
-       * ``wpa2_key``
-       * ``wpa2_ca``
+       * ``wpa_ent_cert``
+       * ``wpa_ent_key``
+       * ``wpa_ent_ca``
      -
-       * ``wpa2_cert``
-       * ``wpa2_key``
-       * ``wpa2_ca``
+       * ``wpa_ent_cert``
+       * ``wpa_ent_key``
+       * ``wpa_ent_ca``
      -
-       * When AT acts as a WPA2-Enterprise client, the client certificate must be configured to identify itself to the server. Only one certificate set is supported.
-       * When AT acts as a WPA2-Enterprise client, the client private key must be configured to encrypt communication between the client and server. Only one private key set is supported.
-       * When AT acts as a WPA2-Enterprise client, the client CA certificate must be configured to verify the validity of the server certificate. Only one CA certificate set is supported.
+       * When AT acts as a Wi-Fi Enterprise client, the client certificate must be configured to identify itself to the server. Only one certificate set is supported.
+       * When AT acts as a Wi-Fi Enterprise client, the client private key must be configured to encrypt communication between the client and server. Only one private key set is supported.
+       * When AT acts as a Wi-Fi Enterprise client, the client CA certificate must be configured to verify the validity of the server certificate. Only one CA certificate set is supported.
+       * These namespaces and keys are shared by both WPA2-Enterprise and WPA3-Enterprise. If ``CONFIG_AT_EAP_LEGACY_NAMESPACE_SUPPORT`` is enabled, the legacy ``wpa2_cert``, ``wpa2_key``, and ``wpa2_ca`` names are used instead for backward compatibility with old firmware.
 
 .. note::
   You can query all namespaces supported by the current firmware using the ``AT+SYSMFG?`` command to confirm if the certificate namespaces you need are available.

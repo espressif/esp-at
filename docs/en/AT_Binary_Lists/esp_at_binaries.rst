@@ -36,7 +36,7 @@ Introduction
 
   .. only:: esp32c2
 
-    - The released AT firmware only supports chip versions with a crystal oscillator frequency of 26 MHz. If your module uses a crystal oscillator frequency of 40 MHz, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In the project configuration during the fifth step, make the following selections:
+    - The released AT firmware only supports chip versions with a crystal oscillator frequency of 26 MHz. If your module uses a crystal oscillator frequency of 40 MHz, you can compile the ESP-AT project by following the steps in :doc:`Compile ESP-AT Project Locally <../Compile_and_Develop/How_to_clone_project_and_compile_it>` documentation. In step 5 of the project configuration, make the following selections:
 
       - ``Component config`` > ``Hardware Settings`` > ``Main XTAL Config`` > ``Main XTAL frequency`` > ``40 MHz``
 
@@ -476,7 +476,7 @@ The table lists which command set is supported by default in the official AT fir
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-    * - WPA2 enterprise
+    * - Wi-Fi Enterprise
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
@@ -600,7 +600,7 @@ The table lists which command set is supported by default in the official AT fir
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
-    * - WPA2 enterprise
+    * - Wi-Fi Enterprise
       - |icon-orange-check|
       - |icon-orange-check|
       - |icon-orange-check|
@@ -662,7 +662,7 @@ The table lists which command set is supported by default in the official AT fir
       - |icon-orange-check|
     * - driver
       - |icon-orange-check|
-    * - WPA2 enterprise
+    * - Wi-Fi Enterprise
       - |icon-orange-check|
     * - Web server
       - |icon-orange-check|
@@ -706,7 +706,7 @@ The table lists which command set is supported by default in the official AT fir
       - |icon-orange-check|
     * - driver
       - |icon-orange-check|
-    * - WPA2 enterprise
+    * - Wi-Fi Enterprise
       - |icon-orange-check|
     * - Web server
       - |icon-orange-check|
@@ -746,7 +746,7 @@ The table lists which command set is supported by default in the official AT fir
       - |icon-orange-check|
     * - driver
       - |icon-orange-check|
-    * - WPA2 enterprise
+    * - Wi-Fi Enterprise
       - |icon-orange-check|
     * - Web server
       - |icon-orange-check|
