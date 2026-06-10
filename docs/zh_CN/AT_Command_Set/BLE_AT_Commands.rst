@@ -9,7 +9,7 @@ Bluetooth® Low Energy AT 命令集
 
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`介绍 <cmd-ble-intro>`
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEINIT <cmd-BINIT>`：Bluetooth LE 初始化
-    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEADDR <cmd-BADDR>`：设置 Bluetooth LE 设备地址
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEADDR <cmd-BADDR>`：查询/设置 Bluetooth LE 设备地址
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLENAME <cmd-BNAME>`：查询/设置 Bluetooth LE 设备名称
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESCANPARAM <cmd-BSCANP>`：查询/设置 Bluetooth LE 扫描参数
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESCAN <cmd-BSCAN>`：使能 Bluetooth LE 扫描
@@ -76,7 +76,7 @@ Bluetooth® Low Energy AT 命令集
 
 .. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
-  当前， {IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/specs/core-specification-5-0/>`_。
+  当前，{IDF_TARGET_NAME} AT 固件支持 `蓝牙核心规范 5.0 版本 <https://www.bluetooth.com/specifications/specs/core-specification-5-0/>`_。
 
 .. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
@@ -218,19 +218,10 @@ Bluetooth® Low Energy AT 命令集
 
     **响应：**
 
-    .. only:: esp32 or esp32c3
+    ::
 
-        ::
-
-            +BLEADDR:<BLE_public_addr>
-            OK
-
-    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
-
-        ::
-
-            +BLEADDR:<BLE_random_addr>
-            OK
+        +BLEADDR:<BLE_public_addr>
+        OK
 
     设置命令
     ^^^^^^^^
@@ -267,6 +258,14 @@ Bluetooth® Low Energy AT 命令集
     - 地址最高两位应为 1；
     - 随机地址部分至少有 1 位为 0；
     - 随机地址部分至少有 1 位为 1。
+
+    .. only:: esp32 or esp32c3
+
+        - 查询命令只会返回公共地址。
+
+    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
+
+        - 默认情况下，查询命令返回公共地址。如果设置过随机地址，则查询命令返回随机地址。
 
     - 设置的静态地址不会被保存在 NVS 区。
 
@@ -390,25 +389,37 @@ Bluetooth® Low Energy AT 命令集
 
     - **<scan_type>**：扫描类型
 
-    - 0: 被动扫描
+    - 0: 被动扫描（默认）
     - 1: 主动扫描
 
     - **<own_addr_type>**：地址类型
 
-    - 0: 公共地址
+    - 0: 公共地址（默认）
     - 1: 随机地址
     - 2: RPA 公共地址
     - 3: RPA 随机地址
 
     - **<filter_policy>**：扫描过滤方式
 
-    - 0: BLE_SCAN_FILTER_ALLOW_ALL
+    - 0: BLE_SCAN_FILTER_ALLOW_ALL（默认）
     - 1: BLE_SCAN_FILTER_ALLOW_ONLY_WLST
     - 2: BLE_SCAN_FILTER_ALLOW_UND_RPA_DIR
     - 3: BLE_SCAN_FILTER_ALLOW_WLIST_PRA_DIR
 
-    - **<scan_interval>**：扫描间隔。本参数值应大于等于 ``<scan_window>`` 参数值。参数范围：[0x0004,0x4000]。扫描间隔是该参数乘以 ``0.625`` 毫秒，所以实际的扫描间隔范围为 [2.5,10240] 毫秒。
-    - **<scan_window>**：扫描窗口。本参数值应小于等于 ``<scan_interval>`` 参数值。参数范围：[0x0004,0x4000]。扫描窗口是该参数乘以 ``0.625`` 毫秒，所以实际的扫描窗口范围为 [2.5,10240] 毫秒。
+    .. only:: esp32
+
+        - **<scan_interval>**：扫描间隔。本参数值应大于等于 ``<scan_window>`` 参数值。参数范围：[0x0004,0x4000]。扫描间隔是该参数乘以 ``0.625`` 毫秒，所以实际的扫描间隔范围为 [2.5,10240] 毫秒。默认值：0x140。
+        - **<scan_window>**：扫描窗口。本参数值应小于等于 ``<scan_interval>`` 参数值。参数范围：[0x0004,0x4000]。扫描窗口是该参数乘以 ``0.625`` 毫秒，所以实际的扫描窗口范围为 [2.5,10240] 毫秒。默认值：0x30。
+
+    .. only:: esp32c3
+
+        - **<scan_interval>**：扫描间隔。本参数值应大于等于 ``<scan_window>`` 参数值。参数范围：[0x0004,0x4000]。扫描间隔是该参数乘以 ``0.625`` 毫秒，所以实际的扫描间隔范围为 [2.5,10240] 毫秒。默认值：0x40。
+        - **<scan_window>**：扫描窗口。本参数值应小于等于 ``<scan_interval>`` 参数值。参数范围：[0x0004,0x4000]。扫描窗口是该参数乘以 ``0.625`` 毫秒，所以实际的扫描窗口范围为 [2.5,10240] 毫秒。默认值：0x40。
+
+    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
+
+        - **<scan_interval>**：扫描间隔。本参数值应大于等于 ``<scan_window>`` 参数值。参数范围：[0x0004,0x4000]。扫描间隔是该参数乘以 ``0.625`` 毫秒，所以实际的扫描间隔范围为 [2.5,10240] 毫秒。默认值：0x50。
+        - **<scan_window>**：扫描窗口。本参数值应小于等于 ``<scan_interval>`` 参数值。参数范围：[0x0004,0x4000]。扫描窗口是该参数乘以 ``0.625`` 毫秒，所以实际的扫描窗口范围为 [2.5,10240] 毫秒。默认值：0x50。
 
     示例
     ^^^^
@@ -530,7 +541,7 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    - **<scan_rsp_data>**：扫描响应数据，为 HEX 字符串。例如，若想设置扫描响应数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLESCANRSPDATA="1122334455"``。
+    - **<scan_rsp_data>**：扫描响应数据，为 HEX 字符串。例如，若想设置扫描响应数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLESCANRSPDATA="1122334455"``。默认值：空（未设置扫描响应数据）。
 
     示例
     ^^^^
@@ -605,13 +616,13 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    - **<adv_int_min>**：最小广播间隔。参数范围：[0x0020,0x4000]。广播间隔等于该参数乘以 ``0.625`` 毫秒，所以实际的最小广播间隔范围为 [20,10240] 毫秒。本参数值应小于等于 ``<adv_int_max>`` 参数值。
-    - **<adv_int_max>**：最大广播间隔。参数范围：[0x0020,0x4000]。广播间隔等于该参数乘以 ``0.625`` 毫秒，所以实际的最大广播间隔范围为 [20,10240] 毫秒。本参数值应大于等于 ``<adv_int_min>`` 参数值。
+    - **<adv_int_min>**：最小广播间隔。参数范围：[0x0020,0x4000]。广播间隔等于该参数乘以 ``0.625`` 毫秒，所以实际的最小广播间隔范围为 [20,10240] 毫秒。本参数值应小于等于 ``<adv_int_max>`` 参数值。默认值：0x20。
+    - **<adv_int_max>**：最大广播间隔。参数范围：[0x0020,0x4000]。广播间隔等于该参数乘以 ``0.625`` 毫秒，所以实际的最大广播间隔范围为 [20,10240] 毫秒。本参数值应大于等于 ``<adv_int_min>`` 参数值。默认值：0x40。
     - **<adv_type>**:
 
     .. only:: esp32
 
-        - 0: ADV_TYPE_IND
+        - 0: ADV_TYPE_IND（默认）
         - 1: ADV_TYPE_DIRECT_IND_HIGH
         - 2: ADV_TYPE_SCAN_IND
         - 3: ADV_TYPE_NONCONN_IND
@@ -619,7 +630,7 @@ Bluetooth® Low Energy AT 命令集
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-        - 0: ADV_TYPE_IND
+        - 0: ADV_TYPE_IND（默认）
         - 1: ADV_TYPE_DIRECT_IND_HIGH
         - 2: ADV_TYPE_SCAN_IND
         - 3: ADV_TYPE_NONCONN_IND
@@ -632,7 +643,7 @@ Bluetooth® Low Energy AT 命令集
 
     - **<own_addr_type>**：Bluetooth LE 地址类型
 
-    - 0: BLE_ADDR_TYPE_PUBLIC
+    - 0: BLE_ADDR_TYPE_PUBLIC（默认）
     - 1: BLE_ADDR_TYPE_RANDOM
 
     - **<channel_map>**：广播信道
@@ -640,21 +651,21 @@ Bluetooth® Low Energy AT 命令集
     - 1: ADV_CHNL_37
     - 2: ADV_CHNL_38
     - 4: ADV_CHNL_39
-    - 7: ADV_CHNL_ALL
+    - 7: ADV_CHNL_ALL（默认）
 
     - **[<adv_filter_policy>]**：广播过滤器规则
 
-    - 0: ADV_FILTER_ALLOW_SCAN_ANY_CON_ANY
+    - 0: ADV_FILTER_ALLOW_SCAN_ANY_CON_ANY（默认）
     - 1: ADV_FILTER_ALLOW_SCAN_WLST_CON_ANY
     - 2: ADV_FILTER_ALLOW_SCAN_ANY_CON_WLST
     - 3: ADV_FILTER_ALLOW_SCAN_WLST_CON_WLST
 
     - **[<peer_addr_type>]**：对方 Bluetooth LE 地址类型
 
-    - 0: PUBLIC
+    - 0: PUBLIC（默认）
     - 1: RANDOM
 
-    - **[<"peer_addr">]**：对方 Bluetooth LE 地址
+    - **[<"peer_addr">]**：对方 Bluetooth LE 地址。默认值："00:00:00:00:00:00"。
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
@@ -751,11 +762,11 @@ Bluetooth® Low Energy AT 命令集
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-        - **<adv_data>**：广播数据，为 HEX 字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATA="1122334455"``。最大长度：119 字节。
+        - **<adv_data>**：广播数据，为 HEX 字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATA="1122334455"``。最大长度：119 字节。默认值：空（未设置广播数据）。
 
     .. only:: esp32
 
-        - **<adv_data>**：广播数据，为 HEX 字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATA="1122334455"``。最大长度：31 字节。
+        - **<adv_data>**：广播数据，为 HEX 字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATA="1122334455"``。最大长度：31 字节。默认值：空（未设置广播数据）。
 
     说明
     ^^^^
@@ -830,13 +841,13 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^
 
-    - **<dev_name>**：字符串参数，表示设备名称。例如，若想设置设备名称为 "just-test"，则命令为 ``AT+BLEADVDATAEX="just-test",<uuid>,<manufacturer_data>,<include_power>``。
+    - **<dev_name>**：字符串参数，表示设备名称。例如，若想设置设备名称为 "just-test"，则命令为 ``AT+BLEADVDATAEX="just-test",<uuid>,<manufacturer_data>,<include_power>``。默认值："ESP-AT"。
 
-    - **<uuid>**：字符串参数。例如，若想设置 UUID 为 "0xA002"，则命令为 ``AT+BLEADVDATAEX=<dev_name>,"A002",<manufacturer_data>,<include_power>``。
+    - **<uuid>**：字符串参数。例如，若想设置 UUID 为 "0xA002"，则命令为 ``AT+BLEADVDATAEX=<dev_name>,"A002",<manufacturer_data>,<include_power>``。默认值：空。
 
-    - **<manufacturer_data>**：制造商数据，为 HEX 字符串。例如，若想设置制造商数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATAEX=<dev_name>,<uuid>,"1122334455",<include_power>``。
+    - **<manufacturer_data>**：制造商数据，为 HEX 字符串。例如，若想设置制造商数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEADVDATAEX=<dev_name>,<uuid>,"1122334455",<include_power>``。默认值：空。
 
-    - **<include_power>**：若广播数据需包含 TX 功率，本参数应该设为 ``1``；否则，为 ``0``。
+    - **<include_power>**：若广播数据需包含 TX 功率，本参数应该设为 ``1``；否则，为 ``0``。默认值：0。
 
     说明
     ^^^^
@@ -1230,7 +1241,7 @@ Bluetooth® Low Energy AT 命令集
 
     .. _cmd-BMTU:
 
-    :ref:`AT+BLECFGMTU <BLE-AT>`：设置 Bluetooth LE MTU 长度
+    :ref:`AT+BLECFGMTU <BLE-AT>`：查询/设置 Bluetooth LE MTU 长度
     -----------------------------------------------------------------------------
 
     查询命令
@@ -2286,7 +2297,7 @@ Bluetooth® Low Energy AT 命令集
 
     - **<auth_req>**：认证请求。
 
-    - 0: NO_BOND
+    - 0: NO_BOND（默认）
     - 1: BOND
     - 4: MITM
     - 8: SC_ONLY
@@ -2296,18 +2307,18 @@ Bluetooth® Low Energy AT 命令集
 
     - **<iocap>**：输入输出能力。
 
-    - 0: DisplayOnly
+    - 0: DisplayOnly（默认）
     - 1: DisplayYesNo
     - 2: KeyboardOnly
     - 3: NoInputNoOutput
     - 4: Keyboard display
 
-    - **<enc_key_size>**：加密密钥长度。参数范围：[7,16]。单位：字节。
-    - **<init_key>**：多个比特位组成的初始密钥。
-    - **<rsp_key>**：多个比特位组成的响应密钥。
+    - **<enc_key_size>**：加密密钥长度。参数范围：[7,16]。单位：字节。默认值：0（未设置；将在配对过程中协商）。
+    - **<init_key>**：多个比特位组成的初始密钥。默认值：0。
+    - **<rsp_key>**：多个比特位组成的响应密钥。默认值：0。
     - **<auth_option>**：安全认证选项：
 
-    - 0: 自动选择安全等级；
+    - 0: 自动选择安全等级（默认）；
     - 1: 如果无法满足之前设定的安全等级，则会断开连接。
 
     说明
@@ -3160,7 +3171,7 @@ Bluetooth® Low Energy AT 命令集
     参数
     ^^^^^^^^^^
 
-    - **<periodic_data>**：周期性广播数据，为 16 进制字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEPERIODICDATA="1122334455"``。
+    - **<periodic_data>**：周期性广播数据，为 16 进制字符串。例如，若想设置广播数据为 "0x11 0x22 0x33 0x44 0x55"，则命令为 ``AT+BLEPERIODICDATA="1122334455"``。默认值：空（未设置周期性广播数据）。
 
     示例
     ^^^^^^^^
