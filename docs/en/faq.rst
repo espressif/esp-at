@@ -38,7 +38,7 @@ AT FAQ
       - :ref:`Why does Wi-Fi disconnect? <faq-wifi-disconnect>`
       - :ref:`What are the common Wi-Fi compatibility issues? <faq-wifi-compatibility>`
       - :ref:`Do AT commands support ESP-WIFI-MESH? <faq-wifi-mesh>`
-      - :ref:`Are there examples for connecting to cloud services? <faq-cloud-examples>`
+      :commentline: - :ref:`Are there examples for connecting to cloud services? <faq-cloud-examples>`
       :esp32: - :ref:`Set ESP32-WROOM-32 module to HID keyboard mode? <faq-hid-keyboard>`
       :esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61: - :ref:`Can AT command set Bluetooth LE transmit power? <faq-ble-tx-power>`
       :esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61: - :ref:`How to enable notify and indicate on BLE clients? <faq-ble-notify-indicate>`
@@ -69,6 +69,8 @@ AT FAQ
       - :ref:`How to modify the default Wi-Fi mode? <faq-default-wifi-mode>`
       - :ref:`How to implement HTTP resume transfer functionality? <faq-http-resume>`
       - :ref:`How to download files from HTTP server and store them to FATFS, or upload files from FATFS file system to HTTP server? <faq-http-fs>`
+      - :ref:`Do open ports reported by nmap on an AT device indicate a security risk? <faq-nmap-open-ports>`
+      - :ref:`The esp-idf-sbom scan of AT firmware reports many CVEs. Does this affect RED, EN 18031, or CRA compliance? <faq-sbom-cve>`
       :esp32: - :ref:`How to conduct BQB certification? <faq-bqb>`
       :esp32: - :ref:`Does AT support PPP? <faq-ppp>`
 
@@ -85,7 +87,7 @@ AT FAQ
 Please select the corresponding chip platform and documentation version based on the actual AT firmware version you are using; there may be functional and behavioral differences between different firmware versions.
 
 - For :ref:`official-released-firmware`, you can directly obtain the corresponding document link through the :ref:`AT+USERDOCS? <cmd-USERDOCS>` command, without needing to confirm the version information.
-- For non-official released firmware, please confirm the following information first, and then select the corresponding document version:
+- For unofficial firmware, please confirm the following information first, and then select the corresponding document version:
 
   - The chip platform of the AT firmware you are using (e.g., ESP32, ESP32-C3, etc.)
   - The version number of the AT firmware (you can use the :ref:`AT+GMR <cmd-GMR>` command to view the version number of the AT core library)
@@ -163,7 +165,7 @@ If the MCU sends AT+CIPSEND and receives a busy p... response, it means the prev
 
 .. _faq-first-cmd-busy:
 
-:ref:`Why does the AT firmware always return the following message after I power up the device and sent the first command? <faq-at-index>`
+:ref:`Why does the AT firmware always return the following message after I power up the device and send the first command? <faq-at-index>`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: text
@@ -206,7 +208,7 @@ Refer to the escape character syntax described in the :ref:`at-command-types` se
 :ref:`Can the serial port baudrate be modified in AT Commands? (Default: 115200) <faq-at-index>`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  Yes, you can use either of the three ways below to modify it:
+  Yes, you can use one of the three ways below to modify it:
 
   - Use the command :ref:`AT+UART_CUR <cmd-UARTC>` or :ref:`AT+UART_DEF <cmd-UARTD>`.
   - Re-compile the AT firmware: :doc:`establish the compiling environment <Compile_and_Develop/How_to_clone_project_and_compile_it>` and :doc:`change the UART baudrate <Compile_and_Develop/How_to_set_AT_port_pin>`.
@@ -294,8 +296,8 @@ Currently, AT commands do not support ESP-WIFI-MESH.
 
   .. _faq-ble-tx-power:
 
-  :ref:`Can AT command set Bluetooth LE transmit power? <faq-at-index>`
-  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  :ref:`Can AT commands set Bluetooth LE transmit power? <faq-at-index>`
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
   Yes, use the :ref:`AT+RFPOWER <cmd-RFPOWER>` command to set Bluetooth LE transmit power. {IDF_TARGET_NAME} Wi-Fi and Bluetooth LE share the same antenna.
 
@@ -425,7 +427,7 @@ Refer to the :doc:`How to enable more AT debug logs <../Compile_and_Develop/How_
 :ref:`How to modify the default Wi-Fi mode when AT firmware starts for the first time? <faq-at-index>`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Modify the source code. Call `esp_wifi_set_mode() <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-reference/network/esp_wifi.html#_CPPv417esp_wifi_set_mode11wifi_mode_t>`_ in the :cpp:type:`esp_at_ready_before()` function to set the Wi-Fi mode, for example: ``esp_wifi_set_mode(WIFI_MODE_STA)``.
+Modify the source code. Call `esp_wifi_set_mode() <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/network/esp_wifi.html#_CPPv417esp_wifi_set_mode11wifi_mode_t>`_ in the :cpp:type:`esp_at_ready_before()` function to set the Wi-Fi mode, for example: ``esp_wifi_set_mode(WIFI_MODE_STA)``.
 
 .. _faq-http-resume:
 
@@ -446,6 +448,57 @@ Refer to GitHub examples:
 
   - :example:`at_http_get_to_fs` - Download files from HTTP server and store them to file system
   - :example:`at_fs_to_http_server` - Upload files from file system to HTTP server
+
+.. _faq-nmap-open-ports:
+
+:ref:`Do open ports reported by nmap on an AT device indicate a security risk? <faq-at-index>`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Summary**: Default AT firmware **does not listen** on any port after Wi-Fi is connected. If no connection or service was created via AT commands, ``open`` / ``open|filtered`` reported by nmap **does not mean** the firmware is providing a service.
+
+Ports are used only with :ref:`AT+CIPSTART <cmd-START>`, :ref:`AT+CIPSERVER <cmd-SERVER>`, :ref:`AT+WEBSERVER <cmd-WEBSERVER>`, :ref:`AT+MDNS <cmd-MDNS>`, and similar commands.
+
+**Common causes of false positives**
+
+  - **UDP scans are unreliable**: ``nmap -sU`` uses ICMP ``port-unreachable`` to detect closed ports; without a reply, ports are marked ``open|filtered``, which **does not mean** the port is listening. UDP and ICMP replies **can be lost**; full-port high-speed scans (e.g. ``-p 1-65535 -T4``) cause more false positives and **must not** be treated as proof of open ports.
+  - **Wrong target or existing connections**: Confirm the IP matches :ref:`AT+CIFSR <cmd-IFSR>`; high UDP ports come from :ref:`AT+CIPSTART <cmd-START>` sockets; 5353 appears only after ``AT+MDNS`` is enabled.
+
+**Troubleshooting**
+
+1. ``AT+CIFSR``, ``AT+CIPSTATE?`` — verify IP and current connections; no listening ports is expected.
+2. TCP scan: ``sudo nmap -sS -p- <IP>``; all ``closed`` if no connections were created.
+3. For UDP scans, use ``-T2`` to slow down, or capture packets to confirm ``port-unreachable`` arrives.
+4. ``AT+RST``, then only ``AT+CWJAP`` to connect Wi-Fi, and scan again.
+
+If the issue persists, record the scan command, :ref:`AT+GMR <cmd-GMR>` version, and AT command sequence, and report it at `esp-at/issues <https://github.com/espressif/esp-at/issues>`_.
+
+.. _faq-sbom-cve:
+
+:ref:`The esp-idf-sbom scan of AT firmware reports many CVEs. Does this affect RED, EN 18031, or CRA compliance? <faq-at-index>`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+CVEs reported by tools such as `esp-idf-sbom <https://github.com/espressif/esp-idf-sbom>`_ are associated with a specific version of a software component (library) and do not mean the final compiled AT firmware is necessarily affected. Most CVEs are only compiled into the firmware and become exploitable when the related feature or code path is enabled; for features that are not enabled in the AT firmware, the source code is not included in the final binary, so the corresponding vulnerability has no trigger conditions. Such CVEs therefore usually do not affect the AT firmware's compliance with the cybersecurity requirements of the EU Radio Equipment Directive (RED, 2014/53/EU; Delegated Regulation (EU) 2022/30 and the harmonized EN 18031 series) or the Cyber Resilience Act (CRA). In such cases, a documented self-assessment is typically sufficient to justify the non-applicability of the reported CVE.
+
+Scan results tend to overestimate the risk for the following reasons:
+
+- Tools match CVEs against public vulnerability databases (such as NVD) by component version number, reporting any version that falls within the affected range without analyzing whether the vulnerability is actually reachable in your specific build configuration.
+- ESP-AT tailors features via menuconfig (Kconfig). The source code of disabled features is not compiled into the firmware, so any vulnerabilities it carries do not exist in the final binary.
+- Even when the code is compiled into the firmware, a vulnerability often requires multiple preconditions to hold simultaneously; if any condition is not met, it cannot be exploited.
+
+Take CVE-2026-34873 (Client Impersonation During TLS 1.3 Session Resumption) as an example. It affects Mbed TLS versions 3.5.0–3.6.5 and 4.0.0 (reported by the SBOM). According to the `official security advisory <https://mbed-tls.readthedocs.io/en/latest/security-advisories/mbedtls-security-advisory-2026-03-client-impersonation-while-resuming-tls13-session/>`_, a deployment is affected only when Mbed TLS runs in the *server* role and meets all of the following conditions:
+
+- It supports both TLS 1.2 and TLS 1.3.
+- It is configured to authenticate clients.
+- It issues TLS 1.3 session tickets to authenticated clients for later session resumption.
+
+Although the AT firmware can act as an SSL client via :ref:`AT+CIPSTART <cmd-START>` and as an SSL server via :ref:`AT+CIPSERVER <cmd-SERVER>`, its Mbed TLS does not enable TLS 1.3 by default (it must be enabled manually in menuconfig; see :ref:`Change the TLS Protocol Version <modify-tls-version>`). As a result, it neither negotiates TLS 1.3 nor issues TLS 1.3 session tickets, so the conditions above cannot be met. Therefore, although the SBOM reports this CVE based on the Mbed TLS version, the vulnerability is not reachable in the default AT firmware configuration and has no practical impact.
+
+To handle reported CVEs, follow these steps:
+
+1. Review each CVE's official description (e.g. NVD, component security advisories) to determine the configuration and runtime conditions required to trigger it.
+2. Compare against the actual AT firmware: check whether the related feature is enabled, whether the code is compiled in, and whether the trigger scenario can occur at runtime. Refer to :doc:`How to Clone Project and Compile It <Compile_and_Develop/How_to_clone_project_and_compile_it>` to confirm the build configuration.
+3. Mark each CVE as affected / not affected with the rationale, as self-assessment material for compliance.
+4. If a CVE is confirmed reachable under your configuration, upgrade to a component version that includes the fix or disable the related feature and rebuild the firmware. You are also welcome to contact us via `esp-at/issues <https://github.com/espressif/esp-at/issues>`_. We continuously monitor upstream security advisories, update dependencies when appropriate, and incorporate relevant fixes into future AT firmware releases.
 
 .. only:: esp32
 

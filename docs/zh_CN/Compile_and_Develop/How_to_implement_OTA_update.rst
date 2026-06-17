@@ -171,7 +171,7 @@ OTA 命令对比及应用场景
 
     保存当前版本的 ota.bin
 
-8. 在设备上运行 :ref:`AT+USEROTA <cmd-USEROTA>` 命令。如果网络已连接，将开始 OTA 升级。
+8. 在设备上运行 :ref:`AT+CIUPDATE <cmd-UPDATE>` 命令。如果网络已连接，将开始 OTA 升级。
 
 .. Important::
 

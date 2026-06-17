@@ -348,6 +348,12 @@ AT 日志
         - 6: HE20
         - 7: VHT20
 
+    * - alloc failed, size:``<size>`` caps:``<caps>``
+      - 内存分配失败，请求大小为 ``<size>``，能力为 ``<caps>``，请考虑分时复用功能或减少内存占用：
+
+        - 在 :ref:`python build.py menuconfig <esp-at-project-config>` > Component config > AT 路径下禁用不需要的 AT 功能
+        - 参考 `内存优化 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/performance/ram-usage.html>`_ 文档中的优化方法
+
     * - at-wifi: wifi disconnected, rc:``<reason_code>``
       - Wi-Fi station 断开连接的 `原因代码 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/station-scenarios.html#esp-wifi-reason-code>`_
     * - at-wifi: wifi reconnect..(``<index>``/``<total_count>``)
