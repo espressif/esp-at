@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -20,6 +20,7 @@
 #include "esp_netif.h"
 
 #include "esp_at.h"
+#include "esp_at_internal.h"
 
 #ifdef CONFIG_AT_OTA_SUPPORT
 #include "at_ota.h"
@@ -108,7 +109,6 @@ static const at_partition_sig_t s_at_partition_sig[] = {
 #define ESP_AT_PARTITION_NAME_LEN_MAX         64
 #define NB_OTA_TASK_STACK_SIZE              5120  // for non-blocking ota
 #define AT_HTTP_CONTENT_LEN_MAX             8192
-#define AT_BUFFER_ON_STACK_SIZE              128
 
 typedef struct {
     int32_t ota_mode;
@@ -651,7 +651,7 @@ static uint8_t at_exeCmdCipupgrade(uint8_t *cmd_name)
     }
 
     if (esp_at_upgrade_process(ESP_AT_OTA_MODE_NORMAL, NULL, "ota")) {
-        esp_at_response_result(ESP_AT_RESULT_CODE_OK);
+        esp_at_write_result(ESP_AT_RESULT_CODE_OK);
         esp_at_port_wait_write_complete(ESP_AT_PORT_TX_WAIT_MS_MAX);
         esp_restart();
         for (;;) {
@@ -765,7 +765,7 @@ static uint8_t at_setupCmdCipupgrade(uint8_t para_num)
 
     if (esp_at_upgrade_process(ota_mode, version, (const char *)partition_name)) {
         if (memcmp(partition_name, "ota", strlen("ota")) == 0) {
-            esp_at_response_result(ESP_AT_RESULT_CODE_OK);
+            esp_at_write_result(ESP_AT_RESULT_CODE_OK);
             esp_at_port_wait_write_complete(ESP_AT_PORT_TX_WAIT_MS_MAX);
             esp_restart();
             for (;;) {
@@ -828,8 +828,8 @@ static uint8_t at_query_cmd_cipfwver(uint8_t *cmd_name)
 #else
     auth_token = esp_at_get_ota_token_by_id(esp_at_get_module_id(), ESP_AT_OTA_MODE_NORMAL);
 #endif
-    char buffer[AT_BUFFER_ON_STACK_SIZE] = {0};
-    snprintf(buffer, AT_BUFFER_ON_STACK_SIZE, "token %s", auth_token);
+    char buffer[ESP_AT_BUF_ON_STACK_SIZE] = {0};
+    snprintf(buffer, ESP_AT_BUF_ON_STACK_SIZE, "token %s", auth_token);
     esp_http_client_set_header(client, "Authorization", buffer);
 
     // rough buffer for http response (due to http response is chunked)
@@ -854,7 +854,7 @@ static uint8_t at_query_cmd_cipfwver(uint8_t *cmd_name)
         if (pstr) {
             ver_head = pstr + strlen("\"version\": ");
             ver_tail = strstr((char *)(ver_head + 1), "\", ");
-            snprintf(buffer, AT_BUFFER_ON_STACK_SIZE, "%s:%.*s\r\n", esp_at_get_current_cmd_name(), ver_tail - ver_head + 1, ver_head);
+            snprintf(buffer, ESP_AT_BUF_ON_STACK_SIZE, "%s:%.*s\r\n", esp_at_get_current_cmd_name(), ver_tail - ver_head + 1, ver_head);
             esp_at_port_write_data((uint8_t *)buffer, strlen(buffer));
             pstr = ver_tail;
         } else {
@@ -874,16 +874,16 @@ _over:
     return ret;
 }
 
-static const esp_at_cmd_struct at_upgrade_cmd[] = {
+static const esp_at_cmd_t at_upgrade_cmd[] = {
     {"+CIUPDATE", NULL, at_queryCmdCipupgrade, at_setupCmdCipupgrade, at_exeCmdCipupgrade},
     {"+CIPFWVER", NULL, at_query_cmd_cipfwver, NULL, NULL},
 };
 
-bool esp_at_ota_cmd_regist(void)
+bool esp_at_ota_cmd_register(void)
 {
-    return esp_at_custom_cmd_array_regist(at_upgrade_cmd, sizeof(at_upgrade_cmd) / sizeof(at_upgrade_cmd[0]));
+    return esp_at_custom_cmd_array_register(at_upgrade_cmd, sizeof(at_upgrade_cmd) / sizeof(at_upgrade_cmd[0]));
 }
 
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ota_cmd_regist, 22);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ota_cmd_register, 22);
 
 #endif

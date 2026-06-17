@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -45,15 +45,15 @@ static uint8_t at_setupCmdFactPlcp(uint8_t para_num)
     return ESP_AT_RESULT_CODE_OK;
 }
 
-static const esp_at_cmd_struct at_fact_cmd[] = {
+static const esp_at_cmd_t at_fact_cmd[] = {
     {"+FACTPLCP", NULL, NULL, at_setupCmdFactPlcp, NULL},
 };
 
-bool esp_at_fact_cmd_regist(void)
+bool esp_at_fact_cmd_register(void)
 {
-    return esp_at_custom_cmd_array_regist(at_fact_cmd, sizeof(at_fact_cmd) / sizeof(at_fact_cmd[0]));
+    return esp_at_custom_cmd_array_register(at_fact_cmd, sizeof(at_fact_cmd) / sizeof(at_fact_cmd[0]));
 }
 
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_fact_cmd_regist, 21);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_fact_cmd_register, 21);
 
 #endif

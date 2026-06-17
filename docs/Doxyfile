@@ -28,13 +28,14 @@ INPUT = \
 ##
 WARN_NO_PARAMDOC = YES
 
-## Enable preprocessing and remove __attribute__(...) expressions from the INPUT files
+## Enable preprocessing and remove __attribute__(...) and __asm__(...) expressions from the INPUT files
 ##
 ENABLE_PREPROCESSING   = YES
 MACRO_EXPANSION        = YES
 EXPAND_ONLY_PREDEF     = YES
 PREDEFINED             = \
     __attribute__(x)= \
+    __asm__(x)= \
     IDF_DEPRECATED(X)= \
     IRAM_ATTR= \
     configSUPPORT_DYNAMIC_ALLOCATION=1 \

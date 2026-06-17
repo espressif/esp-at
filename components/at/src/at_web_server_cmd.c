@@ -33,6 +33,7 @@
 #include "esp_mac.h"
 
 #include "esp_at.h"
+#include "esp_at_internal.h"
 
 #ifdef CONFIG_AT_WEB_SERVER_SUPPORT
 #include "esp_http_server.h"
@@ -85,12 +86,6 @@ static char *s_at_web_redirect_url = NULL;
 
 #define ESP_AT_WEB_HEADER_AUTH_NAME                    ("Object")
 #define ESP_AT_UPGRADE_PARTITION_NAME                  ("ota")
-
-extern void at_wifi_reconnect_stop(void);
-extern void at_wifi_reconnect_init(bool force);
-extern esp_err_t at_wifi_connect(void);
-extern esp_err_t at_wifi_disconnect(void);
-extern esp_err_t at_wifi_scan_start(const wifi_scan_config_t *config, bool block);
 
 typedef struct router_obj {
     uint8_t ssid[32];
@@ -191,9 +186,9 @@ static esp_err_t at_web_try_connect(uint8_t *ssid, uint8_t *password, uint8_t *b
         sta.bssid_set = 1;
         memcpy(sta.bssid, bssid, sizeof(sta.bssid));
     }
-    at_wifi_disconnect();
+    esp_at_wifi_disconnect();
     // stop reconnect if reconnect is in process(if has connected, then keep the connection)
-    at_wifi_reconnect_stop();
+    esp_at_wifi_reconnect_stop();
 
     // set the floor authmode if has valid password
     if (sta.password[0]) {
@@ -206,9 +201,9 @@ static esp_err_t at_web_try_connect(uint8_t *ssid, uint8_t *password, uint8_t *b
         return ret;
     }
     // force connect to AP
-    at_wifi_reconnect_init(true);
+    esp_at_wifi_reconnect_init(true);
     // apply connect
-    at_wifi_connect();
+    esp_at_wifi_connect();
 
     if (connect_event != NULL) { // need to wait wifi connect result, now it's phone config wifi and ssid is null
         bits = xEventGroupWaitBits(connect_event,
@@ -347,7 +342,7 @@ esp_err_t at_web_wifi_scan_get_ap_records(uint16_t *number, wifi_ap_record_t *ap
         return ESP_ERR_INVALID_ARG;
     }
     esp_err_t ret = ESP_FAIL;
-    ret = at_wifi_scan_start(NULL, true);
+    ret = esp_at_wifi_scan_start(NULL, true);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "scan start fail");
         return ret;
@@ -870,7 +865,7 @@ static void listen_sta_connect_status_timer_cb(TimerHandle_t timer)
     } else {
         ESP_LOGW(TAG, "Listen connect %d times and connect fail", connect_count);
         connection_info.config_status = ESP_AT_WIFI_STA_CONNECT_FAIL;
-        at_wifi_reconnect_stop();
+        esp_at_wifi_reconnect_stop();
         goto connect_finish;
     }
     return;
@@ -1006,9 +1001,9 @@ static esp_err_t at_web_apply_wifi_connect_info(int32_t udp_port)
         xTimerStart(s_wifi_sta_connect_timer_handler, 5);
     } else {
         // if have connect to a ap, then disconnect
-        at_wifi_disconnect();
+        esp_at_wifi_disconnect();
         // stop reconnect if reconnect is in process(ensure ESP in disconnect status)
-        at_wifi_reconnect_stop();
+        esp_at_wifi_reconnect_stop();
         s_wifi_sta_connect_event_group = xEventGroupCreate();
 
         s_wifi_sta_connect_timer_handler = xTimerCreate("listen_sta_connect_success", ESP_AT_WEB_TIMER_POLLING_PERIOD / portTICK_PERIOD_MS, pdTRUE,
@@ -1043,7 +1038,7 @@ static esp_err_t at_web_apply_wifi_connect_info(int32_t udp_port)
         if (ret != ESP_OK) { // connect fail
             ESP_LOGW(TAG, "Scan filter fail, timeout");
             connection_info.config_status = ESP_AT_WIFI_STA_CONNECT_FAIL;
-            at_wifi_reconnect_stop();
+            esp_at_wifi_reconnect_stop();
             at_web_update_sta_connection_info(&connection_info);
             esp_at_port_active_write_data((uint8_t*)s_wifi_conncet_finish_response, strlen(s_wifi_conncet_finish_response));
         } else { // connect ok
@@ -1953,7 +1948,7 @@ static uint8_t at_setupCmdWebConf(uint8_t para_num)
     }
 }
 
-static const esp_at_cmd_struct at_web_cmd[] = {
+static const esp_at_cmd_t at_web_cmd[] = {
     {"+WEBSERVER", NULL, NULL,  at_setupCmdWebConf, NULL},
 };
 
@@ -1962,12 +1957,12 @@ static void at_web_got_ip_cb(void* arg, esp_event_base_t event_base, int32_t eve
     at_web_update_sta_got_ip_flag(true);
 }
 
-bool esp_at_web_server_cmd_regist(void)
+bool esp_at_web_server_cmd_register(void)
 {
     esp_event_handler_instance_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &at_web_got_ip_cb, NULL, NULL);
-    return esp_at_custom_cmd_array_regist(at_web_cmd, sizeof(at_web_cmd) / sizeof(at_web_cmd[0]));
+    return esp_at_custom_cmd_array_register(at_web_cmd, sizeof(at_web_cmd) / sizeof(at_web_cmd[0]));
 }
 
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_web_server_cmd_regist, 25);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_web_server_cmd_register, 25);
 
 #endif

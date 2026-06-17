@@ -66,7 +66,7 @@ static uint8_t at_exe_cmd_test(uint8_t *cmd_name)
     return ESP_AT_RESULT_CODE_OK;
 }
 
-static const esp_at_cmd_struct at_custom_cmd[] = {
+static const esp_at_cmd_t at_custom_cmd[] = {
     {"+TEST", at_test_cmd_test, at_query_cmd_test, at_setup_cmd_test, at_exe_cmd_test},
     /**
      * @brief You can define your own AT commands here.
@@ -75,7 +75,7 @@ static const esp_at_cmd_struct at_custom_cmd[] = {
 
 bool esp_at_custom_cmd_register(void)
 {
-    return esp_at_custom_cmd_array_regist(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(esp_at_cmd_struct));
+    return esp_at_custom_cmd_array_register(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(esp_at_cmd_t));
 }
 
 ESP_AT_CMD_SET_INIT_FN(esp_at_custom_cmd_register, 1);

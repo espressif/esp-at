@@ -16,8 +16,8 @@
 #endif
 
 // static variables
-static esp_at_device_ops_struct s_interface_ops;
-static esp_at_custom_ops_struct s_interface_hooks;
+static esp_at_intf_ops_t s_interface_ops;
+static esp_at_custom_ops_t s_interface_hooks;
 
 #ifdef CONFIG_AT_INTF_SECURITY_SUPPORT
 static at_intf_security_ops_t s_intf_security_ops;
@@ -52,7 +52,7 @@ static int32_t at_port_read_data(uint8_t *buffer, int32_t len)
 
 #if CONFIG_AT_RX_DATA_DEBUG
     if (ret > 0) {
-        ESP_AT_LOG_BUFFER_HEXDUMP("intf-rx", buffer, at_min(ret, CONFIG_AT_RX_DATA_MAX_LEN), ESP_LOG_INFO);
+        ESP_AT_LOG_BUFFER_HEXDUMP("intf-rx", buffer, esp_at_min(ret, CONFIG_AT_RX_DATA_MAX_LEN), ESP_LOG_INFO);
     }
 #endif
 
@@ -67,7 +67,7 @@ static int32_t at_port_write_data(uint8_t *data, int32_t len)
     }
 
 #if CONFIG_AT_TX_DATA_DEBUG
-    ESP_AT_LOG_BUFFER_HEXDUMP("intf-tx", data, at_min(len, CONFIG_AT_TX_DATA_MAX_LEN), ESP_LOG_INFO);
+    ESP_AT_LOG_BUFFER_HEXDUMP("intf-tx", data, esp_at_min(len, CONFIG_AT_TX_DATA_MAX_LEN), ESP_LOG_INFO);
 #endif
 
     at_write_data_fn_t write_fn = s_interface_ops.write_data;
@@ -122,20 +122,20 @@ at_read_data_fn_t at_interface_get_read_fn(void)
     return s_interface_ops.read_data;
 }
 
-void at_interface_ops_init(esp_at_device_ops_struct *ops)
+void at_interface_ops_init(esp_at_intf_ops_t *ops)
 {
     s_interface_ops.read_data = ops->read_data;
     s_interface_ops.write_data = ops->write_data;
     s_interface_ops.get_data_length = ops->get_data_length;
     s_interface_ops.wait_write_complete = ops->wait_write_complete;
 
-    esp_at_device_ops_struct at_port_ops = {
+    esp_at_intf_ops_t at_port_ops = {
         .read_data = at_port_read_data,
         .write_data = at_port_write_data,
         .get_data_length = at_port_get_data_len,
         .wait_write_complete = at_port_wait_tx_done,
     };
-    esp_at_device_ops_regist(&at_port_ops);
+    esp_at_device_ops_register(&at_port_ops);
 }
 
 #ifdef CONFIG_AT_INTF_SECURITY_SUPPORT
@@ -168,7 +168,7 @@ int at_interface_security_set(at_intf_security_ops_t *ops)
 }
 #endif
 
-static void at_transmit_mode_switch_cb(esp_at_status_type state)
+static void at_transmit_mode_switch_cb(esp_at_status_t state)
 {
     // do some special things from the interface hook when transmit mode switch
     if (s_interface_hooks.status_callback) {
@@ -176,7 +176,7 @@ static void at_transmit_mode_switch_cb(esp_at_status_type state)
     }
 }
 
-static void at_normal_sleep_before_cb(at_sleep_mode_t mode)
+static void at_normal_sleep_before_cb(esp_at_sleep_mode_t mode)
 {
     // do some common things before sleep
 #ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
@@ -193,7 +193,7 @@ static void at_normal_wakeup_before_cb(void)
 {
     // do some common things before wakeup
 #ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
-    at_set_mcu_state_if_sleep(AT_DISABLE_SLEEP);
+    at_set_mcu_state_if_sleep(ESP_AT_SLEEP_DISABLE);
 #endif
 
     // do some special things from the interface hook before wakeup
@@ -229,7 +229,7 @@ static void at_port_tx_data_before_cb(at_write_data_fn_t fn)
 #endif
 }
 
-void at_interface_hooks(esp_at_custom_ops_struct *if_hooks)
+void at_interface_hooks(esp_at_custom_ops_t *if_hooks)
 {
     if (if_hooks) {
         s_interface_hooks.status_callback = if_hooks->status_callback;
@@ -240,7 +240,7 @@ void at_interface_hooks(esp_at_custom_ops_struct *if_hooks)
         s_interface_hooks.pre_active_write_data_callback = if_hooks->pre_active_write_data_callback;
     }
 
-    esp_at_custom_ops_struct at_hooks = {
+    esp_at_custom_ops_t at_hooks = {
         .status_callback = at_transmit_mode_switch_cb,
         .pre_sleep_callback = at_normal_sleep_before_cb,
         .pre_wakeup_callback = at_normal_wakeup_before_cb,
@@ -248,5 +248,5 @@ void at_interface_hooks(esp_at_custom_ops_struct *if_hooks)
         .pre_restart_callback = at_restart_before_cb,
         .pre_active_write_data_callback = at_port_tx_data_before_cb,
     };
-    esp_at_custom_ops_regist(&at_hooks);
+    esp_at_custom_ops_register(&at_hooks);
 }

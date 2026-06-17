@@ -53,11 +53,11 @@ Each AT command can have up to four types: Test Command, Query Command, Set Comm
 
 Then, define desired type of command. Assuming that ``AT+TEST`` supports all the four types. Below is the code to define the name and types of the AT command, as well as sample code to define each type.
 
-- First, call :cpp:type:`esp_at_cmd_struct` to define the name and type(s) that your AT command supports. The sample code below defined the name ``+TEST`` (omitting ``AT``) and all the four types.
+- First, call :cpp:type:`esp_at_cmd_t` to define the name and type(s) that your AT command supports. The sample code below defined the name ``+TEST`` (omitting ``AT``) and all the four types.
 
     .. code-block:: c
 
-        static const esp_at_cmd_struct at_custom_cmd[] = {
+        static const esp_at_cmd_t at_custom_cmd[] = {
             {"+TEST", at_test_cmd_test, at_query_cmd_test, at_setup_cmd_test, at_exe_cmd_test},
             /**
              * @brief You can define your own AT commands here.
@@ -105,13 +105,13 @@ Then, define desired type of command. Assuming that ``AT+TEST`` supports all the
 
             // get first parameter, and parse it into a digit
             int32_t digit = 0;
-            if (esp_at_get_para_as_digit(index++, &digit) != ESP_AT_PARA_PARSE_RESULT_OK) {
+            if (esp_at_get_para_as_digit(index++, &digit) != ESP_AT_PARA_PARSE_RET_OK) {
                 return ESP_AT_RESULT_CODE_ERROR;
             }
 
             // get second parameter, and parse it into a string
             uint8_t *str = NULL;
-            if (esp_at_get_para_as_str(index++, &str) != ESP_AT_PARA_PARSE_RESULT_OK) {
+            if (esp_at_get_para_as_str(index++, &str) != ESP_AT_PARA_PARSE_RET_OK) {
                 return ESP_AT_RESULT_CODE_ERROR;
             }
 
@@ -148,7 +148,7 @@ Then, define desired type of command. Assuming that ``AT+TEST`` supports all the
 Step 2: Register AT Command Functions
 ***********************************************************************************
 
-- Please define the :cpp:type:`esp_at_custom_cmd_register` function and call the API :cpp:func:`esp_at_custom_cmd_array_regist` to register AT commands.
+- Please define the :cpp:type:`esp_at_custom_cmd_register` function and call the API :cpp:func:`esp_at_custom_cmd_array_register` to register AT commands.
 
   Sample code:
 
@@ -156,7 +156,7 @@ Step 2: Register AT Command Functions
 
       bool esp_at_custom_cmd_register(void)
       {
-          return esp_at_custom_cmd_array_regist(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(esp_at_cmd_struct));
+          return esp_at_custom_cmd_array_register(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(esp_at_cmd_t));
       }
 
 - Then, call the API `ESP_AT_CMD_SET_INIT_FN <https://github.com/espressif/esp-at/blob/113702d9bf0224ed15e873bdc09898e804f4bd28/components/at/include/esp_at_cmd_register.h#L67>`_ to initialize your implemented registration AT command function :cpp:type:`esp_at_custom_cmd_register`.
@@ -318,11 +318,11 @@ The sample codes below are used to customize more complex commands, from which y
 Define Return Values
 ******************************************************
 
-ESP-AT has defined return values in :cpp:type:`esp_at_result_code_string_index`. See :ref:`at-messages` for more return values.
+ESP-AT has defined return values in :cpp:type:`esp_at_rc_t`. See :ref:`at-messages` for more return values.
 
-In addition to output return values through the return mode, you can also use API :cpp:func:`esp_at_response_result` to output the execution result of the command. :cpp:enumerator:`ESP_AT_RESULT_CODE_SEND_OK` and :cpp:enumerator:`ESP_AT_RESULT_CODE_SEND_FAIL` can be used with the API in code.
+In addition to output return values through the return mode, you can also use API :cpp:func:`esp_at_write_result` to output the execution result of the command. :cpp:enumerator:`ESP_AT_RESULT_CODE_SEND_OK` and :cpp:enumerator:`ESP_AT_RESULT_CODE_SEND_FAIL` can be used with the API in code.
 
-For example, when you send data to the server or MCU with the Execute Command of ``AT+TEST``, you can use :cpp:func:`esp_at_response_result` to output the sending result, and the return mode to output the command execution result. Below is the sample code:
+For example, when you send data to the server or MCU with the Execute Command of ``AT+TEST``, you can use :cpp:func:`esp_at_write_result` to output the sending result, and the return mode to output the command execution result. Below is the sample code:
 
 .. code-block:: c
 
@@ -338,7 +338,7 @@ For example, when you send data to the server or MCU with the Execute Command of
         send_data_to_server();
 
         // output SEND OK
-        esp_at_response_result(ESP_AT_RESULT_CODE_SEND_OK);
+        esp_at_write_result(ESP_AT_RESULT_CODE_SEND_OK);
 
         return ESP_AT_RESULT_CODE_OK;
     }
@@ -399,13 +399,13 @@ Below is the sample code to achieve it:
         uint8_t *para_str_4 = NULL;
         uint8_t num_index = 0;
         uint8_t buffer[64] = {0};
-        esp_at_para_parse_result_type parse_result = ESP_AT_PARA_PARSE_RESULT_OK;
+        esp_at_para_parse_ret_t parse_result = ESP_AT_PARA_PARSE_RET_OK;
 
         snprintf((char *)buffer, 64, "this cmd is setup cmd and cmd num is: %u\r\n", para_num);
         esp_at_port_write_data(buffer, strlen((char *)buffer));
 
         parse_result = esp_at_get_para_as_digit(num_index++, &para_int_1);
-        if (parse_result != ESP_AT_PARA_PARSE_RESULT_OK) {
+        if (parse_result != ESP_AT_PARA_PARSE_RET_OK) {
             return ESP_AT_RESULT_CODE_ERROR;
         } else {
             memset(buffer, 0, 64);
@@ -414,8 +414,8 @@ Below is the sample code to achieve it:
         }
 
         parse_result = esp_at_get_para_as_digit(num_index++, &para_int_2);
-        if (parse_result != ESP_AT_PARA_PARSE_RESULT_OMITTED) {
-            if (parse_result != ESP_AT_PARA_PARSE_RESULT_OK) {
+        if (parse_result != ESP_AT_PARA_PARSE_RET_OMITTED) {
+            if (parse_result != ESP_AT_PARA_PARSE_RET_OK) {
                 return ESP_AT_RESULT_CODE_ERROR;
             } else {
                 // sample code
@@ -434,8 +434,8 @@ Below is the sample code to achieve it:
         }
 
         parse_result = esp_at_get_para_as_str(num_index++, &para_str_3);
-        if (parse_result != ESP_AT_PARA_PARSE_RESULT_OMITTED) {
-            if (parse_result != ESP_AT_PARA_PARSE_RESULT_OK) {
+        if (parse_result != ESP_AT_PARA_PARSE_RET_OMITTED) {
+            if (parse_result != ESP_AT_PARA_PARSE_RET_OK) {
                 return ESP_AT_RESULT_CODE_ERROR;
             } else {
                 // sample code
@@ -454,7 +454,7 @@ Below is the sample code to achieve it:
         }
 
         parse_result = esp_at_get_para_as_str(num_index++, &para_str_4);
-        if (parse_result != ESP_AT_PARA_PARSE_RESULT_OK) {
+        if (parse_result != ESP_AT_PARA_PARSE_RET_OK) {
             return ESP_AT_RESULT_CODE_ERROR;
         } else {
             memset(buffer, 0, 64);
@@ -496,13 +496,13 @@ Below is the sample code to achieve it:
         uint8_t *para_str_3 = NULL;
         uint8_t num_index = 0;
         uint8_t buffer[64] = {0};
-        esp_at_para_parse_result_type parse_result = ESP_AT_PARA_PARSE_RESULT_OK;
+        esp_at_para_parse_ret_t parse_result = ESP_AT_PARA_PARSE_RET_OK;
 
         snprintf((char *)buffer, 64, "this cmd is setup cmd and cmd num is: %u\r\n", para_num);
         esp_at_port_write_data(buffer, strlen((char *)buffer));
 
         parse_result = esp_at_get_para_as_digit(num_index++, &para_int_1);
-        if (parse_result != ESP_AT_PARA_PARSE_RESULT_OK) {
+        if (parse_result != ESP_AT_PARA_PARSE_RET_OK) {
             return ESP_AT_RESULT_CODE_ERROR;
         } else {
             memset(buffer, 0, 64);
@@ -511,7 +511,7 @@ Below is the sample code to achieve it:
         }
 
         parse_result = esp_at_get_para_as_str(num_index++, &para_str_2);
-        if (parse_result != ESP_AT_PARA_PARSE_RESULT_OK) {
+        if (parse_result != ESP_AT_PARA_PARSE_RET_OK) {
             return ESP_AT_RESULT_CODE_ERROR;
         } else {
             memset(buffer, 0, 64);
@@ -525,8 +525,8 @@ Below is the sample code to achieve it:
             esp_at_port_write_data(buffer, strlen((char *)buffer));
         } else {
             parse_result = esp_at_get_para_as_str(num_index++, &para_str_3);
-            if (parse_result != ESP_AT_PARA_PARSE_RESULT_OMITTED) {
-                if (parse_result != ESP_AT_PARA_PARSE_RESULT_OK) {
+            if (parse_result != ESP_AT_PARA_PARSE_RET_OMITTED) {
+                if (parse_result != ESP_AT_PARA_PARSE_RET_OK) {
                     return ESP_AT_RESULT_CODE_ERROR;
                 } else {
                     // sample code
@@ -630,7 +630,7 @@ Below is the sample to access the input data of ``<param_1>`` length from AT Com
         uint8_t *buf = NULL;
         uint8_t buffer[64] = {0};
 
-        if (esp_at_get_para_as_digit(0, &specified_len) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        if (esp_at_get_para_as_digit(0, &specified_len) != ESP_AT_PARA_PARSE_RET_OK) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
 

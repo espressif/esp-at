@@ -1,10 +1,11 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
 #pragma once
 #include "esp_at_core.h"
+#include "esp_at_internal.h"
 
 #ifdef CONFIG_AT_BASE_ON_UART
 #include "at_uart.h"
@@ -33,7 +34,7 @@ void at_interface_start(void);
  *
  * @param[in] ops: The pointer of the interface operations.
 */
-void at_interface_ops_init(esp_at_device_ops_struct *ops);
+void at_interface_ops_init(esp_at_intf_ops_t *ops);
 
 /**
  * @brief This function is used to initialize the interface-hooks for communication port.
@@ -54,7 +55,7 @@ void at_interface_ops_init(esp_at_device_ops_struct *ops);
  *              - NULL: use the system-hooks.
  *              - not NULL: use the system-hooks and the interface-hooks.
 */
-void at_interface_hooks(esp_at_custom_ops_struct *if_hooks);
+void at_interface_hooks(esp_at_custom_ops_t *if_hooks);
 
 /**
  * @brief This function is used to get the raw write pointer from interface.

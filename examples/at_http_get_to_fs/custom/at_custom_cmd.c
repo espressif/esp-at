@@ -202,7 +202,7 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
     if (esp_at_get_para_as_str(cnt++, &dst_path) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
-    if (at_str_is_null(dst_path)) {
+    if (dst_path == NULL || dst_path[0] == '\0') {
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
@@ -250,7 +250,7 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
     // receive url from AT port
     int32_t had_recv_len = 0;
     esp_at_port_enter_specific(at_custom_wait_data_cb);
-    esp_at_response_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT);
+    esp_at_dispatch_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT, NULL);
     while (xSemaphoreTake(sp_http_to_fs->sync_sema, portMAX_DELAY)) {
         had_recv_len += esp_at_port_read_data((uint8_t *)(sp_http_to_fs->url) + had_recv_len, url_len - had_recv_len);
         if (had_recv_len == url_len) {
@@ -357,7 +357,7 @@ cmd_exit:
     return ESP_AT_RESULT_CODE_OK;
 }
 
-static const esp_at_cmd_struct at_custom_cmd[] = {
+static const esp_at_cmd_t at_custom_cmd[] = {
     {"+HTTPGET_TO_FS", NULL, NULL, at_setup_cmd_httpget_to_fs, NULL},
     /**
      * @brief You can define your own AT commands here.
@@ -366,7 +366,7 @@ static const esp_at_cmd_struct at_custom_cmd[] = {
 
 bool esp_at_httpget_to_fs_cmd_register(void)
 {
-    return esp_at_custom_cmd_array_regist(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(esp_at_cmd_struct));
+    return esp_at_custom_cmd_array_register(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(esp_at_cmd_t));
 }
 
 ESP_AT_CMD_SET_INIT_FN(esp_at_httpget_to_fs_cmd_register, 1);

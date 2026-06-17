@@ -131,7 +131,7 @@ static void socket_task(void *params)
                     // exit transparent transmission mode
                     if (s_trans_mode && (byte_num == 3) && (memcmp(buffer, "+++", 3) == 0)) {
                         ESP_LOGI(TAG, "exit passthrough mode");
-                        esp_at_transmit_terminal();
+                        esp_at_transmit_terminate();
                         continue;
                     }
 
@@ -166,7 +166,7 @@ exit_task:
     vTaskDelete(NULL);
 }
 
-static void at_socket_transmit_mode_switch_cb(esp_at_status_type status)
+static void at_socket_transmit_mode_switch_cb(esp_at_status_t status)
 {
     switch (status) {
     case ESP_AT_STATUS_NORMAL:
@@ -214,7 +214,7 @@ void at_interface_init(void)
     at_socket_init();
 
     // init interface operations
-    esp_at_device_ops_struct socket_ops = {
+    esp_at_intf_ops_t socket_ops = {
         .read_data = at_socket_read_data,
         .write_data = at_socket_write_data,
         .get_data_length = NULL,
@@ -223,7 +223,7 @@ void at_interface_init(void)
     at_interface_ops_init(&socket_ops);
 
     // init interface hooks
-    esp_at_custom_ops_struct socket_hooks = {
+    esp_at_custom_ops_t socket_hooks = {
         .status_callback = at_socket_transmit_mode_switch_cb,
         .pre_sleep_callback = NULL,
         .pre_wakeup_callback = NULL,

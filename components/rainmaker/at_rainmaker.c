@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -20,6 +20,7 @@
 #include "nvs.h"
 #include "esp_at.h"
 #include "esp_at_core.h"
+#include "esp_at_internal.h"
 #include "esp_http_client.h"
 #include "esp_https_ota.h"
 #include "esp_bt.h"
@@ -1888,7 +1889,7 @@ static uint8_t at_setup_cmd_rmsend(uint8_t para_num)
     esp_at_port_enter_specific(at_rainmaker_wait_data_cb);
 
     // output "OK" and ">"
-    esp_at_response_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT);
+    esp_at_dispatch_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT, NULL);
 
     // receive at cmd port data
     while (xSemaphoreTake(s_at_rainmaker_sync_sema, portMAX_DELAY)) {
@@ -1960,7 +1961,7 @@ static uint8_t at_exe_cmd_rmsend(uint8_t *cmd_name)
     }
     esp_at_port_enter_specific(at_rainmaker_wait_data_cb);
     // output "OK" and ">"
-    esp_at_response_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT);
+    esp_at_dispatch_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT, NULL);
     xEventGroupSetBits(s_rm_event_group, RM_IN_PASSTHROUGH_MODE);
     // receive at cmd port data
     while (xSemaphoreTake(s_at_rainmaker_sync_sema, portMAX_DELAY)) {
@@ -2079,7 +2080,7 @@ static uint8_t at_exe_cmd_rmotafetch(uint8_t *cmd_name)
     }
 }
 
-static const esp_at_cmd_struct s_at_rainmaker_cmd[] = {
+static const esp_at_cmd_t s_at_rainmaker_cmd[] = {
     {"+RMNODEINIT", NULL, NULL, NULL, at_exe_cmd_rmnodeinit},
     {"+RMNODEATTR", NULL, NULL, at_setup_cmd_rmnodeattr, NULL},
     {"+RMDEV", NULL, NULL, at_setup_cmd_rmdev, NULL},
@@ -2195,13 +2196,13 @@ esp_err_t at_rmaker_wifi_event_register(void)
     return ESP_OK;
 }
 
-bool esp_at_rainmaker_cmd_regist(void)
+bool esp_at_rainmaker_cmd_register(void)
 {
     if (at_rmaker_wifi_event_register() == ESP_OK) {
-        return esp_at_custom_cmd_array_regist(s_at_rainmaker_cmd, sizeof(s_at_rainmaker_cmd) / sizeof(s_at_rainmaker_cmd[0]));
+        return esp_at_custom_cmd_array_register(s_at_rainmaker_cmd, sizeof(s_at_rainmaker_cmd) / sizeof(s_at_rainmaker_cmd[0]));
     } else {
         return false;
     }
 }
 
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_rainmaker_cmd_regist, 26);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_rainmaker_cmd_register, 26);

@@ -3,6 +3,18 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
+
+/**
+ * @file esp_at.h
+ * @brief Public AT APIs provided by the esp-at project (application layer).
+ *
+ * These APIs are implemented in the esp-at sources, on top of the AT core
+ * library, and are intended to be called by user applications and custom
+ * AT commands (logging, module identity helpers, NVS wrappers, the
+ * filesystem API, and self-command execution). Including this header also
+ * brings in <esp_at_core.h> and the backward-compatibility aliases in
+ * <esp_at_legacy.h>.
+ */
 #pragma once
 
 #include "sdkconfig.h"
@@ -12,225 +24,255 @@
 #include "esp_at_cmd_register.h"
 #include "nvs.h"
 
-#define ESP_AT_PORT_TX_WAIT_MS_MAX          3000    // 3s
-#define AT_BUFFER_ON_STACK_SIZE             128     // default maximum buffer size on task stack
-
-#if defined(CONFIG_IDF_TARGET_ESP32) || defined(CONFIG_IDF_TARGET_ESP32S2) || defined(CONFIG_IDF_TARGET_ESP32C2) || defined(CONFIG_IDF_TARGET_ESP32C3) || defined(CONFIG_IDF_TARGET_ESP32C6)
-#define ESP_AT_LEGACY_SUPPORT
+#ifdef __cplusplus
+extern "C" {
 #endif
 
+/* ============================================================
+ *                    Compile-time constants
+ * ============================================================ */
+
+#define ESP_AT_PORT_TX_WAIT_MS_MAX      3000    /**< Maximum time (ms) to wait for the AT port TX buffer to drain. */
+#define ESP_AT_BUF_ON_STACK_SIZE         128    /**< Default maximum stack-allocated buffer size for AT command handlers. */
+
+/* ============================================================
+ *                        Utility macros
+ * ============================================================ */
+
+#define esp_at_min(x, y)    ((x) < (y) ? (x) : (y))    /**< Returns the smaller of two values. */
+#define esp_at_max(x, y)    ((x) > (y) ? (x) : (y))    /**< Returns the larger of two values. */
+
+/* ============================================================
+ *                           Logging
+ * ============================================================ */
+
 /**
- * @brief Same to ESP_LOG_BUFFER_HEXDUMP, but only output when buffer is not NULL
-*/
+ * @brief NULL-safe wrapper around ESP_LOG_BUFFER_HEXDUMP.
+ *
+ * Outputs a hexadecimal buffer dump only when @p buffer is non-NULL.
+ */
 #define ESP_AT_LOG_BUFFER_HEXDUMP(tag, buffer, buff_len, level) \
     do { \
         if (buffer) { \
             ESP_LOG_BUFFER_HEXDUMP(tag, buffer, buff_len, level); \
         } \
-    } while(0)
+    } while (0)
 
-typedef enum {
-    AT_PARAMS_NONE = 0,
-    AT_PARAMS_IN_MFG_NVS = 1,
-    AT_PARAMS_IN_PARTITION = 2,
-} at_mfg_params_storage_mode_t;
-
-/**
- * @brief get current module name
- *
- */
-const char* esp_at_get_current_module_name(void);
-
-/**
- * @brief get module name by index
- *
- */
-const char* esp_at_get_module_name_by_id(uint32_t id);
-
-/**
- * @brief get current module id
- */
-uint32_t esp_at_get_module_id(void);
-
-/**
- * @brief Set current module id
- *
- * @param[in] id: the module id to set
-*/
-void esp_at_set_module_id(uint32_t id);
-
-/**
- * @brief Get module id by module name
- *
- * @param[in] buffer: pointer to a module name string
-*/
-void esp_at_set_module_id_by_str(const char *buffer);
-
-#ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
-/**
- * @brief wake up MCU if AT is ready to send data to MCU
- *
- */
-void at_wkmcu_if_config(at_write_data_fn_t write_data_fn);
-
-/**
- * @brief set MCU awake state according to AT+SLEEP command
- *
- */
-void at_set_mcu_state_if_sleep(at_sleep_mode_t mode);
+#ifndef CONFIG_AT_LOG_DEFAULT_LEVEL
+/** @brief Compile-time fallback for the AT log verbosity level when not set via Kconfig. */
+#define CONFIG_AT_LOG_DEFAULT_LEVEL     ESP_LOG_VERBOSE
 #endif
 
 /**
- * @brief some workarounds for esp-at project
+ * @brief Write a formatted message to the AT log output (weak, overridable).
  *
+ * Not intended to be called directly; use the ESP_AT_LOGE/W/I/D/V macros
+ * instead. Must not be called from an interrupt context. As a weak symbol,
+ * the default implementation can be overridden to redirect AT log output.
+ *
+ * @param level   Log severity level.
+ * @param tag     Log tag string.
+ * @param format  printf-style format string.
+ * @param ...     Arguments referenced by @p format.
  */
-void esp_at_main_preprocess(void);
+void esp_at_log_write(esp_log_level_t level, const char *tag, const char *format, ...)
+__attribute__((format(printf, 3, 4)));
+
+/** @brief Log at ERROR level, gated by CONFIG_AT_LOG_DEFAULT_LEVEL. */
+#define ESP_AT_LOGE(tag, format, ...)   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_ERROR)   esp_at_log_write(ESP_LOG_ERROR,   tag, format, ##__VA_ARGS__); }
+/** @brief Log at WARN level, gated by CONFIG_AT_LOG_DEFAULT_LEVEL. */
+#define ESP_AT_LOGW(tag, format, ...)   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_WARN)    esp_at_log_write(ESP_LOG_WARN,    tag, format, ##__VA_ARGS__); }
+/** @brief Log at INFO level, gated by CONFIG_AT_LOG_DEFAULT_LEVEL. */
+#define ESP_AT_LOGI(tag, format, ...)   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_INFO)    esp_at_log_write(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__); }
+/** @brief Log at DEBUG level, gated by CONFIG_AT_LOG_DEFAULT_LEVEL. */
+#define ESP_AT_LOGD(tag, format, ...)   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_DEBUG)   esp_at_log_write(ESP_LOG_DEBUG,   tag, format, ##__VA_ARGS__); }
+/** @brief Log at VERBOSE level, gated by CONFIG_AT_LOG_DEFAULT_LEVEL. */
+#define ESP_AT_LOGV(tag, format, ...)   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_VERBOSE) esp_at_log_write(ESP_LOG_VERBOSE, tag, format, ##__VA_ARGS__); }
+
+/* ============================================================
+ *                       Module identity
+ * ============================================================ */
 
 /**
- * @brief get storage mode of mfg parameters
+ * @brief Return the name of the currently selected AT module.
  *
- * @return at_mfg_params_storage_mode_t
+ * @return NUL-terminated module name string.
  */
-at_mfg_params_storage_mode_t at_get_mfg_params_storage_mode(void);
+const char *esp_at_get_current_module_name(void);
+
+/* ============================================================
+ *                   AT initialization hooks
+ * ============================================================ */
 
 /**
- * @brief Do some things before esp-at is ready.
+ * @brief Hook invoked immediately before the AT stack signals ready.
  *
- * @note This function can be overridden with custom implementation. For example, you can override this function to:
- *        a) execute some preset AT commands by calling at_exe_cmd() API.
- *        b) do some initializations by calling APIs from esp-idf or esp-at.
+ * Override this weak function to:
+ *   a) Execute preset AT commands via esp_at_exe_cmd().
+ *   b) Perform additional initialization using ESP-IDF or AT APIs.
  */
 void esp_at_ready_before(void);
 
+/* ============================================================
+ *  AT self-command execution (CONFIG_AT_SELF_COMMAND_SUPPORT)
+ * ============================================================ */
+
 #ifdef CONFIG_AT_SELF_COMMAND_SUPPORT
 /**
- * @brief Execute AT command from self and wait for expected response.
+ * @brief Execute an AT command from firmware and wait for the expected response.
  *
- *  AT typically communicates with the host MCU via physical interface (UART/SPI/SDIO) or virtual interface (Socket),
- *  here, we define a new API that allows users to send AT commands via esp-at self instead of a physical/virtual interface,
- *  to check the response of the AT commands. This enables users to execute certain preset AT commands before AT ready,
- *  thereby modifying the default initial configuration or status of the AT firmware.
+ * Allows the firmware itself to send AT commands through the AT engine without
+ * a physical or virtual host interface. Intended for executing preset commands
+ * during initialization, before the AT stack is fully ready.
  *
- * @param[in] cmd: AT command string
- * @param[in] expected_response: expected response string
- * @param[in] timeout_ms: timeout in milliseconds
+ * @note Do not call this function from within an AT command handler
+ *       (test, query, set, or execute handler). To invoke AT commands from a
+ *       handler, dispatch via a separate task and queue instead.
  *
- * @note Once expected response is received, the function will return immediately.
- * @note You should not call this function directly from an AT command handler.
- *       The AT command handler typically refers to the test command, query command, set command, and execute command
- *       corresponding to the AT commands registered via esp_at_custom_cmd_array_regist().
- * @note If you want to execute an AT command in the AT command handler, The correct approach is to initialize a new queue and a new task.
- *       In the AT command handler, save the required parameters and send them to the new queue for processing, then return.
- *       The new task will fetch item from that queue, retrieve the parameters and invoke at_exe_cmd() to execute the specific AT command.
- *
- * @return
- *      - ESP_OK: the expected response is received within the timeout
- *      - others: see esp_err.h
+ * @param cmd               AT command string to execute.
+ * @param expected_response NUL-terminated expected response substring.
+ * @param timeout_ms        Timeout in milliseconds.
+ * @return ESP_OK if the expected response was received within the timeout,
+ *         or an error code otherwise.
  */
-esp_err_t at_exe_cmd(const char *cmd, const char *expected_response, uint32_t timeout_ms);
+esp_err_t esp_at_exe_cmd(const char *cmd, const char *expected_response, uint32_t timeout_ms);
 #endif
 
-#ifndef CONFIG_AT_LOG_DEFAULT_LEVEL
-#define CONFIG_AT_LOG_DEFAULT_LEVEL         ESP_LOG_VERBOSE
-#endif
-/**
- * @brief Write message into the log
- *
- * This function is not intended to be used directly. Instead, use one of
- * ESP_AT_LOGE, ESP_AT_LOGW, ESP_AT_LOGI, ESP_AT_LOGD, ESP_AT_LOGV macros.
- *
- * This function or these macros should not be used from an interrupt.
- */
-void esp_at_log_write(esp_log_level_t level, const char *tag, const char *format, ...) __attribute__((format(printf, 3, 4)));
-
-/** runtime macro to output logs at a specified level.
- *
- * @param tag tag of the log, which can be used to change the log level by ``esp_log_level_set`` at runtime.
- * @param format format of the output log. See ``printf``
- * @param ... variables to be replaced into the log. See ``printf``
- *
- * @see ``printf``
- */
-#define ESP_AT_LOGE( tag, format, ... )   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_ERROR) esp_at_log_write(ESP_LOG_ERROR, tag, format, ##__VA_ARGS__); }
-#define ESP_AT_LOGW( tag, format, ... )   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_WARN) esp_at_log_write(ESP_LOG_WARN, tag, format, ##__VA_ARGS__); }
-#define ESP_AT_LOGI( tag, format, ... )   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_INFO) esp_at_log_write(ESP_LOG_INFO, tag, format, ##__VA_ARGS__); }
-#define ESP_AT_LOGD( tag, format, ... )   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_DEBUG) esp_at_log_write(ESP_LOG_DEBUG, tag, format, ##__VA_ARGS__); }
-#define ESP_AT_LOGV( tag, format, ... )   { if (CONFIG_AT_LOG_DEFAULT_LEVEL >= ESP_LOG_VERBOSE) esp_at_log_write(ESP_LOG_VERBOSE, tag, format, ##__VA_ARGS__); }
+/* ============================================================
+ *                         NVS helpers
+ * ============================================================ */
 
 /**
- * @brief NVS operations for string and blob
+ * @brief Store a NUL-terminated string in NVS (weak, overridable).
  *
- * @note These functions can be overridden with custom implementations. For example:
- *       you can override these functions to encrypt the data before writing to NVS (decrypt the data after reading from NVS).
+ * The AT core uses this helper internally to persist string data to NVS. It is
+ * a weak symbol whose default implementation simply forwards to nvs_set_str().
+ * Override it to hook the storage path, for example to encrypt the value before
+ * it is written to flash (override esp_at_nvs_get_str() to decrypt on read).
  *
- * @see ``nvs_set_str``,``nvs_get_str``,``nvs_set_blob``,``nvs_get_blob``
+ * @param handle  NVS handle opened with nvs_open().
+ * @param key     Key name (NUL-terminated).
+ * @param value   NUL-terminated string to store.
+ * @return ESP_OK on success, or an NVS error code otherwise.
+ * @see nvs_set_str
  */
 esp_err_t esp_at_nvs_set_str(nvs_handle_t handle, const char *key, const char *value);
-esp_err_t esp_at_nvs_get_str(nvs_handle_t handle, const char *key, char *out_value, size_t *length);
-esp_err_t esp_at_nvs_set_blob(nvs_handle_t handle, const char *key, const void *value, size_t length);
-esp_err_t esp_at_nvs_get_blob(nvs_handle_t handle, const char *key, void *out_value, size_t *length);
 
 /**
- * @brief Yield the current task if the system has not recently executed the idle task.
+ * @brief Read a NUL-terminated string from NVS (weak, overridable).
  *
- * This function measures the elapsed time since the last execution of the FreeRTOS
- * idle hook. If that duration exceeds the specified threshold, the current task
- * voluntarily delays for a given number of RTOS ticks to allow lower-priority
- * tasks (including the idle task) to run.
+ * Counterpart of esp_at_nvs_set_str(): the AT core uses it internally to load
+ * string data from NVS. It is a weak symbol whose default implementation simply
+ * forwards to nvs_get_str(). Override it together with esp_at_nvs_set_str() to,
+ * for example, decrypt the value after reading it from flash.
  *
- * This mechanism is intended to prevent long-running tasks from monopolizing
- * the CPU under high workload conditions (e.g., heavy RX traffic), which may
- * otherwise trigger the task watchdog.
+ * @param handle     NVS handle opened with nvs_open().
+ * @param key        Key name (NUL-terminated).
+ * @param out_value  Buffer that receives the string; pass NULL to query the required length.
+ * @param length     In/out: capacity of @p out_value in bytes, updated with the actual length.
+ * @return ESP_OK on success, or an NVS error code otherwise.
+ * @see nvs_get_str
+ */
+esp_err_t esp_at_nvs_get_str(nvs_handle_t handle, const char *key, char *out_value, size_t *length);
+
+/**
+ * @brief Store a binary blob in NVS (weak, overridable).
  *
- * @note This function must not be called from ISR context.
+ * The AT core uses this helper internally to persist binary data to NVS. It is
+ * a weak symbol whose default implementation simply forwards to nvs_set_blob().
+ * Override it to hook the storage path, for example to encrypt the blob before
+ * it is written to flash (override esp_at_nvs_get_blob() to decrypt on read).
  *
- * @param[in] idle_timeout_ms  Threshold in milliseconds. If the time since the
- *                             last idle hook execution exceeds this value,
- *                             a yield is performed.
- * @param[in] yield_ticks      Number of RTOS ticks to delay when yielding.
+ * @param handle  NVS handle opened with nvs_open().
+ * @param key     Key name (NUL-terminated).
+ * @param value   Pointer to the blob to store.
+ * @param length  Size of @p value in bytes.
+ * @return ESP_OK on success, or an NVS error code otherwise.
+ * @see nvs_set_blob
+ */
+esp_err_t esp_at_nvs_set_blob(nvs_handle_t handle, const char *key, const void *value, size_t length);
+
+/**
+ * @brief Read a binary blob from NVS (weak, overridable).
+ *
+ * Counterpart of esp_at_nvs_set_blob(): the AT core uses it internally to load
+ * binary data from NVS. It is a weak symbol whose default implementation simply
+ * forwards to nvs_get_blob(). Override it together with esp_at_nvs_set_blob() to,
+ * for example, decrypt the blob after reading it from flash.
+ *
+ * @param handle     NVS handle opened with nvs_open().
+ * @param key        Key name (NUL-terminated).
+ * @param out_value  Buffer that receives the blob; pass NULL to query the required length.
+ * @param length     In/out: capacity of @p out_value in bytes, updated with the actual length.
+ * @return ESP_OK on success, or an NVS error code otherwise.
+ * @see nvs_get_blob
+ */
+esp_err_t esp_at_nvs_get_blob(nvs_handle_t handle, const char *key, void *out_value, size_t *length);
+
+/* ============================================================
+ *                       CPU yield helper
+ * ============================================================ */
+
+/**
+ * @brief Yield the current task if the FreeRTOS idle task has not run recently.
+ *
+ * Measures the time since the last idle hook execution. If that interval
+ * exceeds @p idle_timeout_ms, the calling task delays for @p yield_ticks RTOS
+ * ticks to allow lower-priority tasks (including the idle task) to run.
+ *
+ * Intended to prevent high-throughput tasks from starving the idle task and
+ * triggering the task watchdog timer under sustained CPU load.
+ *
+ * @note Must not be called from interrupt context.
+ *
+ * @param idle_timeout_ms  Threshold (ms) since last idle hook execution.
+ * @param yield_ticks      RTOS ticks to delay when a yield is triggered.
  */
 void esp_at_yield_if_idle_timeout(uint32_t idle_timeout_ms, uint32_t yield_ticks);
 
+/* ============================================================
+ *                        Filesystem API
+ * ============================================================ */
+
 /**
- * @brief Get the mount point of the filesystem
+ * @brief Return the mount point of the AT filesystem partition.
  *
- * @return pointer to the mount point string
+ * @return NUL-terminated mount point path string (e.g. "/littlefs").
  */
 const char *esp_at_fs_get_mount_point(void);
 
 /**
- * @brief Mount the filesystem
+ * @brief Mount the AT filesystem partition.
  *
- * @return
- *      - true: mount successfully
- *      - false: mount failed
+ * @return true on success, false on failure.
  */
 bool esp_at_fs_mount(void);
 
 /**
- * @brief Unmount the filesystem
+ * @brief Unmount the AT filesystem partition.
  *
- * @return
- *      - true: unmount successfully
- *      - false: unmount failed
+ * @return true on success, false on failure.
  */
 bool esp_at_fs_unmount(void);
 
 /**
- * @brief Get the filesystem information
+ * @brief Query the total and free capacity of the AT filesystem.
  *
- * @param[out] out_total_bytes: pointer to store total bytes of the filesystem
- * @param[out] out_free_bytes: pointer to store free bytes of the filesystem
- *
- * @return
- *      - ESP_OK: get filesystem info successfully
- *      - others: see esp_err.h
+ * @param out_total_bytes  Output: total filesystem size in bytes.
+ * @param out_free_bytes   Output: available free space in bytes.
+ * @return ESP_OK on success, or an error code.
  */
 esp_err_t esp_at_get_fs_info(uint32_t *out_total_bytes, uint32_t *out_free_bytes);
 
 /**
- * @brief Get the filesystem type
+ * @brief Return the filesystem type in use.
  *
- * @return the filesystem type, see at_fs_type_t
+ * @return The active esp_at_fs_type_t value.
  */
-at_fs_type_t esp_at_fs_get_type(void);
+esp_at_fs_type_t esp_at_fs_get_type(void);
+
+#include "esp_at_legacy.h"
+
+#ifdef __cplusplus
+}
+#endif

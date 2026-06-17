@@ -15,87 +15,87 @@
 static const char *TAG = "at-cmd-register";
 
 #ifdef CONFIG_AT_BASE_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_base_cmd_regist, 1);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_base_cmd_register, 1);
 #endif
 
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_wifi_cmd_regist, 2);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_wifi_cmd_register, 2);
 #endif
 
 #ifdef CONFIG_AT_SMARTCONFIG_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_smartconfig_cmd_regist, 3);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_smartconfig_cmd_register, 3);
 #endif
 
 #ifdef CONFIG_AT_WPS_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_wps_cmd_regist, 4);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_wps_cmd_register, 4);
 #endif
 
 #ifdef CONFIG_AT_EAP_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_eap_cmd_regist, 5);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_eap_cmd_register, 5);
 #endif
 
 #ifdef CONFIG_AT_MDNS_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_mdns_cmd_regist, 6);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_mdns_cmd_register, 6);
 #endif
 
 #ifdef CONFIG_AT_NET_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_net_cmd_regist, 7);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_net_cmd_register, 7);
 #endif
 
 #ifdef CONFIG_AT_PING_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ping_cmd_regist, 8);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ping_cmd_register, 8);
 #endif
 
 #ifdef CONFIG_AT_MQTT_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_mqtt_cmd_regist, 9);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_mqtt_cmd_register, 9);
 #endif
 
 #ifdef CONFIG_AT_HTTP_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_http_cmd_regist, 10);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_http_cmd_register, 10);
 #endif
 
 #ifdef CONFIG_AT_WS_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ws_cmd_regist, 11);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ws_cmd_register, 11);
 #endif
 
 #ifdef CONFIG_AT_BLE_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ble_cmd_regist, 12);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ble_cmd_register, 12);
 #endif
 
 #ifdef CONFIG_AT_BLE_HID_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ble_hid_cmd_regist, 13);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ble_hid_cmd_register, 13);
 #endif
 
 #ifdef CONFIG_AT_BLUFI_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_blufi_cmd_regist, 14);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_blufi_cmd_register, 14);
 #endif
 
 #ifdef CONFIG_AT_BT_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_bt_cmd_regist, 15);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_bt_cmd_register, 15);
 #endif
 
 #ifdef CONFIG_AT_BT_SPP_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_bt_spp_cmd_regist, 16);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_bt_spp_cmd_register, 16);
 #endif
 
 #ifdef CONFIG_AT_BT_A2DP_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_bt_a2dp_cmd_regist, 17);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_bt_a2dp_cmd_register, 17);
 #endif
 
 #ifdef CONFIG_AT_FS_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_fs_cmd_regist, 18);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_fs_cmd_register, 18);
 #endif
 
 #ifdef CONFIG_AT_DRIVER_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_driver_cmd_regist, 19);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_driver_cmd_register, 19);
 #endif
 
 #ifdef CONFIG_AT_ETHERNET_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_eth_cmd_regist, 2);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_eth_cmd_register, 2);
 #endif
 
 #ifdef CONFIG_AT_BLE_OTA_COMMAND_SUPPORT
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ble_ota_cmd_regist, 20);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_ble_ota_cmd_register, 20);
 #endif
 
 void esp_at_cmd_set_register(void)

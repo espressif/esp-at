@@ -91,7 +91,7 @@ static void at_self_cmd_cleanup(void)
     }
 }
 
-esp_err_t at_exe_cmd(const char *cmd, const char *expected_response, uint32_t timeout_ms)
+esp_err_t esp_at_exe_cmd(const char *cmd, const char *expected_response, uint32_t timeout_ms)
 {
     esp_err_t ret = ESP_OK;
 

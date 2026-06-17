@@ -123,7 +123,7 @@ retry:
                     uart_flush_input(g_at_cmd_port);
                     xQueueReset(s_at_uart_queue);
                 }
-                esp_at_transmit_terminal();
+                esp_at_transmit_terminate();
                 break;
 
             case UART_FIFO_OVF:
@@ -197,7 +197,7 @@ static void at_uart_init(void)
     xTaskCreate(at_uart_task, "uTask", CONFIG_AT_UART_TASK_STACK_SIZE, NULL, 1, &s_task_handle);
 }
 
-void at_uart_transmit_mode_switch_cb(esp_at_status_type status)
+void at_uart_transmit_mode_switch_cb(esp_at_status_t status)
 {
     switch (status) {
     case ESP_AT_STATUS_NORMAL:
@@ -266,7 +266,7 @@ void at_interface_init(void)
     at_uart_init();
 
     // init interface operations
-    esp_at_device_ops_struct uart_ops = {
+    esp_at_intf_ops_t uart_ops = {
         .read_data = at_uart_read_data,
         .write_data = at_uart_write_data,
         .get_data_length = at_uart_get_data_len,
@@ -275,7 +275,7 @@ void at_interface_init(void)
     at_interface_ops_init(&uart_ops);
 
     // init interface hooks
-    esp_at_custom_ops_struct uart_hooks = {
+    esp_at_custom_ops_t uart_hooks = {
         .status_callback = at_uart_transmit_mode_switch_cb,
         .pre_sleep_callback = NULL,
         .pre_wakeup_callback = NULL,
