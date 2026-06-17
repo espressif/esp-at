@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -26,6 +26,7 @@
 #include "esp_https_ota.h"
 #include "esp_at_core.h"
 #include "esp_at.h"
+#include "esp_at_internal.h"
 
 #ifdef CONFIG_AT_USER_COMMAND_SUPPORT
 
@@ -178,7 +179,7 @@ static uint8_t at_setup_cmd_userram(uint8_t para_num)
         }
         uint32_t had_written_len = 0;
         esp_at_port_enter_specific(at_user_wait_data_cb);
-        esp_at_response_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT);
+        esp_at_dispatch_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT, NULL);
 
         // receive at cmd port data to user ram
         while (xSemaphoreTake(s_at_user_sync_sema, portMAX_DELAY)) {
@@ -208,7 +209,7 @@ static uint8_t at_setup_cmd_userram(uint8_t para_num)
         if (offset + length > s_user_ram_size) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
-        uint8_t *pbuffer = calloc(1, at_min(AT_USERRAM_READ_BUFFER_SIZE, length) + HEAD_BUFFER_SIZE);
+        uint8_t *pbuffer = calloc(1, esp_at_min(AT_USERRAM_READ_BUFFER_SIZE, length) + HEAD_BUFFER_SIZE);
         if (pbuffer == NULL) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
@@ -216,7 +217,7 @@ static uint8_t at_setup_cmd_userram(uint8_t para_num)
 
         uint32_t head_len = 0, had_read_len = 0, to_read_len = 0;
         do {
-            to_read_len = at_min(length - had_read_len, AT_USERRAM_READ_BUFFER_SIZE);
+            to_read_len = esp_at_min(length - had_read_len, AT_USERRAM_READ_BUFFER_SIZE);
             head_len = snprintf((char *)pbuffer, HEAD_BUFFER_SIZE, "%s:%d,", esp_at_get_current_cmd_name(), to_read_len);
             memcpy((char *)pbuffer + head_len, (char *)sp_user_ram + offset + had_read_len, to_read_len);
             esp_at_port_write_data(pbuffer, head_len + to_read_len);
@@ -332,7 +333,7 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
 
     int32_t had_received_len = 0;
     esp_at_port_enter_specific(at_user_wait_data_cb);
-    esp_at_response_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT);
+    esp_at_dispatch_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT, NULL);
 
     // receive at cmd port data
     while (xSemaphoreTake(s_at_user_sync_sema, portMAX_DELAY)) {
@@ -382,7 +383,7 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
     free(url);
 
     if (ret == ESP_OK) {
-        esp_at_response_result(ESP_AT_RESULT_CODE_OK);
+        esp_at_write_result(ESP_AT_RESULT_CODE_OK);
         esp_at_port_wait_write_complete(ESP_AT_PORT_TX_WAIT_MS_MAX);
         esp_restart();
         for (;;) {
@@ -416,21 +417,21 @@ static uint8_t at_query_cmd_userdocs(uint8_t *cmd_name)
 }
 
 #ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
-void at_set_mcu_state_if_sleep(at_sleep_mode_t mode)
+void at_set_mcu_state_if_sleep(esp_at_sleep_mode_t mode)
 {
     if (!(s_wkmcu_cfg.check_mcu_awake & AT_MCU_AWAKE_ON_AT_SLEEP)) {
         return;
     }
 
     switch (mode) {
-    case AT_DISABLE_SLEEP:
+    case ESP_AT_SLEEP_DISABLE:
         xEventGroupSetBits(s_wkmcu_evt_group, AT_MCU_AWAKE_ON_AT_SLEEP);
         s_mcu_sleep = false;
         break;
 
-    case AT_MIN_MODEM_SLEEP:
-    case AT_LIGHT_SLEEP:
-    case AT_MAX_MODEM_SLEEP:
+    case ESP_AT_SLEEP_MIN_MODEM:
+    case ESP_AT_SLEEP_LIGHT:
+    case ESP_AT_SLEEP_MAX_MODEM:
         xEventGroupClearBits(s_wkmcu_evt_group, AT_MCU_AWAKE_BIT);
         s_mcu_sleep = true;
         break;
@@ -640,7 +641,7 @@ static uint8_t at_setup_cmd_usermcusleep(uint8_t para_num)
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
-    at_handle_result_code(ESP_AT_RESULT_CODE_OK, NULL);
+    esp_at_dispatch_result(ESP_AT_RESULT_CODE_OK, NULL);
 
     if (s_wkmcu_cfg.check_mcu_awake & AT_MCU_AWAKE_ON_MCU_SLEEP) {
         if (mcu_sleep) {
@@ -661,7 +662,7 @@ static uint8_t at_setup_cmd_usermcusleep(uint8_t para_num)
 }
 #endif
 
-static const esp_at_cmd_struct s_at_user_cmd[] = {
+static const esp_at_cmd_t s_at_user_cmd[] = {
     {"+USERRAM", NULL, at_query_cmd_userram, at_setup_cmd_userram, NULL},
     {"+USEROTA", NULL, NULL, at_setup_cmd_userota, NULL},
     {"+USERDOCS", NULL, at_query_cmd_userdocs, NULL, NULL},
@@ -671,14 +672,14 @@ static const esp_at_cmd_struct s_at_user_cmd[] = {
 #endif
 };
 
-bool esp_at_user_cmd_regist(void)
+bool esp_at_user_cmd_register(void)
 {
 #ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
     s_wkmcu_evt_group = xEventGroupCreate();
 #endif
-    return esp_at_custom_cmd_array_regist(s_at_user_cmd, sizeof(s_at_user_cmd) / sizeof(s_at_user_cmd[0]));
+    return esp_at_custom_cmd_array_register(s_at_user_cmd, sizeof(s_at_user_cmd) / sizeof(s_at_user_cmd[0]));
 }
 
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_user_cmd_regist, 24);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_user_cmd_register, 24);
 
 #endif

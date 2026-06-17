@@ -96,9 +96,9 @@ AT 命令分类
 - AT 命令以新行 (CR-LF) 结束，所以串口工具应设置为“新行模式”。
 - AT 命令错误代码的定义请见 :doc:`../Compile_and_Develop/AT_API_Reference`：
 
-   - :cpp:type:`esp_at_error_code`
-   - :cpp:type:`esp_at_para_parse_result_type`
-   - :cpp:type:`esp_at_result_code_string_index`
+   - :cpp:type:`esp_at_errno_t`
+   - :cpp:type:`esp_at_para_parse_ret_t`
+   - :cpp:type:`esp_at_rc_t`
 
 参数信息保存在 flash 中的 AT 命令
 =================================================

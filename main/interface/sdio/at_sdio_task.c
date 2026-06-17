@@ -197,7 +197,7 @@ void at_interface_init(void)
     at_sdio_init();
 
     // init interface operations
-    esp_at_device_ops_struct sdio_ops = {
+    esp_at_intf_ops_t sdio_ops = {
         .read_data = at_sdio_read_data,
         .write_data = at_sdio_write_data,
         .get_data_length = NULL,

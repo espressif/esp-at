@@ -11,6 +11,7 @@
 #include "esp_system.h"
 #include "esp_log.h"
 #include "esp_at.h"
+#include "esp_at_internal.h"
 #ifdef CONFIG_AT_SMARTCONFIG_COMMAND_SUPPORT
 #include "esp_smartconfig.h"
 #endif

@@ -8,6 +8,7 @@
 #include "sdkconfig.h"
 #include "esp_log.h"
 #include "esp_at.h"
+#include "esp_at_internal.h"
 
 static const char *TAG = "at-workaround";
 

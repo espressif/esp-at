@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2025-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -220,7 +220,7 @@ static uint8_t at_setup_cmd_storage_nvs_key(uint8_t para_num)
     if (esp_at_get_para_as_str(cnt++, &key) != ESP_AT_PARA_PARSE_RESULT_OK) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
-    if (at_str_is_null(key)) {
+    if (key == NULL || key[0] == '\0') {
         return ESP_AT_RESULT_CODE_ERROR;
     }
     int key_len = strlen((char *)key);
@@ -255,24 +255,24 @@ static uint8_t at_setup_cmd_storage_nvs_key(uint8_t para_num)
 
 static uint8_t at_query_cmd_storage_nvs_key(uint8_t *cmd_name)
 {
-    uint8_t buffer[AT_BUFFER_ON_STACK_SIZE] = {0};
+    uint8_t buffer[ESP_AT_BUF_ON_STACK_SIZE] = {0};
 
     uint8_t aes_key[AT_AES_PK_LEN];
     at_storage_security_get_key(aes_key);
 
     int ret = 0;
-    ret = snprintf((char *)buffer, AT_BUFFER_ON_STACK_SIZE, "%s:", cmd_name);
+    ret = snprintf((char *)buffer, ESP_AT_BUF_ON_STACK_SIZE, "%s:", cmd_name);
     for (int i = 0; i < AT_AES_PK_LEN; ++i) {
-        ret += snprintf((char *)buffer + ret, AT_BUFFER_ON_STACK_SIZE - ret, "%02x", aes_key[i]);
+        ret += snprintf((char *)buffer + ret, ESP_AT_BUF_ON_STACK_SIZE - ret, "%02x", aes_key[i]);
     }
-    ret += snprintf((char *)buffer + ret, AT_BUFFER_ON_STACK_SIZE - ret, "\r\n");
+    ret += snprintf((char *)buffer + ret, ESP_AT_BUF_ON_STACK_SIZE - ret, "\r\n");
 
     esp_at_port_write_data(buffer, ret);
 
     return ESP_AT_RESULT_CODE_OK;
 }
 
-static const esp_at_cmd_struct at_custom_cmd[] = {
+static const esp_at_cmd_t at_custom_cmd[] = {
     {"+STORAGE_NVS_KEY", NULL, at_query_cmd_storage_nvs_key, at_setup_cmd_storage_nvs_key, NULL},
     /**
      * @brief You can define your own AT commands here.
@@ -281,7 +281,7 @@ static const esp_at_cmd_struct at_custom_cmd[] = {
 
 bool esp_at_storage_nvs_key_cmd_register(void)
 {
-    return esp_at_custom_cmd_array_regist(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(esp_at_cmd_struct));
+    return esp_at_custom_cmd_array_register(at_custom_cmd, sizeof(at_custom_cmd) / sizeof(esp_at_cmd_t));
 }
 
 ESP_AT_CMD_SET_INIT_FN(esp_at_storage_nvs_key_cmd_register, 1);

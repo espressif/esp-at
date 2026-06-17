@@ -141,14 +141,14 @@ static void at_bt_controller_mem_release(void)
 __attribute__((weak)) void esp_at_ready_before(void)
 {
 #ifdef CONFIG_AT_SELF_COMMAND_SUPPORT
-    at_exe_cmd("AT+GMR\r\n", "OK", 1000);
-    at_exe_cmd("AT+SYSRAM?\r\n", "OK", 1000);
+    esp_at_exe_cmd("AT+GMR\r\n", "OK", 1000);
+    esp_at_exe_cmd("AT+SYSRAM?\r\n", "OK", 1000);
 #endif
 }
 
 static esp_err_t at_module_config_init(void)
 {
-    char buffer[AT_BUFFER_ON_STACK_SIZE] = {0};
+    char buffer[ESP_AT_BUF_ON_STACK_SIZE] = {0};
 
     at_mfg_params_storage_mode_t mode = at_get_mfg_params_storage_mode();
     if (mode == AT_PARAMS_IN_MFG_NVS) {
@@ -158,7 +158,7 @@ static esp_err_t at_module_config_init(void)
             return ESP_FAIL;
         }
         // read module name from manufacturing nvs
-        size_t len = AT_BUFFER_ON_STACK_SIZE;
+        size_t len = ESP_AT_BUF_ON_STACK_SIZE;
         if (esp_at_nvs_get_str(handle, "module_name", buffer, &len) != ESP_OK) {
             nvs_close(handle);
             return ESP_FAIL;
@@ -174,7 +174,7 @@ static esp_err_t at_module_config_init(void)
             ESP_AT_LOGE(TAG, "factory_param partition missed");
             return ESP_FAIL;
         }
-        if (esp_partition_read(partition, 0, buffer, AT_BUFFER_ON_STACK_SIZE) != ESP_OK) {
+        if (esp_partition_read(partition, 0, buffer, ESP_AT_BUF_ON_STACK_SIZE) != ESP_OK) {
             return ESP_FAIL;
         }
         // check magic flag, should be 0xfc 0xfc
@@ -200,7 +200,7 @@ static esp_err_t at_module_config_init(void)
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
 static esp_err_t at_wifi_config_init(void)
 {
-    char buffer[AT_BUFFER_ON_STACK_SIZE] = {0};
+    char buffer[ESP_AT_BUF_ON_STACK_SIZE] = {0};
 
     at_mfg_params_storage_mode_t mode = at_get_mfg_params_storage_mode();
     if (mode == AT_PARAMS_IN_MFG_NVS) {
@@ -232,7 +232,7 @@ static esp_err_t at_wifi_config_init(void)
             nvs_close(handle);
             return ESP_FAIL;
         }
-        size_t len = AT_BUFFER_ON_STACK_SIZE;
+        size_t len = ESP_AT_BUF_ON_STACK_SIZE;
         if (esp_at_nvs_get_str(handle, "country_code", buffer, &len) != ESP_OK) {
             nvs_close(handle);
             return ESP_FAIL;
@@ -250,7 +250,7 @@ static esp_err_t at_wifi_config_init(void)
             ESP_AT_LOGE(TAG, "factory_param partition missed");
             return ESP_FAIL;
         }
-        if (esp_partition_read(partition, 0, buffer, AT_BUFFER_ON_STACK_SIZE) != ESP_OK) {
+        if (esp_partition_read(partition, 0, buffer, ESP_AT_BUF_ON_STACK_SIZE) != ESP_OK) {
             return ESP_FAIL;
         }
         // check magic flag, should be 0xfc 0xfc

@@ -101,186 +101,186 @@ typedef struct {
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_base_cmd_regist(void);
+bool esp_at_base_cmd_register(void) __asm__("esp_at_base_cmd_regist");
 
 /**
  * @brief Register the Wi-Fi AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_wifi_cmd_regist(void);
+bool esp_at_wifi_cmd_register(void) __asm__("esp_at_wifi_cmd_regist");
 
 /**
  * @brief Register the smartconfig AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_smartconfig_cmd_regist(void);
+bool esp_at_smartconfig_cmd_register(void) __asm__("esp_at_smartconfig_cmd_regist");
 
 /**
  * @brief Register the WPS AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_wps_cmd_regist(void);
+bool esp_at_wps_cmd_register(void) __asm__("esp_at_wps_cmd_regist");
 
 /**
  * @brief Register the Enterprise-AP AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_eap_cmd_regist(void);
+bool esp_at_eap_cmd_register(void) __asm__("esp_at_eap_cmd_regist");
 
 /**
  * @brief Register the mDNS AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_mdns_cmd_regist(void);
+bool esp_at_mdns_cmd_register(void) __asm__("esp_at_mdns_cmd_regist");
 
 /**
  * @brief Register the TCP-IP AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_net_cmd_regist(void);
+bool esp_at_net_cmd_register(void) __asm__("esp_at_net_cmd_regist");
 
 /**
  * @brief Register the PING AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_ping_cmd_regist(void);
+bool esp_at_ping_cmd_register(void) __asm__("esp_at_ping_cmd_regist");
 
 /**
  * @brief Register the MQTT AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_mqtt_cmd_regist(void);
+bool esp_at_mqtt_cmd_register(void) __asm__("esp_at_mqtt_cmd_regist");
 
 /**
  * @brief Register the HTTP AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_http_cmd_regist(void);
+bool esp_at_http_cmd_register(void) __asm__("esp_at_http_cmd_regist");
 
 /**
  * @brief Register the WebSocket AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_ws_cmd_regist(void);
+bool esp_at_ws_cmd_register(void) __asm__("esp_at_ws_cmd_regist");
 
 /**
  * @brief Register the BLE AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_ble_cmd_regist(void);
+bool esp_at_ble_cmd_register(void) __asm__("esp_at_ble_cmd_regist");
 
 /**
  * @brief Register the BLE HID AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_ble_hid_cmd_regist(void);
+bool esp_at_ble_hid_cmd_register(void) __asm__("esp_at_ble_hid_cmd_regist");
 
 /**
  * @brief Register the BluFi AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_blufi_cmd_regist(void);
+bool esp_at_blufi_cmd_register(void) __asm__("esp_at_blufi_cmd_regist");
 
 /**
  * @brief Register the BLE OTA AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_ble_ota_cmd_regist(void);
+bool esp_at_ble_ota_cmd_register(void) __asm__("esp_at_ble_ota_cmd_regist");
 
 /**
  * @brief Register the Classic Bluetooth AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_bt_cmd_regist(void);
+bool esp_at_bt_cmd_register(void) __asm__("esp_at_bt_cmd_regist");
 
 /**
  * @brief Register the Classic Bluetooth SPP AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_bt_spp_cmd_regist(void);
+bool esp_at_bt_spp_cmd_register(void) __asm__("esp_at_bt_spp_cmd_regist");
 
 /**
  * @brief Register the Classic Bluetooth A2DP AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_bt_a2dp_cmd_regist(void);
+bool esp_at_bt_a2dp_cmd_register(void) __asm__("esp_at_bt_a2dp_cmd_regist");
 
 /**
  * @brief Register the file system AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_fs_cmd_regist(void);
+bool esp_at_fs_cmd_register(void) __asm__("esp_at_fs_cmd_regist");
 
 /**
  * @brief Register the driver AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_driver_cmd_regist(void);
+bool esp_at_driver_cmd_register(void) __asm__("esp_at_driver_cmd_regist");
 
 /**
  * @brief Register the ethernet AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_eth_cmd_regist(void);
+bool esp_at_eth_cmd_register(void) __asm__("esp_at_eth_cmd_regist");
 
 /**
  * @brief Register the signaling test AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_fact_cmd_regist(void);
+bool esp_at_fact_cmd_register(void);
 
 /**
  * @brief Register the OTA AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_ota_cmd_regist(void);
+bool esp_at_ota_cmd_register(void);
 
 /**
  * @brief Register the UART AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_uart_cmd_regist(void);
+bool esp_at_uart_cmd_register(void);
 
 /**
  * @brief Register the user AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_user_cmd_regist(void);
+bool esp_at_user_cmd_register(void);
 
 /**
  * @brief Register the web server AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_web_server_cmd_regist(void);
+bool esp_at_web_server_cmd_register(void);
 
 /**
  * @brief Register the rainmaker AT commands.
  *
  * @return true if success, otherwise false.
  */
-bool esp_at_rainmaker_cmd_regist(void);
+bool esp_at_rainmaker_cmd_register(void);

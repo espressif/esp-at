@@ -27,7 +27,7 @@
 #endif
 
 typedef enum {
-    AT_FS_TYPE_FATFS = 0,
-    AT_FS_TYPE_LITTLEFS,
-    AT_FS_TYPE_MAX,
-} at_fs_type_t;
+    ESP_AT_FS_FATFS = 0,
+    ESP_AT_FS_LITTLEFS,
+    ESP_AT_FS_TYPE_MAX,
+} esp_at_fs_type_t;

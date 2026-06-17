@@ -8,6 +8,7 @@
 #include "esp_err.h"
 
 #include "esp_at.h"
+#include "esp_at_internal.h"
 #include "esp_at_init.h"
 
 void app_main(void)

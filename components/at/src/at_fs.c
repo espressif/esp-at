@@ -30,12 +30,12 @@ const char *esp_at_fs_get_mount_point(void)
     return AT_FS_MOUNT_POINT;
 }
 
-at_fs_type_t esp_at_fs_get_type(void)
+esp_at_fs_type_t esp_at_fs_get_type(void)
 {
 #if CONFIG_AT_FS_LITTLEFS
-    return AT_FS_TYPE_LITTLEFS;
+    return ESP_AT_FS_LITTLEFS;
 #else
-    return AT_FS_TYPE_FATFS;
+    return ESP_AT_FS_FATFS;
 #endif
 }
 

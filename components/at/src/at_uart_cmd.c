@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -80,7 +80,7 @@ static uint8_t at_setup_cmd_uart_common(uint8_t para_num, bool save_to_flash)
             return ESP_AT_RESULT_CODE_ERROR;
         }
     }
-    esp_at_response_result(ESP_AT_RESULT_CODE_OK);
+    esp_at_write_result(ESP_AT_RESULT_CODE_OK);
 
     // set now
     uint8_t uart_port = at_uart_port_get();
@@ -130,8 +130,8 @@ static uint8_t at_query_cmd_uart(uint8_t *cmd_name)
         parity = 0xff;
     }
 
-    uint8_t buffer[AT_BUFFER_ON_STACK_SIZE] = {0};
-    snprintf((char *)buffer, AT_BUFFER_ON_STACK_SIZE, "%s:%d,%d,%d,%d,%d\r\n",
+    uint8_t buffer[ESP_AT_BUF_ON_STACK_SIZE] = {0};
+    snprintf((char *)buffer, ESP_AT_BUF_ON_STACK_SIZE, "%s:%d,%d,%d,%d,%d\r\n",
              cmd_name, baudrate, data_bits, stop_bits, parity, flow_control);
     esp_at_port_write_data(buffer, strlen((char *)buffer));
 
@@ -155,25 +155,25 @@ static uint8_t at_query_cmd_uart_def(uint8_t *cmd_name)
         config.parity = 0xff;
     }
 
-    uint8_t buffer[AT_BUFFER_ON_STACK_SIZE] = {0};
-    snprintf((char *)buffer, AT_BUFFER_ON_STACK_SIZE, "%s:%d,%d,%d,%d,%d\r\n",
+    uint8_t buffer[ESP_AT_BUF_ON_STACK_SIZE] = {0};
+    snprintf((char *)buffer, ESP_AT_BUF_ON_STACK_SIZE, "%s:%d,%d,%d,%d,%d\r\n",
              cmd_name, config.baudrate, config.data_bits, config.stop_bits, config.parity, config.flow_control);
     esp_at_port_write_data(buffer, strlen((char *)buffer));
 
     return ESP_AT_RESULT_CODE_OK;
 }
 
-static const esp_at_cmd_struct at_uart_cmd[] = {
+static const esp_at_cmd_t at_uart_cmd[] = {
     {"+UART", NULL, at_query_cmd_uart, at_setup_cmd_uart_def, NULL},
     {"+UART_CUR", NULL, at_query_cmd_uart, at_setup_cmd_uart_cur, NULL},
     {"+UART_DEF", NULL, at_query_cmd_uart_def, at_setup_cmd_uart_def, NULL},
 };
 
-bool esp_at_uart_cmd_regist(void)
+bool esp_at_uart_cmd_register(void)
 {
-    return esp_at_custom_cmd_array_regist(at_uart_cmd, sizeof(at_uart_cmd) / sizeof(esp_at_cmd_struct));
+    return esp_at_custom_cmd_array_register(at_uart_cmd, sizeof(at_uart_cmd) / sizeof(esp_at_cmd_t));
 }
 
-ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_uart_cmd_regist, 23);
+ESP_AT_CMD_SET_FIRST_INIT_FN(esp_at_uart_cmd_register, 23);
 
 #endif

@@ -3,465 +3,793 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
+
+/**
+ * @file esp_at_core.h
+ * @brief Public AT APIs provided by the AT core library.
+ *
+ * These APIs are implemented in the prebuilt AT core library and are intended
+ * to be called by user applications and custom AT commands: command and
+ * device-operation registration, parameter parsing, port I/O, result/error
+ * handling, and the Wi-Fi / TCP-IP / HTTP / WebSocket helpers.
+ */
 #pragma once
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "sdkconfig.h"
+#include "esp_err.h"
 #include "esp_partition.h"
+#include "freertos/FreeRTOS.h"
+
+/*
+ * Optional-component headers are pulled in only when the matching AT command
+ * feature is enabled, so that builds without those components are not forced
+ * to depend on the lwIP socket API / esp_http_client / esp_websocket_client.
+ */
+
+#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
 #include "esp_wifi.h"
+#endif
 
-#define at_min(x,y)     ((x)<(y)?(x):(y))
-#define at_max(x,y)     ((x)>(y)?(x):(y))
+#ifdef CONFIG_AT_NET_COMMAND_SUPPORT
+#include <sys/socket.h>
+#include "lwip/ip_addr.h"
+#include "lwip/netdb.h"
+#endif
 
-/**
- * @brief esp_at_cmd_struct
- *  used for define at command
- *
- */
-typedef struct {
-    char *at_cmdName;                               /*!< at command name */
-    uint8_t (*at_testCmd)(uint8_t *cmd_name);       /*!< Test Command function pointer */
-    uint8_t (*at_queryCmd)(uint8_t *cmd_name);      /*!< Query Command function pointer */
-    uint8_t (*at_setupCmd)(uint8_t para_num);       /*!< Setup Command function pointer */
-    uint8_t (*at_exeCmd)(uint8_t *cmd_name);        /*!< Execute Command function pointer */
-} esp_at_cmd_struct;
+#ifdef CONFIG_AT_HTTP_COMMAND_SUPPORT
+#include "esp_http_client.h"
+#endif
 
-/**
- * @brief esp_at_device_ops_struct
- *  device operate functions struct for AT
- *
- */
-typedef struct {
-    int32_t (*read_data)(uint8_t *data, int32_t len);               /*!< read data from device */
-    int32_t (*write_data)(uint8_t *data, int32_t len);              /*!< write data into device */
+#ifdef CONFIG_AT_WS_COMMAND_SUPPORT
+#include "esp_websocket_client.h"
+#endif
 
-    int32_t (*get_data_length)(void);                               /*!< get the length of data received */
-    bool (*wait_write_complete)(int32_t timeout_msec);              /*!< wait write finish */
-} esp_at_device_ops_struct;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-typedef int32_t (*at_read_data_fn_t)(uint8_t *data, int32_t len);
-typedef int32_t (*at_write_data_fn_t)(uint8_t *data, int32_t len);
-typedef int32_t (*at_get_data_len_fn_t)(void);
+/* ============================================================================
+ *                                Enumerations
+ * ========================================================================== */
 
 /**
- * @brief esp_at_custom_net_ops_struct
- * custom socket callback for AT
- */
-typedef struct {
-    int32_t (*recv_data)(uint8_t*data, int32_t len); /*!< callback when socket received data */
-    void (*connect_cb)(void);                        /*!< callback when socket connection is built */
-    void (*disconnect_cb)(void);                     /*!< callback when socket connection is disconnected */
-} esp_at_custom_net_ops_struct;
-
-/**
- * @brief esp_at_custom_ble_ops_struct
- * custom ble callback for AT
- *
- */
-typedef struct {
-    int32_t (*recv_data)(uint8_t*data, int32_t len); /*!< callback when ble received data */
-    void (*connect_cb)(void);                        /*!< callback when ble connection is built */
-    void (*disconnect_cb)(void);                     /*!< callback when ble connection is disconnected */
-} esp_at_custom_ble_ops_struct;
-
-/**
- * @brief esp_at_status
- *  some custom function interacting with AT
- *
+ * @brief Operational status of the AT core.
  */
 typedef enum {
-    ESP_AT_STATUS_NORMAL = 0x0,                /*!< Normal mode.Now mcu can send AT command */
-    ESP_AT_STATUS_TRANSMIT,                    /*!< Transparent Transmission mode */
-
-} esp_at_status_type;
-
-typedef enum {
-    AT_DISABLE_SLEEP = 0,
-    AT_MIN_MODEM_SLEEP,
-    AT_LIGHT_SLEEP,
-    AT_MAX_MODEM_SLEEP,
-    AT_SLEEP_MAX,
-} at_sleep_mode_t;
+    ESP_AT_STATUS_NORMAL    = 0x0,  /**< Command mode: processing AT commands   */
+    ESP_AT_STATUS_TRANSMIT,         /**< Passthrough mode: forwarding raw data  */
+} esp_at_status_t;
 
 /**
- * @brief esp_at_ops_struct
- *  some custom function interacting with AT
- *
+ * @brief Supported sleep mode of the AT core.
  */
-typedef struct {
-    void (*status_callback)(esp_at_status_type status);               /*!< callback when AT status changes */
-    void (*pre_sleep_callback)(at_sleep_mode_t mode);                 /*!< callback before entering light sleep */
-    void (*pre_wakeup_callback)(void);                                /*!< callback before waking up from light sleep */
-    void (*pre_deepsleep_callback)(void);                             /*!< callback before enter deep sleep */
-    void (*pre_restart_callback)(void);                               /*!< callback before restart */
-    void (*pre_active_write_data_callback)(at_write_data_fn_t);       /*!< callback before write data */
-} esp_at_custom_ops_struct;
+typedef enum {
+    ESP_AT_SLEEP_DISABLE    = 0,    /**< Sleep disabled                         */
+    ESP_AT_SLEEP_MIN_MODEM,         /**< Minimum modem sleep (DTIM-based)       */
+    ESP_AT_SLEEP_LIGHT,             /**< Light sleep                            */
+    ESP_AT_SLEEP_MAX_MODEM,         /**< Maximum modem sleep                    */
+    ESP_AT_SLEEP_MODE_MAX,          /**< Sentinel value; not a valid mode       */
+} esp_at_sleep_mode_t;
 
 /**
- * @brief AT specific callback type
- *
+ * @brief Return value of the parameter-parsing helpers.
+ */
+typedef enum {
+    ESP_AT_PARA_PARSE_RET_FAIL      = -1,   /**< Parse failed; parameter is malformed   */
+    ESP_AT_PARA_PARSE_RET_OK        =  0,   /**< Parameter parsed successfully          */
+    ESP_AT_PARA_PARSE_RET_OMITTED,          /**< Parameter was omitted (empty field)    */
+} esp_at_para_parse_ret_t;
+
+/**
+ * @brief Result code selectors for esp_at_write_result() and esp_at_dispatch_result().
+ */
+typedef enum {
+    ESP_AT_RESULT_CODE_OK                  = 0x00,  /**< OK                                 */
+    ESP_AT_RESULT_CODE_ERROR               = 0x01,  /**< ERROR                              */
+    ESP_AT_RESULT_CODE_FAIL                = 0x02,  /**< ERROR                              */
+    ESP_AT_RESULT_CODE_SEND_OK             = 0x03,  /**< SEND OK                            */
+    ESP_AT_RESULT_CODE_SEND_FAIL           = 0x04,  /**< SEND FAIL                          */
+    ESP_AT_RESULT_CODE_IGNORE              = 0x05,  /**< (no output)                        */
+    ESP_AT_RESULT_CODE_PROCESS_DONE        = 0x06,  /**< (processing complete, no output)   */
+    ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT = 0x07,  /**< OK followed by input prompt        */
+    ESP_AT_RESULT_CODE_MAX,                         /**< Sentinel; not a valid code         */
+} esp_at_rc_t;
+
+/* ============================================================================
+ *                              Data Structures
+ * ========================================================================== */
+
+/**
+ * @brief Callback invoked while the AT core is in a specific receive mode.
  */
 typedef void (*esp_at_port_specific_callback_t)(void);
-// error number
+
 /**
- * @brief module number,Now just AT module
+ * @brief Descriptor for a single AT command.
  *
+ * Register an array of these via esp_at_custom_cmd_array_register().
+ * Set unused command-type handlers to NULL.
  */
+typedef struct {
+    char    *cmd_name;                              /**< Command name string, e.g. "+MYCOMMAND" */
+    uint8_t (*test_cmd)(uint8_t *cmd_name);         /**< Handler for AT+CMD=? */
+    uint8_t (*query_cmd)(uint8_t *cmd_name);        /**< Handler for AT+CMD? */
+    uint8_t (*setup_cmd)(uint8_t para_num);         /**< Handler for AT+CMD=\<params\> */
+    uint8_t (*exe_cmd)(uint8_t *cmd_name);          /**< Handler for AT+CMD */
+} esp_at_cmd_t;
+
+/**
+ * @brief I/O operation callbacks for the underlying AT transport device.
+ *
+ * Pass a populated instance to esp_at_device_ops_register().
+ */
+typedef struct {
+    int32_t (*read_data)(uint8_t *data, int32_t len);       /**< Read bytes from the physical interface      */
+    int32_t (*write_data)(uint8_t *data, int32_t len);      /**< Write bytes to the physical interface       */
+    int32_t (*get_data_length)(void);                       /**< Return the number of bytes available        */
+    bool (*wait_write_complete)(int32_t timeout_msec);      /**< Block until the transmit buffer is drained  */
+} esp_at_intf_ops_t;
+
+/**
+ * @brief Callbacks for a socket-based passthrough (transparent-transmission) link.
+ *
+ * Register via esp_at_custom_net_ops_register().
+ */
+typedef struct {
+    int32_t (*recv_data)(uint8_t *data, int32_t len);   /**< Invoked when data arrives on the link  */
+    void (*connect_cb)(void);                           /**< Invoked when the link is established   */
+    void (*disconnect_cb)(void);                        /**< Invoked when the link is torn down     */
+} esp_at_net_ops_t;
+
+/**
+ * @brief Callbacks for a BLE passthrough link.
+ *
+ * Register via esp_at_custom_ble_ops_register().
+ */
+typedef struct {
+    int32_t (*recv_data)(uint8_t *data, int32_t len);   /**< Invoked when data arrives on the BLE link  */
+    void (*connect_cb)(void);                           /**< Invoked when the BLE link is established   */
+    void (*disconnect_cb)(void);                        /**< Invoked when the BLE link is torn down     */
+} esp_at_ble_ops_t;
+
+/**
+ * @brief Lifecycle and status callbacks for AT core events.
+ *
+ * Pass a populated instance to esp_at_custom_ops_register().
+ */
+typedef struct {
+    void (*status_callback)(esp_at_status_t status);        /**< Called on AT core status change    */
+    void (*pre_sleep_callback)(esp_at_sleep_mode_t mode);   /**< Called before entering sleep       */
+    void (*pre_wakeup_callback)(void);                      /**< Called before waking from sleep    */
+    void (*pre_deepsleep_callback)(void);                   /**< Called before entering deep sleep  */
+    void (*pre_restart_callback)(void);                     /**< Called before system restart       */
+    void (*pre_active_write_data_callback)(int32_t (*write_fn)(uint8_t *data, int32_t len));
+    /**< Called before an active data write */
+} esp_at_custom_ops_t;
+
+/* ============================================================================
+ *                                Error Codes
+ * ========================================================================== */
+
+/** @brief AT core module identifier, used as the high byte of error codes. */
 typedef enum {
-    ESP_AT_MODULE_NUM = 0x01   /*!< AT module */
-} esp_at_module;
+    ESP_AT_MODULE_NUM = 0x01,
+} esp_at_module_t;
 
-/**
- * @brief subcategory number
- *
- */
+/** @brief AT command error sub-categories. */
 typedef enum {
-    ESP_AT_SUB_OK                       = 0x00,              /*!< OK */
-    ESP_AT_SUB_COMMON_ERROR             = 0x01,              /*!< reserved */
-    ESP_AT_SUB_NO_TERMINATOR            = 0x02,              /*!< terminator character not found ("\r\n" expected) */
-    ESP_AT_SUB_NO_AT                    = 0x03,              /*!< Starting "AT" not found (or at, At or aT entered) */
-    ESP_AT_SUB_PARA_LENGTH_MISMATCH     = 0x04,              /*!< parameter length mismatch */
-    ESP_AT_SUB_PARA_TYPE_MISMATCH       = 0x05,              /*!< parameter type mismatch */
-    ESP_AT_SUB_PARA_NUM_MISMATCH        = 0x06,              /*!< parameter number mismatch */
-    ESP_AT_SUB_PARA_INVALID             = 0x07,              /*!< the parameter is invalid */
-    ESP_AT_SUB_PARA_PARSE_FAIL          = 0x08,              /*!< parse parameter fail */
-    ESP_AT_SUB_UNSUPPORT_CMD            = 0x09,              /*!< the command is not supported */
-    ESP_AT_SUB_CMD_EXEC_FAIL            = 0x0A,              /*!< the command execution failed */
-    ESP_AT_SUB_CMD_PROCESSING           = 0x0B,              /*!< processing of previous command is in progress */
-    ESP_AT_SUB_CMD_OP_ERROR             = 0x0C,              /*!< the command operation type is error */
-} esp_at_error_code;
-
-#define ESP_AT_ERROR_NO(subcategory,extension)  \
-        ((ESP_AT_MODULE_NUM << 24) | ((subcategory) << 16) | (extension))
-
-#define ESP_AT_CMD_ERROR_OK                           ESP_AT_ERROR_NO(ESP_AT_SUB_OK,0x00)                                       /*!< No Error */
-#define ESP_AT_CMD_ERROR_NON_FINISH                   ESP_AT_ERROR_NO(ESP_AT_SUB_NO_TERMINATOR,0x00)                            /*!< terminator character not found ("\r\n" expected) */
-#define ESP_AT_CMD_ERROR_NOT_FOUND_AT                 ESP_AT_ERROR_NO(ESP_AT_SUB_NO_AT,0x00)                                    /*!< Starting "AT" not found (or at, At or aT entered) */
-#define ESP_AT_CMD_ERROR_PARA_LENGTH(which_para)      ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_LENGTH_MISMATCH,which_para)               /*!< parameter length mismatch */
-#define ESP_AT_CMD_ERROR_PARA_TYPE(which_para)        ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_TYPE_MISMATCH,which_para)                 /*!< parameter type mismatch */
-#define ESP_AT_CMD_ERROR_PARA_NUM(need,given)         ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_NUM_MISMATCH,(((need) << 8) | (given)))   /*!< parameter number mismatch */
-#define ESP_AT_CMD_ERROR_PARA_INVALID(which_para)     ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_INVALID,which_para)                       /*!< the parameter is invalid */
-#define ESP_AT_CMD_ERROR_PARA_PARSE_FAIL(which_para)  ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_PARSE_FAIL,which_para)                    /*!< parse parameter fail */
-#define ESP_AT_CMD_ERROR_CMD_UNSUPPORT                ESP_AT_ERROR_NO(ESP_AT_SUB_UNSUPPORT_CMD,0x00)                            /*!< the command is not supported */
-#define ESP_AT_CMD_ERROR_CMD_EXEC_FAIL(result)        ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_EXEC_FAIL,result)                          /*!< the command execution failed */
-#define ESP_AT_CMD_ERROR_CMD_PROCESSING               ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_PROCESSING,0x00)                           /*!< processing of previous command is in progress */
-#define ESP_AT_CMD_ERROR_CMD_OP_ERROR                 ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_OP_ERROR,0x00)                             /*!< the command operation type is error */
+    ESP_AT_SUB_OK                   = 0x00, /**< No error                               */
+    ESP_AT_SUB_COMMON_ERROR         = 0x01, /**< Generic error                          */
+    ESP_AT_SUB_NO_TERMINATOR        = 0x02, /**< Missing line terminator                */
+    ESP_AT_SUB_NO_AT                = 0x03, /**< Missing AT prefix                      */
+    ESP_AT_SUB_PARA_LENGTH_MISMATCH = 0x04, /**< Parameter length out of range          */
+    ESP_AT_SUB_PARA_TYPE_MISMATCH   = 0x05, /**< Parameter type mismatch                */
+    ESP_AT_SUB_PARA_NUM_MISMATCH    = 0x06, /**< Wrong number of parameters             */
+    ESP_AT_SUB_PARA_INVALID         = 0x07, /**< Parameter value out of valid range     */
+    ESP_AT_SUB_PARA_PARSE_FAIL      = 0x08, /**< Failed to parse parameter              */
+    ESP_AT_SUB_UNSUPPORT_CMD        = 0x09, /**< Command not supported                  */
+    ESP_AT_SUB_CMD_EXEC_FAIL        = 0x0A, /**< Command execution failed               */
+    ESP_AT_SUB_CMD_PROCESSING       = 0x0B, /**< A command is already in progress       */
+    ESP_AT_SUB_CMD_OP_ERROR         = 0x0C, /**< Wrong operation type for command       */
+} esp_at_errno_t;
 
 /**
- * @brief the result of AT parse
+ * @brief Encode an AT error code from its constituent fields.
  *
+ * @param subcategory  Error sub-category (esp_at_errno_t).
+ * @param extension    Command-specific extension value.
+ * @return Packed 32-bit error code: [module:8][sub:8][ext:16].
  */
-typedef enum {
-    ESP_AT_PARA_PARSE_RESULT_FAIL = -1,           /*!< parse fail,Maybe the type of parameter is mismatched,or out of range */
-    ESP_AT_PARA_PARSE_RESULT_OK = 0,              /*!< Successful */
-    ESP_AT_PARA_PARSE_RESULT_OMITTED,             /*!< the parameter is OMITTED. */
-} esp_at_para_parse_result_type;
+#define ESP_AT_ERROR_NO(subcategory, extension) \
+    ((ESP_AT_MODULE_NUM << 24) | ((subcategory) << 16) | (extension))
+
+#define ESP_AT_CMD_ERROR_OK                          ESP_AT_ERROR_NO(ESP_AT_SUB_OK, 0x00)                                     /**< No error */
+#define ESP_AT_CMD_ERROR_NON_FINISH                  ESP_AT_ERROR_NO(ESP_AT_SUB_NO_TERMINATOR, 0x00)                          /**< Command terminator ("\r\n") not found */
+#define ESP_AT_CMD_ERROR_NOT_FOUND_AT                ESP_AT_ERROR_NO(ESP_AT_SUB_NO_AT, 0x00)                                  /**< Command does not start with "AT" */
+#define ESP_AT_CMD_ERROR_PARA_LENGTH(which_para)     ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_LENGTH_MISMATCH, which_para)             /**< Parameter length mismatch (@p which_para: 0-based index) */
+#define ESP_AT_CMD_ERROR_PARA_TYPE(which_para)       ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_TYPE_MISMATCH, which_para)               /**< Parameter type mismatch (@p which_para: 0-based index) */
+#define ESP_AT_CMD_ERROR_PARA_NUM(need, given)       ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_NUM_MISMATCH, (((need) << 8) | (given))) /**< Parameter count mismatch (@p need expected, @p given received) */
+#define ESP_AT_CMD_ERROR_PARA_INVALID(which_para)    ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_INVALID, which_para)                     /**< Invalid parameter value (@p which_para: 0-based index) */
+#define ESP_AT_CMD_ERROR_PARA_PARSE_FAIL(which_para) ESP_AT_ERROR_NO(ESP_AT_SUB_PARA_PARSE_FAIL, which_para)                  /**< Failed to parse a parameter (@p which_para: 0-based index) */
+#define ESP_AT_CMD_ERROR_CMD_UNSUPPORT               ESP_AT_ERROR_NO(ESP_AT_SUB_UNSUPPORT_CMD, 0x00)                          /**< Command not supported */
+#define ESP_AT_CMD_ERROR_CMD_EXEC_FAIL(result)       ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_EXEC_FAIL, result)                        /**< Command execution failed (@p result: handler-specific code) */
+#define ESP_AT_CMD_ERROR_CMD_PROCESSING              ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_PROCESSING, 0x00)                         /**< A previous command is still being processed */
+#define ESP_AT_CMD_ERROR_CMD_OP_ERROR                ESP_AT_ERROR_NO(ESP_AT_SUB_CMD_OP_ERROR, 0x00)                           /**< Unsupported command operation type */
+
+/* ============================================================================
+ *                                Registration
+ * ========================================================================== */
 
 /**
- * @brief the result code of AT command processing
+ * @brief Register a custom AT command set.
  *
+ * @param custom_at_cmd_array  Array of esp_at_cmd_t descriptors.
+ * @param cmd_num              Number of entries in the array.
+ * @return true on success, false if registration failed.
  */
-typedef enum {
-    ESP_AT_RESULT_CODE_OK           = 0x00,       /*!< "OK" */
-    ESP_AT_RESULT_CODE_ERROR        = 0x01,       /*!< "ERROR" */
-    ESP_AT_RESULT_CODE_FAIL         = 0x02,       /*!< "ERROR" */
-    ESP_AT_RESULT_CODE_SEND_OK      = 0x03,       /*!< "SEND OK" */
-    ESP_AT_RESULT_CODE_SEND_FAIL    = 0x04,       /*!< "SEND FAIL" */
-    ESP_AT_RESULT_CODE_IGNORE       = 0x05,       /*!< response nothing, just change internal status */
-    ESP_AT_RESULT_CODE_PROCESS_DONE = 0x06,       /*!< response nothing, just change internal status */
-    ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT = 0x07,    // "OK" and ">"
-    ESP_AT_RESULT_CODE_MAX
-} esp_at_result_code_string_index;
+bool esp_at_custom_cmd_array_register(const esp_at_cmd_t *custom_at_cmd_array, uint32_t cmd_num)
+__asm__("esp_at_custom_cmd_array_regist");
 
 /**
- * @brief This function should be called only once.
+ * @brief Register the device I/O operations for the AT transport interface.
  *
- * @param custom_version version information by custom
+ * @param ops  Pointer to a populated esp_at_intf_ops_t.
  */
-void esp_at_module_init(const uint8_t *custom_version);
+void esp_at_device_ops_register(esp_at_intf_ops_t *ops)
+__asm__("esp_at_device_ops_regist");
 
 /**
- * @brief Parse digit parameter from command string.
+ * @brief Register passthrough callbacks for a socket-based network link.
  *
- * @param para_index the index of parameter
- * @param value the value parsed
+ * @note Call this only after esp_at_module_init().
  *
- * @return
- *  - ESP_AT_PARA_PARSE_RESULT_OK : succeed
- *  - ESP_AT_PARA_PARSE_RESULT_FAIL : fail
- *  - ESP_AT_PARA_PARSE_RESULT_OMITTED : this parameter is OMITTED
+ * @param link_id  Link identifier (0-based).
+ * @param ops      Pointer to a populated esp_at_net_ops_t.
+ * @return true on success.
  */
-esp_at_para_parse_result_type esp_at_get_para_as_digit(int32_t para_index, int32_t *value);
+bool esp_at_custom_net_ops_register(int32_t link_id, esp_at_net_ops_t *ops)
+__asm__("esp_at_custom_net_ops_regist");
 
 /**
- * @brief Parse float parameter from command string.
+ * @brief Register passthrough callbacks for a BLE link.
  *
- * @param para_index the index of parameter
- * @param value the value parsed
+ * @note Call this only after esp_at_module_init().
  *
- * @return
- *  - ESP_AT_PARA_PARSE_RESULT_OK : succeed
- *  - ESP_AT_PARA_PARSE_RESULT_FAIL : fail
- *  - ESP_AT_PARA_PARSE_RESULT_OMITTED : this parameter is OMITTED
+ * @param conn_index  BLE connection index (0-based).
+ * @param ops         Pointer to a populated esp_at_ble_ops_t.
+ * @return true on success.
  */
-esp_at_para_parse_result_type esp_at_get_para_as_float(int32_t para_index, float *value);
+bool esp_at_custom_ble_ops_register(int32_t conn_index, esp_at_ble_ops_t *ops)
+__asm__("esp_at_custom_ble_ops_regist");
 
 /**
- * @brief Parse string parameter from command string.
+ * @brief Register lifecycle callbacks for AT core events.
  *
- * @param para_index the index of parameter
- * @param result the pointer that point to the result.
- *
- * @return
- *  - ESP_AT_PARA_PARSE_RESULT_OK : succeed
- *  - ESP_AT_PARA_PARSE_RESULT_FAIL : fail
- *  - ESP_AT_PARA_PARSE_RESULT_OMITTED : this parameter is OMITTED
+ * @param ops  Pointer to a populated esp_at_custom_ops_t.
  */
-esp_at_para_parse_result_type esp_at_get_para_as_str(int32_t para_index, uint8_t **result);
+void esp_at_custom_ops_register(esp_at_custom_ops_t *ops)
+__asm__("esp_at_custom_ops_regist");
+
+/* ============================================================================
+ *                              Command Context
+ * ========================================================================== */
 
 /**
- * @brief Calling the esp_at_port_recv_data_notify_from_isr to notify at module that at port received data.
- *        When received this notice,at task will get data by calling get_data_length and read_data in esp_at_device_ops.
- *        This function MUST be used in isr.
+ * @brief Return the name of the AT command currently being executed.
  *
- * @param len data length
- *
+ * @return Pointer to a NUL-terminated command name string.
+ *         Valid only during command handler execution.
  */
-void esp_at_port_recv_data_notify_from_isr(int32_t len);
+const uint8_t *esp_at_get_current_cmd_name(void);
 
 /**
- * @brief Calling the esp_at_port_recv_data_notify to notify at module that at port received data.
- *        When received this notice,at task will get data by calling get_data_length and read_data in esp_at_device_ops.
- *        This function MUST NOT be used in isr.
+ * @brief Look up a flash partition in the secondary (user) partition table.
  *
- * @param len data length
- * @param msec timeout time,The unit is millisecond. It waits forever,if msec is portMAX_DELAY.
+ * Searches only partitions defined in at_customize.csv (the secondary partition
+ * table), not the primary system partition table partitions_at.csv.
  *
- * @return
- *  - true : succeed
- *  - false : fail
+ * @note To look up the primary partition table first and fall back to the
+ *       secondary table when no match is found, use esp_partition_find_first().
+ *       In ESP-AT, this IDF API is linker-wrapped to perform that two-stage lookup.
+ *
+ * @param type     Partition type.
+ * @param subtype  Partition subtype.
+ * @param label    Partition label string.
+ * @return Pointer to the matching esp_partition_t, or NULL if not found.
+ */
+const esp_partition_t *esp_at_custom_partition_find(esp_partition_type_t type,
+                                                    esp_partition_subtype_t subtype,
+                                                    const char *label);
+
+/* ============================================================================
+ *                             Parameter Parsing
+ * ========================================================================== */
+
+/**
+ * @brief Parse the parameter at @p para_index as a signed 32-bit integer.
+ *
+ * @param para_index  Zero-based parameter position in the AT command line.
+ * @param value       Output: parsed integer value.
+ * @return ESP_AT_PARA_PARSE_RET_OK, _FAIL, or _OMITTED.
+ */
+esp_at_para_parse_ret_t esp_at_get_para_as_digit(int32_t para_index, int32_t *value);
+
+/**
+ * @brief Parse the parameter at @p para_index as a single-precision float.
+ *
+ * @param para_index  Zero-based parameter position.
+ * @param value       Output: parsed float value.
+ * @return ESP_AT_PARA_PARSE_RET_OK, _FAIL, or _OMITTED.
+ */
+esp_at_para_parse_ret_t esp_at_get_para_as_float(int32_t para_index, float *value);
+
+/**
+ * @brief Return a pointer to the raw string for the parameter at @p para_index.
+ *
+ * The returned pointer refers to the AT core's internal command buffer.
+ * The caller must not free or modify the pointed-to string.
+ *
+ * @param para_index  Zero-based parameter position.
+ * @param result      Output: pointer to the NUL-terminated parameter string.
+ * @return ESP_AT_PARA_PARSE_RET_OK, _FAIL, or _OMITTED.
+ */
+esp_at_para_parse_ret_t esp_at_get_para_as_str(int32_t para_index, uint8_t **result);
+
+/* ============================================================================
+ *                                  Port I/O
+ * ========================================================================== */
+
+/**
+ * @brief Notify the AT core that @p len bytes have arrived on the port (task context).
+ *
+ * @param len   Number of newly received bytes.
+ * @param msec  Maximum time to wait for the core to accept the notification (ms).
+ * @return true if the notification was accepted within the timeout.
  */
 bool esp_at_port_recv_data_notify(int32_t len, uint32_t msec);
 
 /**
- * @brief terminal transparent transmit mode,This function MUST be used in isr.
+ * @brief Read up to @p len bytes from the AT input port.
  *
+ * @param data  Destination buffer.
+ * @param len   Maximum number of bytes to read.
+ * @return Number of bytes actually read, or negative on error.
  */
-void esp_at_transmit_terminal_from_isr(void);
-
-/**
- * @brief   terminal transparent transmit mode,This function MUST NOT be used in isr.
- *
- */
-void esp_at_transmit_terminal(void);
-
-/**
- * @brief register at command set, which defined by custom,
- *
- * @param custom_at_cmd_array at command set
- * @param cmd_num command number
- *
- */
-bool esp_at_custom_cmd_array_regist(const esp_at_cmd_struct *custom_at_cmd_array, uint32_t cmd_num);
-
-/**
- * @brief register device operate functions set,
- *
- * @param ops device operate functions set
- *
- */
-void esp_at_device_ops_regist(esp_at_device_ops_struct* ops);
+int32_t esp_at_port_read_data(uint8_t *data, int32_t len);
 
 /*
- *  @brief register custom callback about socket status,
+ * The four esp_at_port_*write_data* functions below all write @p len bytes to
+ * the AT output port, but differ along two independent axes:
  *
- *  @param link_id the link id
- *  @param ops custom operate functions set
+ *   - Message filtering: whether the output is subject to AT+SYSMSGFILTER.
+ *       "_without_filter" variants bypass the filter; the others honor it
+ *       (when filtering is enabled).
+ *   - MCU wakeup: whether the host MCU is woken before the data is sent.
+ *       "active_" variants invoke the pre-write callback registered via
+ *       esp_at_custom_ops_register(), which wakes the MCU according to the
+ *       AT+USERWKMCUCFG configuration; the others do not.
  *
- *  Note: Make sure this API call after esp_at_module_init.
+ *   Function                                       | AT+SYSMSGFILTER | Wakes MCU
+ *   -----------------------------------------------+-----------------+----------
+ *   esp_at_port_write_data                         | applied         | no
+ *   esp_at_port_write_data_without_filter          | bypassed        | no
+ *   esp_at_port_active_write_data                  | applied         | yes
+ *   esp_at_port_active_write_data_without_filter   | bypassed        | yes
  */
-bool esp_at_custom_net_ops_regist(int32_t link_id, esp_at_custom_net_ops_struct* ops);
-
-/*
- *  @brief register custom callback about ble status,
- *
- *  @param ops custom operate functions set
- *
- *  Note: Make sure this API call after esp_at_module_init.
- */
-bool esp_at_custom_ble_ops_regist(int32_t conn_index, esp_at_custom_ble_ops_struct* ops);
-
-/**
- * @brief register custom operate functions set interacting with AT,
- *
- * @param ops custom operate functions set
- *
- */
-void esp_at_custom_ops_regist(esp_at_custom_ops_struct* ops);
 
 /**
- * @brief get at module version number,
+ * @brief Write @p len bytes to the AT output port.
  *
- * @return at version bit31~bit24: at main version
- *                    bit23~bit16: at sub version
- *                    bit15~bit8 : at test version
- *                    bit7~bit0 : at custom version
+ * The output is subject to AT+SYSMSGFILTER (when filtering is enabled). The
+ * host MCU is not woken before the data is sent.
+ *
+ * @param data  Data buffer.
+ * @param len   Number of bytes to write.
+ * @return Number of bytes written, or negative on error.
  */
-uint32_t esp_at_get_version(void);
+int32_t esp_at_port_write_data(uint8_t *data, int32_t len);
 
 /**
- * @brief response AT process result,
+ * @brief Write @p len bytes to the AT output port, waking the host MCU first.
  *
- * @param result_code see esp_at_result_code_string_index
+ * The output is subject to AT+SYSMSGFILTER (when filtering is enabled). Before
+ * sending, the pre-write callback registered via esp_at_custom_ops_register()
+ * is invoked, which wakes the host MCU according to the AT+USERWKMCUCFG
+ * configuration.
  *
+ * @param data  Data buffer.
+ * @param len   Number of bytes to write.
+ * @return Number of bytes written, or negative on error.
  */
-void esp_at_response_result(uint8_t result_code);
+int32_t esp_at_port_active_write_data(uint8_t *data, int32_t len);
 
 /**
- * @brief write data into device,
+ * @brief Write @p len bytes to the AT output port, bypassing AT+SYSMSGFILTER.
  *
- * @param data data buffer to be written
- * @param len data length
+ * The output is never filtered by AT+SYSMSGFILTER. The host MCU is not woken
+ * before the data is sent.
  *
- * @return
- *  - >= 0 : the real length of the data written
- *  - others : fail.
+ * @param data  Data buffer.
+ * @param len   Number of bytes to write.
+ * @return Number of bytes written, or negative on error.
  */
-int32_t  esp_at_port_write_data(uint8_t *data, int32_t len);
+int32_t esp_at_port_write_data_without_filter(uint8_t *data, int32_t len);
 
 /**
- * @brief call pre_active_write_data_callback() first and then write data into device,
+ * @brief Write @p len bytes to the AT output port, waking the host MCU first
+ *        and bypassing AT+SYSMSGFILTER.
  *
- * @param data data buffer to be written
- * @param len data length
+ * The output is never filtered by AT+SYSMSGFILTER. Before sending, the
+ * pre-write callback registered via esp_at_custom_ops_register() is invoked,
+ * which wakes the host MCU according to the AT+USERWKMCUCFG configuration.
  *
- * @return
- *  - >= 0 : the real length of the data written
- *  - others : fail.
+ * @param data  Data buffer.
+ * @param len   Number of bytes to write.
+ * @return Number of bytes written, or negative on error.
  */
-int32_t  esp_at_port_active_write_data(uint8_t *data, int32_t len);
+int32_t esp_at_port_active_write_data_without_filter(uint8_t *data, int32_t len);
 
 /**
- * @brief   read data from device,
+ * @brief Block until the AT output port transmit buffer is empty.
  *
- * @param data data buffer
- * @param len data length
- *
- * @return
- *  - >= 0 : the real length of the data read from device
- *  - others : fail
- */
-int32_t esp_at_port_read_data(uint8_t*data, int32_t len);
-
-/**
- * @brief wait for transmitting data completely to peer device,
- *
- * @param timeout_msec timeout time,The unit is millisecond.
- *
- * @return
- *  - true : succeed,transmit data completely
- *  - false : fail
+ * @param timeout_msec  Maximum wait time in milliseconds.
+ * @return true if the buffer drained before the timeout.
  */
 bool esp_at_port_wait_write_complete(int32_t timeout_msec);
 
 /**
- * @brief get the length of the data received,
+ * @brief Return the number of bytes currently pending on the AT input port.
  *
  * @return
- *  - >= 0   : the length of the data received
- *  - others : fail
+ *  - >= 0  : the length of the data received
+ *  - others: failure
  */
 int32_t esp_at_port_get_data_length(void);
 
 /**
- * @brief Set AT command terminator, by default, the terminator is "\r\n"
- * You can change it by calling this function, but it just supports one character now.
- * @param terminator: the line terminator
+ * @brief Enter a special receive mode; @p callback is invoked on each data arrival.
  *
- * @return
- *  - true : succeed,transmit data completely
- *  - false : fail
- */
-bool esp_at_custom_cmd_line_terminator_set(uint8_t* terminator);
-
-/**
- * @brief Get AT command line terminator,by default, the return string is "\r\n"
- *
- * @return the command line terminator
- */
-uint8_t* esp_at_custom_cmd_line_terminator_get(void);
-
-/**
- * @brief Find the partition which is defined in at_customize.csv
- * @param type: the type of the partition
- * @param subtype: the subtype of the partition
- * @param label: Partition label
- *
- * @return pointer to esp_partition_t structure, or NULL if no partition is found.
- *         This pointer is valid for the lifetime of the application
- */
-const esp_partition_t* esp_at_custom_partition_find(esp_partition_type_t type, esp_partition_subtype_t subtype, const char* label);
-
-/**
- * @brief Set AT core as specific status, it will call callback if receiving data.
- * for example:
- *
-  * @code{c}
- * static void wait_data_callback (void)
- * {
- *     xSemaphoreGive(sync_sema);
- * }
- *
- * void process_task(void* para)
- * {
- *     vSemaphoreCreateBinary(sync_sema);
- *     xSemaphoreTake(sync_sema,portMAX_DELAY);
- *     esp_at_port_write_data((uint8_t *)">",strlen(">"));
- *     esp_at_port_enter_specific(wait_data_callback);
- *     while(xSemaphoreTake(sync_sema,portMAX_DELAY)) {
- *         len = esp_at_port_read_data(data, data_len);
- *         // TODO:
- *     }
- * }
- * @endcode
- * @param callback: which will be called when received data from AT port
- *
+ * @param callback  Function called when new data arrives.
  */
 void esp_at_port_enter_specific(esp_at_port_specific_callback_t callback);
 
 /**
- * @brief Exit AT core as specific status.
- *
+ * @brief Exit the special receive mode entered by esp_at_port_enter_specific().
  */
 void esp_at_port_exit_specific(void);
 
-/**
- * @brief Get current AT command name.
- *
- */
-const uint8_t* esp_at_get_current_cmd_name(void);
+/* ============================================================================
+ *                              Command Response
+ * ========================================================================== */
 
 /**
- * @brief Get the version of the AT core library
+ * @brief Output a standard result string (OK, ERROR, SEND OK, etc.) on the AT port.
  *
- * @param buffer: buffer to store the version string
- * @param size: size of the buffer
+ * This only writes the corresponding result string to the AT port; it does not
+ * change the state of the AT port receive task. Use it when, after emitting the
+ * result string, the command handler still needs to run further logic that is
+ * unrelated to receiving new data on the AT port.
  *
+ * @note If the command is finished and the AT port should resume accepting new
+ *       input, use esp_at_dispatch_result() instead.
+ *
+ * @param result_code  One of the esp_at_rc_t values cast to uint8_t.
+ */
+void esp_at_write_result(uint8_t result_code)
+__asm__("esp_at_response_result");
+
+/**
+ * @brief Output a result string and return the AT port to the ready state.
+ *
+ * In addition to outputting the corresponding result string (like
+ * esp_at_write_result()), this dispatches the result code through any
+ * registered result handlers and brings the AT command receive task back to
+ * its idle/ready state, so that the AT port can accept and process new input.
+ *
+ * Use it when the command handler has finished and the next step is to receive
+ * fresh data from the AT port. For example, after printing "OK" and the ">"
+ * data prompt, call this so the AT port is ready to receive the new input that
+ * the handler expects.
+ *
+ * @param code  Result code to dispatch.
+ * @param pbuf  Optional command-specific data; set it to NULL if not needed.
+ */
+void esp_at_dispatch_result(esp_at_rc_t code, void *pbuf)
+__asm__("at_handle_result_code");
+
+/* ============================================================================
+ *                               System Control
+ * ========================================================================== */
+
+/**
+ * @brief Restart the system with a hardware watchdog safety net.
+ *
+ * Arms a 3-second hardware timer before calling the esp_restart() routine. If the
+ * normal restart path stalls, the watchdog forces a hard reset. No output is
+ * generated on the AT port before the restart.
+ */
+void esp_at_restart(void) __asm__("at_restart");
+
+/**
+ * @brief Respond with OK on the AT port, run the pre_restart callback, then restart.
+ *
+ * Use this variant to restart in response to an AT command so that the host
+ * receives an OK acknowledgement before the device reboots. Arms the same
+ * 3-second hardware watchdog as esp_at_restart().
+ */
+void esp_at_restart_async(void) __asm__("at_handle_restart");
+
+/* ============================================================================
+ *                                 Utilities
+ * ========================================================================== */
+
+/**
+ * @brief Convert a colon-separated MAC address string to a 6-byte binary array.
+ *
+ * Accepts the format "XX:XX:XX:XX:XX:XX" (case-insensitive hex digits).
+ *
+ * @param str  NUL-terminated MAC address string.
+ * @param mac  Output: 6-byte binary MAC address.
+ * @return true on success, false if the string is malformed.
+ */
+bool esp_at_str_2_mac(const char *str, uint8_t mac[6]) __asm__("at_str_2_mac");
+
+/* ============================================================================
+ *                                   Wi-Fi
+ * ========================================================================== */
+
+#ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
+
+/**
+ * @brief Same as esp_wifi_connect(), but also compatible with the AT Wi-Fi
+ *        command set.
+ *
+ * @note Use this instead of esp_wifi_connect() to start a Wi-Fi connection.
+ *
+ * @return ESP_OK on success, or a Wi-Fi stack error code.
+ */
+esp_err_t esp_at_wifi_connect(void) __asm__("at_wifi_connect");
+
+/**
+ * @brief Same as esp_wifi_disconnect(), but also compatible with the AT Wi-Fi
+ *        command set.
+ *
+ * @note Use this instead of esp_wifi_disconnect() to stop a Wi-Fi connection.
+ *
+ * @return ESP_OK on success, or a Wi-Fi stack error code.
+ */
+esp_err_t esp_at_wifi_disconnect(void) __asm__("at_wifi_disconnect");
+
+/**
+ * @brief Initialize the Wi-Fi reconnect state machine before a connection attempt.
+ *
+ * Must be called before esp_at_wifi_connect(). If the connection drops or the
+ * initial connect fails, the AT core automatically attempts to reconnect
+ * according to the selected policy.
+ *
+ * @param force  true  — reconnect unconditionally until esp_at_wifi_reconnect_stop()
+ *                       is called explicitly.
+ *               false — reconnect using the interval and count configured via
+ *                       AT+CWRECONNCFG.
+ */
+void esp_at_wifi_reconnect_init(bool force) __asm__("at_wifi_reconnect_init");
+
+/**
+ * @brief Stop an active Wi-Fi reconnect sequence.
+ *
+ * If an IP address has already been acquired, the existing connection is
+ * preserved and not torn down.
+ */
+void esp_at_wifi_reconnect_stop(void) __asm__("at_wifi_reconnect_stop");
+
+/**
+ * @brief Start a Wi-Fi scan using the AT command calling convention.
+ *
+ * If a reconnect sequence is in progress, it is suspended for the duration
+ * of the scan and then automatically resumed on completion.
+ *
+ * @param config  Scan configuration, or NULL for a default full passive scan.
+ * @param block   true to block until the scan completes.
+ * @return ESP_OK on success, or a Wi-Fi stack error code.
+ */
+esp_err_t esp_at_wifi_scan_start(const wifi_scan_config_t *config, bool block)
+__asm__("at_wifi_scan_start");
+
+#endif /* CONFIG_AT_WIFI_COMMAND_SUPPORT */
+
+/* ============================================================================
+ *                                   TCP/IP
+ * ========================================================================== */
+
+#ifdef CONFIG_AT_NET_COMMAND_SUPPORT
+
+/**
+ * @brief IP protocol family preference for DNS resolution.
+ */
+typedef enum {
+    ESP_AT_IPPROTO_UNSPEC       = 0,    /**< No preference; use the system default      */
+    ESP_AT_IPPROTO_IPV4_IPV6,           /**< Accept both IPv4 and IPv6 addresses        */
+    ESP_AT_IPPROTO_IPV4_ONLY,           /**< Resolve IPv4 addresses only                */
+    ESP_AT_IPPROTO_IPV6_ONLY,           /**< Resolve IPv6 addresses only                */
+} esp_at_ip_proto_t;
+
+/**
+ * @brief Network interface type associated with a socket or connection.
+ */
+typedef enum {
+    ESP_AT_NETIF_NONE   = 0,    /**< No network interface           */
+    ESP_AT_NETIF_STA,           /**< Wi-Fi station interface        */
+    ESP_AT_NETIF_AP,            /**< Wi-Fi soft-AP interface        */
+    ESP_AT_NETIF_ETH,           /**< Ethernet interface             */
+    ESP_AT_NETIF_MAX,           /**< Sentinel value                 */
+} esp_at_netif_t;
+
+/**
+ * @brief Connect a socket with an explicit timeout.
+ *
+ * Behaves like POSIX connect() with the following differences:
+ *   - Configurable timeout via @p timeout_ms.
+ *   - Requires approximately 2 KB of additional heap memory.
+ *   - The file descriptor lifecycle is managed internally; do not close it
+ *     manually after calling this function.
+ *
+ * Additional error codes not returned by connect():
+ *   - ESP_ERR_INVALID_ARG — invalid argument
+ *   - ESP_ERR_NO_MEM      — memory allocation failed
+ *   - ESP_ERR_TIMEOUT     — connection timed out
+ *
+ * @param fd          Socket file descriptor.
+ * @param name        Destination address structure.
+ * @param namelen     Size of the address structure.
+ * @param timeout_ms  Connection timeout in milliseconds; must be greater than 0.
+ * @return 0 on success, or a negative error code.
+ */
+int esp_at_connect(int fd, const struct sockaddr *name, socklen_t namelen, int timeout_ms)
+__asm__("at_connect");
+
+/**
+ * @brief Return the socket file descriptor associated with a TCP/UDP/SSL link ID.
+ *
+ * @param link_id  AT connection link identifier (0-based).
+ * @return Socket file descriptor, or a negative value if the link ID is invalid.
+ */
+int32_t esp_at_get_socket_by_link_id(uint8_t link_id);
+
+/**
+ * @brief Return the network interface type associated with a socket.
+ *
+ * @param fd  Socket file descriptor.
+ * @return The corresponding esp_at_netif_t, or ESP_AT_NETIF_NONE if unknown.
+ */
+esp_at_netif_t esp_at_get_netif_by_socket(int fd);
+
+/**
+ * @brief Resolve a hostname to a single IP address with timeout control.
+ *
+ * @note @p hostname may also be an IPv4/IPv6 address literal string.
+ *
+ * @note When @p timeout_ms > 0, the call uses approximately 2 KB of additional heap
+ *       memory. When @p timeout_ms == 0, no extra 2 KB is
+ *       used and the timeout is controlled internally by lwIP.
+ *
+ * @param hostname    NUL-terminated hostname or IPv4/IPv6 address string.
+ * @param ip_proto    Address family preference.
+ * @param target_addr Output: resolved IP address.
+ * @param timeout_ms  Resolution timeout in milliseconds.
  * @return
- * - > 0 : the real length of the version string
- * - others : fail
+ *   - ESP_OK             — resolved successfully
+ *   - ESP_ERR_NOT_FOUND  — hostname not found
+ *   - ESP_ERR_TIMEOUT    — resolution timed out
+ *   - ESP_ERR_NO_MEM     — memory allocation failed
+ *   - Other esp_err_t codes from the underlying DNS stack
  */
-int32_t esp_at_get_core_version(char *buffer, uint32_t size);
+esp_err_t esp_at_hostname_to_ipaddr(const char *hostname, esp_at_ip_proto_t ip_proto,
+                                    ip_addr_t *target_addr, uint32_t timeout_ms)
+__asm__("at_hostname_to_ipaddr");
 
 /**
- * @brief Check if the string is NULL
+ * @brief Resolve a hostname to a linked list of addrinfo structures.
  *
- * @param str: the string to be checked
+ * Returns detailed address information and supports multiple resolved addresses
+ * for a single hostname. The caller is responsible for freeing @p res with
+ * freeaddrinfo().
  *
- * @return
- * - true : the string is NULL
- * - false : the string is not NULL
+ * @note @p hostname may also be an IPv4/IPv6 address literal string. The timeout and
+ * heap-usage behavior is the same as esp_at_hostname_to_ipaddr().
+ *
+ * @param hostname    NUL-terminated hostname or IPv4/IPv6 address string.
+ * @param ip_proto    Address family preference.
+ * @param target_addr Output: first resolved IP address (may be NULL).
+ * @param res         Output: head of the resolved addrinfo linked list.
+ * @param timeout_ms  Resolution timeout in milliseconds.
+ * @return Same error codes as esp_at_hostname_to_ipaddr().
  */
-bool at_str_is_null(uint8_t *str);
+esp_err_t esp_at_hostname_to_addrinfo(const char *hostname, esp_at_ip_proto_t ip_proto,
+                                      ip_addr_t *target_addr, struct addrinfo **res,
+                                      uint32_t timeout_ms)
+__asm__("at_hostname_to_addrinfo");
 
-void at_handle_result_code(esp_at_result_code_string_index code, void *pbuf);
+#endif /* CONFIG_AT_NET_COMMAND_SUPPORT */
+
+/* ============================================================================
+ *                                HTTP Client
+ * ========================================================================== */
+
+#ifdef CONFIG_AT_HTTP_COMMAND_SUPPORT
+
+/**
+ * @brief Apply PKI configuration from AT+HTTPCFG to an HTTP client config struct.
+ *
+ * Call this before creating the HTTP client handle. The function copies
+ * the certificate and key material configured via AT+HTTPCFG into @p config.
+ *
+ * @param config  HTTP client configuration to populate.
+ * @return ESP_OK on success, or an error code.
+ */
+esp_err_t esp_at_http_set_pki_if_config(esp_http_client_config_t *config);
+
+/**
+ * @brief Release PKI resources previously applied by esp_at_http_set_pki_if_config().
+ *
+ * @param config  HTTP client configuration whose PKI fields are to be freed.
+ */
+void esp_at_http_free_pki_if_config(esp_http_client_config_t *config);
+
+/**
+ * @brief Apply request headers from AT+HTTPCHEAD to an HTTP client handle.
+ *
+ * Call this after creating the client handle and before initiating the request.
+ *
+ * @param handle  HTTP client handle.
+ * @return ESP_OK on success, or an error code.
+ */
+esp_err_t esp_at_http_set_header_if_config(esp_http_client_handle_t handle);
+
+/**
+ * @brief Clear all request headers previously configured via AT+HTTPCHEAD.
+ *
+ * @return ESP_OK on success.
+ */
+esp_err_t esp_at_http_clear_header(void);
+
+#endif /* CONFIG_AT_HTTP_COMMAND_SUPPORT */
+
+/* ============================================================================
+ *                              WebSocket Client
+ * ========================================================================== */
+
+#ifdef CONFIG_AT_WS_COMMAND_SUPPORT
+
+/**
+ * @brief Return the WebSocket client handle associated with a link ID.
+ *
+ * @param link_id  AT connection link identifier (0-2).
+ * @return WebSocket client handle, or NULL if the link ID is invalid or inactive.
+ */
+esp_websocket_client_handle_t esp_at_get_ws_client_handle_by_link_id(uint8_t link_id);
+
+/**
+ * @brief Send data over a WebSocket connection with explicit opcode and FIN flag.
+ *
+ * @param handle   WebSocket client handle.
+ * @param opcode   WebSocket frame opcode (e.g. WS_TRANSPORT_OPCODES_TEXT).
+ * @param fin      true to mark the last frame; false for continuation frames.
+ * @param data     Payload data buffer.
+ * @param length   Payload length in bytes.
+ * @param timeout  Maximum time to wait for the send to complete.
+ * @return Number of bytes sent, or negative on error.
+ */
+int esp_at_websocket_client_send_by_opcode_fin(esp_websocket_client_handle_t handle,
+                                               ws_transport_opcodes_t opcode, bool fin,
+                                               const char *data, int length,
+                                               TickType_t timeout);
+
+#endif /* CONFIG_AT_WS_COMMAND_SUPPORT */
+
+/* Deprecated aliases live in esp_at_legacy.h, included automatically via esp_at.h. */
+
+#ifdef __cplusplus
+}
+#endif

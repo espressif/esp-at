@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -14,6 +14,7 @@
 #include "nvs_flash.h"
 #include "nvs.h"
 #include "esp_at.h"
+#include "esp_at_internal.h"
 #include "at_uart.h"
 #include "driver/uart.h"
 
@@ -115,10 +116,10 @@ static int32_t at_mfg_uart_baudrate_get(void)
 
 #ifdef ESP_AT_LEGACY_SUPPORT
     } else if (mode == AT_PARAMS_IN_PARTITION) {
-        char data[AT_BUFFER_ON_STACK_SIZE] = {0};
+        char data[ESP_AT_BUF_ON_STACK_SIZE] = {0};
         const esp_partition_t *partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
         if (partition) {
-            if (esp_partition_read(partition, 0, data, AT_BUFFER_ON_STACK_SIZE) != ESP_OK) {
+            if (esp_partition_read(partition, 0, data, ESP_AT_BUF_ON_STACK_SIZE) != ESP_OK) {
                 return baud_rate;
             }
             // magic number
@@ -190,10 +191,10 @@ esp_err_t at_mfg_uart_port_pins_get(at_uart_port_pins_t *config)
 
 #ifdef ESP_AT_LEGACY_SUPPORT
     } else if (mode == AT_PARAMS_IN_PARTITION) {
-        char data[AT_BUFFER_ON_STACK_SIZE] = {0};
+        char data[ESP_AT_BUF_ON_STACK_SIZE] = {0};
         const esp_partition_t *partition = esp_at_custom_partition_find(0x40, 0xff, "factory_param");
         if (partition) {
-            if (esp_partition_read(partition, 0, data, AT_BUFFER_ON_STACK_SIZE) != ESP_OK) {
+            if (esp_partition_read(partition, 0, data, ESP_AT_BUF_ON_STACK_SIZE) != ESP_OK) {
                 return ESP_FAIL;
             }
             // magic number

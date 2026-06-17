@@ -336,7 +336,7 @@ static void at_spi_init(void)
     xTaskCreate(at_spi_task, "at_spi_task", 4096, NULL, 10, &s_task_handle);
 }
 
-static void at_spi_sleep_before_cb(at_sleep_mode_t mode)
+static void at_spi_sleep_before_cb(esp_at_sleep_mode_t mode)
 {
     // do something before entering light-sleep
 }
@@ -352,7 +352,7 @@ void at_interface_init(void)
     at_spi_init();
 
     // init interface operations
-    esp_at_device_ops_struct spi_ops = {
+    esp_at_intf_ops_t spi_ops = {
         .read_data = at_spi_read_data,
         .write_data = at_spi_write_data,
         .get_data_length = at_spi_get_data_len,
@@ -361,7 +361,7 @@ void at_interface_init(void)
     at_interface_ops_init(&spi_ops);
 
     // init interface hooks
-    esp_at_custom_ops_struct spi_hooks = {
+    esp_at_custom_ops_t spi_hooks = {
         .pre_sleep_callback = at_spi_sleep_before_cb,
         .pre_wakeup_callback = at_spi_wakeup_before_cb,
         .status_callback = NULL,

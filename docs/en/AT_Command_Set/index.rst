@@ -96,9 +96,9 @@ Generic AT command has four types:
 - AT commands end with a new-line (CR-LF), so the serial tool should be set to "New Line Mode".
 - Definitions of AT command error codes are provided in :doc:`../Compile_and_Develop/AT_API_Reference`:
 
-   - :cpp:type:`esp_at_error_code`
-   - :cpp:type:`esp_at_para_parse_result_type`
-   - :cpp:type:`esp_at_result_code_string_index`
+   - :cpp:type:`esp_at_errno_t`
+   - :cpp:type:`esp_at_para_parse_ret_t`
+   - :cpp:type:`esp_at_rc_t`
 
 AT Commands with Configuration Saved in the Flash
 =================================================
