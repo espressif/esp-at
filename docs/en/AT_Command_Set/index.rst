@@ -348,6 +348,12 @@ Through the ``Log Output`` pin described in :doc:`../Get_Started/Hardware_connec
         - 6: HE20
         - 7: VHT20
 
+    * - alloc failed, size:``<size>`` caps:``<caps>``
+      - Memory allocation failed. The requested size is ``<size>`` and the capability is ``<caps>``. Consider time-multiplexing features or reducing memory usage:
+
+        - Disable unneeded AT features under :ref:`python build.py menuconfig <esp-at-project-config>` > Component config > AT
+        - Refer to the optimization methods in the `Minimizing RAM Usage <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/performance/ram-usage.html>`_ document
+
     * - at-wifi: wifi disconnected, rc:``<reason_code>``
       - Wi-Fi station disconnection `reason code <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/wifi-driver/station-scenarios.html#wi-fi-reason-code>`_
     * - at-wifi: wifi reconnect..(``<index>``/``<total_count>``)

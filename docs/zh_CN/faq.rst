@@ -69,6 +69,8 @@ AT FAQ
       - :ref:`如何修改 AT 固件首次启动时的默认 Wi-Fi 模式？ <faq-default-wifi-mode>`
       - :ref:`AT 指令如何实现 HTTP 断点续传功能？ <faq-http-resume>`
       - :ref:`如何从 HTTP 服务器下载文件并存储到 FATFS，或将 FATFS 文件系统中的文件上传到 HTTP 服务器？ <faq-http-fs>`
+      - :ref:`使用 nmap 等工具扫描发现 AT 设备存在开放端口，是否说明固件存在安全风险？ <faq-nmap-open-ports>`
+      - :ref:`使用 esp-idf-sbom 扫描 AT 固件出现大量 CVE，是否会影响 RED、EN 18031、CRA 等合规？ <faq-sbom-cve>`
       :esp32: - :ref:`如何进行 BQB 认证？ <faq-bqb>`
       :esp32: - :ref:`AT 支持 PPP 吗？ <faq-ppp>`
 
@@ -241,7 +243,7 @@ ESP 系列模组出厂时 Flash 中未烧录 ESP-AT 固件，上电后会提示 
 
 .. _faq-wifi-disconnect:
 
-:ref:`Wi-Fi 为什么断开（WIFI DISCONNECT）？ <faq-at-index>`
+:ref:`Wi-Fi 为什么断开 (WIFI DISCONNECT)？ <faq-at-index>`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 可在 :term:`AT 日志端口` 查看断开原因，通常打印 ``wifi disconnected, rc:<reason_code>``。
@@ -446,6 +448,57 @@ AT 当前不支持 ESP-WIFI-MESH。
 
   - :example:`at_http_get_to_fs` - 从 HTTP 服务器下载文件并存储到 FATFS 文件系统
   - :example:`at_fs_to_http_server` - 将 FATFS 文件系统中的文件上传到 HTTP 服务器
+
+.. _faq-nmap-open-ports:
+
+:ref:`使用 nmap 等工具扫描发现 AT 设备存在开放端口，是否说明固件存在安全风险？ <faq-at-index>`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**结论**：默认 AT 固件连上 Wi-Fi 后 **不会主动监听** 任何端口。未通过 AT 命令创建连接或服务时，nmap 报告的 ``open`` / ``open|filtered`` **不是** 固件在提供服务。
+
+仅在使用 :ref:`AT+CIPSTART <cmd-START>`、:ref:`AT+CIPSERVER <cmd-SERVER>`、:ref:`AT+WEBSERVER <cmd-WEBSERVER>`、:ref:`AT+MDNS <cmd-MDNS>` 等命令时才会占用端口。
+
+**误判原因**
+
+  - **UDP 扫描不可靠**：``nmap -sU`` 靠 ICMP ``port-unreachable`` 判断端口关闭；未收到回复即标记 ``open|filtered``， **不等于** 端口在监听。UDP 及 ICMP 回复 **会丢包**，全端口高速扫描（如 ``-p 1-65535 -T4``）误报更多， **不能** 据此认定设备开放了端口。
+  - **扫错目标或已有连接**：确认 IP 与 :ref:`AT+CIFSR <cmd-IFSR>` 一致；高位 UDP 端口来自 :ref:`AT+CIPSTART <cmd-START>` 套接字，5353 仅 ``AT+MDNS`` 启用后存在。
+
+**排查**
+
+1. ``AT+CIFSR``、``AT+CIPSTATE?`` — 核对 IP 与当前连接，无多余监听即正常。
+2. TCP 扫描：``sudo nmap -sS -p- <IP>``；未建连时应全部 ``closed``。
+3. 需 UDP 扫描时用 ``-T2`` 降速，或抓包确认 ``port-unreachable`` 是否到达。
+4. ``AT+RST`` 后仅 ``AT+CWJAP`` 连 Wi-Fi，再复扫。
+
+仍异常请记录扫描命令、:ref:`AT+GMR <cmd-GMR>` 版本及 AT 命令序列，至 `esp-at/issues <https://github.com/espressif/esp-at/issues>`_ 反馈。
+
+.. _faq-sbom-cve:
+
+:ref:`使用 esp-idf-sbom 扫描 AT 固件出现大量 CVE，是否会影响 RED、EN 18031、CRA 等合规？ <faq-at-index>`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+`esp-idf-sbom <https://github.com/espressif/esp-idf-sbom>`_ 等工具报告的 CVE 针对的是软件组件（库）的特定版本，并不代表最终编译出的 AT 固件一定受影响。多数 CVE 只有在相关功能或代码路径被启用时才会编入固件并具备触发条件；对于 AT 固件中未启用的功能，其源码不会进入最终二进制，对应漏洞也就没有触发条件。因此，这类 CVE 通常不影响 AT 固件满足欧盟无线电设备指令（RED，2014/53/EU）的网络安全要求（委托条例 (EU) 2022/30 及协调标准 EN 18031 系列）以及《网络弹性法案》(CRA) 等合规要求，提供一份自我评估 (self-assessment) 说明即可。
+
+扫描结果之所以会高估风险，主要原因如下：
+
+- 工具按组件版本号匹配公开漏洞库（如 NVD），只要版本落在受影响范围内即报告，并不分析该漏洞在具体编译配置下是否真正可达。
+- ESP-AT 通过 menuconfig (Kconfig) 裁剪功能，被关闭功能对应的源码不会编入固件，其携带的漏洞也不存在于最终二进制中。
+- 即使代码被编入固件，漏洞往往仍需多个前提条件同时满足才能触发，任一条件不满足即不可利用。
+
+以 CVE-2026-34873（TLS 1.3 会话恢复期间的客户端伪装）为例，该漏洞影响 Mbed TLS 3.5.0 至 3.6.5 及 4.0.0（会被 SBOM 报告）。根据 `官方安全公告 <https://mbed-tls.readthedocs.io/en/latest/security-advisories/mbedtls-security-advisory-2026-03-client-impersonation-while-resuming-tls13-session/>`_，仅当以 *服务端* 角色运行的 Mbed TLS 同时满足以下条件时才可能受影响：
+
+- 同时支持 TLS 1.2 与 TLS 1.3；
+- 配置为对客户端进行身份认证；
+- 向已认证的客户端签发 TLS 1.3 会话票据 (session ticket) 用于后续会话恢复。
+
+AT 固件虽然可通过 :ref:`AT+CIPSTART <cmd-START>` 作为 SSL 客户端、通过 :ref:`AT+CIPSERVER <cmd-SERVER>` 作为 SSL 服务端，但其 Mbed TLS 默认未启用 TLS 1.3（需在 menuconfig 中手动开启，参见 :ref:`修改 TLS 协议版本 <modify-tls-version>`），因此既不会协商 TLS 1.3，也不会签发 TLS 1.3 会话票据，上述条件无从满足。所以，尽管 SBOM 会因 Mbed TLS 版本报告该 CVE，但在默认 AT 固件配置下，该漏洞无法被触发，因此对固件没有实际影响。
+
+建议按以下步骤处理被报告的 CVE：
+
+1. 查阅每条 CVE 的官方描述（如 NVD、组件安全公告），确认其触发所需的配置与运行条件。
+2. 对照 AT 固件实际情况，检查相关功能是否启用、代码是否被编译、运行时是否具备触发场景。可参考 :doc:`本地编译 ESP-AT 工程 <Compile_and_Develop/How_to_clone_project_and_compile_it>` 确认编译配置。
+3. 对每条 CVE 标注受影响 / 不受影响及判定依据，作为合规所需的自我评估材料。
+4. 若确认某条 CVE 在你的配置下确实可达，可升级到包含修复的组件版本或关闭相关功能后重新编译固件，也欢迎通过 `esp-at/issues <https://github.com/espressif/esp-at/issues>`_ 联系我们。我们持续跟踪上游组件的安全公告，在适当情况下更新相关依赖，并将适用的安全修复集成到后续发布的 AT 固件版本中。
 
 .. only:: esp32
 
