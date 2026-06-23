@@ -1,0 +1,33 @@
+name: Scheduled Rebuild of Maintenance Branches
+
+# GitHub only runs `schedule` triggers from the workflow file on the default
+# branch. So this dispatcher lives on the default branch and fans out to the
+# maintenance branches via workflow_dispatch, which rebuilds their firmware and
+# refreshes the artifacts that otherwise expire after 90 days.
+on:
+  schedule:
+    # Run at 02:00 UTC on the 1st of every other month.
+    - cron: '0 2 1 */2 *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        branch:
+          - release/v2.2.0.0_esp8266
+          - release/v2.3.0.0_esp8266
+    steps:
+      - name: Trigger CI on ${{ matrix.branch }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run main.yml \
+            --repo "${{ github.repository }}" \
+            --ref "${{ matrix.branch }}"
