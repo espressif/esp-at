@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 #
-# SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+# SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
 
 import os
 import sys
 import subprocess
 import shutil
-import filecmp
 import configparser
 
 def ESP_LOGI(x):
@@ -106,17 +105,15 @@ def main():
         if not os.path.exists(src_patch_path) or not os.path.exists(dst_patch_path):
             raise Exception(f'{src_patch_path} or {dst_patch_path} does not exist')
 
-        # avoid applying the same patch multiple times
-        dst_patch_file = os.path.join(repo_dir, path_option, patch_name)
-        if os.path.exists(dst_patch_file):
-            ESP_LOGI(f'{patch_name} already exists, skipping.')
-            continue
-        else:
-            shutil.copy(src_patch_path, dst_patch_path)
-
         # *.patch
-        cur_dir = os.getcwd()
         if patch_name.endswith('.patch'):
+            # avoid applying the same patch multiple times
+            dst_patch_file = os.path.join(repo_dir, path_option, patch_name)
+            if os.path.exists(dst_patch_file):
+                ESP_LOGI(f'{patch_name} already exists, skipping.')
+                continue
+            shutil.copy(src_patch_path, dst_patch_path)
+            cur_dir = os.getcwd()
             cmd = f'cd {dst_patch_path} && git apply --check {src_patch_path} && cd {cur_dir}'
             ret = subprocess.run(cmd, capture_output = True, shell = True)
             if ret.returncode:
@@ -127,17 +124,16 @@ def main():
                 if ret:
                     raise Exception(f'{patch_name} apply failed.')
                 ESP_LOGI(f'{patch_name} has been applied.')
-        # *.a
+        # *.a: always sync to overwrite the destination
         elif patch_name.endswith('.a'):
-            if filecmp.cmp(dst_patch_path, src_patch_path):
-                ESP_LOGI(f'{src_patch_path} does not need to be applied.')
-            else:
-                shutil.copy(src_patch_path, dst_patch_path)
-                ESP_LOGI(f'{src_patch_path} has been applied.')
-        # directory
+            shutil.copy(src_patch_path, dst_patch_path)
+            ESP_LOGI(f'{patch_name} has been synchronized to {dst_patch_path}.')
+        # directory: always sync to overwrite the destination
         elif os.path.isdir(src_patch_path):
             shutil.copytree(src_patch_path, dst_patch_path, dirs_exist_ok=True)
             ESP_LOGI(f'Directory {src_patch_path} has been synchronized to {dst_patch_path}.')
+        else:
+            raise Exception(f'Unsupported patch type: {patch_name}')
 
 if __name__ == '__main__':
     try:
