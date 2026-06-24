@@ -23,13 +23,13 @@ Bluetooth® Low Energy AT Commands
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLECONNPARAM <cmd-BCONNP>`: Query or update parameters of Bluetooth LE connection.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEDISCONN <cmd-BDISC>`: End Bluetooth LE connection.
     :esp32 or esp32c3 : - :ref:`AT+BLEDATALEN <cmd-BDLEN>`: Set Bluetooth LE data packet length.
-    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLECFGMTU <cmd-BMTU>`: Set Bluetooth LE MTU length.
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLECFGMTU <cmd-BMTU>`: Query or set Bluetooth LE MTU length.
     :esp32 or esp32c3 : - :ref:`AT+BLEGATTSSRVCRE <cmd-GSSRVCRE>`: Generic Attributes Server (GATTS) creates services.
     :esp32 or esp32c3 : - :ref:`AT+BLEGATTSSRVSTART <cmd-GSSRVSTART>`: GATTS starts services.
     :esp32 or esp32c3 : - :ref:`AT+BLEGATTSSRVSTOP <cmd-GSSRVSTOP>`: GATTS Stops Services.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTSSRV <cmd-GSSRV>`: GATTS discovers services.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`: GATTS discovers characteristics.
-    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`: Notify a client of the value of a characteristic value from the server.
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`: Notify a client of a characteristic value from the server.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTSIND <cmd-GSIND>`: Indicate the characteristic value from the server to a client.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`: GATTS sets characteristics.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`: Generic Attributes Client (GATTC) discovers primary services.
@@ -43,8 +43,8 @@ Bluetooth® Low Energy AT Commands
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESECPARAM <cmd-BLESMPPAR>`: Query or set Bluetooth LE encryption parameters.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEENC <cmd-BLEENC>`: Initiate Bluetooth LE encryption request.
     :esp32 or esp32c3 : - :ref:`AT+BLEENCRSP <cmd-BLEENCRSP>`: Respond to the pairing request from the peer device.
-    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`: Reply the key value to the peer device.
-    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`: Reply the confirm value to the peer device in the legacy connection stage.
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEKEYREPLY <cmd-BLEKEYREPLY>`: Send the key value to the peer device.
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLECONFREPLY <cmd-BLECONFREPLY>`: Send the confirm value to the peer device in the legacy connection stage.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEENCDEV <cmd-BLEENCDEV>`: Query bonded Bluetooth LE encryption device list.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEENCCLEAR <cmd-BLEENCCLEAR>`: Clear Bluetooth LE encryption device list.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESETKEY <cmd-BLESETKEY>`: Set Bluetooth LE static pair key.
@@ -63,7 +63,7 @@ Bluetooth® Low Energy AT Commands
     :esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEREADPHY <cmd-BLERDPHY>`: Query the current transmitter PHY.
     :esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESETPHY <cmd-BLESETPHY>`: Set the current transmitter PHY.
     :esp32 or esp32c3: - :ref:`AT+BLERDRSSI <cmd-BLERDRSSI>`: Query the current connection RSSI.
-    :esp32 or esp32c3: - :ref:`AT+BLEWL <cmd-BLEWL>`: Set the white list.
+    :esp32 or esp32c3: - :ref:`AT+BLEWL <cmd-BLEWL>`: Set the whitelist.
 
 .. _cmd-ble-intro:
 
@@ -218,19 +218,10 @@ Introduction
 
     **Response:**
 
-    .. only:: esp32 or esp32c3
+    ::
 
-        ::
-
-            +BLEADDR:<BLE_public_addr>
-            OK
-
-    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
-
-        ::
-
-            +BLEADDR:<BLE_random_addr>
-            OK
+        +BLEADDR:<BLE_public_addr>
+        OK
 
     Set Command
     ^^^^^^^^^^^
@@ -268,7 +259,15 @@ Introduction
     - At least one bit of the random part of the address should be 0.
     - At least one bit of the random part of the address should be 1.
 
-    - The configuration changes will be saved in the NVS partition.
+    .. only:: esp32 or esp32c3
+
+        - The query command only returns the public address.
+
+    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
+
+        - By default, the query command returns the public address. If a random address has been set, the query command returns the random address.
+
+    - The configuration changes will not be saved in the NVS partition.
 
     Example
     ^^^^^^^^
@@ -390,25 +389,37 @@ Introduction
 
     - **<scan_type>**:
 
-    - 0: passive scan
+    - 0: passive scan (default)
     - 1: active scan
 
     - **<own_addr_type>**:
 
-    - 0: Public Address
+    - 0: Public Address (default)
     - 1: Random Address
     - 2: RPA Public Address
     - 3: RPA Random Address
 
     - **<filter_policy>**:
 
-    - 0: BLE_SCAN_FILTER_ALLOW_ALL
+    - 0: BLE_SCAN_FILTER_ALLOW_ALL (default)
     - 1: BLE_SCAN_FILTER_ALLOW_ONLY_WLST
     - 2: BLE_SCAN_FILTER_ALLOW_UND_RPA_DIR
     - 3: BLE_SCAN_FILTER_ALLOW_WLIST_PRA_DIR
 
-    - **<scan_interval>**: scan interval. It should be more than or equal to the value of ``<scan_window>``. The range of this parameter is [0x0004,0x4000]. The scan interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual scan interval is [2.5,10240] ms.
-    - **<scan_window>**: scan window. It should be less than or equal to the value of ``<scan_interval>``. The range of this parameter is [0x0004,0x4000]. The scan window equals this parameter multiplied by ``0.625 ms``, so the range for the actual scan window is [2.5,10240] ms.
+    .. only:: esp32
+
+        - **<scan_interval>**: scan interval. It should be more than or equal to the value of ``<scan_window>``. The range of this parameter is [0x0004,0x4000]. The scan interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual scan interval is [2.5,10240] ms. Default: 0x140.
+        - **<scan_window>**: scan window. It should be less than or equal to the value of ``<scan_interval>``. The range of this parameter is [0x0004,0x4000]. The scan window equals this parameter multiplied by ``0.625 ms``, so the range for the actual scan window is [2.5,10240] ms. Default: 0x30.
+
+    .. only:: esp32c3
+
+        - **<scan_interval>**: scan interval. It should be more than or equal to the value of ``<scan_window>``. The range of this parameter is [0x0004,0x4000]. The scan interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual scan interval is [2.5,10240] ms. Default: 0x40.
+        - **<scan_window>**: scan window. It should be less than or equal to the value of ``<scan_interval>``. The range of this parameter is [0x0004,0x4000]. The scan window equals this parameter multiplied by ``0.625 ms``, so the range for the actual scan window is [2.5,10240] ms. Default: 0x40.
+
+    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
+
+        - **<scan_interval>**: scan interval. It should be more than or equal to the value of ``<scan_window>``. The range of this parameter is [0x0004,0x4000]. The scan interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual scan interval is [2.5,10240] ms. Default: 0x50.
+        - **<scan_window>**: scan window. It should be less than or equal to the value of ``<scan_interval>``. The range of this parameter is [0x0004,0x4000]. The scan window equals this parameter multiplied by ``0.625 ms``, so the range for the actual scan window is [2.5,10240] ms. Default: 0x50.
 
     Example
     ^^^^^^^^
@@ -530,7 +541,7 @@ Introduction
     Parameter
     ^^^^^^^^^^
 
-    - **<scan_rsp_data>**: scan response data is a HEX string. For example, if you want to set the response data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLESCANRSPDATA="1122334455"``.
+    - **<scan_rsp_data>**: scan response data is a HEX string. For example, if you want to set the response data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLESCANRSPDATA="1122334455"``. Default: empty (no scan response data configured).
 
     Example
     ^^^^^^^^
@@ -605,13 +616,13 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    - **<adv_int_min>**: minimum advertising interval. The range of this parameter is [0x0020,0x4000]. The actual advertising interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual minimum interval is [20, 10240] ms. It should be less than or equal to the value of ``<adv_int_max>``.
-    - **<adv_int_max>**: maximum advertising interval. The range of this parameter is [0x0020,0x4000]. The actual advertising interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual maximum interval is [20, 10240] ms. It should be more than or equal to the value of ``<adv_int_min>``.
+    - **<adv_int_min>**: minimum advertising interval. The range of this parameter is [0x0020,0x4000]. The actual advertising interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual minimum interval is [20, 10240] ms. It should be less than or equal to the value of ``<adv_int_max>``. Default: 0x20.
+    - **<adv_int_max>**: maximum advertising interval. The range of this parameter is [0x0020,0x4000]. The actual advertising interval equals this parameter multiplied by ``0.625 ms``, so the range for the actual maximum interval is [20, 10240] ms. It should be more than or equal to the value of ``<adv_int_min>``. Default: 0x40.
     - **<adv_type>**:
 
     .. only:: esp32
 
-        - 0: ADV_TYPE_IND
+        - 0: ADV_TYPE_IND (default)
         - 1: ADV_TYPE_DIRECT_IND_HIGH
         - 2: ADV_TYPE_SCAN_IND
         - 3: ADV_TYPE_NONCONN_IND
@@ -619,7 +630,7 @@ Introduction
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-        - 0: ADV_TYPE_IND
+        - 0: ADV_TYPE_IND (default)
         - 1: ADV_TYPE_DIRECT_IND_HIGH
         - 2: ADV_TYPE_SCAN_IND
         - 3: ADV_TYPE_NONCONN_IND
@@ -632,7 +643,7 @@ Introduction
 
     - **<own_addr_type>**: own Bluetooth LE address type.
 
-    - 0: BLE_ADDR_TYPE_PUBLIC
+    - 0: BLE_ADDR_TYPE_PUBLIC (default)
     - 1: BLE_ADDR_TYPE_RANDOM
 
     - **<channel_map>**: channel of advertising.
@@ -640,21 +651,21 @@ Introduction
     - 1: ADV_CHNL_37
     - 2: ADV_CHNL_38
     - 4: ADV_CHNL_39
-    - 7: ADV_CHNL_ALL
+    - 7: ADV_CHNL_ALL (default)
 
     - **[<adv_filter_policy>]**: filter policy of advertising.
 
-    - 0: ADV_FILTER_ALLOW_SCAN_ANY_CON_ANY
+    - 0: ADV_FILTER_ALLOW_SCAN_ANY_CON_ANY (default)
     - 1: ADV_FILTER_ALLOW_SCAN_WLST_CON_ANY
     - 2: ADV_FILTER_ALLOW_SCAN_ANY_CON_WLST
     - 3: ADV_FILTER_ALLOW_SCAN_WLST_CON_WLST
 
     - **[<peer_addr_type>]**: remote Bluetooth LE address type.
 
-    - 0: PUBLIC
+    - 0: PUBLIC (default)
     - 1: RANDOM
 
-    - **[<"peer_addr">]**: remote Bluetooth LE address.
+    - **[<"peer_addr">]**: remote Bluetooth LE address. Default: "00:00:00:00:00:00".
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
@@ -751,11 +762,11 @@ Introduction
 
     .. only:: esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2
 
-        - **<adv_data>**: advertising data in HEX string. For example, to set the advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATA="1122334455"``. The maximum length is 119 bytes.
+        - **<adv_data>**: advertising data in HEX string. For example, to set the advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATA="1122334455"``. The maximum length is 119 bytes. Default: empty (no advertising data).
 
     .. only:: esp32
 
-        - **<adv_data>**: advertising data in HEX string. For example, to set the advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATA="1122334455"``. The maximum length is 31 bytes.
+        - **<adv_data>**: advertising data in HEX string. For example, to set the advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATA="1122334455"``. The maximum length is 31 bytes. Default: empty (no advertising data).
 
     Note
     ^^^^^
@@ -830,13 +841,13 @@ Introduction
     Parameters
     ^^^^^^^^^^
 
-    - **<dev_name>**: string parameter showing a device name. For example, if you want to set the device name to "just-test", the command should be ``AT+BLEADVDATAEX="just-test",<uuid>,<manufacturer_data>,<include_power>``.
+    - **<dev_name>**: string parameter showing a device name. For example, if you want to set the device name to "just-test", the command should be ``AT+BLEADVDATAEX="just-test",<uuid>,<manufacturer_data>,<include_power>``. Default: "ESP-AT".
 
-    - **<uuid>**: string parameter. For example, if you want to set the UUID to "0xA002", the command should be ``AT+BLEADVDATAEX=<dev_name>,"A002",<manufacturer_data>,<include_power>``.
+    - **<uuid>**: string parameter. For example, if you want to set the UUID to "0xA002", the command should be ``AT+BLEADVDATAEX=<dev_name>,"A002",<manufacturer_data>,<include_power>``. Default: empty.
 
-    - **<manufacturer_data>**: manufacturer data in HEX string. For example, if you set the manufacturer data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATAEX=<dev_name>,<uuid>,"1122334455",<include_power>``.
+    - **<manufacturer_data>**: manufacturer data in HEX string. For example, if you set the manufacturer data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEADVDATAEX=<dev_name>,<uuid>,"1122334455",<include_power>``. Default: empty.
 
-    - **<include_power>**: If you need to include the TX power in the advertising data, you should set the parameter to ``1``. Otherwise, set it to ``0``.
+    - **<include_power>**: If you need to include the TX power in the advertising data, you should set the parameter to ``1``. Otherwise, set it to ``0``. Default: 0.
 
     Note
     ^^^^^
@@ -1230,7 +1241,7 @@ Introduction
 
     .. _cmd-BMTU:
 
-    :ref:`AT+BLECFGMTU <BLE-AT>`: Set Bluetooth LE MTU Length
+    :ref:`AT+BLECFGMTU <BLE-AT>`: Query or set Bluetooth LE MTU Length
     -----------------------------------------------------------------------------
 
     Query Command
@@ -1594,7 +1605,7 @@ Introduction
 
     .. _cmd-GSNTFY:
 
-    :ref:`AT+BLEGATTSNTFY <BLE-AT>`: Notify a Client of the Value of a Characteristic Value from the Server
+    :ref:`AT+BLEGATTSNTFY <BLE-AT>`: Notify a Client of a Characteristic Value from the Server
     ---------------------------------------------------------------------------------------------------------------------------
 
     Set Command
@@ -2171,7 +2182,7 @@ Introduction
     - **<auto_conn>**: Bluetooth LE SPP auto-reconnection flag. By default, automatic reconnection is enabled.
 
     - 0: disable Bluetooth LE SPP automatic reconnection.
-    - 1: enable Bluetooth LE SPP automatic reconnection
+    - 1: enable Bluetooth LE SPP automatic reconnection.
 
     Notes
     ^^^^^
@@ -2286,7 +2297,7 @@ Introduction
 
     - **<auth_req>**: authentication request.
 
-    - 0: NO_BOND
+    - 0: NO_BOND (default)
     - 1: BOND
     - 4: MITM
     - 8: SC_ONLY
@@ -2296,18 +2307,18 @@ Introduction
 
     - **<iocap>**: input and output capability.
 
-    - 0: DisplayOnly
+    - 0: DisplayOnly (default)
     - 1: DisplayYesNo
     - 2: KeyboardOnly
     - 3: NoInputNoOutput
     - 4: Keyboard display
 
-    - **<enc_key_size>**: encryption key size. Range: [7,16]. Unit: byte.
-    - **<init_key>**: initial key represented in bit combinations.
-    - **<rsp_key>**: response key represented in bit combinations.
+    - **<enc_key_size>**: encryption key size. Range: [7,16]. Unit: byte. Default: 0 (not set; will be negotiated during pairing).
+    - **<init_key>**: initial key represented in bit combinations. Default: 0.
+    - **<rsp_key>**: response key represented in bit combinations. Default: 0.
     - **<auth_option>**: authentication option of security.
 
-    - 0: Select the security level automatically.
+    - 0: Select the security level automatically (default).
     - 1: If it cannot follow the preset security level, the connection will disconnect.
 
     Note
@@ -2460,7 +2471,7 @@ Introduction
 
     .. _cmd-BLEKEYREPLY:
 
-    :ref:`AT+BLEKEYREPLY <BLE-AT>`: Reply the Key Value to the Peer Device
+    :ref:`AT+BLEKEYREPLY <BLE-AT>`: Send the Key Value to the Peer Device
     -------------------------------------------------------------------------------------------------------------------------
 
     Set Command
@@ -2497,7 +2508,7 @@ Introduction
 
     .. _cmd-BLECONFREPLY:
 
-    :ref:`AT+BLECONFREPLY <BLE-AT>`: Reply the Confirm Value to the Peer Device in the Legacy Connection Stage
+    :ref:`AT+BLECONFREPLY <BLE-AT>`: Send the Confirm Value to the Peer Device in the Legacy Connection Stage
     ------------------------------------------------------------------------------------------------------------------------------
 
     Set Command
@@ -3160,7 +3171,7 @@ Introduction
     Parameter
     ^^^^^^^^^^
 
-    - **<periodic_data>**: Periodic advertising data in HEX string. For example, to set the periodic advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEPERIODICDATA="1122334455"``.
+    - **<periodic_data>**: Periodic advertising data in HEX string. For example, to set the periodic advertising data to "0x11 0x22 0x33 0x44 0x55", the command should be ``AT+BLEPERIODICDATA="1122334455"``. Default: empty (no periodic advertising data).
 
     Example
     ^^^^^^^^
@@ -3490,7 +3501,7 @@ Introduction
 
     .. _cmd-BLEWL:
 
-    :ref:`AT+BLEWL <BLE-AT>`: Set the white list
+    :ref:`AT+BLEWL <BLE-AT>`: Set the whitelist
     -----------------------------------------------------------------------------
 
     Set Command
@@ -3498,7 +3509,7 @@ Introduction
 
     **Function:**
 
-    Set the white list.
+    Set the whitelist.
 
     **Command:**
 
@@ -3518,7 +3529,7 @@ Introduction
     - **<add_or_rmv>**:
 
       - 0: remove a single device from the whitelist, or clear the entire whitelist.
-      - 1: add a device to the white list.
+      - 1: add a device to the whitelist.
 
     - **[<addr_type>]**: address type
 
@@ -3537,5 +3548,5 @@ Introduction
 
     ::
 
-        AT+BLEWL=1,0,"24:0a:c4:09:34:23" // add a device to the white list
-        AT+BLEWL=0 // remove all devices from the white list
+        AT+BLEWL=1,0,"24:0a:c4:09:34:23" // add a device to the whitelist
+        AT+BLEWL=0 // remove all devices from the whitelist
