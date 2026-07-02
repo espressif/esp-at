@@ -24,6 +24,12 @@
 #include "at_uart.h"
 #include "esp_at_interface.h"
 
+#if CONFIG_AT_DEBUG
+#define ESP_AT_UART_TASK_STACK_SIZE     esp_at_max(4096, CONFIG_AT_UART_TASK_STACK_SIZE)
+#else
+#define ESP_AT_UART_TASK_STACK_SIZE     CONFIG_AT_UART_TASK_STACK_SIZE
+#endif
+
 // static variables
 static QueueHandle_t s_at_uart_queue = NULL;
 static TaskHandle_t s_task_handle = NULL;
@@ -194,7 +200,7 @@ static void at_uart_init(void)
 #else
     ESP_AT_LOGI(TAG, "AT log port:uart%d baudrate:%d", CONFIG_ESP_CONSOLE_UART_NUM, CONFIG_ESP_CONSOLE_UART_BAUDRATE);
 #endif
-    xTaskCreate(at_uart_task, "uTask", CONFIG_AT_UART_TASK_STACK_SIZE, NULL, 1, &s_task_handle);
+    xTaskCreate(at_uart_task, "uTask", ESP_AT_UART_TASK_STACK_SIZE, NULL, 1, &s_task_handle);
 }
 
 void at_uart_transmit_mode_switch_cb(esp_at_status_t status)
