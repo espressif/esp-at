@@ -80,11 +80,6 @@ def at_sync_submodule(path, repo, ref, ref_type, commit, redirect):
             ret = subprocess.call(cmd, shell = True)
             if ret:
                 raise Exception('git fetch failed! Please manually run:\r\n{}'.format(cmd))
-            if ref_type == 'branch':
-                cmd = 'cd {} && git merge origin/{} {}'.format(path, ref, ref)
-                ret = subprocess.call(cmd, shell = True)
-                if ret:
-                    raise Exception('git merge failed! Please manually run:\r\n{}'.format(cmd))
         cmd = 'cd {} && git checkout -q {} --force'.format(path, commit)
         ret = subprocess.call(cmd, shell = True)
         if ret:
