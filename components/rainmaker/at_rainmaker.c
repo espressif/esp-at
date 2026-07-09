@@ -526,7 +526,10 @@ esp_err_t rmaker_ota_handle(esp_rmaker_ota_handle_t ota_handle, esp_rmaker_ota_d
             free(hmcu_ota_value);
             hmcu_ota_value = NULL;
 
-            char *host_ota_info = (char *)calloc(1, strlen(ota_data->url) + 256);
+            size_t host_ota_info_len = strlen(ota_data->url) + 256 +
+                                       (ota_data->fw_version ? strlen(ota_data->fw_version) : strlen("null")) +
+                                       (ota_data->ota_job_id ? strlen(ota_data->ota_job_id) : 0);
+            char *host_ota_info = (char *)calloc(1, host_ota_info_len);
             if (host_ota_info == NULL) {
                 esp_rmaker_ota_report_status(ota_handle, OTA_STATUS_FAILED, "ESP no ram to notify host mcu OTA info");
                 return ESP_FAIL;
@@ -534,7 +537,7 @@ esp_err_t rmaker_ota_handle(esp_rmaker_ota_handle_t ota_handle, esp_rmaker_ota_d
 
             /* Format: +RMFWNOTIFY:<type>,<size>,<url>,<fw_version>,<ota_job_id> */
             if (ota_data->fw_version) {
-                sprintf(host_ota_info, "%s:%d,%d,%s,%s,%s\r\n",
+                snprintf(host_ota_info, host_ota_info_len, "%s:%d,%d,%s,%s,%s\r\n",
                         RAINMAKER_OTA_NOTIFY_FORMAT,
                         AT_RM_HOST_MCU_OTA,
                         ota_data->filesize,
@@ -542,7 +545,7 @@ esp_err_t rmaker_ota_handle(esp_rmaker_ota_handle_t ota_handle, esp_rmaker_ota_d
                         ota_data->fw_version,
                         ota_data->ota_job_id);
             } else {
-                sprintf(host_ota_info, "%s:%d,%d,%s,%s,%s\r\n",
+                snprintf(host_ota_info, host_ota_info_len, "%s:%d,%d,%s,%s,%s\r\n",
                         RAINMAKER_OTA_NOTIFY_FORMAT,
                         AT_RM_HOST_MCU_OTA,
                         ota_data->filesize,
@@ -959,7 +962,7 @@ static uint8_t at_exe_cmd_rmnodeinit(uint8_t *cmd_name)
     // set fw_version field in "info" in node configuration
     // format like "2.4.0(esp32c3_MINI-1_4b42408):Sep 20 2022 11:58:48"
     char *version = (char *)calloc(1, 256);
-    sprintf(version, "%s(%s_%s_%s):%s %s",
+    snprintf(version, 256, "%s(%s_%s_%s):%s %s",
             CONFIG_APP_PROJECT_VER, CONFIG_IDF_TARGET,
             esp_at_get_current_module_name(),
             ESP_AT_PROJECT_COMMIT_ID,
