@@ -142,7 +142,7 @@ static void at_sdio_task(void *params)
 
         esp_at_sdio_list_t *p_list = container_of((uint8_t(*)[CONFIG_AT_SDIO_BLOCK_SIZE])addr, esp_at_sdio_list_t, pbuf);
         p_list->handle = handle;
-        p_list->left_len = size;
+        p_list->left_len = (size <= CONFIG_AT_SDIO_BLOCK_SIZE) ? size : CONFIG_AT_SDIO_BLOCK_SIZE;
         p_list->pos = 0;
         p_list->next = NULL;
         xSemaphoreTake(s_sdio_rw_sema, portMAX_DELAY);
