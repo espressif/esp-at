@@ -43,10 +43,7 @@
 static char *s_at_web_redirect_url = NULL;
 #endif
 
-#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
-#include "bootloader_custom_ota.h"
-#include "at_compress_ota.h"
-#endif
+#include "esp_at_ota.h"
 
 #define ESP_AT_WEB_SERVER_CHECK(a, str, goto_tag, ...)                                              \
     do                                                                                 \
@@ -1445,55 +1442,6 @@ error_handle:
     return ESP_FAIL;
 }
 
-const esp_partition_t *at_web_get_ota_update_partition(void)
-{
-    const esp_partition_t *update_partition = NULL;
-    const esp_partition_t *configured = esp_ota_get_boot_partition();
-    const esp_partition_t *running = esp_ota_get_running_partition();
-
-    if (configured != running) {
-        ESP_LOGW(TAG, "Configured OTA boot partition at offset 0x%08x, but running from offset 0x%08x",
-                 configured->address, running->address);
-        ESP_LOGW(TAG, "(This can happen if either the OTA boot data or preferred boot image become corrupted somehow.)");
-    }
-    ESP_LOGI(TAG, "Running partition type %d subtype %d (offset 0x%08x)",
-             running->type, running->subtype, running->address);
-
-#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
-    update_partition = esp_partition_find_first(ESP_PARTITION_TYPE_DATA, BOOTLOADER_CUSTOM_OTA_PARTITION_SUBTYPE, NULL);
-#else
-    update_partition = esp_ota_get_next_update_partition(running);
-#endif
-    if (update_partition) {
-        ESP_LOGI(TAG, "Next partition found, subtype %d at offset 0x%x", update_partition->subtype, update_partition->address);
-        if (update_partition->address == running->address) {
-            ESP_LOGE(TAG, "The partition to be updated is the current running partition");
-            update_partition = NULL;
-        }
-    }
-
-    return update_partition;
-}
-
-esp_err_t at_web_ota_end(esp_ota_handle_t handle, const esp_partition_t *partition)
-{
-    esp_err_t err = esp_ota_end(handle);
-    if (err != ESP_OK) {
-        if (err == ESP_ERR_OTA_VALIDATE_FAILED) {
-            ESP_LOGE(TAG, "Image validation failed, image is corrupted");
-        }
-        ESP_LOGE(TAG, "esp_ota_end failed (%s)!", esp_err_to_name(err));
-        return ESP_FAIL;
-    }
-
-    err = esp_ota_set_boot_partition(partition);
-    if (err != ESP_OK) {
-        ESP_LOGE(TAG, "esp_ota_set_boot_partition failed (%s)!", esp_err_to_name(err));
-        return ESP_FAIL;
-    }
-    return err;
-}
-
 static esp_err_t ota_upgrade(httpd_req_t *req)
 {
     char *buf = ((web_server_context_t*)(req->user_ctx))->scratch;
@@ -1501,12 +1449,14 @@ static esp_err_t ota_upgrade(httpd_req_t *req)
     int remaining_len = req->content_len;
     int received_len = 0;
     esp_err_t err = ESP_FAIL;
-#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
-    at_compress_ota_handle_t handle;
-#else
-    esp_ota_handle_t update_handle = 0;
-#endif
-    const esp_partition_t *update_partition = at_web_get_ota_update_partition();
+    esp_at_ota_handle_t ota = NULL;
+    bool ota_started = false;
+
+    const esp_partition_t *update_partition = esp_at_ota_get_update_partition();
+    if (update_partition == NULL) {
+        ESP_LOGE(TAG, "no ota update partition");
+        goto err_handler;
+    }
     // check post data size
     if (update_partition->size < total_len) {
         ESP_LOGE(TAG, "ota data too long, partition size is %u, bin size is %d", update_partition->size, total_len);
@@ -1516,15 +1466,12 @@ static esp_err_t ota_upgrade(httpd_req_t *req)
     memset(buf, 0x0, ESP_AT_WEB_SCRATCH_BUFSIZE * sizeof(char));
 
     // start ota
-#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
-    err = at_compress_ota_begin(&handle);
-#else
-    err = esp_ota_begin(update_partition, OTA_SIZE_UNKNOWN, &update_handle);
-#endif
+    err = esp_at_ota_begin(&ota);
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "ota begin failed (%s)", esp_err_to_name(err));
         goto err_handler;
     }
+    ota_started = true;
     // receive ota data
     while (remaining_len > 0) {
         received_len = httpd_req_recv(req, buf, MIN(remaining_len, ESP_AT_WEB_SCRATCH_BUFSIZE)); // Receive the file part by part into a buffer
@@ -1534,35 +1481,18 @@ static esp_err_t ota_upgrade(httpd_req_t *req)
                 continue;
             }
             ESP_LOGE(TAG, "Failed to receive post ota data, err = %d", received_len);
-#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
-            at_compress_ota_end(&handle);
-#else
-            esp_ota_end(update_handle);
-#endif
             goto err_handler;
         } else { // received successfully
-#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
-            err = at_compress_ota_write(&handle, buf, received_len);
-#else
-            err = esp_ota_write(update_handle, buf, received_len);
-#endif
+            err = esp_at_ota_write(ota, buf, received_len);
             if (err != ESP_OK) {
                 ESP_LOGE(TAG, "ota write failed (%s)", esp_err_to_name(err));
-#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
-                at_compress_ota_end(&handle);
-#else
-                esp_ota_end(update_handle);
-#endif
                 goto err_handler;
             }
             remaining_len -= received_len;
         }
     }
-#if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
-    err = at_compress_ota_end(&handle);
-#else
-    err = at_web_ota_end(update_handle, update_partition);
-#endif
+    err = esp_at_ota_end(ota);
+    ota_started = false;
     if (err != ESP_OK) {
         goto err_handler;
     }
@@ -1572,6 +1502,9 @@ static esp_err_t ota_upgrade(httpd_req_t *req)
     return ESP_OK;
 
 err_handler:
+    if (ota_started) {
+        esp_at_ota_abort(ota);
+    }
     at_web_response_error(req, HTTPD_500);
     esp_at_port_active_write_data((uint8_t*)s_ota_receive_fail_response, strlen(s_ota_receive_fail_response));
     return ESP_FAIL;
@@ -1678,7 +1611,7 @@ static esp_err_t ota_info_get_handler(httpd_req_t *req)
     json_len += sprintf(temp_json_str + json_len, "[");
 
     // OTA partition information
-    if (at_web_get_ota_update_partition()) {
+    if (esp_at_ota_get_update_partition()) {
         json_len += sprintf(temp_json_str + json_len, "\"ota\",");
     }
 
