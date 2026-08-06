@@ -110,7 +110,7 @@ def at_sync_submodule(path, repo, ref, ref_type, commit, redirect):
         ret = subprocess.call(cmd, shell = True)
         if ret:
             raise Exception('git submodule sync failed! Please manually run:\r\n{}'.format(cmd))
-        cmd = 'cd {} && git submodule update --init --recursive --force'.format(path)
+        cmd = 'cd {} && git submodule update --depth 1 --init --recursive --force'.format(path)
         ret = subprocess.call(cmd, shell = True)
         if ret:
             ESP_LOGW('Submodule update failed, cleaning up stale gitdir references and retrying..')
