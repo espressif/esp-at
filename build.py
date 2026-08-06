@@ -56,7 +56,7 @@ def at_sync_submodule(path, repo, ref, ref_type, commit, redirect):
                 repo = '/'.join([preset_origins[at_origin]['preprocess'](), os.path.basename(repo)])
 
         ESP_LOGI('Cloning into submodule:"{}" from "{}" (This may take some time)..'.format(path, repo))
-        ret = subprocess.call('git clone -b {} {} {}'.format(ref, repo, path), shell = True)
+        ret = subprocess.call('git clone --depth 1 -b {} {} {}'.format(ref, repo, path), shell = True)
         if ret:
             raise Exception('git clone failed')
         new_clone = True
