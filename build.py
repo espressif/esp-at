@@ -7,6 +7,7 @@ import os
 import sys
 import subprocess
 import json
+import shutil
 
 # color output on windows
 if sys.platform == 'win32':
@@ -467,12 +468,24 @@ def install_compilation_env(target):
 
     print('\r\nAll done! You can now run:\r\n\r\n  {}build.py build\r\n'.format('python ' if sys.platform == 'win32' else './'))
 
+def detect_linux_package_manager():
+    for pkg_mgr in ('apt-get', 'dnf'):
+        if shutil.which(pkg_mgr):
+            return pkg_mgr
+    return None
+
 def install_prerequisites():
     # install ESP-IDF prerequisites
     ESP_LOGI('Ready to install ESP-IDF prerequisites..')
     cmd = ''
     if sys.platform == 'linux':
-        cmd = 'sudo apt-get install git wget flex bison gperf python3 python3-pip python3-venv python3-setuptools cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0'
+        pkg_mgr = detect_linux_package_manager()
+        if pkg_mgr == 'dnf':
+            cmd = 'sudo dnf install git wget flex bison gperf python3 python3-setuptools cmake ninja-build ccache dfu-util libusbx'
+        else:
+            if pkg_mgr is None:
+                ESP_LOGW('No supported package manager (apt-get, dnf) found, defaulting to apt-get..')
+            cmd = 'sudo apt-get install git wget flex bison gperf python3 python3-pip python3-venv python3-setuptools cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0'
     elif sys.platform == 'darwin':
         cmd = 'brew install cmake ninja dfu-util ccache python3'
     elif sys.platform == 'win32':
