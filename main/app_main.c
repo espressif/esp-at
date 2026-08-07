@@ -97,8 +97,6 @@ void wifi_status_gpio_init(void)
 }
 
 
-
-
 #ifdef CONFIG_AT_OTA_SUPPORT
 static uint8_t at_exeCmdCipupdate(uint8_t *cmd_name)//add get station ip and ap ip
 {
