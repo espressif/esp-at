@@ -59,6 +59,7 @@
 #include "esp_event_loop.h"
 #include "driver/gpio.h"
 
+
 #define WIFI_STATUS_PIN  4   // 选用GPIO4作为状态输出引脚
 
 // WiFi事件回调函数
