@@ -55,6 +55,50 @@
 #include "at_eth_init.h"
 #endif
 
+#include "esp_wifi.h"
+#include "esp_event_loop.h"
+#include "driver/gpio.h"
+
+#define WIFI_STATUS_PIN  4   // 选用GPIO4作为状态输出引脚
+
+// WiFi事件回调函数
+static esp_err_t wifi_status_event_cb(void *ctx, system_event_t *event)
+{
+    switch(event->event_id) {
+        case SYSTEM_EVENT_STA_CONNECTED:
+        case SYSTEM_EVENT_STA_GOT_IP:
+            gpio_set_level(WIFI_STATUS_PIN, 1);  // 连接成功，输出高电平
+            break;
+        case SYSTEM_EVENT_STA_DISCONNECTED:
+            gpio_set_level(WIFI_STATUS_PIN, 0);  // 断开连接，输出低电平
+            break;
+        default:
+            break;
+    }
+    return ESP_OK;
+}
+
+// 初始化函数，在esp_at_ready_before中调用
+void wifi_status_gpio_init(void)
+{
+    // 配置GPIO为输出模式
+    gpio_config_t io_conf = {
+        .pin_bit_mask = 1ULL << WIFI_STATUS_PIN,
+        .mode = GPIO_MODE_OUTPUT,
+        .pull_up_en = 0,
+        .pull_down_en = 0,
+        .intr_type = GPIO_INTR_DISABLE,
+    };
+    gpio_config(&io_conf);
+    gpio_set_level(WIFI_STATUS_PIN, 0);  // 默认断开状态
+
+    // 注册WiFi事件回调
+    esp_event_loop_set_cb(wifi_status_event_cb, NULL);
+}
+
+
+
+
 #ifdef CONFIG_AT_OTA_SUPPORT
 static uint8_t at_exeCmdCipupdate(uint8_t *cmd_name)//add get station ip and ap ip
 {
