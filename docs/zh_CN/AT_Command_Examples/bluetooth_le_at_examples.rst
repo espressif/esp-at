@@ -194,6 +194,20 @@ Bluetooth LE 客户端读写服务特征值
 
        OK
 
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播参数。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADVPARAM=50,50,0,0,7,0,,
+
+   响应：
+
+   .. code-block:: none
+
+     OK
+
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端开始广播，之后 {IDF_TARGET_NAME} Bluetooth LE 客户端开始扫描并且持续 3 秒钟。
 
    {IDF_TARGET_NAME} Bluetooth LE 服务端：
@@ -1038,6 +1052,20 @@ Bluetooth LE 连接加密
        +BLEGATTSCHAR:"char",2,2,0xC401
 
        OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE 服务端设置广播参数。
+
+   命令：
+
+   .. code-block:: none
+
+     AT+BLEADVPARAM=50,50,0,0,7,0,,
+
+   响应：
+
+   .. code-block:: none
+
+     OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE 服务端开始广播，之后 {IDF_TARGET_NAME} Bluetooth LE 客户端开始扫描并且持续 3 秒钟。
 
