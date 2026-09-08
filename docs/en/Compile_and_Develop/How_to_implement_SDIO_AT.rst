@@ -24,7 +24,7 @@ The SDIO slave pins are as below:
    - DAT2 is GPIO12 (for 4-bit mode only)
    - DAT3 is GPIO13 (for 4-bit mode only)
 
-.. only:: esp32c6 or esp32c61
+.. only:: esp32c6
 
    - CLK is GPIO19
    - CMD is GPIO18
@@ -41,6 +41,15 @@ The SDIO slave pins are as below:
    - DAT1 is GPIO7
    - DAT2 is GPIO14 (for 4-bit mode only)
    - DAT3 is GPIO13 (for 4-bit mode only)
+
+.. only:: esp32c61
+
+   - CLK is GPIO26
+   - CMD is GPIO25
+   - DAT0 is GPIO27
+   - DAT1 is GPIO28
+   - DAT2 is GPIO22 (for 4-bit mode only)
+   - DAT3 is GPIO23 (for 4-bit mode only)
 
 Implement SDIO AT
 -----------------

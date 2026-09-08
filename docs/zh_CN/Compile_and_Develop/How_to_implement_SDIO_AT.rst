@@ -24,7 +24,7 @@ SDIO slave 管脚如下所示：
    - DAT2 is GPIO12（四线）
    - DAT3 is GPIO13（四线）
 
-.. only:: esp32c6 or esp32c61
+.. only:: esp32c6
 
    - CLK is GPIO19
    - CMD is GPIO18
@@ -41,6 +41,15 @@ SDIO slave 管脚如下所示：
    - DAT1 is GPIO7
    - DAT2 is GPIO14（四线）
    - DAT3 is GPIO13（四线）
+
+.. only:: esp32c61
+
+   - CLK is GPIO26
+   - CMD is GPIO25
+   - DAT0 is GPIO27
+   - DAT1 is GPIO28
+   - DAT2 is GPIO22（四线）
+   - DAT3 is GPIO23（四线）
 
 如何使用 SDIO AT
 ----------------
