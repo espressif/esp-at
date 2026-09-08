@@ -229,6 +229,13 @@ jobs:
       artifacts_name: esp32c61-4MB-at
     secrets: inherit
 
+  build-esp32c61-sdio-at:
+    uses: ./.github/workflows/build_template_esp32c61.yml
+    with:
+      module_name: ESP32C61-SDIO
+      artifacts_name: esp32c61-sdio-at
+    secrets: inherit
+
   build-esp32c61-4mb-debug-at:
     uses: ./.github/workflows/build_template_esp32c61.yml
     with:
