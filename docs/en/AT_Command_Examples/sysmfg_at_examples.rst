@@ -401,11 +401,41 @@ Maximum TX Power Operations
 
   **Response:**
 
-  .. code-block:: none
+  .. only:: esp32
 
-    +RFPOWER:60
+    .. code-block:: none
 
-    OK
+      +RFPOWER:60,0,0,0
+
+      OK
+
+  .. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+    .. code-block:: none
+
+      +RFPOWER:60,11,11,11
+
+      OK
+
+  .. only:: esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+    The response above applies when the current firmware includes Bluetooth LE. ``60`` must match the Wi-Fi maximum TX power updated above. The other three values are the defaults of ``<ble_adv_power>``, ``<ble_scan_power>``, and ``<ble_conn_power>``.
+
+    When the current firmware does not include Bluetooth LE:
+
+    .. code-block:: none
+
+      +RFPOWER:60
+
+      OK
+
+  .. only:: esp32s2
+
+    .. code-block:: none
+
+      +RFPOWER:60
+
+      OK
 
   The maximum TX power is now 60 (60 × 0.25 dBm = 15 dBm).
 

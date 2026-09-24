@@ -1669,14 +1669,23 @@
 
 **响应：**
 
-.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+.. only:: esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+  当前固件包含 Bluetooth LE 功能时：
 
   ::
 
     +RFPOWER:<wifi_power>,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>
     OK
 
-.. only:: esp32c2 or esp32s2
+  当前固件未包含 Bluetooth LE 功能时：
+
+  ::
+
+    +RFPOWER:<wifi_power>
+    OK
+
+.. only:: esp32s2
 
   ::
 
@@ -1688,13 +1697,13 @@
 
 **命令：**
 
-.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+.. only:: esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
   ::
 
-    AT+RFPOWER=<wifi_power>[,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>]
+    AT+RFPOWER=[<wifi_power>][,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>]
 
-.. only:: esp32c2 or esp32s2
+.. only:: esp32s2
 
   ::
 
@@ -1709,7 +1718,7 @@
 参数
 ^^^^
 
-- **<wifi_power>**：单位为 0.25 dBm，比如设定的参数值为 78，则实际的 RF Power 值为 78 * 0.25 dBm = 19.5 dBm。配置后可运行 ``AT+RFPOWER?`` 命令确认实际的 RF Power 值。
+- **<wifi_power>**：单位为 0.25 dBm，比如设定的参数值为 78，则实际的 RF Power 值为 78 * 0.25 dBm = 19.5 dBm。配置后可运行 ``AT+RFPOWER?`` 命令确认实际的 RF Power 值。默认值：78。
 
   .. only:: esp32
 
@@ -1752,7 +1761,7 @@
 
 .. only:: esp32
 
-  - **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [0,7]：
+  - **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。默认值：0。取值范围为 [0,7]：
 
     - 0: 7 dBm
     - 1: 4 dBm
@@ -1765,7 +1774,7 @@
 
 .. only:: esp32c3 or esp32c2 or esp32c5
 
-  - **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [0,15]：
+  - **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。默认值：11。取值范围为 [0,15]：
 
     - 0: -24 dBm
     - 1: -21 dBm
@@ -1786,7 +1795,7 @@
 
 .. only:: esp32c6 or esp32c61
 
-  - **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。取值范围为 [3,15]：
+  - **<ble_adv_power>**：Bluetooth LE 广播的 RF TX Power。默认值：11。取值范围为 [3,15]：
 
     - 3: -15 dBm
     - 4: -12 dBm
@@ -1802,23 +1811,31 @@
     - 14: 18 dBm
     - 15: 20 dBm
 
-.. only:: esp32 or esp32c3 or esp32c6 or esp32c61 or esp32c5
+.. only:: esp32
 
-  - **<ble_scan_power>**：Bluetooth LE 扫描的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
-  - **<ble_conn_power>**：Bluetooth LE 连接的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。
+  - **<ble_scan_power>**：Bluetooth LE 扫描的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。默认值：0。
+  - **<ble_conn_power>**：Bluetooth LE 连接的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。默认值：0。
+
+.. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+  - **<ble_scan_power>**：Bluetooth LE 扫描的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。默认值：11。
+  - **<ble_conn_power>**：Bluetooth LE 连接的 RF TX Power，参数取值同 ``<ble_adv_power>`` 参数。默认值：11。
 
 说明
 ^^^^
 
-- 当 Wi-Fi 关闭或未初始化时，``AT+RFPOWER`` 命令无法设置/查询 Wi-Fi 的 RF TX Power。当 Bluetooth LE 未初始化时，``AT+RFPOWER`` 命令无法设置/查询 Bluetooth LE 的 RF TX Power。
-- 由于 RF TX Power 分为不同的等级，而每个等级都有与之对应的取值范围，所以通过 ``esp_wifi_get_max_tx_power`` 查询到的 ``wifi_power`` 的值可能与 ``esp_wifi_set_max_tx_power`` 设定的值存在差异，但不会比该值大。
-- 建议将 <ble_scan_power> 和 <ble_conn_power> 两个参数值设置为与 <ble_adv_power> 参数相同的值，否则，这两个参数将会被自动设置为与 <ble_adv_power> 相同的值。
-- 配置更改不保存到 flash。如果需要保存到 flash，请参考 :ref:`最大发射功率操作 <sysmfg-max-tx-power>`。
+- 设置 Wi-Fi 的 RF TX Power 前，需要先初始化 Wi-Fi。Wi-Fi 关闭、未初始化，以及当前固件未包含 Wi-Fi 功能时，查询到的 ``<wifi_power>`` 为 0。该值为无效值，此时无法设置 Wi-Fi 的 RF TX Power。
+
+.. only:: esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+  - 设置 Bluetooth LE 的 RF TX Power 前，需要先初始化 Bluetooth LE。Bluetooth LE 未初始化时，查询到的 ``<ble_adv_power>``、``<ble_scan_power>``、``<ble_conn_power>`` 为 255。这些值无效，此时无法设置 Bluetooth LE 的 RF TX Power。
+  - 建议将 ``<ble_scan_power>`` 和 ``<ble_conn_power>`` 设置为与 ``<ble_adv_power>`` 相同的值，否则这两个参数会自动设置为与 ``<ble_adv_power>`` 相同的值。
 
 .. only:: esp32c61
 
-  .. attention::
-    - Bluetooth LE TX Power 必须在 Bluetooth LE 初始化后立即配置。如果扫描功能曾经被启用过一次，之后任意设置 Bluetooth LE TX Power 的命令将会失败。
+  - 如果想要设置 Bluetooth LE 的 RF TX Power，需要在 Bluetooth LE 初始化后立即配置。如果 Bluetooth LE 扫描曾经启用过一次，之后设置 Bluetooth LE 的 RF TX Power 会失败。
+
+- 配置更改不保存到 flash。如果需要保存到 flash，请参考 :ref:`最大发射功率操作 <sysmfg-max-tx-power>`。
 
 .. _cmd-RFCAL:
 
