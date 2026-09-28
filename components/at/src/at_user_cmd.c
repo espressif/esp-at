@@ -16,6 +16,7 @@
 #ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
 #include "freertos/event_groups.h"
 #include "driver/gpio.h"
+#include "esp_private/esp_gpio_reserve.h"
 #endif
 
 #if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
@@ -524,6 +525,11 @@ static uint8_t at_setup_cmd_userwkmcucfg(uint8_t para_num)
             if (!GPIO_IS_VALID_GPIO(wk_number)) {
                 return ESP_AT_RESULT_CODE_ERROR;
             }
+            // Reject a GPIO already in use, for example by SPI flash, UART, or another peripheral.
+            if (esp_gpio_is_reserved(1ULL << wk_number)) {
+                ESP_AT_LOGE(TAG, "GPIO%d is in use", (int)wk_number);
+                return ESP_AT_RESULT_CODE_ERROR;
+            }
         } else if (wk_mode == WKMCU_MODE_UART) {
 #ifdef CONFIG_IDF_TARGET_ESP8266
             if (wk_number != 0) {
@@ -601,7 +607,10 @@ static uint8_t at_setup_cmd_userwkmcucfg(uint8_t para_num)
             io_conf.pull_up_en = false;
             io_conf.pull_down_en = false;
             io_conf.intr_type = GPIO_INTR_DISABLE;
+            gpio_hold_dis(s_wkmcu_cfg.wake_number);
             gpio_config(&io_conf);
+            // gpio_config(OUTPUT) reserved this pin. DISABLE does not clear that bit.
+            esp_gpio_revoke(1ULL << s_wkmcu_cfg.wake_number);
         }
     }
 
