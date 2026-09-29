@@ -134,6 +134,9 @@ def at_sync_submodule(path, repo, ref, ref_type, commit, redirect):
             if ret:
                 raise Exception('git submodule update failed! Please manually run:\r\n{}'.format(cmd))
 
+    use_commit = subprocess.check_output('cd {} && git rev-parse HEAD'.format(path), shell=True).decode(encoding='utf-8').strip()
+    ESP_LOGI('Submodule "{}" is using commit: {}'.format(path, use_commit))
+
 def at_parse_idf_version(idf_ver_file, pairs):
     if not os.path.exists(idf_ver_file):
         ESP_LOGE('File does not exist: {}'.format(idf_ver_file))
@@ -250,14 +253,16 @@ def build_project(platform_name, module_name, silence, build_args):
             data = rd_f.read().splitlines()
             wr_f.write(' '.join(data))
 
+def _is_csv_comment_or_empty(row):
+    return (not row) or (not row[0].strip()) or row[0].lstrip().startswith('#')
+
+
 def get_param_data_info(source_file, sheet_name):
-    import xlrd
     import csv
     filename, filetype = os.path.splitext(source_file)
     if filetype == '.csv':
         with open(source_file) as f:
-            csv_data = csv.reader(f)
-            param_data_list = list(csv_data)
+            param_data_list = [row for row in csv.reader(f) if not _is_csv_comment_or_empty(row)]
 
     else:
         print('The file type is not supported.')

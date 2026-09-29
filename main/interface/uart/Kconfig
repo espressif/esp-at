@@ -37,6 +37,7 @@ if AT_BASE_ON_UART
 
         config AT_UART_TASK_STACK_SIZE
             int "The stack size of the AT uart task"
+            default 1536 if IDF_TARGET_ESP32S2
             default 1536 if IDF_TARGET_ESP32
             default 1024
             range 1024 8192

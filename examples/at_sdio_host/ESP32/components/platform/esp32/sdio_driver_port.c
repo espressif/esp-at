@@ -14,8 +14,6 @@
 #include "driver/sdmmc_defs.h"
 
 #include "sdmmc_cmd.h"
-#include "soc/host_reg.h"
-#include "soc/sdmmc_periph.h"
 
 #include "sdio_host_log.h"
 #include "sdio_host_error.h"

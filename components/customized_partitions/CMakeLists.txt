@@ -64,6 +64,12 @@ if (CONFIG_AT_CUSTOMIZED_PARTITION_TABLE_SUPPORT)
                 --flash_args_file ${flash_customized_partition_args}
     COMMENT "Create customized_bin..."
     )
+    # IDF 6.x creates gen_project_binary in __idf_build_binary() after
+    # components are processed. Create a placeholder so we can attach the
+    # dependency now; IDF will add the real binary-generation target later.
+    if(NOT TARGET gen_project_binary)
+        add_custom_target(gen_project_binary)
+    endif()
     add_dependencies(gen_project_binary customized_bin)
 
 endif()

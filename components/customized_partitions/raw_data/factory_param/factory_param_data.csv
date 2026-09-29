@@ -1,3 +1,4 @@
+# Rows starting with # are comments and are skipped.
 platform,module_name,description,version,max_tx_power,uart_port,start_channel,channel_num,country_code,uart_baudrate,uart_tx_pin,uart_rx_pin,uart_cts_pin,uart_rts_pin,sys_store
 PLATFORM_ESP32,WROOM-32,"4MB, Wi-Fi + BLE, OTA, TX:17 RX:16",4,78,1,1,13,CN,115200,17,16,15,14,1
 PLATFORM_ESP32,PICO-D4,"4MB, Wi-Fi + BLE, OTA, TX:22 RX:19",4,78,1,1,13,CN,115200,22,19,15,14,1
@@ -8,7 +9,8 @@ PLATFORM_ESP32,SOLO-1,"Not recommended for new design. 4MB, Wi-Fi + BLE, OTA, TX
 PLATFORM_ESP32,WROVER-32,"Not recommended for new design. 4MB, Wi-Fi + BLE, OTA, TX:22 RX:19",4,78,1,1,13,CN,115200,22,19,15,14,1
 PLATFORM_ESP32C3,MINI-1,"4MB, Wi-Fi + BLE, OTA, TX:7 RX:6",4,78,1,1,13,CN,115200,7,6,5,4,1
 PLATFORM_ESP32C3,ESP32C3-SPI,"4MB, Wi-Fi + BLE, OTA, communicate with MCU via SPI",4,78,-1,1,13,CN,-1,-1,-1,-1,-1,1
-PLATFORM_ESP32C3,ESP32C3_RAINMAKER,"4MB, RainMaker, Compress OTA, TX:7 RX:6",4,78,1,1,13,CN,115200,7,6,5,4,1
+# TODO: Remove rainmaker support if it remains unused
+# PLATFORM_ESP32C3,ESP32C3_RAINMAKER,"4MB, RainMaker, Compress OTA, TX:7 RX:6",4,78,1,1,13,CN,115200,7,6,5,4,1
 PLATFORM_ESP32C2,ESP32C2-2MB,"2MB, Wi-Fi, Compress OTA, All ECOs, TX:7 RX:6",4,78,1,1,13,CN,115200,7,6,19,20,1
 PLATFORM_ESP32C2,ESP32C2-4MB,"4MB, Wi-Fi + BluFi, OTA, All ECOs, TX:7 RX:6",4,78,1,1,13,CN,115200,7,6,5,4,1
 PLATFORM_ESP32C2,ESP32C2-2MB-BLE,"2MB, BLE, No OTA, All ECOs, TX:7 RX:6",4,78,1,1,13,CN,115200,7,6,5,4,1

@@ -6,7 +6,6 @@
 #pragma once
 
 #include "sdkconfig.h"
-#include "esp_idf_version.h"
 
 // label of the fs partition
 #if CONFIG_AT_FS_FATFS

@@ -17,10 +17,7 @@
 #include "esp_at_internal.h"
 #include "at_uart.h"
 #include "driver/uart.h"
-
-#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 4, 0)
 #include "soc/uart_reg.h"
-#endif
 
 // static variables
 static const uint8_t g_at_uart_parity_table[] = {UART_PARITY_DISABLE, UART_PARITY_ODD, UART_PARITY_EVEN};

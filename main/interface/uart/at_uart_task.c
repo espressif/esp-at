@@ -20,7 +20,7 @@
 #include "esp_system.h"
 #include "driver/gpio.h"
 #include "driver/uart.h"
-#include "soc/uart_channel.h"
+#include "soc/uart_pins.h"
 #include "at_uart.h"
 #include "esp_at_interface.h"
 
@@ -194,8 +194,8 @@ static void at_uart_init(void)
 
 #if CONFIG_ESP_CONSOLE_UART_CUSTOM
     ESP_AT_LOGI(TAG, "AT log port:uart%d tx:%d rx:%d baudrate:%d", CONFIG_ESP_CONSOLE_UART_NUM,
-                (CONFIG_ESP_CONSOLE_UART_TX_GPIO >= 0) ? CONFIG_ESP_CONSOLE_UART_TX_GPIO : UART_NUM_0_TXD_DIRECT_GPIO_NUM,
-                (CONFIG_ESP_CONSOLE_UART_RX_GPIO >= 0) ? CONFIG_ESP_CONSOLE_UART_RX_GPIO : UART_NUM_0_RXD_DIRECT_GPIO_NUM,
+                (CONFIG_ESP_CONSOLE_UART_TX_GPIO >= 0) ? CONFIG_ESP_CONSOLE_UART_TX_GPIO : U0TXD_GPIO_NUM,
+                (CONFIG_ESP_CONSOLE_UART_RX_GPIO >= 0) ? CONFIG_ESP_CONSOLE_UART_RX_GPIO : U0RXD_GPIO_NUM,
                 CONFIG_ESP_CONSOLE_UART_BAUDRATE);
 #else
     ESP_AT_LOGI(TAG, "AT log port:uart%d baudrate:%d", CONFIG_ESP_CONSOLE_UART_NUM, CONFIG_ESP_CONSOLE_UART_BAUDRATE);

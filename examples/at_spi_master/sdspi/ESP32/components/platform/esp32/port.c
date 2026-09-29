@@ -10,8 +10,8 @@
 #include "driver/gpio.h"
 #include "esp_intr_alloc.h"
 
-#include "freertos/queue.h"
 #include "freertos/FreeRTOS.h"
+#include "freertos/queue.h"
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 
@@ -77,7 +77,7 @@ esp_err_t at_spi_slot_init(void)
     };
 
     // Initialize SPI bus and enable dma
-    esp_err_t ret = spi_bus_initialize(HSPI_HOST, &buscfg, 1);
+    esp_err_t ret = spi_bus_initialize(SPI2_HOST, &buscfg, 1);
     assert(ret == ESP_OK);
 
     // Attach the SD card to the SPI bus
@@ -89,7 +89,7 @@ esp_err_t at_spi_slot_init(void)
         .spics_io_num = -1,
         .queue_size = 4,
     };
-    ret =  spi_bus_add_device(HSPI_HOST, &devcfg, &spi_handle);
+    ret =  spi_bus_add_device(SPI2_HOST, &devcfg, &spi_handle);
     assert(ret == ESP_OK);
 
     // Configure CS pin

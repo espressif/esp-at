@@ -27,6 +27,7 @@ workflow:
 variables:
   GIT_STRATEGY: fetch
   AT_FIRMWARE_FROM: gitlab
+  PYTHONUNBUFFERED: 1
   AT_CI_MEM_DEBUG_LEVEL:
     value: "0"
     description: "Mem debug for all firmware jobs: 0=none, 1=monitor, 2=monitor+heap light, 3=monitor+heap comprehensive"
