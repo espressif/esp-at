@@ -194,6 +194,20 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
        OK
 
+#. {IDF_TARGET_NAME} Bluetooth LE server sets advertising parameters.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADVPARAM=50,50,0,0,7,0,,
+
+   Response:
+
+   .. code-block:: none
+
+     OK
+
 #. {IDF_TARGET_NAME} Bluetooth LE server starts advertising, then the {IDF_TARGET_NAME} Bluetooth LE client starts scanning and lasts for 3 s.
 
    {IDF_TARGET_NAME} Bluetooth LE server:
@@ -1038,6 +1052,20 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
        +BLEGATTSCHAR:"char",2,2,0xC401
 
        OK
+
+#. {IDF_TARGET_NAME} Bluetooth LE server sets advertising parameters.
+
+   Command:
+
+   .. code-block:: none
+
+     AT+BLEADVPARAM=50,50,0,0,7,0,,
+
+   Response:
+
+   .. code-block:: none
+
+     OK
 
 #. {IDF_TARGET_NAME} Bluetooth LE server starts advertising, then the {IDF_TARGET_NAME} Bluetooth LE client starts scanning and lasts for 3 s.
 
