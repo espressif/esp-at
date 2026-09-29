@@ -115,6 +115,8 @@ def create_factory_param_csv(args):
         csv_data_type = csv.reader(f)
         l_csv_data_type = list(csv_data_type)
         for item in l_csv_data_type:
+            if not item or not item[0].strip() or item[0].lstrip().startswith('#'):
+                continue
             if len(item) == 3:
                 to_read_type_items.append(item)
 
@@ -123,6 +125,8 @@ def create_factory_param_csv(args):
         csv_data = csv.reader(f)
         csv_data = list(csv_data)
         for item in csv_data:
+            if not item or not item[0].strip() or item[0].lstrip().startswith('#'):
+                continue
             if item[0] == 'platform':
                 to_read_data_items.append(item)
                 continue

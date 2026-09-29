@@ -1,0 +1,39 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: xiewenxiang <xiewenxiang@espressif.com>
+Date: Thu, 3 Sep 2026 14:31:00 +0800
+Subject: [PATCH] modify-bluedroid-conn-timeout-v61
+
+---
+ components/bt/host/bluedroid/stack/l2cap/l2c_ble.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c b/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c
+index 3dfd210cc24..2679505eb54 100644
+--- a/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c
++++ b/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c
+@@ -1018,18 +1018,20 @@ BOOLEAN l2cble_init_direct_conn (tL2C_LCB *p_lcb)
+     }
+ #endif // (BLE_TOPOLOGY_CHECK == TRUE)
+ 
+-    uint32_t link_timeout = L2CAP_BLE_LINK_CONNECT_TOUT;
++    extern int32_t bluedroid_conn_wait_time;
++
++    uint32_t link_timeout = bluedroid_conn_wait_time;
+     if(GATTC_CONNECT_RETRY_COUNT) {
+         if(!p_lcb->retry_create_con) {
+             p_lcb->start_time_s = esp_system_get_time() / 1000;
+         }
+         int64_t current_time = esp_system_get_time() / 1000;
+         int64_t elapsed_ms = current_time - p_lcb->start_time_s;
+-        int64_t timeout_ms = (int64_t)L2CAP_BLE_LINK_CONNECT_TOUT * 1000;
++        int64_t timeout_ms = (int64_t)bluedroid_conn_wait_time * 1000;
+         int64_t remaining_ms = timeout_ms - elapsed_ms;
+ 
+         if (remaining_ms <= 0 || remaining_ms > timeout_ms) {
+-            link_timeout = L2CAP_BLE_LINK_CONNECT_TOUT;
++            link_timeout = bluedroid_conn_wait_time;
+         } else {
+             link_timeout = (uint32_t)(remaining_ms / 1000);
+             if (link_timeout == 0) {
+-- 
+2.50.1 (Apple Git-155)

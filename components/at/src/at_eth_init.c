@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -8,6 +8,16 @@
 #ifdef CONFIG_AT_ETHERNET_SUPPORT
 #include "string.h"
 #include "esp_eth.h"
+
+#if CONFIG_PHY_IP101
+#include "esp_eth_phy_ip101.h"
+#elif CONFIG_PHY_RTL8201
+#include "esp_eth_phy_rtl8201.h"
+#elif CONFIG_PHY_LAN8720
+#include "esp_eth_phy_lan87xx.h"
+#elif CONFIG_PHY_DP83848
+#include "esp_eth_phy_dp83848.h"
+#endif
 
 #define CONFIG_AT_ETH_MDC_GPIO         23
 #define CONFIG_AT_ETH_MDIO_GPIO        18

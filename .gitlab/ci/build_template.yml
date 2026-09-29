@@ -31,6 +31,8 @@
 .install_compilation_env: &install_compilation_env
   - source esp-idf/tools/ci/utils.sh
   - source esp-idf/tools/ci/configure_ci_environment.sh
+  # TODO: Remove this workaround after esp-idf/components/esp_wifi/linker.lf fixed this error on CI: `ERROR: 'libesp_timer.a:esp_timer timer_process_alarm' not found`
+  - unset LDGEN_CHECK_MAPPING
   - esp-idf/tools/idf_tools.py install
   - esp-idf/tools/idf_tools.py export
   - source esp-idf/export.sh
@@ -45,7 +47,7 @@
 
 .build_template:
   stage: build
-  image: espressif/idf:release-v5.4
+  image: espressif/idf:release-v6.1
   needs: []
   tags:
     - esp-at
@@ -187,7 +189,8 @@
 .enable_bt_cmds: &enable_bt_cmds
   - echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
   - echo -e "CONFIG_AT_BT_SPP_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
-  - echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
+  # TODO: Remove BT A2DP support if it remains unused
+  # - echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
 
 .enable_ble_cmds: &enable_ble_cmds
   - echo -e "CONFIG_AT_BLE_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
@@ -377,7 +380,6 @@
   extends:
     - .build_template
     - .before_script_esp32c5
-  image: espressif/idf:release-v5.5
   variables:
     PLATFORM: "PLATFORM_ESP32C5"
     SILENCE: "0"
@@ -394,7 +396,6 @@
   extends:
     - .build_template
     - .before_script_esp32c61
-  image: espressif/idf:release-v5.5
   variables:
     PLATFORM: "PLATFORM_ESP32C61"
     SILENCE: "0"

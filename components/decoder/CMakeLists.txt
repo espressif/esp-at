@@ -1,12 +1,11 @@
 
-set(require_components mqtt mdns esp_http_client json freertos spiffs
-    bootloader_support app_update wpa_supplicant spi_flash)
+# Prebuilt MP3 decoder is ESP32-only (A2DP). Other targets leave this
+# component unregistered.
+if(NOT "${IDF_TARGET}" STREQUAL "esp32")
+    return()
+endif()
 
-if ("${IDF_TARGET}" STREQUAL "esp32")
-    list(APPEND require_components bt fatfs)
-
-idf_component_register (
-    REQUIRES ${require_components})
+idf_component_register(REQUIRES log esp_hw_support)
 
 set(LIB_NAME _mp3)
 
@@ -19,4 +18,3 @@ add_library(${LIBS} STATIC IMPORTED)
 set_property(TARGET ${LIBS} PROPERTY IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/lib/lib${LIBS}.a)
 target_link_libraries(${COMPONENT_LIB} INTERFACE ${LIBS})
 set_property(TARGET ${LIBS} APPEND PROPERTY INTERFACE_LINK_LIBRARIES ${COMPONENT_LIB})
-endif()

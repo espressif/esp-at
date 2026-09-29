@@ -2,7 +2,7 @@
 
 # The following lines of boilerplate have to be in your project's CMakeLists
 # in this exact order for cmake to work correctly
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.22)
 
 set(IDF_PATH ${CMAKE_SOURCE_DIR}/esp-idf)
 
@@ -213,11 +213,11 @@ file(MAKE_DIRECTORY $ENV{ESP_AT_PROJECT_PATH}/build/factory)
 add_custom_target(esp_at_factory_bin ALL DEPENDS app bootloader gen_project_binary)
 add_custom_command(TARGET esp_at_factory_bin
     POST_BUILD
-    COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/esp-idf/components/esptool_py/esptool/esptool.py
-        --chip ${IDF_TARGET} merge_bin --output factory/factory_${ESP_AT_MODULE_NAME}.bin --fill-flash-size ${CONFIG_ESPTOOLPY_FLASHSIZE} "@flash_project_args"
+    COMMAND ${PYTHON} -m esptool
+        --chip ${IDF_TARGET} merge-bin --output factory/factory_${ESP_AT_MODULE_NAME}.bin --pad-to-size ${CONFIG_ESPTOOLPY_FLASHSIZE} "@flash_project_args"
         WORKING_DIRECTORY $ENV{ESP_AT_PROJECT_PATH}/build
-    COMMAND ${PYTHON} $ENV{ESP_AT_PROJECT_PATH}/esp-idf/components/esptool_py/esptool/esptool.py
-        --chip ${IDF_TARGET} merge_bin --output factory/factory_${ESP_AT_MODULE_NAME}_unfilled.bin "@flash_project_args"
+    COMMAND ${PYTHON} -m esptool
+        --chip ${IDF_TARGET} merge-bin --output factory/factory_${ESP_AT_MODULE_NAME}_unfilled.bin "@flash_project_args"
         WORKING_DIRECTORY $ENV{ESP_AT_PROJECT_PATH}/build
     COMMENT "Creating factory bin..."
 )

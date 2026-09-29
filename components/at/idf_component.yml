@@ -1,12 +1,32 @@
 ## IDF Component Manager Manifest File
 dependencies:
   espressif/mdns:
-    version: "~1.4.2"
+    version: "~1.12.0"
   espressif/esp_websocket_client:
-    version: "~1.2.0"
+    version: "~1.8.0"
+  espressif/mqtt:
+    version: "~1.1.0"
+  espressif/cjson:
+    version: "~1.7.19~2"
   espressif/bootloader_support_plus:
-    version: "~0.4.0"
+    version: "~0.4.2"
     rules:
       - if: "target in [esp32c2, esp32c3, esp32c5, esp32c61]"
+  espressif/ip101:
+    version: "~1.1.0"
+    rules:
+      - if: "target in [esp32]"
+  espressif/rtl8201:
+    version: "~1.1.0"
+    rules:
+      - if: "target in [esp32]"
+  espressif/lan87xx:
+    version: "~1.1.0"
+    rules:
+      - if: "target in [esp32]"
+  espressif/dp83848:
+    version: "~1.1.0"
+    rules:
+      - if: "target in [esp32]"
   joltwallet/littlefs:
-    version: "~1.20.3"
+    version: "~1.22.3"

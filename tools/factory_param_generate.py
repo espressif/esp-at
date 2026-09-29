@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 #
-# SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+# SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
 
-import xlrd
 import csv
 import io
 import binascii
@@ -16,25 +15,16 @@ ESP_AT_FACTORY_PARAM_SIZE = 4096
 # param_type_dicts = {}
 # param_data_lists = []
 
+def _is_csv_comment_or_empty(row):
+    return (not row) or (not row[0].strip()) or row[0].lstrip().startswith('#')
+
 def get_param_type_info(source_file, sheet_name):
     filename,filetype = os.path.splitext(source_file)
 
     param_type_dicts = {}
-    if filetype == '.xlsx':
-        data = xlrd.open_workbook(source_file)
-        sheet = data.sheet_by_name(sheet_name)
-        headers = sheet.row_values(0)
-
-        for row in range(1,sheet.nrows):
-            dict = {}
-            for col in range(1,sheet.ncols):
-                dict[headers[col]] = sheet.row_values(row)[col]
-
-            param_type_dicts[sheet.row_values(row)[0]] = dict
-    elif filetype == '.csv':
+    if filetype == '.csv':
         with open(source_file) as f:
-            csv_data = csv.reader(f)
-            data = list(csv_data)
+            data = [row for row in csv.reader(f) if not _is_csv_comment_or_empty(row)]
             headers = data[0]
 
             for row_data in data[1:]: # skip header
@@ -65,8 +55,7 @@ def get_param_data_info(source_file, sheet_name):
             param_data_dicts[sheet.row_values(row)[0]] = dict
     elif filetype == '.csv':
         with open(source_file) as f:
-            csv_data = csv.reader(f)
-            param_data_list = list(csv_data)
+            param_data_list = [row for row in csv.reader(f) if not _is_csv_comment_or_empty(row)]
 
     else:
         print('The file type is not supported.')

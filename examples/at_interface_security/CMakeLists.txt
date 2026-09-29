@@ -4,7 +4,7 @@ file(GLOB_RECURSE srcs *.c)
 set(includes "include")
 
 # Add more required components you need here, separated by spaces
-set(require_components at)
+set(require_components at mbedtls)
 
 idf_component_register(
     SRCS ${srcs}

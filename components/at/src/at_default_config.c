@@ -165,6 +165,11 @@ __attribute__((weak)) void esp_at_log_write(esp_log_level_t level, const char *t
     }
 }
 
+uint32_t esp_at_get_freertos_tick_rate_hz(void)
+{
+    return (uint32_t)CONFIG_FREERTOS_HZ;
+}
+
 uint32_t esp_at_get_process_task_stack_size(void)
 {
     return CONFIG_AT_PROCESS_TASK_STACK_SIZE;

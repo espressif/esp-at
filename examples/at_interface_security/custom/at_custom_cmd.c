@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "esp_at.h"
-#include "mbedtls/aes.h"
+#include "aes/esp_aes.h"
 #include "esp_log.h"
 #include "esp_at_interface.h"
 
@@ -18,7 +18,7 @@
 #define AT_RX_DATA_LEN_MAX  8192    /* The maximum length of data that can be received in one go */
 
 typedef struct {
-    mbedtls_aes_context ctx;        /* mbedtls context data for AES */
+    esp_aes_context ctx;            /* AES context (hardware-accelerated) */
     uint8_t iv[16];                 /* The 128-bit nonce and counter */
     uint8_t stream_block[16];       /* The saved stream block for resuming */
     size_t offset;                  /* The offset in the current \p stream_block, for resuming within the current cipher stream. */
@@ -45,11 +45,11 @@ static void at_port_security_get_iv(uint8_t iv[16])
 static void at_port_security_close(void)
 {
     if (s_ctx) {
-        mbedtls_aes_free(&s_ctx[0].ctx);
+        esp_aes_free(&s_ctx[0].ctx);
         if (s_ctx[0].buffer) {
             free(s_ctx[0].buffer);
         }
-        mbedtls_aes_free(&s_ctx[1].ctx);
+        esp_aes_free(&s_ctx[1].ctx);
         if (s_ctx[1].buffer) {
             free(s_ctx[1].buffer);
         }
@@ -77,14 +77,14 @@ static int at_port_security_open(void)
     // set key
     uint8_t key[AT_AES_PK_LEN];
     at_port_security_get_key(key);
-    mbedtls_aes_init(&s_ctx[0].ctx);
-    if (mbedtls_aes_setkey_enc(&s_ctx[0].ctx, key, AT_AES_PK_LEN * 8) != 0) {
+    esp_aes_init(&s_ctx[0].ctx);
+    if (esp_aes_setkey(&s_ctx[0].ctx, key, AT_AES_PK_LEN * 8) != 0) {
         ESP_LOGE(TAG, "setkey failed");
         at_port_security_close();
         return -1;
     }
-    mbedtls_aes_init(&s_ctx[1].ctx);
-    if (mbedtls_aes_setkey_enc(&s_ctx[1].ctx, key, AT_AES_PK_LEN * 8) != 0) {
+    esp_aes_init(&s_ctx[1].ctx);
+    if (esp_aes_setkey(&s_ctx[1].ctx, key, AT_AES_PK_LEN * 8) != 0) {
         ESP_LOGE(TAG, "setkey failed");
         at_port_security_close();
         return -1;
@@ -120,7 +120,7 @@ static int32_t at_port_security_read(uint8_t *data, int32_t size)
     ESP_AT_LOG_BUFFER_HEXDUMP("intf-sec-rx", data, buffered_len, ESP_LOG_INFO);
 
     for (int idx = 0; idx < buffered_len; idx = idx + buffered_len) {
-        mbedtls_aes_crypt_ctr(&s_ctx[1].ctx, buffered_len - idx, &s_ctx[1].offset, s_ctx[1].iv, s_ctx[1].stream_block, s_ctx[1].buffer + idx, data + idx);
+        esp_aes_crypt_ctr(&s_ctx[1].ctx, buffered_len - idx, &s_ctx[1].offset, s_ctx[1].iv, s_ctx[1].stream_block, s_ctx[1].buffer + idx, data + idx);
     }
 
     return buffered_len;
@@ -138,7 +138,7 @@ static int32_t at_port_security_write(uint8_t *data, int32_t size)
     }
 
     for (int idx = 0; idx < size; idx = idx + size) {
-        mbedtls_aes_crypt_ctr(&s_ctx[0].ctx, size - idx, &s_ctx[0].offset, s_ctx[0].iv, s_ctx[0].stream_block, data + idx, s_ctx[0].buffer + idx);
+        esp_aes_crypt_ctr(&s_ctx[0].ctx, size - idx, &s_ctx[0].offset, s_ctx[0].iv, s_ctx[0].stream_block, data + idx, s_ctx[0].buffer + idx);
     }
 
     ESP_AT_LOG_BUFFER_HEXDUMP("intf-sec-tx", s_ctx[0].buffer, size, ESP_LOG_INFO);

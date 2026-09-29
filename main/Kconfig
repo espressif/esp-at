@@ -220,11 +220,12 @@ config AT_BT_SPP_COMMAND_SUPPORT
     select BT_SPP_ENABLED
     depends on AT_BT_COMMAND_SUPPORT
 
-config AT_BT_A2DP_COMMAND_SUPPORT
-    bool "AT bt a2dp command support."
-    default "n"
-    select BT_A2DP_ENABLE
-    depends on AT_BT_COMMAND_SUPPORT
+# TODO: Remove BT A2DP support if it remains unused
+# config AT_BT_A2DP_COMMAND_SUPPORT
+#     bool "AT bt a2dp command support."
+#     default "n"
+#     select BT_A2DP_ENABLE
+#     depends on AT_BT_COMMAND_SUPPORT
 
 config AT_I2S_LRCK_PIN
     int "I2S LRCK (WS) GPIO"

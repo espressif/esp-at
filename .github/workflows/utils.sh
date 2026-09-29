@@ -84,7 +84,8 @@ function enable_ethernet_cmds() {
 function enable_bt_cmds() {
   echo -e "CONFIG_AT_BT_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
   echo -e "CONFIG_AT_BT_SPP_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
-  echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
+  # TODO: Remove BT A2DP support if it remains unused
+  # echo -e "CONFIG_AT_BT_A2DP_COMMAND_SUPPORT=y" >> ${at_sdkconfig_file}
 }
 
 function enable_ble_cmds() {

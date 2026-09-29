@@ -26,6 +26,9 @@ esp32c3_rainmaker:
   extends:
     - .build_template_esp32c3
     - .rules:build:build_project
+  # TODO: Remove rainmaker support if it remains unused
+  rules:
+    - when: never
   variables:
     MODULE_NAME: "ESP32C3_RAINMAKER"
 

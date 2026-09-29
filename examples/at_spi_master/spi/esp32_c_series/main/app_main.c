@@ -38,11 +38,7 @@ Pins in use. The SPI Master can use the GPIO mux, so feel free to change these i
 #define GPIO_HD               CONFIG_SPI_HD_PIN
 #endif
 
-#ifdef CONFIG_IDF_TARGET_ESP32
-#define MASTER_HOST           HSPI_HOST
-#elif defined CONFIG_IDF_TARGET_ESP32C3
 #define MASTER_HOST           SPI2_HOST
-#endif
 
 #define DMA_CHAN              SPI_DMA_CH_AUTO
 #define ESP_SPI_DMA_MAX_LEN   4092

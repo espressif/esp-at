@@ -22,9 +22,7 @@
 #include "esp32s2/rom/uart.h"
 #endif
 
-#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 4, 0)
 #include "driver/uart.h"
-#endif
 
 /*******************************************************
  *                Macros
@@ -38,7 +36,7 @@
 #define AT_UART_PARITY_EVEN                         UART_PARITY_EVEN        /**< uart parity even */
 #define AT_UART_PARITY_ODD                          UART_PARITY_ODD         /**< uart parity odd */
 
-#if defined(CONFIG_IDF_TARGET_ESP32C2)
+#if defined(CONFIG_IDF_TARGET_ESP32C2) || defined(CONFIG_IDF_TARGET_ESP32C61)
 #define AT_UART_RX_BUFFER_SIZE                      1024                    /**< uart rx buffer size */
 #define AT_UART_TX_BUFFER_SIZE                      2048                    /**< uart tx buffer size */
 #define AT_UART_QUEUE_SIZE                          15                      /**< uart queue size */

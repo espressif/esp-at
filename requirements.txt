@@ -2,15 +2,10 @@
 # Please see the Compile and Develop section of the ESP-AT User Guide for further information.
 
 # IDF Component Manager
-idf-component-manager~=2.3.0
+idf-component-manager~=3.1.0
 
 # examples/at_interface_security
 pycryptodome==3.19.1
-
-# ESP-AT requirements
-pyyaml
-xlrd
-configparser
 
 # littlefs image building requirements
 littlefs-python==0.15.0
