@@ -867,11 +867,11 @@ Wi-Fi AT 命令集
 
 - **<scan_time_min>**：每个信道最短扫描时间，单位：毫秒，范围：[0,1500]，如果扫描类型为被动扫描，本参数无效
 - **<scan_time_max>**：每个信道最长扫描时间，单位：毫秒，范围：[0,1500]，如果设为 0，固件采用参数默认值，主动扫描为 120 ms，被动扫描为 360 ms
-- **<2ghz_channel_bitmap>**：2.4 GHz 频段信道的位图。在 ``<channel>`` 缺省时或为 0 时生效。每一位对应一个信道，1 表示扫描该信道，0 表示不扫描该信道。2.4 GHz 频段支持的信道见：`2.4G 信道 <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L415-L428>`_。例如，若 bit 1 和 bit 2 设为 1，则表示扫描信道 1 和信道 2
+- **<2ghz_channel_bitmap>**：2.4 GHz 频段信道的位图。在 ``<channel>`` 缺省时或为 0 时生效。每一位对应一个信道，1 表示扫描该信道，0 表示不扫描该信道。2.4 GHz 频段支持的信道见：`2.4G 信道 <https://github.com/espressif/esp-idf/blob/release/v6.1/components/esp_wifi/include/esp_wifi_types_generic.h#L424-L439>`_。例如，若 bit 1 和 bit 2 设为 1，则表示扫描信道 1 和信道 2
 
 .. only:: esp32c5
 
-  - **<5ghz_channel_bitmap>**：5 GHz 频段信道的位图。在 ``<channel>`` 缺省时或为 0 时生效。每一位对应一个信道，1 表示扫描该信道，0 表示不扫描该信道。5 GHz 频段支持的信道见：`5G 信道 <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L433-L460>`_。例如，若 bit 1 和 bit 2 设为 1，则表示扫描信道 36 和信道 40。
+  - **<5ghz_channel_bitmap>**：5 GHz 频段信道的位图。在 ``<channel>`` 缺省时或为 0 时生效。每一位对应一个信道，1 表示扫描该信道，0 表示不扫描该信道。5 GHz 频段支持的信道见：`5G 信道 <https://github.com/espressif/esp-idf/blob/release/v6.1/components/esp_wifi/include/esp_wifi_types_generic.h#L442-L471>`_。例如，若 bit 1 和 bit 2 设为 1，则表示扫描信道 36 和信道 40。
 
 - **<freq_offset>**：频偏（保留项目）
 - **<freqcal_val>**：频率校准值（保留项目）
@@ -2354,7 +2354,7 @@ WPA2/WPA3 企业版错误码以 ``ERR CODE:0x<%08x>`` 格式打印：
   - **<"country_code">**：国家代码，最大长度：3 个字符，各国国家代码请参考 `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ 标准。
   - **<start_channel>**：起始信道，范围：[1,14]。
   - **<total_channel_count>**：信道总个数。
-  :esp32c5: - **<5g_channel_bitmap>**：表示 5GHz 频段信道的位图，每一位对应一个信道，1 表示启用该信道，0 表示禁用该信道。支持的信道见：`5G 信道 <https://github.com/espressif/esp-idf/blob/v5.5.1/components/esp_wifi/include/esp_wifi_types_generic.h#L433-L460>`_。
+  :esp32c5: - **<5g_channel_bitmap>**：表示 5GHz 频段信道的位图，每一位对应一个信道，1 表示启用该信道，0 表示禁用该信道。支持的信道见：`5G 信道 <https://github.com/espressif/esp-idf/blob/release/v6.1/components/esp_wifi/include/esp_wifi_types_generic.h#L442-L471>`_。
 
 说明
 ^^^^

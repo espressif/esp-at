@@ -922,7 +922,7 @@ Query the memory usage under given capabilities.
 Parameters
 ^^^^^^^^^^
 
-- **<caps>**: Capability value. See `Different capability definitions <https://github.com/espressif/esp-idf/blob/release/v5.4/components/heap/include/esp_heap_caps.h#L29-L49>`_ for details. Multiple values can be combined, e.g., ``AT+SYSRAM=0x1800`` represents ``MALLOC_CAP_INTERNAL | MALLOC_CAP_DEFAULT``.
+- **<caps>**: Capability value. See `Different capability definitions <https://github.com/espressif/esp-idf/blob/release/v6.1/components/heap/include/esp_heap_caps.h#L29-L55>`_ for details. Multiple values can be combined, e.g., ``AT+SYSRAM=0x1800`` represents ``MALLOC_CAP_INTERNAL | MALLOC_CAP_DEFAULT``.
 - **<caps_largest_free_block_size>**: The maximum size of a free block that can be allocated under the given caps. Unit: byte.
 - **<caps_free_size>**: The total size of all free blocks under the given caps. Unit: byte.
 - **<caps_minimum_free_size>**: The minimum total size of all free blocks under the given caps since power-on. Unit: byte.
