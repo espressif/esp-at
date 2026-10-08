@@ -31,6 +31,7 @@ Bluetooth® Low Energy AT 命令集
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`：GATTS 发现服务特征
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`：服务器 notify 服务特征值给客户端
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTSIND <cmd-GSIND>`：服务器 indicate 服务特征值给客户端
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESRVCHG <cmd-BLESRVCHG>`：发送 Service Changed Indication
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`：GATTS 设置服务特征值
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`：GATTC 发现基本服务
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`：GATTC 发现包含的服务
@@ -1370,6 +1371,7 @@ Bluetooth® Low Energy AT 命令集
         - :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`
         - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`
         - :ref:`AT+BLEGATTSIND <cmd-GSIND>`
+        - :ref:`AT+BLESRVCHG <cmd-BLESRVCHG>`
         - :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`
 
     示例
@@ -1745,6 +1747,71 @@ Bluetooth® Low Energy AT 命令集
             // 例如，使用 3 号服务的 7 号特征 indicate 长度为 4 字节的数据，命令如下：
             AT+BLEGATTSIND=0,3,7,4
             // 提示 ">" 符号后，输入 4 字节的数据，如 "1234"，然后数据自动传输
+
+    .. _cmd-BLESRVCHG:
+
+    :ref:`AT+BLESRVCHG <BLE-AT>`：发送 Service Changed Indication
+    ---------------------------------------------------------------------------------
+
+    设置命令
+    ^^^^^^^^
+
+    **功能：**
+
+    向已连接的对端设备发送 Service Changed indication。
+
+    **命令：**
+
+    ::
+
+        AT+BLESRVCHG=<conn_index>
+
+    **响应：**
+
+    ::
+
+        OK
+
+    参数
+    ^^^^
+
+    .. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+        - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
+
+    .. only:: esp32c2
+
+        - **<conn_index>**：Bluetooth LE 连接号，范围：[0,1]。
+
+    说明
+    ^^^^
+
+    - 本端须初始化为 server 角色（:ref:`AT+BLEINIT=2 <cmd-BINIT>`）或双角色（:ref:`AT+BLEINIT=3 <cmd-BINIT>`）。
+    - 执行本命令前，Bluetooth LE 连接必须已经建立。``<conn_index>`` 是 :ref:`AT+BLECONN? <cmd-BCONN>` 或 ``+BLECONN`` 上报的连接号。
+    - 本命令向该连接的对端发送 Service Changed indication（特征 UUID 为 ``0x2A05``）。indication 中的属性句柄范围是 ``0x0001`` 到 ``0xFFFF``，用于通知对端重新发现 GATT 数据库。
+    - 对端必须已在 Service Changed 特征的客户端特征配置描述符（CCCD）中使能 indication，否则对端会丢弃该 indication。
+    - 本命令是阻塞的，必须返回 ``OK`` 后才能下发新的命令。
+    - 如果 ``<conn_index>`` 没有对应已建立的连接，或 indication 发送失败，命令返回 ``ERROR``。
+
+    示例
+    ^^^^
+
+    .. only:: esp32 or esp32c3
+
+        ::
+
+            AT+BLEINIT=2      // 角色：服务器
+            AT+BLEADVSTART    // 开始广播。客户端连接后，必须使能 Service Changed 特征的 indication
+            AT+BLESRVCHG=0    // 向 0 号连接发送 Service Changed indication
+
+    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
+
+        ::
+
+            AT+BLEINIT=2      // 角色：服务器
+            AT+BLEADVPARAM=50,50,0,0,7,0,,
+            AT+BLEADVSTART    // 开始广播。客户端连接后，必须使能 Service Changed 特征的 indication
+            AT+BLESRVCHG=0    // 向 0 号连接发送 Service Changed indication
 
     .. _cmd-GSSETA:
 
