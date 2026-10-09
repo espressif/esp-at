@@ -867,11 +867,11 @@ Parameters
 
 - **<scan_time_min>**: the minimum active scan time per channel. Unit: millisecond. Range [0,1500]. If the scan type is passive, this parameter is invalid.
 - **<scan_time_max>**: the maximum active scan time per channel. Unit: millisecond. Range [0,1500]. If this parameter is 0, the firmware will use the default time: 120 ms for active scan; 360 ms for passive scan.
-- **<2ghz_channel_bitmap>**: Bitmap for 2.4 GHz band channels. Effective when ``<channel>`` is omitted or set to 0. Each bit corresponds to a channel; 1 means scan this channel, 0 means do not scan. For supported 2.4 GHz channels, see: `2.4G Channels <https://github.com/espressif/esp-idf/blob/release/v6.1/components/esp_wifi/include/esp_wifi_types_generic.h#L424-L439>`_. For example, if bit 1 and bit 2 are set to 1, it means scanning channels 1 and 2.
+- **<2ghz_channel_bitmap>**: Bitmap for 2.4 GHz band channels. Effective when ``<channel>`` is omitted or set to 0. Each bit corresponds to a channel; 1 means scan this channel, 0 means do not scan. For supported 2.4 GHz channels, see: `2.4G Channels <https://github.com/espressif/esp-idf/blob/release/v6.1/components/esp_wifi/include/esp_wifi_types_generic.h#L425-L441>`_. For example, if bit 1 and bit 2 are set to 1, it means scanning channels 1 and 2.
 
 .. only:: esp32c5
 
-  - **<5ghz_channel_bitmap>**: Bitmap for 5 GHz band channels. Effective when ``<channel>`` is omitted or set to 0. Each bit corresponds to a channel; 1 means scan this channel, 0 means do not scan. For supported 5 GHz channels, see: `5G Channels <https://github.com/espressif/esp-idf/blob/release/v6.1/components/esp_wifi/include/esp_wifi_types_generic.h#L442-L471>`_. For example, if bit 1 and bit 2 are set to 1, it means scanning channels 36 and 40.
+  - **<5ghz_channel_bitmap>**: Bitmap for 5 GHz band channels. Effective when ``<channel>`` is omitted or set to 0. Each bit corresponds to a channel; 1 means scan this channel, 0 means do not scan. For supported 5 GHz channels, see: `5G Channels <https://github.com/espressif/esp-idf/blob/release/v6.1/components/esp_wifi/include/esp_wifi_types_generic.h#L443-L473>`_. For example, if bit 1 and bit 2 are set to 1, it means scanning channels 36 and 40.
 
 - **<freq_offset>**: frequency offset (reserved item).
 - **<freqcal_val>**: frequency calibration value (reserved item).
@@ -2354,7 +2354,7 @@ Parameters
   - **<"country_code">**: country code. Maximum length: 3 characters. Refer to `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ for country codes.
   - **<start_channel>**: the channel number to start. Range: [1,14].
   - **<total_channel_count>**: total number of channels.
-  :esp32c5: - **<5g_channel_bitmap>**: Bitmap representing 5GHz band channels. Each bit corresponds to a channel; 1 means enable this channel, 0 means disable this channel. For supported 5GHz channels, see: `5G Channels <https://github.com/espressif/esp-idf/blob/release/v6.1/components/esp_wifi/include/esp_wifi_types_generic.h#L442-L471>`_.
+  :esp32c5: - **<5g_channel_bitmap>**: Bitmap representing 5GHz band channels. Each bit corresponds to a channel; 1 means enable this channel, 0 means disable this channel. For supported 5GHz channels, see: `5G Channels <https://github.com/espressif/esp-idf/blob/release/v6.1/components/esp_wifi/include/esp_wifi_types_generic.h#L443-L473>`_.
 
 Note
 ^^^^^
