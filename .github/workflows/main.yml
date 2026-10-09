@@ -107,6 +107,8 @@ jobs:
     secrets: inherit
 
   build-esp32c3-rainmaker:
+    # TODO: Remove rainmaker support if it remains unused
+    if: false
     uses: ./.github/workflows/build_template_esp32c3.yml
     with:
       module_name: ESP32C3_RAINMAKER
