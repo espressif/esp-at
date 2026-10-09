@@ -922,7 +922,7 @@
 参数
 ^^^^
 
-- **<caps>**：能力值。详见 `不同 capabilities 定义 <https://github.com/espressif/esp-idf/blob/release/v5.4/components/heap/include/esp_heap_caps.h#L29-L49>`_。可以组合使用，如 ``AT+SYSRAM=0x1800``，表示 ``MALLOC_CAP_INTERNAL | MALLOC_CAP_DEFAULT``。
+- **<caps>**：能力值。详见 `不同 capabilities 定义 <https://github.com/espressif/esp-idf/blob/release/v6.1/components/heap/include/esp_heap_caps.h#L29-L55>`_。可以组合使用，如 ``AT+SYSRAM=0x1800``，表示 ``MALLOC_CAP_INTERNAL | MALLOC_CAP_DEFAULT``。
 - **<caps_largest_free_block_size>**：当前 caps 下能够分配的最大空闲块，单位：byte。
 - **<caps_free_size>**：当前 caps 下所有的空闲块大小总和，单位：byte。
 - **<caps_minimum_free_size>**：芯片上电后，caps 下所有的空闲块大小总和的最小值，单位：byte。

@@ -2,7 +2,7 @@
 AT Command Set
 **************
 
-{IDF_TARGET_VER: default="5.4", esp32c5="5.5", esp32c61="5.5"}
+{IDF_TARGET_VER: default="6.1"}
 
 :link_to_translation:`zh_CN:[中文]`
 
