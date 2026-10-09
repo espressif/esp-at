@@ -11,7 +11,7 @@
  * These APIs are implemented in the prebuilt AT core library and are intended
  * to be called by user applications and custom AT commands: command and
  * device-operation registration, parameter parsing, port I/O, result/error
- * handling, and the Wi-Fi / TCP-IP / HTTP / WebSocket helpers.
+ * handling, and the Wi-Fi / Ethernet / TCP-IP / HTTP / WebSocket helpers.
  */
 #pragma once
 
@@ -599,6 +599,44 @@ esp_err_t esp_at_wifi_scan_start(const wifi_scan_config_t *config, bool block)
 __asm__("at_wifi_scan_start");
 
 #endif /* CONFIG_AT_WIFI_COMMAND_SUPPORT */
+
+/* ============================================================================
+ *                                 Ethernet
+ * ========================================================================== */
+
+#ifdef CONFIG_AT_ETHERNET_SUPPORT
+
+/**
+ * @brief Ethernet station link state.
+ */
+typedef enum {
+    ESP_AT_ETH_IDLE          = 0,  /**< Ethernet connection not started            */
+    ESP_AT_ETH_CONNECTED,          /**< Connected; IPv4 address not acquired yet   */
+    ESP_AT_ETH_GOT_IP,             /**< Connected and IPv4 address acquired        */
+    ESP_AT_ETH_DISCONNECTED,       /**< Ethernet link is disconnected              */
+    ESP_AT_ETH_MAX,                /**< Sentinel value; not a valid state          */
+} esp_at_eth_sta_state_t;
+
+/**
+ * @brief Return the Ethernet station state tracked by the AT core.
+ *
+ * @return Current state, one of esp_at_eth_sta_state_t.
+ */
+esp_at_eth_sta_state_t esp_at_eth_get_sta_state(void);
+
+/**
+ * @brief Report the Ethernet station state to the AT core.
+ *
+ * The AT core does not observe an external SPI Ethernet module by itself.
+ * When such a module is used and the AT network commands are to run over
+ * that link, call this function whenever the link state changes so the
+ * core can track it.
+ *
+ * @param state  New Ethernet station state.
+ */
+void esp_at_eth_set_sta_state(esp_at_eth_sta_state_t state);
+
+#endif /* CONFIG_AT_ETHERNET_SUPPORT */
 
 /* ============================================================================
  *                                   TCP/IP
