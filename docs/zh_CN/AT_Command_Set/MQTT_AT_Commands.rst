@@ -719,7 +719,70 @@ MQTT AT 命令集
 :ref:`MQTT AT 错误码 <MQTT-AT>`
 -------------------------------------
 
-MQTT 错误码以 ``ERR CODE:0x<%08x>`` 形式打印。
+启用 :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` 后，AT 用两种消息报告 MQTT 错误：
+
+- ``ERR CODE:0x<%08x>``：执行 MQTT 命令时同步返回，表示该命令执行失败。
+- ``+MQTTERR``：MQTT 客户端产生 ``MQTT_EVENT_ERROR`` 事件时上报的 :term:`URC`，一般是异步的。
+
+同一次连接失败中，两条消息可能先后出现。``ERR CODE`` 是这条命令的执行结果，``+MQTTERR`` 是该事件中的传输层错误或 Broker 拒绝连接。
+
++MQTTERR
+^^^^^^^^
+
+``MQTT_EVENT_ERROR`` 事件产生时，AT 一般会输出：
+
+::
+
+  +MQTTERR:<LinkID>,<error_type>,<connect_return_code>,<esp_tls_err>,<tls_err>,<cert_flags>,<sock_errno>
+
+``<LinkID>`` 和 ``<error_type>`` 以十进制输出。其余参数以 ``0x`` 开头的十六进制输出。
+
+参数：
+
+- **<LinkID>**：MQTT 连接 ID。当前仅支持 link ID 0。
+- **<error_type>**：错误来源。
+- **<connect_return_code>**：Broker 在 CONNACK 中返回的连接返回码。``0x0`` 表示连接已接受。
+- **<esp_tls_err>**：TLS 协议栈错误码，通常定义在 `esp_err.h <https://github.com/espressif/esp-idf/blob/master/components/esp_common/include/esp_err.h>`_ 和 `esp_tls_errors.h <https://github.com/espressif/esp-idf/blob/master/components/esp-tls/esp_tls_errors.h>`_ 中。``0x0`` 表示该层无错误。
+- **<tls_err>**：TLS 错误码，通常定义在 `mbedtls/ssl.h <https://github.com/espressif/mbedtls/blob/master/include/mbedtls/ssl.h>`_ 中。``0x0`` 表示无 TLS 错误。
+- **<cert_flags>**：证书校验标志，通常定义在 `mbedtls/x509.h <https://github.com/espressif/mbedtls/blob/master/include/mbedtls/x509.h>`_ 中。``0x0`` 表示校验成功或未执行校验。
+- **<sock_errno>**：套接字 errno，通常定义在 `errno.h <https://github.com/espressif/esp-lwip/blob/2.2.0-esp/src/include/lwip/errno.h>`_ 中。``0x0`` 表示无套接字错误。
+
+``<error_type>`` 取值：
+
+.. list-table::
+  :header-rows: 1
+
+  * - ``<error_type>``
+    - 说明
+  * - 1
+    - 传输层错误，包括 TCP、TLS 和套接字错误。``<connect_return_code>`` 为 ``0x0``
+  * - 2
+    - Broker 拒绝连接。``<connect_return_code>`` 为 ``0x1`` 至 ``0x5``。``<esp_tls_err>``、``<tls_err>``、``<cert_flags>``、``<sock_errno>`` 为 ``0x0``
+
+``<connect_return_code>`` 取值：
+
+.. list-table::
+  :header-rows: 1
+
+  * - ``<connect_return_code>``
+    - 说明
+  * - 0x0
+    - 连接已接受
+  * - 0x1
+    - 协议版本不可接受
+  * - 0x2
+    - 客户端标识符被拒绝
+  * - 0x3
+    - 服务器不可用
+  * - 0x4
+    - 用户名或密码错误
+  * - 0x5
+    - 未授权
+
+ERR CODE
+^^^^^^^^
+
+执行 MQTT 命令失败时，AT 同步返回该错误码。MQTT 错误码以 ``ERR CODE:0x<%08x>`` 形式打印。
 
 .. list-table::
    :header-rows: 1
@@ -899,3 +962,4 @@ MQTT 错误码以 ``ERR CODE:0x<%08x>`` 形式打印。
 
 - 当 MQTT 连接断开时，会提示 ``+MQTTDISCONNECTED:<LinkID>`` 消息。
 - 当 MQTT 连接建立时，会提示 ``+MQTTCONNECTED:<LinkID>,<scheme>,<"host">,port,<"path">,<reconnect>`` 消息。
+- 当 MQTT 客户端产生 ``MQTT_EVENT_ERROR`` 事件时，会提示 :ref:`+MQTTERR <MQTTErrCod>` 消息。该消息一般是异步的。执行 MQTT 命令时同步返回的错误码是同一节中的 ``ERR CODE``。

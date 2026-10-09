@@ -364,9 +364,9 @@ Index of Abbreviations
       TLS 协议，即传输层安全性协议
 
     URC
-      Unsolicited Result Code
+      Unsolicited Result Code. A message that AT sends to the MCU on its own. It is not the response to the AT command currently being executed, and is generally asynchronous. See :ref:`ESP-AT message reports <at-messages-report>`.
 
-      非请求结果码，一般为模组给 MCU 的串口返回
+      非请求结果码。AT 主动发给 MCU 的消息，不是当前正在执行的 AT 命令的响应，一般是异步的。详见 :ref:`ESP-AT 消息报告 <at-messages-report>`。
 
     UTC
       Coordinated Universal Time
