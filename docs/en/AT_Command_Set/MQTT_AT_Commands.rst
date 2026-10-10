@@ -719,7 +719,70 @@ Parameter
 :ref:`MQTT AT Error Codes <MQTT-AT>`
 --------------------------------------
 
-The MQTT Error code will be prompted as ``ERR CODE:0x<%08x>``.
+When :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` is enabled, AT reports MQTT errors in two messages:
+
+- ``ERR CODE:0x<%08x>``: Returned synchronously when an MQTT command is executed. It means this command failed.
+- ``+MQTTERR``: A :term:`URC` reported when the MQTT client generates ``MQTT_EVENT_ERROR``. It is generally asynchronous.
+
+During one connection failure, both messages may appear. ``ERR CODE`` is the result of this command. ``+MQTTERR`` is the transport error or the broker connection refusal in that event.
+
++MQTTERR
+^^^^^^^^
+
+When ``MQTT_EVENT_ERROR`` occurs, AT generally outputs:
+
+::
+
+  +MQTTERR:<LinkID>,<error_type>,<connect_return_code>,<esp_tls_err>,<tls_err>,<cert_flags>,<sock_errno>
+
+``<LinkID>`` and ``<error_type>`` are decimal. The other parameters are hexadecimal and start with ``0x``.
+
+Parameters:
+
+- **<LinkID>**: MQTT connection ID. Only supports link ID 0 currently.
+- **<error_type>**: Error source.
+- **<connect_return_code>**: Connect return code reported by the broker in CONNACK. ``0x0`` means the connection was accepted.
+- **<esp_tls_err>**: TLS stack error code. Typically defined in `esp_err.h <https://github.com/espressif/esp-idf/blob/master/components/esp_common/include/esp_err.h>`_ and `esp_tls_errors.h <https://github.com/espressif/esp-idf/blob/master/components/esp-tls/esp_tls_errors.h>`_. ``0x0`` means no error at this layer.
+- **<tls_err>**: TLS error code. Typically defined in `mbedtls/ssl.h <https://github.com/espressif/mbedtls/blob/master/include/mbedtls/ssl.h>`_. ``0x0`` means no TLS error.
+- **<cert_flags>**: Certificate verification flags. Typically defined in `mbedtls/x509.h <https://github.com/espressif/mbedtls/blob/master/include/mbedtls/x509.h>`_. ``0x0`` means verification succeeded or was not performed.
+- **<sock_errno>**: Socket errno. Typically defined in `errno.h <https://github.com/espressif/esp-lwip/blob/2.2.0-esp/src/include/lwip/errno.h>`_. ``0x0`` means no socket error.
+
+``<error_type>`` values:
+
+.. list-table::
+  :header-rows: 1
+
+  * - ``<error_type>``
+    - Description
+  * - 1
+    - Transport error, including TCP, TLS, and socket errors. ``<connect_return_code>`` is ``0x0``
+  * - 2
+    - The broker refused the connection. ``<connect_return_code>`` is ``0x1`` to ``0x5``. ``<esp_tls_err>``, ``<tls_err>``, ``<cert_flags>``, and ``<sock_errno>`` are ``0x0``
+
+``<connect_return_code>`` values:
+
+.. list-table::
+  :header-rows: 1
+
+  * - ``<connect_return_code>``
+    - Description
+  * - 0x0
+    - Connection accepted
+  * - 0x1
+    - Unacceptable protocol version
+  * - 0x2
+    - Identifier rejected
+  * - 0x3
+    - Server unavailable
+  * - 0x4
+    - Bad user name or password
+  * - 0x5
+    - Not authorized
+
+ERR CODE
+^^^^^^^^
+
+When an MQTT command fails, AT returns this code synchronously. The MQTT Error code will be prompted as ``ERR CODE:0x<%08x>``.
 
 .. list-table::
    :header-rows: 1
@@ -899,3 +962,4 @@ The MQTT Error code will be prompted as ``ERR CODE:0x<%08x>``.
 
 - When the MQTT connection ends, it will prompt the message ``+MQTTDISCONNECTED:<LinkID>``.
 - When the MQTT connection established, it will prompt the message ``+MQTTCONNECTED:<LinkID>,<scheme>,<"host">,port,<"path">,<reconnect>``.
+- When the MQTT client generates ``MQTT_EVENT_ERROR``, it will prompt the :ref:`+MQTTERR <MQTTErrCod>` message. This message is generally asynchronous. The error code returned synchronously during MQTT command execution is ``ERR CODE`` in the same section.
