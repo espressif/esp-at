@@ -31,6 +31,7 @@ Bluetooth® Low Energy AT Commands
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`: GATTS discovers characteristics.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`: Notify a client of a characteristic value from the server.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTSIND <cmd-GSIND>`: Indicate the characteristic value from the server to a client.
+    :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLESRVCHG <cmd-BLESRVCHG>`: Send a Service Changed indication.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`: GATTS sets characteristics.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTCPRIMSRV <cmd-GCPRIMSRV>`: Generic Attributes Client (GATTC) discovers primary services.
     :esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61 or esp32c2: - :ref:`AT+BLEGATTCINCLSRV <cmd-GCINCLSRV>`: GATTC discovers included services.
@@ -1370,6 +1371,7 @@ Introduction
         - :ref:`AT+BLEGATTSCHAR <cmd-GSCHAR>`
         - :ref:`AT+BLEGATTSNTFY <cmd-GSNTFY>`
         - :ref:`AT+BLEGATTSIND <cmd-GSIND>`
+        - :ref:`AT+BLESRVCHG <cmd-BLESRVCHG>`
         - :ref:`AT+BLEGATTSSETATTR <cmd-GSSETA>`
 
     Example
@@ -1745,6 +1747,71 @@ Introduction
             // For example, to indicate 4 bytes of data using the 7th characteristic in the 3rd service, use the following command:
             AT+BLEGATTSIND=0,3,7,4
             // After the symbol ">" shows, input 4 bytes of data, such as "1234". Then the data will be transmitted automatically.
+
+    .. _cmd-BLESRVCHG:
+
+    :ref:`AT+BLESRVCHG <BLE-AT>`: Send a Service Changed Indication
+    ---------------------------------------------------------------------------------
+
+    Set Command
+    ^^^^^^^^^^^
+
+    **Function:**
+
+    Send a Service Changed indication to a connected peer device.
+
+    **Command:**
+
+    ::
+
+        AT+BLESRVCHG=<conn_index>
+
+    **Response:**
+
+    ::
+
+        OK
+
+    Parameters
+    ^^^^^^^^^^
+
+    .. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+        - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
+
+    .. only:: esp32c2
+
+        - **<conn_index>**: index of Bluetooth LE connection. Range: [0,1].
+
+    Notes
+    ^^^^^
+
+    - The local device must be initialized as a server role (:ref:`AT+BLEINIT=2 <cmd-BINIT>`) or a dual role (:ref:`AT+BLEINIT=3 <cmd-BINIT>`).
+    - A Bluetooth LE connection must be established first. ``<conn_index>`` is the connection index reported by :ref:`AT+BLECONN? <cmd-BCONN>` or ``+BLECONN``.
+    - This command sends a Service Changed indication (characteristic UUID ``0x2A05``) to the peer of that connection. The indicated attribute handle range is ``0x0001`` to ``0xFFFF``, which asks the peer to rediscover the GATT database.
+    - The peer must have enabled indications in the Client Characteristic Configuration Descriptor (CCCD) of the Service Changed characteristic. Otherwise the peer discards the indication.
+    - This command is blocking. A new command can be sent only after it returns ``OK``.
+    - If ``<conn_index>`` does not match an existing connection, or the indication fails to be sent, the command returns ``ERROR``.
+
+    Example
+    ^^^^^^^^
+
+    .. only:: esp32 or esp32c3
+
+        ::
+
+            AT+BLEINIT=2      // Role: server.
+            AT+BLEADVSTART    // Start advertising. After the client is connected, it must enable indications on the Service Changed characteristic.
+            AT+BLESRVCHG=0    // Send a Service Changed indication to connection 0.
+
+    .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
+
+        ::
+
+            AT+BLEINIT=2      // Role: server.
+            AT+BLEADVPARAM=50,50,0,0,7,0,,
+            AT+BLEADVSTART    // Start advertising. After the client is connected, it must enable indications on the Service Changed characteristic.
+            AT+BLESRVCHG=0    // Send a Service Changed indication to connection 0.
 
     .. _cmd-GSSETA:
 
