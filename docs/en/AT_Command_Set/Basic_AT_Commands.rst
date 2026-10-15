@@ -1669,14 +1669,23 @@ Query the RF TX Power.
 
 **Response:**
 
-.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+.. only:: esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+  When the current firmware includes Bluetooth LE:
 
   ::
 
     +RFPOWER:<wifi_power>,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>
     OK
 
-.. only:: esp32c2 or esp32s2
+  When the current firmware does not include Bluetooth LE:
+
+  ::
+
+    +RFPOWER:<wifi_power>
+    OK
+
+.. only:: esp32s2
 
   ::
 
@@ -1688,13 +1697,13 @@ Set Command
 
 **Command:**
 
-.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+.. only:: esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
 
   ::
 
-    AT+RFPOWER=<wifi_power>[,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>]
+    AT+RFPOWER=[<wifi_power>][,<ble_adv_power>,<ble_scan_power>,<ble_conn_power>]
 
-.. only:: esp32c2 or esp32s2
+.. only:: esp32s2
 
   ::
 
@@ -1709,7 +1718,7 @@ Set Command
 Parameters
 ^^^^^^^^^^
 
-- **<wifi_power>**: the unit is 0.25 dBm. For example, if you set the value to 78, the actual maximum RF Power value is 78 * 0.25 dBm = 19.5 dBm. After you configure it, please confirm the actual value by entering the command ``AT+RFPOWER?``.
+- **<wifi_power>**: the unit is 0.25 dBm. For example, if you set the value to 78, the actual maximum RF Power value is 78 * 0.25 dBm = 19.5 dBm. After you configure it, please confirm the actual value by entering the command ``AT+RFPOWER?``. Default: 78.
 
   .. only:: esp32
 
@@ -1752,7 +1761,7 @@ Parameters
 
 .. only:: esp32
 
-  - **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,7].
+  - **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Default: 0. Range: [0,7].
 
     - 0: 7 dBm
     - 1: 4 dBm
@@ -1765,7 +1774,7 @@ Parameters
 
 .. only:: esp32c3 or esp32c2 or esp32c5
 
-  - **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [0,15].
+  - **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Default: 11. Range: [0,15].
 
     - 0: -24 dBm
     - 1: -21 dBm
@@ -1786,7 +1795,7 @@ Parameters
 
 .. only:: esp32c6 or esp32c61
 
-  - **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Range: [3,15].
+  - **<ble_adv_power>**: RF TX Power of Bluetooth LE advertising. Default: 11. Range: [3,15].
 
     - 3: -15 dBm
     - 4: -12 dBm
@@ -1802,23 +1811,31 @@ Parameters
     - 14: 18 dBm
     - 15: 20 dBm
 
-.. only:: esp32 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+.. only:: esp32
 
-  - **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. The parameters are the same as ``<ble_adv_power>``.
-  - **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. The same as ``<ble_adv_power>``.
+  - **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. The parameters are the same as ``<ble_adv_power>``. Default: 0.
+  - **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. The same as ``<ble_adv_power>``. Default: 0.
+
+.. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+  - **<ble_scan_power>**: RF TX Power of Bluetooth LE scanning. The parameters are the same as ``<ble_adv_power>``. Default: 11.
+  - **<ble_conn_power>**: RF TX Power of Bluetooth LE connecting. The same as ``<ble_adv_power>``. Default: 11.
 
 Note
 ^^^^^
 
-- When Wi-Fi is turned off or not initialized, the :ref:`AT+RFPOWER <cmd-RFPOWER>` command cannot set or query the RF TX Power of Wi-Fi. Similarly, when Bluetooth LE is not initialized, the command cannot set or query that of Bluetooth LE, either.
-- Since the RF TX Power is actually divided into several levels, and each level has its own value range, the ``wifi_power`` value queried by the ``esp_wifi_get_max_tx_power`` may differ from the value set by ``esp_wifi_set_max_tx_power`` and is no larger than the set value.
-- It is recommended to set the two parameters <ble_scan_power> and <ble_conn_power> to the same value as the <ble_adv_power> parameter. Otherwise, they will be automatically adjusted to the value of <ble_adv_power>.
-- The configuration changes are not saved in the flash. If you need to save them to flash, please refer to :ref:`Maximum TX Power Operations <sysmfg-max-tx-power>`.
+- Initialize Wi-Fi before setting the RF TX Power of Wi-Fi. When Wi-Fi is turned off, not initialized, or not included in the current firmware, the queried ``<wifi_power>`` is 0. The value is invalid, and the command cannot set the RF TX Power of Wi-Fi.
+
+.. only:: esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+  - Initialize Bluetooth LE before setting the RF TX Power of Bluetooth LE. When Bluetooth LE is not initialized, the queried ``<ble_adv_power>``, ``<ble_scan_power>``, and ``<ble_conn_power>`` are 255. The values are invalid, and the command cannot set the RF TX Power of Bluetooth LE.
+  - Set ``<ble_scan_power>`` and ``<ble_conn_power>`` to the same value as ``<ble_adv_power>``. Otherwise, these two parameters are automatically set to the value of ``<ble_adv_power>``.
 
 .. only:: esp32c61
 
-  .. attention::
-    The BLE transmit power must be configured immediately after initialization. If scanning has been enabled even once, any subsequent attempts to set the transmit power will fail.
+  - If you want to set the RF TX Power of Bluetooth LE, you need to configure it immediately after Bluetooth LE initialization. If Bluetooth LE scanning has been enabled even once, any subsequent command that sets the RF TX Power of Bluetooth LE will fail.
+
+- The configuration changes are not saved in the flash. If you need to save them to flash, please refer to :ref:`Maximum TX Power Operations <sysmfg-max-tx-power>`.
 
 .. _cmd-RFCAL:
 

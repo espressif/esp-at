@@ -401,11 +401,41 @@ UART 配置操作
 
   **响应：**
 
-  .. code-block:: none
+  .. only:: esp32
 
-    +RFPOWER:60
+    .. code-block:: none
 
-    OK
+      +RFPOWER:60,0,0,0
+
+      OK
+
+  .. only:: esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+    .. code-block:: none
+
+      +RFPOWER:60,11,11,11
+
+      OK
+
+  .. only:: esp32 or esp32c2 or esp32c3 or esp32c5 or esp32c6 or esp32c61
+
+    上面的响应适用于当前固件包含 Bluetooth LE 功能的情况。``60`` 应与上面更新的 Wi-Fi 最大发射功率一致。另外三个值是 ``<ble_adv_power>``、``<ble_scan_power>``、``<ble_conn_power>`` 的默认值。
+
+    当前固件未包含 Bluetooth LE 功能时：
+
+    .. code-block:: none
+
+      +RFPOWER:60
+
+      OK
+
+  .. only:: esp32s2
+
+    .. code-block:: none
+
+      +RFPOWER:60
+
+      OK
 
   最大发射功率现在为 60 (60 × 0.25 dBm = 15 dBm)。
 
