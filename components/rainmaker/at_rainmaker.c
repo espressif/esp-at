@@ -325,8 +325,8 @@ static void rmaker_response_result(at_rainmaker_mess_t message)
 
     case AT_RM_WIFI_MCU_OTA_DELAYED:
         if ((s_rm_ota_status != OTA_STATUS_DELAYED) && ((xEventGroupGetBits(s_rm_event_group) & RM_HOST_MCU_OTA_EXIST) == 0)) {
-            snprintf((char *)buffer, TEMP_BUFFER_SIZE, "%s:%d\r\n", RAINMAKER_MESS_OTA, OTA_STATUS_REJECTED);
-            s_rm_ota_status = OTA_STATUS_REJECTED;
+            snprintf((char *)buffer, TEMP_BUFFER_SIZE, "%s:%d\r\n", RAINMAKER_MESS_OTA, OTA_STATUS_DELAYED);
+            s_rm_ota_status = OTA_STATUS_DELAYED;
         }
         break;
 
@@ -583,7 +583,7 @@ static esp_err_t write_cb(const esp_rmaker_device_t *device, const esp_rmaker_pa
     }
     const char *device_name = esp_rmaker_device_get_name(device);
     const char *param_name = esp_rmaker_param_get_name(param);
-    const char *src_name = esp_rmaker_device_cb_src_to_str(ctx->src);
+    const char *src_name = (ctx != NULL) ? esp_rmaker_device_cb_src_to_str(ctx->src) : "unknown";
 
     // passthrough mode
     if ((xEventGroupGetBits(s_rm_event_group) & RM_IN_PASSTHROUGH_MODE)) {
@@ -595,7 +595,10 @@ static esp_err_t write_cb(const esp_rmaker_device_t *device, const esp_rmaker_pa
         } else if (val.type == RMAKER_VAL_TYPE_FLOAT) {
             asprintf(&buf, "%f", val.val.f);
         } else {
-            asprintf(&buf, "%s", val.val.s);
+            asprintf(&buf, "%s", val.val.s ? val.val.s : "");
+        }
+        if (buf == NULL) {
+            return ESP_FAIL;
         }
         esp_at_port_write_data((uint8_t *)buf, strlen((char *)buf));
         free(buf);
@@ -608,7 +611,10 @@ static esp_err_t write_cb(const esp_rmaker_device_t *device, const esp_rmaker_pa
         } else if (val.type == RMAKER_VAL_TYPE_FLOAT) {
             asprintf(&buf, "%s:%s,%s,%s:%f\r\n", DATA_FORMAT, src_name, device_name, param_name, val.val.f);
         } else {
-            asprintf(&buf, "%s:%s,%s,%s:%s\r\n", DATA_FORMAT, src_name, device_name, param_name, val.val.s);
+            asprintf(&buf, "%s:%s,%s,%s:%s\r\n", DATA_FORMAT, src_name, device_name, param_name, val.val.s ? val.val.s : "");
+        }
+        if (buf == NULL) {
+            return ESP_FAIL;
         }
         esp_at_port_write_data((uint8_t *)buf, strlen((char *)buf));
         free(buf);

@@ -57,6 +57,11 @@ const esp_partition_t *esp_at_ota_get_update_partition(void)
     const esp_partition_t *configured = esp_ota_get_boot_partition();
     const esp_partition_t *running = esp_ota_get_running_partition();
 
+    if (configured == NULL) {
+        ESP_LOGE(TAG, "no boot partition");
+        return NULL;
+    }
+
     if (configured != running) {
         ESP_LOGW(TAG, "Configured OTA boot partition at offset 0x%08x, but running from offset 0x%08x",
                  configured->address, running->address);

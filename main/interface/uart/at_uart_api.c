@@ -90,6 +90,10 @@ bool at_nvs_uart_config_set_internal(at_uart_config_t *config)
         nvs_close(handle);
         return false;
     }
+    if (nvs_commit(handle) != ESP_OK) {
+        nvs_close(handle);
+        return false;
+    }
 
     nvs_close(handle);
     return true;
@@ -157,7 +161,10 @@ esp_err_t at_mfg_uart_port_pins_get(at_uart_port_pins_t *config)
 
     // get uart port and uart pins from flash
     int8_t uart_num = g_at_cmd_port;
-    int32_t tx_pin, rx_pin, cts_pin, rts_pin;
+    int32_t tx_pin = config->tx_pin;
+    int32_t rx_pin = config->rx_pin;
+    int32_t cts_pin = config->cts_pin;
+    int32_t rts_pin = config->rts_pin;
     at_mfg_params_storage_mode_t mode = at_get_mfg_params_storage_mode();
     if (mode == AT_PARAMS_IN_MFG_NVS) {
         nvs_handle handle;

@@ -122,9 +122,14 @@ retry:
                 pattern_pos = uart_pattern_pop_pos(g_at_cmd_port);
                 if (pattern_pos >= 0) {
                     data = (uint8_t *)malloc(pattern_pos + 3);
-                    uart_read_bytes(g_at_cmd_port, data, pattern_pos + 3, 0);
-                    free(data);
-                    data = NULL;
+                    if (data != NULL) {
+                        uart_read_bytes(g_at_cmd_port, data, pattern_pos + 3, 0);
+                        free(data);
+                        data = NULL;
+                    } else {
+                        uart_flush_input(g_at_cmd_port);
+                        xQueueReset(s_at_uart_queue);
+                    }
                 } else {
                     uart_flush_input(g_at_cmd_port);
                     xQueueReset(s_at_uart_queue);
