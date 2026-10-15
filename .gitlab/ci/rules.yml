@@ -52,42 +52,44 @@
 #########
 # Rules #
 #########
+.rules:skip-at-integration:
+  rules:
+    - <<: *if-at-integration-force-by-env
+      when: never
+    - <<: *if-at-integration-triggered-by-external
+      when: never
+    - <<: *if-at-integration-enabled-by-mr-note
+      when: never
+
 .rules:protected:
   rules:
+    - !reference [".rules:skip-at-integration", rules]
     - <<: *if-protected
 
 .rules:build:build_doc:
   rules:
+    - !reference [".rules:skip-at-integration", rules]
     - <<: *if-protected
     - <<: *if-dev-push
       changes: *patterns-docs
 
 .rules:build:build_project:
   rules:
-    - <<: *if-at-integration-force-by-env
-      when: never
-    - <<: *if-at-integration-triggered-by-external
-      when: never
-    - <<: *if-at-integration-enabled-by-mr-note
-      when: never
+    - !reference [".rules:skip-at-integration", rules]
     - <<: *if-protected-or-web-trigger
     - <<: *if-dev-push
       changes: *patterns-src
 
 .rules:build:build_examples:
   rules:
+    - !reference [".rules:skip-at-integration", rules]
     - <<: *if-protected-or-web-trigger
     - <<: *if-dev-push
       changes: *patterns-examples
 
 .rules:build:build_project_on_protected:
   rules:
-    - <<: *if-at-integration-force-by-env
-      when: never
-    - <<: *if-at-integration-triggered-by-external
-      when: never
-    - <<: *if-at-integration-enabled-by-mr-note
-      when: never
+    - !reference [".rules:skip-at-integration", rules]
     - <<: *if-protected-or-web-trigger
 
 .rules:deploy:docs_preview:
@@ -97,6 +99,7 @@
 
 .rules:deploy:docs_production:
   rules:
+    - !reference [".rules:skip-at-integration", rules]
     - <<: *if-protected
 
 .rules:test:at_integration_pipeline:

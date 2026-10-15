@@ -7,6 +7,9 @@
 check_pre_commit:
   extends:
     - .pre_check_template
+  rules:
+    - !reference [".rules:skip-at-integration", rules]
+    - when: on_success
   before_script:
     - pip install pre-commit
   script:
