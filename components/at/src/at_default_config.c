@@ -44,6 +44,7 @@ static const at_module_info_t s_module_info[] = {
     {"MINI-1",          CONFIG_ESP_AT_OTA_TOKEN_ESP32_MINI_1,  CONFIG_ESP_AT_OTA_SSL_TOKEN_ESP32_MINI_1 },   // ESP32-MINI-1
     {"ESP32-SDIO",      NULL,  NULL },   // ESP32-SDIO
     {"ESP32-D2WD",      NULL,  NULL },   // ESP32-D2WD
+    {"NINA-W10",        NULL,  NULL },   // NINA-W10
 #endif
 
 #if defined(CONFIG_IDF_TARGET_ESP32C3)
