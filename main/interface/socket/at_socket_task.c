@@ -103,7 +103,7 @@ static void socket_task(void *params)
 
     for (;;) {
         // accept a new client
-        socklen_t len;
+        socklen_t len = sizeof(struct sockaddr_in);
         struct sockaddr_in remote_addr;
         ESP_LOGD(TAG, "wait for a new client...");
         s_client_fd = accept(server_fd, (struct sockaddr*) &remote_addr, &len);
@@ -116,6 +116,12 @@ static void socket_task(void *params)
 
         // create a buffer to store data from client
         uint8_t *buffer = (uint8_t *)malloc(AT_SOCKET_RECV_BUFFER_SIZE * sizeof(uint8_t));
+        if (buffer == NULL) {
+            ESP_LOGE(TAG, "malloc failed");
+            close(s_client_fd);
+            s_client_fd = -1;
+            continue;
+        }
 
         for (;;) {
             // set fd_set

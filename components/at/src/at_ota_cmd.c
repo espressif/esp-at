@@ -457,22 +457,34 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
         if (buff_len < 0) {
             ESP_AT_LOGE(TAG, "recv data failed");
             goto OTA_ERROR;
-        } else if (buff_len > 0 && !pkg_body_start) {
+        }
+        data_buffer[buff_len] = '\0';
+        if (buff_len > 0 && !pkg_body_start) {
             // search "\r\n\r\n"
             pStr = (uint8_t*)strstr((char*)data_buffer, "Content-Length: ");
             if (pStr == NULL) {
-                break;
+                ESP_AT_LOGE(TAG, "content length not found");
+                goto OTA_ERROR;
             }
             pStr += strlen("Content-Length: ");
             total_len = atoi((char*)pStr);
+            if (total_len <= 0) {
+                ESP_AT_LOGE(TAG, "invalid content length: %d", total_len);
+                goto OTA_ERROR;
+            }
             ESP_AT_LOGI(TAG, "total_len=%d!\r\n", total_len);
             uint32_t partition_size = 0;
             if (upgrade_type == AT_UPGRADE_SYSTEM_FIRMWARE) {
-                partition_size = esp_at_ota_get_update_partition()->size;
+                const esp_partition_t *update_partition = esp_at_ota_get_update_partition();
+                if (update_partition == NULL) {
+                    ESP_AT_LOGE(TAG, "no ota update partition");
+                    goto OTA_ERROR;
+                }
+                partition_size = update_partition->size;
             } else {
                 partition_size = at_custom_partition->size;
             }
-            if (total_len > partition_size) {
+            if ((uint32_t)total_len > partition_size) {
                 ESP_AT_LOGE(TAG, "ota bin oversize, %d > %d", total_len, partition_size);
                 goto OTA_ERROR;
             }
@@ -514,14 +526,16 @@ bool esp_at_upgrade_process(at_ota_mode_t ota_mode, uint8_t *version, const char
             recv_len += buff_len;
         } else if (buff_len == 0) {
             ESP_AT_LOGI(TAG, "receive all packet over");
-            if (recv_len != total_len) {
+            if (!pkg_body_start || recv_len != total_len) {
                 goto OTA_ERROR;
             }
         } else {
             ESP_AT_LOGW(TAG, "unhandled event");
         }
-        ESP_AT_LOGI(TAG, "total_len=%d(%d), %0.1f%%!", total_len, recv_len, (recv_len * 1.0) * 100 / total_len);
-        if (recv_len == total_len) {
+        if (total_len > 0) {
+            ESP_AT_LOGI(TAG, "total_len=%d(%d), %0.1f%%!", total_len, recv_len, (recv_len * 1.0) * 100 / total_len);
+        }
+        if (pkg_body_start && recv_len == total_len) {
             break;
         }
     }
@@ -721,15 +735,23 @@ static uint8_t at_queryCmdCipupgrade(uint8_t *cmd_name)
 
 static esp_err_t at_cipfwver_http_event_handler(esp_http_client_event_t *evt)
 {
-    switch (evt->event_id) {
-    case HTTP_EVENT_ON_DATA:
-        memcpy(s_http_buffer + s_http_buffer_offset, evt->data, evt->data_len);
-        s_http_buffer_offset += evt->data_len;
-
-    default:
-        break;;
+    if (evt->event_id != HTTP_EVENT_ON_DATA) {
+        return ESP_OK;
     }
 
+    /* Keep one byte for the NUL terminator used by the version parser. */
+    if (s_http_buffer == NULL || evt->data == NULL || evt->data_len < 0 ||
+            s_http_buffer_offset < 0 || s_http_buffer_offset >= (AT_HTTP_CONTENT_LEN_MAX - 1)) {
+        return ESP_FAIL;
+    }
+
+    int remain = AT_HTTP_CONTENT_LEN_MAX - 1 - s_http_buffer_offset;
+    if (evt->data_len > remain) {
+        return ESP_FAIL;
+    }
+
+    memcpy(s_http_buffer + s_http_buffer_offset, evt->data, evt->data_len);
+    s_http_buffer_offset += evt->data_len;
     return ESP_OK;
 }
 
@@ -751,6 +773,9 @@ static uint8_t at_query_cmd_cipfwver(uint8_t *cmd_name)
         .timeout_ms = 10000,
     };
     esp_http_client_handle_t client = esp_http_client_init(&config);
+    if (client == NULL) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
 
     // set http authorization
     const char *auth_token = NULL;
@@ -760,6 +785,9 @@ static uint8_t at_query_cmd_cipfwver(uint8_t *cmd_name)
     auth_token = esp_at_get_ota_token_by_id(esp_at_get_module_id(), ESP_AT_OTA_MODE_NORMAL);
 #endif
     char buffer[ESP_AT_BUF_ON_STACK_SIZE] = {0};
+    if (auth_token == NULL) {
+        goto _over;
+    }
     snprintf(buffer, ESP_AT_BUF_ON_STACK_SIZE, "token %s", auth_token);
     esp_http_client_set_header(client, "Authorization", buffer);
 
@@ -784,8 +812,18 @@ static uint8_t at_query_cmd_cipfwver(uint8_t *cmd_name)
         pstr = strstr((char *)pstr, "\"version\": ");
         if (pstr) {
             ver_head = pstr + strlen("\"version\": ");
-            ver_tail = strstr((char *)(ver_head + 1), "\", ");
-            snprintf(buffer, ESP_AT_BUF_ON_STACK_SIZE, "%s:%.*s\r\n", esp_at_get_current_cmd_name(), ver_tail - ver_head + 1, ver_head);
+            if (ver_head >= (char *)(s_http_buffer + s_http_buffer_offset)) {
+                break;
+            }
+            ver_tail = strstr(ver_head, "\", ");
+            if (ver_tail == NULL) {
+                break;
+            }
+            int precision = (int)(ver_tail - ver_head) + 1;
+            if (precision <= 0 || precision >= ESP_AT_BUF_ON_STACK_SIZE) {
+                break;
+            }
+            snprintf(buffer, ESP_AT_BUF_ON_STACK_SIZE, "%s:%.*s\r\n", esp_at_get_current_cmd_name(), precision, ver_head);
             esp_at_port_write_data((uint8_t *)buffer, strlen(buffer));
             pstr = ver_tail;
         } else {

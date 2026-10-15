@@ -5,13 +5,13 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <fcntl.h>
 #include <sys/socket.h>
 #include <sys/param.h>
-#include <time.h>
 #include <sys/queue.h>
 
 #include "freertos/FreeRTOS.h"
@@ -31,6 +31,7 @@
 #include "esp_flash_partitions.h"
 #include "esp_partition.h"
 #include "esp_mac.h"
+#include "esp_timer.h"
 
 #include "esp_at.h"
 #include "esp_at_internal.h"
@@ -85,7 +86,7 @@ static char *s_at_web_redirect_url = NULL;
 #define ESP_AT_UPGRADE_PARTITION_NAME                  ("ota")
 
 typedef struct router_obj {
-    uint8_t ssid[32];
+    uint8_t ssid[33];
     int8_t rssi;
     uint8_t mac[6];
     SLIST_ENTRY(router_obj) next;
@@ -252,6 +253,11 @@ static esp_err_t at_web_get_mobile_phone_mac(uint8_t *mobile_phone_mac)
         return ESP_FAIL;
     }
 
+    if (sta_list.num == 0) {
+        ESP_LOGW(TAG, "no station associated");
+        return ESP_FAIL;
+    }
+
     ESP_LOGI(TAG, "Find mobile phone mac is : %02x:%02x:%02x:%02x:%02x:%02x", MAC2STR(sta_list.sta[sta_list.num - 1].mac));
     memcpy(mobile_phone_mac, sta_list.sta[sta_list.num - 1].mac, sizeof(sta_list.sta[sta_list.num - 1].mac));
     return ESP_OK;
@@ -414,8 +420,8 @@ static esp_err_t at_web_start_scan_filter(uint8_t *phone_mac, uint8_t *password,
     uint16_t ap_scan_number = 0;
     int32_t loop = 0;
     bool last_scan = false;
-    uint64_t start = 0;
-    uint64_t end = 0;
+    int64_t start = 0;
+    int64_t end = 0;
     router_obj_t *item = NULL;
     router_obj_t *head_item = NULL;
     wifi_ap_record_t *ap_info = NULL;
@@ -436,7 +442,7 @@ static esp_err_t at_web_start_scan_filter(uint8_t *phone_mac, uint8_t *password,
     ESP_LOGD(TAG, "max connect time is %d", max_connect_time);
 
     while (max_try_connect_num > 0) {
-        start = clock();
+        start = esp_timer_get_time();
         if (current_available_time <= ESP_AT_WEB_WIFI_LAST_SCAN_TIMEOUT) {
             last_scan = true;
         }
@@ -450,7 +456,6 @@ static esp_err_t at_web_start_scan_filter(uint8_t *phone_mac, uint8_t *password,
             ESP_LOGE(TAG, "get scan fail");
             goto err;
         }
-
         for (loop = 0; loop < ap_scan_number; loop++) {
             if (at_web_check_ap_info(&ap_info[loop]) != ESP_OK) {
                 continue;
@@ -583,17 +588,18 @@ static esp_err_t at_web_start_scan_filter(uint8_t *phone_mac, uint8_t *password,
         }
 
         last = NULL;
-        end = clock();
-        if (end > start) {
-            ESP_LOGI(TAG, "scan and try connect use time is %d", (int32_t)((end - start) / 1000));
-            current_available_time -= ((end - start) / 1000);
-        } else if (end < start) {
-            ESP_LOGI(TAG, "scan and try connect use time is %d", (int32_t)((end + 0xFFFFFFFFUL - start) / 1000));
-            current_available_time -= ((end + 0xFFFFFFFFUL - start) / 1000);
-        } else {
+        end = esp_timer_get_time();
+        if (end < start) {
             ESP_LOGE(TAG, "time interval fatal error");
             break;
         }
+        /* current_available_time is in seconds. Charge at least one second so a fast scan cannot spin. */
+        int32_t elapsed_s = (int32_t)((end - start + 999999) / 1000000);
+        if (elapsed_s < 1) {
+            elapsed_s = 1;
+        }
+        ESP_LOGI(TAG, "scan and try connect use time is %d", elapsed_s);
+        current_available_time -= elapsed_s;
 
         if ((current_available_time <= 0) || (current_available_time > max_connect_time)) {
             break;
@@ -621,10 +627,22 @@ err:
 
 static int at_web_url_decode(char *src, int src_len, char *des, int des_len)
 {
-    int len = MIN(src_len, des_len);
+    int len;
+
+    if (des == NULL || des_len <= 0) {
+        return -1;
+    }
+
+    /* Keep the result NUL-terminated inside des. */
+    len = MIN(src_len, des_len - 1);
+    if (len < 0) {
+        len = 0;
+    }
 
     memset(des, 0, des_len);
-    memcpy(des, src, len);
+    if (len > 0) {
+        memcpy(des, src, len);
+    }
 
     return len;
 }
@@ -747,14 +765,14 @@ static esp_err_t recv_post_data(httpd_req_t *req, char *buf)
     int cur_len = 0;
     int received = 0;
 
-    if (total_len >= ESP_AT_WEB_SCRATCH_BUFSIZE) {
+    if (total_len < 0 || total_len >= ESP_AT_WEB_SCRATCH_BUFSIZE) {
         /* Respond with 500 Internal Server Error */
         httpd_resp_send_500(req);
         ESP_LOGE(TAG, "context too long");
         return ESP_FAIL;
     }
     while (cur_len < total_len) {
-        received = httpd_req_recv(req, buf + cur_len, total_len);
+        received = httpd_req_recv(req, buf + cur_len, total_len - cur_len);
         if (received <= 0) {
             /* Respond with 500 Internal Server Error */
             httpd_resp_send_500(req);
@@ -1131,26 +1149,32 @@ static esp_err_t at_get_wifi_info_from_json_str(char *buffer, wifi_sta_connect_c
 
     item = cJSON_GetObjectItem(root, "ssid");
     if (item) {
+        if (!cJSON_IsString(item) || item->valuestring == NULL) {
+            ESP_LOGE(TAG, "ssid is not a string");
+            goto json_fail;
+        }
         ssid_len = strlen(item->valuestring);
         ESP_LOGD(TAG, "ssid:%s", item->valuestring);
         if (ssid_len > 32) {
             ESP_LOGE(TAG, "ssid is too long");
-            return ESP_FAIL;
-        } else {
-            strncpy(ssid, item->valuestring, sizeof(ssid) - 1);
+            goto json_fail;
         }
+        memcpy(ssid, item->valuestring, ssid_len);
     }
 
     item = cJSON_GetObjectItem(root, "password");
     if (item) {
+        if (!cJSON_IsString(item) || item->valuestring == NULL) {
+            ESP_LOGE(TAG, "password is not a string");
+            goto json_fail;
+        }
         password_len = strlen(item->valuestring);
         ESP_LOGD(TAG, "password:%s", item->valuestring);
         if (password_len > 64) {
             ESP_LOGE(TAG, "password is too long");
-            return ESP_FAIL;
-        } else {
-            strncpy(password, item->valuestring, sizeof(password) - 1);
+            goto json_fail;
         }
+        memcpy(password, item->valuestring, password_len);
     }
     cJSON_Delete(root);
 
@@ -1158,6 +1182,9 @@ static esp_err_t at_get_wifi_info_from_json_str(char *buffer, wifi_sta_connect_c
     memcpy(config->password, password, password_len);
 
     return ESP_OK;
+json_fail:
+    cJSON_Delete(root);
+    return ESP_FAIL;
 }
 
 static esp_err_t config_wifi_post_handler(httpd_req_t *req)
@@ -1241,51 +1268,74 @@ error_handle:
     return ESP_FAIL;
 }
 
+static int json_append(char *buf, int buf_size, int json_len, const char *fmt, ...)
+{
+    va_list args;
+    int written;
+
+    if (json_len < 0 || json_len >= buf_size) {
+        return -1;
+    }
+
+    va_start(args, fmt);
+    written = vsnprintf(buf + json_len, buf_size - json_len, fmt, args);
+    va_end(args);
+    if (written < 0 || written >= buf_size - json_len) {
+        return -1;
+    }
+    return json_len + written;
+}
+
+static int json_append_escaped(char *buf, int buf_size, int json_len, const uint8_t *text, int text_len)
+{
+    for (int i = 0; i < text_len; i++) {
+        uint8_t c = text[i];
+        if (c == '\\' || c == '\"' || c == '/') {
+            json_len = json_append(buf, buf_size, json_len, "\\");
+            if (json_len < 0) {
+                return -1;
+            }
+        }
+        json_len = json_append(buf, buf_size, json_len, "%c", c);
+        if (json_len < 0) {
+            return -1;
+        }
+    }
+    return json_len;
+}
+
 /* Simple handler for WiFi_info_get handler */
 static esp_err_t config_wifi_get_handler(httpd_req_t *req)
 {
     wifi_sta_connect_config_t *connect_config = at_web_get_sta_connect_config();
     wifi_sta_connection_info_t *connection_info = at_web_get_sta_connection_info();
     char temp_str[32] = {0};
-    int32_t json_len = 0;
+    int json_len = 0;
     char *temp_json_str = ((web_server_context_t*)(req->user_ctx))->scratch;
 
     httpd_resp_set_type(req, "application/json");
 
     // according wifi connect status, update state
     if (connection_info->config_status == ESP_AT_WIFI_STA_CONNECT_OK) {
-        json_len += sprintf(temp_json_str + json_len, "{\"state\":1,"); // it means wifi connect success
+        json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "{\"state\":1,"); // wifi connect success
     } else if (connection_info->config_status == ESP_AT_WIFI_STA_CONNECT_FAIL) {
-        json_len += sprintf(temp_json_str + json_len, "{\"state\":2,"); // it means wifi connect fail
+        json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "{\"state\":2,"); // wifi connect fail
     } else {
-        json_len += sprintf(temp_json_str + json_len, "{\"state\":0,"); // it means http context OK
+        json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "{\"state\":0,"); // http context OK
     }
 
     // add ssid to json str
-    // note: escape special non-control characters in json format, see https://www.json.org/json-en.html for more details
-    json_len += sprintf(temp_json_str + json_len, "\"sta_ssid\":\"");
-    int32_t ssid_len = strlen((char *)(connect_config->ssid));
-    for (int i = 0; i < ssid_len; i++) {
-        uint8_t c = connect_config->ssid[i];
-        if (c == '\\' || c == '\"' || c == '/') {
-            json_len += sprintf(temp_json_str + json_len, "\\");
-        }
-        json_len += sprintf(temp_json_str + json_len, "%c", c);
-    }
-    json_len += sprintf(temp_json_str + json_len, "\",");
+    // escape \, ", and / ; see https://www.json.org/json-en.html
+    json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "\"sta_ssid\":\"");
+    json_len = json_append_escaped(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, connect_config->ssid,
+                                   strnlen((char *)connect_config->ssid, sizeof(connect_config->ssid)));
+    json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "\",");
 
     // add password to json str
-    // note: escape special non-control characters in json format, see https://www.json.org/json-en.html for more details
-    json_len += sprintf(temp_json_str + json_len, "\"sta_password\":\"");
-    int32_t password_len = strlen((char *)(connect_config->password));
-    for (int i = 0; i < password_len; i++) {
-        uint8_t c = connect_config->password[i];
-        if (c == '\\' || c == '\"' || c == '/') {
-            json_len += sprintf(temp_json_str + json_len, "\\");
-        }
-        json_len += sprintf(temp_json_str + json_len, "%c", c);
-    }
-    json_len += sprintf(temp_json_str + json_len, "\",");
+    json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "\"sta_password\":\"");
+    json_len = json_append_escaped(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, connect_config->password,
+                                   strnlen((char *)connect_config->password, sizeof(connect_config->password)));
+    json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "\",");
 
     switch (connection_info->config_status) {
     case ESP_AT_WIFI_STA_NOT_START:
@@ -1306,7 +1356,7 @@ static esp_err_t config_wifi_get_handler(httpd_req_t *req)
     default:
         break;
     }
-    json_len += sprintf(temp_json_str + json_len, "\"message\":\"%s\"}", temp_str);
+    json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "\"message\":\"%s\"}", temp_str);
 
     ESP_LOGD(TAG, "now wifi get json str is %s\n", temp_json_str);
     httpd_resp_send(req, temp_json_str, (temp_json_str == NULL) ? 0 : strlen(temp_json_str));
@@ -1408,37 +1458,50 @@ static esp_err_t ap_record_get_handler(httpd_req_t *req)
     memset(temp_json_str, 0, ESP_AT_WEB_AP_RECORD_JSON_STR_LEN * sizeof(char));
 
     httpd_resp_set_type(req, "application/json");
-    json_len += sprintf(temp_json_str + json_len, "{\"state\":0,\"message\":\"scan done\",\"aplist\":["); // to get a json array format str
 
-    for (loop = 0; loop < ap_number; loop++) {
-        int32_t ssid_len = strlen((const char*)ap_info[loop].ssid);
-        if (ssid_len != 0) { // ignore hidden ssid
-            json_len += sprintf(temp_json_str + json_len, "{\"ssid\":\"");
-            for (int i = 0; i < ssid_len; i++) {
-                uint8_t c = ap_info[loop].ssid[i];
-                // escape special non-control characters in json format, see https://www.json.org/json-en.html for more details
-                if (c == '\\' || c == '\"' || c == '/') {
-                    json_len += sprintf(temp_json_str + json_len, "\\");
-                }
-                json_len += sprintf(temp_json_str + json_len, "%c", c);
-            }
-            json_len += sprintf(temp_json_str + json_len, "\",\"auth_mode\":%d},", ap_info[loop].authmode);
-
+    json_len = json_append(temp_json_str, ESP_AT_WEB_AP_RECORD_JSON_STR_LEN, json_len,
+                           "{\"state\":0,\"message\":\"scan done\",\"aplist\":["); // json array of AP records
+    for (loop = 0; loop < ap_number && json_len >= 0; loop++) {
+        int ssid_len = strnlen((const char *)ap_info[loop].ssid, sizeof(ap_info[loop].ssid));
+        if (ssid_len == 0) { // ignore hidden ssid
+            continue;
+        }
+        json_len = json_append(temp_json_str, ESP_AT_WEB_AP_RECORD_JSON_STR_LEN, json_len, "{\"ssid\":\"");
+        // escape \, ", and / ; see https://www.json.org/json-en.html
+        json_len = json_append_escaped(temp_json_str, ESP_AT_WEB_AP_RECORD_JSON_STR_LEN, json_len,
+                                       ap_info[loop].ssid, ssid_len);
+        json_len = json_append(temp_json_str, ESP_AT_WEB_AP_RECORD_JSON_STR_LEN, json_len,
+                               "\",\"auth_mode\":%d},", ap_info[loop].authmode);
+        if (json_len >= 0) {
             valid_ap_count++;
         }
     }
     free(ap_info);
     ap_info = NULL;
+    if (json_len < 1) {
+        at_web_response_error(req, HTTPD_500);
+        goto error_handle;
+    }
 
-    json_len += sprintf(temp_json_str + json_len - 1, "]}");
+    if (temp_json_str[json_len - 1] == ',') {
+        json_len = json_append(temp_json_str, ESP_AT_WEB_AP_RECORD_JSON_STR_LEN, json_len - 1, "]}");
+    } else {
+        json_len = json_append(temp_json_str, ESP_AT_WEB_AP_RECORD_JSON_STR_LEN, json_len, "]}");
+    }
+    if (json_len < 0) {
+        at_web_response_error(req, HTTPD_500);
+        goto error_handle;
+    }
     ESP_LOGD(TAG, "now, valid ap num is %d, ap records json str is %s\n", valid_ap_count, temp_json_str);
-    httpd_resp_send(req, temp_json_str, (temp_json_str == NULL) ? 0 : strlen(temp_json_str));
+    httpd_resp_send(req, temp_json_str, strlen(temp_json_str));
     free(temp_json_str);
     temp_json_str = NULL;
     return ESP_OK;
 error_handle:
     free(ap_info);
     ap_info = NULL;
+    free(temp_json_str);
+    temp_json_str = NULL;
     return ESP_FAIL;
 }
 
@@ -1458,7 +1521,7 @@ static esp_err_t ota_upgrade(httpd_req_t *req)
         goto err_handler;
     }
     // check post data size
-    if (update_partition->size < total_len) {
+    if ((uint32_t)total_len > update_partition->size) {
         ESP_LOGE(TAG, "ota data too long, partition size is %u, bin size is %d", update_partition->size, total_len);
         goto err_handler;
     }
@@ -1527,7 +1590,7 @@ static esp_err_t partition_upgrade(httpd_req_t *req, char *buf, const int total_
         return ESP_FAIL;
     }
 
-    if (total_len > at_custom_partition->size) {
+    if ((uint32_t)total_len > at_custom_partition->size) {
         ESP_LOGE(TAG, "received size %d is not equal %s size %d", total_len, partition_name, at_custom_partition->size);
         return ESP_FAIL;
     }
@@ -1589,7 +1652,7 @@ extern const esp_partition_t *esp_at_custom_partition_find_next(const esp_partit
 static esp_err_t ota_info_get_handler(httpd_req_t *req)
 {
     uint32_t version_uint32 =  esp_at_get_version();
-    int32_t json_len = 0;
+    int json_len = 0;
     uint8_t version[4] = {0};
     char *temp_json_str = ((web_server_context_t*)(req->user_ctx))->scratch;
     esp_partition_t *cur_partition = NULL;
@@ -1599,39 +1662,46 @@ static esp_err_t ota_info_get_handler(httpd_req_t *req)
     httpd_resp_set_type(req, "application/json");
 
     // OTA information start
-    json_len += sprintf(temp_json_str + json_len, "{");
-
+    json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "{");
     // OTA information
-    json_len += sprintf(temp_json_str + json_len, "\"state\":0,"); // it means http context OK
-    json_len += sprintf(temp_json_str + json_len, "\"fw_version\":\"%s\",", CONFIG_APP_PROJECT_VER); // it means http context OK
-    json_len += sprintf(temp_json_str + json_len, "\"at_core_version\":\"%d.%d.%d.%d\",", version[3], version[2], version[1], version[0]);
-
+    json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "\"state\":0,"); // http context OK
+    json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "\"fw_version\":\"%s\",", CONFIG_APP_PROJECT_VER);
+    json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len,
+                           "\"at_core_version\":\"%d.%d.%d.%d\",", version[3], version[2], version[1], version[0]);
     // partition information array start
-    json_len += sprintf(temp_json_str + json_len, "\"partitions\":");
-    json_len += sprintf(temp_json_str + json_len, "[");
+    json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "\"partitions\":");
+    json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "[");
 
     // OTA partition information
     if (esp_at_ota_get_update_partition()) {
-        json_len += sprintf(temp_json_str + json_len, "\"ota\",");
+        json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "\"ota\",");
     }
 
     // AT customize partition information
     for (;;) {
         const esp_partition_t *partition = esp_at_custom_partition_find_next((const esp_partition_t *)cur_partition);
-        if (partition) {
-            json_len += sprintf(temp_json_str + json_len, "\"%s\",", partition->label);
-            cur_partition = (esp_partition_t *)partition;
-        } else {
-            json_len -= 1;
+        if (partition == NULL || json_len < 0) {
             break;
         }
+        json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "\"%.16s\",", partition->label);
+        cur_partition = (esp_partition_t *)partition;
     }
 
+    if (json_len < 1) {
+        at_web_response_error(req, HTTPD_500);
+        return ESP_FAIL;
+    }
     // partition information array end
-    json_len += sprintf(temp_json_str + json_len, "]");
-
     // OTA information end
-    json_len += sprintf(temp_json_str + json_len, "}");
+    if (temp_json_str[json_len - 1] == ',') {
+        json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len - 1, "]}");
+    } else {
+        json_len = json_append(temp_json_str, ESP_AT_WEB_SCRATCH_BUFSIZE, json_len, "]}");
+    }
+    if (json_len < 0) {
+        at_web_response_error(req, HTTPD_500);
+        return ESP_FAIL;
+    }
 
     ESP_LOGD(TAG, "now ota get json str is %s\n", temp_json_str);
     httpd_resp_send(req, temp_json_str, strlen(temp_json_str));
@@ -1651,6 +1721,9 @@ static esp_err_t ota_data_post_handler(httpd_req_t *req)
     obj_len = httpd_req_get_hdr_value_len(req, ESP_AT_WEB_HEADER_AUTH_NAME) + 1;
     if (obj_len) {
         obj_name = calloc(1, obj_len);
+        if (obj_name == NULL) {
+            return ESP_FAIL;
+        }
 
         if (httpd_req_get_hdr_value_str(req, ESP_AT_WEB_HEADER_AUTH_NAME, obj_name, obj_len) != ESP_OK) {
             ESP_LOGE(TAG, "%s get error", ESP_AT_WEB_HEADER_AUTH_NAME);

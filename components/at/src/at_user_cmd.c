@@ -168,7 +168,7 @@ static uint8_t at_setup_cmd_userram(uint8_t para_num)
         if (sp_user_ram == NULL) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
-        if (offset + length > s_user_ram_size) {
+        if ((uint32_t)offset > s_user_ram_size || (uint32_t)length > s_user_ram_size - (uint32_t)offset) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
 
@@ -184,7 +184,14 @@ static uint8_t at_setup_cmd_userram(uint8_t para_num)
 
         // receive at cmd port data to user ram
         while (xSemaphoreTake(s_at_user_sync_sema, portMAX_DELAY)) {
-            had_written_len += esp_at_port_read_data(sp_user_ram + offset + had_written_len, length - had_written_len);
+            int32_t received = esp_at_port_read_data(sp_user_ram + offset + had_written_len, length - had_written_len);
+            if (received < 0) {
+                esp_at_port_exit_specific();
+                vSemaphoreDelete(s_at_user_sync_sema);
+                s_at_user_sync_sema = NULL;
+                return ESP_AT_RESULT_CODE_ERROR;
+            }
+            had_written_len += (uint32_t)received;
             if (had_written_len == length) {
                 ESP_AT_LOGI(TAG, "recv %d bytes", had_written_len);
                 esp_at_port_exit_specific();
@@ -207,7 +214,7 @@ static uint8_t at_setup_cmd_userram(uint8_t para_num)
         if (sp_user_ram == NULL) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
-        if (offset + length > s_user_ram_size) {
+        if ((uint32_t)offset > s_user_ram_size || (uint32_t)length > s_user_ram_size - (uint32_t)offset) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
         uint8_t *pbuffer = calloc(1, esp_at_min(AT_USERRAM_READ_BUFFER_SIZE, length) + HEAD_BUFFER_SIZE);
@@ -338,7 +345,15 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
 
     // receive at cmd port data
     while (xSemaphoreTake(s_at_user_sync_sema, portMAX_DELAY)) {
-        had_received_len += esp_at_port_read_data(url + had_received_len, length - had_received_len);
+        int32_t received = esp_at_port_read_data(url + had_received_len, length - had_received_len);
+        if (received < 0) {
+            esp_at_port_exit_specific();
+            free(url);
+            vSemaphoreDelete(s_at_user_sync_sema);
+            s_at_user_sync_sema = NULL;
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+        had_received_len += received;
         if (had_received_len == length) {
             esp_at_port_exit_specific();
 

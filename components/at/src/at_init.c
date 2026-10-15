@@ -82,9 +82,13 @@ esp_err_t esp_at_netif_init(void)
 
 static void at_module_init(void)
 {
-#define AT_TEMP_BUFFER_SIZE     256
+#define AT_TEMP_BUFFER_SIZE     512
     int ret = 0;
     uint8_t *version = (uint8_t *)malloc(AT_TEMP_BUFFER_SIZE);
+    if (version == NULL) {
+        ESP_AT_LOGE(TAG, "version buffer alloc failed");
+        esp_at_restart();
+    }
     ret = snprintf((char *)version, AT_TEMP_BUFFER_SIZE,
                    "compile time(%s):%s %s\r\n", ESP_AT_PROJECT_COMMIT_ID, __DATE__, __TIME__);
 
@@ -95,12 +99,16 @@ static void at_module_init(void)
     ESP_AT_LOGI(TAG, "%s (unknown)", CONFIG_APP_PROJECT_VER);
 #endif
 
-    ret = snprintf((char *)version + ret, AT_TEMP_BUFFER_SIZE - ret,
-                   "Bin version:%s(%s)\r\n", CONFIG_APP_PROJECT_VER, esp_at_get_current_module_name());
+    ret += snprintf((char *)version + ret, AT_TEMP_BUFFER_SIZE - ret,
+                    "Bin version:%s(%s)\r\n", CONFIG_APP_PROJECT_VER, esp_at_get_current_module_name());
 #endif
 
 #if CONFIG_AT_DEBUG
     char *versions = (char *)malloc(AT_TEMP_BUFFER_SIZE);
+    if (versions == NULL) {
+        ESP_AT_LOGE(TAG, "version buffer alloc failed");
+        esp_at_restart();
+    }
     ret = esp_at_get_core_version((char *)versions, AT_TEMP_BUFFER_SIZE);
     ret += snprintf((char *)versions + ret, AT_TEMP_BUFFER_SIZE - ret, "SDK version:%s\r\n", esp_get_idf_version());
     ret += snprintf((char *)versions + ret, AT_TEMP_BUFFER_SIZE - ret, "%s", version);

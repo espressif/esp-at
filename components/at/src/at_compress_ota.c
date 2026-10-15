@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -78,7 +78,8 @@ static esp_err_t at_compress_image_header_check(at_compress_ota_handle_t *handle
     }
 
     // check the size of compressed image, make sure the partition can hold on the compressed image
-    if (compressed_img_header->length + head_len <= handle->partition->size) {
+    if (head_len <= handle->partition->size &&
+            compressed_img_header->length <= handle->partition->size - head_len) {
         handle->compressed_img_size = compressed_img_header->length + head_len;
         handle->image_header_checked = true;
         ESP_LOGD(TAG, "Compressed image header check succeeded, image size: %d", handle->compressed_img_size);
@@ -162,6 +163,12 @@ esp_err_t at_compress_ota_write(at_compress_ota_handle_t *handle, const void *da
         }
     }
 
+    if (handle->wrote_size > handle->partition->size ||
+            (uint32_t)size > handle->partition->size - handle->wrote_size) {
+        ESP_LOGE(TAG, "Compressed image write exceeds partition");
+        return ESP_FAIL;
+    }
+
     esp_err_t ret = esp_partition_write(handle->partition, handle->wrote_size, data, size);
     if (ret == ESP_OK) {
         handle->wrote_size += size;
@@ -233,11 +240,13 @@ esp_err_t at_compress_https_ota(const esp_http_client_config_t *config)
     int status_code = esp_http_client_get_status_code(client);
     if (status_code >= HttpStatus_BadRequest) {
         ESP_LOGE(TAG, "HTTP client error (%d)", status_code);
+        esp_http_client_cleanup(client);
         return ESP_FAIL;
     }
 
     uint8_t *data = (uint8_t *)malloc(AT_HEAP_BUFFER_SIZE);
     if (!data) {
+        esp_http_client_cleanup(client);
         return ESP_FAIL;
     }
 

@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024-2025 Espressif Systems (Shanghai) CO LTD
+ * SPDX-FileCopyrightText: 2024-2026 Espressif Systems (Shanghai) CO LTD
  *
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -118,34 +118,57 @@ static esp_err_t localhost_udp_create(void)
 /* Parse the name from the packet from the dns name format to a regular .-seperated name
    returns the pointer to the next part of the packet
 */
-static char *parse_dns_name(char *raw_name, char *parsed_name, size_t parsed_name_max_len)
+static char *parse_dns_name(char *raw_name, char *parsed_name, size_t parsed_name_max_len, const char *packet_end)
 {
-
     char *label = raw_name;
     char *name_itr = parsed_name;
     int name_len = 0;
-    int sub_name_len = 0;
+
+    if (label == NULL || label >= packet_end) {
+        return NULL;
+    }
+
     do {
-        sub_name_len = *label;
-        // Len + 1 since we are adding '.'
-        name_len += (sub_name_len + 1);
-        if (name_len > parsed_name_max_len) {
+        size_t remain = (size_t)(packet_end - label);
+        int sub_name_len;
+
+        if (remain < 1) {
+            return NULL;
+        }
+        sub_name_len = (uint8_t)(*label);
+        if (sub_name_len == 0) {
+            break;
+        }
+        /* Label bytes and the following length byte must stay inside this datagram.
+         * Compression pointers are not followed.
+         */
+        if ((sub_name_len & 0xC0) == 0xC0 || (size_t)sub_name_len + 1 >= remain) {
             return NULL;
         }
 
-        // Copy the sub name that follows the the label
+        /* +1 for the '.' inserted between labels. */
+        name_len += sub_name_len + 1;
+        if (name_len > (int)parsed_name_max_len) {
+            return NULL;
+        }
+
+        /* Copy the sub name that follows the label. */
         memcpy(name_itr, label + 1, sub_name_len);
         name_itr[sub_name_len] = '.';
-        name_itr += (sub_name_len + 1);
-
+        name_itr += sub_name_len + 1;
         label += sub_name_len + 1;
-
+        if (label >= packet_end) {
+            return NULL;
+        }
     } while (*label != 0);
 
-    // Terminate the final string, replacing the last '.'
-    parsed_name[name_len - 1] = '\0';
+    if (name_len <= 0) {
+        return NULL;
+    }
 
-    // Return pointer to first char after the name
+    /* Replace the trailing '.' with the terminator. */
+    parsed_name[name_len - 1] = '\0';
+    /* First byte after the name. */
     return label + 1;
 }
 
@@ -154,7 +177,7 @@ static int parse_dns_request(char *req, size_t req_len, char *dns_reply, size_t 
 {
     memset(dns_reply, 0, dns_reply_max_len);
 
-    if (req_len > dns_reply_max_len) {
+    if (req_len < sizeof(dns_header_t) || req_len > dns_reply_max_len) {
         return -1;
     }
 
@@ -186,11 +209,13 @@ static int parse_dns_request(char *req, size_t req_len, char *dns_reply, size_t 
     char *cur_qd_ptr  = dns_reply + sizeof(dns_header_t);
 
     char name[128] = {0};
+    const char *packet_end = dns_reply + req_len;
     /* Respond to all questions with the ESP's IP address */
     for (int i = 0; i < qd_count; i++) {
-        char *name_end_ptr = parse_dns_name(cur_qd_ptr, name, sizeof(name));
-        if (name_end_ptr == NULL) {
-            ESP_LOGE(TAG, "Failed to parse DNS question: %s", cur_qd_ptr);
+        char *name_end_ptr = parse_dns_name(cur_qd_ptr, name, sizeof(name), packet_end);
+        if (name_end_ptr == NULL || name_end_ptr < dns_reply ||
+                (size_t)(packet_end - name_end_ptr) < sizeof(dns_question_t)) {
+            ESP_LOGE(TAG, "Failed to parse DNS question");
             return -1;
         }
 
