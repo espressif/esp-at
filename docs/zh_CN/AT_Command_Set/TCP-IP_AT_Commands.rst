@@ -1695,7 +1695,9 @@ ESP-AT 在运行时，通过 Network 从指定的服务器上下载新固件到�
 - **<ota mode>**：
 
     - 0: 通过 HTTP OTA；
-    - 1: 通过 HTTPS OTA，如果无效，请检查 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``OTA based upon ssl`` 是否使能，更多信息请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`。
+    - 1: 通过 HTTPS OTA，不校验证书。如果无效，请检查 ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``OTA based upon ssl`` 是否使能，更多信息请见 :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`。
+    - 2: 通过 HTTPS OTA，使用 ``mfg_nvs`` 中的 ``ota_ca.0`` 校验服务器证书；
+    - 大于等于 3: 无效，返回 ``ERROR``。
 
 - **<version>**：AT 版本，如 ``v1.2.0.0``、``v1.1.3.0`` 或 ``v1.1.2.0``。
 - **<"firmware name">**：升级的固件，如 ``ota``、``mqtt_ca``、``client_ca`` 或其它 ``at_customize.csv`` 中自定义的分区。
@@ -1720,7 +1722,13 @@ ESP-AT 在运行时，通过 Network 从指定的服务器上下载新固件到�
 - 如果你直接使用乐鑫提供的 AT `BIN <https://www.espressif.com/zh-hans/support/download/at>`_, 本命令将从 Espressif Cloud 下载 AT 固件升级。
 - 如果你使用的是自行编译的 AT BIN，请自行实现 AT+CIUPDATE FOTA 功能或者使用 :ref:`AT+USEROTA <cmd-USEROTA>` 或者 :ref:`AT+WEBSERVER <cmd-WEBSERVER>` 命令，可参考 ESP-AT 工程提供的示例 `FOTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_ota_cmd.c>`_。
 - 建议升级 AT 固件后，调用 :ref:`AT+RESTORE <cmd-RESTORE>` 恢复出厂设置。
-- OTA 过程的超时时间为 ``3`` 分钟。
+- 出现下面任一情况时，本次升级失败：
+
+    - 整次升级超过 ``3`` 分钟；
+    - 连续 ``10`` 秒没有收到数据。
+
+- 失败时不上报 ``+CIPUPDATE:4``。阻塞模式返回 ``ERROR``，非阻塞模式上报 ``+CIPUPDATE:-1``。网络恢复后，请重新发送本命令。
+- 如果 ``<ota mode>`` 为 2，为了校验服务器证书的有效期，请在发送本命令前确保 {IDF_TARGET_NAME} 已获取到当前时间（你可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间）。``ota_ca.0`` 不存在或长度为 0 时，本命令返回 ``ERROR``，不会改为不校验证书。
 - 非阻塞模式响应中的 ``OK`` 和 ``+CIPUPDATE:<state>`` 在输出顺序上没有严格意义上的先后顺序。OK 可能在 ``+CIPUPDATE:<state>`` 之前输出，也有可能在 ``+CIPUPDATE:<state>`` 之后输出。
 - 不建议升级到旧版本。降到旧版本会存在一定的兼容性问题，甚至无法运行，如果你坚持要升级到旧版本，请根据自己的产品自行测试验证功能。
 - 请参考 :doc:`../Compile_and_Develop/How_to_implement_OTA_update` 获取更多 OTA 命令。
@@ -1734,6 +1742,7 @@ ESP-AT 在运行时，通过 Network 从指定的服务器上下载新固件到�
     AT+CWJAP="1234567890","1234567890"
     AT+CIUPDATE
     AT+CIUPDATE=1
+    AT+CIUPDATE=2
     AT+CIUPDATE=1,"v1.2.0.0"
     AT+CIUPDATE=1,"v2.2.0.0","mqtt_ca"
     AT+CIUPDATE=1,"v2.2.0.0","ota",1

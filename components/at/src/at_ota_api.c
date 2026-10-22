@@ -3,14 +3,20 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
 #include "esp_err.h"
 #include "esp_log.h"
 #include "esp_partition.h"
 #include "esp_ota_ops.h"
+#include "nvs.h"
 
 #include "at_compress_ota.h"
+#include "at_ota.h"
+#include "esp_at.h"
 #include "esp_at_ota.h"
 
 #if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
@@ -20,7 +26,25 @@
 #define AT_OTA_LEGACY_COMPRESS      0
 #endif
 
+/* AT+CIUPDATE, AT+WEBSERVER, and BLE OTA write firmware through this file. */
+#if defined(CONFIG_AT_OTA_SUPPORT) || defined(CONFIG_AT_WEB_SERVER_SUPPORT) || defined(CONFIG_AT_BLE_OTA_COMMAND_SUPPORT)
+#define AT_OTA_FIRMWARE_SUPPORT     1
+#else
+#define AT_OTA_FIRMWARE_SUPPORT     0
+#endif
+
+/* AT+CIUPDATE mode 2 and AT+USEROTA auth mode 1 load a CA from mfg_nvs. */
+#if defined(CONFIG_AT_OTA_SUPPORT) || defined(CONFIG_AT_USER_COMMAND_SUPPORT)
+#define AT_OTA_CA_SUPPORT           1
+#else
+#define AT_OTA_CA_SUPPORT           0
+#endif
+
+#if AT_OTA_FIRMWARE_SUPPORT || AT_OTA_CA_SUPPORT
 static const char *TAG = "at-ota";
+#endif
+
+#if AT_OTA_FIRMWARE_SUPPORT
 
 typedef enum {
     AT_OTA_STATE_IDLE = 0,
@@ -200,3 +224,68 @@ esp_err_t esp_at_ota_abort(esp_at_ota_handle_t handle)
     free(ota);
     return err;
 }
+
+#endif /* AT_OTA_FIRMWARE_SUPPORT */
+
+#if AT_OTA_CA_SUPPORT
+
+extern const char *g_at_mfg_nvs_name;
+
+/* mbedTLS rejects a certificate when the clock is still at the epoch. */
+#define AT_OTA_CERT_TIME_MIN                1577836800 /* 2020-01-01 00:00:00 UTC */
+#define AT_OTA_CA_NAMESPACE                 "ota_ca"
+
+esp_err_t esp_at_ota_load_ca(int ca_id, char **ca_pem)
+{
+    nvs_handle_t handle;
+    char key[NVS_KEY_NAME_MAX_SIZE];
+    int key_len;
+
+    *ca_pem = NULL;
+    key_len = snprintf(key, sizeof(key), "ota_ca.%d", ca_id);
+    if (ca_id < 0 || key_len < 0 || key_len >= (int)sizeof(key)) {
+        ESP_AT_LOGE(TAG, "no ota_ca");
+        return ESP_ERR_INVALID_ARG;
+    }
+
+    esp_err_t err = nvs_open_from_partition(g_at_mfg_nvs_name, AT_OTA_CA_NAMESPACE, NVS_READONLY, &handle);
+    if (err != ESP_OK) {
+        ESP_AT_LOGE(TAG, "no ota_ca");
+        return err;
+    }
+
+    size_t len = 0;
+    err = esp_at_nvs_get_blob(handle, key, NULL, &len);
+    if (err != ESP_OK || len == 0) {
+        nvs_close(handle);
+        ESP_AT_LOGE(TAG, "no %s", key);
+        return ESP_FAIL;
+    }
+
+    char *pem = calloc(1, len + 1);
+    if (pem == NULL) {
+        nvs_close(handle);
+        return ESP_ERR_NO_MEM;
+    }
+
+    err = esp_at_nvs_get_blob(handle, key, pem, &len);
+    nvs_close(handle);
+    if (err != ESP_OK) {
+        free(pem);
+        return err;
+    }
+
+    *ca_pem = pem;
+    return ESP_OK;
+}
+
+esp_err_t esp_at_ota_check_time(void)
+{
+    if (time(NULL) < (time_t)AT_OTA_CERT_TIME_MIN) {
+        ESP_AT_LOGE(TAG, "invalid system time, run AT+CIPSNTPCFG first");
+        return ESP_FAIL;
+    }
+    return ESP_OK;
+}
+
+#endif /* AT_OTA_CA_SUPPORT */

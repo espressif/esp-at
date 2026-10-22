@@ -229,9 +229,9 @@ const char *esp_at_get_ota_token_by_id(uint32_t id, at_ota_mode_t ota_mode)
     }
 
     if (id < sizeof(s_module_info) / sizeof(s_module_info[0])) {
-        if (ota_mode == ESP_AT_OTA_MODE_NORMAL) {
+        if (ota_mode == AT_OTA_OVER_HTTP) {
             ota_token = s_module_info[id].ota_token;
-        } else if (ota_mode == ESP_AT_OTA_MODE_SSL) {
+        } else if (ota_mode == AT_OTA_OVER_HTTPS) {
             ota_token = s_module_info[id].ota_ssl_token;
         }
     }

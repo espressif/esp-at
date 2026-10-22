@@ -3,7 +3,7 @@ How to Update PKI Configuration
 
 :link_to_translation:`zh_CN:[中文]`
 
-This document describes how to update the default :term:`PKI` configuration provided by ESP-AT by recompiling the firmware. The PKI configuration includes certificates and keys for TLS clients, TLS servers, MQTT clients, WebSocket clients, HTTP clients, and Wi-Fi Enterprise client (WPA2-Enterprise/WPA3-Enterprise).
+This document describes how to update the default :term:`PKI` configuration provided by ESP-AT by recompiling the firmware. The PKI configuration includes certificates and keys for TLS clients, TLS servers, MQTT clients, WebSocket clients, HTTP clients, OTA, and Wi-Fi Enterprise client (WPA2-Enterprise/WPA3-Enterprise).
 
 .. note::
   If you want to update certificates at runtime using AT commands without recompiling the firmware, please refer to :ref:`AT+SYSMFG command examples <sysmfg-pki>`.
@@ -83,6 +83,16 @@ The source files for the current default PKI configuration are located in the :c
           * :component_file:`https_client_01.crt <customized_partitions/raw_data/https_cert/https_client_01.crt>`
           * :component_file:`https_client_01.key <customized_partitions/raw_data/https_key/https_client_01.key>`
         - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
+
+      * - OTA
+        - CA set 0 (DigiCert Global Root G2)
+
+          * :component_file:`ota_ca_00.crt <customized_partitions/raw_data/ota_ca/ota_ca_00.crt>`
+
+          CA set 1 (ISRG Root X1)
+
+          * :component_file:`ota_ca_01.crt <customized_partitions/raw_data/ota_ca/ota_ca_01.crt>`
+        - :ref:`AT+CIUPDATE <cmd-UPDATE>`, :ref:`AT+USEROTA <cmd-USEROTA>`
 
       * - Wi-Fi Enterprise client (WPA2-Enterprise/WPA3-Enterprise)
         -

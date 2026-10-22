@@ -50,7 +50,7 @@ def get_to_read_config_dir(at_path):
             line = line.split()
             if (sdkconfig_data.find(''.join(['CONFIG_',line[0]])) != -1):
                 cfg_dir = os.path.join(at_path, 'components', 'customized_partitions', 'raw_data', line[1])
-                if os.path.exists(cfg_dir):
+                if os.path.exists(cfg_dir) and cfg_dir not in to_read_config_name:
                     to_read_config_name.append(cfg_dir)
     return to_read_config_name
 

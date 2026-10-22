@@ -124,7 +124,7 @@ Upgrade to the firmware version specified by the URL.
 
 ::
 
-    AT+USEROTA=<url len>
+    AT+USEROTA=<url len>[,<auth mode>][,<ca id>]
 
 **Response:**
 
@@ -156,6 +156,14 @@ Parameters
 ^^^^^^^^^^
 
 - **<url len>**: URL length. Maximum: 8192 bytes.
+- **<auth mode>**: SSL certificate authentication mode. Default: 0.
+
+  - 0: No authentication.
+  - 1: Verify the server certificate with ``ota_ca.<ca id>`` in ``mfg_nvs``.
+  - 2: Provide a client certificate. Not supported yet. The command returns ``ERROR``.
+  - 3: Mutual authentication. Not supported yet. The command returns ``ERROR``.
+
+- **<ca id>**: CA certificate set index. Default: 0. It takes effect only when ``<auth mode>`` is 1.
 
 Note
 ^^^^^
@@ -187,7 +195,9 @@ Note
 - After you upgrade the AT firmware, you are suggested to call the command AT+RESTORE to restore the factory default settings.
 - ``AT+USEROTA`` supports ``HTTP`` and ``HTTPS``.
 - After AT outputs the ``>`` character, the special characters in the URL does not need to be escaped through the escape character, and it does not need to end with a new line (CR-LF).
-- When the URL is ``HTTPS``, SSL verification is not recommended. If SSL verification is required, you need to generate your own PKI files and download them into the corresponding partition, and then load the certificates in the code implemented by the ``AT+USEROTA`` command. Please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config` for PKI files. For ``AT+USEROTA`` command, ESP-AT project provides an example of `USEROTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_user_cmd.c>`_.
+- When ``<auth mode>`` is 0, AT does not verify the server certificate. ``<ca id>`` is ignored.
+- When ``<auth mode>`` is 1, the URL must be ``HTTPS``. In order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending this command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` command to query the current time.) The default CA set is 0, ``ota_ca.0``. If that certificate is missing or its length is 0, this command returns ``ERROR`` and does not fall back to unverified TLS. Please refer to :doc:`../Compile_and_Develop/How_to_update_pki_config` for PKI files.
+- When ``<auth mode>`` is 2 or 3, this command returns ``ERROR``.
 - Please refer to :doc:`../Compile_and_Develop/How_to_implement_OTA_update` for more OTA commands.
 
 Example
@@ -203,6 +213,12 @@ Example
     Recv 36 bytes
 
     OK
+
+Verify the server certificate with CA set 0:
+
+::
+
+    AT+USEROTA=36,1,0
 
 .. _cmd-USERWKMCUCFG:
 
