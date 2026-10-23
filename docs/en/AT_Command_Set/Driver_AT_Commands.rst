@@ -104,19 +104,48 @@ Parameters
 
 - **<atten>**: attenuation.
 
-  .. only:: esp32 or esp32s2
+  .. only:: esp32
 
     - 0: 0 dB attenuation, effective measurement range is [100, 950] mV.
     - 1: 2.5 dB attenuation, effective measurement range is [100, 1250] mV.
     - 2: 6 dB attenuation, effective measurement range is [150, 1750] mV.
-    - 3: 11 dB attenuation, effective measurement range is [150, 2450] mV.
+    - 3: 12 dB attenuation, effective measurement range is [150, 2450] mV.
 
-  .. only:: esp32c3 or esp32c2 or esp32c5 or esp32c6 or esp32c61
+  .. only:: esp32s2
+
+    - 0: 0 dB attenuation, effective measurement range is [0, 700] mV.
+    - 1: 2.5 dB attenuation, effective measurement range is [0, 950] mV.
+    - 2: 6 dB attenuation, effective measurement range is [0, 1200] mV.
+    - 3: 12 dB attenuation, effective measurement range is [0, 2300] mV.
+
+    These ranges apply to chips with a shielding-case Date Code of 212023 or later, or a bar-code D/C of 2321 or later.
+
+  .. only:: esp32c2
+
+    - 0: 0 dB attenuation, effective measurement range is [0, 950] mV.
+    - 1: 2.5 dB attenuation.
+    - 2: 6 dB attenuation.
+    - 3: 12 dB attenuation, effective measurement range is [0, 2800] mV.
+
+    No effective measurement range is given for 2.5 dB and 6 dB.
+
+  .. only:: esp32c3
 
     - 0: 0 dB attenuation, effective measurement range is [0, 750] mV.
     - 1: 2.5 dB attenuation, effective measurement range is [0, 1050] mV.
     - 2: 6 dB attenuation, effective measurement range is [0, 1300] mV.
-    - 3: 11 dB attenuation, effective measurement range is [0, 2500] mV.
+    - 3: 12 dB attenuation, effective measurement range is [0, 2500] mV.
+
+  .. only:: esp32c5 or esp32c6 or esp32c61
+
+    - 0: 0 dB attenuation, effective measurement range is [0, 1000] mV.
+    - 1: 2.5 dB attenuation, effective measurement range is [0, 1300] mV.
+    - 2: 6 dB attenuation, effective measurement range is [0, 1900] mV.
+    - 3: 12 dB attenuation, effective measurement range is [0, 3300] mV.
+
+    .. only:: esp32c6
+
+      These ranges apply to chips with a shielding-case Date Code of 212023 or later, or a bar-code D/C of 2321 or later.
 
 - **<raw data>**: ADC channel value.
 
@@ -124,29 +153,65 @@ Notes
 ^^^^^
 
 - ESP-AT only supports ADC1.
-- {IDF_TARGET_NAME} support 12-bit width.
+
+.. only:: not esp32s2
+
+  - {IDF_TARGET_NAME} supports 12-bit width.
+
+.. only:: esp32s2
+
+  - On {IDF_TARGET_NAME}, ``AT+DRVADC`` returns a 13-bit raw value in the range 0–8191. From chip revision v1.0, the effective resolution is 12 bits: bit 0 is not valid, and bits 1 to 12 are valid. Shift the raw value right by 1, then convert it as a 12-bit result.
+
 - For details on how to convert the channel value into voltage, please refer to `ADC Conversion <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/adc/index.html#adc-conversion>`__.
 
 Example
 ^^^^^^^^
 
-.. only:: esp32 or esp32s2
+.. only:: esp32
 
   ::
 
-    // For {IDF_TARGET_NAME}, 0 dB attenuation, effective measurement range is [100, 950] mV
-    // The returned 2048 means the voltage is 2048 / 4095 * 950 = 475.12 mV
+    // 0 dB attenuation, effective measurement range is [100, 950] mV
     AT+DRVADC=0,0
     +DRVADC:2048
 
     OK
 
-.. only:: esp32c3 or esp32c2 or esp32c5 or esp32c6 or esp32c61
+.. only:: esp32s2
 
   ::
 
-    // For {IDF_TARGET_NAME}, 0 dB attenuation, effective measurement range is [0, 750] mV
-    // The returned 2048 means the voltage is 2048 / 4095 * 750 = 375.09 mV
+    // 0 dB attenuation. The raw value is 13-bit. From v1.0, shift it right by 1 to get the 12-bit result. Effective measurement range is [0, 700] mV
+    AT+DRVADC=0,0
+    +DRVADC:4096
+
+    OK
+
+.. only:: esp32c2
+
+  ::
+
+    // 0 dB attenuation, effective measurement range is [0, 950] mV
+    AT+DRVADC=0,0
+    +DRVADC:2048
+
+    OK
+
+.. only:: esp32c3
+
+  ::
+
+    // 0 dB attenuation, effective measurement range is [0, 750] mV
+    AT+DRVADC=0,0
+    +DRVADC:2048
+
+    OK
+
+.. only:: esp32c5 or esp32c6 or esp32c61
+
+  ::
+
+    // 0 dB attenuation, effective measurement range is [0, 1000] mV
     AT+DRVADC=0,0
     +DRVADC:2048
 
