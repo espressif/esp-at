@@ -104,19 +104,48 @@
 
 - **<atten>**：衰减值。
 
-  .. only:: esp32 or esp32s2
+  .. only:: esp32
 
     - 0: 0 dB 衰减，有效测量范围为 [100, 950] mV。
     - 1: 2.5 dB 衰减，有效测量范围为 [100, 1250] mV。
     - 2: 6 dB 衰减，有效测量范围为 [150, 1750] mV。
-    - 3: 11 dB 衰减，有效测量范围为 [150, 2450] mV。
+    - 3: 12 dB 衰减，有效测量范围为 [150, 2450] mV。
 
-  .. only:: esp32c3 or esp32c2 or esp32c5 or esp32c6 or esp32c61
+  .. only:: esp32s2
+
+    - 0: 0 dB 衰减，有效测量范围为 [0, 700] mV。
+    - 1: 2.5 dB 衰减，有效测量范围为 [0, 950] mV。
+    - 2: 6 dB 衰减，有效测量范围为 [0, 1200] mV。
+    - 3: 12 dB 衰减，有效测量范围为 [0, 2300] mV。
+
+    上述量程适用于丝印 Date Code 为 212023 及之后的芯片，或产品标签 D/C 为 2321 及之后的芯片。
+
+  .. only:: esp32c2
+
+    - 0: 0 dB 衰减，有效测量范围为 [0, 950] mV。
+    - 1: 2.5 dB 衰减。
+    - 2: 6 dB 衰减。
+    - 3: 12 dB 衰减，有效测量范围为 [0, 2800] mV。
+
+    2.5 dB 和 6 dB 未给出有效测量范围。
+
+  .. only:: esp32c3
 
     - 0: 0 dB 衰减，有效测量范围为 [0, 750] mV。
     - 1: 2.5 dB 衰减，有效测量范围为 [0, 1050] mV。
     - 2: 6 dB 衰减，有效测量范围为 [0, 1300] mV。
-    - 3: 11 dB 衰减，有效测量范围为 [0, 2500] mV。
+    - 3: 12 dB 衰减，有效测量范围为 [0, 2500] mV。
+
+  .. only:: esp32c5 or esp32c6 or esp32c61
+
+    - 0: 0 dB 衰减，有效测量范围为 [0, 1000] mV。
+    - 1: 2.5 dB 衰减，有效测量范围为 [0, 1300] mV。
+    - 2: 6 dB 衰减，有效测量范围为 [0, 1900] mV。
+    - 3: 12 dB 衰减，有效测量范围为 [0, 3300] mV。
+
+    .. only:: esp32c6
+
+      上述量程适用于丝印 Date Code 为 212023 及之后的芯片，或产品标签 D/C 为 2321 及之后的芯片。
 
 - **<raw data>**：ADC 通道值。
 
@@ -124,29 +153,65 @@
 ^^^^
 
 - ESP-AT 只支持 ADC1。
-- {IDF_TARGET_NAME} 支持 12 位宽度。
+
+.. only:: not esp32s2
+
+  - {IDF_TARGET_NAME} 支持 12 位宽度。
+
+.. only:: esp32s2
+
+  - ``AT+DRVADC`` 在 {IDF_TARGET_NAME} 上返回 13 位原始值，范围是 0–8191。芯片版本 v1.0 起，有效分辨率是 12 位：bit 0 无效，有效位是 bit 1 至 bit 12。转换为电压时，先将原始值右移 1 位，再按 12 位计算。
+
 - 对于如何将通道值转换为电压，可以参考 `ADC 转换 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-reference/peripherals/adc/index.html#id2>`__。
 
 示例
 ^^^^
 
-.. only:: esp32 or esp32s2
+.. only:: esp32
 
   ::
 
-    // {IDF_TARGET_NAME} 设备设置为 0 dB 衰减，有效测量范围为 [100, 950] mV
-    // 电压为 2048 / 4095 * 950 = 475.12 mV
+    // 0 dB 衰减，有效测量范围为 [100, 950] mV
     AT+DRVADC=0,0
     +DRVADC:2048
 
     OK
 
-.. only:: esp32c3 or esp32c2 or esp32c5 or esp32c6 or esp32c61
+.. only:: esp32s2
 
   ::
 
-    // {IDF_TARGET_NAME} 设备设置为 0 dB 衰减，有效测量范围为 [0, 750] mV
-    // 电压为 2048 / 4095 * 750 = 375.09 mV
+    // 0 dB 衰减，返回 13 位原始值。v1.0 起右移 1 位得到 12 位结果。有效测量范围为 [0, 700] mV
+    AT+DRVADC=0,0
+    +DRVADC:4096
+
+    OK
+
+.. only:: esp32c2
+
+  ::
+
+    // 0 dB 衰减，有效测量范围为 [0, 950] mV
+    AT+DRVADC=0,0
+    +DRVADC:2048
+
+    OK
+
+.. only:: esp32c3
+
+  ::
+
+    // 0 dB 衰减，有效测量范围为 [0, 750] mV
+    AT+DRVADC=0,0
+    +DRVADC:2048
+
+    OK
+
+.. only:: esp32c5 or esp32c6 or esp32c61
+
+  ::
+
+    // 0 dB 衰减，有效测量范围为 [0, 1000] mV
     AT+DRVADC=0,0
     +DRVADC:2048
 
