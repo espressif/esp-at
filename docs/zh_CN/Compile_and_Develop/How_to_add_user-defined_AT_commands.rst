@@ -595,112 +595,82 @@ ESP-AT 提供以下两个 API 获取命令参数。
 从 AT 命令端口获取输入的数据
 ************************************************************
 
-ESP-AT 支持从 AT 命令端口访问输入的数据，为此提供以下两个 API。
+ESP-AT 用两种方式从 AT 命令端口读取输入数据。一次收完一段已知长度时，使用 :cpp:func:`esp_at_port_read_bytes`。长度未定，或者数据较长且连续到达（例如音频）时，使用 :cpp:func:`esp_at_port_read_data`。后一种方式在整个传输期间保持对端口的占用，避免每读一块就切换一次读取权。
 
-- :cpp:func:`esp_at_port_enter_specific` 设置回调函数，AT 端口接收到输入的数据后，将调用该函数。
-- :cpp:func:`esp_at_port_exit_specific` 删除由 ``esp_at_port_enter_specific`` 设置的回调函数。
+- :cpp:func:`esp_at_port_read_bytes` 一次读完指定长度。它从 AT 命令解析器接管端口，后续字节按原始数据接收。它按 ``prompt`` 输出提示符，读满指定长度或失败后归还端口，并把剩余字节交回 AT 命令解析器。调用方不用调用 :cpp:func:`esp_at_port_enter_specific` 或 :cpp:func:`esp_at_port_exit_specific`。成功时返回值等于请求长度。失败时返回负的错误码，缓冲区内容未定义。在 AT 命令处理函数中调用。上一次调用返回之前不能再次调用。每次调用都会接管并归还端口。
+- :cpp:func:`esp_at_port_read_data` 只读取当前已经到达的字节。返回值可以小于请求长度，``0`` 表示当前没有新数据。它不接管端口，也不归还端口，只能在 :cpp:func:`esp_at_port_enter_specific` 之后、:cpp:func:`esp_at_port_exit_specific` 之前调用。它不输出提示符，没有超时参数，也不识别 ``+++``。剩余字节由调用方通过 :cpp:func:`esp_at_port_recv_data_notify` 交回 AT 命令解析器。未指定长度的输入，以及较长的连续数据，都在一次 ``enter_specific`` 之后反复调用本函数，全部收完再 ``exit_specific``。
 
-获取数据的方法会根据数据长度是否被指定而有所不同。
+``prompt`` 用来通知主机 MCU：AT 已经准备好接收数据。MCU 收到提示符后再发送载荷。在此之前发出的字节可能被当作 AT 命令处理。
+
+- ``ESP_AT_PORT_PROMPT_NONE``：不输出提示符。处理函数已经自行通知 MCU 时使用。
+- ``ESP_AT_PORT_PROMPT_SIMPLE``：输出 ``>``。
+- ``ESP_AT_PORT_PROMPT_OK``：先输出 ``OK``，再输出 ``>``。这个 ``OK`` 和命令处理函数最终返回的结果码相互独立。如果想再输出一个 ``OK``，处理函数应返回 ``ESP_AT_RESULT_CODE_OK``。
 
 指定长度的输入数据
 ^^^^^^^^^^^^^^^^^^^
 
-假设你已经使用 ``<param_1>`` 指定了数据长度，如下所示。
+假设命令用 ``<param_1>`` 给出了数据长度：
 
 .. code-block:: none
 
     AT+TEST=<param_1>
 
-以下示例代码介绍如何从 AT 命令端口获取长度为 ``<param_1>`` 的输入数据。
+下面是 :cpp:func:`esp_at_port_read_bytes` 的用法。处理函数读取 ``<param_1>`` 字节。主机 MCU 收到 ``>`` 后再发送这些字节。``portMAX_DELAY`` 表示一直等待，直到读满或读取失败。单独收到 ``+++`` 且剩余待读不少于 3 字节时，读取中止。超出指定长度的字节会交回 AT 命令解析器。
+
+``<param_1>`` 很大，或数据连续到达（例如音频）时，改用下一节的 :cpp:func:`esp_at_port_read_data`。
 
 .. code-block:: c
-
-    static xSemaphoreHandle at_sync_sema = NULL;
-
-    void wait_data_callback(void)
-    {
-        xSemaphoreGive(at_sync_sema);
-    }
 
     uint8_t at_setup_cmd_test(uint8_t para_num)
     {
         int32_t specified_len = 0;
-        int32_t received_len = 0;
-        int32_t remain_len = 0;
         uint8_t *buf = NULL;
         uint8_t buffer[64] = {0};
 
         if (esp_at_get_para_as_digit(0, &specified_len) != ESP_AT_PARA_PARSE_RET_OK) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
+        if (specified_len <= 0) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
 
         buf = (uint8_t *)malloc(specified_len);
         if (buf == NULL) {
-            memset(buffer, 0, 64);
             snprintf((char *)buffer, 64, "malloc failed\r\n");
             esp_at_port_write_data(buffer, strlen((char *)buffer));
+            return ESP_AT_RESULT_CODE_ERROR;
         }
 
-        // 示例代码
-        // 不必在此处创建 semaphores
-        if (!at_sync_sema) {
-            at_sync_sema = xSemaphoreCreateBinary();
-            assert(at_sync_sema != NULL);
+        // 输出提示符 ">"
+        int32_t received_len = esp_at_port_read_bytes(buf, specified_len,
+                                                      ESP_AT_PORT_PROMPT_SIMPLE,
+                                                      portMAX_DELAY);
+        if (received_len != specified_len) {
+            free(buf);
+            return ESP_AT_RESULT_CODE_ERROR;
         }
 
-        // 返回输入数据提示符 ">"
-        esp_at_port_write_data((uint8_t *)">", strlen(">"));
-
-        // 设置回调函数，在接收到输入数据后由 AT 端口调用
-        esp_at_port_enter_specific(wait_data_callback);
-
-        // 接收输入的数据
-        while(xSemaphoreTake(at_sync_sema, portMAX_DELAY)) {
-            received_len += esp_at_port_read_data(buf + received_len, specified_len - received_len);
-
-            if (specified_len == received_len) {
-                esp_at_port_exit_specific();
-
-                // 获取剩余输入数据的长度
-                remain_len = esp_at_port_get_data_length();
-                if (remain_len > 0) {
-                    // 示例代码
-                    // 如果剩余数据长度 > 0，则实际输入数据长度大于指定的接收数据长度
-                    // 可自定义如何处理这些剩余数据
-                    // 此处只是简单打印出剩余数据
-                    esp_at_port_recv_data_notify(remain_len, portMAX_DELAY);
-                }
-
-                // 示例代码
-                // 输出接收到的数据
-                memset(buffer, 0, 64);
-                snprintf((char *)buffer, 64, "\r\nreceived data is: ");
-                esp_at_port_write_data(buffer, strlen((char *)buffer));
-
-                esp_at_port_write_data(buf, specified_len);
-
-                break;
-            }
-        }
+        snprintf((char *)buffer, 64, "\r\nreceived data is: ");
+        esp_at_port_write_data(buffer, strlen((char *)buffer));
+        esp_at_port_write_data(buf, specified_len);
 
         free(buf);
-
         return ESP_AT_RESULT_CODE_OK;
     }
 
-因此，如果你设置 ``AT+TEST=5``，输入的数据为 ``1234567890``，那么 ``ESP-AT`` 返回的结果如下所示。
+因此，发送 ``AT+TEST=5`` 后输入 ``12345``，ESP-AT 的输出如下。
 
 .. code-block:: none
 
     AT+TEST=5
-    >67890
+    >12345
     received data is: 12345
     OK
 
 未指定长度的输入数据
 ^^^^^^^^^^^^^^^^^^^^^
 
-这种情况类似 Network :term:`透传模式`，不指定数据长度。
+下面是 :cpp:func:`esp_at_port_read_data` 的用法。长度未指定的输入，以及较长的连续数据（例如音频）都采用这种方式：一次 :cpp:func:`esp_at_port_enter_specific` 之后反复读取，全部收完再 :cpp:func:`esp_at_port_exit_specific`。读取权在整个传输期间保持不变。提示符由处理函数自己输出，MCU 收到提示符后再发送数据。
 
 ::
 

@@ -595,112 +595,82 @@ The sample code is as follows:
 Access Input Data from AT Command Port
 ********************************************************************
 
-ESP-AT supports accessing input data from AT Command port. It provides two APIs for this purpose.
+ESP-AT reads input data from the AT command port in two ways. Use :cpp:func:`esp_at_port_read_bytes` for one transfer of a known length. Use :cpp:func:`esp_at_port_read_data` when the length is unknown, or when the payload is long and arrives continuously, such as audio. The second way keeps the port owned for the whole transfer, so the read ownership is not taken and released on every chunk.
 
-- :cpp:func:`esp_at_port_enter_specific` sets the callback function which will be called by AT port after receiving the input data.
-- :cpp:func:`esp_at_port_exit_specific` deletes the callback function set by ``esp_at_port_enter_specific``.
+- :cpp:func:`esp_at_port_read_bytes` reads an exact length in one call. It takes the port from the AT command parser, so the following bytes are received as raw data. It writes the prompt selected by ``prompt``, then returns the port after the length is reached or the call fails, and hands any leftover bytes back to the AT command parser. The caller does not call :cpp:func:`esp_at_port_enter_specific` or :cpp:func:`esp_at_port_exit_specific`. On success the return value equals the requested length. On failure the return value is a negative error code, and the buffer contents are undefined. Call it from an AT command handler. Do not call it again before the previous call returns. Each call takes and releases the port.
+- :cpp:func:`esp_at_port_read_data` reads only the bytes already available. The return value may be less than the requested length. ``0`` means no new data. It does not take or release the port. Call it only after :cpp:func:`esp_at_port_enter_specific` and before :cpp:func:`esp_at_port_exit_specific`. It writes no prompt, has no timeout, and does not treat ``+++`` as special. The caller hands leftover bytes back to the AT command parser with :cpp:func:`esp_at_port_recv_data_notify`. Input of unspecified length and a long continuous payload both call this function repeatedly after one ``enter_specific``, then call ``exit_specific`` when the transfer is finished.
 
-Approaches to access the data vary depending on whether the data length has been specified or not.
+``prompt`` tells the host MCU that AT is ready to receive data. The MCU sends the payload after it receives the prompt. Bytes sent earlier can be parsed as an AT command.
+
+- ``ESP_AT_PORT_PROMPT_NONE``: write nothing. Use it when the handler has already signaled the MCU.
+- ``ESP_AT_PORT_PROMPT_SIMPLE``: write ``>``.
+- ``ESP_AT_PORT_PROMPT_OK``: write ``OK``, then ``>``. This ``OK`` is separate from the result code returned by the command handler. Return ``ESP_AT_RESULT_CODE_OK`` when the command should produce another ``OK``.
 
 Input Data of Specified Length
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Assuming that you have specified the data length in ``<param_1>`` as follows:
+Assume that the command gives the data length in ``<param_1>``:
 
 .. code-block:: none
 
     AT+TEST=<param_1>
 
-Below is the sample to access the input data of ``<param_1>`` length from AT Command Port:
+The sample below is the :cpp:func:`esp_at_port_read_bytes` usage. The handler reads ``<param_1>`` bytes. The host MCU sends those bytes after it receives ``>``. ``portMAX_DELAY`` waits until the length is reached or the read fails. A lone ``+++`` aborts the read when at least 3 bytes are still expected. Bytes beyond the specified length are handed back to the AT command parser.
+
+When ``<param_1>`` is large, or the data arrives continuously (for example, audio), use :cpp:func:`esp_at_port_read_data` as shown in the next section.
 
 .. code-block:: c
-
-    static xSemaphoreHandle at_sync_sema = NULL;
-
-    void wait_data_callback(void)
-    {
-        xSemaphoreGive(at_sync_sema);
-    }
 
     uint8_t at_setup_cmd_test(uint8_t para_num)
     {
         int32_t specified_len = 0;
-        int32_t received_len = 0;
-        int32_t remain_len = 0;
         uint8_t *buf = NULL;
         uint8_t buffer[64] = {0};
 
         if (esp_at_get_para_as_digit(0, &specified_len) != ESP_AT_PARA_PARSE_RET_OK) {
             return ESP_AT_RESULT_CODE_ERROR;
         }
+        if (specified_len <= 0) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
 
         buf = (uint8_t *)malloc(specified_len);
         if (buf == NULL) {
-            memset(buffer, 0, 64);
             snprintf((char *)buffer, 64, "malloc failed\r\n");
             esp_at_port_write_data(buffer, strlen((char *)buffer));
+            return ESP_AT_RESULT_CODE_ERROR;
         }
 
-        // sample code
-        // users do not have to create semaphores here
-        if (!at_sync_sema) {
-            at_sync_sema = xSemaphoreCreateBinary();
-            assert(at_sync_sema != NULL);
+        // write the ">" prompt
+        int32_t received_len = esp_at_port_read_bytes(buf, specified_len,
+                                                      ESP_AT_PORT_PROMPT_SIMPLE,
+                                                      portMAX_DELAY);
+        if (received_len != specified_len) {
+            free(buf);
+            return ESP_AT_RESULT_CODE_ERROR;
         }
 
-        // output input prompt ">"
-        esp_at_port_write_data((uint8_t *)">", strlen(">"));
-
-        // set the callback function which will be called by AT port after receiving the input data
-        esp_at_port_enter_specific(wait_data_callback);
-
-        // receive input data
-        while(xSemaphoreTake(at_sync_sema, portMAX_DELAY)) {
-            received_len += esp_at_port_read_data(buf + received_len, specified_len - received_len);
-
-            if (specified_len == received_len) {
-                esp_at_port_exit_specific();
-
-                // get the length of the remaining input data
-                remain_len = esp_at_port_get_data_length();
-                if (remain_len > 0) {
-                    // sample code
-                    // if the remaining data length > 0, the actual input data length is greater than the specified received data length
-                    // users can customize the operation to process the remaining data
-                    // here is just a simple print out of the remaining data
-                    esp_at_port_recv_data_notify(remain_len, portMAX_DELAY);
-                }
-
-                // sample code
-                // output received data
-                memset(buffer, 0, 64);
-                snprintf((char *)buffer, 64, "\r\nreceived data is: ");
-                esp_at_port_write_data(buffer, strlen((char *)buffer));
-
-                esp_at_port_write_data(buf, specified_len);
-
-                break;
-            }
-        }
+        snprintf((char *)buffer, 64, "\r\nreceived data is: ");
+        esp_at_port_write_data(buffer, strlen((char *)buffer));
+        esp_at_port_write_data(buf, specified_len);
 
         free(buf);
-
         return ESP_AT_RESULT_CODE_OK;
     }
 
-So, if you set ``AT+TEST=5`` and the input data is ``1234567890``, the ``ESP-AT`` output is as follows.
+After ``AT+TEST=5``, the input ``12345`` produces the following ESP-AT output.
 
 .. code-block:: none
 
     AT+TEST=5
-    >67890
+    >12345
     received data is: 12345
     OK
 
 Input Data of Unspecified Length
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This scenario is similar to the Network :term:`Passthrough Mode`. You do not specify the data length.
+The sample below is the :cpp:func:`esp_at_port_read_data` usage. Input of unspecified length and a long continuous payload (for example, audio) both use it: call :cpp:func:`esp_at_port_enter_specific` once, read repeatedly, then call :cpp:func:`esp_at_port_exit_specific` when the transfer is finished. The port stays owned for the whole transfer. The handler writes the prompt itself. The MCU sends data after it receives the prompt.
 
 ::
 

@@ -39,7 +39,7 @@
 #include "lwip/netdb.h"
 #endif
 
-#ifdef CONFIG_AT_HTTP_COMMAND_SUPPORT
+#if defined(CONFIG_AT_HTTP_COMMAND_SUPPORT) || defined(CONFIG_AT_OTA_SUPPORT) || defined(CONFIG_AT_USER_COMMAND_SUPPORT)
 #include "esp_http_client.h"
 #endif
 
@@ -50,6 +50,19 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/* ============================================================================
+ *                               AT Error Codes
+ * ========================================================================== */
+
+/** @brief Starting number of AT error codes. */
+#define ESP_ERR_AT_BASE                 0x20000
+
+/** @brief Operation was aborted by the AT port peer. */
+#define ESP_ERR_AT_ABORTED              (ESP_ERR_AT_BASE + 1)
+
+/** @brief Failed to access the AT port. */
+#define ESP_ERR_AT_PORT_FAIL            (ESP_ERR_AT_BASE + 2)
 
 /* ============================================================================
  *                                Enumerations
@@ -97,6 +110,18 @@ typedef enum {
     ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT = 0x07,  /**< OK followed by input prompt        */
     ESP_AT_RESULT_CODE_MAX,                         /**< Sentinel; not a valid code         */
 } esp_at_rc_t;
+
+/**
+ * @brief Prompt that tells the host MCU that AT is ready to receive data.
+ *
+ * The MCU sends the payload after it receives the prompt. Bytes that arrive
+ * before the prompt can be parsed as an AT command.
+ */
+typedef enum {
+    ESP_AT_PORT_PROMPT_NONE = 0,    /**< Write nothing                             */
+    ESP_AT_PORT_PROMPT_SIMPLE,      /**< Write ">"                                 */
+    ESP_AT_PORT_PROMPT_OK,          /**< Write "\r\nOK\r\n>"                       */
+} esp_at_port_prompt_type_t;
 
 /* ============================================================================
  *                              Data Structures
@@ -352,13 +377,75 @@ esp_at_para_parse_ret_t esp_at_get_para_as_str(int32_t para_index, uint8_t **res
 bool esp_at_port_recv_data_notify(int32_t len, uint32_t msec);
 
 /**
- * @brief Read up to @p len bytes from the AT input port.
+ * @brief Read up to @p len bytes currently available on the AT input port.
+ *
+ * This call does not take or release the AT port. Call it only after
+ * esp_at_port_enter_specific() and before esp_at_port_exit_specific().
+ * The return value may be less than @p len.
+ *
+ * For one fixed-length transfer, use esp_at_port_read_bytes(). For a long or
+ * continuous payload, such as audio, call this function repeatedly while the
+ * port stays in specific mode. The port is then taken once for the whole
+ * transfer, instead of on every chunk.
  *
  * @param data  Destination buffer.
  * @param len   Maximum number of bytes to read.
- * @return Number of bytes actually read, or negative on error.
+ * @return Number of bytes actually read (possibly 0), or negative on error.
  */
 int32_t esp_at_port_read_data(uint8_t *data, int32_t len);
+
+/**
+ * @brief Output a prompt, then receive exactly @p len raw bytes from the AT port.
+ *
+ * The function takes the AT port from the AT command parser, so incoming bytes
+ * are treated as raw data. It writes the prompt selected by @p prompt, receives
+ * the data, restores the port, and hands any leftover bytes back to the AT core.
+ * The caller does not call esp_at_port_enter_specific() or
+ * esp_at_port_exit_specific().
+ *
+ * The prompt tells the host MCU that AT is ready to receive the payload. The
+ * MCU sends the payload after it receives the prompt. Bytes that arrive
+ * earlier can be parsed as an AT command. ESP_AT_PORT_PROMPT_NONE writes no
+ * prompt; use it only after the handler has already signaled the MCU.
+ *
+ * Only the prompt is written. The command handler still chooses the final
+ * result code.
+ *
+ * Call this from an AT command handler. Do not call it again before the
+ * previous call returns, and do not call it from an ISR. Each call takes and
+ * releases the port. A long or continuous payload, such as audio, is read with
+ * repeated calls to esp_at_port_read_data() while the port stays owned.
+ *
+ * Receiving stops if "+++" arrives alone while at least 3 bytes are still
+ * expected, the same rule as AT+CIPSEND. "+++" mixed with other bytes is payload.
+ *
+ * @param buf            Buffer for the received data. Its size must be at least @p len.
+ * @param len            Number of bytes to receive.
+ * @param prompt         Prompt written before receiving.
+ * @param ticks_to_wait  Total wait in RTOS ticks. portMAX_DELAY waits forever.
+ *                       0 consumes only data already buffered.
+ * @return
+ *  - @p len : all requested bytes were received
+ *  - < 0    : negative esp_err_t, and the contents of @p buf are undefined
+ *      - -ESP_ERR_INVALID_ARG   : @p buf is NULL or @p len is less than 1
+ *      - -ESP_ERR_INVALID_STATE : another receive is in progress
+ *      - -ESP_ERR_NO_MEM        : failed to allocate the internal resource
+ *      - -ESP_ERR_TIMEOUT       : timed out before @p len bytes arrived
+ *      - -ESP_ERR_AT_ABORTED    : aborted because "+++" was received
+ *      - -ESP_ERR_AT_PORT_FAIL  : failed to read data from the AT port
+ *
+ * @code{c}
+ * uint8_t data[64] = {0};
+ * int32_t data_len = sizeof(data);
+ *
+ * if (esp_at_port_read_bytes(data, data_len, ESP_AT_PORT_PROMPT_OK, pdMS_TO_TICKS(10000)) != data_len) {
+ *     return ESP_AT_RESULT_CODE_ERROR;
+ * }
+ * // handle the received data
+ * return ESP_AT_RESULT_CODE_OK;
+ * @endcode
+ */
+int32_t esp_at_port_read_bytes(uint8_t *buf, int32_t len, esp_at_port_prompt_type_t prompt, TickType_t ticks_to_wait);
 
 /*
  * The four esp_at_port_*write_data* functions below all write @p len bytes to
@@ -769,6 +856,27 @@ __asm__("at_hostname_to_addrinfo");
 /* ============================================================================
  *                                HTTP Client
  * ========================================================================== */
+
+#if defined(CONFIG_AT_HTTP_COMMAND_SUPPORT) || defined(CONFIG_AT_OTA_SUPPORT) || defined(CONFIG_AT_USER_COMMAND_SUPPORT)
+
+/**
+ * @brief Report the detailed error context of an HTTP_EVENT_ERROR event.
+ *
+ * The function reads and clears the last TLS error, so call it only once for
+ * each error event. It logs the esp-tls error, the TLS error, the certificate
+ * verification flags, and the socket errno. When AT+SYSLOG is enabled, it also
+ * writes +HTTPERR on the AT port.
+ *
+ * The return value is the last esp-tls error and may be other than ESP_OK.
+ * An HTTP event callback should keep returning ESP_OK unless it intends to
+ * abort the client for another reason.
+ *
+ * @param evt  HTTP_EVENT_ERROR event. NULL is ignored.
+ * @return Last esp-tls error of the HTTP client, or ESP_OK if none was recorded.
+ */
+esp_err_t esp_at_http_handle_error_event(esp_http_client_event_t *evt);
+
+#endif
 
 #ifdef CONFIG_AT_HTTP_COMMAND_SUPPORT
 

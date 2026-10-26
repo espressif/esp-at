@@ -735,6 +735,10 @@ static uint8_t at_queryCmdCipupgrade(uint8_t *cmd_name)
 
 static esp_err_t at_cipfwver_http_event_handler(esp_http_client_event_t *evt)
 {
+    if (evt->event_id == HTTP_EVENT_ERROR) {
+        esp_at_http_handle_error_event(evt);
+        return ESP_OK;
+    }
     if (evt->event_id != HTTP_EVENT_ON_DATA) {
         return ESP_OK;
     }

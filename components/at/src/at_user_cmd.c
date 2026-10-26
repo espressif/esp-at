@@ -11,7 +11,6 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "freertos/semphr.h"
 
 #ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
 #include "freertos/event_groups.h"
@@ -92,13 +91,7 @@ static uint32_t s_user_ram_size = 0;
 static int32_t s_user_ota_total_size = 0;
 static int32_t s_user_ota_recv_size = 0;
 static bool s_user_ota_is_chunked = true;
-static SemaphoreHandle_t s_at_user_sync_sema;
 static const char *TAG = "at-user";
-
-static void at_user_wait_data_cb(void)
-{
-    xSemaphoreGive(s_at_user_sync_sema);
-}
 
 static uint8_t at_setup_cmd_userram(uint8_t para_num)
 {
@@ -172,40 +165,13 @@ static uint8_t at_setup_cmd_userram(uint8_t para_num)
             return ESP_AT_RESULT_CODE_ERROR;
         }
 
-        if (!s_at_user_sync_sema) {
-            s_at_user_sync_sema = xSemaphoreCreateBinary();
-            if (!s_at_user_sync_sema) {
-                return ESP_AT_RESULT_CODE_ERROR;
-            }
+        int32_t received = esp_at_port_read_bytes(sp_user_ram + offset, length,
+                                                  ESP_AT_PORT_PROMPT_OK, portMAX_DELAY);
+        if (received != length) {
+            return ESP_AT_RESULT_CODE_ERROR;
         }
-        uint32_t had_written_len = 0;
-        esp_at_port_enter_specific(at_user_wait_data_cb);
-        esp_at_dispatch_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT, NULL);
-
-        // receive at cmd port data to user ram
-        while (xSemaphoreTake(s_at_user_sync_sema, portMAX_DELAY)) {
-            int32_t received = esp_at_port_read_data(sp_user_ram + offset + had_written_len, length - had_written_len);
-            if (received < 0) {
-                esp_at_port_exit_specific();
-                vSemaphoreDelete(s_at_user_sync_sema);
-                s_at_user_sync_sema = NULL;
-                return ESP_AT_RESULT_CODE_ERROR;
-            }
-            had_written_len += (uint32_t)received;
-            if (had_written_len == length) {
-                ESP_AT_LOGI(TAG, "recv %d bytes", had_written_len);
-                esp_at_port_exit_specific();
-                esp_at_port_write_data((uint8_t *)"\r\nWRITE OK\r\n", strlen("\r\nWRITE OK\r\n"));
-                had_written_len = esp_at_port_get_data_length();
-
-                if (had_written_len > 0) {
-                    esp_at_port_recv_data_notify(had_written_len, portMAX_DELAY);
-                }
-                break;
-            }
-        }
-        vSemaphoreDelete(s_at_user_sync_sema);
-        s_at_user_sync_sema = NULL;
+        ESP_AT_LOGI(TAG, "recv %d bytes", received);
+        esp_at_port_write_data((uint8_t *)"\r\nWRITE OK\r\n", strlen("\r\nWRITE OK\r\n"));
         return ESP_AT_RESULT_CODE_PROCESS_DONE;
     }
 
@@ -264,7 +230,7 @@ static esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 {
     switch (evt->event_id) {
     case HTTP_EVENT_ERROR:
-        ESP_AT_LOGE(TAG, "http error");
+        esp_at_http_handle_error_event(evt);
         break;
     case HTTP_EVENT_ON_CONNECTED:
         ESP_AT_LOGI(TAG, "http connected");
@@ -331,48 +297,16 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
-    if (!s_at_user_sync_sema) {
-        s_at_user_sync_sema = xSemaphoreCreateBinary();
-        if (!s_at_user_sync_sema) {
-            free(url);
-            return ESP_AT_RESULT_CODE_ERROR;
-        }
+    int32_t received = esp_at_port_read_bytes(url, length, ESP_AT_PORT_PROMPT_OK, portMAX_DELAY);
+    if (received != length) {
+        free(url);
+        return ESP_AT_RESULT_CODE_ERROR;
     }
 
-    int32_t had_received_len = 0;
-    esp_at_port_enter_specific(at_user_wait_data_cb);
-    esp_at_dispatch_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT, NULL);
-
-    // receive at cmd port data
-    while (xSemaphoreTake(s_at_user_sync_sema, portMAX_DELAY)) {
-        int32_t received = esp_at_port_read_data(url + had_received_len, length - had_received_len);
-        if (received < 0) {
-            esp_at_port_exit_specific();
-            free(url);
-            vSemaphoreDelete(s_at_user_sync_sema);
-            s_at_user_sync_sema = NULL;
-            return ESP_AT_RESULT_CODE_ERROR;
-        }
-        had_received_len += received;
-        if (had_received_len == length) {
-            esp_at_port_exit_specific();
-
-            snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\nRecv %d bytes\r\n", length);
-            esp_at_port_write_data(buffer, strlen((char *)buffer));
-
-            had_received_len = esp_at_port_get_data_length();
-            if (had_received_len > 0) {
-                snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\nbusy p...\r\n");
-                esp_at_port_write_data(buffer, strlen((char *)buffer));
-            }
-
-            break;
-        }
-    }
+    snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\nRecv %d bytes\r\n", length);
+    esp_at_port_write_data(buffer, strlen((char *)buffer));
 
     ESP_AT_LOGI(TAG, "url: %s", url);
-    vSemaphoreDelete(s_at_user_sync_sema);
-    s_at_user_sync_sema = NULL;
 
     s_user_ota_total_size = 0;
     s_user_ota_recv_size = 0;
