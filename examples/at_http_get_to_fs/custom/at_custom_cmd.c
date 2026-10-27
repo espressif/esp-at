@@ -8,7 +8,6 @@
 #include <stdbool.h>
 #include "sdkconfig.h"
 #include "freertos/FreeRTOS.h"
-#include "freertos/semphr.h"
 #include "esp_timer.h"
 #include "esp_http_client.h"
 #include "esp_log.h"
@@ -36,7 +35,6 @@ typedef struct {
     int32_t total_size;             /*!< Total size of the file */
     int32_t recv_size;              /*!< Received size of the file */
     bool is_chunked;                /*!< Chunked flag */
-    SemaphoreHandle_t sync_sema;    /*!< Semaphore for synchronization */
     esp_http_client_handle_t client;    /*!< HTTP client handle */
     at_write_fs_handle_t *fs_handle;    /*!< File system handle */
 } at_httpget_to_fs_t;
@@ -121,10 +119,6 @@ static void at_http_to_fs_clean(void)
 {
     if (sp_http_to_fs) {
         // http client
-        if (sp_http_to_fs->sync_sema) {
-            vSemaphoreDelete(sp_http_to_fs->sync_sema);
-            sp_http_to_fs->sync_sema = NULL;
-        }
         if (sp_http_to_fs->url) {
             free(sp_http_to_fs->url);
             sp_http_to_fs->url = NULL;
@@ -159,15 +153,13 @@ static void at_http_to_fs_clean(void)
     }
 }
 
-static void at_custom_wait_data_cb(void)
-{
-    xSemaphoreGive(sp_http_to_fs->sync_sema);
-}
-
 static esp_err_t at_http_event_handler(esp_http_client_event_t *evt)
 {
     ESP_AT_LOGI(TAG, "http event id=%d", evt->event_id);
     switch (evt->event_id) {
+    case HTTP_EVENT_ERROR:
+        esp_at_http_handle_error_event(evt);
+        break;
     case HTTP_EVENT_ON_HEADER:
         if (strcmp(evt->header_key, "Content-Length") == 0) {
             sp_http_to_fs->total_size = atoi(evt->header_value);
@@ -240,30 +232,20 @@ static uint8_t at_setup_cmd_httpget_to_fs(uint8_t para_num)
     // init resources
     sp_http_to_fs->fs_handle = at_http_to_fs_begin((char *)dst_path);
     sp_http_to_fs->url = (char *)calloc(1, url_len + 1);
-    sp_http_to_fs->sync_sema = xSemaphoreCreateBinary();
 
-    if (!sp_http_to_fs->fs_handle || !sp_http_to_fs->url || !sp_http_to_fs->sync_sema) {
+    if (!sp_http_to_fs->fs_handle || !sp_http_to_fs->url) {
         ret = ESP_ERR_NO_MEM;
         goto cmd_exit;
     }
 
     // receive url from AT port
-    int32_t had_recv_len = 0;
-    esp_at_port_enter_specific(at_custom_wait_data_cb);
-    esp_at_dispatch_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT, NULL);
-    while (xSemaphoreTake(sp_http_to_fs->sync_sema, portMAX_DELAY)) {
-        had_recv_len += esp_at_port_read_data((uint8_t *)(sp_http_to_fs->url) + had_recv_len, url_len - had_recv_len);
-        if (had_recv_len == url_len) {
-            ESP_AT_LOGI(TAG, "recv %d bytes", had_recv_len);
-            esp_at_port_exit_specific();
-
-            int32_t remain_len = esp_at_port_get_data_length();
-            if (remain_len > 0) {
-                esp_at_port_recv_data_notify(remain_len, portMAX_DELAY);
-            }
-            break;
-        }
+    int32_t received = esp_at_port_read_bytes((uint8_t *)sp_http_to_fs->url, url_len,
+                                              ESP_AT_PORT_PROMPT_OK, portMAX_DELAY);
+    if (received != url_len) {
+        ret = ESP_FAIL;
+        goto cmd_exit;
     }
+    ESP_AT_LOGI(TAG, "recv %d bytes", received);
     ESP_AT_LOGI(TAG, "ready to download %s to %s", sp_http_to_fs->url, sp_http_to_fs->fs_handle->path);
 
     // init http client

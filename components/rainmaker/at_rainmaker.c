@@ -1835,7 +1835,6 @@ static uint8_t at_setup_cmd_rmsend(uint8_t para_num)
     uint8_t *param_name = NULL;
     int32_t len = 0;
     uint8_t *buf = NULL;
-    int32_t had_received_len = 0;
 
     if (!(xEventGroupGetBits(s_rm_event_group) & RM_NODE_INIT_DONE_EVENT)) {
         //TODO: error code, not init
@@ -1883,47 +1882,21 @@ static uint8_t at_setup_cmd_rmsend(uint8_t para_num)
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
-    if (!s_at_rainmaker_sync_sema) {
-        s_at_rainmaker_sync_sema = xSemaphoreCreateBinary();
-        if (!s_at_rainmaker_sync_sema) {
-            free(buf);
-            buf = NULL;
-            return ESP_AT_RESULT_CODE_ERROR;
-        }
+    int32_t received = esp_at_port_read_bytes(buf, len, ESP_AT_PORT_PROMPT_OK, portMAX_DELAY);
+    if (received != len) {
+        free(buf);
+        return ESP_AT_RESULT_CODE_ERROR;
     }
 
-    esp_at_port_enter_specific(at_rainmaker_wait_data_cb);
+    snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\nRecv %d bytes\r\n", len);
+    esp_at_port_write_data(buffer, strlen((char *)buffer));
 
-    // output "OK" and ">"
-    esp_at_dispatch_result(ESP_AT_RESULT_CODE_OK_AND_INPUT_PROMPT, NULL);
-
-    // receive at cmd port data
-    while (xSemaphoreTake(s_at_rainmaker_sync_sema, portMAX_DELAY)) {
-        had_received_len += esp_at_port_read_data(buf + had_received_len, len - had_received_len);
-        if (had_received_len == len) {
-            snprintf((char *)buffer, TEMP_BUFFER_SIZE, "\r\nRecv %d bytes\r\n", len);
-            esp_at_port_write_data(buffer, strlen((char *)buffer));
-
-            esp_at_port_exit_specific();
-
-            /* Report to the cloud */
-            esp_rmaker_param_val_t val;
-            memset(&val, 0, sizeof(esp_rmaker_param_val_t));
-            val.type = esp_rmaker_param_get_data_type(param);
-            rmaker_structure_data(val.type, buf, &val);
-            esp_rmaker_param_update_and_report(param, val);
-
-            had_received_len = esp_at_port_get_data_length();
-            if (had_received_len > 0) {
-                esp_at_port_recv_data_notify(had_received_len, portMAX_DELAY);
-            }
-
-            break;
-        }
-    }
-
-    vSemaphoreDelete(s_at_rainmaker_sync_sema);
-    s_at_rainmaker_sync_sema = NULL;
+    /* Report to the cloud */
+    esp_rmaker_param_val_t val;
+    memset(&val, 0, sizeof(esp_rmaker_param_val_t));
+    val.type = esp_rmaker_param_get_data_type(param);
+    rmaker_structure_data(val.type, buf, &val);
+    esp_rmaker_param_update_and_report(param, val);
 
     free(buf);
     buf = NULL;
