@@ -72,6 +72,7 @@ manufacturing NVS 分区包含多个命名空间，每个命名空间包含若�
     +SYSMFG:"mqtt_cert"
     +SYSMFG:"mqtt_key"
     +SYSMFG:"mqtt_ca"
+    +SYSMFG:"ota_ca"
 
     OK
 
@@ -828,6 +829,10 @@ PKI（公钥基础设施）配置用于创建、管理、分配、存储和撤�
        * AT 作为 MQTT 客户端时，需要配置客户端证书，提供给服务器进行身份验证。只支持单套证书。
        * AT 作为 MQTT 客户端时，需要配置客户端私钥，用于加密客户端与服务器之间的通信。只支持单套私钥。
        * AT 作为 MQTT 客户端时，需要配置客户端 CA 证书，用于校验服务器证书的有效性。只支持单套 CA 证书。
+   * - OTA
+     - ``ota_ca``
+     - ``ota_ca.0``, ``ota_ca.1``
+     - 按 ``ota_ca.<index>`` 规则存储多套 CA 证书。``ota_ca.0`` 是 DigiCert Global Root G2，``ota_ca.1`` 是 ISRG Root X1。``AT+CIUPDATE`` 的 ``<ota mode>`` 为 2 时使用 ``ota_ca.0``。``AT+USEROTA`` 的 ``<auth mode>`` 为 1 时按 ``<ca id>`` 选择套号，默认 ``ota_ca.0``。
    * - HTTPS 客户端
      -
        * ``https_cert``
@@ -872,7 +877,7 @@ PKI（公钥基础设施）配置用于创建、管理、分配、存储和撤�
 .. note::
   你可以通过 ``AT+SYSMFG?`` 命令查询当前固件支持的所有命名空间，以确认你需要的证书命名空间是否可用。
 
-本节以 SSL 证书为例说明证书配置的完整流程。其他功能的证书配置（如 MQTT、HTTPS）可参照相同方法，仅需根据上表修改对应的命名空间名称和键名即可。
+本节以 SSL 证书为例说明证书配置的完整流程。其他功能的证书配置（如 MQTT、HTTPS、OTA）可参照相同方法，仅需根据上表修改对应的命名空间名称和键名即可。
 
 .. _sysmfg-ssl-client:
 

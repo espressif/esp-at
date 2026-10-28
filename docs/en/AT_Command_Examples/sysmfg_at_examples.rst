@@ -72,6 +72,7 @@ Query all namespaces actually supported by the current firmware:
     +SYSMFG:"mqtt_cert"
     +SYSMFG:"mqtt_key"
     +SYSMFG:"mqtt_ca"
+    +SYSMFG:"ota_ca"
 
     OK
 
@@ -828,6 +829,10 @@ PKI (Public Key Infrastructure) configuration is used to create, manage, distrib
        * When AT acts as an MQTT client, the client certificate must be configured to identify itself to the server. Only one certificate set is supported.
        * When AT acts as an MQTT client, the client private key must be configured to encrypt communication between the client and server. Only one private key set is supported.
        * When AT acts as an MQTT client, the client CA certificate must be configured to verify the validity of the server certificate. Only one CA certificate set is supported.
+   * - OTA
+     - ``ota_ca``
+     - ``ota_ca.0``, ``ota_ca.1``
+     - Multiple CA sets are stored using the ``ota_ca.<index>`` rule. ``ota_ca.0`` is DigiCert Global Root G2. ``ota_ca.1`` is ISRG Root X1. When ``<ota mode>`` of ``AT+CIUPDATE`` is 2, AT uses ``ota_ca.0``. When ``<auth mode>`` of ``AT+USEROTA`` is 1, ``<ca id>`` selects the set and defaults to ``ota_ca.0``.
    * - HTTPS Client
      -
        * ``https_cert``
@@ -872,7 +877,7 @@ PKI (Public Key Infrastructure) configuration is used to create, manage, distrib
 .. note::
   You can query all namespaces supported by the current firmware using the ``AT+SYSMFG?`` command to confirm if the certificate namespaces you need are available.
 
-This section uses SSL certificates as an example to illustrate the complete process of certificate configuration. Certificate configuration for other functions (such as MQTT, HTTPS) can follow the same method, only requiring modification of the corresponding namespace names and key names according to the table above.
+This section uses SSL certificates as an example to illustrate the complete process of certificate configuration. Certificate configuration for other functions (such as MQTT, HTTPS, and OTA) can follow the same method, only requiring modification of the corresponding namespace names and key names according to the table above.
 
 .. _sysmfg-ssl-client:
 

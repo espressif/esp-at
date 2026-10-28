@@ -124,7 +124,7 @@ ESP-AT 在运行时，升级到指定 URL 上的新固件。
 
 ::
 
-    AT+USEROTA=<url len>
+    AT+USEROTA=<url len>[,<auth mode>][,<ca id>]
 
 **响应：**
 
@@ -155,7 +155,15 @@ AT 输出上述信息之后，升级过程开始。如果升级完成，返回�
 参数
 ^^^^
 
-- **<url len>**：URL 长度。最大值：8192 字节
+- **<url len>**：URL 长度。最大值：8192 字节。
+- **<auth mode>**：SSL 证书认证模式。默认值：0。
+
+  - 0: 不认证；
+  - 1: 校验服务器证书，使用 ``mfg_nvs`` 中的 ``ota_ca.<ca id>``；
+  - 2: 提供客户端证书。暂不支持，返回 ``ERROR``；
+  - 3: 双向认证。暂不支持，返回 ``ERROR``。
+
+- **<ca id>**：CA 证书套号。默认值：0。仅当 ``<auth mode>`` 为 1 时生效。
 
 说明
 ^^^^
@@ -187,7 +195,9 @@ AT 输出上述信息之后，升级过程开始。如果升级完成，返回�
 - 建议升级 AT 固件后，调用 :ref:`AT+RESTORE <cmd-RESTORE>` 恢复出厂设置。
 - ``AT+USEROTA`` 支持 ``HTTP`` 和 ``HTTPS``。
 - AT 输出 ``>`` 字符后，数据中的特殊字符不需要转义字符进行转义，也不需要以新行结尾 (CR-LF)。
-- 当 URL 为 ``HTTPS`` 时，不建议 SSL 认证。如果要求 SSL 认证，你必须自行生成 PKI 文件然后将它们下载到对应的分区中，之后在 ``AT+USEROTA`` 命令的实现代码中加载证书。对于 PKI 文件请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。对于 ``AT+USEROTA`` 命令，可参考 ESP-AT 工程提供的示例 `USEROTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_user_cmd.c>`_。
+- ``<auth mode>`` 为 0 时，不校验证书。``<ca id>`` 会被忽略。
+- ``<auth mode>`` 为 1 时，URL 必须为 ``HTTPS``。为了校验服务器证书的有效期，请在发送本命令前确保 {IDF_TARGET_NAME} 已获取到当前时间（你可以发送 :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` 命令来配置 SNTP，获取当前时间，发送 :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` 命令查询当前时间）。默认使用第 0 套 CA 证书 ``ota_ca.0``。该证书不存在或长度为 0 时，本命令返回 ``ERROR``，不会改为不校验证书。PKI 文件请参考 :doc:`../Compile_and_Develop/How_to_update_pki_config`。
+- ``<auth mode>`` 为 2 或 3 时，本命令返回 ``ERROR``。
 - 请参考 :doc:`../Compile_and_Develop/How_to_implement_OTA_update` 获取更多 OTA 命令。
 
 示例
@@ -203,6 +213,12 @@ AT 输出上述信息之后，升级过程开始。如果升级完成，返回�
     Recv 36 bytes
 
     OK
+
+使用第 0 套 CA 证书校验服务器证书：
+
+::
+
+    AT+USEROTA=36,1,0
 
 .. _cmd-USERWKMCUCFG:
 

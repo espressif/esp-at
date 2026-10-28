@@ -1695,7 +1695,9 @@ Parameters
 - **<ota mode>**:
 
     - 0: OTA via HTTP.
-    - 1: OTA via HTTPS. If it does not work, please check whether ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``OTA based upon ssl`` is enabled. For more information, please refer to :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`.
+    - 1: OTA via HTTPS. The server certificate is not verified. If it does not work, please check whether ``./build.py menuconfig`` > ``Component config`` > ``AT`` > ``OTA based upon ssl`` is enabled. For more information, please refer to :doc:`../Compile_and_Develop/How_to_clone_project_and_compile_it`.
+    - 2: OTA via HTTPS. AT verifies the server certificate with ``ota_ca.0`` in ``mfg_nvs``.
+    - 3 or greater: invalid. The command returns ``ERROR``.
 
 - **<version>**: AT version, such as, ``v1.2.0.0``, ``v1.1.3.0``, ``v1.1.2.0``.
 - **<"firmware name">**: firmware to upgrade, such as, ``ota``, ``mqtt_ca``, ``client_ca`` or other custom partition in ``at_customize.csv``.
@@ -1720,7 +1722,13 @@ Notes
 - If you use Espressif's AT `BIN <https://www.espressif.com/en/support/download/at>`_, ``AT+CIUPDATE`` will download a new AT BIN from the Espressif Cloud.
 - If you use a user-compiled AT BIN, you need to implement your own AT+CIUPDATE FOTA function or use :ref:`AT+USEROTA <cmd-USEROTA>` or :ref:`AT+WEBSERVER <cmd-WEBSERVER>` command. ESP-AT project provides an example of `FOTA <https://github.com/espressif/esp-at/blob/master/components/at/src/at_ota_cmd.c>`_.
 - After you upgrade the AT firmware, you are suggested to call the command :ref:`AT+RESTORE <cmd-RESTORE>` to restore the factory default settings.
-- The timeout of OTA process is ``3`` minutes.
+- The upgrade fails in either of the following cases:
+
+    - The whole upgrade takes more than ``3`` minutes.
+    - No data is received for ``10`` consecutive seconds.
+
+- On failure, AT does not report ``+CIPUPDATE:4``. Blocking mode returns ``ERROR``. Non-blocking mode reports ``+CIPUPDATE:-1``. After the network recovers, send this command again.
+- If ``<ota mode>`` is 2, in order to check the server certificate validity period, please make sure {IDF_TARGET_NAME} has obtained the current time before sending this command. (You can send :ref:`AT+CIPSNTPCFG <cmd-SNTPCFG>` command to configure SNTP and obtain the current time, and send :ref:`AT+CIPSNTPTIME? <cmd-SNTPT>` command to query the current time.) If ``ota_ca.0`` is missing or its length is 0, this command returns ``ERROR`` and does not fall back to unverified TLS.
 - The response ``OK`` in non-blocking mode does not necessarily come before the response ``+CIPUPDATE:<state>``. It may be output before ``+CIPUPDATE:<state>`` or after it.
 - Downgrading to an older version is not recommended due to potential compatibility issues and the risk of operational failure. If you still prefer downgrading to an older version, please test and verify the functionality based on your product.
 - Please refer to :doc:`../Compile_and_Develop/How_to_implement_OTA_update` for more OTA commands.
@@ -1734,6 +1742,7 @@ Example
     AT+CWJAP="1234567890","1234567890"
     AT+CIUPDATE
     AT+CIUPDATE=1
+    AT+CIUPDATE=2
     AT+CIUPDATE=1,"v1.2.0.0"
     AT+CIUPDATE=1,"v2.2.0.0","mqtt_ca"
     AT+CIUPDATE=1,"v2.2.0.0","ota",1

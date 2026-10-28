@@ -27,11 +27,17 @@
 #include "esp_at_core.h"
 #include "esp_at.h"
 #include "esp_at_internal.h"
+#include "at_ota.h"
 
 #ifdef CONFIG_AT_USER_COMMAND_SUPPORT
 
 #define AT_USERRAM_READ_BUFFER_SIZE     1024
 #define AT_USEROTA_URL_LEN_MAX          (8 * 1024)
+#define AT_USEROTA_AUTH_NONE            0
+#define AT_USEROTA_AUTH_VERIFY_SERVER   1
+#define AT_USEROTA_AUTH_CLIENT_CERT     2
+#define AT_USEROTA_AUTH_MUTUAL          3
+#define AT_USEROTA_AUTH_MAX             4
 #define AT_USERDOCS_BUFFER_LEN_MAX      (1024)
 #define AT_DOCS_SERVER_HOSTNAME         "docs.espressif.com"
 #define AT_DOCS_PROJECT_PATH            "projects/esp-at"
@@ -272,12 +278,31 @@ static esp_err_t _http_event_handler(esp_http_client_event_t *evt)
     return ESP_OK;
 }
 
+static bool at_userota_url_is_https(const uint8_t *url)
+{
+    const char prefix[] = "https://";
+
+    for (size_t i = 0; prefix[i] != '\0'; i++) {
+        char c = (char)url[i];
+        if (c >= 'A' && c <= 'Z') {
+            c = (char)(c - 'A' + 'a');
+        }
+        if (c != prefix[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 static uint8_t at_setup_cmd_userota(uint8_t para_num)
 {
 #define TEMP_BUFFER_SIZE    32
     uint8_t buffer[TEMP_BUFFER_SIZE] = {0};
     int32_t length = 0;
+    int32_t auth_mode = AT_USEROTA_AUTH_NONE;
+    int32_t ca_id = 0;
     int32_t cnt = 0;
+    char *ca_pem = NULL;
 
     // length
     if (esp_at_get_para_as_digit(cnt++, &length) != ESP_AT_PARA_PARSE_RESULT_OK) {
@@ -287,19 +312,45 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
+    if (cnt < para_num) {
+        if (esp_at_get_para_as_digit(cnt++, &auth_mode) != ESP_AT_PARA_PARSE_RESULT_OK) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+    }
+    if (cnt < para_num) {
+        if (esp_at_get_para_as_digit(cnt++, &ca_id) != ESP_AT_PARA_PARSE_RESULT_OK) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+    }
+
     // parameters are ready
     if (cnt != para_num) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
+    if (auth_mode < AT_USEROTA_AUTH_NONE || auth_mode >= AT_USEROTA_AUTH_MAX) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+    /* Client certificate and mutual authentication are reserved. */
+    if (auth_mode == AT_USEROTA_AUTH_CLIENT_CERT || auth_mode == AT_USEROTA_AUTH_MUTUAL) {
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+    if (auth_mode == AT_USEROTA_AUTH_VERIFY_SERVER) {
+        if (esp_at_ota_load_ca(ca_id, &ca_pem) != ESP_OK || esp_at_ota_check_time() != ESP_OK) {
+            free(ca_pem);
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+    }
 
     uint8_t *url = (uint8_t *)calloc(1, length + 1);
     if (url == NULL) {
+        free(ca_pem);
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
     int32_t received = esp_at_port_read_bytes(url, length, ESP_AT_PORT_PROMPT_OK, portMAX_DELAY);
     if (received != length) {
         free(url);
+        free(ca_pem);
         return ESP_AT_RESULT_CODE_ERROR;
     }
 
@@ -307,6 +358,12 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
     esp_at_port_write_data(buffer, strlen((char *)buffer));
 
     ESP_AT_LOGI(TAG, "url: %s", url);
+
+    if (auth_mode == AT_USEROTA_AUTH_VERIFY_SERVER && !at_userota_url_is_https(url)) {
+        free(url);
+        free(ca_pem);
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
 
     s_user_ota_total_size = 0;
     s_user_ota_recv_size = 0;
@@ -318,6 +375,7 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
         .keep_alive_enable = true,
         .timeout_ms = 10000,
         .buffer_size = 2048,
+        .cert_pem = ca_pem,
     };
 
 #if defined(CONFIG_BOOTLOADER_COMPRESSED_ENABLED) && defined(CONFIG_ENABLE_LEGACY_ESP_BOOTLOADER_PLUS_V2_SUPPORT)
@@ -331,6 +389,7 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
 #endif
 
     free(url);
+    free(ca_pem);
 
     if (ret == ESP_OK) {
         esp_at_write_result(ESP_AT_RESULT_CODE_OK);

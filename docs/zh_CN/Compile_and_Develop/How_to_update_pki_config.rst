@@ -3,7 +3,7 @@
 
 :link_to_translation:`en:[English]`
 
-本文档介绍了如何通过重新编译固件来更新 ESP-AT 提供的默认的 :term:`PKI` 配置。PKI 配置包括 TLS 客户端、TLS 服务器、MQTT 客户端、WebSocket 客户端、HTTP 客户端和 Wi-Fi Enterprise 客户端的证书和密钥。
+本文档介绍了如何通过重新编译固件来更新 ESP-AT 提供的默认的 :term:`PKI` 配置。PKI 配置包括 TLS 客户端、TLS 服务器、MQTT 客户端、WebSocket 客户端、HTTP 客户端、OTA 和 Wi-Fi Enterprise 客户端的证书和密钥。
 
 .. note::
   如果你想在运行时通过 AT 命令更新证书而无需重新编译固件，请参考 :ref:`AT+SYSMFG 命令示例 <sysmfg-pki>`。
@@ -83,6 +83,16 @@ PKI 配置介绍
           * :component_file:`https_client_01.crt <customized_partitions/raw_data/https_cert/https_client_01.crt>`
           * :component_file:`https_client_01.key <customized_partitions/raw_data/https_key/https_client_01.key>`
         - :ref:`AT+HTTPCFG <cmd-HTTPCFG>`
+
+      * - OTA
+        - 第 0 套 CA 证书 (DigiCert Global Root G2)
+
+          * :component_file:`ota_ca_00.crt <customized_partitions/raw_data/ota_ca/ota_ca_00.crt>`
+
+          第 1 套 CA 证书 (ISRG Root X1)
+
+          * :component_file:`ota_ca_01.crt <customized_partitions/raw_data/ota_ca/ota_ca_01.crt>`
+        - :ref:`AT+CIUPDATE <cmd-UPDATE>`、:ref:`AT+USEROTA <cmd-USEROTA>`
 
       * - Wi-Fi 企业版客户端 (WPA2-Enterprise/WPA3-Enterprise)
         -
