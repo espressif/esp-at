@@ -1,0 +1,33 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: xiewenxiang <xiewenxiang@espressif.com>
+Date: Tue, 3 Nov 2026 16:32:00 +0800
+Subject: [PATCH] bluedroid-c3-keep-own-addr-type
+
+Do not force an RPA when creating a connection. The application already
+chose own_addr_type. Controller privacy on ESP32-C3 otherwise sets the
+identity bit and the peer sees a random address on the next connection.
+
+diff --git a/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c b/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c
+index 3dfd210cc241..51e1484e8afa 100644
+--- a/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c
++++ b/components/bt/host/bluedroid/stack/l2cap/l2c_ble.c
+@@ -993,16 +993,15 @@ BOOLEAN l2cble_init_direct_conn (tL2C_LCB *p_lcb)
+ #endif // (!CONTROLLER_RPA_LIST_ENABLE)
+ 
+ #if (CONTROLLER_RPA_LIST_ENABLE)
+ 
+     if (p_dev_rec->ble.in_controller_list & BTM_RESOLVING_LIST_BIT) {
+         if (!(peer_addr_type == BLE_ADDR_RANDOM && !BTM_BLE_IS_RESOLVE_BDA(peer_addr))) {
+-            if (btm_cb.ble_ctr_cb.privacy_mode >=  BTM_PRIVACY_1_2) {
+-                own_addr_type |= BLE_ADDR_TYPE_ID_BIT;
+-            }
+-
++            /* Do not set BLE_ADDR_TYPE_ID_BIT. The application already chose
++             * own_addr_type. On C3, controller privacy would turn a public
++             * address (0) into 0x02 and send an RPA on the next connection. */
+             //btm_ble_enable_resolving_list(BTM_BLE_RL_INIT);
+             btm_random_pseudo_to_identity_addr(peer_addr, &peer_addr_type);
+         }
+     } else {
+         btm_ble_disable_resolving_list(BTM_BLE_RL_INIT, TRUE);
+     }
