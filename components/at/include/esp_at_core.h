@@ -26,18 +26,19 @@
 /*
  * Optional-component headers are pulled in only when the matching AT command
  * feature is enabled, so that builds without those components are not forced
- * to depend on the lwIP socket API / esp_http_client / esp_websocket_client.
+ * to depend on esp_http_client / esp_websocket_client.
+ *
+ * The TCP/IP helpers other than esp_at_write_data_to_link_id are always
+ * declared, so the lwIP socket headers they use are included unconditionally.
  */
 
 #ifdef CONFIG_AT_WIFI_COMMAND_SUPPORT
 #include "esp_wifi.h"
 #endif
 
-#ifdef CONFIG_AT_NET_COMMAND_SUPPORT
 #include <sys/socket.h>
 #include "lwip/ip_addr.h"
 #include "lwip/netdb.h"
-#endif
 
 #if defined(CONFIG_AT_HTTP_COMMAND_SUPPORT) || defined(CONFIG_AT_OTA_SUPPORT) || defined(CONFIG_AT_USER_COMMAND_SUPPORT)
 #include "esp_http_client.h"
@@ -729,8 +730,6 @@ void esp_at_eth_set_sta_state(esp_at_eth_sta_state_t state);
  *                                   TCP/IP
  * ========================================================================== */
 
-#ifdef CONFIG_AT_NET_COMMAND_SUPPORT
-
 /**
  * @brief IP protocol family preference for DNS resolution.
  */
@@ -791,6 +790,8 @@ int32_t esp_at_get_socket_by_link_id(uint8_t link_id);
  */
 esp_at_netif_t esp_at_get_netif_by_socket(int fd);
 
+#ifdef CONFIG_AT_NET_COMMAND_SUPPORT
+
 /**
  * @brief Send data on a TCP/UDP/SSL connection identified by link ID.
  *
@@ -804,6 +805,8 @@ esp_at_netif_t esp_at_get_netif_by_socket(int fd);
  * @return Number of bytes written, or a negative error code.
  */
 int32_t esp_at_write_data_to_link_id(uint8_t link_id, const void *data, size_t size);
+
+#endif /* CONFIG_AT_NET_COMMAND_SUPPORT */
 
 /**
  * @brief Resolve a hostname to a single IP address with timeout control.
@@ -850,8 +853,6 @@ esp_err_t esp_at_hostname_to_addrinfo(const char *hostname, esp_at_ip_proto_t ip
                                       ip_addr_t *target_addr, struct addrinfo **res,
                                       uint32_t timeout_ms)
 __asm__("at_hostname_to_addrinfo");
-
-#endif /* CONFIG_AT_NET_COMMAND_SUPPORT */
 
 /* ============================================================================
  *                                HTTP Client
