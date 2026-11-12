@@ -124,7 +124,7 @@ Upgrade to the firmware version specified by the URL.
 
 ::
 
-    AT+USEROTA=<url len>[,<auth mode>][,<ca id>]
+    AT+USEROTA=<url len>[,<auth mode>][,<ca id>][,<network timeout>][,<total timeout>]
 
 **Response:**
 
@@ -164,6 +164,8 @@ Parameters
   - 3: Mutual authentication. Not supported yet. The command returns ``ERROR``.
 
 - **<ca id>**: CA certificate set index. Default: 0. It takes effect only when ``<auth mode>`` is 1.
+- **<network timeout>**: Maximum time of one TCP connect, TLS handshake, or data read/write. Unit: milliseconds. Default: 10000. Range: [1000,30000]. If ``<total timeout>`` is set and its duration is shorter, that duration is used for the wait. Before the transfer, AT resolves the URL host within this wait. If that fails, the command returns ``ERROR``. DNS for a redirected host is not limited by this value.
+- **<total timeout>**: Total time of this upgrade. Unit: seconds. Range: [10,300]. If omitted, this upgrade has no total time limit.
 
 Note
 ^^^^^
@@ -191,6 +193,7 @@ Note
 
 - The speed of the upgrade depends on the network status.
 - If the upgrade fails due to unfavorable network conditions, AT will return ``ERROR``. Please wait for some time before retrying.
+- ``<total timeout>`` starts after AT outputs ``Recv <url len> bytes``. Time spent waiting for the URL is not counted. When the time is reached, AT stops the network transfer. A step already in progress is not stopped, so the command can return later than ``<total timeout>``. The extra time is the rest of that step. A TCP connect or TLS handshake already in progress ends within ``<network timeout>`` milliseconds, or within the duration of ``<total timeout>`` when that duration is shorter. Erasing the partition and the final image check are not stopped. If the image has been fully received and checks out, AT returns OK and restarts.
 - Downgrading to an older version is not recommended due to potential compatibility issues and the risk of operational failure. If you still prefer downgrading to an older version, please test and verify the functionality based on your product.
 - After you upgrade the AT firmware, you are suggested to call the command AT+RESTORE to restore the factory default settings.
 - ``AT+USEROTA`` supports ``HTTP`` and ``HTTPS``.
@@ -219,6 +222,18 @@ Verify the server certificate with CA set 0:
 ::
 
     AT+USEROTA=36,1,0
+
+Set the network timeout to 5000 milliseconds:
+
+::
+
+    AT+USEROTA=36,,,5000
+
+Set the total upgrade time to 60 seconds:
+
+::
+
+    AT+USEROTA=36,,,,60
 
 .. _cmd-USERWKMCUCFG:
 

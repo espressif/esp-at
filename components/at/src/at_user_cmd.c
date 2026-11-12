@@ -6,11 +6,14 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdatomic.h>
 #include <string.h>
+#include <sys/socket.h>
 #include "sdkconfig.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/semphr.h"
 
 #ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
 #include "freertos/event_groups.h"
@@ -24,6 +27,7 @@
 
 #include "esp_http_client.h"
 #include "esp_https_ota.h"
+#include "esp_timer.h"
 #include "esp_at_core.h"
 #include "esp_at.h"
 #include "esp_at_internal.h"
@@ -38,6 +42,12 @@
 #define AT_USEROTA_AUTH_CLIENT_CERT     2
 #define AT_USEROTA_AUTH_MUTUAL          3
 #define AT_USEROTA_AUTH_MAX             4
+/* One socket wait. Also capped by <total timeout> when that limit is shorter. */
+#define AT_USEROTA_HTTP_TIMEOUT_MS_DEFAULT  10000
+#define AT_USEROTA_HTTP_TIMEOUT_MS_MIN      1000
+#define AT_USEROTA_HTTP_TIMEOUT_MS_MAX      (30 * 1000)
+#define AT_USEROTA_TIMEOUT_SEC_MIN          10
+#define AT_USEROTA_TIMEOUT_SEC_MAX          (5 * 60)
 #define AT_USERDOCS_BUFFER_LEN_MAX      (1024)
 #define AT_DOCS_SERVER_HOSTNAME         "docs.espressif.com"
 #define AT_DOCS_PROJECT_PATH            "projects/esp-at"
@@ -97,6 +107,13 @@ static uint32_t s_user_ram_size = 0;
 static int32_t s_user_ota_total_size = 0;
 static int32_t s_user_ota_recv_size = 0;
 static bool s_user_ota_is_chunked = true;
+/* Socket of a timed upgrade. The timer task shuts it down; the download task closes the client. */
+static atomic_int s_user_ota_fd = -1;
+static atomic_bool s_user_ota_timed_out = false;
+static bool s_user_ota_arm_fd = false;
+/* Held across shutdown and across withdrawing the fd. close() frees the socket
+ * only after DISCONNECTED returns, so the timer cannot shut down a reused fd. */
+static SemaphoreHandle_t s_user_ota_fd_lock;
 static const char *TAG = "at-user";
 
 static uint8_t at_setup_cmd_userram(uint8_t para_num)
@@ -232,8 +249,68 @@ static uint8_t at_query_cmd_userram(uint8_t *cmd_name)
     return ESP_AT_RESULT_CODE_OK;
 }
 
+static void at_userota_timeout_cb(void *arg)
+{
+    int fd;
+    bool locked = false;
+
+    (void)arg;
+    atomic_store(&s_user_ota_timed_out, true);
+    if (s_user_ota_fd_lock != NULL && xSemaphoreTake(s_user_ota_fd_lock, portMAX_DELAY) == pdTRUE) {
+        locked = true;
+    }
+    fd = atomic_exchange(&s_user_ota_fd, -1);
+    if (fd >= 0) {
+        shutdown(fd, SHUT_RDWR);
+    }
+    if (locked) {
+        xSemaphoreGive(s_user_ota_fd_lock);
+    }
+    ESP_AT_LOGE(TAG, "ota timeout");
+}
+
+static void at_userota_stop_timer(esp_timer_handle_t timer)
+{
+    if (timer == NULL) {
+        return;
+    }
+    if (esp_timer_stop_blocking(timer, portMAX_DELAY) == ESP_OK) {
+        esp_timer_delete(timer);
+    }
+    s_user_ota_arm_fd = false;
+    atomic_store(&s_user_ota_fd, -1);
+    atomic_store(&s_user_ota_timed_out, false);
+}
+
 static esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 {
+    /* DISCONNECTED runs inside close(), before the fd is freed. Withdraw it under the
+     * lock the timer holds across shutdown. Publishing it would let the timer shut
+     * down a number the OS may already have given to another socket. */
+    if (s_user_ota_arm_fd && evt->client != NULL) {
+        if (evt->event_id == HTTP_EVENT_DISCONNECTED) {
+            bool locked = false;
+
+            if (s_user_ota_fd_lock != NULL && xSemaphoreTake(s_user_ota_fd_lock, portMAX_DELAY) == pdTRUE) {
+                locked = true;
+            }
+            atomic_store(&s_user_ota_fd, -1);
+            if (locked) {
+                xSemaphoreGive(s_user_ota_fd_lock);
+            }
+        } else {
+            int fd = esp_http_client_get_socket(evt->client);
+
+            if (fd >= 0) {
+                atomic_store(&s_user_ota_fd, fd);
+                /* The timer may have fired before this socket existed. Shut it down on this task. */
+                if (atomic_load(&s_user_ota_timed_out) && atomic_exchange(&s_user_ota_fd, -1) >= 0) {
+                    shutdown(fd, SHUT_RDWR);
+                }
+            }
+        }
+    }
+
     switch (evt->event_id) {
     case HTTP_EVENT_ERROR:
         esp_at_http_handle_error_event(evt);
@@ -294,6 +371,56 @@ static bool at_userota_url_is_https(const uint8_t *url)
     return true;
 }
 
+/* Resolve the URL host within timeout_ms. The address is discarded; the URL is not changed. */
+static esp_err_t at_userota_probe_dns(const char *url, uint32_t timeout_ms)
+{
+    const char *host;
+    const char *end;
+    const char *at;
+    char name[254];
+    size_t len;
+    ip_addr_t addr;
+
+    host = strstr(url, "://");
+    if (host == NULL) {
+        return ESP_OK;
+    }
+    host += 3;
+    end = strpbrk(host, "/?#");
+    at = strchr(host, '@');
+    if (at != NULL && (end == NULL || at < end)) {
+        host = at + 1;
+    }
+    if (*host == '[') {
+        host++;
+        end = strchr(host, ']');
+        if (end == NULL) {
+            return ESP_FAIL;
+        }
+    } else {
+        const char *colon = strchr(host, ':');
+
+        if (colon != NULL && (end == NULL || colon < end)) {
+            end = colon;
+        }
+        if (end == NULL) {
+            end = host + strlen(host);
+        }
+    }
+    len = (size_t)(end - host);
+    if (len == 0 || len >= sizeof(name)) {
+        return ESP_FAIL;
+    }
+    memcpy(name, host, len);
+    name[len] = '\0';
+    esp_err_t err = esp_at_hostname_to_ipaddr(name, ESP_AT_IPPROTO_UNSPEC, &addr, timeout_ms);
+    if (err != ESP_OK) {
+        ESP_AT_LOGE(TAG, "dns failed, errno:0x%x (%s)", (unsigned)err, esp_err_to_name(err));
+        return err;
+    }
+    return ESP_OK;
+}
+
 static uint8_t at_setup_cmd_userota(uint8_t para_num)
 {
 #define TEMP_BUFFER_SIZE    32
@@ -301,6 +428,8 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
     int32_t length = 0;
     int32_t auth_mode = AT_USEROTA_AUTH_NONE;
     int32_t ca_id = 0;
+    int32_t timeout_sec = 0;
+    int32_t http_timeout_ms = AT_USEROTA_HTTP_TIMEOUT_MS_DEFAULT;
     int32_t cnt = 0;
     char *ca_pem = NULL;
 
@@ -313,25 +442,64 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
     }
 
     if (cnt < para_num) {
-        if (esp_at_get_para_as_digit(cnt++, &auth_mode) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        int32_t value = 0;
+        esp_at_para_parse_ret_t parsed = esp_at_get_para_as_digit(cnt++, &value);
+        if (parsed == ESP_AT_PARA_PARSE_RESULT_FAIL) {
             return ESP_AT_RESULT_CODE_ERROR;
+        }
+        if (parsed == ESP_AT_PARA_PARSE_RESULT_OK) {
+            if (value < AT_USEROTA_AUTH_NONE || value >= AT_USEROTA_AUTH_MAX) {
+                return ESP_AT_RESULT_CODE_ERROR;
+            }
+            /* Client certificate and mutual authentication are reserved. */
+            if (value == AT_USEROTA_AUTH_CLIENT_CERT || value == AT_USEROTA_AUTH_MUTUAL) {
+                return ESP_AT_RESULT_CODE_ERROR;
+            }
+            auth_mode = value;
         }
     }
     if (cnt < para_num) {
-        if (esp_at_get_para_as_digit(cnt++, &ca_id) != ESP_AT_PARA_PARSE_RESULT_OK) {
+        int32_t value = 0;
+        esp_at_para_parse_ret_t parsed = esp_at_get_para_as_digit(cnt++, &value);
+        if (parsed == ESP_AT_PARA_PARSE_RESULT_FAIL) {
             return ESP_AT_RESULT_CODE_ERROR;
+        }
+        if (parsed == ESP_AT_PARA_PARSE_RESULT_OK) {
+            if (auth_mode == AT_USEROTA_AUTH_VERIFY_SERVER && value < 0) {
+                return ESP_AT_RESULT_CODE_ERROR;
+            }
+            ca_id = value;
+        }
+    }
+    if (cnt < para_num) {
+        int32_t value = 0;
+        esp_at_para_parse_ret_t parsed = esp_at_get_para_as_digit(cnt++, &value);
+        if (parsed == ESP_AT_PARA_PARSE_RESULT_FAIL) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+        if (parsed == ESP_AT_PARA_PARSE_RESULT_OK) {
+            if (value < AT_USEROTA_HTTP_TIMEOUT_MS_MIN || value > AT_USEROTA_HTTP_TIMEOUT_MS_MAX) {
+                return ESP_AT_RESULT_CODE_ERROR;
+            }
+            http_timeout_ms = value;
+        }
+    }
+    if (cnt < para_num) {
+        int32_t value = 0;
+        esp_at_para_parse_ret_t parsed = esp_at_get_para_as_digit(cnt++, &value);
+        if (parsed == ESP_AT_PARA_PARSE_RESULT_FAIL) {
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+        if (parsed == ESP_AT_PARA_PARSE_RESULT_OK) {
+            if (value < AT_USEROTA_TIMEOUT_SEC_MIN || value > AT_USEROTA_TIMEOUT_SEC_MAX) {
+                return ESP_AT_RESULT_CODE_ERROR;
+            }
+            timeout_sec = value;
         }
     }
 
     // parameters are ready
     if (cnt != para_num) {
-        return ESP_AT_RESULT_CODE_ERROR;
-    }
-    if (auth_mode < AT_USEROTA_AUTH_NONE || auth_mode >= AT_USEROTA_AUTH_MAX) {
-        return ESP_AT_RESULT_CODE_ERROR;
-    }
-    /* Client certificate and mutual authentication are reserved. */
-    if (auth_mode == AT_USEROTA_AUTH_CLIENT_CERT || auth_mode == AT_USEROTA_AUTH_MUTUAL) {
         return ESP_AT_RESULT_CODE_ERROR;
     }
     if (auth_mode == AT_USEROTA_AUTH_VERIFY_SERVER) {
@@ -358,6 +526,9 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
     esp_at_port_write_data(buffer, strlen((char *)buffer));
 
     ESP_AT_LOGI(TAG, "url: %s", url);
+    if (timeout_sec > 0) {
+        ESP_AT_LOGI(TAG, "ota timeout %d s", (int)timeout_sec);
+    }
 
     if (auth_mode == AT_USEROTA_AUTH_VERIFY_SERVER && !at_userota_url_is_https(url)) {
         free(url);
@@ -369,11 +540,46 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
     s_user_ota_recv_size = 0;
     s_user_ota_is_chunked = true;
 
+    int32_t io_timeout_ms = http_timeout_ms;
+    esp_timer_handle_t timer = NULL;
+
+    if (timeout_sec > 0 && (int32_t)timeout_sec * 1000 < io_timeout_ms) {
+        io_timeout_ms = (int32_t)timeout_sec * 1000;
+    }
+    if (timeout_sec > 0) {
+        const esp_timer_create_args_t timer_args = {
+            .callback = at_userota_timeout_cb,
+            .name = "userota",
+        };
+
+        atomic_store(&s_user_ota_timed_out, false);
+        atomic_store(&s_user_ota_fd, -1);
+        s_user_ota_arm_fd = true;
+        if (esp_timer_create(&timer_args, &timer) != ESP_OK ||
+                esp_timer_start_once(timer, (uint64_t)timeout_sec * 1000000) != ESP_OK) {
+            if (timer != NULL) {
+                esp_timer_delete(timer);
+            }
+            s_user_ota_arm_fd = false;
+            free(url);
+            free(ca_pem);
+            return ESP_AT_RESULT_CODE_ERROR;
+        }
+    }
+
+    if (at_userota_probe_dns((const char *)url, (uint32_t)io_timeout_ms) != ESP_OK ||
+            (timeout_sec > 0 && atomic_load(&s_user_ota_timed_out))) {
+        at_userota_stop_timer(timer);
+        free(url);
+        free(ca_pem);
+        return ESP_AT_RESULT_CODE_ERROR;
+    }
+
     esp_http_client_config_t config = {
-        .url = (const char*)url,
+        .url = (const char *)url,
         .event_handler = _http_event_handler,
         .keep_alive_enable = true,
-        .timeout_ms = 10000,
+        .timeout_ms = io_timeout_ms,
         .buffer_size = 2048,
         .cert_pem = ca_pem,
     };
@@ -384,10 +590,10 @@ static uint8_t at_setup_cmd_userota(uint8_t para_num)
     esp_https_ota_config_t ota_config = {
         .http_config = &config,
     };
-
     esp_err_t ret = esp_https_ota(&ota_config);
 #endif
 
+    at_userota_stop_timer(timer);
     free(url);
     free(ca_pem);
 
@@ -694,6 +900,9 @@ bool esp_at_user_cmd_register(void)
 #ifdef CONFIG_AT_USERWKMCU_COMMAND_SUPPORT
     s_wkmcu_evt_group = xEventGroupCreate();
 #endif
+    if (s_user_ota_fd_lock == NULL) {
+        s_user_ota_fd_lock = xSemaphoreCreateMutex();
+    }
     return esp_at_custom_cmd_array_register(s_at_user_cmd, sizeof(s_at_user_cmd) / sizeof(s_at_user_cmd[0]));
 }
 
