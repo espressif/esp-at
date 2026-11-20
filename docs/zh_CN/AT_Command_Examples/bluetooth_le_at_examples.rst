@@ -389,7 +389,7 @@ Bluetooth LE 客户端读写服务特征值
 
      >
 
-   符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行写入操作。
+   :ref:`> 响应 <at-data-input>` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行写入操作。
 
    .. code-block:: none
 
@@ -415,7 +415,7 @@ Bluetooth LE 客户端读写服务特征值
 
      >
 
-   符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行写入操作。
+   :ref:`> 响应 <at-data-input>` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行写入操作。
 
    为了接收 {IDF_TARGET_NAME} Bluetooth LE 服务端发送过来的数据（通过 ``notify`` 方式或者 ``indicate`` 方式），{IDF_TARGET_NAME} Bluetooth LE 客户端需要提前向服务端注册。对于 ``notify`` 方式，需要写入值 ``0x0001``，对于 ``indicate`` 方式，需要写入值 ``0x0002``。在本例中写入 ``0x0002`` 来使用 ``indicate`` 方式。
 
@@ -441,7 +441,7 @@ Bluetooth LE 客户端读写服务特征值
 
      >
 
-   符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行 indicate 操作。
+   :ref:`> 响应 <at-data-input>` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行 indicate 操作。
 
    .. code-block:: none
 

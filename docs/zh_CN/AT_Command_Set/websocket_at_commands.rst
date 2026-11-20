@@ -121,7 +121,7 @@ WebSocket AT 命令集
 
     >
 
-符号 ``>`` 表示 AT 准备好接收 AT 命令口数据，此时你可以输入 WebSocket 请求头（请求头为 ``key: value`` 形式，无需以 ``\r\n`` 结尾），当数据长度达到参数 ``<req_header_len>`` 的值时，AT 返回：
+:ref:`> 响应 <at-data-input>` 表示 AT 准备好接收 AT 命令口数据，此时你可以输入 WebSocket 请求头（请求头为 ``key: value`` 形式，无需以 ``\r\n`` 结尾），当数据长度达到参数 ``<req_header_len>`` 的值时，AT 返回：
 
 ::
 
@@ -258,7 +258,7 @@ WebSocket AT 命令集
 
     >
 
-上述响应表示 AT 已准备好从 AT port 接收数据，此时你可以输入数据，当 AT 接收到的数据长度达到 ``<length>`` 后，数据传输开始。
+上述 :ref:`> 响应 <at-data-input>` 表示 AT 已准备好从 AT port 接收数据，此时你可以输入数据，当 AT 接收到的数据长度达到 ``<length>`` 后，数据传输开始。
 
 如果未建立连接或数据传输时连接被断开，返回：
 
@@ -276,7 +276,7 @@ WebSocket AT 命令集
 ^^^^
 
 - **<link_id>**：WebSocket 连接 ID。范围：[0,2]。
-- **<length>**：发送的数据长度。单位：字节。最大可发送长度取决于 16 KiB 与系统可分配堆空间大小中的较小者。
+- **<length>**：发送的数据长度。单位：字节。须大于 0。最大可发送长度取决于 16 KiB 与系统可分配堆空间大小中的较小者。
 - **<opcode>**：发送的 WebSocket 帧中的 opcode。范围：[0,0xF]。默认值：1，即 text 帧。请参考 `RFC6455 5.2 章节 <https://www.rfc-editor.org/rfc/rfc6455#section-5.2>`_ 了解更多的 opcode。
 
    - 0x0：continuation 帧

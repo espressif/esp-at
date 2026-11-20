@@ -615,7 +615,7 @@ Assume that the command gives the data length in ``<param_1>``:
 
     AT+TEST=<param_1>
 
-The sample below is the :cpp:func:`esp_at_port_read_bytes` usage. The handler reads ``<param_1>`` bytes. The host MCU sends those bytes after it receives ``>``. ``portMAX_DELAY`` waits until the length is reached or the read fails. A lone ``+++`` aborts the read when at least 3 bytes are still expected. Bytes beyond the specified length are handed back to the AT command parser.
+The sample below is the :cpp:func:`esp_at_port_read_bytes` usage. The handler reads ``<param_1>`` bytes. The host MCU sends those bytes after it receives :ref:`> Response <at-data-input>`. ``portMAX_DELAY`` waits until the length is reached or the read fails. Bytes beyond the specified length are handed back to the AT command parser.
 
 When ``<param_1>`` is large, or the data arrives continuously (for example, audio), use :cpp:func:`esp_at_port_read_data` as shown in the next section.
 

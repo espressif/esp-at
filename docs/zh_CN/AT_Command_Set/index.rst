@@ -30,7 +30,7 @@ AT 命令集
 
 .. contents::
    :local:
-   :depth: 1
+   :depth: 2
 
 .. _at-command-types:
 
@@ -119,40 +119,78 @@ AT 命令分类
 AT 消息
 ===========
 
-从 ESP-AT 命令端口返回的 ESP-AT 消息有两种类型：ESP-AT 响应（被动）和 ESP-AT 消息报告（主动）。
+从 ESP-AT 命令端口返回的消息有两类：:ref:`ESP-AT 响应 <at-messages-response>` 和 :ref:`ESP-AT 消息报告 <at-messages-report>`。
 
 .. _at-messages-response:
 
-- ESP-AT 响应（被动）
+ESP-AT 响应（被动）
+-------------------
 
-  每个输入的 ESP-AT 命令都会返回响应，告诉发送者 ESP-AT 命令的执行结果。响应的最后一条消息必然是 ``OK`` 或者 ``ERROR``。
+每个输入的 ESP-AT 命令都会返回响应，告诉发送者 ESP-AT 命令的执行结果。响应的最后一条消息必然是 ``OK`` 或者 ``ERROR``。
 
-  .. list-table:: ESP-AT 响应
-      :header-rows: 1
-      :widths: 40 60
+.. list-table::
+    :header-rows: 1
+    :widths: 40 60
 
-      * - AT 响应
-        - 说明
-      * - OK
-        - AT 命令处理完毕，返回 OK
-      * - ERROR
-        - AT 命令错误或执行过程中发生错误
-      * - SEND OK
-        - 数据已发送到协议栈（针对于 :ref:`AT+CIPSEND <cmd-SEND>` 和 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 命令），但不代表数据已经发到对端
-      * - SEND FAIL
-        - 向协议栈发送数据时发生错误（针对于 :ref:`AT+CIPSEND <cmd-SEND>` 和 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 命令）
-      * - SET OK
-        - URL 已经成功设置（针对于 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令）
-      * - +<Command Name>:``...``
-        - 详细描述 AT 命令处理结果
+    * - AT 响应
+      - 说明
+    * - OK
+      - AT 命令处理完毕，返回 OK
+    * - ERROR
+      - AT 命令错误或执行过程中发生错误
+    * - :ref:`+ERRNO <at-errno>`
+      - 命令执行失败时的错误码 ``+ERRNO:<error_code>``
+    * - :ref:`ERR CODE <at-err-code>`
+      - 参数错误时的错误码 ``ERR CODE:<0x%08x>``
+    * - SEND OK
+      - 数据已发送到协议栈（针对于 :ref:`AT+CIPSEND <cmd-SEND>` 和 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 命令），但不代表数据已经发到对端
+    * - SEND FAIL
+      - 向协议栈发送数据时发生错误（针对于 :ref:`AT+CIPSEND <cmd-SEND>`、:ref:`AT+CIPSENDL <cmd-SENDL>` 和 :ref:`AT+CIPSENDEX <cmd-SENDEX>` 命令）
+    * - SET OK
+      - URL 已经成功设置（针对于 :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` 命令）
+    * - +<Command Name>:``...``
+      - 详细描述 AT 命令处理结果
+    * - :ref:`> 响应 <at-data-input>`
+      - 等待接收命令指定长度的数据
+
+.. _at-data-input:
+
+> 响应
+^^^^^^
+
+命令需要接收定长数据时，AT 先在命令端口返回 ``>``，再接收该命令指定的字节数。
+
+若剩余长度不少于 3 字节，且本次输入只有 :ref:`+++ <cmd-PLUS>`，AT 中止接收，命令返回 ``ERROR``。``+++`` 与其它字节在同一次输入中时，按数据接收。因此，输入内容不能恰好为 ``+++``。
+
+待接收长度为 0 时，命令返回 ``ERROR``，且不返回 ``>``。若某命令将长度 0 定义为清除配置或不发送数据，以该命令的参数说明为准。
+
+.. _at-errno:
+
++ERRNO
+^^^^^^
+
+``+ERRNO:<error_code>`` 既作为命令响应返回，也会作为 :term:`URC` 上报。仅 ``AT+SYSLOG=1`` 时输出。``<error_code>`` 的来源因命令而异：
+
+- 建立 TCP 连接、UDP 传输、SSL 服务器失败时，错误码按优先级返回：首先为套接字的 SO_ERROR；若 SO_ERROR 为 0，则返回 LwIP 的 errno；若 errno 为 0，则返回 ESP-AT 定义的错误码。
+- 建立 SSL 连接失败时，错误码按优先级返回：首先为证书相关错误码；若证书相关错误码为 0，则返回 mbedTLS 的错误码；若 mbedTLS 的错误码为 0，则返回 esp-tls 的错误码；若 esp-tls 的错误码为 0，则返回 ESP-AT 定义的错误码。
+- ``AT+CIPSEND`` 或 ``AT+CIPSENDL`` 发送失败时，TCP 或 UDP 连接的错误码为套接字 errno 的绝对值，SSL 连接为 esp-tls 错误码的绝对值。发送缓冲区已满为 ``ECONNABORTED``，套接字已关闭为 ``ENOTCONN``，发送超时为 ``ETIMEDOUT``。
+- ``AT+SYSMFG`` 失败时，错误码为 ESP-IDF 的 ``esp_err_t``。命令参数错误不会输出本消息。
+
+.. _at-err-code:
+
+ERR CODE
+^^^^^^^^
+
+``ERR CODE:<0x%08x>`` 是早期的 AT 错误码。仅 ``AT+SYSLOG=1`` 时输出。命令参数错误时通常返回该错误码。错误码定义见 :ref:`AT+SYSLOG <cmd-SYSLOG>`。
 
 .. _at-messages-report:
 
-- ESP-AT 消息报告（主动）
+ESP-AT 消息报告（主动）
+-----------------------
 
-  ESP-AT 会报告系统中重要的状态变化或消息。
+下表列出 ESP-AT 主动上报的 :term:`URC`，用于指示系统状态变化。说明较长的消息在表后单独给出。
 
-  .. list-table:: ESP-AT 消息报告
+.. list-table:: ESP-AT 消息报告
      :header-rows: 1
      :widths: 60 60
 
@@ -162,8 +200,8 @@ AT 消息
        - ESP-AT 固件已经准备就绪
      * - busy p...
        - 系统繁忙，正在处理上一条命令，无法处理新的命令
-     * - ERR CODE:``<0x%08x>``
-       - 不同命令的错误代码
+     * - :ref:`ERR CODE <at-err-code>`
+       - 参数错误时的错误码 ``ERR CODE:<0x%08x>``
      * - Will force to restart!!!
        - 立即重启模块
      * - smartconfig type:``<xxx>``
@@ -194,11 +232,8 @@ AT 消息
        - ID 为 ``<conn_id>`` 的网络连接已建立（默认情况下，ID 为 0）
      * - [<conn_id>,]CLOSED
        - ID 为 ``<conn_id>`` 的网络连接已断开（默认情况下，ID 为 0）
-     * - +ERRNO:``<error_code>``
-       - 命令执行失败时的错误码
-
-         - 建立 TCP 连接、UDP 传输、SSL 服务器失败时，错误码按优先级返回：首先为套接字的 SO_ERROR；若 SO_ERROR 为 0，则返回 LwIP 的 errno；若 errno 为 0，则返回 ESP-AT 定义的错误码。
-         - 建立 SSL 连接失败时，错误码按优先级返回：首先为证书相关错误码；若证书相关错误码为 0，则返回 mbedTLS 的错误码；若 mbedTLS 的错误码为 0，则返回 esp-tls 的错误码；若 esp-tls 的错误码为 0，则返回 ESP-AT 定义的错误码。
+     * - :ref:`+ERRNO <at-errno>`
+       - 命令执行失败时的错误码 ``+ERRNO:<error_code>``
 
      * - +LINK_CONN
        - TCP/UDP/SSL 连接的详细信息
@@ -208,23 +243,10 @@ AT 消息
        - ESP-AT 的 Wi-Fi softAP 接口给 station 分配 IP 地址
      * - +STA_DISCONNECTED: <sta_mac>
        - station 与 ESP-AT 的 Wi-Fi softAP 接口的连接断开
-     * - >
-       - ESP-AT 正在等待用户输入数据
      * - Recv ``<xxx>`` bytes
        - ESP-AT 从命令端口已接收到 ``<xxx>`` 字节
-     * - +IPD
-       - ESP-AT 在非透传模式下，已收到来自网络的数据。有以下的消息格式：
-
-         - 如果 AT+CIPMUX=0，AT+CIPRECVTYPE=1，打印：``+IPD,<length>``
-         - 如果 AT+CIPMUX=1，AT+CIPRECVTYPE=<link_id>,1，打印：``+IPD,<link_id>,<length>``
-         - 如果 AT+CIPMUX=0，AT+CIPRECVTYPE=0，AT+CIPDINFO=0，打印：``+IPD,<length>:<data>``
-         - 如果 AT+CIPMUX=1，AT+CIPRECVTYPE=<link_id>,0，AT+CIPDINFO=0，打印：``+IPD,<link_id>,<length>:<data>``
-         - 如果 AT+CIPMUX=0，AT+CIPRECVTYPE=0，AT+CIPDINFO=1，打印：``+IPD,<length>,<"remote_ip">,<remote_port>:<data>``
-         - 如果 AT+CIPMUX=1，AT+CIPRECVTYPE=<link_id>,0，AT+CIPDINFO=1，打印：``+IPD,<link_id>,<length>,<"remote_ip">,<remote_port>:<data>``
-
-         其中的 ``link_id`` 为连接 ID，``length`` 为数据长度，``remote_ip`` 为远端 IP 地址，``remote_port`` 为远端端口号，``data`` 为数据。
-
-         注意：当这是个 SSL 连接时，在被动接收模式下（AT+CIPRECVTYPE=1），AT 命令口回复的 ``length`` 可能和实际可读的 SSL 数据长度不一致。因为 AT 会优先返回 SSL 层可读的数据长度，如果 SSL 层可读的数据长度为 0，AT 会返回套接字层可读的数据长度。
+     * - :ref:`+IPD <at-ipd>`
+       - 非透传模式下收到网络数据
 
      * - :term:`透传模式` 下的数据
        - ESP-AT 在透传模式下，已收到来自网络或蓝牙的数据
@@ -293,7 +315,25 @@ AT 消息
      * - +WRITE:<conn_index>
        - 在透传模式下，使能 notify 或者 indicate 时，打印以 "+WRITE:" 开头的提示消息
 
-  .. only:: esp32c3
+.. _at-ipd:
+
++IPD
+^^^^
+
+ESP-AT 在非透传模式下收到网络数据时，按以下格式上报 ``+IPD``：
+
+- 如果 AT+CIPMUX=0，AT+CIPRECVTYPE=1，打印：``+IPD,<length>``
+- 如果 AT+CIPMUX=1，AT+CIPRECVTYPE=<link_id>,1，打印：``+IPD,<link_id>,<length>``
+- 如果 AT+CIPMUX=0，AT+CIPRECVTYPE=0，AT+CIPDINFO=0，打印：``+IPD,<length>:<data>``
+- 如果 AT+CIPMUX=1，AT+CIPRECVTYPE=<link_id>,0，AT+CIPDINFO=0，打印：``+IPD,<link_id>,<length>:<data>``
+- 如果 AT+CIPMUX=0，AT+CIPRECVTYPE=0，AT+CIPDINFO=1，打印：``+IPD,<length>,<"remote_ip">,<remote_port>:<data>``
+- 如果 AT+CIPMUX=1，AT+CIPRECVTYPE=<link_id>,0，AT+CIPDINFO=1，打印：``+IPD,<link_id>,<length>,<"remote_ip">,<remote_port>:<data>``
+
+其中 ``link_id`` 为连接 ID，``length`` 为数据长度，``remote_ip`` 为远端 IP 地址，``remote_port`` 为远端端口号，``data`` 为数据。
+
+当这是个 SSL 连接时，在被动接收模式下（AT+CIPRECVTYPE=1），AT 命令口回复的 ``length`` 可能和实际可读的 SSL 数据长度不一致。因为 AT 会优先返回 SSL 层可读的数据长度，如果 SSL 层可读的数据长度为 0，AT 会返回套接字层可读的数据长度。
+
+.. only:: esp32c3
 
     如果使用第三方云命令，ESP-AT 会在系统中报告云重要状态变化或消息。
 

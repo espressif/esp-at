@@ -939,6 +939,11 @@ Wi-Fi AT 命令集
 
     OK
 
+说明
+^^^^
+
+station 已连接 AP 时，本命令等待 Wi-Fi 断开，最长 5 秒。若超时前断开尚未完成，命令仍返回 ``OK``，断开流程可能还在继续。station 未连接 AP 时，命令立即返回 ``OK``。
+
 .. _cmd-SAP:
 
 :ref:`AT+CWSAP <WiFi-AT>`：配置 {IDF_TARGET_NAME} SoftAP 参数

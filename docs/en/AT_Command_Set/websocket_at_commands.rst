@@ -121,7 +121,7 @@ Set Command
 
     >
 
-The ``>`` symbol indicates that AT is ready to receive AT command data. At this point, you can enter the WebSocket request header (in the format of ``key: value``, no need to end with ``\r\n``). When the data length reaches the value of parameter ``<req_header_len>``, AT returns:
+The :ref:`> Response <at-data-input>` indicates that AT is ready to receive AT command data. At this point, you can enter the WebSocket request header (in the format of ``key: value``, no need to end with ``\r\n``). When the data length reaches the value of parameter ``<req_header_len>``, AT returns:
 
 ::
 
@@ -258,7 +258,7 @@ Set Command
 
     >
 
-This response indicates that AT is ready for receiving data from AT port. You should enter the data, and when the data length reaches the ``<length>`` value, the transmission of data starts.
+This :ref:`> Response <at-data-input>` indicates that AT is ready for receiving data from AT port. You should enter the data, and when the data length reaches the ``<length>`` value, the transmission of data starts.
 
 If the connection cannot be established or is disrupted during data transmission, the system returns:
 
@@ -276,7 +276,7 @@ Parameters
 ^^^^^^^^^^
 
 - **<link_id>**: ID of the WebSocket connection. Range: [0,2].
-- **<length>**: Length of the data to be sent. Unit: byte. The maximum allowable length is the smaller of 16 KiB and the amount of heap memory currently available for allocation.
+- **<length>**: Length of the data to be sent. Unit: byte. It must be greater than 0. The maximum allowable length is the smaller of 16 KiB and the amount of heap memory currently available for allocation.
 - **<opcode>**: The opcode in the WebSocket frame sent. Range: [0,0xF]. Default: 1, which means text frame. For details about opcode, please refer to `Section: RFC6455 5.2 <https://www.rfc-editor.org/rfc/rfc6455#section-5.2>`_.
 
    - 0x0: continuation frame

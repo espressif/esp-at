@@ -118,7 +118,7 @@ MQTT AT 命令集
 
     >
 
-上述响应表示 AT 已准备好接收 MQTT 客户端 ID，此时你可以输入客户端 ID，当 AT 接收到的客户端 ID 长度达到 ``<length>`` 后，返回：
+上述 :ref:`> 响应 <at-data-input>` 表示 AT 已准备好接收 MQTT 客户端 ID，此时你可以输入客户端 ID，当 AT 接收到的客户端 ID 长度达到 ``<length>`` 后，返回：
 
 ::
 
@@ -164,7 +164,7 @@ MQTT AT 命令集
 
     >
 
-上述响应表示 AT 已准备好接收 MQTT 用户名，此时你可以输入 MQTT 用户名，当 AT 接收到的 MQTT 用户名长度达到 ``<length>`` 后，返回：
+上述 :ref:`> 响应 <at-data-input>` 表示 AT 已准备好接收 MQTT 用户名，此时你可以输入 MQTT 用户名，当 AT 接收到的 MQTT 用户名长度达到 ``<length>`` 后，返回：
 
 ::
 
@@ -210,7 +210,7 @@ MQTT AT 命令集
 
     >
 
-上述响应表示 AT 已准备好接收 MQTT 密码，此时你可以输入 MQTT 密码，当 AT 接收到的 MQTT 密码长度达到 ``<length>`` 后，返回：
+上述 :ref:`> 响应 <at-data-input>` 表示 AT 已准备好接收 MQTT 密码，此时你可以输入 MQTT 密码，当 AT 接收到的 MQTT 密码长度达到 ``<length>`` 后，返回：
 
 ::
 
@@ -457,6 +457,11 @@ MQTT AT 命令集
    - 9: MQTT over WebSocket Secure（基于 TLS，提供 client 证书）；
    - 10: MQTT over WebSocket Secure（基于 TLS，校验 server 证书并且提供 client 证书）。
 
+说明
+^^^^
+
+- 返回 ``ERROR`` 后，不再上报该次连接的 ``+MQTTCONNECTED``。
+
 .. _cmd-MQTTPUB:
 
 :ref:`AT+MQTTPUB <MQTT-AT>`：发布 MQTT 消息（字符串）
@@ -496,6 +501,7 @@ MQTT AT 命令集
 
 - 每条 AT 命令的总长度不能超过 256 字节。
 - 本命令不能发送数据 ``\0``，若需要发送该数据，请使用 :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` 命令。
+- ``OK`` 在本次发布完成后返回。
 
 示例
 ^^^^
@@ -533,7 +539,7 @@ MQTT AT 命令集
     OK
     >
 
-符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，数据传输开始。
+:ref:`> 响应 <at-data-input>` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，数据传输开始。
 
 若传输成功，则 AT 返回：
 
@@ -556,6 +562,12 @@ MQTT AT 命令集
 - **<qos>**：发布消息的 QoS，参数可选 0、1、或 2，默认值：0。
 - **<retain>**：发布 retain。
 - **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
+
+说明
+^^^^
+
+- ``<length>`` 须大于 0。
+- ``+MQTTPUB:OK`` 在本次发布完成后返回。
 
 .. _cmd-MQTTSUB:
 
@@ -640,6 +652,7 @@ MQTT AT 命令集
 ^^^^
 
 - 由于广域网每个路由节点的 MTU 限制或流量策略管理等，MQTT broker 发送的一条消息，最终可能会被分为多个消息发给 {IDF_TARGET_NAME} 设备，因此 {IDF_TARGET_NAME} 可能会收到多条 ``+MQTTSUBRECV`` 消息。
+- ``OK`` 在本次订阅完成后返回。
 - 若 {IDF_TARGET_NAME} 设备收到一条 MQTT 消息，且消息长度超过 1024 字节（包括 MQTT 报头和 MQTT 有效载荷），也会被分为多条 ``+MQTTSUBRECV`` 消息。此时，你可以通过下面方式增加 MQTT 缓冲区来避免此情况。
 
   - ``./build.py menuconfig`` > ``Component config`` > ``ESP-MQTT Configurations`` > ``MQTT Using custom configurations``
@@ -685,6 +698,11 @@ MQTT AT 命令集
 - **<"topic">**：MQTT topic，最大长度：128 字节。
 - **<timeout_ms>**：超时时间，单位：毫秒。范围：[3000,60000]。默认值：15000 毫秒。
 
+说明
+^^^^
+
+- ``OK`` 在本次取消订阅完成后返回。
+
 .. _cmd-MQTTCLEAN:
 
 :ref:`AT+MQTTCLEAN <MQTT-AT>`：断开 MQTT 连接
@@ -713,6 +731,11 @@ MQTT AT 命令集
 ^^^^
 
 - **<LinkID>**：当前仅支持 link ID 0。
+
+说明
+^^^^
+
+- 返回 ``OK`` 后，客户端资源可能仍在释放。完成前，其它 MQTT 命令返回 ``ERROR``。启用 :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` 时，错误码为 ``AT_MQTT_CLEANUP_IN_PROGRESS`` (0x6058)。
 
 .. _MQTTErrCod:
 
@@ -954,6 +977,20 @@ ERR CODE
      - 0x6051
    * - AT_MQTT_HOSTNAME_VERIFY_FAILED
      - 0x6052
+   * - AT_MQTT_CONN_TIMEOUT_READ_FAILED
+     - 0x6053
+   * - AT_MQTT_CONN_TIMEOUT_VALUE_IS_WRONG
+     - 0x6054
+   * - AT_MQTT_HOSTNAME_RESOLUTION_FAILED
+     - 0x6055
+   * - AT_MQTT_HOSTNAME_NO_VALID_IP
+     - 0x6056
+   * - AT_MQTT_CONNECT_TIMEOUT
+     - 0x6057
+   * - AT_MQTT_CLEANUP_IN_PROGRESS
+     - 0x6058
+
+``AT_MQTT_CREATE_SEMA_FAILED`` (0x604E) 为保留值，当前固件不会返回该错误码。
 
 .. _MQTTNote:
 

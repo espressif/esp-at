@@ -228,7 +228,7 @@ If the amount of data you publish is relatively large, and the length of a singl
 
      >
 
-   This response indicates that AT is ready for receiving serial data. You should enter the data, and when the data length reaches the ``<length>`` value, the transmission of data starts.
+   This :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data. You should enter the data, and when the data length reaches the ``<length>`` value, the transmission of data starts.
 
    .. code-block:: none
 

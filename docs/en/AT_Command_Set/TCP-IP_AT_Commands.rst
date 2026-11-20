@@ -543,6 +543,7 @@ Notes
 - This special execution command consists of three identical ``+`` characters (0x2b ASCII), and no CR-LF appends to the command tail.
 - Make sure there is more than 20 ms interval before the first ``+`` character, more than 20 ms interval after the third ``+`` character, less than 20 ms interval among the three ``+`` characters. Otherwise, the ``+`` characters will be sent out as normal data.
 - This command returns no reply.
+- During :ref:`> Response <at-data-input>`, ``+++`` alone aborts the input and the command returns ``ERROR``.
 - Please wait for at least one second before sending the next AT command.
 - If TCP data is being retransmitted and the server does not reply when you exit the Network :term:`Passthrough Mode`, AT does not respond to subsequent AT commands until the retransmission finishes (the maximum timeout is about 90 seconds). Sending AT commands during this period results in ``busy p...``. To avoid the long wait, set the TCP send timeout with :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` (``<so_sndtimeo>``) before entering passthrough mode so that retransmission can end earlier.
 
@@ -579,13 +580,19 @@ Set the data length to be send in the :term:`Normal Transmission Mode`. If the l
 
     >
 
-This response indicates that AT is ready for receiving serial data. You should enter the data, and when the data length reaches the ``<length>`` value, the transmission of data starts.
+This :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data. You should enter the data, and when the data length reaches the ``<length>`` value, the transmission of data starts.
 
 If the connection cannot be established or is disrupted during data transmission, the system returns:
 
 ::
 
     ERROR
+
+If the data fails to be sent, the system returns:
+
+::
+
+    SEND FAIL
 
 If the data has been successfully sent to the protocol stack (It does not mean that the data has been sent to the opposite end), the system returns:
 
@@ -636,6 +643,7 @@ Notes
 
 - This command can only be used after the connection has been established (after the ``CONNECT`` message is received).
 - You can use :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command to configure socket options for each TCP connection. For example, setting <so_sndtimeo> to 5000 will enable TCP send operation to return results within 5 seconds, regardless of success or failure. This can save the time that the MCU waits for AT command response.
+- A send failure returns ``SEND FAIL``. When :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` is enabled, ``+ERRNO:<error_code>`` is output before it. See :ref:`+ERRNO <at-errno>`.
 
 .. _cmd-SENDL:
 
@@ -670,7 +678,7 @@ In the :term:`Normal Transmission Mode`, set the data length to be sent, and the
 
     >
 
-This response indicates that AT enters the :term:`Data Mode` and AT command port is ready to receive data. You can enter the data now. Once the port receives data, it will be pushed to underlying protocol stack and the transmission starts.
+This :ref:`> Response <at-data-input>` indicates that AT enters the :term:`Data Mode` and AT command port is ready to receive data. You can enter the data now. Once the port receives data, it will be pushed to underlying protocol stack and the transmission starts.
 
 If the transmission starts, the system reports message according to :ref:`AT+CIPSENDLCFG <cmd-SENDLCFG>` configuration:
 
@@ -678,13 +686,15 @@ If the transmission starts, the system reports message according to :ref:`AT+CIP
 
     +CIPSENDL:<had sent len>,<port recv len>
 
-If the transmission is cancelled by :ref:`+++ <cmd-PLUS>` command, the system returns:
+If the transmission is cancelled by :ref:`+++ <cmd-PLUS>` command, AT waits until the data already being sent has finished, then returns:
 
 ::
 
     SEND CANCELLED
 
-If not all the data has been sent out, the system finally returns:
+AT accepts the next AT command only after this response.
+
+If a send fails, AT does not write any further data to the connection. It keeps reading the AT command port until ``<length>`` bytes have been received or the transmission is cancelled, so the MCU has sent the same number of bytes that AT has read. AT then reports one more ``+CIPSENDL:<had sent len>,<port recv len>`` and returns:
 
 ::
 
@@ -705,7 +715,7 @@ Parameters
 - **<length>**: data length. Maximum: 2 :sup:`31` - 1 bytes.
 - **<"remote host">**: IPv4 address, IPv6 address, or domain name of remote host. It can be set in UDP transmission.
 - **<remote port>**: the remote port number.
-- **<had sent len>**: the length of data successfully sent to the underlying protocol stack.
+- **<had sent len>**: number of bytes successfully written to the protocol stack, including bytes already written in a block that did not finish.
 - **<port recv len>**: data length received by AT command port.
 
 Notes
@@ -714,6 +724,7 @@ Notes
 - This command can only be used after the connection has been established (after the ``CONNECT`` message is received).
 - It is recommended to use UART flow control, because if the UART receives data at a faster rate than the network sends, data loss may occur.
 - You can use :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` command to configure socket options for each TCP connection. For example, setting <so_sndtimeo> to 5000 will enable TCP send operation to return results within 5 seconds, regardless of success or failure. This can save the time that the MCU waits for AT command response.
+- A send failure returns ``SEND FAIL``. When :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` is enabled, ``+ERRNO:<error_code>`` is output before it. See :ref:`+ERRNO <at-errno>`.
 
 .. _cmd-SENDLCFG:
 
@@ -805,7 +816,7 @@ Set the data length to be send in :term:`Normal Transmission Mode`, or use ``\0`
 
     >
 
-This response indicates that AT is ready for receiving data. You should enter the data of designated length. When the data length reaches the ``<length>`` value, or when the string ``\0`` appears in the data, the transmission starts.
+This :ref:`> Response <at-data-input>` indicates that AT is ready for receiving data. You should enter the data of designated length. When the data length reaches the ``<length>`` value, or when the string ``\0`` appears in the data, the transmission starts.
 
 If the connection cannot be established or gets disconnected during transmission, the system returns:
 

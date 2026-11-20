@@ -128,7 +128,7 @@ In this example, mobile phone or PC is master and {IDF_TARGET_NAME} is slave. Th
 
      >
 
-   The symbol ``>`` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter ``<data_len>`` is met, the writing starts.
+   The :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter ``<data_len>`` is met, the writing starts.
 
    Input 4 bytes, for example, ``test``, then AT will respond the following message.
 

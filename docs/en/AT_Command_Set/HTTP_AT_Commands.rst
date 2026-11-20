@@ -202,7 +202,7 @@ Set Command
 
     >
 
-The symbol ``>`` indicates that AT is ready for receiving serial data, and you can enter the data now. When the requirement of message length determined by the parameter ``<length>`` is met, the transmission starts.
+The :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data, and you can enter the data now. When the requirement of message length determined by the parameter ``<length>`` is met, the transmission starts.
 
 If the transmission is successful, AT returns:
 
@@ -219,7 +219,7 @@ Otherwise, it returns:
 Parameters
 ^^^^^^^^^^
 - **<"url">**: HTTP URL. It is a string parameter and should be enclosed with quotes.
-- **<length>**: HTTP data length to POST. The maximum length is equal to the system allocable heap size.
+- **<length>**: HTTP data length to POST. It must be greater than 0. The maximum length is equal to the system allocable heap size.
 - **<http_req_header_cnt>**: the number of <"http_req_header"> parameters.
 - **<"http_req_header">**: HTTP request header. You can send more than one request header to the server.
 
@@ -257,7 +257,7 @@ Set Command
 
     >
 
-The symbol ``>`` indicates that AT is ready for receiving serial data, and you can enter the data now. When the requirement of message length determined by the parameter ``<length>`` is met, the transmission starts.
+The :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data, and you can enter the data now. When the requirement of message length determined by the parameter ``<length>`` is met, the transmission starts.
 
 If the transmission is successful, AT returns:
 
@@ -274,7 +274,7 @@ Otherwise, it returns:
 Parameters
 ^^^^^^^^^^
 - **<"url">**: HTTP URL. It is a string parameter and should be enclosed with quotes.
-- **<length>**: HTTP data length to PUT. The maximum length is equal to the system allocable heap size.
+- **<length>**: HTTP data length to PUT. It must be greater than 0. The maximum length is equal to the system allocable heap size.
 - **<http_req_header_cnt>**: the number of <"http_req_header"> parameters.
 - **<"http_req_header">**: HTTP request header. You can send more than one request header to the server.
 
@@ -322,7 +322,7 @@ Set Command
 
     >
 
-This response indicates that AT is ready for receiving serial data. You should enter the URL now, and when the URL length reaches the ``<url length>`` value, the system returns:
+This :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data. You should enter the URL now, and when the URL length reaches the ``<url length>`` value, the system returns:
 
 ::
 
@@ -376,7 +376,7 @@ Set Command
 
     >
 
-The ``>`` symbol indicates that AT is ready to receive AT command data. At this point, you can enter the HTTP request header (in the format of ``key: value``, no need to end with ``\r\n``). When the data length reaches the value of parameter ``<req_header_len>``, AT returns:
+The :ref:`> Response <at-data-input>` indicates that AT is ready to receive AT command data. At this point, you can enter the HTTP request header (in the format of ``key: value``, no need to end with ``\r\n``). When the data length reaches the value of parameter ``<req_header_len>``, AT returns:
 
 ::
 

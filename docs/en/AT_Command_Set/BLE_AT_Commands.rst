@@ -1631,7 +1631,7 @@ Introduction
 
         >
 
-    The symbol ``>`` indicates that AT is ready for receiving serial data, and you can enter data now. When the requirement of data length determined by the parameter <length> is met, the notification starts.
+    The :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data, and you can enter data now. When the requirement of data length determined by the parameter <length> is met, the notification starts.
 
     If the data transmission is successful, AT returns:
 
@@ -1651,6 +1651,7 @@ Introduction
     ^^^^
 
     - The maximum data length per transmission is (:ref:`MTU <cmd-BMTU>` - 3) bytes. If you send more than this, the underlying layer will automatically split the data into packets for transmission.
+    - ``<length>`` must be greater than 0.
 
     Example
     ^^^^^^^^
@@ -1704,7 +1705,7 @@ Introduction
 
         >
 
-    The symbol ``>`` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter <length> is met, the indication starts.
+    The :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter <length> is met, the indication starts.
 
     If the data transmission is successful, AT returns:
 
@@ -1718,7 +1719,7 @@ Introduction
     - **<conn_index>**: index of Bluetooth LE connection. Range: [0,2].
     - **<srv_index>**: service's index. It can be queried with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
     - **<char_index>**: characteristic's index; it can be fetched with command :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>`.
-    - **<length>**: data length. The maximum length is (:ref:`MTU <cmd-BMTU>` - 3).
+    - **<length>**: data length. The maximum length is (:ref:`MTU <cmd-BMTU>` - 3). It must be greater than 0.
 
     Example
     ^^^^^^^^
@@ -1845,7 +1846,7 @@ Introduction
 
         >
 
-    The symbol ``>`` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter <length> is met, the setting starts.
+    The :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter <length> is met, the setting starts.
 
     If the setting is successful, AT returns:
 
@@ -1872,6 +1873,7 @@ Introduction
     ^^^^^
 
     - If the value of ``<length>`` is larger than the maximum length allowed, the setting will fail. The service table is defined in :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>`.
+    - ``<length>`` must be greater than 0.
 
     .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
 
@@ -2152,7 +2154,7 @@ Introduction
 
         >
 
-    The symbol ``>`` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter <length> is met, the writing starts.
+    The :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter <length> is met, the writing starts.
 
     If the setting is successful, AT returns:
 
@@ -2178,6 +2180,7 @@ Introduction
 
     - The Bluetooth LE connection has to be established first.
     - If the target characteristic cannot be written, it will return "ERROR".
+    - ``<length>`` must be greater than 0.
 
     Example
     ^^^^^^^^
@@ -3184,7 +3187,7 @@ Introduction
 
         >
 
-    The symbol ``>`` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter <length> is met, the transmission starts.
+    The :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter <length> is met, the transmission starts.
 
     If the data transmission is successful, AT returns:
 
@@ -3201,6 +3204,7 @@ Introduction
     ^^^^^
 
     - The length of customized data cannot exceed 600 bytes.
+    - ``<length>`` must be greater than 0.
     - If your ESP chip receives customized data from the phone, the data will be printed in the form of ``+BLUFIDATA:<len>,<data>``.
 
     Example

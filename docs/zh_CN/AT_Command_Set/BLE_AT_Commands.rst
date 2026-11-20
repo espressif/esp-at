@@ -1631,7 +1631,7 @@ Bluetooth® Low Energy AT 命令集
 
         >
 
-    符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行 notify 操作。
+    :ref:`> 响应 <at-data-input>` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行 notify 操作。
 
     若数据传输成功，则提示：
 
@@ -1651,6 +1651,7 @@ Bluetooth® Low Energy AT 命令集
     ^^^^
 
     - 数据单次发送的最大长度为 (:ref:`MTU <cmd-BMTU>` – 3) 字节。若设置的长度超过此值，底层会自动分包传输。
+    - ``<length>`` 须大于 0。
 
     示例
     ^^^^
@@ -1704,7 +1705,7 @@ Bluetooth® Low Energy AT 命令集
 
         >
 
-    符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行 indicate 操作。
+    :ref:`> 响应 <at-data-input>` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行 indicate 操作。
 
     若数据传输成功，则提示：
 
@@ -1718,7 +1719,7 @@ Bluetooth® Low Energy AT 命令集
     - **<conn_index>**：Bluetooth LE 连接号，范围：[0,2]。
     - **<srv_index>**：服务序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
     - **<char_index>**：服务特征的序号，可运行 :ref:`AT+BLEGATTSCHAR? <cmd-GSCHAR>` 查询。
-    - **<length>**：数据长度，最大长度：（:ref:`MTU <cmd-BMTU>` – 3）。
+    - **<length>**：数据长度，最大长度：（:ref:`MTU <cmd-BMTU>` – 3）。须大于 0。
 
     示例
     ^^^^
@@ -1845,7 +1846,7 @@ Bluetooth® Low Energy AT 命令集
 
         >
 
-    符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行设置操作。
+    :ref:`> 响应 <at-data-input>` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行设置操作。
 
     若数据传输成功，则提示：
 
@@ -1872,6 +1873,7 @@ Bluetooth® Low Energy AT 命令集
     ^^^^
 
     - 如果 ``<length>`` 参数值大于支持的最大长度，则设置会失败。关于 service table，请见 :project_file:`gatts_data.csv <components/customized_partitions/raw_data/ble_data/gatts_data.csv>`。
+    - ``<length>`` 须大于 0。
 
     .. only:: esp32c2 or esp32c5 or esp32c6 or esp32c61
 
@@ -2152,7 +2154,7 @@ Bluetooth® Low Energy AT 命令集
 
         >
 
-    符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行写入操作。
+    :ref:`> 响应 <at-data-input>` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，执行写入操作。
 
     若数据传输成功，则提示：
 
@@ -2178,6 +2180,7 @@ Bluetooth® Low Energy AT 命令集
 
     - 使用本命令，需要先建立 Bluetooth LE 连接。
     - 若目标服务特征不支持写操作，则返回 "ERROR"。
+    - ``<length>`` 须大于 0。
 
     示例
     ^^^^
@@ -3184,7 +3187,7 @@ Bluetooth® Low Energy AT 命令集
 
         >
 
-    符号 ``>`` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，开始传输数据。
+    :ref:`> 响应 <at-data-input>` 表示 AT 准备好接收串口数据，此时你可以输入数据，当数据长度达到参数 ``<length>`` 的值时，开始传输数据。
 
     若数据传输成功，则提示：
 
@@ -3201,6 +3204,7 @@ Bluetooth® Low Energy AT 命令集
     ^^^^
 
     - 自定义数据的长度不能超过 600 字节。
+    - ``<length>`` 须大于 0。
     - 如果 ESP 收到手机发来的用户自定义数据，那么会以 ``+BLUFIDATA:<len>,<data>`` 格式打印。
 
     示例

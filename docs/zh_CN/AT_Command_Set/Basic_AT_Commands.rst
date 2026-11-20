@@ -1217,7 +1217,7 @@
 
     >
 
-上述响应表示 AT 已准备好接收 AT 命令口的数据，此时你可以输入数据（即：头部正则表达式和尾部正则表达式），当 AT 接收到的数据长度达到 ``<head_regexp_len>`` + ``<tail_regexp_len>`` 后，进行正则表达式完整性校验。
+上述 :ref:`> 响应 <at-data-input>` 表示 AT 已准备好接收 AT 命令口的数据，此时你可以输入数据（即：头部正则表达式和尾部正则表达式），当 AT 接收到的数据长度达到 ``<head_regexp_len>`` + ``<tail_regexp_len>`` 后，进行正则表达式完整性校验。
 
 如果正则表达式完整性校验失败或添加过滤器失败，返回：
 
@@ -1298,7 +1298,7 @@
 
     >
 
-上述响应表示 AT 已准备好接收 AT 命令口的数据，此时你可以输入数据（即：头部正则表达式和尾部正则表达式），当 AT 接收到的数据长度达到 ``<head_regexp_len>`` + ``<tail_regexp_len>`` 后，进行正则表达式完整性校验。
+上述 :ref:`> 响应 <at-data-input>` 表示 AT 已准备好接收 AT 命令口的数据，此时你可以输入数据（即：头部正则表达式和尾部正则表达式），当 AT 接收到的数据长度达到 ``<head_regexp_len>`` + ``<tail_regexp_len>`` 后，进行正则表达式完整性校验。
 
 如果正则表达式完整性校验失败或删除过滤器失败，返回：
 
@@ -1414,7 +1414,8 @@
 - 使用本命令需烧录 at_customize.bin，详细信息可参考 :doc:`../Compile_and_Develop/How_to_customize_partitions`。
 - 擦除分区时，请完整擦除该目标分区。这可以通过省略 ``<offset>`` 和 ``<length>`` 参数来完成。例如，命令 ``AT+SYSFLASH=0,"mfg_nvs"`` 可擦除整个 "mfg_nvs" 区域。
 - 关于分区的定义可参考 `ESP-IDF 分区表 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_。
-- 当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时你可以输入要写的数据，数据长度应与 ``<length>`` 一致。
+- 当 ``<operator>`` 为 ``write`` 时，系统收到此命令后先换行返回 :ref:`> 响应 <at-data-input>`，此时你可以输入要写的数据，数据长度应与 ``<length>`` 一致。``<length>`` 须大于 0。
+- 写分区的数据接收完成后，请等待本命令返回后再发送下一条命令。紧接在数据之后发出的命令可能收到 ``busy p...``。
 - 写分区前，请先擦除该分区。
 - 如果你想修改 mfg_nvs 分区中的某些数据，请使用 :ref:`AT+SYSMFG <cmd-SYSMFG>` 命令（NVS 中的键值对操作）。如果你想修改整个 mfg_nvs 分区，请使用 :ref:`AT+SYSFLASH <cmd-SYSFLASH>` 命令（分区操作）。
 - 写分区时，MCU 应该分次写入数据，避免一次性写入过多数据导致内存不足。例如每次写入 4 KB 字节数据，直到写入完成。
@@ -1482,6 +1483,7 @@
    - 0: 擦除操作
    - 1: 读取操作
    - 2: 写入操作
+   - 3: 读取 MD5
 
 - **<"namespace">**：命名空间。
 - **<"key">**：主键，或称为键。当 ``<"key">`` 缺省时，擦除 ``<"namespace">`` 内所有的键值对；否则只擦除当前指定的 ``<"key">`` 的键值对。
@@ -1547,6 +1549,7 @@
    - 0: 擦除操作
    - 1: 读取操作
    - 2: 写入操作
+   - 3: 读取 MD5
 
 - **<"namespace">**：命名空间。
 - **<"key">**：主键，或称为键。
@@ -1612,6 +1615,7 @@
    - 0: 擦除操作
    - 1: 读取操作
    - 2: 写入操作
+   - 3: 读取 MD5
 
 - **<"namespace">**：命名空间。
 - **<"key">**：主键，或称为键。
@@ -1629,7 +1633,7 @@
 - **<value>**：参数 ``<type>`` 不同，则此参数意义不同：
 
   - 如果 ``<type>`` 是 1-6，``<value>`` 代表键值的数据。
-  - 如果 ``<type>`` 是 7-8，``<value>`` 代表键值的数据的长度。在你发送完此条命令后，AT 返回 ``>``，表示 AT 已准备好接收串行数据，此时你可以输入数据，当 AT 接收到的数据长度达到 ``<value>`` 后，则立即向命名空间内写入键值对。
+  - 如果 ``<type>`` 是 7-8，``<value>`` 代表键值的数据的长度，须大于 0。在你发送完此条命令后，AT 返回 :ref:`> 响应 <at-data-input>`，表示 AT 已准备好接收串行数据，此时你可以输入数据，当 AT 接收到的数据长度达到 ``<value>`` 后，则立即向命名空间内写入键值对。
 
 说明
 ^^^^
@@ -1648,6 +1652,59 @@
     AT+SYSMFG=2,"client_cert","client_cert.0",8,1164
 
     // 等待串口返回 > 后，写入 1164 字节的证书文件
+
+读取键值的 MD5
+^^^^^^^^^^^^^^^^^^^^^^^
+
+设置命令
+"""""""""
+
+**命令：**
+
+::
+
+    AT+SYSMFG=<operation>,<"namespace">,<"key">
+
+**响应：**
+
+::
+
+    +SYSMFG:<"namespace">,<"key">,<length>,<md5>
+
+    OK
+
+参数
+"""""
+
+- **<operation>**：
+
+   - 0: 擦除操作
+   - 1: 读取操作
+   - 2: 写入操作
+   - 3: 读取 MD5
+
+- **<"namespace">**：命名空间。
+- **<"key">**：主键，或称为键。
+- **<length>**：参与计算 MD5 的字节数。``<type>`` 为 string 时，不包含结尾的 ``\0``。
+- **<md5>**：32 个小写十六进制字符，是整个键值的 MD5。本操作不接受 ``<offset>`` 和读取长度。
+
+说明
+^^^^
+
+- 仅支持 string（``<type>`` 为 7）和 binary（``<type>`` 为 8）。其它类型返回 ``ERROR``，:ref:`AT+SYSLOG=1 <cmd-SYSLOG>` 时 ``+ERRNO`` 为 ``ESP_ERR_NVS_TYPE_MISMATCH``。
+- 用于核对已写入的 string 或 binary，无需读回全部数据。
+
+示例
+"""""
+
+::
+
+    AT+SYSMFG=3,"client_ca","client_ca.0"
+
+错误码
+^^^^^^
+
+以下说明适用于全部 ``AT+SYSMFG`` 操作。NVS 或 AT 命令口失败时，:ref:`AT+SYSLOG=1 <cmd-SYSLOG>` 会在 ``ERROR`` 前返回 ``+ERRNO:<error_code>``，见 :ref:`+ERRNO <at-errno>`。参数错误只返回 ``ERROR``。
 
 .. _cmd-RFPOWER:
 

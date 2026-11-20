@@ -615,7 +615,7 @@ ESP-AT 用两种方式从 AT 命令端口读取输入数据。一次收完一段
 
     AT+TEST=<param_1>
 
-下面是 :cpp:func:`esp_at_port_read_bytes` 的用法。处理函数读取 ``<param_1>`` 字节。主机 MCU 收到 ``>`` 后再发送这些字节。``portMAX_DELAY`` 表示一直等待，直到读满或读取失败。单独收到 ``+++`` 且剩余待读不少于 3 字节时，读取中止。超出指定长度的字节会交回 AT 命令解析器。
+下面是 :cpp:func:`esp_at_port_read_bytes` 的用法。处理函数读取 ``<param_1>`` 字节。主机 MCU 收到 :ref:`> 响应 <at-data-input>` 后再发送这些字节。``portMAX_DELAY`` 表示一直等待，直到读满或读取失败。超出指定长度的字节会交回 AT 命令解析器。
 
 ``<param_1>`` 很大，或数据连续到达（例如音频）时，改用下一节的 :cpp:func:`esp_at_port_read_data`。
 

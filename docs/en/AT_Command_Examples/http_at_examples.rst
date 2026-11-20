@@ -347,7 +347,7 @@ In this example, the HTTP server is http://httpbin.org and the data type is ``ap
 
      >
 
-   This response indicates that AT is ready for receiving serial data. You should enter the 427-byte data mentioned above, and when the data length reaches the ``<length>`` value, data transmission starts.
+   This :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data. You should enter the 427-byte data mentioned above, and when the data length reaches the ``<length>`` value, data transmission starts.
 
    .. code-block:: none
 
@@ -559,7 +559,7 @@ In this example, the HTTP server is http://httpbin.org and the data type is ``ap
 
      >
 
-   This response indicates that AT is ready for receiving serial data. You should enter the 427-byte data mentioned above, and when the data length reaches the ``<length>`` value, data transmission starts.
+   This :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data. You should enter the 427-byte data mentioned above, and when the data length reaches the ``<length>`` value, data transmission starts.
 
    .. code-block:: none
 

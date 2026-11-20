@@ -30,7 +30,7 @@ It is strongly recommended to read the following sections for some common inform
 
 .. contents::
    :local:
-   :depth: 1
+   :depth: 2
 
 .. _at-command-types:
 
@@ -119,40 +119,78 @@ Saving of configuration settings by several other commands can be switched on or
 AT Messages
 ===========
 
-There are two types of ESP-AT messages returned from the ESP-AT command port:
+ESP-AT returns two kinds of messages from the command port: :ref:`ESP-AT responses <at-messages-response>` and :ref:`ESP-AT message reports <at-messages-report>`.
 
 .. _at-messages-response:
 
-- ESP-AT Response Messages (passive)
+ESP-AT Responses (passive)
+--------------------------
 
-  Each ESP-AT command input returns response messages to tell the sender the result of the ESP-AT command. The last message in the response is either ``OK`` or ``ERROR``.
+Each ESP-AT command input returns response messages to tell the sender the result of the ESP-AT command. The last message in the response is either ``OK`` or ``ERROR``.
 
-  .. list-table:: ESP-AT Response Messages
-      :header-rows: 1
-      :widths: 40 60
+.. list-table::
+    :header-rows: 1
+    :widths: 40 60
 
-      * - AT Response Messages
-        - Description
-      * - OK
-        - AT command process done and return OK
-      * - ERROR
-        - AT command error or error occurred during the execution
-      * - SEND OK
-        - Data has been sent to the protocol stack (specific to :ref:`AT+CIPSEND <cmd-SEND>` and :ref:`AT+CIPSENDEX <cmd-SENDEX>` command). It doesn't mean that the data has been sent to the opposite end
-      * - SEND FAIL
-        - Error occurred during sending the data to the protocol stack (specific to :ref:`AT+CIPSEND <cmd-SEND>` and :ref:`AT+CIPSENDEX <cmd-SENDEX>` command
-      * - SET OK
-        - The URL has been set successfully (specific to :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command)
-      * - +<Command Name>:``...``
-        - Response to the sender that describes AT command process results in details
+    * - AT Response
+      - Description
+    * - OK
+      - AT command process done and return OK
+    * - ERROR
+      - AT command error or error occurred during the execution
+    * - :ref:`+ERRNO <at-errno>`
+      - Error code ``+ERRNO:<error_code>`` when command execution fails
+    * - :ref:`ERR CODE <at-err-code>`
+      - Error code ``ERR CODE:<0x%08x>`` for a parameter error
+    * - SEND OK
+      - Data has been sent to the protocol stack (specific to :ref:`AT+CIPSEND <cmd-SEND>` and :ref:`AT+CIPSENDEX <cmd-SENDEX>` command). It doesn't mean that the data has been sent to the opposite end
+    * - SEND FAIL
+      - Error occurred during sending the data to the protocol stack (specific to :ref:`AT+CIPSEND <cmd-SEND>`, :ref:`AT+CIPSENDL <cmd-SENDL>`, and :ref:`AT+CIPSENDEX <cmd-SENDEX>` command)
+    * - SET OK
+      - The URL has been set successfully (specific to :ref:`AT+HTTPURLCFG <cmd-HTTPURLCFG>` command)
+    * - +<Command Name>:``...``
+      - Response to the sender that describes AT command process results in details
+    * - :ref:`> Response <at-data-input>`
+      - Waiting for the number of bytes specified by the command
+
+.. _at-data-input:
+
+> Response
+^^^^^^^^^^^
+
+When a command requires a fixed number of bytes, AT first returns ``>`` on the command port, then receives that many bytes.
+
+If at least 3 bytes are still expected and the input contains only :ref:`+++ <cmd-PLUS>`, AT stops receiving and the command returns ``ERROR``. ``+++`` mixed with other bytes in the same input is received as data, so the input cannot consist of only ``+++``.
+
+When the length to receive is 0, the command returns ``ERROR`` and does not return ``>``. If a command defines 0 as clearing a configuration or sending no data, follow that command's parameter description.
+
+.. _at-errno:
+
++ERRNO
+^^^^^^
+
+``+ERRNO:<error_code>`` is returned in a command response and is also reported as a :term:`URC`. It is output only when ``AT+SYSLOG=1``. The source of ``<error_code>`` depends on the command:
+
+- When TCP connection, UDP transmission, or SSL server fails, the error code is returned in priority order: first, the socket's SO_ERROR; if SO_ERROR is 0, then LwIP's errno; if errno is 0, then the error code defined by ESP-AT.
+- When SSL connection establishment fails, the error code is returned in priority order: first, certificate-related error code; if certificate-related error code is 0, then mbedTLS error code; if mbedTLS error code is 0, then esp-tls error code; if esp-tls error code is 0, then the error code defined by ESP-AT.
+- When ``AT+CIPSEND`` or ``AT+CIPSENDL`` fails to send, a TCP or UDP connection reports the absolute value of the socket errno, and an SSL connection reports the absolute value of the esp-tls error code. A full send buffer is ``ECONNABORTED``, a closed socket is ``ENOTCONN``, and a send timeout is ``ETIMEDOUT``.
+- When ``AT+SYSMFG`` fails, the error code is the ESP-IDF ``esp_err_t``. A parameter error does not output this message.
+
+.. _at-err-code:
+
+ERR CODE
+^^^^^^^^
+
+``ERR CODE:<0x%08x>`` is an early AT error code. It is output only when ``AT+SYSLOG=1``. A parameter error usually returns this code. See :ref:`AT+SYSLOG <cmd-SYSLOG>` for the code definition.
 
 .. _at-messages-report:
 
-- ESP-AT Message Reports (active)
+ESP-AT Message Reports (active)
+-------------------------------
 
-  ESP-AT will report important state changes or messages in the system.
+The following table lists :term:`URC` messages that ESP-AT reports to indicate system state changes. Messages that need a longer description are documented after the table.
 
-  .. list-table:: ESP-AT Message Reports
+.. list-table:: ESP-AT Message Reports
      :header-rows: 1
      :widths: 60 60
 
@@ -162,8 +200,8 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - The ESP-AT firmware is ready
      * - busy p...
        - Busy processing. The system is in process of handling the previous command, thus CANNOT accept the new input
-     * - ERR CODE:``<0x%08x>``
-       - Error code for different commands
+     * - :ref:`ERR CODE <at-err-code>`
+       - Error code ``ERR CODE:<0x%08x>`` for a parameter error
      * - Will force to restart!!!
        - Module restart right now
      * - smartconfig type:``<xxx>``
@@ -194,11 +232,8 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - A network connection of which ID is ``<conn_id>`` is established (ID=0 by default)
      * - [<conn_id>,]CLOSED
        - A network connection of which ID is ``<conn_id>`` ends (ID=0 by default)
-     * - +ERRNO:``<error_code>``
-       - Error code when command execution fails.
-
-         - When TCP connection, UDP transmission, or SSL server fails, the error code is returned in priority order: first, the socket's SO_ERROR; if SO_ERROR is 0, then LwIP's errno; if errno is 0, then the error code defined by ESP-AT.
-         - When SSL connection establishment fails, the error code is returned in priority order: first, certificate-related error code; if certificate-related error code is 0, then mbedTLS error code; if mbedTLS error code is 0, then esp-tls error code; if esp-tls error code is 0, then the error code defined by ESP-AT.
+     * - :ref:`+ERRNO <at-errno>`
+       - Error code ``+ERRNO:<error_code>`` when command execution fails
 
      * - +LINK_CONN
        - Detailed connection information of TCP/UDP/SSL
@@ -208,23 +243,10 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
        - The Wi-Fi softAP interface of ESP-AT distributes an IP address to the station
      * - +STA_DISCONNECTED: <sta_mac>
        - A station disconnected from the Wi-Fi softAP interface of ESP-AT
-     * - >
-       - ESP-AT is waiting for more data to be received
      * - Recv ``<xxx>`` bytes
        - ESP-AT has already received ``<xxx>`` bytes from the ESP-AT command port
-     * - +IPD
-       - ESP-AT received the data from the network when AT is not in :term:`Passthrough Mode`. The message formats are as follows:
-
-         - ``+IPD,<length>`` will be outputted if AT+CIPMUX=0 and AT+CIPRECVTYPE=1.
-         - ``+IPD,<link_id>,<length>`` will be outputted if AT+CIPMUX=1 and AT+CIPRECVTYPE=<link_id>,1.
-         - ``+IPD,<length>:<data>`` will be outputted if AT+CIPMUX=0, AT+CIPRECVTYPE=0, and AT+CIPDINFO=0.
-         - ``+IPD,<link_id>,<length>:<data>`` will be outputted if AT+CIPMUX=1, AT+CIPRECVTYPE=<link_id>,0, and AT+CIPDINFO=0.
-         - ``+IPD,<length>,<"remote_ip">,<remote_port>:<data>`` will be outputted if AT+CIPMUX=0, AT+CIPRECVTYPE=0, and AT+CIPDINFO=1.
-         - ``+IPD,<link_id>,<length>,<"remote_ip">,<remote_port>:<data>`` will be outputted if AT+CIPMUX=1, AT+CIPRECVTYPE=<link_id>,0, and AT+CIPDINFO=1.
-
-         The ``link_id`` represents the connection ID, ``length`` indicates the data length, ``remote_ip`` refers to the remote IP address, ``remote_port`` represents the remote port number, and ``data`` denotes the actual data.
-
-         Note: In the case of a SSL connection, in passive receive mode (AT+CIPRECVTYPE=1), the ``length`` in the AT command response may not match the actual readable SSL data length. This is because AT prioritizes returning the readable data length at the SSL layer. If the SSL layer has no readable data, AT will return the readable data length at the socket layer.
+     * - :ref:`+IPD <at-ipd>`
+       - Data received from the network when AT is not in :term:`Passthrough Mode`
 
      * - The Data in :term:`Passthrough Mode`
        - ESP-AT received the data from the network or Bluetooth when AT is in :term:`Passthrough Mode`
@@ -293,7 +315,25 @@ There are two types of ESP-AT messages returned from the ESP-AT command port:
      * - +WRITE:<conn_index>
        - In passthrough mode, when enabling notify or indicate, the message prefixed with "+WRITE:" will be printed.
 
-  .. only:: esp32c3
+.. _at-ipd:
+
++IPD
+^^^^
+
+When ESP-AT receives network data and is not in :term:`Passthrough Mode`, it reports ``+IPD`` in one of the following formats:
+
+- ``+IPD,<length>`` if AT+CIPMUX=0 and AT+CIPRECVTYPE=1.
+- ``+IPD,<link_id>,<length>`` if AT+CIPMUX=1 and AT+CIPRECVTYPE=<link_id>,1.
+- ``+IPD,<length>:<data>`` if AT+CIPMUX=0, AT+CIPRECVTYPE=0, and AT+CIPDINFO=0.
+- ``+IPD,<link_id>,<length>:<data>`` if AT+CIPMUX=1, AT+CIPRECVTYPE=<link_id>,0, and AT+CIPDINFO=0.
+- ``+IPD,<length>,<"remote_ip">,<remote_port>:<data>`` if AT+CIPMUX=0, AT+CIPRECVTYPE=0, and AT+CIPDINFO=1.
+- ``+IPD,<link_id>,<length>,<"remote_ip">,<remote_port>:<data>`` if AT+CIPMUX=1, AT+CIPRECVTYPE=<link_id>,0, and AT+CIPDINFO=1.
+
+``link_id`` is the connection ID, ``length`` is the data length, ``remote_ip`` is the remote IP address, ``remote_port`` is the remote port, and ``data`` is the data.
+
+For an SSL connection in passive receive mode (AT+CIPRECVTYPE=1), the ``length`` reported on the AT command port may differ from the readable SSL data length. AT first returns the readable length at the SSL layer. If that length is 0, AT returns the readable length at the socket layer.
+
+.. only:: esp32c3
 
     If third-party cloud commands are used, ESP-AT will report cloud important state changes or messages in the system.
 

@@ -389,7 +389,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
      >
 
-   The symbol ``>`` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter ``<length>`` is met, the writing starts.
+   The :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter ``<length>`` is met, the writing starts.
 
    .. code-block:: none
 
@@ -415,7 +415,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
      >
 
-   The symbol ``>`` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter ``<length>`` is met, the writing starts.
+   The :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter ``<length>`` is met, the writing starts.
 
    To receive data from {IDF_TARGET_NAME} Bluetooth LE server (through the ``notify`` or the ``indicate`` method), the {IDF_TARGET_NAME} Bluetooth LE client needs to register with the server in advance. Write the value ``0x0001`` to use the ``notify`` method, and ``0x0002`` to use the ``indicate`` method. This example writes the ``0x0002`` to use the ``indicate`` method.
 
@@ -441,7 +441,7 @@ Below is an example of using two {IDF_TARGET_NAME} development boards, one as a 
 
      >
 
-   The symbol ``>`` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter ``<length>`` is met, the indication starts.
+   The :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data and you can enter data now. When the requirement of data length determined by the parameter ``<length>`` is met, the indication starts.
 
    .. code-block:: none
 

@@ -69,7 +69,7 @@
 - 本命令会自动挂载文件系统。:ref:`AT+FS <cmd-FS>` 文件系统操作完成后，强烈建议使用 :ref:`AT+FSMOUNT=0 <cmd-FSMOUNT>` 命令卸载文件系统，来释放大量 RAM 空间。
 - 使用本命令需烧录 at_customize.bin，详细信息可参考 `ESP-IDF 分区表 <https://docs.espressif.com/projects/esp-idf/zh_CN/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_ 和 :doc:`../Compile_and_Develop/How_to_customize_partitions`。
 - 若读取数据的长度大于实际文件大小，仅返回实际长度的数据。
-- 当 ``<operation>`` 为 ``write`` 时，系统收到此命令后先换行返回 ``>``，此时你可以输入要写的数据，数据长度应与 ``<length>`` 一致。
+- 当 ``<operation>`` 为 ``write`` 时，系统收到此命令后先换行返回 :ref:`> 响应 <at-data-input>`，此时你可以输入要写的数据，数据长度应与 ``<length>`` 一致。``<length>`` 须大于 0。
 - 若需通过 OTA 升级 AT 固件并确保其兼容旧版 FATFS 分区，请在以下配置路径 ``Component config`` > ``AT`` > ``AT FS command support`` > ``Filesystem type for AT FS command`` 中选择 ``FatFS (legacy partition, upgrade only, READ HELP FIRST)``。
 
 示例
