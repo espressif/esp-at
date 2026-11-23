@@ -69,7 +69,7 @@ Notes
 - This command will automatically mount the filesystem. After the :ref:`AT+FS <cmd-FS>` filesystem operation is all done, it is strongly recommended to use the :ref:`AT+FSMOUNT=0 <cmd-FSMOUNT>` command to unmount the filesystem to free a large amount of RAM space.
 - Please make sure that you have downloaded at_customize.bin before using this command. For more details, refer to `ESP-IDF Partition Tables <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_ and :doc:`../Compile_and_Develop/How_to_customize_partitions`.
 - If the length of the read data is greater than the actual file length, only the actual data length of the file will be returned.
-- If the operation is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
+- If the operation is ``write``, AT first returns a new line and :ref:`> Response <at-data-input>` after the write command. You can then enter the data to write. The data length must equal ``<length>``, which must be greater than 0.
 - If you need to ensure that the AT firmware is compatible with the legacy FATFS partition after an OTA upgrade, please select ``FatFS (legacy partition, upgrade only, READ HELP FIRST)`` at the following configuration path: ``Component config`` > ``AT`` > ``AT FS command support`` > ``Filesystem type for AT FS command``.
 
 Example

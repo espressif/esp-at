@@ -450,7 +450,7 @@ Set Command
     OK
     >
 
-This response indicates that you should enter the data you want to write. When the requirement of data length is met, the data transmission starts.
+This :ref:`> Response <at-data-input>` indicates that you should enter the data you want to write. When the requirement of data length is met, the data transmission starts.
 
 If the data is transmitted successfully, AT returns:
 
@@ -689,7 +689,7 @@ When ``<data_len>`` is larger than 0, AT returns:
     OK
     >
 
-This response indicates that you should enter the data you want to write. When the requirement of data length is met, the data transmission starts.
+This :ref:`> Response <at-data-input>` indicates that you should enter the data you want to write. When the requirement of data length is met, the data transmission starts.
 
 If the data is transmitted successfully, AT returns:
 

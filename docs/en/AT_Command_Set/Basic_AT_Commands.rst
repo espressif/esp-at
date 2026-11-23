@@ -1217,7 +1217,7 @@ Set Command
 
     >
 
-The symbol ``>`` indicates that AT is ready for receiving regular expressions from AT command port. You should enter the head regular expression and the tail regular expression. When the length reaches the ``<head_regexp_len>`` + ``<tail_regexp_len>`` value, the regular expression integrity check starts.
+The :ref:`> Response <at-data-input>` indicates that AT is ready for receiving regular expressions from AT command port. You should enter the head regular expression and the tail regular expression. When the length reaches the ``<head_regexp_len>`` + ``<tail_regexp_len>`` value, the regular expression integrity check starts.
 
 If the regular expression integrity check fails or the addition of filter fails, AT returns:
 
@@ -1298,7 +1298,7 @@ Set Command
 
     >
 
-The symbol ``>`` indicates that AT is ready for receiving regular expressions from AT command port. You should enter the head regular expression and the tail regular expression. When the length reaches the ``<head_regexp_len>`` + ``<tail_regexp_len>`` value, the regular expression integrity check starts.
+The :ref:`> Response <at-data-input>` indicates that AT is ready for receiving regular expressions from AT command port. You should enter the head regular expression and the tail regular expression. When the length reaches the ``<head_regexp_len>`` + ``<tail_regexp_len>`` value, the regular expression integrity check starts.
 
 If the regular expression integrity check fails or the deletion of filter fails, AT returns:
 
@@ -1414,7 +1414,8 @@ Notes
 - Please make sure that you have downloaded at_customize.bin before using this command. For more details, please refer to :doc:`../Compile_and_Develop/How_to_customize_partitions`.
 - When erasing a partition, please erase the target partition in its entirety. This can be done by omitting the parameters ``<offset>`` and ``<length>``. For example, command ``AT+SYSFLASH=0,"mfg_nvs"`` can erase the entire "mfg_nvs" user partition.
 - The introduction to partitions is in `ESP-IDF Partition Tables <https://docs.espressif.com/projects/esp-idf/en/latest/{IDF_TARGET_PATH_NAME}/api-guides/partition-tables.html>`_.
-- If the operator is ``write``, wrap return ``>`` after the write command, then you can send the data that you want to write. The length should be parameter ``<length>``.
+- If the operator is ``write``, AT first returns a new line and :ref:`> Response <at-data-input>` after the write command. You can then enter the data to write. The data length must equal ``<length>``, which must be greater than 0.
+- After the write data has been received, wait for this command to return before sending the next command. A command sent immediately after the data may receive ``busy p...``.
 - If the operator is ``write``, please make sure that you have already erased this partition.
 - If you want to modify some data in the "mfg_nvs" partition, please use the :ref:`AT+SYSMFG <cmd-SYSMFG>` command (key-value pairs operation). If you want to modify total "mfg_nvs" partition, please use the :ref:`AT+SYSFLASH <cmd-SYSFLASH>` command (partition operation).
 - When writing to a partition, the MCU should write data in multiple chunks to avoid memory exhaustion caused by writing too much data at once. For example, write 4 KB of data each time until the write is complete.
@@ -1482,6 +1483,7 @@ Parameters
    - 0: Erase operation
    - 1: Read operation
    - 2: Write operation
+   - 3: Read MD5
 
 - **<"namespace">**: namespace name.
 - **<"key">**: key name. If this parameter is omitted, all key-value pairs of current ``<"namespace">`` will be erased. Otherwise, only the current key-value pair is erased.
@@ -1547,6 +1549,7 @@ Parameters
    - 0: Erase operation
    - 1: Read operation
    - 2: Write operation
+   - 3: Read MD5
 
 - **<"namespace">**: Namespace name.
 - **<"key">**: key name.
@@ -1612,6 +1615,7 @@ Parameters
    - 0: erase operation
    - 1: read operation
    - 2: write operation
+   - 3: read MD5
 
 - **<"namespace">**: namespace name.
 - **<"key">**: key name.
@@ -1629,7 +1633,7 @@ Parameters
 - **<value>**: It means differently depending on the parameter ``<type>``:
 
   - If ``<type>`` is between 1-6, ``<value>`` represents the real value.
-  - If ``<type>`` is between 7-8, ``<value>`` represents the length of the value. After you send the command, AT will return ``>``. This symbol indicates that AT is ready for receiving data. You should enter the data of designated length. When the data length reaches the ``<value>`` value, the key-value pair will be written to the namespace immediately.
+  - If ``<type>`` is between 7-8, ``<value>`` represents the length of the value. It must be greater than 0. After you send the command, AT will return :ref:`> Response <at-data-input>`, which indicates that AT is ready to receive data. You should enter the data of designated length. When the data length reaches the ``<value>`` value, the key-value pair will be written to the namespace immediately.
 
 Note
 ^^^^
@@ -1648,6 +1652,59 @@ Example
     AT+SYSMFG=2,"client_cert","client_cert.0",8,1164
 
     // Wait until AT command port returns ``>``, and then write 1164 bytes
+
+Read the MD5 of a Value
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Set Command
+"""""""""""
+
+**Command:**
+
+::
+
+    AT+SYSMFG=<operation>,<"namespace">,<"key">
+
+**Response:**
+
+::
+
+    +SYSMFG:<"namespace">,<"key">,<length>,<md5>
+
+    OK
+
+Parameters
+""""""""""
+
+- **<operation>**:
+
+   - 0: Erase operation
+   - 1: Read operation
+   - 2: Write operation
+   - 3: Read MD5
+
+- **<"namespace">**: namespace name.
+- **<"key">**: key name.
+- **<length>**: number of bytes covered by the MD5. For a string value, the trailing ``\0`` is not included.
+- **<md5>**: 32 lowercase hexadecimal characters. The digest covers the whole value. This operation does not take ``<offset>`` or a read length.
+
+Note
+^^^^
+
+- Only string (``<type>`` 7) and binary (``<type>`` 8) are supported. Other types return ``ERROR``. With :ref:`AT+SYSLOG=1 <cmd-SYSLOG>`, ``+ERRNO`` is ``ESP_ERR_NVS_TYPE_MISMATCH``.
+- Use this operation to check a stored string or binary value without reading it all back.
+
+Example
+"""""""
+
+::
+
+    AT+SYSMFG=3,"client_ca","client_ca.0"
+
+Error Code
+^^^^^^^^^^
+
+The following description applies to all ``AT+SYSMFG`` operations. When an NVS or AT port operation fails, :ref:`AT+SYSLOG=1 <cmd-SYSLOG>` returns ``+ERRNO:<error_code>`` before ``ERROR``. See :ref:`+ERRNO <at-errno>`. A parameter error returns ``ERROR`` only.
 
 .. _cmd-RFPOWER:
 

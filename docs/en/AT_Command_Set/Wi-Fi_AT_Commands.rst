@@ -939,6 +939,11 @@ Execute Command
 
     OK
 
+Notes
+^^^^^
+
+If the station is connected to an AP, the command waits up to 5 seconds for Wi-Fi to disconnect. If the disconnect is not finished before the timeout, the command still returns ``OK`` and the disconnect may still be in progress. If the station is not connected, the command returns ``OK`` immediately.
+
 .. _cmd-SAP:
 
 :ref:`AT+CWSAP <WiFi-AT>`: Query or set the configuration of an {IDF_TARGET_NAME} SoftAP

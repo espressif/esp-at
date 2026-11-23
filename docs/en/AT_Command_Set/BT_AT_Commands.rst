@@ -554,7 +554,8 @@ Parameters
 Notes
 ^^^^^
 
-- The wrap return is > after this command is executed. Then, the {IDF_TARGET_NAME} enters UART Bluetooth passthrough mode. When the packet which only contains :ref:`+++ <cmd-PLUS>` is received, the device returns to normal command mode. Please wait for at least one second before sending the next AT command.
+- The wrap return is ``>`` after this command is executed. Then, the {IDF_TARGET_NAME} enters UART Bluetooth passthrough mode. When the packet which only contains :ref:`+++ <cmd-PLUS>` is received, the device returns to normal command mode. Please wait for at least one second before sending the next AT command.
+- The set command returns :ref:`> Response <at-data-input>`, then receives ``<data_len>`` bytes. ``<data_len>`` must be greater than 0.
 
 Example
 ^^^^^^^^

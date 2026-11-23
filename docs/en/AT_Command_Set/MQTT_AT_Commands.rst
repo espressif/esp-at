@@ -118,7 +118,7 @@ Set MQTT Client ID.
 
     >
 
-This response indicates that AT is ready for receiving MQTT Client ID. You should enter the Client ID, and when the Client ID length reaches the ``<length>`` value, the system returns:
+This :ref:`> Response <at-data-input>` indicates that AT is ready for receiving MQTT Client ID. You should enter the Client ID, and when the Client ID length reaches the ``<length>`` value, the system returns:
 
 ::
 
@@ -164,7 +164,7 @@ Set MQTT username.
 
     >
 
-This response indicates that AT is ready for receiving MQTT username. You should enter the MQTT username, and when the MQTT username length reaches the ``<length>`` value, the system returns:
+This :ref:`> Response <at-data-input>` indicates that AT is ready for receiving MQTT username. You should enter the MQTT username, and when the MQTT username length reaches the ``<length>`` value, the system returns:
 
 ::
 
@@ -210,7 +210,7 @@ Set MQTT password.
 
     >
 
-This response indicates that AT is ready for receiving MQTT password. You should enter the MQTT password, and when the MQTT password length reaches the ``<length>`` value, the system returns:
+This :ref:`> Response <at-data-input>` indicates that AT is ready for receiving MQTT password. You should enter the MQTT password, and when the MQTT password length reaches the ``<length>`` value, the system returns:
 
 ::
 
@@ -457,6 +457,11 @@ Parameters
    - 9: MQTT over WebSocket Secure (based on TLS, provide client certificate).
    - 10: MQTT over WebSocket Secure (based on TLS, verify server certificate and provide client certificate).
 
+Notes
+^^^^^
+
+- After ``ERROR``, AT does not report ``+MQTTCONNECTED`` for that attempt.
+
 .. _cmd-MQTTPUB:
 
 :ref:`AT+MQTTPUB <MQTT-AT>`: Publish MQTT Messages in String
@@ -496,6 +501,7 @@ Notes
 
 - The length of the entire AT command should be less than 256 bytes.
 - This command cannot send data ``\0``. If you need to send ``\0``, please use the command :ref:`AT+MQTTPUBRAW <cmd-MQTTPUBRAW>` instead.
+- ``OK`` is returned after the publish completes.
 
 Example
 ^^^^^^^^
@@ -533,7 +539,7 @@ Publish long MQTT messages to a defined topic. If the amount of data you publish
     OK
     >
 
-The symbol ``>`` indicates that AT is ready for receiving serial data, and you can enter the data now. When the requirement of message length determined by the parameter ``<length>`` is met, the transmission starts.
+The :ref:`> Response <at-data-input>` indicates that AT is ready for receiving serial data, and you can enter the data now. When the requirement of message length determined by the parameter ``<length>`` is met, the transmission starts.
 
 If the transmission is successful, AT returns:
 
@@ -556,6 +562,12 @@ Parameters
 - **<qos>**: QoS of the published message, which can be set to 0, 1, or 2. Default is 0.
 - **<retain>**: retain flag.
 - **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
+
+Notes
+^^^^^
+
+- ``<length>`` must be greater than 0.
+- ``+MQTTPUB:OK`` is returned after the publish completes.
 
 .. _cmd-MQTTSUB:
 
@@ -639,6 +651,7 @@ Parameters
 Note
 ^^^^
 
+- ``OK`` is returned after the subscription completes.
 - Due to MTU limitations or traffic policy management on each WAN routing node, a single message sent by the MQTT broker may eventually be split into multiple messages received by the {IDF_TARGET_NAME} device. Therefore, {IDF_TARGET_NAME} may receive multiple ``+MQTTSUBRECV`` messages.
 - If the {IDF_TARGET_NAME} device receives an MQTT message whose length exceeds 1024 bytes (including the MQTT header and MQTT payload), it will also be split into multiple ``+MQTTSUBRECV`` messages. In this case, you can increase the MQTT buffer size as follows to avoid this situation.
 
@@ -685,6 +698,11 @@ Parameters
 - **<"topic">**: MQTT topic. Maximum length: 128 bytes.
 - **<timeout_ms>**: timeout for the command. Unit: milliseconds. Range: [3000,60000]. Default: 15000 milliseconds.
 
+Notes
+^^^^^
+
+- ``OK`` is returned after the unsubscribe completes.
+
 .. _cmd-MQTTCLEAN:
 
 :ref:`AT+MQTTCLEAN <MQTT-AT>`: Close MQTT Connections
@@ -713,6 +731,11 @@ Parameter
 ^^^^^^^^^^
 
 - **<LinkID>**: only supports link ID 0 currently.
+
+Notes
+^^^^^
+
+- After ``OK``, the client may still be releasing resources. Other MQTT commands return ``ERROR`` until that finishes. With :ref:`AT+SYSLOG=1 <cmd-SYSLOG>`, the error code is ``AT_MQTT_CLEANUP_IN_PROGRESS`` (0x6058).
 
 .. _MQTTErrCod:
 
@@ -954,6 +977,20 @@ When an MQTT command fails, AT returns this code synchronously. The MQTT Error c
      - 0x6051
    * - AT_MQTT_HOSTNAME_VERIFY_FAILED
      - 0x6052
+   * - AT_MQTT_CONN_TIMEOUT_READ_FAILED
+     - 0x6053
+   * - AT_MQTT_CONN_TIMEOUT_VALUE_IS_WRONG
+     - 0x6054
+   * - AT_MQTT_HOSTNAME_RESOLUTION_FAILED
+     - 0x6055
+   * - AT_MQTT_HOSTNAME_NO_VALID_IP
+     - 0x6056
+   * - AT_MQTT_CONNECT_TIMEOUT
+     - 0x6057
+   * - AT_MQTT_CLEANUP_IN_PROGRESS
+     - 0x6058
+
+``AT_MQTT_CREATE_SEMA_FAILED`` (0x604E) is reserved. The current firmware does not return this error code.
 
 .. _MQTTNote:
 
