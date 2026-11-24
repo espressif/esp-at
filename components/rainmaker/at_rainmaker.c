@@ -526,32 +526,29 @@ esp_err_t rmaker_ota_handle(esp_rmaker_ota_handle_t ota_handle, esp_rmaker_ota_d
             free(hmcu_ota_value);
             hmcu_ota_value = NULL;
 
-            char *host_ota_info = (char *)calloc(1, strlen(ota_data->url) + 256);
-            if (host_ota_info == NULL) {
+            if (ota_data->url == NULL || ota_data->ota_job_id == NULL) {
+                esp_rmaker_ota_report_status(ota_handle, OTA_STATUS_FAILED, "Aborted. OTA notify data missing");
+                return ESP_FAIL;
+            }
+
+            /* Format: +RMFWNOTIFY:<type>,<size>,<url>,<fw_version>,<ota_job_id>
+             * Size the buffer from the cloud strings. A fixed slack overflows when
+             * fw_version or ota_job_id is longer than that slack.
+             */
+            char *host_ota_info = NULL;
+            int host_ota_info_len = asprintf(&host_ota_info, "%s:%d,%d,%s,%s,%s\r\n",
+                                             RAINMAKER_OTA_NOTIFY_FORMAT,
+                                             AT_RM_HOST_MCU_OTA,
+                                             ota_data->filesize,
+                                             ota_data->url,
+                                             ota_data->fw_version ? ota_data->fw_version : "null",
+                                             ota_data->ota_job_id);
+            if (host_ota_info_len < 0 || host_ota_info == NULL) {
                 esp_rmaker_ota_report_status(ota_handle, OTA_STATUS_FAILED, "ESP no ram to notify host mcu OTA info");
                 return ESP_FAIL;
             }
 
-            /* Format: +RMFWNOTIFY:<type>,<size>,<url>,<fw_version>,<ota_job_id> */
-            if (ota_data->fw_version) {
-                sprintf(host_ota_info, "%s:%d,%d,%s,%s,%s\r\n",
-                        RAINMAKER_OTA_NOTIFY_FORMAT,
-                        AT_RM_HOST_MCU_OTA,
-                        ota_data->filesize,
-                        ota_data->url,
-                        ota_data->fw_version,
-                        ota_data->ota_job_id);
-            } else {
-                sprintf(host_ota_info, "%s:%d,%d,%s,%s,%s\r\n",
-                        RAINMAKER_OTA_NOTIFY_FORMAT,
-                        AT_RM_HOST_MCU_OTA,
-                        ota_data->filesize,
-                        ota_data->url,
-                        "null",
-                        ota_data->ota_job_id);
-            }
-
-            esp_at_port_write_data((uint8_t *)host_ota_info, strlen((host_ota_info)));
+            esp_at_port_write_data((uint8_t *)host_ota_info, host_ota_info_len);
             free(host_ota_info);
 
             xEventGroupSetBits(s_rm_event_group, RM_HOST_MCU_OTA_EXIST);
