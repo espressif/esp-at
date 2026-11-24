@@ -1288,6 +1288,9 @@ static int json_append(char *buf, int buf_size, int json_len, const char *fmt, .
 
 static int json_append_escaped(char *buf, int buf_size, int json_len, const uint8_t *text, int text_len)
 {
+    /* Escape \, ", and / for JSON. '<', '>', and '&' stay literal; index.html
+     * parses the string and writes it with textContent.
+     */
     for (int i = 0; i < text_len; i++) {
         uint8_t c = text[i];
         if (c == '\\' || c == '\"' || c == '/') {
