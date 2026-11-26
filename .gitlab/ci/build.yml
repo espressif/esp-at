@@ -1,0 +1,35 @@
+# ESP-AT chip firmware builds.
+# Pass NEED_COMPILE_<CHIP>=1 to build only those chips. Otherwise every chip is built.
+
+.include-rule-all-chips: &include-rule-all-chips
+  if: '$NEED_COMPILE_ESP32 != "1" && $NEED_COMPILE_ESP32C2 != "1" && $NEED_COMPILE_ESP32C3 != "1" && $NEED_COMPILE_ESP32C5 != "1" && $NEED_COMPILE_ESP32C6 != "1" && $NEED_COMPILE_ESP32C61 != "1" && $NEED_COMPILE_ESP32S2 != "1"'
+
+include:
+  - local: '.gitlab/ci/build_esp32.yml'
+    rules:
+      - if: '$NEED_COMPILE_ESP32 == "1"'
+      - *include-rule-all-chips
+  - local: '.gitlab/ci/build_esp32c2.yml'
+    rules:
+      - if: '$NEED_COMPILE_ESP32C2 == "1"'
+      - *include-rule-all-chips
+  - local: '.gitlab/ci/build_esp32c3.yml'
+    rules:
+      - if: '$NEED_COMPILE_ESP32C3 == "1"'
+      - *include-rule-all-chips
+  - local: '.gitlab/ci/build_esp32c5.yml'
+    rules:
+      - if: '$NEED_COMPILE_ESP32C5 == "1"'
+      - *include-rule-all-chips
+  - local: '.gitlab/ci/build_esp32c6.yml'
+    rules:
+      - if: '$NEED_COMPILE_ESP32C6 == "1"'
+      - *include-rule-all-chips
+  - local: '.gitlab/ci/build_esp32c61.yml'
+    rules:
+      - if: '$NEED_COMPILE_ESP32C61 == "1"'
+      - *include-rule-all-chips
+  - local: '.gitlab/ci/build_esp32s2.yml'
+    rules:
+      - if: '$NEED_COMPILE_ESP32S2 == "1"'
+      - *include-rule-all-chips
