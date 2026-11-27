@@ -540,12 +540,15 @@ Exit from :term:`Data Mode` and enter the :term:`Command Mode`.
 Notes
 """"""
 
-- This special execution command consists of three identical ``+`` characters (0x2b ASCII), and no CR-LF appends to the command tail.
-- Make sure there is more than 20 ms interval before the first ``+`` character, more than 20 ms interval after the third ``+`` character, less than 20 ms interval among the three ``+`` characters. Otherwise, the ``+`` characters will be sent out as normal data.
-- This command returns no reply.
-- During :ref:`> Response <at-data-input>`, ``+++`` alone aborts the input and the command returns ``ERROR``.
-- Please wait for at least one second before sending the next AT command.
-- If TCP data is being retransmitted and the server does not reply when you exit the Network :term:`Passthrough Mode`, AT does not respond to subsequent AT commands until the retransmission finishes (the maximum timeout is about 90 seconds). Sending AT commands during this period results in ``busy p...``. To avoid the long wait, set the TCP send timeout with :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` (``<so_sndtimeo>``) before entering passthrough mode so that retransmission can end earlier.
+.. list::
+
+  - This special execution command consists of three identical ``+`` characters (0x2b ASCII), and no CR-LF is appended to the command tail.
+  - Make sure there is more than 20 ms of no input before the first ``+`` character and after the third ``+`` character, and less than 20 ms between the three ``+`` characters. Otherwise, the ``+`` characters will be sent out as normal data.
+  :not esp32 and not esp32c2: - If the baud rate is higher than 3.2 Mbps, make sure the interval between the three ``+`` characters is less than 13 ms (the idle intervals before and after ``+++`` can still stay more than 20 ms).
+  - This command returns no reply.
+  - During :ref:`> Response <at-data-input>`, ``+++`` alone aborts the input and the command returns ``ERROR``.
+  - Please wait for at least one second before sending the next AT command.
+  - If TCP data is being retransmitted and the server does not reply when you exit the Network :term:`Passthrough Mode`, AT does not respond to subsequent AT commands until the retransmission finishes (the maximum timeout is about 90 seconds). Sending AT commands during this period results in ``busy p...``. To avoid the long wait, set the TCP send timeout with :ref:`AT+CIPTCPOPT <cmd-TCPOPT>` (``<so_sndtimeo>``) before entering passthrough mode so that retransmission can end earlier.
 
 .. _cmd-SEND:
 

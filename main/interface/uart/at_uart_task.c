@@ -11,6 +11,7 @@
 #ifdef CONFIG_AT_BASE_ON_UART
 #include "soc/io_mux_reg.h"
 #include "soc/gpio_periph.h"
+#include "soc/uart_reg.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_at.h"
@@ -217,26 +218,31 @@ void at_uart_transmit_mode_switch_cb(esp_at_status_t status)
 
     case ESP_AT_STATUS_TRANSMIT: {
         /**
-         * As the implement of API uart_enable_pattern_det_baud_intr() in esp-idf,
-         * the last three timeout parameters is different on ESP32 and non ESP32 platform.
+         * uart_enable_pattern_det_baud_intr() takes baud-rate cycles on every chip.
+         * The ESP32 driver converts those cycles to APB clocks. Other chips write them
+         * into 16-bit registers. UART_RX_GAP_TOUT_V, UART_PRE_IDLE_NUM_V and
+         * UART_POST_IDLE_NUM_V have the same width on each chip.
          *
-         * That is, on ESP32 platform, it uses the APB clocks as the unit;
-         * on non ESP32 platform (ESP32-C3, ..), it uses the UART baud rate clocks as the unit.
-         *
-         * Notes:
-         * on non ESP32 platform, due to the value of input parameters have a limit of 0xFFFF (see as macro: UART_RX_GAP_TOUT_V..),
-         * so the maximum uart baud rate is recommended to be less than (0xFFFF * 1000 / AT_UART_PATTERN_TIMEOUT_MS) = 3276750 ~= 3.2Mbps
-         * otherwise, this uart_enable_pattern_det_baud_intr() will not work.
-        */
-#ifdef CONFIG_IDF_TARGET_ESP32
-        int apb_clocks = (uint32_t)APB_CLK_FREQ * AT_UART_PATTERN_TIMEOUT_MS / 1000;
-        uart_enable_pattern_det_baud_intr(g_at_cmd_port, '+', 3, apb_clocks, apb_clocks, apb_clocks);
-#else
+         * 20 ms is baud * AT_UART_PATTERN_TIMEOUT_MS / 1000 cycles. Above about 3.2 Mbps
+         * that exceeds 0xFFFF. Clamp to the register maximum so detection stays enabled:
+         * the required idle becomes shorter than 20 ms, and the gap between '+' bytes
+         * stays wide enough for a back-to-back "+++".
+         */
         uint32_t uart_baud = 0;
-        uart_get_baudrate(g_at_cmd_port, &uart_baud);
-        int uart_clocks = (uint32_t)uart_baud * AT_UART_PATTERN_TIMEOUT_MS / 1000;
-        uart_enable_pattern_det_baud_intr(g_at_cmd_port, '+', 3, uart_clocks, uart_clocks, uart_clocks);
-#endif
+        uint32_t cycles = 0;
+
+        if (uart_get_baudrate(g_at_cmd_port, &uart_baud) != ESP_OK || uart_baud == 0) {
+            ESP_AT_LOGE(TAG, "get uart baudrate failed");
+            break;
+        }
+
+        cycles = uart_baud * AT_UART_PATTERN_TIMEOUT_MS / 1000;
+        if (cycles > UART_RX_GAP_TOUT_V) {
+            cycles = UART_RX_GAP_TOUT_V;
+        }
+        if (uart_enable_pattern_det_baud_intr(g_at_cmd_port, '+', 3, cycles, cycles, cycles) != ESP_OK) {
+            ESP_AT_LOGE(TAG, "enable +++ pattern detect failed, baud:%u cycles:%u", uart_baud, cycles);
+        }
     }
     break;
     }
